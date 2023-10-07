@@ -1,8 +1,25 @@
 \documentclass{article}
+\title{Logica}
+\author{Fabio Irimie}
+\date{1° semestre 2023}
 \begin{document}
+\maketitle
 \tableofcontents
 \section{Introduzione}
 \subsection{Logica Proposizionale}
-\paragraph{Definizione} La logica proposizionale è un linguaggio formale che permette di esprimere proposizioni. Una proposizione è una frase che può essere vera o falsa.
-la professoressa non sa insegnare
+$<\N, 0, succ>$
+\paragraph{succ} è una funzione che associa un numero naturale ad un altro numero naturale: $succ(n) = n + 1$
+
+I naturali soddisfano i seguenti assiomi:
+\begin{itemize}
+\item \textbf{assioma 1} 0 è un elemento privilegiato di $N$ detto zero
+\item \textbf{assioma 2} $succ: \N \to \N$ è un operazione unaria iniettiva su A
+\item \textbf{assioma 3} $0 \notin Im(succ)$
+\item \textbf{assioma 4} Se $P \subseteq \N$ e valgono le seguenti proprietà
+\begin{enumerize}
+\item $0 \in P$
+\item $\forall n \in \N . (n \in P \Rightarrow succ(n) \in P$
+allora $P = N$
+\end{enumerize}
+\end{itemize}
 \end{document}
