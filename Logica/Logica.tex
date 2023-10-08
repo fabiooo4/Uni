@@ -1,25 +1,245 @@
 \documentclass{article}
-\title{Logica}
-\author{Fabio Irimie}
-\date{1° semestre 2023}
-\begin{document}
-\maketitle
-\tableofcontents
-\section{Introduzione}
-\subsection{Logica Proposizionale}
-$<\N, 0, succ>$
-\paragraph{succ} è una funzione che associa un numero naturale ad un altro numero naturale: $succ(n) = n + 1$
+\usepackage[italian]{babel}
+\usepackage{amsfonts}
+\usepackage{mdframed}
+\usepackage{ntheorem}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\graphicspath{ {./figures/} }
 
-I naturali soddisfano i seguenti assiomi:
+\usepackage{import}
+\usepackage{pdfpages}
+\usepackage{transparent}
+\usepackage{xcolor}
+
+% Inkscape figures
+\newcommand{\incfig}[2][1]{%
+	\def\svgwidth{#1\columnwidth}
+	\import{./figures/}{#2.pdf_tex}
+}
+
+\pdfsuppresswarningpagegroup=1
+
+% Useful definitions frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	innertopmargin=8pt,%
+	ntheorem]{define}{Definizioni utili}[section]
+
+% Example frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	innertopmargin=8pt,%
+	ntheorem]{example}{Esempio}[section]
+
+% Important definition frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	backgroundcolor=gray!40,%
+	innertopmargin=8pt,%
+	ntheorem]{definition}{Definizione}[section]
+
+% Exercise frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	innertopmargin=8pt,%
+	ntheorem]{exercise}{Esercizio}[section]
+
+
+
+\begin{document}
+\input{title.tex}
+
+\tableofcontents
+\pagebreak
+
+\section{Introduzione}
+La logica ha lo scopo di formalizzare il ragionamento matematico
+che è caratterizzato dal concetto di dimostrazione senza ambiguità
+
+\section{Sintassi della logica proposizionale}
+La logica proposizionale è formata da simboli formali ben definiti
+e sono divisi in:
+\subsection{Connettivi}
 \begin{itemize}
-\item \textbf{assioma 1} 0 è un elemento privilegiato di $N$ detto zero
-\item \textbf{assioma 2} $succ: \N \to \N$ è un operazione unaria iniettiva su A
-\item \textbf{assioma 3} $0 \notin Im(succ)$
-\item \textbf{assioma 4} Se $P \subseteq \N$ e valgono le seguenti proprietà
-\begin{enumerize}
-\item $0 \in P$
-\item $\forall n \in \N . (n \in P \Rightarrow succ(n) \in P$
-allora $P = N$
-\end{enumerize}
+	\item \( \vee \) Congiunzione, And logico
+	\item \( \wedge \) Disgiunzione, Or logico
+	\item \( \neg \) Negazione, Not logico (non connette niente, è solo una costante logica
+	      che equivale a 0 nella logica booleana)
+	\item \( \bot \) Falso, Bottom, Assurdo
+	\item \( \to  \) Implicazione, If-then
 \end{itemize}
+
+\subsection{Ausiliari}
+\begin{itemize}
+	\item () Le parentesi non fanno parte della proposizione,
+	      ma servono solo a costruire il linguaggio
+\end{itemize}
+
+\subsection{Simboli proposizionali}
+\begin{itemize}
+	\item \( p_n, q_n, \psi_n, \ldots  \) Le lettere minuscole indicizzate vengono usate per indicare
+	      una proposizione (sono infiniti simboli numerabili)
+\end{itemize}
+
+\subsection{Altri simboli}
+\begin{itemize}
+	\item \( | \) Tale che
+	\item \( \leftrightarrow \) Se e solo se
+\end{itemize}
+
+\begin{define}
+	\begin{enumerate}
+		\item \textbf{Stringa}: Una sequenza finita di simboli o caratteri
+		\item \textbf{Infinito numerabile}: Un insieme è infinito numerabile se è il
+		      più piccolo infinito possibile, cioè se è in corrispondenza
+		      biunivoca con l'insieme \( \mathbb{N} \)
+	\end{enumerate}
+\end{define}
+
+\section{Principio di induzione}
+Il principio di induzione è un principio logico che permette di dimostrare che una proprietà è vera
+per tutti gli elementi di un insieme infinito numerabile.
+
+Una prima definizione induttiva fatta in modo non formale, ma con frasi in italiano è la seguente:
+
+L'insieme di proposizioni \( PROP \) è così definito \emph{induttivamente}:
+\begin{enumerate}
+	\item \( \bot \to PROP \)
+	\item se \( p \) è un simbolo proposizionale allora \( p \in PROP \)
+	\item \textbf{(Caso induttivo)} se \( \alpha, \beta \in PROP \) allora
+	      \( (\alpha \wedge \beta ) \in PROP, (\alpha \vee \beta ) \in PROP,
+	      (\alpha \to \beta ) \in PROP, (\neg \alpha ) \in PROP \)
+	\item nient'altro appartiene a \( PROP \)
+\end{enumerate}
+
+In questo modo è stato creato l'insieme \( PROP \) che contiene tutte le proposizioni che possono essere create
+usando gli unici simboli che abbiamo definito \( (\wedge, \vee, \to, \neg) \).
+\vspace{0.5cm}
+\\
+Esempi di proposizioni corrette e scorrette:
+\begin{itemize}
+	\item \( (p_{7} \to p_{0}) \in PROP \)
+	\item \( p_{7} \to p_{0} \notin PROP \) (mancano le parentesi)
+	\item \( ((\bot \vee p_{32}) \wedge (\neg p_{2})) \in PROP \)
+	\item \( ((\to \wedge \notin PROP \)
+	\item \( \neg \neg \bot \notin PROP \)
+\end{itemize}
+
+\subsection{Definizione induttiva formale dell'insieme \( PROP \)}
+Adesso l'insieme \( PROP \) viene definito in modo formale usando i simboli proposizionali.
+\begin{definition}
+	L'insieme \( PROP \) è il più piccolo insieme \( X \) di stringhe tale che:
+	\begin{enumerate}
+		\item \( \bot \in X \)
+		\item \( p \in X \) (Perchè è un simbolo proposizionale)
+		\item se \( \alpha, \beta \in X \) allora \( (\alpha \to \beta ) \in X, (\alpha \vee \beta ) \in X,
+		      (\alpha \wedge \beta ) \in X, (\neg \alpha ) \in X \)
+	\end{enumerate}
+	\( p, \alpha , \beta, \ldots  \) sono elementi proposizionali generici
+\end{definition}
+\underline{\( AT  = \) simboli proposizionali + \( \bot \)}
+è l'insieme di tutte le proposizioni atomiche,
+cioè quelle che non contengono connettivi, sono quindi la più piccola parte
+non ulteriormente scomponibile
+
+\section{Proprietà su un insieme}
+Definito \( P \) un insieme di proprietà assunte da un insieme \( A \) si ha che:
+\begin{itemize}
+	\item \( P \subseteq A \)
+	\item \( a \in A \) dove \( a \) è un elemento generico dell'insieme \( A \)
+\end{itemize}
+Si dice che \( a \) gode della proprietà \( P \) se \( a \in P \).
+
+Altri modi per dire che \( a \) gode della proprietà \( P \) sono:
+\begin{itemize}
+	\item \( P(a) \)
+	\item \( P[a] \) (per non creare confusione con le parentesi tonde che sono
+	      usate come simboli ausiliari per costruire il linguaggio)
+\end{itemize}
+
+\( P \subseteq PROP \)\hspace{5mm} \( \forall \alpha \in PROP \) \( . \) \( P(\alpha ) \)\\
+(il punto mette in evidenza ciè che viene dopo di esso e può anche essere omesso)
+
+\begin{example}
+	Esempio di una proprietà sull'insieme \( \mathbb{N} \):
+
+	\( P = \{n | n \in \mathbb{N} \) ed è pari \( \} \) essendo \( n \) un numero generico
+	indica la proprietà di essere pari.
+	\\
+	\( P[5] \) \( \times  \)\\
+	\( P[4] \) \( \surd \)
+\end{example}
+
+\subsection{Principio di induzione sui numeri naturali \( \mathbb{N} \)}
+\( P \subseteq \mathbb{N} \)
+\begin{enumerate}
+	\item \textbf{Caso base}: se \( P[0] \) e
+	\item \textbf{Passo induttivo}: se \( \forall n \in \mathbb{N} (P[n] \Rightarrow P[n+1]) \)
+	      allora \( \forall n \in \mathbb{N} \hspace{2mm} . \hspace{2mm} P[n] \)
+\end{enumerate}
+
+Se si dimostra la proprietà per \( n \) e per il successivo \( (n+1) \), allora
+si dimostra che la proprietà è vera per tutti i numeri naturali. Si sfrutta
+il fatto che esiste un minimo a cui prima o poi si arriva.
+\begin{exercise}
+	Dimostra per induzione che: \( TODO \)
+	\[\sum_{i=0}^{n} i = \frac{n(n+1)}{2}\]
+
+\end{exercise}
+\section{Teorema del principio di induzione su \( PROP \)}
+\begin{definition}
+	\( P \subseteq PROP \)
+	\begin{enumerate}
+		\item Se \( P[\alpha ], \alpha \in AT \) e
+		\item Se \( P[\alpha ] \Rightarrow P[(\neg \alpha )] \) e
+		\item se \( P[\alpha ]\) e \(P[\beta ] \Rightarrow P[(\alpha \wedge \beta )],
+		      P[(\alpha \vee \beta) P[(\alpha \to \beta )]\)\\
+		      allora \( \forall \psi \in PROP \hspace{2mm} . \hspace{2mm} P[\psi]\)
+	\end{enumerate}
+\end{definition}
+
+Con questo teorema si possono dimostrare intere proposizioni complesse dimostrando i pezzi
+più piccoli (\textbf{\emph{sottoformule}}) come mostrato nella figura \ref{fig:dimostrazionecomplessa}.
+
+%\begin{example}
+\label{ex:dimostrazioneComplessa}
+\begin{figure}[ht]
+	\centering
+	\incfig[1]{dimostrazionecomplessa}
+	\caption{Dimostrazione di una formula complessa}
+	\label{fig:dimostrazionecomplessa}
+\end{figure}
+%\end{example}
+
+\begin{exercise}
+	Dimostra che ogni \( \psi \in PROP \) ha un numero pari di parentesi usando
+	il principio di induzione per dimostrare proprietà sintattiche sulla struttura
+	delle formule.
+
+	\( P[\psi] \equiv \) \( \psi \) ha un numero pari di parentesi
+	\begin{enumerate}
+		\item \textbf{Caso base} \( \psi \in AT \) quindi \( \psi \) ha 0 parentesi
+		      e quindi è pari: \( P[\psi] \) \( \surd \)
+		\item \textbf{Ipotesi induttiva} \( \alpha , \beta \in PROP, \) \( P[\alpha ], P[\beta ] \)
+		      ? \( P[(\alpha \to \beta )] \) (per \( \alpha  \) vale e per \( \beta  \) vale, si sono
+		      aggiunte due parentesi, quindi la formula è ancora pari)
+		\item \textbf{Passo induttivo} \( P[\alpha], P[\beta] \Rightarrow P[(\alpha \to \beta )], P[(\alpha \vee \beta )],
+		      P[(\alpha \wedge \beta)]\) allora \( \forall \psi \in PROP \hspace{2mm}.\hspace{2mm} P[\psi] \)
+
+	\end{enumerate}
+\end{exercise}
+
 \end{document}
