@@ -33,7 +33,7 @@
 \theoremstyle{break}
 \theoremheaderfont{\bfseries}
 \newmdtheoremenv[%
-	linecolor=gray,leftmargin=0,%
+	linecolor=white,leftmargin=0,%
 	rightmargin=0,
 	innertopmargin=8pt,%
 	ntheorem]{example}{Esempio}[section]
@@ -64,6 +64,33 @@
 
 \tableofcontents
 \pagebreak
+
+\section{Ripasso di matematica}
+\subsection{Relazioni}
+Prendendo in considerazione 2 insiemi \( A, B \) e una relazione \( f \subseteq A\times B \)
+si definisce \textbf{dominio} l'insieme \( A \) e \textbf{codominio} l'insieme \( B \).
+Il prodotto cartesiano è definito nel seguente modo:
+\[
+	A \times B = \{(a,b) | a \in A, b \in B\}
+\]
+Ciò significa che si prende in considerazione una coppia ordinata di elementi formata da
+un elemento di \( A \) e uno di \( B \).
+La relazione \( f \) è una funzione sse (se e solo se) \( \forall a \in A \) \( \exists \) unico \( b \in B \)
+si dice che: \( (a,b) \in f \), oppure \( f(a) = b \).
+
+\subsection{Sottoinsieme delle parti}
+Dato un insieme \( A \) si definisce \textbf{sottoinsieme delle parti} (scritto \( \mathcal{P}(A) \) o \( 2^{A} \))
+l'insieme di tutti i sottoinsiemi di \( A \), cioè \( 2^{A} = {x|x \subseteq A} \).
+
+Un esempio è il seguente:
+\[
+	A = \{3, 5\}
+\]
+\[
+	2^{A} = \{ \emptyset, \{3\}, \{5\}, \{3,5\} \}
+\]
+
+\( \emptyset \) è l'insieme vuoto, cioè l'insieme che non contiene nessun elemento.
 
 \section{Introduzione}
 La logica ha lo scopo di formalizzare il ragionamento matematico
@@ -195,7 +222,7 @@ Se si dimostra la proprietà per \( n \) e per il successivo \( (n+1) \), allora
 si dimostra che la proprietà è vera per tutti i numeri naturali. Si sfrutta
 il fatto che esiste un minimo a cui prima o poi si arriva.
 \begin{exercise}
-	Dimostra per induzione che: \( TODO \)
+	Dimostra per induzione che:
 	\[\sum_{i=0}^{n} i = \frac{n(n+1)}{2}\]
 
 \end{exercise}
@@ -214,17 +241,18 @@ il fatto che esiste un minimo a cui prima o poi si arriva.
 Con questo teorema si possono dimostrare intere proposizioni complesse dimostrando i pezzi
 più piccoli (\textbf{\emph{sottoformule}}) come mostrato nella figura \ref{fig:dimostrazionecomplessa}.
 
-%\begin{example}
 \label{ex:dimostrazioneComplessa}
-\begin{figure}[ht]
+\begin{figure}[h]
 	\centering
 	\incfig[1]{dimostrazionecomplessa}
 	\caption{Dimostrazione di una formula complessa}
 	\label{fig:dimostrazionecomplessa}
 \end{figure}
-%\end{example}
+
+\pagebreak
 
 \begin{exercise}
+	\label{ex:parentesiPari}
 	Dimostra che ogni \( \psi \in PROP \) ha un numero pari di parentesi usando
 	il principio di induzione per dimostrare proprietà sintattiche sulla struttura
 	delle formule.
@@ -241,5 +269,87 @@ più piccoli (\textbf{\emph{sottoformule}}) come mostrato nella figura \ref{fig:
 
 	\end{enumerate}
 \end{exercise}
+
+\section{Definizione ricorsiva di funzioni su PROP}
+\begin{definition}
+	Riprendendo l'esercizio \ref{ex:parentesiPari} si definisce la funzione \( \pi \) che associa ad ogni formula
+	proposizionale (equivalente di un input nell'informatica) un numero naturale
+	(equivalente di un output nell'informatica). La funzione \( \pi \) quindi dopo aver dato in input
+	un argomento (qualsiasi formula proposizionale atomica o complessa) restituisce in output
+	il numero di parentesi che contiene la formula in input.
+	\[ \pi : PROP \to \mathbb{N} \]
+	\begin{enumerate}
+		\item \textbf{Caso base} \( \pi [\alpha] = 0 \) se \( \alpha \in AT \)
+		\item \textbf{Ipotesi induttiva} \( \pi[(\neg \alpha)] = \pi[\alpha ] + 2 \) In questo passaggio viene
+		      chiamata la funzione \( \pi \) dentro la funzione \( \pi \) stessa, quindi è una definizione
+		      ricorsiva. In questo caso si aggiungono 2 parentesi al numero di parentesi di \( \alpha \) \(\pi[\alpha] \)
+		\item \textbf{Passo induttivo} \( \pi[(\alpha \to \beta )] = \pi[(\alpha \vee \beta)] =
+		      \pi[(\alpha \wedge \beta )] = \pi[\alpha] + \pi[\beta] + 2\) dove \( \pi[\alpha ] \) e \( \pi[\beta ] \)
+		      sono il numero di parentesi di \( \alpha \) e \( \beta \) e si aggiungono 2 parentesi per
+		      il connettivo.
+	\end{enumerate}
+\end{definition}
+
+Di seguito ci sono 2 esempi in cui viene messa in pratica la funzione \( \pi \) definita sopra in
+modo da capire meglio come funziona.
+
+\begin{example}
+	\[
+		\pi[(p_{2}\to p_{1})]\stackrel{caso \:3}{=}\pi[p_{2}]+\pi[p_{1}]+2\stackrel{caso \:1}{=}0+0+2=2
+	\]
+\end{example}
+\begin{example}
+	\[
+		\pi[(p_{1}\vee (p_{2}\vee p_{1}))] = (\pi[p_{2}] + \pi[p_{1}] + 2) + \pi[p_{1}] + 2 = (0 + 0 + 2) + 0 + 2 = 4
+	\]
+\end{example}
+
+Tutte le funzioni definite ricorsivamente sono funzioni, e non tutte le funzioni possono essere definite ricorsivamente.
+
+\subsection{Definizione più precisa dell'esercizio \ref{ex:parentesiPari}}
+Ogni \( \alpha \in PROP \) ha un numero pari di parentesi: \( \forall \alpha \in PROP \) \( P[\alpha] \stackrel{sse}{\Leftrightarrow} \pi[\alpha] \) è pari
+\begin{enumerate}
+	\item \( P[\alpha ] \) \( \alpha \in AT \)
+
+	      se \( \alpha \in AT \! \) \( \pi[\alpha]\stackrel{def}{=}0 \) quindi \( \surd \)
+	\item Suppongo che valga \( P[\alpha ],\; P[(\neg \alpha )] \: ? \)
+
+	      \( P[\alpha ] \Leftrightarrow \pi[\alpha ] pari \) è pari perchè lo abbiamo supposto prima (consideriamo 0 come pari)
+
+
+	      \( \pi[(\neg \alpha )] = \pi [\alpha ] + 2 \) è pari quindi \( P[(\neg \alpha )] \; \surd \)
+
+	      Si può definire un simbolo nuovo che non vuole dire niente nel linguaggio proposizionale e
+	      gli si assegnano i connettivi possibili per non doverli più scrivere ogni volta.
+	      Per questo esercizio prendiamo in considerazione \[ \circ \in \{\to , \vee, \wedge\} \]
+
+	\item \( (\alpha \circ \beta) \)
+
+	      suppongo \( P[\alpha ], P[\beta ] \)
+
+	      allora \( \pi[\alpha ] \) e \( \pi[\beta ] \) sono pari
+
+	      quindi \( \pi[(\alpha \circ \beta )] = \pi[\alpha ] + \pi[\beta ] + 2 \;\) (è pari)
+
+\end{enumerate}
+
+Ho dimostrato per induzione che \( \forall \psi \in PROP \; P[\psi] \; \) \( \Box \)
+
+(\( \Box \) è un simbolo che indica la fine della dimostrazione.)
+
+\section{Dimostrazione ricorsiva di rango e sottoformula}
+Il rango di una formula è il numero di connettivi che contiene.
+\begin{definition}
+	Considerato \( r \) il rango di una proposizione
+
+	\( r: PROP \to \mathbb{N} \)
+
+	\begin{enumerate}
+		\item \( r[\psi] = 0 \) se \( \psi \in AT \)
+		\item \( r[(\neg \psi)] = 1 + r[\psi] \)
+		\item \( r[(\psi \circ \gamma )] = 1 + max(r[\psi], r[\gamma]) \hspace{5mm} \) \( \circ \in \{\vee, \wedge, \to \} \)
+
+	\end{enumerate}
+\end{definition}
 
 \end{document}
