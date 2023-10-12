@@ -10,7 +10,6 @@
 \usepackage{import}
 \usepackage{pdfpages}
 \usepackage{transparent}
-\usepackage{enumitem}
 \usepackage{xcolor}
 
 \newtheorem{theorem}{Teorema}
@@ -408,24 +407,11 @@ La sottoformula è una formula che è contenuta in un'altra formula più grande.
 		      \begin{enumerate}
 			      \item se \( \alpha \in sub[\beta_1] \) (ipotesi induttiva)
 			            \begin{enumerate}
-				            \item \label{sub3a1} Se \( \alpha \neq \beta_1 \Rightarrow
-				                  \stackrel{ii\: su\: \beta_1 }{r[\alpha] \le r[\beta_1]} \)
-				            \item \label{sub3a2} Se \( \alpha = \beta_1 \Rightarrow r[\alpha] = r[\beta_1]\)
+				            \item Se \( \alpha \neq \beta_1 \Rightarrow
+				                  \stackrel{ii su \( \beta_1 \) }{r[\alpha] \le r[\beta_1]} \)
+				            \item Se \( \alpha = \beta_1 \Rightarrow r[\alpha] = r[\beta_1]\)
 			            \end{enumerate}
-			            Da \ref{sub3a1} e \ref{sub3a2} si ricava \( r[\alpha] \le r[\beta_1] \)
-			      \item se \( \alpha \in sub[\beta_2] \)
-			            \begin{enumerate}
-				            \item \label{sub3b1} Se \( \alpha \neq \beta_2 \Rightarrow
-				                  \stackrel{ii\: su\: \beta_{2} }{r[\alpha] \le r[\beta_2]} \)
-				            \item \label{sub3b2} Se \( \alpha = \beta_2 \Rightarrow r[\alpha] = r[\beta_2]\)
-			            \end{enumerate}
-			            Da \ref{sub3b1} e \ref{sub3b2} si ricava \( r[\alpha] \le r[\beta_2] \)
 		      \end{enumerate}
-		      \[
-			      \stackrel{\beta}{r[(\beta_1 \to \beta_2)]} = 1 + max\{\stackrel{\ge \alpha}{r[\beta_1]}
-			      ,\stackrel{\ge \alpha}{r[\beta_2]}\}\ge 1+ max\{r[\alpha], r[\alpha]\}
-			      \ge 1+ r[\alpha] > r[\alpha]
-		      \]
 	\end{enumerate}
 \end{theorem}
 

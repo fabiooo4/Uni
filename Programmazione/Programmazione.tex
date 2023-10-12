@@ -1,0 +1,173 @@
+\documentclass[a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage[italian]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{amsfonts}
+\usepackage{mdframed}
+\usepackage{ntheorem}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\graphicspath{{./figures/}}
+
+% Code blocks
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={\small\ttfamily},
+	numbers=none,
+	numberstyle=\tiny\color{gray},
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve},
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=3
+}
+
+\usepackage{import}
+\usepackage{pdfpages}
+\usepackage{transparent}
+\usepackage{xcolor}
+
+% Useful definitions frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	innertopmargin=8pt,%
+	ntheorem]{define}{Definizioni utili}[section]
+
+% Example frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	innertopmargin=8pt,%
+	ntheorem]{example}{Esempio}[section]
+
+% Important definition frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	backgroundcolor=gray!40,%
+	innertopmargin=8pt,%
+	ntheorem]{definition}{Definizione}[section]
+
+% Exercise frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	innertopmargin=8pt,%
+	ntheorem]{exercise}{Esercizio}[section]
+
+
+% figure support
+% Inkscape figures
+\newcommand{\incfig}[2][1]{%
+	\def\svgwidth{#1\columnwidth}
+	\import{./figures/}{#2.pdf_tex}
+}
+
+\pdfsuppresswarningpagegroup=1
+
+
+\begin{document}
+\input{title.tex}
+
+\tableofcontents
+\pagebreak
+
+\section{Introduzione}
+L'informatica è la scienza che si occupa della rappresentazione (estrarre
+le informazioni rilevanti: quali, cosa, quante) ed elaborazione
+(come si arriva passo dopo passo a risolvere un problema) dell'informazione. È una scienza con un approccio rigoroso e formale.
+
+\subsection{Algoritmo}
+Dopo aver raccolto le informazioni del problema che si vuole risolvere
+si procede con la costruzione di un algoritmo che risolva il problema.
+Questo algoritmo viene scritto utilizzando un linguaggio di programmazione
+(C, Java, \ldots).
+
+\begin{definition}
+	Dato un esecutore e un problema l'algoritmo è una sequenza finita e
+	ordinata di istruzioni elementari, comprensibili dall'esecutore,
+	che risolvono il problema dato.
+\end{definition}
+
+\subsubsection{Proprietà}
+\begin{itemize}
+	\item \textbf{Sequenza}: l'ordine è importante,
+	\item \textbf{Finita}: deve terminare,
+	\item \textbf{Deterministico}: deve essere preciso,
+	\item \textbf{Corretto}: deve risolvere il problema,
+	\item \textbf{Completo}: deve considerare tutti
+	      gli aspetti del problema,
+	\item \textbf{Generale}: deve risolvere tutti i casi del problema,
+	\item \textbf{Efficienza}
+	      \begin{itemize}
+		      \item \textbf{Tempo}: deve terminare in un tempo ragionevole,
+		      \item \textbf{Spazio}: deve utilizzare una quantità di memoria
+		            ragionevole.
+	      \end{itemize}
+\end{itemize}
+
+\subsection{Linguaggio pseudo-formale}
+Il linguaggio si divide in:
+\begin{itemize}
+	\item \textbf{Vocabolario}: insieme di simboli che possono essere usati,
+	\item \textbf{Sintassi}: regole per la costruzione di frasi,
+	\item \textbf{Semantica}: significato delle frasi corrette.
+\end{itemize}
+
+\section{Diagrammi di flusso}
+I seguenti simboli vengono utilizzati per la costruzione di un diagramma
+di flusso che rappresenta un algoritmo:
+\begin{itemize}
+	\item \textbf{Inizio/fine}: rappresenta l'inizio e la fine dell'algoritmo,
+	\item \textbf{Istruzione}: rappresenta un'istruzione,
+	\item \textbf{Condizione}: rappresenta una condizione,
+	\item \textbf{Sottoprogramma}: rappresenta un sottoprogramma.
+\end{itemize}
+
+\begin{figure}[ht]
+	\centering
+	\incfig[0.3]{simbolidiagramma}
+	\caption{Simboli del diagramma di flusso}
+	\label{fig:simbolidiagramma}
+\end{figure}
+
+Dato un numero dare in output il doppio.
+\begin{figure}[ht]
+	\centering
+	\incfig[0.3]{numeroDoppio}
+	\caption{Diagramma di flusso per il doppio}
+	\label{fig:doppio}
+\end{figure}
+
+Dati 2 numeri dire il maggiore.
+\begin{figure}[ht]
+	\centering
+	\incfig[0.3]{maggiore3numeri}
+	\caption{Diagramma di flusso per il doppio}
+	\label{fig:maggiore3numeri}
+\end{figure}
+
+\end{document}
