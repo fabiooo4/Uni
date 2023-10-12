@@ -10,6 +10,7 @@
 \usepackage{ntheorem}
 \usepackage{xcolor}
 \usepackage{graphicx}
+\usepackage{tikz}
 \graphicspath{{./figures/}}
 
 \usepackage{import}
@@ -24,6 +25,7 @@
 	linecolor=gray,leftmargin=0,%
 	rightmargin=0,
 	innertopmargin=8pt,%
+	innerbottommargin=8pt,
 	ntheorem]{define}{Definizioni utili}[section]
 
 % Example frame
@@ -33,6 +35,7 @@
 	linecolor=gray,leftmargin=0,%
 	rightmargin=0,
 	innertopmargin=8pt,%
+	innerbottommargin=8pt,
 	ntheorem]{example}{Esempio}[section]
 
 % Important definition frame
@@ -43,6 +46,7 @@
 	rightmargin=0,
 	backgroundcolor=gray!40,%
 	innertopmargin=8pt,%
+	innerbottommargin=8pt,
 	ntheorem]{definition}{Definizione}[section]
 
 % Exercise frame
@@ -52,7 +56,18 @@
 	linecolor=gray,leftmargin=0,%
 	rightmargin=0,
 	innertopmargin=8pt,%
+	innerbottommargin=8pt,
 	ntheorem]{exercise}{Esercizio}[section]
+
+% Theorem frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	innertopmargin=8pt,
+	innerbottommargin=8pt,
+	ntheorem]{theorem}{Teorema}[section]
 
 
 % figure support
@@ -105,6 +120,58 @@ In base al tipo di hardware l'algoritmo viene implementato in diversi modi:
 Ogni cosa nel mondo è rappresentabile da funzioni continue nel tempo \( f(t) \),
 ma con risorse finite è impossibile rappresentare infiniti dati, bisogna quindi
 campionarli.
+\begin{figure}[h]
+	\label{fig:f(t)}
+	\centering
+	\begin{tikzpicture}[scale=0.6, domain=0:10]
+		\coordinate (A) at (0,5);
+		\coordinate (B) at (1,5);
+		\coordinate (C) at (2,2);
+		\coordinate (D) at (3,4);
+		\coordinate (E) at (4,1);
+		\coordinate (F) at (5,3);
+		\coordinate (G) at (6,2);
+		\coordinate (H) at (7,4);
+		\coordinate (I) at (8,3);
+		\coordinate (J) at (9,2);
+		\coordinate (K) at (10,5);
+
+		\draw [->] (0,0) -- (10,0) node[right] {$t$};
+		\draw [->] (0,0) -- (0,5) node[above] {$f(t)$};
+
+		\draw [gray!50, ultra thin] (0,0) grid (10,5);
+		\draw [blue, thick] plot [smooth, tension=1] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) };
+		\draw [red, thick ] (A) -- (B) -- (C) -- (D) -- (E) -- (F) -- (G) -- (H) -- (I) -- (J) -- (K);
+
+		\draw [fill] (A) circle [radius=0.1];
+		\draw [fill] (B) circle [radius=0.1];
+		\draw [fill] (C) circle [radius=0.1];
+		\draw [fill] (D) circle [radius=0.1];
+		\draw [fill] (E) circle [radius=0.1];
+		\draw [fill] (F) circle [radius=0.1];
+		\draw [fill] (G) circle [radius=0.1];
+		\draw [fill] (H) circle [radius=0.1];
+		\draw [fill] (I) circle [radius=0.1];
+		\draw [fill] (J) circle [radius=0.1];
+		\draw [fill] (K) circle [radius=0.1];
+
+		\draw (0, -0.2) -- (1, -0.2) node[below, xshift=-10] {\( \Delta t \) };
+	\end{tikzpicture}
+	\caption{Funzione casuale continua nel tempo}
+\end{figure}
+
+Per campionare la funzione nella figura \ref{fig:f(t)} bisogna scegliere un intervallo di tempo \( \Delta t \) e prendere
+un valore della funzione ogni \( \Delta t \). In questo caso le linee
+verticali rappresentano il \textbf{campionamento}, mentre quelle orizzontali
+reppresentano la \textbf{discretizzazione o quantizzazione}.
+La linea rossa è una spezzata approssimata della funzione continua, infatti
+per il teorema di Shannon:
+
+\begin{theorem}
+	Deciso il grado di errore da voler compiere, esistono una precisa frequenza di
+	campionamento e un intervallo di discretizzazione che garantiscono
+	quell'errore.
+\end{theorem}
 
 \section{Numeri razionali a virgola mobile}
 Gli standard della virgola mobile sono: IEEE 754/85 e IEEE 754/19. Questo standard
