@@ -7,6 +7,7 @@
 \usepackage{amsmath, amssymb}
 \usepackage{amsfonts}
 \usepackage{mdframed}
+\usepackage{float}
 \usepackage{ntheorem}
 \usepackage{xcolor}
 \usepackage{graphicx}
@@ -159,7 +160,6 @@ campionarli.
 	\end{tikzpicture}
 	\caption{Funzione casuale continua nel tempo}
 \end{figure}
-
 Per campionare la funzione nella figura \ref{fig:f(t)} bisogna scegliere un intervallo di tempo \( \Delta t \) e prendere
 un valore della funzione ogni \( \Delta t \). In questo caso le linee
 verticali rappresentano il \textbf{campionamento}, mentre quelle orizzontali
@@ -172,6 +172,133 @@ per il teorema di Shannon:
 	campionamento e un intervallo di discretizzazione che garantiscono
 	quell'errore.
 \end{theorem}
+Il sistema di calcolo è ora diventato digitale, cioè elabora i segnali numerici
+in ingresso per produrre segnali numerici in uscita.
+
+\begin{figure}[h]
+	\centering
+	\begin{tikzpicture}
+		\node[draw, text=red, align=center] (Realtà fisica) at (0,0) {Realtà\\
+			fisica};
+		\node[draw, align=center] (Campionamento e discretizzazione) at (2,-1.5) {Campionamento e\\
+			discretizzazione};
+		\node[draw, text=blue, align=center] (Codifica) at (4,0) {Codifica};
+		\node[draw, align=center] (Sistema digitale) at (6,-1.5) {Sistema\\
+			digitale};
+		\node[draw, text=blue, align=center] (Decodifica) at (8,0) {Decodifica};
+		\node[draw, text=red, align=center] (Informazioni) at (9,-1.5) {Informazioni};
+
+		\draw[->,draw] (Realtà fisica) to (Campionamento e discretizzazione);
+		\draw[->,draw] (Campionamento e discretizzazione) to (Codifica);
+		\draw[->,draw] (Codifica) to (Sistema digitale);
+		\draw[->,draw] (Sistema digitale) to (Decodifica);
+		\draw[->,draw] (Decodifica) to (Informazioni);
+	\end{tikzpicture}
+	\caption{Dalla realtà fisica al sistema digitale}
+\end{figure}
+
+
+\section{Sistemi di codifica}
+Ogni sistema digitale lavora in base binaria, quindi entrano \( N \)  bit
+ed escono \( M \)  bit. I bit in uscita devono essere codificati per
+realizzare delle informazioni. Ci sono 2 tipi di informazioni:
+
+\begin{itemize}
+	\item \textbf{Informazioni intelleggibili}: sono già chiare agli esseri umani,
+	      come un testo scritto.
+	\item \textbf{Informazioni non intelleggibili}: hanno bisogno di macchine
+	      per essere riprodotte, come le casse per l'audio.
+\end{itemize}
+
+\subsection{Codifica di informazioni non numeriche}
+Ogni informazione deve avere un codice univoco in modo che il sistema
+digitale non possa sbagliare a decodificarla. Date \( M \)  informazioni si
+ricavano \( n = log_2{(M)} \)  codici disponibili per rappresentarle.
+
+\begin{example}
+	Con \( M=7 \) informazioni:
+	\begin{itemize}
+		\item \( n=log_2{(7)} \approx 3\; bit \)
+		\item \( 2^3=8 \) codici disponibili
+	\end{itemize}
+\end{example}
+
+\subsection{Numeri interi assoluti}
+I numeri interi assoluti rappresentano solo i valori da \( 0 \) a \( 2^n-1 \),
+dove \( n \) è il numero di bit disponibile.
+
+La codifica da base decimale a base binaria prende il nome di \textbf{codifica
+	a modulo}
+
+\begin{example}
+	\label{ex:57modulo}
+	Si deve convertire il numero \( 57_{10} \) in base binaria
+	\begin{center}
+		\( n=log_2{(57)} = 6 \) bit (minimi)\\
+		\( \sum_{i=1}^{n-1} 2^n-1 = 63 \) (codici massimi)
+	\end{center}
+	Si eseguono i seguenti passaggi:
+	\begin{enumerate}
+		\item Si sottraggono le potenze di 2 partendo da \( n-1 \).
+		      \begin{itemize}
+			      \item Se la potenza \( 2^i \) è minore o uguale del numero,
+			            allora si moltiplica per 1.
+			      \item Se la potenza \( 2^i \) è maggiore del numero,
+			            allora si moltiplica per 0.
+		      \end{itemize}
+		\item Le sottrazioni continuano fino a quando si giunge a 0.
+	\end{enumerate}
+	\(57_{10}-{\textcolor{cyan}{1}}*2^{\textcolor{red}{5}}
+		=25_{10}-{\textcolor{cyan}{1}}*2^{\textcolor{red}{4}}
+		=9_{10}-{\textcolor{cyan}{1}}*2^{\textcolor{red}{3}}
+		=1_{10}-{\textcolor{cyan}{0}}*2^{\textcolor{red}{2}}
+		=1_{10}-{\textcolor{cyan}{0}}*2^{\textcolor{red}{1}}
+		=1_{10}-{\textcolor{cyan}{1}}*2^{\textcolor{red}{0}}\)
+\end{example}
+
+\subsection{Numeri interi relativi}
+La codifica più ovvia per i numeri interi relativi è la codifica a
+\textbf{modulo + segno}. Tuttavia rappresenta varie problematiche, per cui
+si preferisce usare la codifica in \textbf{complemento a 2}.
+
+\subsubsection{Codifica a modulo + segno}
+\begin{center}
+	Intervallo: \( -2^{n-1} \le N \le 2^{n-1}-1 \)
+\end{center}
+Il segno si rappresenta con un bit, 0 per il positivo e 1 per il negativo.
+Il bit più significativo è il bit del segno, mentre i bit meno significativi
+rappresentano il modulo.
+
+\begin{center}
+	\begin{tikzpicture}
+		\draw[draw] (0, 0) rectangle (2,1) node[pos=.5, align=center] {1 bit:\\
+				segno \( \pm \) };
+		\draw[draw] (2, 0) rectangle (7,1) node[pos=.5, align=center] {7 bit: modulo};
+	\end{tikzpicture}
+\end{center}
+Considerando l'esempio \ref{ex:57modulo} si hanno le seguenti rappresentazioni:
+
+\begin{center}
+	\( +57_{10}=\textbf{0}|111001_2 \)\\
+	\( -57_{10}=\textbf{1}|111001_2 \)
+\end{center}
+Sorge però un problema quando si vuole rappresentare il valore \( 0_{10} \),
+che in binario risulterebbe:
+
+\begin{center}
+	\( +0_{10}=\textbf{0}|000000_2 \)\\
+	\( -0_{10}=\textbf{1}|000000_2 \)
+\end{center}
+Inoltre le somme che passano dal positivo al negativo e viceversa risultano errate.
+
+\subsubsection{Codifica in complemento a 2}
+\begin{center}
+	Intervallo: \( -2^{n-1} \le N \le 2^{n-1}-1 \)
+\end{center}
+La codifica in complemento a 2 rimuove tutti i problemi della codifica in modulo
++ segno. Questa codifica infatti rende le somme molto più semplici. La somma facile
+infatti è l'obiettivo di questa codifica e parte dell'idea di trovare la
+codifica di -1, pertanto si cerca di formulare \( -1+1=0 \).
 
 \section{Numeri razionali a virgola mobile}
 Gli standard della virgola mobile sono: IEEE 754/85 e IEEE 754/19. Questo standard
@@ -242,15 +369,20 @@ Per codificare i numeri si somma 127 al numero desiderato e visto che i numeri p
 ora vanno da -127 a +127 se codifichiamo il risultato in modulo avremo dei numeri
 da 0 a 256.
 
-\begin{example}
-	$1\:01110111\:0110...0$\\
-	$M = -(1+1/4+1/8)*2 = -(11/8)*2^{E}$\\
-	$E = (1+2+4+16+32+64)-127=119-127=-8$\\
-	$N = -11/8 * 2^{-8}$
-\end{example}
-\begin{exercise}
-	Codifica $+(4+\frac{1}{2}+\frac{1}{16})*2^{+34}$
-\end{exercise}
+\begin{figure}[H]
+	\begin{example}
+		$1\:01110111\:0110...0$\\
+		$M = -(1+1/4+1/8)*2 = -(11/8)*2^{E}$\\
+		$E = (1+2+4+16+32+64)-127=119-127=-8$\\
+		$N = -11/8 * 2^{-8}$
+	\end{example}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{exercise}
+		Codifica $+(4+\frac{1}{2}+\frac{1}{16})*2^{+34}$
+	\end{exercise}
+\end{figure}
 
 \begin{itemize}
 	\item $0\:00000000\:0...0 = +0$
