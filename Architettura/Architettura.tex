@@ -121,12 +121,13 @@ In base al tipo di hardware l'algoritmo viene implementato in diversi modi:
 Ogni cosa nel mondo è rappresentabile da funzioni continue nel tempo \( f(t) \),
 ma con risorse finite è impossibile rappresentare infiniti dati, bisogna quindi
 campionarli.
+
 \begin{figure}[h]
 	\label{fig:f(t)}
 	\centering
 	\begin{tikzpicture}[scale=0.6, domain=0:10]
-		\coordinate (A) at (0,5);
-		\coordinate (B) at (1,5);
+		\coordinate (A) at (0,4);
+		\coordinate (B) at (1,4);
 		\coordinate (C) at (2,2);
 		\coordinate (D) at (3,4);
 		\coordinate (E) at (4,1);
@@ -141,7 +142,7 @@ campionarli.
 		\draw [->] (0,0) -- (0,5) node[above] {$f(t)$};
 
 		\draw [gray!50, ultra thin] (0,0) grid (10,5);
-		\draw [blue, thick] plot [smooth, tension=1] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) };
+		\draw [blue, ultra thick] plot [smooth, tension=1] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) };
 		\draw [red, thick ] (A) -- (B) -- (C) -- (D) -- (E) -- (F) -- (G) -- (H) -- (I) -- (J) -- (K);
 
 		\draw [fill] (A) circle [radius=0.1];
@@ -326,6 +327,55 @@ Se si considera il numero di bit \( n=4 \), allora l'intervallo di valori è
 		\( 7_{10} = 0111_{2}\) & \( -8_{10} = 1000_{2}\) \\
 	\end{tabular}
 \end{center}
+I valori nel complemento a 2 ciclano, quindi se si somma 1 a 7 si ottiene -8.
+
+\begin{example}
+	Sottrazione con il complemento a 2: \( 43-17=25 \)
+	\[
+		n=7 \; bit
+	\]
+	\begin{enumerate}
+		\item Per prima cosa si prende il valore assoluto del numero negativo
+		      \( 17_{10} \) e si converte in binario.
+		      \begin{center}
+			      \( 17_{10}=0010001_{2} \)
+		      \end{center}
+		\item Si inverte il numero trovato.
+		      \begin{center}
+			      \( !(0010001_2) = 1101110_2 = -18_{10} \)
+		      \end{center}
+		\item Si somma 1 al numero trovato.
+		      \begin{center}
+			      \begin{tabular}{l}
+				      \( 1101110\; + \) \\
+				      \( 0000001 = \)   \\
+				      \hline
+				      \( 1101111 \)
+			      \end{tabular}\\
+			      \( 1101111_2 = -17_{10} \)
+		      \end{center}
+		\item Si somma il numero trovato al numero positivo.
+		      \begin{center}
+			      \begin{tabular}{l}
+				      \( 0010001\; + \) \\
+				      \( 1101111 = \)   \\
+				      \hline
+				      \( \textbf{1}0011010 \)
+			      \end{tabular}
+		      \end{center}
+		\item Il risultato ottenuto è: \[
+			      \textbf{1}0011010
+		      \] Si osserva che c'è un bit in più rispetto a quelli disponibili (quello
+		      in grassetto),
+		      vuol dire che risulta in overflow\footnote{Indica il "traboccamento",
+			      cioè se viene superato il limite massimo l'overfflow è un errore,
+			      non perchè sia sbagliata la somma, ma perchè il risultato non è codificabile
+			      con il numero di bit disponibili}, quindi si scarta il bit più significativo e
+		      si ottiene:\[
+			      0011010_2 = 26_{10}
+		      \] che è il risultato corretto.
+	\end{enumerate}
+\end{example}
 
 \section{Numeri razionali a virgola mobile}
 Gli standard della virgola mobile sono: IEEE 754/85 e IEEE 754/19. Questo standard
