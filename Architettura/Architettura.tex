@@ -377,65 +377,218 @@ I valori nel complemento a 2 ciclano, quindi se si somma 1 a 7 si ottiene -8.
 	\end{enumerate}
 \end{example}
 
-\section{Numeri razionali a virgola mobile}
-Gli standard della virgola mobile sono: IEEE 754/85 e IEEE 754/19. Questo standard
-è stato rivisto molte volte e ora viene usato da tutte le codifiche per i numeri in
-virgola mobile.
+\paragraph{Estensione del numero con il complemento a 2}
+\begin{itemize}
+	\item Se un numero è \textbf{positivo} va esteso con gli \( \textbf{0} \)
+	      \begin{center}
+		      \begin{tabular}{l|l}                                        \\
+			      \( +57_{10}+ \)  & \( 0111001_2\;+ \)        \\
+			      \( +7_{10}\;= \) & \( \textbf{000}1001_2= \) \\ \\
+			      \hline                                       \\
+			      \( +64_{10} \)   & \( 1000010_2 \)
+		      \end{tabular}
+	      \end{center}
+	\item Se un numero è \textbf{negativo} va esteso con gli \( \textbf{1} \)
+	      \begin{center}
+		      \begin{tabular}{l|l}                                        \\
+			      \( +57_{10}+ \)  & \( 0111001_2\;+ \)        \\
+			      \( -7_{10}\;= \) & \( \textbf{111}1001_2= \) \\ \\
+			      \hline                                       \\
+			      \( +50_{10} \)   & \( 10110010_2 \)
+		      \end{tabular}
+	      \end{center}
+\end{itemize}
 
-Il numero viene separato in due parti: Mantissa (\( M \)) e una base (\(b\))
-con un esponente ($e$).
+\section{Numeri razionali}
+I numeri razionali sono composti da una parte intera e una parte frazionaria.
+Si possono codificare in 2 modi:
+\begin{itemize}
+	\item \textbf{Virgola fissa}(fixed point): viene usata maggiormente nei
+	      sistemi embedded quando si sa a priori il numero più grande e la
+	      precisione che si vuole ottenere
+	\item \textbf{Virgola mobile}(floating point): viene usata maggiormente
+	      nei sistemi general purpose.
+\end{itemize}
+
+\subsection{Codifica in virgola fissa}
+\begin{example}
+	Si hanno a disposizione 8 bit: 4 per la parte intera e 4 per la parte frazionaria.
+	Vogliamo decodificare il numero \( 0110.1011_2 \):
+	\Large\[
+		\underbrace{\stackrel{2^{3}}{0}\;\stackrel{2^{2}}{1}\;\stackrel{2^{1}}{1}\;\stackrel{2^{0}}{1}}_{+6} .
+		\underbrace{\stackrel{2^{-1}}{1}\;\stackrel{2^{-2}}{0}\;\stackrel{2^{-3}}{1}\;\stackrel{2^{-4}}{1}}_{\frac{1}{2}+\frac{1}{8}+\frac{1}{16}}
+	\]
+	\normalsize\[
+		+6 + \frac{1}{2}+\frac{1}{8}+\frac{1}{16}= 6+\frac{11}{16} = \frac{107}{16} = 6.6875
+	\]
+\end{example}
+Se si vuole codificare un numero da decimale a binario bisogna tenere in considerazione
+che non è certo che il numero sia razionale anche in base 2, quindi bisogna
+approssimare per rappresentarlo.
+
+\begin{example}
+	\label{ex:virgolaFissaDecBin}
+	Prendiamo in considerazione \( +4 +\frac{3}{5} \), in questo caso bisogna andare
+	"a tentoni" e trovare la rappresentazione binaria che approssima con il minor
+	errore possibile.
+	\[
+		4_{10} = 0100_2
+	\]
+	\[
+		0.1001 = \frac{9}{10} \Delta \frac{3}{80}
+	\]
+	\[
+		0.0111 = \frac{7}{16} \Delta -\frac{4}{80}
+	\]
+	\[
+		0.0110 = \frac{3}{8} \Delta \frac{9}{40}
+	\]
+	\[
+		\underline{0.1010 = \frac{5}{8} \Delta -\frac{1}{40}}
+	\]
+	\( \Delta \) rappresenta l'errore, quindi la rappresentazione più vicina è
+	\( 0100.1010_2 \). Però non è stato rappresentato \( \frac{3}{5} \), ma
+	\( \frac{1}{2}+\frac{1}{16}=\frac{9}{16} \).
+\end{example}
+Questo metodo è pesante perchè bisogna controllare più alternative.
+
+\subsubsection{Errore percentuale}
+Bisogna decidere se calcolarlo rispetto alla parte intera o a quella frazionaria.
+Nel seguente esempio viene calcolato l'errore percentuale rispetto alla parte
+frazionaria dell'esempio \ref{ex:virgolaFissaDecBin}.
+\begin{example}
+	\[
+		\frac{1}{40} : \frac{3}{5} = \frac{1}{40} * \frac{5}{3} = \frac{1}{24} \approx 0.052\%
+	\]
+\end{example}
+Il massimo errore che si può fare è l'overflow.
+
+\subsection{Codifica in virgola mobile}
+Gli standard della virgola mobile sono: IEEE 754. Questo standard
+è stato rivisto molte volte e ora viene usato da tutte le codifiche per i numeri in
+virgola mobile.\\
+Il numero viene separato in 3 parti:
+\begin{itemize}
+	\item \textbf{M}: Mantissa
+	\item \textbf{B}: Base 2
+	\item \textbf{e}: Esponente
+\end{itemize}
+La struttura del numero è quindi:
 \[
-	N = +- M * b^{+-E}
+	N = \pm \cdot B^{\pm e}
 \]
 Questo permette di dividere il numero in modo da poter scegliere quanti bit dedicare
-alla mantissa e quanti all'esponente.
-
-Ci sono 2 problemi però:
+alla mantissa e quanti all'esponente. Si riscontrano però i seguenti problemi:
 \begin{itemize}
-	\item bisogna scegliere la base in cui fare la codifica (base 2)
-	\item divisione bit tra M e E (23 M, 8 E, 1 S)
-	\item rappresentazione univoca (1.0...)
-	\item bisogna trovare un modo per rappresentare gli errori
+	\item Bisogna scegliere la base in cui fare la codifica \(\to\)  base 2
+	\item Bisogna scegliere la divisione di bit tra \emph{segno}, \emph{mantissa} e \emph{esponente} \( \to \)   \( 1\; S \), \( 23\; M \), \( 8\; e \)
+	\item La rappresentazione deve essere univoca \( \to \)  \( 1.\; \ldots_2 \)
+	\item Bisogna trovare un modo per rappresentare gli errori
+\end{itemize}
+Se la mantissa e la base sono in base 2 la moltiplicazione e la
+divisione sono agevolate tramite l'utilizzo dello \emph{shift}.
+
+\begin{itemize}
+	\item \(0110 \cdot  2 = 1100\) è uno shift a sinistra in binario.
+	      \begin{center}
+		      \Large
+		      \begin{tikzpicture}
+			      \node[align=left] (Prima1) at (0,0) {0};
+			      \node[align=left] (Prima2) at (0.2,0) {1};
+			      \node[align=left] (Prima3) at (0.4,0) {1};
+			      \node[align=left] (Prima4) at (0.6,0) {0};
+
+			      \node[align=left] (Dopo1) at (0,-1) {1};
+			      \node[align=left] (Dopo2) at (0.2,-1) {1};
+			      \node[align=left] (Dopo3) at (0.4,-1) {0};
+			      \node[align=left] (Dopo4) at (0.6,-1) {0};
+
+			      \draw[->, draw] (Prima2) to (Dopo1);
+			      \draw[->, draw] (Prima3) to (Dopo2);
+			      \draw[->, draw] (Prima4) to (Dopo3);
+		      \end{tikzpicture}
+	      \end{center}
+
+	\item \(1010/2 = 0101\) è uno shift a destra in binario.
+	      \begin{center}
+		      \Large
+		      \begin{tikzpicture}
+			      \node[align=left] (Prima1) at (0,0) {1};
+			      \node[align=left] (Prima2) at (0.2,0) {0};
+			      \node[align=left] (Prima3) at (0.4,0) {1};
+			      \node[align=left] (Prima4) at (0.6,0) {0};
+
+			      \node[align=left] (Dopo1) at (0,-1) {0};
+			      \node[align=left] (Dopo2) at (0.2,-1) {1};
+			      \node[align=left] (Dopo3) at (0.4,-1) {0};
+			      \node[align=left] (Dopo4) at (0.6,-1) {1};
+
+			      \draw[->, draw] (Prima1) to (Dopo2);
+			      \draw[->, draw] (Prima2) to (Dopo3);
+			      \draw[->, draw] (Prima3) to (Dopo4);
+		      \end{tikzpicture}
+	      \end{center}
+
 \end{itemize}
 
-Un numero in base 10 si può rappresentare in più modi>
-\(120_{10} = 12*10^{1} = 120 * 10^{0} = 1.20 * 10^{2}\)
 
-Se la mantissa e la base sono in base 2 le operazioni tra numeri sono agevolate.
-
-\(0110 * 2 = 1100\) è uno shift a sinistra in binario.
-
-\(1010/2 = 0101\) è uno shift a destra in binario.
-
-\subsection{Divisione tra bit con mantissa e base diversa}
+\subsubsection{Divisione di bit tra segno, mantissa ed esponente}
 Un numero è rappresentabile in 2 modi:
 \begin{itemize}
-	\item 32 bit (singola precisione / float)
-	\item 64 bit (doppia precisione / double)
+	\item Singola precisione 32 bit \( \to  \) float
+	\item Doppia precisione 64 bit \( \to  \) double
 \end{itemize}
 
-Prendiamo in considerazione 32 bit, ora dobbiamo decidere quanti bit dedicare alla
-mantissa e alla base
-
-$2^{+-E}$\\
-$|E| = 4 bit = 2^{+7}$\\
-$5 bit = 2^{+15}$\\
-$6 bit = 2^{+31}$\\
-$7 bit = 2^{+63}$\\
-$8 bit = 2^{+127}$
-
+Prendiamo in considerazione 32 bit, ora dobbiamo decidere quanti bit dedicare
+alla mantissa e all'esponente.
+\[
+	2^{\pm e}
+\]
+\begin{center}
+	$|e| = 4 bit = 2^{+7}$\\
+	$5 bit = 2^{+15}$\\
+	$6 bit = 2^{+31}$\\
+	$7 bit = 2^{+63}$\\
+	$8 bit = 2^{+127}$
+\end{center}
 L'impatto dei bit sull'esponente è doppiamente esponenziale, quindi cresce tantissimo.
-Tra tutti i bit a disposizione ne dedichiamo 8 all'esponente, $32 - 8 = 24$ bit rimanenti,
-quindi 23 bit vengono assegnati alla mantissa e 1 bit viene assegnato al segno.
-\label{fig:disegno1}
 
+\begin{itemize}
+	\item \textbf{8 bit} all'esponente, quindi l'esponente
+	      può assumere valori da \( -127 \) a \( +127 \).
+	\item \textbf{23 bit} alla mantissa, quindi la mantissa
+	      può assumere valori da \( 0 \) a \( 2^{23}-1 \)
+	\item \textbf{1 bit} al segno.
+\end{itemize}
+
+\begin{center}
+	\begin{tikzpicture}
+		\draw[draw] (0, 0) rectangle (1.6,1) node[pos=.5, align=center] {1 bit:\\
+				segno \( \pm \) };
+		\draw[draw] (1.6, 0) rectangle (5,1) node[pos=.5, align=center] {8 bit: esponente};
+		\draw[draw] (5, 0) rectangle (10,1) node[pos=.5, align=center] {23 bit: mantissa};
+	\end{tikzpicture}
+\end{center}
 Per la rappresentazione univoca la mantissa si codifica in virgola fissa.
-Cioè si parte da una mantissa con un punto fisso e dividendo o moltiplicando (shift) si
-può spostare la virgola per arrivare alla forma 1.00000... e questa forma è la
-rappresentazione univoca. Questa operazioe si chiama normalizzazione e visto che la
-rappresentazione è sempre la stessa l'1. non viene rappresentato, quindi
-viene inserito nella mantissa solo tutto ciò che viene dopo l'1. .
-\label{fig:disegno2}
+Cioè si parte da una mantissa con un \textbf{punto fisso} e dividendo o moltiplicando (shift) si
+può spostare la virgola per arrivare alla forma \textbf{1.00000...} e questa forma è la
+rappresentazione univoca.
+
+Questa operazioe si chiama \textbf{normalizzazione} e visto che la
+rappresentazione è sempre la stessa l'\emph{1.} non viene rappresentato, quindi
+viene inserito nella mantissa solo tutto ciò che viene dopo.
+\begin{figure}[H]
+	\begin{center}
+		\( 11111111 \) \( \pm \infty \)\\
+		\( 11111110 \) \( +127 \) \\
+		\( \ldots \)\\
+		\( 10000000 \) \( \pm 0 \)\\
+		\( \ldots \)\\
+		\( 00000001 \) \( -126 \) \\
+		\( 00000000 \) \( -127 \)
+	\end{center}
+	\caption{Range dell'esponente}
+\end{figure}
 
 Se lavorassimo con un esponente in complemento a due ci sarebbe il seguente problema:
 $00000000000...0 = 1*2^{0}=1$
