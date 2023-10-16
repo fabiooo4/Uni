@@ -777,96 +777,19 @@ Mette in collegamento 2 punti:
     \item Se la corrente è 3V allora c'è collegamento
 \end{itemize}
 
-\begin{figure}[H]
-    \begin{center}
-        \begin{circuitikz}[american,] 
-            \node (Vcc) at (0,0.3) {\( V_{cc} \) };
-            \draw (0,0) -- (1,0) to[short,-*] ++(0,0) node[left] {}
-                (2,0) -- (1,0) 
-                node[nmos,anchor=D] (nmos) {}
-                (nmos.G) to[short] ++(0,0) node[left] {}
-                (nmos.S) node[ground] {};
-        \end{circuitikz}
-    \end{center}
-    \caption{Transistor N}
-\end{figure}
-
-\subsubsection{Transistor P}
-Mette in collegamento 2 punti:
-\begin{itemize}
-    \item Se la corrente è 0V allora c'è collegamento
-    \item Se la corrente è 3V allora non c'è collegamento
-\end{itemize}
-
-\begin{figure}[H]
-    \begin{center}
-        \begin{circuitikz}[american,] 
-            \node (Vcc) at (0,0.3) {\( V_{cc} \) };
-            \draw (0,0) -- (1,0) to[short,-*] ++(0,0) node[left] {}
-                (2,0) -- (1,0) 
-                node[pmos,anchor=S] (pmos) {}
-                (pmos.G) to[short] ++(0,0) node[left] {}
-                (pmos.D) node[ground] {};
-
-        \end{circuitikz}
-    \end{center}
-    \caption{Transistor P}
-\end{figure}
-\subsubsection{Circuito di negazione}
-Si realizza con un transistor P e uno N in serie.
-\begin{figure}[H]
-   \begin{center}
-    \begin{circuitikz}
-        \node (Vcc) at (-1,0.3) {\( V_{cc} \) };
-        \node (Vcc) at (1,0.3) {\( 3V \) };
-            \draw (-1,0) -- (0,0) to[short,-*] ++(0,0) node[left] {}
-                (1,0) -- (0,0);
-        \draw (0,0) node[pmos, anchor=S] (pmos) {}
-            (pmos.G) to[short] ++(0,0) node[left] {}
-            (pmos.D) to[short] ++(0,0) node[left] {}
-            (pmos.D) -- ++(0,0) to[short,-*] (0,-1.6) node[left] {}
-            node[nmos,anchor=D] (nmos) {}
-            (nmos.G) to[short] ++(0,0) node[left] {}
-            (nmos.S) node[ground] {};
-        \draw (-2, -1.6) node[above] {\( x \) } to[short,-*] (-0.99,-1.6) node[left] {}
-            (pmos.G) -- ++(0,0) to[short,-*] (-0.99,-1.6) node[left] {}
-            (0,-1.6) -- ++(0,0) to[short] (1.2,-1.6) node[above] {O}
-            (nmos.G) -- ++(0,0) to[short] (-0.99,-1.6) node[left] {};
-        \node (0V) at (0.6,-3.5) {\( 0V \) };
+\begin{center}
+    \begin{circuitikz} \draw
+         (0,0) -- (0,4)
+  to[ammeter] (4,4) -- (4,0) -- (3.5,0)
+  to[lamp, *-*] (0.5,0) -- (0,0)
+(0.5,0) -- (0.5,-2)
+  to[voltmeter] (3.5,-2) -- (3.5,0)
+;
     \end{circuitikz}
-   \end{center} 
-\end{figure}
-La tabella della verità è:
-\begin{center}
-    \begin{tabular}{c|c}
-        \( x \) & \( O \) \\
-        \hline
-        0V & 3V \\
-        3V & 0V \\
-    \end{tabular}
 \end{center}
-Se assegnamo ad ogni valore un numero binario:
-\begin{center}
-    \begin{tabular}{c|c}
-        \( x \) & \( O \) \\
-        \hline
-        0 & 1 \\
-        1 & 0 \\
-    \end{tabular}
-\end{center}
-Si può notare che è la funzione di negazione rappresentata con la seguente
-porta logica:
-\begin{figure}[H]
-    \begin{center}
-        \begin{circuitikz}
-            \draw (0,0) node[scale=0.7, not port] (not) {};
-            \draw (not.in) node[left] {x};
-            \draw (not.out) node[right] {O};
-        \end{circuitikz}
-    \end{center}
-\end{figure}
 
-\label{D5} TODO
+\label{D4}
+\label{D5}
 
 \section{Espressione in somma di prodotti}
 \label{D6}
