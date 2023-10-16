@@ -582,36 +582,52 @@ viene inserito nella mantissa solo tutto ciò che viene dopo.
 		\( 11111111 \) \( \pm \infty \)\\
 		\( 11111110 \) \( +127 \) \\
 		\( \ldots \)\\
-		\( 10000000 \) \( \pm 0 \)\\
+		\( 00000000 \) \( \pm 0 \)\\
 		\( \ldots \)\\
 		\( 00000001 \) \( -126 \) \\
 		\( 00000000 \) \( -127 \)
 	\end{center}
 	\caption{Range dell'esponente}
 \end{figure}
-
-Se lavorassimo con un esponente in complemento a due ci sarebbe il seguente problema:
-$00000000000...0 = 1*2^{0}=1$
-
-Allora si è deciso di codificare l'esponente in Eccesso 127. Quindi per rappresentare
-lo zero si usa come esponente il minore numero possibile: $1*2^{127} = 0$
-Per codificare i numeri si somma 127 al numero desiderato e visto che i numeri possibili
-ora vanno da -127 a +127 se codifichiamo il risultato in modulo avremo dei numeri
-da 0 a 256.
+Si è deciso di codificare l'esponente in \textbf{Eccesso 127}. Quindi per
+rappresentare lo zero si usa come esponente il minore numero possibile:
+$1 \cdot 2^{-127} = 0$. Per codificare i numeri si somma 127 al numero desiderato
+e visto che i numeri possibili ora vanno da -127 a +127 se codifichiamo
+il risultato in modulo avremo dei numeri da 0 a 256.
 
 \begin{figure}[H]
 	\begin{example}
-		$1\:01110111\:0110...0$\\
-		$M = -(1+1/4+1/8)*2 = -(11/8)*2^{E}$\\
-		$E = (1+2+4+16+32+64)-127=119-127=-8$\\
-		$N = -11/8 * 2^{-8}$
+		Si vuole decodificare il seguente numero:
+		\[1\:01110111\:0110...0\]
+		\[M = -(1+\frac{1}{4}+\frac{1}{4})*2 = -(\frac{11}{8})*2^{e}\]
+		\[E = (1+2+4+16+32+64)-127=119-127=-8\]
+		\[N = -\frac{11}{8} * 2^{-8}\]
 	\end{example}
 \end{figure}
 
 \begin{figure}[H]
-	\begin{exercise}
+	\begin{example}
 		Codifica $+(4+\frac{1}{2}+\frac{1}{16})*2^{+34}$
-	\end{exercise}
+       \begin{enumerate}
+        \item Sappiamo già che il numero è positivo quindi:
+            \[
+            S=0
+            \] 
+            \item Calcoliamo la mantissa:
+                \[
+                    4+\frac{1}{2}+\frac{1}{16}= \underbrace{100}_{4_{10}}.
+                    \underbrace{10010 \ldots 0}_{\frac{1}{2}+\frac{1}{16}}
+                \] 
+                \item La mantissa va normalizzata moltiplicando per 4:
+                \[
+                    100.10010 \ldots 0 * 2^{+2} = 1.0010010 \ldots 0
+                \]
+                \[
+                M = 0010010 \ldots 0
+                \] 
+            \item Calcoliamo l'esponente:
+       \end{enumerate} 
+	\end{example}
 \end{figure}
 
 \begin{itemize}
