@@ -14,6 +14,9 @@
 \usepackage{tikz}
 \graphicspath{{./figures/}}
 
+\usepackage{ntheorem}
+\newtheorem{theorem}{Teorema}
+
 \usepackage{import}
 \usepackage{pdfpages}
 \usepackage{transparent}
@@ -59,17 +62,6 @@
 	innertopmargin=8pt,%
 	innerbottommargin=8pt,
 	ntheorem]{exercise}{Esercizio}[section]
-
-% Theorem frame
-\theoremstyle{break}
-\theoremheaderfont{\bfseries}
-\newmdtheoremenv[%
-	linecolor=gray,leftmargin=0,%
-	rightmargin=0,
-	innertopmargin=8pt,
-	innerbottommargin=8pt,
-	ntheorem]{theorem}{Teorema}[section]
-
 
 % figure support
 \usepackage{import}
@@ -644,6 +636,120 @@ Somma:\\
 
 
 %Lezione 4
-Per un progetto bisogna creare un modello che rappresenti il sistema
+\section{Modelli}
+Per un progetto bisogna creare un \textbf{modello} che rappresenti il sistema.
+Boole ha cercato di rappresentare tutte le algebre. Lo ha fatto attraverso
+una quintupla: \( <B^{n}, \cdot, + ,\{0,1\}> \)
+\label{D1}
+\begin{itemize}
+    \item \( B^n \) è l'insieme di valori
+    \item \( \{0,1\} \) è l'alfabeto (sistema binario)
+        \item \( \cdot  \) e \( + \) sono 2 operatori
+\end{itemize}
+Bool garantisce che si può creare qualsiasi funzione utilizzando soltanto i
+2 operatori:
+\[
+    f(B^n) \to B^m
+\] 
+\begin{example}
+    Si vuole creare un modello con 2 bit in entrata e 1 in uscita:
+    \[
+    n=2 \; m=1
+    \] 
+    \( O=1 \leftrightarrow A=B \)\\
+    \( f(B^2) \to B \) 
+    \label{D2}
+    Per mappare i valori in ingresso con quelli di uscita si usa una
+    \textbf{tabella di verità}:
+\begin{center}
+	\begin{tabular}{c|c|c}
+		\( A \) & \( B \) & \( O \) \\
+		\hline
+		0            & 0           & 1                       \\
+		0            & 1           & 0                       \\
+		1            & 0           & 0                       \\
+		1            & 1           & 1                       \\
+	\end{tabular}
+\end{center}
+Chiamiamo mintermine un punto dello spazio booleano in ingresso in cui la
+funzione vale 1. Il maxtermine è il contrario.
+L'insieme di mintermini \( \{m_0\footnote{\( m_n \): n è il valore in modulo
+del relativo numero binario, \( m \) sta per modulo. \( m_3 = 11_2 \) }, m_3\} \) si chiama \textbf{ON-SET} 
+L'insieme dei maxtermini \( \{m_1, m_2\} \) si chiama \textbf{OFF-SET}. Basta
+uno dei due insiemi (ON-SET, OFF-SET) per definire la funzione.
+\[
+m_3 = A \cdot B
+\] 
+Dire che \( m_3 \) è il prodotto delle due variabili è un modo corretto per
+rappresentarlo.
+\[
+ m_0 = \bar{A} \cdot \bar{B} 
+\] 
+Per rappresentare il mintermine basta fare il prodotto delle variabili se
+valgono 1 o delle variabili negate se valgono 0.
 
+Per rappresentare la funzione si può usare la somma dei mintermini:
+\[
+O = m_0 + m_3 = \bar{A} \cdot \bar{B} + A \cdot B = 0
+\] 
+Questa rappresentazione viene detta: \emph{Espressione in somma di prodotti} 
+\begin{theorem}
+   Dato un ON-SET c'è sempre una sola espressione in somma di prodotti che lo
+   rappresenti.
+\end{theorem}
+\end{example}
+
+\subsection{Tabelle di verità}
+\subsubsection{Operatore prodotto}
+\begin{center}
+	\begin{tabular}{c|c|c}
+		\( A \) & \( B \) & \( O \) \\
+		\hline
+		0            & 0           & 0                       \\
+		0            & 1           & 0                       \\
+		1            & 0           & 0                       \\
+		1            & 1           & 1                       \\
+	\end{tabular}
+\end{center}
+
+\subsubsection{Operatore somma}
+\begin{center}
+	\begin{tabular}{c|c|c}
+		\( A \) & \( B \) & \( O \) \\
+		\hline
+		0            & 0           & 0                       \\
+		0            & 1           & 1                       \\
+		1            & 0           & 1                       \\
+		1            & 1           & 1                       \\
+	\end{tabular}
+\end{center}
+
+\subsubsection{Operatore negazione}
+\begin{center}
+	\begin{tabular}{c|c}
+		\( A \) & \( O \) \\
+		\hline
+		0            & 1 \\
+		1            & 0 \\
+	\end{tabular}
+\end{center}
+
+\section{Transistor}
+È un "comando di accensione" che permette di accendere o spegnere un circuito.
+\subsection{Transistor CMOS}
+\label{D3}
+\label{D4}
+\label{D5}
+
+\section{Espressione in somma di prodotti}
+\label{D6}
+I circuiti devono spesso tenere conto di alcune specifiche da ottimizzare:
+\begin{itemize}
+    \item \textbf{Area}: minor numero di porte logiche
+    \item \textbf{Latency}: più porte logiche si attraversano più sarà il ritardo
+    \item \textbf{Power}: più porte logiche si attraversano più sarà
+            il consumo
+    \item \textbf{Safety}: più porte logiche si attraversano più sarà
+            la probabilità di errore
+\end{itemize}
 \end{document}
