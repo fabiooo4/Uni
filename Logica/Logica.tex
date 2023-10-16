@@ -4,6 +4,7 @@
 \usepackage{mdframed}
 \usepackage{ntheorem}
 \usepackage{xcolor}
+\usepackage{float}
 \usepackage{graphicx}
 \graphicspath{ {./figures/} }
 
@@ -429,5 +430,124 @@ La sottoformula è una formula che è contenuta in un'altra formula più grande.
 	\end{enumerate}
 \end{theorem}
 
+\section{Semantica delle formule proposizionali}
+Considerando una formula \( \alpha \) si associano 2 possibli valori:
+\begin{itemize}
+	\item Vero (1)
+	\item Falso (0)
+\end{itemize}
+
+\subsection{Valutazione delle formule logiche}
+\( V: PROP \to \{ 0, 1 \} \)\\
+\( V(p_1) =\; ?\;\) \( 0 \) o \( 1 \)
+\begin{figure}[H]
+	\begin{example}
+		Le seguenti funzioni non sono valide:
+		\begin{itemize}
+			\item \( V(\alpha) = V(\neg \alpha) \)
+			\item \( V(\alpha) = 0 \) \( \forall \alpha \)
+		\end{itemize}
+	\end{example}
+\end{figure}
+
+\( V: PROP \to \{ 0, 1 \} \) è una valutazione se:
+\begin{enumerate}
+	\item \( V(\alpha \wedge \beta) = 1 \leftrightarrow V(\alpha) = 1\; \&\; V(\beta) = 1 \)
+	\item \(V(\alpha \vee \beta) = 1 \leftrightarrow V(\alpha) = 1\; or\; V(\beta) = 1 \)
+	\item \( V(\neg \alpha) = 1  \)
+	\item \( V(\bot) = 0 \)
+	\item \( V(\alpha \to \beta) = 1 \leftrightarrow [ V(\alpha) = 1 \Rightarrow V(\beta) = 1] \)
+	\item[5.2] \( V(\alpha \to \beta) = 1 \leftrightarrow V(\alpha) = 0\; or\; V(\beta) = 1  \)
+\end{enumerate}
+
+\subsection{Valutazione atomica}
+\( v \) è detta \textbf{valutazione (atomica)} se:\\
+\( v: AT \to \{0,1\}\) e \(v(\bot) = 0 \)
+
+\begin{definition}
+	Teorema:\\
+	Data una valutazione atomica \( v \) esiste ed è unica una valutazione
+	\[
+		[| \cdot |]_v\footnote{\([| \cdot |]\) sono parentesi denotazionali, cioè
+			indicano che stiamo valutando il valore della valutazione, quindi della semantica}: PROP \to \{0,1\}
+	\] tale che:\[
+		[| \alpha |]_v= V(\alpha) \; per\; \alpha \in AT
+	\]
+\end{definition}
+
+\subsection{Tavole di verità}
+Il valore di verità di una formula è determinato (universalmente) dal
+valore dei suoi atomi.
+
+\subsubsection{Tavola di verità per \( \vee \) }
+\( [|(\alpha \vee \beta)]_v = 1 \leftrightarrow [|\alpha|]_v = 1\; or\; [|\beta|]_v = 1 \)
+\begin{center}
+	\begin{tabular}{c|c|c}
+		\( \alpha \) & \( \beta \) & \( \alpha \vee \beta \) \\
+		\hline
+		0            & 0           & 0                       \\
+		0            & 1           & 1                       \\
+		1            & 0           & 1                       \\
+		1            & 1           & 1                       \\
+	\end{tabular}
+\end{center}
+\subsubsection{Tavola di verità per \( \wedge \) }
+TODO
+\subsubsection{Tavola di verità per \( \to  \) }
+TODO
+
+\subsection{Esempi di tabelle di verità}
+\begin{example}
+	\[
+		\alpha = ((p_2 \to  p_1)\vee p_2)
+	\]
+	\begin{center}
+		\begin{tabular}{c|c|c|c}
+			\( p_1 \) & \( p_2 \) & \( (p_1 \to p_2) \) & \( ((p_2 \to  p_1)\vee p_2) \) \\
+			\hline
+			0         & 0         & 1                   & 1                              \\
+			0         & 1         & 0                   & 1                              \\
+			1         & 0         & 1                   & 1                              \\
+			1         & 1         & 1                   & 1                              \\
+		\end{tabular}
+	\end{center}
+	A ogni riga corrisponde una valutazione atomica: \( v_1[p_1] = 0, v_1[p_2] = 0 \) ecc...
+\end{example}
+
+\begin{exercise}
+	Valutare: \( [|\alpha|]_{v_1} \) dell'esercizio precedente:\\
+	\( [|(p_2 \to p_1)|]_{v_1}=1 \leftrightarrow [|p_2|]_{v_1}\stackrel{punto 5.2}{=} 0\; or\; [|p_1|]_{v_1}=1 \)\\
+	\( [|((p_2 \to p_1)\vee p_2)|]_{v_1} = 1 \leftrightarrow [|(p_2 \to p_1)|]_{v_1}=1;\ or\; [|p_2|]_{v_1}=1 \)
+\end{exercise}
+
+\begin{exercise}[A casa]
+	Valutare \( [|\alpha|]_{v_2} \)
+\end{exercise}
+
+
+\subsection{Formule privilegiate}
+\begin{theorem}
+    \( \phi \in PROP \) sia \( \phi^{AT} = \{ p | p \in AT\; \&\; p \) è in \( \phi\} \) \\
+    Siano \( v_1 \) e \( v_2 \) valutazioni atomiche\\
+    tali che: \( \forall p \in \phi^{AT} \) \( v_1[p]=v_2[p] \) \\
+    allora \( [|\phi|]_{v_1} = [|\phi|]_{v_2} \)
+\end{theorem}
+
+\begin{definition}
+	\( \alpha \in PROP \) è detta \textbf{tautologia} se per ogni valutazione
+	v: \( [|\alpha|]_v = 1 \)\\
+    \(
+    \models \phi
+    \) indica una formula privilegiata (di cui fa parte la tautologia) 
+\end{definition}
+
+\( \forall v [|\alpha|]_v = 1 \) è una formula privilegiata? \( \models \alpha \) 
+\begin{itemize}
+    \item Sì \( \Rightarrow \) dimostro \textbf{per ogni \( v \)} che \( [|\alpha|]_v = 1\) (\( \forall  \)\footnote{Per far si che sia vero
+        dobbiamo dimostrare che sia vero per ogni elemento}) 
+    \item No \( \Rightarrow \) esibisco una specifica valutazione
+        tale che \( [|\alpha|]_v= 0 \) (\( \exists  \)\footnote{Per far si che sia falso
+        dobbiamo dismostrare che almeno una valutazione sia falsa (controesempio)})
+\end{itemize}
 
 \end{document}
