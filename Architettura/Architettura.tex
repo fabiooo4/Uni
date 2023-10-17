@@ -879,4 +879,118 @@ I circuiti devono spesso tenere conto di alcune specifiche da ottimizzare:
     \item \textbf{Safety}: più porte logiche si attraversano più sarà
             la probabilità di errore
 \end{itemize}
+Prendiamo in considerazione la funzione \( f(B^3)\footnote{Il numero di funzioni booleane
+possibili è \( 2^{2^3} = 256 \) e il valore cresce esponenzialmente con
+l'aumento dei bit}\to B \):
+\begin{center}
+    \begin{tabular}{c|c}
+        X Y Z & O \\
+        \hline
+        0\;0\;0 & 0 \\
+        0\;0\;1 & 1 \\
+        0\;1\;0 & 0 \\
+        0\;1\;1 & 1 \\
+        1\;0\;0 & 0 \\
+        1\;0\;1 & 1 \\
+        1\;1\;0 & 0 \\
+        1\;1\;1 & 1 \\
+    \end{tabular}
+\end{center}
+ON-SET\(=\{ m_1,m_3,m_5,m_7 \} \)\\ 
+La funzione rappresentata con un'espressione in somma di prodotti è:
+\[ O=m_1+m_3+m_5+m_7 = \bar{X}\bar{Y}Z + \bar{X}YZ + X\bar{Y}Z + XYZ \] 
+Proviamo a stimare le dimensioni di questo circuito. Si utilizza il concetto
+di \textbf{letterale} che è una coppia chiave-valore. La funzione \( O \) 
+è composta da 12 letterali e questo numero è in relazione con il numero di
+transistor nel senso che se una funzione ha più letterali di un altra si può
+già sapere che avrà bisogno di un minor numero di transistor.
+\subsection{Riduzione}
+La regola principale della riduzione è l'assorbimento:
+Preso un prodottp \( P \)  moltiplicato ad un letterale \( a \) e la somma di
+questo prodotto, ma con il letterale negato \( \bar{a} \) allora il risultato
+è \( P \cdot  (a+\bar{a}) \) dove \( (a+\bar{a}) \) fa sempre 1, quindi rimane
+\( P \).
+\[
+    aP+\bar{a}P=P \cdot (a+\bar{a}) = P
+\] 
+
+\[
+2 \cdot (|P|+1) \Rightarrow |P|
+\] 
+Quindi se prendiamo come riferimento la funzione \( O \) si può applicare la 
+regola dell'assorbimento per ridurre il numero di letterali:
+\[ \bar{x}Z \cdot (\bar{Y}+Y) + XZ(\bar{Y}+Y) \]
+E riapplicando la regola si arriva al minimo:
+\[
+Z
+\] 
+\label{D7}
+\subsection{Terminologia}
+Ogni mintermine è un prodotto (o implicante), ma dopo aver applicato la regola
+di assorbimento non è più un mintermine, ma soltanto prodotto (o implicante).
+\[
+    \bar{Z}\bar{Y}Z \to \bar{X}Z
+\] 
+La \( Y \) non c'è più nel risultato dell'assorbimento, ciò vuol dire che non
+ci interessa il suo valore perchè non varia il risultato. Si può scrivere sia
+\(
+11
+\)
+che
+\(
+1-1
+\)\\ 
+Quindi ad esempio:\\
+\( Z=--1=4\; \)mintermini: \( \{ 001, 011, 101, 111 \} \)
+\begin{definition}
+   \textbf{Implicante primo} è un implicante non contenuto in nessun altro
+   implicante
+\end{definition}
+
+\section{Assorbimento}
+Prendendo come riferimento la funzione O:
+\label{D8}
+L'assorbimento può essere fatto soltanto tra gli ON-SET con distanza di
+Hamming = 1.
+\begin{definition}
+   La \textbf{distanza di Hamming} è il numero di bit che differenziano 2 codici. 
+   \begin{center}
+    \( 0110 \to 0101\; \) distanza di Hamming = 2 
+    \( 010 \to 011\; \) distanza di Hamming = 1 
+   \end{center}
+\end{definition}
+Per effettuare l'assorbimento ci si posiziona nel punto di un mintermine e si
+"guarda" in tutte le direzioni per eventuali altri mintermini con cui fare il
+prodotto.
+\label{D9}
+Ora si può fare l'assorbimento anche tra i prodotti ottenuti dall'assorbimento:
+\label{D10}
+Si arriva quindi a dire che \( Z \) è un implicante primo perchè non c'è nessun
+altro implicante che lo contiene.
+\begin{define}
+   Quando si parla di implicante si può anche dire \textbf{sottocubo} e
+   l'implicante primo può essere chiamato anche \textbf{sottocubo di dimensione
+   massima}.
+   \begin{center}
+       Implicante = Sottocubo\\
+       Implicante primo = Sottocubo di dimensione massima
+   \end{center}
+\end{define}
+Esistono condizioni favorevoli (come la funzione O) in cui un implicante primo
+contiene tutti i mintermini della funzione.\\
+Ci sono più tipi di implicanti primi:
+\begin{itemize}
+    \item \textbf{Essenziali}: includono almeno un mintermine che non è coperto da nessun
+        altro implicante primo (fanno parte della soluzione finale).
+    \item \textbf{Non essenziali}:  Implicanti primi che coprono mintermini
+        coperti anche da altri implicanti.
+        Si identificano con l'\textbf{algoritmo di copertura}
+\end{itemize}
+Karnaugh ha creato una mappa che permette di rappresentare su un piano tutte
+le variabili booleane (nel caso della funzione O si mettono i valori del cubo
+nella tabella).
+\label{D11}
+
+\label{D12} %Esempio con funzione casuale
+
 \end{document}
