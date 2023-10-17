@@ -601,25 +601,25 @@ il risultato in modulo avremo dei numeri da 0 a 256.
 \begin{figure}[H]
 	\begin{example}
 		Codifica $+(4+\frac{1}{2}+\frac{1}{16})*2^{+34}$
-       \begin{enumerate}
-        \item Sappiamo già che il numero è positivo quindi:
-            \[
-            S=0
-            \] 
-            \item Calcoliamo la mantissa:
-                \[
-                    4+\frac{1}{2}+\frac{1}{16}= \underbrace{100}_{4_{10}}.
-                    \underbrace{10010 \ldots 0}_{\frac{1}{2}+\frac{1}{16}}
-                \] 
-                \item La mantissa va normalizzata moltiplicando per 4:
-                \[
-                    100.10010 \ldots 0 * 2^{+2} = 1.0010010 \ldots 0
-                \]
-                \[
-                M = 0010010 \ldots 0
-                \] 
-            \item Calcoliamo l'esponente:
-       \end{enumerate} 
+		\begin{enumerate}
+			\item Sappiamo già che il numero è positivo quindi:
+			      \[
+				      S=0
+			      \]
+			\item Calcoliamo la mantissa:
+			      \[
+				      4+\frac{1}{2}+\frac{1}{16}= \underbrace{100}_{4_{10}}.
+				      \underbrace{10010 \ldots 0}_{\frac{1}{2}+\frac{1}{16}}
+			      \]
+			\item La mantissa va normalizzata moltiplicando per 4:
+			      \[
+				      100.10010 \ldots 0 * 2^{+2} = 1.0010010 \ldots 0
+			      \]
+			      \[
+				      M = 0010010 \ldots 0
+			      \]
+			\item Calcoliamo l'esponente:
+		\end{enumerate}
 	\end{example}
 \end{figure}
 
@@ -642,94 +642,94 @@ Per un progetto bisogna creare un \textbf{modello} che rappresenti il sistema.
 Boole ha cercato di rappresentare tutte le algebre. Lo ha fatto attraverso
 una quintupla: \( <B^{n}, \cdot, + ,\{0,1\}> \)
 \begin{figure}[H]
-    \centering
-    \begin{tikzpicture}
-        \node[draw, align=center] (Sistema digitale) at (0,0) {Sistema\\
-            digitale}; 
+	\centering
+	\begin{tikzpicture}
+		\node[draw, align=center] (Sistema digitale) at (0,0) {Sistema\\
+			digitale};
 
-        \draw[->, draw] (Sistema digitale) to (2,0);
-        \draw[<-, draw] (Sistema digitale) to (-2,0);
+		\draw[->, draw] (Sistema digitale) to (2,0);
+		\draw[<-, draw] (Sistema digitale) to (-2,0);
 
-        \node (A) at (-2,0.3) {A};
-        \node (B) at (-2,-0.3) {B};
-        \node (O) at (2,0.3) {O};
-    \end{tikzpicture}
+		\node (A) at (-2,0.3) {A};
+		\node (B) at (-2,-0.3) {B};
+		\node (O) at (2,0.3) {O};
+	\end{tikzpicture}
 \end{figure}
 
 \begin{itemize}
-    \item \( B^n \) è l'insieme di valori
-    \item \( \{0,1\} \) è l'alfabeto (sistema binario)
-        \item "\( \cdot  \)" e "\( + \)" sono 2 operatori
+	\item \( B^n \) è l'insieme di valori
+	\item \( \{0,1\} \) è l'alfabeto (sistema binario)
+	\item "\( \cdot  \)" e "\( + \)" sono 2 operatori
 \end{itemize}
 Bool garantisce che si può creare qualsiasi funzione utilizzando soltanto i
 2 operatori:
 \[
-    f(B^n) \to B^m
-\] 
+	f(B^n) \to B^m
+\]
 \begin{example}
-    Si vuole creare un modello con 2 bit in entrata e 1 in uscita:
-    \[
-    n=2 \; m=1
-    \] 
-    \( O=1 \leftrightarrow A=B \)\\
-    \( f(B^2) \to B \) 
-    \begin{center}
-        \begin{tikzpicture}
-            \draw[thick] (0,0) circle [x radius=0.5cm, y radius=1.5cm]
-                               (2,0) circle [x radius=0.5cm, y radius=1.5cm]; 
+	Si vuole creare un modello con 2 bit in entrata e 1 in uscita:
+	\[
+		n=2 \; m=1
+	\]
+	\( O=1 \leftrightarrow A=B \)\\
+	\( f(B^2) \to B \)
+	\begin{center}
+		\begin{tikzpicture}
+			\draw[thick] (0,0) circle [x radius=0.5cm, y radius=1.5cm]
+			(2,0) circle [x radius=0.5cm, y radius=1.5cm];
 
-            \node[align=center] (00) at (0,0.8) {00}; 
-            \node[align=center] (11) at (0,0.3) {11}; 
-            \node[align=center] (01) at (0,-0.2) {01}; 
-            \node[align=center] (10) at (0,-0.7) {10}; 
+			\node[align=center] (00) at (0,0.8) {00};
+			\node[align=center] (11) at (0,0.3) {11};
+			\node[align=center] (01) at (0,-0.2) {01};
+			\node[align=center] (10) at (0,-0.7) {10};
 
-            \node[align=center] (1) at (2,0.6) {1}; 
-            \node[align=center] (0) at (2,-0.5) {0}; 
+			\node[align=center] (1) at (2,0.6) {1};
+			\node[align=center] (0) at (2,-0.5) {0};
 
-            \draw[->, draw] (00) to (1);
-            \draw[->, draw] (11) to (1);
-            \draw[->, draw] (01) to (0);
-            \draw[->, draw] (10) to (0);
-        \end{tikzpicture}        
-    \end{center}
-    Per mappare i valori in ingresso con quelli di uscita si usa una
-    \textbf{tabella di verità}:
-\begin{center}
-	\begin{tabular}{c|c|c}
-		\( A \) & \( B \) & \( O \) \\
-		\hline
-		0            & 0           & 1                       \\
-		0            & 1           & 0                       \\
-		1            & 0           & 0                       \\
-		1            & 1           & 1                       \\
-	\end{tabular}
-\end{center}
-Chiamiamo mintermine un punto dello spazio booleano in ingresso in cui la
-funzione vale 1. Il maxtermine è il contrario.
-L'insieme di mintermini \( \{m_0\footnote{\( m_n \): n è il valore in modulo
-del relativo numero binario, \( m \) sta per modulo. \( m_3 = 11_2 \) }, m_3\} \) si chiama \textbf{ON-SET} 
-L'insieme dei maxtermini \( \{m_1, m_2\} \) si chiama \textbf{OFF-SET}. Basta
-uno dei due insiemi (ON-SET, OFF-SET) per definire la funzione.
-\[
-m_3 = A \cdot B
-\] 
-Dire che \( m_3 \) è il prodotto delle due variabili è un modo corretto per
-rappresentarlo.
-\[
- m_0 = \bar{A} \cdot \bar{B} 
-\] 
-Per rappresentare il mintermine basta fare il prodotto delle variabili se
-valgono 1 o delle variabili negate se valgono 0.
+			\draw[->, draw] (00) to (1);
+			\draw[->, draw] (11) to (1);
+			\draw[->, draw] (01) to (0);
+			\draw[->, draw] (10) to (0);
+		\end{tikzpicture}
+	\end{center}
+	Per mappare i valori in ingresso con quelli di uscita si usa una
+	\textbf{tabella di verità}:
+	\begin{center}
+		\begin{tabular}{c|c|c}
+			\( A \) & \( B \) & \( O \) \\
+			\hline
+			0       & 0       & 1       \\
+			0       & 1       & 0       \\
+			1       & 0       & 0       \\
+			1       & 1       & 1       \\
+		\end{tabular}
+	\end{center}
+	Chiamiamo mintermine un punto dello spazio booleano in ingresso in cui la
+	funzione vale 1. Il maxtermine è il contrario.
+	L'insieme di mintermini \( \{m_0\footnote{\( m_n \): n è il valore in modulo
+		del relativo numero binario, \( m \) sta per modulo. \( m_3 = 11_2 \) }, m_3\} \) si chiama \textbf{ON-SET}
+	L'insieme dei maxtermini \( \{m_1, m_2\} \) si chiama \textbf{OFF-SET}. Basta
+	uno dei due insiemi (ON-SET, OFF-SET) per definire la funzione.
+	\[
+		m_3 = A \cdot B
+	\]
+	Dire che \( m_3 \) è il prodotto delle due variabili è un modo corretto per
+	rappresentarlo.
+	\[
+		m_0 = \bar{A} \cdot \bar{B}
+	\]
+	Per rappresentare il mintermine basta fare il prodotto delle variabili se
+	valgono 1 o delle variabili negate se valgono 0.
 
-Per rappresentare la funzione si può usare la somma dei mintermini:
-\[
-O = m_0 + m_3 = \bar{A} \cdot \bar{B} + A \cdot B = 0
-\] 
-Questa rappresentazione viene detta: \emph{Espressione in somma di prodotti} 
-\begin{theorem}
-   Dato un ON-SET c'è sempre una sola espressione in somma di prodotti che lo
-   rappresenti.
-\end{theorem}
+	Per rappresentare la funzione si può usare la somma dei mintermini:
+	\[
+		O = m_0 + m_3 = \bar{A} \cdot \bar{B} + A \cdot B = 0
+	\]
+	Questa rappresentazione viene detta: \emph{Espressione in somma di prodotti}
+	\begin{theorem}
+		Dato un ON-SET c'è sempre una sola espressione in somma di prodotti che lo
+		rappresenti.
+	\end{theorem}
 \end{example}
 
 \subsection{Tabelle di verità}
@@ -738,10 +738,10 @@ Questa rappresentazione viene detta: \emph{Espressione in somma di prodotti}
 	\begin{tabular}{c|c|c}
 		\( A \) & \( B \) & \( O \) \\
 		\hline
-		0            & 0           & 0                       \\
-		0            & 1           & 0                       \\
-		1            & 0           & 0                       \\
-		1            & 1           & 1                       \\
+		0       & 0       & 0       \\
+		0       & 1       & 0       \\
+		1       & 0       & 0       \\
+		1       & 1       & 1       \\
 	\end{tabular}
 \end{center}
 
@@ -750,10 +750,10 @@ Questa rappresentazione viene detta: \emph{Espressione in somma di prodotti}
 	\begin{tabular}{c|c|c}
 		\( A \) & \( B \) & \( O \) \\
 		\hline
-		0            & 0           & 0                       \\
-		0            & 1           & 1                       \\
-		1            & 0           & 1                       \\
-		1            & 1           & 1                       \\
+		0       & 0       & 0       \\
+		0       & 1       & 1       \\
+		1       & 0       & 1       \\
+		1       & 1       & 1       \\
 	\end{tabular}
 \end{center}
 
@@ -762,8 +762,8 @@ Questa rappresentazione viene detta: \emph{Espressione in somma di prodotti}
 	\begin{tabular}{c|c}
 		\( A \) & \( O \) \\
 		\hline
-		0            & 1 \\
-		1            & 0 \\
+		0       & 1       \\
+		1       & 0       \\
 	\end{tabular}
 \end{center}
 
@@ -773,134 +773,182 @@ Questa rappresentazione viene detta: \emph{Espressione in somma di prodotti}
 \subsubsection{Transistor N}
 Mette in collegamento 2 punti:
 \begin{itemize}
-    \item Se la corrente è 0V allora non c'è collegamento
-    \item Se la corrente è 3V allora c'è collegamento
+	\item Se la corrente è 0V allora non c'è collegamento
+	\item Se la corrente è 3V allora c'è collegamento
 \end{itemize}
 
 \begin{figure}[H]
-    \begin{center}
-        \begin{circuitikz}[american,] 
-            \node (Vcc) at (0,0.3) {\( V_{cc} \) };
-            \draw (0,0) -- (1,0) to[short,-*] ++(0,0) node[left] {}
-                (2,0) -- (1,0) 
-                node[nmos,anchor=D] (nmos) {}
-                (nmos.G) to[short] ++(0,0) node[left] {}
-                (nmos.S) node[ground] {};
-        \end{circuitikz}
-    \end{center}
-    \caption{Transistor N}
+	\begin{center}
+		\begin{circuitikz}[american,]
+			\node (Vcc) at (0,0.3) {\( V_{cc} \) };
+			\draw (0,0) -- (1,0) to[short,-*] ++(0,0) node[left] {}
+			(2,0) -- (1,0)
+			node[nmos,anchor=D] (nmos) {}
+			(nmos.G) to[short] ++(0,0) node[left] {}
+			(nmos.S) node[ground] {};
+		\end{circuitikz}
+	\end{center}
+	\caption{Transistor N}
 \end{figure}
 
 \subsubsection{Transistor P}
 Mette in collegamento 2 punti:
 \begin{itemize}
-    \item Se la corrente è 0V allora c'è collegamento
-    \item Se la corrente è 3V allora non c'è collegamento
+	\item Se la corrente è 0V allora c'è collegamento
+	\item Se la corrente è 3V allora non c'è collegamento
 \end{itemize}
 
 \begin{figure}[H]
-    \begin{center}
-        \begin{circuitikz}[american,] 
-            \node (Vcc) at (0,0.3) {\( V_{cc} \) };
-            \draw (0,0) -- (1,0) to[short,-*] ++(0,0) node[left] {}
-                (2,0) -- (1,0) 
-                node[pmos,anchor=S] (pmos) {}
-                (pmos.G) to[short] ++(0,0) node[left] {}
-                (pmos.D) node[ground] {};
+	\begin{center}
+		\begin{circuitikz}[american,]
+			\node (Vcc) at (0,0.3) {\( V_{cc} \) };
+			\draw (0,0) -- (1,0) to[short,-*] ++(0,0) node[left] {}
+			(2,0) -- (1,0)
+			node[pmos,anchor=S] (pmos) {}
+			(pmos.G) to[short] ++(0,0) node[left] {}
+			(pmos.D) node[ground] {};
 
-        \end{circuitikz}
-    \end{center}
-    \caption{Transistor P}
+		\end{circuitikz}
+	\end{center}
+	\caption{Transistor P}
 \end{figure}
-\subsubsection{Circuito di negazione}
+\subsubsection{Circuito di negazione (NOT)}
 Si realizza con un transistor P e uno N in serie.
 \begin{figure}[H]
-   \begin{center}
-    \begin{circuitikz}
-        \node (Vcc) at (-1,0.3) {\( V_{cc} \) };
-        \node (Vcc) at (1,0.3) {\( 3V \) };
-            \draw (-1,0) -- (0,0) to[short,-*] ++(0,0) node[left] {}
-                (1,0) -- (0,0);
-        \draw (0,0) node[pmos, anchor=S] (pmos) {}
-            (pmos.G) to[short] ++(0,0) node[left] {}
-            (pmos.D) to[short] ++(0,0) node[left] {}
-            (pmos.D) -- ++(0,0) to[short,-*] (0,-1.6) node[left] {}
-            node[nmos,anchor=D] (nmos) {}
-            (nmos.G) to[short] ++(0,0) node[left] {}
-            (nmos.S) node[ground] {};
-        \draw (-2, -1.6) node[above] {\( x \) } to[short,-*] (-0.99,-1.6) node[left] {}
-            (pmos.G) -- ++(0,0) to[short,-*] (-0.99,-1.6) node[left] {}
-            (0,-1.6) -- ++(0,0) to[short] (1.2,-1.6) node[above] {O}
-            (nmos.G) -- ++(0,0) to[short] (-0.99,-1.6) node[left] {};
-        \node (0V) at (0.6,-3.5) {\( 0V \) };
-    \end{circuitikz}
-   \end{center} 
+	\begin{center}
+		\begin{circuitikz}
+			\node (Vcc) at (-1,0.3) {\( V_{cc} \) };
+			\node (Vcc) at (1,0.3) {\( 3V \) };
+			\draw (-1,0) -- (0,0) to[short,-*] ++(0,0) node[left] {}
+			(1,0) -- (0,0);
+			\draw (0,0) node[pmos, anchor=S] (pmos) {}
+			(pmos.G) to[short] ++(0,0) node[left] {}
+			(pmos.D) to[short] ++(0,0) node[left] {}
+			(pmos.D) -- ++(0,0) to[short,-*] (0,-1.6) node[left] {}
+			node[nmos,anchor=D] (nmos) {}
+			(nmos.G) to[short] ++(0,0) node[left] {}
+			(nmos.S) node[ground] {};
+			\draw (-2, -1.6) node[above] {\( x \) } to[short,-*] (-0.99,-1.6) node[left] {}
+			(pmos.G) -- ++(0,0) to[short,-*] (-0.99,-1.6) node[left] {}
+			(0,-1.6) -- ++(0,0) to[short] (1.2,-1.6) node[above] {O}
+			(nmos.G) -- ++(0,0) to[short] (-0.99,-1.6) node[left] {};
+			\node (0V) at (0.6,-3.5) {\( 0V \) };
+		\end{circuitikz}
+	\end{center}
 \end{figure}
 La tabella della verità è:
 \begin{center}
-    \begin{tabular}{c|c}
-        \( x \) & \( O \) \\
-        \hline
-        0V & 3V \\
-        3V & 0V \\
-    \end{tabular}
+	\begin{tabular}{c|c}
+		\( x \) & \( O \) \\
+		\hline
+		0V      & 3V      \\
+		3V      & 0V      \\
+	\end{tabular}
 \end{center}
 Se assegnamo ad ogni valore un numero binario:
 \begin{center}
-    \begin{tabular}{c|c}
-        \( x \) & \( O \) \\
-        \hline
-        0 & 1 \\
-        1 & 0 \\
-    \end{tabular}
+	\begin{tabular}{c|c}
+		\( x \) & \( O \) \\
+		\hline
+		0       & 1       \\
+		1       & 0       \\
+	\end{tabular}
 \end{center}
 Si può notare che è la funzione di negazione rappresentata con la seguente
 porta logica:
 \begin{figure}[H]
-    \begin{center}
-        \begin{circuitikz}
-            \draw (0,0) node[scale=0.7, not port] (not) {};
-            \draw (not.in) node[left] {x};
-            \draw (not.out) node[right] {O};
-        \end{circuitikz}
-    \end{center}
+	\begin{center}
+		\begin{circuitikz}
+			\draw (0,0) node[scale=0.7, not port] (not) {};
+			\draw (not.in) node[left] {x};
+			\draw (not.out) node[right] {O};
+		\end{circuitikz}
+	\end{center}
 \end{figure}
 
-\label{D5} TODO
+\subsubsection{Circuito del prodotto (AND)}
+\begin{center}
+	\begin{circuitikz}
+		\node (x) at (-2,-0.23) {x};
+		\node (y) at (-2,-2.77) {y};
+		\node (O) at (1.2,-1.3) {O};
+
+		\node (Vcc) at (-1.5,1.8) {\( V_{cc}=3V \) };
+
+		\filldraw[black] (1,0) circle (1.5pt) node[anchor=west]{};
+		\filldraw[black] (-0.28,-0.23) circle (1.5pt) node[anchor=west]{};
+		\filldraw[black] (-0.98,-2.77) circle (1.5pt) node[anchor=west]{};
+		\filldraw[black] (2,1.55) circle (1.5pt) node[anchor=west]{};
+		\filldraw[black] (0,1.55) circle (1.5pt) node[anchor=west]{};
+
+		\draw
+		(0,0) node[pmos, anchor=D] (pmos1) {} (0,0) -- (2,0)
+		(2,0) node[pmos, anchor=D] (pmos2) {} (2,0)
+		(1,0) node[nmos, anchor=D] (nmos1) {} (1,-1)
+		(1,-1.54) -- (1,-2) node[nmos, anchor=D] (nmos2) {} (1,-2)
+		(nmos2.S) node[ground] {}
+		(pmos1.G) to ++(0,-3.542)
+		(pmos2.G) to ++(-1.3,0) -- ++(0, -1) to[short] (x)
+		(nmos1.G) to ++(-0.3,0) -- ++(0,1)
+		(nmos2.G) to[short] (y)
+		(-2,1.55) -- ++(5,0)
+		(nmos1.S) -- ++(2,0) -- ++(0,1.497)
+		;
+
+		\begin{scope}[shift={(5,1.55)}]
+			\draw (-2,0) -- (0,0) to[short,-*] ++(0,0) node[left] {}
+			(1,0) -- (0,0);
+			\draw (0,0) node[pmos, anchor=S] (pmos) {}
+			(pmos.G) to[short] ++(0,0) node[left] {}
+			(pmos.D) to[short] ++(0,0) node[left] {}
+			(pmos.D) -- ++(0,0) to[short,-*] (0,-1.6) node[left] {}
+			node[nmos,anchor=D] (nmos) {}
+			(nmos.G) to[short] ++(0,0) node[left] {}
+			(nmos.S) node[ground] {};
+			\draw (-2, -1.6) node[above] {} to[short,-*] (-0.99,-1.6) node[left] {}
+			(pmos.G) -- ++(0,0) to[short,-*] (-0.99,-1.6) node[left] {}
+			(0,-1.6) -- ++(0,0) to[short] (1.2,-1.6) node[above] {O}
+			(nmos.G) -- ++(0,0) to[short] (-0.99,-1.6) node[left] {};
+			\node (0V) at (0.6,-3.5) {\( 0V \) };
+		\end{scope}
+
+
+	\end{circuitikz}
+\end{center}
 
 \section{Espressione in somma di prodotti}
 \label{D6}
 I circuiti devono spesso tenere conto di alcune specifiche da ottimizzare:
 \begin{itemize}
-    \item \textbf{Area}: minor numero di porte logiche
-    \item \textbf{Latency}: più porte logiche si attraversano più sarà il ritardo
-    \item \textbf{Power}: più porte logiche si attraversano più sarà
-            il consumo
-    \item \textbf{Safety}: più porte logiche si attraversano più sarà
-            la probabilità di errore
+	\item \textbf{Area}: minor numero di porte logiche
+	\item \textbf{Latency}: più porte logiche si attraversano più sarà il ritardo
+	\item \textbf{Power}: più porte logiche si attraversano più sarà
+	      il consumo
+	\item \textbf{Safety}: più porte logiche si attraversano più sarà
+	      la probabilità di errore
 \end{itemize}
 Prendiamo in considerazione la funzione \( f(B^3)\footnote{Il numero di funzioni booleane
-possibili è \( 2^{2^3} = 256 \) e il valore cresce esponenzialmente con
-l'aumento dei bit}\to B \):
+	possibili è \( 2^{2^3} = 256 \) e il valore cresce esponenzialmente con
+	l'aumento dei bit}\to B \):
 \begin{center}
-    \begin{tabular}{c|c}
-        X Y Z & O \\
-        \hline
-        0\;0\;0 & 0 \\
-        0\;0\;1 & 1 \\
-        0\;1\;0 & 0 \\
-        0\;1\;1 & 1 \\
-        1\;0\;0 & 0 \\
-        1\;0\;1 & 1 \\
-        1\;1\;0 & 0 \\
-        1\;1\;1 & 1 \\
-    \end{tabular}
+	\begin{tabular}{c|c}
+		X Y Z   & O \\
+		\hline
+		0\;0\;0 & 0 \\
+		0\;0\;1 & 1 \\
+		0\;1\;0 & 0 \\
+		0\;1\;1 & 1 \\
+		1\;0\;0 & 0 \\
+		1\;0\;1 & 1 \\
+		1\;1\;0 & 0 \\
+		1\;1\;1 & 1 \\
+	\end{tabular}
 \end{center}
-ON-SET\(=\{ m_1,m_3,m_5,m_7 \} \)\\ 
+ON-SET\(=\{ m_1,m_3,m_5,m_7 \} \)\\
 La funzione rappresentata con un'espressione in somma di prodotti è:
-\[ O=m_1+m_3+m_5+m_7 = \bar{X}\bar{Y}Z + \bar{X}YZ + X\bar{Y}Z + XYZ \] 
+\[ O=m_1+m_3+m_5+m_7 = \bar{X}\bar{Y}Z + \bar{X}YZ + X\bar{Y}Z + XYZ \]
 Proviamo a stimare le dimensioni di questo circuito. Si utilizza il concetto
-di \textbf{letterale} che è una coppia chiave-valore. La funzione \( O \) 
+di \textbf{letterale} che è una coppia chiave-valore. La funzione \( O \)
 è composta da 12 letterali e questo numero è in relazione con il numero di
 transistor nel senso che se una funzione ha più letterali di un altra si può
 già sapere che avrà bisogno di un minor numero di transistor.
@@ -911,26 +959,26 @@ questo prodotto, ma con il letterale negato \( \bar{a} \) allora il risultato
 è \( P \cdot  (a+\bar{a}) \) dove \( (a+\bar{a}) \) fa sempre 1, quindi rimane
 \( P \).
 \[
-    aP+\bar{a}P=P \cdot (a+\bar{a}) = P
-\] 
+	aP+\bar{a}P=P \cdot (a+\bar{a}) = P
+\]
 
 \[
-2 \cdot (|P|+1) \Rightarrow |P|
-\] 
-Quindi se prendiamo come riferimento la funzione \( O \) si può applicare la 
+	2 \cdot (|P|+1) \Rightarrow |P|
+\]
+Quindi se prendiamo come riferimento la funzione \( O \) si può applicare la
 regola dell'assorbimento per ridurre il numero di letterali:
 \[ \bar{x}Z \cdot (\bar{Y}+Y) + XZ(\bar{Y}+Y) \]
 E riapplicando la regola si arriva al minimo:
 \[
-Z
-\] 
+	Z
+\]
 \label{D7}
 \subsection{Terminologia}
 Ogni mintermine è un prodotto (o implicante), ma dopo aver applicato la regola
 di assorbimento non è più un mintermine, ma soltanto prodotto (o implicante).
 \[
-    \bar{Z}\bar{Y}Z \to \bar{X}Z
-\] 
+	\bar{Z}\bar{Y}Z \to \bar{X}Z
+\]
 La \( Y \) non c'è più nel risultato dell'assorbimento, ciò vuol dire che non
 ci interessa il suo valore perchè non varia il risultato. Si può scrivere sia
 \(
@@ -939,12 +987,12 @@ ci interessa il suo valore perchè non varia il risultato. Si può scrivere sia
 che
 \(
 1-1
-\)\\ 
+\)\\
 Quindi ad esempio:\\
 \( Z=--1=4\; \)mintermini: \( \{ 001, 011, 101, 111 \} \)
 \begin{definition}
-   \textbf{Implicante primo} è un implicante non contenuto in nessun altro
-   implicante
+	\textbf{Implicante primo} è un implicante non contenuto in nessun altro
+	implicante
 \end{definition}
 
 \section{Assorbimento}
@@ -953,11 +1001,11 @@ Prendendo come riferimento la funzione O:
 L'assorbimento può essere fatto soltanto tra gli ON-SET con distanza di
 Hamming = 1.
 \begin{definition}
-   La \textbf{distanza di Hamming} è il numero di bit che differenziano 2 codici. 
-   \begin{center}
-    \( 0110 \to 0101\; \) distanza di Hamming = 2 
-    \( 010 \to 011\; \) distanza di Hamming = 1 
-   \end{center}
+	La \textbf{distanza di Hamming} è il numero di bit che differenziano 2 codici.
+	\begin{center}
+		\( 0110 \to 0101\; \) distanza di Hamming = 2
+		\( 010 \to 011\; \) distanza di Hamming = 1
+	\end{center}
 \end{definition}
 Per effettuare l'assorbimento ci si posiziona nel punto di un mintermine e si
 "guarda" in tutte le direzioni per eventuali altri mintermini con cui fare il
@@ -968,23 +1016,23 @@ Ora si può fare l'assorbimento anche tra i prodotti ottenuti dall'assorbimento:
 Si arriva quindi a dire che \( Z \) è un implicante primo perchè non c'è nessun
 altro implicante che lo contiene.
 \begin{define}
-   Quando si parla di implicante si può anche dire \textbf{sottocubo} e
-   l'implicante primo può essere chiamato anche \textbf{sottocubo di dimensione
-   massima}.
-   \begin{center}
-       Implicante = Sottocubo\\
-       Implicante primo = Sottocubo di dimensione massima
-   \end{center}
+	Quando si parla di implicante si può anche dire \textbf{sottocubo} e
+	l'implicante primo può essere chiamato anche \textbf{sottocubo di dimensione
+		massima}.
+	\begin{center}
+		Implicante = Sottocubo\\
+		Implicante primo = Sottocubo di dimensione massima
+	\end{center}
 \end{define}
 Esistono condizioni favorevoli (come la funzione O) in cui un implicante primo
 contiene tutti i mintermini della funzione.\\
 Ci sono più tipi di implicanti primi:
 \begin{itemize}
-    \item \textbf{Essenziali}: includono almeno un mintermine che non è coperto da nessun
-        altro implicante primo (fanno parte della soluzione finale).
-    \item \textbf{Non essenziali}:  Implicanti primi che coprono mintermini
-        coperti anche da altri implicanti.
-        Si identificano con l'\textbf{algoritmo di copertura}
+	\item \textbf{Essenziali}: includono almeno un mintermine che non è coperto da nessun
+	      altro implicante primo (fanno parte della soluzione finale).
+	\item \textbf{Non essenziali}:  Implicanti primi che coprono mintermini
+	      coperti anche da altri implicanti.
+	      Si identificano con l'\textbf{algoritmo di copertura}
 \end{itemize}
 Karnaugh ha creato una mappa che permette di rappresentare su un piano tutte
 le variabili booleane (nel caso della funzione O si mettono i valori del cubo
