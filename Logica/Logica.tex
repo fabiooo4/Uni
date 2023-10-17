@@ -527,27 +527,217 @@ TODO
 
 \subsection{Formule privilegiate}
 \begin{theorem}
-    \( \phi \in PROP \) sia \( \phi^{AT} = \{ p | p \in AT\; \&\; p \) è in \( \phi\} \) \\
-    Siano \( v_1 \) e \( v_2 \) valutazioni atomiche\\
-    tali che: \( \forall p \in \phi^{AT} \) \( v_1[p]=v_2[p] \) \\
-    allora \( [|\phi|]_{v_1} = [|\phi|]_{v_2} \)
+	\( \phi \in PROP \) sia \( \phi^{AT} = \{ p | p \in AT\; \&\; p \) è in \( \phi\} \) \\
+	Siano \( v_1 \) e \( v_2 \) valutazioni atomiche\\
+	tali che: \( \forall p \in \phi^{AT} \) \( v_1[p]=v_2[p] \) \\
+	allora \( [|\phi|]_{v_1} = [|\phi|]_{v_2} \)
 \end{theorem}
 
 \begin{definition}
 	\( \alpha \in PROP \) è detta \textbf{tautologia} se per ogni valutazione
 	v: \( [|\alpha|]_v = 1 \)\\
-    \(
-    \models \phi
-    \) indica una formula privilegiata (di cui fa parte la tautologia) 
+	\(
+	\models \phi
+	\) indica una formula privilegiata (di cui fa parte la tautologia)
 \end{definition}
 
-\( \forall v [|\alpha|]_v = 1 \) è una formula privilegiata? \( \models \alpha \) 
+\( \forall v [|\alpha|]_v = 1 \) è una formula privilegiata? \( \models \alpha \)
 \begin{itemize}
-    \item Sì \( \Rightarrow \) dimostro \textbf{per ogni \( v \)} che \( [|\alpha|]_v = 1\) (\( \forall  \)\footnote{Per far si che sia vero
-        dobbiamo dimostrare che sia vero per ogni elemento}) 
-    \item No \( \Rightarrow \) esibisco una specifica valutazione
-        tale che \( [|\alpha|]_v= 0 \) (\( \exists  \)\footnote{Per far si che sia falso
-        dobbiamo dismostrare che almeno una valutazione sia falsa (controesempio)})
+	\item Sì \( \Rightarrow \) dimostro \textbf{per ogni \( v \)} che \( [|\alpha|]_v = 1\) (\( \forall  \)\footnote{Per far si che sia vero
+		      dobbiamo dimostrare che sia vero per ogni elemento})
+	\item No \( \Rightarrow \) esibisco una specifica valutazione
+	      tale che \( [|\alpha|]_v= 0 \) (\( \exists  \)\footnote{Per far si che sia falso
+		      dobbiamo dismostrare che almeno una valutazione sia falsa (controesempio)})
 \end{itemize}
 
+\section{Struttura esercizi di semantica}
+\begin{exercise}
+	Vogliamo dimostrare una formula che implica se stessa:
+	\[
+		\models (\alpha \to \alpha)
+	\]
+	\( \forall v\: . \: [|(\alpha \to \alpha)]_v = 1 \)\\
+	\( [|(\alpha \to \alpha)]_v = 1 \stackrel{def}{\Leftrightarrow} [|\alpha|]_v=0\; or\; [|\alpha|]_v=1 \)
+\end{exercise}
+
+\begin{exercise}
+	Vogliamo dimostrare:
+	\[
+		\models ((\alpha \wedge \beta) \to \alpha)
+	\]
+	\( \forall v\;.\; [|((\alpha \wedge \beta)\to \alpha|)]_v=1 \Leftrightarrow\)\\
+	\([|(\alpha \wedge \beta)]_v = 0\; or\; [|\alpha|]_v=1 \Leftrightarrow\)\\
+	\(([|\alpha|]_v=0 \; or\; [|\beta|]_v=0)\;or\; [|\alpha|]_v=1\)
+\end{exercise}
+
+\begin{exercise}
+	Vogliamo dimostrare:
+	\[
+		\models (\alpha \to (\beta \to \alpha))
+	\]
+	\( \forall v\;.\; [|(\alpha \to (\beta \to \alpha))]_v = 1 \Leftrightarrow \)\\
+	\( [|\alpha|]_v=0 \; or \; [|(\beta \to \alpha)|] = 1 \Leftrightarrow \)\\
+	\( [|\alpha|]_v = 0 \; or \; ([|\beta|]_v = 0 \; or \; [|\alpha|]_v = 1) \)\\
+	Ho tutte le possibilità per \( \alpha \) (\( [|\alpha|]_v=0,\; [|\alpha|]_v=1\)),
+	quindi la formula è vera.
+\end{exercise}
+
+\subsection{Prova con il contromodello}
+\begin{figure}[H]
+    \begin{exercise}
+        È vero che la seguente formula è una tautologia? NO
+        Ragiona sullo stesso esercizio, ma se ci fosse \( \vee \)
+        \[
+            \models (\alpha \to (\alpha \wedge \beta))
+        \]
+        Bisogna trovare un'istanza di \( \alpha \) e \( \beta \) e una valutazione \( v \).
+
+        Assumo che \( \alpha \) sia \( p_0 \) e \( \beta \) sia \( p_1 \)
+        \[ \exists v\; t.c.\; [|p_0 \to (p_0 \wedge p_1)]_v=0 \]
+        Per assegnare i valori a \( p_0 \) e \( p_1 \) si può anche usare
+        la tabella di verità della formula intera.
+        \[v[p_0]=1\; v[p_1]=0 \] (\textbf{Contromodello}) 1 non può implicare 0\\
+        Verifichiamo che sia vero che esca il contromodello
+        \[
+            [|(p_0 \to (p_0 \wedge p_1))|]_v=0 \Leftrightarrow
+        \]\[
+        p_0=\delta\; \; \; (p_0 \wedge p_1) = \gamma
+        \] \[
+        (|\delta \to  \gamma) = 0
+        \] \[
+        [|p_0|]_v=1 \;\&\; [|(p_0 \wedge p_1)|]_v=0 \Leftrightarrow
+        \] \[
+        [|p_0|]_v=1 \;\&\; ([|p_0|]_v=0 \; or \; [|p_1|]_v=0)
+        \] 
+        \( [|p_0|]_v=1 \) è vero e anche il pezzo dopo \&, quindi è tutto vero. 
+
+    \end{exercise}
+\end{figure}
+
+\section{Soddisfacibilità della formula}
+Si definisce:
+\begin{itemize}
+    \item \( \alpha \in PROP \) è soddisfacibile se esiste \( v \):  
+        \[
+         [|\alpha|]_v = 1
+        \] 
+        \item \( \alpha \) non è soddisfacibile quando non esiste:
+            \[
+            \not\exists v\; t.c.\; [|\alpha|]_v = 1
+            \]
+\end{itemize}
+\( \Gamma \) insieme formule proposizionali\\
+\( \Gamma \) è soddisfacibile quando:
+\[
+\exists v\; t.c.\; \forall \phi \in \Gamma\; [|\phi|]_v = 1
+\] 
+\section{Conseguenza logica}
+\begin{center}
+    Ipotesi \( \to  \) tesi
+\end{center}
+\( \Gamma, E, \Delta \) Insiemi arbitrari di formule \( \alpha, \beta, \gamma \)  
+\[
+    \stackrel{ipotesi}{\Gamma} \models \stackrel{tesi}{\alpha}
+\] 
+Si può leggere in più modi:
+\begin{itemize}
+    \item Da \( \Gamma \) segue semanticamente \( \alpha \) 
+        \item \( \alpha \) è conseguenza logica/semantica di \( \Gamma \)
+\end{itemize}
+\begin{definition}
+    La verità dell'ipotesi fa conseguire la verità della tesi.
+    \begin{center}
+        \( \Gamma \models \alpha \) sse \( \forall v \) se \( \forall \phi \in \Gamma \) allora \( [|\phi|]_v = 1 \) allora \( [|\alpha|]_v = 1 \)
+    \end{center}
+    Le denotazione dell'insieme vuol dire che tutte le formule dell'insieme
+    sono vere.
+    \[
+        [|\Gamma|]_v=1 \Leftrightarrow \forall \alpha \in \Gamma\; [|\alpha|]_v = 1 \Rightarrow [|\alpha|]_v = 1
+    \] 
+    \[
+        \Gamma \models \alpha \Leftrightarrow \forall v\; [|\Gamma|]_v=1 allora [|\alpha|]_v=1
+    \] 
+    La seguente formula vuol dire che esiste almeno una formula falsa nell'
+    insieme \( \Gamma \) 
+    \[
+        [|\Gamma|]_v \neq 1
+    \] 
+    Che è diverso dal dire:
+    \[
+        [|\Gamma|]_v = 0
+    \] 
+    Che significa che tutte le formule di \( \Gamma \) valgono 0.
+\end{definition}
+
+\begin{exercise}[easy]
+Vogliamo provare:
+\[
+    (\alpha \wedge \beta) \models \alpha
+\] 
+Applico la definizione e prendo una valutazione generica
+\[
+    [|(\alpha \wedge \beta)|]_v =1 \Rightarrow [|\alpha|]_v=1
+\] 
+Usiamo le definizioni semantiche dei connettivi per valutare la prima parte dell'espressione
+\[
+    [|(\alpha \wedge \beta)|]_v=1 \Leftrightarrow [|\alpha|]_v=1\; \&\; [|\beta|]_v=1
+    \Rightarrow [|\alpha|]_v=1
+\] 
+\end{exercise}
+
+\begin{exercise}
+    Definiamo un insieme separando con la virgola le formule che lo compongono\footnote{
+        Equivale a dire: \( \Gamma=\{ \beta_1, \beta_2, \ldots \}\; \) la virgola vuol dire
+        \(\; \Gamma \cup \Delta \models \alpha\; \) o \(\; \alpha \wedge \beta \)  
+    }
+   \[
+       (\alpha \to \beta),\; \alpha \models \beta
+   \]  
+   \[
+       \forall v.\; [|(\alpha \to \beta),\; \alpha|]_v=1 \Rightarrow [|\beta|]_v=1
+   \] 
+   \[
+   [|(\alpha \to \beta), \alpha|]_v=1 \Leftrightarrow\] 
+   \[[|\alpha \to \beta|]_v=1\; \&\; [|\alpha|]_v=1 \Leftrightarrow
+   \] 
+   \[
+       ([|\alpha|]_v=0\; or\; [|\beta|]_v=1)\; \&\; [|\alpha|]_v=1 \Rightarrow 
+   \] 
+   \[
+       [|\beta|]_v=1
+   \] 
+\end{exercise}
+
+\begin{exercise}[a casa]
+    \[
+    \Gamma,\alpha \models \beta \Rightarrow \Gamma \models \alpha \to \beta
+    \] 
+\end{exercise}
+\begin{exercise}[a casa]
+   \[
+   \phi \models \psi \vee \phi
+   \]  
+\end{exercise}
+\begin{exercise}[a casa]
+    Risolvi con tavole di verità:
+    \[
+    \models(p \to (q \to r)) \to ((p \to q) \to (p \to r))
+    \] 
+\end{exercise}
+
+\begin{exercise}
+    \[
+    \Gamma, \alpha, \beta \models \alpha \wedge \beta
+    \] 
+    Prendiamo una \( v \) generica
+    \[
+        \forall v. ([|\Gamma, \alpha, \beta|]_v=1 \Rightarrow [|\alpha \wedge \beta|]_v=1)
+    \] 
+    \[
+        ([|\Gamma|]_v=1\; \&\; [|\alpha|]_v=1\; \&\; [|\beta|]_v=1) \Rightarrow
+    \] 
+    \[
+        ([|\Gamma|]_v=1\; \&\; [|(\alpha \wedge \beta)|]_v=1) \Rightarrow [|\alpha \wedge \beta|]_v=1
+    \] 
+\end{exercise}
 \end{document}
