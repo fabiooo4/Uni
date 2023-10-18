@@ -8,9 +8,20 @@
 \usepackage{amsfonts}
 \usepackage{mdframed}
 \usepackage{ntheorem}
+\usepackage{float}
 \usepackage{xcolor}
 \usepackage{graphicx}
 \graphicspath{{./figures/}}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows}
+
+% Flow chart styles
+\tikzstyle{startstop} = [ellipse, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black]
+\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black]
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black]
+\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black]
+\tikzstyle{arrow} = [thick,->,>=stealth]
 
 % Code blocks
 \usepackage{listings}
@@ -147,7 +158,7 @@ di flusso che rappresenta un algoritmo:
 	\item \textbf{Sottoprogramma}: rappresenta un sottoprogramma.
 \end{itemize}
 
-\begin{figure}[ht]
+\begin{figure}[H]
 	\centering
 	\incfig[0.3]{simbolidiagramma}
 	\caption{Simboli del diagramma di flusso}
@@ -155,7 +166,7 @@ di flusso che rappresenta un algoritmo:
 \end{figure}
 
 Dato un numero dare in output il doppio.
-\begin{figure}[ht]
+\begin{figure}[H]
 	\centering
 	\incfig[0.3]{numeroDoppio}
 	\caption{Diagramma di flusso per il doppio}
@@ -163,11 +174,88 @@ Dato un numero dare in output il doppio.
 \end{figure}
 
 Dati 2 numeri dire il maggiore.
-\begin{figure}[ht]
+\begin{figure}[H]
 	\centering
-	\incfig[0.3]{maggiore3numeri}
+	\incfig[1]{maggiore3numeri}
 	\caption{Diagramma di flusso per il doppio}
 	\label{fig:maggiore3numeri}
 \end{figure}
+\subsubsection{Stampa tutti i numeri naturali fino a n}
+\( \forall i \in [o,n] \) stampo a video i:
+\begin{figure}
+	\includegraphics{numeriNaturali}
+\end{figure}
+Questo è un ciclo a condizione iniziale, cioè appena la condizione diventa falsa
+si esce dal ciclo.
 
+\subsubsection{Trovare il più grande tra n numeri}
+\begin{center}
+	\scalebox{0.8}{
+		\begin{tikzpicture}[node distance=2cm]
+			\node (start) [startstop] {Inizio};
+			\node (out1) [io, below of=start] {Quanti voti?};
+			\node (in1) [io, below of=out1] {n};
+			\node (proc1) [process, below of=in1] {i = 1};
+			\node (in2) [io, below of=proc1] {voto};
+			\node (proc2) [process, below of=in2] {max = voto};
+			\node (dec1) [decision, below of=proc2, yshift=-0.5cm] {i $<$ n};
+			\node (out2) [io, right of=in2, xshift=3cm] {max};
+			\node (stop) [startstop, below of=out2] {Fine};
+			\node (proc3) [process, below of=dec1, yshift=-0.5cm] {i = i + 1};
+			\node (in3) [io, below of=proc3] {voto};
+			\node (dec2) [decision, below of=in3, yshift=-0.5cm] {voto $>$ max};
+			\node (proc4) [process, right of=dec2, xshift=2cm] {max = voto};
+
+			\draw [arrow] (start) -- (out1);
+			\draw [arrow] (out1) -- (in1);
+			\draw [arrow] (in1) -- (proc1);
+			\draw [arrow] (proc1) -- (in2);
+			\draw [arrow] (in2) -- (proc2);
+			\draw [arrow] (proc2) -- (dec1);
+			\draw [arrow] (dec1) -- node[anchor=east] {Vero} (proc3);
+			\draw [arrow] (proc3) -- (in3);
+			\draw [arrow] (in3) -- (dec2);
+			\draw [arrow] (dec2) -- node[anchor=south] {Vero} (proc4);
+			\draw [arrow] (dec2) -- node[anchor=south] {Falso} ++(-3,0) |- (dec1);
+			\draw [arrow] (proc4) |- (dec1);
+			\draw [arrow] (dec1) -- node[anchor=west] {Falso} (out2);
+			\draw [arrow] (out2) -- (stop);
+		\end{tikzpicture}
+	}
+\end{center}
+
+\subsection{Ciclo guidato da sentinella}
+È un ciclo che termina quando viene inserito un valore particolare.
+\subsubsection{Trova il voto più alto tra un insieme di voti di cardinalità a priori
+	non specificata (terminare quando viene inserito -1)}
+\begin{center}
+	\scalebox{0.8}{
+		\begin{tikzpicture}[node distance=2cm]
+			\node (inizio) [startstop] {Inizio};
+			\node (voto1) [io, below of=inizio] {voto};
+			\node (sentinella) [decision, below of=voto1] {voto è -1?};
+			\node (fine1) [startstop, right of=sentinella, xshift=2cm] {Fine};
+			\node (maxvoto) [process, below of=sentinella, yshift=-0.5cm] {max = voto};
+			\node (votonon1) [decision, below of=maxvoto, yshift=-0.5cm] {voto \( \neq \)  -1?};
+			\node (voto2) [io, below of=votonon1, yshift=-0.5cm] {voto};
+			\node (votomaggioremax) [decision, below of=voto2, yshift=-0.5cm] {voto \( > \) max?};
+			\node (maxvoto2) [process, below of=votomaggioremax, yshift=-0.5cm] {max = voto};
+			\node (max) [io, right of=maxvoto, xshift=3cm] {max};
+			\node (fine2) [startstop, below of=max] {Fine};
+
+			\draw [arrow] (inizio) -- (voto1);
+			\draw [arrow] (voto1) -- (sentinella);
+			\draw [arrow] (sentinella) -- node[anchor=south] {Vero} (fine1);
+			\draw [arrow] (sentinella) -- node[anchor=east] {Falso} (maxvoto);
+			\draw [arrow] (maxvoto) -- (votonon1);
+			\draw [arrow] (votonon1) -- node[anchor=east] {Vero} (voto2);
+			\draw [arrow] (votonon1) -- node[anchor=south] {Falso} (max);
+			\draw [arrow] (voto2) -- (votomaggioremax);
+			\draw [arrow] (votomaggioremax) -- node[anchor=east] {Vero} (maxvoto2);
+			\draw [arrow] (votomaggioremax) -- node[anchor=south] {Falso} ++(-3,0) |- (votonon1);
+			\draw [arrow] (max) -- (fine2);
+			\draw [arrow] (votomaggioremax) -- ++(3,0) |- (votonon1);
+		\end{tikzpicture}
+	}
+\end{center}
 \end{document}
