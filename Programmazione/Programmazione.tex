@@ -9,16 +9,45 @@
 \usepackage{mdframed}
 \usepackage{ntheorem}
 \usepackage{float}
+\usepackage{listings}
 \usepackage{xcolor}
 \usepackage{graphicx}
 \graphicspath{{./figures/}}
 
 \usepackage{tikz}
-\usetikzlibrary{shapes.geometric, arrows}
+\usetikzlibrary{shapes.geometric, shapes.misc, arrows}
+
+% Code blocks
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.95}
+
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\ttfamily\footnotesize,
+	breakatwhitespace=false,
+	breaklines=true,
+	captionpos=b,
+	keepspaces=true,
+	numbers=left,
+	numbersep=5pt,
+	showspaces=false,
+	showstringspaces=false,
+	showtabs=false,
+	tabsize=2
+}
+
+\lstset{style=mystyle}
 
 % Flow chart styles
 \tikzstyle{startstop} = [ellipse, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black]
-\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black]
+\tikzstyle{input} = [chamfered rectangle, chamfered rectangle corners=north west, chamfered rectangle xsep=2cm, minimum width=3cm, minimum height=1cm, text centered, draw=black]
+\tikzstyle{output} = [chamfered rectangle, chamfered rectangle corners=south east, chamfered rectangle xsep=2cm, minimum width=3cm, minimum height=1cm, text centered, draw=black]
 \tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black]
 \tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black]
 \tikzstyle{arrow} = [thick,->,>=stealth]
@@ -165,6 +194,7 @@ di flusso che rappresenta un algoritmo:
 	\label{fig:simbolidiagramma}
 \end{figure}
 
+\section{Esercizi con diagrammi di flusso}
 Dato un numero dare in output il doppio.
 \begin{figure}[H]
 	\centering
@@ -193,16 +223,16 @@ si esce dal ciclo.
 	\scalebox{0.8}{
 		\begin{tikzpicture}[node distance=2cm]
 			\node (start) [startstop] {Inizio};
-			\node (out1) [io, below of=start] {Quanti voti?};
-			\node (in1) [io, below of=out1] {n};
+			\node (out1) [output, below of=start] {Quanti voti?};
+			\node (in1) [input, below of=out1] {n};
 			\node (proc1) [process, below of=in1] {i = 1};
-			\node (in2) [io, below of=proc1] {voto};
+			\node (in2) [input, below of=proc1] {voto};
 			\node (proc2) [process, below of=in2] {max = voto};
 			\node (dec1) [decision, below of=proc2, yshift=-0.5cm] {i $<$ n};
-			\node (out2) [io, right of=in2, xshift=3cm] {max};
+			\node (out2) [output, right of=in2, xshift=3cm] {max};
 			\node (stop) [startstop, below of=out2] {Fine};
 			\node (proc3) [process, below of=dec1, yshift=-0.5cm] {i = i + 1};
-			\node (in3) [io, below of=proc3] {voto};
+			\node (in3) [input, below of=proc3] {voto};
 			\node (dec2) [decision, below of=in3, yshift=-0.5cm] {voto $>$ max};
 			\node (proc4) [process, right of=dec2, xshift=2cm] {max = voto};
 
@@ -232,15 +262,15 @@ si esce dal ciclo.
 	\scalebox{0.8}{
 		\begin{tikzpicture}[node distance=2cm]
 			\node (inizio) [startstop] {Inizio};
-			\node (voto1) [io, below of=inizio] {voto};
+			\node (voto1) [input, below of=inizio] {voto};
 			\node (sentinella) [decision, below of=voto1] {voto è -1?};
 			\node (fine1) [startstop, right of=sentinella, xshift=2cm] {Fine};
 			\node (maxvoto) [process, below of=sentinella, yshift=-0.5cm] {max = voto};
 			\node (votonon1) [decision, below of=maxvoto, yshift=-0.5cm] {voto \( \neq \)  -1?};
-			\node (voto2) [io, below of=votonon1, yshift=-0.5cm] {voto};
+			\node (voto2) [input, below of=votonon1, yshift=-0.5cm] {voto};
 			\node (votomaggioremax) [decision, below of=voto2, yshift=-0.5cm] {voto \( > \) max?};
 			\node (maxvoto2) [process, below of=votomaggioremax, yshift=-0.5cm] {max = voto};
-			\node (max) [io, right of=maxvoto, xshift=3cm] {max};
+			\node (max) [output, right of=maxvoto, xshift=3cm] {max};
 			\node (fine2) [startstop, below of=max] {Fine};
 
 			\draw [arrow] (inizio) -- (voto1);
@@ -258,4 +288,142 @@ si esce dal ciclo.
 		\end{tikzpicture}
 	}
 \end{center}
+
+\section{Linguaggio di programmazione C}
+È un linguaggio di programmazione:
+\begin{itemize}
+	\item \textbf{General purpose}: può essere utilizzato per risolvere
+	      qualsiasi problema.
+	\item \textbf{Dichiarativo}: si dichiarano le variabili e si
+	      specifica cosa fare con esse.
+	\item \textbf{Imperativo}: si specifica come risolvere il problema.
+	\item \textbf{Case sensitive}: distingue tra maiuscole e minuscole.
+	\item \textbf{Compilato}: il codice sorgente viene tradotto in codice macchina.
+\end{itemize}
+
+\subsection{Catena di programmazione}
+\begin{enumerate}
+	\item \textbf{Editing}: si scrive il programma con un editor
+	\item \textbf{Pre-processing}(Pre-processore): inclusione di librerie.
+	\item \textbf{Compilazione}(Compilatore): traduzione il programma C in
+	      codice oggetto comprensibile dal calcolatore. Vengono segnalati
+	      errori (statici) e se non ci sono errori viene generato un file eseguibile.
+	\item \textbf{Linking}: collegamento il codice oggetto di programma con
+	      le librerie.
+	\item \textbf{Loading}: il programma va caricato nella RAM prima dell'esecuzione
+	\item \textbf{Esecuzione}: il programma viene eseguito.
+\end{enumerate}
+Un esempio di codice in C è il seguente:
+\begin{lstlisting}[language=C]
+#include <stdio.h>
+
+int main() {
+		printf("Hello World!");
+		return 0;
+	}
+\end{lstlisting}
+
+\subsection{Dichiarazione di variabili}
+Le variabili sono di 2 tipi:
+\begin{itemize}
+	\item \textbf{Built-in}: sono già presenti nel linguaggio.
+	\item \textbf{User-defined}: definite dall'utente.
+\end{itemize}
+
+\paragraph{Tipo:} L'insieme dei valori ammissibili più le operazioni ammesse sull'insieme
+\begin{itemize}
+	\item Intero:
+	      \begin{itemize}
+		      \item \texttt{int} 16bit in complemento a 2
+		      \item \texttt{long} 32bit in complemento a 2
+	      \end{itemize}
+	\item Reale:
+	      \begin{itemize}
+		      \item \texttt{float} 32bit in virgola mobile
+		      \item \texttt{double} 64bit in virgola mobile
+	      \end{itemize}
+	\item Carattere: \texttt{char} 8bit ASCII
+\end{itemize}
+Il codice è diviso in:
+\begin{itemize}
+	\item \textbf{Parte dichiarativa}: dichiarazione delle variabili
+	\item \textbf{Parte esecutiva}: istruzioni che vengono eseguite
+\end{itemize}
+Il seguente codice è un esempio che mostra la separazione delle 2 parti:
+\begin{lstlisting}[language=C]
+   #include <stdio.h> 
+
+   int main() {
+       //Parte dichiarativa
+       int lato;
+       int perimetro, area;
+       char t;
+       float media;
+
+       //Parte esecutiva
+       lato = 4;
+       perimetro = lato * 4;
+
+       return 0;
+   }
+\end{lstlisting}
+\subsubsection{Operatori}
+In C le operazioni disponibili sono:
+\begin{itemize}
+	\item \textbf{+} somma
+	\item \textbf{-} sottrazione
+	\item \textbf{*} moltiplicazione
+	\item \textbf{/} divisione
+	\item \textbf{\%} resto della divisione intera
+\end{itemize}
+Un esempio di codice che usa gli operatori è il seguente:
+\begin{lstlisting}[language=C]
+    #include <stdio.h>
+
+    int main() {
+        int a, b;
+        float media;
+        float bonus;
+
+        a = 25;
+        b = 26;
+        media = (a + b) / 2; // 25.0
+        return 0;
+    }
+\end{lstlisting}
+Con \( a \) e \( b \) interi la divisione è fatta per intero, quindi il risultato è 25
+che poi viene assegnato alla variabile float \emph{media}, quindi il risultato è 25.0.
+Per avere il risultato corretto bisogna dichiarare a e b come float. Un'altra opzione
+sarebbe di rendere float il 2 del divisore, in questo modo il risultato sarebbe:
+\( (a+b)=2.0=25.5 \)
+
+\begin{define}
+	\begin{lstlisting}[language=C]
+t = 'a'; // Assegnato il carattere a alla variabile t
+t = a; // Assegnato il valore della variabile a alla variabile t
+	\end{lstlisting}
+\end{define}
+
+\subsection{Output (Stampa a video standard)}
+Per stampare a video si utilizza la funzione \texttt{printf()}:
+\begin{lstlisting}[language=C]
+    printf("Hello World!\n"); // \n va a capo
+    printf("Hello \t world"); // \t tabulazione (4 spazi)
+\end{lstlisting}
+Per stampare il valore delle variabili:
+\begin{lstlisting}[language=C]
+    printf("Il valore di a e' %d\n", a); // %d indica un intero
+    printf("Il valore di a e' %d e di b e' %d\n", a, b);
+
+    // %c indica un carattere
+    // %f indica un float
+    // %g indica un double
+\end{lstlisting}
+
+\subsection{Input da tastiera}
+Per leggere da tastiera si utilizza la funzione \texttt{scanf()}:
+\begin{lstlisting}[language=C]
+    scanf("%d", &a); // &a indica l'indirizzo di memoria di a
+    scanf("%d %d", &a, &b);
+\end{lstlisting}
 \end{document}
