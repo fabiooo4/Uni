@@ -7,8 +7,9 @@
 \usepackage{amsmath, amssymb}
 \usepackage{amsfonts}
 \usepackage{mdframed}
-\usepackage{ntheorem}
 \usepackage{xcolor}
+\usepackage{float}
+\usepackage{tikz}
 \usepackage{graphicx}
 \graphicspath{{./figures/}}
 
@@ -16,6 +17,9 @@
 \usepackage{pdfpages}
 \usepackage{transparent}
 \usepackage{xcolor}
+
+\usepackage{ntheorem}
+\newtheorem{theorem}{Teorema}
 
 % Useful definitions frame
 \theoremstyle{break}
@@ -73,20 +77,190 @@
 
 \tableofcontents
 \pagebreak
-\section{Tangente}
-\( x^{2} + y^{2} = 1 \)\\
-\( f(x) = \sqrt{1-x^{2}}  \)\\
-\( t \in (-1, 1) \)\\
-\( y - \sqrt{1-t^{2}} = n(x-t)  \)
-\begin{equation}
-	\begin{cases}
-		ax + by + c = 0 \\
-		(x_{0}, y_{0})
-	\end{cases}
-\end{equation}
 
-Distanza \( \frac{|ax_{0} + by_{0} + 0|}{\sqrt{a^2 + b^2} } \)
+\section{Introduzione}
+\subsection{Maggiorante}
 
-\( \frac{|-mt + \sqrt{1-t^2}| }{\sqrt{m^{2} + 1} } = 1 \)
+\subsection{Minorante}
 
+\subsection{Estremo superiore}
+
+\subsection{Estremo inferiore}
+
+\section{Limiti}
+I limiti sono il calcolo infinitesimale, ovvero il
+calcolo che si occupa di studiare il comportamento di una funzione in un intorno
+di un punto.
+
+Nelle definizioni che seguono, è data una funzione \( f:A \to \mathbb{R} \) il cui
+dominio \( A \subseteq \mathbb{R} \) è un insieme \textbf{non} limitato superiormente.
+(Questa ipotesi serve per definire i limiti per \( x \to +\infty \) )
+
+\begin{definition}
+	Sia \( L \in \mathbb{R} \). Si dice che
+	\[ \lim_{x \to +\infty} f(x) = L  \]
+	Se e solo se
+	\[
+		\forall \epsilon > 0 \exists k>0 \;t.c.\; \forall x \subset A\footnote{Il dominio della funzione},
+	\]
+	\[
+		x \ge k \to L-\epsilon \le f(x) \le L+\epsilon
+	\]
+	(Notazione alternativa: \( f(x) \to L \) per \( x \to +\infty \) )\\
+	\textbf{La condizione deve essere soddisfatta per ogni \( \epsilon \) }.
+	\label{D1}
+\end{definition}
+\begin{example}
+	\[
+		\lim_{x \to +\infty} \frac{1}{x} = 0
+	\]
+	\label{D2}
+	Sia dato \( \epsilon > 0 \) arbitrario. Definisco \( k := \frac{1}{\epsilon} \).\\
+	sia dato \( x > 0 \) arbitrario, supponiamo \( x \ge k \).  Allora
+	\[
+		0-\epsilon \le 0 \le \frac{1}{x} \le \frac{1}{k} = \frac{1}{\frac{1}{\epsilon}} = \epsilon
+	\]
+	Quindi, ho dimostrato che la definizione di limite è soddisfatta (con \( L=0 \)).
+\end{example}
+\begin{figure}[H]
+	\begin{definition}
+		Si dice che
+		\[
+			\lim_{x \to +\infty} f(x) = +\infty
+		\]
+		Se e solo se
+		\[
+			\forall M > 0\;\; \exists k>0\; \;t.c.\;\; \forall x \in A,
+		\]
+		\[
+			x \ge k \to f(x) \ge M
+		\]
+		(Notazione alternativa: \( f(x) \to +\infty \) per \( x \to +\infty \))
+		\label{D3}
+	\end{definition}
+\end{figure}
+\begin{figure}[H]
+	\begin{definition}
+		Si dice che
+		\[
+			\lim_{x \to +\infty} f(x) = -\infty
+		\]
+		Se e solo se
+		\[
+			\forall M > 0\;\; \exists k>0\; \;t.c.\;\; \forall x \in A,
+		\]
+		\[
+			x \ge k \to f(x) \le -M
+		\]
+		(Notazione alternativa: \( f(x) \to -\infty \) per \( x \to +\infty \))
+		\label{D4}
+	\end{definition}
+\end{figure}
+Quindi, ho dimostrato che la definizione di limmite è soddisfatta (con \( L = 0 \)).
+\[
+	\lim_{x \to +\infty} x = +\infty
+\]
+\label{D5}
+Sia dato \( M>0 \) arbitrario. Definisco \( k := M \).\\
+Sia dato \( x \ge k \). Allora \( x \ge M \).\\
+Quindi è verificata la definizione di limite.
+\subsection{Osservazioni}
+\textbf{Non} è detto che un limite esista.
+\begin{example}
+	\[
+		\lim_{x \to +\infty} sin(x)
+	\]
+	\[
+		\lim_{x \to +\infty} cos(x)
+	\]
+	\label{D6}
+	La funzione non entra in un intevallo limitato senza poi uscirne, quindi non esiste il limite.
+\end{example}
+Tuttavia, se una funzione ammette limite, allora esso è unico. La funzione dovrebbe
+entrare in entrambe le strisce e non uscirne più, ma questo non è possibile.
+\label{D7}
+\subsection{Risultati utili per il calcolo dei limiti}
+\begin{theorem}[Algebra dei limiti]
+	Sia \( A \subseteq \mathbb{R} \) un insieme non limitato superiormente, \( f \) e \( g \)
+	due funzioni. \( A \to \mathbb{R} \). Supponiamo che i limiti
+	\[
+		F:= \lim_{x \to +\infty} f(x)
+	\]
+	\[
+		G:= \lim_{x \to +\infty} g(x)
+	\]
+	esistano e siano \textbf{finiti}. Allora
+	\[
+		\lim_{x \to +\infty} (f(x) + g(x)) = F+G
+	\]
+	\[
+		\lim_{x \to +\infty} (f(x) \cdot g(x)) = F \cdot G
+	\]
+	TODO
+
+	\textbf{parzialmente} al caso \( F \) o \( G \) siano infiniti, secondo
+	le regole seguenti:
+	\begin{itemize}
+		\item \(
+		      F + \infty = +\infty,\;\; F - \infty = -\infty\;\; \forall F \in \mathbb{R}
+		      \)
+		\item \(
+		      +\infty + \infty = +\infty,\;\; +\infty - \infty = -\infty
+		      \)
+		\item \(
+		      F \cdot \infty = \infty, \;\; \forall F \in \mathbb{R},\; F \neq 0
+		      \)
+		\item \(
+		      \infty \cdot \infty = \infty
+		      \)
+		\item \(
+		      \frac{F}{\infty} = 0 \;\; \forall F \in \mathbb{R}
+		      \)
+		\item \(
+		      \frac{F}{0} = \infty \;\; \forall F \in \mathbb{R},\; F \neq 0
+		      \)
+		\item \(
+		      \frac{0}{\infty} = 0
+		      \)
+		\item \(
+		      \frac{\infty}{0} = \infty
+		      \)
+	\end{itemize}
+	Il segno di \( \infty \) è da determinare secondo la regola usuale.
+\end{theorem}
+
+\subsection{Forme indeterminate}
+Sono dei casi in cui il teorema \textbf{non} si applica e tutto può succdere:
+\begin{itemize}
+	\item \( +\infty - \infty \)
+	\item \( 0 \cdot \infty \)
+	\item \( \frac{0}{0} \)
+	\item \( \frac{\infty}{\infty} \)
+	\item \( 1^{\infty} \)
+	\item \( 0^{0} \)
+	\item \( \infty^{0} \)
+\end{itemize}
+\paragraph{\textbf{N.B.:}} in questo contesto, \( 0 \) , \( \infty \) TODO
+
+\subsection{Esempi}
+\begin{example}
+	\[ \lim_{x \to +\infty} (x^2+\frac{1}{x})  \]
+	\[
+		\underbrace{x^2}_\text{\( +\infty \)} + \underbrace{\frac{1}{x}}_\text{\( 0 \)} \to +\infty
+	\]
+	Per \( x \to +\infty \) (per il teorema dell'algebra dei limiti)
+\end{example}
+\begin{example}
+	\[
+		\lim_{x \to +\infty} x^2-x^3 = +\infty - \infty
+	\]
+	\[
+		\underbrace{x^3}_\text{\( +\infty \)}(\underbrace{\frac{1}{x}}_\text{\( 0 \)} - 1) \to -\infty
+	\]
+	Per \( x \to +\infty \)
+\end{example}
+\begin{example}
+	TODO
+\end{example}
+\subsubsection{Esempi di limiti irrazionali}
 \end{document}
