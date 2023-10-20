@@ -729,7 +729,7 @@ Bool garantisce che si può creare qualsiasi funzione utilizzando soltanto i
 		Dato un ON-SET c'è sempre una sola espressione in somma di prodotti che lo
 		rappresenti.
 	\end{theorem}
-    \label{ex:modelloAB}
+	\label{ex:modelloAB}
 \end{example}
 
 \subsection{Tabelle di verità}
@@ -911,7 +911,7 @@ porta logica:
 			(nmos.G) -- ++(0,0) to[short] (-0.99,-1.6) node[left] {};
 			\node (0V) at (0.6,-3.5) {\( 0V \) };
 		\end{scope}
-       \draw (-2.5,-4.2) -- ++(0,-0.3) -- ++(5,0) node[below, xshift=-2.5cm] {Prodotto negato} -- ++(0,0.3);
+		\draw (-2.5,-4.2) -- ++(0,-0.3) -- ++(5,0) node[below, xshift=-2.5cm] {Prodotto negato} -- ++(0,0.3);
 		\draw (2.6,-4.2) -- ++(0,-0.3) -- ++(3.7,0) node[below, xshift=-1.85cm] {Porta logica NOT} -- ++(0,0.3);
 	\end{circuitikz}
 \end{center}
@@ -970,18 +970,18 @@ Il seguente circuito è un esempio di espressione in somma di prodotti dell'esem
 		to[short, o-]
 		(2,-1)
 		node[not port, anchor=in, scale=0.5,label=below:\( \bar{B} \) ] (not2) {}
-        (4,-0.5) node[and port, label={above, yshift=3mm}:{\( m_{0} = \bar{A} \cdot \bar{B} \)}, scale=0.5,] (and1) {}
-        (not1.out) to[short] ++(0.25,0) |- (and1.in 1) 
-        (not2.out) to[short] ++(0.25,0) |- (and1.in 2)
-        (2,-2.5) node[and port, anchor=in 1, label={below, yshift=-3mm}:{\( m_{3} = A \cdot B \)}, scale=0.5,] (and2) {}
-        (and2.in 1) to[short] ++(-0.5,0)
-        to[short, -*] (1.5,0)
-        (and2.in 2) to[short] ++(-1,0)
-        to[short, -*] (1,52 |- not2.in)
-        (and1.out) to[short] ++(1.7,0)
-        node[or port, anchor=in 1, label={above, yshift=3mm}:{\( O = m_{0} + m_{3} \)}, scale=0.5,] (or1) {}
-        (or1.in 2) to[short] ++(-0.5,0) |- (and2.out)
-        (or1.out) to[short, -o] ++(0.5,0) node[label=right:\( O \)] {}
+		(4,-0.5) node[and port, label={above, yshift=3mm}:{\( m_{0} = \bar{A} \cdot \bar{B} \)}, scale=0.5,] (and1) {}
+		(not1.out) to[short] ++(0.25,0) |- (and1.in 1)
+		(not2.out) to[short] ++(0.25,0) |- (and1.in 2)
+		(2,-2.5) node[and port, anchor=in 1, label={below, yshift=-3mm}:{\( m_{3} = A \cdot B \)}, scale=0.5,] (and2) {}
+		(and2.in 1) to[short] ++(-0.5,0)
+		to[short, -*] (1.5,0)
+		(and2.in 2) to[short] ++(-1,0)
+		to[short, -*] (1,52 |- not2.in)
+		(and1.out) to[short] ++(1.7,0)
+		node[or port, anchor=in 1, label={above, yshift=3mm}:{\( O = m_{0} + m_{3} \)}, scale=0.5,] (or1) {}
+		(or1.in 2) to[short] ++(-0.5,0) |- (and2.out)
+		(or1.out) to[short, -o] ++(0.5,0) node[label=right:\( O \)] {}
 		;
 	\end{circuitikz}
 \end{center}
@@ -1034,12 +1034,31 @@ questo prodotto, ma con il letterale negato \( \bar{a} \) allora il risultato
 \]
 Quindi se prendiamo come riferimento la funzione \( O \) si può applicare la
 regola dell'assorbimento per ridurre il numero di letterali:
-\[ \bar{x}Z \cdot (\bar{Y}+Y) + XZ(\bar{Y}+Y) \]
+\begin{center}
+	\begin{tikzpicture}
+		\node (1) at (0,0) {\( \bar{X}\bar{Y}Z+\bar{X}YZ+X\bar{Y}Z+XYZ \)};
+		\node (2) at (0,-1) {\( \bar{X}Z(\bar{Y}+Y)+XZ(\bar{Y}+Y) \)};
+
+		\draw[->, draw] (-1.9, -0.2) to (-1.3, -0.7);
+		\draw[->, draw] (-0.7, -0.2) to (-0.55,-0.7);
+		\draw[->, draw] (0.65, -0.2) to (1, -0.7);
+		\draw[->, draw] (1.9, -0.2) to (1.8, -0.7);
+
+	\end{tikzpicture}
+\end{center}
 E riapplicando la regola si arriva al minimo:
+\begin{center}
+	\begin{tikzpicture}
+		\node (3) at (0,-2) {\( \bar{X}Z+XZ \)};
+		\node (4) at (0,-3) {\( Z(\bar{X}+X) \)};
+
+		\draw[->, draw] (-0.7, -2.2) to (-0.3,-2.7);
+		\draw[->, draw] (0.4, -2.2) to (0.5, -2.7);
+	\end{tikzpicture}
+\end{center}
 \[
 	Z
 \]
-\label{D7}
 \subsection{Terminologia}
 Ogni mintermine è un prodotto (o implicante), ma dopo aver applicato la regola
 di assorbimento non è più un mintermine, ma soltanto prodotto (o implicante).
@@ -1063,37 +1082,84 @@ Quindi ad esempio:\\
 \end{definition}
 
 \section{Assorbimento}
-Prendendo come riferimento la funzione O:
-\label{D8}
+\begin{figure}[H]
+	\begin{definition}
+		La \textbf{distanza di Hamming} è il numero di bit che differenziano 2 codici.
+		\begin{center}
+			\( 01 \textbf{10} \to 01 \textbf{01}\; \) distanza di Hamming = 2\\
+			\( 01 \textbf{0} \to 01 \textbf{1}\; \) distanza di Hamming = 1
+		\end{center}
+	\end{definition}
+\end{figure}
+Prendendo come riferimento la funzione \( f(B^3)^1 \to B \) definita precedentemente
+si può guardare la funzione come se fosse sul piano cartesiano con centro in
+un punto qualsiasi. Ogni punto adiacente al centro è un punto con distanza di
+Hamming = 1.
+\begin{center}
+	\begin{tikzpicture}[x=0.5cm,y=0.5cm,z=0.3cm,>=stealth]
+		\draw[->] (xyz cs:x=0) -- (xyz cs:x=6) node[above] {$x$};
+		\draw[->] (xyz cs:y=0) -- (xyz cs:y=6) node[right] {$z$};
+		\draw[->] (xyz cs:z=0) -- (xyz cs:z=6) node[above] {$y$};
+
+		\node[below] (000) at (0,0,0) {\( 000 \)};
+		\node[right] (001) at (0,0,6) {\( 001 \)};
+		\node[left] (010) at (0,6,0) {\( 010 \)};
+		\node[below] (011) at (6,0,0) {\( 011 \)};
+	\end{tikzpicture}
+\end{center}
 L'assorbimento può essere fatto soltanto tra gli ON-SET con distanza di
 Hamming = 1.
-\begin{figure}[H]
-    \begin{definition}
-        La \textbf{distanza di Hamming} è il numero di bit che differenziano 2 codici.
-        \begin{center}
-            \( 0110 \to 0101\; \) distanza di Hamming = 2
-            \( 010 \to 011\; \) distanza di Hamming = 1
-        \end{center}
-    \end{definition}
-\end{figure}
 Per effettuare l'assorbimento ci si posiziona nel punto di un mintermine e si
 "guarda" in tutte le direzioni per eventuali altri mintermini con cui fare il
 prodotto.
-\label{D9}
+
+Nella seguente figura i vertici rossi rappresentano gli OFF-SET e i vertici
+blu rappresentano gli ON-SET.
+\begin{figure}[H]
+	\begin{center}
+		\begin{tikzpicture}[x=0.5cm,y=0.5cm,z=0.3cm,>=stealth,scale=0.8]
+
+			\draw[] (xyz cs:x=0) -- (xyz cs:x=8);
+			\draw[] (xyz cs:y=0) -- (xyz cs:y=8);
+			\draw[] (xyz cs:z=0) -- (xyz cs:z=8);
+
+			\draw[draw]
+			(xyz cs:z=8) --
+			+(0,8) coordinate (u) --
+			(xyz cs:y=8) --
+			+(8,0) --
+			++(xyz cs:x=8,z=8) coordinate (v) --
+			+(0,-8) coordinate (w) --
+			(xyz cs:z=8) coordinate (m) --
+			cycle;
+			\draw[draw] (u) -- (v);
+			\draw[draw] (8,8) -- (8,0) -- (w);
+
+			\node[fill, red, circle,inner sep=2pt,label={below:$000$}] at (0,0) {};
+			\node[fill, red, circle,inner sep=2pt,label={left:$010$}] at (0,8) {};
+			\node[fill, red, circle,inner sep=2pt,label={right:$110$}] at (8,8) {};
+			\node[fill, red, circle,inner sep=2pt,label={below:$100$}] at (8,0) {};
+			\node[fill, blue, circle,inner sep=2pt,label={left:$001$}] at (m) {};
+			\node[fill, blue, circle,inner sep=2pt,label={above:$011$}] at (u) {};
+			\node[fill, blue, circle,inner sep=2pt,label={above:$111$}] at (v) {};
+			\node[fill, blue, circle,inner sep=2pt,label={right:$101$}] at (w) {};
+		\end{tikzpicture}
+	\end{center}
+\end{figure}
 Ora si può fare l'assorbimento anche tra i prodotti ottenuti dall'assorbimento:
 \label{D10}
 Si arriva quindi a dire che \( Z \) è un implicante primo perchè non c'è nessun
 altro implicante che lo contiene.
 \begin{figure}[H]
-    \begin{define}
-        Quando si parla di implicante si può anche dire \textbf{sottocubo} e
-        l'implicante primo può essere chiamato anche \textbf{sottocubo di dimensione
-        massima}.
-        \begin{center}
-            Implicante = Sottocubo\\
-            Implicante primo = Sottocubo di dimensione massima
-        \end{center}
-    \end{define}
+	\begin{define}
+		Quando si parla di implicante si può anche dire \textbf{sottocubo} e
+		l'implicante primo può essere chiamato anche \textbf{sottocubo di dimensione
+			massima}.
+		\begin{center}
+			Implicante = Sottocubo\\
+			Implicante primo = Sottocubo di dimensione massima
+		\end{center}
+	\end{define}
 \end{figure}
 Esistono condizioni favorevoli (come la funzione O) in cui un implicante primo
 contiene tutti i mintermini della funzione.\\
