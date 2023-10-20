@@ -729,6 +729,7 @@ Bool garantisce che si può creare qualsiasi funzione utilizzando soltanto i
 		Dato un ON-SET c'è sempre una sola espressione in somma di prodotti che lo
 		rappresenti.
 	\end{theorem}
+    \label{ex:modelloAB}
 \end{example}
 
 \subsection{Tabelle di verità}
@@ -910,12 +911,80 @@ porta logica:
 			(nmos.G) -- ++(0,0) to[short] (-0.99,-1.6) node[left] {};
 			\node (0V) at (0.6,-3.5) {\( 0V \) };
 		\end{scope}
-        \draw (-3,-5) -- ++(5,0);
+       \draw (-2.5,-4.2) -- ++(0,-0.3) -- ++(5,0) node[below, xshift=-2.5cm] {Prodotto negato} -- ++(0,0.3);
+		\draw (2.6,-4.2) -- ++(0,-0.3) -- ++(3.7,0) node[below, xshift=-1.85cm] {Porta logica NOT} -- ++(0,0.3);
 	\end{circuitikz}
+\end{center}
+Il prodotto negato più il NOT è uguale ad un AND:
+\begin{center}
+	\begin{circuitikz}
+		\draw (0,0) node[scale=0.7, and port] (and) {};
+		\draw (and.in 1) node[left] {x};
+		\draw (and.in 2) node[left] {y};
+		\draw (and.out) node[right] {O};
+	\end{circuitikz}
+\end{center}
+La tabella della verità è:
+\begin{center}
+	\begin{tabular}{c|c|c}
+		\( x \) & \( y \) & \( O \) \\
+		\hline
+		0       & 0       & 0       \\
+		0       & 1       & 0       \\
+		1       & 0       & 0       \\
+		1       & 1       & 1       \\
+	\end{tabular}
+\end{center}
+
+\subsubsection{Circuito della somma (OR)}
+\begin{center}
+	\begin{circuitikz}
+		\draw (0,0) node[scale=0.7, or port] (and) {};
+		\draw (and.in 1) node[left] {x};
+		\draw (and.in 2) node[left] {y};
+		\draw (and.out) node[right] {O};
+	\end{circuitikz}
+\end{center}
+La tabella della verità è:
+\begin{center}
+	\begin{tabular}{c|c|c}
+		\( x \) & \( y \) & \( O \) \\
+		\hline
+		0       & 0       & 0       \\
+		0       & 1       & 1       \\
+		1       & 0       & 1       \\
+		1       & 1       & 1       \\
+	\end{tabular}
 \end{center}
 
 \section{Espressione in somma di prodotti}
-\label{D6}
+Il seguente circuito è un esempio di espressione in somma di prodotti dell'esempio \ref{ex:modelloAB}:
+\begin{center}
+	\begin{circuitikz}
+		\draw (0,0) node[label=left:\( A \) ] (A) {}
+		to[short, o-]
+		(2,0)
+		node[not port, anchor=in, scale=0.5,label=above:\( \bar{A} \) ] (not1) {}
+		(0,-1)
+		node[label=left:\( B \) ] (B) {}
+		to[short, o-]
+		(2,-1)
+		node[not port, anchor=in, scale=0.5,label=below:\( \bar{B} \) ] (not2) {}
+        (4,-0.5) node[and port, label={above, yshift=3mm}:{\( m_{0} = \bar{A} \cdot \bar{B} \)}, scale=0.5,] (and1) {}
+        (not1.out) to[short] ++(0.25,0) |- (and1.in 1) 
+        (not2.out) to[short] ++(0.25,0) |- (and1.in 2)
+        (2,-2.5) node[and port, anchor=in 1, label={below, yshift=-3mm}:{\( m_{3} = A \cdot B \)}, scale=0.5,] (and2) {}
+        (and2.in 1) to[short] ++(-0.5,0)
+        to[short, -*] (1.5,0)
+        (and2.in 2) to[short] ++(-1,0)
+        to[short, -*] (1,52 |- not2.in)
+        (and1.out) to[short] ++(1.7,0)
+        node[or port, anchor=in 1, label={above, yshift=3mm}:{\( O = m_{0} + m_{3} \)}, scale=0.5,] (or1) {}
+        (or1.in 2) to[short] ++(-0.5,0) |- (and2.out)
+        (or1.out) to[short, -o] ++(0.5,0) node[label=right:\( O \)] {}
+		;
+	\end{circuitikz}
+\end{center}
 I circuiti devono spesso tenere conto di alcune specifiche da ottimizzare:
 \begin{itemize}
 	\item \textbf{Area}: minor numero di porte logiche
@@ -998,13 +1067,15 @@ Prendendo come riferimento la funzione O:
 \label{D8}
 L'assorbimento può essere fatto soltanto tra gli ON-SET con distanza di
 Hamming = 1.
-\begin{definition}
-	La \textbf{distanza di Hamming} è il numero di bit che differenziano 2 codici.
-	\begin{center}
-		\( 0110 \to 0101\; \) distanza di Hamming = 2
-		\( 010 \to 011\; \) distanza di Hamming = 1
-	\end{center}
-\end{definition}
+\begin{figure}[H]
+    \begin{definition}
+        La \textbf{distanza di Hamming} è il numero di bit che differenziano 2 codici.
+        \begin{center}
+            \( 0110 \to 0101\; \) distanza di Hamming = 2
+            \( 010 \to 011\; \) distanza di Hamming = 1
+        \end{center}
+    \end{definition}
+\end{figure}
 Per effettuare l'assorbimento ci si posiziona nel punto di un mintermine e si
 "guarda" in tutte le direzioni per eventuali altri mintermini con cui fare il
 prodotto.
@@ -1013,15 +1084,17 @@ Ora si può fare l'assorbimento anche tra i prodotti ottenuti dall'assorbimento:
 \label{D10}
 Si arriva quindi a dire che \( Z \) è un implicante primo perchè non c'è nessun
 altro implicante che lo contiene.
-\begin{define}
-	Quando si parla di implicante si può anche dire \textbf{sottocubo} e
-	l'implicante primo può essere chiamato anche \textbf{sottocubo di dimensione
-		massima}.
-	\begin{center}
-		Implicante = Sottocubo\\
-		Implicante primo = Sottocubo di dimensione massima
-	\end{center}
-\end{define}
+\begin{figure}[H]
+    \begin{define}
+        Quando si parla di implicante si può anche dire \textbf{sottocubo} e
+        l'implicante primo può essere chiamato anche \textbf{sottocubo di dimensione
+        massima}.
+        \begin{center}
+            Implicante = Sottocubo\\
+            Implicante primo = Sottocubo di dimensione massima
+        \end{center}
+    \end{define}
+\end{figure}
 Esistono condizioni favorevoli (come la funzione O) in cui un implicante primo
 contiene tutti i mintermini della funzione.\\
 Ci sono più tipi di implicanti primi:
