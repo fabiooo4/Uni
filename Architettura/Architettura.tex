@@ -83,7 +83,7 @@
 \tableofcontents
 \pagebreak
 \section{Introduzione}
-L'informatica è nata per la risoluzione i problemi di calcolo, in particolare
+L'informatica è nata per la risoluzione di problemi di calcolo, in particolare
 quelli di calcolo numerico. Per questo motivo i primi computer erano macchine
 che eseguivano operazioni aritmetiche. Per risolvere questi problemi si usano
 degli algoritmi che sono una sequenza di istruzioni semplici che portano poi
@@ -116,7 +116,6 @@ ma con risorse finite è impossibile rappresentare infiniti dati, bisogna quindi
 campionarli.
 
 \begin{figure}[h]
-	\label{fig:f(t)}
 	\centering
 	\begin{tikzpicture}[scale=0.6, domain=0:10]
 		\coordinate (A) at (0,4);
@@ -152,7 +151,8 @@ campionarli.
 
 		\draw (0, -0.2) -- (1, -0.2) node[below, xshift=-10] {\( \Delta t \) };
 	\end{tikzpicture}
-	\caption{Funzione casuale continua nel tempo}
+    \caption{Funzione casuale continua nel tempo}
+    \label{fig:f(t)}
 \end{figure}
 Per campionare la funzione nella figura \ref{fig:f(t)} bisogna scegliere un intervallo di tempo \( \Delta t \) e prendere
 un valore della funzione ogni \( \Delta t \). In questo caso le linee
@@ -228,8 +228,9 @@ La codifica da base decimale a base binaria prende il nome di \textbf{codifica
 	\label{ex:57modulo}
 	Si deve convertire il numero \( 57_{10} \) in base binaria
 	\begin{center}
-		\( n=log_2{(57)} = 6 \) bit (minimi)\\
-		\( \sum_{i=1}^{n-1} 2^n-1 = 63 \) (codici massimi)
+		\[ n=log_2{(57)} = 6\; bit\; (minimi)
+ \]
+ \[ \sum_{i=1}^{n-1} 2^n-1 = 63\; (codici\; massimi)\]
 	\end{center}
 	Si eseguono i seguenti passaggi:
 	\begin{enumerate}
@@ -248,6 +249,10 @@ La codifica da base decimale a base binaria prende il nome di \textbf{codifica
 		=1_{10}-{\textcolor{cyan}{0}}*2^{\textcolor{red}{2}}
 		=1_{10}-{\textcolor{cyan}{0}}*2^{\textcolor{red}{1}}
 		=1_{10}-{\textcolor{cyan}{1}}*2^{\textcolor{red}{0}}\)
+
+    \begin{center}
+       \( 57= \textcolor{cyan}{111001} \) 
+   \end{center}
 \end{example}
 
 \subsection{Numeri interi relativi}
@@ -376,7 +381,7 @@ I valori nel complemento a 2 ciclano, quindi se si somma 1 a 7 si ottiene -8.
 	      \begin{center}
 		      \begin{tabular}{l|l}                                        \\
 			      \( +57_{10}+ \)  & \( 0111001_2\;+ \)        \\
-			      \( +7_{10}\;= \) & \( \textbf{000}1001_2= \) \\ \\
+			      \( +7_{10}\;= \) & \( \textbf{0000}111_2= \) \\ \\
 			      \hline                                       \\
 			      \( +64_{10} \)   & \( 1000010_2 \)
 		      \end{tabular}
@@ -385,7 +390,7 @@ I valori nel complemento a 2 ciclano, quindi se si somma 1 a 7 si ottiene -8.
 	      \begin{center}
 		      \begin{tabular}{l|l}                                        \\
 			      \( +57_{10}+ \)  & \( 0111001_2\;+ \)        \\
-			      \( -7_{10}\;= \) & \( \textbf{111}1001_2= \) \\ \\
+			      \( -7_{10}\;= \) & \( \textbf{1111}111_2= \) \\ \\
 			      \hline                                       \\
 			      \( +50_{10} \)   & \( 10110010_2 \)
 		      \end{tabular}
@@ -408,7 +413,7 @@ Si possono codificare in 2 modi:
 	Si hanno a disposizione 8 bit: 4 per la parte intera e 4 per la parte frazionaria.
 	Vogliamo decodificare il numero \( 0110.1011_2 \):
 	\Large\[
-		\underbrace{\stackrel{2^{3}}{0}\;\stackrel{2^{2}}{1}\;\stackrel{2^{1}}{1}\;\stackrel{2^{0}}{1}}_{+6} .
+		\underbrace{\stackrel{2^{3}}{0}\;\stackrel{2^{2}}{1}\;\stackrel{2^{1}}{1}\;\stackrel{2^{0}}{0}}_{+6} .
 		\underbrace{\stackrel{2^{-1}}{1}\;\stackrel{2^{-2}}{0}\;\stackrel{2^{-3}}{1}\;\stackrel{2^{-4}}{1}}_{\frac{1}{2}+\frac{1}{8}+\frac{1}{16}}
 	\]
 	\normalsize\[
@@ -462,13 +467,13 @@ Gli standard della virgola mobile sono: IEEE 754. Questo standard
 virgola mobile.\\
 Il numero viene separato in 3 parti:
 \begin{itemize}
+    \item \textbf{S}: Segno
+    \item \textbf{e}: Esponente
 	\item \textbf{M}: Mantissa
-	\item \textbf{B}: Base 2
-	\item \textbf{e}: Esponente
 \end{itemize}
 La struttura del numero è quindi:
 \[
-	N = \pm \cdot B^{\pm e}
+	N = \pm \cdot M^{\pm e}
 \]
 Questo permette di dividere il numero in modo da poter scegliere quanti bit dedicare
 alla mantissa e quanti all'esponente. Si riscontrano però i seguenti problemi:
