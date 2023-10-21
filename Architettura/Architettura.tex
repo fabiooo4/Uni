@@ -12,6 +12,7 @@
 \usepackage{graphicx}
 \usepackage{tikz}
 \usepackage{circuitikz}
+\usepackage[label=corner]{karnaugh-map}
 \graphicspath{{./figures/}}
 
 \usepackage{ntheorem}
@@ -1091,7 +1092,7 @@ Quindi ad esempio:\\
 		\end{center}
 	\end{definition}
 \end{figure}
-Prendendo come riferimento la funzione \( f(B^3)^1 \to B \) definita precedentemente
+Prendendo come riferimento la funzione \( f(B^3)^1 \to B \)  definita precedentemente (che chiameremo \( O \)) 
 si può guardare la funzione come se fosse sul piano cartesiano con centro in
 un punto qualsiasi. Ogni punto adiacente al centro è un punto con distanza di
 Hamming = 1.
@@ -1117,38 +1118,103 @@ Nella seguente figura i vertici rossi rappresentano gli OFF-SET e i vertici
 blu rappresentano gli ON-SET.
 \begin{figure}[H]
 	\begin{center}
-		\begin{tikzpicture}[x=0.5cm,y=0.5cm,z=0.3cm,>=stealth,scale=0.8]
+		\begin{tikzpicture}
+        \newcommand{\Depth}{3}
+        \newcommand{\Height}{3}
+        \newcommand{\Width}{3}
 
-			\draw[] (xyz cs:x=0) -- (xyz cs:x=8);
-			\draw[] (xyz cs:y=0) -- (xyz cs:y=8);
-			\draw[] (xyz cs:z=0) -- (xyz cs:z=8);
+        \coordinate (O) at (0,0,0);
+        \coordinate (A) at (0,\Width,0);
+        \coordinate (B) at (0,\Width,\Height);
+        \coordinate (C) at (0,0,\Height);
+        \coordinate (D) at (\Depth,0,0);
+        \coordinate (E) at (\Depth,\Width,0);
+        \coordinate (F) at (\Depth,\Width,\Height);
+        \coordinate (G) at (\Depth,0,\Height);
 
-			\draw[draw]
-			(xyz cs:z=8) --
-			+(0,8) coordinate (u) --
-			(xyz cs:y=8) --
-			+(8,0) --
-			++(xyz cs:x=8,z=8) coordinate (v) --
-			+(0,-8) coordinate (w) --
-			(xyz cs:z=8) coordinate (m) --
-			cycle;
-			\draw[draw] (u) -- (v);
-			\draw[draw] (8,8) -- (8,0) -- (w);
+        \draw[] (O) -- (C) -- (G) -- (D) -- cycle;% Bottom Face
+        \draw[] (O) -- (A) -- (E) -- (D) -- cycle;% Back Face
+        \draw[] (O) -- (A) -- (B) -- (C) -- cycle;% Left Face
+        \draw[opacity=0.8] (D) -- (E) -- (F) -- (G) -- cycle;% Right Face
+        \draw[opacity=0.6] (C) -- (B) -- (F) -- (G) -- cycle;% Front Face
+        \draw[opacity=0.8] (A) -- (B) -- (F) -- (E) -- cycle;% Top Face
 
-			\node[fill, red, circle,inner sep=2pt,label={below:$000$}] at (0,0) {};
-			\node[fill, red, circle,inner sep=2pt,label={left:$010$}] at (0,8) {};
-			\node[fill, red, circle,inner sep=2pt,label={right:$110$}] at (8,8) {};
-			\node[fill, red, circle,inner sep=2pt,label={below:$100$}] at (8,0) {};
-			\node[fill, blue, circle,inner sep=2pt,label={left:$001$}] at (m) {};
-			\node[fill, blue, circle,inner sep=2pt,label={above:$011$}] at (u) {};
-			\node[fill, blue, circle,inner sep=2pt,label={above:$111$}] at (v) {};
-			\node[fill, blue, circle,inner sep=2pt,label={right:$101$}] at (w) {};
-		\end{tikzpicture}
+        \draw[fill, red] (C) circle (2pt) node[below] {\( 000 \)};
+        \draw[fill, red] (B) circle (2pt) node[left] {\( 010 \)};
+        \draw[fill, red] (F) circle (2pt) node[right] {\( 110 \)};
+        \draw[fill, red] (G) circle (2pt) node[below] {\( 100 \)};
+        \draw[fill, blue] (O) circle (2pt) node[left] {\( 001 \)};
+        \draw[fill, blue] (A) circle (2pt) node[above] {\( 011 \)};
+        \draw[fill, blue] (E) circle (2pt) node[above] {\( 111 \)};
+        \draw[fill, blue] (D) circle (2pt) node[right] {\( 101 \)};
+
+        \draw[fill, red] (4, 3) rectangle ++(0.3, 0.3) node[below right, yshift=1mm] {OFF-SET}; 
+        \draw[fill, blue] (4, 2.5) rectangle ++(0.3, 0.3) node[below right, yshift=1mm] {ON-SET}; 
+    \end{tikzpicture}
 	\end{center}
 \end{figure}
+Si trascura la faccia del cubo con l'OFF-SET per rendere la rappresentazione più semplice.
+Prendendo coppie di vertici dell'ON-SET sullo stesso lato del cubo si può fare il prodotto tra i 2 mintermini:
+\begin{center}
+    \begin{tikzpicture}
+        \newcommand{\Depth}{3}
+        \newcommand{\Height}{3}
+        \newcommand{\Width}{3}
+
+        \coordinate (O) at (0,0,0);
+        \coordinate (A) at (0,\Width,0);
+        \coordinate (B) at (0,\Width,\Height);
+        \coordinate (C) at (0,0,\Height);
+        \coordinate (D) at (\Depth,0,0);
+        \coordinate (E) at (\Depth,\Width,0);
+        \coordinate (F) at (\Depth,\Width,\Height);
+        \coordinate (G) at (\Depth,0,\Height);
+
+        \draw[] (O) -- (A) -- (E) -- (D) -- cycle;% Back Face
+
+        \draw[fill, blue] (O) circle (2pt) node[below] {\( 001 \)};
+        \draw[fill, blue] (A) circle (2pt) node[above] {\( 011 \)};
+        \draw[fill, blue] (E) circle (2pt) node[above] {\( 111 \)};
+        \draw[fill, blue] (D) circle (2pt) node[below] {\( 101 \)};
+
+        \node[below, blue] (1) at (1.5,0,0) {\( \bar{Y}Z \)};
+        \node[above, blue] (2) at (1.5,3,0) {\( YZ \)};
+        \node[left, blue] (3) at (0,1.5,0) {\( \bar{X}Z \)};
+        \node[right, blue] (4) at (3,1.5,0) {\( XZ \)};
+    \end{tikzpicture}
+\end{center}
 Ora si può fare l'assorbimento anche tra i prodotti ottenuti dall'assorbimento:
-\label{D10}
-Si arriva quindi a dire che \( Z \) è un implicante primo perchè non c'è nessun
+\begin{center}
+    \begin{tikzpicture}
+        \newcommand{\Depth}{3}
+        \newcommand{\Height}{3}
+        \newcommand{\Width}{3}
+
+        \coordinate (O) at (0,0,0);
+        \coordinate (A) at (0,\Width,0);
+        \coordinate (B) at (0,\Width,\Height);
+        \coordinate (C) at (0,0,\Height);
+        \coordinate (D) at (\Depth,0,0);
+        \coordinate (E) at (\Depth,\Width,0);
+        \coordinate (F) at (\Depth,\Width,\Height);
+        \coordinate (G) at (\Depth,0,\Height);
+
+        \draw[] (O) -- (A) -- (E) -- (D) -- cycle;% Back Face
+
+        \draw[fill, blue] (O) circle (2pt) node[below] {\( 001 \)};
+        \draw[fill, blue] (A) circle (2pt) node[above] {\( 011 \)};
+        \draw[fill, blue] (E) circle (2pt) node[above] {\( 111 \)};
+        \draw[fill, blue] (D) circle (2pt) node[below] {\( 101 \)};
+
+        \node[below, blue] (1) at (1.5,0,0) {\( \bar{Y}Z \)};
+        \node[above, blue] (2) at (1.5,3,0) {\( YZ \)};
+        \node[left, blue] (3) at (0,1.5,0) {\( \bar{X}Z \)};
+        \node[right, blue] (4) at (3,1.5,0) {\( XZ \)};
+
+        \node[blue] (5) at (1.5,1.5,0) {\textbf{Z}};
+    \end{tikzpicture}
+\end{center}
+Si arriva quindi a dire che \( Z \) è un \textbf{implicante primo} perchè non c'è nessun
 altro implicante che lo contiene.
 \begin{figure}[H]
 	\begin{define}
@@ -1161,7 +1227,7 @@ altro implicante che lo contiene.
 		\end{center}
 	\end{define}
 \end{figure}
-Esistono condizioni favorevoli (come la funzione O) in cui un implicante primo
+Esistono condizioni favorevoli (come la funzione \( O \) ) in cui un implicante primo
 contiene tutti i mintermini della funzione.\\
 Ci sono più tipi di implicanti primi:
 \begin{itemize}
@@ -1171,11 +1237,36 @@ Ci sono più tipi di implicanti primi:
 	      coperti anche da altri implicanti.
 	      Si identificano con l'\textbf{algoritmo di copertura}
 \end{itemize}
+\subsection{Mappe di Karnaugh}
 Karnaugh ha creato una mappa che permette di rappresentare su un piano tutte
-le variabili booleane (nel caso della funzione O si mettono i valori del cubo
-nella tabella).
-\label{D11}
+le variabili booleane (nel caso della funzione \( O \)  si mettono i valori del cubo
+nella tabella) in modo da poter fare l'assorbimento in modo più semplice. I valori
+posti sopra le celle sono messi in modo che siano a distanza di Hamming = 1.
+Nella seguente mappa di Karnaugh si possono vedere i valori della funzione \( O \):
+\begin{center}
+    \begin{karnaugh-map}[4][2][1][\( Y \)][\( X \)][\( Z \)]
+        \minterms{4,5,7,6}
+        \autoterms[0]
+        \implicant{4}{6}
+    \end{karnaugh-map}
+\end{center}
+In questa mappa si può vedere che \( Z \) è un implicante primo
+(o sottocubo di dimensione massima).
+Le mappe di Karnaugh sono come una sfera, quindi se si va oltre il bordo si torna
+dall'altra parte.
 
-\label{D12} %Esempio con funzione casuale
-
+Un altro esempio di mappa di Karnaugh è il seguente:
+\begin{example}
+    Prendiamo in considerazione una funzione casuale a 4 variabili:
+    \begin{center}
+        \begin{karnaugh-map}[4][4][1][\( Y \)][\( X \)][\( V \)][\( Z \)]
+          \minterms{0,1,2,3,7,15,14,8,9,11,10}
+          \autoterms[0]
+          \implicant{0}{2}
+          \implicant{8}{10}
+          \implicant{15}{10}
+          \implicant{3}{11}
+        \end{karnaugh-map}    
+    \end{center}
+\end{example}
 \end{document}
