@@ -79,13 +79,179 @@
 \pagebreak
 
 \section{Introduzione}
+
+
+\subsection{Numeri reali}
+I numeri reali sono descritti tramite rappresentazioni decimali limitate o illimitate, periodiche
+o non periodiche, e sono tutti i numeri razionali e irrazioneli; questo insieme viene indicato con
+il simbolo \( \mathbb{R} \)
+
+Proprietà necessarie dei numeri reali:
+\begin{itemize}
+	\item \textbf{\( 1^a \) proprietà (Eudosso-Archimede)}: due grandezze sono confrontabili quando esiste
+	      un multiplo della minore che supera la maggiore. Ciò significa che non possiamo confrontare
+	      linee con superfici, o superfici con volumi, ecc.
+
+	      Questa proprietà veniva assunta come definizione di grandezze omogenee.
+
+	      \textbf{Assioma}: dati due numeri reali positivi \( a, b \) con \( 0 < a < b \) esiste un
+	      intero \( n \) tale che \( na > b \).
+	\item \textbf{\( 2^a \) proprietà (Intervalli inscatolati)}: date due serie di grandezze:
+	      \( a_1, a_2, \ldots, a_n \)
+	      e \( b_1, b_2, \ldots, b_n \): la prima crescente (numeri della famiglia \( a \)) e la seconda
+	      decrescente (numeri della famiglia \( b \)), in cui ogni \( a_k \) è minore di \( b_k \) e tali
+	      che per ogni altra grandezza \( d \) si ha \( b_k - a_k < c \) per qualche \( k \), allora
+	      esiste una grandezza \( c \) tale che per ogni \( k\;\; a_k \le c \le b_k \).
+\end{itemize}
+
+
 \subsection{Maggiorante}
+\begin{definition}
+	Sia \( S \subseteq \mathbb{R} \) un sottoinsieme di numeri reali. Un numero \( y \in \mathbb{R} \) `
+	è un maggiorante dell'insieme \( S \) se per ogni \( x \in S \) si ha che \( y \ge x \).
+\end{definition}
+Se sommassimo un qualsiasi numero positivo a questo maggiorante si otterrebbe un altro maggiorante.
+
+Se l'interballo tendesse verso \( +\infty \) non si sarebbe alcun maggiorante poichè \( +\infty \) non
+è un numero reale. Esempi:
+\begin{itemize}
+	\item \( I = (1,10] \): tutti i maggioranti sono quelli per \( y \ge 10 \)
+	\item \( I = [0,3) \): tutti i maggioranti sono quelli per \( y \ge 3 \)
+	\item \( \mathbb{R} = (-\infty,+\infty) \): non ha maggiorante
+\end{itemize}
+
 
 \subsection{Minorante}
+\begin{definition}
+	Sia \( S \subseteq \mathbb{R}\) un sottoinsieme di numeri reali. Un numero \( y \in \mathbb{R} \)
+	è un minorante dell'insieme \( S \) se per ogni \( x \in S \) si ha che \( y \le x \).
+\end{definition}
+Se sottraessimo un qualsiasi numero negativo a questo minorante si otterrebbe un altro minorante.
+
+Se l'intervallo tendesse verso \( -\infty \) non ci sarebbe alcun minorante poichè \( -\infty \) non
+è un numero reale. Esempi:
+\begin{itemize}
+	\item \( I = (1,10] \): tutti i minoranti sono quelli per \( y \le 1 \)
+	\item \( I = [9,3) \): tutti i minoranti sono quelli per \( y \le 9 \)
+	\item \( \mathbb{R} = (-\infty,+\infty) \): non ha minorante
+\end{itemize}
+
 
 \subsection{Estremo superiore}
+Dato un insieme \( S \subseteq \mathbb{R} \), \( S \) è un insieme limitato superiormente con \( y \in \mathbb{R} \)
+estremo superiore di \( S \) se:
+\begin{itemize}
+	\item \( y \) è un maggiorante di \( S \)
+	\item \( y \) è il più piccolo maggiorante di \( S \)
+\end{itemize}
+Se \( S \) è un insieme illimitato superiormente allora l'estremo superiore di \( S \) è \( sup(S)=+\infty \).
+Esempi:
+\begin{itemize}
+	\item \( I = (1,10] \): \( sup(I) = 10 \)
+	\item \( I = (-\infty,0) \): \( sup(I) = 0 \)
+	\item \( \mathbb{R} = (-\infty, +\infty) \): \( sup(\mathbb{R}) = +\infty \)
+\end{itemize}
+
 
 \subsection{Estremo inferiore}
+Dato un insieme \( S \subseteq \mathbb{R} \), \( S \) è un insieme limitato inferiormente con \( y \in \mathbb{R} \)
+estremo inferiore di \( S \) se:
+\begin{itemize}
+	\item \( y \) è un minorante di \( S \)
+	\item \( y \) è il più grande minorante di \( S \)
+\end{itemize}
+Se \( S \) è un insieme illimitato inferiormente allora l'estremo inferiore di \( S \) è \( inf(S)=-\infty \).
+Esempi:
+\begin{itemize}
+	\item \( I=[1,8) \): \( inf(I) = 1 \)
+	\item \( I=(-13,0) \): \( inf(I) = -13 \)
+	\item \( \mathbb{R} = (-\infty, +\infty) \): \( inf(\mathbb{R}) = -\infty \)
+\end{itemize}
+
+
+\subsection{Massimo}
+\begin{definition}
+	Sia \( S \subseteq \mathbb{R} \) un sottoinsieme reale, dove \( y \in \mathbb{R} \) è il massimo
+	di \( S \) se \( y \) è l'estremo superiore di \( S \) e se \( y \in S \).
+\end{definition}
+Quindi se l'estremo superiore di un insieme appartiene all'insieme stesso, esso si chiamerà
+massimo indicato con \( Max(S)=y \).
+
+
+\subsection{Minimo}
+\begin{figure}[H]
+	\begin{definition}
+		Sia \( S \subseteq \mathbb{R} \) un sottoinsieme reale, dove \( y \in \mathbb{R} \) è il minimo
+		di \( S \) se \( y \) è l'estremo inferiore di \( S \) e se \( y \in S \).
+	\end{definition}
+\end{figure}
+Quindi se l'estremo inferiore di un insieme appartiene all'insieme stesso, esso si chiamerà
+minimo indicato con \( Min(S)=y \).
+
+\begin{theorem}
+	Ogni insieme di numeri reali che sia limitato superiormente ha estremo superiore.
+\end{theorem}
+
+
+\subsection{Funzioni}
+\begin{definition}
+	Una \textbf{funzione} è una corrispondenza che collega gli elementi di due insiemi dove tutti
+	gli elementi del primo insieme hanno associati un solo elemento del secondo insieme:
+	\[
+		f: A \to B
+	\]
+\end{definition}
+Questa è una funzione se e solo se a ogni elemento di \( A \) è associato uno e uno solo elemento di \( B \).
+
+Tradotto in simboli diventa:
+\[
+	\forall a \in A \;\exists !\; b \in B \;tale\;che\; f: A \to B
+\]
+Esempio di funzione corretta:
+\begin{center}
+	\begin{tikzpicture}
+		\draw[draw] (-1.5,0) circle (1cm) node[above, yshift=1.1cm] {$A$};
+		\draw[draw] (1.5,0) circle (1cm) node[above, yshift=1.1cm] {$B$};
+
+		\draw[draw, fill, blue] (-1.2,0.7) circle (0.5mm) node (1) {};
+		\draw[draw, fill, blue] (-1.6,0.4) circle (0.5mm) node (2) {};
+		\draw[draw, fill, blue] (-1.3,-0.3) circle (0.5mm) node (3) {};
+		\draw[draw, fill, blue] (-1.8,-0.6) circle (0.5mm) node (4) {};
+		\draw[draw, fill, blue] (-1.7,0) circle (0.5mm) node (9) {};
+
+		\draw[draw, fill, red] (1.2,0.7) circle (0.5mm) node (5) {};
+		\draw[draw, fill, red] (1.6,0.4) circle (0.5mm) node (6) {};
+		\draw[draw, fill, red] (1.3,-0.3) circle (0.5mm) node (7) {};
+		\draw[draw, fill, red] (1.8,-0.6) circle (0.5mm) node (8) {};
+
+		\draw[->] (1) -- (5);
+		\draw[->] (2) -- (6);
+		\draw[->] (3) -- (7);
+		\draw[->] (4) -- (8);
+		\draw[->] (9) -- (8);
+
+	\end{tikzpicture}
+\end{center}
+
+\subsubsection{Dominio di una funzione}
+\begin{definition}
+	Dato un insieme di partenza \( A \) gli elementi ai quali è applicata la funzione \( f \) sono
+	il dominio stesso della funzione
+\end{definition}
+Esempio:
+\[
+	x \to x^2\; con\; D=\mathbb{R}
+\] \[
+	x \to \sqrt{x}\; con\; D=[0,+\infty)
+\]
+Si può dare un nome simbolico alla funzione scrivendo in questo modo:
+\[
+	f(x)=x^2\; con\; D=\mathbb{R}
+\] \[
+	f(x)=\sqrt{x}\; con\; D=[0,+\infty)
+\]
+
+
 
 \section{Limiti}
 I limiti sono il calcolo infinitesimale, ovvero il
@@ -108,20 +274,46 @@ dominio \( A \subseteq \mathbb{R} \) è un insieme \textbf{non} limitato superio
 	\]
 	(Notazione alternativa: \( f(x) \to L \) per \( x \to +\infty \) )\\
 	\textbf{La condizione deve essere soddisfatta per ogni \( \epsilon \) }.
-	\label{D1}
+	\begin{center}
+		\begin{tikzpicture}[scale=0.5, domain=0:13]
+			\draw[->] (-0.5,0) -- (13,0) node[right] {$x$};
+			\draw[->] (0,-0.5) -- (0,7) node[above] {$y$};
+
+			\coordinate (A) at (0,0);
+			\coordinate (B) at (1,1);
+			\coordinate (C) at (2,2);
+			\coordinate (D) at (3,6);
+			\coordinate (E) at (4,5);
+			\coordinate (F) at (5,3);
+			\coordinate (G) at (6,2.12);
+			\coordinate (H) at (7,3.9);
+			\coordinate (I) at (8,3);
+			\coordinate (J) at (9,3);
+			\coordinate (K) at (10,3);
+			\coordinate (L) at (11,3);
+			\coordinate (M) at (12,3);
+			\coordinate (N) at (13,3);
+
+			\draw [red, ultra thick] plot [smooth, tension=1] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
+
+			\draw [] (0,3) -- (13,3) node[right] {$L$};
+			\draw [dashed] (0,4) -- (13,4) node[right, scale=0.5] {$L+\epsilon$};
+			\draw [dashed] (0,2) -- (13,2) node[right, scale=0.5] {$L-\epsilon$};
+
+			\draw[fill, fill opacity=0.2, cyan] (0,4) rectangle (13,2);
+
+			\draw [dashed] (0,3.2) -- (13,3.2) node[above right, scale=0.5] {$L+\epsilon^1$};
+			\draw [dashed] (0,2.8) -- (13,2.8) node[below right, scale=0.5] {$L-\epsilon^1$};
+
+			\draw[fill, fill opacity=0.2, green] (0,3.2) rectangle (13,2.8);
+
+			\draw [dashed] (4.5,4) -- (4.5,0) node[below] {$k$};
+			\draw [dashed] (7.8,3.2) -- (7.8,0) node[below] {$k^1$};
+		\end{tikzpicture}
+	\end{center}
+	Per la definizione di limite, la funzione deve entrare in un intorno di \( L \) e non uscirne più.
+	Questo vale per ogni \( \epsilon \), quindi anche per \( \epsilon^1 \).
 \end{definition}
-\begin{example}
-	\[
-		\lim_{x \to +\infty} \frac{1}{x} = 0
-	\]
-	\label{D2}
-	Sia dato \( \epsilon > 0 \) arbitrario. Definisco \( k := \frac{1}{\epsilon} \).\\
-	sia dato \( x > 0 \) arbitrario, supponiamo \( x \ge k \).  Allora
-	\[
-		0-\epsilon \le 0 \le \frac{1}{x} \le \frac{1}{k} = \frac{1}{\frac{1}{\epsilon}} = \epsilon
-	\]
-	Quindi, ho dimostrato che la definizione di limite è soddisfatta (con \( L=0 \)).
-\end{example}
 \begin{figure}[H]
 	\begin{definition}
 		Si dice che
@@ -136,7 +328,37 @@ dominio \( A \subseteq \mathbb{R} \) è un insieme \textbf{non} limitato superio
 			x \ge k \to f(x) \ge M
 		\]
 		(Notazione alternativa: \( f(x) \to +\infty \) per \( x \to +\infty \))
-		\label{D3}
+		\begin{center}
+			\begin{tikzpicture}[scale=0.5, domain=0:13]
+				\draw[->] (-0.5,0) -- (13,0) node[right] {$x$};
+				\draw[->] (0,-0.5) -- (0,7) node[above] {$y$};
+
+				\coordinate (A) at (0,0);
+				\coordinate (B) at (1,1);
+				\coordinate (C) at (2,2);
+				\coordinate (D) at (3,6);
+				\coordinate (E) at (4,5);
+				\coordinate (F) at (5,3);
+				\coordinate (G) at (6,2.12);
+				\coordinate (H) at (7,3.9);
+				\coordinate (I) at (8,3);
+				\coordinate (J) at (9,5);
+				\coordinate (K) at (10,5);
+				\coordinate (L) at (11,5);
+				\coordinate (M) at (12,6);
+				\coordinate (N) at (13,7);
+
+				\draw [red, ultra thick] plot [smooth, tension=1] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
+
+				\draw [] (0,4.8) -- (13,4.8) node[right] {$M$};
+				\draw [] (0,6) -- (13,6) node[right] {$M^1$};
+
+				\draw[fill, fill opacity=0.2, cyan] (0,4.8) rectangle (13,7);
+
+				\draw [dashed] (8.8,4.8) -- (8.8,0) node[below] {$k$};
+				\draw [dashed] (12,6) -- (12,0) node[below] {$k^1$};
+			\end{tikzpicture}
+		\end{center}
 	\end{definition}
 \end{figure}
 \begin{figure}[H]
@@ -153,32 +375,151 @@ dominio \( A \subseteq \mathbb{R} \) è un insieme \textbf{non} limitato superio
 			x \ge k \to f(x) \le -M
 		\]
 		(Notazione alternativa: \( f(x) \to -\infty \) per \( x \to +\infty \))
-		\label{D4}
+		\begin{center}
+			\begin{tikzpicture}[scale=0.5, domain=0:13]
+				\draw[->] (-0.5,0) -- (13,0) node[right] {$x$};
+				\draw[->] (0,-7) -- (0,2) node[above] {$y$};
+
+				\coordinate (A) at (0,0);
+				\coordinate (B) at (1,1);
+				\coordinate (C) at (2,-2);
+				\coordinate (D) at (3,-6);
+				\coordinate (E) at (4,-5);
+				\coordinate (F) at (5,-3);
+				\coordinate (G) at (6,-2.12);
+				\coordinate (H) at (7,-3.9);
+				\coordinate (I) at (8,-3);
+				\coordinate (J) at (9,-5);
+				\coordinate (K) at (10,-5);
+				\coordinate (L) at (11,-5);
+				\coordinate (M) at (12,-6);
+				\coordinate (N) at (13,-7);
+
+				\draw [red, ultra thick] plot [smooth, tension=1] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
+
+				\draw [] (0,-4.8) -- (13,-4.8) node[right] {$M$};
+				\draw [] (0,-6) -- (13,-6) node[right] {$M^1$};
+
+				\draw[fill, fill opacity=0.2, cyan] (0,-4.8) rectangle (13,-7);
+
+				\draw [dashed] (8.8,-4.8) -- (8.8,0) node[above] {$k$};
+				\draw [dashed] (12,-6) -- (12,0) node[above] {$k^1$};
+			\end{tikzpicture}
+		\end{center}
 	\end{definition}
 \end{figure}
-Quindi, ho dimostrato che la definizione di limmite è soddisfatta (con \( L = 0 \)).
-\[
-	\lim_{x \to +\infty} x = +\infty
-\]
-\label{D5}
-Sia dato \( M>0 \) arbitrario. Definisco \( k := M \).\\
-Sia dato \( x \ge k \). Allora \( x \ge M \).\\
-Quindi è verificata la definizione di limite.
-\subsection{Osservazioni}
-\textbf{Non} è detto che un limite esista.
+
+
+\subsection{Esempi}
 \begin{example}
 	\[
-		\lim_{x \to +\infty} sin(x)
+		\lim_{x \to +\infty} \frac{1}{x}=0\;\;\;Dominio=\mathbb{R}/\{0\}
 	\]
+	\begin{center}
+		\begin{tikzpicture}
+			\draw[->] (-0.5, 0) -- (7, 0) node[right] {$x$};
+			\draw[->] (0, -2) -- (0, 5) node[above] {$y$};
+			\draw[domain=0.2:7, smooth, variable=\x, red, thick] plot ({\x}, {1/\x});
+
+			\draw [dashed] (0,1) -- (7,1) node[right, scale=0.8] {$0+\epsilon$};
+			\draw [dashed] (0,-1) -- (7,-1) node[right, scale=0.8] {$0-\epsilon$};
+
+			\draw[fill, fill opacity=0.2, cyan] (0,1) rectangle (7,-1);
+		\end{tikzpicture}
+	\end{center}
+	Sia dato \( \epsilon > 0 \) arbitrario. Definisco \( k := \frac{1}{\epsilon} \).\\
+	Sia dato \( x > 0 \) arbitrario, supponiamo \( x \ge k \). Allora
 	\[
-		\lim_{x \to +\infty} cos(x)
+		0-\epsilon \le 0 \le \frac{1}{x} \le \frac{1}{k} = \frac{1}{\frac{1}{\epsilon}} = \epsilon
 	\]
-	\label{D6}
-	La funzione non entra in un intevallo limitato senza poi uscirne, quindi non esiste il limite.
+	Quindi, ho dimostrato che la definizione di limite è soddisfatta (con \( L=0 \)).
 \end{example}
-Tuttavia, se una funzione ammette limite, allora esso è unico. La funzione dovrebbe
+\begin{example}
+	\[
+		\lim_{x \to +\infty} x = +\infty
+	\]
+	\begin{center}
+		\begin{tikzpicture}
+			\draw[->] (-0.5, 0) -- (5, 0) node[right] {$x$};
+			\draw[->] (0, -0.5) -- (0, 5) node[above] {$y$};
+			\draw[domain=0:5, smooth, variable=\x, red, thick] plot ({\x}, {\x});
+
+			\draw [dashed] (0,3) -- (5,3) node[right, scale=0.8] {$M$};
+
+			\draw[fill, fill opacity=0.2, cyan] (0,3) rectangle (5,5);
+
+			\draw [dashed] (3,3) -- (3,0) node[below] {$k$};
+		\end{tikzpicture}
+	\end{center}
+	Sia dato \( M>0 \) arbitrario. Definisco \( k := M \).\\
+	Sia dato \( x \ge k \). Allora \( x \ge M \).\\
+	Quindi è verificata la definizione di limite.
+
+\end{example}
+
+
+\subsection{Osservazioni}
+\textbf{Non} è detto che un limite esista.
+\[
+	\lim_{x \to +\infty} sin(x)
+\]
+\[
+	\lim_{x \to +\infty} cos(x)
+\]
+\begin{center}
+	\begin{tikzpicture}
+		\draw[->] (-5, 0) -- (5, 0) node[right] {$x$};
+		\draw[->] (0, -2) -- (0, 2) node[above] {$y$};
+		\draw[domain=-5:5, smooth, variable=\x, red, thick] plot ({\x}, {sin(\x r)});
+
+		\draw [dashed] (-5,0.2) -- (5,0.2) node[right, scale=0.5] {$0+\epsilon$};
+		\draw [dashed] (-5,-0.2) -- (5,-0.2) node[right, scale=0.5] {$0+\epsilon$};
+
+		\draw[fill, fill opacity=0.2, cyan] (-5,0.2) rectangle (5,-0.2);
+	\end{tikzpicture}
+\end{center}
+La funzione non entra in un intevallo limitato senza poi uscirne, quindi non esiste il limite.
+
+\begin{center}
+	\begin{tikzpicture}[scale=0.5, domain=0:13]
+		\draw[->] (-0.5,0) -- (13,0) node[right] {$x$};
+		\draw[->] (0,-0.5) -- (0,7) node[above] {$y$};
+
+		\coordinate (A) at (0,0);
+		\coordinate (B) at (1,1);
+		\coordinate (C) at (2,2);
+		\coordinate (D) at (3,6);
+		\coordinate (E) at (4,5);
+		\coordinate (F) at (5,3);
+		\coordinate (G) at (6,2.12);
+		\coordinate (H) at (7,3.9);
+		\coordinate (I) at (8,3);
+		\coordinate (J) at (9,3);
+		\coordinate (K) at (10,3);
+		\coordinate (L) at (11,3);
+		\coordinate (M) at (12,3);
+		\coordinate (N) at (13,3);
+
+		\draw [red, ultra thick] plot [smooth, tension=1] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
+
+		\draw [] (0,3) -- (13,3) node[right] {$L$};
+
+
+		\draw [dashed] (0,3.2) -- (13,3.2) node[above right, scale=0.5] {$L+\epsilon$};
+		\draw [dashed] (0,2.8) -- (13,2.8) node[below right, scale=0.5] {$L-\epsilon$};
+
+		\draw[fill, fill opacity=0.2, cyan] (0,3.2) rectangle (13,2.8);
+
+		\draw [dashed] (0,1) -- (13,1) node[right, scale=0.5] {$L+\epsilon^1$};
+		\draw [dashed] (0,0.6) -- (13,0.6) node[right, scale=0.5] {$L-\epsilon^1$};
+
+		\draw[fill, fill opacity=0.2, cyan] (0,1) rectangle (13,0.6);
+	\end{tikzpicture}
+\end{center}
+Tuttavia, se una funzione ammette limite, allora esso è unico. Questa funzione dovrebbe
 entrare in entrambe le strisce e non uscirne più, ma questo non è possibile.
-\label{D7}
+
+
 \subsection{Risultati utili per il calcolo dei limiti}
 \begin{theorem}[Algebra dei limiti]
 	Sia \( A \subseteq \mathbb{R} \) un insieme non limitato superiormente, \( f \) e \( g \)
@@ -194,11 +535,15 @@ entrare in entrambe le strisce e non uscirne più, ma questo non è possibile.
 		\lim_{x \to +\infty} (f(x) + g(x)) = F+G
 	\]
 	\[
+		\lim_{x \to +\infty} (f(x) - g(x)) = F-G
+	\]
+	\[
 		\lim_{x \to +\infty} (f(x) \cdot g(x)) = F \cdot G
 	\]
-	TODO
-
-	\textbf{parzialmente} al caso \( F \) o \( G \) siano infiniti, secondo
+	\[
+		\lim_{x \to +\infty} \frac{f(x)}{g(x)} = \frac{F}{G}\;\;\;se\;G \neq 0
+	\]
+	Il teorema si estende \textbf{parzialmente} nel caso \( F \) o \( G \) siano infiniti, secondo
 	le regole seguenti:
 	\begin{itemize}
 		\item \(
@@ -229,6 +574,7 @@ entrare in entrambe le strisce e non uscirne più, ma questo non è possibile.
 	Il segno di \( \infty \) è da determinare secondo la regola usuale.
 \end{theorem}
 
+
 \subsection{Forme indeterminate}
 Sono dei casi in cui il teorema \textbf{non} si applica e tutto può succdere:
 \begin{itemize}
@@ -240,9 +586,10 @@ Sono dei casi in cui il teorema \textbf{non} si applica e tutto può succdere:
 	\item \( 0^{0} \)
 	\item \( \infty^{0} \)
 \end{itemize}
-\paragraph{\textbf{N.B.:}} in questo contesto, \( 0 \) , \( \infty \) TODO
+\paragraph{\textbf{N.B.:}} in questo contesto, \( 0 \) , \( \infty \) e \( 1 \) sono da intendersi
+come abbreviazioni.
 
-\subsection{Esempi}
+\subsection{Esempi di calcolo di limiti}
 \begin{example}
 	\[ \lim_{x \to +\infty} (x^2+\frac{1}{x})  \]
 	\[
@@ -260,7 +607,40 @@ Sono dei casi in cui il teorema \textbf{non} si applica e tutto può succdere:
 	Per \( x \to +\infty \)
 \end{example}
 \begin{example}
-	TODO
+	\[
+		\lim_{x \to +\infty} (5x^6-4x) = +\infty - \infty
+	\]
+	\[
+		\underbrace{x}_\text{\( +\infty \)}(\underbrace{5x^5}_\text{\( +\infty \)} - 4) \to +\infty
+	\]
 \end{example}
-\subsubsection{Esempi di limiti irrazionali}
+
+
+\subsection{Limiti razionali}
+Se \( P \) è un polinomio di grado \( p \) e \( Q \) è un polinomio di grado \( q \), allora
+\[
+	\lim_{x \to +\infty} \frac{P(x)}{Q(x)}=
+	\begin{cases}
+		\pm \infty\;\;\; se\; p > q                          \\
+		0\;\;\; se\; p < q                                   \\
+		coefficiente\; denominante\; di\; P\;\;\; se\; p = q \\
+		coefficiente\; denominante\; di\; Q\;\;\; se\; p = q
+	\end{cases}
+\]
+
+\subsection{Monotonia}
+\begin{theorem}[di monotonia]
+	Sia \( A \subseteq \mathbb{R}\) un insieme non limitato superiormente e sia \( f:\;A \to \mathbb{R} \)
+	una funzione monotona. Allora
+	\[
+		\lim_{x \to +\infty} f(x)\;\;esiste\;e
+	\]
+	\[
+		\lim_{x \to +\infty} f(x) =
+		\begin{cases}
+			sup\{ f(x):\; x \in A \}\;\;\; se\;f\;cresce \\
+			inf\{ f(x):\; x \in A \}\;\;\; se\;f\;decresce
+		\end{cases}
+	\]
+\end{theorem}
 \end{document}
