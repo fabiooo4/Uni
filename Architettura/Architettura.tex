@@ -1262,11 +1262,34 @@ Un altro esempio di mappa di Karnaugh è il seguente:
         \begin{karnaugh-map}[4][4][1][\( Y \)][\( X \)][\( V \)][\( Z \)]
           \minterms{0,1,2,3,7,15,14,8,9,11,10}
           \autoterms[0]
-          \implicant{0}{2}
-          \implicant{8}{10}
+          \implicantedge{0}{2}{8}{10}
           \implicant{15}{10}
           \implicant{3}{11}
         \end{karnaugh-map}    
     \end{center}
+    Si può verificare che ci sono 3 implicanti primi essenziali:
+    \begin{itemize}
+        \item \( \bar{V} \): essenziale
+            \item \( XY \): essenziale perchè copre \( 1101 \)
+                \item \( XZ \): essenziale perchè copre \( 1011 \) 
+    \end{itemize}
+    \[
+    O=\bar{V}+XY+XZ\;\;\;(5\;letterali)
+    \] 
+    Per capire quali sono gli implicanti primi bisogna raggruppare gli 1 in rettangoli
+    più grandi possibile, ma sempre di grandezza \( 2^n \) (2, 4, 8, 16, \( \ldots \)).
+    Per ciascun raggruppamento bisogna trovare le variabili che non cambiano il loro valore.
+    Per il raggruppamento rosso:
+    \begin{itemize}
+        \item \textbf{\( X \)} cambia valore, passando da \( 0 \)  in \( 0000 \) e \( 0100 \)
+            a \( 1 \)  in \( 1100 \) e \( 1000 \), quindi deve essere esclusa.
+        \item \textbf{\( Y \)} cambia valore, passando da \( 0 \)  in \( 0000 \) e \( 1000 \)
+            a \( 1 \)  in \( 0100 \) e \( 1100 \), quindi deve essere esclusa.
+        \item \textbf{\( Z \)} cambia valore, passando da \( 0 \)  in \( 0000 \)
+            a \( 1 \)  in \( 0010 \), quindi deve essere esclusa.
+        \item \textbf{\( \bar{V} \)} mantiene lo stesso stato in tutto il gruppo, quindi
+            deve essere inclusa nel prodotto risultante
+    \end{itemize}
+    Lo stesso ragionamento viene applicato per tutti i gruppi, fino ad arrivare al risultato finale.
 \end{example}
 \end{document}
