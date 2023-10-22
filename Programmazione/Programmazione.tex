@@ -187,107 +187,188 @@ di flusso che rappresenta un algoritmo:
 	\item \textbf{Sottoprogramma}: rappresenta un sottoprogramma.
 \end{itemize}
 
-\begin{figure}[H]
-	\centering
-	\incfig[0.3]{simbolidiagramma}
-	\caption{Simboli del diagramma di flusso}
-	\label{fig:simbolidiagramma}
-\end{figure}
+\begin{center}
+	\begin{tikzpicture}[node distance=1.5cm, scale=0.8, every node/.style={scale=0.8}]
+		\node (start) [startstop] {Inizio};
+		\node (label1) [right of=start, xshift=6mm] {Solo 1};
+		\node (out1) [output, below of=start] {Output};
+		\node (in1) [input, below of=out1] {Input};
+		\node (proc1) [process, below of=in1] {Istruzione};
+		\node (dec1) [decision, below of=proc1, yshift=-0.5cm] {Condizione};
+		\node (stop) [startstop, below of=dec1, yshift=-5mm] {Fine};
+		\node (label2) [right of=stop, xshift=8mm] {Almeno 1};
+
+		\draw [arrow] (start) to node[anchor=west] {Sequenzialità} (out1);
+	\end{tikzpicture}
+\end{center}
 
 \section{Esercizi con diagrammi di flusso}
-Dato un numero dare in output il doppio.
-\begin{figure}[H]
-	\centering
-	\incfig[0.3]{numeroDoppio}
-	\caption{Diagramma di flusso per il doppio}
-	\label{fig:doppio}
-\end{figure}
-
-Dati 2 numeri dire il maggiore.
-\begin{figure}[H]
-	\centering
-	\incfig[1]{maggiore3numeri}
-	\caption{Diagramma di flusso per il doppio}
-	\label{fig:maggiore3numeri}
-\end{figure}
-\subsubsection{Stampa tutti i numeri naturali fino a n}
-\( \forall i \in [o,n] \) stampo a video i:
-\begin{figure}
-	\includegraphics{numeriNaturali}
-\end{figure}
-Questo è un ciclo a condizione iniziale, cioè appena la condizione diventa falsa
-si esce dal ciclo.
-
-\subsubsection{Trovare il più grande tra n numeri}
-\begin{center}
-	\scalebox{0.8}{
-		\begin{tikzpicture}[node distance=2cm]
+\subsubsection{Dato un numero dare in output il doppio}
+\begin{exercise}
+	Stampa il doppio di un numero:
+	\begin{center}
+		\begin{tikzpicture}[node distance=2cm ,scale=0.8, every node/.style={scale=0.8}]
 			\node (start) [startstop] {Inizio};
-			\node (out1) [output, below of=start] {Quanti voti?};
+			\node (out1) [output, below of=start] {Dimmi un numero};
 			\node (in1) [input, below of=out1] {n};
-			\node (proc1) [process, below of=in1] {i = 1};
-			\node (in2) [input, below of=proc1] {voto};
-			\node (proc2) [process, below of=in2] {max = voto};
-			\node (dec1) [decision, below of=proc2, yshift=-0.5cm] {i $<$ n};
-			\node (out2) [output, right of=in2, xshift=3cm] {max};
+			\node (proc1) [process, below of=in1] {d = n * 2};
+			\node (out2) [output, below of=proc1] {Il doppio di n è d};
 			\node (stop) [startstop, below of=out2] {Fine};
-			\node (proc3) [process, below of=dec1, yshift=-0.5cm] {i = i + 1};
-			\node (in3) [input, below of=proc3] {voto};
-			\node (dec2) [decision, below of=in3, yshift=-0.5cm] {voto $>$ max};
-			\node (proc4) [process, right of=dec2, xshift=2cm] {max = voto};
 
 			\draw [arrow] (start) -- (out1);
 			\draw [arrow] (out1) -- (in1);
 			\draw [arrow] (in1) -- (proc1);
-			\draw [arrow] (proc1) -- (in2);
-			\draw [arrow] (in2) -- (proc2);
-			\draw [arrow] (proc2) -- (dec1);
-			\draw [arrow] (dec1) -- node[anchor=east] {Vero} (proc3);
-			\draw [arrow] (proc3) -- (in3);
-			\draw [arrow] (in3) -- (dec2);
-			\draw [arrow] (dec2) -- node[anchor=south] {Vero} (proc4);
-			\draw [arrow] (dec2) -- node[anchor=south] {Falso} ++(-3,0) |- (dec1);
-			\draw [arrow] (proc4) |- (dec1);
-			\draw [arrow] (dec1) -- node[anchor=west] {Falso} (out2);
+			\draw [arrow] (proc1) -- (out2);
 			\draw [arrow] (out2) -- (stop);
 		\end{tikzpicture}
-	}
-\end{center}
+	\end{center}
+\end{exercise}
+\subsubsection{Dati 2 numeri dire il maggiore}
+\begin{exercise}
+	Stampa il maggiore tra 2 numeri:
+	\begin{center}
+		\begin{tikzpicture}[node distance=2cm,scale=0.7, every node/.style={scale=0.7}]
+			\node (start) [startstop] {Inizio};
+			\node (out1) [output, below of=start] {Dimmi 3 numeri};
+			\node (in1) [input, below of=out1] {n1, n2, n3};
+			\node (dec1) [decision, below of=in1, yshift=-0.5cm] {n1 $>$ n2};
+			%F
+			\node (dec2) [decision, right of=dec1, xshift=2cm] {n2 $>$ n3};
+			%F
+			\node (out2) [output, right of=dec2, xshift=2cm] {Il maggiore è n3};
+			\node (stop) [startstop, below of=out2] {Fine};
+			%V
+			\node (out3) [output, below of=dec2, yshift=-0.5cm] {Il maggiore è n2};
+			\node (stop2) [startstop, below of=out3] {Fine};
+			%V
+			\node (dec3) [decision, below of=dec1, yshift=-1cm] {n1 $>$ n3};
+			%F
+			\node (out4) [output, left of=dec3, xshift=-2cm] {Il maggiore è n3};
+			\node (stop3) [startstop, below of=out4] {Fine};
+			%V
+			\node (out5) [output, below of=dec3, yshift=-0.5cm] {Il maggiore è n1};
+			\node (stop4) [startstop, below of=out5] {Fine};
+
+			\draw [arrow] (start) -- (out1);
+			\draw [arrow] (out1) -- (in1);
+			\draw [arrow] (in1) -- (dec1);
+			\draw [arrow] (dec1) -- node[anchor=south] {F} (dec2);
+			\draw [arrow] (dec1) -- node[anchor=east] {T} (dec3);
+			\draw [arrow] (dec2) -- node[anchor=south] {T} (out2);
+			\draw [arrow] (dec2) -- node[anchor=east] {F} (out3);
+			\draw [arrow] (out2) -- (stop);
+			\draw [arrow] (out3) -- (stop2);
+			\draw [arrow] (dec3) -- node[anchor=south] {T} (out4);
+			\draw [arrow] (dec3) -- node[anchor=east] {F} (out5);
+			\draw [arrow] (out4) -- (stop3);
+			\draw [arrow] (out5) -- (stop4);
+		\end{tikzpicture}
+	\end{center}
+\end{exercise}
+\subsubsection{Stampa tutti i numeri naturali fino a n}
+\begin{exercise}
+	\( \forall i \in [o,n] \) stampa a video i:
+	\begin{center}
+		\begin{tikzpicture}[node distance=2cm, scale=0.8, every node/.style={scale=0.8}]
+			\node (start) [startstop] {Inizio};
+			\node (in1) [input, below of=start] {n};
+			\node (proc1) [process, below of=in1] {i = 0};
+			\node (dec1) [decision, below of=proc1, yshift=-0.5cm] {i $<$ n};
+			\node (out1) [output, below of=dec1, yshift=-0.5cm] {i};
+			\node (proc2) [process, below of=out1] {i = i + 1};
+			\node (stop) [startstop, left of=dec1, xshift=-2cm] {Fine};
+
+			\draw [arrow] (start) -- (in1);
+			\draw [arrow] (in1) -- (proc1);
+			\draw [arrow] (proc1) -- (dec1);
+			\draw [arrow] (dec1) -- node[anchor=east] {V} (out1);
+			\draw [arrow] (out1) -- (proc2);
+			\draw [arrow] (proc2) -- ++(2, 0) |- (dec1);
+			\draw [arrow] (dec1) -- node[anchor=south] {F} (stop);
+
+		\end{tikzpicture}
+	\end{center}
+	Questo è un ciclo a condizione iniziale, cioè appena la condizione diventa falsa
+	si esce dal ciclo.
+\end{exercise}
+
+\subsubsection{Trovare il più grande tra n numeri}
+\begin{exercise}
+	Stampa il maggiore tra n numeri:
+	\begin{center}
+		\scalebox{0.8}{
+			\begin{tikzpicture}[node distance=2cm]
+				\node (start) [startstop] {Inizio};
+				\node (out1) [output, below of=start] {Quanti voti?};
+				\node (in1) [input, below of=out1] {n};
+				\node (proc1) [process, below of=in1] {i = 1};
+				\node (in2) [input, below of=proc1] {voto};
+				\node (proc2) [process, below of=in2] {max = voto};
+				\node (dec1) [decision, below of=proc2, yshift=-0.5cm] {i $<$ n};
+				\node (out2) [output, right of=in2, xshift=3cm] {max};
+				\node (stop) [startstop, below of=out2] {Fine};
+				\node (proc3) [process, below of=dec1, yshift=-0.5cm] {i = i + 1};
+				\node (in3) [input, below of=proc3] {voto};
+				\node (dec2) [decision, below of=in3, yshift=-0.5cm] {voto $>$ max};
+				\node (proc4) [process, right of=dec2, xshift=2cm] {max = voto};
+
+				\draw [arrow] (start) -- (out1);
+				\draw [arrow] (out1) -- (in1);
+				\draw [arrow] (in1) -- (proc1);
+				\draw [arrow] (proc1) -- (in2);
+				\draw [arrow] (in2) -- (proc2);
+				\draw [arrow] (proc2) -- (dec1);
+				\draw [arrow] (dec1) -- node[anchor=east] {Vero} (proc3);
+				\draw [arrow] (proc3) -- (in3);
+				\draw [arrow] (in3) -- (dec2);
+				\draw [arrow] (dec2) -- node[anchor=south] {Vero} (proc4);
+				\draw [arrow] (dec2) -- node[anchor=south] {Falso} ++(-3,0) |- (dec1);
+				\draw [arrow] (proc4) |- (dec1);
+				\draw [arrow] (dec1) -- node[anchor=west] {Falso} (out2);
+				\draw [arrow] (out2) -- (stop);
+			\end{tikzpicture}
+		}
+	\end{center}
+\end{exercise}
 
 \subsection{Ciclo guidato da sentinella}
 È un ciclo che termina quando viene inserito un valore particolare.
 \subsubsection{Trova il voto più alto tra un insieme di voti di cardinalità a priori
 	non specificata (terminare quando viene inserito -1)}
-\begin{center}
-	\scalebox{0.8}{
-		\begin{tikzpicture}[node distance=2cm]
-			\node (inizio) [startstop] {Inizio};
-			\node (voto1) [input, below of=inizio] {voto};
-			\node (sentinella) [decision, below of=voto1] {voto è -1?};
-			\node (fine1) [startstop, right of=sentinella, xshift=2cm] {Fine};
-			\node (maxvoto) [process, below of=sentinella, yshift=-0.5cm] {max = voto};
-			\node (votonon1) [decision, below of=maxvoto, yshift=-0.5cm] {voto \( \neq \)  -1?};
-			\node (voto2) [input, below of=votonon1, yshift=-0.5cm] {voto};
-			\node (votomaggioremax) [decision, below of=voto2, yshift=-0.5cm] {voto \( > \) max?};
-			\node (maxvoto2) [process, below of=votomaggioremax, yshift=-0.5cm] {max = voto};
-			\node (max) [output, right of=maxvoto, xshift=3cm] {max};
-			\node (fine2) [startstop, below of=max] {Fine};
+\begin{exercise}
+	Trova il voto più alto tra un insieme di voti di cardinalità a priori non specificata,terminando
+	quando viene inserito -1
+	\begin{center}
+		\scalebox{0.8}{
+			\begin{tikzpicture}[node distance=2cm]
+				\node (inizio) [startstop] {Inizio};
+				\node (voto1) [input, below of=inizio] {voto};
+				\node (sentinella) [decision, below of=voto1] {voto è -1?};
+				\node (fine1) [startstop, right of=sentinella, xshift=2cm] {Fine};
+				\node (maxvoto) [process, below of=sentinella, yshift=-0.5cm] {max = voto};
+				\node (votonon1) [decision, below of=maxvoto, yshift=-0.5cm] {voto \( \neq \)  -1?};
+				\node (voto2) [input, below of=votonon1, yshift=-0.5cm] {voto};
+				\node (votomaggioremax) [decision, below of=voto2, yshift=-0.5cm] {voto \( > \) max?};
+				\node (maxvoto2) [process, below of=votomaggioremax, yshift=-0.5cm] {max = voto};
+				\node (max) [output, right of=maxvoto, xshift=3cm] {max};
+				\node (fine2) [startstop, below of=max] {Fine};
 
-			\draw [arrow] (inizio) -- (voto1);
-			\draw [arrow] (voto1) -- (sentinella);
-			\draw [arrow] (sentinella) -- node[anchor=south] {Vero} (fine1);
-			\draw [arrow] (sentinella) -- node[anchor=east] {Falso} (maxvoto);
-			\draw [arrow] (maxvoto) -- (votonon1);
-			\draw [arrow] (votonon1) -- node[anchor=east] {Vero} (voto2);
-			\draw [arrow] (votonon1) -- node[anchor=south] {Falso} (max);
-			\draw [arrow] (voto2) -- (votomaggioremax);
-			\draw [arrow] (votomaggioremax) -- node[anchor=east] {Vero} (maxvoto2);
-			\draw [arrow] (votomaggioremax) -- node[anchor=south] {Falso} ++(-3,0) |- (votonon1);
-			\draw [arrow] (max) -- (fine2);
-			\draw [arrow] (votomaggioremax) -- ++(3,0) |- (votonon1);
-		\end{tikzpicture}
-	}
-\end{center}
+				\draw [arrow] (inizio) -- (voto1);
+				\draw [arrow] (voto1) -- (sentinella);
+				\draw [arrow] (sentinella) -- node[anchor=south] {Vero} (fine1);
+				\draw [arrow] (sentinella) -- node[anchor=east] {Falso} (maxvoto);
+				\draw [arrow] (maxvoto) -- (votonon1);
+				\draw [arrow] (votonon1) -- node[anchor=east] {Vero} (voto2);
+				\draw [arrow] (votonon1) -- node[anchor=south] {Falso} (max);
+				\draw [arrow] (voto2) -- (votomaggioremax);
+				\draw [arrow] (votomaggioremax) -- node[anchor=east] {Vero} (maxvoto2);
+				\draw [arrow] (votomaggioremax) -- node[anchor=south] {Falso} ++(-3,0) |- (votonon1);
+				\draw [arrow] (max) -- (fine2);
+				\draw [arrow] (votomaggioremax) -- ++(3,0) |- (votonon1);
+			\end{tikzpicture}
+		}
+	\end{center}
+\end{exercise}
 
 \section{Linguaggio di programmazione C}
 È un linguaggio di programmazione:
@@ -417,6 +498,7 @@ Per stampare il valore delle variabili:
 
     // %c indica un carattere
     // %f indica un float
+    // %.2f indica un float con 2 cifre decimali (solo in output)
     // %g indica un double
 \end{lstlisting}
 
