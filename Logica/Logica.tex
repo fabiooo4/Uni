@@ -230,7 +230,7 @@ il fatto che esiste un minimo a cui prima o poi si arriva.
 	\[\sum_{i=0}^{n} i = \frac{n(n+1)}{2}\]
 
 \end{exercise}
-\section{Teorema del principio di induzione su \( PROP \)}
+\section{Teorema del principio di induzione delle proprietà su \( PROP \)}
 \begin{definition}
 	\( P \subseteq PROP \)
 	\begin{enumerate}
@@ -308,7 +308,7 @@ modo da capire meglio come funziona.
 	\]
 \end{example}
 
-Tutte le funzioni definite ricorsivamente sono funzioni, e non tutte le funzioni possono essere definite ricorsivamente.
+Tutte le funzioni definite ricorsivamente sono funzioni, ma non tutte le funzioni possono essere definite ricorsivamente.
 
 \subsection{Definizione più precisa dell'esercizio \ref{ex:parentesiPari}}
 Ogni \( \alpha \in PROP \) ha un numero pari di parentesi: \( \forall \alpha \in PROP \) \( P[\alpha] \stackrel{sse}{\Leftrightarrow} \pi[\alpha] \) è pari
@@ -747,6 +747,33 @@ Si può leggere in più modi:
 	\[
 		\models(p \to (q \to r)) \to ((p \to q) \to (p \to r))
 	\]
+	\begin{center}
+		\begin{tabular}{c|c|c|c|c|c}
+			\( p\;q\;r \) & \( q \to r \) & \( p \to q \) & \( p \to r \) & \( p \to (q \to r) \) & \( (p \to q) \to (p \to r) \) \\
+			\hline
+			0\; 0\; 0     & 1             & 1             & 1             & 0                     & 1                             \\
+			0\; 0\; 1     & 0             & 1             & 0             & 1                     & 1                             \\
+			0\; 1\; 0     & 1             & 0             & 1             & 0                     & 0                             \\
+			0\; 1\; 1     & 1             & 0             & 0             & 0                     & 1                             \\
+			1\; 0\; 0     & 1             & 1             & 1             & 1                     & 1                             \\
+			1\; 0\; 1     & 0             & 1             & 1             & 1                     & 1                             \\
+			1\; 1\; 0     & 1             & 1             & 1             & 1                     & 1                             \\
+			1\; 1\; 1     & 1             & 1             & 1             & 1                     & 1                             \\
+		\end{tabular}
+		\begin{tabular}{c}
+			\((p \to (q \to r)) \to ((p \to q) \to (p \to r))\) \\
+			\hline
+			\( 0 \)                                             \\
+			\( 1 \)                                             \\
+			\( 1 \)                                             \\
+			\( 0 \)                                             \\
+			\( 1 \)                                             \\
+			\( 1 \)                                             \\
+			\( 1 \)                                             \\
+			\( 1 \)
+		\end{tabular}
+	\end{center}
+	La valutazione sulla formula finale non è sempre vera, quindi la formula non è una tautologia.
 \end{exercise}
 
 \begin{exercise}
