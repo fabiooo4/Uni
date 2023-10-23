@@ -1297,4 +1297,203 @@ Un altro esempio di mappa di Karnaugh è il seguente:
     \end{itemize}
     Lo stesso ragionamento viene applicato per tutti i gruppi, fino ad arrivare al risultato finale.
 \end{example}
+Le mappe di Karnaugh sono utili soltanto se le variabili sono meno di 5, altrimenti
+bisogna usare più mappe.
+
+
+
+\section{Metodo di Quine-McCluskey}
+Questo metodo ha 2 versioni:
+\begin{itemize}
+    \item Funzioni completamente specificate
+        \item Funzioni parzialmente specificate
+\end{itemize}
+Si divide in 2 fasi:
+\begin{enumerate}
+\item Si espande il più possibile il problema per cercare il massimo grado di minimizzazione.
+    (ad esempio trattando un \emph{don't care} come 1 per permettere ulteriori ottimizzazioni)
+    \item Bisogna capire quali servono veramente.
+\end{enumerate}
+
+\subsection{Esempio con funzione completamente specificata}
+\begin{example}
+    Prendiamo una funzione completamente specificata
+   \[
+       O = f(x,y,z,w) = \{ m_1, m_4, m_5, m_6, m_7, m_9, m_{11}, m_{14}, m_{15} \}
+   \]  
+   \begin{center}
+       \begin{tabular}{c|c}
+           \( m \) & \( x\;y\;z\;w \)\\
+           \hline
+           \( 1 \) & \( 0\;0\;0\;1 \)\\ 
+           \( 4 \) & \( 0\;1\;0\;0 \)\\
+           \( 5 \) & \( 0\;1\;0\;1 \)\\
+           \( 6 \) & \( 0\;1\;1\;0 \)\\
+           \( 7 \) & \( 0\;1\;1\;1 \)\\
+           \( 9 \) & \( 1\;0\;0\;1 \)\\ 
+           \( 11 \) & \( 1\;0\;1\;1 \)\\
+           \( 14 \) & \( 1\;1\;1\;0 \)\\
+           \( 15 \) & \( 1\;1\;1\;1 \)\\
+           \label{tab:quine-mccluskey1}
+    \end{tabular}
+   \end{center}
+   36 Letterali.\\
+   L'unico caso in cui due stringhe sono a distanza di Hamming \( =1 \) è quando il numero di \( 1 \) differisce di uno.\\
+   Il metodo di Quine-McCluskey riordina le \( m \)  in base al numero di \( 1 \) che contengono,
+   questo è il primo passo:
+      \begin{center}
+       \begin{tabular}{c|c}
+           \( m \) & \( x\;y\;z\;w \)\\
+           \hline
+           \( 1 \) & \( 0\;0\;0\;1\;\;\surd \)\\ 
+           \( 4 \) & \( 0\;1\;0\;0\;\;\surd \)\\
+           \hline
+           \( 5 \) & \( 0\;1\;0\;1\;\;\surd \)\\
+           \( 6 \) & \( 0\;1\;1\;0\;\;\surd \)\\
+           \( 9 \) & \( 1\;0\;0\;1\;\;\surd \)\\ 
+           \hline
+           \( 7 \) & \( 0\;1\;1\;1\;\;\surd \)\\
+           \( 11 \) & \( 1\;0\;1\;1\;\;\surd \)\\
+           \( 14 \) & \( 1\;1\;1\;0\;\;\surd \)\\
+           \hline
+           \( 15 \) & \( 1\;1\;1\;1\;\;\surd \)\\
+    \label{tab:quine-mccluskey2}
+    \end{tabular}
+   \end{center}
+   Si individuano i gruppi che sono a distanza di Hamming 1. Nel prossimo passo
+   confrontiamo i gruppi con \( 1\;bit=1 \) e con \( 2\;bit=1 \), se sono a 
+   distanza di Hamming 1 allora si mette \emph{don't care} nel bit che cambia.
+   Nella prima colonna c'è la coppia di \( m \) che viene confrontata. 
+         \begin{center}
+       \begin{tabular}{c|c}
+           \( m \) & \( x\;y\;z\;w \)\\
+           \hline
+           \( 1,\; 5 \) & \( 0\;-\;0\;1\;\;A \)\\ 
+           \( 1,\;9 \) & \( -\;1\;0\;0\;\;B \)\\
+           \( 4,\;5 \) & \( 0\;1\;0\;-\;\;\surd \)\\
+           \( 4,\;6 \) & \( 0\;1\;-\;0\;\;\surd \)\\
+           \hline
+           \( 5,\;7 \) & \( 0\;1\;-\;1\;\;\surd \)\\
+           \( 6,\;7 \) & \( 1\;0\;1\;-\;\;\surd \)\\
+           \( 6,\;14 \) & \( -\;1\;1\;0\;\;\surd \)\\
+           \( 9,\;11 \) & \( 1\;0\;-\;1\;\;C \)\\
+           \hline
+           \( 7,\;15 \) & \( -\;1\;1\;1\;\;\surd \)\\
+           \( 11,\;15 \) & \( 1\;-\;1\;1\;\;D \)\\
+           \( 14,\;15 \) & \( 1\;1\;1\;-\;\;\surd \)\\
+    \label{tab:quine-mccluskey3}
+    \end{tabular}
+   \end{center}
+   Tutti i mintermini della tabella \ref{tab:quine-mccluskey2} sono coperti da un implicante
+   della tabella \ref{tab:quine-mccluskey3}.
+
+   Ora si può semplificare anche la tabella \ref{tab:quine-mccluskey3} se i don't care
+   sono nella stessa variabile:
+            \begin{center}
+       \begin{tabular}{c|c}
+           \( m \) & \( x\;y\;z\;w \)\\
+           \hline
+           \( 4,\; 5, \;6, \;7 \) & \( 0\;1\;-\;-\;\;E \)\\ 
+           \( 6, \;7, \;14, \;15 \) & \( -\;1\;1\;-\;\;F \)\\
+    \label{tab:quine-mccluskey4}
+    \end{tabular}
+   \end{center}
+   I valori senza \( \surd \) sono implicanti primi perchè non sono coperti da nessun altro implicante
+   della tabella \ref{tab:quine-mccluskey4}. Anche i 2 valori nella tabella \ref{tab:quine-mccluskey4} sono
+   implicanti primi.\\
+   Implicanti primi: \( A,B,C,D,E,F \)
+   \[
+   A=0-01=\bar{X}\bar{Z}W
+\]
+   \[
+       B=-001=\bar{Y}\bar{Z}W
+   \]
+   \[
+       C=10-1=X\bar{Y}W
+   \]
+   \[
+       D=1-11=XZW
+   \]
+   \[
+       E=01--=\bar{X}Y
+   \]
+   \[
+       F=-11-=YZ
+   \]
+   16 Letterali.\\
+Ad ogni passo del metodo di Quine-McCluskey diminuisce il numero di letterali.
+
+Ora bisogna trovare gli implicanti primi essenziali
+\begin{center}
+    \begin{tabular}{c|c|c|c|c|c|c}
+        \( m \) & \( A \) & \( B \) & \( C \) & \( D \) & \( E \) & \( F \)\\ 
+        \hline
+        \( 1 \) & 1 & 1 &  &  &  &   \\
+        \( 4 \) &  &  &  &  & \textbf{1} &   \\
+        \( 5 \) & 1 &  &  &  & 1 &   \\
+        \( 6 \) &  &  &  &  & 1 & 1  \\
+        \( 7 \) &  &  &  &  & 1 & 1  \\
+        \( 9 \) &  & 1 & 1 &  &  &   \\
+        \( 11 \) &  &  & 1 & 1 &  &  \\
+        \( 14 \) &  &  &  &  &  & \textbf{1}  \\
+        \( 15 \) &  &  &  & 1 &  & 1  \\
+    \end{tabular}
+\end{center}
+E ed F sono essenziali perchè coprono \( m_4 \) e \( m_{14} \). Inoltre E ed F coprono
+anche \( m_5, m_6, m_7 \) e \( m_6, m_7, m_{14}, m_{15} \).  
+
+Tenendo in mente le \( m \) coperte, la tabella diventa:
+\begin{center}
+    \begin{tabular}{c|c|c|c|c}
+        & A & B & C & D\\
+        \hline
+        \( m_1 \) & 1 & 1 &  &  \\ 
+        \( m_9 \) &  & 1 & 1 &  \\
+        \( m_{11} \) &  &  & 1 & 1 \\ 
+    \end{tabular}
+\end{center}
+\paragraph{Eulistica} È un metodo per trovare la soluzione corretta, ma non garantisce
+che sia ottima.
+
+Se si cancella ad esempio \( m_1, m_9 \) perchè coperti da \( B \), allora \( B \)
+domina \( A \) e \( C \) domina D per la regola di \textbf{dominanza per colonne}.
+Prendendo la colonna con più elementi ho più probabilità di trovare la soluzione
+ottima.
+\[
+    O=E+F+B+C = \bar{X}Y+YZ+\bar{Y}\bar{Z}W+X\bar{Y}W
+\] 
+10 Letterali.\\
+La \textbf{pseudo-essenzialità} è l'essenzialità dopo aver già fatto un'ottimizzazione.
+\end{example}
+\begin{example}
+    Dominanza per righe
+    \begin{center}
+        \begin{tabular}{c|c|c|c|c}
+            & A & B & C & D\\
+            \hline 
+            \( \alpha \) & 1 &  & 1 &  \\ 
+            \( \beta \) & 1 &  &  & 1 \\
+            \( \gamma \) &  & 1 & 1 & 1 \\
+            \( \delta \) &  & 1 & 1 &  \\
+            \( \epsilon \) & 1 & 1 &  & 1 \\
+        \end{tabular}
+    \end{center}
+    \begin{itemize}
+        \item \( \beta \) dominato da \( \epsilon \) 
+            \item \( \delta \) dominato da \( \gamma \) 
+    \end{itemize}
+    Dobbiamo prendere \( \beta \) e \( \delta \) perchè cancellando \( A \) e \( D \)
+    si cancellano anche \( \gamma \) ed \( \epsilon \) perchè sono dominati.  
+    La tabella diventa:
+    \begin{center}
+               \begin{tabular}{c|c|c|c|c}
+            & A & B & C & D\\
+            \hline 
+            \( \alpha \) & 1 & \vline & 1 &  \\ 
+            \( \beta \) & 1 & \vline &  & 1  \\
+             \( \delta \) &  & \textbf{1} \vline & 1 & \\
+        \end{tabular}
+    \end{center}
+    Si fa finta che B e D siano essenziali (essenzialmente scelti a caso)
+\end{example}
 \end{document}
