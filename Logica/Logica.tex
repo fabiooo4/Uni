@@ -736,6 +736,28 @@ Si può leggere in più modi:
 	\[
 		\Gamma,\alpha \models \beta \Rightarrow \Gamma \models \alpha \to \beta
 	\]
+    \[
+        \Gamma,\alpha \models \beta \stackrel{def}{\Leftrightarrow} \forall v.\; [|(\Gamma,\alpha)|]_v=1 \Rightarrow [|\beta|]_v=1 \Leftrightarrow
+    \]
+    Per la definizione di implicazione:
+    \[
+        \forall v.\; [|\Gamma,\alpha|]_v \neq 1\; opure\; [|\beta|]_v=1 \Leftrightarrow
+    \] 
+    \[
+        \forall v.\; [|\Gamma|]_v \neq 1\; oppure\; [|\alpha|] = 0\; oppure\; [|\beta|]_v=1 \Leftrightarrow
+    \] 
+    Non \( a \) o \( b \) è la definizione dell'implica:
+    \[
+        \forall v.\; [|\Gamma|]_v \neq 1\; or\; [|\alpha \to \beta|]_v=1 \Leftrightarrow
+    \] 
+    Applicando di nuovo la definizione di implicazione:
+    \[
+        \forall v.\; [|\Gamma|]_v=1 \Rightarrow [|\alpha \to \beta|]_v=1 \stackrel{def}{\Leftrightarrow}
+    \] 
+    Quest'ultima è la definizione di conseguenza logica:
+    \[
+    \Gamma \models \alpha \to \beta
+    \] 
 \end{exercise}
 \begin{exercise}[a casa]
 	\[
@@ -790,5 +812,104 @@ Si può leggere in più modi:
 	\[
 		([|\Gamma|]_v=1\; \&\; [|(\alpha \wedge \beta)|]_v=1) \Rightarrow [|\alpha \wedge \beta|]_v=1
 	\]
+\end{exercise}
+
+
+\section{Convenzioni}
+\subsection{Rimozione della parentesi nella sintassi}
+Le parentesi possono essere omesse per rendere più leggibile la formula senza cambiare
+la sintassi.
+\begin{enumerate}
+    \item Omettiamo, quando possibile (ovvero quando non c'è ambiguità sintattica),
+        alcune parentesi: \( (\alpha \to \beta) \Rightarrow \alpha \to \beta \) 
+        \item Per ripristinare le parentesi servono precedenze tra i connettivi.
+            \begin{itemize}
+                \item \( \neg \) ha la precedenza più alta
+                    \item Dopo la negazione vengono: \( \wedge \) e \( \vee \):
+                        \[
+                        \alpha \vee \beta \wedge \gamma
+                        \] 
+                        \[
+                            (\alpha \vee \beta) \wedge \gamma \neq \alpha \vee (\beta \wedge \gamma)
+                        \] 
+                Bisogna quindi specificare la struttura della formula quando si usano \( \vee \) e \( \wedge \).
+                \item Poi viene \( \to  \), che associa a destra, cioè:
+                    \[
+                    \alpha_1 \to \alpha_2 \to \alpha_3 == \alpha_1 \to (\alpha_2 \to \alpha_3)
+                    \] 
+            \end{itemize}
+\end{enumerate}
+
+\subsubsection{Esempi}
+\[
+\gamma \to  \neg \alpha \vee \beta 
+\] 
+Diventa:
+\[
+\gamma \to (\neg \alpha) \vee \beta
+\] 
+Diventa:
+\[
+\gamma \to ((\neg \alpha) \vee \beta)
+\] 
+Diventa:
+\[
+(\gamma \to ((\neg \alpha) \vee \beta))
+\]
+
+
+\section{Definizione di sostituzione}
+\begin{definition}
+   \[
+       \phi \in PROP\;\; \phi[\psi/p]\;\; \psi \in PROP\;\;
+   \]  
+   \( p \) è un simbolo proposizionale che \textbf{occorre}\footnote{L' \textbf{occorrenza} è il numero di volte
+   in cui appare una formula:
+\[
+   \phi=((p_1 \to (p_5 \vee p_1))\wedge p_3)
+\] 
+Per osservare le occorrenze scrivo il simbolo + la posizione in cui appare (il numero del carattere ad esempio):
+\[
+    (p_1, 2), (p_1, 7)
+\]
+Quindi se si vuole sostituire \( p_1 \): \[ \phi[\psi/p_1] = ((\psi \to (p_5 \vee \psi))\wedge p_3)) \]
+} in \( \phi \)
+\begin{itemize}
+    \item \( \phi[\psi/p] = \bot\;\; se\; \phi = \bot \)
+    \item \( \phi[\psi/p] = \phi\;\; se\;\phi \in AT\; e\; \phi \neq p \) (non c'è la p, quindi non sostituisco niente)
+    \item \( \phi[\psi/p] = \psi\;\; \phi = p \) 
+    \item \( (\neg \phi)[\psi/p] =  \neg (\phi[\psi/p])\) 
+    \item \( (\phi_1 \circ \phi_2)[\psi/p]=(\phi_1[\psi/p] \circ \phi_2[\psi/p]) \)  \(\;\; \circ \in  \{ \wedge, \vee, \to  \} \) 
+\end{itemize}
+\end{definition}
+
+\section{Connettivi derivati}
+Deriviamo \( \leftrightarrow \) che finora abbiamo usato semanticamente come \( \Leftrightarrow \) 
+\[
+\alpha \leftrightarrow \beta = (\alpha \to \beta) \wedge (\beta \to \alpha)
+\] 
+\begin{theorem}
+    Due formule equivalenti si comportano nello stesso modo davanti alla sostituzione:
+    \[
+    se\; \models \phi_1 \leftrightarrow \phi_2 = (\models (\phi_1 \to \phi_2) \wedge (\models (\phi_2 \to \phi_1))
+    \] 
+    allora
+    \[
+        \models \psi[\phi_1/p] \leftrightarrow \psi[\phi_2/p]
+    \].
+\end{theorem}
+\[
+    \models \alpha \leftrightarrow \beta
+\] Vuol dire che
+\[
+    \alpha \approx \beta
+\] 
+\begin{exercise}[a casa]
+    (basta fare l'unfolding di \( \leftrightarrow \))
+    Lemma che va a sancire la semantica del se e solo se
+    \[
+        [|\phi \leftrightarrow \psi|]_v=1 \Leftrightarrow [|\phi|]_v=[|\psi|]_v
+    \] 
+    La semantica di \( \leftrightarrow \) è vera quando entrambi gli elementi sono uguali. 
 \end{exercise}
 \end{document}
