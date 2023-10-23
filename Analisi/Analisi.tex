@@ -294,7 +294,7 @@ dominio \( A \subseteq \mathbb{R} \) è un insieme \textbf{non} limitato superio
 			\coordinate (M) at (12,3);
 			\coordinate (N) at (13,3);
 
-			\draw [red, ultra thick] plot [smooth, tension=1] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
+			\draw [red, ultra thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
 
 			\draw [] (0,3) -- (13,3) node[right] {$L$};
 			\draw [dashed] (0,4) -- (13,4) node[right, scale=0.5] {$L+\epsilon$};
@@ -348,7 +348,7 @@ dominio \( A \subseteq \mathbb{R} \) è un insieme \textbf{non} limitato superio
 				\coordinate (M) at (12,6);
 				\coordinate (N) at (13,7);
 
-				\draw [red, ultra thick] plot [smooth, tension=1] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
+				\draw [red, ultra thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
 
 				\draw [] (0,4.8) -- (13,4.8) node[right] {$M$};
 				\draw [] (0,6) -- (13,6) node[right] {$M^1$};
@@ -395,7 +395,7 @@ dominio \( A \subseteq \mathbb{R} \) è un insieme \textbf{non} limitato superio
 				\coordinate (M) at (12,-6);
 				\coordinate (N) at (13,-7);
 
-				\draw [red, ultra thick] plot [smooth, tension=1] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
+				\draw [red, ultra thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
 
 				\draw [] (0,-4.8) -- (13,-4.8) node[right] {$M$};
 				\draw [] (0,-6) -- (13,-6) node[right] {$M^1$};
@@ -500,7 +500,7 @@ La funzione non entra in un intevallo limitato senza poi uscirne, quindi non esi
 		\coordinate (M) at (12,3);
 		\coordinate (N) at (13,3);
 
-		\draw [red, ultra thick] plot [smooth, tension=1] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
+		\draw [red, ultra thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
 
 		\draw [] (0,3) -- (13,3) node[right] {$L$};
 
@@ -628,19 +628,187 @@ Se \( P \) è un polinomio di grado \( p \) e \( Q \) è un polinomio di grado \
 	\end{cases}
 \]
 
-\subsection{Monotonia}
+\subsection{Limiti delle funzioni monotone}
 \begin{theorem}[di monotonia]
 	Sia \( A \subseteq \mathbb{R}\) un insieme non limitato superiormente e sia \( f:\;A \to \mathbb{R} \)
-	una funzione monotona. Allora
+	una funzione monotona\footnote{Le funzioni \textbf{monotone} sono funzioni che
+		sono sempre crescenti o sempre decrescenti}. Allora
 	\[
 		\lim_{x \to +\infty} f(x)\;\;esiste\;e
 	\]
 	\[
 		\lim_{x \to +\infty} f(x) =
 		\begin{cases}
-			sup\{ f(x):\; x \in A \}\;\;\; se\;f\;cresce \\
-			inf\{ f(x):\; x \in A \}\;\;\; se\;f\;decresce
+			sup\{ f(x):\; x \in A \}\;\;\; se\;f\;cresce\;(non decrescecnte) \\
+			inf\{ f(x):\; x \in A \}\;\;\; se\;f\;decresce\;(non crescente)
 		\end{cases}
 	\]
 \end{theorem}
+\( f: (0, +\infty) \to \mathbb{R} \)\\
+\( f \) è strettamente crescente e limitata (l'immagine di \( f \) è un insieme limitato).
+
+\begin{center}
+	\begin{tikzpicture}[scale=0.5, domain=0:7]
+		\draw[->] (-0.5,0) -- (7,0) node[right] {$x$};
+		\draw[->] (0,-0.5) -- (0,7) node[above] {$y$};
+
+		\coordinate (A) at (0,0);
+		\coordinate (B) at (1,2);
+		\coordinate (C) at (2,3.5);
+		\coordinate (D) at (3,4.5);
+		\coordinate (E) at (4,5);
+		\coordinate (F) at (5,5);
+		\coordinate (G) at (6,5);
+		\coordinate (H) at (7,5);
+
+		\draw [red, ultra thick] plot [smooth, tension=0.8] coordinates { (A) (B) (C) (D) (E) (F) (H) };
+
+		\draw [dashed] (0,5) -- (6,5) node[left, xshift=-3cm] {$5$};
+	\end{tikzpicture}
+\end{center}
+\[
+	\lim_{x \to +\infty} f(x) = 5
+\]
+\( g: (0,+\infty) \to \mathbb{R}\) è strettamente crescente e non limitata
+\begin{center}
+	\begin{tikzpicture}
+		\draw[->] (0, 0) -- (5, 0) node[right] {$x$};
+		\draw[->] (0, -2) -- (0, 2) node[above] {$y$};
+		\draw[domain=0.1:1.5, smooth, variable=\x, red, thick] plot ({\x}, {(\x)^2});
+
+		\draw [dashed] (0,1) -- (5,1) node[right, scale=0.5] {};
+	\end{tikzpicture}
+\end{center}
+\[
+	\lim_{x \to +\infty} g(x) = +\infty
+\]
+\vspace{1cm}
+
+\begin{center}
+	\( f: \mathbb{R} \to \mathbb{R} \)
+	\begin{tikzpicture}[scale=0.5, domain=0:13]
+		\draw[->] (-0.5,0) -- (13,0) node[right] {$x$};
+		\draw[->] (0,-0.5) -- (0,7) node[above] {$y$};
+
+		\coordinate (A) at (0,0);
+		\coordinate (B) at (1,1);
+		\coordinate (C) at (2,2);
+		\coordinate (D) at (3,6);
+		\coordinate (E) at (4,5);
+		\coordinate (F) at (5,3);
+		\coordinate (G) at (6,2.12);
+		\coordinate (H) at (7,3.9);
+		\coordinate (I) at (8,3);
+		\coordinate (J) at (9,3);
+		\coordinate (K) at (10,3);
+		\coordinate (L) at (11,3);
+		\coordinate (M) at (12,3);
+		\coordinate (N) at (13,3);
+
+		\draw [red, ultra thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
+
+		\draw [dashed] (7.2,0) -- (7.2,7) node[below, yshift=-3.5cm] {$5$};
+	\end{tikzpicture}
+\end{center}
+Questa funzione non è monotona, ma se guardiamo ciò che succede epr \( x>5 \) si ottiene
+una funzione monotona. Quindi la funzione globalmente non è monotona, ma è decrescente
+ristrettamente a partire da \( x=5 \).
+
+Per il teorema di monotonia, \[
+	\lim_{x \to +\infty} f(x) = L
+\]
+\begin{example}
+	\[
+		\lim_{x \to +\infty} log(x) = +\infty
+	\]
+	\begin{center}
+		\begin{tikzpicture}
+			\draw[->] (0, 0) -- (5, 0) node[right] {$x$};
+			\draw[->] (0, -2) -- (0, 2) node[above] {$y$};
+			\draw[domain=0.1:5, smooth, variable=\x, red, thick] plot ({\x}, {ln((\x))});
+
+			\draw [dashed] (0,1) -- (5,1) node[right, scale=0.5] {};
+		\end{tikzpicture}
+	\end{center}
+	Per il teorema di monotonia:
+	\[
+		\lim_{x \to +\infty} log(x) = sup\{ log(x): x>0 \}
+	\]
+	\[
+		\ge sup\{ log(e^n): n \in \mathbb{Z}, n>0 \}\;\;scelto\;arbitrariamente
+	\]
+	\[
+		= sup\{ n \cdot log(e): n \in \mathbb{Z}, n>0 \} = +\infty
+	\]
+	Abbiamo dimostrato (per il postulato di Eudosso - Archimede) che il limite di questa
+	funzione è uguale a \( +\infty \).
+\end{example}
+\begin{exercise}
+	Dimostrare che:
+	\[
+		\lim_{x \to +\infty} e^x = +\infty
+	\]
+	\begin{center}
+		\begin{tikzpicture}
+			\draw[->] (-3, 0) -- (3, 0) node[right] {$x$};
+			\draw[->] (0, -2) -- (0, 2) node[above] {$y$};
+			\draw[domain=-3:0.8, smooth, variable=\x, red, thick] plot ({\x}, {e^(\x)});
+		\end{tikzpicture}
+	\end{center}
+	E similmente che:
+	\[
+		\lim_{x \to +\infty} a^x = +\infty\;\;\;\forall a \in (0,+\infty)
+	\]
+\end{exercise}
+
+\section{Teorema dei carabinieri}
+\begin{theorem}[del confronto tra i limiti, o dei carabinieri]
+	Sia \( A \subseteq \mathbb{R} \) un insieme non limitato superiormente e siano
+	\( f,g,h: A \to \mathbb{R} \). Supponiamo che
+	\[
+		f(x) \le g(x) \le h(x)\;\;\;\forall x \in A
+	\]
+	Supponiamo inoltre che i limiti
+	\[
+		\lim_{x \to +\infty} f(x) = \lim_{x \to +\infty} h(x) = L
+	\]
+	esistano (e che siano uguali tra di loro). Allora
+	\[
+		\lim_{x \to +\infty} g(x) = L
+	\]
+	\begin{center}
+		\begin{tikzpicture}
+			\draw[->] (-0.2, 0) -- (5, 0) node[right] {$x$};
+			\draw[->] (0, -0.2) -- (0, 4) node[above] {$y$};
+			\draw[domain=0.48:5, smooth, variable=\x, blue, thick] plot ({\x}, {(-1/\x)+2}) node [below right] {h};
+			\draw[domain=0.48:5, smooth, variable=\x, green, thick] plot ({\x}, {(1/\x)+2}) node [above right] {f};
+			\draw[domain=0.48:5, smooth, variable=\x, red, thick] plot ({\x}, {((cos(\x r))/(\x +1))+2}) node [right] {g};
+
+			\draw [dashed] (0,2) node[left] {L} -- (5,2);
+		\end{tikzpicture}
+	\end{center}
+
+\end{theorem}
+\subsection{Variante}
+Sia \( A \subseteq \mathbb{R} \) non limitato superiormente e siano \( f,g: A \to \mathbb{R} \)
+\( t.c.\;f(x) \le g(x)\;\forall x \in A \).\\
+Se \( \lim_{x \to +\infty} f(x)= +\infty \) allora \( \lim_{x \to +\infty} g(x) = +\infty \).
+	\begin{center}
+		\begin{tikzpicture}
+			\draw[->] (-0.2, 0) -- (3, 0) node[right] {$x$};
+			\draw[->] (0, -0.2) -- (0, 4) node[above] {$y$};
+			\draw[domain=0.1:2, smooth, variable=\x, blue, thick] plot ({\x}, {\x^2}) node [below right] {g};
+            \draw[domain=0.1:2.7, smooth, variable=\x, red, thick] plot ({\x}, {\x^2/2}) node [above right] {f};
+		\end{tikzpicture}
+	\end{center}
+Se \( \lim_{x \to +\infty} f(x)= -\infty \) allora \( \lim_{x \to +\infty} g(x) = -\infty \).
+\begin{center}
+		\begin{tikzpicture}
+			\draw[->] (-0.2, 0) -- (3, 0) node[right] {$x$};
+			\draw[->] (0, -4) -- (0, 0.5) node[above] {$y$};
+			\draw[domain=0.1:2, smooth, variable=\x, blue, thick] plot ({\x}, {-(\x^2)}) node [below right] {f};
+            \draw[domain=0.1:2.7, smooth, variable=\x, red, thick] plot ({\x}, {-(\x^2/2)}) node [above right] {g};
+		\end{tikzpicture}
+	\end{center}
+
 \end{document}
