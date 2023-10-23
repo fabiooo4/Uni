@@ -597,8 +597,8 @@ il risultato in modulo avremo dei numeri da 0 a 256.
 	\begin{example}
 		Si vuole decodificare il seguente numero:
 		\[1\:01110111\:0110...0\]
-		\[M = -(1+\frac{1}{4}+\frac{1}{4})*2 = -(\frac{11}{8})*2^{e}\]
-		\[E = (1+2+4+16+32+64)-127=119-127=-8\]
+		\[M = -(1+\frac{1}{4}+\frac{1}{8})*2^e = -(\frac{11}{8})*2^{e}\]
+		\[e = (1+2+4+16+32+64)-127=119-127=-8\]
 		\[N = -\frac{11}{8} * 2^{-8}\]
 	\end{example}
 \end{figure}
@@ -624,6 +624,19 @@ il risultato in modulo avremo dei numeri da 0 a 256.
 				      M = 0010010 \ldots 0
 			      \]
 			\item Calcoliamo l'esponente:
+                \[
+                e = 34 + 2 = 36
+                \] Si aggiunge 2 perchè abbiamo fatto lo shift di 2 bit.
+                \[
+                e = 36 + 127 = 163
+                \] 
+                \[
+                    163_{10} = 10100011_2
+                \] 
+                \item Il numero in virgola mobile è:
+                \[
+                    0\:10100011\:0010010 \ldots 0
+                \]
 		\end{enumerate}
 	\end{example}
 \end{figure}
@@ -633,8 +646,8 @@ il risultato in modulo avremo dei numeri da 0 a 256.
 	\item $1\:00000000\:0...0 = -0$
 \end{itemize}
 
-Quando l'esponente è tutto 1 e la mantissa tutta 0 allora equivale a $infinito$
-+ o - in base al primo bit. Se invece la mantissa è diversa da 0 con esponente tutti 1
+Quando l'esponente è tutto 1 e la mantissa tutta 0 allora equivale a \( \pm \infty \)
+in base al primo bit. Se invece la mantissa è diversa da 0 con esponente tutti 1
 allora rappresenta un errore NaN.
 
 Somma:\\
@@ -1025,8 +1038,10 @@ di \textbf{letterale} che è una coppia chiave-valore. La funzione \( O \)
 è composta da 12 letterali e questo numero è in relazione con il numero di
 transistor nel senso che se una funzione ha più letterali di un altra si può
 già sapere che avrà bisogno di un minor numero di transistor.
-\subsection{Riduzione}
-La regola principale della riduzione è l'assorbimento:
+
+
+\subsection{Tecniche di ottimizzazione}
+La regola principale dell'ottimizzazione è l'\textbf{assorbimento}:
 Preso un prodottp \( P \)  moltiplicato ad un letterale \( a \) e la somma di
 questo prodotto, ma con il letterale negato \( \bar{a} \) allora il risultato
 è \( P \cdot  (a+\bar{a}) \) dove \( (a+\bar{a}) \) fa sempre 1, quindi rimane
@@ -1036,7 +1051,7 @@ questo prodotto, ma con il letterale negato \( \bar{a} \) allora il risultato
 \]
 
 \[
-	2 \cdot (|P|+1) \Rightarrow |P|
+    \underbrace{2 \cdot (|P|+1)}_{\text{Cardinalità prima dell'assorbimento}} \Rightarrow \underbrace{|P|}_{\text{Cardinalità dopo l'assorbimento}}
 \]
 Quindi se prendiamo come riferimento la funzione \( O \) si può applicare la
 regola dell'assorbimento per ridurre il numero di letterali:
@@ -1069,7 +1084,7 @@ E riapplicando la regola si arriva al minimo:
 Ogni mintermine è un prodotto (o implicante), ma dopo aver applicato la regola
 di assorbimento non è più un mintermine, ma soltanto prodotto (o implicante).
 \[
-	\bar{Z}\bar{Y}Z \to \bar{X}Z
+	\bar{X}\bar{Y}Z \to \bar{X}Z
 \]
 La \( Y \) non c'è più nel risultato dell'assorbimento, ciò vuol dire che non
 ci interessa il suo valore perchè non varia il risultato. Si può scrivere sia
@@ -1087,16 +1102,16 @@ Quindi ad esempio:\\
 	implicante
 \end{definition}
 
-\section{Assorbimento}
 \begin{figure}[H]
-	\begin{definition}
-		La \textbf{distanza di Hamming} è il numero di bit che differenziano 2 codici.
-		\begin{center}
-			\( 01 \textbf{10} \to 01 \textbf{01}\; \) distanza di Hamming = 2\\
-			\( 01 \textbf{0} \to 01 \textbf{1}\; \) distanza di Hamming = 1
-		\end{center}
-	\end{definition}
+    \begin{definition}
+        La \textbf{distanza di Hamming} è il numero di bit che differenziano 2 codici.
+        \begin{center}
+            \( 01 \textbf{10} \to 01 \textbf{01}\; \) distanza di Hamming = 2\\
+            \( 01 \textbf{0} \to 01 \textbf{1}\; \) distanza di Hamming = 1
+        \end{center}
+    \end{definition}
 \end{figure}
+\section{Assorbimento svolto graficamente}
 Prendendo come riferimento la funzione \( f(B^3)^1 \to B \)  definita precedentemente (che chiameremo \( O \)) 
 si può guardare la funzione come se fosse sul piano cartesiano con centro in
 un punto qualsiasi. Ogni punto adiacente al centro è un punto con distanza di
