@@ -911,5 +911,124 @@ Deriviamo \( \leftrightarrow \) che finora abbiamo usato semanticamente come \( 
         [|\phi \leftrightarrow \psi|]_v=1 \Leftrightarrow [|\phi|]_v=[|\psi|]_v
     \] 
     La semantica di \( \leftrightarrow \) è vera quando entrambi gli elementi sono uguali. 
+    \[
+        [|\phi \to \psi|]_v=1 \& [|\psi \to \phi|]_v \Leftrightarrow
+    \] 
+    \[
+        ([|\phi|]_v=0\; or\; [|\psi|]_v=1)\; \&\; ([|\psi|]_v=0\; or\; [|\phi|]_v=1) 
+    \] 
+    Vero quando \( \phi \) e \( \psi \) valutano allo stesso valore.
 \end{exercise}
+
+\section{Relazione di equivalenza}
+Una relazione è di equivalenza quando si impongono delle proprietà.
+\begin{enumerate}
+    \item \( \forall x \in A\;\;\; xRx \) (riflessività)
+    \item \( \forall a,b,c \in A\;\;\; (aRb\;\&\;bRc) \) (transitività)
+    \item \( \forall a,b \in A\;\;\; aRb  \Rightarrow bRa \) (simmetria)
+\end{enumerate}
+\[
+A\;\;\;\; R \subseteq A \times A
+\] 
+R è detta relazione di equivalenza sse: \( (x,y) \in R \), si può scrivere anche \( xRy \)  
+\[
+\approx \; \subseteq PROP \times PROP
+\] 
+\[
+    \phi\;\approx\;\psi \stackrel{def}{\Leftrightarrow} \models \phi \leftrightarrow \psi
+\] 
+\begin{theorem}
+    Si può dimostrare che \( \approx \) è una relazione di equivalenza
+    \begin{enumerate}
+        \item \textbf{Riflessività}: \[
+                \forall \phi \in PROP \;\;\; \phi\; \approx \; \phi \] 
+            \[
+                \models \phi \leftrightarrow \phi \Leftrightarrow \forall v.\; [|(\phi \to \phi) \wedge (\phi \to \phi)|]_v = 1
+            \]\[
+            \Leftrightarrow \forall v.\; [|\phi \to \phi|]_v = 1 \Leftrightarrow
+            \]  
+            \[
+                \forall v.\; ([|\phi|]_v=0\; or\; [|\phi|]_v=1)
+            \] 
+       \item \textbf{Simmetria}: \[
+       \forall \phi,\psi \in  PROP\;\;\; \phi \approx \psi \Rightarrow \psi \approx \phi
+       \] 
+       Presa una \( v \) generica:
+       \[
+           [|\phi \leftrightarrow \psi|]_v = 1 \Leftrightarrow [|(\phi \to \psi) \wedge (\psi \to \phi|)]_v=1 \Leftrightarrow 
+       \] 
+       \[
+           [|(\phi \to  \psi)|]_v=1\; \&\; [|\psi \to \phi|]_v=1 \Leftrightarrow
+       \] 
+        \[
+        [|(\psi \to \phi) \wedge (\phi \to \psi)|]_v=1 \Leftrightarrow \psi\; \approx\; \phi
+        \] 
+
+        \item \textbf{Transitività}: \[
+                \forall \phi,\psi,\gamma ((\phi\; \approx\; \psi\; \& \psi\; \approx\; \gamma) \to (\phi\; \approx\; \gamma)) 
+        \] 
+        \[
+            \forall v. [|\phi \leftrightarrow \psi|]_v=1 \;\&\; [|\psi \leftrightarrow \gamma|]_v=1 \Rightarrow [|\phi \to \gamma|]_v=1
+        \] 
+        Il risultato segue dal lemma: \( [|\alpha \leftrightarrow \beta|]_v=1 \Leftrightarrow [|\alpha|]_v=[|\beta|]_v \) 
+        
+        A casa applica il lemma.
+    \end{enumerate}
+\end{theorem}
+
+\section{Tautologie notevoli}
+\begin{enumerate}
+    \item \( \models \neg (\phi \wedge \psi) \leftrightarrow (\neg \phi \vee \neg \psi) \) Prima legge di \textbf{De Morgan}
+    \item \( \models \neg (\phi \vee \psi) \leftrightarrow (\neg \phi \wedge \neg \psi) \) Seconda legge di \textbf{De Morgan}
+    \item \( \models \phi \leftrightarrow \neg \neg \phi \) Negazione involutiva
+    \item \( \models (\phi \wedge \psi) \leftrightarrow (\psi \wedge \phi) \)  Commutatività
+    \item \( \models (\phi \vee \psi) \leftrightarrow (\psi \vee \phi) \) Commutatività
+    \item \( \models \phi \wedge (\psi \vee \gamma) \leftrightarrow ((\phi \wedge \psi) \vee (\phi \wedge \gamma)) \) Distributività
+    \item \( \models \phi \vee (\psi \wedge \gamma) \leftrightarrow ((\phi \vee \psi) \wedge (\phi \vee \gamma)) \) Distributività
+    \item \( \models \phi \vee (\psi \vee \gamma) \leftrightarrow (\phi \vee \psi) \vee \gamma \) Associatività per AND
+    \item \( \models \phi \wedge (\psi \wedge \gamma) \leftrightarrow (\phi \wedge \psi) \wedge \gamma \) Associatività per OR
+\end{enumerate}
+
+\begin{exercise}
+    Dimostrazione della seconda legge di De Morgan:
+    \[
+    \models \neg (\phi \vee \psi) \to (\neg \phi \wedge \neg \psi)
+    \] 
+    \[
+        \forall v.\; [|\neg(\phi \vee \psi) \to (\neg \phi \wedge \neg \psi)|]_v=1 \Leftrightarrow
+    \] 
+    \[
+        ([|\neg (\phi \vee \psi)|]_v=0\; or\; [|\neg \phi \wedge \neg \psi|]_v=1) \Leftrightarrow
+    \] 
+    \[
+        ([|\phi \vee \psi|]_v = 1 \;or\; ([|\neg \phi]_v=1\; \&\; [|\neg \psi|]_v=1)) \Leftrightarrow
+    \] 
+    \[
+        ([|\phi|]_v=1\;or\;[|\psi|]_v=1\;or\;( [|\phi|]_v=0\; \&\; [|\psi|]_v=0)) \Leftrightarrow
+    \] 
+    Tutti i casi \( \Rightarrow \) OK \( \square \)  
+\end{exercise}
+
+\begin{figure}[H]
+    \begin{exercise}
+        \[
+            \models \neg (\phi \vee \psi) \leftrightarrow (\neg \phi \wedge \neg \psi)
+        \] 
+        \[
+            \forall v.\; [|\neg (\phi \vee \psi)|]_v=1 \Leftrightarrow
+        \] 
+        \[
+            [|(\phi \vee \psi)|]_v=0 \Leftrightarrow
+        \] 
+        \[
+            [|\phi|]_v=0\; \&\; [|\psi|]_v=0 \Leftrightarrow
+        \] 
+        \[
+            [|\neg \phi|]_v=1 \; \&\; [|\neg \psi|]_v=1 \Leftrightarrow
+        \] 
+        \[
+            [|(\neg \phi \wedge \neg \psi)|]_v=1
+        \] 
+    \end{exercise}
+\end{figure}
 \end{document}
