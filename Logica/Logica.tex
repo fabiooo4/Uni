@@ -1031,4 +1031,121 @@ R è detta relazione di equivalenza sse: \( (x,y) \in R \), si può scrivere anc
         \] 
     \end{exercise}
 \end{figure}
+\begin{exercise}
+    Modulus Ponens
+    \[
+        (\underbrace{\Gamma \models \alpha \to \beta}_{1}\;\;\&\;\; \underbrace{\Gamma \models \alpha}_{2}) \Rightarrow \Gamma \models \beta
+    \] 
+    Per la definizione di conseguenza logica:
+    \begin{enumerate}
+        \item \[
+                \forall v.\; ([|\Gamma|]_v=1 \Rightarrow [|\alpha \to \beta|]_v=1) \;\&
+        \] 
+        \item \[
+                \forall v.\; ([|\Gamma|]_v=1 \Rightarrow [|\gamma|]_v=1)
+        \] 
+    \item[1.] \[
+            \Leftrightarrow \forall v.\; ([|\Gamma|]_v=1 \Rightarrow ([|\alpha|]_v=1 \Rightarrow [|\beta|]_v=1)) \Leftrightarrow
+    \] 
+    \end{enumerate}
+    \begin{define}
+        \[
+        a \Rightarrow b \Rightarrow c
+        \] 
+        È uguale a dire:
+        \[
+            (a \wedge b) \Rightarrow c
+        \] 
+    \end{define}
+    \begin{enumerate}
+        \item 
+        \[
+            \forall v.\; ([|\Gamma|]_v=1\;\&\;[|\alpha|]_v=1) \Rightarrow [|\beta|]_v=1 \Leftrightarrow
+        \] 
+    \item[1.]\[
+            \forall v.\; ([|\Gamma|]_v \neq 1\; or\; [|\alpha|]_v=0)\; or\; [|\beta|]_v=1 \Leftrightarrow
+    \] 
+\item[2.]\[
+        \forall v.\; ([|\Gamma|]_v=1 \Rightarrow [|\gamma|]_v = 1) \Leftrightarrow
+\]
+\item[2.]
+\[
+   \forall v.\; ([|\Gamma|]_v \neq 1\; or\; [|\gamma|]_v=1)  
+\] 
+    \end{enumerate}
+    Si mettono insieme \(\forall v.\; 1\; \&\; 2 \) 
+    \[
+        \forall v.\; ([|\Gamma|]_v \neq 1\; or\; [|\alpha|]_v=1)\; \&\; ([|\Gamma|]_v \neq 1\; or\; [|\gamma|]_v=0\; or\; [|\beta|]_v=1)
+    \] 
+    \[
+        \forall v.([|\Gamma|]_v \neq 1\; or\; [|\beta|]_v=1)])
+    \]
+    È la definizione di conseguenza logica (\( \neg \alpha \vee \beta \) ), quindi:
+    \[
+        \forall v. \;[|\Gamma|]_v=1 \Rightarrow [|\beta|]_v=1
+    \] 
+    \[
+    \Gamma \models \beta
+    \] 
+    \[
+    \square
+    \]  
+\end{exercise}
+
+
+
+\section{RAA (Reductio ad absurdum)}
+È un principio di tecnica di dimostrazione, cioè quella per assurdo.
+\[
+\Gamma, \neg \alpha \models \bot \Rightarrow \Gamma \models \alpha
+\] 
+Prendiamo un insieme generico \( \Delta \) 
+\[
+    \Delta \models \neg \;\;\;\;\;\;\; [|\neg|]_v=0
+\] 
+\[
+    \forall v.\; [|\Delta|]_v=1 \Rightarrow [|\bot|]_v=1 \Leftrightarrow
+\] 
+\[
+    \underbrace{[|\Delta|]_v \neq 1}_{\forall v.\; \exists \gamma \in \Delta\; t.c.\; [|\gamma|]_v=0}\; or\; \underbrace{[|\bot|]_v=1}_{ \times }
+\] 
+Se un insieme è falso, vuol dire che è insoddisfacibile:
+\[
+\Delta \models \bot
+\] 
+\( \Delta \) è insoddisfacibile
+\[
+    Se\; \Gamma \cup \{ \neg \alpha \}\; insoddisfacibile\; allora\; \Gamma \models \alpha
+\] 
+\begin{definition}
+    Si può interpretare la negazione di una formula nel seguente modo:
+    \[
+        \neg \alpha \stackrel{def}{\Leftrightarrow} \alpha \to \bot
+    \] 
+\end{definition}
+
+\[
+(*):\; \Gamma, \alpha \models \beta \Rightarrow \Gamma \models \alpha \to \beta
+\] 
+\[
+    \Gamma, \neg \alpha \models \bot \stackrel{(*)}{\Rightarrow} \Gamma \models \neg \alpha \to \bot
+\] 
+Per definizione di negazione:
+\[
+    \underbrace{ \underbrace{(\alpha \to \bot)}_{\neg \alpha} \to \bot}_{\neg \neg \alpha}
+\] 
+Quindi:
+\[
+\Gamma \models \neg \neg \alpha
+\] 
+Per la definizione di conseguenza logica:
+\[
+    \forall v.\; ([|\Gamma|]_v=1 \Rightarrow [|\neg \neg \alpha|]_v=1)
+\] 
+\[
+    [|\neg \neg \alpha|]_v=[|\alpha|]_v
+\] 
+\[
+    \forall v.\; (\underbrace{[|\Gamma|]_v=1 \Rightarrow [|\alpha|]_v=1}_{\Gamma \models \alpha})
+\] 
 \end{document}
