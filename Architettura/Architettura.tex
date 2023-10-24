@@ -1369,7 +1369,7 @@ Si divide in 2 fasi:
            \( m \) & \( x\;y\;z\;w \)\\
            \hline
            \( 1,\; 5 \) & \( 0\;-\;0\;1\;\;A \)\\ 
-           \( 1,\;9 \) & \( -\;1\;0\;0\;\;B \)\\
+           \( 1,\;9 \) & \( -\;0\;0\;1\;\;B \)\\
            \( 4,\;5 \) & \( 0\;1\;0\;-\;\;\surd \)\\
            \( 4,\;6 \) & \( 0\;1\;-\;0\;\;\surd \)\\
            \hline
@@ -1494,6 +1494,175 @@ La \textbf{pseudo-essenzialità} è l'essenzialità dopo aver già fatto un'otti
              \( \delta \) &  & \textbf{1} \vline & 1 & \\
         \end{tabular}
     \end{center}
-    Si fa finta che B e D siano essenziali (essenzialmente scelti a caso)
+    Si fa finta che B e D siano essenziali (essenzialmente scelti a caso).
 \end{example}
+
+
+\subsection{Esempio con funzione parzialmente specificata}
+Potrebbe uscire nel risultato un \emph{don't care}, ad esempio per condizioni di 
+ingresso non utilizzate.
+
+Prendiamo in considerazione una funzione booleana \( f(B^n)=B \) parzialmente
+specificata che viene descritta tramite 3 insiemi:
+\begin{itemize}
+    \item \textbf{ON-SET}: insieme delle configurazioni per cui vale 1
+    \item \textbf{DC-SET}: insieme delle configurazioni per le quali
+        la funzione non è specificata
+    \item \textbf{OFF-SET}: insieme delle configurazioni per cui vale 0
+\end{itemize}
+L'intersezione fra i 3 insiemi deve essere vuota, mentre l'unione è l'insieme
+di tutte le configurazioni possibili.
+
+Per conoscere tutti e 3 gli insiemi basta conoscerne 2 di essi.
+\begin{example}
+    Funzione parzialmente specificata
+        \begin{center}
+            \begin{tabular}{c|c}
+                x y z v & 0\\
+                \hline
+                0 0 0 0 & 0\\
+                0 0 0 1 & 0\\
+                0 0 1 0 & 0\\
+                0 0 1 1 & -\\
+                0 1 0 0 & 1\\
+                0 1 0 1 & -\\
+                0 1 1 0 & -\\
+                0 1 1 1 & -\\
+                1 0 0 0 & 0\\
+                1 0 0 1 & 0\\
+                1 0 1 0 & 1\\
+                1 0 1 1 & 1\\
+                1 1 0 0 & 0\\
+                1 1 0 1 & 1\\
+                1 1 1 0 & 1\\
+                1 1 1 1 & 1\\
+            \end{tabular}
+        \end{center}
+        \[ON-SET = \{ m_4,m_{10},m_{11},m_{13},m_{14},m_{15} \} \]
+        \[
+        DC-SET = \{ m_3,m_5,m_6,m_7 \}
+        \] 
+        Il primo passo è quello di ampliare il problema, quindi si considerano i
+        don't care come 1, e poi rioridnare i mintermini in base al numero di 1.
+        \begin{center}
+            \begin{tabular}{c|c|c}
+                m & x y z v &\\
+                \hline
+                4 & 0 1 0 0 & \( \surd \) \\
+                \hline
+                3 & 0 0 1 1 &\( \surd \) \\
+                5 & 0 1 0 1 &\( \surd \) \\
+                6 & 0 1 1 0 &\( \surd \) \\
+                10 & 1 0 1 0&\( \surd \) \\
+                \hline
+                7 & 0 1 1 1&\( \surd \) \\
+                11 & 1 0 1 1&\( \surd \) \\
+                13 & 1 1 0 1&\( \surd \) \\
+                14 & 1 1 1 0&\( \surd \) \\
+                \hline
+                15 & 1 1 1 1&\( \surd \) \\
+            \end{tabular}
+        \end{center}
+        Il secondo passo è quello di tentare la semplificazione:
+        \begin{center}
+            \begin{tabular}{c|c|c}
+                m & x y z v& \\
+                \hline
+                4, 5 & 0 1 0 -& \( \surd \) \\
+                4, 6 & 0 1 - 0& \( \surd \) \\
+                \hline
+                3, 7 & 0 - 1 1& \( \surd \) \\
+                3, 11 & - 0 1 1& \( \surd \) \\
+                5, 7 & 0 1 - 1& \( \surd \) \\
+                5, 13 & - 1 0 1& \( \surd \) \\
+                6, 7 & 0 1 1 -& \( \surd \) \\
+                6, 14 & - 1 1 0& \( \surd \) \\
+                10, 11 & 1 0 1 -& \( \surd \) \\
+                10, 14 & 1 - 1 0& \( \surd \) \\
+                \hline
+                7, 15 & - 1 1 1& \( \surd \) \\
+                11, 15 & 1 - 1 1& \( \surd \) \\
+                13, 15 & 1 1 - 1& \( \surd \) \\
+                14, 15 & 1 1 1 -& \( \surd \) \\
+            \end{tabular}
+        \end{center}
+        Ora si applica di nuovo la semplificazione:
+        \begin{center}
+            \begin{tabular}{c|c|c}
+                m & x y z v&\\
+                \hline
+                4, 5, 6, 7 & 0 1 - -& A\\
+                \hline
+                3, 7, 11, 15 & - - 1 1& B\\
+                5, 7, 13, 15 & - 1 - 1& C\\
+                6, 7, 14, 15 & - 1 1 -& D\\
+                10, 11, 14, 15 & 1 - 1 -& E\\
+            \end{tabular}
+        \end{center}
+        Visto che non si possono fare ulteriori semplificazioni \( A, B, C, D, E \)
+        sono tutti implicanti primi.
+
+        Ora si cerca di capire quali sono gli implicanti primi essenziali considerando
+        però soltanto l'ON-SET:
+        \begin{center}
+            \begin{tabular}{c|c|c|c|c|c}
+                m & A & B & C & D & E \\
+                \hline
+                \( m_4 \) & \textbf{1} &  &  &  &  \\ 
+                \hline
+                \( m_{10} \) &  &  &  &  & \textbf{1} \\
+                \hline
+                \( m_{11} \) &  & 1 &  &  & 1 \\
+                \hline
+                \( m_{13} \) &  &  & \textbf{1} &  &  \\
+                \hline
+                \( m_{14} \) &  &  &  & 1 & 1 \\
+                \hline
+                \( m_{15} \) &  & 1 & 1 & 1 & 1 
+            \end{tabular}
+        \end{center}
+        Si cancellano le righe \( A, C, E \) perchè sono implicanti primi essenziali,
+        quindi si coprono anche tutte le righe delle colonne \( A, C, E \) che
+        contengono 1. Si arriva quindi a coprire tutta la tabella e il risultato
+        finale è:
+        \[
+        O = A + C + E
+        \] 
+\end{example}
+
+
+
+\section{Circuiti Combinatori}
+\begin{itemize}
+    \item \textbf{PROM}: Programmable Read Only Memory (ROM)
+        \item \textbf{PLA}: Programmable Logic Array, attivano diverse porte logiche
+\end{itemize}
+I circuiti a 2 livelli sono composti da 2 livelli di porte logiche:
+\begin{enumerate}
+    \item Porte AND
+        \item Porte OR
+\end{enumerate}
+
+\subsubsection{PLA (Programmable Logic Array)}
+\begin{example}
+    Un esempio di PLA:
+    \[
+    O_1 = \bar{X}Y + YV + XZ
+    \] 
+    \[
+        O_2 = \bar{X}\bar{Y} + YV + X\bar{Z}
+    \] 
+    \label{D1}
+\end{example}
+
+\subsubsection{CPLD (Complex Programmable Logic Device)}
+I CPLD ttivano diversi PLA.
+\label{D2}
+
+\subsubsection{FPGA (Field Programmable Gate Array)}
+\label{D3}
+
+
+\subsubsection{SoC (System on Chip)}
+\label{D4}
 \end{document}
