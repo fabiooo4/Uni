@@ -296,13 +296,16 @@ Il segno si rappresenta con un bit, 0 per il positivo e 1 per il negativo.
 Il bit più significativo è il bit del segno, mentre i bit meno significativi
 rappresentano il modulo.
 
-\begin{center}
-	\begin{tikzpicture}
-		\draw[draw] (0, 0) rectangle (2,1) node[pos=.5, align=center] {1 bit:\\
-				segno \( \pm \) };
-		\draw[draw] (2, 0) rectangle (7,1) node[pos=.5, align=center] {7 bit: modulo};
-	\end{tikzpicture}
-\end{center}
+\begin{figure}[H]
+    \begin{center}
+        \begin{tikzpicture}
+            \draw[draw] (0, 0) rectangle (2,1) node[pos=.5, align=center] {1 bit:\\
+                segno \( \pm \) };
+            \draw[draw] (2, 0) rectangle (7,1) node[pos=.5, align=center] {7 bit: modulo};
+        \end{tikzpicture}
+    \end{center}
+    \caption{Bit dedicati alla codifica a modulo + segno} 
+\end{figure}
 Considerando l'esempio \ref{ex:57modulo} si hanno le seguenti rappresentazioni:
 
 \begin{center}
@@ -327,32 +330,38 @@ La codifica in complemento a 2 rimuove tutti i problemi della codifica in modulo
 infatti è l'obiettivo di questa codifica e parte dell'idea di trovare la
 codifica di -1, pertanto si cerca di formulare \( -1+1=0 \).
 
-\begin{center}
-	\begin{tabular}{ c|c }
-		Obiettivo            & Risultato      \\
-		\hline                                \\
-		\( ????_2 \) \( + \) & \( 1111_2 + \) \\
-		\( 0001_2 = \)       & \( 0001_2 = \) \\ [2ex]
-		\hline                                \\
-		\( 0000_2 = \)       & \( 0000_2 \)   \\
-	\end{tabular}
-\end{center}
+\begin{table}[H]
+    \begin{center}
+        \begin{tabular}{ c|c }
+            Obiettivo            & Risultato      \\
+            \hline                                \\
+            \( ????_2 \) \( + \) & \( 1111_2 + \) \\
+            \( 0001_2 = \)       & \( 0001_2 = \) \\ [2ex]
+            \hline                                \\
+            \( 0000_2 = \)       & \( 0000_2 \)   \\
+        \end{tabular}
+    \end{center}
+    \caption{Obiettivo della codifica in complemento a 2}
+\end{table}
 
 Se si considera il numero di bit \( n=4 \), allora l'intervallo di valori è
 \( -2^3 \le N \le 2^3-1 \):
 
-\begin{center}
-	\begin{tabular}{c|c}
-		\( 0_{10} = 0000_{2}\) & \( -1_{10} = 1111_{2}\) \\
-		\( 1_{10} = 0001_{2}\) & \( -2_{10} = 1110_{2}\) \\
-		\( 2_{10} = 0010_{2}\) & \( -3_{10} = 1101_{2}\) \\
-		\( 3_{10} = 0011_{2}\) & \( -4_{10} = 1100_{2}\) \\
-		\( 4_{10} = 0100_{2}\) & \( -5_{10} = 1011_{2}\) \\
-		\( 5_{10} = 0101_{2}\) & \( -6_{10} = 1010_{2}\) \\
-		\( 6_{10} = 0110_{2}\) & \( -7_{10} = 1001_{2}\) \\
-		\( 7_{10} = 0111_{2}\) & \( -8_{10} = 1000_{2}\) \\
-	\end{tabular}
-\end{center}
+\begin{table}[H]
+    \begin{center}
+        \begin{tabular}{c|c}
+            \( 0_{10} = 0000_{2}\) & \( -1_{10} = 1111_{2}\) \\
+            \( 1_{10} = 0001_{2}\) & \( -2_{10} = 1110_{2}\) \\
+            \( 2_{10} = 0010_{2}\) & \( -3_{10} = 1101_{2}\) \\
+            \( 3_{10} = 0011_{2}\) & \( -4_{10} = 1100_{2}\) \\
+            \( 4_{10} = 0100_{2}\) & \( -5_{10} = 1011_{2}\) \\
+            \( 5_{10} = 0101_{2}\) & \( -6_{10} = 1010_{2}\) \\
+            \( 6_{10} = 0110_{2}\) & \( -7_{10} = 1001_{2}\) \\
+            \( 7_{10} = 0111_{2}\) & \( -8_{10} = 1000_{2}\) \\
+        \end{tabular}
+    \end{center}
+    \caption{Codifica in complemento a 2 con \( n=4 \) bit}
+\end{table}
 I valori nel complemento a 2 ciclano, quindi se si somma 1 a 7 si ottiene -8.
 
 \begin{example}
@@ -371,24 +380,30 @@ I valori nel complemento a 2 ciclano, quindi se si somma 1 a 7 si ottiene -8.
 			      \( !(0010001_2) = 1101110_2 = -18_{10} \)
 		      \end{center}
 		\item Si somma 1 al numero trovato.
-		      \begin{center}
-			      \begin{tabular}{l}
-				      \( 1101110\; + \) \\
-				      \( 0000001 = \)   \\
-				      \hline
-				      \( 1101111 \)
-			      \end{tabular}\\
-			      \( 1101111_2 = -17_{10} \)
-		      \end{center}
+            \begin{table}[H]
+                \begin{center}
+                    \begin{tabular}{l}
+                        \( 1101110\; + \) \\
+                        \( 0000001 = \)   \\
+                        \hline
+                        \( 1101111 \)
+                    \end{tabular}\\
+                    \( 1101111_2 = -17_{10} \)
+                \end{center}
+                \caption{Somma di 1 al numero invertito}
+            \end{table}
 		\item Si somma il numero trovato al numero positivo.
-		      \begin{center}
-			      \begin{tabular}{l}
-				      \( 0010001\; + \) \\
-				      \( 1101111 = \)   \\
-				      \hline
-				      \( \textbf{1}0011010 \)
-			      \end{tabular}
-		      \end{center}
+            \begin{table}[H]
+                \begin{center}
+                    \begin{tabular}{l}
+                        \( 0010001\; + \) \\
+                        \( 1101111 = \)   \\
+                        \hline
+                        \( \textbf{1}0011010 \)
+                    \end{tabular}
+                \end{center}
+               \caption{Somma del numero positivo con il numero negativo} 
+            \end{table}
 		\item Il risultato ottenuto è: \[
 			      \textbf{1}0011010
 		      \] Si osserva che c'è un bit in più rispetto a quelli disponibili (quello
@@ -406,23 +421,29 @@ I valori nel complemento a 2 ciclano, quindi se si somma 1 a 7 si ottiene -8.
 \paragraph{Estensione del numero con il complemento a 2}
 \begin{itemize}
 	\item Se un numero è \textbf{positivo} va esteso con gli \( \textbf{0} \)
-	      \begin{center}
-		      \begin{tabular}{l|l}                                        \\
-			      \( +57_{10}+ \)  & \( 0111001_2\;+ \)        \\
-			      \( +7_{10}\;= \) & \( \textbf{0000}111_2= \) \\ \\
-			      \hline                                       \\
-			      \( +64_{10} \)   & \( 1000010_2 \)
-		      \end{tabular}
-	      \end{center}
+        \begin{table}[H]
+            \begin{center}
+                \begin{tabular}{l|l}                                        \\
+                    \( +57_{10}+ \)  & \( 0111001_2\;+ \)        \\
+                    \( +7_{10}\;= \) & \( \textbf{0000}111_2= \) \\ \\
+                    \hline                                       \\
+                    \( +64_{10} \)   & \( 1000010_2 \)
+                \end{tabular}
+            \end{center}
+           \caption{Estensione di un numero positivo} 
+        \end{table}
 	\item Se un numero è \textbf{negativo} va esteso con gli \( \textbf{1} \)
-	      \begin{center}
-		      \begin{tabular}{l|l}                                        \\
-			      \( +57_{10}+ \)  & \( 0111001_2\;+ \)        \\
-			      \( -7_{10}\;= \) & \( \textbf{1111}111_2= \) \\ \\
-			      \hline                                       \\
-			      \( +50_{10} \)   & \( 10110010_2 \)
-		      \end{tabular}
-	      \end{center}
+        \begin{table}[H]
+            \begin{center}
+                \begin{tabular}{l|l}                                        \\
+                    \( +57_{10}+ \)  & \( 0111001_2\;+ \)        \\
+                    \( -7_{10}\;= \) & \( \textbf{1111}111_2= \) \\ \\
+                    \hline                                       \\
+                    \( +50_{10} \)   & \( 10110010_2 \)
+                \end{tabular}
+            \end{center}
+            \caption{Estensione di un numero negativo}
+        \end{table}
 \end{itemize}
 
 \section{Numeri razionali}
@@ -516,45 +537,50 @@ divisione sono agevolate tramite l'utilizzo dello \emph{shift}.
 
 \begin{itemize}
 	\item \(0110 \cdot  2 = 1100\) è uno shift a sinistra in binario.
-	      \begin{center}
-		      \Large
-		      \begin{tikzpicture}
-			      \node[align=left] (Prima1) at (0,0) {0};
-			      \node[align=left] (Prima2) at (0.2,0) {1};
-			      \node[align=left] (Prima3) at (0.4,0) {1};
-			      \node[align=left] (Prima4) at (0.6,0) {0};
+        \begin{figure}[H]
+            \begin{center}
+                \Large
+                \begin{tikzpicture}
+                    \node[align=left] (Prima1) at (0,0) {0};
+                    \node[align=left] (Prima2) at (0.2,0) {1};
+                    \node[align=left] (Prima3) at (0.4,0) {1};
+                    \node[align=left] (Prima4) at (0.6,0) {0};
 
-			      \node[align=left] (Dopo1) at (0,-1) {1};
-			      \node[align=left] (Dopo2) at (0.2,-1) {1};
-			      \node[align=left] (Dopo3) at (0.4,-1) {0};
-			      \node[align=left] (Dopo4) at (0.6,-1) {0};
+                    \node[align=left] (Dopo1) at (0,-1) {1};
+                    \node[align=left] (Dopo2) at (0.2,-1) {1};
+                    \node[align=left] (Dopo3) at (0.4,-1) {0};
+                    \node[align=left] (Dopo4) at (0.6,-1) {0};
 
-			      \draw[->, draw] (Prima2) to (Dopo1);
-			      \draw[->, draw] (Prima3) to (Dopo2);
-			      \draw[->, draw] (Prima4) to (Dopo3);
-		      \end{tikzpicture}
-	      \end{center}
+                    \draw[->, draw] (Prima2) to (Dopo1);
+                    \draw[->, draw] (Prima3) to (Dopo2);
+                    \draw[->, draw] (Prima4) to (Dopo3);
+                \end{tikzpicture}
+            \end{center}
+            \caption{Shift a sinistra in binario}
+        \end{figure}
 
 	\item \(1010/2 = 0101\) è uno shift a destra in binario.
-	      \begin{center}
-		      \Large
-		      \begin{tikzpicture}
-			      \node[align=left] (Prima1) at (0,0) {1};
-			      \node[align=left] (Prima2) at (0.2,0) {0};
-			      \node[align=left] (Prima3) at (0.4,0) {1};
-			      \node[align=left] (Prima4) at (0.6,0) {0};
+        \begin{figure}[H]
+            \begin{center}
+                \Large
+                \begin{tikzpicture}
+                    \node[align=left] (Prima1) at (0,0) {1};
+                    \node[align=left] (Prima2) at (0.2,0) {0};
+                    \node[align=left] (Prima3) at (0.4,0) {1};
+                    \node[align=left] (Prima4) at (0.6,0) {0};
 
-			      \node[align=left] (Dopo1) at (0,-1) {0};
-			      \node[align=left] (Dopo2) at (0.2,-1) {1};
-			      \node[align=left] (Dopo3) at (0.4,-1) {0};
-			      \node[align=left] (Dopo4) at (0.6,-1) {1};
+                    \node[align=left] (Dopo1) at (0,-1) {0};
+                    \node[align=left] (Dopo2) at (0.2,-1) {1};
+                    \node[align=left] (Dopo3) at (0.4,-1) {0};
+                    \node[align=left] (Dopo4) at (0.6,-1) {1};
 
-			      \draw[->, draw] (Prima1) to (Dopo2);
-			      \draw[->, draw] (Prima2) to (Dopo3);
-			      \draw[->, draw] (Prima3) to (Dopo4);
-		      \end{tikzpicture}
-	      \end{center}
-
+                    \draw[->, draw] (Prima1) to (Dopo2);
+                    \draw[->, draw] (Prima2) to (Dopo3);
+                    \draw[->, draw] (Prima3) to (Dopo4);
+                \end{tikzpicture}
+            \end{center}
+            \caption{Shift a destra in binario}
+        \end{figure}
 \end{itemize}
 
 
@@ -587,14 +613,17 @@ L'impatto dei bit sull'esponente è doppiamente esponenziale, quindi cresce tant
 	\item \textbf{1 bit} al segno.
 \end{itemize}
 
-\begin{center}
-	\begin{tikzpicture}
-		\draw[draw] (0, 0) rectangle (1.6,1) node[pos=.5, align=center] {1 bit:\\
-				segno \( \pm \) };
-		\draw[draw] (1.6, 0) rectangle (5,1) node[pos=.5, align=center] {8 bit: esponente};
-		\draw[draw] (5, 0) rectangle (10,1) node[pos=.5, align=center] {23 bit: mantissa};
-	\end{tikzpicture}
-\end{center}
+\begin{figure}[H]
+    \begin{center}
+        \begin{tikzpicture}
+            \draw[draw] (0, 0) rectangle (1.6,1) node[pos=.5, align=center] {1 bit:\\
+                segno \( \pm \) };
+            \draw[draw] (1.6, 0) rectangle (5,1) node[pos=.5, align=center] {8 bit: esponente};
+            \draw[draw] (5, 0) rectangle (10,1) node[pos=.5, align=center] {23 bit: mantissa};
+        \end{tikzpicture}
+    \end{center}
+    \caption{Bit dedicati alla codifica in virgola mobile}
+\end{figure}
 Per la rappresentazione univoca la mantissa si codifica in virgola fissa.
 Cioè si parte da una mantissa con un \textbf{punto fisso} e dividendo o moltiplicando (shift) si
 può spostare la virgola per arrivare alla forma \textbf{1.00000...} e questa forma è la
@@ -678,10 +707,6 @@ Quando l'esponente è tutto 1 e la mantissa tutta 0 allora equivale a \( \pm \in
 in base al primo bit. Se invece la mantissa è diversa da 0 con esponente tutti 1
 allora rappresenta un errore NaN.
 
-Somma:\\
-\label{es2}
-
-
 %Lezione 4
 \section{Modelli}
 Per un progetto bisogna creare un \textbf{modello} che rappresenti il sistema.
@@ -700,6 +725,7 @@ una quintupla: \( <B^{n}, \cdot, + ,\{0,1\}> \)
 		\node (B) at (-2,-0.3) {B};
 		\node (O) at (2,0.3) {O};
 	\end{tikzpicture}
+    \caption{Modello di un sistema digitale}
 \end{figure}
 
 \begin{itemize}
@@ -719,37 +745,43 @@ Bool garantisce che si può creare qualsiasi funzione utilizzando soltanto i
 	\]
 	\( O=1 \leftrightarrow A=B \)\\
 	\( f(B^2) \to B \)
-	\begin{center}
-		\begin{tikzpicture}
-			\draw[thick] (0,0) circle [x radius=0.5cm, y radius=1.5cm]
-			(2,0) circle [x radius=0.5cm, y radius=1.5cm];
+    \begin{figure}[H]
+        \begin{center}
+            \begin{tikzpicture}
+                \draw[thick] (0,0) circle [x radius=0.5cm, y radius=1.5cm]
+                    (2,0) circle [x radius=0.5cm, y radius=1.5cm];
 
-			\node[align=center] (00) at (0,0.8) {00};
-			\node[align=center] (11) at (0,0.3) {11};
-			\node[align=center] (01) at (0,-0.2) {01};
-			\node[align=center] (10) at (0,-0.7) {10};
+                \node[align=center] (00) at (0,0.8) {00};
+                \node[align=center] (11) at (0,0.3) {11};
+                \node[align=center] (01) at (0,-0.2) {01};
+                \node[align=center] (10) at (0,-0.7) {10};
 
-			\node[align=center] (1) at (2,0.6) {1};
-			\node[align=center] (0) at (2,-0.5) {0};
+                \node[align=center] (1) at (2,0.6) {1};
+                \node[align=center] (0) at (2,-0.5) {0};
 
-			\draw[->, draw] (00) to (1);
-			\draw[->, draw] (11) to (1);
-			\draw[->, draw] (01) to (0);
-			\draw[->, draw] (10) to (0);
-		\end{tikzpicture}
-	\end{center}
+                \draw[->, draw] (00) to (1);
+                \draw[->, draw] (11) to (1);
+                \draw[->, draw] (01) to (0);
+                \draw[->, draw] (10) to (0);
+            \end{tikzpicture}
+        \end{center}
+        \caption{Modello di un sistema digitale}
+    \end{figure}
 	Per mappare i valori in ingresso con quelli di uscita si usa una
 	\textbf{tabella di verità}:
-	\begin{center}
-		\begin{tabular}{c|c|c}
-			\( A \) & \( B \) & \( O \) \\
-			\hline
-			0       & 0       & 1       \\
-			0       & 1       & 0       \\
-			1       & 0       & 0       \\
-			1       & 1       & 1       \\
-		\end{tabular}
-	\end{center}
+    \begin{table}[H]
+        \begin{center}
+            \begin{tabular}{c|c}
+                \( A \)  \( B \) & \( O \) \\
+                \hline
+                0        0       & 1       \\
+                0        1       & 0       \\
+                1        0       & 0       \\
+                1        1       & 1       \\
+            \end{tabular}
+        \end{center}
+        \caption{Tabella di verità}
+    \end{table}
 	Chiamiamo mintermine un punto dello spazio booleano in ingresso in cui la
 	funzione vale 1. Il maxtermine è il contrario.
 	L'insieme di mintermini \( \{m_0\footnote{\( m_n \): n è il valore in modulo
@@ -781,38 +813,47 @@ Bool garantisce che si può creare qualsiasi funzione utilizzando soltanto i
 
 \subsection{Tabelle di verità}
 \subsubsection{Operatore prodotto}
-\begin{center}
-	\begin{tabular}{c|c|c}
-		\( A \) & \( B \) & \( O \) \\
-		\hline
-		0       & 0       & 0       \\
-		0       & 1       & 0       \\
-		1       & 0       & 0       \\
-		1       & 1       & 1       \\
-	\end{tabular}
-\end{center}
+\begin{table}[H]
+    \begin{center}
+        \begin{tabular}{c|c}
+            \( A \)  \( B \) & \( O \) \\
+            \hline
+            0        0       & 0       \\
+            0        1       & 0       \\
+            1        0       & 0       \\
+            1        1       & 1       \\
+        \end{tabular}
+    \end{center}
+    \caption{Tabella di verità dell'AND}
+\end{table}
 
 \subsubsection{Operatore somma}
-\begin{center}
-	\begin{tabular}{c|c|c}
-		\( A \) & \( B \) & \( O \) \\
-		\hline
-		0       & 0       & 0       \\
-		0       & 1       & 1       \\
-		1       & 0       & 1       \\
-		1       & 1       & 1       \\
-	\end{tabular}
-\end{center}
+\begin{table}[H]
+    \begin{center}
+        \begin{tabular}{c|c}
+            \( A \)  \( B \) & \( O \) \\
+            \hline
+            0        0       & 0       \\
+            0        1       & 1       \\
+            1        0       & 1       \\
+            1        1       & 1       \\
+        \end{tabular}
+    \end{center}
+    \caption{Tabella di verità dell'OR}
+\end{table}
 
 \subsubsection{Operatore negazione}
-\begin{center}
-	\begin{tabular}{c|c}
-		\( A \) & \( O \) \\
-		\hline
-		0       & 1       \\
-		1       & 0       \\
-	\end{tabular}
-\end{center}
+\begin{table}[H]
+    \begin{center}
+        \begin{tabular}{c|c}
+            \( A \) & \( O \) \\
+            \hline
+            0       & 1       \\
+            1       & 0       \\
+        \end{tabular}
+    \end{center}
+    \caption{Tabella di verità del NOT}
+\end{table}
 
 \section{Transistor}
 È un "comando di accensione" che permette di accendere o spegnere un circuito.
@@ -882,25 +923,32 @@ Si realizza con un transistor P e uno N in serie.
 			\node (0V) at (0.6,-3.5) {\( 0V \) };
 		\end{circuitikz}
 	\end{center}
+    \caption{Circuito di negazione}
 \end{figure}
 La tabella della verità è:
-\begin{center}
-	\begin{tabular}{c|c}
-		\( x \) & \( O \) \\
-		\hline
-		0V      & 3V      \\
-		3V      & 0V      \\
-	\end{tabular}
-\end{center}
+\begin{table}[H]
+    \begin{center}
+        \begin{tabular}{c|c}
+            \( x \) & \( O \) \\
+            \hline
+            0V      & 3V      \\
+            3V      & 0V      \\
+        \end{tabular}
+    \end{center}
+    \caption{Tabella di verità del circuito}
+\end{table}
 Se assegnamo ad ogni valore un numero binario:
-\begin{center}
-	\begin{tabular}{c|c}
-		\( x \) & \( O \) \\
-		\hline
-		0       & 1       \\
-		1       & 0       \\
-	\end{tabular}
-\end{center}
+\begin{table}[H]
+    \begin{center}
+        \begin{tabular}{c|c}
+            \( x \) & \( O \) \\
+            \hline
+            0       & 1       \\
+            1       & 0       \\
+        \end{tabular}
+    \end{center}
+    \caption{Tabella di verità del circuito in binario}
+\end{table}
 Si può notare che è la funzione di negazione rappresentata con la seguente
 porta logica:
 \begin{figure}[H]
@@ -911,87 +959,100 @@ porta logica:
 			\draw (not.out) node[right] {O};
 		\end{circuitikz}
 	\end{center}
+    \caption{Porta logica NOT}
 \end{figure}
 
 \subsubsection{Circuito del prodotto (AND)}
-\begin{center}
-	\begin{circuitikz}
-		\node (x) at (-2,-0.23) {x};
-		\node (y) at (-2,-2.77) {y};
-		\node (O) at (1.2,-1.3) {O};
+\begin{figure}[H]
+    \begin{center}
+        \begin{circuitikz}
+            \node (x) at (-2,-0.23) {x};
+            \node (y) at (-2,-2.77) {y};
+            \node (O) at (1.2,-1.3) {O};
 
-		\node (Vcc) at (-1.5,1.8) {\( V_{cc}=3V \) };
+            \node (Vcc) at (-1.5,1.8) {\( V_{cc}=3V \) };
 
-		\filldraw[black] (1,0) circle (1.5pt) node[anchor=west]{};
-		\filldraw[black] (-0.28,-0.23) circle (1.5pt) node[anchor=west]{};
-		\filldraw[black] (-0.98,-2.77) circle (1.5pt) node[anchor=west]{};
-		\filldraw[black] (2,1.55) circle (1.5pt) node[anchor=west]{};
-		\filldraw[black] (0,1.55) circle (1.5pt) node[anchor=west]{};
+            \filldraw[black] (1,0) circle (1.5pt) node[anchor=west]{};
+            \filldraw[black] (-0.28,-0.23) circle (1.5pt) node[anchor=west]{};
+            \filldraw[black] (-0.98,-2.77) circle (1.5pt) node[anchor=west]{};
+            \filldraw[black] (2,1.55) circle (1.5pt) node[anchor=west]{};
+            \filldraw[black] (0,1.55) circle (1.5pt) node[anchor=west]{};
 
-		\draw
-		(0,0) node[pmos, anchor=D] (pmos1) {} (0,0) -- (2,0)
-		(2,0) node[pmos, anchor=D] (pmos2) {} (2,0)
-		(1,0) node[nmos, anchor=D] (nmos1) {} (1,-1)
-		(1,-1.54) -- (1,-2) node[nmos, anchor=D] (nmos2) {} (1,-2)
-		(nmos2.S) node[ground] {}
-		(pmos1.G) to ++(0,-3.542)
-		(pmos2.G) to ++(-1.3,0) -- ++(0, -1) to[short] (x)
-		(nmos1.G) to ++(-0.3,0) -- ++(0,1)
-		(nmos2.G) to[short] (y)
-		(-2,1.55) -- ++(5,0)
-		(nmos1.S) -- ++(2,0) -- ++(0,1.497)
-		;
+            \draw
+                (0,0) node[pmos, anchor=D] (pmos1) {} (0,0) -- (2,0)
+                (2,0) node[pmos, anchor=D] (pmos2) {} (2,0)
+                (1,0) node[nmos, anchor=D] (nmos1) {} (1,-1)
+                (1,-1.54) -- (1,-2) node[nmos, anchor=D] (nmos2) {} (1,-2)
+                (nmos2.S) node[ground] {}
+                (pmos1.G) to ++(0,-3.542)
+                (pmos2.G) to ++(-1.3,0) -- ++(0, -1) to[short] (x)
+                (nmos1.G) to ++(-0.3,0) -- ++(0,1)
+                (nmos2.G) to[short] (y)
+                (-2,1.55) -- ++(5,0)
+                (nmos1.S) -- ++(2,0) -- ++(0,1.497)
+                ;
 
-		\begin{scope}[shift={(5,1.55)}]
-			\draw (-2,0) -- (0,0) to[short,-*] ++(0,0) node[left] {}
-			(1,0) -- (0,0);
-			\draw (0,0) node[pmos, anchor=S] (pmos) {}
-			(pmos.G) to[short] ++(0,0) node[left] {}
-			(pmos.D) to[short] ++(0,0) node[left] {}
-			(pmos.D) -- ++(0,0) to[short,-*] (0,-1.6) node[left] {}
-			node[nmos,anchor=D] (nmos) {}
-			(nmos.G) to[short] ++(0,0) node[left] {}
-			(nmos.S) node[ground] {};
-			\draw (-2, -1.6) node[above] {} to[short,-*] (-0.99,-1.6) node[left] {}
-			(pmos.G) -- ++(0,0) to[short,-*] (-0.99,-1.6) node[left] {}
-			(0,-1.6) -- ++(0,0) to[short] (1.2,-1.6) node[above] {O}
-			(nmos.G) -- ++(0,0) to[short] (-0.99,-1.6) node[left] {};
-			\node (0V) at (0.6,-3.5) {\( 0V \) };
-		\end{scope}
-		\draw (-2.5,-4.2) -- ++(0,-0.3) -- ++(5,0) node[below, xshift=-2.5cm] {Prodotto negato} -- ++(0,0.3);
-		\draw (2.6,-4.2) -- ++(0,-0.3) -- ++(3.7,0) node[below, xshift=-1.85cm] {Porta logica NOT} -- ++(0,0.3);
-	\end{circuitikz}
-\end{center}
+            \begin{scope}[shift={(5,1.55)}]
+                \draw (-2,0) -- (0,0) to[short,-*] ++(0,0) node[left] {}
+                    (1,0) -- (0,0);
+                \draw (0,0) node[pmos, anchor=S] (pmos) {}
+                    (pmos.G) to[short] ++(0,0) node[left] {}
+                    (pmos.D) to[short] ++(0,0) node[left] {}
+                    (pmos.D) -- ++(0,0) to[short,-*] (0,-1.6) node[left] {}
+                    node[nmos,anchor=D] (nmos) {}
+                    (nmos.G) to[short] ++(0,0) node[left] {}
+                    (nmos.S) node[ground] {};
+                \draw (-2, -1.6) node[above] {} to[short,-*] (-0.99,-1.6) node[left] {}
+                    (pmos.G) -- ++(0,0) to[short,-*] (-0.99,-1.6) node[left] {}
+                    (0,-1.6) -- ++(0,0) to[short] (1.2,-1.6) node[above] {O}
+                    (nmos.G) -- ++(0,0) to[short] (-0.99,-1.6) node[left] {};
+                \node (0V) at (0.6,-3.5) {\( 0V \) };
+            \end{scope}
+            \draw (-2.5,-4.2) -- ++(0,-0.3) -- ++(5,0) node[below, xshift=-2.5cm] {Prodotto negato} -- ++(0,0.3);
+            \draw (2.6,-4.2) -- ++(0,-0.3) -- ++(3.7,0) node[below, xshift=-1.85cm] {Porta logica NOT} -- ++(0,0.3);
+        \end{circuitikz}
+    \end{center}
+    \caption{Circuito del prodotto}
+\end{figure}
 Il prodotto negato più il NOT è uguale ad un AND:
-\begin{center}
-	\begin{circuitikz}
-		\draw (0,0) node[scale=0.7, and port] (and) {};
-		\draw (and.in 1) node[left] {x};
-		\draw (and.in 2) node[left] {y};
-		\draw (and.out) node[right] {O};
-	\end{circuitikz}
-\end{center}
+\begin{figure}[H]
+    \begin{center}
+        \begin{circuitikz}
+            \draw (0,0) node[scale=0.7, and port] (and) {};
+            \draw (and.in 1) node[left] {x};
+            \draw (and.in 2) node[left] {y};
+            \draw (and.out) node[right] {O};
+        \end{circuitikz}
+    \end{center}
+    \caption{Porta logica AND}
+\end{figure}
 La tabella della verità è:
-\begin{center}
-	\begin{tabular}{c|c|c}
-		\( x \) & \( y \) & \( O \) \\
-		\hline
-		0       & 0       & 0       \\
-		0       & 1       & 0       \\
-		1       & 0       & 0       \\
-		1       & 1       & 1       \\
-	\end{tabular}
-\end{center}
+\begin{table}[H]
+    \begin{center}
+        \begin{tabular}{c|c}
+            \( x \)  \( y \) & \( O \) \\
+            \hline
+            0        0       & 0       \\
+            0        1       & 0       \\
+            1        0       & 0       \\
+            1        1       & 1       \\
+        \end{tabular}
+    \end{center}
+    \caption{Tabella di verità del circuito}
+\end{table}
 
 \subsubsection{Circuito della somma (OR)}
-\begin{center}
-	\begin{circuitikz}
-		\draw (0,0) node[scale=0.7, or port] (and) {};
-		\draw (and.in 1) node[left] {x};
-		\draw (and.in 2) node[left] {y};
-		\draw (and.out) node[right] {O};
-	\end{circuitikz}
-\end{center}
+\begin{figure}[H]
+    \begin{center}
+        \begin{circuitikz}
+            \draw (0,0) node[scale=0.7, or port] (and) {};
+            \draw (and.in 1) node[left] {x};
+            \draw (and.in 2) node[left] {y};
+            \draw (and.out) node[right] {O};
+        \end{circuitikz}
+    \end{center}
+    \caption{Porta logica OR}
+\end{figure}
 La tabella della verità è:
 \begin{center}
 	\begin{tabular}{c|c|c}
@@ -1200,68 +1261,75 @@ blu rappresentano gli ON-SET.
         \draw[fill, blue] (4, 2.5) rectangle ++(0.3, 0.3) node[below right, yshift=1mm] {ON-SET}; 
     \end{tikzpicture}
 	\end{center}
+    \caption{Funzione rappresentata su un cubo}
 \end{figure}
 Si trascura la faccia del cubo con l'OFF-SET per rendere la rappresentazione più semplice.
 Prendendo coppie di vertici dell'ON-SET sullo stesso lato del cubo si può fare il prodotto tra i 2 mintermini:
-\begin{center}
-    \begin{tikzpicture}
-        \newcommand{\Depth}{3}
-        \newcommand{\Height}{3}
-        \newcommand{\Width}{3}
+\begin{figure}[H]
+    \begin{center}
+        \begin{tikzpicture}
+            \newcommand{\Depth}{3}
+            \newcommand{\Height}{3}
+            \newcommand{\Width}{3}
 
-        \coordinate (O) at (0,0,0);
-        \coordinate (A) at (0,\Width,0);
-        \coordinate (B) at (0,\Width,\Height);
-        \coordinate (C) at (0,0,\Height);
-        \coordinate (D) at (\Depth,0,0);
-        \coordinate (E) at (\Depth,\Width,0);
-        \coordinate (F) at (\Depth,\Width,\Height);
-        \coordinate (G) at (\Depth,0,\Height);
+            \coordinate (O) at (0,0,0);
+            \coordinate (A) at (0,\Width,0);
+            \coordinate (B) at (0,\Width,\Height);
+            \coordinate (C) at (0,0,\Height);
+            \coordinate (D) at (\Depth,0,0);
+            \coordinate (E) at (\Depth,\Width,0);
+            \coordinate (F) at (\Depth,\Width,\Height);
+            \coordinate (G) at (\Depth,0,\Height);
 
-        \draw[] (O) -- (A) -- (E) -- (D) -- cycle;% Back Face
+            \draw[] (O) -- (A) -- (E) -- (D) -- cycle;% Back Face
 
-        \draw[fill, blue] (O) circle (2pt) node[below] {\( 001 \)};
-        \draw[fill, blue] (A) circle (2pt) node[above] {\( 011 \)};
-        \draw[fill, blue] (E) circle (2pt) node[above] {\( 111 \)};
-        \draw[fill, blue] (D) circle (2pt) node[below] {\( 101 \)};
+            \draw[fill, blue] (O) circle (2pt) node[below] {\( 001 \)};
+            \draw[fill, blue] (A) circle (2pt) node[above] {\( 011 \)};
+            \draw[fill, blue] (E) circle (2pt) node[above] {\( 111 \)};
+            \draw[fill, blue] (D) circle (2pt) node[below] {\( 101 \)};
 
-        \node[below, blue] (1) at (1.5,0,0) {\( \bar{Y}Z \)};
-        \node[above, blue] (2) at (1.5,3,0) {\( YZ \)};
-        \node[left, blue] (3) at (0,1.5,0) {\( \bar{X}Z \)};
-        \node[right, blue] (4) at (3,1.5,0) {\( XZ \)};
-    \end{tikzpicture}
-\end{center}
+            \node[below, blue] (1) at (1.5,0,0) {\( \bar{Y}Z \)};
+            \node[above, blue] (2) at (1.5,3,0) {\( YZ \)};
+            \node[left, blue] (3) at (0,1.5,0) {\( \bar{X}Z \)};
+            \node[right, blue] (4) at (3,1.5,0) {\( XZ \)};
+        \end{tikzpicture}
+    \end{center}
+    \caption{Prima semplificazione} 
+\end{figure}
 Ora si può fare l'assorbimento anche tra i prodotti ottenuti dall'assorbimento:
-\begin{center}
-    \begin{tikzpicture}
-        \newcommand{\Depth}{3}
-        \newcommand{\Height}{3}
-        \newcommand{\Width}{3}
+\begin{figure}[H]
+    \begin{center}
+        \begin{tikzpicture}
+            \newcommand{\Depth}{3}
+            \newcommand{\Height}{3}
+            \newcommand{\Width}{3}
 
-        \coordinate (O) at (0,0,0);
-        \coordinate (A) at (0,\Width,0);
-        \coordinate (B) at (0,\Width,\Height);
-        \coordinate (C) at (0,0,\Height);
-        \coordinate (D) at (\Depth,0,0);
-        \coordinate (E) at (\Depth,\Width,0);
-        \coordinate (F) at (\Depth,\Width,\Height);
-        \coordinate (G) at (\Depth,0,\Height);
+            \coordinate (O) at (0,0,0);
+            \coordinate (A) at (0,\Width,0);
+            \coordinate (B) at (0,\Width,\Height);
+            \coordinate (C) at (0,0,\Height);
+            \coordinate (D) at (\Depth,0,0);
+            \coordinate (E) at (\Depth,\Width,0);
+            \coordinate (F) at (\Depth,\Width,\Height);
+            \coordinate (G) at (\Depth,0,\Height);
 
-        \draw[] (O) -- (A) -- (E) -- (D) -- cycle;% Back Face
+            \draw[] (O) -- (A) -- (E) -- (D) -- cycle;% Back Face
 
-        \draw[fill, blue] (O) circle (2pt) node[below] {\( 001 \)};
-        \draw[fill, blue] (A) circle (2pt) node[above] {\( 011 \)};
-        \draw[fill, blue] (E) circle (2pt) node[above] {\( 111 \)};
-        \draw[fill, blue] (D) circle (2pt) node[below] {\( 101 \)};
+            \draw[fill, blue] (O) circle (2pt) node[below] {\( 001 \)};
+            \draw[fill, blue] (A) circle (2pt) node[above] {\( 011 \)};
+            \draw[fill, blue] (E) circle (2pt) node[above] {\( 111 \)};
+            \draw[fill, blue] (D) circle (2pt) node[below] {\( 101 \)};
 
-        \node[below, blue] (1) at (1.5,0,0) {\( \bar{Y}Z \)};
-        \node[above, blue] (2) at (1.5,3,0) {\( YZ \)};
-        \node[left, blue] (3) at (0,1.5,0) {\( \bar{X}Z \)};
-        \node[right, blue] (4) at (3,1.5,0) {\( XZ \)};
+            \node[below, blue] (1) at (1.5,0,0) {\( \bar{Y}Z \)};
+            \node[above, blue] (2) at (1.5,3,0) {\( YZ \)};
+            \node[left, blue] (3) at (0,1.5,0) {\( \bar{X}Z \)};
+            \node[right, blue] (4) at (3,1.5,0) {\( XZ \)};
 
-        \node[blue] (5) at (1.5,1.5,0) {\textbf{Z}};
-    \end{tikzpicture}
-\end{center}
+            \node[blue] (5) at (1.5,1.5,0) {\textbf{Z}};
+        \end{tikzpicture}
+    \end{center}
+    \caption{Seconda semplificazione} 
+\end{figure}
 Si arriva quindi a dire che \( Z \) è un \textbf{implicante primo} perchè non c'è nessun
 altro implicante che lo contiene.
 \begin{figure}[H]
