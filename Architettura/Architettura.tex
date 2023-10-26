@@ -1882,15 +1882,16 @@ Il modello di codice di SIS è il seguente:
 
 Lista di comandi base:
 \begin{itemize}
-    \item \textbf{read\_blif}: carica il modello sis,
+    \item \textbf{read\_blif}: carica il modello sis;
     \item \textbf{simulate [valori in bit, separati da spazi]}: esegue un passo di
-        simulazione del circuito,
-    \item \textbf{help}: mostra i comandi disponibili,
-    \item \textbf{help [comando]}: mostra la descrizione del comando,
+        simulazione del circuito;
+    \item \textbf{help}: mostra i comandi disponibili;
+    \item \textbf{help [comando]}: mostra la descrizione del comando;
     \item \textbf{print\_stats}: fornisce informazioni sul circuito, quali numero di input
-       (pi), output (po), porte logiche (gates), numero di mintermini (minterms),
-    \item \textbf{quit}: esce da sis,
-    \item \textbf{read\_blif [nome file]}: carica il modello sis,
-    \item \textbf{write\_blif [nome file]}: salva il modello sis in un file,
+       (pi), output (po), elementi di memoria (latches), letterali (lits(sop)), numero di nodi (nodes);
+    \item \textbf{quit}: esce da sis;
+    \item \textbf{write\_blif [nome file]}: salva il modello sis in un file;
+    \item \textbf{write\_blif}: stampa a video il file blif del circuito caricato in memoria
+        senza dover lasciare l'ambiente SIS.
 \end{itemize}
 \end{document}
