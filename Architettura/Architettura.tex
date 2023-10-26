@@ -51,6 +51,35 @@
 
 \lstset{style=mystyle}
 
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={\small\ttfamily},
+	numbers=none,
+	numberstyle=\tiny\color{gray},
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve},
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=3
+}
+
+\usepackage{import}
+\usepackage{pdfpages}
+\usepackage{transparent}
+\usepackage{xcolor}
+
+
+
 % Useful definitions frame
 \theoremstyle{break}
 \theoremheaderfont{\bfseries}
@@ -1054,45 +1083,51 @@ La tabella della verità è:
     \caption{Porta logica OR}
 \end{figure}
 La tabella della verità è:
-\begin{center}
-	\begin{tabular}{c|c|c}
-		\( x \) & \( y \) & \( O \) \\
-		\hline
-		0       & 0       & 0       \\
-		0       & 1       & 1       \\
-		1       & 0       & 1       \\
-		1       & 1       & 1       \\
-	\end{tabular}
-\end{center}
+\begin{table}[H]
+    \begin{center}
+        \begin{tabular}{c|c}
+            \( x \)  \( y \) & \( O \) \\
+            \hline
+            0        0       & 0       \\
+            0        1       & 1       \\
+            1        0       & 1       \\
+            1        1       & 1       \\
+        \end{tabular}
+    \end{center}
+    \caption{Tabella di verità della somma}
+\end{table}
 
 \section{Espressione in somma di prodotti}
 Il seguente circuito è un esempio di espressione in somma di prodotti dell'esempio \ref{ex:modelloAB}:
-\begin{center}
-	\begin{circuitikz}
-		\draw (0,0) node[label=left:\( A \) ] (A) {}
-		to[short, o-]
-		(2,0)
-		node[not port, anchor=in, scale=0.5,label=above:\( \bar{A} \) ] (not1) {}
-		(0,-1)
-		node[label=left:\( B \) ] (B) {}
-		to[short, o-]
-		(2,-1)
-		node[not port, anchor=in, scale=0.5,label=below:\( \bar{B} \) ] (not2) {}
-		(4,-0.5) node[and port, label={above, yshift=3mm}:{\( m_{0} = \bar{A} \cdot \bar{B} \)}, scale=0.5,] (and1) {}
-		(not1.out) to[short] ++(0.25,0) |- (and1.in 1)
-		(not2.out) to[short] ++(0.25,0) |- (and1.in 2)
-		(2,-2.5) node[and port, anchor=in 1, label={below, yshift=-3mm}:{\( m_{3} = A \cdot B \)}, scale=0.5,] (and2) {}
-		(and2.in 1) to[short] ++(-0.5,0)
-		to[short, -*] (1.5,0)
-		(and2.in 2) to[short] ++(-1,0)
-		to[short, -*] (1,52 |- not2.in)
-		(and1.out) to[short] ++(1.7,0)
-		node[or port, anchor=in 1, label={above, yshift=3mm}:{\( O = m_{0} + m_{3} \)}, scale=0.5,] (or1) {}
-		(or1.in 2) to[short] ++(-0.5,0) |- (and2.out)
-		(or1.out) to[short, -o] ++(0.5,0) node[label=right:\( O \)] {}
-		;
-	\end{circuitikz}
-\end{center}
+\begin{figure}[H]
+    \begin{center}
+        \begin{circuitikz}
+            \draw (0,0) node[label=left:\( A \) ] (A) {}
+                to[short, o-]
+                (2,0)
+                node[not port, anchor=in, scale=0.5,label=above:\( \bar{A} \) ] (not1) {}
+                (0,-1)
+                node[label=left:\( B \) ] (B) {}
+                to[short, o-]
+                (2,-1)
+                node[not port, anchor=in, scale=0.5,label=below:\( \bar{B} \) ] (not2) {}
+                (4,-0.5) node[and port, label={above, yshift=3mm}:{\( m_{0} = \bar{A} \cdot \bar{B} \)}, scale=0.5,] (and1) {}
+                (not1.out) to[short] ++(0.25,0) |- (and1.in 1)
+                (not2.out) to[short] ++(0.25,0) |- (and1.in 2)
+                (2,-2.5) node[and port, anchor=in 1, label={below, yshift=-3mm}:{\( m_{3} = A \cdot B \)}, scale=0.5,] (and2) {}
+                (and2.in 1) to[short] ++(-0.5,0)
+                to[short, -*] (1.5,0)
+                (and2.in 2) to[short] ++(-1,0)
+                to[short, -*] (1,52 |- not2.in)
+                (and1.out) to[short] ++(1.7,0)
+                node[or port, anchor=in 1, label={above, yshift=3mm}:{\( O = m_{0} + m_{3} \)}, scale=0.5,] (or1) {}
+                (or1.in 2) to[short] ++(-0.5,0) |- (and2.out)
+                (or1.out) to[short, -o] ++(0.5,0) node[label=right:\( O \)] {}
+                ;
+        \end{circuitikz}
+    \end{center}
+    \caption{Circuito dell'espressione in somma di prodotti}
+\end{figure}
 I circuiti devono spesso tenere conto di alcune specifiche da ottimizzare:
 \begin{itemize}
 	\item \textbf{Area}: minor numero di porte logiche
@@ -1105,20 +1140,23 @@ I circuiti devono spesso tenere conto di alcune specifiche da ottimizzare:
 Prendiamo in considerazione la funzione \( f(B^3)\footnote{Il numero di funzioni booleane
 	possibili è \( 2^{2^3} = 256 \) e il valore cresce esponenzialmente con
 	l'aumento dei bit}\to B \):
-\begin{center}
-	\begin{tabular}{c|c}
-		X Y Z   & O \\
-		\hline
-		0\;0\;0 & 0 \\
-		0\;0\;1 & 1 \\
-		0\;1\;0 & 0 \\
-		0\;1\;1 & 1 \\
-		1\;0\;0 & 0 \\
-		1\;0\;1 & 1 \\
-		1\;1\;0 & 0 \\
-		1\;1\;1 & 1 \\
-	\end{tabular}
-\end{center}
+    \begin{table}[H]
+        \begin{center}
+            \begin{tabular}{c|c}
+                X Y Z   & O \\
+                \hline
+                0\;0\;0 & 0 \\
+                0\;0\;1 & 1 \\
+                0\;1\;0 & 0 \\
+                0\;1\;1 & 1 \\
+                1\;0\;0 & 0 \\
+                1\;0\;1 & 1 \\
+                1\;1\;0 & 0 \\
+                1\;1\;1 & 1 \\
+            \end{tabular}
+        \end{center}
+        \caption{Tabella di verità della funzione}
+    \end{table}
 ON-SET\(=\{ m_1,m_3,m_5,m_7 \} \)\\
 La funzione rappresentata con un'espressione in somma di prodotti è:
 \[ O=m_1+m_3+m_5+m_7 = \bar{X}\bar{Y}Z + \bar{X}YZ + X\bar{Y}Z + XYZ \]
@@ -1205,18 +1243,21 @@ Prendendo come riferimento la funzione \( f(B^3)^1 \to B \)  definita precedente
 si può guardare la funzione come se fosse sul piano cartesiano con centro in
 un punto qualsiasi. Ogni punto adiacente al centro è un punto con distanza di
 Hamming = 1.
-\begin{center}
-	\begin{tikzpicture}[x=0.5cm,y=0.5cm,z=0.3cm,>=stealth]
-		\draw[->] (xyz cs:x=0) -- (xyz cs:x=6) node[above] {$x$};
-		\draw[->] (xyz cs:y=0) -- (xyz cs:y=6) node[right] {$z$};
-		\draw[->] (xyz cs:z=0) -- (xyz cs:z=6) node[above] {$y$};
+\begin{figure}[H]
+    \begin{center}
+        \begin{tikzpicture}[x=0.5cm,y=0.5cm,z=0.3cm,>=stealth]
+            \draw[->] (xyz cs:x=0) -- (xyz cs:x=6) node[above] {$x$};
+            \draw[->] (xyz cs:y=0) -- (xyz cs:y=6) node[right] {$z$};
+            \draw[->] (xyz cs:z=0) -- (xyz cs:z=6) node[above] {$y$};
 
-		\node[below] (000) at (0,0,0) {\( 000 \)};
-		\node[right] (001) at (0,0,6) {\( 001 \)};
-		\node[left] (010) at (0,6,0) {\( 010 \)};
-		\node[below] (011) at (6,0,0) {\( 011 \)};
-	\end{tikzpicture}
-\end{center}
+            \node[below] (000) at (0,0,0) {\( 000 \)};
+            \node[right] (001) at (0,0,6) {\( 001 \)};
+            \node[left] (010) at (0,6,0) {\( 010 \)};
+            \node[below] (011) at (6,0,0) {\( 011 \)};
+        \end{tikzpicture}
+    \end{center}
+    \caption{Funzione rappresentata su un piano cartesiano}
+\end{figure}
 L'assorbimento può essere fatto soltanto tra gli ON-SET con distanza di
 Hamming = 1.
 Per effettuare l'assorbimento ci si posiziona nel punto di un mintermine e si
@@ -1359,13 +1400,16 @@ le variabili booleane (nel caso della funzione \( O \)  si mettono i valori del 
 nella tabella) in modo da poter fare l'assorbimento in modo più semplice. I valori
 posti sopra le celle sono messi in modo che siano a distanza di Hamming = 1.
 Nella seguente mappa di Karnaugh si possono vedere i valori della funzione \( O \):
-\begin{center}
-    \begin{karnaugh-map}[4][2][1][\( Y \)][\( X \)][\( Z \)]
-        \minterms{4,5,7,6}
-        \autoterms[0]
-        \implicant{4}{6}
-    \end{karnaugh-map}
-\end{center}
+\begin{table}[H]
+    \begin{center}
+        \begin{karnaugh-map}[4][2][1][\( Y \)][\( X \)][\( Z \)]
+            \minterms{4,5,7,6}
+            \autoterms[0]
+            \implicant{4}{6}
+        \end{karnaugh-map}
+    \end{center}
+    \caption{Mappa di Karnaugh della funzione \( O \)}
+\end{table}
 In questa mappa si può vedere che \( Z \) è un implicante primo
 (o sottocubo di dimensione massima).
 Le mappe di Karnaugh sono come una sfera, quindi se si va oltre il bordo si torna
@@ -1374,15 +1418,18 @@ dall'altra parte.
 Un altro esempio di mappa di Karnaugh è il seguente:
 \begin{example}
     Prendiamo in considerazione una funzione casuale a 4 variabili:
-    \begin{center}
-        \begin{karnaugh-map}[4][4][1][\( Y \)][\( X \)][\( V \)][\( Z \)]
-          \minterms{0,1,2,3,7,15,14,8,9,11,10}
-          \autoterms[0]
-          \implicantedge{0}{2}{8}{10}
-          \implicant{15}{10}
-          \implicant{3}{11}
-        \end{karnaugh-map}    
-    \end{center}
+    \begin{table}[H]
+        \begin{center}
+            \begin{karnaugh-map}[4][4][1][\( Y \)][\( X \)][\( V \)][\( Z \)]
+                \minterms{0,1,2,3,7,15,14,8,9,11,10}
+                \autoterms[0]
+                \implicantedge{0}{2}{8}{10}
+                \implicant{15}{10}
+                \implicant{3}{11}
+            \end{karnaugh-map}    
+        \end{center}
+        \caption{Mappa di Karnaugh di una funzione casuale}
+    \end{table}
     Si può verificare che ci sono 3 implicanti primi essenziali:
     \begin{itemize}
         \item \( \bar{V} \): essenziale
@@ -1597,17 +1644,20 @@ La \textbf{pseudo-essenzialità} è l'essenzialità dopo aver già fatto un'otti
 \end{example}
 \begin{example}
     Dominanza per righe
-    \begin{center}
-        \begin{tabular}{c|c|c|c|c}
+    \begin{table}[H]
+        \begin{center}
+            \begin{tabular}{c|c|c|c|c}
             & A & B & C & D\\
             \hline 
-            \( \alpha \) & 1 &  & 1 &  \\ 
-            \( \beta \) & 1 &  &  & 1 \\
-            \( \gamma \) &  & 1 & 1 & 1 \\
-            \( \delta \) &  & 1 & 1 &  \\
-            \( \epsilon \) & 1 & 1 &  & 1 \\
-        \end{tabular}
-    \end{center}
+                \( \alpha \) & 1 &  & 1 &  \\ 
+                \( \beta \) & 1 &  &  & 1 \\
+                \( \gamma \) &  & 1 & 1 & 1 \\
+                \( \delta \) &  & 1 & 1 &  \\
+                \( \epsilon \) & 1 & 1 &  & 1 \\
+            \end{tabular}
+        \end{center}
+        \caption{Tabella con implicanti primi}
+    \end{table}
     \begin{itemize}
         \item \( \beta \) dominato da \( \epsilon \) 
             \item \( \delta \) dominato da \( \gamma \) 
@@ -1615,15 +1665,18 @@ La \textbf{pseudo-essenzialità} è l'essenzialità dopo aver già fatto un'otti
     Dobbiamo prendere \( \beta \) e \( \delta \) perchè cancellando \( A \) e \( D \)
     si cancellano anche \( \gamma \) ed \( \epsilon \) perchè sono dominati.  
     La tabella diventa:
-    \begin{center}
-               \begin{tabular}{c|c|c|c|c}
+    \begin{table}[H]
+        \begin{center}
+            \begin{tabular}{c|c|c|c|c}
             & A & B & C & D\\
             \hline 
-            \( \alpha \) & 1 & \vline & 1 &  \\ 
-            \( \beta \) & 1 & \vline &  & 1  \\
-             \( \delta \) &  & \textbf{1} \vline & 1 & \\
-        \end{tabular}
-    \end{center}
+                \( \alpha \) & 1 && 1 &  \\ 
+                \( \beta \) & 1 & &  & 1  \\
+                \( \delta \) &  & \textbf{1} & 1 & \\
+            \end{tabular}
+        \end{center}
+        \caption{Tabella senza implicanti essenziali}
+    \end{table}
     Si fa finta che B e D siano essenziali (essenzialmente scelti a caso).
 \end{example}
 
@@ -1646,6 +1699,7 @@ di tutte le configurazioni possibili.
 Per conoscere tutti e 3 gli insiemi basta conoscerne 2 di essi.
 \begin{example}
     Funzione parzialmente specificata
+    \begin{table}[H]
         \begin{center}
             \begin{tabular}{c|c}
                 x y z v & 0\\
@@ -1668,89 +1722,103 @@ Per conoscere tutti e 3 gli insiemi basta conoscerne 2 di essi.
                 1 1 1 1 & 1\\
             \end{tabular}
         \end{center}
+        \caption{Tabella della funzione parzialmente specificata}
+    \end{table}
         \[ON-SET = \{ m_4,m_{10},m_{11},m_{13},m_{14},m_{15} \} \]
         \[
         DC-SET = \{ m_3,m_5,m_6,m_7 \}
         \] 
         Il primo passo è quello di ampliare il problema, quindi si considerano i
         don't care come 1, e poi rioridnare i mintermini in base al numero di 1.
-        \begin{center}
-            \begin{tabular}{c|c|c}
-                m & x y z v &\\
-                \hline
-                4 & 0 1 0 0 & \( \surd \) \\
-                \hline
-                3 & 0 0 1 1 &\( \surd \) \\
-                5 & 0 1 0 1 &\( \surd \) \\
-                6 & 0 1 1 0 &\( \surd \) \\
-                10 & 1 0 1 0&\( \surd \) \\
-                \hline
-                7 & 0 1 1 1&\( \surd \) \\
-                11 & 1 0 1 1&\( \surd \) \\
-                13 & 1 1 0 1&\( \surd \) \\
-                14 & 1 1 1 0&\( \surd \) \\
-                \hline
-                15 & 1 1 1 1&\( \surd \) \\
-            \end{tabular}
-        \end{center}
+        \begin{table}[H]
+            \begin{center}
+                \begin{tabular}{c|c|c}
+                    m & x y z v &\\
+                    \hline
+                    4 & 0 1 0 0 & \( \surd \) \\
+                    \hline
+                    3 & 0 0 1 1 &\( \surd \) \\
+                    5 & 0 1 0 1 &\( \surd \) \\
+                    6 & 0 1 1 0 &\( \surd \) \\
+                    10 & 1 0 1 0&\( \surd \) \\
+                    \hline
+                    7 & 0 1 1 1&\( \surd \) \\
+                    11 & 1 0 1 1&\( \surd \) \\
+                    13 & 1 1 0 1&\( \surd \) \\
+                    14 & 1 1 1 0&\( \surd \) \\
+                    \hline
+                    15 & 1 1 1 1&\( \surd \) \\
+                \end{tabular}
+            \end{center}
+            \caption{Tabella riordinata}
+        \end{table}
         Il secondo passo è quello di tentare la semplificazione:
-        \begin{center}
-            \begin{tabular}{c|c|c}
-                m & x y z v& \\
-                \hline
-                4, 5 & 0 1 0 -& \( \surd \) \\
-                4, 6 & 0 1 - 0& \( \surd \) \\
-                \hline
-                3, 7 & 0 - 1 1& \( \surd \) \\
-                3, 11 & - 0 1 1& \( \surd \) \\
-                5, 7 & 0 1 - 1& \( \surd \) \\
-                5, 13 & - 1 0 1& \( \surd \) \\
-                6, 7 & 0 1 1 -& \( \surd \) \\
-                6, 14 & - 1 1 0& \( \surd \) \\
-                10, 11 & 1 0 1 -& \( \surd \) \\
-                10, 14 & 1 - 1 0& \( \surd \) \\
-                \hline
-                7, 15 & - 1 1 1& \( \surd \) \\
-                11, 15 & 1 - 1 1& \( \surd \) \\
-                13, 15 & 1 1 - 1& \( \surd \) \\
-                14, 15 & 1 1 1 -& \( \surd \) \\
-            \end{tabular}
-        \end{center}
+        \begin{table}[H]
+            \begin{center}
+                \begin{tabular}{c|c|c}
+                    m & x y z v& \\
+                    \hline
+                    4, 5 & 0 1 0 -& \( \surd \) \\
+                    4, 6 & 0 1 - 0& \( \surd \) \\
+                    \hline
+                    3, 7 & 0 - 1 1& \( \surd \) \\
+                    3, 11 & - 0 1 1& \( \surd \) \\
+                    5, 7 & 0 1 - 1& \( \surd \) \\
+                    5, 13 & - 1 0 1& \( \surd \) \\
+                    6, 7 & 0 1 1 -& \( \surd \) \\
+                    6, 14 & - 1 1 0& \( \surd \) \\
+                    10, 11 & 1 0 1 -& \( \surd \) \\
+                    10, 14 & 1 - 1 0& \( \surd \) \\
+                    \hline
+                    7, 15 & - 1 1 1& \( \surd \) \\
+                    11, 15 & 1 - 1 1& \( \surd \) \\
+                    13, 15 & 1 1 - 1& \( \surd \) \\
+                    14, 15 & 1 1 1 -& \( \surd \) \\
+                \end{tabular}
+            \end{center}
+            \caption{Prima semplificazione}
+        \end{table}
         Ora si applica di nuovo la semplificazione:
-        \begin{center}
-            \begin{tabular}{c|c|c}
-                m & x y z v&\\
-                \hline
-                4, 5, 6, 7 & 0 1 - -& A\\
-                \hline
-                3, 7, 11, 15 & - - 1 1& B\\
-                5, 7, 13, 15 & - 1 - 1& C\\
-                6, 7, 14, 15 & - 1 1 -& D\\
-                10, 11, 14, 15 & 1 - 1 -& E\\
-            \end{tabular}
-        \end{center}
+        \begin{table}[H]
+            \begin{center}
+                \begin{tabular}{c|c|c}
+                    m & x y z v&\\
+                    \hline
+                    4, 5, 6, 7 & 0 1 - -& A\\
+                    \hline
+                    3, 7, 11, 15 & - - 1 1& B\\
+                    5, 7, 13, 15 & - 1 - 1& C\\
+                    6, 7, 14, 15 & - 1 1 -& D\\
+                    10, 11, 14, 15 & 1 - 1 -& E\\
+                \end{tabular}
+            \end{center}
+            \caption{Seconda semplificazione}
+        \end{table}
         Visto che non si possono fare ulteriori semplificazioni \( A, B, C, D, E \)
         sono tutti implicanti primi.
 
         Ora si cerca di capire quali sono gli implicanti primi essenziali considerando
         però soltanto l'ON-SET:
-        \begin{center}
-            \begin{tabular}{c|c|c|c|c|c}
-                m & A & B & C & D & E \\
-                \hline
-                \( m_4 \) & \textbf{1} &  &  &  &  \\ 
-                \hline
-                \( m_{10} \) &  &  &  &  & \textbf{1} \\
-                \hline
-                \( m_{11} \) &  & 1 &  &  & 1 \\
-                \hline
-                \( m_{13} \) &  &  & \textbf{1} &  &  \\
-                \hline
-                \( m_{14} \) &  &  &  & 1 & 1 \\
-                \hline
-                \( m_{15} \) &  & 1 & 1 & 1 & 1 
-            \end{tabular}
-        \end{center}
+        \begin{table}[H]
+            \begin{center}
+                \begin{tabular}{c|c|c|c|c|c}
+                    m & A & B & C & D & E \\
+                    \hline
+                    \( m_4 \) & \textbf{1} &  &  &  &  \\ 
+                    \hline
+                    \( m_{10} \) &  &  &  &  & \textbf{1} \\
+                    \hline
+                    \( m_{11} \) &  & 1 &  &  & 1 \\
+                    \hline
+                    \( m_{13} \) &  &  & \textbf{1} &  &  \\
+                    \hline
+                    \( m_{14} \) &  &  &  & 1 & 1 \\
+                    \hline
+                    \( m_{15} \) &  & 1 & 1 & 1 & 1 
+                \end{tabular}
+            \end{center}
+            \caption{Tabella con implicanti primi}
+        \end{table}
         Si cancellano le righe \( A, C, E \) perchè sono implicanti primi essenziali,
         quindi si coprono anche tutte le righe delle colonne \( A, C, E \) che
         contengono 1. Si arriva quindi a coprire tutta la tabella e il risultato
@@ -2040,6 +2108,7 @@ Il modello di codice di SIS è il seguente:
             1 1 & 1\\
         \end{tabular}
     \end{center}
+    \caption{Tabella di verità dell'implicazione logica}
    \end{table}
    che si può scrivere anche nel seguente modo:
       \begin{table}[H]
@@ -2052,6 +2121,7 @@ Il modello di codice di SIS è il seguente:
             1 1 & 1\\
         \end{tabular}
     \end{center}
+    \caption{Tabella di verità ridotta}
    \end{table}
 
 \begin{lstlisting}[language=Verilog]
