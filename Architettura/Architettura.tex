@@ -9,6 +9,7 @@
 \usepackage{mdframed}
 \usepackage{float}
 \usepackage{xcolor}
+\usepackage{listings}
 \usepackage{graphicx}
 \usepackage{tikz}
 \usepackage{circuitikz}
@@ -22,6 +23,33 @@
 \usepackage{pdfpages}
 \usepackage{transparent}
 \usepackage{xcolor}
+
+% Code blocks
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.95}
+
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\ttfamily\footnotesize,
+	breakatwhitespace=false,
+	breaklines=true,
+	captionpos=b,
+	keepspaces=true,
+	numbers=left,
+	numbersep=5pt,
+	showspaces=false,
+	showstringspaces=false,
+	showtabs=false,
+	tabsize=2
+}
+
+\lstset{style=mystyle}
 
 % Useful definitions frame
 \theoremstyle{break}
@@ -1321,83 +1349,96 @@ Si divide in 2 fasi:
    \[
        O = f(x,y,z,w) = \{ m_1, m_4, m_5, m_6, m_7, m_9, m_{11}, m_{14}, m_{15} \}
    \]  
-   \begin{center}
-       \begin{tabular}{c|c}
-           \( m \) & \( x\;y\;z\;w \)\\
-           \hline
-           \( 1 \) & \( 0\;0\;0\;1 \)\\ 
-           \( 4 \) & \( 0\;1\;0\;0 \)\\
-           \( 5 \) & \( 0\;1\;0\;1 \)\\
-           \( 6 \) & \( 0\;1\;1\;0 \)\\
-           \( 7 \) & \( 0\;1\;1\;1 \)\\
-           \( 9 \) & \( 1\;0\;0\;1 \)\\ 
-           \( 11 \) & \( 1\;0\;1\;1 \)\\
-           \( 14 \) & \( 1\;1\;1\;0 \)\\
-           \( 15 \) & \( 1\;1\;1\;1 \)\\
-           \label{tab:quine-mccluskey1}
-    \end{tabular}
-   \end{center}
+   \begin{table}[H]
+       \begin{center}
+           \begin{tabular}{c|c}
+               \( m \) & \( x\;y\;z\;w \)\\
+               \hline
+               \( 1 \) & \( 0\;0\;0\;1 \)\\ 
+               \( 4 \) & \( 0\;1\;0\;0 \)\\
+               \( 5 \) & \( 0\;1\;0\;1 \)\\
+               \( 6 \) & \( 0\;1\;1\;0 \)\\
+               \( 7 \) & \( 0\;1\;1\;1 \)\\
+               \( 9 \) & \( 1\;0\;0\;1 \)\\ 
+               \( 11 \) & \( 1\;0\;1\;1 \)\\
+               \( 14 \) & \( 1\;1\;1\;0 \)\\
+               \( 15 \) & \( 1\;1\;1\;1 \)\\
+           \end{tabular}
+       \end{center}
+       \caption{Tabella dei mintermini}
+       \label{tab:quine-mccluskey1}
+   \end{table}
+    
    36 Letterali.\\
    L'unico caso in cui due stringhe sono a distanza di Hamming \( =1 \) è quando il numero di \( 1 \) differisce di uno.\\
    Il metodo di Quine-McCluskey riordina le \( m \)  in base al numero di \( 1 \) che contengono,
    questo è il primo passo:
-      \begin{center}
-       \begin{tabular}{c|c}
-           \( m \) & \( x\;y\;z\;w \)\\
-           \hline
-           \( 1 \) & \( 0\;0\;0\;1\;\;\surd \)\\ 
-           \( 4 \) & \( 0\;1\;0\;0\;\;\surd \)\\
-           \hline
-           \( 5 \) & \( 0\;1\;0\;1\;\;\surd \)\\
-           \( 6 \) & \( 0\;1\;1\;0\;\;\surd \)\\
-           \( 9 \) & \( 1\;0\;0\;1\;\;\surd \)\\ 
-           \hline
-           \( 7 \) & \( 0\;1\;1\;1\;\;\surd \)\\
-           \( 11 \) & \( 1\;0\;1\;1\;\;\surd \)\\
-           \( 14 \) & \( 1\;1\;1\;0\;\;\surd \)\\
-           \hline
-           \( 15 \) & \( 1\;1\;1\;1\;\;\surd \)\\
-    \label{tab:quine-mccluskey2}
-    \end{tabular}
-   \end{center}
+   \begin{table}[H]
+       \begin{center}
+           \begin{tabular}{c|c|c}
+               \( m \) &  x y z w  &\\
+               \hline
+               \( 1 \) &  0 0 0 1&\(\surd \)\\ 
+               \( 4 \) & 0 1 0 0&\(\surd \)\\
+               \hline
+               \( 5 \) &  0 1 0 1&\(\surd \)\\
+               \( 6 \) & 0 1 1 0&\(\surd \)\\
+               \( 9 \) & 1 0 0 1&\(\surd \)\\ 
+               \hline
+               \( 7 \) &  0 1 1 1& \(\surd \)\\
+               \( 11 \) & 1 0 1 1&\(\surd \)\\
+               \( 14 \) & 1 1 1 0&\(\surd \)\\
+               \hline
+               \( 15 \) & 1 1 1 1&\(\surd \)\\
+           \end{tabular}
+       \end{center}
+       \caption{Tabella riordinata}
+       \label{tab:quine-mccluskey2}
+   \end{table}
    Si individuano i gruppi che sono a distanza di Hamming 1. Nel prossimo passo
    confrontiamo i gruppi con \( 1\;bit=1 \) e con \( 2\;bit=1 \), se sono a 
    distanza di Hamming 1 allora si mette \emph{don't care} nel bit che cambia.
    Nella prima colonna c'è la coppia di \( m \) che viene confrontata. 
-         \begin{center}
-       \begin{tabular}{c|c}
-           \( m \) & \( x\;y\;z\;w \)\\
-           \hline
-           \( 1,\; 5 \) & \( 0\;-\;0\;1\;\;A \)\\ 
-           \( 1,\;9 \) & \( -\;0\;0\;1\;\;B \)\\
-           \( 4,\;5 \) & \( 0\;1\;0\;-\;\;\surd \)\\
-           \( 4,\;6 \) & \( 0\;1\;-\;0\;\;\surd \)\\
-           \hline
-           \( 5,\;7 \) & \( 0\;1\;-\;1\;\;\surd \)\\
-           \( 6,\;7 \) & \( 1\;0\;1\;-\;\;\surd \)\\
-           \( 6,\;14 \) & \( -\;1\;1\;0\;\;\surd \)\\
-           \( 9,\;11 \) & \( 1\;0\;-\;1\;\;C \)\\
-           \hline
-           \( 7,\;15 \) & \( -\;1\;1\;1\;\;\surd \)\\
-           \( 11,\;15 \) & \( 1\;-\;1\;1\;\;D \)\\
-           \( 14,\;15 \) & \( 1\;1\;1\;-\;\;\surd \)\\
-    \label{tab:quine-mccluskey3}
-    \end{tabular}
-   \end{center}
+   \begin{table}[H]
+       \begin{center}
+           \begin{tabular}{c|c|c}
+               \( m \) & \( x\;y\;z\;w \)\\
+               \hline
+               \( 1,\; 5 \) & 0 - 0 1 & A \\ 
+               \( 1,\;9 \) & - 0 0 1 & B \\
+               \( 4,\;5 \) & 0 1 0 - & \(\surd \)\\
+               \( 4,\;6 \) & 0 1 - 0 & \(\surd \)\\
+               \hline
+               \( 5,\;7 \) & 0 1 - 1 & \(\surd \)\\
+               \( 6,\;7 \) & 1 0 1 - & \( \surd \)\\
+               \( 6,\;14 \) & - 1 1 0 & \( \surd \)\\
+               \( 9,\;11 \) & 1 0 - 1 & C \\
+               \hline
+               \( 7,\;15 \) & - 1 1 1&\(\surd \)\\
+               \( 11,\;15 \) & 1 - 1 1 & D \\
+               \( 14,\;15 \) & 1 1 1 - & \(\surd \)\\
+           \end{tabular}
+       \end{center}
+       \caption{Prima semplificazione}
+       \label{tab:quine-mccluskey3}
+   \end{table}
    Tutti i mintermini della tabella \ref{tab:quine-mccluskey2} sono coperti da un implicante
    della tabella \ref{tab:quine-mccluskey3}.
 
    Ora si può semplificare anche la tabella \ref{tab:quine-mccluskey3} se i don't care
    sono nella stessa variabile:
-            \begin{center}
-       \begin{tabular}{c|c}
-           \( m \) & \( x\;y\;z\;w \)\\
-           \hline
-           \( 4,\; 5, \;6, \;7 \) & \( 0\;1\;-\;-\;\;E \)\\ 
-           \( 6, \;7, \;14, \;15 \) & \( -\;1\;1\;-\;\;F \)\\
-    \label{tab:quine-mccluskey4}
-    \end{tabular}
-   \end{center}
+   \begin{table}[H]
+       \begin{center}
+           \begin{tabular}{c|c|c}
+               \( m \) & \( x\;y\;z\;w \)\\
+               \hline
+               \( 4,\; 5, \;6, \;7 \) &  0 1 - -  & E \\ 
+               \( 6, \;7, \;14, \;15 \) & - 1 1 - & F\\
+           \end{tabular}
+       \end{center}
+        \caption{Seconda semplificazione}
+        \label{tab:quine-mccluskey4}
+   \end{table}
    I valori senza \( \surd \) sono implicanti primi perchè non sono coperti da nessun altro implicante
    della tabella \ref{tab:quine-mccluskey4}. Anche i 2 valori nella tabella \ref{tab:quine-mccluskey4} sono
    implicanti primi.\\
@@ -1424,34 +1465,40 @@ Si divide in 2 fasi:
 Ad ogni passo del metodo di Quine-McCluskey diminuisce il numero di letterali.
 
 Ora bisogna trovare gli implicanti primi essenziali
-\begin{center}
-    \begin{tabular}{c|c|c|c|c|c|c}
-        \( m \) & \( A \) & \( B \) & \( C \) & \( D \) & \( E \) & \( F \)\\ 
-        \hline
-        \( 1 \) & 1 & 1 &  &  &  &   \\
-        \( 4 \) &  &  &  &  & \textbf{1} &   \\
-        \( 5 \) & 1 &  &  &  & 1 &   \\
-        \( 6 \) &  &  &  &  & 1 & 1  \\
-        \( 7 \) &  &  &  &  & 1 & 1  \\
-        \( 9 \) &  & 1 & 1 &  &  &   \\
-        \( 11 \) &  &  & 1 & 1 &  &  \\
-        \( 14 \) &  &  &  &  &  & \textbf{1}  \\
-        \( 15 \) &  &  &  & 1 &  & 1  \\
-    \end{tabular}
-\end{center}
+\begin{table}[H]
+    \begin{center}
+        \begin{tabular}{c|c|c|c|c|c|c}
+            \( m \) & \( A \) & \( B \) & \( C \) & \( D \) & \( E \) & \( F \)\\ 
+            \hline
+            \( 1 \) & 1 & 1 &  &  &  &   \\
+            \( 4 \) &  &  &  &  & \textbf{1} &   \\
+            \( 5 \) & 1 &  &  &  & 1 &   \\
+            \( 6 \) &  &  &  &  & 1 & 1  \\
+            \( 7 \) &  &  &  &  & 1 & 1  \\
+            \( 9 \) &  & 1 & 1 &  &  &   \\
+            \( 11 \) &  &  & 1 & 1 &  &  \\
+            \( 14 \) &  &  &  &  &  & \textbf{1}  \\
+            \( 15 \) &  &  &  & 1 &  & 1  \\
+        \end{tabular}
+    \end{center}
+    \caption{Tabella con implicanti primi}
+\end{table}
 E ed F sono essenziali perchè coprono \( m_4 \) e \( m_{14} \). Inoltre E ed F coprono
 anche \( m_5, m_6, m_7 \) e \( m_6, m_7, m_{14}, m_{15} \).  
 
 Tenendo in mente le \( m \) coperte, la tabella diventa:
-\begin{center}
-    \begin{tabular}{c|c|c|c|c}
+\begin{table}[H]
+    \begin{center}
+        \begin{tabular}{c|c|c|c|c}
         & A & B & C & D\\
         \hline
-        \( m_1 \) & 1 & 1 &  &  \\ 
-        \( m_9 \) &  & 1 & 1 &  \\
-        \( m_{11} \) &  &  & 1 & 1 \\ 
-    \end{tabular}
-\end{center}
+            \( m_1 \) & 1 & 1 &  &  \\ 
+            \( m_9 \) &  & 1 & 1 &  \\
+            \( m_{11} \) &  &  & 1 & 1 \\ 
+        \end{tabular}
+    \end{center}
+    \caption{Tabella senza implicanti essenziali}
+\end{table}
 \paragraph{Eulistica} È un metodo per trovare la soluzione corretta, ma non garantisce
 che sia ottima.
 
@@ -1665,4 +1712,79 @@ I CPLD ttivano diversi PLA.
 
 \subsubsection{SoC (System on Chip)}
 \label{D4}
+
+
+
+% Laboratorio
+\section{Laboratorio}
+\subsection{SIS}
+È il successore di \emph{Espresso} e permette di fare la sintesi di circuiti, cioè
+si genera passo dopo passo il layout per il silicio.
+
+Il modello di codice di SIS è il seguente:
+\begin{lstlisting}[language=Verilog]
+    .model <model-male> # nome della funzione
+    .inputs <input-list> # elenco degli input
+    .outputs <output-list> # elenco degli output
+    .names # On-set/Off-set per ogni input
+    <command> 
+    ...
+    <command>
+    .end # il file deve essere 
+\end{lstlisting}
+
+\begin{example}
+   Prendiamo in considerazoine la tabella di verità dell'
+   implicazione logica:
+   \begin{table}[H]
+    \begin{center}
+        \begin{tabular}{c|c}
+            a b & a \(\implies\) b\\
+            \hline
+            0 0 & 1\\
+            0 1 & 1\\
+            1 0 & 0\\
+            1 1 & 1\\
+        \end{tabular}
+    \end{center}
+   \end{table}
+   che si può scrivere anche nel seguente modo:
+      \begin{table}[H]
+    \begin{center}
+        \begin{tabular}{c|c}
+            a b & a \(\implies\) b\\
+            \hline
+            0 - & 1\\
+            1 0 & 0\\
+            1 1 & 1\\
+        \end{tabular}
+    \end{center}
+   \end{table}
+
+\begin{lstlisting}[language=Verilog]
+   .model IMPLIES
+   .inputs I1 I2
+   .outputs O
+
+   .names I1 I2 O
+   # si definisce l'on-set o l'off-set  
+   0- 1
+   11 1
+   .end
+\end{lstlisting}
+\end{example}
+
+Lista di comandi base:
+\begin{itemize}
+    \item \textbf{read\_blif}: carica il modello sis,
+    \item \textbf{simulate [valori in bit, separati da spazi]}: esegue un passo di
+        simulazione del circuito,
+    \item \textbf{help}: mostra i comandi disponibili,
+    \item \textbf{help [comando]}: mostra la descrizione del comando,
+    \item \textbf{print\_stats}: fornisce informazioni sul circuito, quali numero di input
+       (pi), output (po), porte logiche (gates), numero di mintermini (minterms),
+    \item \textbf{quit}: esce da sis,
+    \item \textbf{read\_blif [nome file]}: carica il modello sis,
+    \item \textbf{write\_blif [nome file]}: salva il modello sis in un file,
+\end{itemize}
 \end{document}
