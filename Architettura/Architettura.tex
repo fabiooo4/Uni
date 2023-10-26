@@ -1714,112 +1714,229 @@ I circuiti a 2 livelli sono composti da 2 livelli di porte logiche:
     \textcolor{red}{\[
         O_2 = \bar{X}\bar{Y} + YV + X\bar{Z}
     \] }
-    \begin{center}
-        \begin{tikzpicture}
-            \node (x) at (0,0) {\( X \)};
-            \draw (x) -- ++(0,0.5) -- ++(-0.3,0) -- ++(0,0.3) node[buffer port, anchor=in, scale=0.35, yscale=1.3, rotate=90] (notx1) {};
-            \draw (x) -- ++(0,0.5) -- ++(0.3,0) -- ++(0,0.3) node[not port, anchor=in, scale=0.35, yscale=1.3, rotate=90] (notx2) {};
+    \begin{figure}[H]
+        \begin{center}
+            \begin{tikzpicture}
+                \node (x) at (0,0) {\( X \)};
+                \draw (x) -- ++(0,0.5) -- ++(-0.3,0) -- ++(0,0.3) node[buffer port, anchor=in, scale=0.35, yscale=1.3, rotate=90] (notx1) {};
+                \draw (x) -- ++(0,0.5) -- ++(0.3,0) -- ++(0,0.3) node[not port, anchor=in, scale=0.35, yscale=1.3, rotate=90] (notx2) {};
 
-            \node (y) at (1.2,0) {\( Y \)};
-            \draw (y) -- ++(0,0.5) -- ++(-0.3,0) -- ++(0,0.3) node[buffer port, anchor=in, scale=0.35, yscale=1.3, rotate=90] (noty1) {};
-            \draw (y) -- ++(0,0.5) -- ++(0.3,0) -- ++(0,0.3) node[not port, anchor=in, scale=0.35, yscale=1.3, rotate=90] (noty2) {};
+                \node (y) at (1.2,0) {\( Y \)};
+                \draw (y) -- ++(0,0.5) -- ++(-0.3,0) -- ++(0,0.3) node[buffer port, anchor=in, scale=0.35, yscale=1.3, rotate=90] (noty1) {};
+                \draw (y) -- ++(0,0.5) -- ++(0.3,0) -- ++(0,0.3) node[not port, anchor=in, scale=0.35, yscale=1.3, rotate=90] (noty2) {};
 
-            \node (z) at (2.4,0) {\( Z \)};
-            \draw (z) -- ++(0,0.5) -- ++(-0.3,0) -- ++(0,0.3) node[not port, anchor=in, scale=0.35, yscale=1.3, rotate=90] (notz1) {};
-            \draw (z) -- ++(0,0.5) -- ++(0.3,0) -- ++(0,0.3) node[buffer port, anchor=in, scale=0.35, yscale=1.3, rotate=90] (notz2) {};
+                \node (z) at (2.4,0) {\( Z \)};
+                \draw (z) -- ++(0,0.5) -- ++(-0.3,0) -- ++(0,0.3) node[not port, anchor=in, scale=0.35, yscale=1.3, rotate=90] (notz1) {};
+                \draw (z) -- ++(0,0.5) -- ++(0.3,0) -- ++(0,0.3) node[buffer port, anchor=in, scale=0.35, yscale=1.3, rotate=90] (notz2) {};
 
-            \node (v) at (3.6,0) {\( V \)};
-            \draw (v) -- ++(0,0.5) -- ++(-0.3,0) -- ++(0,0.3) node[not port, anchor=in, scale=0.35, yscale=1.3, rotate=90] (notv1) {};
-            \draw (v) -- ++(0,0.5) -- ++(0.3,0) -- ++(0,0.3) node[buffer port, anchor=in, scale=0.35, yscale=1.3, rotate=90] (notv2) {};
-
-
-            \draw (notx1) -- ++(0,5);
-            \draw (notx2) -- ++(0,5);
-
-            \draw (noty1) -- ++(0,5);
-            \draw (noty2) -- ++(0,5);
-
-            \draw (notz1) -- ++(0,5);
-            \draw (notz2) -- ++(0,5);
-
-            \draw (notv1) -- ++(0,5);
-            \draw (notv2) -- ++(0,5);
-
-            \node[and port, anchor=out, scale=0.5] (and1) at (5.5,6.12) {\( p_1 \)};
-            \draw (notx1.out |- 52, 52 |- and1.out) -- (4.6, 52 |- and1.out) |- (and1.in 1);
-            \draw  (4.6, 52 |- and1.out) |- (and1.in 2);
-
-            \node[and port, anchor=out, scale=0.5] (and2) at (5.5,5.12) {\( p_2 \)};
-            \draw (notx1.out |- 52, 52 |- and2.out) -- (4.6, 52 |- and2.out) |- (and2.in 1);
-            \draw  (4.6, 52 |- and2.out) |- (and2.in 2);
-
-            \node[and port, anchor=out, scale=0.5] (and3) at (5.5,4.12) {\( p_3 \)};
-            \draw (notx1.out |- 52, 52 |- and3.out) -- (4.6, 52 |- and3.out) |- (and3.in 1);
-            \draw  (4.6, 52 |- and3.out) |- (and3.in 2);
-
-            \node[and port, anchor=out, scale=0.5] (and4) at (5.5,3.12) {\( p_4 \)};
-            \draw (notx1.out |- 52, 52 |- and4.out) -- (4.6, 52 |- and4.out) |- (and4.in 1);
-            \draw  (4.6, 52 |- and4.out) |- (and4.in 2);
-
-            \node[and port, anchor=out, scale=0.5] (and5) at (5.5,2.12) {\( p_5 \)};
-            \draw (notx1.out |- 52, 52 |- and5.out) -- (4.6, 52 |- and5.out) |- (and5.in 1);
-            \draw  (4.6, 52 |- and5.out) |- (and5.in 2);
-
-            \node[or port, anchor=out, scale=0.5, rotate=-90] (or1) at (6.5,0.5) {};
-            \node[or port, anchor=out, scale=0.5, rotate=-90] (or2) at (7.5,0.5) {};
-            \node[below] at (or1.out) {\( O_1 \)};
-            \node[below] at (or2.out) {\( O_2 \)};
- 
-            \draw (and1.out |- 52, 52 |- and1.out) -- (or2.out |- 52, 52 |- and1.out);
-            \draw (and2.out |- 52, 52 |- and2.out) -- (or2.out |- 52, 52 |- and2.out);
-            \draw (and3.out |- 52, 52 |- and3.out) -- (or2.out |- 52, 52 |- and3.out);
-            \draw (and4.out |- 52, 52 |- and4.out) -- (or2.out |- 52, 52 |- and4.out);
-            \draw (and5.out |- 52, 52 |- and5.out) -- (or2.out |- 52, 52 |- and5.out);
-
-            \draw (or1.out |- 52, 52 |- or1.in 1) -- (or1.out |- 52, 52 |- and1.out);
-            \draw (or1.out |- 52, 52 |- or1.in 1) |- (or1.in 1);
-            \draw (or1.out |- 52, 52 |- or1.in 1) |- (or1.in 2);
-
-            \draw (or2.out |- 52, 52 |- or2.in 1) -- (or2.out |- 52, 52 |- and1.out);
-            \draw (or2.out |- 52, 52 |- or2.in 1) |- (or2.in 1);
-            \draw (or2.out |- 52, 52 |- or2.in 1) |- (or2.in 2);
-
-            \draw[fill, circle, red] (notx1.out |- 52, 52 |- and1.out) circle [radius=0.08] node[anchor=west] {};
-            \draw[fill, circle, red] (notx2.out |- 52, 52 |- and2.out) circle [radius=0.08] node[anchor=west] {};
-            \draw[fill, circle, red] (noty2.out |- 52, 52 |- and2.out) circle [radius=0.08] node[anchor=west] {};
-            \draw[fill, circle, red] (notz2.out |- 52, 52 |- and1.out) circle [radius=0.08] node[anchor=west] {};
-
-            \draw[fill, circle, red] (or2.out |- 52, 52 |- and1.out) circle [radius=0.08] node[anchor=west] {};
-            \draw[fill, circle, red] (or2.out |- 52, 52 |- and2.out) circle [radius=0.08] node[anchor=west] {};
-            \draw[fill, circle, red] (or2.out |- 52, 52 |- and4.out) circle [radius=0.08] node[anchor=west] {};
+                \node (v) at (3.6,0) {\( V \)};
+                \draw (v) -- ++(0,0.5) -- ++(-0.3,0) -- ++(0,0.3) node[not port, anchor=in, scale=0.35, yscale=1.3, rotate=90] (notv1) {};
+                \draw (v) -- ++(0,0.5) -- ++(0.3,0) -- ++(0,0.3) node[buffer port, anchor=in, scale=0.35, yscale=1.3, rotate=90] (notv2) {};
 
 
-            \draw[fill, circle, blue] (notx1.out |- 52, 52 |- and3.out) circle [radius=0.08] node[anchor=west] {};
-            \draw[fill, circle, blue] (notx2.out |- 52, 52 |- and5.out) circle [radius=0.08] node[anchor=west] {};
-            \draw[fill, circle, blue] (noty1.out |- 52, 52 |- and4.out) circle [radius=0.08] node[anchor=west] {};
-            \draw[fill, circle, blue] (noty1.out |- 52, 52 |- and5.out) circle [radius=0.08] node[anchor=west] {};
-            \draw[fill, circle, blue] (notz1.out |- 52, 52 |- and3.out) circle [radius=0.08] node[anchor=west] {};
-            \draw[fill, circle, blue] (notv1.out |- 52, 52 |- and4.out) circle [radius=0.08] node[anchor=west] {};
+                \draw (notx1) -- ++(0,5);
+                \draw (notx2) -- ++(0,5);
 
-            \draw[fill, circle, blue] (or1.out |- 52, 52 |- and3.out) circle [radius=0.08] node[anchor=west] {};
-            \draw[fill, circle, blue] (or1.out |- 52, 52 |- and4.out) circle [radius=0.08] node[anchor=west] {};
-            \draw[fill, circle, blue] (or1.out |- 52, 52 |- and5.out) circle [radius=0.08] node[anchor=west] {};
-        \end{tikzpicture}
-    \end{center}
+                \draw (noty1) -- ++(0,5);
+                \draw (noty2) -- ++(0,5);
+
+                \draw (notz1) -- ++(0,5);
+                \draw (notz2) -- ++(0,5);
+
+                \draw (notv1) -- ++(0,5);
+                \draw (notv2) -- ++(0,5);
+
+                \node[and port, anchor=out, scale=0.5] (and1) at (5.5,6.12) {\( p_1 \)};
+                \draw (notx1.out |- 52, 52 |- and1.out) -- (4.6, 52 |- and1.out) |- (and1.in 1);
+                \draw  (4.6, 52 |- and1.out) |- (and1.in 2);
+
+                \node[and port, anchor=out, scale=0.5] (and2) at (5.5,5.12) {\( p_2 \)};
+                \draw (notx1.out |- 52, 52 |- and2.out) -- (4.6, 52 |- and2.out) |- (and2.in 1);
+                \draw  (4.6, 52 |- and2.out) |- (and2.in 2);
+
+                \node[and port, anchor=out, scale=0.5] (and3) at (5.5,4.12) {\( p_3 \)};
+                \draw (notx1.out |- 52, 52 |- and3.out) -- (4.6, 52 |- and3.out) |- (and3.in 1);
+                \draw  (4.6, 52 |- and3.out) |- (and3.in 2);
+
+                \node[and port, anchor=out, scale=0.5] (and4) at (5.5,3.12) {\( p_4 \)};
+                \draw (notx1.out |- 52, 52 |- and4.out) -- (4.6, 52 |- and4.out) |- (and4.in 1);
+                \draw  (4.6, 52 |- and4.out) |- (and4.in 2);
+
+                \node[and port, anchor=out, scale=0.5] (and5) at (5.5,2.12) {\( p_5 \)};
+                \draw (notx1.out |- 52, 52 |- and5.out) -- (4.6, 52 |- and5.out) |- (and5.in 1);
+                \draw  (4.6, 52 |- and5.out) |- (and5.in 2);
+
+                \node[or port, anchor=out, scale=0.5, rotate=-90] (or1) at (6.5,0.5) {};
+                \node[or port, anchor=out, scale=0.5, rotate=-90] (or2) at (7.5,0.5) {};
+                \node[below] at (or1.out) {\( O_1 \)};
+                \node[below] at (or2.out) {\( O_2 \)};
+
+                \draw (and1.out |- 52, 52 |- and1.out) -- (or2.out |- 52, 52 |- and1.out);
+                \draw (and2.out |- 52, 52 |- and2.out) -- (or2.out |- 52, 52 |- and2.out);
+                \draw (and3.out |- 52, 52 |- and3.out) -- (or2.out |- 52, 52 |- and3.out);
+                \draw (and4.out |- 52, 52 |- and4.out) -- (or2.out |- 52, 52 |- and4.out);
+                \draw (and5.out |- 52, 52 |- and5.out) -- (or2.out |- 52, 52 |- and5.out);
+
+                \draw (or1.out |- 52, 52 |- or1.in 1) -- (or1.out |- 52, 52 |- and1.out);
+                \draw (or1.out |- 52, 52 |- or1.in 1) |- (or1.in 1);
+                \draw (or1.out |- 52, 52 |- or1.in 1) |- (or1.in 2);
+
+                \draw (or2.out |- 52, 52 |- or2.in 1) -- (or2.out |- 52, 52 |- and1.out);
+                \draw (or2.out |- 52, 52 |- or2.in 1) |- (or2.in 1);
+                \draw (or2.out |- 52, 52 |- or2.in 1) |- (or2.in 2);
+
+                \draw[fill, circle, red] (notx1.out |- 52, 52 |- and1.out) circle [radius=0.08] node[anchor=west] {};
+                \draw[fill, circle, red] (notx2.out |- 52, 52 |- and2.out) circle [radius=0.08] node[anchor=west] {};
+                \draw[fill, circle, red] (noty2.out |- 52, 52 |- and2.out) circle [radius=0.08] node[anchor=west] {};
+                \draw[fill, circle, red] (notz2.out |- 52, 52 |- and1.out) circle [radius=0.08] node[anchor=west] {};
+
+                \draw[fill, circle, red] (or2.out |- 52, 52 |- and1.out) circle [radius=0.08] node[anchor=west] {};
+                \draw[fill, circle, red] (or2.out |- 52, 52 |- and2.out) circle [radius=0.08] node[anchor=west] {};
+                \draw[fill, circle, red] (or2.out |- 52, 52 |- and4.out) circle [radius=0.08] node[anchor=west] {};
+
+
+                \draw[fill, circle, blue] (notx1.out |- 52, 52 |- and3.out) circle [radius=0.08] node[anchor=west] {};
+                \draw[fill, circle, blue] (notx2.out |- 52, 52 |- and5.out) circle [radius=0.08] node[anchor=west] {};
+                \draw[fill, circle, blue] (noty1.out |- 52, 52 |- and4.out) circle [radius=0.08] node[anchor=west] {};
+                \draw[fill, circle, blue] (noty1.out |- 52, 52 |- and5.out) circle [radius=0.08] node[anchor=west] {};
+                \draw[fill, circle, blue] (notz1.out |- 52, 52 |- and3.out) circle [radius=0.08] node[anchor=west] {};
+                \draw[fill, circle, blue] (notv1.out |- 52, 52 |- and4.out) circle [radius=0.08] node[anchor=west] {};
+
+                \draw[fill, circle, blue] (or1.out |- 52, 52 |- and3.out) circle [radius=0.08] node[anchor=west] {};
+                \draw[fill, circle, blue] (or1.out |- 52, 52 |- and4.out) circle [radius=0.08] node[anchor=west] {};
+                \draw[fill, circle, blue] (or1.out |- 52, 52 |- and5.out) circle [radius=0.08] node[anchor=west] {};
+            \end{tikzpicture}
+        \end{center}
+        \caption{PLA}
+    \end{figure}
+    Prende in input coppie di variabili e le assegna ad un array di AND e l'output
+    di questi AND viene assegnato ad un array di OR.
 \end{example}
 
 \subsubsection{CPLD (Complex Programmable Logic Device)}
-I CPLD ttivano diversi PLA.
-\label{D2}
+I CPLD attivano diversi PLA:
+\begin{figure}[H]
+   \begin{center}
+    \begin{tikzpicture}
+        \draw (-3,-2) rectangle (3, 2);
+        \node[align=center, draw] at (0,0) (ip) {Interconnected\\
+            programming};
+
+        \node[align=center, draw] at (2,1) (pla1) {PLA};
+        \draw (pla1) -- ++(0,0.5) node[above, draw, scale=0.6] {I/O};
+
+        \node[align=center, draw] at (2,-1) (pla2) {PLA};
+        \draw (pla2) -- ++(0,-0.5) node[below, draw, scale=0.6] {I/O};
+
+        \node[align=center, draw] at (-2,1) (pla3) {PLA};
+        \draw (pla3) -- ++(0,0.5) node[above, draw, scale=0.6] {I/O};
+
+        \node[align=center, draw] at (-2,-1) (pla4) {PLA};
+        \draw (pla4) -- ++(0,-0.5) node[below, draw, scale=0.6] {I/O};
+
+        \draw (pla1) -- (ip);
+        \draw (pla2) -- (ip);
+        \draw (pla3) -- (ip);
+        \draw (pla4) -- (ip);
+    \end{tikzpicture}
+   \end{center} 
+   \caption{CPLD}
+\end{figure}
 
 \subsubsection{FPGA (Field Programmable Gate Array)}
-\label{D3}
+I FPGA attivano diversi CPLD:
+\begin{figure}[H]
+   \begin{center}
+    \begin{tikzpicture}
+        \draw (0,0) rectangle ++(1,1);
+        \draw (0,1.3) rectangle ++(0.2,0.2);
+        \draw (0.4,1.3) rectangle ++(0.2,0.2);
+        \draw (0.8,1.3) rectangle ++(0.2,0.2);
+
+        \draw (0.1,1.3) -- (0.1, 1);
+        \draw (0.5,1.3) -- (0.5, 1);
+        \draw (0.9,1.3) -- (0.9, 1);
+
+        \draw (1.5,0) rectangle ++(1,1);
+        \draw (1.5,1.3) rectangle ++(0.2,0.2);
+        \draw (1.9,1.3) rectangle ++(0.2,0.2);
+        \draw (2.3,1.3) rectangle ++(0.2,0.2);
+
+        \draw (1.6,1.3) -- (1.6, 1);
+        \draw (2,1.3) -- (2, 1);
+        \draw (2.4,1.3) -- (2.4, 1);
+
+        \draw (3,0) rectangle ++(1,1);
+        \draw (3,1.3) rectangle ++(0.2,0.2);
+        \draw (3.4,1.3) rectangle ++(0.2,0.2);
+        \draw (3.8,1.3) rectangle ++(0.2,0.2);
+
+        \draw (3.1,1.3) -- (3.1, 1);
+        \draw (3.5,1.3) -- (3.5, 1);
+        \draw (3.9,1.3) -- (3.9, 1);
+
+        \draw (0,-1.5) rectangle ++(1,1);
+
+        \draw (1.5,-1.5) rectangle ++(1,1);
+
+        \draw (3,-1.5) rectangle ++(1,1);
+
+
+        \draw (0,-3) rectangle ++(1,1);
+
+        \draw (1.5,-3) rectangle ++(1,1);
+
+        \draw (3,-3) rectangle ++(1,1);
+
+        \draw[<-] (4,1.4) -- ++(0.5, 0) node[right, scale=0.6] {I/O};
+        \draw[<-] (4,0.5) -- ++(0.5, 0) node[right, scale=0.8, align=center] {Logic cell\\
+            (Interconnected\\
+        programming)};
+
+        \draw (0.5,0) -- (0.5,-0.5);
+        \draw (2,0) -- (2,-0.5);
+        \draw (3.5,0) -- (3.5,-0.5);
+
+        \draw (0.5,-1.5) -- (0.5,-2);
+        \draw (2,-1.5) -- (2,-2);
+        \draw (3.5,-1.5) -- (3.5,-2);
+
+        \draw (1, 0.5) -- (1.5, 0.5);
+        \draw (1,-1) -- (1.5, -1);
+        \draw (1,-2.5) -- (1.5, -2.5);
+
+        \draw (2.5, 0.5) -- (3, 0.5);
+        \draw (2.5,-1) -- (3, -1);
+        \draw (2.5,-2.5) -- (3, -2.5);
+    \end{tikzpicture}
+   \end{center} 
+   \caption{FPGA}
+\end{figure}
 
 
 \subsubsection{SoC (System on Chip)}
-\label{D4}
+I SoC attivano diversi CPLD
+\begin{figure}[H]
+   \begin{center}
+    \begin{tikzpicture}
+        \draw (-3,-2) rectangle (3, 1);
+        \draw[<->, thick] (-2.5,-1.5) -- (2.5, -1.5);
 
+        \node[draw] at (-1.5,0) (cpu) {CPU};
+        \node[draw] at (1.5,0) (ram) {FPGA};
 
+        \draw (cpu) -- (-1.5,-1.5);
+        \draw (ram) -- (1.5,-1.5);
+
+        \node[draw] at (0,-3) (ram) {RAM};
+        \draw[<->] (ram) -- (0,-1.5);
+
+        \node[draw] at (-2.95,0) (io1) {I\;\;O};
+        \node[draw] at (-2.95,-1) (io2) {I\;\;O};
+    \end{tikzpicture}
+   \end{center} 
+   \caption{SoC}
+\end{figure}
 
 % Laboratorio
 \section{Laboratorio}
@@ -1829,14 +1946,16 @@ si genera passo dopo passo il layout per il silicio.
 
 Il modello di codice di SIS è il seguente:
 \begin{lstlisting}[language=Verilog]
-    .model <model-male> # nome della funzione
-    .inputs <input-list> # elenco degli input
-    .outputs <output-list> # elenco degli output
-    .names # On-set/Off-set per ogni input
+    .model <model-male> // nome della funzione
+    .inputs <input-list> // elenco degli input
+    .outputs <output-list> // elenco degli output
+
+    .names // On-set/Off-set per ogni input
     <command> 
     ...
     <command>
-    .end # il file deve essere 
+
+    .end // il file deve essere 
 \end{lstlisting}
 
 \begin{example}
@@ -1873,7 +1992,7 @@ Il modello di codice di SIS è il seguente:
    .outputs O
 
    .names I1 I2 O
-   # si definisce l'on-set o l'off-set  
+   // si definisce l'on-set o l'off-set  
    0- 1
    11 1
    .end
