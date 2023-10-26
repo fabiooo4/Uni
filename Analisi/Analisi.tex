@@ -208,30 +208,33 @@ Tradotto in simboli diventa:
 	\forall a \in A \;\exists !\; b \in B \;tale\;che\; f: A \to B
 \]
 Esempio di funzione corretta:
-\begin{center}
-	\begin{tikzpicture}
-		\draw[draw] (-1.5,0) circle (1cm) node[above, yshift=1.1cm] {$A$};
-		\draw[draw] (1.5,0) circle (1cm) node[above, yshift=1.1cm] {$B$};
+\begin{figure}[H]
+	\begin{center}
+		\begin{tikzpicture}
+			\draw[draw] (-1.5,0) circle (1cm) node[above, yshift=1.1cm] {$A$};
+			\draw[draw] (1.5,0) circle (1cm) node[above, yshift=1.1cm] {$B$};
 
-		\draw[draw, fill, blue] (-1.2,0.7) circle (0.5mm) node (1) {};
-		\draw[draw, fill, blue] (-1.6,0.4) circle (0.5mm) node (2) {};
-		\draw[draw, fill, blue] (-1.3,-0.3) circle (0.5mm) node (3) {};
-		\draw[draw, fill, blue] (-1.8,-0.6) circle (0.5mm) node (4) {};
-		\draw[draw, fill, blue] (-1.7,0) circle (0.5mm) node (9) {};
+			\draw[draw, fill, blue] (-1.2,0.7) circle (0.5mm) node (1) {};
+			\draw[draw, fill, blue] (-1.6,0.4) circle (0.5mm) node (2) {};
+			\draw[draw, fill, blue] (-1.3,-0.3) circle (0.5mm) node (3) {};
+			\draw[draw, fill, blue] (-1.8,-0.6) circle (0.5mm) node (4) {};
+			\draw[draw, fill, blue] (-1.7,0) circle (0.5mm) node (9) {};
 
-		\draw[draw, fill, red] (1.2,0.7) circle (0.5mm) node (5) {};
-		\draw[draw, fill, red] (1.6,0.4) circle (0.5mm) node (6) {};
-		\draw[draw, fill, red] (1.3,-0.3) circle (0.5mm) node (7) {};
-		\draw[draw, fill, red] (1.8,-0.6) circle (0.5mm) node (8) {};
+			\draw[draw, fill, red] (1.2,0.7) circle (0.5mm) node (5) {};
+			\draw[draw, fill, red] (1.6,0.4) circle (0.5mm) node (6) {};
+			\draw[draw, fill, red] (1.3,-0.3) circle (0.5mm) node (7) {};
+			\draw[draw, fill, red] (1.8,-0.6) circle (0.5mm) node (8) {};
 
-		\draw[->] (1) -- (5);
-		\draw[->] (2) -- (6);
-		\draw[->] (3) -- (7);
-		\draw[->] (4) -- (8);
-		\draw[->] (9) -- (8);
+			\draw[->] (1) -- (5);
+			\draw[->] (2) -- (6);
+			\draw[->] (3) -- (7);
+			\draw[->] (4) -- (8);
+			\draw[->] (9) -- (8);
 
-	\end{tikzpicture}
-\end{center}
+		\end{tikzpicture}
+	\end{center}
+	\caption{Esempio di funzione corretta}
+\end{figure}
 
 \subsubsection{Dominio di una funzione}
 \begin{definition}
@@ -274,6 +277,233 @@ dominio \( A \subseteq \mathbb{R} \) è un insieme \textbf{non} limitato superio
 	\]
 	(Notazione alternativa: \( f(x) \to L \) per \( x \to +\infty \) )\\
 	\textbf{La condizione deve essere soddisfatta per ogni \( \epsilon \) }.
+	\begin{figure}[H]
+		\begin{center}
+			\begin{tikzpicture}[scale=0.5, domain=0:13]
+				\draw[->] (-0.5,0) -- (13,0) node[right] {$x$};
+				\draw[->] (0,-0.5) -- (0,7) node[above] {$y$};
+
+				\coordinate (A) at (0,0);
+				\coordinate (B) at (1,1);
+				\coordinate (C) at (2,2);
+				\coordinate (D) at (3,6);
+				\coordinate (E) at (4,5);
+				\coordinate (F) at (5,3);
+				\coordinate (G) at (6,2.12);
+				\coordinate (H) at (7,3.9);
+				\coordinate (I) at (8,3);
+				\coordinate (J) at (9,3);
+				\coordinate (K) at (10,3);
+				\coordinate (L) at (11,3);
+				\coordinate (M) at (12,3);
+				\coordinate (N) at (13,3);
+
+				\draw [red, ultra thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
+
+				\draw [] (0,3) -- (13,3) node[right] {$L$};
+				\draw [dashed] (0,4) -- (13,4) node[right, scale=0.5] {$L+\epsilon$};
+				\draw [dashed] (0,2) -- (13,2) node[right, scale=0.5] {$L-\epsilon$};
+
+				\draw[fill, fill opacity=0.2, cyan] (0,4) rectangle (13,2);
+
+				\draw [dashed] (0,3.2) -- (13,3.2) node[above right, scale=0.5] {$L+\epsilon^1$};
+				\draw [dashed] (0,2.8) -- (13,2.8) node[below right, scale=0.5] {$L-\epsilon^1$};
+
+				\draw[fill, fill opacity=0.2, green] (0,3.2) rectangle (13,2.8);
+
+				\draw [dashed] (4.5,4) -- (4.5,0) node[below] {$k$};
+				\draw [dashed] (7.8,3.2) -- (7.8,0) node[below] {$k^1$};
+			\end{tikzpicture}
+		\end{center}
+		\caption{Definizione di limite}
+	\end{figure}
+	Per la definizione di limite, la funzione deve entrare in un intorno di \( L \) e non uscirne più.
+	Questo vale per ogni \( \epsilon \), quindi anche per \( \epsilon^1 \).
+\end{definition}
+\begin{figure}[H]
+	\begin{definition}
+		Si dice che
+		\[
+			\lim_{x \to +\infty} f(x) = +\infty
+		\]
+		Se e solo se
+		\[
+			\forall M > 0\;\; \exists k>0\; \;t.c.\;\; \forall x \in A,
+		\]
+		\[
+			x \ge k \to f(x) \ge M
+		\]
+		(Notazione alternativa: \( f(x) \to +\infty \) per \( x \to +\infty \))
+		\begin{figure}[H]
+			\begin{center}
+				\begin{tikzpicture}[scale=0.5, domain=0:13]
+					\draw[->] (-0.5,0) -- (13,0) node[right] {$x$};
+					\draw[->] (0,-0.5) -- (0,7) node[above] {$y$};
+
+					\coordinate (A) at (0,0);
+					\coordinate (B) at (1,1);
+					\coordinate (C) at (2,2);
+					\coordinate (D) at (3,6);
+					\coordinate (E) at (4,5);
+					\coordinate (F) at (5,3);
+					\coordinate (G) at (6,2.12);
+					\coordinate (H) at (7,3.9);
+					\coordinate (I) at (8,3);
+					\coordinate (J) at (9,5);
+					\coordinate (K) at (10,5);
+					\coordinate (L) at (11,5);
+					\coordinate (M) at (12,6);
+					\coordinate (N) at (13,7);
+
+					\draw [red, ultra thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
+
+					\draw [] (0,4.8) -- (13,4.8) node[right] {$M$};
+					\draw [] (0,6) -- (13,6) node[right] {$M^1$};
+
+					\draw[fill, fill opacity=0.2, cyan] (0,4.8) rectangle (13,7);
+
+					\draw [dashed] (8.8,4.8) -- (8.8,0) node[below] {$k$};
+					\draw [dashed] (12,6) -- (12,0) node[below] {$k^1$};
+				\end{tikzpicture}
+			\end{center}
+			\caption{Definizione di limite a \( +\infty \)}
+		\end{figure}
+	\end{definition}
+\end{figure}
+\begin{figure}[H]
+	\begin{definition}
+		Si dice che
+		\[
+			\lim_{x \to +\infty} f(x) = -\infty
+		\]
+		Se e solo se
+		\[
+			\forall M > 0\;\; \exists k>0\; \;t.c.\;\; \forall x \in A,
+		\]
+		\[
+			x \ge k \to f(x) \le -M
+		\]
+		(Notazione alternativa: \( f(x) \to -\infty \) per \( x \to +\infty \))
+		\begin{figure}[H]
+			\begin{center}
+				\begin{tikzpicture}[scale=0.5, domain=0:13]
+					\draw[->] (-0.5,0) -- (13,0) node[right] {$x$};
+					\draw[->] (0,-7) -- (0,2) node[above] {$y$};
+
+					\coordinate (A) at (0,0);
+					\coordinate (B) at (1,1);
+					\coordinate (C) at (2,-2);
+					\coordinate (D) at (3,-6);
+					\coordinate (E) at (4,-5);
+					\coordinate (F) at (5,-3);
+					\coordinate (G) at (6,-2.12);
+					\coordinate (H) at (7,-3.9);
+					\coordinate (I) at (8,-3);
+					\coordinate (J) at (9,-5);
+					\coordinate (K) at (10,-5);
+					\coordinate (L) at (11,-5);
+					\coordinate (M) at (12,-6);
+					\coordinate (N) at (13,-7);
+
+					\draw [red, ultra thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
+
+					\draw [] (0,-4.8) -- (13,-4.8) node[right] {$M$};
+					\draw [] (0,-6) -- (13,-6) node[right] {$M^1$};
+
+					\draw[fill, fill opacity=0.2, cyan] (0,-4.8) rectangle (13,-7);
+
+					\draw [dashed] (8.8,-4.8) -- (8.8,0) node[above] {$k$};
+					\draw [dashed] (12,-6) -- (12,0) node[above] {$k^1$};
+				\end{tikzpicture}
+			\end{center}
+			\caption{Definizione di limite a \( -\infty \)}
+		\end{figure}
+	\end{definition}
+\end{figure}
+
+
+\subsection{Esempi}
+\begin{example}
+	\[
+		\lim_{x \to +\infty} \frac{1}{x}=0\;\;\;Dominio=\mathbb{R}/\{0\}
+	\]
+
+	\begin{figure}[H]
+		\begin{center}
+			\begin{tikzpicture}
+				\draw[->] (-0.5, 0) -- (7, 0) node[right] {$x$};
+				\draw[->] (0, -2) -- (0, 5) node[above] {$y$};
+				\draw[domain=0.2:7, smooth, variable=\x, red, thick] plot ({\x}, {1/\x});
+
+				\draw [dashed] (0,1) -- (7,1) node[right, scale=0.8] {$0+\epsilon$};
+				\draw [dashed] (0,-1) -- (7,-1) node[right, scale=0.8] {$0-\epsilon$};
+
+				\draw[fill, fill opacity=0.2, cyan] (0,1) rectangle (7,-1);
+			\end{tikzpicture}
+		\end{center}
+		\caption{Esempio di limite}
+	\end{figure}
+	Sia dato \( \epsilon > 0 \) arbitrario. Definisco \( k := \frac{1}{\epsilon} \).\\
+	Sia dato \( x > 0 \) arbitrario, supponiamo \( x \ge k \). Allora
+	\[
+		0-\epsilon \le 0 \le \frac{1}{x} \le \frac{1}{k} = \frac{1}{\frac{1}{\epsilon}} = \epsilon
+	\]
+	Quindi, ho dimostrato che la definizione di limite è soddisfatta (con \( L=0 \)).
+\end{example}
+\begin{example}
+	\[
+		\lim_{x \to +\infty} x = +\infty
+	\]
+
+	\begin{figure}[H]
+		\begin{center}
+			\begin{tikzpicture}
+				\draw[->] (-0.5, 0) -- (5, 0) node[right] {$x$};
+				\draw[->] (0, -0.5) -- (0, 5) node[above] {$y$};
+				\draw[domain=0:5, smooth, variable=\x, red, thick] plot ({\x}, {\x});
+
+				\draw [dashed] (0,3) -- (5,3) node[right, scale=0.8] {$M$};
+
+				\draw[fill, fill opacity=0.2, cyan] (0,3) rectangle (5,5);
+
+				\draw [dashed] (3,3) -- (3,0) node[below] {$k$};
+			\end{tikzpicture}
+		\end{center}
+		\caption{Esempio di limite a \( +\infty \)}
+	\end{figure}
+	Sia dato \( M>0 \) arbitrario. Definisco \( k := M \).\\
+	Sia dato \( x \ge k \). Allora \( x \ge M \).\\
+	Quindi è verificata la definizione di limite.
+
+\end{example}
+
+
+\subsection{Osservazioni}
+\textbf{Non} è detto che un limite esista.
+\[
+	\lim_{x \to +\infty} sin(x)
+\]
+\[
+	\lim_{x \to +\infty} cos(x)
+\]
+\begin{figure}[H]
+	\begin{center}
+		\begin{tikzpicture}
+			\draw[->] (-5, 0) -- (5, 0) node[right] {$x$};
+			\draw[->] (0, -2) -- (0, 2) node[above] {$y$};
+			\draw[domain=-5:5, smooth, variable=\x, red, thick] plot ({\x}, {sin(\x r)});
+
+			\draw [dashed] (-5,0.2) -- (5,0.2) node[right, scale=0.5] {$0+\epsilon$};
+			\draw [dashed] (-5,-0.2) -- (5,-0.2) node[right, scale=0.5] {$0+\epsilon$};
+
+			\draw[fill, fill opacity=0.2, cyan] (-5,0.2) rectangle (5,-0.2);
+		\end{tikzpicture}
+	\end{center}
+	\caption{Esempio di limite non esistente}
+\end{figure}
+La funzione non entra in un intevallo limitato senza poi uscirne, quindi non esiste il limite.
+
+\begin{figure}[H]
 	\begin{center}
 		\begin{tikzpicture}[scale=0.5, domain=0:13]
 			\draw[->] (-0.5,0) -- (13,0) node[right] {$x$};
@@ -297,225 +527,21 @@ dominio \( A \subseteq \mathbb{R} \) è un insieme \textbf{non} limitato superio
 			\draw [red, ultra thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
 
 			\draw [] (0,3) -- (13,3) node[right] {$L$};
-			\draw [dashed] (0,4) -- (13,4) node[right, scale=0.5] {$L+\epsilon$};
-			\draw [dashed] (0,2) -- (13,2) node[right, scale=0.5] {$L-\epsilon$};
 
-			\draw[fill, fill opacity=0.2, cyan] (0,4) rectangle (13,2);
 
-			\draw [dashed] (0,3.2) -- (13,3.2) node[above right, scale=0.5] {$L+\epsilon^1$};
-			\draw [dashed] (0,2.8) -- (13,2.8) node[below right, scale=0.5] {$L-\epsilon^1$};
+			\draw [dashed] (0,3.2) -- (13,3.2) node[above right, scale=0.5] {$L+\epsilon$};
+			\draw [dashed] (0,2.8) -- (13,2.8) node[below right, scale=0.5] {$L-\epsilon$};
 
-			\draw[fill, fill opacity=0.2, green] (0,3.2) rectangle (13,2.8);
+			\draw[fill, fill opacity=0.2, cyan] (0,3.2) rectangle (13,2.8);
 
-			\draw [dashed] (4.5,4) -- (4.5,0) node[below] {$k$};
-			\draw [dashed] (7.8,3.2) -- (7.8,0) node[below] {$k^1$};
+			\draw [dashed] (0,1) -- (13,1) node[right, scale=0.5] {$L+\epsilon^1$};
+			\draw [dashed] (0,0.6) -- (13,0.6) node[right, scale=0.5] {$L-\epsilon^1$};
+
+			\draw[fill, fill opacity=0.2, cyan] (0,1) rectangle (13,0.6);
 		\end{tikzpicture}
 	\end{center}
-	Per la definizione di limite, la funzione deve entrare in un intorno di \( L \) e non uscirne più.
-	Questo vale per ogni \( \epsilon \), quindi anche per \( \epsilon^1 \).
-\end{definition}
-\begin{figure}[H]
-	\begin{definition}
-		Si dice che
-		\[
-			\lim_{x \to +\infty} f(x) = +\infty
-		\]
-		Se e solo se
-		\[
-			\forall M > 0\;\; \exists k>0\; \;t.c.\;\; \forall x \in A,
-		\]
-		\[
-			x \ge k \to f(x) \ge M
-		\]
-		(Notazione alternativa: \( f(x) \to +\infty \) per \( x \to +\infty \))
-		\begin{center}
-			\begin{tikzpicture}[scale=0.5, domain=0:13]
-				\draw[->] (-0.5,0) -- (13,0) node[right] {$x$};
-				\draw[->] (0,-0.5) -- (0,7) node[above] {$y$};
-
-				\coordinate (A) at (0,0);
-				\coordinate (B) at (1,1);
-				\coordinate (C) at (2,2);
-				\coordinate (D) at (3,6);
-				\coordinate (E) at (4,5);
-				\coordinate (F) at (5,3);
-				\coordinate (G) at (6,2.12);
-				\coordinate (H) at (7,3.9);
-				\coordinate (I) at (8,3);
-				\coordinate (J) at (9,5);
-				\coordinate (K) at (10,5);
-				\coordinate (L) at (11,5);
-				\coordinate (M) at (12,6);
-				\coordinate (N) at (13,7);
-
-				\draw [red, ultra thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
-
-				\draw [] (0,4.8) -- (13,4.8) node[right] {$M$};
-				\draw [] (0,6) -- (13,6) node[right] {$M^1$};
-
-				\draw[fill, fill opacity=0.2, cyan] (0,4.8) rectangle (13,7);
-
-				\draw [dashed] (8.8,4.8) -- (8.8,0) node[below] {$k$};
-				\draw [dashed] (12,6) -- (12,0) node[below] {$k^1$};
-			\end{tikzpicture}
-		\end{center}
-	\end{definition}
+	\caption{Esempio di limite non esistente}
 \end{figure}
-\begin{figure}[H]
-	\begin{definition}
-		Si dice che
-		\[
-			\lim_{x \to +\infty} f(x) = -\infty
-		\]
-		Se e solo se
-		\[
-			\forall M > 0\;\; \exists k>0\; \;t.c.\;\; \forall x \in A,
-		\]
-		\[
-			x \ge k \to f(x) \le -M
-		\]
-		(Notazione alternativa: \( f(x) \to -\infty \) per \( x \to +\infty \))
-		\begin{center}
-			\begin{tikzpicture}[scale=0.5, domain=0:13]
-				\draw[->] (-0.5,0) -- (13,0) node[right] {$x$};
-				\draw[->] (0,-7) -- (0,2) node[above] {$y$};
-
-				\coordinate (A) at (0,0);
-				\coordinate (B) at (1,1);
-				\coordinate (C) at (2,-2);
-				\coordinate (D) at (3,-6);
-				\coordinate (E) at (4,-5);
-				\coordinate (F) at (5,-3);
-				\coordinate (G) at (6,-2.12);
-				\coordinate (H) at (7,-3.9);
-				\coordinate (I) at (8,-3);
-				\coordinate (J) at (9,-5);
-				\coordinate (K) at (10,-5);
-				\coordinate (L) at (11,-5);
-				\coordinate (M) at (12,-6);
-				\coordinate (N) at (13,-7);
-
-				\draw [red, ultra thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
-
-				\draw [] (0,-4.8) -- (13,-4.8) node[right] {$M$};
-				\draw [] (0,-6) -- (13,-6) node[right] {$M^1$};
-
-				\draw[fill, fill opacity=0.2, cyan] (0,-4.8) rectangle (13,-7);
-
-				\draw [dashed] (8.8,-4.8) -- (8.8,0) node[above] {$k$};
-				\draw [dashed] (12,-6) -- (12,0) node[above] {$k^1$};
-			\end{tikzpicture}
-		\end{center}
-	\end{definition}
-\end{figure}
-
-
-\subsection{Esempi}
-\begin{example}
-	\[
-		\lim_{x \to +\infty} \frac{1}{x}=0\;\;\;Dominio=\mathbb{R}/\{0\}
-	\]
-	\begin{center}
-		\begin{tikzpicture}
-			\draw[->] (-0.5, 0) -- (7, 0) node[right] {$x$};
-			\draw[->] (0, -2) -- (0, 5) node[above] {$y$};
-			\draw[domain=0.2:7, smooth, variable=\x, red, thick] plot ({\x}, {1/\x});
-
-			\draw [dashed] (0,1) -- (7,1) node[right, scale=0.8] {$0+\epsilon$};
-			\draw [dashed] (0,-1) -- (7,-1) node[right, scale=0.8] {$0-\epsilon$};
-
-			\draw[fill, fill opacity=0.2, cyan] (0,1) rectangle (7,-1);
-		\end{tikzpicture}
-	\end{center}
-	Sia dato \( \epsilon > 0 \) arbitrario. Definisco \( k := \frac{1}{\epsilon} \).\\
-	Sia dato \( x > 0 \) arbitrario, supponiamo \( x \ge k \). Allora
-	\[
-		0-\epsilon \le 0 \le \frac{1}{x} \le \frac{1}{k} = \frac{1}{\frac{1}{\epsilon}} = \epsilon
-	\]
-	Quindi, ho dimostrato che la definizione di limite è soddisfatta (con \( L=0 \)).
-\end{example}
-\begin{example}
-	\[
-		\lim_{x \to +\infty} x = +\infty
-	\]
-	\begin{center}
-		\begin{tikzpicture}
-			\draw[->] (-0.5, 0) -- (5, 0) node[right] {$x$};
-			\draw[->] (0, -0.5) -- (0, 5) node[above] {$y$};
-			\draw[domain=0:5, smooth, variable=\x, red, thick] plot ({\x}, {\x});
-
-			\draw [dashed] (0,3) -- (5,3) node[right, scale=0.8] {$M$};
-
-			\draw[fill, fill opacity=0.2, cyan] (0,3) rectangle (5,5);
-
-			\draw [dashed] (3,3) -- (3,0) node[below] {$k$};
-		\end{tikzpicture}
-	\end{center}
-	Sia dato \( M>0 \) arbitrario. Definisco \( k := M \).\\
-	Sia dato \( x \ge k \). Allora \( x \ge M \).\\
-	Quindi è verificata la definizione di limite.
-
-\end{example}
-
-
-\subsection{Osservazioni}
-\textbf{Non} è detto che un limite esista.
-\[
-	\lim_{x \to +\infty} sin(x)
-\]
-\[
-	\lim_{x \to +\infty} cos(x)
-\]
-\begin{center}
-	\begin{tikzpicture}
-		\draw[->] (-5, 0) -- (5, 0) node[right] {$x$};
-		\draw[->] (0, -2) -- (0, 2) node[above] {$y$};
-		\draw[domain=-5:5, smooth, variable=\x, red, thick] plot ({\x}, {sin(\x r)});
-
-		\draw [dashed] (-5,0.2) -- (5,0.2) node[right, scale=0.5] {$0+\epsilon$};
-		\draw [dashed] (-5,-0.2) -- (5,-0.2) node[right, scale=0.5] {$0+\epsilon$};
-
-		\draw[fill, fill opacity=0.2, cyan] (-5,0.2) rectangle (5,-0.2);
-	\end{tikzpicture}
-\end{center}
-La funzione non entra in un intevallo limitato senza poi uscirne, quindi non esiste il limite.
-
-\begin{center}
-	\begin{tikzpicture}[scale=0.5, domain=0:13]
-		\draw[->] (-0.5,0) -- (13,0) node[right] {$x$};
-		\draw[->] (0,-0.5) -- (0,7) node[above] {$y$};
-
-		\coordinate (A) at (0,0);
-		\coordinate (B) at (1,1);
-		\coordinate (C) at (2,2);
-		\coordinate (D) at (3,6);
-		\coordinate (E) at (4,5);
-		\coordinate (F) at (5,3);
-		\coordinate (G) at (6,2.12);
-		\coordinate (H) at (7,3.9);
-		\coordinate (I) at (8,3);
-		\coordinate (J) at (9,3);
-		\coordinate (K) at (10,3);
-		\coordinate (L) at (11,3);
-		\coordinate (M) at (12,3);
-		\coordinate (N) at (13,3);
-
-		\draw [red, ultra thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
-
-		\draw [] (0,3) -- (13,3) node[right] {$L$};
-
-
-		\draw [dashed] (0,3.2) -- (13,3.2) node[above right, scale=0.5] {$L+\epsilon$};
-		\draw [dashed] (0,2.8) -- (13,2.8) node[below right, scale=0.5] {$L-\epsilon$};
-
-		\draw[fill, fill opacity=0.2, cyan] (0,3.2) rectangle (13,2.8);
-
-		\draw [dashed] (0,1) -- (13,1) node[right, scale=0.5] {$L+\epsilon^1$};
-		\draw [dashed] (0,0.6) -- (13,0.6) node[right, scale=0.5] {$L-\epsilon^1$};
-
-		\draw[fill, fill opacity=0.2, cyan] (0,1) rectangle (13,0.6);
-	\end{tikzpicture}
-\end{center}
 Tuttavia, se una funzione ammette limite, allora esso è unico. Questa funzione dovrebbe
 entrare in entrambe le strisce e non uscirne più, ma questo non è possibile.
 
@@ -647,69 +673,78 @@ Se \( P \) è un polinomio di grado \( p \) e \( Q \) è un polinomio di grado \
 \( f: (0, +\infty) \to \mathbb{R} \)\\
 \( f \) è strettamente crescente e limitata (l'immagine di \( f \) è un insieme limitato).
 
-\begin{center}
-	\begin{tikzpicture}[scale=0.5, domain=0:7]
-		\draw[->] (-0.5,0) -- (7,0) node[right] {$x$};
-		\draw[->] (0,-0.5) -- (0,7) node[above] {$y$};
+\begin{figure}[H]
+	\begin{center}
+		\begin{tikzpicture}[scale=0.5, domain=0:7]
+			\draw[->] (-0.5,0) -- (7,0) node[right] {$x$};
+			\draw[->] (0,-0.5) -- (0,7) node[above] {$y$};
 
-		\coordinate (A) at (0,0);
-		\coordinate (B) at (1,2);
-		\coordinate (C) at (2,3.5);
-		\coordinate (D) at (3,4.5);
-		\coordinate (E) at (4,5);
-		\coordinate (F) at (5,5);
-		\coordinate (G) at (6,5);
-		\coordinate (H) at (7,5);
+			\coordinate (A) at (0,0);
+			\coordinate (B) at (1,2);
+			\coordinate (C) at (2,3.5);
+			\coordinate (D) at (3,4.5);
+			\coordinate (E) at (4,5);
+			\coordinate (F) at (5,5);
+			\coordinate (G) at (6,5);
+			\coordinate (H) at (7,5);
 
-		\draw [red, ultra thick] plot [smooth, tension=0.8] coordinates { (A) (B) (C) (D) (E) (F) (H) };
+			\draw [red, ultra thick] plot [smooth, tension=0.8] coordinates { (A) (B) (C) (D) (E) (F) (H) };
 
-		\draw [dashed] (0,5) -- (6,5) node[left, xshift=-3cm] {$5$};
-	\end{tikzpicture}
-\end{center}
+			\draw [dashed] (0,5) -- (6,5) node[left, xshift=-3cm] {$5$};
+		\end{tikzpicture}
+	\end{center}
+	\caption{Esempio di funzione monotona}
+\end{figure}
 \[
 	\lim_{x \to +\infty} f(x) = 5
 \]
 \( g: (0,+\infty) \to \mathbb{R}\) è strettamente crescente e non limitata
-\begin{center}
-	\begin{tikzpicture}
-		\draw[->] (0, 0) -- (5, 0) node[right] {$x$};
-		\draw[->] (0, -2) -- (0, 2) node[above] {$y$};
-		\draw[domain=0.1:1.5, smooth, variable=\x, red, thick] plot ({\x}, {(\x)^2});
+\begin{figure}[H]
+	\begin{center}
+		\begin{tikzpicture}[scale=1.5]
+			\draw[->] (-0.2, 0) -- (2, 0) node[right] {$x$};
+			\draw[->] (0, -0.2) -- (0, 2) node[above] {$y$};
+			\draw[domain=0.1:1.5, smooth, variable=\x, red, thick] plot ({\x}, {(\x)^2});
 
-		\draw [dashed] (0,1) -- (5,1) node[right, scale=0.5] {};
-	\end{tikzpicture}
-\end{center}
+			\draw [dashed] (0,1) -- (2,1) node[right, scale=0.5] {};
+		\end{tikzpicture}
+	\end{center}
+	\caption{Esempio di funzione monotona non limitata}
+\end{figure}
 \[
 	\lim_{x \to +\infty} g(x) = +\infty
 \]
 \vspace{1cm}
 
-\begin{center}
-	\( f: \mathbb{R} \to \mathbb{R} \)
-	\begin{tikzpicture}[scale=0.5, domain=0:13]
-		\draw[->] (-0.5,0) -- (13,0) node[right] {$x$};
-		\draw[->] (0,-0.5) -- (0,7) node[above] {$y$};
+\begin{figure}[H]
+	\begin{center}
+		\( f: \mathbb{R} \to \mathbb{R} \)
+		\begin{tikzpicture}[scale=0.5, domain=0:13]
+			\draw[->] (-0.5,0) -- (13,0) node[right] {$x$};
+			\draw[->] (0,-0.5) -- (0,7) node[above] {$y$};
 
-		\coordinate (A) at (0,0);
-		\coordinate (B) at (1,1);
-		\coordinate (C) at (2,2);
-		\coordinate (D) at (3,6);
-		\coordinate (E) at (4,5);
-		\coordinate (F) at (5,3);
-		\coordinate (G) at (6,2.12);
-		\coordinate (H) at (7,3.9);
-		\coordinate (I) at (8,3);
-		\coordinate (J) at (9,3);
-		\coordinate (K) at (10,3);
-		\coordinate (L) at (11,3);
-		\coordinate (M) at (12,3);
-		\coordinate (N) at (13,3);
+			\coordinate (A) at (0,0);
+			\coordinate (B) at (1,1);
+			\coordinate (C) at (2,2);
+			\coordinate (D) at (3,6);
+			\coordinate (E) at (4,5);
+			\coordinate (F) at (5,3);
+			\coordinate (G) at (6,2.12);
+			\coordinate (H) at (7,3.9);
+			\coordinate (I) at (8,3);
+			\coordinate (J) at (9,3);
+			\coordinate (K) at (10,3);
+			\coordinate (L) at (11,3);
+			\coordinate (M) at (12,3);
+			\coordinate (N) at (13,3);
 
-		\draw [red, ultra thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
+			\draw [red, ultra thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
 
-		\draw [dashed] (7.2,0) -- (7.2,7) node[below, yshift=-3.5cm] {$5$};
-	\end{tikzpicture}
-\end{center}
+			\draw [dashed] (7.2,0) -- (7.2,7) node[below, yshift=-3.5cm] {$5$};
+		\end{tikzpicture}
+	\end{center}
+	\caption{Esempio di funzione ristrettamente monotona}
+\end{figure}
 Questa funzione non è monotona, ma se guardiamo ciò che succede epr \( x>5 \) si ottiene
 una funzione monotona. Quindi la funzione globalmente non è monotona, ma è decrescente
 ristrettamente a partire da \( x=5 \).
@@ -721,15 +756,18 @@ Per il teorema di monotonia, \[
 	\[
 		\lim_{x \to +\infty} log(x) = +\infty
 	\]
-	\begin{center}
-		\begin{tikzpicture}
-			\draw[->] (0, 0) -- (5, 0) node[right] {$x$};
-			\draw[->] (0, -2) -- (0, 2) node[above] {$y$};
-			\draw[domain=0.1:5, smooth, variable=\x, red, thick] plot ({\x}, {ln((\x))});
+	\begin{figure}[H]
+		\begin{center}
+			\begin{tikzpicture}
+				\draw[->] (0, 0) -- (5, 0) node[right] {$x$};
+				\draw[->] (0, -2) -- (0, 2) node[above] {$y$};
+				\draw[domain=0.1:5, smooth, variable=\x, red, thick] plot ({\x}, {ln((\x))});
 
-			\draw [dashed] (0,1) -- (5,1) node[right, scale=0.5] {};
-		\end{tikzpicture}
-	\end{center}
+				\draw [dashed] (0,1) -- (5,1) node[right, scale=0.5] {};
+			\end{tikzpicture}
+		\end{center}
+		\caption{Esempio di funzione monotona non limitata}
+	\end{figure}
 	Per il teorema di monotonia:
 	\[
 		\lim_{x \to +\infty} log(x) = sup\{ log(x): x>0 \}
@@ -743,23 +781,28 @@ Per il teorema di monotonia, \[
 	Abbiamo dimostrato (per il postulato di Eudosso - Archimede) che il limite di questa
 	funzione è uguale a \( +\infty \).
 \end{example}
-\begin{exercise}
-	Dimostrare che:
-	\[
-		\lim_{x \to +\infty} e^x = +\infty
-	\]
-	\begin{center}
-		\begin{tikzpicture}
-			\draw[->] (-3, 0) -- (3, 0) node[right] {$x$};
-			\draw[->] (0, -2) -- (0, 2) node[above] {$y$};
-			\draw[domain=-3:0.8, smooth, variable=\x, red, thick] plot ({\x}, {e^(\x)});
-		\end{tikzpicture}
-	\end{center}
-	E similmente che:
-	\[
-		\lim_{x \to +\infty} a^x = +\infty\;\;\;\forall a \in (0,+\infty)
-	\]
-\end{exercise}
+\begin{figure}[H]
+	\begin{exercise}
+		Dimostrare che:
+		\[
+			\lim_{x \to +\infty} e^x = +\infty
+		\]
+		\begin{figure}[H]
+			\begin{center}
+				\begin{tikzpicture}
+					\draw[->] (-3, 0) -- (3, 0) node[right] {$x$};
+					\draw[->] (0, -2) -- (0, 2) node[above] {$y$};
+					\draw[domain=-3:0.8, smooth, variable=\x, red, thick] plot ({\x}, {e^(\x)});
+				\end{tikzpicture}
+			\end{center}
+			\caption{Esempio di funzione monotona non limitata}
+		\end{figure}
+		E similmente che:
+		\[
+			\lim_{x \to +\infty} a^x = +\infty\;\;\;\forall a \in (0,+\infty)
+		\]
+	\end{exercise}
+\end{figure}
 
 \section{Teorema dei carabinieri}
 \begin{theorem}[del confronto tra i limiti, o dei carabinieri]
@@ -776,39 +819,48 @@ Per il teorema di monotonia, \[
 	\[
 		\lim_{x \to +\infty} g(x) = L
 	\]
-	\begin{center}
-		\begin{tikzpicture}
-			\draw[->] (-0.2, 0) -- (5, 0) node[right] {$x$};
-			\draw[->] (0, -0.2) -- (0, 4) node[above] {$y$};
-			\draw[domain=0.48:5, smooth, variable=\x, blue, thick] plot ({\x}, {(-1/\x)+2}) node [below right] {h};
-			\draw[domain=0.48:5, smooth, variable=\x, green, thick] plot ({\x}, {(1/\x)+2}) node [above right] {f};
-			\draw[domain=0.48:5, smooth, variable=\x, red, thick] plot ({\x}, {((cos(\x r))/(\x +1))+2}) node [right] {g};
+	\begin{figure}[H]
+		\begin{center}
+			\begin{tikzpicture}
+				\draw[->] (-0.2, 0) -- (5, 0) node[right] {$x$};
+				\draw[->] (0, -0.2) -- (0, 4) node[above] {$y$};
+				\draw[domain=0.48:5, smooth, variable=\x, blue, thick] plot ({\x}, {(-1/\x)+2}) node [below right] {h};
+				\draw[domain=0.48:5, smooth, variable=\x, green, thick] plot ({\x}, {(1/\x)+2}) node [above right] {f};
+				\draw[domain=0.48:5, smooth, variable=\x, red, thick] plot ({\x}, {((cos(\x r))/(\x +1))+2}) node [right] {g};
 
-			\draw [dashed] (0,2) node[left] {L} -- (5,2);
-		\end{tikzpicture}
-	\end{center}
+				\draw [dashed] (0,2) node[left] {L} -- (5,2);
+			\end{tikzpicture}
+		\end{center}
+		\caption{Teorema del confronto tra i limiti}
+	\end{figure}
 
 \end{theorem}
 \subsection{Variante}
 Sia \( A \subseteq \mathbb{R} \) non limitato superiormente e siano \( f,g: A \to \mathbb{R} \)
 \( t.c.\;f(x) \le g(x)\;\forall x \in A \).\\
 Se \( \lim_{x \to +\infty} f(x)= +\infty \) allora \( \lim_{x \to +\infty} g(x) = +\infty \).
+\begin{figure}[H]
 	\begin{center}
 		\begin{tikzpicture}
 			\draw[->] (-0.2, 0) -- (3, 0) node[right] {$x$};
 			\draw[->] (0, -0.2) -- (0, 4) node[above] {$y$};
 			\draw[domain=0.1:2, smooth, variable=\x, blue, thick] plot ({\x}, {\x^2}) node [below right] {g};
-            \draw[domain=0.1:2.7, smooth, variable=\x, red, thick] plot ({\x}, {\x^2/2}) node [above right] {f};
+			\draw[domain=0.1:2.7, smooth, variable=\x, red, thick] plot ({\x}, {\x^2/2}) node [above right] {f};
 		\end{tikzpicture}
 	\end{center}
+	\caption{Teorema del confronto tra i limiti con 2 funzioni positive}
+\end{figure}
 Se \( \lim_{x \to +\infty} f(x)= -\infty \) allora \( \lim_{x \to +\infty} g(x) = -\infty \).
-\begin{center}
+\begin{figure}[H]
+	\begin{center}
 		\begin{tikzpicture}
 			\draw[->] (-0.2, 0) -- (3, 0) node[right] {$x$};
 			\draw[->] (0, -4) -- (0, 0.5) node[above] {$y$};
 			\draw[domain=0.1:2, smooth, variable=\x, blue, thick] plot ({\x}, {-(\x^2)}) node [below right] {f};
-            \draw[domain=0.1:2.7, smooth, variable=\x, red, thick] plot ({\x}, {-(\x^2/2)}) node [above right] {g};
+			\draw[domain=0.1:2.7, smooth, variable=\x, red, thick] plot ({\x}, {-(\x^2/2)}) node [above right] {g};
 		\end{tikzpicture}
 	\end{center}
+	\caption{Teorema del confronto tra i limiti con 2 funzioni negative}
+\end{figure}
 
 \end{document}
