@@ -8,12 +8,10 @@ int main() {
 
   scanf("%d", &n);
 
-  if (n % 3 == 0 && n % 5 == 0) {
+  if (n % 3 == 0) {
     printf("Multiplo di 3");
-    printf("Multiplo di 5");
-  } else if (n % 3 == 0) {
-    printf("Multiplo di 3");
-  } else if (n % 5 == 0) {
+  }
+  if (n % 5 == 0) {
     printf("Multiplo di 5");
   }
 
