@@ -2255,53 +2255,11 @@ letterali di tutte le funzioni.
 \begin{figure}[H]
     \begin{center}
         \begin{tikzpicture}
-            \draw (0,3) circle [radius=0.3] node {X};
-            \draw (0,2) circle [radius=0.3] node {Y};
-            \draw (0,1) circle [radius=0.3] node {Z};
-            \draw (0,0) circle [radius=0.3] node {V};
-
-            \draw (2,2.5) circle [radius=0.3] node {A};
-            \draw (2,1.5) circle [radius=0.3] node {B};
-            \draw (2,0.5) circle [radius=0.3] node {C};
-
-            \draw (4,2) circle [radius=0.3] node {D};
-            \draw (4,1) circle [radius=0.3] node {E};
-
-            \draw (6,2) circle [radius=0.3] node {W};
-            \draw (6,1) circle [radius=0.3] node {O};
-
-            % x to a
-            \draw [->] (0.3,3) -- (1.7,2.57);
-            % y to a
-            \draw [->] (0.3,2) -- (1.7,2.43);
-            % y to b
-            \draw [->] (0.3,2) -- (1.7,1.6);
-            % z to b
-            \draw [->] (0.3,1) -- (1.7,1.5);
-            % v to b
-            \draw [->] (0.3,0) -- (1.7,1.4);
-            % v to c
-            \draw [->] (0.3,0) -- (1.7,0.5);
-
-            % a to d
-            \draw [->] (2.3,2.5) -- (3.7,2.1);
-            % b to d
-            \draw [->] (2.3,1.5) -- (3.7,1.9);
-            % b to e
-            \draw [->] (2.3,1.5) -- (3.7,1.1);
-            % c to e
-            \draw [->] (2.3,0.5) -- (3.7,0.9);
-            % d to e
-            \draw [->] (4,1.7) -- (4,1.3);
-
-            % a to w
-            \draw [->] (2.29,2.6) -- (5.7,2.2);
-            % e to o
-            \draw [->] (4.3,1) -- (5.7,1);
+            \draw (0,0) circle [radius=0.3];
         \end{tikzpicture}
     \end{center}
-    \caption{Esempio di network}
 \end{figure}
+
 Il numero di nodi può essere messo in relazione con il ritardo (più nodi ci sono più nodi devono
 attraversare i segnali, quindi più ritardo).
 \begin{itemize}
@@ -2326,57 +2284,7 @@ esempio:
 \end{itemize}
 
 \subsubsection{full\_simplify}
-
-\begin{figure}[H]
-    \begin{center}
-        \begin{tikzpicture}
-            \draw (0,3) circle [radius=0.3] node {X};
-            \draw (0,2) circle [radius=0.3] node {Y};
-            \draw (0,1) circle [radius=0.3] node {Z};
-            \draw (0,0) circle [radius=0.3] node {V};
-
-            \draw (2,2.5) circle [radius=0.3] node {A};
-            \draw (2,1.5) circle [radius=0.3] node {B};
-            \draw (2,0.5) circle [radius=0.3] node {C};
-
-            \draw (4,2) circle [radius=0.3] node {D};
-            \draw (4,1) circle [radius=0.3] node {E};
-
-            \draw (6,2) circle [radius=0.3] node {W};
-            \draw (6,1) circle [radius=0.3] node {O};
-
-            % x to a
-            \draw [->] (0.3,3) -- (1.7,2.57);
-            % y to a
-            \draw [->] (0.3,2) -- (1.7,2.43);
-            % y to b
-            \draw [->] (0.3,2) -- (1.7,1.6);
-            % z to b
-            \draw [->] (0.3,1) -- (1.7,1.5);
-            % v to b
-            \draw [->] (0.3,0) -- (1.7,1.4);
-            % v to c
-            \draw [->] (0.3,0) -- (1.7,0.5);
-
-            % a to d
-            \draw [->] (2.3,2.5) -- (3.7,2.1);
-            % b to d
-            \draw [->] (2.3,1.5) -- (3.7,1.9);
-            % b to e
-            \draw [->] (2.3,1.5) -- (3.7,1.1);
-            % c to e
-            \draw [->] (2.3,0.5) -- (3.7,0.9);
-            % d to e
-            \draw [->] (4,1.7) -- (4,1.3);
-
-            % a to w
-            \draw [->] (2.29,2.6) -- (5.7,2.2);
-            % e to o
-            \draw [->] (4.3,1) -- (5.7,1);
-        \end{tikzpicture}
-    \end{center}
-\end{figure}
-
+\label{D6}
 Con un semplice \textbf{simplify} sul primo nodo intermedio il circuito resta uguale. La
 \textbf{full\_simplify} calcola i \textbf{controllability don't care set\footnote{Gli \textbf{observability don't care} sono valori di ingresso che non servono per calcolare l'uscita}}, che sarebbero
 le configurazioni di ingresso che non si possono presentare. ad esempio: ABX= (0,0,0), 
