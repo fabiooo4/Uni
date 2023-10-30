@@ -4,6 +4,7 @@
 \usepackage{mdframed}
 \usepackage{ntheorem}
 \usepackage{xcolor}
+\usepackage{amsmath}
 \usepackage{float}
 \usepackage{graphicx}
 \graphicspath{ {./figures/} }
@@ -552,13 +553,15 @@ valore dei suoi atomi.
 	allora \( [|\phi|]_{v_1} = [|\phi|]_{v_2} \)
 \end{theorem}
 
-\begin{definition}
-	\( \alpha \in PROP \) è detta \textbf{tautologia} se per ogni valutazione
-	v: \( [|\alpha|]_v = 1 \)\\
-	\(
-	\models \phi
-	\) indica una formula privilegiata (di cui fa parte la tautologia)
-\end{definition}
+\begin{figure}[H]
+    \begin{definition}
+        \( \alpha \in PROP \) è detta \textbf{tautologia} se per ogni valutazione
+        v: \( [|\alpha|]_v = 1 \)\\
+        \(
+        \models \phi
+        \) indica una formula privilegiata (di cui fa parte la tautologia)
+    \end{definition}
+\end{figure}
 
 \( \forall v [|\alpha|]_v = 1 \) è una formula privilegiata? \( \models \alpha \)
 \begin{itemize}
@@ -1146,6 +1149,167 @@ Per la definizione di conseguenza logica:
     [|\neg \neg \alpha|]_v=[|\alpha|]_v
 \] 
 \[
-    \forall v.\; (\underbrace{[|\Gamma|]_v=1 \Rightarrow [|\alpha|]_v=1}_{\Gamma \models \alpha})
+    \forall v.\; (\underbrace{[|\Gamma|]_v=1 \Rightarrow [|\alpha|]_v=1}_{\Gamma \models \alpha\;\;(modus\;ponens)})
 \] 
+
+
+
+\section{Formalizzazione della deduzione}
+Il simbolo che si utilizza è: \( \Gamma \vdash \alpha\) e vuol dire che da
+\( \Gamma \) si deduce \( \alpha \).
+
+\begin{definition}
+    \begin{itemize}
+         \item \textbf{Dedurre}: vuol dire riuscire a dimostrare qualcosa partendo da un insieme di ipotesi.
+         \item \textbf{Ipotesi}: ciò che assumo essere vero   
+         \item \textbf{Tesi}: ciò che voglio dimostrare a partire dalle ipotesi
+    \end{itemize}
+\end{definition}
+Si ha quindi un \textbf{sistema deduttivo} formato da \textbf{regole logiche} che
+trasformano le formule in altre formule.
+
+\subsection{Deduzione naturale}
+È una deduzione che si basa su regole logiche che applichiamo naturalmente.
+
+La struttura della deduzione naturale è la seguente:
+\[
+    \underbrace{\stackrel{ipotesi}{\underset{tesi}{D}}}_{dimostrazione/derivazione}
+\] 
+È un concetto generico in matematica e nel linguaggio formale.
+\[
+\Gamma, \neg, \alpha \models \bot \Rightarrow \Gamma \models \alpha
+\] 
+Introduciamo il sistema di \textbf{deduzinoe naturale}:
+
+Prendiamo un sottosistema di connettivi:
+\[
+    \{ \to, \wedge, \stackrel{\neg}{\bot}\} 
+\] 
+Si usano \( D \), \( \pi \), \( D_1 \ldots \overline{D} \) per indicare una dimostrazione
+generica.
+\[
+    \underset{\alpha}{D}\;\;\; \underset{\beta}{D}
+\] 
+Le lettere sotto la \( D \) sono \textbf{fatti dimostrati}.\\
+Per indicare l'insieme delle ipotesi usate nella dimostrazione \( D \) si usa: 
+\[
+hp(D)
+\] 
+Quando una formula sola viene usata come ipotesi è anche tesi (se la assumo, vuol dire che è vera).
+È anche la più piccola dimostrazione possibile.
+
+Per ciascun connettivo si hanno 2 regole:
+\begin{enumerate}
+    \item Regola di \textbf{eliminazione}
+    \item Regola di \textbf{introduzione}
+\end{enumerate}
+
+\subsubsection{Regole dell'implicazione}
+Eliminazione: \( D \) 
+\[
+    (\to E)
+\] 
+
+\[
+    \underset{\alpha}{D_1}\;\;\; \underset{\alpha \to \beta}{D_2}
+\] 
+\noindent\hrulefill \( (\to E) \) \noindent\hrulefill\\
+Si applica la regola di eliminazione (Modus Ponens\footnote{\( [|\alpha|]_v=1\;\; (\alpha \to \beta) \models \beta \) })
+\[
+\beta
+\] 
+Introduzione: \( \overline{D} \) 
+La seguente notazione vuol dire che tra le ipotesi \emph{potrebbe} esserci \( \alpha \):
+\[
+    \underset{\beta}{\stackrel{\alpha}{D}}
+\] 
+\[
+    \underset{\beta}{\stackrel{[\alpha]^*}{D}}\footnote{Le parentesi [] indicano che abbiamo utilizzato \( \alpha \), ed è quindi "\textbf{scaricata}", cioè visto che è già stata utilizzata non fa più parte delle ipotesi}
+\] 
+ \noindent\hrulefill \( (\to I)^* \) \noindent\hrulefill
+\[
+\alpha \to \beta
+\] 
+\[
+    hp(\overline{D})=hp(D) / \{\alpha\} 
+\] 
+
+\begin{example}
+    Quando scarico \( \alpha \) devo scaricare tutte le occorrenze 
+    \[
+        \stackrel{\underline{\alpha},\beta,\delta,\underline{\alpha} \ldots}{\underset{\gamma}{D}}
+    \] 
+\end{example}
+\begin{example}
+    La seguente dimostrazione è accettata anche se \( \alpha \) è stata scaricata.
+    \[
+        \stackrel{[\alpha]}{\underset{\alpha \to \beta}{\underline{D}}}
+    \] 
+    Questa dimostrazione prende il nome di \textbf{indebolimento}. "Lego" la verità di \( \alpha \) 
+    a quella di \( \beta \) anche se non avevo \( \alpha \).
+
+    Ad esempio:
+    \[
+        [|\beta|]_v=1 \Rightarrow \underbrace{[|\alpha \to \beta|]_v}_{[|\alpha|]_v=0\;or\;[|\beta|]_v=1}=1
+    \] 
+\end{example}
+
+La struttura di una derivazione è la seguente:
+\begin{itemize}
+    \item \( \alpha,\beta, \ldots \) 
+    \item compongo \( D_1, \ldots, D_k \) attraverso le regole \( (\to E, \to I) \) 
+    \item nient'altro è derivazione
+\end{itemize}
+
+\subsubsection{Esercizi}
+\begin{exercise}
+    \[
+        \vdash \alpha \to \alpha \;\;\; \vdash \to \text{derivabilità}
+    \] 
+    \begin{center}
+        \(
+        [a]^1
+        \)\\
+        \hspace{1cm}\line(1,0){50}\(\;\;\; \to I^1 \)\\  
+        \(
+            \alpha \to \alpha
+        \) 
+    \end{center}
+\( \alpha \) è sia ipotesi che conclusione di \( D \) 
+\end{exercise}
+\begin{exercise}
+    \[
+    \vdash \alpha \to (\beta \to \alpha)
+    \] 
+    \begin{center}
+        \(
+        \alpha
+        \)\\
+        \hspace{1cm}\line(1,0){30}\(\;\;\; \to I \)\\  
+        \hspace{3.5cm} \( \beta \to \alpha \) \hspace{1cm} (indebolimento) \\
+        \hspace{1cm}\line(1,0){50}\(\;\;\; \to I^1 \)\\  
+        \(
+            \alpha \to (\beta \to \alpha)
+        \)
+    \end{center}
+    Alla fine della derivazione tutte le ipotesi devono essere scaricate
+\end{exercise}
+\begin{exercise}[hard]
+    TODO
+    \[
+    \vdash (\alpha \to (\beta \to \gamma)) \to ((\alpha \to \beta) \to (\alpha \to \gamma))
+    \] 
+    \begin{center}
+        \(
+        \alpha \to (\beta \to \gamma)\;\;\; \alpha
+        \)\\
+        \hspace{1cm}\line(1,0){60}\(\;\;\; \to E \)\\  
+            \( \beta \to \gamma\)\\
+        \hspace{1cm}\line(1,0){80}\(\;\;\; \to ? \)\\  
+        \(
+        (\alpha \to (\beta \to \gamma)) \to ((\alpha \to \beta) \to (\alpha \to \gamma))
+        \)
+    \end{center}
+
+\end{exercise}
 \end{document}
