@@ -270,7 +270,7 @@ dominio \( A \subseteq \mathbb{R} \) è un insieme \textbf{non} limitato superio
 	\[ \lim_{x \to +\infty} f(x) = L  \]
 	Se e solo se
 	\[
-		\forall \epsilon > 0 \exists k>0 \;t.c.\; \forall x \subset A\footnote{Il dominio della funzione},
+		\forall \epsilon > 0\;\;\; \exists k>0 \;t.c.\; \forall x \subset A\footnote{Il dominio della funzione},
 	\]
 	\[
 		x \ge k \to L-\epsilon \le f(x) \le L+\epsilon
@@ -804,7 +804,7 @@ Per il teorema di monotonia, \[
 	\end{exercise}
 \end{figure}
 
-\section{Teorema dei carabinieri}
+\subsection{Teorema dei carabinieri}
 \begin{theorem}[del confronto tra i limiti, o dei carabinieri]
 	Sia \( A \subseteq \mathbb{R} \) un insieme non limitato superiormente e siano
 	\( f,g,h: A \to \mathbb{R} \). Supponiamo che
@@ -826,16 +826,38 @@ Per il teorema di monotonia, \[
 				\draw[->] (0, -0.2) -- (0, 4) node[above] {$y$};
 				\draw[domain=0.48:5, smooth, variable=\x, blue, thick] plot ({\x}, {(-1/\x)+2}) node [below right] {h};
 				\draw[domain=0.48:5, smooth, variable=\x, green, thick] plot ({\x}, {(1/\x)+2}) node [above right] {f};
-				\draw[domain=0.48:5, smooth, variable=\x, red, thick] plot ({\x}, {((cos(\x r))/(\x +1))+2}) node [right] {g};
+				\draw[domain=0.48:10, smooth, variable=\x, red, thick, xscale=0.5] plot ({\x}, {(sin(\x r)/\x)+2}) node [right] {g};
 
 				\draw [dashed] (0,2) node[left] {L} -- (5,2);
 			\end{tikzpicture}
 		\end{center}
 		\caption{Teorema del confronto tra i limiti}
 	\end{figure}
+	Dobbiamo dimostrare che
+	\[
+		\forall \epsilon > 0\;\; \exists k>0\; \;t.c.\;\; \forall x \in A,
+	\]
+	\[
+		x \ge k \to L-\epsilon \le g(x) \le L+\epsilon
+	\]
+	Prendiamo dunque \( \epsilon>0 \) arbitrario. Poichè \( \lim_{x \to +\infty} f(x)=L\),
+	sappiamo che esiste \( k_f >0 \) t.c.
+	\[
+		\forall x \in A,\;\;\;\; x \ge k_f \to L-\epsilon \le f(x) \le L+\epsilon
+	\]
+	Allo stesso modo, poichè \( \lim_{x \to +\infty} h(x)=L\),
+	sappiamo che esiste \( k_h >0 \) t.c.
+	\[
+		\forall x \in A,\;\;\;\; x \ge k_h \to L-\epsilon \le h(x) \le L+\epsilon
+	\]
+	Definiamo \( k:= max\{k_f,k_h\} \). Comunque preso \( x \in A \),
+	se \( x \ge k \) allora vale che
+	\[
+		L-\epsilon \le f(x) \le g(x) \le h(x) \le L+\epsilon
+	\]
 
 \end{theorem}
-\subsection{Variante}
+\subsubsection{Variante}
 Sia \( A \subseteq \mathbb{R} \) non limitato superiormente e siano \( f,g: A \to \mathbb{R} \)
 \( t.c.\;f(x) \le g(x)\;\forall x \in A \).\\
 Se \( \lim_{x \to +\infty} f(x)= +\infty \) allora \( \lim_{x \to +\infty} g(x) = +\infty \).
@@ -863,4 +885,185 @@ Se \( \lim_{x \to +\infty} f(x)= -\infty \) allora \( \lim_{x \to +\infty} g(x) 
 	\caption{Teorema del confronto tra i limiti con 2 funzioni negative}
 \end{figure}
 
+\subsection{Limiti per \( x \to -\infty \) }
+Sia \( A \subseteq \mathbb{R} \) un insieme non limitato inferiormente, \( f: A \to \mathbb{R} \) ,
+\( L \in \mathbb{R} \cup \{+\infty, -\infty\}  \).
+Diremo che:
+\[
+	\lim_{x \to -\infty} f(x) = L
+\]
+se e solo se
+\[
+	\lim_{x \to +\infty} f(-t) = L
+\]
+    \begin{center}
+        \(
+        x=-t
+        \)\\ 
+        se \( x \to -\infty \) \\
+        allora \( t \to +\infty \) 
+    \end{center}
+
+\subsection{Limiti per \( x \to x_0 \) }
+Sia \( f: A \subseteq \mathbb{R} \), \( x_0 \in \mathbb{R} \). Per definire il limite di \( f \) 
+quando \( x \to 0 \), serve che \( f \) sia definita "vicino a \( x_0 \)", in un senso opportuno.
+Noi supporremo, ad esempio, che il dominio \( A \) contenga almeno un intervallo del tipo
+\( (x_0-\delta, x_0) \) oppure \( (x_0, x_0-\delta) \), con \( \delta>0 \). \textbf{Non} è richiesto, invece,
+che \( f \) sia definita in \( x_0 \).
+\begin{example}
+    \[
+    A = (-\infty,1) \cup (1,2)\;\;\; f: A \to \mathbb{R}
+    \] 
+    \label{D1}
+    Posso definire \[
+    \lim_{x \to -\infty} f(x),\; \lim_{x \to 2} f(x),\; \lim_{x \to 0} f(x),\; \lim_{x \to 0} f(x),\; \lim_{x \to 1} f(x)
+    \] 
+    Non è detto però che tali limiti esistano
+\end{example}
+Sotto le ipotesi precedenti su \( f: A \subseteq \mathbb{R} \to \mathbb{R} \) e su \( x_0 \in \mathbb{R} \),
+dato \( L \in \mathbb{R} \) diremo che \[
+\lim_{x \to x_0} f(x) = L
+\] 
+se e solo se
+\[
+\forall \epsilon > 0\;\;\; \exists \delta > 0\;t.c.\; \forall x \in A,
+\] 
+\[
+x_0-\delta \le x \le x_0 + \delta\;\; e\;\; x \neq x_0
+\] 
+\[
+\to L-\epsilon \le f(x) \le L+\epsilon
+\] 
+\label{D2}
+
+
+Sotto le ipotesi precedenti su \( f: A \subseteq \mathbb{R} \to \mathbb{R} \) e su \( x_0 \in \mathbb{R} \),
+dato \( L \in \mathbb{R} \) diremo che \[
+\lim_{x \to x_0} f(x) = +\infty
+\] 
+se e solo se
+\[
+\forall M > 0\;\;\; \exists \delta > 0\;t.c.\; \forall x \in A,
+\] 
+\[
+x_0-\delta \le x \le x_0 + \delta\;\; e\;\; x \neq x_0
+\] 
+\[
+f(x) \ge M
+\] 
+\label{D3}
+
+
+Sotto le ipotesi precedenti su \( f: A \subseteq \mathbb{R} \to \mathbb{R} \) e su \( x_0 \in \mathbb{R} \),
+dato \( L \in \mathbb{R} \) diremo che \[
+\lim_{x \to x_0} f(x) = -\infty
+\] 
+se e solo se
+\[
+\forall M > 0\;\;\; \exists \delta > 0\;t.c.\; \forall x \in A,
+\] 
+\[
+x_0-\delta \le x \le x_0 + \delta\;\; e\;\; x \neq x_0
+\] 
+\[
+f(x) \le M
+\] 
+\label{D4}
+
+\subsection{Limiti unilateri}
+Si possono anche dare le definizioni di limiti \textbf{unilateri}, da destra o da sinistra:
+\[
+    \lim_{x \to x_0^+} f(x) = \lim_{\underset{x > x_0}{x \to x_0}} f(x)
+\] 
+\[
+    \lim_{x \to x_0^-} f(x) = \lim_{\underset{x < x_0}{x \to x_0}} f(x)
+\] 
+\begin{example}
+    \[
+    f: \mathbb{R} / \{0\} \to \mathbb{R}
+    \] 
+    \[
+    f(x) = \frac{1}{x}\;\; \forall x \in \mathbb{R} / \{0\}
+    \] 
+    \[
+    \lim_{x \to 0^+} (\frac{1}{x}) = +\infty
+    \] 
+    \[
+    \lim_{x \to 0^-} (\frac{1}{x}) = -\infty
+    \]
+    \[
+    \lim_{x \to 0} (\frac{1}{x})\;\; \text{non esiste}
+    \] 
+    \label{D5}
+\end{example}
+
+\subsection{Limiti di funzioni continue}
+Sia \( A \subseteq \mathbb{R} \) un intervallo oppure un'unione finita di intervalli.
+\begin{definition}
+    Sia \( f: A \to  \mathbb{R} \), \( x_0 \in A \). Diremo che \( f \) è continua in \( x_0 \) 
+    se e solo se
+    \[
+    \lim_{x \to x_0} f(x) = f(x_0)
+    \] 
+    Diremo che \( f \) è continua se e solo se \( f \) è continua in ogni punto del suo dominio
+    \( x_0 \in A \).
+\end{definition}
+
+\begin{example}
+    \[
+    g: \mathbb{R} \to \mathbb{R}, \;\;\; g(x):=x\;\; \forall x \in \mathbb{R}
+    \] 
+    è continua, perchè
+    \[
+    \lim_{x \to x_0} x = x_0\;\; \forall x_0 \in \mathbb{R}
+    \] 
+    \label{D6}
+\end{example}
+\begin{example}
+    \[
+    f: \mathbb{R} \to \mathbb{R}
+    \] 
+    \[
+    f(x):= \begin{cases}
+        x\;\;\; se\; x \neq 2 \\
+        31\;\;\; se\; x = 2
+    \end{cases}
+    \] 
+    Non è continua perchè
+    \[
+    \lim_{x \to 2} f(x) = 2 \neq f(2)
+    \] 
+    Però \( f \) è continua in tutti gli \( x_0 \in  \mathbb{R} \), \( x_0 \neq 2 \):
+    \[
+    \lim_{x \to x_0} f(x) = f(x_0) = x_0
+    \] 
+    \label{D7}
+\end{example}
+\begin{example}
+    \[
+    h: \mathbb{R} / \{0\} \to \mathbb{R}
+    \] 
+    \[
+    h(x):= \frac{1}{x}\;\;\; \forall x \in \mathbb{R} / \{0\}
+    \] 
+    Il dominio è un unione di 2 intervalli:
+    \[
+        (\mathbb{R}/0 = (-\infty,0) \cup (0,+\infty))
+    \] 
+    È una funzione continua
+    \label{D8}
+\end{example}
+\begin{example}
+    \[
+    h: \mathbb{R} \to \mathbb{R}
+    \] 
+    \[
+    h(x):=\begin{cases}
+        \frac{1}{x}\;\;\; se\; x \neq 0 \\
+        0\;\;\; se\; x = 0
+    \end{cases}
+    \] 
+    Questa funzione non è continua
+    \label{D9}
+\end{example}
 \end{document}
