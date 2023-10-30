@@ -2151,4 +2151,64 @@ Lista di comandi base:
     \item \textbf{write\_blif}: stampa a video il file blif del circuito caricato in memoria
         senza dover lasciare l'ambiente SIS.
 \end{itemize}
+
+\section{Sintesi a N livelli}
+\label{D1}
+\label{D2}
+Il cammino critico è il percorso più lungo che il segnale deve effettuare e indica il ritardo.
+In un circuito a 2 livelli riducendo l'area si riduce anche il ritardo. In circuiti a N livelli
+il grafico del ritardo e dell'area è un'iperbole:
+\label{D3}
+Quindi bisogna trovare un buon compromesso tra area e ritardo, perchè diminuendo troppo l'area
+aumenta anche il ritardo.
+\subsection{Network}
+\paragraph{DAG} Direct Acyclic Graph. Non permettono la creazione di cicli (Acyclic).
+\label{D4}
+
+Gli input sono dei nodi, e ogni nodo di ingresso avrà soltanto archi uscenti. I nodi di uscita
+avranno solo archi entranti. Il numero di letterali è dato dalla somma dei
+letterali di tutte le funzioni.
+\label{D5}
+
+Il numero di nodi può essere messo in relazione con il ritardo (più nodi ci sono più nodi devono
+attraversare i segnali, quindi più ritardo).
+\begin{itemize}
+    \item Area: numero di letterali;
+    \item Delay: numero di nodi;
+\end{itemize}
+
+\subsection{Algoritmi}
+\begin{itemize}
+    \item \textbf{simplify}(Quine-McCluskey):trova la minimizzazione massima per ogni nodo del network
+    \item \textbf{full\_simplify}: è l'algoritmo più pesante per semplificare il circuito
+        e utilizza BDB (Binady Decision Diagram) come struttura dati (struttura a grafo).
+\end{itemize}
+\subsection{Script}
+In sis c'è una lista di \textbf{script} che permettono di minimizzare il circuito, ad
+esempio:
+\begin{itemize}
+    \item \textbf{rugged}: permette di minimizzare il circuito;
+    \item \textbf{sweep}: ripulisce il circuito dai nodi inutili
+    \item \textbf{eliminate}: elimina un nodo dal circuito condensandolo nei nodi che lo
+        circondano
+\end{itemize}
+
+\subsubsection{full\_simplify}
+\label{D6}
+Con un semplice \textbf{simplify} sul primo nodo intermedio il circuito resta uguale. La
+\textbf{full\_simplify} calcola i \textbf{controllability don't care set\footnote{Gli \textbf{observability don't care} sono valori di ingresso che non servono per calcolare l'uscita}}, che sarebbero
+le configurazioni di ingresso che non si possono presentare. ad esempio: ABX= (0,0,0), 
+(0,1,0), (1,0,1), (1,1,0).
+Usando questi don´t care si può semplificare il circuito e si nota che il nodo X non
+è più necessario, quindi si può eliminare (sweep).
+
+Per poter realizzare il circuito minimizzato a 2 livelli bisogna fare il technology mapping
+che sarebbe l'ultimo passaggio per realizzare il network in qualcosa di reale.
+\begin{itemize}
+    \item \textbf{FPGA}: \( f(B^5) \to B \) 
+    \item \textbf{ASIC}: libreria di porte logiche (composte da più porte elementari e date dal produttore)
+\end{itemize}
+L'algoritmo più famoso di technology mapping si chiama \textbf{tree mapping}.
+
+Dopo il mapping si avrà una misurazione per area, ritardo e potenza.
 \end{document}
