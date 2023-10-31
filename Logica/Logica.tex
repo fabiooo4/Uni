@@ -1310,6 +1310,177 @@ La struttura di una derivazione è la seguente:
         (\alpha \to (\beta \to \gamma)) \to ((\alpha \to \beta) \to (\alpha \to \gamma))
         \)
     \end{center}
+\end{exercise}
 
+\begin{definition}
+    \[
+        \vdash \alpha\;\; (\alpha \text{è un teorema})
+    \] 
+    Se esiste una derivazione \( D \) tale che \( \underbrace{hp(D) = \emptyset}_{\text{cancellate tutte
+    le ipotesi nel proc. deduttivo}} \) 
+\end{definition}
+
+\subsection{Regole dell'AND}
+      \begin{center}
+    \(
+        \underset{\alpha}{D_1}\;\;\; \underset{\beta}{D_2}
+    \)\\ 
+        \hspace{1cm}\line(1,0){80}\(\;\;\; \wedge I \)\\  
+    \(
+        \alpha \wedge \beta
+    \)
+\end{center}
+
+
+\begin{center}
+        \(
+            \underset{\alpha \wedge \beta}{D}
+        \)\\ 
+            \hspace{1cm}\line(1,0){80}\(\;\;\; \wedge E_1 \)\\  
+        \(
+            \alpha
+        \)
+    \end{center}
+    \begin{center}
+        \(
+            \underset{\alpha \wedge \beta}{D}
+        \)\\ 
+            \hspace{1cm}\line(1,0){80}\(\;\;\; \wedge E_2 \)\\  
+        \(
+            \beta
+        \)
+    \end{center}
+
+\begin{figure}[H]
+    \begin{exercise}
+        \[
+            \vdash \alpha \to \alpha \wedge \alpha
+        \] 
+        \begin{center}
+            \(
+            [\alpha]^1 \;\;\;\;\;\; [\alpha]^1
+            \)\\ 
+            \hspace{1cm}\line(1,0){80}\(\;\;\; \wedge I \)\\
+            \(
+            \alpha \wedge \alpha
+            \)\\
+            \hspace{1cm}\line(1,0){80}\(\;\;\; \to I^1 \)\\
+            \( \alpha \to (\alpha \wedge \alpha) \) 
+        \end{center}
+    \end{exercise}
+\end{figure}
+
+\begin{exercise}
+    \[
+    \vdash \alpha \to \beta \to (\alpha \wedge \beta)
+    \] 
+    \begin{center}
+        \( [\alpha]^2\;\;\;\;\;\;\; [\beta]^1 \) \\
+                    \hspace{1cm}\line(1,0){80}\(\;\;\; \wedge I \)\\
+        \( \alpha \wedge \beta \) \\
+                    \hspace{1cm}\line(1,0){80}\(\;\;\; \to I^1 \)\\
+         \( \beta \to (\alpha \wedge \beta) \) \\
+                     \hspace{1cm}\line(1,0){80}\(\;\;\; \to I^2 \)\\
+         \( \alpha \to  \beta \to  (\alpha \wedge \beta) \) 
+    \end{center}
+\end{exercise}
+
+\begin{example}
+    \[
+    \vdash \alpha \to \neg \neg \alpha = =
+    \] 
+    \[
+    \vdash \to ((\alpha \to \neg) \to \neg)
+    \] 
+    \begin{center}
+        \( [\alpha]^2 \;\;\;\;\;\;\; [\alpha \to  \bot]^1 \) \\
+     \hspace{1cm}\line(1,0){80}\(\;\;\; \to E\)\\
+        \( \bot\) \\
+         \hspace{1cm}\line(1,0){80}\(\;\;\; \to I^1 \)\\
+        \( (\alpha \to \bot) \to \bot\) \\
+        \hspace{1cm}\line(1,0){80}\(\;\;\; \to I^2 \)\\
+         \( \alpha \to ((\alpha \to \neg) \to \bot) \) \\
+         \( \alpha \to \neg \neg \alpha \) 
+    \end{center}
+\end{example}
+
+\subsection{Regole del Bottom}
+\subsubsection{Ex falso}
+\begin{center}
+    \(
+        \underset{\bot}{D}
+    \)\\ 
+        \hspace{1cm}\line(1,0){80}\(\;\;\; \bot I \)\\  
+    \(
+        \alpha
+    \)
+\end{center}
+Si può aggiungere qualsiasi formula dal bottom utilizzando questa regola. (Dimostrazione per assurdo)
+\subsubsection{Riduzione ad assurdo}
+\begin{center}
+    \(
+    [\neg \alpha]^* 
+    \)\\ 
+    \( \ldots \) \\
+    \( \bot \) \\
+        \hspace{1cm}\line(1,0){80}\(\;\;\; RAA^* \)\\  
+    \(
+        \alpha
+    \)
+\end{center}
+Voglio dimostrare P:
+\begin{enumerate}
+    \item assumo P sia falso
+    \item se da 1. arrivo a una contraddizione allora P è vero
+\end{enumerate}
+
+\subsubsection{Dimostrazione per assurdo}
+?
+\begin{example}
+    \[
+        \vdash \neg \neg \alpha \to \alpha
+    \] 
+        \begin{center}
+            \( [\neg \neg \alpha]^2 \;\;\;\;\;\;\; [\neg \alpha]^1\) \\
+     \hspace{1cm}\line(1,0){80}\(\;\;\; \to E\)\\
+        \( \bot\) \\
+         \hspace{1cm}\line(1,0){80}\(\;\;\; RAA^1  \)\\
+        \( \alpha\) \\
+         \hspace{1cm}\line(1,0){80}\(\;\;\; \to I^2\)\\
+        \( \neg \neg \alpha \to \alpha\) \\
+    \end{center}
+\end{example}
+La riduzione ad assurdo è equivalente a:
+\begin{center}
+        \hspace{1cm}\line(1,0){80}\(\;\;\; \bot I \)\\  
+        \( \alpha \vee \neg \alpha \) 
+\end{center} 
+Per la regola del \textbf{terzo escluso} (tertium non datur)
+
+\subsection{Regole dell'OR}
+\subsubsection{Introduzione 1}
+\begin{center}
+    \( \underset{\alpha}{D} \) \\
+    \hspace{1cm}\line(1,0){80}\(\;\;\; \vee I_1 \)\\  
+    \( \alpha \vee \beta \)
+\end{center}
+\subsubsection{Introduzione 2}
+\begin{center}
+    \( \underset{\alpha}{D} \) \\
+    \hspace{1cm}\line(1,0){80}\(\;\;\; \vee I_2 \)\\  
+    \( \beta \vee \alpha \)
+\end{center}
+
+\begin{exercise}
+    \[
+    \vdash \alpha \to \alpha \vee \beta
+    \] 
+    \begin{center}
+        \( [\alpha]^1 \)\\
+    \hspace{1cm}\line(1,0){80}\(\;\;\; \vee I_1 \)\\  
+    \( \alpha \vee \beta \) \\
+    \hspace{1cm}\line(1,0){80}\(\;\;\; \to I^1 \)\\  
+      \( \alpha \to \alpha \vee \beta \) 
+    \end{center}
 \end{exercise}
 \end{document}
