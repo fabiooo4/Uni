@@ -2448,4 +2448,56 @@ che sarebbe l'ultimo passaggio per realizzare il network in qualcosa di reale.
 \end{itemize}
 L'algoritmo più famoso di technology mapping si chiama \textbf{tree mapping} e dopo l'applicazione
 di questo algoritmo si avrà una misurazione per area, ritardo e potenza.
+
+\section{Hardware design su FPGA con HDL}
+\textbf{HDL} è un linguaggio di modellazione che permette di progettare circuiti su hardware.
+\subsection{EDA (Electronic Design Automation)}
+La legge di Moore dice che ogni due anni il numero di transistor nei circuiti raddoppia.
+
+Con gli anni aumenta anche l'astrazione, che però comporta anche perdita di dettagli.
+
+Con verilog simuliamo il circuito (test bench) creando così un golden model, che sarà il
+modello di riferimento per realizzare il circuito con SIS. Nel caso in cui il modello fatto con sis
+si comporta come il bengh test, allora esso è corretto soltanto rispetto a quel bench test.
+
+Si potrebbe scrivere un modello usando un linguaggio di programmazione comune, il problema è che 
+i linguaggi di programmazinoe sono sequenziali e quindi eseguono le istruzioni in sequenza.
+Nei circuiti ogni porta logica continua a lavorare sui segnali che ha in ingresso, quindi
+non è sequenziale e per rappresentare l'hardware serve un linguaggio parallelo (i linguaggi di 
+programmazione non sono fatti per questo). Per questo motivo c'è una netta differenza tra il tempo
+di simulazione e il tempo simulato (tempo reale). Un HDL che useremo è Verilog in cui tutto concorre
+(quindi in parallelo) e non ci sono istruzioni sequenziali.
+\subsection{Verilog}
+L'elemento principale da rappresentare è il modulo, che ha un nome e un elenco di porte di ingresso
+e di uscita. Le porte hanno 16 bit e sono messi in ordine dal 15 allo 0
+\begin{lstlisting}[language=Verilog]
+module foo(clk, xi, yi, done); // clock, input, output
+    input [15:0] xi,yi; // input a 16 bit
+    output done;
+
+    // always esegue il blocco di codice quando si verifica un evento sull'argomento
+    always @(posedge clk) // serve per descrivere al livello RTL, posedge verifica quando il clock passa da 0 a 1
+        begin:
+            if (!done) begin
+                if (x == y) cd <= x;
+                else (x > y) x <= x - y;
+            end
+        end
+endmodule
+\end{lstlisting}
+Ai dati si può assegnare un valore tra i seguenti:
+\begin{itemize}
+    \item \textbf{0} bit falso
+    \item \textbf{1} bit vero
+    \item \textbf{X} dont'care o valore non definito
+    \item \textbf{Z} stato di alta impedenza 
+\end{itemize}
+In verilog ci sono diversi layer di astrazione:
+\begin{itemize}
+    \item \textbf{Behavioral}: si descrive il circuito come un insieme di istruzioni
+    \item \textbf{Data flow}: si descrive il circuito come un insieme di equazioni booleane
+    \item \textbf{Gate level}: si istanziano le porte logiche
+\end{itemize}
+Inoltre si possono assegnare dei valori di partenza (initial statement) che vengono eseguiti
+una sola volta all'inizio della simulazione.
 \end{document}
