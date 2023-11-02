@@ -2095,6 +2095,7 @@ Il modello di codice di SIS è il seguente:
     .end // il file deve essere 
 \end{lstlisting}
 
+
 \begin{example}
    Prendiamo in considerazoine la tabella di verità dell'
    implicazione logica:
@@ -2138,7 +2139,16 @@ Il modello di codice di SIS è il seguente:
 \end{lstlisting}
 \end{example}
 
-Lista di comandi base:
+Esiste il comando \textbf{.exdc} che permette di specificare il \textbf{don't care set} di una funzione booleana.
+
+La sintassi è la seguente
+\begin{lstlisting}[language=Verilog]
+    .exdc
+    .names [lista delle variabili]
+    [lista delle configurazioni, mettendo 1 come output] // l'1 come output non vuol dire che si sta forzando il don't care a 1, ma serve solo per il parser
+\end{lstlisting}
+
+Lista di comandi utili: 
 \begin{itemize}
     \item \textbf{read\_blif}: carica il modello sis;
     \item \textbf{simulate [valori in bit, separati da spazi]}: esegue un passo di
@@ -2151,10 +2161,43 @@ Lista di comandi base:
     \item \textbf{write\_blif [nome file]}: salva il modello sis in un file;
     \item \textbf{write\_blif}: stampa a video il file blif del circuito caricato in memoria
         senza dover lasciare l'ambiente SIS.
+    \item \textbf{write\_eqn}: stampa a video l'equazione del circuito caricato, l'espressione è scritta
+        in somma di prodotti dove il simbolo "!" indica la negazione del letterale che lo segue.
+    \item \textbf{full\_simplofy}: ottimizza il circuito caricato, ma sarebbe meglio usare
+        \emph{write\_eqn} prima di usare questo comando.
 \end{itemize}
 
+\subsection{Ottimizzazione}
+Ottimizzare significa ridurre l'\textbf{area} o il \textbf{ritardo}.
+\begin{itemize}
+    \item L'\textbf{area} di un circuito digitale è misurabile come il numero di porte logiche a 2 ingressi
+        necessarie per la realizzazione del circuito
+    \item Il \textbf{ritardo} di un circuito digitale è misurabile come il massimo numero di porte logiche
+        che un segnale applicato agli ingressi deve attraversare per raggiungere l'uscita.
+    \item L'\textbf{ottimizzazione} di un circuito digitale consiste nella trasformazione del circuito in uno
+        \emph{funzionalmente equivalente} avente area e/o ritardo minimi. Lo scopo è quello di ottenere
+        circuiti piccoli e veloci.
+\end{itemize}
+Bisogna anche tenere conto del consumo energetico e della temperatura.
+
+La minimizzazione di circuiti a 2 livelli avviene in 3 passo:
+\begin{enumerate}
+    \item Si identificano tutti gli implicanti primi essenziali
+    \item Si identifica un insieme minimo di implicanti che coprano tutti i mintermini non coperti
+        dagli implicanti primi essenziali
+    \item La funzione di copertura ottima è data dalla somma degli implicanti trovati ai punti 1 e 2
+\end{enumerate}
+
+Per \textbf{circuiti a una uscita} esiste un metodo esatto (Mc Cluskey) che permette di trovare gli implicanti
+primi essenziali ed esiste sia un metodo esatto che approsimato anche per ottenere la funzione
+di copertura ottima.
+
+Per \textbf{circuiti a più uscite} esiste solo un metodo \emph{approssimato} per trovare la copertura ottima che si
+basa sul metodo esatto di identificazione degli implicanti primi essenziali di ogni singola uscita.
+
+
 \section{Sintesi a N livelli}
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\begin{tikzpicture}[scale=0.6, domain=0:10]
 		\coordinate (A) at (0,5);
@@ -2223,7 +2266,7 @@ In circuiti a N livelli il grafico del ritardo e dell'area è un'iperbole:
             \draw [->] (1,1) -- ++(0.2,-0.2) node[right, align=center] {};
 		\end{tikzpicture}
 	\end{center}
-	\caption{Grafico di un circuito a N livelli}
+	\caption{Curva di Pareto}
 \end{figure}
 Quindi bisogna trovare un buon compromesso tra area e ritardo, perchè diminuendo troppo l'area
 aumenta anche il ritardo.
