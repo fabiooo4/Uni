@@ -1,0 +1,18 @@
+.model es1
+.inputs a b c
+.outputs z
+
+# Specifico l'ON-SET
+.names a b c z
+001 1
+100 1
+111 1
+
+# Specifico l'DC-SET
+.exdc
+.names a b c z
+010 1
+101 1
+110 1
+
+.end
