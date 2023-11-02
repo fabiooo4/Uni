@@ -298,7 +298,7 @@ dominio \( A \subseteq \mathbb{R} \) è un insieme \textbf{non} limitato superio
 				\coordinate (M) at (12,3);
 				\coordinate (N) at (13,3);
 
-				\draw [red, ultra thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
+				\draw [red, thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
 
 				\draw [] (0,3) -- (13,3) node[right] {$L$};
 				\draw [dashed] (0,4) -- (13,4) node[right, scale=0.5] {$L+\epsilon$};
@@ -355,7 +355,7 @@ dominio \( A \subseteq \mathbb{R} \) è un insieme \textbf{non} limitato superio
 					\coordinate (M) at (12,6);
 					\coordinate (N) at (13,7);
 
-					\draw [red, ultra thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
+					\draw [red, thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
 
 					\draw [] (0,4.8) -- (13,4.8) node[right] {$M$};
 					\draw [] (0,6) -- (13,6) node[right] {$M^1$};
@@ -405,7 +405,7 @@ dominio \( A \subseteq \mathbb{R} \) è un insieme \textbf{non} limitato superio
 					\coordinate (M) at (12,-6);
 					\coordinate (N) at (13,-7);
 
-					\draw [red, ultra thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
+					\draw [red, thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
 
 					\draw [] (0,-4.8) -- (13,-4.8) node[right] {$M$};
 					\draw [] (0,-6) -- (13,-6) node[right] {$M^1$};
@@ -524,7 +524,7 @@ La funzione non entra in un intevallo limitato senza poi uscirne, quindi non esi
 			\coordinate (M) at (12,3);
 			\coordinate (N) at (13,3);
 
-			\draw [red, ultra thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
+			\draw [red, thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
 
 			\draw [] (0,3) -- (13,3) node[right] {$L$};
 
@@ -688,7 +688,7 @@ Se \( P \) è un polinomio di grado \( p \) e \( Q \) è un polinomio di grado \
 			\coordinate (G) at (6,5);
 			\coordinate (H) at (7,5);
 
-			\draw [red, ultra thick] plot [smooth, tension=0.8] coordinates { (A) (B) (C) (D) (E) (F) (H) };
+			\draw [red, thick] plot [smooth, tension=0.8] coordinates { (A) (B) (C) (D) (E) (F) (H) };
 
 			\draw [dashed] (0,5) -- (6,5) node[left, xshift=-3cm] {$5$};
 		\end{tikzpicture}
@@ -738,7 +738,7 @@ Se \( P \) è un polinomio di grado \( p \) e \( Q \) è un polinomio di grado \
 			\coordinate (M) at (12,3);
 			\coordinate (N) at (13,3);
 
-			\draw [red, ultra thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
+			\draw [red, thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
 
 			\draw [dashed] (7.2,0) -- (7.2,7) node[below, yshift=-3.5cm] {$5$};
 		\end{tikzpicture}
@@ -896,174 +896,377 @@ se e solo se
 \[
 	\lim_{x \to +\infty} f(-t) = L
 \]
-    \begin{center}
-        \(
-        x=-t
-        \)\\ 
-        se \( x \to -\infty \) \\
-        allora \( t \to +\infty \) 
-    \end{center}
+\begin{center}
+	\(
+	x=-t
+	\)\\
+	se \( x \to -\infty \) \\
+	allora \( t \to +\infty \)
+\end{center}
 
 \subsection{Limiti per \( x \to x_0 \) }
-Sia \( f: A \subseteq \mathbb{R} \), \( x_0 \in \mathbb{R} \). Per definire il limite di \( f \) 
+Sia \( f: A \subseteq \mathbb{R} \), \( x_0 \in \mathbb{R} \). Per definire il limite di \( f \)
 quando \( x \to 0 \), serve che \( f \) sia definita "vicino a \( x_0 \)", in un senso opportuno.
 Noi supporremo, ad esempio, che il dominio \( A \) contenga almeno un intervallo del tipo
 \( (x_0-\delta, x_0) \) oppure \( (x_0, x_0-\delta) \), con \( \delta>0 \). \textbf{Non} è richiesto, invece,
 che \( f \) sia definita in \( x_0 \).
 \begin{example}
-    \[
-    A = (-\infty,1) \cup (1,2)\;\;\; f: A \to \mathbb{R}
-    \] 
-    \label{D1}
-    Posso definire \[
-    \lim_{x \to -\infty} f(x),\; \lim_{x \to 2} f(x),\; \lim_{x \to 0} f(x),\; \lim_{x \to 0} f(x),\; \lim_{x \to 1} f(x)
-    \] 
-    Non è detto però che tali limiti esistano
+	\[
+		A = (-\infty,1) \cup (1,2)\;\;\; f: A \to \mathbb{R}
+	\]
+	\begin{figure}[H]
+		\begin{center}
+			\begin{tikzpicture}[scale=0.5, domain=0:13]
+				\draw[->] (-0.5,3.5) -- (13,3.5) node[below] {$x$};
+				\draw[->] (0,-0.5) -- (0,7) node[left] {$y$};
+
+				\coordinate (A) at (-0.5,0);
+				\coordinate (B) at (1,1);
+				\coordinate (C) at (2,2);
+				\coordinate (D) at (3,4);
+				\coordinate (E) at (4,5);
+				\coordinate (F) at (5,7);
+				\coordinate (G) at (5,2);
+				\coordinate (H) at (6,2);
+				\coordinate (I) at (7,4);
+				\coordinate (J) at (8,4);
+
+				\draw [red, thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F)};
+				\draw [red, thick] plot [smooth, tension=0.7] coordinates { (G) (H) (I) (J) };
+
+				\draw[red] (5,2) circle (4pt);
+				\draw[red] (8,4) circle (4pt);
+
+				\draw [dashed] (5,0) -- (5,7) node[below, yshift=-3.5cm] {};
+
+				\draw[fill, yellow, opacity=0.4] (-0.5,3.3) rectangle (0.5,3.7);
+				\draw[fill, yellow, opacity=0.4] (4.5,3.3) rectangle (5.5,3.7);
+				\draw[fill, yellow, opacity=0.4] (7.5,3.3) rectangle (8,3.7);
+
+				\node [below left, scale=0.8] at (5,3.3) {1};
+				\node [below, scale=0.8] at (8,3.3) {2};
+
+			\end{tikzpicture}
+		\end{center}
+		\caption{Limiti su una funzione non continua}
+	\end{figure}
+	Posso definire \[
+		\lim_{x \to -\infty} f(x),\; \lim_{x \to 2} f(x),\; \lim_{x \to 0} f(x),\; \lim_{x \to 0} f(x),\; \lim_{x \to 1} f(x)
+	\]
+	Non è detto però che tali limiti esistano
 \end{example}
 Sotto le ipotesi precedenti su \( f: A \subseteq \mathbb{R} \to \mathbb{R} \) e su \( x_0 \in \mathbb{R} \),
 dato \( L \in \mathbb{R} \) diremo che \[
-\lim_{x \to x_0} f(x) = L
-\] 
+	\lim_{x \to x_0} f(x) = L
+\]
 se e solo se
 \[
-\forall \epsilon > 0\;\;\; \exists \delta > 0\;t.c.\; \forall x \in A,
-\] 
+	\forall \epsilon > 0\;\;\; \exists \delta > 0\;t.c.\; \forall x \in A,
+\]
 \[
-x_0-\delta \le x \le x_0 + \delta\;\; e\;\; x \neq x_0
-\] 
+	x_0-\delta \le x \le x_0 + \delta\;\; e\;\; x \neq x_0
+\]
 \[
-\to L-\epsilon \le f(x) \le L+\epsilon
-\] 
-\label{D2}
+	\to L-\epsilon \le f(x) \le L+\epsilon
+\]
+\begin{figure}[H]
+	\begin{center}
+		\begin{tikzpicture}[scale=0.5, domain=0:13]
+			\draw[->] (-0.5,0) -- (13,0) node[right] {$x$};
+			\draw[->] (0,-0.5) -- (0,7) node[above] {$y$};
+
+			\coordinate (A) at (0,0);
+			\coordinate (B) at (1,1);
+			\coordinate (C) at (2,2);
+			\coordinate (D) at (3,1);
+			\coordinate (E) at (4,3);
+			\coordinate (F) at (5,4);
+			\coordinate (G) at (6,4.2);
+			\coordinate (H) at (7,4.5);
+			\coordinate (I) at (8,4.5);
+			\coordinate (J) at (9,5);
+			\coordinate (K) at (10,6);
+			\coordinate (L) at (11,7);
+			\coordinate (M) at (12,6);
+			\coordinate (N) at (13,7);
+
+			\draw [red, thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
+
+			\draw [dashed] (0,5) -- (13,5) node[right] {$L$};
+			\draw [dashed] (0,6) -- (13,6) node[right, scale=0.5] {$L+\epsilon$};
+			\draw [dashed] (0,4) -- (13,4) node[right, scale=0.5] {$L-\epsilon$};
+
+			\draw[fill, fill opacity=0.1, cyan] (0,4) rectangle (13,6);
+
+			\draw [dashed] (9,7) -- (9,0) node[below] {$x_0$};
+
+			\draw [dashed] (8,7) -- (8,0) node[below left] {$x_0-\delta$};
+			\draw [dashed] (10,7) -- (10,0) node[below right] {$x_0+\delta$};
+
+			\draw[fill, fill opacity=0.1, green] (8,0) rectangle (10,7);
+		\end{tikzpicture}
+	\end{center}
+	\caption{Limite a \( x_0 \) }
+\end{figure}
+
+Sotto le ipotesi precedenti su \( f: A \subseteq \mathbb{R} \to \mathbb{R} \) e su \( x_0 \in \mathbb{R} \),
+dato \( L \in \mathbb{R} \) diremo che \[
+	\lim_{x \to x_0} f(x) = +\infty
+\]
+se e solo se
+\[
+	\forall M > 0\;\;\; \exists \delta > 0\;t.c.\; \forall x \in A,
+\]
+\[
+	x_0-\delta \le x \le x_0 + \delta\;\; e\;\; x \neq x_0
+\]
+\[
+	f(x) \ge M
+\]
+\begin{figure}[H]
+	\begin{center}
+		\begin{tikzpicture}[scale=0.5, domain=0:13]
+			\draw[->] (-0.5,0) -- (13,0) node[right] {$x$};
+			\draw[->] (0,-0.5) -- (0,7) node[above] {$y$};
+
+			\coordinate (A) at (0,1);
+			\coordinate (B) at (1,2);
+			\coordinate (C) at (2,2);
+			\coordinate (D) at (3,4);
+			\coordinate (E) at (4,4.5);
+			\coordinate (F) at (5.3,7);
+			\coordinate (G) at (5.7,7);
+			\coordinate (H) at (7,4.5);
+			\coordinate (I) at (8,4.5);
+			\coordinate (J) at (9,4);
+			\coordinate (K) at (10,4.5);
+			\coordinate (L) at (11,4);
+			\coordinate (M) at (12,3);
+			\coordinate (N) at (13,2);
+
+			\draw [red, thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) };
+			\draw [red, thick] plot [smooth, tension=0.7] coordinates { (G) (H) (I) (J) (K) (L) (M) (N) };
+
+			\draw [] (0,5) -- (13,5) node[right] {$M$};
+
+			\draw[fill, fill opacity=0.1, cyan] (0,5) rectangle (13,7);
+
+			\draw [dashed] (5.5,7) -- (5.5,0) node[below] {$x_0$};
+
+			\draw [dashed] (4.5,7) -- (4.5,0) node[below left] {$x_0-\delta$};
+			\draw [dashed] (6.5,7) -- (6.5,0) node[below right] {$x_0+\delta$};
+
+			\draw[fill, fill opacity=0.1, green] (4.5,0) rectangle (6.5,7);
+		\end{tikzpicture}
+	\end{center}
+	\caption{Limite a \( x_0 \) }
+\end{figure}
 
 
 Sotto le ipotesi precedenti su \( f: A \subseteq \mathbb{R} \to \mathbb{R} \) e su \( x_0 \in \mathbb{R} \),
 dato \( L \in \mathbb{R} \) diremo che \[
-\lim_{x \to x_0} f(x) = +\infty
-\] 
+	\lim_{x \to x_0} f(x) = -\infty
+\]
 se e solo se
 \[
-\forall M > 0\;\;\; \exists \delta > 0\;t.c.\; \forall x \in A,
-\] 
+	\forall M > 0\;\;\; \exists \delta > 0\;t.c.\; \forall x \in A,
+\]
 \[
-x_0-\delta \le x \le x_0 + \delta\;\; e\;\; x \neq x_0
-\] 
+	x_0-\delta \le x \le x_0 + \delta\;\; e\;\; x \neq x_0
+\]
 \[
-f(x) \ge M
-\] 
-\label{D3}
-
-
-Sotto le ipotesi precedenti su \( f: A \subseteq \mathbb{R} \to \mathbb{R} \) e su \( x_0 \in \mathbb{R} \),
-dato \( L \in \mathbb{R} \) diremo che \[
-\lim_{x \to x_0} f(x) = -\infty
-\] 
-se e solo se
-\[
-\forall M > 0\;\;\; \exists \delta > 0\;t.c.\; \forall x \in A,
-\] 
-\[
-x_0-\delta \le x \le x_0 + \delta\;\; e\;\; x \neq x_0
-\] 
-\[
-f(x) \le M
-\] 
-\label{D4}
-
+	f(x) \le M
+\]
 \subsection{Limiti unilateri}
 Si possono anche dare le definizioni di limiti \textbf{unilateri}, da destra o da sinistra:
 \[
-    \lim_{x \to x_0^+} f(x) = \lim_{\underset{x > x_0}{x \to x_0}} f(x)
-\] 
+	\lim_{x \to x_0^+} f(x) = \lim_{\underset{x > x_0}{x \to x_0}} f(x)
+\]
 \[
-    \lim_{x \to x_0^-} f(x) = \lim_{\underset{x < x_0}{x \to x_0}} f(x)
-\] 
+	\lim_{x \to x_0^-} f(x) = \lim_{\underset{x < x_0}{x \to x_0}} f(x)
+\]
 \begin{example}
-    \[
-    f: \mathbb{R} / \{0\} \to \mathbb{R}
-    \] 
-    \[
-    f(x) = \frac{1}{x}\;\; \forall x \in \mathbb{R} / \{0\}
-    \] 
-    \[
-    \lim_{x \to 0^+} (\frac{1}{x}) = +\infty
-    \] 
-    \[
-    \lim_{x \to 0^-} (\frac{1}{x}) = -\infty
-    \]
-    \[
-    \lim_{x \to 0} (\frac{1}{x})\;\; \text{non esiste}
-    \] 
-    \label{D5}
+	\[
+		f: \mathbb{R} / \{0\} \to \mathbb{R}
+	\]
+	\[
+		f(x) = \frac{1}{x}\;\; \forall x \in \mathbb{R} / \{0\}
+	\]
+	\[
+		\lim_{x \to 0^+} (\frac{1}{x}) = +\infty
+	\]
+	\[
+		\lim_{x \to 0^-} (\frac{1}{x}) = -\infty
+	\]
+	\[
+		\lim_{x \to 0} (\frac{1}{x})\;\; \text{non esiste}
+	\]
+
+	\begin{figure}[H]
+		\begin{center}
+			\begin{tikzpicture}
+				\draw[->] (-3, 0) -- (3, 0) node[right] {$x$};
+				\draw[->] (0, -3) -- (0, 3) node[above] {$y$};
+				\draw[domain=0.25:3, smooth, variable=\x, red, thick, yscale=0.7] plot ({\x}, {1/\x});
+				\draw[domain=0.25:3, smooth, variable=\x, red, thick, yscale=0.7] plot ({-\x}, {-1/\x});
+			\end{tikzpicture}
+		\end{center}
+		\caption{Limiti unilateri}
+	\end{figure}
+
 \end{example}
 
 \subsection{Limiti di funzioni continue}
 Sia \( A \subseteq \mathbb{R} \) un intervallo oppure un'unione finita di intervalli.
-\begin{definition}
-    Sia \( f: A \to  \mathbb{R} \), \( x_0 \in A \). Diremo che \( f \) è continua in \( x_0 \) 
-    se e solo se
+\begin{figure}[H]
+	\begin{definition}
+		Sia \( f: A \to  \mathbb{R} \), \( x_0 \in A \). Diremo che \( f \) è continua in \( x_0 \)
+		se e solo se
+		\[
+			\lim_{x \to x_0} f(x) = f(x_0)
+		\]
+		Diremo che \( f \) è continua se e solo se \( f \) è continua in ogni punto del suo dominio
+		\( x_0 \in A \).
+	\end{definition}
+\end{figure}
+
+\begin{example}
+	\[
+		g: \mathbb{R} \to \mathbb{R}, \;\;\; g(x):=x\;\; \forall x \in \mathbb{R}
+	\]
+	è continua, perchè
+	\[
+		\lim_{x \to x_0} x = x_0\;\; \forall x_0 \in \mathbb{R}
+	\]
+	\begin{figure}[H]
+		\begin{center}
+			\begin{tikzpicture}
+				\draw[->] (-2, 0) -- (2, 0) node[right] {$x$};
+				\draw[->] (0, -2) -- (0, 2) node[above] {$y$};
+				\draw[domain=-2:2, smooth, variable=\x, red, thick] plot ({\x}, {\x});
+			\end{tikzpicture}
+		\end{center}
+		\caption{Eempio di funzione continua}
+	\end{figure}
+
+\end{example}
+\begin{example}
+	\[
+		f: \mathbb{R} \to \mathbb{R}
+	\]
+	\[
+		f(x):= \begin{cases}
+			x\;\;\; se\; x \neq 2 \\
+			31\;\;\; se\; x = 2
+		\end{cases}
+	\]
+	Non è continua perchè
+	\[
+		\lim_{x \to 2} f(x) = 2 \neq f(2)
+	\]
+	Però \( f \) è continua in tutti gli \( x_0 \in  \mathbb{R} \), \( x_0 \neq 2 \):
+	\[
+		\lim_{x \to x_0} f(x) = f(x_0) = x_0
+	\]
+	\begin{figure}[H]
+		\begin{center}
+			\begin{tikzpicture}
+				\draw[->] (-2, 0) -- (2, 0) node[right] {$x$};
+				\draw[->] (0, -2) -- (0, 2) node[above] {$y$};
+				\draw[domain=-2:0.45, smooth, variable=\x, red, thick] plot ({\x}, {\x});
+				\draw[domain=0.55:2, smooth, variable=\x, red, thick] plot ({\x}, {\x});
+
+				\draw[red] (0.5,0.5) circle (2pt);
+				\draw[fill, red] (0.5,1.8) circle (2pt);
+			\end{tikzpicture}
+		\end{center}
+		\caption{Eempio di funzione non continua}
+	\end{figure}
+\end{example}
+\begin{example}
+	\[
+		h: \mathbb{R} / \{0\} \to \mathbb{R}
+	\]
+	\[
+		h(x):= \frac{1}{x}\;\;\; \forall x \in \mathbb{R} / \{0\}
+	\]
+	Il dominio è un unione di 2 intervalli:
+	\[
+		(\mathbb{R}/0 = (-\infty,0) \cup (0,+\infty))
+	\]
+	È una funzione continua
+	\begin{figure}[H]
+		\begin{center}
+			\begin{tikzpicture}
+				\draw[->] (-3, 0) -- (3, 0) node[right] {$x$};
+				\draw[->] (0, -3) -- (0, 3) node[above] {$y$};
+				\draw[domain=0.25:3, smooth, variable=\x, red, thick, yscale=0.7] plot ({\x}, {1/\x});
+				\draw[domain=0.25:3, smooth, variable=\x, red, thick, yscale=0.7] plot ({-\x}, {-1/\x});
+			\end{tikzpicture}
+		\end{center}
+		\caption{Esmpio di funzione continua}
+	\end{figure}
+
+\end{example}
+\begin{example}
+	\[
+		l: \mathbb{R} \to \mathbb{R}
+	\]
+	\[
+		l(x):=\begin{cases}
+			\frac{1}{x}\;\;\; se\; x \neq 0 \\
+			5\;\;\; se\; x = 0
+		\end{cases}
+	\]
+	Questa funzione non è continua perchè il limite a 0 non esiste:
     \[
-    \lim_{x \to x_0} f(x) = f(x_0)
+        \lim_{x \to 0} l(x) = \nexists
+    \]
+    ma:
+    \[
+    \lim_{x \to 0} |l(x)| = +\infty
     \] 
-    Diremo che \( f \) è continua se e solo se \( f \) è continua in ogni punto del suo dominio
-    \( x_0 \in A \).
-\end{definition}
+	\begin{figure}[H]
+		\begin{center}
+			\begin{tikzpicture}
+				\draw[->] (-3, 0) -- (3, 0) node[right] {$x$};
+				\draw[->] (0, -3) -- (0, 3) node[above] {$y$};
+				\draw[domain=0.25:3, smooth, variable=\x, red, thick, yscale=0.7] plot ({\x}, {1/\x});
+				\draw[domain=0.25:3, smooth, variable=\x, red, thick, yscale=0.7] plot ({-\x}, {-1/\x});
+				\draw[fill, red] (0,1.5) circle (2pt) node[left] {5};
+			\end{tikzpicture}
+		\end{center}
+		\caption{Esmpio di funzione non continua}
+	\end{figure}
+\end{example}
 
 \begin{example}
     \[
-    g: \mathbb{R} \to \mathbb{R}, \;\;\; g(x):=x\;\; \forall x \in \mathbb{R}
-    \] 
-    è continua, perchè
-    \[
-    \lim_{x \to x_0} x = x_0\;\; \forall x_0 \in \mathbb{R}
-    \] 
-    \label{D6}
-\end{example}
-\begin{example}
-    \[
-    f: \mathbb{R} \to \mathbb{R}
+    m: \mathbb{R} \to \mathbb{R}
     \] 
     \[
-    f(x):= \begin{cases}
-        x\;\;\; se\; x \neq 2 \\
-        31\;\;\; se\; x = 2
+    m(x):=\begin{cases}
+        x^2\;\;\; se\; x \neq 0 \\
+        -2\;\;\; se\; x = 0
     \end{cases}
-    \] 
-    Non è continua perchè
+    \]
+    Non è continua perchè:
     \[
-    \lim_{x \to 2} f(x) = 2 \neq f(2)
+    \lim_{x \to 0} m(x) = \lim_{x \to 0} x^2 = 0 \neq m(0)
     \] 
-    Però \( f \) è continua in tutti gli \( x_0 \in  \mathbb{R} \), \( x_0 \neq 2 \):
-    \[
-    \lim_{x \to x_0} f(x) = f(x_0) = x_0
-    \] 
-    \label{D7}
-\end{example}
-\begin{example}
-    \[
-    h: \mathbb{R} / \{0\} \to \mathbb{R}
-    \] 
-    \[
-    h(x):= \frac{1}{x}\;\;\; \forall x \in \mathbb{R} / \{0\}
-    \] 
-    Il dominio è un unione di 2 intervalli:
-    \[
-        (\mathbb{R}/0 = (-\infty,0) \cup (0,+\infty))
-    \] 
-    È una funzione continua
-    \label{D8}
-\end{example}
-\begin{example}
-    \[
-    h: \mathbb{R} \to \mathbb{R}
-    \] 
-    \[
-    h(x):=\begin{cases}
-        \frac{1}{x}\;\;\; se\; x \neq 0 \\
-        0\;\;\; se\; x = 0
-    \end{cases}
-    \] 
-    Questa funzione non è continua
-    \label{D9}
+    \begin{figure}[H]
+		\begin{center}
+			\begin{tikzpicture}
+				\draw[->] (-3, 0) -- (3, 0) node[right] {$x$};
+				\draw[->] (0, -2) -- (0, 3) node[above] {$y$};
+				\draw[domain=0.1:2, smooth, variable=\x, red, thick, yscale=0.7] plot ({\x}, {\x^2});
+				\draw[domain=0.1:2, smooth, variable=\x, red, thick, yscale=0.7] plot ({-\x}, {\x^2});
+
+                \draw[red, thick] (0,0) circle (3pt);
+                \draw[fill, red] (0,-1) circle (2.5pt) node[left] {-2};
+			\end{tikzpicture}
+		\end{center}
+		\caption{Esmpio di funzione non continua}
+	\end{figure}
 \end{example}
 \end{document}

@@ -1168,7 +1168,7 @@ Il simbolo che si utilizza è: \( \Gamma \vdash \alpha\) e vuol dire che da
 Si ha quindi un \textbf{sistema deduttivo} formato da \textbf{regole logiche} che
 trasformano le formule in altre formule.
 
-\subsection{Deduzione naturale}
+\section{Deduzione naturale}
 È una deduzione che si basa su regole logiche che applichiamo naturalmente.
 
 La struttura della deduzione naturale è la seguente:
@@ -1195,8 +1195,12 @@ Per indicare l'insieme delle ipotesi usate nella dimostrazione \( D \) si usa:
 \[
 hp(D)
 \] 
-Quando una formula sola viene usata come ipotesi è anche tesi (se la assumo, vuol dire che è vera).
-È anche la più piccola dimostrazione possibile.
+\begin{figure}[H]
+    \begin{definition}
+        Quando una formula sola viene usata come ipotesi è anche tesi (se la assumo, vuol dire che è vera).
+        È anche la più piccola dimostrazione possibile.
+    \end{definition}
+\end{figure}
 
 Per ciascun connettivo si hanno 2 regole:
 \begin{enumerate}
@@ -1204,55 +1208,64 @@ Per ciascun connettivo si hanno 2 regole:
     \item Regola di \textbf{introduzione}
 \end{enumerate}
 
-\subsubsection{Regole dell'implicazione}
-Eliminazione: \( D \) 
-\[
-    (\to E)
-\] 
+\subsection{Regole dell'implicazione}
+\subsubsection{Eliminazione }
+Si utilizza il metoo Modus Ponens\footnote{\( [|\alpha|]_v=1\;\; (\alpha \to \beta) \models \beta \) }
+\begin{center}
+    \(
+        \underset{\alpha}{D_1}\;\;\; \underset{\alpha \to \beta}{D_2}
+    \)\\ 
+    \hspace{1cm}\line(1,0){70}\(\;\;\; \to E \)\\
+    \(
+        \beta
+    \) 
+\end{center}
 
-\[
-    \underset{\alpha}{D_1}\;\;\; \underset{\alpha \to \beta}{D_2}
-\] 
-\noindent\hrulefill \( (\to E) \) \noindent\hrulefill\\
-Si applica la regola di eliminazione (Modus Ponens\footnote{\( [|\alpha|]_v=1\;\; (\alpha \to \beta) \models \beta \) })
-\[
-\beta
-\] 
-Introduzione: \( \overline{D} \) 
-La seguente notazione vuol dire che tra le ipotesi \emph{potrebbe} esserci \( \alpha \):
+\subsubsection{Introduzione}
+ 
+La seguente notazione \( \overline{D} \) vuol dire che tra le ipotesi \emph{potrebbe} esserci \( \alpha \):
 \[
     \underset{\beta}{\stackrel{\alpha}{D}}
 \] 
-\[
-    \underset{\beta}{\stackrel{[\alpha]^*}{D}}\footnote{Le parentesi [] indicano che abbiamo utilizzato \( \alpha \), ed è quindi "\textbf{scaricata}", cioè visto che è già stata utilizzata non fa più parte delle ipotesi}
-\] 
- \noindent\hrulefill \( (\to I)^* \) \noindent\hrulefill
-\[
-\alpha \to \beta
-\] 
+\begin{center}
+    \(
+    \underset{\beta}{\stackrel{[\alpha]^*}{D}}
+    \)\\ 
+    \hspace{1cm}\line(1,0){40}\(\;\;\; \to I^* \)\\
+    \(
+        \alpha \to \beta
+    \) 
+\end{center}
+Le parentesi quadre indicano che abbiamo utilizzato \( \alpha \), ed è quindi "\textbf{scaricata}",
+cioè visto che è già stata utilizzata non fa più parte delle ipotesi. L'asterisco, invece è un indice
+che mostra su quale ipotesi è stata applicata la regola.
 \[
     hp(\overline{D})=hp(D) / \{\alpha\} 
 \] 
 
-\begin{example}
-    Quando scarico \( \alpha \) devo scaricare tutte le occorrenze 
-    \[
-        \stackrel{\underline{\alpha},\beta,\delta,\underline{\alpha} \ldots}{\underset{\gamma}{D}}
-    \] 
-\end{example}
-\begin{example}
-    La seguente dimostrazione è accettata anche se \( \alpha \) è stata scaricata.
-    \[
-        \stackrel{[\alpha]}{\underset{\alpha \to \beta}{\underline{D}}}
-    \] 
-    Questa dimostrazione prende il nome di \textbf{indebolimento}. "Lego" la verità di \( \alpha \) 
-    a quella di \( \beta \) anche se non avevo \( \alpha \).
+\begin{figure}[H]
+    \begin{example}
+        Quando scarico \( \alpha \) devo scaricare tutte le occorrenze 
+        \[
+            \stackrel{\underline{\alpha},\beta,\delta,\underline{\alpha} \ldots}{\underset{\gamma}{D}}
+        \] 
+    \end{example}
+\end{figure}
 
-    Ad esempio:
-    \[
-        [|\beta|]_v=1 \Rightarrow \underbrace{[|\alpha \to \beta|]_v}_{[|\alpha|]_v=0\;or\;[|\beta|]_v=1}=1
-    \] 
-\end{example}
+\subsubsection{Indebolimento}
+        La seguente dimostrazione è accettata anche se \( \alpha \) è stata scaricata.
+        \begin{center}
+            \(\stackrel{[\alpha]}{D}\)\\
+            \hspace{1cm}\line(1,0){40}\(\;\;\; \to I^* \)\\
+            \( \alpha \to \beta \) 
+        \end{center}
+        Questa dimostrazione prende il nome di \textbf{indebolimento}. "Lego" la verità di \( \alpha \) 
+        a quella di \( \beta \) anche se non avevo \( \alpha \).
+
+        Ad esempio:
+        \[
+            [|\beta|]_v=1 \Rightarrow \underbrace{[|\alpha \to \beta|]_v}_{[|\alpha|]_v=0\;or\;[|\beta|]_v=1}=1
+        \] 
 
 La struttura di una derivazione è la seguente:
 \begin{itemize}
@@ -1264,7 +1277,7 @@ La struttura di una derivazione è la seguente:
 \subsubsection{Esercizi}
 \begin{exercise}
     \[
-        \vdash \alpha \to \alpha \;\;\; \vdash \to \text{derivabilità}
+        \vdash \alpha \to \alpha \;\;\; \vdash\; = \text{derivabilità}
     \] 
     \begin{center}
         \(
@@ -1277,79 +1290,88 @@ La struttura di una derivazione è la seguente:
     \end{center}
 \( \alpha \) è sia ipotesi che conclusione di \( D \) 
 \end{exercise}
-\begin{exercise}
-    \[
-    \vdash \alpha \to (\beta \to \alpha)
-    \] 
-    \begin{center}
-        \(
-        \alpha
-        \)\\
-        \hspace{1cm}\line(1,0){30}\(\;\;\; \to I \)\\  
-        \hspace{3.5cm} \( \beta \to \alpha \) \hspace{1cm} (indebolimento) \\
-        \hspace{1cm}\line(1,0){50}\(\;\;\; \to I^1 \)\\  
-        \(
+\begin{figure}[H]
+    \begin{exercise}
+        \[
+            \vdash \alpha \to (\beta \to \alpha)
+        \] 
+        \begin{center}
+            \(
+            [\alpha]^1
+            \)\\
+            \hspace{3.6cm}\line(1,0){30}\(\;\;\; \to I\;\; (indebolimento) \)\\  
+             \( \beta \to \alpha \) \\
+            \hspace{1cm}\line(1,0){50}\(\;\;\; \to I^1 \)\\  
+            \(
             \alpha \to (\beta \to \alpha)
-        \)
-    \end{center}
-    Alla fine della derivazione tutte le ipotesi devono essere scaricate
-\end{exercise}
+            \)
+        \end{center}
+        Alla fine della derivazione tutte le ipotesi devono essere scaricate
+    \end{exercise}
+\end{figure}
 \begin{exercise}[hard]
-    TODO
     \[
     \vdash (\alpha \to (\beta \to \gamma)) \to ((\alpha \to \beta) \to (\alpha \to \gamma))
     \] 
     \begin{center}
-        \(
-        \alpha \to (\beta \to \gamma)\;\;\; \alpha
-        \)\\
-        \hspace{1cm}\line(1,0){60}\(\;\;\; \to E \)\\  
-            \( \beta \to \gamma\)\\
-        \hspace{1cm}\line(1,0){80}\(\;\;\; \to ? \)\\  
-        \(
-        (\alpha \to (\beta \to \gamma)) \to ((\alpha \to \beta) \to (\alpha \to \gamma))
-        \)
+        \( [\alpha]^1\;\;\; [\alpha \to (\beta \to \gamma)]^3 \) \hspace{2.5cm} \([(\alpha \to \beta)]^2\;\;\; [\alpha]^1 \)\\
+       \hspace{1cm}\line(1,0){90}\(\;\;\; \to E \) \hspace{1cm}\line(1,0){70}\(\;\;\; \to E \)\\
+       \( \beta \to \gamma \) \hspace{3.5cm} \( \beta \)\\
+        \hspace{1cm}\line(1,0){200}\( \;\;\; \to E \)\\
+        \( \gamma \) \\
+        \hspace{1cm}\line(1,0){30}\(\;\;\; \to I^1 \)\\
+         \( \alpha \to  \gamma \) \\
+         \hspace{1cm}\line(1,0){50}\(\;\;\; \to I^2 \)\\
+         \( (\alpha \to \beta) \to (\alpha \to \gamma) \) \\
+         \hspace{1cm}\line(1,0){200}\(\;\;\; \to I^3 \)\\
+         \( (\alpha \to (\beta \to \gamma)) \to ((\alpha \to \beta) \to (\alpha \to \gamma)) \) 
     \end{center}
 \end{exercise}
 
 \begin{definition}
     \[
-        \vdash \alpha\;\; (\alpha \text{è un teorema})
+        \vdash \alpha
     \] 
-    Se esiste una derivazione \( D \) tale che \( \underbrace{hp(D) = \emptyset}_{\text{cancellate tutte
-    le ipotesi nel proc. deduttivo}} \) 
+    \( \alpha \) è un teorema se esiste una derivazione \( D \)
+    tale che: \[ \underbrace{hp(D) = \emptyset}_{\text{cancellate tutte
+    le ipotesi nel proc. deduttivo}} \] 
 \end{definition}
 
 \subsection{Regole dell'AND}
+\subsubsection{Introduzione}
       \begin{center}
     \(
         \underset{\alpha}{D_1}\;\;\; \underset{\beta}{D_2}
     \)\\ 
-        \hspace{1cm}\line(1,0){80}\(\;\;\; \wedge I \)\\  
+        \hspace{0.6cm}\line(1,0){50}\(\;\;\; \wedge I \)\\  
     \(
         \alpha \wedge \beta
     \)
 \end{center}
 
-
+\subsubsection{Eliminazione a destra}
 \begin{center}
         \(
             \underset{\alpha \wedge \beta}{D}
         \)\\ 
-            \hspace{1cm}\line(1,0){80}\(\;\;\; \wedge E_1 \)\\  
+            \hspace{1cm}\line(1,0){30}\(\;\;\; \wedge E_1 \)\\  
         \(
             \alpha
         \)
-    \end{center}
-    \begin{center}
+\end{center}
+
+\subsubsection{Eliminazione a sinistra}
+\begin{center}
         \(
             \underset{\alpha \wedge \beta}{D}
         \)\\ 
-            \hspace{1cm}\line(1,0){80}\(\;\;\; \wedge E_2 \)\\  
+            \hspace{1cm}\line(1,0){30}\(\;\;\; \wedge E_2 \)\\  
         \(
             \beta
         \)
-    \end{center}
+\end{center}
+
+\subsubsection{Esercizi}
 
 \begin{figure}[H]
     \begin{exercise}
@@ -1360,11 +1382,11 @@ La struttura di una derivazione è la seguente:
             \(
             [\alpha]^1 \;\;\;\;\;\; [\alpha]^1
             \)\\ 
-            \hspace{1cm}\line(1,0){80}\(\;\;\; \wedge I \)\\
+            \hspace{0.8cm}\line(1,0){70}\(\;\;\; \wedge I \)\\
             \(
             \alpha \wedge \alpha
             \)\\
-            \hspace{1cm}\line(1,0){80}\(\;\;\; \to I^1 \)\\
+            \hspace{1.2cm}\line(1,0){70}\(\;\;\; \to I^1 \)\\
             \( \alpha \to (\alpha \wedge \alpha) \) 
         \end{center}
     \end{exercise}
@@ -1376,7 +1398,7 @@ La struttura di una derivazione è la seguente:
     \] 
     \begin{center}
         \( [\alpha]^2\;\;\;\;\;\;\; [\beta]^1 \) \\
-                    \hspace{1cm}\line(1,0){80}\(\;\;\; \wedge I \)\\
+                    \hspace{0.6cm}\line(1,0){60}\(\;\;\; \wedge I \)\\
         \( \alpha \wedge \beta \) \\
                     \hspace{1cm}\line(1,0){80}\(\;\;\; \to I^1 \)\\
          \( \beta \to (\alpha \wedge \beta) \) \\
@@ -1385,24 +1407,51 @@ La struttura di una derivazione è la seguente:
     \end{center}
 \end{exercise}
 
-\begin{example}
-    \[
-    \vdash \alpha \to \neg \neg \alpha = =
-    \] 
-    \[
-    \vdash \to ((\alpha \to \neg) \to \neg)
-    \] 
-    \begin{center}
-        \( [\alpha]^2 \;\;\;\;\;\;\; [\alpha \to  \bot]^1 \) \\
-     \hspace{1cm}\line(1,0){80}\(\;\;\; \to E\)\\
-        \( \bot\) \\
-         \hspace{1cm}\line(1,0){80}\(\;\;\; \to I^1 \)\\
-        \( (\alpha \to \bot) \to \bot\) \\
-        \hspace{1cm}\line(1,0){80}\(\;\;\; \to I^2 \)\\
-         \( \alpha \to ((\alpha \to \neg) \to \bot) \) \\
-         \( \alpha \to \neg \neg \alpha \) 
-    \end{center}
-\end{example}
+\begin{figure}[H]
+    \begin{exercise}[a casa]
+        \[
+            \vdash (\phi \to \psi) \to \neg (\phi \wedge \neg \psi)
+        \] 
+        \begin{center}
+            \hspace{1.8cm}\((\phi \wedge \neg \psi) \) \\
+            \hspace{2.7cm}\line(1,0){40}\(\;\;\; \wedge E_1 \)\\
+            \( [(\phi \to \psi)]^1 \hspace{1cm} \phi \) \hspace{1cm}\\
+            \hspace{1cm}\line(1,0){80}\(\;\;\; \to E \)\\
+            \( \psi \) \\
+            \hspace{1cm}\line(1,0){80}\(\;\;\; \to I \)\\
+            \( \neg \psi \)\\ 
+            \hspace{1cm}\line(1,0){80}\(\;\;\; \wedge I \)\\
+            \( \phi \wedge \neg \psi \) \\
+            \hspace{1cm}\line(1,0){80}\(\;\;\; \to I \)\\
+            \( \neg (\phi \wedge \neg \psi) \) \\
+            \hspace{1cm}\line(1,0){80}\(\;\;\; \to I^1 \)\\
+            \( (\phi \to \psi) \to \neg(\phi \wedge \neg \psi) \) 
+        \end{center}
+        ???
+    \end{exercise}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{example}
+        \[
+            \vdash \alpha \to \neg \neg \alpha 
+        \] 
+        è equivalente a:
+        \[
+            \vdash \alpha \to ((\alpha \to \neg) \to \neg)
+        \] 
+        \begin{center}
+            \( [\alpha]^2 \;\;\;\;\;\;\; [\alpha \to  \bot]^1 \) \\
+            \hspace{1cm}\line(1,0){80}\(\;\;\; \to E\)\\
+            \( \bot\) \\
+            \hspace{1cm}\line(1,0){80}\(\;\;\; \to I^1 \)\\
+            \( (\alpha \to \bot) \to \bot\) \\
+            \hspace{1cm}\line(1,0){95}\(\;\;\; \to I^2 \)\\
+            \( \alpha \to ((\alpha \to \neg) \to \bot) \) \\
+            \( \alpha \to \neg \neg \alpha \) 
+        \end{center}
+    \end{example}
+\end{figure}
 
 \subsection{Regole del Bottom}
 \subsubsection{Ex falso}
@@ -1410,7 +1459,7 @@ La struttura di una derivazione è la seguente:
     \(
         \underset{\bot}{D}
     \)\\ 
-        \hspace{1cm}\line(1,0){80}\(\;\;\; \bot I \)\\  
+        \hspace{0.8cm}\line(1,0){20}\(\;\;\; \bot I \)\\  
     \(
         \alpha
     \)
@@ -1423,19 +1472,21 @@ Si può aggiungere qualsiasi formula dal bottom utilizzando questa regola. (Dimo
     \)\\ 
     \( \ldots \) \\
     \( \bot \) \\
-        \hspace{1cm}\line(1,0){80}\(\;\;\; RAA^* \)\\  
+        \hspace{1.2cm}\line(1,0){30}\(\;\;\; RAA^* \)\\  
     \(
         \alpha
     \)
 \end{center}
+
+\subsubsection{Dimostrazione per assurdo}
 Voglio dimostrare P:
 \begin{enumerate}
     \item assumo P sia falso
     \item se da 1. arrivo a una contraddizione allora P è vero
 \end{enumerate}
 
-\subsubsection{Dimostrazione per assurdo}
-?
+\subsubsection{Esercizi}
+
 \begin{example}
     \[
         \vdash \neg \neg \alpha \to \alpha
@@ -1444,43 +1495,59 @@ Voglio dimostrare P:
             \( [\neg \neg \alpha]^2 \;\;\;\;\;\;\; [\neg \alpha]^1\) \\
      \hspace{1cm}\line(1,0){80}\(\;\;\; \to E\)\\
         \( \bot\) \\
-         \hspace{1cm}\line(1,0){80}\(\;\;\; RAA^1  \)\\
+         \hspace{1.2cm}\line(1,0){20}\(\;\;\; RAA^1  \)\\
         \( \alpha\) \\
-         \hspace{1cm}\line(1,0){80}\(\;\;\; \to I^2\)\\
+         \hspace{1cm}\line(1,0){60}\(\;\;\; \to I^2\)\\
         \( \neg \neg \alpha \to \alpha\) \\
     \end{center}
 \end{example}
 La riduzione ad assurdo è equivalente a:
 \begin{center}
-        \hspace{1cm}\line(1,0){80}\(\;\;\; \bot I \)\\  
+          \( \ldots \)\\ 
+        \hspace{0.8cm}\line(1,0){40}\(\;\;\; \bot I \)\\  
         \( \alpha \vee \neg \alpha \) 
 \end{center} 
-Per la regola del \textbf{terzo escluso} (tertium non datur)
+per la regola del \textbf{terzo escluso} (tertium non datur)
 
 \subsection{Regole dell'OR}
-\subsubsection{Introduzione 1}
+\subsubsection{Introduzione a destra}
 \begin{center}
     \( \underset{\alpha}{D} \) \\
-    \hspace{1cm}\line(1,0){80}\(\;\;\; \vee I_1 \)\\  
+    \hspace{0.9cm}\line(1,0){40}\(\;\;\; \vee I_1 \)\\  
     \( \alpha \vee \beta \)
 \end{center}
-\subsubsection{Introduzione 2}
+\subsubsection{Introduzione a sinistra}
 \begin{center}
     \( \underset{\alpha}{D} \) \\
-    \hspace{1cm}\line(1,0){80}\(\;\;\; \vee I_2 \)\\  
+    \hspace{0.9cm}\line(1,0){40}\(\;\;\; \vee I_2 \)\\  
     \( \beta \vee \alpha \)
 \end{center}
 
+
+\subsubsection{Esercizi}
 \begin{exercise}
     \[
     \vdash \alpha \to \alpha \vee \beta
     \] 
     \begin{center}
         \( [\alpha]^1 \)\\
-    \hspace{1cm}\line(1,0){80}\(\;\;\; \vee I_1 \)\\  
+    \hspace{0.9cm}\line(1,0){40}\(\;\;\; \vee I_1 \)\\  
     \( \alpha \vee \beta \) \\
-    \hspace{1cm}\line(1,0){80}\(\;\;\; \to I^1 \)\\  
+    \hspace{1cm}\line(1,0){60}\(\;\;\; \to I^1 \)\\  
       \( \alpha \to \alpha \vee \beta \) 
+    \end{center}
+\end{exercise}
+
+\begin{exercise}[a casa]
+    \[
+        \vdash (\alpha \vee \beta) \to (\alpha \vee \beta) \vee \gamma
+    \] 
+    \begin{center}
+        \( [(\alpha \vee \beta)]^1 \) \\
+        \hspace{0.7cm}\line(1,0){60}\(\;\;\; \vee I_2  \)\\
+          \( (\alpha \vee \beta) \vee \gamma \) \\
+        \hspace{1cm}\line(1,0){100}\(\;\;\; \to I^1  \)\\
+        \( (\alpha \vee \beta) \to (\alpha \vee \beta) \vee \gamma \) 
     \end{center}
 \end{exercise}
 \end{document}
