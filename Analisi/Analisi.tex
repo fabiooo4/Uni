@@ -1269,4 +1269,57 @@ Sia \( A \subseteq \mathbb{R} \) un intervallo oppure un'unione finita di interv
 		\caption{Esmpio di funzione non continua}
 	\end{figure}
 \end{example}
+
+\section{patatì patatà}
+Consideriamo il seguente limite:
+\[
+\lim_{x \to 0} \frac{sin(x)}{x}=1
+\] 
+\label{D1}
+
+Se definiamo:
+\[
+    q(x):=\frac{sin(x)}{x}-1
+\] 
+posso concludere che:
+\[
+\frac{sin(x)}{x}=1 + q(x) \Leftrightarrow sin(x)=x+xq(x)
+\] 
+\[
+\lim_{x \to 0} q(x) = 0
+\] 
+\begin{definition}
+    \textbf{Notazione} \( o \) piccolo di Landau.
+    
+    Diremo che:
+    \[
+    f(x) = o(g(x))\;\;\;\;\;\; per\; x \to x_0
+    \] 
+    se e solo se esiste una funzione \( q \) tale che:
+    \[
+    f(x) = g(x)q(x)\;\;\;\;\;\; (\forall x)
+    \] 
+    \[
+    \lim_{x \to x_0} q(x) = 0
+    \] 
+\end{definition}
+Ad esempio, possiamo dire che:
+\[
+sin(x) = x + o(x)\;\;\;\;\;\; per\; x \to 0
+\] 
+\subsubsection{Proprietà}
+\begin{enumerate}
+    \item \( f(x) = o(1)\) per \( x \to x_0 \Leftrightarrow \lim_{x \to x_0} f(x) = 0  \)  
+    \item \( o(g(x)) = g(x) o(1) \) per \( x \to x_0 \)  
+    \item \( o(g(x) + o(g(x))) = o(g(x)) \) per \( x \to x_0 \) \\
+        Infatti,\[
+        o(g(x)) + o(g(x)) = g(x) q_1(x) + g(x) q_2(x)
+        \] dove
+        \[
+        \lim_{x \to x_0} q_1(x) = \lim_{x \to x_0} q_2(x) = 0 
+        \] e quindi
+        \[
+            o(g(x)) + o(g(x)) = g(x) \underbrace{(q_1(x) + q_2(x))}_{0\;\; per\; x \to x_0} = o(g(x))
+        \] 
+\end{enumerate}
 \end{document}
