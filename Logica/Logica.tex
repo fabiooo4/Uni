@@ -1412,22 +1412,22 @@ La struttura di una derivazione è la seguente:
         \[
             \vdash (\phi \to \psi) \to \neg (\phi \wedge \neg \psi)
         \] 
+        \[
+            (\phi \to \psi) \to ((\phi \wedge (\psi \to \bot)) \to \bot)
+        \] 
         \begin{center}
-            \hspace{1.8cm}\((\phi \wedge \neg \psi) \) \\
-            \hspace{2.7cm}\line(1,0){40}\(\;\;\; \wedge E_1 \)\\
-            \( [(\phi \to \psi)]^1 \hspace{1cm} \phi \) \hspace{1cm}\\
-            \hspace{1cm}\line(1,0){80}\(\;\;\; \to E \)\\
-            \( \psi \) \\
-            \hspace{1cm}\line(1,0){80}\(\;\;\; \to I \)\\
-            \( \neg \psi \)\\ 
-            \hspace{1cm}\line(1,0){80}\(\;\;\; \wedge I \)\\
-            \( \phi \wedge \neg \psi \) \\
-            \hspace{1cm}\line(1,0){80}\(\;\;\; \to I \)\\
-            \( \neg (\phi \wedge \neg \psi) \) \\
-            \hspace{1cm}\line(1,0){80}\(\;\;\; \to I^1 \)\\
-            \( (\phi \to \psi) \to \neg(\phi \wedge \neg \psi) \) 
+            \hspace{-8cm}\( [(\phi \wedge (\psi \to \bot))]^2 \) \\
+            \hspace{-7cm}\line(1,0){80}\(\;\;\; \wedge E_1 \) \hspace{4cm}\\
+            \hspace{1cm}\( \phi \hspace{2.6cm}[(\phi \to \psi)]^1 \hspace{1cm} \hspace{1cm} [(\phi \wedge (\psi \to \bot))]^2\) \\
+            \hspace{0.7cm}\line(1,0){150}\(\;\;\; \to E \) \hspace{0.8cm}\line(1,0){70}\(\;\;\; \wedge E_2 \)\\
+            \hspace{2cm}\( \psi \hspace{5cm} \psi \to \bot\)\\ 
+            \hspace{1cm}\line(1,0){250}\(\;\;\; \to E\)\\
+            \( \bot \) \\
+            \hspace{1cm}\line(1,0){100}\(\;\;\; \to I^2 \)\\
+            \( ((\phi \wedge (\psi \to \bot)) \to \bot) \) \\
+            \hspace{1cm}\line(1,0){160}\(\;\;\; \to I^1 \)\\
+            \( (\phi \to \psi) \to ((\phi \wedge (\psi \to \bot)) \to \bot) \)
         \end{center}
-        ???
     \end{exercise}
 \end{figure}
 

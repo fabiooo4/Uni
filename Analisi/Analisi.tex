@@ -10,6 +10,8 @@
 \usepackage{xcolor}
 \usepackage{float}
 \usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest, ticks=none}
 \usepackage{graphicx}
 \graphicspath{{./figures/}}
 
@@ -1219,13 +1221,13 @@ Sia \( A \subseteq \mathbb{R} \) un intervallo oppure un'unione finita di interv
 		\end{cases}
 	\]
 	Questa funzione non è continua perchè il limite a 0 non esiste:
-    \[
-        \lim_{x \to 0} l(x) = \nexists
-    \]
-    ma:
-    \[
-    \lim_{x \to 0} |l(x)| = +\infty
-    \] 
+	\[
+		\lim_{x \to 0} l(x) = \nexists
+	\]
+	ma:
+	\[
+		\lim_{x \to 0} |l(x)| = +\infty
+	\]
 	\begin{figure}[H]
 		\begin{center}
 			\begin{tikzpicture}
@@ -1241,20 +1243,20 @@ Sia \( A \subseteq \mathbb{R} \) un intervallo oppure un'unione finita di interv
 \end{example}
 
 \begin{example}
-    \[
-    m: \mathbb{R} \to \mathbb{R}
-    \] 
-    \[
-    m(x):=\begin{cases}
-        x^2\;\;\; se\; x \neq 0 \\
-        -2\;\;\; se\; x = 0
-    \end{cases}
-    \]
-    Non è continua perchè:
-    \[
-    \lim_{x \to 0} m(x) = \lim_{x \to 0} x^2 = 0 \neq m(0)
-    \] 
-    \begin{figure}[H]
+	\[
+		m: \mathbb{R} \to \mathbb{R}
+	\]
+	\[
+		m(x):=\begin{cases}
+			x^2\;\;\; se\; x \neq 0 \\
+			-2\;\;\; se\; x = 0
+		\end{cases}
+	\]
+	Non è continua perchè:
+	\[
+		\lim_{x \to 0} m(x) = \lim_{x \to 0} x^2 = 0 \neq m(0)
+	\]
+	\begin{figure}[H]
 		\begin{center}
 			\begin{tikzpicture}
 				\draw[->] (-3, 0) -- (3, 0) node[right] {$x$};
@@ -1262,83 +1264,193 @@ Sia \( A \subseteq \mathbb{R} \) un intervallo oppure un'unione finita di interv
 				\draw[domain=0.1:2, smooth, variable=\x, red, thick, yscale=0.7] plot ({\x}, {\x^2});
 				\draw[domain=0.1:2, smooth, variable=\x, red, thick, yscale=0.7] plot ({-\x}, {\x^2});
 
-                \draw[red, thick] (0,0) circle (3pt);
-                \draw[fill, red] (0,-1) circle (2.5pt) node[left] {-2};
+				\draw[red, thick] (0,0) circle (3pt);
+				\draw[fill, red] (0,-1) circle (2.5pt) node[left] {-2};
 			\end{tikzpicture}
 		\end{center}
 		\caption{Esmpio di funzione non continua}
 	\end{figure}
 \end{example}
 
-\section{patatì patatà}
-Consideriamo il seguente limite:
+\section{Notazione o piccolo di Landau}
+Si dimostra che:
 \[
-\lim_{x \to 0} \frac{sin(x)}{x}=1
-\] 
-\label{D1}
+	\lim_{x \to 0} \frac{sin(x)}{x}=1\;\;\;\;\;\;\;(F.I.\; \frac{0}{0})
+\]
+Considero \( x > 0 \)
+\begin{figure}[H]
+	\begin{center}
+		\begin{tikzpicture}
+			\begin{axis}[
+					axis lines = middle,
+					xmin=-2, xmax=5, ymin=-2, ymax=5,
+					axis equal,
+					xlabel = $x$,
+					ylabel = $y$,
+					yticklabels={,,}
+				]
+				\draw (axis cs: 4,0) arc[radius =4, start angle= 0, end angle= 90];
+				\draw[red] (axis cs: 1,0) arc[radius =1, start angle= 0, end angle= 42] node [below right, xshift=4, yshift=-2, scale=0.6] {\( x \)};
 
+				\addplot [mark=none, dashed, black] coordinates {(4, -1) (4, 4)};
+				\node [below right, red, scale=0.6] at (axis cs: 4,0) {\( U = (1,0) \) };
+				\draw [fill, red] (axis cs: 4,0) circle (1.5pt);
+
+				\addplot [mark=none, dashed, black] coordinates {(3, -1) (3, 3)};
+				\node [below left, red, scale=0.6] at (axis cs: 3,0) {\( H = (cos(x),0) \) };
+				\draw [fill, red] (axis cs: 3,0) circle (1.5pt);
+
+				\addplot [mark=none, thick, red] coordinates {(3, 0) (3, 2.65)};
+
+				\addplot [mark=none, thick, red] coordinates {(0, 0) (4, 3.55)};
+				\node [below left, red, scale=0.6] at (axis cs: 3,3) {\( P = (cos(x),sin(x)) \) };
+				\draw [fill, red] (axis cs: 3,2.65) circle (1.5pt);
+
+				\addplot [mark=none, thick, red] coordinates {(4, 0) (4, 3.55)};
+				\node [right, red, scale=0.6] at (axis cs: 4,3.55) {\( Q = (1,tan(x)) \) };
+				\draw [fill, red] (axis cs: 4,3.55) circle (1.5pt);
+
+				\addplot [mark=none, thick, red] coordinates {(0, 0) (4, 0)};
+				\node [below left, red, solid, scale=0.6] at (axis cs: 0,0) {\( O = (0,0) \) };
+				\draw [fill, red] (axis cs: 0,0) circle (1.5pt);
+			\end{axis}
+		\end{tikzpicture}
+	\end{center}
+	\caption{Grafico}
+\end{figure}
+Area del triangolo \( OHP \):
+\begin{itemize}
+	\item \( \le  \) area del settore \( OUP \)
+	\item \( \le  \) area del triangolo \( OUQ \)
+\end{itemize}
+Area di \( OHP = \frac{1}{2} sin(x)cos(x) \) \\
+Area di \( OUQ = \frac{1}{2} tan(x) = \frac{1}{2} \frac{sin(x)}{cos(x)} \) \\
+Area di \( OUP \) : area del disco unitario = ampiezza dell'angolo \( P\hat{O}U \): ampiezza dell'angolo giro
+
+da cui:
+\[
+	Area\; di\; OUP = \frac{\pi x}{2 \pi} = \frac{1}{2}x
+\]
+Pertanto:
+\[
+	\frac{1}{2}sin(x)cos(x) \le \frac{1}{2}x \le \frac{1}{2} \frac{sin(x)}{cos(x)}
+\]
+Moltiplico per \( \frac{2}{sin(x)} \) (assumendo che \( 0 < x < \frac{\pi}{2} \), così che \( sin(x) > 0 \)):
+\[
+	cos(x) \le \frac{x}{sin(x)} \le \frac{1}{cos(x)}
+\]
+da cui:
+\[
+	\underbrace{cos(x)}_{1} \le \frac{sin(x)}{x} \le \underbrace{\frac{1}{cos(x)}}_{1}
+\]
+\[
+	per\; x \to  0^+
+\]
+Per il teorema del confronto, segue che
+\[
+	\lim_{x \to 0^+} \frac{sin(x)}{x} = 1.
+\]
+Il caso \( x \to 0^- \) è analogo. \( \square \)
+\vspace{1cm}\\
 Se definiamo:
 \[
-    q(x):=\frac{sin(x)}{x}-1
-\] 
+	q(x):=\frac{sin(x)}{x}-1
+\]
 posso concludere che:
 \[
-\frac{sin(x)}{x}=1 + q(x) \Leftrightarrow sin(x)=x+xq(x)
-\] 
+	\frac{sin(x)}{x}=1 + q(x) \Leftrightarrow sin(x)=x+xq(x)
+\]
 \[
-\lim_{x \to 0} q(x) = 0
-\] 
-\begin{definition}
-    \textbf{Notazione} \( o \) piccolo di Landau.
-    
-    Diremo che:
-    \[
-    f(x) = o(g(x))\;\;\;\;\;\; per\; x \to x_0
-    \] 
-    se e solo se esiste una funzione \( q \) tale che:
-    \[
-    f(x) = g(x)q(x)\;\;\;\;\;\; (\forall x)
-    \] 
-    \[
-    \lim_{x \to x_0} q(x) = 0
-    \] 
-\end{definition}
+	\lim_{x \to 0} q(x) = 0
+\]
+\begin{figure}[H]
+	\begin{definition}
+		\textbf{Notazione} \( o \) piccolo di Landau.
+
+		Diremo che:
+		\[
+			f(x) = o(g(x))\;\;\;\;\;\; per\; x \to x_0
+		\]
+		se e solo se esiste una funzione \( q \) tale che:
+		\[
+			f(x) = g(x)q(x)\;\;\;\;\;\; (\forall x)
+		\]
+		\[
+			\lim_{x \to x_0} q(x) = 0
+		\]
+	\end{definition}
+\end{figure}
 Ad esempio, possiamo dire che:
 \[
-sin(x) = x + o(x)\;\;\;\;\;\; per\; x \to 0
-\] 
-\subsubsection{Proprietà}
+	sin(x) = x + \underbrace{o(x)}_{g(x) q(x)}\;\;\;\;\;\; per\; x \to 0
+\]
+\subsection{Proprietà}
 \begin{enumerate}
-    \item \( f(x) = o(1)\) per \( x \to x_0 \Leftrightarrow \lim_{x \to x_0} f(x) = 0  \)  
-    \item \( o(g(x)) = g(x) o(1) \) per \( x \to x_0 \)  
-    \item \( o(g(x)) + o(g(x)) = o(g(x)) \) per \( x \to x_0 \) \\
-        Infatti,\[
-        o(g(x)) + o(g(x)) = g(x) q_1(x) + g(x) q_2(x)
-        \] dove
-        \[
-        \lim_{x \to x_0} q_1(x) = \lim_{x \to x_0} q_2(x) = 0 
-        \] e quindi
-        \[
-            o(g(x)) + o(g(x)) = g(x) \underbrace{(q_1(x) + q_2(x))}_{0\;\; per\; x \to x_0} = o(g(x))
-        \] 
-    \item Se \( k \in \mathbb{R} \) è una costante,
-        \[
-        ko(g(x)) = o(g(x))\;\;\;\;\;\; per\; x \to x_0
-        \] 
-    \item \( f(x)o(g(x)) = o(f(x)g(x))\;\;\;\;\;\; per\; x \to x_0 \) 
+	\item \( f(x) = o(1)\) per \( x \to x_0 \Leftrightarrow \lim_{x \to x_0} f(x) = 0  \)
+	\item \( o(g(x)) = g(x) o(1) \) per \( x \to x_0 \)
+	\item \( o(g(x) + o(g(x))) = o(g(x)) \) per \( x \to x_0 \) \\
+	      Infatti,\[
+		      o(g(x)) + o(g(x)) = g(x) q_1(x) + g(x) q_2(x)
+	      \] dove
+	      \[
+		      \lim_{x \to x_0} q_1(x) = \lim_{x \to x_0} q_2(x) = 0
+	      \] e quindi
+	      \[
+		      o(g(x)) + o(g(x)) = g(x) \underbrace{(q_1(x) + q_2(x))}_{0\;\; per\; x \to x_0} = o(g(x))
+	      \]
+	\item Se \( k \in \mathbb{R} \) è una costante,
+	      \[
+		      k o(g(x)) = o(g(x))\;\;\;\;\;per\;x \to x_0
+	      \]
+	\item \( f(x)o(g(x)) = o(f(x)g(x))\;\;\;\;\;per\; x \to x_0 \)
+	\item In generale, \textbf{non} vale
+	      \[
+		      o(g(x)) - o(g(x)) = 0\;\;\;\;\;per\; x \to x_0
+	      \]
+	      Inteffi,
+	      \[
+		      o(g(x)) - o(g(x)) = g(x)q_1(x) - g(x)q_2(x)
+	      \]
+	      dove
+	      \[
+		      \lim_{x \to x_0} q_1(x) = \lim_{x \to x_0} q_2(x) = 0
+	      \]
+	      ma \textbf{non} è detto che \( q_1(x)=q_2(x) \).
+
+	      (Però è vero che \( o(g(x))-o(g(x)) = o(g(x))\;\;\;\;\;per\; x \to x_0 \) )
+	\item Allo stesso modo, \textbf{non} è detto che
+	      \[
+		      \frac{o(g(x))}{o(g(x))} = 1 \;\;\;\;\;per\; x \to x_0
+	      \] (forma indeterminata)
 \end{enumerate}
+\textbf{È molto importante specificare \( x \to x_0 \) }.
+
+Ad esempio:
 \begin{example}
-    \[
-    \lim_{x \to 0} \frac{x sin(x) - x^5}{3x^2 + x^3} \;\;\;\;FI (\frac{0}{0})
-    \] 
-    \[
-        \frac{xsin(x)-x^5}{3x^2 + x^3} \underbrace{=}_{sin(x) = x + o(x) \;\; per\; x \to 0} \frac{x(x+o(x)) - x^5}{3x^2+x^3}
-    \] 
-    \[
-    = \frac{x^2 + o(x^2) - x^5}{3x^2+x^3}
-    \] 
-    \[
-    = \frac{1 + o(1) - x^3}{3+x} = \lim_{x \to 0} = \frac{1}{3}
-    \] 
+	\[
+		x^2 = o(x) \;\;\;\;\;per\; x \to 0
+	\]
+	\[
+		x = o(x^2) \;\;\;\;\;per\; x \to +\infty
+	\]
 \end{example}
+
+\subsection{Sviluppi di alcune funzioni elementari per \( x \to 0 \) }
+\begin{itemize}
+	\item \(
+	      e^x = 1 + x + o(x)
+	      \)
+	\item \(
+	      log(1+x) = x + o(x)
+	      \)
+	\item \(
+	      (1+x)^\alpha = 1 + \alpha x + o(x)\;\;\;\;\; (con\; \alpha \in \mathbb{R}\; costante)
+	      \)
+	\item \(
+	      sin(x) = x + o(x)
+	      \)
+	\item \(
+	      cos(x) = 1 - \frac{x^2}{2} + o(x^2)
+	      \)
+\end{itemize}
 \end{document}

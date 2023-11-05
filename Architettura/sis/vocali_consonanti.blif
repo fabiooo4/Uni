@@ -1,0 +1,26 @@
+# da 0 a 20 corrispondono le lettere dalla a alla z
+# o = 1 se è vocale 0 se è consonante
+.model vocali_consonanti
+.inputs a b c d e
+.outputs o
+
+.names a b c d e o
+00-00 1 # 0 = a, 4 = e
+01000 1 # 8 = i
+01110 1 # 14 = o
+10100 1 # 20 = u
+
+# valori non specificati
+.exdc
+.names a b c d e o
+11011 1
+11100 1
+11101 1
+11110 1
+11111 1
+
+.end
+
+# uscite non specificate a 0 con 19 letterali, dopo full_simplify con 13 letterali
+# uscite non specificate a 1 con 44 letterali, dopo full_simplify con 23 letterali
+# uscite non specificate a - con 19 letterali, dopo full_simplify con 12 letterali
