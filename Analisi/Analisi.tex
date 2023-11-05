@@ -1311,7 +1311,7 @@ sin(x) = x + o(x)\;\;\;\;\;\; per\; x \to 0
 \begin{enumerate}
     \item \( f(x) = o(1)\) per \( x \to x_0 \Leftrightarrow \lim_{x \to x_0} f(x) = 0  \)  
     \item \( o(g(x)) = g(x) o(1) \) per \( x \to x_0 \)  
-    \item \( o(g(x) + o(g(x))) = o(g(x)) \) per \( x \to x_0 \) \\
+    \item \( o(g(x)) + o(g(x)) = o(g(x)) \) per \( x \to x_0 \) \\
         Infatti,\[
         o(g(x)) + o(g(x)) = g(x) q_1(x) + g(x) q_2(x)
         \] dove
@@ -1321,5 +1321,24 @@ sin(x) = x + o(x)\;\;\;\;\;\; per\; x \to 0
         \[
             o(g(x)) + o(g(x)) = g(x) \underbrace{(q_1(x) + q_2(x))}_{0\;\; per\; x \to x_0} = o(g(x))
         \] 
+    \item Se \( k \in \mathbb{R} \) è una costante,
+        \[
+        ko(g(x)) = o(g(x))\;\;\;\;\;\; per\; x \to x_0
+        \] 
+    \item \( f(x)o(g(x)) = o(f(x)g(x))\;\;\;\;\;\; per\; x \to x_0 \) 
 \end{enumerate}
+\begin{example}
+    \[
+    \lim_{x \to 0} \frac{x sin(x) - x^5}{3x^2 + x^3} \;\;\;\;FI (\frac{0}{0})
+    \] 
+    \[
+        \frac{xsin(x)-x^5}{3x^2 + x^3} \underbrace{=}_{sin(x) = x + o(x) \;\; per\; x \to 0} \frac{x(x+o(x)) - x^5}{3x^2+x^3}
+    \] 
+    \[
+    = \frac{x^2 + o(x^2) - x^5}{3x^2+x^3}
+    \] 
+    \[
+    = \frac{1 + o(1) - x^3}{3+x} = \lim_{x \to 0} = \frac{1}{3}
+    \] 
+\end{example}
 \end{document}
