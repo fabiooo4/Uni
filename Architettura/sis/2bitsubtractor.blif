@@ -1,0 +1,29 @@
+.model 2bitsubtractor
+.inputs a1 a2 b1 b2
+.outputs o1 o2 
+
+.names a1 a2 b1 b2 o1
+001- 1
+0110 1
+100- 1
+1100 1
+1111 1
+
+.names a1 a2 b1 b2 o2
+00-1 1
+01-0 1
+1001 1
+1100 1
+
+.exdc
+.names a1 a2 b1 b2 o1
+0101 1
+101- 1
+1110 1
+
+.names a1 a2 b1 b2 o2
+0101 1
+101- 1
+1110 1
+
+.end
