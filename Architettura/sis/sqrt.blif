@@ -1,0 +1,41 @@
+# parte intera della radice quadrata dei numeri da 0 a 9
+.model sqrt
+.inputs a b c d
+.outputs o1 o2
+
+.names a b c d o1 
+0100 1
+0101 1
+0110 1
+0111 1
+1000 1
+1001 1
+
+.names a b c d o2
+0001 1
+0010 1
+0011 1
+1001 1
+
+.exdc
+.names a b c d o1 
+1010 1
+1011 1
+1100 1
+1101 1
+1110 1
+1111 1
+
+.names a b c d o2 
+1010 1
+1011 1
+1100 1
+1101 1
+1110 1
+1111 1
+
+.end
+
+# uscite non specificate a 0 con 40 letterali, dopo full_simplify con 11 letterali
+# uscite non specificate a 1 con 88 letterali, dopo full_simplify con 8 letterali
+# uscite non specificate a - con 40 letterali, dopo full_simplify con 6 letterali
