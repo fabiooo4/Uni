@@ -1509,6 +1509,27 @@ La riduzione ad assurdo è equivalente a:
 \end{center} 
 per la regola del \textbf{terzo escluso} (tertium non datur)
 
+\begin{example}
+    Derivazione del terzo escluso
+
+            \begin{center}
+                \hspace{0cm}\( [\alpha]^1 \) \hspace{2.8cm} \line(1,0){0} \\
+                \hspace{0cm}\line(1,0){50}\(\;\;\; \vee I_1 \) \hspace{2cm} \line(1,0){0}\\
+            \( (\alpha \vee \neg \alpha) \hspace{1cm} [\neg(\alpha \vee \neg \alpha)]^2 \) \\
+            \hspace{0.9cm}\line(1,0){150}\(\;\;\; \to E \)\\  
+            \( \bot \) \\ 
+            \hspace{0.9cm}\line(1,0){30}\(\;\;\; \to I^1 \)\\  
+            \( \neg \alpha \)\\
+            \hspace{0.9cm}\line(1,0){110}\(\;\;\; \vee I^1 \)\\  
+            \( \alpha \vee \neg \alpha \hspace{0.5cm} [\neg (\alpha \vee \neg \alpha)]^2 \) \\
+            \hspace{0.9cm}\line(1,0){110}\(\;\;\; \to E \)\\  
+            \( \bot \) \\
+            \hspace{0.9cm}\line(1,0){50}\(\;\;\; RAA^2  \)\\  
+            \( \alpha \vee \neg \alpha \) 
+        \end{center}
+\end{example}
+
+
 \subsection{Regole dell'OR}
 \subsubsection{Introduzione a destra}
 \begin{center}
@@ -1550,4 +1571,117 @@ per la regola del \textbf{terzo escluso} (tertium non datur)
         \( (\alpha \vee \beta) \to (\alpha \vee \beta) \vee \gamma \) 
     \end{center}
 \end{exercise}
+
+\subsubsection{Eliminazione}
+\begin{center}
+    \( \underset{\alpha \vee \beta}{D} \hspace{0.5cm} \stackrel{[\alpha]^*}{\underset{\gamma}{D}} \hspace{0.5cm} \stackrel{[\beta]^*}{\underset{\gamma}{D}} \)\\
+    \hspace{0.9cm}\line(1,0){90}\(\;\;\; \vee E^* \)\\  
+    \( \beta \vee \alpha \)
+\end{center}
+Si implementa alla regola il \textbf{ragionamento per casi}
+\begin{enumerate}
+    \item \( P \Rightarrow R \) 
+    \item \( Q \Rightarrow R \) 
+    \item 1. + 2. (se riesco a provare entrambi i casi) \( P\;or\;Q \Rightarrow R \) 
+\end{enumerate}
+\begin{example}
+    \[
+        \Gamma,\alpha \models \gamma\;\;\; \&\;\;\; \Delta,\beta \models \gamma\;\;\; \&\;\;\; E \models \alpha \vee \beta
+    \]
+    \[
+    \Rightarrow \Gamma,\Delta,E \models \gamma
+    \] 
+\end{example}
+\begin{example}
+    \[
+    E = \{\alpha \vee \beta\} 
+    \] 
+    \[
+        \Gamma,\alpha \models \gamma\;\;\; \&\;\;\; \Delta,\beta \models \gamma\;\;\; \& \;\;\; \alpha \vee \beta \models \alpha \vee \beta
+    \] 
+    \[
+    \Rightarrow \Gamma,\Delta,\alpha \vee \beta \models \gamma
+    \] 
+\end{example}
+
+Semanticamente:
+\[
+    [|\alpha \vee \beta|]_v=1
+\] 
+ci si può chiedere cosa succede a livello di tautologie, è vero che?:
+\[
+\models \alpha \vee \beta \Rightarrow \models \alpha\;\;or\;\; \models \beta
+\] 
+non è vero. Perchè:
+\[
+    \models \alpha \vee \beta \stackrel{def}{\Leftrightarrow} \forall v.\; [|\alpha \vee \beta|]_v=1 \Leftrightarrow
+\] 
+\[
+    \forall v.\; ([|\alpha|]_v=1 \; oppure\; [|\beta|]_v=1)
+\] 
+\[
+\alpha = p \;\;\;\;\;\; \beta = \neg p
+\] 
+\[
+\models p \vee \neg p \Leftrightarrow \forall v.\; (v(p) = 1 \; or\; v(p) = 0)\;\; \surd
+\] 
+\[
+\models p \Leftrightarrow \forall v. \; v(p) = 1\;\; \times
+\] 
+\[
+\models \neg p \Leftrightarrow \forall v. \; v(p) = 0\;\; \times
+\] 
+\begin{figure}[H]
+    \begin{example}
+        Per dimostrare \( \alpha \vee \beta \to \gamma \) devo trovare \( D_1 \) e \( D_2 \) e poi scaricare le
+        assunzioni \( (\alpha \vee \beta) \).
+
+        \begin{center}
+            \( \underset{[\alpha \vee \beta]^1}{D} \hspace{0.5cm} \stackrel{[\alpha]^*}{\underset{\gamma}{D}} \hspace{0.5cm} \stackrel{[\beta]^*}{\underset{\gamma}{D}} \)\\
+            \hspace{0.9cm}\line(1,0){90}\(\;\;\; \vee E^* \)\\  
+            \( \beta \vee \alpha \)\\
+            \hspace{0.9cm}\line(1,0){70}\(\;\;\; \to I^1 \)\\  
+            \( (\alpha \vee \beta) \to \gamma \) 
+        \end{center}
+    \end{example}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{exercise}
+        \[
+            \vdash \alpha \vee \beta \to \beta \vee \alpha
+        \] 
+        \begin{center}
+            \hspace{2.2cm}\( [\alpha]^1 \hspace{1.8cm} [\beta]^1 \) \\
+            \hspace{3cm}\line(1,0){30}\(\;\;\; \vee I_2 \) \hspace{0.2cm}\line(1,0){30}\(\;\;\; \vee I_1 \)\\  
+            \( [\alpha \vee \beta]^2 \hspace{1cm} \beta \vee \alpha \hspace{1.5cm} \beta \vee \alpha \) \\
+            \hspace{0.9cm}\line(1,0){150}\(\;\;\; \vee E^1 \)\\  
+            \( \beta \vee \alpha \)\\
+            \hspace{0.9cm}\line(1,0){90}\(\;\;\; \to I^2 \)\\  
+            \( (\alpha \vee \beta) \to (\beta \vee \alpha) \) 
+        \end{center}
+
+    \end{exercise}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{exercise}
+                \[
+            \vdash \alpha \vee \beta \to \alpha \vee (\beta \vee \gamma)
+        \] 
+        \begin{center}
+            \( \hspace{5cm} [\beta]^1 \)\\ 
+            \line(1,0){0}\hspace{6cm}\line(1,0){50}\(\;\;\; \vee I_1 \)\\
+            \hspace{2.2cm}\( [\alpha]^1 \hspace{1.8cm} (\beta \vee \gamma) \) \\
+            \hspace{3cm}\line(1,0){50}\(\;\;\; \vee I_1 \) \hspace{0.2cm}\line(1,0){50}\(\;\;\; \vee I_2 \)\\  
+            \( [\alpha \vee \beta]^2 \hspace{0.5cm} \alpha \vee (\beta \vee \gamma) \hspace{1cm} \alpha \vee (\beta \vee \gamma) \) \\
+            \hspace{0.9cm}\line(1,0){200}\(\;\;\; \vee E^1 \)\\  
+            \( \alpha \vee (\beta \vee \gamma)\)\\
+            \hspace{0.9cm}\line(1,0){110}\(\;\;\; \to I^2 \)\\  
+            \( (\alpha \vee \beta) \to (\alpha \vee (\beta \vee \gamma)) \) 
+        \end{center}
+    \end{exercise}
+\end{figure}
+
+\section{Prove dirette e indirette}
 \end{document}
