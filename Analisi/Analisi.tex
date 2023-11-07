@@ -1458,157 +1458,192 @@ Ad esempio:
 
 Proprietà:
 \begin{enumerate}
-    \item Se \( f,g: A \subseteq \mathbb{R} \to  \mathbb{R} \) sono funzioni continue, allora sono continue anche
-        \[
-        f+g, f-g, fg, \frac{f}{g}
-        \] 
-        (quest'ultima definita su \( \{x \in A: g(x) \neq 0\}  \) )
-    \item Se \( f: A \to \mathbb{R},\;g: B \to \mathbb{R} \) con \( A \subseteq \mathbb{R},\; B \subseteq \mathbb{R} \) 
-        sono funzioni continue tali che \( f(A) \subseteq B \), allora è continua anche la funzione composta
-        \[
-            g \circ f: A \to \mathbb{R}
-        \] 
-        \[
-        (g \circ f)(x) := g(f(x))\;\;\;\;\;\;\; \forall x \in A
-        \] 
+	\item Se \( f,g: A \subseteq \mathbb{R} \to  \mathbb{R} \) sono funzioni continue, allora sono continue anche
+	      \[
+		      f+g, f-g, fg, \frac{f}{g}
+	      \]
+	      (quest'ultima definita su \( \{x \in A: g(x) \neq 0\}  \) )
+	\item Se \( f: A \to \mathbb{R},\;g: B \to \mathbb{R} \) con \( A \subseteq \mathbb{R},\; B \subseteq \mathbb{R} \)
+	      sono funzioni continue tali che \( f(A) \subseteq B \), allora è continua anche la funzione composta
+	      \[
+		      g \circ f: A \to \mathbb{R}
+	      \]
+	      \[
+		      (g \circ f)(x) := g(f(x))\;\;\;\;\;\;\; \forall x \in A
+	      \]
 \end{enumerate}
 \begin{example}
-    Sono funzioni continue:
-    \begin{itemize}
-        \item tutti i polinomi
-        \item tutte le funzioni razionali (quozienti di polinomi)
-        \item \( x \to x^\alpha \), con \( \alpha \in \mathbb{R} \) costante, laddove ben definito 
-        \item exp, log, sin, cos, tan, \( \ldots \) 
-        \item valore assoluto, \( x \in \mathbb{R} \to |x|:= \begin{cases}
-            x\;\;\; se\; x \ge 0 \\
-            -x\;\;\; se\; x < 0
-        \end{cases} \) 
-        \item funzioni composte, ad esempio:
-            \[
-            h_1: \mathbb{R} \to \mathbb{R},\;\;\; h_1(x):=sin(x^3 + 5x^4)\;\;\; \forall x \in \mathbb{R}
-            \] 
-            \[
-            h_2:(2, +\infty) \to \mathbb{R}, \;\;\; h_2(x):=log(x^2-4)\;\;\; \forall x \in (2, +\infty) 
-            \] 
-    \end{itemize}
+	Sono funzioni continue:
+	\begin{itemize}
+		\item tutti i polinomi
+		\item tutte le funzioni razionali (quozienti di polinomi)
+		\item \( x \to x^\alpha \), con \( \alpha \in \mathbb{R} \) costante, laddove ben definito
+		\item exp, log, sin, cos, tan, \( \ldots \)
+		\item valore assoluto, \( x \in \mathbb{R} \to |x|:= \begin{cases}
+			      x\;\;\; se\; x \ge 0 \\
+			      -x\;\;\; se\; x < 0
+		      \end{cases} \)
+		\item funzioni composte, ad esempio:
+		      \[
+			      h_1: \mathbb{R} \to \mathbb{R},\;\;\; h_1(x):=sin(x^3 + 5x^4)\;\;\; \forall x \in \mathbb{R}
+		      \]
+		      \[
+			      h_2:(2, +\infty) \to \mathbb{R}, \;\;\; h_2(x):=log(x^2-4)\;\;\; \forall x \in (2, +\infty)
+		      \]
+	\end{itemize}
 \end{example}
 
 \subsection{Teorema di Weiestrass}
 \begin{definition}
-    Teorema di Weierstrass
+	Teorema di Weierstrass
 
-    Sia \( [a, b] \) un intervallo chiuso e limitato, \( f: [a,b]  \to \mathbb{R}\) continua.
+	Sia \( [a, b] \) un intervallo chiuso e limitato, \( f: [a,b]  \to \mathbb{R}\) continua.
 
-    Allora esistono
-    \[
-        x_{max}, x_{min} \in [a,b]\;\; t.c.\;\; f(x_{min}) \le f(x) \le f(x_{max}) \forall x \in [a,b]
-    \] 
-    	\begin{figure}[H]
+	Allora esistono
+	\[
+		x_{max}, x_{min} \in [a,b]\;\; t.c.\;\; f(x_{min}) \le f(x) \le f(x_{max}) \forall x \in [a,b]
+	\]
+	\begin{figure}[H]
 		\begin{center}
 			\begin{tikzpicture}
 				\draw[->] (-0.2, 0) -- (4, 0) node[right] {$x$};
 				\draw[->] (0, -1.5) -- (0, 1.5) node[left] {$y$};
 				\draw[domain=0.5:6, smooth, variable=\x, red, thick, xscale=0.5] plot ({\x}, {(sin(\x r)}) node [right] {f};
 
-                \draw[dashed] (0.25, 0.5) -- (0.25, 0) node[below] {$a$};
-                \draw[dashed] (3, -0.3) -- (3, 0) node[above] {$b$};
+				\draw[dashed] (0.25, 0.5) -- (0.25, 0) node[below] {$a$};
+				\draw[dashed] (3, -0.3) -- (3, 0) node[above] {$b$};
 
-                \draw[dashed, blue] (0.78, 1) -- (0.78, 0) node[below, scale=0.6] {$x_{max}$};
-                \draw[dashed, blue] (2.38, -1) -- (2.38, 0) node[above, scale=0.6] {$x_{min}$};
+				\draw[dashed, blue] (0.78, 1) -- (0.78, 0) node[below, scale=0.6] {$x_{max}$};
+				\draw[dashed, blue] (2.38, -1) -- (2.38, 0) node[above, scale=0.6] {$x_{min}$};
 			\end{tikzpicture}
 		\end{center}
 		\caption{Teorema di Weiestrass}
 	\end{figure}
-    Ogni funzione continua, avrà quindi un punto di minimo e un punto di massimo
+	Ogni funzione continua, avrà quindi un punto di minimo e un punto di massimo
 \end{definition}
 \subsubsection{Osservazioni}
 \begin{itemize}
-    \item In particolare, \( f \) è limitata
-    \item I punti \( x_{min}, x_{max} \) si dicono punti di minimo e di massimo \textbf{globali} di \( f \) 
-    \item I punti di minimo e massimo globali possono essere non unici e coincidere con gli estremi
-        \( a,b \) dell'intervallo
+	\item In particolare, \( f \) è limitata
+	\item I punti \( x_{min}, x_{max} \) si dicono punti di minimo e di massimo \textbf{globali} di \( f \)
+	\item I punti di minimo e massimo globali possono essere non unici e coincidere con gli estremi
+	      \( a,b \) dell'intervallo
 \end{itemize}
 
 \begin{example}
-    \[
-        cos: [0, 4 \pi] \to \mathbb{R}
-    \] 
-    \label{D2}
+	\[
+		cos: [0, 4 \pi] \to \mathbb{R}
+	\]
+	\begin{figure}[H]
+		\begin{center}
+			\begin{tikzpicture}[xscale=0.5]
+				\draw[->] (-0.2, 0) -- (13.5, 0) node[right] {$x$};
+				\draw[->] (0, -1.5) -- (0, 1.5) node[left] {$y$};
+				\draw[domain=0:12.5, smooth, variable=\x, red, thick,yscale=0.5] plot ({\x}, {(cos(\x r)}) node [right] {};
+
+				\node [below left, scale=0.9, green] at (0,0) (0) {0};
+				\node [above, scale=0.9, blue] at (3.14,0) (pi) {$\pi$};
+				\node [below, scale=0.9, green] at (6.28,0) (2pi) {$2\pi$};
+				\node [above, scale=0.9, blue] at (9.42,0) (3pi) {$3\pi$};
+				\node [below, scale=0.9, green] at (12.56,0) (4pi) {$4\pi$};
+
+				\draw (3.14,-0.08) -- (3.14, 0.08);
+				\draw (6.28,-0.08) -- (6.28, 0.08);
+				\draw (9.42,-0.08) -- (9.42, 0.08);
+				\draw (12.56,-0.08) -- (12.56, 0.08);
+
+				\node[align=center, scale=0.8, blue] at (6,1.5) (globalmax) {Punti di massimo\\
+					globale};
+				\node[align=center, scale=0.8, green] at (6,-1.5) (globalmin) {Punti di minimo\\
+					globale};
+
+				\draw[blue] (globalmax) -- (pi);
+				\draw[blue] (globalmax) -- (3pi);
+
+				\draw[green] (globalmin) -- (0);
+				\draw[green] (globalmin) -- (2pi);
+				\draw[green] (globalmin) -- (4pi);
+
+			\end{tikzpicture}
+		\end{center}
+		\caption{Teorema di Weiestrass}
+	\end{figure}
 \end{example}
 Se vengono meno le ipotesi del teorema, può venir meno la conclusione.
 \subsubsection{Esempi}
-\begin{example}
-    \[
-    f_1: (0,1) \to \mathbb{R},\;\;\;\; f_1(x):= x \;\;\; \forall x \in (0,1)
-    \] 
-    \label{D3}
-    Questa funzione è continua, ma per come è definita \textbf{non} ammette nè massimo nè minimo perchè
-    il \textbf{dominio non è chiuso}.
-\end{example}
 \begin{figure}[H]
-    \begin{example}
-        \[
-            f_2: (0, +\infty) \to \mathbb{R},\;\;\;\; f_2(x):= x sin(x)\;\;\; \forall x \in (0, +\infty)
-        \] 
-        \label{D4}
-        Questa funzione è continua, ma \textbf{non} possiede nè punti di massimo, nè punti di minimo perchè
-        la funzione ha ampiezza sempre crescente.
-    \end{example}
+	\begin{example}
+		\[
+			f_1: (0,1) \to \mathbb{R},\;\;\;\; f_1(x):= x \;\;\; \forall x \in (0,1)
+		\]
+		\label{D3}
+		Questa funzione è continua, ma per come è definita \textbf{non} ammette nè massimo nè minimo perchè
+		il \textbf{dominio non è chiuso}.
+	\end{example}
+\end{figure}
+\begin{figure}[H]
+	\begin{example}
+		\[
+			f_2: (0, +\infty) \to \mathbb{R},\;\;\;\; f_2(x):= x sin(x)\;\;\; \forall x \in (0, +\infty)
+		\]
+		\label{D4}
+		Questa funzione è continua, ma \textbf{non} possiede nè punti di massimo, nè punti di minimo perchè
+		la funzione ha ampiezza sempre crescente.
+	\end{example}
 \end{figure}
 \begin{example}
-    \[
-        f_3: [-1, 1] \to \mathbb{R}
-    \] 
-    \[
-    f_3(x):=\begin{cases}
-        1-x \;\;\; se\; 0 < x \le 1 \\
-        0 \;\;\; se\; x = 0 \\
-        x-1 \;\;\; se\; -1 \le x < 0
-    \end{cases}
-    \] 
-    \label{D5}
-    Questa funzione \textbf{non} ammette punti di massimo e di minimo perchè non è continua.
+	\[
+		f_3: [-1, 1] \to \mathbb{R}
+	\]
+	\[
+		f_3(x):=\begin{cases}
+			1-x \;\;\; se\; 0 < x \le 1 \\
+			0 \;\;\; se\; x = 0         \\
+			x-1 \;\;\; se\; -1 \le x < 0
+		\end{cases}
+	\]
+	\label{D5}
+	Questa funzione \textbf{non} ammette punti di massimo e di minimo perchè non è continua.
 \end{example}
 \subsection{Teorema degli zeri}
 \begin{figure}[H]
-    \begin{definition}
-        Teorema degli zeri (o di Bolzano)
+	\begin{definition}
+		Teorema degli zeri (o di Bolzano)
 
-        Sia \( [a,b] \) un intervallo chiuso e limitato, \( f: [a,b] \to \mathbb{R} \) una funzione continua.
-        Se
-        \[
-            f(a)f(b) < 0
-        \] 
-        allora esiste \( c \in (a,b) \) tale che \( f(c) = 0 \)  
+		Sia \( [a,b] \) un intervallo chiuso e limitato, \( f: [a,b] \to \mathbb{R} \) una funzione continua.
+		Se
+		\[
+			f(a)f(b) < 0
+		\]
+		allora esiste \( c \in (a,b) \) tale che \( f(c) = 0 \)
 
-        \label{D6}
-    \end{definition}
+		\label{D6}
+	\end{definition}
 \end{figure}
 Se vengono meno le ipotesi, può venir meno la conclusione.
 \subsubsection{Esempi}
 \begin{example}
-    \[
-        g_1: [-1,1] \to \mathbb{R}
-    \] 
-    \[
-    g_1(x)= \begin{cases}
-        -1 \;\;\; se\; -1 \le x <0 \\
-        1 \;\;\; se\; 0 \le x \le 1
-    \end{cases}
-    \] 
-    \label{D7}
-    Questa funzione non è continua, quindi non si applica il teorema.
+	\[
+		g_1: [-1,1] \to \mathbb{R}
+	\]
+	\[
+		g_1(x)= \begin{cases}
+			-1 \;\;\; se\; -1 \le x <0 \\
+			1 \;\;\; se\; 0 \le x \le 1
+		\end{cases}
+	\]
+	\label{D7}
+	Questa funzione non è continua, quindi non si applica il teorema.
 \end{example}
 
 \begin{example}
-    \[
-        g_2: [-1,1] / \{0\} \to \mathbb{R} 
-    \] 
-    \[
-    g_2(x):= \frac{1}{x}\;\;\; \forall x \in [-1,1] / \{0\}
-    \] 
-    \label{D8}
-    Questa funzione è continua, ma non si annulla mai perchè il dominio della funzione \textbf{non è un intervallo}
-    ,ma un intervallo privato di un valore, quindi non si applica il teorema.
+	\[
+		g_2: [-1,1] / \{0\} \to \mathbb{R}
+	\]
+	\[
+		g_2(x):= \frac{1}{x}\;\;\; \forall x \in [-1,1] / \{0\}
+	\]
+	\label{D8}
+	Questa funzione è continua, ma non si annulla mai perchè il dominio della funzione \textbf{non è un intervallo}
+	,ma un intervallo privato di un valore, quindi non si applica il teorema.
 \end{example}
 \end{document}
