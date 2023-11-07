@@ -1683,5 +1683,228 @@ non è vero. Perchè:
     \end{exercise}
 \end{figure}
 
+\subsection{Condizione di derivabilità}
+\( \Gamma \) deriva \( \alpha \) e \( \alpha \) è derivabile da \( \Gamma \).
+\[
+\Gamma \vdash \alpha
+\] 
+\(
+    \Gamma \vdash \alpha \stackrel{def}{sse}
+    \) esiste una derivazione \(\underset{\alpha}{D}\) che si conclude con \( \alpha \) e
+    tale che \( hp(D) \subseteq \Gamma \) 
+    \subsubsection{Esercizi}
+\begin{exercise}
+    \[
+    \Gamma \vdash \alpha \Rightarrow \Gamma,\beta \vdash \alpha
+    \] 
+    \[
+        \exists \underset{\alpha}{D}\; e\; hp(D) \subseteq \Gamma \;\;\;\;\; \exists \underset{\alpha}{D^1} \; e \; hp(D) \subseteq \Gamma \cup \{\beta\} 
+    \] 
+    \[
+    \Gamma \vdash \alpha \Rightarrow \Gamma, \Delta \vdash \alpha
+    \] 
+    La deduzione che esisteva prima continua ad esistere anche con il nuovo insieme delle ipotesi.
+\end{exercise}
+\begin{exercise}[a casa]
+    \[
+    \Gamma, \alpha \vdash \alpha
+    \] 
+\end{exercise}
+\begin{exercise}
+    \[
+    \Gamma,\alpha \vdash \beta \Rightarrow \Gamma \vdash \alpha \to \beta
+    \] 
+\[
+    \exists \underset{\beta}{D}\; t.c.\; hp(D)\;\; \subseteq \Gamma \cup \{\alpha\} \;\;\;\;\;\; \bar{\underset{\alpha \to \beta}{D}} 
+\] 
+\[
+    \bar{D} \begin{cases}
+        \hspace{2.5cm}[\alpha]\\
+        \hspace{2.5cm}D\\
+        \hspace{2.5cm}\beta\\
+        \hspace{0.9cm}\line(1,0){90}\;\;\; \to I^2 \\  
+        \hspace{2cm}\alpha \to \beta
+    \end{cases}
+\] 
+\[
+    hp(\bar{D} \subseteq \Gamma)
+\] 
+\end{exercise}
+\begin{figure}[H]
+    \begin{exercise}
+        \[
+            (\Gamma \vdash \alpha \to  \beta\;\; \&\;\; \Delta \vdash \alpha) \Rightarrow \Gamma,\Delta \vdash \beta
+        \] 
+        TODO
+    \end{exercise}
+\end{figure}
+\begin{figure}[H]
+    \begin{exercise}[a casa]
+        \[
+            (\Gamma \vdash \alpha\;\; \&\;\; \Delta, \alpha \vdash \beta) \Rightarrow \Gamma, \Delta \vdash \beta
+        \] 
+        Suggerimenti:
+        \begin{itemize}
+            \item svolgi i pezzi prima e dopo l'\&
+            \item non abbiamo ipotesi sulla presenza di alpha nelle ipotesi
+                \begin{itemize}
+                    \item se \( \alpha \not\exists hp(D_2)  \) 
+                    \item se \( \alpha\;\; \exists hp(D_2)  \) 
+                \end{itemize}
+        \end{itemize}
+
+    \end{exercise}
+\end{figure}
+
 \section{Prove dirette e indirette}
+\subsection{Prove indirette}
+\( p \) è un simbolo proposizionale:
+\[
+    \vdash \alpha \leftrightarrow \beta \Rightarrow \phi[\alpha/p] \leftrightarrow \phi[\beta/p]
+\] 
+Dati i successivi 2 teoremi \textbf{già dimostrati}:
+\[
+    \vdash \alpha \vee \neg \alpha \;\;\;
+    \begin{cases}
+        \vdash \neg \neg \neg \alpha \leftrightarrow \neg \alpha \\
+        \vdash \alpha \vee (\neg \neg \neg \alpha)
+    \end{cases}
+\] 
+Una formula si può ottenere componendo più formule già dimostrate.
+
+Consideriamo le leggi di de Morgan:
+\begin{enumerate}
+    \item \( \vdash \neg(\alpha \wedge \beta) \leftrightarrow (\neg \alpha \vee \neg \beta) \) 
+    \item \( \vdash \neg (\alpha \vee \beta) \leftrightarrow (\neg \alpha \wedge \beta) \) 
+    \item \( \vdash \neg (\alpha \to \beta) \leftrightarrow (\alpha \wedge \neg \beta) \) 
+\end{enumerate}
+Proviamo a dimostrare indirettamente la seconda legge di de Morgan usando altri teoremi:
+\begin{enumerate}
+    \item[a.] \( \vdash \phi \leftrightarrow \psi \Rightarrow \sigma[\phi/p] \leftrightarrow \sigma[\psi/p] \) 
+    \item[b.] (Ragionamente per contrapposizione) \( \vdash \phi \to \psi \Leftrightarrow \neg \psi \to \neg \phi\) 
+    \item[c.] \( \phi \to \psi\; \& \; \vdash \psi \to \gamma \Rightarrow \phi \to \gamma \)
+    \item[d.] \( \vdash \phi \leftrightarrow \neg \neg \phi \) 
+\end{enumerate}
+\begin{example}
+   \[
+   \vdash \neg (\alpha \vee \beta) \leftrightarrow (\neg \alpha \wedge \beta)
+   \]  
+   Assumo 1. e a. b. c. d.:
+\[
+    \vdash (\neg \alpha \vee \neg \beta) \leftrightarrow \neg (\alpha \vee \beta) \stackrel{b.}{\Leftrightarrow}
+\] 
+\[
+    \vdash \neg \neg (\alpha \wedge \beta) \leftrightarrow \neg (\neg \alpha \vee \neg \beta) \stackrel{d, c}{\Leftrightarrow}
+\] 
+\[
+ \vdash   (\alpha \wedge \beta) \leftrightarrow \neg (\neg \alpha \vee \neg \beta)
+\] 
+Istanzio le formule per togliere le negazioni:
+\[
+\alpha = \neg \phi
+\] 
+\[
+\beta = \neg \psi
+\] 
+E la formula diventa:
+\[
+    \vdash (\neg \phi \wedge \neg \psi) \leftrightarrow \neg(\neg \neg \phi \vee \neg \neg \psi) \Leftrightarrow
+\] 
+\[
+\vdash (\neg \phi \wedge \neg \psi) \leftrightarrow \neg(\phi \vee \psi)\;\;\;\;\; \square
+\] 
+\end{example}
+
+\section{Definizione rigorosa di derivazione}
+L'insieme delle \textbf{derivazioni} è il più piccolo insieme \( x \) tc:
+\begin{enumerate}
+    \item \( \phi \in x \) (\( \phi \) è una formula)
+    \item se \( \underset{\phi_1}{D_1}\; \underset{\phi_2}{D_2} \in x \Rightarrow \) TODO
+        \begin{center}
+             \(
+            [\alpha]^1
+            \)\\
+            \hspace{1cm}\line(1,0){30}\(\;\;\; \to I\;\;\)\\  
+             \( \beta \to \alpha \) \\
+            \hspace{1cm}\line(1,0){50}\(\;\;\; \to I^1 \)\\  
+            \(
+            \alpha \to (\beta \to \alpha)
+            \)
+        \end{center}
+    \item se \( \underset{\phi_1 \wedge \phi_2}{D} \in x  \Rightarrow\) TODO 
+                \begin{center}
+             \(
+            [\alpha]^1
+            \)\\
+            \hspace{1cm}\line(1,0){30}\(\;\;\; \to I\;\;\)\\  
+             \( \beta \to \alpha \) \\
+            \hspace{1cm}\line(1,0){50}\(\;\;\; \to I^1 \)\\  
+            \(
+            \alpha \to (\beta \to \alpha)
+            \)
+        \end{center}
+
+    \item \( \underset{\phi_1}{D_1}, \underset{\phi_1 \to \phi_2}{D_2} \in x \Rightarrow \) TODO
+                \begin{center}
+             \(
+            [\alpha]^1
+            \)\\
+            \hspace{1cm}\line(1,0){30}\(\;\;\; \to I\;\;\)\\  
+             \( \beta \to \alpha \) \\
+            \hspace{1cm}\line(1,0){50}\(\;\;\; \to I^1 \)\\  
+            \(
+            \alpha \to (\beta \to \alpha)
+            \)
+        \end{center}
+
+    \item \( \underset{\psi}{\stackrel{\phi}{D}} \in x \Rightarrow \) TODO 
+                \begin{center}
+             \(
+            [\alpha]^1
+            \)\\
+            \hspace{1cm}\line(1,0){30}\(\;\;\; \to I\;\;\)\\  
+             \( \beta \to \alpha \) \\
+            \hspace{1cm}\line(1,0){50}\(\;\;\; \to I^1 \)\\  
+            \(
+            \alpha \to (\beta \to \alpha)
+            \)
+        \end{center}
+    \item \( \underset{\bot}{D} \in x \Rightarrow \) TODO
+                \begin{center}
+             \(
+            [\alpha]^1
+            \)\\
+            \hspace{1cm}\line(1,0){30}\(\;\;\; \to I\;\;\)\\  
+             \( \beta \to \alpha \) \\
+            \hspace{1cm}\line(1,0){50}\(\;\;\; \to I^1 \)\\  
+            \(
+            \alpha \to (\beta \to \alpha)
+            \)
+        \end{center}
+    \item \( \underset{\bot}{\stackrel{\neg \phi}{D}} \in x \Rightarrow \) TODO
+                \begin{center}
+             \(
+            [\alpha]^1
+            \)\\
+            \hspace{1cm}\line(1,0){30}\(\;\;\; \to I\;\;\)\\  
+             \( \beta \to \alpha \) \\
+            \hspace{1cm}\line(1,0){50}\(\;\;\; \to I^1 \)\\  
+            \(
+            \alpha \to (\beta \to \alpha)
+            \)
+        \end{center}
+
+\end{enumerate}
+
+\section{Soundness}
+È il passaggio da deduzione naturale a conseguenza logica:
+\[
+    \stackrel{\emptyset}{\Gamma} \vdash \alpha \to \stackrel{\emptyset}{\Gamma} \models \alpha
+\] 
+\section{Completeness}
+È il passaggio da conseguenza logica a deduzione naturale: 
+\[
+    \stackrel{\emptyset}{\Gamma} \models \alpha \to  \stackrel{\emptyset}{\Gamma} \vdash \alpha 
+\] 
+
 \end{document}
