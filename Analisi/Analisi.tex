@@ -1503,9 +1503,22 @@ Proprietà:
     \[
         x_{max}, x_{min} \in [a,b]\;\; t.c.\;\; f(x_{min}) \le f(x) \le f(x_{max}) \forall x \in [a,b]
     \] 
+    	\begin{figure}[H]
+		\begin{center}
+			\begin{tikzpicture}
+				\draw[->] (-0.2, 0) -- (4, 0) node[right] {$x$};
+				\draw[->] (0, -1.5) -- (0, 1.5) node[left] {$y$};
+				\draw[domain=0.5:6, smooth, variable=\x, red, thick, xscale=0.5] plot ({\x}, {(sin(\x r)}) node [right] {f};
 
-    \label{D1}
+                \draw[dashed] (0.25, 0.5) -- (0.25, 0) node[below] {$a$};
+                \draw[dashed] (3, -0.3) -- (3, 0) node[above] {$b$};
 
+                \draw[dashed, blue] (0.78, 1) -- (0.78, 0) node[below, scale=0.6] {$x_{max}$};
+                \draw[dashed, blue] (2.38, -1) -- (2.38, 0) node[above, scale=0.6] {$x_{min}$};
+			\end{tikzpicture}
+		\end{center}
+		\caption{Teorema di Weiestrass}
+	\end{figure}
     Ogni funzione continua, avrà quindi un punto di minimo e un punto di massimo
 \end{definition}
 \subsubsection{Osservazioni}
@@ -1532,14 +1545,16 @@ Se vengono meno le ipotesi del teorema, può venir meno la conclusione.
     Questa funzione è continua, ma per come è definita \textbf{non} ammette nè massimo nè minimo perchè
     il \textbf{dominio non è chiuso}.
 \end{example}
-\begin{example}
-    \[
-    f_2: (0, +\infty) \to \mathbb{R},\;\;\;\; f_2(x):= x sin(x)\;\;\; \forall x \in (0, +\infty)
-    \] 
-    \label{D4}
-    Questa funzione è continua, ma \textbf{non} possiede nè punti di massimo, nè punti di minimo perchè
-    la funzione ha ampiezza sempre crescente.
-\end{example}
+\begin{figure}[H]
+    \begin{example}
+        \[
+            f_2: (0, +\infty) \to \mathbb{R},\;\;\;\; f_2(x):= x sin(x)\;\;\; \forall x \in (0, +\infty)
+        \] 
+        \label{D4}
+        Questa funzione è continua, ma \textbf{non} possiede nè punti di massimo, nè punti di minimo perchè
+        la funzione ha ampiezza sempre crescente.
+    \end{example}
+\end{figure}
 \begin{example}
     \[
         f_3: [-1, 1] \to \mathbb{R}
