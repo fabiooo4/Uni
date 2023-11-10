@@ -5,6 +5,7 @@
 \usepackage{ntheorem}
 \usepackage{xcolor}
 \usepackage{amsmath}
+\usepackage{mathtools}
 \usepackage{float}
 \usepackage{graphicx}
 \graphicspath{ {./figures/} }
@@ -1764,12 +1765,12 @@ non è vero. Perchè:
 \] 
 Dati i successivi 2 teoremi \textbf{già dimostrati}:
 \[
-    \vdash \alpha \vee \neg \alpha \;\;\;
-    \begin{cases}
+    \begin{rcases}
         \vdash \neg \neg \neg \alpha \leftrightarrow \neg \alpha \\
         \vdash \alpha \vee (\neg \neg \neg \alpha)
-    \end{cases}
+    \end{rcases} \vdash \alpha \vee \neg \alpha
 \] 
+Si ottiene il terzo escluso facilmente.
 Una formula si può ottenere componendo più formule già dimostrate.
 
 Consideriamo le leggi di de Morgan:
@@ -1781,7 +1782,7 @@ Consideriamo le leggi di de Morgan:
 Proviamo a dimostrare indirettamente la seconda legge di de Morgan usando altri teoremi:
 \begin{enumerate}
     \item[a.] \( \vdash \phi \leftrightarrow \psi \Rightarrow \sigma[\phi/p] \leftrightarrow \sigma[\psi/p] \) 
-    \item[b.] (Ragionamente per contrapposizione) \( \vdash \phi \to \psi \Leftrightarrow \neg \psi \to \neg \phi\) 
+    \item[b.] (Ragionamento per contrapposizione) \( \vdash \phi \to \psi \Leftrightarrow \neg \psi \to \neg \phi\) 
     \item[c.] \( \phi \to \psi\; \& \; \vdash \psi \to \gamma \Rightarrow \phi \to \gamma \)
     \item[d.] \( \vdash \phi \leftrightarrow \neg \neg \phi \) 
 \end{enumerate}
@@ -1808,7 +1809,7 @@ Istanzio le formule per togliere le negazioni:
 \] 
 E la formula diventa:
 \[
-    \vdash (\neg \phi \wedge \neg \psi) \leftrightarrow \neg(\neg \neg \phi \vee \neg \neg \psi) \Leftrightarrow
+    \vdash (\neg \phi \wedge \neg \psi) \leftrightarrow \neg(\neg \neg \phi \vee \neg \neg \psi) \stackrel{a}{\Leftrightarrow}
 \] 
 \[
 \vdash (\neg \phi \wedge \neg \psi) \leftrightarrow \neg(\phi \vee \psi)\;\;\;\;\; \square
@@ -1818,93 +1819,154 @@ E la formula diventa:
 \section{Definizione rigorosa di derivazione}
 L'insieme delle \textbf{derivazioni} è il più piccolo insieme \( x \) tc:
 \begin{enumerate}
-    \item \( \phi \in x \) (\( \phi \) è una formula)
-    \item se \( \underset{\phi_1}{D_1}\; \underset{\phi_2}{D_2} \in x \Rightarrow \) TODO
+    \item \( \phi \in X \) (\( \phi \) è una formula)
+    \item se \( \underset{\phi_1}{D_1}\; \underset{\phi_2}{D_2} \in X \Rightarrow \)
         \begin{center}
              \(
-            [\alpha]^1
+            \underset{\phi_1}{D_1}\;\;\;\; \underset{\phi_2}{D_2}
             \)\\
-            \hspace{1cm}\line(1,0){30}\(\;\;\; \to I\;\;\)\\  
-             \( \beta \to \alpha \) \\
-            \hspace{1cm}\line(1,0){50}\(\;\;\; \to I^1 \)\\  
-            \(
-            \alpha \to (\beta \to \alpha)
-            \)
+            \hspace{1.8cm}\line(1,0){50}\(\;\;\; \wedge I\;\;\;\; \in X\)\\  
+             \( \phi_1 \wedge \phi_2 \)
         \end{center}
-    \item se \( \underset{\phi_1 \wedge \phi_2}{D} \in x  \Rightarrow\) TODO 
-                \begin{center}
+    \item se \( \underset{\phi_1 \wedge \phi_2}{D} \in X  \Rightarrow\)
+        \begin{center}
              \(
-            [\alpha]^1
+            \underset{\phi_1 \wedge \phi_2}{D}
             \)\\
-            \hspace{1cm}\line(1,0){30}\(\;\;\; \to I\;\;\)\\  
-             \( \beta \to \alpha \) \\
-            \hspace{1cm}\line(1,0){50}\(\;\;\; \to I^1 \)\\  
-            \(
-            \alpha \to (\beta \to \alpha)
-            \)
+            \hspace{3.8cm}\line(1,0){40}\(\;\;\; \wedge E_i\;\;\;\; \in X\;\;\;\; (i = 1,2)\)\\  
+             \( \phi_i \)
         \end{center}
 
-    \item \( \underset{\phi_1}{D_1}, \underset{\phi_1 \to \phi_2}{D_2} \in x \Rightarrow \) TODO
-                \begin{center}
+    \item \( \underset{\phi_1}{D_1}, \underset{\phi_1 \to \phi_2}{D_2} \in X \Rightarrow \)
+        \begin{center}
              \(
-            [\alpha]^1
+            \underset{\phi_1}{D_1}\;\;\;\; \underset{\phi_1 \to \phi_2}{D_2}
             \)\\
-            \hspace{1cm}\line(1,0){30}\(\;\;\; \to I\;\;\)\\  
-             \( \beta \to \alpha \) \\
-            \hspace{1cm}\line(1,0){50}\(\;\;\; \to I^1 \)\\  
-            \(
-            \alpha \to (\beta \to \alpha)
-            \)
+            \hspace{2.1cm}\line(1,0){50}\(\;\;\; \to E\;\;\;\; \in X\)\\  
+             \( \phi_2 \)
         \end{center}
 
-    \item \( \underset{\psi}{\stackrel{\phi}{D}} \in x \Rightarrow \) TODO 
-                \begin{center}
+    \item \( \underset{\psi}{\stackrel{\phi}{D}}\;\; \in X \Rightarrow \)
+        \begin{center}
              \(
-            [\alpha]^1
+             \underset{\psi}{\stackrel{[\phi]^*}{D}}
             \)\\
-            \hspace{1cm}\line(1,0){30}\(\;\;\; \to I\;\;\)\\  
-             \( \beta \to \alpha \) \\
-            \hspace{1cm}\line(1,0){50}\(\;\;\; \to I^1 \)\\  
-            \(
-            \alpha \to (\beta \to \alpha)
-            \)
+            \hspace{2.3cm}\line(1,0){40}\(\;\;\; \to I^*\;\;\;\; \in X\)\\  
+             \( \phi \to \psi \)
         \end{center}
-    \item \( \underset{\bot}{D} \in x \Rightarrow \) TODO
-                \begin{center}
+
+    \item \( \underset{\bot}{D} \in X \Rightarrow \)
+        \begin{center}
              \(
-            [\alpha]^1
+            \underset{\bot}{D}
             \)\\
-            \hspace{1cm}\line(1,0){30}\(\;\;\; \to I\;\;\)\\  
-             \( \beta \to \alpha \) \\
-            \hspace{1cm}\line(1,0){50}\(\;\;\; \to I^1 \)\\  
-            \(
-            \alpha \to (\beta \to \alpha)
-            \)
+            \hspace{2.2cm}\line(1,0){20}\(\;\;\; \bot_i\;\;\;\; \in X\;\;\;\;\)\\  
+             \( \phi \)
         \end{center}
-    \item \( \underset{\bot}{\stackrel{\neg \phi}{D}} \in x \Rightarrow \) TODO
-                \begin{center}
+
+    \item \( \underset{\bot}{\stackrel{\neg \phi}{D}}\; \in X \Rightarrow \)
+        \begin{center}
              \(
-            [\alpha]^1
+             \underset{\bot}{\stackrel{[\neg \phi]^*}{D}}
             \)\\
-            \hspace{1cm}\line(1,0){30}\(\;\;\; \to I\;\;\)\\  
-             \( \beta \to \alpha \) \\
-            \hspace{1cm}\line(1,0){50}\(\;\;\; \to I^1 \)\\  
-            \(
-            \alpha \to (\beta \to \alpha)
-            \)
+            \hspace{2.8cm}\line(1,0){20}\(\;\;\; RAA^*\;\;\;\; \in X\;\;\;\;\)\\  
+             \( \phi \)
         \end{center}
+
+    \item \( \underset{\phi_i}{D}\; \in X \Rightarrow \)
+        \begin{center}
+             \(
+             \underset{\phi_i}{D}
+            \)\\
+            \hspace{3.6cm}\line(1,0){40}\(\;\;\; \vee I_i\;\;\;\; \in X\;\;\;\;(i = 1,2)\)\\  
+             \( \phi_1 \vee \phi_2 \)
+        \end{center}
+
+    \item \( \underset{\phi \vee \phi}{D}, \underset{\gamma}{\stackrel{\phi}{D_1}}, \underset{\gamma}{\stackrel{\psi}{D_2}}\;\in X \Rightarrow \)
+        \begin{center}
+             \(
+             \underset{\phi \vee \phi}{D}\;\;\; \underset{\gamma}{\stackrel{[\phi]}{D_1}}\;\;\; \underset{\gamma}{\stackrel{[\psi]}{D_2}}
+            \)\\
+            \hspace{2cm}\line(1,0){70}\(\;\;\; \vee E\;\;\;\; \in X\)\\  
+             \( \gamma \)
+        \end{center}
+
 
 \end{enumerate}
 
-\section{Soundness}
+\section{Soundness e Completeness}
+\subsection{Soundness}
 È il passaggio da deduzione naturale a conseguenza logica:
 \[
     \stackrel{\emptyset}{\Gamma} \vdash \alpha \to \stackrel{\emptyset}{\Gamma} \models \alpha
 \] 
-\section{Completeness}
+\subsection{Completeness}
 È il passaggio da conseguenza logica a deduzione naturale: 
 \[
     \stackrel{\emptyset}{\Gamma} \models \alpha \to  \stackrel{\emptyset}{\Gamma} \vdash \alpha 
 \] 
+\section{Altezza derivazione \( h[D] \) }
+    \begin{flalign*}
+        \bullet\qquad & 
+        h[\phi] = 0 
+        &
+    \end{flalign*}
 
+    \begin{flalign*}
+        \bullet\qquad &
+        h\left[ \frac{\underset{\alpha}{D_1}\;\;\; \underset{\beta}{D_2}}{\alpha \wedge \beta} \wedge I \right] = max\left(h\left[ \underset{\alpha}{D_1} \right], h\left[ \underset{\beta}{D_2} \right]\right) + 1 
+        &
+    \end{flalign*}
+
+    \begin{flalign*}
+        \bullet\qquad &
+        h\left[ \frac{\underset{\alpha_1 \wedge \alpha_2}{D}}{\alpha_i} \wedge I_i \right]_{i=1,2}= h\left[ \underset{\alpha_1 \wedge \alpha_2}{D} \right] + 1 
+        &
+    \end{flalign*}
+     
+    \begin{flalign*}
+        \bullet\qquad & 
+        h\left[ \frac{\underset{\beta}{\stackrel{[\alpha]}{D}}}{\alpha \to \beta} \right] = h\left[ \underset{\beta}{\stackrel{\alpha}{D}} \right] +1
+        &
+    \end{flalign*}
+
+    \begin{flalign*}
+        \bullet\qquad & 
+        h\left[ \frac{\underset{\alpha}{D_1}\;\;\;\underset{\alpha \to \beta}{D_2}}{\beta} \right] = max \left( h\left[ \underset{\alpha}{D_1} \right], h\left[ \underset{\alpha \to \beta}{D_2} \right] \right) +1
+        &
+    \end{flalign*}
+
+    \begin{flalign*}
+        \bullet\qquad &
+        h\left[ \frac{\underset{\bot}{D}}{\beta} \right] = h\left[ \underset{\bot}{D} \right] +1
+        &
+    \end{flalign*}
+
+        \begin{flalign*}
+        \bullet\qquad &
+        h\left[ \frac{\underset{\bot}{\stackrel{[\neg \phi]}{D}}}{\phi} \right] = h\left[ \underset{\bot}{\stackrel{\neg \phi}{D}} \right] +1
+        &
+    \end{flalign*}
+
+        \begin{flalign*}
+        \bullet\qquad &
+        h\left[ \frac{\underset{\phi_i}{D}}{\phi_1 \vee \phi_2} \right]_{i=1,2} = h\left[ \underset{\phi_i}{D} \right] +1
+        &
+    \end{flalign*}
+
+        \begin{flalign*}
+        \bullet\qquad &
+        h\left[ \frac{\underset{\alpha \vee \beta}{D}\;\; \underset{\gamma}{\stackrel{[\alpha]}{D_1}}\;\; \underset{\gamma}{\stackrel{[\beta]}{D_2}}}{\gamma} \right] = max\left( h\left[ \underset{\alpha \vee \beta}{D} \right], h\left[ \underset{\gamma}{\stackrel{\alpha}{D_1}} \right], h\left[ \underset{\gamma}{\stackrel{\beta}{D_2}} \right] \right)+1
+        &
+    \end{flalign*}
+
+\subsection{Teorema}
+\begin{enumerate}
+    \item \( \Gamma,\psi \models \phi\;\; \Rightarrow\;\; \Gamma \models \psi \to \phi \) 
+    \item \( \Gamma \models \phi \to \psi \;\&\; \Delta \models \phi \;\;\Rightarrow\;\; \Gamma,\Delta \models \psi \) 
+    \item \( \Gamma \models \phi \;\&\; \Delta \models \psi \;\;\Rightarrow\;\; \Gamma,\Delta \models \phi \wedge \psi \) 
+    \item \( \Gamma \models \phi_1 \wedge \phi_2 \;\;\Rightarrow\;\; \Gamma \models \phi_i \;\;\;\; i \in \{1,2\}  \) 
+    \item \( \Gamma \models \bot \;\;\Rightarrow\;\; \Gamma \models \phi \;\;\;\; \forall \phi \) 
+    \item \( \Gamma, \neg \phi \models \bot \;\;\Rightarrow\;\; \Gamma \models \phi \) 
+\end{enumerate}
 \end{document}
