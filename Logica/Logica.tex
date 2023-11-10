@@ -1257,7 +1257,7 @@ che mostra su quale ipotesi è stata applicata la regola.
         La seguente dimostrazione è accettata anche se \( \alpha \) è stata scaricata.
         \begin{center}
             \(\stackrel{[\alpha]}{D}\)\\
-            \hspace{1cm}\line(1,0){40}\(\;\;\; \to I^* \)\\
+            \hspace{1cm}\line(1,0){40}\(\;\;\; \to I \)\\
             \( \alpha \to \beta \) 
         \end{center}
         Questa dimostrazione prende il nome di \textbf{indebolimento}. "Lego" la verità di \( \alpha \) 
@@ -1466,6 +1466,14 @@ La struttura di una derivazione è la seguente:
     \)
 \end{center}
 Si può aggiungere qualsiasi formula dal bottom utilizzando questa regola. (Dimostrazione per assurdo)
+
+\vspace{0.5cm}
+\textbf{Dimostrazione per assurdo:}\\
+Voglio dimostrare P:
+\begin{enumerate}
+    \item assumo P sia falso
+    \item se da 1. arrivo a una contraddizione allora P è vero
+\end{enumerate}
 \subsubsection{Riduzione ad assurdo}
 \begin{center}
     \(
@@ -1479,12 +1487,6 @@ Si può aggiungere qualsiasi formula dal bottom utilizzando questa regola. (Dimo
     \)
 \end{center}
 
-\subsubsection{Dimostrazione per assurdo}
-Voglio dimostrare P:
-\begin{enumerate}
-    \item assumo P sia falso
-    \item se da 1. arrivo a una contraddizione allora P è vero
-\end{enumerate}
 
 \subsubsection{Esercizi}
 
@@ -1961,12 +1963,12 @@ L'insieme delle \textbf{derivazioni} è il più piccolo insieme \( x \) tc:
     \end{flalign*}
 
 \subsection{Teorema}
-\begin{enumerate}
-    \item \( \Gamma,\psi \models \phi\;\; \Rightarrow\;\; \Gamma \models \psi \to \phi \) 
-    \item \( \Gamma \models \phi \to \psi \;\&\; \Delta \models \phi \;\;\Rightarrow\;\; \Gamma,\Delta \models \psi \) 
-    \item \( \Gamma \models \phi \;\&\; \Delta \models \psi \;\;\Rightarrow\;\; \Gamma,\Delta \models \phi \wedge \psi \) 
-    \item \( \Gamma \models \phi_1 \wedge \phi_2 \;\;\Rightarrow\;\; \Gamma \models \phi_i \;\;\;\; i \in \{1,2\}  \) 
-    \item \( \Gamma \models \bot \;\;\Rightarrow\;\; \Gamma \models \phi \;\;\;\; \forall \phi \) 
-    \item \( \Gamma, \neg \phi \models \bot \;\;\Rightarrow\;\; \Gamma \models \phi \) 
-\end{enumerate}
+    \begin{enumerate}
+        \item \( \Gamma,\psi \models \phi\;\; \Rightarrow\;\; \Gamma \models \psi \to \phi \) 
+        \item \( \Gamma \models \phi \to \psi \;\&\; \Delta \models \phi \;\;\Rightarrow\;\; \Gamma,\Delta \models \psi \) 
+        \item \( \Gamma \models \phi \;\&\; \Delta \models \psi \;\;\Rightarrow\;\; \Gamma,\Delta \models \phi \wedge \psi \) 
+        \item \( \Gamma \models \phi_1 \wedge \phi_2 \;\;\Rightarrow\;\; \Gamma \models \phi_i \;\;\;\; i \in \{1,2\}  \) 
+        \item \( \Gamma \models \bot \;\;\Rightarrow\;\; \Gamma \models \phi \;\;\;\; \forall \phi \) 
+        \item \( \Gamma, \neg \phi \models \bot \;\;\Rightarrow\;\; \Gamma \models \phi \) 
+    \end{enumerate}
 \end{document}
