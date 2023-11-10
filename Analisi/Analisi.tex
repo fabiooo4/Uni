@@ -1575,7 +1575,22 @@ Se vengono meno le ipotesi del teorema, può venir meno la conclusione.
 		\[
 			f_1: (0,1) \to \mathbb{R},\;\;\;\; f_1(x):= x \;\;\; \forall x \in (0,1)
 		\]
-		\label{D3}
+		\begin{figure}[H]
+			\begin{center}
+				\begin{tikzpicture}[scale=2]
+					\draw[->] (-0.2, 0) -- (1.2, 0) node[right] {$x$};
+					\draw[->] (0, -0.2) -- (0, 1.2) node[left] {$y$};
+					\draw[domain=0.04:0.96, smooth, variable=\x, red, thick] plot ({\x}, {\x}) node [right] {};
+
+					\draw[red] (0,0) circle (1.5pt);
+					\draw[red] (1,1) circle (1.5pt);
+
+					\draw[dashed, red] (1,1) -- (1,0) node [below, scale=0.7] {1};
+					\node[below left, red, scale=0.7] at (0,0) {0};
+				\end{tikzpicture}
+			\end{center}
+			\caption{Esempio di funzione continua}
+		\end{figure}
 		Questa funzione è continua, ma per come è definita \textbf{non} ammette nè massimo nè minimo perchè
 		il \textbf{dominio non è chiuso}.
 	\end{example}
@@ -1585,7 +1600,20 @@ Se vengono meno le ipotesi del teorema, può venir meno la conclusione.
 		\[
 			f_2: (0, +\infty) \to \mathbb{R},\;\;\;\; f_2(x):= x sin(x)\;\;\; \forall x \in (0, +\infty)
 		\]
-		\label{D4}
+
+		\begin{figure}[H]
+			\begin{center}
+				\begin{tikzpicture}[xscale=0.5, yscale=0.2]
+					\draw[->] (-0.2, 0) -- (13.5, 0) node[right] {$x$};
+					\draw[->] (0, -13.5) -- (0, 13.5) node[left] {$y$};
+					\draw[domain=0:12.56, smooth, variable=\x, red, thick] plot ({\x}, {(\x * sin(\x r)}) node [right] {};
+					\draw[domain=0:12.5, dashed, variable=\x] plot ({\x}, {\x}) node [right] {$y = x$};
+					\draw[domain=0:12.5, dashed, variable=\x] plot ({\x}, {-\x}) node [right] {$y = -x$};
+				\end{tikzpicture}
+			\end{center}
+			\caption{Esempio di funzione continua}
+		\end{figure}
+
 		Questa funzione è continua, ma \textbf{non} possiede nè punti di massimo, nè punti di minimo perchè
 		la funzione ha ampiezza sempre crescente.
 	\end{example}
@@ -1598,10 +1626,32 @@ Se vengono meno le ipotesi del teorema, può venir meno la conclusione.
 		f_3(x):=\begin{cases}
 			1-x \;\;\; se\; 0 < x \le 1 \\
 			0 \;\;\; se\; x = 0         \\
-			x-1 \;\;\; se\; -1 \le x < 0
+			-x-1 \;\;\; se\; -1 \le x < 0
 		\end{cases}
 	\]
-	\label{D5}
+	\begin{figure}[H]
+		\begin{center}
+			\begin{tikzpicture}[scale=2]
+				\draw[->] (-1.2, 0) -- (1.2, 0) node[right] {$x$};
+				\draw[->] (0, -1.2) -- (0, 1.2) node[left] {$y$};
+				\draw[domain=0.04:1, smooth, variable=\x, red, thick] plot ({\x}, {1-\x}) node [right] {};
+				\draw[domain=-1:-0.04, smooth, variable=\x, red, thick] plot ({\x}, {-\x-1}) node [right] {};
+
+				\draw[red, fill] (0,0) circle (1.5pt);
+				\draw[red] (0,1) circle (1.5pt);
+				\draw[red] (0,-1) circle (1.5pt);
+
+				\node[below, red, scale=0.7] at (1,0) {1};
+				\node[below, red, scale=0.7] at (-1,0) {-1};
+				\node[below left, red, scale=0.7] at (0,0) {0};
+
+				\node[left, red, scale=0.7, xshift=-5] at (0,1) {1};
+				\node[right, red, scale=0.7, xshift=5] at (0,-1) {-1};
+			\end{tikzpicture}
+		\end{center}
+		\caption{Esempio di funzione non continua}
+	\end{figure}
+
 	Questa funzione \textbf{non} ammette punti di massimo e di minimo perchè non è continua.
 \end{example}
 \subsection{Teorema degli zeri}
@@ -1616,7 +1666,34 @@ Se vengono meno le ipotesi del teorema, può venir meno la conclusione.
 		\]
 		allora esiste \( c \in (a,b) \) tale che \( f(c) = 0 \)
 
-		\label{D6}
+		\begin{figure}[H]
+			\begin{center}
+				\begin{tikzpicture}[scale=0.5, domain=0:13]
+					\draw[->] (-0.5,0) -- (8,0) node[right] {$x$};
+
+					\coordinate (A) at (0,3);
+					\coordinate (B) at (1,2);
+					\coordinate (C) at (2,3);
+					\coordinate (D) at (3,1);
+					\coordinate (E) at (4,0);
+					\coordinate (F) at (5,-2);
+					\coordinate (G) at (6,-2);
+					\coordinate (H) at (7,-2.5);
+
+					\draw [red, thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) };
+
+					\draw (0,0.2) -- (0,-0.2) node[below] {$a$};
+					\draw (7,0.2) -- (7,-0.2) node[below] {$b$};
+
+					\draw[red, fill] (0,3) circle (3pt);
+					\draw[red, fill] (7,-2.5) circle (3pt);
+					\draw[red, fill] (4,0) circle (3pt);
+
+				\end{tikzpicture}
+			\end{center}
+			\caption{Teorema degli zeri}
+		\end{figure}
+
 	\end{definition}
 \end{figure}
 Se vengono meno le ipotesi, può venir meno la conclusione.
@@ -1631,7 +1708,21 @@ Se vengono meno le ipotesi, può venir meno la conclusione.
 			1 \;\;\; se\; 0 \le x \le 1
 		\end{cases}
 	\]
-	\label{D7}
+	\begin{figure}[H]
+		\begin{center}
+			\begin{tikzpicture}[scale=2]
+				\draw[->] (-1.2, 0) -- (1.2, 0) node[right] {$x$};
+				\draw[->] (0, -1.2) -- (0, 1.2) node[left] {$y$};
+				\draw[domain=0.04:1, smooth, variable=\x, red, thick] plot ({\x}, {0.5}) node [right] {};
+				\draw[domain=-1:-0.04, smooth, variable=\x, red, thick] plot ({\x}, {-0.5}) node [right] {};
+
+				\draw[red, fill] (0,0.5) circle (1.5pt);
+				\draw[red] (0,-0.5) circle (1.5pt);
+			\end{tikzpicture}
+		\end{center}
+		\caption{Esempio di funzione non continua}
+	\end{figure}
+
 	Questa funzione non è continua, quindi non si applica il teorema.
 \end{example}
 
@@ -1642,7 +1733,21 @@ Se vengono meno le ipotesi, può venir meno la conclusione.
 	\[
 		g_2(x):= \frac{1}{x}\;\;\; \forall x \in [-1,1] / \{0\}
 	\]
-	\label{D8}
+	\begin{figure}[H]
+		\begin{center}
+			\begin{tikzpicture}
+				\draw[->] (-1, 0) -- (1, 0) node[right] {$x$};
+				\draw[->] (0, -3) -- (0, 3) node[left] {$y$};
+				\draw[domain=0.17:1, smooth, variable=\x, red, thick, yscale=0.5, xscale=0.5] plot ({\x}, {1/\x}) node [right] {};
+				\draw[domain=-1:-0.17, smooth, variable=\x, red, thick, yscale=0.5, xscale=0.5] plot ({\x}, {1/\x}) node [right] {};
+
+                \draw[red, fill] (0.5,0.5) circle (1.5pt);
+                \draw[red, fill] (-0.5,-0.5) circle (1.5pt);
+			\end{tikzpicture}
+		\end{center}
+		\caption{Esempio di funzione continua}
+	\end{figure}
+
 	Questa funzione è continua, ma non si annulla mai perchè il dominio della funzione \textbf{non è un intervallo}
 	,ma un intervallo privato di un valore, quindi non si applica il teorema.
 \end{example}
