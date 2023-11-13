@@ -1759,7 +1759,35 @@ oppure un'unione di intervalli aperti.
 
 Sia \( f: A \to \mathbb{R},\;\;x_0 \in A \). \textbf{Retta tangente} al grafico di \( f \) nel
 punto \( (x_0, f(x_0)) \)? 
-\label{D1}
+\begin{figure}[H]
+	\begin{center}
+		\begin{tikzpicture}[scale=0.5, domain=0:13]
+			\draw[->] (-0.5,0) -- (8.5,0) node[right] {$x$};
+			\draw[->] (0,-0.5) -- (0,7) node[above] {$y$};
+
+			\coordinate (A) at (0,-0.5);
+			\coordinate (B) at (1,1);
+			\coordinate (C) at (2,2);
+			\coordinate (D) at (3,2.2);
+			\coordinate (E) at (4,2.5);
+			\coordinate (F) at (5,4);
+			\coordinate (G) at (6,6);
+			\coordinate (H) at (7,6.5);
+			\coordinate (I) at (8,6.5);
+
+			\draw [red, thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) };
+
+      \draw[fill, green] (2, 2) circle (4pt);
+      \draw[fill, green] (5, 4) circle (4pt);
+
+      \draw[green, thick] (0, 0.65) -- (8, 6);
+      \draw[blue, thick] (0, 1.65) -- (8, 3);
+
+      \draw[dashed] (2, 2) -- (2, 0) node[below] {$x_0$};
+      \draw[dashed] (5, 4) -- (5, 0) node[below] {$x_0+h$};
+		\end{tikzpicture}
+	\end{center}
+\end{figure}
 Preso \( h \in \mathbb{R},\; h \neq 0 \), il coefficiente angolare (pendenza) della retta secante
 il grafico nei punti \( (x_0, f(x_0)), \;\; (x_0+h, f(x_0+h)) \) è:
 \[
@@ -1807,7 +1835,29 @@ il grafico nei punti \( (x_0, f(x_0)), \;\; (x_0+h, f(x_0+h)) \) è:
         \[
             f=e^x,\;\;\; x_0=0
         \] 
-        \label{D2}
+ 	\begin{figure}[H]
+		\begin{center}
+			\begin{tikzpicture}
+				\draw[->] (-2, 0) -- (1.6, 0) node[right] {$x$};
+				\draw[->] (0, -0.5) -- (0, 2) node[above] {$y$};
+				\draw[domain=-4:1.4, smooth, variable=\x, red, thick, yscale=0.5, xscale=0.5] plot ({\x}, {e^\x});
+				\draw[domain=-2:3.2, smooth, variable=\x, lime, yscale=0.5, xscale=0.5] plot ({\x}, {\x+1});
+				\draw[domain=-1:0.4, dashed, variable=\y] plot ({0.5}, {\y+1});
+
+        \node[below left, scale=0.5] at (0,0) (0) {\( x_0=0 \) };
+        \node[below, scale=0.5] at (0.5,0) (0) {\( x \) };
+
+        \draw[fill, green, opacity=1] (0, -0.01) rectangle (0.5, 0.01);
+        \draw[fill, blue, opacity=1] (0.49, 1) rectangle (0.51, 1.35);
+
+        
+        \draw[fill, green, opacity=1] (-0.6, -1.01) rectangle (-0.2, -0.99);
+        \node[scale=0.5] at (0, -1) (0) {\( > \) };
+        \draw[fill, blue, opacity=1] (0.2, -1.01) rectangle (0.4, -0.99);
+			\end{tikzpicture}
+		\end{center}
+		\caption{Eempio di funzione continua}
+	\end{figure}
         \[
             e^x = 1 + x + o(x)\;\;\; per\;x \to 0
         \] 
@@ -1818,7 +1868,7 @@ il grafico nei punti \( (x_0, f(x_0)), \;\; (x_0+h, f(x_0+h)) \) è:
         Che sarebbe il coefficiente di x nell'equazione \( e^x=1+x+o(x) \) 
     \end{example}
 \end{figure}
-Si scrive anche (Notazione di Leibnitz):
+Si può anche scrivere (Notazione di Leibnitz):
 \[
 f'(x_0) = \frac{df}{dx}(x_0)
 \] 
