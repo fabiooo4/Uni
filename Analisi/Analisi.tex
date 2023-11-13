@@ -1751,4 +1751,81 @@ Se vengono meno le ipotesi, può venir meno la conclusione.
 	Questa funzione è continua, ma non si annulla mai perchè il dominio della funzione \textbf{non è un intervallo}
 	,ma un intervallo privato di un valore, quindi non si applica il teorema.
 \end{example}
+
+
+\section{Derivate}
+Sia \( A \) un intervallo aperto (del tipo \( A=(a,b) \) oppure \( A=(a,+\infty), A=(-\infty, a), A=\mathbb{R} \)),
+oppure un'unione di intervalli aperti.
+
+Sia \( f: A \to \mathbb{R},\;\;x_0 \in A \). \textbf{Retta tangente} al grafico di \( f \) nel
+punto \( (x_0, f(x_0)) \)? 
+\label{D1}
+Preso \( h \in \mathbb{R},\; h \neq 0 \), il coefficiente angolare (pendenza) della retta secante
+il grafico nei punti \( (x_0, f(x_0)), \;\; (x_0+h, f(x_0+h)) \) è:
+\[
+\frac{f(x_0+h)-f(x_0)}{h}
+\] 
+
+\begin{definition}
+    Una funzione \( f: A \to \mathbb{R} \) si dice \textbf{differenziabile} (o derivabile)
+    in \( x_0 \in A \) se e solo se esiste ed è finito il limite:
+    \[
+    f'(x_0):= \lim_{h \to 0} \frac{f(x_0+h)-f(x_0)}{h}
+    \] 
+    Tale limite è detto \textbf{derivata} di \( f \) in \( x_0 \). \( f \) si dice
+    \textbf{differenziabile} (o derivabile) se e solo se è differenziabile in ogni punto
+    del suo dominio.
+\end{definition}
+
+\subsubsection{Osservazioni}
+\begin{enumerate}
+    \item La retta tangente al grafico di \( f \) in \( (x_0, f(x_0)) \) è definita
+        come l'unica retta di pendenza \( f'(x_0) \) passante per \( (x_0, f(x_0) \).
+        Essa ha equazione:
+        \[
+        y = f'(x_0)(x-x_0) + f(x_0)
+        \] 
+    \item \( f \) è differenziabile in \( x_0 \) se e solo se vale:
+        \[
+            \frac{f(x_0+h)-f(x_0)}{h}=f'(x_0) + o(1)\;\;\; per\;h \to 0
+        \] 
+        che equivale a dire:
+        \[
+        f(x_0+h)-f(x_0)=f'(x_0)h+h\,o(1)\;\;\; per\;h \to 0
+        \] 
+        Quindi, \( f \) è differenziabile in \( x_0 \) se e solo se:
+        \[
+        f(x_0+h)=f(x_0)+f'(x_0)h + o(h) \;\;\; per\;h \to 0
+        \] 
+        il che equivale (posto \( x=x_0+h \)) a:
+        \[
+        f(x)=f(x_0)+f'(x_0)(x-x_0)+o(x-x_0)\;\;\; per\;x \to x_0
+        \] 
+\end{enumerate}
+\begin{figure}[H]
+    \begin{example}
+        \[
+            f=e^x,\;\;\; x_0=0
+        \] 
+        \label{D2}
+        \[
+            e^x = 1 + x + o(x)\;\;\; per\;x \to 0
+        \] 
+        dunque
+        \[
+            e'^0=1
+        \] 
+        Che sarebbe il coefficiente di x nell'equazione \( e^x=1+x+o(x) \) 
+    \end{example}
+\end{figure}
+Si scrive anche (Notazione di Leibnitz):
+\[
+f'(x_0) = \frac{df}{dx}(x_0)
+\] 
+\begin{example}
+    Una funzione costante è differenziabile con derivata
+    \[
+        (5')(x_0)= \lim_{h \to 0} \frac{5-5}{h} = 0
+    \] 
+\end{example}
 \end{document}
