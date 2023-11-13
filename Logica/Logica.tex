@@ -1896,18 +1896,7 @@ L'insieme delle \textbf{derivazioni} è il più piccolo insieme \( x \) tc:
 
 \end{enumerate}
 
-\section{Soundness e Completeness}
-\subsection{Soundness}
-È il passaggio da deduzione naturale a conseguenza logica:
-\[
-    \stackrel{\emptyset}{\Gamma} \vdash \alpha \to \stackrel{\emptyset}{\Gamma} \models \alpha
-\] 
-\subsection{Completeness}
-È il passaggio da conseguenza logica a deduzione naturale: 
-\[
-    \stackrel{\emptyset}{\Gamma} \models \alpha \to  \stackrel{\emptyset}{\Gamma} \vdash \alpha 
-\] 
-\section{Altezza derivazione \( h[D] \) }
+\section{Definizione di altezza di una derivazione \( h[D] \) }
     \begin{flalign*}
         \bullet\qquad & 
         h[\phi] = 0 
@@ -1922,7 +1911,7 @@ L'insieme delle \textbf{derivazioni} è il più piccolo insieme \( x \) tc:
 
     \begin{flalign*}
         \bullet\qquad &
-        h\left[ \frac{\underset{\alpha_1 \wedge \alpha_2}{D}}{\alpha_i} \wedge I_i \right]_{i=1,2}= h\left[ \underset{\alpha_1 \wedge \alpha_2}{D} \right] + 1 
+        h\left[ \frac{\underset{\alpha_1 \wedge \alpha_2}{D}}{\alpha_i} \wedge E_i \right]_{i=1,2}= h\left[ \underset{\alpha_1 \wedge \alpha_2}{D} \right] + 1 
         &
     \end{flalign*}
      
@@ -1962,13 +1951,134 @@ L'insieme delle \textbf{derivazioni} è il più piccolo insieme \( x \) tc:
         &
     \end{flalign*}
 
-\subsection{Teorema}
+\begin{exercise}
+    \[
+        h\left[ \frac{\frac{[A \wedge B]^1}{A}\wedge E_1}{A \wedge B} \to I_1 \right] = 3
+    \] 
+\end{exercise}
+
+\subsection{Principio di induzione sull'altezza di una derivazione}
+Sia \( P \) una proprietà sulle derivazioni, allora:
+
+se \( P \) vale per le derivazioni \( D \) tc \( h[D]=0 \) e
+
+se \( \forall D,k (h[D]=k \Rightarrow (\forall \bar{D}[(h[\bar{D}]<k) \Rightarrow P(\bar{D})] \Rightarrow P(D))) \)
+
+allora \( \forall D\;\; . \;\; P(D) \).\\
+Se sono in grado di dimostrare la proprietà su tutte le derivazioni di altezza \( <k \)
+sono in grado di assumere (\textbf{per ipotesi induttiva}) la proprietà su \( \bar{D} \)
+(perchè ha altezza minore di \( D \)). Dall'ipotesi induttiva trovo che P vale per
+\( D \) che ha altezza \( k \) e quindi vale per tutte le derivazioni.
+
+
+\section{Teorema di semantica}
     \begin{enumerate}
-        \item \( \Gamma,\psi \models \phi\;\; \Rightarrow\;\; \Gamma \models \psi \to \phi \) 
-        \item \( \Gamma \models \phi \to \psi \;\&\; \Delta \models \phi \;\;\Rightarrow\;\; \Gamma,\Delta \models \psi \) 
-        \item \( \Gamma \models \phi \;\&\; \Delta \models \psi \;\;\Rightarrow\;\; \Gamma,\Delta \models \phi \wedge \psi \) 
-        \item \( \Gamma \models \phi_1 \wedge \phi_2 \;\;\Rightarrow\;\; \Gamma \models \phi_i \;\;\;\; i \in \{1,2\}  \) 
-        \item \( \Gamma \models \bot \;\;\Rightarrow\;\; \Gamma \models \phi \;\;\;\; \forall \phi \) 
-        \item \( \Gamma, \neg \phi \models \bot \;\;\Rightarrow\;\; \Gamma \models \phi \) 
+        \item \( \Gamma,\psi \models \phi\;\; \Rightarrow\;\; \Gamma \models \psi \to \phi \) (Introduzione dell'implica)
+        \item \( \Gamma \models \phi \to \psi \;\&\; \Delta \models \phi \;\;\Rightarrow\;\; \Gamma,\Delta \models \psi \) (Modus ponens)
+        \item \( \Gamma \models \phi \;\&\; \Delta \models \psi \;\;\Rightarrow\;\; \Gamma,\Delta \models \phi \wedge \psi \) (Introduzione dell AND)
+        \item \( \Gamma \models \phi_1 \wedge \phi_2 \;\;\Rightarrow\;\; \Gamma \models \phi_i \;\;\;\; i \in \{1,2\}  \) (Eliminazione dell'AND)
+        \item \( \Gamma \models \bot \;\;\Rightarrow\;\; \Gamma \models \phi \;\;\;\; \forall \phi \) (Ex falso)
+        \item \( \Gamma, \neg \phi \models \bot \;\;\Rightarrow\;\; \Gamma \models \phi \) (Riduzione ad assurdo)
     \end{enumerate}
+    L'OR è superfluo perchè si può definire in termini dei seguenti connettivi:
+    \[
+        \{\to , \wedge, \bot\} 
+    \] 
+    ad esempio si può prendere l'OR non primitivo (per la regola di De Morgan): \[ \vdash \alpha \vee \beta \leftrightarrow \neg(\neg \alpha \wedge \neg \beta) \] 
+
+\section{Soundness e Completeness}
+\subsection{Teorema di correttezza (Soundness)}
+È il passaggio da deduzione naturale a conseguenza logica:
+\[
+    \Gamma \vdash \alpha \to \Gamma \models \alpha
+\] 
+\subsubsection{Lemma 1}
+Questo lemma lega la nozione di derivazione a quella di conseguenza logica:
+\[
+    \underset{\phi}{D} \Rightarrow hp(D) \models \phi
+\] 
+Utilizziamo:
+\begin{itemize}
+    \item Tutti i teoremi di semantica
+    \item Induzione
+\end{itemize}
+Tecnica: induzione su \( h(D) \) e per casi sull'ultima regola
+\begin{enumerate}
+    \item \textbf{Base} \( h[D]=0 \;\;\;D = \phi \;\;\; hp(D) =\phi \;\; hp(D)=\phi \models \phi \) 
+    \item \textbf{Passo induttivo}
+        \begin{enumerate}
+            \item [Caso 1.]
+            \[
+                D \begin{cases}
+                    \frac{\stackrel{[\phi]}{\underset{\psi}{D_1}}}{\phi \to \psi} \to I \;\;\;
+                \end{cases}
+                h[D_1] < h[D]
+            \]
+            per ipotesi induttiva \( hp(D_1) \models \psi \), cioè:
+            \[
+                \underset{\psi}{D_1} \Rightarrow hp(D_1) \models \psi
+            \] 
+            \begin{enumerate}
+                \item \[ \phi \in  hp(D_1), hp(D_1) = \Delta \cup \{\phi\}  \] 
+                    \[
+                        (ipotesi\;induttiva)\; \Delta \cup \{\phi\} \models \psi \stackrel{1}{\Rightarrow} \Delta \models \phi \to \psi 
+                    \] 
+                    \[
+                    \Delta = hp(D_1) - \{\phi\} = hp(D)
+                    \] 
+                    \[
+                        \underset{\Delta}{hp(D)} \models \phi \to \psi\;\;\; \square
+                    \] 
+                \item  \[
+                \phi \not\in hp(D_1)
+                \]  
+                \[
+                    (ipotesi\;induttiva)\; hp(D_1) \models \psi
+                \] 
+                Aggiungo \( \phi \) per weakening:
+                \[
+                    hp(D_1),\phi \models \psi \stackrel{1}{\Rightarrow}
+                \] 
+                \[ 
+                hp(D_1) \models \phi \to \psi
+                \] 
+                \[
+                hp(D) \models \phi \to \psi
+                \] 
+            \end{enumerate}
+            \item [Caso 2.]
+                \[
+                    D= \frac{\underset{\phi}{D_1}\;\; \underset{\phi \to \psi}{D_2}}{\psi} \to E
+                \] 
+                Per ipotesi induttiva:
+                \[
+                hp(D_1) \models \phi\;\;\;\;\; hp(D_2) \models \phi \to \psi \stackrel{2}{\Rightarrow}
+                \] 
+                \[
+                hp(D_1) \cup hp(D_2) \models \psi
+                \] 
+                \[
+                hp(D) \models \psi
+                \] 
+            \item [(2 casi di congiunzione)]
+        \end{enumerate}
+\end{enumerate}
+
+\begin{exercise}[a casa]
+    Caso 3 (3 teorema di semantica)
+    \[
+        D= \frac{\underset{\alpha}{D_1}\;\;\underset{\beta}{D_2}}{\alpha \wedge \beta}
+    \] 
+    Caso 4 (4 teorema di semantica)
+    \[
+        D= \frac{\underset{\alpha_1 \wedge \alpha_2}{D_1}}{\alpha_i}_{i=1,2}
+    \] 
+\end{exercise}
+
+\subsection{Teorema di completezza (Completeness)}
+È il passaggio da conseguenza logica a deduzione naturale: 
+\[
+    \Gamma \models \alpha \to  \Gamma \vdash \alpha 
+\] 
+
 \end{document}
