@@ -2544,5 +2544,114 @@ In verilog ci sono diversi layer di astrazione:
 Inoltre si possono assegnare dei valori di partenza (initial statement) che vengono eseguiti
 una sola volta all'inizio della simulazione.
 
-\section{Esercitazione}
+\section{Circuiti sequenziali}
+È un circuito i cui valori di uscita non dipendono soltanto dai valori di ingresso
+correnti, ma anche da quelli precedenti. Questa la differenza dispetto a una rete
+combinatoria, che invece non tiene traccia della sequenza passata di input.
+\[
+O_t=f(I_1,I_2,...,I_k)
+\] 
+Il sistema digitale \textbf{memorizza} gli ingressi fino a quel momento, cioè memorizza lo \textbf{stato}
+del sistema.
+\label{D1}
+\begin{table}[H]
+    \begin{center}
+        \begin{tabular}{c|c}
+            S R & \( Q_{t+1} \) \( \bar{Q}_{t+1} \) \\
+            \hline
+            1 0 & 1 0 \\
+            0 1 & 0 1 \\
+            0 0 & \( Q_{t} \) \( \bar{Q}_{t} \)   \\
+            1 1 & non applicabile
+        \end{tabular}
+    \end{center}
+    \caption{Tabella di verità del Latch SR}
+\end{table}
+Se \( S \) e \( R \) valgono 0, allora il circuito mantiene lo stato precedente.
+
+C'è bisogno di un "metronomo" che faccia scorrere il tempo, per i circuiti si utilizza
+un \textbf{clock} che è un segnale periodico che oscilla tra 0 e 1 e scandisce il tempo.
+Deve essere presente in tutti i sistemi digitali sequenziali.
+\label{D2}
+Di seguito c'è il circuito di un D-Latch che è un latch con un clock.
+\label{D3}
+\begin{table}[H]
+    \begin{center}
+        \begin{tabular}{c|c}
+            D CK & \( Q_{t+1} \) \\
+            \hline
+            0 1 & 0 \\
+            1 1 & 1 \\
+            0 0 & \( Q_{t} \) \\
+            1 0 & \( Q_{t} \)
+        \end{tabular}
+    \end{center}
+\end{table}
+Si può scrivere anche:
+\begin{table}[H]
+    \begin{center}
+        \begin{tabular}{c|c}
+            D CK & \( Q_{t+1} \) \\
+            \hline
+            D 1 & D \\
+            - 0 & \( Q_{t} \) \\
+        \end{tabular}
+    \end{center}
+\end{table}
+Cioè, quando il clock è 1 il valore di \( Q \) è uguale a quello di \( D \), mentre quando
+il clock è 0 il valore di \( Q \) è uguale a quello di \( Q_{t} \).
+
+Il grafico dei segnali è il seguente:
+\label{D4}
+Il circuito sincronizza il segnale di ingresso con quello del clock.
+
+Il simbolo del latch è il seguente:
+\label{D5}
+
+Per rendere più facile la realizzazione dei circuiti si astraggono le porte in componenti
+più complessi, come ad esempio il sommatore.
+\label{D6}
+Oppure unendo 8 sommatori si ottiene un sommatore a 8 bit:
+\label{D7}
+Oppure unendo N Latch si ottiene un registro:
+\label{D8}
+Un altro esempio è la seguente tabella:
+\begin{table}[H]
+    \begin{center}
+        \begin{tabular}{c|c}
+            A B S & O \\
+            \hline
+            0 - 0 & 0 \\
+            1 - 0 & 1 \\
+            - 0 1 & 0 \\
+            - 1 1 & 1
+        \end{tabular}
+    \end{center}
+\end{table}
+che assegna all'uscita il valore di A se S è 0, altrimenti assegna il valore di B. Questo
+circuito si chiama \textbf{multiplexer} (MUX) e si rappresenta col seguente circuito:
+\label{D9}
+Il simbolo del multiplexer è il seguente:
+\label{D10}
+
+\begin{example}
+    Realizziamo con i precedenti componenti un contatore a modulo 1024.
+
+    Lo chiamiamo \( "count" \) e quando il \( reset = 1 \) allora \( count = 0 \).
+    Per contare 1024 numeri bisogna memorizzare 10 bit, quindi prendiamo un registro
+    a 10 bit.
+    \label{D11}
+    Il segnale del circuito è il seguente:
+    \label{12}
+    Non si può sapere l'uscita del circuito perchè ha un ritardo (dato dal cammino
+    critico) che non permette al segnali di stabilizzarsi in tempo. Per questo motivo
+    questo circuito non rappresenta un contatore, ma essenzialmente è un generatore casuale
+    di numeri. Bisogna quindi creare un altro elemento di memoria.
+\end{example}
+Un altro elemento di memoria è il flip-flop:
+\label{D13}
+Il campionamento degli ingressi avviene sul fronte di salita del clock.
+
+Per descrivere un qualsiasi comportamento sequenziale si usano come \textbf{modello}
+le FSM (Final State Machines).
 \end{document}
