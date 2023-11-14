@@ -12,7 +12,7 @@
 \usepackage{listings}
 \usepackage{graphicx}
 \usepackage{tikz}
-\usetikzlibrary{shapes}
+\usetikzlibrary{shapes, arrows, automata, petri, positioning, calc}
 \usepackage{circuitikz}
 \usepackage[label=corner]{karnaugh-map}
 \graphicspath{{./figures/}}
@@ -131,6 +131,23 @@
 \newcommand{\incfig}[1]{%
 	\def\svgwidth{\columnwidth}
 	\import{./figures/}{#1.pdf_tex}
+}
+
+% FSM tikz
+\tikzset{
+    place/.style={
+        circle,
+        thick,
+        draw=black,
+        minimum size=6mm,
+    },
+        state/.style={
+        circle,
+        thick,
+        draw=blue!75,
+        fill=blue!20,
+        minimum size=6mm,
+    },
 }
 
 \pdfsuppresswarningpagegroup=1
@@ -2577,6 +2594,10 @@ combinatoria, che invece non tiene traccia della sequenza passata di input.
 \[
 O_t=f(I_1,I_2,...,I_k)
 \] 
+\begin{define}
+  I circuiti combinatori sono un sottoinsieme dei circuiti sequenziali, per la precisione
+  sono circuiti sequenziali con solo 1 stato.
+\end{define}
 Il sistema digitale \textbf{memorizza} gli ingressi fino a quel momento, cioè memorizza lo \textbf{stato}
 del sistema. Un esempio di circuito sequenziale è il seguente:
 \begin{figure}[H]
@@ -2847,4 +2868,168 @@ Il campionamento degli ingressi avviene sul fronte di salita del clock.
 
 Per descrivere un qualsiasi comportamento sequenziale si usano come \textbf{modello}
 le FSM (Final State Machines).
+
+\section{Macchine a stati finiti (FSM)}
+Tutte le macchine sensate avranno delle sequenze finite e conterranno l'evoluzione da
+stato presente a stato prossimo in base alla configurazione di ingresso e genereranno una
+configurazione di uscita. Esistono diversi tipi di SFM, ma in questo corso ci
+concentriamo solo sulle macchine \textbf{sincrone} e \textbf{deterministiche}.
+\begin{itemize}
+  \item \textbf{Sincrone}: evolvono a ogni ciclo di clock (temporizzate) 
+  \item \textbf{Deterministiche}: dato un ingresso si ottiene sempre la stessa uscita
+\end{itemize}
+Una macchina a stati è una sestupla: 
+\[
+M=<S,I,O,\delta,\lambda,s>
+\] 
+\begin{itemize}
+  \item \textbf{S}: insieme, finito e non vuoto, degli stati
+  \item \textbf{I}: alfabeto in ingresso, \( n \) bit in ingresso. \( |I|=2^n \) 
+  \item \textbf{O}: alfabeto di uscita, \( m \)  bit in uscita \( |O|=2^m \)
+  \item \textbf{\(\delta\)}: funzione di stato prossimo, \( \delta: S \times I \to S \)
+  \item \textbf{\(\lambda\)}: funzione di uscita, \( \lambda: S \times I \to O \). Esistono
+    più tipi di macchine in base alla funzione \( \lambda \) 
+    \begin{itemize}
+      \item \textbf{FSM di Mealy}: Genera l'uscita in base allo stato corrente e l'input corrente \[ \lambda: S \times I \to O \]
+      \item \textbf{FMS di Moore}: Genera l'uscita in base allo stato corrente \[ \lambda: S \to O \]
+    \end{itemize}
+    I due tipi di macchine dal punto di vista dell'espressività sono equivalenti, quindi
+    si può passare da una all'altra.
+  \item \textbf{s}: stato iniziale (può non esserci), \( s \in S \)
+\end{itemize}
+
+\subsection{Rappresentazione delle FSM}
+\subsubsection{State Transition Table (STT)}
+Per ogni coppia \( S,I \) indica lo stato prossimo e l'uscita.
+\begin{itemize}
+  \item Nelle \textbf{colonne}: simboli di ingresso
+  \item Nelle \textbf{righe}: stato corrente
+  \item Nelle \textbf{celle}: 
+    \begin{itemize}
+      \item \textbf{Mealy}: stato prossimo e uscita
+      \item \textbf{Moore}: stato prossimo
+    \end{itemize}
+\end{itemize}
+
+\begin{example}[Mealy]
+  \[ M= <\{A,B,C\}, \{0,1\}, \{0,1\}, \delta, \lambda> \]
+  \begin{table}[H]
+    \begin{center}
+      \begin{tabular}{c|c|c}
+          & 0 & 1 \\
+        \hline
+        A & B/0 & C/1\\
+        \hline
+        B & A/1 & C/1\\
+        \hline
+        C & B/0 & A/0\\
+      \end{tabular}
+    \end{center}
+    \caption{State Transition Table di una FSM di Mealy}
+  \end{table}
+\end{example}
+
+\begin{example}[Moore]
+  \[ M= <\{A,B,C\}, \{0,1\}, \{0,1\}, \delta, \lambda> \]
+  La funzione lambda viene scritta in una colonna separata: \( z \) 
+  \begin{table}[H]
+    \begin{center}
+      \begin{tabular}{c|c|c|c}
+          & 0 & 1 & z\\
+        \hline
+        A & B & C & 0 \\
+        \hline
+        B & A & C & 1 \\
+        \hline
+        C & B & A & 1 \\
+      \end{tabular}
+    \end{center}
+    \caption{State Transition Table di una FSM di Moore}
+  \end{table}
+\end{example}
+
+\subsubsection{State Transition graph (STG)}
+Un grafo è un costrutto matematico preciso formato da una coppia \( G=<V,E> \) dove:
+\begin{itemize}
+  \item \( V \) è un insieme di nodi (vertex)
+  \item \( E \) è un insieme di archi orientati (edges)
+\end{itemize}
+\label{D2.1}
+
+\begin{example}[Mealy]
+  \[ M= <\{A,B,C\}, \{0,1\}, \{0,1\}, \delta, \lambda> \]
+  \label{D2.2}
+\begin{figure}[H]
+  \begin{center}
+    \begin{tikzpicture}[node distance=2cm and 1cm,>=stealth',auto, every place/.style={draw}]
+      \node [place] (S1) {S1};
+      \coordinate[node distance=1.1cm,left of=S1] (left-S1);
+      \coordinate[node distance=1.1cm,right of=S1] (right-S1);
+
+      \draw[->, thick] (left-S1) -- (S1);
+
+      \node [place] (S2) [right=of S1] {S2};
+      \node [place] (S3) [node distance=1.5cm,below =of right-S1] {S3};    
+      \node [state,initial text=,accepting by double] (S4) [right=of S3] {S4};
+
+      \path[->] (S1) edge [bend left] node {a} (S2);
+      \path[->] (S2) edge [bend left] node {b} (S1);
+      \path[->] (S2) edge [loop above] node {a} ();
+      \path[->] (S3) edge [bend left] node {a} (S1);
+      \path[->] (S2) edge [bend left] node {c} (S4);
+      \path[->] (S3) edge [bend left] node {b} (S4);
+      \path[->] (S4) edge [bend left] node {d} (S3);      
+    \end{tikzpicture}
+  \end{center}
+\end{figure}
+
+\end{example}
+
+\begin{example}[Moore]
+  \[ M= <\{A,B,C\}, \{0,1\}, \{0,1\}, \delta, \lambda> \]
+  \label{D2.3}
+\end{example}
+
+\begin{exercise}
+  Progettare una macchina con 1 bit di ingresso \( x \) e 1 bit di uscita \( y \).
+  \( y=1 \) se su \( x \) è stato letto un numero pari di 0, seguiti da un numero dispari di 1.
+  \( y \) torna a 0 quando il numero di 1 diventa pari, oppure arriva uno 0.
+
+  \label{2.4}
+
+  \begin{itemize}
+    \item \textbf{A}: aspetto il primo 0 della sequenza
+    \item \textbf{B}: ho letto una sequenza dispari di 0
+    \item \textbf{C}: ho letto una sequenza di pari di 0
+    \item \textbf{D}: ho letto una sequenza pari di 0 e una sequenza dispari di 1
+    \item \textbf{E}: ho letto una sequenza pari di 0 e una sequenza pari di 1
+  \end{itemize}
+
+  \begin{table}[H]
+    \begin{center}
+      \begin{tabular}{c|c|c}
+        & 0 & 1 \\
+        \hline
+        A & B/0 & A/0 \\
+        \hline
+        B & C/0 & A/0 \\
+        \hline
+        C & B/0 & D/1 \\
+        \hline
+        D & B/0 & E/0 \\
+        \hline
+        E & B/0 & D/1 \\
+      \end{tabular}
+    \end{center}
+  \end{table}
+\end{exercise}
+
+\subsection{Modello di Huffman}
+I circuiti sequenziali si realizzano fisicamente con il \textbf{modello di Huffman}. Questo
+modello divide il circuito in 2 parti:
+\begin{itemize}
+  \item \textbf{Parte combinatoria}
+  \item \textbf{Parte di registri} 
+\end{itemize}
+\label{D2.5}
 \end{document}
