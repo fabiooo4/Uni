@@ -98,6 +98,72 @@ Un esempio è il seguente:
 
 \( \emptyset \) è l'insieme vuoto, cioè l'insieme che non contiene nessun elemento.
 
+\subsection{Ordinamento parziale}
+\[
+<A, R>\;\;\;\;\; R \subseteq A \times A
+\] 
+\( R \) è ordinamento parziale se ha 3 proprietà:
+\begin{enumerate}
+  \item \textbf{Riflessività}: \( \forall a \in A\;\;\;\;\; aRa \) 
+  \item \textbf{Transitività}: \( \forall a,b,c \in A \)
+    \[
+      aRb\;\; \&\;\; bRc \Rightarrow aRc
+    \] 
+  \item \textbf{Ansisimmetria}: \( \forall a,b \in A \) 
+    \[
+      aRb\;\; \& \;\; bRa \Rightarrow a=b
+    \] 
+\end{enumerate}
+
+\subsection{Massimale di un insieme}
+\(
+  <A,R>
+  \) sia o.p. (Ordine Parziale anche scritto \emph{po}) possiamo avere 2 definizioni:
+  \begin{enumerate}
+    \item \( m \in A \) è \textbf{massimo} se \( \forall a \in A\;\; aRm \) 
+    \item \( m \in A \) è \textbf{massimale} se 
+      \[
+      \forall a \in A\;\; mRa \Rightarrow m=a
+      \] che equivale a dire:
+      \[
+      \not\exists\;\; a \in A\;\;tc\;\;(a \neq m\;\;e\;\;mRa)
+      \] 
+      Se metto qualcosa in relazione con il massimo non trovo mai qualcosa più grande di lui.
+  \end{enumerate}
+
+  \begin{example}
+    Prendo come insieme supporto i numeri naturali \( \mathbb{N} \) e come insieme generico l'insieme \( A \subseteq P(\mathbb{N})\footnote{Sottoinsieme delle parti} \) 
+
+    \[
+      <A, \subseteq> p.o
+    \] 
+    \[
+      A=\{\{4\},\{2\},\underbrace{\{2,4\}}_{Massimo} \} 
+    \] 
+    È massimo perchè:
+    \[
+    a \subseteq M
+    \] 
+    \[
+    b \subseteq M
+    \] 
+  \end{example}
+  \begin{example}
+    \[
+      A = \{\{4\} ,\{2\} \} 
+    \] 
+    Sono entrambi massimali perchè non posso trovare nulla di più grande della relazione.
+  \end{example}
+  \begin{example}
+    \[
+    P = \{\{n\} | n \in \mathbb{N}\} \;\;\; P = \{\{0\} ,\{1\} ,\{2\} , \ldots\} 
+    \] 
+    \[
+    <P,\subseteq> p.o
+    \] 
+    ha \( \infty \) massimali
+  \end{example}
+  Quindi il massimale \textbf{non è unico}.
 \section{Introduzione}
 La logica ha lo scopo di formalizzare il ragionamento matematico
 che è caratterizzato dal concetto di dimostrazione senza ambiguità
@@ -2060,25 +2126,253 @@ Tecnica: induzione su \( h(D) \) e per casi sull'ultima regola
                 \[
                 hp(D) \models \psi
                 \] 
-            \item [(2 casi di congiunzione)]
+              \item [Caso 3.] TODO
+              \item [Caso 4.] TODO
+              \item [Caso 5.]
+                \[
+                  D=\frac{\underset{\bot}{D_1}}{\beta}\bot_i
+                \] 
+                Per ipotesi induttiva:
+                \[
+                  hp(D_1) \models \bot \stackrel{5}{\Rightarrow}
+                \] 
+                \[
+                hp(D_1) \models \beta
+                \] 
+                \[
+                  hp(D) \models \beta
+                \] 
+              \item [Caso 6.]
+                \[
+                  D= \frac{\underset{\bot}{\stackrel{[\neg \phi]}{D_1}}}{\phi} RAA
+                \] 
+                Per ipotesi induttiva:
+                \[
+                hp(D_1) \models \bot
+                \] 
+                \[
+                  (hp(D_1)-\{\neg \phi\}) \cup \{\neg \phi\} \models \bot \stackrel{6}{\Rightarrow}
+                \] 
+                \[
+                hp(D_1) - \{\neg \phi\} \models \phi 
+                \] 
+                \[
+                hp(D) \models \phi
+                \] 
         \end{enumerate}
 \end{enumerate}
 
-\begin{exercise}[a casa]
+\begin{figure}[H]
+  \begin{exercise}[a casa]
     Caso 3 (3 teorema di semantica)
     \[
-        D= \frac{\underset{\alpha}{D_1}\;\;\underset{\beta}{D_2}}{\alpha \wedge \beta}
+      D= \frac{\underset{\alpha}{D_1}\;\;\underset{\beta}{D_2}}{\alpha \wedge \beta}
     \] 
     Caso 4 (4 teorema di semantica)
     \[
-        D= \frac{\underset{\alpha_1 \wedge \alpha_2}{D_1}}{\alpha_i}_{i=1,2}
+      D= \frac{\underset{\alpha_1 \wedge \alpha_2}{D_1}}{\alpha_i}_{i=1,2}
     \] 
-\end{exercise}
+  \end{exercise}
+\end{figure}
+
+\begin{itemize}
+  \item \textbf{Lemma1} \( \underset{\phi}{D} \Rightarrow hp(D) \models \phi \)
+  \item \textbf{Lemma2} \( E \subseteq \Gamma\;\;\; E \models \phi \Rightarrow \Gamma \models \phi \)
+\end{itemize}
+
+\begin{theorem} [Soundness]
+  \[
+  \Gamma \vdash \phi \Rightarrow \Gamma \models \phi
+  \] 
+\end{theorem}
+Dimostrazione:\\
+se \( \Gamma \vdash \phi \stackrel{def}{\Leftrightarrow} \exists \underset{\phi}{D} \) e \( hp(D) \subseteq \Gamma \)  
+\[
+  \Rightarrow Lemma1\;\;\; hp(D) \models \phi
+\] 
+\[
+\Rightarrow Lemma2\;\;\; \Gamma \models \phi
+\] 
+Per la dimostrazione:
+\[
+  \alpha \to \beta \leftrightarrow \neg \beta \to \alpha
+\] 
+Il teorema di soundness diventa:
+\[
+\Gamma \not\models \alpha \Rightarrow \Gamma \not\vdash \alpha
+\]
+\[
+\vdash \alpha \Rightarrow \models \alpha
+\] 
+\[
+\not\models \alpha \Rightarrow \not\vdash \alpha
+\] 
+Contromodello \( \Rightarrow \) prova di \textbf{non} derivabilità
 
 \subsection{Teorema di completezza (Completeness)}
 È il passaggio da conseguenza logica a deduzione naturale: 
 \[
     \Gamma \models \alpha \to  \Gamma \vdash \alpha 
 \] 
+\begin{definition}[Insieme consistente]
+  Un insieme \( \Gamma, E, \Delta \) si dice \textbf{consistente} (o coerente o non contraddittorio)
+  se \( \Gamma \not\vdash \bot \). Quindi ad esempio \( \Gamma \) è inconsistente se
+  \( \Gamma \vdash \bot \) 
+\end{definition}
+Prendiamo in considerazione \(<A, \subseteq> p.o\;\;\;\;\; A \subseteq P(PROP) \) 
+\subsubsection{Teorema 0}
+Sono equivalenti:
+\begin{enumerate}
+  \item \( \Gamma \vdash \bot \) 
+  \item \( \forall \phi \; \Gamma \vdash \phi \) 
+  \item \( \exists \; \phi\;\;\; \Gamma \vdash \phi\;\; \&\;\; \Gamma \vdash \neg \phi \) 
+\end{enumerate}
+\( 1. \Rightarrow 2. \Rightarrow 3. \Rightarrow 1. \)\\
+\textbf{Prova (1)}\\
+1. allora \( \exists\;\; \underset{\bot}{D} \;\;\;\; hp(D) \subseteq \Gamma \) 
+\[
+  \frac{\underset{\bot}{D}}{\phi}\bot_i \Rightarrow \Gamma \vdash \phi \;\;\;\; \square
+\] 
+\( 2. \Rightarrow 3.\;\;\; \surd \)\\
+\( 3. \Rightarrow 1. \):
+\[
+  \Gamma \vdash \phi\;\;\; \exists \;\;\; \underset{\phi}{D_1} \;\;\; hp(D_1) \subseteq \Gamma
+\] 
+\[
+  \Gamma \vdash \neg \phi \;\; \exists  \;\; \underset{\neg \phi}{D_2} \;\;\; hp(D_2) \subseteq \Gamma
+\] 
+\[
+  \frac{\underset{\phi}{D_1}\;\;\;\underset{\neg \phi}{D_2}}{\bot} \to E \Rightarrow \Gamma \vdash \bot \;\;\; (1)\; \square
+\] 
+\subsubsection{Proposizione 1}
+Se sono un insieme inconsistente, allora non rtovo mai una valutazione che renda vera tutte le formule (sono insoddisfacibile)
+\[
+  \Gamma \vdash \bot \Rightarrow \forall v. [|\Gamma|]_v \underbrace{\neq}_{non\;\; soddisfacibile} 1
+\] 
+\textbf{Prova}\\
+Se
+\[
+  \Gamma \vdash \bot \stackrel{def}{\Leftrightarrow} \exists \;\underset{\bot}{D} \;\;\; hp(D) \subseteq \Gamma
+\] 
+Per il teorema di soundness:
+\[
+\Gamma \models \bot
+\] 
+che sarebbe la definizione di conseguenza logica:
+\[
+  \forall v. [|\Gamma|]_v=1 \Rightarrow [|\bot|]_v=1 \Leftrightarrow
+\] 
+\[
+  \underbrace{[|\Gamma|]_v \neq 1}_{\surd} \;\;OR\;\; \underbrace{[|\bot|]_v=1}_{\times }
+\] 
 
+\subsubsection{Teorema 1}
+\begin{definition}[Insieme massimale consistente]
+  \( \Delta \) è \textbf{massimale consistente} sse:
+  \begin{itemize}
+    \item \( \Delta \not\vdash \bot \) 
+    \item se \( \Delta \subseteq \Sigma,\; \Sigma \not\vdash \bot \Rightarrow \Delta = \Sigma \)
+  \end{itemize}
+  Ci chiediamo se esistono insiemi massimali consistenti. Sì, ma bisogna dimostrarli:
+  \[
+  C = \{\Gamma | \Gamma \not\vdash \bot\} <C,\subseteq> p.o
+  \] 
+  \( \Rightarrow \) proviamo che ha massimali
+\end{definition}
+
+Se \( \Gamma \not\vdash \bot \) allora \( \exists \; \Delta \) massimale consistente tc
+\( \Gamma \subseteq \Delta \)\\
+\textbf{Prova} 2 parti
+\begin{enumerate}
+  \item \textbf{Parte 1}: costruisco una successione di insiemi consistenti
+  \item \textbf{Parte 2}: 
+    \begin{itemize}
+      \item definiamo un insieme \( \Gamma^* \not\vdash \bot \)
+        \item \( \Gamma^* \) massimale 
+    \end{itemize}
+\end{enumerate}
+\textbf{Parte 1}:\\
+Fissiamo un'enumerazione di tutte le formule:
+\[
+\phi_0, \phi_1, \phi_2, \ldots, \phi_k, \ldots
+\] 
+Ora definiamo la successione \( (\Gamma_i)_{i \in \mathbb{N}} \) di insiemi consistenti di formule:
+\[
+\Gamma_0 = \Gamma\;\;\;\; \text{(consistente per ipotesi)}
+\] 
+\[
+  \Gamma_{i+1} = \begin{cases}
+    \Gamma_i + \{\phi_i\}\;\;se\;\; \Gamma_i,\phi_i \not\vdash \bot \\
+    \Gamma_i\;\;\;\;\; \text{altrimenti}
+  \end{cases}
+\]  
+Vale che:
+\begin{enumerate}
+  \item \( \forall i \;\; \Gamma_i \subseteq \Gamma_{i+1} \) (non decrescente) per costruzione
+  \item \( \forall i\;\; \Gamma_i \not\vdash \bot \) si prova per induzione:
+    \begin{itemize}
+      \item (base) \( \Gamma_0 = \Gamma \;\;\; \Gamma_0 \not\vdash \bot \) 
+      \item (passo) \( \Gamma_{i+1} \) ho due casi:
+        \begin{enumerate}
+          \item[a)] \( \Gamma_{i+1} = \Gamma_i \) per ipotesi induttiva:
+            \[ \Gamma_i \not\vdash \bot \]
+            \[
+              \Gamma_{i+1} \not\vdash \bot
+            \] 
+        \item[b)] \( \Gamma_{i+1} = \Gamma_i \cup \{\phi_i\} \not\vdash \bot \) per costruzione
+        \end{enumerate}
+    \end{itemize}
+\end{enumerate}
+\textbf{Parte 2}:\\
+Unione infinita di insiemi consistenti
+\[
+  \Gamma^* = \underset{i \in \mathbb{N}}{\cup } \Gamma_i
+\] 
+Si dimostra:
+\begin{enumerate}
+  \item \( \Gamma^* \not\vdash \bot \) 
+  \item \( \Gamma^* \) è MC (Massimale Consistente) 
+\end{enumerate}
+nel seguente modo:
+\begin{enumerate}
+  \item (RAA)\( \Gamma^* \vdash \bot \stackrel{def}{\Leftrightarrow} \exists \; \underset{\bot}{D} \) e \( hp(D) \subseteq \Gamma^* \) 
+    \[
+      \underbrace{hp(D)}_{finite} = \{\psi_1, \ldots, \psi_n\} \subseteq \Gamma^* 
+    \] 
+    \[
+      \forall j \in [1 \ldots n]\;\;\;\;\;\phi_j \in {\Gamma_i}_j \text{(un insieme nella successione)}
+    \] 
+    \[
+      \psi_1 \in  \Gamma_{i1} \ldots \psi_n \in \Gamma_{in}
+    \] 
+    Consideriamo \( max \{i_1 \ldots i_n\} = m  \) 
+    \[
+      \Gamma_{i1} \subseteq \Gamma_{in} \subseteq \Gamma_m
+    \] 
+    quindi
+    \[
+      \underset{\bot}{hp(D)} \subseteq \Gamma_{m}
+    \] 
+    Ma per costruzione \( \Gamma \) consistente \( \Rightarrow \) assurdo/impossibile \( \Rightarrow \) \( \Gamma^* \not\vdash \bot \) 
+  \item \( \Gamma^* \) è \textbf{massimale}
+
+    Supponiamo che esista \( \Delta \neq \Gamma^* \) tc:
+    \[
+    \Delta \not\vdash \bot\;\;\;e\;\;\; \Gamma^* \subseteq \Delta
+    \] 
+    quindi avremo almeno una \( \psi \in \Delta \setminus \Gamma^* \).
+
+    \underline{Per l'enumerazione} \( \exists,\;k \;\;tc\;\; \psi = \phi_k \) per costruzione
+    della successione
+    \[
+      \phi_k \in \Gamma_{k+1} \;\;\;\; (\Gamma_k, \phi_k \vdash \bot \;\;\; \text{altrimenti})
+    \] 
+    e dato che \( \Gamma_k \cup \{\phi_k\} \subseteq \Delta\) avremmo:
+    \[
+    \Delta \vdash \bot\;\;\;\;\; \text{impossibile}
+    \] 
+    \[
+    \phi_k \in \Gamma^*
+    \] 
+\end{enumerate}
 \end{document}
