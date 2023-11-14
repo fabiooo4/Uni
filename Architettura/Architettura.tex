@@ -2954,40 +2954,74 @@ Un grafo è un costrutto matematico preciso formato da una coppia \( G=<V,E> \) 
   \item \( V \) è un insieme di nodi (vertex)
   \item \( E \) è un insieme di archi orientati (edges)
 \end{itemize}
-\label{D2.1}
-
-\begin{example}[Mealy]
-  \[ M= <\{A,B,C\}, \{0,1\}, \{0,1\}, \delta, \lambda> \]
-  \label{D2.2}
+Un esempio di grafo è il seguente:
 \begin{figure}[H]
   \begin{center}
     \begin{tikzpicture}[node distance=2cm and 1cm,>=stealth',auto, every place/.style={draw}]
-      \node [place] (S1) {S1};
-      \coordinate[node distance=1.1cm,left of=S1] (left-S1);
-      \coordinate[node distance=1.1cm,right of=S1] (right-S1);
+      \node [place] (A) {A};
+      \coordinate[node distance=1.1cm,left of=A] (left-A);
+      \coordinate[node distance=1.1cm,right of=A] (right-A);
 
-      \draw[->, thick] (left-S1) -- (S1);
+      \node [place] (B) [right=of A] {B};
+      \node [place] (C) [node distance=1.5cm,below of=right-A] {C};    
 
-      \node [place] (S2) [right=of S1] {S2};
-      \node [place] (S3) [node distance=1.5cm,below =of right-S1] {S3};    
-      \node [state,initial text=,accepting by double] (S4) [right=of S3] {S4};
-
-      \path[->] (S1) edge [bend left] node {a} (S2);
-      \path[->] (S2) edge [bend left] node {b} (S1);
-      \path[->] (S2) edge [loop above] node {a} ();
-      \path[->] (S3) edge [bend left] node {a} (S1);
-      \path[->] (S2) edge [bend left] node {c} (S4);
-      \path[->] (S3) edge [bend left] node {b} (S4);
-      \path[->] (S4) edge [bend left] node {d} (S3);      
+      \path[->] (A) edge [bend left] node {a} (B);
+      \path[->] (C) edge [bend right] node {b} (B);
+      \path[->] (A) edge [bend right] node {a} (C);
     \end{tikzpicture}
   \end{center}
+  \caption{Esempio di STG}
 \end{figure}
+
+\begin{example}[Mealy]
+  \[ M= <\{A,B,C\}, \{0,1\}, \{0,1\}, \delta, \lambda> \]
+  \begin{figure}[H]
+  \begin{center}
+    \begin{tikzpicture}[node distance=2cm and 2cm,>=stealth',auto, every place/.style={draw}]
+      \node [place] (A) {A};
+      \coordinate[node distance=1.3cm,left of=A] (left-A);
+      \coordinate[node distance=1.3cm,right of=A] (right-A);
+
+      \node [place] (B) [right=of A] {B};
+      \node [place] (C) [below of=right-A] {C};    
+
+      \path[->] (A) edge [bend left=20] node[scale=0.7] {0/0} (B);
+      \path[->] (B) edge [bend left=20] node[scale=0.7] {0/1} (A);
+      \path[->] (C) edge [bend right=20] node[right,xshift=3, scale=0.7] {0/0} (B);
+      \path[->] (B) edge [bend right=20] node[xshift=-3,scale=0.7] {1/1} (C);
+      \path[->] (A) edge [bend right=20] node[xshift=-2,left,scale=0.7] {1/1} (C);
+      \path[->] (C) edge [bend right=20] node[xshift=2,scale=0.7] {1/0} (A);
+    \end{tikzpicture}
+  \end{center}
+  \caption{Esempio di STG con Mealy}
+\end{figure}
+
 
 \end{example}
 
 \begin{example}[Moore]
   \[ M= <\{A,B,C\}, \{0,1\}, \{0,1\}, \delta, \lambda> \]
-  \label{D2.3}
+\begin{figure}[H]
+  \begin{center}
+    \begin{tikzpicture}[node distance=2cm and 2cm,>=stealth',auto, every place/.style={draw}]
+      \node [place] (A) {A/0};
+      \coordinate[node distance=1.3cm,left of=A] (left-A);
+      \coordinate[node distance=1.3cm,right of=A] (right-A);
+
+      \node [place] (B) [right=of A] {B/0};
+      \node [place] (C) [below of=right-A] {C/1};    
+
+      \path[->] (A) edge [bend left=20] node[scale=0.7] {0} (B);
+      \path[->] (B) edge [bend left=20] node[scale=0.7] {0} (A);
+      \path[->] (C) edge [bend right=20] node[right,xshift=3, scale=0.7] {0} (B);
+      \path[->] (B) edge [bend right=20] node[xshift=-3,scale=0.7] {1} (C);
+      \path[->] (A) edge [bend right=20] node[xshift=-2,left,scale=0.7] {1} (C);
+      \path[->] (C) edge [loop below] node[xshift=2,scale=0.7] {1} ();
+    \end{tikzpicture}
+  \end{center}
+  \caption{Esempio di STG con Moore}
+\end{figure}
+
 \end{example}
 
 \begin{exercise}
@@ -2995,7 +3029,40 @@ Un grafo è un costrutto matematico preciso formato da una coppia \( G=<V,E> \) 
   \( y=1 \) se su \( x \) è stato letto un numero pari di 0, seguiti da un numero dispari di 1.
   \( y \) torna a 0 quando il numero di 1 diventa pari, oppure arriva uno 0.
 
-  \label{2.4}
+\begin{figure}[H]
+  \begin{center}
+    \begin{tikzpicture}[node distance=2cm and 2cm,>=stealth',auto, every place/.style={draw}]
+      \node [place] (A) {A};
+      \coordinate[node distance=1.3cm,left of=A] (left-A);
+      \coordinate[node distance=1.3cm,right of=A] (right-A);
+
+      \node [place] (B) [right of= A] {B};
+      \node [place] (C) [right of=B] {C};
+      \node [place] (D) [right of=C] {D};
+      \node [place] (E) [right of=D] {E};
+
+
+      \path[->] (A) edge [loop left] node[xshift=2,scale=0.7] {1/0} ();
+
+      \path[->] (A) edge [bend left=20] node[scale=0.7] {0/0} (B);
+      \path[->] (B) edge [bend left=20] node[scale=0.7] {1/0} (A);
+
+      \path[->] (B) edge [bend left=20] node[scale=0.7] {0/0} (C);
+      \path[->] (C) edge [bend left=20] node[scale=0.7] {0/0} (B);
+
+      \path[->] (C) edge [] node[scale=0.7] {1/1} (D);
+
+      \path[->] (D) edge [] node[below, scale=0.7] {1/0} (E);
+      \path[->] (E) edge [bend right] node[above,scale=0.7] {1/1} (D);
+
+      \path[->] (D) edge [bend left=50] node[scale=0.7] {0/0} (B);
+      \path[->] (E) edge [bend left=70] node[scale=0.7] {0/0} (B);
+
+    \end{tikzpicture}
+  \end{center}
+  \caption{Esempio di STG con Moore}
+\end{figure}
+
 
   \begin{itemize}
     \item \textbf{A}: aspetto il primo 0 della sequenza
