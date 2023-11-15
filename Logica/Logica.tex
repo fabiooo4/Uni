@@ -1800,14 +1800,6 @@ non è vero. Perchè:
 \] 
 \end{exercise}
 \begin{figure}[H]
-    \begin{exercise}
-        \[
-            (\Gamma \vdash \alpha \to  \beta\;\; \&\;\; \Delta \vdash \alpha) \Rightarrow \Gamma,\Delta \vdash \beta
-        \] 
-        TODO
-    \end{exercise}
-\end{figure}
-\begin{figure}[H]
     \begin{exercise}[a casa]
         \[
             (\Gamma \vdash \alpha\;\; \&\;\; \Delta, \alpha \vdash \beta) \Rightarrow \Gamma, \Delta \vdash \beta
@@ -2075,10 +2067,8 @@ Tecnica: induzione su \( h(D) \) e per casi sull'ultima regola
         \begin{enumerate}
             \item [Caso 1.]
             \[
-                D \begin{cases}
-                    \frac{\stackrel{[\phi]}{\underset{\psi}{D_1}}}{\phi \to \psi} \to I \;\;\;
-                \end{cases}
-                h[D_1] < h[D]
+                D = \frac{\stackrel{[\phi]}{\underset{\psi}{D_1}}}{\phi \to \psi} \to I \;\;\;
+                \;\;\;\;\;\;\; h[D_1] < h[D]
             \]
             per ipotesi induttiva \( hp(D_1) \models \psi \), cioè:
             \[
@@ -2126,8 +2116,34 @@ Tecnica: induzione su \( h(D) \) e per casi sull'ultima regola
                 \[
                 hp(D) \models \psi
                 \] 
-              \item [Caso 3.] TODO
-              \item [Caso 4.] TODO
+              \item [Caso 3.] 
+                \[
+                  D=\frac{\underset{\phi}{D_1}\;\;\;\underset{\psi}{D_2}}{\phi \wedge \psi} \wedge I
+                \] 
+                Per ipotesi induttiva:
+                \[
+                hp(D_1) \models \phi\;\;\;\;\; hp(D_2) \models \psi \stackrel{3}{\Rightarrow}
+                \] 
+                \[
+                hp(D_1) \cup hp(D_2) \models \phi \wedge \psi
+                \] 
+                \[
+                hp(D) \models \phi \wedge \psi
+                \] 
+              \item [Caso 4.] 
+                \[
+                  D=\frac{\underset{\phi_1 \wedge \phi_2}{D_1}}{\phi_i}_{i=1,2} \wedge E_i
+                \] 
+                Per ipotesi induttiva:
+                \[
+                hp(D_1) \models \phi_1 \wedge \phi_2 \stackrel{4}{\Rightarrow}
+                \]  
+                \[
+                hp(D_1) \models \phi_i
+                \] 
+                \[
+                hp(D) \models \phi_i
+                \] 
               \item [Caso 5.]
                 \[
                   D=\frac{\underset{\bot}{D_1}}{\beta}\bot_i
