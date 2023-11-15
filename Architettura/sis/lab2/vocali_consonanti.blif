@@ -5,14 +5,21 @@
 .outputs o
 
 .names a b c d e o
-00-00 1 # 0 = a, 4 = e
+00000 1 # 0 = a
+00100 1 # 4 = e
 01000 1 # 8 = i
-01110 1 # 14 = o
-10100 1 # 20 = u
+01100 1 # 12 = o
+10010 1 # 18 = u
 
 # valori non specificati
 .exdc
 .names a b c d e o
+10101 1
+10110 1
+10111 1
+11000 1
+11001 1
+11010 1
 11011 1
 11100 1
 11101 1
@@ -21,6 +28,6 @@
 
 .end
 
-# uscite non specificate a 0 con 19 letterali, dopo full_simplify con 13 letterali
-# uscite non specificate a 1 con 44 letterali, dopo full_simplify con 23 letterali
-# uscite non specificate a - con 19 letterali, dopo full_simplify con 12 letterali
+# uscite non specificate a 0 con 25 letterali, dopo full_simplify con 8 letterali
+# uscite non specificate a 1 con 80 letterali, dopo full_simplify con 11 letterali
+# uscite non specificate a - con 25 letterali, dopo full_simplify con 6 letterali
