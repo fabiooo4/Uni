@@ -522,7 +522,7 @@ Considerando una formula \( \alpha \) si associano 2 possibli valori:
 \begin{enumerate}
 	\item \( V(\alpha \wedge \beta) = 1 \leftrightarrow V(\alpha) = 1\; \&\; V(\beta) = 1 \)
 	\item \(V(\alpha \vee \beta) = 1 \leftrightarrow V(\alpha) = 1\; or\; V(\beta) = 1 \)
-	\item \( V(\neg \alpha) = 1  \)
+	\item \( V(\neg \alpha) = 1 \leftrightarrow V(\alpha) = 0 \)
 	\item \( V(\bot) = 0 \)
 	\item \( V(\alpha \to \beta) = 1 \leftrightarrow [ V(\alpha) = 1 \Rightarrow V(\beta) = 1] \)
 	\item[5.2] \( V(\alpha \to \beta) = 1 \leftrightarrow V(\alpha) = 0\; or\; V(\beta) = 1  \)
@@ -577,8 +577,8 @@ valore dei suoi atomi.
 		\( \alpha \) & \( \beta \) & \( \alpha \to \beta \) \\
 		\hline
 		0            & 0           & 1                      \\
-		0            & 1           & 0                      \\
-		1            & 0           & 1                      \\
+		0            & 1           & 1                      \\
+		1            & 0           & 0                      \\
 		1            & 1           & 1                      \\
 	\end{tabular}
 \end{center}
