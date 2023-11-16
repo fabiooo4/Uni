@@ -1741,8 +1741,8 @@ Se vengono meno le ipotesi, può venir meno la conclusione.
 				\draw[domain=0.17:1, smooth, variable=\x, red, thick, yscale=0.5, xscale=0.5] plot ({\x}, {1/\x}) node [right] {};
 				\draw[domain=-1:-0.17, smooth, variable=\x, red, thick, yscale=0.5, xscale=0.5] plot ({\x}, {1/\x}) node [right] {};
 
-                \draw[red, fill] (0.5,0.5) circle (1.5pt);
-                \draw[red, fill] (-0.5,-0.5) circle (1.5pt);
+				\draw[red, fill] (0.5,0.5) circle (1.5pt);
+				\draw[red, fill] (-0.5,-0.5) circle (1.5pt);
 			\end{tikzpicture}
 		\end{center}
 		\caption{Esempio di funzione continua}
@@ -1758,7 +1758,7 @@ Sia \( A \) un intervallo aperto (del tipo \( A=(a,b) \) oppure \( A=(a,+\infty)
 oppure un'unione di intervalli aperti.
 
 Sia \( f: A \to \mathbb{R},\;\;x_0 \in A \). \textbf{Retta tangente} al grafico di \( f \) nel
-punto \( (x_0, f(x_0)) \)? 
+punto \( (x_0, f(x_0)) \)?
 \begin{figure}[H]
 	\begin{center}
 		\begin{tikzpicture}[scale=0.5, domain=0:13]
@@ -1777,107 +1777,255 @@ punto \( (x_0, f(x_0)) \)?
 
 			\draw [red, thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) };
 
-      \draw[fill, green] (2, 2) circle (4pt);
-      \draw[fill, green] (5, 4) circle (4pt);
+			\draw[fill, green] (2, 2) circle (4pt);
+			\draw[fill, green] (5, 4) circle (4pt);
 
-      \draw[green, thick] (0, 0.65) -- (8, 6);
-      \draw[blue, thick] (0, 1.65) -- (8, 3);
+			\draw[green, thick] (0, 0.65) -- (8, 6);
+			\draw[blue, thick] (0, 1.65) -- (8, 3);
 
-      \draw[dashed] (2, 2) -- (2, 0) node[below] {$x_0$};
-      \draw[dashed] (5, 4) -- (5, 0) node[below] {$x_0+h$};
+			\draw[dashed] (2, 2) -- (2, 0) node[below] {$x_0$};
+			\draw[dashed] (5, 4) -- (5, 0) node[below] {$x_0+h$};
 		\end{tikzpicture}
 	\end{center}
 \end{figure}
 Preso \( h \in \mathbb{R},\; h \neq 0 \), il coefficiente angolare (pendenza) della retta secante
 il grafico nei punti \( (x_0, f(x_0)), \;\; (x_0+h, f(x_0+h)) \) è:
 \[
-\frac{f(x_0+h)-f(x_0)}{h}
-\] 
+	\frac{f(x_0+h)-f(x_0)}{h}
+\]
 
 \begin{definition}
-    Una funzione \( f: A \to \mathbb{R} \) si dice \textbf{differenziabile} (o derivabile)
-    in \( x_0 \in A \) se e solo se esiste ed è finito il limite:
-    \[
-    f'(x_0):= \lim_{h \to 0} \frac{f(x_0+h)-f(x_0)}{h}
-    \] 
-    Tale limite è detto \textbf{derivata} di \( f \) in \( x_0 \). \( f \) si dice
-    \textbf{differenziabile} (o derivabile) se e solo se è differenziabile in ogni punto
-    del suo dominio.
+	Una funzione \( f: A \to \mathbb{R} \) si dice \textbf{differenziabile} (o derivabile)
+	in \( x_0 \in A \) se e solo se esiste ed è finito il limite:
+	\[
+		f'(x_0):= \lim_{h \to 0} \frac{f(x_0+h)-f(x_0)}{h}
+	\]
+	Tale limite è detto \textbf{derivata} di \( f \) in \( x_0 \). \( f \) si dice
+	\textbf{differenziabile} (o derivabile) se e solo se è differenziabile in ogni punto
+	del suo dominio.
 \end{definition}
 
 \subsubsection{Osservazioni}
 \begin{enumerate}
-    \item La retta tangente al grafico di \( f \) in \( (x_0, f(x_0)) \) è definita
-        come l'unica retta di pendenza \( f'(x_0) \) passante per \( (x_0, f(x_0) \).
-        Essa ha equazione:
-        \[
-        y = f'(x_0)(x-x_0) + f(x_0)
-        \] 
-    \item \( f \) è differenziabile in \( x_0 \) se e solo se vale:
-        \[
-            \frac{f(x_0+h)-f(x_0)}{h}=f'(x_0) + o(1)\;\;\; per\;h \to 0
-        \] 
-        che equivale a dire:
-        \[
-        f(x_0+h)-f(x_0)=f'(x_0)h+h\,o(1)\;\;\; per\;h \to 0
-        \] 
-        Quindi, \( f \) è differenziabile in \( x_0 \) se e solo se:
-        \[
-        f(x_0+h)=f(x_0)+f'(x_0)h + o(h) \;\;\; per\;h \to 0
-        \] 
-        il che equivale (posto \( x=x_0+h \)) a:
-        \[
-        f(x)=f(x_0)+f'(x_0)(x-x_0)+o(x-x_0)\;\;\; per\;x \to x_0
-        \] 
+	\item La retta tangente al grafico di \( f \) in \( (x_0, f(x_0)) \) è definita
+	      come l'unica retta di pendenza \( f'(x_0) \) passante per \( (x_0, f(x_0) \).
+	      Essa ha equazione:
+	      \[
+		      y = f'(x_0)(x-x_0) + f(x_0)
+	      \]
+	\item \( f \) è differenziabile in \( x_0 \) se e solo se vale:
+	      \[
+		      \frac{f(x_0+h)-f(x_0)}{h}=f'(x_0) + o(1)\;\;\; per\;h \to 0
+	      \]
+	      che equivale a dire:
+	      \[
+		      f(x_0+h)-f(x_0)=f'(x_0)h+h\,o(1)\;\;\; per\;h \to 0
+	      \]
+	      Quindi, \( f \) è differenziabile in \( x_0 \) se e solo se:
+	      \[
+		      f(x_0+h)=f(x_0)+f'(x_0)h + o(h) \;\;\; per\;h \to 0
+	      \]
+	      il che equivale (posto \( x=x_0+h \)) a:
+	      \[
+		      f(x)=f(x_0)+f'(x_0)(x-x_0)+o(x-x_0)\;\;\; per\;x \to x_0
+	      \]
 \end{enumerate}
 \begin{figure}[H]
-    \begin{example}
-        \[
-            f=e^x,\;\;\; x_0=0
-        \] 
- 	\begin{figure}[H]
-		\begin{center}
-			\begin{tikzpicture}
-				\draw[->] (-2, 0) -- (1.6, 0) node[right] {$x$};
-				\draw[->] (0, -0.5) -- (0, 2) node[above] {$y$};
-				\draw[domain=-4:1.4, smooth, variable=\x, red, thick, yscale=0.5, xscale=0.5] plot ({\x}, {e^\x});
-				\draw[domain=-2:3.2, smooth, variable=\x, lime, yscale=0.5, xscale=0.5] plot ({\x}, {\x+1});
-				\draw[domain=-1:0.4, dashed, variable=\y] plot ({0.5}, {\y+1});
+	\begin{example}
+		\[
+			f=e^x,\;\;\; x_0=0
+		\]
+		\begin{figure}[H]
+			\begin{center}
+				\begin{tikzpicture}
+					\draw[->] (-2, 0) -- (1.6, 0) node[right] {$x$};
+					\draw[->] (0, -0.5) -- (0, 2) node[above] {$y$};
+					\draw[domain=-4:1.4, smooth, variable=\x, red, thick, yscale=0.5, xscale=0.5] plot ({\x}, {e^\x});
+					\draw[domain=-2:3.2, smooth, variable=\x, lime, yscale=0.5, xscale=0.5] plot ({\x}, {\x+1});
+					\draw[domain=-1:0.4, dashed, variable=\y] plot ({0.5}, {\y+1});
 
-        \node[below left, scale=0.5] at (0,0) (0) {\( x_0=0 \) };
-        \node[below, scale=0.5] at (0.5,0) (0) {\( x \) };
+					\node[below left, scale=0.5] at (0,0) (0) {\( x_0=0 \) };
+					\node[below, scale=0.5] at (0.5,0) (0) {\( x \) };
 
-        \draw[fill, green, opacity=1] (0, -0.01) rectangle (0.5, 0.01);
-        \draw[fill, blue, opacity=1] (0.49, 1) rectangle (0.51, 1.35);
+					\draw[fill, green, opacity=1] (0, -0.01) rectangle (0.5, 0.01);
+					\draw[fill, blue, opacity=1] (0.49, 1) rectangle (0.51, 1.35);
 
-        
-        \draw[fill, green, opacity=1] (-0.6, -1.01) rectangle (-0.2, -0.99);
-        \node[scale=0.5] at (0, -1) (0) {\( > \) };
-        \draw[fill, blue, opacity=1] (0.2, -1.01) rectangle (0.4, -0.99);
-			\end{tikzpicture}
-		\end{center}
-		\caption{Eempio di funzione continua}
-	\end{figure}
-        \[
-            e^x = 1 + x + o(x)\;\;\; per\;x \to 0
-        \] 
-        dunque
-        \[
-            e'^0=1
-        \] 
-        Che sarebbe il coefficiente di x nell'equazione \( e^x=1+x+o(x) \) 
-    \end{example}
+
+					\draw[fill, green, opacity=1] (-0.6, -1.01) rectangle (-0.2, -0.99);
+					\node[scale=0.5] at (0, -1) (0) {\( > \) };
+					\draw[fill, blue, opacity=1] (0.2, -1.01) rectangle (0.4, -0.99);
+				\end{tikzpicture}
+			\end{center}
+			\caption{Eempio di funzione continua}
+		\end{figure}
+		\[
+			e^x = 1 + x + o(x)\;\;\; per\;x \to 0
+		\]
+		dunque
+		\[
+			e'^0=1
+		\]
+		Che sarebbe il coefficiente di x nell'equazione \( e^x=1+x+o(x) \)
+	\end{example}
 \end{figure}
 Si può anche scrivere (Notazione di Leibnitz):
 \[
-f'(x_0) = \frac{df}{dx}(x_0)
-\] 
+	f'(x_0) = \frac{df}{dx}(x_0)
+\]
 \begin{example}
-    Una funzione costante è differenziabile con derivata
-    \[
-        (5')(x_0)= \lim_{h \to 0} \frac{5-5}{h} = 0
-    \] 
+	Una funzione costante è differenziabile con derivata
+	\[
+		(5')(x_0)= \lim_{h \to 0} \frac{5-5}{h} = 0
+	\]
 \end{example}
 
+\subsection{Proprietà delle funzioni differenziabili}
+Dove non specificato, supporremo sempre che il dominio \( A \)  sia un intervallo
+aperto o un'unione di intervalli aperti.
 
+\textbf{Proprietà}: Se \( f:A \to \mathbb{R} \) è differenziabile in \( x_0 \), allora
+\( f \) è continua in \( x_0 \).
+
+Dimostrazione:
+\[
+	\lim_{x \to x_0} f(x) = \lim_{x \to x_0} (f(x_0)+f'(x_0)(x-x_0)+o(x-x_0)) = f(x_0) \square
+\]
+\textbf{Non} vale il viceversa: \( f \) può essere continua senza essere differenziabile.
+\begin{figure}[H]
+	\begin{example}
+		\[
+			f(x):= |x|,\;\;\; \forall x \in \mathbb{R}
+		\]
+		\[
+			x_0 = 0
+		\]
+		\[
+			f'+(0)=\lim_{h \to 0^+} \frac{f(h)-f(0)}{h} = \lim_{h \to 0^+} \frac{|h|}{h} = 1
+		\]
+		\[
+			f'-(0)=\lim_{h \to 0^-} \frac{f(h)-f(0)}{h} = \lim_{h \to 0^-} \frac{|h|}{h} = -1
+		\]
+		\label{D1}
+	\end{example}
+\end{figure}
+Le derivate destra e sinistra in \( x_0 = 0 \) esistono e sono entrambe finite, ma sono
+\textbf{diverse} tra loro: \( f \) ha un \textbf{punto angoloso} in \( x_0=0 \).
+
+\begin{figure}[H]
+	\begin{example}
+		\[
+			g: [0,+\infty) \to \mathbb{R},\;\;\; g(x):= \sqrt{x}\;\;\; \forall x \ge 0
+		\]
+		\[
+			x_0=0
+		\]
+		\[
+			g'+(0)= \lim_{h \to 0^+} \frac{g(h)-g(0)}{h} = \lim_{h \to 0^+} \frac{\sqrt{h}}{h} = \lim_{h \to 0^+} \frac{1}{\sqrt{h} }  = +\infty
+		\]
+		\label{D2}
+		Il limite (destro, in questo caso) del rapporto incrementale esiste, ma è infinito: \( g \)
+		ha una \textbf{cuspide} o \textbf{punto a tangente verticale} in \( x_0=0 \).
+	\end{example}
+\end{figure}
+
+\begin{definition}
+	Un punto \( x_0 \in A \) si dice punto di \( \begin{cases}
+	 \text{massimo}\\
+   \text{minimo}
+	\end{cases} \)  locale di una funzione \( f: A \to \mathbb{R} \)
+	se esiste \( \delta > 0 \) tc \( \begin{cases}
+		f(x_0) \ge f(x) \\
+		f(x_0) \le f(x)
+	\end{cases} \) per ogni:
+	\[
+		x \in (x_0 - \delta, x_0 + \delta) \cap A
+	\]
+	\label{D3}
+  I punti di massimo o minimo locale si chiamano anche \textbf{estremi locali}.
+\end{definition}
+
+\subsection{Teorema di Fermat}
+\begin{theorem}[di Fermat]
+  Sia \( x_0 \in A \) un estremo locale di una funzione \( f: A \to \mathbb{R} \).
+  Se \( f \) è differenziabile in \( x_0 \) e se \( x_0 \) è \textbf{interno} ad \( A \)
+  (cioè, \( f \) è definita in un intorno di \( x_0 \)), allora:
+  \[
+  f'(x_0)=0
+  \] 
+  \label{D4}
+  \label{D5}
+  (I punti dove \( f'(x_0)=0 \) si dicono \textbf{punti critici di \( f \) })
+\end{theorem}
+
+\textbf{Dimostrazione}:
+
+Supponiamo ad esempio \( x_0 \) minimo locale di \( f \). Prendo \( h \in \mathbb{R} \),
+\( h \neq 0 \). Se \( |h| \) è abbastanza piccolo,
+\[
+f(x_0+h)-f(x_0) \ge 0\;\;\;\;\text{perchè \( x_0 \) è minimo locale}
+\] 
+Se \( h > 0 \):
+\[
+  \frac{f(x_0+h) - f(x_0)}{h} \ge 0
+\] 
+Se \( h < 0 \):
+\[
+\frac{f(x_0)-f(x_0)}{h} \le 0
+\] 
+Poichè \( f \) è differenziabile in \( x_0 \), so che esistono:
+\[
+  \lim_{h \to 0^+} \frac{f(x_0 + h) - f(x_0)}{h} 
+\] 
+\[
+  \lim_{h \to 0^-} \frac{f(x_0 + h) - f(x_0)}{h} 
+\] 
+e i due limiti sono uguali tra loro e uguali a \( f'(x_0) \). L'unica possibilità \( f'(x_0)=0 \) 
+
+\subsection{Teorema di Lagrange}
+\begin{definition}
+  Teorema di Lagrange o del valor medio. Sia \( f: [a,b]  \to \mathbb{R}\) una funzione
+  continua in \( [a,b] \) e differenziabile in \( (a,b) \). Allora esiste 
+  \( c \in (a,b) \) tale che:
+  \[
+  f'(c) = \frac{f(b)-f(a)}{b-a}
+\]
+\label{D6}
+\end{definition}
+\textbf{Corollario}: Sia \( I \) un intervallo, \( f: I \to \mathbb{R} \) una funzione
+differenziabile se:
+\[
+\begin{cases}
+  f'=0\\
+  f'\ge 0\\
+  f'>0\\
+  f'\le 0\\
+  f'<0
+\end{cases}
+\] 
+in tutti i punti di \( I \), allora \( f \) è:
+\[
+\begin{cases}
+  \text{costante}\\
+  \text{non decrescente}\\
+  \text{strettamente crescente}\\
+  \text{non crescente}\\
+  \text{strettamente decrescente}
+\end{cases}
+\] 
+Qui è importante assumere che il dominio sia un intervallo
+\begin{figure}[H]
+  \begin{example}
+    \[ f: (0,1) \cup (2,3) \to \mathbb{R} \],
+    \[
+      f(x):=\begin{cases}
+        -1 \;\;\; se\; 0<x<1\\
+        \frac{1}{2} \;\;\; se\; 2<x<3
+      \end{cases}
+    \] 
+    \[
+    \lim_{h \to 0} \frac{f(x_0+h)-f(x_0)}{h} = 0
+    \] 
+    \( f \) è differenziabile e ha \( f'=0 \) ovunque, ma non è costante.
+  \end{example}
+\end{figure}
 \end{document}
