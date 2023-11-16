@@ -1673,7 +1673,7 @@ Tenendo in mente le \( m \) coperte, la tabella diventa:
     \end{center}
     \caption{Tabella senza implicanti essenziali}
 \end{table}
-\paragraph{Eulistica} È un metodo per trovare la soluzione corretta, ma non garantisce
+\paragraph{Euristica} È un metodo per trovare la soluzione corretta, ma non garantisce
 che sia ottima.
 
 Se si cancella ad esempio \( m_1, m_9 \) perchè coperti da \( B \), allora \( B \)
@@ -2239,6 +2239,140 @@ Per \textbf{circuiti a più uscite} esiste solo un metodo \emph{approssimato} pe
 basa sul metodo esatto di identificazione degli implicanti primi essenziali di ogni singola uscita.
 
 
+\section{Modelli gerarchici}
+Un \textbf{componente gerarchico} è un componente del sistema che contiene al proprio interno dei
+sottocomponenti, ossia delle \textbf{istanze di altri componenti}. (Un sommatore di \( n \) bit
+può essere costruito da \( n \) sommatori).
+
+Un componente si può includere in un modello \emph{blif} con le seguenti istruzioni:
+\begin{center}
+  \begin{lstlisting}[language=Verilog]
+  .subckt nomeComp paramFormale=paramAttuale // Crea l'istanza di un componente
+  .search nomeFileComp.blif // Include il file blif di un componente
+  \end{lstlisting}
+\end{center}
+Ad esempio, per includere un sommatore a 4 bit:
+\begin{center}
+  \begin{lstlisting}[language=Verilog]
+  // sommatore.blif
+  .model SOMMATORE
+  .inputs A B CIN
+  .outputs O COUT
+
+  .names A B K
+  10 1
+  01 1
+
+  .names K CIN O
+  10 1
+  01 1
+
+  .names A B CIN COUT
+  11- 1
+  1-1 1
+  -11 1
+  .end
+  \end{lstlisting}
+\end{center}
+Si vuole includere il sommatore per creare un sommatore a 2 bit:
+\begin{center}
+  \begin{lstlisting}[language=Verilog]
+  .model SOMMATORE2
+  .inputs A1 A0 B1 B0 CIN
+  .outputs O1 O0 COUT
+  
+  .subsckt SOMMATORE A=A0 B=B0 CIN=CIN O=O0 COUT=C0
+  .subsckt SOMMATORE A=A1 B=B1 CIN=C0 O=O1 COUT=COUT
+  .search sommatore.blif
+
+  \end{lstlisting}
+\end{center}
+Ci sono dei componenti che possono essere utili, ad esempio:
+\begin{itemize}
+  \item Generazione di un bit costante a 0:
+    \begin{center}
+      \begin{lstlisting}[language=Verilog]
+        .model zero1
+        .outputs uscita
+        .names uscita
+        .end
+      \end{lstlisting}
+    \end{center}
+  \item Generazione di un bit a costante 1:
+    \begin{center}
+      \begin{lstlisting}[language=Verilog]
+        .model uno1
+        .outputs uscita
+        .names uscita
+        1
+        .end
+      \end{lstlisting}
+    \end{center}
+\end{itemize}
+
+\section{Ottimizzazione approssimata multilivello}
+Consente al progettista di bilanciare area e ritardo di di un circuito con maggior
+grado di libertà rispetto alla minimizzazione a 2 livelli.
+
+Tuttavia, non esistono tecniche esatte efficienti che portino alla realizzazione di
+configurazioni ottime usando la minimizzazione multi-livello; pertanto si ricorre
+a tecniche euristiche che garantiscono buone soluzioni in tempi di calcolo ragionevoli.
+
+Alcuni comandi utili sono le seguentu:
+\begin{itemize}
+  \item \textbf{sweep}: eliminazione dei nodi con un'unica linea di ingresso e di nodi
+    con valore costante
+  \item \textbf{eliminate}: eliminazione di un nodo interno alla rete. Si consideri
+    che il nodo \( N \) rappresenti la funzione \( y = (a+b) * c \), l'eliminazione
+    di \( N \) prevede la sostituzione della variabile \( y \) in tutti i nodi che la
+    utilizzano con l'espressione booleana \( (a+b) * c \).
+  \item \textbf{resub}: sostituzione di un nodo interno con un’insieme di nodi la cui
+funzionalità sia equivalente a quella del nodo sostituito.
+L’operazione viene effettuata per diminuire la complessità di
+un nodo
+  \item \textbf{extract}: estrazione di una sottoespressione comune a più nodi che
+viene rappresentata con un nuovo nodo
+  \item \textbf{simplify}: riduzione della complessità di ogni singolo nodo con algoritmo
+di Quine-McCluskey
+
+\section{Mapping tecnologico}
+La realizzazione di un circuito può usare due tecnologie fondamentali:
+\begin{itemize}
+  \item \textbf{ASIC}: utilizzando le porte logiche di base messe a disposizione da
+    chi si occupa di fondere il semiconduttore
+  \item \textbf{FPGA}: utilizzando le porte logiche di base disponibili all'interno della
+    board FPGA a disposizione
+\end{itemize}
+In entrambi i casi, le porte logiche di base sono contenute in una \textbf{libreria tecnologica}
+, la quale specifica anche le caratteristiche di \textbf{area e ritardo} delle porte logiche
+contenuta nella libreria.
+\end{itemize}
+I comandi principali sono:
+\begin{itemize}
+  \item \textbf{read\_library libreria}: carica la libreria tecnologica di nome "libreria".
+    Le librerie sono specificate nel formato \textbf{genlib} (estensione .genlib, ad esempio
+    synch.genlib e mcnc.genlib)
+  \item \textbf{print\_library}: visualizza informazioni inerenti alla libreria caricata
+  \item \textbf{map}: esegue l’operazione di mapping. Le opzioni principali del
+comando sono:
+\begin{itemize}
+  \item \textbf{-m 0}: permette di ottenere un circuito ottimizzato rispetto all'area.
+  \item \textbf{-n 1}: permette di ottenere un circuito ottimizzato rispetto al ritardo.
+  \item \textbf{-s}: visualizza informazioni relative ad area e ritardo dopo il mapping:
+    \begin{itemize}
+      \item \textbf{total gate area}: fornisce il valore dell'area come numero di
+        celle standard della libreria tecnologica
+      \item \textbf{maximum arrival time}: indica il ritardo
+    \end{itemize}
+\end{itemize}
+  \item \textbf{write\_blif -n}: mostra la rappresentazione del circuito associata alle
+porte della libreria
+  \item \textbf{print\_delay}: stampa informazioni relative al ritardo del circuito
+  \item \textbf{reduce\_depth}: riduce la lunghezza dei cammnini critici
+\end{itemize}
+
+% Fine laboratorio
+
 \section{Sintesi a N livelli}
 \begin{figure}[H]
 	\centering
@@ -2271,7 +2405,7 @@ basa sul metodo esatto di identificazione degli implicanti primi essenziali di o
     Il cammino critico è il percorso più lungo che il segnale deve effettuare e indica il ritardo.
 \end{define}
 In un circuito a 2 livelli riducendo l'area si riduce anche il ritardo.
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\begin{tikzpicture}[scale=0.6, domain=2:8]
 		\coordinate (D) at (3,1);
@@ -2973,56 +3107,59 @@ Un esempio di grafo è il seguente:
   \caption{Esempio di STG}
 \end{figure}
 
-\begin{example}[Mealy]
-  \[ M= <\{A,B,C\}, \{0,1\}, \{0,1\}, \delta, \lambda> \]
-  \begin{figure}[H]
-  \begin{center}
-    \begin{tikzpicture}[node distance=2cm and 2cm,>=stealth',auto, every place/.style={draw}]
-      \node [place] (A) {A};
-      \coordinate[node distance=1.3cm,left of=A] (left-A);
-      \coordinate[node distance=1.3cm,right of=A] (right-A);
-
-      \node [place] (B) [right=of A] {B};
-      \node [place] (C) [below of=right-A] {C};    
-
-      \path[->] (A) edge [bend left=20] node[scale=0.7] {0/0} (B);
-      \path[->] (B) edge [bend left=20] node[scale=0.7] {0/1} (A);
-      \path[->] (C) edge [bend right=20] node[right,xshift=3, scale=0.7] {0/0} (B);
-      \path[->] (B) edge [bend right=20] node[xshift=-3,scale=0.7] {1/1} (C);
-      \path[->] (A) edge [bend right=20] node[xshift=-2,left,scale=0.7] {1/1} (C);
-      \path[->] (C) edge [bend right=20] node[xshift=2,scale=0.7] {1/0} (A);
-    \end{tikzpicture}
-  \end{center}
-  \caption{Esempio di STG con Mealy}
-\end{figure}
-
-
-\end{example}
-
-\begin{example}[Moore]
-  \[ M= <\{A,B,C\}, \{0,1\}, \{0,1\}, \delta, \lambda> \]
 \begin{figure}[H]
-  \begin{center}
-    \begin{tikzpicture}[node distance=2cm and 2cm,>=stealth',auto, every place/.style={draw}]
-      \node [place] (A) {A/0};
-      \coordinate[node distance=1.3cm,left of=A] (left-A);
-      \coordinate[node distance=1.3cm,right of=A] (right-A);
+  \begin{example}[Mealy]
+    \[ M= <\{A,B,C\}, \{0,1\}, \{0,1\}, \delta, \lambda> \]
+    \begin{figure}[H]
+      \begin{center}
+        \begin{tikzpicture}[node distance=2cm and 2cm,>=stealth',auto, every place/.style={draw}]
+          \node [place] (A) {A};
+          \coordinate[node distance=1.3cm,left of=A] (left-A);
+          \coordinate[node distance=1.3cm,right of=A] (right-A);
 
-      \node [place] (B) [right=of A] {B/0};
-      \node [place] (C) [below of=right-A] {C/1};    
+          \node [place] (B) [right=of A] {B};
+          \node [place] (C) [below of=right-A] {C};    
 
-      \path[->] (A) edge [bend left=20] node[scale=0.7] {0} (B);
-      \path[->] (B) edge [bend left=20] node[scale=0.7] {0} (A);
-      \path[->] (C) edge [bend right=20] node[right,xshift=3, scale=0.7] {0} (B);
-      \path[->] (B) edge [bend right=20] node[xshift=-3,scale=0.7] {1} (C);
-      \path[->] (A) edge [bend right=20] node[xshift=-2,left,scale=0.7] {1} (C);
-      \path[->] (C) edge [loop below] node[xshift=2,scale=0.7] {1} ();
-    \end{tikzpicture}
-  \end{center}
-  \caption{Esempio di STG con Moore}
+          \path[->] (A) edge [bend left=20] node[scale=0.7] {0/0} (B);
+          \path[->] (B) edge [bend left=20] node[scale=0.7] {0/1} (A);
+          \path[->] (C) edge [bend right=20] node[right,xshift=3, scale=0.7] {0/0} (B);
+          \path[->] (B) edge [bend right=20] node[xshift=-3,scale=0.7] {1/1} (C);
+          \path[->] (A) edge [bend right=20] node[xshift=-2,left,scale=0.7] {1/1} (C);
+          \path[->] (C) edge [bend right=20] node[xshift=2,scale=0.7] {1/0} (A);
+        \end{tikzpicture}
+      \end{center}
+      \caption{Esempio di STG con Mealy}
+    \end{figure}
+  \end{example}
+  
 \end{figure}
 
-\end{example}
+\begin{figure}[H]
+\begin{example}[Moore]
+    \[ M= <\{A,B,C\}, \{0,1\}, \{0,1\}, \delta, \lambda> \]
+    \begin{figure}[H]
+      \begin{center}
+        \begin{tikzpicture}[node distance=2cm and 2cm,>=stealth',auto, every place/.style={draw}]
+          \node [place] (A) {A/0};
+          \coordinate[node distance=1.3cm,left of=A] (left-A);
+          \coordinate[node distance=1.3cm,right of=A] (right-A);
+
+          \node [place] (B) [right=of A] {B/0};
+          \node [place] (C) [below of=right-A] {C/1};    
+
+          \path[->] (A) edge [bend left=20] node[scale=0.7] {0} (B);
+          \path[->] (B) edge [bend left=20] node[scale=0.7] {0} (A);
+          \path[->] (C) edge [bend right=20] node[right,xshift=3, scale=0.7] {0} (B);
+          \path[->] (B) edge [bend right=20] node[xshift=-3,scale=0.7] {1} (C);
+          \path[->] (A) edge [bend right=20] node[xshift=-2,left,scale=0.7] {1} (C);
+          \path[->] (C) edge [loop below] node[xshift=2,scale=0.7] {1} ();
+        \end{tikzpicture}
+      \end{center}
+      \caption{Esempio di STG con Moore}
+    \end{figure}
+
+  \end{example}
+\end{figure}
 
 \begin{exercise}
   Progettare una macchina con 1 bit di ingresso \( x \) e 1 bit di uscita \( y \).
