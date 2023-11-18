@@ -20,11 +20,41 @@ stampa a video:
 #include <stdio.h>
 
 int main() {
-  int n;
+  int n, tmp;
+  int cifre = 0;
 
-  scanf("%d", &n);
+  do {
+    scanf("%d", &n);
+  } while (n < 0);
+  tmp = n;
+
+  // Conta delle cifre
+  while (tmp != 0) {
+    tmp /= 10;
+    cifre++;
+  }
 
   if (n > 99) {
+    for (int i = 0; i < cifre - 2; i++) {
+      int cifra1 = (n / 100) % 10;
+      int cifra2 = (n / 10) % 10;
+      int cifra3 = n % 10;
+
+      n /= 10;
+
+      int sub = cifra2 - cifra3;
+      // Modulo della sottrazione
+      if (sub < 0)
+        sub *= -1;
+
+      if (cifra1 != sub) {
+        printf("NO\n");
+        return 0;
+      }
+    }
+    printf("SI\n");
+  } else {
+    printf("NO\n");
   }
 
   return 0;
