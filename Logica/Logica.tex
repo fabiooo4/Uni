@@ -2436,8 +2436,7 @@ dimostrazione equivalente:
       \underbrace{\phi \to \psi \in \Gamma}_{A} \Leftrightarrow (\underbrace{\phi \in  \Gamma}_{B} \Rightarrow \underbrace{\psi \in \Gamma}_{C})
     \] 
     \begin{enumerate}
-      \item [Caso 1] TODO A CASA
-      \item [Caso 2]
+      \item [\( \Rightarrow\)] 
         \[
           (\Rightarrow)\;\;\;\;        A \Rightarrow B \Rightarrow C
         \] 
@@ -2448,12 +2447,21 @@ dimostrazione equivalente:
         \[
           \Gamma \vdash \psi \stackrel{TH2}{\Leftrightarrow} \psi \in \Gamma (\text{\textbf{C}})
         \] 
+      \item [\( \Leftarrow \) ]
         \[
           (\Leftarrow)\;\;\;\; (B \Rightarrow C) \Rightarrow A
         \] 
         \begin{enumerate}
-          \item [Caso B.1] \( \phi \in \Gamma \)  ("B è vero") TODO A CASA
-          \item [Caso B.2] \( \phi \notin \Gamma \) 
+          \item [Caso 1] \( \phi \in \Gamma \) 
+                    \[
+          \psi \in \Gamma \stackrel{TH2}{\Leftrightarrow} \Gamma \vdash \psi
+        \] 
+        Per costruzione di \( \Gamma \) 
+        \[
+          \Gamma,\phi \vdash \psi \Rightarrow \Gamma \vdash \phi \Rightarrow \psi \stackrel{TH2}{\Leftrightarrow} \phi \to \psi \in \Gamma
+        \] 
+
+          \item [Caso 2] \( \phi \notin \Gamma \) 
             \[
               \phi \notin \Gamma \; \stackrel{TH2,3}{\Rightarrow} \Gamma \vdash \neg \phi\;\; (\phi \notin \Gamma\; \stackrel{TH3}{\Leftrightarrow} \neg \phi \in \Gamma\; \stackrel{TH2}{\Leftrightarrow}\; \Gamma \vdash \neg \phi)
             \]
@@ -2487,17 +2495,41 @@ Dimostrazione per induzione sul rango di \( \phi \):
 \begin{itemize}
   \item \textbf{Base:} \( \phi \) atomica
    \begin{itemize}
-     \item \( \bot \) \(\;\;\;\;\; [|\bot|]_v=1 \Leftrightarrow \bot \in \Gamma \Leftrightarrow\) 
-     \item simbolo proposizionale \( \;\; [|\bot|]_v=0 \Leftrightarrow \bot \notin \Gamma \) 
+     \item \( \bot\;\;\;\;\; \) 
+       \(
+         [|\bot|]_v = 1 \Leftrightarrow \bot \in \Gamma \Leftrightarrow [|\bot|]_v=0 \Leftrightarrow \bot \notin \Gamma
+       \) 
+     \item simbolo proposizionale (valido per costruzione)
    \end{itemize} 
+  \item \textbf{Passo induttivo:} 
+    \begin{itemize}
+      \item \( \phi = \psi \wedge \gamma\) 
+        \[
+          \phi \in \Gamma \Leftrightarrow [|\phi|]_v=1
+        \] 
+        \[
+        \psi \wedge \gamma \in \Gamma \stackrel{def}{\Leftrightarrow} [|\psi|]_v=1\;\&\; [|\gamma|]_v=1
+        \] 
+        \[
+          \stackrel{TH4}{\Leftrightarrow} \psi \in \Gamma\; \& \; \gamma \in \Gamma\;\;\; \surd
+        \] 
+      \item \( \phi = \psi \to \gamma\)
+        \[
+        \phi \in \Gamma \Leftrightarrow [|\phi|]_v=1
+        \] 
+        \[
+          \psi \to \gamma \in \Gamma \stackrel{def}{\Leftrightarrow} [|\psi|]_v=0 \; OR\; [|\gamma|]_v=1
+        \] 
+        \[
+          \stackrel{TH4}{\Leftrightarrow} \psi \in \Gamma \Rightarrow \gamma \in \Gamma
+        \] 
+        \[
+          [|\psi|]_v=1\;\;\;\;[|\gamma|]_v=1
+        \] 
+        Quindi visto che la valutazione di \( \gamma \) è 1 basta per verificare
+        l'OR visto che era a 1 anche prima.
+    \end{itemize}
 \end{itemize}
-TODO A CASA (con TH4)
-\[
-\phi = \psi \wedge \gamma
-\] 
-\[
-  \phi = \psi \to \gamma
-\] 
 \subsubsection{Corollario 1}
 Se \( \Gamma \not\vdash \bot \) allora è soddisfacibile
 
