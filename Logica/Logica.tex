@@ -2178,19 +2178,6 @@ Tecnica: induzione su \( h(D) \) e per casi sull'ultima regola
         \end{enumerate}
 \end{enumerate}
 
-\begin{figure}[H]
-  \begin{exercise}[a casa]
-    Caso 3 (3 teorema di semantica)
-    \[
-      D= \frac{\underset{\alpha}{D_1}\;\;\underset{\beta}{D_2}}{\alpha \wedge \beta}
-    \] 
-    Caso 4 (4 teorema di semantica)
-    \[
-      D= \frac{\underset{\alpha_1 \wedge \alpha_2}{D_1}}{\alpha_i}_{i=1,2}
-    \] 
-  \end{exercise}
-\end{figure}
-
 \begin{itemize}
   \item \textbf{Lemma1} \( \underset{\phi}{D} \Rightarrow hp(D) \models \phi \)
   \item \textbf{Lemma2} \( E \subseteq \Gamma\;\;\; E \models \phi \Rightarrow \Gamma \models \phi \)
@@ -2391,4 +2378,131 @@ nel seguente modo:
     \phi_k \in \Gamma^*
     \] 
 \end{enumerate}
+\begin{itemize}
+  \item se \( \Gamma \) soddisfacibile \( \Rightarrow \not\vdash \bot \) 
+  \item se \( \Gamma \not\vdash \bot \Rightarrow \exists \;\Delta MC\;\;\;\Gamma\subseteq \Delta\) 
+\end{itemize}
+
+\subsubsection{Teorema 2: Chiusura per derivabilità}
+Se \( \Gamma \) è MC\footnote{Massimale Consistente} e \( \Gamma \vdash \alpha \Leftrightarrow \alpha \in \Gamma\) 
+
+
+\textbf{Prova:}\\
+Supponiamo per assurdo che \( \alpha \notin \Gamma \) allora:
+\[ \underbrace{\Gamma \cup \{\alpha\} \vdash \bot}_{\underset{\bot}{D}\;tc\; hp(D) \subseteq \Gamma \cup \{\alpha\} } \Rightarrow \Gamma \vdash \neg \alpha \;\;\;\;\;\;\;per:\; \frac{\underset{\bot}{\stackrel{\alpha}{D}}}{\underbrace{\alpha \to \bot}_{\neg \alpha}} \] 
+
+\[
+  \underbrace{\Gamma \vdash \neg \alpha \;\; \text{ma per hp}\; \Gamma \vdash \alpha}_{\text{Teorema 0}} \Rightarrow
+\] 
+\[
+\Gamma \vdash \bot \;\; \text{assurdo} \Rightarrow \alpha \in \Gamma \;\;\; \square
+\] 
+\subsubsection{Teorema 3}
+\[
+  \Gamma\;MC\; \text{allora}\; \forall \phi\;.\; \underbrace{\phi \in \Gamma = \neg \phi \in \Gamma}_{A \to B\;\;OR\;\; \neg A \vee B}
+\]  
+dimostrazione equivalente:
+\[
+\phi \notin \Gamma \Rightarrow \neg \phi \in \Gamma
+\] 
+\textbf{Prova:}
+\[
+\text{se}\;\; \phi \notin \Gamma \Rightarrow \Gamma, \phi \vdash \bot \Rightarrow
+\] 
+\[
+  \Gamma \vdash \neg \phi\; \stackrel{TH2}{\Leftrightarrow}\; \neg \phi \in \Gamma
+\] 
+
+\subsubsection{Teorema 4}
+\[
+\text{se}\;\Gamma\;\;MC
+\] 
+\begin{itemize}
+  \item \( \phi \wedge \psi \in \Gamma\; \Leftrightarrow\; (\phi \in \Gamma\;\&\; \psi \in\Gamma)\) 
+  \item \( \phi \to \psi \in \Gamma\; \Leftrightarrow\; (\phi \in  \Gamma \;\Rightarrow\; \psi \in \Gamma) \) 
+\end{itemize}
+\begin{itemize}
+  \item 
+    \textbf{Prova a:}
+    \[
+      \phi \wedge \psi \in \Gamma \; \stackrel{TH2}{\Leftrightarrow}\; \Gamma \vdash \phi \wedge \psi\;\;sse 
+    \] 
+    per regole di deduzione naturale: \( \Gamma \vdash \phi \;\&\; \Gamma \vdash \psi\;\;\; per:\; \frac{\underset{\phi}{\ldots}\;\;\underset{\psi}{\ldots}}{\phi \wedge \psi} \) 
+    \[
+      \stackrel{TH2}{\Leftrightarrow} \phi \in \Gamma\;\&\; \psi \in \Gamma
+    \] 
+  \item \textbf{Prova b:}
+    \[
+      \underbrace{\phi \to \psi \in \Gamma}_{A} \Leftrightarrow (\underbrace{\phi \in  \Gamma}_{B} \Rightarrow \underbrace{\psi \in \Gamma}_{C})
+    \] 
+    \begin{enumerate}
+      \item [Caso 1] TODO A CASA
+      \item [Caso 2]
+        \[
+          (\Rightarrow)\;\;\;\;        A \Rightarrow B \Rightarrow C
+        \] 
+        \begin{itemize}
+          \item \textbf{A} \( \;\;\; \phi \to  \psi \in \Gamma\; \stackrel{TH2}{\Rightarrow} \Gamma \vdash \phi \to \psi \) per \( \to E \) 
+          \item \textbf{B} \( \;\;\;\phi \in \Gamma\; \stackrel{TH2}{\Rightarrow} \Gamma \vdash \phi \) per \( \to E \) 
+        \end{itemize}
+        \[
+          \Gamma \vdash \psi \stackrel{TH2}{\Leftrightarrow} \psi \in \Gamma (\text{\textbf{C}})
+        \] 
+        \[
+          (\Leftarrow)\;\;\;\; (B \Rightarrow C) \Rightarrow A
+        \] 
+        \begin{enumerate}
+          \item [Caso B.1] \( \phi \in \Gamma \)  ("B è vero") TODO A CASA
+          \item [Caso B.2] \( \phi \notin \Gamma \) 
+            \[
+              \phi \notin \Gamma \; \stackrel{TH2,3}{\Rightarrow} \Gamma \vdash \neg \phi\;\; (\phi \notin \Gamma\; \stackrel{TH3}{\Leftrightarrow} \neg \phi \in \Gamma\; \stackrel{TH2}{\Leftrightarrow}\; \Gamma \vdash \neg \phi)
+            \]
+            \[
+            \Rightarrow \Gamma, \phi \vdash \bot
+            \] 
+            \[
+              \Rightarrow \Gamma, \phi \vdash \psi\;\;\;\;per:\; \frac{\underset{\bot}{\stackrel{[\phi]}{D}}}{\frac{\psi}{\phi \to \psi}\to I}\bot_i
+            \] 
+            \[
+              \Gamma \vdash \phi \to \psi \stackrel{TH2}{\Leftrightarrow} \phi \to \psi \in \Gamma\;\;(\text{\textbf{A}})
+            \] 
+        \end{enumerate}
+    \end{enumerate}
+\end{itemize}
+\subsubsection{Teorema 5}
+\[
+  \Gamma\;MC\;\; \Rightarrow \exists v.\; [|\Gamma|]_v=1
+\] 
+\textbf{Prova:}
+\[
+\text{sia v. tc}\;\; v(p)=1 \Leftrightarrow p \in \Gamma
+\] 
+\[
+\text{è accettabile}\;\;v(\neg p) = 0 \;\;\text{quando}\;\; \neg p \notin \Gamma\;(MC)
+\] 
+Dimostrazione per induzione sul rango di \( \phi \):
+\[
+  [|\phi|]_v = 1 \Leftrightarrow \phi \in \Gamma
+\] 
+\begin{itemize}
+  \item \textbf{Base:} \( \phi \) atomica
+   \begin{itemize}
+     \item \( \bot \) \(\;\;\;\;\; [|\bot|]_v=1 \Leftrightarrow \bot \in \Gamma \Leftrightarrow\) 
+     \item simbolo proposizionale \( \;\; [|\bot|]_v=0 \Leftrightarrow \bot \notin \Gamma \) 
+   \end{itemize} 
+\end{itemize}
+TODO A CASA (con TH4)
+\[
+\phi = \psi \wedge \gamma
+\] 
+\[
+  \phi = \psi \to \gamma
+\] 
+\subsubsection{Corollario 1}
+Se \( \Gamma \not\vdash \bot \) allora è soddisfacibile
+
+\subsubsection{Teorema 6}
+\[
+\Gamma \models \phi \Rightarrow \Gamma \vdash \phi
+\] 
 \end{document}
