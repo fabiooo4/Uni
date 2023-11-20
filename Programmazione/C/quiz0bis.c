@@ -9,10 +9,13 @@ Il programma stampa a video:
 
 #include <stdio.h>
 
+#define INT_MAX 2147483647
+#define INT_MIN -2147483648
+
 int main() {
   int n;
-  int minPari = -1;
-  int maxDispari = -1;
+  int minPari = INT_MAX;
+  int maxDispari = INT_MIN;
 
   scanf("%d", &n);
   if (n % 2 == 0) {
@@ -35,13 +38,13 @@ int main() {
     maxDispari = n;
   }
 
-  if (minPari != -1) {
+  if (minPari != INT_MAX) {
     printf("%d\n", minPari);
   } else {
     printf("NO\n");
   }
 
-  if (maxDispari != -1) {
+  if (maxDispari != INT_MIN) {
     printf("%d\n", maxDispari);
   } else {
     printf("NO\n");
