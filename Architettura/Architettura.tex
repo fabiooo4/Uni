@@ -162,7 +162,7 @@
  td=cout, tu=cin},
  }}
 \newcommand{\fulladder}[2] % #1 = name from to[generic,n=#1], #2 = rotation angle
-{\draw[thick,rotate=#2] (#1) 
+{\draw[rotate=#2] (#1) 
   (0,0) node[component adder, rotate=-90+#2] {+}
 ;}
 
@@ -172,7 +172,7 @@
  td=CK},
  }}
 \newcommand{\registry}[2] % #1 = name from to[generic,n=#1], #2 = rotation angle
-{\draw[thick,rotate=#2] (#1) 
+{\draw[rotate=#2] (#1) 
   (0,0) node[component registry, rotate=-90+#2] {\rotatebox{90}{REG}}
 ;}
 
@@ -2887,9 +2887,10 @@ Alcuni esempi sono i seguenti:
   \end{center}
   \caption{Simbolo dell'adder}
 \end{figure}
-Oppure unendo 8 sommatori si ottiene un sommatore a 8 bit:
-\label{D7}
-Oppure unendo N Latch si ottiene un registro:
+Unendo 8 sommatori si ottiene un sommatore a 8 bit.
+
+
+Oppure unendo N Latch si ottiene un registro a N bit:
 \begin{figure}[H]
   \begin{center}
     \begin{circuitikz}
@@ -2961,7 +2962,56 @@ Il simbolo del multiplexer è il seguente:
     Lo chiamiamo \( "count" \) e quando il \( reset = 1 \) allora \( count = 0 \).
     Per contare 1024 numeri bisogna memorizzare 10 bit, quindi prendiamo un registro
     a 10 bit.
-    \label{D11}
+    \begin{figure}[H]
+      \begin{center}
+        \begin{circuitikz}
+          \tikzset{mux custom/.style={muxdemux,
+           muxdemux def={Lh=4, NL=2, Rh=3,
+           NB=1, w=2, square pins=1}}}
+           \tikzset{component registry/.style={flipflop,
+            flipflop def={t2=I, t5=O,
+            td=CK},
+            }};
+          \tikzset{component adder/.style={flipflop,
+           flipflop def={t1=B, t3=A, t5=S,
+           td=cout, tu=cin},
+           }};
+
+
+          \node [mux custom, anchor=bpin 1, rotate=-90](B)
+            at (2,0){\rotatebox{90}{MUX}};
+           \node [anchor=north, scale=0.8] (A) at (B.blpin 1) {0};
+           \node [anchor=north, scale=0.8] (B) at (B.blpin 2) {1};
+
+
+          \draw[] (registry) 
+            (3.4,-2.12) node[component registry, rotate=-90, scale=0.7] {\rotatebox{90}{REG}};
+
+          \draw[] (adder) 
+          (6.989,-1.62) node[component adder, rotate=-270, scale=0.7] {+};
+
+          \draw
+            (0,0) node[above] {Reset}
+            to[short] ++(2,0)
+            (3.4,-0.84) to[short] ++(0,-0.5)
+            (0,-2.12) node[above] {CK}
+            to[short] ++(2.33,0)
+            (3.4,-3.4) to[short] ++(0,0.5)
+            node[below, yshift=-12] {Count}
+            to[short, *-] ++(3,0)
+            to[short] ++(0,0.5)
+            (6.989,-0.85) to[short] ++(0, 2)
+            to[short] ++(-3.03,0)
+            to[short] ++(0,-0.32)
+            (7.577,-2.4) to[short] ++(0,-0.6)
+            node[below, scale=0.8] {0000000001}
+            (2.84,0.84) to[short] ++(0,0.5)
+            node[above, scale=0.8] {0000000000}
+          ;
+        \end{circuitikz}
+      \end{center}
+      \caption{Contatore a modulo 1024}
+    \end{figure}
     Il segnale del circuito è il seguente:
     \begin{figure}[H]
   \begin{center}
@@ -2997,13 +3047,30 @@ Il simbolo del multiplexer è il seguente:
     di numeri. Bisogna quindi creare un altro elemento di memoria.
 \end{example}
 Un altro elemento di memoria è il flip-flop D (oppure Latch Master-Slave):
-\label{D13}
+\begin{figure}[H]
+  \begin{center}
+    \begin{circuitikz}
+      \draw
+        (0,0) node[above] {D} to[short] (1,0)
+        to[short] (1,0.5) -- (2,0.5) -- (2, -0.5) -- (1,-0.5) -- (1,0)
+        (2,0) node[above right] {\( Q_1 \) } to[short] (3.5,0) node[above left] {\( D_1 \) }
+        to[short] (3.5, 0.5) -- (4.5, 0.5) -- (4.5, -0.5) -- (3.5, -0.5) -- (3.5, 0)
+        (4.5,0) to[short] (5.5,0) node[above] {Q}
+        (1.5,-0.5) to[short] (1.5,-0.6) node[not port, anchor=out, scale=0.4,rotate=90] (not) {}
+        (not.in) to[short] (1.5,-2.2) node[below] {CK}
+        (not.in) to[short] ++(0,-0.2) to[short, *-] ++(2.5, 0) -- (4, -0.5)
+        (0.5,0) -- ++(0,1) -- ++(4.5,0) -- ++(0,-2.8) -- ++(-4.5,0) -- (0.5,0)
+      ;
+    \end{circuitikz}
+  \end{center}
+  \caption{Flip-flop D}
+\end{figure}
 Il campionamento degli ingressi avviene sul fronte di salita del clock.
 
-Per descrivere un qualsiasi comportamento sequenziale si usano come \textbf{modello}
-le FSM (Final State Machines).
 
 \section{Macchine a stati finiti (FSM)}
+Per descrivere un qualsiasi comportamento sequenziale si usano come \textbf{modello}
+le FSM (Final State Machines).
 Tutte le macchine sensate avranno delle sequenze finite e conterranno l'evoluzione da
 stato presente a stato prossimo in base alla configurazione di ingresso e genereranno una
 configurazione di uscita. Esistono diversi tipi di SFM, ma in questo corso ci
@@ -3045,23 +3112,25 @@ Per ogni coppia \( S,I \) indica lo stato prossimo e l'uscita.
     \end{itemize}
 \end{itemize}
 
-\begin{example}[Mealy]
-  \[ M= <\{A,B,C\}, \{0,1\}, \{0,1\}, \delta, \lambda> \]
-  \begin{table}[H]
-    \begin{center}
-      \begin{tabular}{c|c|c}
+\begin{figure}[H]
+  \begin{example}[Mealy]
+    \[ M= <\{A,B,C\}, \{0,1\}, \{0,1\}, \delta, \lambda> \]
+    \begin{table}[H]
+      \begin{center}
+        \begin{tabular}{c|c|c}
           & 0 & 1 \\
-        \hline
-        A & B/0 & C/1\\
-        \hline
-        B & A/1 & C/1\\
-        \hline
-        C & B/0 & A/0\\
-      \end{tabular}
-    \end{center}
-    \caption{State Transition Table di una FSM di Mealy}
-  \end{table}
-\end{example}
+          \hline
+          A & B/0 & C/1\\
+          \hline
+          B & A/1 & C/1\\
+          \hline
+          C & B/0 & A/0\\
+        \end{tabular}
+      \end{center}
+      \caption{State Transition Table di una FSM di Mealy}
+    \end{table}
+  \end{example}
+\end{figure}
 
 \begin{example}[Moore]
   \[ M= <\{A,B,C\}, \{0,1\}, \{0,1\}, \delta, \lambda> \]
@@ -3235,5 +3304,46 @@ modello divide il circuito in 2 parti:
   \item \textbf{Parte combinatoria}
   \item \textbf{Parte di registri} 
 \end{itemize}
-\label{D2.5}
+\begin{figure}[H]
+  \begin{center}
+    \begin{circuitikz}[scale=0.5]
+      \draw
+        (0,0) -- ++(3,0) node[above] {Combinatoria} -- ++(3,0) -- ++(0,-9) -- ++(-6,0) -- ++(0,9)
+        (0,-1) -- ++(-2,0) node[left] {\( x_0 \) }
+        (0,-2) -- ++(-2,0) node[left] {\( x_1 \) }
+        (0,-3) -- ++(-2,0) node[left] {\( x_2 \) }
+        (0,-4) -- ++(-2,0) node[left] {\( x_{n-1} \) }
+
+        (6,-1) -- ++(2,0) node[right] {\( y_0 \) }
+        (6,-2) -- ++(2,0) node[right] {\( y_1 \) }
+        (6,-3) -- ++(2,0) node[right] {\( y_2 \) }
+        (6,-4) -- ++(2,0) node[right] {\( y_{n-1} \) }
+
+        (0, -11) -- ++(6,0) -- ++(0,-2) -- ++(-6,0) -- ++(0,2) (6,-11.7) -- ++(-0.4,-0.3) -- ++(0.4,-0.3)
+        (0,-13) node[above right] {Q}
+        (6,-13) node[above left] {D}
+        (0, -14) -- ++(6,0) -- ++(0,-2) -- ++(-6,0) -- ++(0,2) (6,-14.7) -- ++(-0.4,-0.3) -- ++(0.4,-0.3)
+        (0,-16) node[above right] {Q}
+        (6,-16) node[above left] {D}
+        (0, -17) -- ++(6,0) -- ++(0,-2) -- ++(-6,0) -- ++(0,2) (6,-17.7) -- ++(-0.4,-0.3) -- ++(0.4,-0.3)
+        (0,-19) node[above right] {Q}
+        (6,-19) node[above left] {D}
+
+        (6,-6) -- ++(3,0) node[above] {\( s_{k-1} \) } -- ++(0,-12) -- ++(-3,0)
+        (6,-7) -- ++(2,0) node[above] {\( s_1 \) } -- ++(0,-8) -- ++(-2,0)
+        (6,-8) -- ++(1,0) node[above] {\( s_0 \) } -- ++(0,-4) -- ++(-1,0)
+
+        
+        (0,-6) -- ++(-3,0) node[above] {\( s_{k-1} \) } -- ++(0,-12) -- ++(3,0)
+        (0,-7) -- ++(-2,0) node[above] {\( s_1 \) } -- ++(0,-8) -- ++(2,0)
+        (0,-8) -- ++(-1,0) node[above] {\( s_0 \) } -- ++(0,-4) -- ++(1,0)
+      ;
+    \draw[red] (0,0) -- (6,-4.5);
+    \node[above left, red] at (6,-9) {\( \delta \) };
+    \draw[blue] (0,-9) -- (6,-4.5);
+    \node[below left, blue] at (6,0) {\( \delta \) };
+    \end{circuitikz}
+  \end{center}
+  \caption{Modello di Huffman}
+\end{figure}
 \end{document}
