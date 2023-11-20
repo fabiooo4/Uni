@@ -3444,13 +3444,13 @@ degli stati utilizzando la codifica a 3 bit:
     \end{tabular}
   \end{center}
 \end{table}
-La funzione \( \delta \)  è la seguente
-\[ \delta(y'_2,y'_1,y'_0) = \delta(y_2 \wedge y_1 \wedge y_0 \wedge x) \]
+La funzione è la seguente
+\[ (y'_0,y'_1,y'_2) = \delta(y_0 \wedge y_1 \wedge y_2 \wedge x) \]
 E la tabella di verità della funzione è la seguente:
 \begin{table}[H]
   \begin{center}
     \begin{tabular}{c|c}
-      \( y_2 \) \( y_1 \) \( y_0 \) \( x \)  & \( y'_2 \) \( y'_1 \) \( y'_0 \)    \\
+      \( y_0 \) \( y_1 \) \( y_2 \) \( x=0 \)  & \( y'_0 \) \( y'_1 \) \( y'_2 \)    \\
       \hline
       0 0 0 0 & 0 0 1 \\
       0 0 0 1 & 0 0 0 \\
@@ -3471,91 +3471,4 @@ E la tabella di verità della funzione è la seguente:
     \end{tabular}
   \end{center}
 \end{table}
-La funzione \( \lambda \) è la seguente:
-\[
-z = \lambda (y_2, y_1, y_0, x)
-\] 
-E la tabella di verità della funzione è la seguente:
-\begin{table}[H]
-  \begin{center}
-    \begin{tabular}{c|c}
-      \( y_2 \) \( y_1 \) \( y_0 \) \( x \)  & \( z \)     \\
-      \hline
-      0 0 0 0 & 0 \\
-      0 0 0 1 & 0 \\
-      0 0 1 0 & 0 \\
-      0 0 1 1 & 0 \\
-      0 1 0 0 & 0 \\
-      0 1 0 1 & 1 \\
-      0 1 1 0 & 0 \\
-      0 1 1 1 & 0 \\
-      1 0 0 0 & 0 \\
-      1 0 0 1 & 1 \\
-      1 0 1 0 & - \\
-      1 0 1 1 & - \\
-      1 1 0 0 & - \\
-      1 1 0 1 & - \\
-      1 1 1 0 & - \\
-      1 1 1 1 & - \\
-    \end{tabular}
-  \end{center}
-\end{table}
-Ora si può disegnare il modello di Huffman della funzione
-\begin{figure}[H]
-  \begin{center}
-    \begin{circuitikz}[scale=0.5]
-      \draw
-        (0,0) -- ++(3,0) node[above] {Combinatoria} -- ++(3,0) -- ++(0,-9) -- ++(-6,0) -- ++(0,9)
-        (0,-1) -- ++(-2,0) node[left] {\( x \) }
-
-        (6,-1) -- ++(2,0) node[right] {\( z \) }
-
-        (0, -11) -- ++(6,0) -- ++(0,-2) -- ++(-6,0) -- ++(0,2) (6,-11.7) -- ++(-0.4,-0.3) -- ++(0.4,-0.3)
-        (0,-13) node[above right] {Q}
-        (6,-13) node[above left] {D}
-        (0, -14) -- ++(6,0) -- ++(0,-2) -- ++(-6,0) -- ++(0,2) (6,-14.7) -- ++(-0.4,-0.3) -- ++(0.4,-0.3)
-        (0,-16) node[above right] {Q}
-        (6,-16) node[above left] {D}
-        (0, -17) -- ++(6,0) -- ++(0,-2) -- ++(-6,0) -- ++(0,2) (6,-17.7) -- ++(-0.4,-0.3) -- ++(0.4,-0.3)
-        (0,-19) node[above right] {Q}
-        (6,-19) node[above left] {D}
-
-        (6,-6) -- ++(3,0) node[above] {\( y_0 \) } -- ++(0,-12) -- ++(-3,0)
-        (6,-7) -- ++(2,0) node[above] {\( y_1 \) } -- ++(0,-8) -- ++(-2,0)
-        (6,-8) -- ++(1,0) node[above] {\( y_2 \) } -- ++(0,-4) -- ++(-1,0)
-
-        
-        (0,-6) -- ++(-3,0) node[above] {\( y_0 \) } -- ++(0,-12) -- ++(3,0)
-        (0,-7) -- ++(-2,0) node[above] {\( y_1 \) } -- ++(0,-8) -- ++(2,0)
-        (0,-8) -- ++(-1,0) node[above] {\( y_2 \) } -- ++(0,-4) -- ++(1,0)
-      ;
-    \draw[red] (0,0) -- (6,-4.5);
-    \node[above left, red] at (6,-9) {\( \delta \) };
-    \draw[blue] (0,-9) -- (6,-4.5);
-    \node[below left, blue] at (6,0) {\( \lambda\) };
-    \end{circuitikz}
-  \end{center}
-  \caption{Modello di Huffman}
-\end{figure}
-
-\section{Equivalenza tra macchina a stati}
-Le FSM si dividono in 2 tipi:
-\begin{itemize}
-  \item \textbf{Completamente specificate}: per ogni coppia stato/ingresso è specificata la coppia
-    stato prossimo/uscita
-  \item \textbf{Parzialmente specificate}: per alcune coppie stato/ingresso non viene
-    specificato lo stato prossimo \textbf{oppure} (anche entrambi) l'uscita
-\end{itemize}
-Prendiamo in considerazione 2 macchine:
-\[
-M_1 = <S_1, I_1, O_1, \delta_1, \lambda_1>
-\] 
-\[
-M_2 = <S_2, I_2, O_2, \delta_2, \lambda_2>
-\] 
-Tali che \( I_1 = I_2 \) e \( O_1 = O_2 \), \( M_1 \) e \( M_2 \) sono equivalenti
-se e solo se per ogni stato \( s_1^a \in S_1\) esiste uno stato \( s_2^b \in S_2 \) tale
-che ponendo la macchina \( M_1 \) nello stato \( s_1^a \) e la macchina \( M_2 \) nello stato
-\( s_2^b \) e applicando una qualsiasi sequenza di ingresso \( J_a \) le due sequenze
-di uscita prodotte sono identiche.
 \end{document}

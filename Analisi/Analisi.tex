@@ -2195,4 +2195,52 @@ Qui è importante assumere che il dominio sia un intervallo
     \( f \) è differenziabile e ha \( f'=0 \) ovunque, ma non è costante (il dominio non è un intervallo).
   \end{example}
 \end{figure}
+\subsection{Dimostrazione}
+\begin{enumerate}
+  \item 
+    Sia \( f: [a,b] \to \mathbb{R} \) continua, differenziabile in \( (a,b) \) , tale
+    che \( f(a)=f(b) \).
+
+    Devo dimostrare che esiste \[ c \in (a,b)\;tc\; f'(c)=0 \]
+    Per il teorema di Weierstrass, \( f \) possiede un punto di massimo \( x_{max} \) 
+    e un punto di minimo \( x_{min} \) globali. 
+
+    Se \( x_{min} \in (a,b) \), allora scelgo \( c:= x_{min} \) e per il teorema di Fermat,
+    so che \( f'(c)=0 \).
+
+    Se \( x_{max} \in (a,b) \), allora scelgo \( c:=x_{max} \) e per il teorema di Fermat,
+    so che \( f'(c)=0 \).
+
+    Altrimenti, ho \( \{x_{max},x_{min}\}= \{a,b\}   \). Grazie all'ipotesi \( f(a)=f(b) \),
+    posso allora dedurre che \( f \) è costante, dunque \( f'=0 \) in tutto \( [a,b] \).
+    \label{D1}
+  \item \textbf{Caso generale:}
+    Definisco \( g: [a,b] \to \mathbb{R} \),
+    \[
+      g(x):= f(x)-\left(\frac{f(b)-f(a)}{b-a}(x-a)+f(a)\right)\;\;\;\forall x \in [a,b]
+    \] 
+    Ora \( g \) è continnua, \( g \) è differenziabile, in \( (a,b) \),
+    \[
+    g(a)=f(a) - f(a) = 0
+    \] 
+    \[
+    g(b) = f(b) -f(b) = 0
+    \] 
+    Dunque, per quanto dimostrato nel passo precedente, esiste \( c \in (a,b) \) tale che
+    \[
+    g'(c)=0
+    \] 
+    TODO A CASA (concludi per esercizio)
+\end{enumerate}
+\subsubsection{Dimostrazione del corollario}
+Prendo \( a \in I, b \in I \) qualsiasi; devo dimostrare che \( f(a) = f(b) \).
+Se \( a = b \), non c'è nulla da dimostrare. Suppongo ad esempio \( a < b \) (se no li scambio).
+Allora \( f \) è definita su tutto \( [a,b] \) (perchè \( I \) è un intervallo, dunque \( [a,b] \supseteq I\) ).
+\label{D2}
+Inoltre \( f:[a,b] \to \mathbb{R} \) è continua (differenziabile \( \Rightarrow \) continua),
+differenziabile in \( (a,b) \) e quindi, per il teorema di Lagrange, esiste \( c \in (a,b) \) t.c.
+\[
+f'(c)=\frac{f(b)-f(a)}{b-a}
+\] 
+Ma, per ipotesi, \( f'(c)=0 \), da cioè \( f(b)-f(a)=0 \), cioè \( f(b)=f(a) \).
 \end{document}
