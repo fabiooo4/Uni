@@ -2717,4 +2717,80 @@ Nozione duale \( \to  \) \textbf{variabile legata}
     \end{itemize} 
   \end{definition}
 \end{figure}
+
+\subsection{Sottotermini}
+\[
+  ST(\overline{c}) = \{\overline{c}\} 
+\] 
+\[
+  ST(x) = \{x\} 
+\] 
+\[
+  ST(f(t_1 \ldots t_n)) = ST(t_1) \cup \ldots \cup ST(t_n) \cup \{f(t_1 \ldots t_n)\} 
+\] 
+\subsection{Sottoformule}
+\[
+SF(\bot) = \{\bot\} 
+\] 
+\[
+SF(t_1 = t_2) = \{t_1 = t_2\} 
+\] 
+\[
+SF(P(t_1 \ldots t_n)) = \{P(t_1 \ldots t_n)\} 
+\] 
+\[
+SF(\phi \circ \psi) = SF(\phi) \cup SF(\psi) \cup \{\phi \circ \psi\}\;\;\;\; \circ \in \{\wedge, \vee, \to \}  
+\] 
+\[
+  SF(\underset{\exists}{\forall}x.\; \phi) = SF(\phi) \cup \{\underset{\exists}{\forall}x.\; \phi\}
+\] 
+\subsection{Vincoli}
+\( t \in TERM \) si dice chiuso se \( FV(t) = \emptyset \) o\\
+\( \phi \in \) \( \underbrace{ FORM  \text{si dice chiusa}}_{\text{Enunciato (Sentence SENT)}} \)  se \( FV(\phi) = \emptyset \)
+\vspace{1em}\\
+Prendendo in considerazione la sostituzione \( \phi[t/x] \) esistono 2 tipi di vincoli:
+\begin{enumerate}
+  \item non posso sostituire variabili legate
+  \item non tutti i termini vanno bene
+\end{enumerate}
+Questi vincoli servono ad evitare errori, ad esempio:
+\[
+\phi = \forall x.\; R(x,y) \in FORM\;\;\;\;tc=f(x) \in TERM
+\] 
+\[
+  \phi[f(x)/y] = \forall x.\; R(x, \underbrace{f(x)}_{legato})\;\;\; \text{Questo risultato non è accettabile}
+\] 
+\[
+  \phi[f(x),x] = \phi
+\] 
+Dopo la sostituzione sono state create delle nuove variabili legate.
+\begin{figure}[H]
+  \begin{definition}
+    Termini liberi per una variabile in una formula.
+    \vspace{1em}\\
+    \( t \) libero per \( x \) in \( \phi \) se dopo la sostituzione \( \phi[t/x] \) tutte
+    le occorrenze delle variabili in \( t \) sono libere.
+    \vspace{1em}\\
+    \( \phi[t/x] \) è corretta se dopo la sostituzione tutte le occorrenze
+    delle variabili in \( t \) sono libere.
+  \end{definition}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{example}
+    \[
+    R(\_\;,\_)
+    \] 
+    \[
+      \sigma=\forall x.\;(R(z,x)\;[f(z)] \equiv \forall x.\; (R(f(z),x)) \;\;\surd
+    \] 
+    \[
+      \forall x.\; (R(z,x))\;[f(x)/z] \equiv \forall x.\; (R(f(x),x)) \;\;\times
+    \] 
+    \[
+      \forall x.\; (R(z,x))\;[f(z)/x] \equiv \sigma
+    \] 
+    \( f(x) \) non è libero per \( x \) in \( \sigma \)
+  \end{example}
+\end{figure}
 \end{document}
