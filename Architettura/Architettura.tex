@@ -3558,4 +3558,287 @@ se e solo se per ogni stato \( s_1^a \in S_1\) esiste uno stato \( s_2^b \in S_2
 che ponendo la macchina \( M_1 \) nello stato \( s_1^a \) e la macchina \( M_2 \) nello stato
 \( s_2^b \) e applicando una qualsiasi sequenza di ingresso \( J_a \) le due sequenze
 di uscita prodotte sono identiche.
+
+\begin{figure}[H]
+  \begin{definition}
+    \[
+      M=<S,I,O,\delta,\lambda> \;\;\text{completamente specificata}
+    \] 
+    \( s_i, s_k \in S \) sono \textbf{equivalenti} (o indistiguibili) \( s_i \sim s_k \) 
+    se e solo se per ogni sequenza di ingresso:
+    \[
+      I_{\alpha} \ldots i_n
+    \] 
+    \[
+      \lambda(s_i,I_{\alpha}) = \lambda(s_k,I_{\alpha})
+    \] 
+    Non si può trovare un algoritmo che verifichi l'uguaglianza perchè ci sono infiniti
+    test da verificare.
+  \end{definition}
+\end{figure}
+La relazione \( \sim \) è una relazione di equivalenza ed è:
+\begin{itemize}
+  \item \textbf{Riflessiva}: \( s_i \sim s_i \)
+  \item \textbf{Simmetrica}: \( s_i \sim s_k \to s_k \sim s_i \) 
+  \item \textbf{Transitiva}: \( s_i \sim s_k \wedge s_k \sim s_j \to s_i \sim s_j \) 
+\end{itemize}
+
+\subsection{Macchina minima}
+Una macchina \( M \) si dice \textbf{minima} se in \( S \)  non esiste una coppia di stati
+\( s_i,s_k \in S \) tale che \( s_i \sim s_k \). \textbf{Per ogni macchina esiste una e una
+sola macchina minima} (a meno di rinominazione degli stati).
+
+\section{Algoritmo di Paull-Unger}
+Bisogna cambiare la definizione di equivalenza per rimuovere l'infinità di test.
+\begin{figure}[H]
+  \begin{definition}
+    \( s_i \sim s_k \) se e solo se per ogni \( i \in I \) si verificano \textbf{entrambe}
+    le seguenti condizioni:
+    \begin{enumerate}
+      \item \( \lambda(s_i,i) = \lambda(s_j,i) \)
+      \item \( \delta(s_i,i) \sim \delta(s_j,i) \) (definito ricorsivamente)
+    \end{enumerate}
+  \end{definition}
+\end{figure}
+\begin{table}[H]
+  \begin{center}
+    \begin{tabular}{c|c|c}
+      s & x=0 & x=1 \\
+      \hline
+      A & B/0 & A/0 \\
+      B & C/0 & A/0 \\
+      C & B/0 & D/1 \\
+      D & B/0 & E/0 \\
+      E & B/0 & D/1 \\
+    \end{tabular}
+  \end{center}
+\end{table}
+Adesso si crea una tabella triangolare in cui si fanno i confronti tra gli stati.
+\begin{table}[H]
+  \begin{center}
+    \begin{tabular}{c|c|c|c|c}
+      B & (B,C) &  &  &  \\
+      \hline
+      C & \( \times  \)  & \( \times \)  &  &  \\
+      \hline
+      D & (A,E) & (B,C) (A,E) & \( \times  \)  &  \\
+      \hline
+      E & \( \times  \)  & \( \times  \)  & \( \sim \)  & \( \times  \)  \\
+      \hline
+        & A & B & C & D \\
+    \end{tabular}
+  \end{center}
+  \caption{Tabella di confronto}
+\end{table}
+Nel passo successivo si controllano le coppie di stati con i confronti già fatti, se valgono
+rimangono nella tabella, altrimenti si eliminano.
+\begin{table}[H]
+  \begin{center}
+    \begin{tabular}{c|c|c|c|c}
+      B & \( \times  \)  &  &  &  \\
+      \hline
+      C & \( \times  \)  & \( \times \)  &  &  \\
+      \hline
+      D & \( \times  \)  & \( \times  \)  & \( \times  \)  &  \\
+      \hline
+      E & \( \times  \)  & \( \times  \)  & \( \sim \)  & \( \times  \)  \\
+      \hline
+        & A & B & C & D \\
+    \end{tabular}
+  \end{center}
+  \caption{Tabella di confronto finale}
+\end{table}
+Nel passo successivo si creano nuovi stati a partire dalla tabella.
+\[
+\alpha = \{A\}, \;\; \beta = \{B\}  
+\] 
+\[
+\gamma= \{C,E\}, \;\; \delta= \{D\}  
+\] 
+Si ricrea poi la tabella con i nuovi stati e sarà la macchina minima.
+\begin{table}[H]
+  \begin{center}
+    \begin{tabular}{c|c|c}
+      s & x=0 & x=1 \\
+      \hline
+      \( \alpha \)  & \( \beta \)/0 & \( \alpha \)/0 \\
+      \( \beta \)  & \( \gamma \)/0 & \( \alpha \)/0 \\
+      \( \gamma \)  & \( \beta \)/0 & \( \delta \)/1 \\
+      \( \delta \)  & \( \beta \)/0 & \( \gamma \)/0 \\
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\subsubsection{Esempi}
+\begin{figure}[H]
+  \begin{example}
+    Prendiamo in considerazione la seguente tabella:
+    \begin{table}[H]
+      \begin{center}
+        \begin{tabular}{c|c|c}
+          S & 0 & 1 \\
+          \hline
+          A & G/00 & C/01 \\
+          B & G/00 & D/01 \\
+          C & D/10 & A/11 \\
+          D & C/10 & B/11 \\
+          E & G/00 & F/01 \\
+          F & F/10 & E/11 \\
+          G & A/01 & F/11 \\
+        \end{tabular}
+      \end{center}
+    \end{table}
+    Creiamo la tabella dei confronti:
+    \begin{table}[H]
+  \begin{center}
+    \begin{tabular}{c|c|c|c|c|c|c}
+      B & (C,D) &  &  &  &  & \\
+      \hline
+      C & \( \times  \)  & \( \times \)  &  &  &  &  \\
+      \hline
+      D & \( \times  \)  & \( \times  \)  & (A,B) &  &  &  \\
+      \hline
+      E & (C,F) & (D,F) & \( \times \)  & \( \times  \) &  &   \\
+      \hline
+      F & \( \times  \)  & \( \times  \)  & (D,F) (A,E)  & (C,F) (B,E) & \( \times  \)  & \\
+      \hline
+      G & \( \times  \)  & \( \times  \)  & \( \times  \)  & \( \times  \) & \( \times  \)  & \( \times  \)  \\
+      \hline
+        & A & B & C & D & E & F \\
+    \end{tabular}
+  \end{center}
+  \caption{Tabella di confronto finale}
+\end{table}
+    Osserviamo che il confronto (B,A) vale solo se vale il confronto (C,D) che anch'esso
+    vale solo se vale (B,A), cioè:
+    \[
+    A \sim B\;\;se\;\; C \sim D\;\;\;\;\;\; C \sim D \to A \sim B
+    \] 
+    \[
+    C \sim D\;\;se\;\; A \sim B\;\;\;\;\;\; A \sim B \to C \sim D
+    \] 
+    Utilizziamo quindi dei grafi (\textbf{cricca}\footnote{Un insieme di nodi connessi tra loro.
+    Una \textbf{Cricca massima} è una cricca che non è contenuta in un altra cricca}) per risolvere il problema visto che non abbiamo cicli che
+    validano tutti gli stati.
+    \label{D1}
+    Dal grafo deriviamo le cricche:
+    \[
+    \alpha = \{A,B,E\} 
+    \] 
+    \[
+    \beta = \{C,D,F\}
+    \] 
+    \[
+    \gamma = \{G\}
+    \] 
+    Questi sottoinsiemi sono chiamati \textbf{Classi di equivalenza}.\\
+    Nel prossimo passo si crea la tabella delle classi di equivalenza:
+    \begin{table}[H]
+      \begin{center}
+        \begin{tabular}{c|c|c}
+          & 0 & 1 \\
+          \hline
+          \( \alpha \) & \( \gamma \)/00 & \( \beta \)/01  \\ 
+          \( \beta \) & \( \beta \)/10 & \( \alpha \)/11 \\ 
+          \( \gamma \) & \( \alpha \)/01 & \( \beta \)/11 \\ 
+        \end{tabular}
+      \end{center}
+    \end{table}
+  \end{example}
+\end{figure}
+
+\subsection{Compatibilità}
+\( s_i \vee s_k \) se e solo se per ogni \( i_i \in I \) 
+\begin{itemize}
+  \item ovunque siano ambedue specificati \( \delta(s_i, i_i) \vee \delta(s_k, i_i) \) 
+  \item ovunque siano ambedue specificati \( \lambda(s_i, i_i) = \lambda(s_k, i_i) \) 
+\end{itemize}
+Dopo aver utilizzato l'algoritmo di Paull-Unger si può creare la \textbf{tabella di compatibilità}
+\begin{table}[H]
+  \begin{center}
+    \begin{tabular}{c|c|c}
+      & 0 & 1 \\
+      \hline
+      A & E/0 & A/0 \\
+      B & D/0 & B/0 \\
+      C & E/- & C/- \\
+      D & A/1 & A/1 \\
+      E & A/- & B/- \\
+    \end{tabular}
+  \end{center}
+  \caption{Esempio di macchina a stati}
+\end{table}
+La tabella dei confronti è la seguente:
+\begin{table}[H]
+  \begin{center}
+    \begin{tabular}{c|c|c|c|c}
+      B & (E,D) &  &  &  \\
+      \hline
+      C & \( \sim\)  & (D,E)  &  &  \\
+      \hline
+      D & \( \times  \)  & \( \times  \)  & (E,A) (C,A)  &  \\
+      \hline
+      E & (A,B)  & (D,A)  & (E,A) (C,B)  & (A,B)  \\
+      \hline
+        & A & B & C & D \\
+    \end{tabular}
+  \end{center}
+  \caption{Tabella di confronto}
+\end{table}
+La tabella finale è la seguente:
+\begin{table}[H]
+  \begin{center}
+    \begin{tabular}{c|c|c|c|c}
+      B & (E,D) &  &  &  \\
+      \hline
+      C & \( \sim\)  & (D,E)  &  &  \\
+      \hline
+      D & \( \times  \)  & \( \times  \)  & (E,A) (C,A)  &  \\
+      \hline
+      E & (A,B)  & \( \times  \)   & (E,A) (C,B)  & (A,B)  \\
+      \hline
+        & A & B & C & D \\
+    \end{tabular}
+  \end{center}
+  \caption{Tabella di confronto finale}
+\end{table}
+Bisogna fare il grafo:
+\label{D2}
+Infine bisogna trovare le classi massime di compatibilità (\textbf{cricche massime}), ma possono
+esistere solo se esistono le condizioni definite sugli archi.
+\[
+\alpha = \{A,B,C\}\;\;\text{condizione D,E}\;\; 
+\] 
+\[
+\beta = \{A,C,E\} \;\; \text{condizione}\;\;A,B\;\; A,E\;\; C,B
+\] 
+\[
+\gamma = \{C,D,E\} \;\; \text{condizione}\;\;A,E\;\;A,B\;\;A,C\;\;C,B
+\] 
+Bisogna prenderne una (a caso), assumerla compatibile e ricavare le altre. In questo caso
+scegliamo \( \alpha \) e vengono cancellati tutti i collegamenti del grafo che coinvolgono
+\( \alpha \). 
+\label{D3}
+Dall'ultimo grafo otteniamo di nuovo le cricche massime:
+\[
+\beta = \{D,E\} 
+\] 
+Gli stati alla fine saranno 2, cioè quello che abbiamo scelto all'inizio (\( \alpha \)) e
+la cricca massima dell'ultimo grafo:
+\[
+\alpha = \{A,B,C\}
+\] 
+\[
+\beta = \{D,E\} 
+\] 
+\begin{table}[H]
+  \begin{center}
+    \begin{tabular}{c|c|c}
+      & 0 & 1\\
+      \hline
+      \( \alpha \) & \( \beta \)/0 & \( \alpha \)/0 \\
+      \( \beta \) & \( \alpha \)/1 & \( \alpha \)/1 \\
+    \end{tabular}
+  \end{center}
+\end{table}
 \end{document}
