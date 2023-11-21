@@ -2531,10 +2531,190 @@ Dimostrazione per induzione sul rango di \( \phi \):
     \end{itemize}
 \end{itemize}
 \subsubsection{Corollario 1}
-Se \( \Gamma \not\vdash \bot \) allora è soddisfacibile
-
-\subsubsection{Teorema 6}
+Se \( \Gamma \not\vdash \bot \) allora \( \exists v. [|\Gamma|]_v=1 \) 
+\textbf{Prova}:
+\[
+  \Gamma \not\vdash \bot \stackrel{TH1}{\Rightarrow} \exists \Delta.\;\;\; \Gamma \subseteq \Delta,\;\;\; \Delta\; MC
+\] 
+\[
+  \stackrel{TH5}{\Rightarrow} \exists v.\;\;\; [|\Delta|]_v=1 \Rightarrow \exists v.\;\;\; [|\Gamma|]_v=1 \;\; \square
+\] 
+\subsubsection{Teorema 6 (Completezza)}
 \[
 \Gamma \models \phi \Rightarrow \Gamma \vdash \phi
 \] 
+Riscriviamo il risultato usando il ragionamento per contrapposizione (\( \alpha \to \beta = \neg \beta \to \neg \alpha \) )
+\[
+\Gamma \not\vdash \phi \Rightarrow \Gamma \not\models \phi
+\] 
+\[
+  \Gamma \not\vdash \phi \Rightarrow \Gamma,\neg \phi \not\vdash \bot \stackrel{COR1}{\Rightarrow}
+\] 
+\[
+  \exists v.\;\;\; [|\Gamma|]_v=1 \;\&\; [|\neg \phi|]_v=1 \; \Leftrightarrow
+\] 
+\[
+  \exists v.\;\;\; [|\Gamma|]_v=1\; \&\; [|\phi|]_v=0 \Rightarrow \Gamma \not\models \phi
+\] 
+
+\subsection{Estensione}
+Si possono estendere i teoremi al sistema completo con \( \vee \).
+
+\section{Logica del primo ordine (dei Predicati)}
+La logica del primo ordine è una logica che estende la logica proposizionale 
+e permette di esprimere concetti più complessi attraverso strutture matematiche.
+Un esempio non formale è il seguente:
+\[
+  \forall n.\; (\text{se \( n \) è pari allora \( \exists m \) dispari t.c. \( m>n \)  })
+\] 
+La grammatica locale a questa frase è:
+\[
+  \forall,\; \exists,\; \Rightarrow\;\;\;+\;\;\;\text{esprimere proprietà e relazioni}
+\] 
+Avremo bisogno anche della nozione di variabili, costanti, funzioni e operatori.
+
+\subsection{Linguaggio di primo ordine}
+\begin{itemize}
+  \item \textbf{Connettivi}: \( \vee,\; \wedge,\; \to,\; \bot\;\;\;\;\;\;(\neg) \) 
+  \item \textbf{Quantificatori}: \( \forall,\; \exists \)\\
+    Al primo ordine si può quantificare solo su variabili
+  \item \textbf{Variabili}: \( x,\;y,\;z,\; \ldots \) \(\;\;\; Var = \) insieme delle variabili
+  \item \textbf{Relazioni}: \( R_0,\; R_1,\; \ldots \) \( \;\;\; P \ldots \;Q \ldots \) 
+    \[
+    \forall n\; \exists\; \mathbb{N} \setminus \{0\} \;\;\; \text{insieme} \; R^n\; \text{di relazioni n arie}
+    \] 
+  \item \textbf{Funzioni}: \( \forall n \in \mathbb{N} \) \( F^n =\) insieme di funzioni 
+    \[
+    f_1 \ldots f_n \;\;\; \text{simboli per funzioni}
+    \] 
+  \item \textbf{Simboli ausiliari}: "(", ")", ",", "."
+  \item \textbf{Uguaglianza}: \( =\;\;\; \) relazione binaria che non è già inclusa in \( R^2 \)  
+  \item \textbf{Costanti}: \( C\;\;\; \) \( c_0, c_1, \ldots \)  
+\end{itemize}
+L'unione di tutti gli insiemi è la seguente:
+\[
+R = \cup_i R^i \;\;\;\;\; F = \cup_i F^i
+\] 
+\subsection{Entità sintattiche}
+Vengono definite su:
+\begin{itemize}
+  \item \textbf{Termini}
+  \item \textbf{Formule}
+\end{itemize}
+
+\subsubsection{Termini}
+L'insieme \( TERM \) dei termini è il più piccolo insieme \( X \) tale che:
+\begin{enumerate}
+  \item \( Var \in X \)
+  \item \( C \in X \)
+  \item se \( t_1 \ldots t_n \in X \) e \( f \) è un simbolo di funzione di arietà \( n \) 
+    \[
+    f(t_1 \ldots t_n) \in X
+    \] 
+    ad esempio:
+        \[
+          \overline{+} \in F^2
+        \] 
+        \[
+          \overline{4}, \overline{5} \in C \in X \Rightarrow \overline{+}(\overline{4}, \overline{5}) \in X
+        \] 
+\end{enumerate}
+
+\begin{figure}[H]
+  \begin{example}
+    \[
+      \overline{c} \in C\;\;\;\;\; x_0, x_1, \ldots \;\;\;\;\; f\; \text{di arietà 2}, \;\;\; g\; \text{di arietà 1}
+    \] 
+    \begin{enumerate}
+      \item \( \overline{c} \in TERM \) 
+      \item \( x_{1000} \in TERM \) 
+      \item \( f(\overline{c}, x_4) \in TERM\) 
+      \item \( g(x_1) \in TERM \) 
+      \item  \( g(x_1, x_2) \notin TERM \) 
+      \item \( f(g(x_2), g(\overline{c})) \in TERM \) 
+    \end{enumerate}
+  \end{example}
+\end{figure}
+
+\subsubsection{Formule}
+L'insieme delle formule \( FORM \) delle formule è il più piccolo insieme \( X \) tale che:
+\begin{enumerate}
+  \item \( \bot \in X \) 
+  \item se \( t_1,t_2 \in TERM \) allora \( t_1 = t_2\;\; \in X \) 
+  \item se \( P \) è una relazione di arietà \( k \) e \( t_1 \ldots t_k \in TERM \) allora \( P(t_1 \ldots t_k) \in X \)
+\end{enumerate}
+Le precedenti 3 formule sono dette \textbf{atomiche}. 
+\begin{enumerate}
+  \item [4.] se \( \phi, \psi \in X \) allora \( (\phi \circ \psi) \in X \;\;\;\;\; \circ \in  \{\wedge, \vee, \to \} \) 
+  \item [5.] se \( x \in Var \) e \( \phi \in X \) allora \( (\forall x.\; (\phi)) \in X \) 
+  \item [6.] se \( x \in Var \) e \( \phi \in X \) allora \( (\exists x.\; (\phi)) \in X \) 
+\end{enumerate}
+
+\subsection{Convenzione}
+I quantificatori \( \forall , \exists  \) legano piu di ogni altro connettivo.
+\[
+\forall y.\; \phi \wedge \psi \equiv (\forall y.\; \phi) \wedge \psi
+\] 
+\[
+\neq \;\; \forall y.\; (\phi \wedge \psi)
+\] 
+
+\subsubsection{Concetto di variabile libera e legata}
+\[
+  (\forall x.\; (P(\underbrace{x}_{\text{non libera}},\underbrace{y}_{\text{libera}}))) \to \forall z.\; (Q(\underbrace{z}_{\text{non libera}},\underbrace{x}_{\text{libera}}))
+\] 
+Sia \( \phi \in FORM \); si dice che un'occorrenza di \( x \in Var \) è libera se non occorre
+in una sottoformula del tipo:
+\[ \forall x.\; \psi \] o \[ \exists x.\; \psi \] 
+Nozione duale \( \to  \) \textbf{variabile legata}
+\begin{figure}[H]
+  \begin{example}
+    \[
+    \psi = (\forall x.\; R(x,y)) \vee (\forall y.\; R(x,y))
+    \] 
+    Le variabili libere (FV: Free Variables) sono:
+    \[
+    FV(\psi) = \{y,x\}
+    \] 
+    \[
+    FV(\phi) = \{x | \text{esiste un'occorrenza libera di \( x \) in \( \phi \) }\} 
+    \] 
+  \end{example}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{definition}[Variabile libera]
+    \begin{itemize}
+      \item \textbf{TERM} \( FV(t) \) 
+        \[
+        FV(c) = \emptyset
+        \] 
+        \[
+        FV(x) = \{x\} 
+        \] 
+        \[
+        FV(f(t_1 \ldots t_n)) = FV(t_1) \cup \ldots \cup FV(t_n)
+        \] 
+      \item \textbf{FORM}
+        \[
+        FV(\bot) = \emptyset
+        \] 
+        \[
+        FV(t_1 = t_2) = FV(t_1) \cup FV(t_2)
+        \] 
+        \[
+        FV(P(t_1 \ldots t_n)) = FV(t_1) \cup \ldots \cup FV(t_n)
+        \] 
+        \[
+        FV(\phi \circ \psi) = FV(\phi) \cup FV(\psi) \;\;\;\;\; \circ \in \{\wedge, \vee, \to \}
+        \] 
+        \[
+        FV(\forall x.\; \phi) = FV(\phi) \setminus \{x\}
+        \] 
+        \[
+        FV(\exists x.\; \phi) = FV(\phi) \setminus \{x\}
+        \] 
+    \end{itemize} 
+  \end{definition}
+\end{figure}
 \end{document}
