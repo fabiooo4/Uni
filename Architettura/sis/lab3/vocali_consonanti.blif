@@ -1,0 +1,44 @@
+# da 0 a 20 corrispondono le lettere dalla a alla z
+# o = 1 se è vocale 0 se è consonante
+.model vocali_consonanti
+.inputs a b c d e
+.outputs o
+
+.names a b c d e o
+00000 1 # 0 = a
+00100 1 # 4 = e
+01000 1 # 8 = i
+01100 1 # 12 = o
+10010 1 # 18 = u
+
+# valori non specificati
+.exdc
+.names a b c d e o
+10101 1
+10110 1
+10111 1
+11000 1
+11001 1
+11010 1
+11011 1
+11100 1
+11101 1
+11110 1
+11111 1
+
+.end
+
+# uscite non specificate a 0 con 25 letterali, dopo full_simplify con 8 letterali
+# uscite non specificate a 1 con 80 letterali, dopo full_simplify con 11 letterali
+# uscite non specificate a - con 25 letterali, dopo full_simplify con 6 letterali
+
+# 25 lits script.rugged -> 6 lits
+
+# before reduce_depth
+# total gate area:       7.00
+# maximum arrival time: (5.00,5.00)
+
+# after reduce_depth
+# total gate area:       7.00
+# maximum arrival time: (5.00,5.00)
+
