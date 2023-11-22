@@ -2217,7 +2217,7 @@ Qui è importante assumere che il dominio sia un intervallo
   \item \textbf{Caso generale:}
     Definisco \( g: [a,b] \to \mathbb{R} \),
     \[
-      g(x):= f(x)-\left(\frac{f(b)-f(a)}{b-a}(x-a)+f(a)\right)\;\;\;\forall x \in [a,b]
+      g(x):= f(x)-\underbrace{\left(\frac{f(b)-f(a)}{b-a}(x-a)+f(a)\right)}_{\text{Equazione della corda AB}}\;\;\;\forall x \in [a,b]
     \] 
     Ora \( g \) è continnua, \( g \) è differenziabile, in \( (a,b) \),
     \[
@@ -2230,7 +2230,10 @@ Qui è importante assumere che il dominio sia un intervallo
     \[
     g'(c)=0
     \] 
-    TODO A CASA (concludi per esercizio)
+    perchè:
+    \[
+    g'(x) = f'(x) - \frac{f(b)-f(a)}{b-a}
+    \] 
 \end{enumerate}
 \subsubsection{Dimostrazione del corollario}
 Prendo \( a \in I, b \in I \) qualsiasi; devo dimostrare che \( f(a) = f(b) \).
