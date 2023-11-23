@@ -806,59 +806,6 @@ Per il teorema di monotonia, \[
 	\end{exercise}
 \end{figure}
 
-\subsection{Teorema dei carabinieri}
-\begin{theorem}[del confronto tra i limiti, o dei carabinieri]
-	Sia \( A \subseteq \mathbb{R} \) un insieme non limitato superiormente e siano
-	\( f,g,h: A \to \mathbb{R} \). Supponiamo che
-	\[
-		f(x) \le g(x) \le h(x)\;\;\;\forall x \in A
-	\]
-	Supponiamo inoltre che i limiti
-	\[
-		\lim_{x \to +\infty} f(x) = \lim_{x \to +\infty} h(x) = L
-	\]
-	esistano (e che siano uguali tra di loro). Allora
-	\[
-		\lim_{x \to +\infty} g(x) = L
-	\]
-	\begin{figure}[H]
-		\begin{center}
-			\begin{tikzpicture}
-				\draw[->] (-0.2, 0) -- (5, 0) node[right] {$x$};
-				\draw[->] (0, -0.2) -- (0, 4) node[above] {$y$};
-				\draw[domain=0.48:5, smooth, variable=\x, blue, thick] plot ({\x}, {(-1/\x)+2}) node [below right] {h};
-				\draw[domain=0.48:5, smooth, variable=\x, green, thick] plot ({\x}, {(1/\x)+2}) node [above right] {f};
-				\draw[domain=0.48:10, smooth, variable=\x, red, thick, xscale=0.5] plot ({\x}, {(sin(\x r)/\x)+2}) node [right] {g};
-
-				\draw [dashed] (0,2) node[left] {L} -- (5,2);
-			\end{tikzpicture}
-		\end{center}
-		\caption{Teorema del confronto tra i limiti}
-	\end{figure}
-	Dobbiamo dimostrare che
-	\[
-		\forall \epsilon > 0\;\; \exists k>0\; \;t.c.\;\; \forall x \in A,
-	\]
-	\[
-		x \ge k \to L-\epsilon \le g(x) \le L+\epsilon
-	\]
-	Prendiamo dunque \( \epsilon>0 \) arbitrario. Poichè \( \lim_{x \to +\infty} f(x)=L\),
-	sappiamo che esiste \( k_f >0 \) t.c.
-	\[
-		\forall x \in A,\;\;\;\; x \ge k_f \to L-\epsilon \le f(x) \le L+\epsilon
-	\]
-	Allo stesso modo, poichè \( \lim_{x \to +\infty} h(x)=L\),
-	sappiamo che esiste \( k_h >0 \) t.c.
-	\[
-		\forall x \in A,\;\;\;\; x \ge k_h \to L-\epsilon \le h(x) \le L+\epsilon
-	\]
-	Definiamo \( k:= max\{k_f,k_h\} \). Comunque preso \( x \in A \),
-	se \( x \ge k \) allora vale che
-	\[
-		L-\epsilon \le f(x) \le g(x) \le h(x) \le L+\epsilon
-	\]
-
-\end{theorem}
 \subsubsection{Variante}
 Sia \( A \subseteq \mathbb{R} \) non limitato superiormente e siano \( f,g: A \to \mathbb{R} \)
 \( t.c.\;f(x) \le g(x)\;\forall x \in A \).\\
@@ -1493,266 +1440,6 @@ Proprietà:
 	\end{itemize}
 \end{example}
 
-\subsection{Teorema di Weiestrass}
-\begin{definition}
-	Teorema di Weierstrass
-
-	Sia \( [a, b] \) un intervallo chiuso e limitato, \( f: [a,b]  \to \mathbb{R}\) continua.
-
-	Allora esistono
-	\[
-		x_{max}, x_{min} \in [a,b]\;\; t.c.\;\; f(x_{min}) \le f(x) \le f(x_{max}) \forall x \in [a,b]
-	\]
-	\begin{figure}[H]
-		\begin{center}
-			\begin{tikzpicture}
-				\draw[->] (-0.2, 0) -- (4, 0) node[right] {$x$};
-				\draw[->] (0, -1.5) -- (0, 1.5) node[left] {$y$};
-				\draw[domain=0.5:6, smooth, variable=\x, red, thick, xscale=0.5] plot ({\x}, {(sin(\x r)}) node [right] {f};
-
-				\draw[dashed] (0.25, 0.5) -- (0.25, 0) node[below] {$a$};
-				\draw[dashed] (3, -0.3) -- (3, 0) node[above] {$b$};
-
-				\draw[dashed, blue] (0.78, 1) -- (0.78, 0) node[below, scale=0.6] {$x_{max}$};
-				\draw[dashed, blue] (2.38, -1) -- (2.38, 0) node[above, scale=0.6] {$x_{min}$};
-			\end{tikzpicture}
-		\end{center}
-		\caption{Teorema di Weiestrass}
-	\end{figure}
-	Ogni funzione continua, avrà quindi un punto di minimo e un punto di massimo
-\end{definition}
-\subsubsection{Osservazioni}
-\begin{itemize}
-	\item In particolare, \( f \) è limitata
-	\item I punti \( x_{min}, x_{max} \) si dicono punti di minimo e di massimo \textbf{globali} di \( f \)
-	\item I punti di minimo e massimo globali possono essere non unici e coincidere con gli estremi
-	      \( a,b \) dell'intervallo
-\end{itemize}
-
-\begin{example}
-	\[
-		cos: [0, 4 \pi] \to \mathbb{R}
-	\]
-	\begin{figure}[H]
-		\begin{center}
-			\begin{tikzpicture}[xscale=0.5]
-				\draw[->] (-0.2, 0) -- (13.5, 0) node[right] {$x$};
-				\draw[->] (0, -1.5) -- (0, 1.5) node[left] {$y$};
-				\draw[domain=0:12.5, smooth, variable=\x, red, thick,yscale=0.5] plot ({\x}, {(cos(\x r)}) node [right] {};
-
-				\node [below left, scale=0.9, green] at (0,0) (0) {0};
-				\node [above, scale=0.9, blue] at (3.14,0) (pi) {$\pi$};
-				\node [below, scale=0.9, green] at (6.28,0) (2pi) {$2\pi$};
-				\node [above, scale=0.9, blue] at (9.42,0) (3pi) {$3\pi$};
-				\node [below, scale=0.9, green] at (12.56,0) (4pi) {$4\pi$};
-
-				\draw (3.14,-0.08) -- (3.14, 0.08);
-				\draw (6.28,-0.08) -- (6.28, 0.08);
-				\draw (9.42,-0.08) -- (9.42, 0.08);
-				\draw (12.56,-0.08) -- (12.56, 0.08);
-
-				\node[align=center, scale=0.8, blue] at (6,1.5) (globalmax) {Punti di massimo\\
-					globale};
-				\node[align=center, scale=0.8, green] at (6,-1.5) (globalmin) {Punti di minimo\\
-					globale};
-
-				\draw[blue] (globalmax) -- (pi);
-				\draw[blue] (globalmax) -- (3pi);
-
-				\draw[green] (globalmin) -- (0);
-				\draw[green] (globalmin) -- (2pi);
-				\draw[green] (globalmin) -- (4pi);
-
-			\end{tikzpicture}
-		\end{center}
-		\caption{Teorema di Weiestrass}
-	\end{figure}
-\end{example}
-Se vengono meno le ipotesi del teorema, può venir meno la conclusione.
-\subsubsection{Esempi}
-\begin{figure}[H]
-	\begin{example}
-		\[
-			f_1: (0,1) \to \mathbb{R},\;\;\;\; f_1(x):= x \;\;\; \forall x \in (0,1)
-		\]
-		\begin{figure}[H]
-			\begin{center}
-				\begin{tikzpicture}[scale=2]
-					\draw[->] (-0.2, 0) -- (1.2, 0) node[right] {$x$};
-					\draw[->] (0, -0.2) -- (0, 1.2) node[left] {$y$};
-					\draw[domain=0.04:0.96, smooth, variable=\x, red, thick] plot ({\x}, {\x}) node [right] {};
-
-					\draw[red] (0,0) circle (1.5pt);
-					\draw[red] (1,1) circle (1.5pt);
-
-					\draw[dashed, red] (1,1) -- (1,0) node [below, scale=0.7] {1};
-					\node[below left, red, scale=0.7] at (0,0) {0};
-				\end{tikzpicture}
-			\end{center}
-			\caption{Esempio di funzione continua}
-		\end{figure}
-		Questa funzione è continua, ma per come è definita \textbf{non} ammette nè massimo nè minimo perchè
-		il \textbf{dominio non è chiuso}.
-	\end{example}
-\end{figure}
-\begin{figure}[H]
-	\begin{example}
-		\[
-			f_2: (0, +\infty) \to \mathbb{R},\;\;\;\; f_2(x):= x sin(x)\;\;\; \forall x \in (0, +\infty)
-		\]
-
-		\begin{figure}[H]
-			\begin{center}
-				\begin{tikzpicture}[xscale=0.5, yscale=0.2]
-					\draw[->] (-0.2, 0) -- (13.5, 0) node[right] {$x$};
-					\draw[->] (0, -13.5) -- (0, 13.5) node[left] {$y$};
-					\draw[domain=0:12.56, smooth, variable=\x, red, thick] plot ({\x}, {(\x * sin(\x r)}) node [right] {};
-					\draw[domain=0:12.5, dashed, variable=\x] plot ({\x}, {\x}) node [right] {$y = x$};
-					\draw[domain=0:12.5, dashed, variable=\x] plot ({\x}, {-\x}) node [right] {$y = -x$};
-				\end{tikzpicture}
-			\end{center}
-			\caption{Esempio di funzione continua}
-		\end{figure}
-
-		Questa funzione è continua, ma \textbf{non} possiede nè punti di massimo, nè punti di minimo perchè
-		la funzione ha ampiezza sempre crescente.
-	\end{example}
-\end{figure}
-\begin{example}
-	\[
-		f_3: [-1, 1] \to \mathbb{R}
-	\]
-	\[
-		f_3(x):=\begin{cases}
-			1-x \;\;\; se\; 0 < x \le 1 \\
-			0 \;\;\; se\; x = 0         \\
-			-x-1 \;\;\; se\; -1 \le x < 0
-		\end{cases}
-	\]
-	\begin{figure}[H]
-		\begin{center}
-			\begin{tikzpicture}[scale=2]
-				\draw[->] (-1.2, 0) -- (1.2, 0) node[right] {$x$};
-				\draw[->] (0, -1.2) -- (0, 1.2) node[left] {$y$};
-				\draw[domain=0.04:1, smooth, variable=\x, red, thick] plot ({\x}, {1-\x}) node [right] {};
-				\draw[domain=-1:-0.04, smooth, variable=\x, red, thick] plot ({\x}, {-\x-1}) node [right] {};
-
-				\draw[red, fill] (0,0) circle (1.5pt);
-				\draw[red] (0,1) circle (1.5pt);
-				\draw[red] (0,-1) circle (1.5pt);
-
-				\node[below, red, scale=0.7] at (1,0) {1};
-				\node[below, red, scale=0.7] at (-1,0) {-1};
-				\node[below left, red, scale=0.7] at (0,0) {0};
-
-				\node[left, red, scale=0.7, xshift=-5] at (0,1) {1};
-				\node[right, red, scale=0.7, xshift=5] at (0,-1) {-1};
-			\end{tikzpicture}
-		\end{center}
-		\caption{Esempio di funzione non continua}
-	\end{figure}
-
-	Questa funzione \textbf{non} ammette punti di massimo e di minimo perchè non è continua.
-\end{example}
-\subsection{Teorema degli zeri}
-\begin{figure}[H]
-	\begin{definition}
-		Teorema degli zeri (o di Bolzano)
-
-		Sia \( [a,b] \) un intervallo chiuso e limitato, \( f: [a,b] \to \mathbb{R} \) una funzione continua.
-		Se
-		\[
-			f(a)f(b) < 0
-		\]
-		allora esiste \( c \in (a,b) \) tale che \( f(c) = 0 \)
-
-		\begin{figure}[H]
-			\begin{center}
-				\begin{tikzpicture}[scale=0.5, domain=0:13]
-					\draw[->] (-0.5,0) -- (8,0) node[right] {$x$};
-
-					\coordinate (A) at (0,3);
-					\coordinate (B) at (1,2);
-					\coordinate (C) at (2,3);
-					\coordinate (D) at (3,1);
-					\coordinate (E) at (4,0);
-					\coordinate (F) at (5,-2);
-					\coordinate (G) at (6,-2);
-					\coordinate (H) at (7,-2.5);
-
-					\draw [red, thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) };
-
-					\draw (0,0.2) -- (0,-0.2) node[below] {$a$};
-					\draw (7,0.2) -- (7,-0.2) node[below] {$b$};
-
-					\draw[red, fill] (0,3) circle (3pt);
-					\draw[red, fill] (7,-2.5) circle (3pt);
-					\draw[red, fill] (4,0) circle (3pt);
-
-				\end{tikzpicture}
-			\end{center}
-			\caption{Teorema degli zeri}
-		\end{figure}
-
-	\end{definition}
-\end{figure}
-Se vengono meno le ipotesi, può venir meno la conclusione.
-\subsubsection{Esempi}
-\begin{example}
-	\[
-		g_1: [-1,1] \to \mathbb{R}
-	\]
-	\[
-		g_1(x)= \begin{cases}
-			-1 \;\;\; se\; -1 \le x <0 \\
-			1 \;\;\; se\; 0 \le x \le 1
-		\end{cases}
-	\]
-	\begin{figure}[H]
-		\begin{center}
-			\begin{tikzpicture}[scale=2]
-				\draw[->] (-1.2, 0) -- (1.2, 0) node[right] {$x$};
-				\draw[->] (0, -1.2) -- (0, 1.2) node[left] {$y$};
-				\draw[domain=0.04:1, smooth, variable=\x, red, thick] plot ({\x}, {0.5}) node [right] {};
-				\draw[domain=-1:-0.04, smooth, variable=\x, red, thick] plot ({\x}, {-0.5}) node [right] {};
-
-				\draw[red, fill] (0,0.5) circle (1.5pt);
-				\draw[red] (0,-0.5) circle (1.5pt);
-			\end{tikzpicture}
-		\end{center}
-		\caption{Esempio di funzione non continua}
-	\end{figure}
-
-	Questa funzione non è continua, quindi non si applica il teorema.
-\end{example}
-
-\begin{example}
-	\[
-		g_2: [-1,1] / \{0\} \to \mathbb{R}
-	\]
-	\[
-		g_2(x):= \frac{1}{x}\;\;\; \forall x \in [-1,1] / \{0\}
-	\]
-	\begin{figure}[H]
-		\begin{center}
-			\begin{tikzpicture}
-				\draw[->] (-1, 0) -- (1, 0) node[right] {$x$};
-				\draw[->] (0, -3) -- (0, 3) node[left] {$y$};
-				\draw[domain=0.17:1, smooth, variable=\x, red, thick, yscale=0.5, xscale=0.5] plot ({\x}, {1/\x}) node [right] {};
-				\draw[domain=-1:-0.17, smooth, variable=\x, red, thick, yscale=0.5, xscale=0.5] plot ({\x}, {1/\x}) node [right] {};
-
-				\draw[red, fill] (0.5,0.5) circle (1.5pt);
-				\draw[red, fill] (-0.5,-0.5) circle (1.5pt);
-			\end{tikzpicture}
-		\end{center}
-		\caption{Esempio di funzione continua}
-	\end{figure}
-
-	Questa funzione è continua, ma non si annulla mai perchè il dominio della funzione \textbf{non è un intervallo}
-	,ma un intervallo privato di un valore, quindi non si applica il teorema.
-\end{example}
-
-
 \section{Derivate}
 Sia \( A \) un intervallo aperto (del tipo \( A=(a,b) \) oppure \( A=(a,+\infty), A=(-\infty, a), A=\mathbb{R} \)),
 oppure un'unione di intervalli aperti.
@@ -2025,6 +1712,547 @@ Le derivate destra e sinistra in \( x_0 = 0 \) esistono e sono entrambe finite, 
   I punti di massimo o minimo locale si chiamano anche \textbf{estremi locali}.
 \end{definition}
 
+
+\subsection{Derivate delle funzioni inverse}
+\begin{figure}[H]
+  \begin{example}
+    Consideriamo
+    \[
+    tan: (-\frac{\pi}{2}, \frac{\pi}{2}) \to \mathbb{R}
+    \] 
+    \[
+    tan(x) = \frac{sin(x)}{cos(x)} \forall x \in (-\frac{\pi}{2}, \frac{\pi}{2})
+    \] 
+    \label{D3}
+    La tangente è differenziabile
+    \[
+      \frac{d}{dx}(tan(x)) = \frac{(sin)'(x)cos(x)-(cos)'(x)sin(x)}{cos^2(x)}
+    \] 
+    \[
+    =\frac{cos^2(x)+sin^2(x)}{cos^2(x)} = \frac{1}{cos^2(x)} = 1+tan^2(x) > 0 \forall x \in (-\frac{\pi}{2}, \frac{\pi}{2})
+    \] 
+    \begin{itemize}
+      \item 
+        La tangente è strettamente crescente, quindi iniettiva
+      \item La tangente è suriettiva: per ogni \( y \in \mathbb{R} \), esiste \[
+      x \in (-\frac{\pi}{2}, \frac{\pi}{2}) \;tc\; tan(x)=y
+      \] 
+      Infatti la tangente è continua e 
+      \[
+      \lim_{x \to (-\frac{\pi}{2})^+} tan(x) = -\infty
+      \] 
+      \[
+      \lim_{x \to (\frac{\pi}{2})^-} tan(x) = +\infty
+      \] 
+    \end{itemize}
+    Quindi il teorema degli zeri implica che esiste \( x \in (\frac{-\pi}{2}, \frac{\pi}{2})\;tc\; tan(x)=y \)
+  \end{example}
+\end{figure}
+\( tan: (\frac{-\pi}{2}, \frac{\pi}{2}) \to \mathbb{R} \) è biettiva, quindi per ogni \( y \in \mathbb{R} \)
+esiste un unico numero reale, che indicheremo \( arctan(y) \), tale che
+\[
+  \begin{cases}
+    -\frac{\pi}{2} < arctan(y) < \frac{\pi}{2}\\
+    tan(arctan(y)) = y
+  \end{cases}
+\] 
+\label{D4}
+La funzione \( arctan \) è differenziabile? Se sì, chi è la sua derivata?
+
+Supponiamo già di sapere che \( arctan \) è differenziabile (è vero, ma andrebbe dimostrato)
+\[
+tan(arctan(y)) = y \;\;\;\;\forall y \in \mathbb{R}
+\] 
+Deriviamo ambo i membri:
+\[
+\frac{d}{dy}(tan(arctan(y))) = 1
+\] 
+\[
+\frac{d}{dy}(tan(arctan(y)))= tan'(arctan(y)) \cdot (arctan(y))'
+\] 
+\[
+tan'(x) = 1 + tan^2(x) = (1 + (tan(arctan(y))))^2 \cdot  (arctan(y))'
+\] 
+\[
+= (1+y^2) \cdot (arctan(y))'
+\] 
+Dunque:
+\[
+  (1+y^2)arctan'(y) = 1
+\] 
+e quindi:
+\[
+arctan'(y) = \frac{1}{1+y^2}
+\] 
+Quanto fatto ha validità più generale:
+
+Sia \( I \subseteq \mathbb{R} \) un intervallo, \( f: I \to \mathbb{R} \) una funzione
+fifferenziabile tale che \( f'(x) \neq 0\;\; \forall x \in \mathbb{R}  \).
+Allora esiste la funzione inversa:
+\[
+g: f(I) \to I
+\] 
+tale che \( f(g(y))=y\; \forall y \in f(I),\; g(f(x)) = x\; \forall x \in I \)
+
+Inoltre, \( g \) è differenziabile e vale:
+\[
+g'(y) = \frac{1}{f'(g(y))}
+\] 
+per ogni \( y \in f(I) \) 
+
+\begin{figure}[H]
+  \begin{exercise}
+    Trovare le derivate delle funzioni:
+    \[
+    arccos: [-1,1] \to [0,\pi]
+    \] 
+    \[
+    arcsin: [-1,1] \to [-\frac{\pi}{2}, \frac{\pi}{2}]
+    \] 
+  \end{exercise}
+\end{figure}
+
+\section{Derivate successive}
+Sia \( A \subseteq \mathbb{R} \) un intervallo aperto, o un'unione di intervalli aperti.
+Sia \( f: A \to \mathbb{R} \).
+
+Se (e solo se) \( f \) è differenziabile e \( f' \) è differenziabile, si dice
+che \( f \) è differenziabile due volte. Si scrive \( f'' \) per la derivata seconda di
+\( f \) (cioè la derivata di \( f \)).
+
+Similmente si definiscono le funzioni differenziabili \( 3,4,5, \ldots, \) infinite volte.
+Notazione per le derivate successive:
+\[
+f' = f^{(1)} = \frac{df}{dx}
+\] 
+\[
+f'' = f^{(2)} = \frac{d^2f}{dx^2}
+\] 
+\[
+f''' = f^{(3)} = \frac{d^3f}{dx^3}
+\] 
+\[
+f^{(n)} = \frac{d^nf}{dx^n}
+\] 
+\subsection{Funzioni convesse e concave}
+Sia \( I \subseteq \mathbb{R} \) intervallo. Una funzione \( f: I \to \mathbb{R} \)
+si dice \( \begin{cases}
+  \text{convessa}\\
+  \text{concava}
+\end{cases} \) se e solo se la corda tra due punti qualsiasi del grafico di \( f \) sta
+tutta \( \begin{cases}
+  \text{sopra}\\
+  \text{sotto}
+\end{cases} \) il grafico di \( f \). 
+\label{D5}
+\label{D6}
+In maniera equivalente, \( f \) è convessa se e solo se per ogni \( x \in I \), ogni
+\( \overline{x} \in I \) ed ogni \( t \in [0,1] \), vale
+\[
+f(tx+(1-t))\overline{x}) \le tf(x) + (1-t)f(\overline{x})
+\] 
+
+\subsection{Proprietà delle funzioni convesse (o concave)}
+\begin{enumerate}
+  \item Se \( I \subseteq \mathbb{R} \) è un intervallo, \( f: I \to \mathbb{R} \) 
+    una funzione differenziabile due volte. Se \( \begin{cases}
+    f''(x) \ge 0\\
+    f''(x) \le 0
+  \end{cases} \) in ogni punto di \( I \), allora \( f \) è \( \begin{cases}
+    \text{convessa}\\
+    \text{concava}
+  \end{cases} \) 
+  \item Se \( I \subseteq \mathbb{R} \) è un intervallo, \( f: I \to \mathbb{R} \) è
+    differenziabile e \( \begin{cases}
+      \text{convessa}\\
+      \text{concava}
+    \end{cases} \) e \( x_0 \in I \), allora la retta tangente a \( f \) nel
+    punto \( (x_0, f(x_0)) \) sta tutta \( \begin{cases}
+      \text{sopra}\\
+      \text{sotto}
+    \end{cases} \) il grafico di \( f \). 
+    \label{D7}
+  \item Se \( I \subseteq \mathbb{R} \) è un intervallo, \( f: I \to \mathbb{R} \) una
+    funzione differenziabile e \( \begin{cases}
+      \text{convessa}\\
+      \text{concava}
+    \end{cases} \) e \( x_0 \in I \) un punto critico di \( f \) \( (f'(x_0)=0) \),
+    allora \( x_0 \) è un punto di \( \begin{cases}
+      \text{minimo}\\
+      \text{massimo}
+    \end{cases} \) di \( f \).
+    \label{D8}
+    \label{D9}
+  \item Se \( f:I \to \mathbb{R} \) è differenziabile due volte e \( x_0 \in I \) è
+    tale che \( f'(x_0) = 0 \) e \( \begin{cases}
+      f''(x_0) > 0\\
+      f''(x_0) < 0
+    \end{cases} \) allora \( x_0 \) è un punto di \( \begin{cases}
+      \text{minimo}\\
+      \text{massimo}
+    \end{cases} \) locale per \( f \).
+\end{enumerate}
+
+\begin{figure}[H]
+  \begin{example}
+    \[
+    f: \mathbb{R}\to \mathbb{R}
+    \] 
+    \[
+    f(x) = x^3-x^2\;\;\; \forall x \in \mathbb{R}
+    \] 
+    \[
+    f'(x) = 3x^2-2x
+    \] 
+    \[
+    f''(x) = 6x-2
+    \] 
+    \label{D10}
+
+    \[
+    f(x) = 0 \Leftrightarrow x^2(x-1) = 0 \Leftrightarrow x = 0\;\; oppure
+    \] 
+    \[
+    f(x) \ge 0 \Leftrightarrow x^2(x-1) \ge 0 \Leftrightarrow x \ge 1\;\; oppure\;\; x = 0
+    \] 
+    \[
+    f'(x) = 0 \Leftrightarrow x=0 \;\; oppure\;\; x=\frac{2}{3}
+    \] 
+    \[
+    f'(x) \ge 0 \Leftrightarrow x \le 0 \;\;oppure\;\; x \ge \frac{2}{3}
+    \] 
+    Quindi \( f \) è cresccente in \( (-\infty, 0) \) e in \( \frac{2}{3}, +\infty \); \( f \) 
+    è decrescente in \( (0, \frac{2}{3}) \). In \( x=0 \) ho un punto di massimo locale,
+    in \( x=\frac{2}{3} \) ho un punto di minimo locale.
+    \[
+    f''(x) = 6x-2
+    \] 
+    \[
+    f''(x) = 0 \Leftrightarrow x = \frac{1}{3}
+    \] 
+    \[
+    f''(x) \ge 0 \Leftrightarrow x \ge \frac{1}{3}
+    \] 
+    \( f \) è convessa in \( (\frac{1}{3}, +\infty) \) e concava in \( (-\infty, \frac{1}{3}) \);
+    \( f \) ha \( x = \frac{1}{3} \) è un punto di flesso di \( f \).
+  \end{example}
+\end{figure}
+
+\section{Teoremi}
+\subsection{Teorema dei carabinieri}
+\begin{theorem}[del confronto tra i limiti, o dei carabinieri]
+	Sia \( A \subseteq \mathbb{R} \) un insieme non limitato superiormente e siano
+	\( f,g,h: A \to \mathbb{R} \). Supponiamo che
+	\[
+		f(x) \le g(x) \le h(x)\;\;\;\forall x \in A
+	\]
+	Supponiamo inoltre che i limiti
+	\[
+		\lim_{x \to +\infty} f(x) = \lim_{x \to +\infty} h(x) = L
+	\]
+	esistano (e che siano uguali tra di loro). Allora
+	\[
+		\lim_{x \to +\infty} g(x) = L
+	\]
+	\begin{figure}[H]
+		\begin{center}
+			\begin{tikzpicture}
+				\draw[->] (-0.2, 0) -- (5, 0) node[right] {$x$};
+				\draw[->] (0, -0.2) -- (0, 4) node[above] {$y$};
+				\draw[domain=0.48:5, smooth, variable=\x, blue, thick] plot ({\x}, {(-1/\x)+2}) node [below right] {h};
+				\draw[domain=0.48:5, smooth, variable=\x, green, thick] plot ({\x}, {(1/\x)+2}) node [above right] {f};
+				\draw[domain=0.48:10, smooth, variable=\x, red, thick, xscale=0.5] plot ({\x}, {(sin(\x r)/\x)+2}) node [right] {g};
+
+				\draw [dashed] (0,2) node[left] {L} -- (5,2);
+			\end{tikzpicture}
+		\end{center}
+		\caption{Teorema del confronto tra i limiti}
+	\end{figure}
+	Dobbiamo dimostrare che
+	\[
+		\forall \epsilon > 0\;\; \exists k>0\; \;t.c.\;\; \forall x \in A,
+	\]
+	\[
+		x \ge k \to L-\epsilon \le g(x) \le L+\epsilon
+	\]
+	Prendiamo dunque \( \epsilon>0 \) arbitrario. Poichè \( \lim_{x \to +\infty} f(x)=L\),
+	sappiamo che esiste \( k_f >0 \) t.c.
+	\[
+		\forall x \in A,\;\;\;\; x \ge k_f \to L-\epsilon \le f(x) \le L+\epsilon
+	\]
+	Allo stesso modo, poichè \( \lim_{x \to +\infty} h(x)=L\),
+	sappiamo che esiste \( k_h >0 \) t.c.
+	\[
+		\forall x \in A,\;\;\;\; x \ge k_h \to L-\epsilon \le h(x) \le L+\epsilon
+	\]
+	Definiamo \( k:= max\{k_f,k_h\} \). Comunque preso \( x \in A \),
+	se \( x \ge k \) allora vale che
+	\[
+		L-\epsilon \le f(x) \le g(x) \le h(x) \le L+\epsilon
+	\]
+
+\end{theorem}
+
+\subsection{Teorema di Weiestrass}
+\begin{definition}
+	Teorema di Weierstrass
+
+	Sia \( [a, b] \) un intervallo chiuso e limitato, \( f: [a,b]  \to \mathbb{R}\) continua.
+
+	Allora esistono
+	\[
+		x_{max}, x_{min} \in [a,b]\;\; t.c.\;\; f(x_{min}) \le f(x) \le f(x_{max}) \forall x \in [a,b]
+	\]
+	\begin{figure}[H]
+		\begin{center}
+			\begin{tikzpicture}
+				\draw[->] (-0.2, 0) -- (4, 0) node[right] {$x$};
+				\draw[->] (0, -1.5) -- (0, 1.5) node[left] {$y$};
+				\draw[domain=0.5:6, smooth, variable=\x, red, thick, xscale=0.5] plot ({\x}, {(sin(\x r)}) node [right] {f};
+
+				\draw[dashed] (0.25, 0.5) -- (0.25, 0) node[below] {$a$};
+				\draw[dashed] (3, -0.3) -- (3, 0) node[above] {$b$};
+
+				\draw[dashed, blue] (0.78, 1) -- (0.78, 0) node[below, scale=0.6] {$x_{max}$};
+				\draw[dashed, blue] (2.38, -1) -- (2.38, 0) node[above, scale=0.6] {$x_{min}$};
+			\end{tikzpicture}
+		\end{center}
+		\caption{Teorema di Weiestrass}
+	\end{figure}
+	Ogni funzione continua, avrà quindi un punto di minimo e un punto di massimo
+\end{definition}
+\subsubsection{Osservazioni}
+\begin{itemize}
+	\item In particolare, \( f \) è limitata
+	\item I punti \( x_{min}, x_{max} \) si dicono punti di minimo e di massimo \textbf{globali} di \( f \)
+	\item I punti di minimo e massimo globali possono essere non unici e coincidere con gli estremi
+	      \( a,b \) dell'intervallo
+\end{itemize}
+
+\begin{example}
+	\[
+		cos: [0, 4 \pi] \to \mathbb{R}
+	\]
+	\begin{figure}[H]
+		\begin{center}
+			\begin{tikzpicture}[xscale=0.5]
+				\draw[->] (-0.2, 0) -- (13.5, 0) node[right] {$x$};
+				\draw[->] (0, -1.5) -- (0, 1.5) node[left] {$y$};
+				\draw[domain=0:12.5, smooth, variable=\x, red, thick,yscale=0.5] plot ({\x}, {(cos(\x r)}) node [right] {};
+
+				\node [below left, scale=0.9, green] at (0,0) (0) {0};
+				\node [above, scale=0.9, blue] at (3.14,0) (pi) {$\pi$};
+				\node [below, scale=0.9, green] at (6.28,0) (2pi) {$2\pi$};
+				\node [above, scale=0.9, blue] at (9.42,0) (3pi) {$3\pi$};
+				\node [below, scale=0.9, green] at (12.56,0) (4pi) {$4\pi$};
+
+				\draw (3.14,-0.08) -- (3.14, 0.08);
+				\draw (6.28,-0.08) -- (6.28, 0.08);
+				\draw (9.42,-0.08) -- (9.42, 0.08);
+				\draw (12.56,-0.08) -- (12.56, 0.08);
+
+				\node[align=center, scale=0.8, blue] at (6,1.5) (globalmax) {Punti di massimo\\
+					globale};
+				\node[align=center, scale=0.8, green] at (6,-1.5) (globalmin) {Punti di minimo\\
+					globale};
+
+				\draw[blue] (globalmax) -- (pi);
+				\draw[blue] (globalmax) -- (3pi);
+
+				\draw[green] (globalmin) -- (0);
+				\draw[green] (globalmin) -- (2pi);
+				\draw[green] (globalmin) -- (4pi);
+
+			\end{tikzpicture}
+		\end{center}
+		\caption{Teorema di Weiestrass}
+	\end{figure}
+\end{example}
+Se vengono meno le ipotesi del teorema, può venir meno la conclusione.
+\subsubsection{Esempi}
+\begin{figure}[H]
+	\begin{example}
+		\[
+			f_1: (0,1) \to \mathbb{R},\;\;\;\; f_1(x):= x \;\;\; \forall x \in (0,1)
+		\]
+		\begin{figure}[H]
+			\begin{center}
+				\begin{tikzpicture}[scale=2]
+					\draw[->] (-0.2, 0) -- (1.2, 0) node[right] {$x$};
+					\draw[->] (0, -0.2) -- (0, 1.2) node[left] {$y$};
+					\draw[domain=0.04:0.96, smooth, variable=\x, red, thick] plot ({\x}, {\x}) node [right] {};
+
+					\draw[red] (0,0) circle (1.5pt);
+					\draw[red] (1,1) circle (1.5pt);
+
+					\draw[dashed, red] (1,1) -- (1,0) node [below, scale=0.7] {1};
+					\node[below left, red, scale=0.7] at (0,0) {0};
+				\end{tikzpicture}
+			\end{center}
+			\caption{Esempio di funzione continua}
+		\end{figure}
+		Questa funzione è continua, ma per come è definita \textbf{non} ammette nè massimo nè minimo perchè
+		il \textbf{dominio non è chiuso}.
+	\end{example}
+\end{figure}
+\begin{figure}[H]
+	\begin{example}
+		\[
+			f_2: (0, +\infty) \to \mathbb{R},\;\;\;\; f_2(x):= x sin(x)\;\;\; \forall x \in (0, +\infty)
+		\]
+
+		\begin{figure}[H]
+			\begin{center}
+				\begin{tikzpicture}[xscale=0.5, yscale=0.2]
+					\draw[->] (-0.2, 0) -- (13.5, 0) node[right] {$x$};
+					\draw[->] (0, -13.5) -- (0, 13.5) node[left] {$y$};
+					\draw[domain=0:12.56, smooth, variable=\x, red, thick] plot ({\x}, {(\x * sin(\x r)}) node [right] {};
+					\draw[domain=0:12.5, dashed, variable=\x] plot ({\x}, {\x}) node [right] {$y = x$};
+					\draw[domain=0:12.5, dashed, variable=\x] plot ({\x}, {-\x}) node [right] {$y = -x$};
+				\end{tikzpicture}
+			\end{center}
+			\caption{Esempio di funzione continua}
+		\end{figure}
+
+		Questa funzione è continua, ma \textbf{non} possiede nè punti di massimo, nè punti di minimo perchè
+		la funzione ha ampiezza sempre crescente.
+	\end{example}
+\end{figure}
+\begin{example}
+	\[
+		f_3: [-1, 1] \to \mathbb{R}
+	\]
+	\[
+		f_3(x):=\begin{cases}
+			1-x \;\;\; se\; 0 < x \le 1 \\
+			0 \;\;\; se\; x = 0         \\
+			-x-1 \;\;\; se\; -1 \le x < 0
+		\end{cases}
+	\]
+	\begin{figure}[H]
+		\begin{center}
+			\begin{tikzpicture}[scale=2]
+				\draw[->] (-1.2, 0) -- (1.2, 0) node[right] {$x$};
+				\draw[->] (0, -1.2) -- (0, 1.2) node[left] {$y$};
+				\draw[domain=0.04:1, smooth, variable=\x, red, thick] plot ({\x}, {1-\x}) node [right] {};
+				\draw[domain=-1:-0.04, smooth, variable=\x, red, thick] plot ({\x}, {-\x-1}) node [right] {};
+
+				\draw[red, fill] (0,0) circle (1.5pt);
+				\draw[red] (0,1) circle (1.5pt);
+				\draw[red] (0,-1) circle (1.5pt);
+
+				\node[below, red, scale=0.7] at (1,0) {1};
+				\node[below, red, scale=0.7] at (-1,0) {-1};
+				\node[below left, red, scale=0.7] at (0,0) {0};
+
+				\node[left, red, scale=0.7, xshift=-5] at (0,1) {1};
+				\node[right, red, scale=0.7, xshift=5] at (0,-1) {-1};
+			\end{tikzpicture}
+		\end{center}
+		\caption{Esempio di funzione non continua}
+	\end{figure}
+
+	Questa funzione \textbf{non} ammette punti di massimo e di minimo perchè non è continua.
+\end{example}
+\subsection{Teorema degli zeri}
+\begin{figure}[H]
+	\begin{definition}
+		Teorema degli zeri (o di Bolzano)
+
+		Sia \( [a,b] \) un intervallo chiuso e limitato, \( f: [a,b] \to \mathbb{R} \) una funzione continua.
+		Se
+		\[
+			f(a)f(b) < 0
+		\]
+		allora esiste \( c \in (a,b) \) tale che \( f(c) = 0 \)
+
+		\begin{figure}[H]
+			\begin{center}
+				\begin{tikzpicture}[scale=0.5, domain=0:13]
+					\draw[->] (-0.5,0) -- (8,0) node[right] {$x$};
+
+					\coordinate (A) at (0,3);
+					\coordinate (B) at (1,2);
+					\coordinate (C) at (2,3);
+					\coordinate (D) at (3,1);
+					\coordinate (E) at (4,0);
+					\coordinate (F) at (5,-2);
+					\coordinate (G) at (6,-2);
+					\coordinate (H) at (7,-2.5);
+
+					\draw [red, thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) };
+
+					\draw (0,0.2) -- (0,-0.2) node[below] {$a$};
+					\draw (7,0.2) -- (7,-0.2) node[below] {$b$};
+
+					\draw[red, fill] (0,3) circle (3pt);
+					\draw[red, fill] (7,-2.5) circle (3pt);
+					\draw[red, fill] (4,0) circle (3pt);
+
+				\end{tikzpicture}
+			\end{center}
+			\caption{Teorema degli zeri}
+		\end{figure}
+
+	\end{definition}
+\end{figure}
+Se vengono meno le ipotesi, può venir meno la conclusione.
+\subsubsection{Esempi}
+\begin{example}
+	\[
+		g_1: [-1,1] \to \mathbb{R}
+	\]
+	\[
+		g_1(x)= \begin{cases}
+			-1 \;\;\; se\; -1 \le x <0 \\
+			1 \;\;\; se\; 0 \le x \le 1
+		\end{cases}
+	\]
+	\begin{figure}[H]
+		\begin{center}
+			\begin{tikzpicture}[scale=2]
+				\draw[->] (-1.2, 0) -- (1.2, 0) node[right] {$x$};
+				\draw[->] (0, -1.2) -- (0, 1.2) node[left] {$y$};
+				\draw[domain=0.04:1, smooth, variable=\x, red, thick] plot ({\x}, {0.5}) node [right] {};
+				\draw[domain=-1:-0.04, smooth, variable=\x, red, thick] plot ({\x}, {-0.5}) node [right] {};
+
+				\draw[red, fill] (0,0.5) circle (1.5pt);
+				\draw[red] (0,-0.5) circle (1.5pt);
+			\end{tikzpicture}
+		\end{center}
+		\caption{Esempio di funzione non continua}
+	\end{figure}
+
+	Questa funzione non è continua, quindi non si applica il teorema.
+\end{example}
+
+\begin{example}
+	\[
+		g_2: [-1,1] / \{0\} \to \mathbb{R}
+	\]
+	\[
+		g_2(x):= \frac{1}{x}\;\;\; \forall x \in [-1,1] / \{0\}
+	\]
+	\begin{figure}[H]
+		\begin{center}
+			\begin{tikzpicture}
+				\draw[->] (-1, 0) -- (1, 0) node[right] {$x$};
+				\draw[->] (0, -3) -- (0, 3) node[left] {$y$};
+				\draw[domain=0.17:1, smooth, variable=\x, red, thick, yscale=0.5, xscale=0.5] plot ({\x}, {1/\x}) node [right] {};
+				\draw[domain=-1:-0.17, smooth, variable=\x, red, thick, yscale=0.5, xscale=0.5] plot ({\x}, {1/\x}) node [right] {};
+
+				\draw[red, fill] (0.5,0.5) circle (1.5pt);
+				\draw[red, fill] (-0.5,-0.5) circle (1.5pt);
+			\end{tikzpicture}
+		\end{center}
+		\caption{Esempio di funzione continua}
+	\end{figure}
+
+	Questa funzione è continua, ma non si annulla mai perchè il dominio della funzione \textbf{non è un intervallo}
+	,ma un intervallo privato di un valore, quindi non si applica il teorema.
+\end{example}
+
+
 \subsection{Teorema di Fermat}
 \begin{theorem}[di Fermat]
   Sia \( x_0 \in A \) un estremo locale di una funzione \( f: A \to \mathbb{R} \).
@@ -2195,7 +2423,7 @@ Qui è importante assumere che il dominio sia un intervallo
     \( f \) è differenziabile e ha \( f'=0 \) ovunque, ma non è costante (il dominio non è un intervallo).
   \end{example}
 \end{figure}
-\subsection{Dimostrazione}
+\subsubsection{Dimostrazione}
 \begin{enumerate}
   \item 
     Sia \( f: [a,b] \to \mathbb{R} \) continua, differenziabile in \( (a,b) \) , tale
@@ -2246,225 +2474,4 @@ differenziabile in \( (a,b) \) e quindi, per il teorema di Lagrange, esiste \( c
 f'(c)=\frac{f(b)-f(a)}{b-a}
 \] 
 Ma, per ipotesi, \( f'(c)=0 \), da cioè \( f(b)-f(a)=0 \), cioè \( f(b)=f(a) \).
-
-\subsection{Derivate delle funzioni inverse}
-\begin{figure}[H]
-  \begin{example}
-    Consideriamo
-    \[
-    tan: (-\frac{\pi}{2}, \frac{\pi}{2}) \to \mathbb{R}
-    \] 
-    \[
-    tan(x) = \frac{sin(x)}{cos(x)} \forall x \in (-\frac{\pi}{2}, \frac{\pi}{2})
-    \] 
-    \label{D3}
-    La tangente è differenziabile
-    \[
-      \frac{d}{dx}(tan(x)) = \frac{(sin)'(x)cos(x)-(cos)'(x)sin(x)}{cos^2(x)}
-    \] 
-    \[
-    =\frac{cos^2(x)+sin^2(x)}{cos^2(x)} = \frac{1}{cos^2(x)} = 1+tan^2(x) > 0 \forall x \in (-\frac{\pi}{2}, \frac{\pi}{2})
-    \] 
-    \begin{itemize}
-      \item 
-        La tangente è strettamente crescente, quindi iniettiva
-      \item La tangente è suriettiva: per ogni \( y \in \mathbb{R} \), esiste \[
-      x \in (-\frac{\pi}{2}, \frac{\pi}{2}) \;tc\; tan(x)=y
-      \] 
-      Infatti la tangente è continua e 
-      \[
-      \lim_{x \to (-\frac{\pi}{2})^+} tan(x) = -\infty
-      \] 
-      \[
-      \lim_{x \to (\frac{\pi}{2})^-} tan(x) = +\infty
-      \] 
-    \end{itemize}
-    Quindi il teorema degli zeri implica che esiste \( x \in (\frac{-\pi}{2}, \frac{\pi}{2})\;tc\; tan(x)=y \)
-  \end{example}
-\end{figure}
-\( tan: (\frac{-\pi}{2}, \frac{\pi}{2}) \to \mathbb{R} \) è biettiva, quindi per ogni \( y \in \mathbb{R} \)
-esiste un unico numero reale, che indicheremo \( arctan(y) \), tale che
-\[
-  \begin{cases}
-    -\frac{\pi}{2} < arctan(y) < \frac{\pi}{2}\\
-    tan(arctan(y)) = y
-  \end{cases}
-\] 
-\label{D4}
-La funzione \( arctan \) è differenziabile? Se sì, chi è la sua derivata?
-
-Supponiamo già di sapere che \( arctan \) è differenziabile (è vero, ma andrebbe dimostrato)
-\[
-tan(arctan(y)) = y \;\;\;\;\forall y \in \mathbb{R}
-\] 
-Deriviamo ambo i membri:
-\[
-\frac{d}{dy}(tan(arctan(y))) = 1
-\] 
-\[
-\frac{d}{dy}(tan(arctan(y)))= tan'(arctan(y)) \cdot (arctan(y))'
-\] 
-\[
-tan'(x) = 1 + tan^2(x) = (1 + (tan(arctan(y))))^2 \cdot  (arctan(y))'
-\] 
-\[
-= (1+y^2) \cdot (arctan(y))'
-\] 
-Dunque:
-\[
-  (1+y^2)arctan'(y) = 1
-\] 
-e quindi:
-\[
-arctan'(y) = \frac{1}{1+y^2}
-\] 
-Quanto fatto ha validità più generale:
-
-Sia \( I \subseteq \mathbb{R} \) un intervallo, \( f: I \to \mathbb{R} \) una funzione
-fifferenziabile tale che \( f'(x) \neq 0\;\; \forall x \in \mathbb{R}  \).
-Allora esiste la funzione inversa:
-\[
-g: f(I) \to I
-\] 
-tale che \( f(g(y))=y\; \forall y \in f(I),\; g(f(x)) = x\; \forall x \in I \)
-
-Inoltre, \( g \) è differenziabile e vale:
-\[
-g'(y) = \frac{1}{f'(g(y))}
-\] 
-per ogni \( y \in f(I) \) 
-
-\begin{figure}[H]
-  \begin{exercise}
-    Trovare le derivate delle funzioni:
-    \[
-    arccos: [-1,1] \to [0,\pi]
-    \] 
-    \[
-    arcsin: [-1,1] \to [-\frac{\pi}{2}, \frac{\pi}{2}]
-    \] 
-  \end{exercise}
-\end{figure}
-
-\section{Derivate successive}
-Sia \( A \subseteq \mathbb{R} \) un intervallo aperto, o un'unione di intervalli aperti.
-Sia \( f: A \to \mathbb{R} \).
-
-Se (e solo se) \( f \) è differenziabile e \( f' \) è differenziabile, si dice
-che \( f \) è differenziabile due volte. Si scrive \( f'' \) per la derivata seconda di
-\( f \) (cioè la derivata di \( f \)).
-
-Similmente si definiscono le funzioni differenziabili \( 3,4,5, \ldots, \) infinite volte.
-Notazione per le derivate successive:
-\[
-f' = f^{(1)} = \frac{df}{dx}
-\] 
-\[
-f'' = f^{(2)} = \frac{d^2f}{dx^2}
-\] 
-\[
-f''' = f^{(3)} = \frac{d^3f}{dx^3}
-\] 
-\[
-f^{(n)} = \frac{d^nf}{dx^n}
-\] 
-\subsection{Funzioni convesse e concave}
-Sia \( I \subseteq \mathbb{R} \) intervallo. Una funzione \( f: I \to \mathbb{R} \)
-si dice \( \begin{cases}
-  \text{convessa}\\
-  \text{concava}
-\end{cases} \) se e solo se la corda tra due punti qualsiasi del grafico di \( f \) sta
-tutta \( \begin{cases}
-  \text{sopra}\\
-  \text{sotto}
-\end{cases} \) il grafico di \( f \). 
-\label{D5}
-\label{D6}
-In maniera equivalente, \( f \) è convessa se e solo se per ogni \( x \in I \), ogni
-\( \overline{x} \in I \) ed ogni \( t \in [0,1] \), vale
-\[
-f(tx+(1-t))\overline{x}) \le tf(x) + (1-t)f(\overline{x})
-\] 
-
-\subsection{Proprietà delle funzioni convesse (o concave)}
-\begin{enumerate}
-  \item Se \( I \subseteq \mathbb{R} \) funzione differenziabile due volte. Se \( \begin{cases}
-    f''(x) \ge 0\\
-    f''(x) \le 0
-  \end{cases} \) in ogni punto   TODO
-  \item Se \( I \subseteq \mathbb{R} \) è un intervallo, \( f: I \to \mathbb{R} \) è
-    differenziabile e \( \begin{cases}
-      \text{convessa}\\
-      \text{concava}
-    \end{cases} \) e \( x_0 \in I \), allora la retta tangente a \( f \) nel
-    punto \( (x_0, f(x_0)) \) sta tutta \( \begin{cases}
-      \text{sopra}\\
-      \text{sotto}
-    \end{cases} \) il grafico di \( f \). 
-    \label{D7}
-  \item Se \( I \subseteq \mathbb{R} \) è un intervallo, \( f: I \to \mathbb{R} \) una
-    funzione differenziabile e \( \begin{cases}
-      \text{convessa}\\
-      \text{concava}
-    \end{cases} \) e \( x_0 \in I \) un punto critico di \( f \) \( (f'(x_0)=0) \),
-    allora \( x_0 \) è un punto di \( \begin{cases}
-      \text{minimo}\\
-      \text{massimo}
-    \end{cases} \) di \( f \).
-    \label{D8}
-    \label{D9}
-  \item Se \( f:I \to \mathbb{R} \) è differenziabile due volte e \( x_0 \in I \) è
-    tale che \( f'(x_0) = 0 \) e \( \begin{cases}
-      f''(x_0) > 0\\
-      f''(x_0) < 0
-    \end{cases} \) allora \( x_0 \) è un punto di \( \begin{cases}
-      \text{minimo}\\
-      \text{massimo}
-    \end{cases} \) locale per \( f \).
-\end{enumerate}
-
-\begin{figure}[H]
-  \begin{example}
-    \[
-    f: \mathbb{R}\to \mathbb{R}
-    \] 
-    \[
-    f(x) = x^3-x^2\;\;\; \forall x \in \mathbb{R}
-    \] 
-    \[
-    f'(x) = 3x^2-2x
-    \] 
-    \[
-    f''(x) = 6x-2
-    \] 
-    \label{D10}
-
-    \[
-    f(x) = 0 \Leftrightarrow x^2(x-1) = 0 \Leftrightarrow x = 0\;\; oppure
-    \] 
-    \[
-    f(x) \ge 0 \Leftrightarrow x^2(x-1) \ge 0 \Leftrightarrow x \ge 1\;\; oppure\;\; x = 0
-    \] 
-    \[
-    f'(x) = 0 \Leftrightarrow x=0 \;\; oppure\;\; x=\frac{2}{3}
-    \] 
-    \[
-    f'(x) \ge 0 \Leftrightarrow x \le 0 \;\;oppure\;\; x \ge \frac{2}{3}
-    \] 
-    Quindi \( f \) è cresccente in \( (-\infty, 0) \) e in \( \frac{2}{3}, +\infty \); \( f \) 
-    è decrescente in \( (0, \frac{2}{3}) \). In \( x=0 \) ho un punto di massimo locale,
-    in \( x=\frac{2}{3} \) ho un punto di minimo locale.
-    \[
-    f''(x) = 6x-2
-    \] 
-    \[
-    f''(x) = 0 \Leftrightarrow x = \frac{1}{3}
-    \] 
-    \[
-    f''(x) \ge 0 \Leftrightarrow x \ge \frac{1}{3}
-    \] 
-    \( f \) è convessa in \( (\frac{1}{3}, +\infty) \) e concava in \( (-\infty, \frac{1}{3}) \);
-    \( f \) ha \( x = \frac{1}{3} \) è un punto di flesso di \( f \).
-  \end{example}
-\end{figure}
 \end{document}
