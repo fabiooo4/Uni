@@ -1,0 +1,22 @@
+.model pippo
+.inputs x y z v
+.outputs o
+
+.names x y z v o
+011- 1
+00-- 1
+-101 1
+10-1 1
+-11- 1
+
+.end
+
+# 10 lits script.rugged -> 5 lits
+
+# before reduce_depth
+# total gate area:       8.00
+# maximum arrival time: (5.50,5.50)
+
+# after reduce_depth
+# total gate area:       8.00
+# maximum arrival time: (5.50,5.50)
