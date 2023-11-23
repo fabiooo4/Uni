@@ -2239,7 +2239,7 @@ Per \textbf{circuiti a più uscite} esiste solo un metodo \emph{approssimato} pe
 basa sul metodo esatto di identificazione degli implicanti primi essenziali di ogni singola uscita.
 
 
-\section{Modelli gerarchici}
+\subsection{Modelli gerarchici}
 Un \textbf{componente gerarchico} è un componente del sistema che contiene al proprio interno dei
 sottocomponenti, ossia delle \textbf{istanze di altri componenti}. (Un sommatore di \( n \) bit
 può essere costruito da \( n \) sommatori).
@@ -2310,7 +2310,7 @@ Ci sono dei componenti che possono essere utili, ad esempio:
     \end{center}
 \end{itemize}
 
-\section{Ottimizzazione approssimata multilivello}
+\subsection{Ottimizzazione approssimata multilivello}
 Consente al progettista di bilanciare area e ritardo di di un circuito con maggior
 grado di libertà rispetto alla minimizzazione a 2 livelli.
 
@@ -2335,7 +2335,7 @@ viene rappresentata con un nuovo nodo
   \item \textbf{simplify}: riduzione della complessità di ogni singolo nodo con algoritmo
 di Quine-McCluskey
 
-\section{Mapping tecnologico}
+\subsection{Mapping tecnologico}
 La realizzazione di un circuito può usare due tecnologie fondamentali:
 \begin{itemize}
   \item \textbf{ASIC}: utilizzando le porte logiche di base messe a disposizione da
@@ -2371,220 +2371,216 @@ porte della libreria
   \item \textbf{reduce\_depth}: riduce la lunghezza dei cammnini critici
 \end{itemize}
 
-% Fine laboratorio
-
-\section{Sintesi a N livelli}
+\subsection{Sintesi a N livelli}
 \begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[scale=0.6, domain=0:10]
-		\coordinate (A) at (0,5);
-		\coordinate (B) at (1,3);
-		\coordinate (C) at (2,4);
-		\coordinate (D) at (3,2);
-		\coordinate (E) at (4,3);
-		\coordinate (F) at (5,3);
-		\coordinate (G) at (6,2);
-		\coordinate (H) at (7,1);
-		\coordinate (I) at (8,3);
-		\coordinate (J) at (9,2);
-		\coordinate (K) at (10,1);
+  \centering
+  \begin{tikzpicture}[scale=0.6, domain=0:10]
+    \coordinate (A) at (0,5);
+    \coordinate (B) at (1,3);
+    \coordinate (C) at (2,4);
+    \coordinate (D) at (3,2);
+    \coordinate (E) at (4,3);
+    \coordinate (F) at (5,3);
+    \coordinate (G) at (6,2);
+    \coordinate (H) at (7,1);
+    \coordinate (I) at (8,3);
+    \coordinate (J) at (9,2);
+    \coordinate (K) at (10,1);
 
-		\draw [->] (0,0) -- (10,0) node[right] {$t$};
-		\draw [->] (0,0) -- (0,5) node[above] {Ottimalità (area)};
+    \draw [->] (0,0) -- (10,0) node[right] {$t$};
+    \draw [->] (0,0) -- (0,5) node[above] {Ottimalità (area)};
 
-		\draw [gray!50, ultra thin] (0,0) grid (10,5);
-		\draw [blue, ultra thick] plot [smooth, tension=0.8] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) };
+    \draw [gray!50, ultra thin] (0,0) grid (10,5);
+    \draw [blue, ultra thick] plot [smooth, tension=0.8] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) };
 
-        \node[left, align=center] (ottimo) at (-1,3) {Ottimo\\
-            locale};
-        \draw [->] (ottimo) -- (B);
-	\end{tikzpicture}
-    \caption{Ottimalità nel tempo}
+    \node[left, align=center] (ottimo) at (-1,3) {Ottimo\\
+      locale};
+    \draw [->] (ottimo) -- (B);
+  \end{tikzpicture}
+  \caption{Ottimalità nel tempo}
 \end{figure}
 \begin{define}
-    Il cammino critico è il percorso più lungo che il segnale deve effettuare e indica il ritardo.
+  Il cammino critico è il percorso più lungo che il segnale deve effettuare e indica il ritardo.
 \end{define}
 In un circuito a 2 livelli riducendo l'area si riduce anche il ritardo.
 \begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[scale=0.6, domain=2:8]
-		\coordinate (D) at (3,1);
-		\coordinate (F) at (5,2);
-		\coordinate (G) at (6,3);
-		\coordinate (I) at (8,4);
+  \centering
+  \begin{tikzpicture}[scale=0.6, domain=2:8]
+    \coordinate (D) at (3,1);
+    \coordinate (F) at (5,2);
+    \coordinate (G) at (6,3);
+    \coordinate (I) at (8,4);
 
-		\draw [->] (0,0) -- (10,0) node[below, align=center] {area\\
-            (numero di letterali)};
-		\draw [->] (0,0) -- (0,5) node[above] {ritardo};
+    \draw [->] (0,0) -- (10,0) node[below, align=center] {area\\
+      (numero di letterali)};
+    \draw [->] (0,0) -- (0,5) node[above] {ritardo};
 
-		\draw [gray!50, ultra thin] (0,0) grid (10,5);
-		\draw [red, thick] (D) -- (F) -- (G) -- (I);
-        \draw [blue] (I) -- (D);
+    \draw [gray!50, ultra thin] (0,0) grid (10,5);
+    \draw [red, thick] (D) -- (F) -- (G) -- (I);
+    \draw [blue] (I) -- (D);
 
-		\draw [fill, red] (D) circle [radius=0.1];
-		\draw [fill, red] (F) circle [radius=0.1];
-		\draw [fill, red] (G) circle [radius=0.1];
-		\draw [fill, red] (I) circle [radius=0.1] node[black, right, align=center, scale=0.7] {Somma di\\
-            letterali};
-	\end{tikzpicture}
-    \caption{Ottimalità di circuiti a 2 livelli}
+    \draw [fill, red] (D) circle [radius=0.1];
+    \draw [fill, red] (F) circle [radius=0.1];
+    \draw [fill, red] (G) circle [radius=0.1];
+    \draw [fill, red] (I) circle [radius=0.1] node[black, right, align=center, scale=0.7] {Somma di\\
+      letterali};
+  \end{tikzpicture}
+  \caption{Ottimalità di circuiti a 2 livelli}
 \end{figure}
 
 In circuiti a N livelli il grafico del ritardo e dell'area è un'iperbole:
 \begin{figure}[H]
-	\begin{center}
-		\begin{tikzpicture}
-			\draw[->] (-0.2, 0) -- (3, 0) node[below] {area};
-			\draw[->] (0, -0.2) -- (0, 3) node[above] {ritardo};
-			\draw[domain=0.35:3, smooth, variable=\x, blue, thick] plot ({\x}, {1/\x}) node [below right] {};
+  \begin{center}
+    \begin{tikzpicture}
+      \draw[->] (-0.2, 0) -- (3, 0) node[below] {area};
+      \draw[->] (0, -0.2) -- (0, 3) node[above] {ritardo};
+      \draw[domain=0.35:3, smooth, variable=\x, blue, thick] plot ({\x}, {1/\x}) node [below right] {};
 
-            \draw [fill] (1,1) circle [radius=0.05] node[below right] {};
-            \draw [->] (1,1) -- ++(-0.2,0.2) node[right, align=center] {};
-            \draw [->] (1,1) -- ++(0.2,-0.2) node[right, align=center] {};
-		\end{tikzpicture}
-	\end{center}
-	\caption{Curva di Pareto}
+      \draw [fill] (1,1) circle [radius=0.05] node[below right] {};
+      \draw [->] (1,1) -- ++(-0.2,0.2) node[right, align=center] {};
+      \draw [->] (1,1) -- ++(0.2,-0.2) node[right, align=center] {};
+    \end{tikzpicture}
+  \end{center}
+  \caption{Curva di Pareto}
 \end{figure}
 Quindi bisogna trovare un buon compromesso tra area e ritardo, perchè diminuendo troppo l'area
 aumenta anche il ritardo.
-
-
-\subsection{Network}
+\subsubsection{Network}
 \paragraph{DAG} Direct Acyclic Graph. Non permettono la creazione di cicli (Acyclic).
 \begin{figure}[H]
-   \begin{center}
-       \begin{tikzpicture}
-           \draw (0,0) circle [radius=0.5];
-           \draw (0,2) circle [radius=0.5];
-           \draw (0,-2) circle [radius=0.5];
-           \draw (2,0) circle [radius=0.5];
-           \draw (-2,0) circle [radius=0.5];
+  \begin{center}
+    \begin{tikzpicture}
+      \draw (0,0) circle [radius=0.5];
+      \draw (0,2) circle [radius=0.5];
+      \draw (0,-2) circle [radius=0.5];
+      \draw (2,0) circle [radius=0.5];
+      \draw (-2,0) circle [radius=0.5];
 
-           \draw [<-] (0,0.5) -- (0,1.5);
-           \draw [->] (0,-0.5) -- (0,-1.5);
-           \draw [->] (0.5,0) -- (1.5,0);
-           \draw [<-] (-0.5,0) -- (-1.5,0);
-           \draw [->] (-1.65,0.35) -- (-0.35,1.65);
-       \end{tikzpicture}
-   \end{center} 
-   \caption{Esempio di DAG}
+      \draw [<-] (0,0.5) -- (0,1.5);
+      \draw [->] (0,-0.5) -- (0,-1.5);
+      \draw [->] (0.5,0) -- (1.5,0);
+      \draw [<-] (-0.5,0) -- (-1.5,0);
+      \draw [->] (-1.65,0.35) -- (-0.35,1.65);
+    \end{tikzpicture}
+  \end{center} 
+  \caption{Esempio di DAG}
 \end{figure}
 
 Gli input sono dei nodi, e ogni nodo di ingresso avrà soltanto archi uscenti. I nodi di uscita
 avranno solo archi entranti. Il numero di letterali è dato dalla somma dei
 letterali di tutte le funzioni.
 \begin{figure}[H]
-    \begin{center}
-        \begin{tikzpicture}
-            \draw (0,3) circle [radius=0.3] node {X};
-            \draw (0,2) circle [radius=0.3] node {Y};
-            \draw (0,1) circle [radius=0.3] node {Z};
-            \draw (0,0) circle [radius=0.3] node {V};
+  \begin{center}
+    \begin{tikzpicture}
+      \draw (0,3) circle [radius=0.3] node {X};
+      \draw (0,2) circle [radius=0.3] node {Y};
+      \draw (0,1) circle [radius=0.3] node {Z};
+      \draw (0,0) circle [radius=0.3] node {V};
 
-            \draw (2,2.5) circle [radius=0.3] node {A};
-            \draw (2,1.5) circle [radius=0.3] node {B};
-            \draw (2,0.5) circle [radius=0.3] node {C};
+      \draw (2,2.5) circle [radius=0.3] node {A};
+      \draw (2,1.5) circle [radius=0.3] node {B};
+      \draw (2,0.5) circle [radius=0.3] node {C};
 
-            \draw (4,2) circle [radius=0.3] node {D};
-            \draw (4,1) circle [radius=0.3] node {E};
+      \draw (4,2) circle [radius=0.3] node {D};
+      \draw (4,1) circle [radius=0.3] node {E};
 
-            \draw (6,2) circle [radius=0.3] node {W};
-            \draw (6,1) circle [radius=0.3] node {O};
+      \draw (6,2) circle [radius=0.3] node {W};
+      \draw (6,1) circle [radius=0.3] node {O};
 
-            % x to a
-            \draw [->] (0.3,3) -- (1.7,2.57);
-            % y to a
-            \draw [->] (0.3,2) -- (1.7,2.43);
-            % y to b
-            \draw [->] (0.3,2) -- (1.7,1.6);
-            % z to b
-            \draw [->] (0.3,1) -- (1.7,1.5);
-            % v to b
-            \draw [->] (0.3,0) -- (1.7,1.4);
-            % v to c
-            \draw [->] (0.3,0) -- (1.7,0.5);
+      % x to a
+      \draw [->] (0.3,3) -- (1.7,2.57);
+      % y to a
+      \draw [->] (0.3,2) -- (1.7,2.43);
+      % y to b
+      \draw [->] (0.3,2) -- (1.7,1.6);
+      % z to b
+      \draw [->] (0.3,1) -- (1.7,1.5);
+      % v to b
+      \draw [->] (0.3,0) -- (1.7,1.4);
+      % v to c
+      \draw [->] (0.3,0) -- (1.7,0.5);
 
-            % a to d
-            \draw [->] (2.3,2.5) -- (3.7,2.1);
-            % b to d
-            \draw [->] (2.3,1.5) -- (3.7,1.9);
-            % b to e
-            \draw [->] (2.3,1.5) -- (3.7,1.1);
-            % c to e
-            \draw [->] (2.3,0.5) -- (3.7,0.9);
-            % d to e
-            \draw [->] (4,1.7) -- (4,1.3);
+      % a to d
+      \draw [->] (2.3,2.5) -- (3.7,2.1);
+      % b to d
+      \draw [->] (2.3,1.5) -- (3.7,1.9);
+      % b to e
+      \draw [->] (2.3,1.5) -- (3.7,1.1);
+      % c to e
+      \draw [->] (2.3,0.5) -- (3.7,0.9);
+      % d to e
+      \draw [->] (4,1.7) -- (4,1.3);
 
-            % a to w
-            \draw [->] (2.29,2.6) -- (5.7,2.2);
-            % e to o
-            \draw [->] (4.3,1) -- (5.7,1);
-        \end{tikzpicture}
-    \end{center}
-    \caption{Esempio di network}
+      % a to w
+      \draw [->] (2.29,2.6) -- (5.7,2.2);
+      % e to o
+      \draw [->] (4.3,1) -- (5.7,1);
+    \end{tikzpicture}
+  \end{center}
+  \caption{Esempio di network}
 \end{figure}
 Il numero di nodi può essere messo in relazione con il ritardo (più nodi ci sono più nodi devono
 attraversare i segnali, quindi più ritardo).
 \begin{itemize}
-    \item Area: numero di letterali;
-    \item Delay: numero di nodi;
+  \item Area: numero di letterali;
+  \item Delay: numero di nodi;
 \end{itemize}
 
-\subsection{Algoritmi}
+\subsubsection{Algoritmi}
 \begin{itemize}
-    \item \textbf{simplify}(Quine-McCluskey):trova la minimizzazione massima per ogni nodo del network
-    \item \textbf{full\_simplify}: è l'algoritmo più pesante per semplificare il circuito
-        e utilizza BDB (Binady Decision Diagram) come struttura dati (struttura a grafo).
+  \item \textbf{simplify}(Quine-McCluskey):trova la minimizzazione massima per ogni nodo del network
+  \item \textbf{full\_simplify}: è l'algoritmo più pesante per semplificare il circuito
+    e utilizza BDB (Binady Decision Diagram) come struttura dati (struttura a grafo).
 \end{itemize}
 \subsection{Script}
 In sis c'è una lista di \textbf{script} che permettono di minimizzare il circuito, ad
 esempio:
 \begin{itemize}
-    \item \textbf{rugged}: permette di minimizzare il circuito;
-    \item \textbf{sweep}: ripulisce il circuito dai nodi inutili
-    \item \textbf{eliminate}: elimina un nodo dal circuito condensandolo nei nodi che lo
-        circondano
+  \item \textbf{rugged}: permette di minimizzare il circuito;
+  \item \textbf{sweep}: ripulisce il circuito dai nodi inutili
+  \item \textbf{eliminate}: elimina un nodo dal circuito condensandolo nei nodi che lo
+    circondano
 \end{itemize}
 
 \subsubsection{full\_simplify}
 Prendiamo come esempio il seguente network:
 \begin{figure}[H]
-    \begin{center}
-        \begin{tikzpicture}
-            \node[draw, circle] at (0,2) (A) {A};
-            \node[draw, circle] at (0,1) (B) {B};
-            \node[draw, circle] at (0,0) (C) {C};
+  \begin{center}
+    \begin{tikzpicture}
+      \node[draw, circle] at (0,2) (A) {A};
+      \node[draw, circle] at (0,1) (B) {B};
+      \node[draw, circle] at (0,0) (C) {C};
 
-            \node[draw, ellipse] at (3,2) (X) {\( X=\bar{A}+B \) };
-            \node[draw, ellipse] at (6,0.5) (Y) {\( Y=ABX+\bar{A}CX \) };
-            \node[draw, ellipse] at (9.5,0.5) (O) {\( O \) };
+      \node[draw, ellipse] at (3,2) (X) {\( X=\bar{A}+B \) };
+      \node[draw, ellipse] at (6,0.5) (Y) {\( Y=ABX+\bar{A}CX \) };
+      \node[draw, ellipse] at (9.5,0.5) (O) {\( O \) };
 
-            \draw[->] (A) -- (X);
-            \draw[->] (B) -- (X);
+      \draw[->] (A) -- (X);
+      \draw[->] (B) -- (X);
 
-            \draw[->] (X) -- (Y);
-            \draw[->] (C) -- (Y);
-            \draw[->] (A) -- (Y);
-            \draw[->] (B) -- (Y);
+      \draw[->] (X) -- (Y);
+      \draw[->] (C) -- (Y);
+      \draw[->] (A) -- (Y);
+      \draw[->] (B) -- (Y);
 
-            \draw[->] (Y) -- (O);
-        \end{tikzpicture}
-    \end{center}
-    \caption{Esempio di network}
+      \draw[->] (Y) -- (O);
+    \end{tikzpicture}
+  \end{center}
+  \caption{Esempio di network}
 \end{figure}
 Con un semplice \textbf{simplify} sul nodo \( X \) il circuito resta uguale.
 Si può notare dalla mappa di Karnaugh del nodo \( X \) che tutti i mintermini sono coperti e
 sono essenziali
 \begin{table}[H]
-    \begin{center}
-        \begin{karnaugh-map}[4][4][1][\( B \)][\( A \)][\( X \)][\( C \)]
-                \minterms{12,13,7,15}
-                \autoterms[0]
-                \implicant{12}{13}
-                \implicant{7}{15}
-            \end{karnaugh-map}    
-    \end{center}
-    \caption{Mappa di Karnaugh del nodo \( X \)}
+  \begin{center}
+    \begin{karnaugh-map}[4][4][1][\( B \)][\( A \)][\( X \)][\( C \)]
+      \minterms{12,13,7,15}
+      \autoterms[0]
+      \implicant{12}{13}
+      \implicant{7}{15}
+    \end{karnaugh-map}    
+  \end{center}
+  \caption{Mappa di Karnaugh del nodo \( X \)}
 \end{table}
 
 Il \textbf{full\_simplify}, invece calcola i \textbf{controllability don't care set\footnote{Gli \textbf{observability don't care} sono valori di ingresso che non servono per calcolare l'uscita}}, che sarebbero
@@ -2593,81 +2589,83 @@ le configurazioni di ingresso che non si possono presentare. ad esempio: ABX= (0
 Se prendiamo in considerazione la tabella di verità del nodo \( X \) si può ottenere il
 controllability don't care set: 
 \begin{table}[H]
-    \begin{center}
-        \begin{tabular}{c|c}
-            A B & X\\
-            \hline
-            0 0 & 1\\
-            0 1 & 1\\
-            1 0 & 0\\
-            1 1 & 1
-        \end{tabular}
-    \end{center}
-    \caption{Tabella di verità del nodo \( X \)}
+  \begin{center}
+    \begin{tabular}{c|c}
+      A B & X\\
+      \hline
+      0 0 & 1\\
+      0 1 & 1\\
+      1 0 & 0\\
+      1 1 & 1
+    \end{tabular}
+  \end{center}
+  \caption{Tabella di verità del nodo \( X \)}
 \end{table}
 \begin{table}[H]
-    \begin{center}
-        \begin{tabular}{c}
-            A B C X\\
-            \hline
-            0 0 - 0\\
-            0 1 - 0\\
-            1 0 - 1\\
-            1 1 - 0
-        \end{tabular}
-    \end{center}
-    \caption{Controllability don't care set}
+  \begin{center}
+    \begin{tabular}{c}
+      A B C X\\
+      \hline
+      0 0 - 0\\
+      0 1 - 0\\
+      1 0 - 1\\
+      1 1 - 0
+    \end{tabular}
+  \end{center}
+  \caption{Controllability don't care set}
 \end{table}
 Se si inseriscono questi don't care nella mappa di Karnaugh si osserva che sono disponibili
 altri raggruppamenti:
 \begin{table}[H]
-    \begin{center}
-        \begin{karnaugh-map}[4][4][1][\( B \)][\( A \)][\( X \)][\( C \)]
-                \minterms{12,13,7,15}
-                \indeterminants{0, 1, 3, 6, 14, 8, 9, 11}
-                \maxterms{2, 4, 5, 10}
-                \implicant{12}{9}
-                \implicant{3}{11}
-                \implicant{7}{14}
-                \implicant{12}{14}
-                \implicantedge{0}{1}{8}{9}
-            \end{karnaugh-map}    
-    \end{center}
-    \caption{Mappa di Karnaugh del nodo \( X \) con i don't care}
+  \begin{center}
+    \begin{karnaugh-map}[4][4][1][\( B \)][\( A \)][\( X \)][\( C \)]
+      \minterms{12,13,7,15}
+      \indeterminants{0, 1, 3, 6, 14, 8, 9, 11}
+      \maxterms{2, 4, 5, 10}
+      \implicant{12}{9}
+      \implicant{3}{11}
+      \implicant{7}{14}
+      \implicant{12}{14}
+      \implicantedge{0}{1}{8}{9}
+    \end{karnaugh-map}    
+  \end{center}
+  \caption{Mappa di Karnaugh del nodo \( X \) con i don't care}
 \end{table}
 Il risultato finale sarà:
 \[
-    Y = \color{red} \bar{A}C \color{black} + \color{green} AB \color{black}
+  Y = \color{red} \bar{A}C \color{black} + \color{green} AB \color{black}
 \] 
 Usando questi don´t care si può semplificare il circuito e si nota che il nodo X non
 è più necessario, quindi si può eliminare (sweep) e il network finale sarà il seguente:
 \begin{figure}[H]
-    \begin{center}
-        \begin{tikzpicture}
-            \node[draw, circle] at (0,2) (A) {A};
-            \node[draw, circle] at (0,1) (B) {B};
-            \node[draw, circle] at (0,0) (C) {C};
+  \begin{center}
+    \begin{tikzpicture}
+      \node[draw, circle] at (0,2) (A) {A};
+      \node[draw, circle] at (0,1) (B) {B};
+      \node[draw, circle] at (0,0) (C) {C};
 
-            \node[draw, ellipse] at (4,1) (Y) {\( Y=\bar{A}C + AB \) };
-            \node[draw, ellipse] at (7.5,1) (O) {\( O \) };
+      \node[draw, ellipse] at (4,1) (Y) {\( Y=\bar{A}C + AB \) };
+      \node[draw, ellipse] at (7.5,1) (O) {\( O \) };
 
-            \draw[->] (C) -- (Y);
-            \draw[->] (A) -- (Y);
-            \draw[->] (B) -- (Y);
+      \draw[->] (C) -- (Y);
+      \draw[->] (A) -- (Y);
+      \draw[->] (B) -- (Y);
 
-            \draw[->] (Y) -- (O);
-        \end{tikzpicture}
-    \end{center}
+      \draw[->] (Y) -- (O);
+    \end{tikzpicture}
+  \end{center}
 \end{figure}
 
 Per poter realizzare il circuito minimizzato a 2 livelli bisogna fare il technology mapping
 che sarebbe l'ultimo passaggio per realizzare il network in qualcosa di reale.
 \begin{itemize}
-    \item \textbf{FPGA}: \( f(B^5) \to B \) 
-    \item \textbf{ASIC}: libreria di porte logiche (composte da più porte elementari e date dal produttore)
+  \item \textbf{FPGA}: \( f(B^5) \to B \) 
+  \item \textbf{ASIC}: libreria di porte logiche (composte da più porte elementari e date dal produttore)
 \end{itemize}
 L'algoritmo più famoso di technology mapping si chiama \textbf{tree mapping} e dopo l'applicazione
 di questo algoritmo si avrà una misurazione per area, ritardo e potenza.
+% Fine laboratorio
+
 
 \section{Hardware design su FPGA con HDL}
 \textbf{HDL} è un linguaggio di modellazione che permette di progettare circuiti su hardware.
