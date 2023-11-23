@@ -2120,7 +2120,7 @@ I SoC attivano diversi CPLD
 
 % Laboratorio
 \section{Laboratorio}
-\subsection{SIS}
+\subsection{Modellazione in SIS}
 È il successore di \emph{Espresso} e permette di fare la sintesi di circuiti, cioè
 si genera passo dopo passo il layout per il silicio.
 
@@ -2664,6 +2664,304 @@ che sarebbe l'ultimo passaggio per realizzare il network in qualcosa di reale.
 \end{itemize}
 L'algoritmo più famoso di technology mapping si chiama \textbf{tree mapping} e dopo l'applicazione
 di questo algoritmo si avrà una misurazione per area, ritardo e potenza.
+
+\subsection{Modellazione in Verilog}
+Verilog è un linguaggio di modellazione più simile ad un linguaggio di programmazione ed
+è divisa nei nei seguenti livelli di astrazione (di più alto livello):
+\begin{itemize}
+  \item \textbf{Behavioural}: il comportamento del sistema hardware viene descritto
+    specificando le azioni da comprendere, in maniera quasi algoritmica
+  \item \textbf{Strutturale}: il comportamento del sistema hardware veiene descritto come
+    aggregazione e interconnesione di componenti, i quali a loro volta
+    specificheranno delle funzionalità in uno dei tre stili di modellazione
+  \item \textbf{Gate-level}: il comportamento del sistema hardware viene descritto come
+    aggregazione di porte logiche di base, quali porte AND, OR, NOT, ecc.
+\end{itemize}
+\subsubsection{Tipi di dato}
+I segnali di Verilog possono essere di 4 tipi, corrispondenti a stati fisici di segnali
+hardware:
+\begin{itemize}
+  \item \textbf{0}: zero logico, oppure una condizione falsa
+  \item \textbf{1}: uno logico, oppure una condizione vera
+  \item \textbf{X}: valore sconosciuto, oppure don't care
+  \item \textbf{Z}: alta impedenza del segnale
+\end{itemize}
+È possibile esprimere valori numerici a più bit utilizzando i letterali numerici,
+la cui struttura di base è: \( [D]'[B][Valore] \) 
+\begin{itemize}
+  \item \textbf{D}: dimensione del segnale (numero di bit) espresso come numero in base 10
+  \item \textbf{B}: base, può essere una delle seguenti:
+    \begin{itemize}
+      \item \textbf{d}: base 10
+      \item \textbf{b}: base 2
+      \item \textbf{o}: base 8
+      \item \textbf{h}: base 16
+    \end{itemize}
+\end{itemize}
+Un esempio di letterale numerico è: \( 32'd17 = (17)_{10} \)\\
+oppure: \( 32'hABCD = (43981)_{10} \)\\
+\vspace{1em}
+
+Gli elementi di memorizzazione e le connessioni tra componenti vengono rappresentati mediante
+2 costruttori principali:
+\begin{itemize}
+  \item \textbf{wire}: rappresenta la connessione tra elementi, il cui valore è guidato
+    solamente dall'uscita di una rete logica (oppure, mediante \emph{assegnamenti continui})
+  \item \textbf{reg}: modella il comportamento di un elemento di memorizzazione
+\end{itemize}
+Per specificare \textbf{modelli a livello comportamentale} è possibile utilizzare variabili,
+simili a quelle dei linguaggi di programmazione, ad esempio:
+\begin{figure}[H]
+  \begin{lstlisting}[language=Verilog]
+  integer i; // variabile intera a 32 bit.
+  real r;    // variabile reale (floating point)
+  time t;    // variabile temporale
+  \end{lstlisting}
+\end{figure}
+
+\subsubsection{Moduli e interfacce}
+Il costrutto \textbf{module} è l'unità fondamentale di un modello Verilog.
+
+Un modulo rappresenta un componente del sistema, caratterizzato da \textbf{un'interfaccia},
+ossia la definizione delle sue \textbf{porte di ingresso} e \textbf{porte di uscita} ad
+esempio:
+\begin{figure}[H]
+    \begin{lstlisting}[language=Verilog]
+  module complemento(input [3:0] in, output [3:0] out);
+  begin
+    ...
+  endmodule
+    \end{lstlisting}   
+\end{figure}
+Il [3:0] indica che è da 4 bit e indica che il bit più grande è a sinistra,
+cioè little endian (il più piccolo bit a destra), il corrispondente è
+big endian (il più grande bit a destra).\\
+\vspace{1em}
+
+Un \textbf{blocco sequenziale} è il costrutto principale per la modellazione del
+comportamento di un sistema elettronico. È descritto da un insieme di istruzioni comprese
+tra le parole \emph{begin} e \emph{end}. Esistono 2 tipi di blocchi sequenziali:
+\begin{itemize}
+  \item \textbf{always}: blocco che viene eseguito ogniqualvolta si verifica un evento
+    (l'output cambia quando cambiano gli input)
+  \item \textbf{initial}: blocco che descrive il comportamento del sistema a partire
+    dall'istante iniziale della sua esecuzione
+\end{itemize}
+
+La sintassi dell'always è la seguente:
+\begin{figure}[H]
+  \begin{lstlisting}[language=Verilog]
+  always @(evento)
+  begin:
+    ...
+  end
+  \end{lstlisting}
+\end{figure}
+La sintassi dell'initial è la seguente:
+\begin{figure}[H]
+  \begin{lstlisting}[language=Verilog]
+  initial begin: nome
+    ...
+  end
+  \end{lstlisting}
+\end{figure}
+
+\subsubsection{Costrutti condizionali e cicli}
+Il linguaggio Verilog mette a disposizione vari costrutti condizionali e iterativi:
+\begin{itemize}
+  \item \textbf{if}:
+    \begin{figure}[H]
+      \begin{lstlisting}[language=Verilog]
+  if(condizione) begin
+    [istruzioni sequenziali]
+  end
+  else if(condizione) begin
+    [istruzioni sequenziali]
+  end else
+    [istruzioni sequenziali]
+  end
+      \end{lstlisting}
+    \end{figure}
+  \item \textbf{case}:
+        \begin{figure}[H]
+      \begin{lstlisting}[language=Verilog]
+case(espressione)
+  valore_1: begin
+    [blocco di istruzioni sequenziali]
+  end
+  valore_2: begin
+    [blocco di istruzioni sequenziali]
+  end
+    ...
+  default: begin
+    [blocco di istruzioni sequenziali]
+  end
+endcase
+      \end{lstlisting}
+    \end{figure}
+  \item \textbf{while}:
+    \begin{figure}[H]
+      \begin{lstlisting}[language=Verilog]
+  while(condizione) begin
+    [istruzioni sequenziali]
+  end
+      \end{lstlisting}
+    \end{figure}
+  \item \textbf{for}:
+    \begin{figure}[H]
+      \begin{lstlisting}[language=Verilog]
+  for(inizializzazione; condizione; incremento) begin
+    [istruzioni sequenziali]
+  end
+      \end{lstlisting}
+    \end{figure}
+  \item \textbf{repeat}:
+    \begin{figure}[H]
+      \begin{lstlisting}[language=Verilog]
+  repeat(nunmero) @ (evento) begin
+    [istruzioni sequenziali]
+  end
+      \end{lstlisting}
+    \end{figure} 
+\end{itemize}
+
+\subsubsection{Assegnamenti}
+Si assegnano dei segnali che sono tipicamente oggetti di tipo \textbf{wire}. Vengono
+continuamente assegnati mediante il costrutto:
+\begin{figure}[H]
+  \begin{lstlisting}[language=Verilog]
+  assign segnale = [ritardo] valore o espressione;
+  \end{lstlisting}
+\end{figure}
+Per assegnare i registri esistono 2 tipi di assegnamenti:
+\begin{itemize}
+  \item \textbf{Assegnamenti non bloccanti}: vengono fatti in sequenza (come in C)
+    \begin{figure}[H]
+      \begin{lstlisting}[language=Verilog]
+  registro <= valore o espressione;
+      \end{lstlisting}
+    \end{figure}
+  \item \textbf{Assegnamenti bloccanti}: vengono fatti in parallelo
+    \begin{figure}[H]
+      \begin{lstlisting}[language=Verilog]
+  registro = valore o espressione;
+      \end{lstlisting}
+    \end{figure}
+\end{itemize}
+
+\subsubsection{Esempi}
+\begin{figure}[H]
+  \begin{example}[Calcolo del complemento a 2]
+    \begin{lstlisting}[language=Verilog]
+  module complemento(input [3:0] in, output [3:0] out);
+    integer i;
+    reg [3:0] negato;
+  
+    always @(in)
+    begin
+      for(i = 0; i < 4; i = i + 1) begin
+        negato[i] <= !in[i];
+      end
+    
+    end
+    assign out = negato + 1;
+  endmodule
+    \end{lstlisting}
+  \end{example}
+\end{figure}
+\begin{figure}[H]
+  \begin{example}[Sommatore a 2 bit]
+    \begin{lstlisting}[language=Verilog]
+  module somma2bit(
+    input [3:0] a,
+    input [3:0] b,
+    output reg [3:0] out);
+    
+    always @(a or b) begin
+      out = a + b;
+    end
+  endmodule
+    \end{lstlisting}
+  \end{example}
+\end{figure}
+
+\subsubsection{Testbench}
+Il \textbf{testbench} è un modulo che genera gli ingressi e legge le uscite del modello
+che si sta progettando. Dunque, il suo ruolo è quello di stimolare l'esecuzione del
+modello in esame. Esistono 2 alternative principali:
+\begin{itemize}
+  \item \textbf{Module}: ad-hoch che istanzia il componente in esame
+  \item \textbf{script}: di comandi che generano gli ingressi del componente in esame.
+\end{itemize}
+I comandi utili alla creazione di un testbench sono:
+\begin{itemize}
+  \item \textbf{\$dumpfile(nomefile.vcd)}: crea un file di tracce (waveform) in cui
+    salvare l'andamento della simulazione
+  \item \textbf{\$display(argomenti)}: stampa a video la stringa creata specificando
+    gli argomenti (sintassi simile a C)
+\end{itemize}
+Un esempio di testbench è il seguente:
+\begin{figure}[H]
+  \begin{example}
+    \begin{lstlisting}[language=Verilog]
+  'timescale 1ns / 1ps
+
+  module tb();
+  reg [3:0] in;
+    wire [3:0] out;
+    integer i;
+    complemento c(.in(in), .out(out));
+
+    initial begin
+      $dumpfile("dump.vcd");
+      $dumpvars(1);
+      for(i = -7; i <= 7; i = i + 1) begin
+        in <= i;
+        #2;
+        $display("in: %d -> out: %d",
+          $signed(in), $signed(out));
+        end
+      end
+    endtask
+  endmodule
+    \end{lstlisting}
+  \end{example}
+\end{figure}
+
+\subsubsection{Simulazione di Verilog}
+Si può utilizzare \textbf{EDAPlayground} che è un insieme di strumenti online.
+
+\subsubsection{Modellazione a Gate Level}
+Verilog permette di specificare modelli più vicini a quella che sarà l'implementazione
+finale del circuito. Il linguaggio mette a disposizione una libreria di porte logiche
+standard che implementano le funzioni booleane corrispondenti. Le porte nella libreria
+sono: AND, OR, XOR, NAND, NOR, XNOR e NOT.
+
+Ogni porta logica richiede di specificare i segnali di uscita seguiti da quelli di ingresso.
+Quindi ad esempio, \( O = A \vee B \) sarà implementata specificando:
+\begin{figure}[H]
+  \begin{lstlisting}[language=Verilog]
+  or (O, A, B);
+  \end{lstlisting}
+\end{figure}
+La rappresentazione a gate level può essere espressa anche mediante assegnamenti continui,
+conoscendo l'operatore bit-wise corrispondente ad ogni porta.
+
+\begin{figure}[H]
+  \begin{example}[Sommatore a 1 bit gate level]
+  \begin{lstlisting}[language=Verilog]
+  module sommatore( input A, B, CIN, output O, COUT);
+    wire V, W, Z;
+    
+    xor(V, A, B);
+    xor(O, V, CIN);
+    and(W, A, B);
+    and(Z, V, CIN);
+    or(COUT, W, Z);
+  endmodule
+  \end{lstlisting}
+\end{example}
+\end{figure}
 % Fine laboratorio
 
 
@@ -2685,39 +2983,6 @@ non è sequenziale e per rappresentare l'hardware serve un linguaggio parallelo 
 programmazione non sono fatti per questo). Per questo motivo c'è una netta differenza tra il tempo
 di simulazione e il tempo simulato (tempo reale). Un HDL che useremo è Verilog in cui tutto concorre
 (quindi in parallelo) e non ci sono istruzioni sequenziali.
-\subsection{Verilog}
-L'elemento principale da rappresentare è il modulo, che ha un nome e un elenco di porte di ingresso
-e di uscita. Le porte hanno 16 bit e sono messi in ordine dal 15 allo 0
-\begin{lstlisting}[language=Verilog]
-module foo(clk, xi, yi, done); // clock, input, output
-    input [15:0] xi,yi; // input a 16 bit
-    output done;
-
-    // always esegue il blocco di codice quando si verifica un evento sull'argomento
-    always @(posedge clk) // serve per descrivere al livello RTL, posedge verifica quando il clock passa da 0 a 1
-        begin:
-            if (!done) begin
-                if (x == y) cd <= x;
-                else (x > y) x <= x - y;
-            end
-        end
-endmodule
-\end{lstlisting}
-Ai dati si può assegnare un valore tra i seguenti:
-\begin{itemize}
-    \item \textbf{0} bit falso
-    \item \textbf{1} bit vero
-    \item \textbf{X} dont'care o valore non definito
-    \item \textbf{Z} stato di alta impedenza 
-\end{itemize}
-In verilog ci sono diversi layer di astrazione:
-\begin{itemize}
-    \item \textbf{Behavioral}: si descrive il circuito come un insieme di istruzioni
-    \item \textbf{Data flow}: si descrive il circuito come un insieme di equazioni booleane
-    \item \textbf{Gate level}: si istanziano le porte logiche
-\end{itemize}
-Inoltre si possono assegnare dei valori di partenza (initial statement) che vengono eseguiti
-una sola volta all'inizio della simulazione.
 
 \section{Circuiti sequenziali}
 È un circuito i cui valori di uscita non dipendono soltanto dai valori di ingresso
@@ -3130,24 +3395,26 @@ Per ogni coppia \( S,I \) indica lo stato prossimo e l'uscita.
   \end{example}
 \end{figure}
 
-\begin{example}[Moore]
-  \[ M= <\{A,B,C\}, \{0,1\}, \{0,1\}, \delta, \lambda> \]
-  La funzione lambda viene scritta in una colonna separata: \( z \) 
-  \begin{table}[H]
-    \begin{center}
-      \begin{tabular}{c|c|c|c}
+\begin{figure}[H]
+  \begin{example}[Moore]
+    \[ M= <\{A,B,C\}, \{0,1\}, \{0,1\}, \delta, \lambda> \]
+    La funzione lambda viene scritta in una colonna separata: \( z \) 
+    \begin{table}[H]
+      \begin{center}
+        \begin{tabular}{c|c|c|c}
           & 0 & 1 & z\\
-        \hline
-        A & B & C & 0 \\
-        \hline
-        B & A & C & 1 \\
-        \hline
-        C & B & A & 1 \\
-      \end{tabular}
-    \end{center}
-    \caption{State Transition Table di una FSM di Moore}
-  \end{table}
-\end{example}
+          \hline
+          A & B & C & 0 \\
+          \hline
+          B & A & C & 1 \\
+          \hline
+          C & B & A & 1 \\
+        \end{tabular}
+      \end{center}
+      \caption{State Transition Table di una FSM di Moore}
+    \end{table}
+  \end{example}
+\end{figure}
 
 \subsubsection{State Transition graph (STG)}
 Un grafo è un costrutto matematico preciso formato da una coppia \( G=<V,E> \) dove:
