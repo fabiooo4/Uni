@@ -2246,4 +2246,225 @@ differenziabile in \( (a,b) \) e quindi, per il teorema di Lagrange, esiste \( c
 f'(c)=\frac{f(b)-f(a)}{b-a}
 \] 
 Ma, per ipotesi, \( f'(c)=0 \), da cioè \( f(b)-f(a)=0 \), cioè \( f(b)=f(a) \).
+
+\subsection{Derivate delle funzioni inverse}
+\begin{figure}[H]
+  \begin{example}
+    Consideriamo
+    \[
+    tan: (-\frac{\pi}{2}, \frac{\pi}{2}) \to \mathbb{R}
+    \] 
+    \[
+    tan(x) = \frac{sin(x)}{cos(x)} \forall x \in (-\frac{\pi}{2}, \frac{\pi}{2})
+    \] 
+    \label{D3}
+    La tangente è differenziabile
+    \[
+      \frac{d}{dx}(tan(x)) = \frac{(sin)'(x)cos(x)-(cos)'(x)sin(x)}{cos^2(x)}
+    \] 
+    \[
+    =\frac{cos^2(x)+sin^2(x)}{cos^2(x)} = \frac{1}{cos^2(x)} = 1+tan^2(x) > 0 \forall x \in (-\frac{\pi}{2}, \frac{\pi}{2})
+    \] 
+    \begin{itemize}
+      \item 
+        La tangente è strettamente crescente, quindi iniettiva
+      \item La tangente è suriettiva: per ogni \( y \in \mathbb{R} \), esiste \[
+      x \in (-\frac{\pi}{2}, \frac{\pi}{2}) \;tc\; tan(x)=y
+      \] 
+      Infatti la tangente è continua e 
+      \[
+      \lim_{x \to (-\frac{\pi}{2})^+} tan(x) = -\infty
+      \] 
+      \[
+      \lim_{x \to (\frac{\pi}{2})^-} tan(x) = +\infty
+      \] 
+    \end{itemize}
+    Quindi il teorema degli zeri implica che esiste \( x \in (\frac{-\pi}{2}, \frac{\pi}{2})\;tc\; tan(x)=y \)
+  \end{example}
+\end{figure}
+\( tan: (\frac{-\pi}{2}, \frac{\pi}{2}) \to \mathbb{R} \) è biettiva, quindi per ogni \( y \in \mathbb{R} \)
+esiste un unico numero reale, che indicheremo \( arctan(y) \), tale che
+\[
+  \begin{cases}
+    -\frac{\pi}{2} < arctan(y) < \frac{\pi}{2}\\
+    tan(arctan(y)) = y
+  \end{cases}
+\] 
+\label{D4}
+La funzione \( arctan \) è differenziabile? Se sì, chi è la sua derivata?
+
+Supponiamo già di sapere che \( arctan \) è differenziabile (è vero, ma andrebbe dimostrato)
+\[
+tan(arctan(y)) = y \;\;\;\;\forall y \in \mathbb{R}
+\] 
+Deriviamo ambo i membri:
+\[
+\frac{d}{dy}(tan(arctan(y))) = 1
+\] 
+\[
+\frac{d}{dy}(tan(arctan(y)))= tan'(arctan(y)) \cdot (arctan(y))'
+\] 
+\[
+tan'(x) = 1 + tan^2(x) = (1 + (tan(arctan(y))))^2 \cdot  (arctan(y))'
+\] 
+\[
+= (1+y^2) \cdot (arctan(y))'
+\] 
+Dunque:
+\[
+  (1+y^2)arctan'(y) = 1
+\] 
+e quindi:
+\[
+arctan'(y) = \frac{1}{1+y^2}
+\] 
+Quanto fatto ha validità più generale:
+
+Sia \( I \subseteq \mathbb{R} \) un intervallo, \( f: I \to \mathbb{R} \) una funzione
+fifferenziabile tale che \( f'(x) \neq 0\;\; \forall x \in \mathbb{R}  \).
+Allora esiste la funzione inversa:
+\[
+g: f(I) \to I
+\] 
+tale che \( f(g(y))=y\; \forall y \in f(I),\; g(f(x)) = x\; \forall x \in I \)
+
+Inoltre, \( g \) è differenziabile e vale:
+\[
+g'(y) = \frac{1}{f'(g(y))}
+\] 
+per ogni \( y \in f(I) \) 
+
+\begin{figure}[H]
+  \begin{exercise}
+    Trovare le derivate delle funzioni:
+    \[
+    arccos: [-1,1] \to [0,\pi]
+    \] 
+    \[
+    arcsin: [-1,1] \to [-\frac{\pi}{2}, \frac{\pi}{2}]
+    \] 
+  \end{exercise}
+\end{figure}
+
+\section{Derivate successive}
+Sia \( A \subseteq \mathbb{R} \) un intervallo aperto, o un'unione di intervalli aperti.
+Sia \( f: A \to \mathbb{R} \).
+
+Se (e solo se) \( f \) è differenziabile e \( f' \) è differenziabile, si dice
+che \( f \) è differenziabile due volte. Si scrive \( f'' \) per la derivata seconda di
+\( f \) (cioè la derivata di \( f \)).
+
+Similmente si definiscono le funzioni differenziabili \( 3,4,5, \ldots, \) infinite volte.
+Notazione per le derivate successive:
+\[
+f' = f^{(1)} = \frac{df}{dx}
+\] 
+\[
+f'' = f^{(2)} = \frac{d^2f}{dx^2}
+\] 
+\[
+f''' = f^{(3)} = \frac{d^3f}{dx^3}
+\] 
+\[
+f^{(n)} = \frac{d^nf}{dx^n}
+\] 
+\subsection{Funzioni convesse e concave}
+Sia \( I \subseteq \mathbb{R} \) intervallo. Una funzione \( f: I \to \mathbb{R} \)
+si dice \( \begin{cases}
+  \text{convessa}\\
+  \text{concava}
+\end{cases} \) se e solo se la corda tra due punti qualsiasi del grafico di \( f \) sta
+tutta \( \begin{cases}
+  \text{sopra}\\
+  \text{sotto}
+\end{cases} \) il grafico di \( f \). 
+\label{D5}
+\label{D6}
+In maniera equivalente, \( f \) è convessa se e solo se per ogni \( x \in I \), ogni
+\( \overline{x} \in I \) ed ogni \( t \in [0,1] \), vale
+\[
+f(tx+(1-t))\overline{x}) \le tf(x) + (1-t)f(\overline{x})
+\] 
+
+\subsection{Proprietà delle funzioni convesse (o concave)}
+\begin{enumerate}
+  \item Se \( I \subseteq \mathbb{R} \) funzione differenziabile due volte. Se \( \begin{cases}
+    f''(x) \ge 0\\
+    f''(x) \le 0
+  \end{cases} \) in ogni punto   TODO
+  \item Se \( I \subseteq \mathbb{R} \) è un intervallo, \( f: I \to \mathbb{R} \) è
+    differenziabile e \( \begin{cases}
+      \text{convessa}\\
+      \text{concava}
+    \end{cases} \) e \( x_0 \in I \), allora la retta tangente a \( f \) nel
+    punto \( (x_0, f(x_0)) \) sta tutta \( \begin{cases}
+      \text{sopra}\\
+      \text{sotto}
+    \end{cases} \) il grafico di \( f \). 
+    \label{D7}
+  \item Se \( I \subseteq \mathbb{R} \) è un intervallo, \( f: I \to \mathbb{R} \) una
+    funzione differenziabile e \( \begin{cases}
+      \text{convessa}\\
+      \text{concava}
+    \end{cases} \) e \( x_0 \in I \) un punto critico di \( f \) \( (f'(x_0)=0) \),
+    allora \( x_0 \) è un punto di \( \begin{cases}
+      \text{minimo}\\
+      \text{massimo}
+    \end{cases} \) di \( f \).
+    \label{D8}
+    \label{D9}
+  \item Se \( f:I \to \mathbb{R} \) è differenziabile due volte e \( x_0 \in I \) è
+    tale che \( f'(x_0) = 0 \) e \( \begin{cases}
+      f''(x_0) > 0\\
+      f''(x_0) < 0
+    \end{cases} \) allora \( x_0 \) è un punto di \( \begin{cases}
+      \text{minimo}\\
+      \text{massimo}
+    \end{cases} \) locale per \( f \).
+\end{enumerate}
+
+\begin{figure}[H]
+  \begin{example}
+    \[
+    f: \mathbb{R}\to \mathbb{R}
+    \] 
+    \[
+    f(x) = x^3-x^2\;\;\; \forall x \in \mathbb{R}
+    \] 
+    \[
+    f'(x) = 3x^2-2x
+    \] 
+    \[
+    f''(x) = 6x-2
+    \] 
+    \label{D10}
+
+    \[
+    f(x) = 0 \Leftrightarrow x^2(x-1) = 0 \Leftrightarrow x = 0\;\; oppure
+    \] 
+    \[
+    f(x) \ge 0 \Leftrightarrow x^2(x-1) \ge 0 \Leftrightarrow x \ge 1\;\; oppure\;\; x = 0
+    \] 
+    \[
+    f'(x) = 0 \Leftrightarrow x=0 \;\; oppure\;\; x=\frac{2}{3}
+    \] 
+    \[
+    f'(x) \ge 0 \Leftrightarrow x \le 0 \;\;oppure\;\; x \ge \frac{2}{3}
+    \] 
+    Quindi \( f \) è cresccente in \( (-\infty, 0) \) e in \( \frac{2}{3}, +\infty \); \( f \) 
+    è decrescente in \( (0, \frac{2}{3}) \). In \( x=0 \) ho un punto di massimo locale,
+    in \( x=\frac{2}{3} \) ho un punto di minimo locale.
+    \[
+    f''(x) = 6x-2
+    \] 
+    \[
+    f''(x) = 0 \Leftrightarrow x = \frac{1}{3}
+    \] 
+    \[
+    f''(x) \ge 0 \Leftrightarrow x \ge \frac{1}{3}
+    \] 
+    \( f \) è convessa in \( (\frac{1}{3}, +\infty) \) e concava in \( (-\infty, \frac{1}{3}) \);
+    \( f \) ha \( x = \frac{1}{3} \) è un punto di flesso di \( f \).
+  \end{example}
+\end{figure}
 \end{document}
