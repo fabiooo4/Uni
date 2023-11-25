@@ -1868,8 +1868,54 @@ tutta \( \begin{cases}
   \text{sopra}\\
   \text{sotto}
 \end{cases} \) il grafico di \( f \). 
-\label{D5}
-\label{D6}
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[scale=0.6, domain=0:10]
+		\coordinate (A) at (0,5);
+		\coordinate (B) at (1,3);
+		\coordinate (C) at (2,2);
+		\coordinate (D) at (3,1);
+		\coordinate (E) at (4,1);
+		\coordinate (F) at (5,2);
+		\coordinate (G) at (6,3);
+		\coordinate (H) at (7,5);
+
+		\draw [->] (0,0) -- (7,0) node[right] {$x$};
+		\draw [->] (0,0) -- (0,5) node[above] {$y$};
+
+		\draw [red, ultra thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H)};
+
+    \draw [orange] (1,3) -- (5,2);
+    \draw [orange] (2,2) -- (6,3);
+    \draw [orange] (3,1) -- (7,5);
+	\end{tikzpicture}
+    \caption{Funzione convessa}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[scale=0.6, domain=0:10]
+		\coordinate (A) at (0,0);
+		\coordinate (B) at (1,2);
+		\coordinate (C) at (2,3);
+		\coordinate (D) at (3,4);
+		\coordinate (E) at (4,4);
+		\coordinate (F) at (5,3);
+		\coordinate (G) at (6,2);
+		\coordinate (H) at (7,0);
+
+		\draw [->] (0,0) -- (7,0) node[right] {$x$};
+		\draw [->] (0,0) -- (0,5) node[above] {$y$};
+
+		\draw [blue, ultra thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H)};
+
+    \draw [cyan] (1,2) -- (5,3);
+    \draw [cyan] (2,3) -- (6,2);
+    \draw [cyan] (3,4) -- (7,0);
+	\end{tikzpicture}
+    \caption{Funzione concava}
+\end{figure}
+
 In maniera equivalente, \( f \) è convessa se e solo se per ogni \( x \in I \), ogni
 \( \overline{x} \in I \) ed ogni \( t \in [0,1] \), vale
 \[
@@ -1895,7 +1941,19 @@ f(tx+(1-t))\overline{x}) \le tf(x) + (1-t)f(\overline{x})
       \text{sopra}\\
       \text{sotto}
     \end{cases} \) il grafico di \( f \). 
-    \label{D7}
+ 		\begin{figure}[H]
+			\begin{center}
+        \begin{tikzpicture}[scale=1.5]
+					\draw[->] (-2, 0) -- (2, 0) node[right] {$x$};
+					\draw[->] (0, -1) -- (0, 2) node[above] {$y$};
+					\draw[domain=-2:1.6, smooth, variable=\x, red, thick, yscale=0.5, xscale=0.5] plot ({\x}, {(\x*\x)+\x});
+					\draw[domain=0:1.8, smooth, variable=\x, green, yscale=0.5, xscale=0.5] plot ({\x}, {(3*\x)-1});
+
+          \draw[fill, red, scale=0.5] (1, 2) circle (3pt);
+				\end{tikzpicture}
+			\end{center}
+		\end{figure}
+
   \item Se \( I \subseteq \mathbb{R} \) è un intervallo, \( f: I \to \mathbb{R} \) una
     funzione differenziabile e \( \begin{cases}
       \text{convessa}\\
@@ -1905,8 +1963,32 @@ f(tx+(1-t))\overline{x}) \le tf(x) + (1-t)f(\overline{x})
       \text{minimo}\\
       \text{massimo}
     \end{cases} \) di \( f \).
-    \label{D8}
-    \label{D9}
+     		\begin{figure}[H]
+			\begin{center}
+        \begin{tikzpicture}[scale=1.5]
+					\draw[->] (-0.5, 0) -- (2, 0) node[right] {$x$};
+					\draw[->] (0, -1) -- (0, 1) node[above] {$y$};
+					\draw[domain=0:3, smooth, variable=\x, red, thick, yscale=0.5, xscale=0.5] plot ({\x}, {(\x*\x)-3*\x+1});
+					\draw[domain=-1:4, smooth, variable=\x, orange, yscale=0.5, xscale=0.5] plot ({\x}, {-1.25});
+
+          \draw[fill, red, scale=0.5] (1.5, -1.25) circle (3pt);
+				\end{tikzpicture}
+			\end{center}
+		\end{figure}
+
+ 		\begin{figure}[H]
+			\begin{center}
+        \begin{tikzpicture}[scale=1.5]
+					\draw[->] (-0.5, 0) -- (2, 0) node[right] {$x$};
+					\draw[->] (0, -1) -- (0, 1) node[above] {$y$};
+					\draw[domain=0:3, smooth, variable=\x, blue, thick, yscale=0.5, xscale=0.5] plot ({\x}, {-(\x*\x)+3*\x-1});
+					\draw[domain=-1:4, smooth, variable=\x, cyan, yscale=0.5, xscale=0.5] plot ({\x}, {1.25});
+
+          \draw[fill, blue, scale=0.5] (1.5, 1.25) circle (3pt);
+				\end{tikzpicture}
+			\end{center}
+		\end{figure}
+
   \item Se \( f:I \to \mathbb{R} \) è differenziabile due volte e \( x_0 \in I \) è
     tale che \( f'(x_0) = 0 \) e \( \begin{cases}
       f''(x_0) > 0\\
@@ -1931,7 +2013,24 @@ f(tx+(1-t))\overline{x}) \le tf(x) + (1-t)f(\overline{x})
     \[
     f''(x) = 6x-2
     \] 
-    \label{D10}
+		\begin{figure}[H]
+			\begin{center}
+        \begin{tikzpicture}[scale=1.3]
+					\draw[->] (-2, 0) -- (2, 0) node[right] {$x$};
+					\draw[->] (0, -2) -- (0, 2) node[above] {$y$};
+					\draw[domain=-1:1.7, smooth, variable=\x, red, thick, yscale=1, xscale=1] plot ({\x}, {(\x*\x*\x)-(\x*\x)});
+
+          \draw[fill, red] (0,0) circle (1.5pt);
+          \draw[fill, red] (1,0) circle (1.5pt);
+          \draw (0.66, -0.15) -- (0.66, 0) node[above, scale=0.8] {\( \frac{2}{3} \) }; 
+
+          \draw[orange, thick, ->] (-1.5, 0.5) -- (-0.5, 1.5);
+          \draw[orange, thick, ->] (0.5, 1.5) -- (1, 0.5);
+          \draw[orange, thick, ->] (1.5, 0.5) -- (2, 1.5);
+				\end{tikzpicture}
+			\end{center}
+		\end{figure}
+
 
     \[
     f(x) = 0 \Leftrightarrow x^2(x-1) = 0 \Leftrightarrow x = 0\;\; oppure
