@@ -3935,7 +3935,6 @@ Si ricrea poi la tabella con i nuovi stati e sarà la macchina minima.
 \end{table}
 
 \subsubsection{Esempi}
-\begin{figure}[H]
   \begin{example}
     Prendiamo in considerazione la seguente tabella:
     \begin{table}[H]
@@ -3985,7 +3984,31 @@ Si ricrea poi la tabella con i nuovi stati e sarà la macchina minima.
     Utilizziamo quindi dei grafi (\textbf{cricca}\footnote{Un insieme di nodi connessi tra loro.
     Una \textbf{Cricca massima} è una cricca che non è contenuta in un altra cricca}) per risolvere il problema visto che non abbiamo cicli che
     validano tutti gli stati.
-    \label{D1}
+    \begin{figure}[H]
+      \begin{center}
+        \begin{tikzpicture}
+          \coordinate (A) at (0,0);
+          \coordinate (B) at (2,-1);
+          \coordinate (C) at (2,-3);
+          \coordinate (D) at (1,-4);
+          \coordinate (E) at (-1,-4);
+          \coordinate (F) at (-2,-3);
+          \coordinate (G) at (-2,-1);
+
+          \draw[fill] (A) circle (1.5pt) node[above] {A};
+          \draw[fill] (B) circle (1.5pt) node[right] {B};
+          \draw[fill] (C) circle (1.5pt) node[right] {C};
+          \draw[fill] (D) circle (1.5pt) node[below] {D};
+          \draw[fill] (E) circle (1.5pt) node[below] {E};
+          \draw[fill] (F) circle (1.5pt) node[left] {F};
+          \draw[fill] (G) circle (1.5pt) node[left] {G};
+
+          \draw (A) -- (B) -- (E) -- (A);
+          \draw (C) -- (D) -- (F) -- (C);
+        \end{tikzpicture}
+      \end{center}
+      \caption{Grafo delle cricche}
+    \end{figure}
     Dal grafo deriviamo le cricche:
     \[
     \alpha = \{A,B,E\} 
@@ -4010,7 +4033,6 @@ Si ricrea poi la tabella con i nuovi stati e sarà la macchina minima.
       \end{center}
     \end{table}
   \end{example}
-\end{figure}
 
 \subsection{Compatibilità}
 \( s_i \vee s_k \) se e solo se per ogni \( i_i \in I \) 
@@ -4068,7 +4090,29 @@ La tabella finale è la seguente:
   \caption{Tabella di confronto finale}
 \end{table}
 Bisogna fare il grafo:
-\label{D2}
+    \begin{figure}[H]
+      \begin{center}
+        \begin{tikzpicture}
+          \coordinate (A) at (0,0);
+          \coordinate (B) at (2,-1);
+          \coordinate (C) at (2,-3);
+          \coordinate (D) at (-2,-3);
+          \coordinate (E) at (-2,-1);
+
+          \draw[fill] (A) circle (1.5pt) node[above] {A};
+          \draw[fill] (B) circle (1.5pt) node[right] {B};
+          \draw[fill] (C) circle (1.5pt) node[right] {C};
+          \draw[fill] (D) circle (1.5pt) node[left] {D};
+          \draw[fill] (E) circle (1.5pt) node[left] {E};
+
+          \draw (A) -- (B) node[midway,above right, scale=0.8] {D,E} --
+            (C) node[midway,right, scale=0.8] {D,E} -- (D) node[midway,below, scale=0.8] {\( A,E \;\;\;A,C \) }
+            -- (E) node[midway,left,scale=0.8] {A,B} -- (A) node[midway,above left,scale=0.8] {A,B}
+            -- (C) -- (E) node[midway,above,rotate=-27,scale=0.8] {\( A,E \;\;\; C,B \) };
+        \end{tikzpicture}
+      \end{center}
+      \caption{Grafo delle cricche}
+    \end{figure}
 Infine bisogna trovare le classi massime di compatibilità (\textbf{cricche massime}), ma possono
 esistere solo se esistono le condizioni definite sugli archi.
 \[
@@ -4083,7 +4127,20 @@ esistere solo se esistono le condizioni definite sugli archi.
 Bisogna prenderne una (a caso), assumerla compatibile e ricavare le altre. In questo caso
 scegliamo \( \alpha \) e vengono cancellati tutti i collegamenti del grafo che coinvolgono
 \( \alpha \). 
-\label{D3}
+    \begin{figure}[H]
+      \begin{center}
+        \begin{tikzpicture}
+          \coordinate (E) at (0,0);
+          \coordinate (D) at (2,0);
+
+          \draw[fill] (E) circle (1.5pt) node[above] {E};
+          \draw[fill] (D) circle (1.5pt) node[above] {D};
+
+          \draw (E) -- (D) node[midway,below] {A,B};
+        \end{tikzpicture}
+      \end{center}
+      \caption{Grafo delle cricche}
+    \end{figure}
 Dall'ultimo grafo otteniamo di nuovo le cricche massime:
 \[
 \beta = \{D,E\} 
