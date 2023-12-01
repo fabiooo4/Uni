@@ -2718,6 +2718,33 @@ Nozione duale \( \to  \) \textbf{variabile legata}
   \end{definition}
 \end{figure}
 
+\begin{figure}[H]
+  \begin{definition}[Variabile legata]
+    \begin{itemize}
+      \item \textbf{FORM} \( BV(\phi)\;\;\;\phi \in FORM \) 
+        \[
+        BV(\bot) = \emptyset
+        \] 
+        \[
+        BV(t_1 = t_2) = BV(t_1) \cup BV(t_2) 
+        \] 
+        \[
+        BV(P(t_1 \ldots t_n)) = BV(t_1) \cup  \ldots  \cup  BV(t_n)
+        \] 
+        \[
+        BV(\phi \circ \psi) = BV(\phi) \cup BV(\psi) \;\;\;\; \circ \in \{\wedge, \vee, \to \} 
+        \] 
+        \[
+        BV(\forall x.\; \phi) = BV(\phi) \cup \{x\} 
+        \] 
+        \[
+        BV(\exists x.\; \phi) = BV(\phi) \cup \{x\} 
+        \] 
+    \end{itemize} 
+  \end{definition}
+\end{figure}
+
+
 \subsection{Sottotermini}
 \[
   ST(\overline{c}) = \{\overline{c}\} 
