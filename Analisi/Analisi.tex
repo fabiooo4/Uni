@@ -2616,4 +2616,134 @@ differenziabile in \( (a,b) \) e quindi, per il teorema di Lagrange, esiste \( c
 f'(c)=\frac{f(b)-f(a)}{b-a}
 \] 
 Ma, per ipotesi, \( f'(c)=0 \), da cioè \( f(b)-f(a)=0 \), cioè \( f(b)=f(a) \).
+
+\subsection{Teorema de l'Hopital}
+Si applica al calcolo dei limiti della forma \( \lim_{x \to x_0} \frac{f(x)}{g(x)} \), con \( f,g \) 
+funzioni differenziabili, \textbf{purchè} il limite si presenti sotto la forma (indeterminata)
+\( \frac{0}{0} \) oppure \( \frac{\infty}{\infty} \). Il teorema riduce il calcolo del limite
+dato al calcolo di:
+\[
+\lim_{x \to x_0} \frac{f'(x)}{g'(x)} \;\;\;\; \text{(purchè esista)}
+\] 
+
+\begin{figure}[H]
+  \begin{definition}
+    Siano \( f,g: [a,+\infty) \to \mathbb{R} \) due funzioni differenziabili. Supponiamo che:
+    \[
+    \lim_{x \to +\infty} f(x) = \lim_{x \to +\infty} g(x) = 0
+    \] 
+    oppure
+    \[
+    \lim_{x \to +\infty} f(x) = \lim_{x \to +\infty} g(x) = \pm \infty
+    \] 
+    Supponiamo inoltre che \( g'(x) \neq 0\;\;\; \forall x\; \in  [a,+\infty)  \) e che il
+    limite
+    \[
+    \lim_{x \to +\infty} \frac{f'(x)}{g'(x)} 
+    \] 
+    esista. Allora
+    \[ \lim_{x \to +\infty} \frac{f(x)}{g(x)} = \lim_{x \to +\infty} \frac{f'(x)}{g'(x)}  \]
+  \end{definition}
+\end{figure}
+Si possono scrivere varianti per il calcolo dei limiti quando \( x \to x_0 \) con \( x \in \mathbb{R} \) 
+oppure \( x \to -\infty \).
+
+\subsubsection{Esempi}
+\begin{figure}[H]
+  \begin{example}
+    \[
+    \lim_{x \to +\infty} \frac{e^x}{x}
+    \] 
+    Considero il rapporto tra le derivate:
+    \[
+    \lim_{x \to +\infty} \frac{e^x}{1} = +\infty
+    \] 
+    Per il teorema di de l'Hopital:
+    \[
+    \lim_{x \to +\infty} \frac{e^x}{x} = +\infty
+    \] 
+  \end{example}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{example}
+    \[
+    \lim_{x \to +\infty} \frac{e^x}{x^2}
+    \] 
+    Considero il rapporto tra le derivate:
+    \[
+    \lim_{x \to +\infty} \frac{e^x}{2x} = \frac{1}{2} \lim_{x \to +\infty} \frac{e^x}{x} = +\infty
+    \] 
+    Per il teorema di de l'Hopital:
+    \[
+    \lim_{x \to +\infty} \frac{e^x}{x^2} = +\infty
+    \] 
+  \end{example}
+\end{figure}
+
+Si può dimostrare che per ogni \( \alpha > 0 \),
+\[
+\lim_{x \to +\infty} \frac{e^x}{x^\alpha} = +\infty,
+\] 
+\[
+\lim_{x \to +\infty} \frac{log(x)}{x^\alpha} = 0
+\] 
+\label{D1}
+Quando \( x \to +\infty \), l'esponenziale cresce più velocemente di tutte le potenze
+(ad esponente positivo); il logaritmo più lentamente.
+
+\section{Sviluppi di Taylor}
+Sia \( f: I \to \mathbb{R} \) (con \( I \subseteq \mathbb{R} \) intervallo) una funzione
+differenziabile \( x_0 \in I \). Per definizione di differenziabilità:
+\[
+  f(x) = \underbrace{f(x_0) + f'(x_0)(x-x_0)}_{\text{retta tangente valutata in \( x_0 \) }} + o(x-x_0) \;\;\; per\; x \to x_0
+\] 
+\label{D2}
+Se \( f \) è differenziabile due o più volte, si possono dare approssimazioni locali ancora
+migliori.
+
+\subsection{Notazione}
+Dato \( n \in \mathbb{Z},\; n \ge 0 \), si definisce il fattoriale di \( n \) come:
+\[
+\begin{cases}
+  0! := 1 \hspace{3.6cm} se \; n = 0\\
+  n! := 1 \cdot 2 \cdot 3 \cdot \ldots \cdot (n-1) \cdot n \;\;\; se\; n \ge 0
+\end{cases}
+\] 
+\subsection{Polinomi di Taylor}
+Sia \( I \subseteq \mathbb{R} \) intervallo, \( f: I \to \mathbb{R} \) differenziabile \( n \) volte,
+\( x_0 \in I \). Si definisce il \textbf{Polinomio di Taylor} di \( f \) di centro \( x_0 \) 
+ed ordine \( n \) come:
+\[
+P(x) = \sum_{j=0}^{n} \frac{f^{(j)}(x_0)}{j!}(x-x_0)^j
+\]  
+Quando \( x_0 = 0 \), si parla anche di polinomio di McLaurin.
+
+\begin{figure}[H]
+  \begin{example}
+    Calcolare il polinomio di Taylor di exp di centro 0 e ordine 7.
+    \[
+    exp: \mathbb{R} \to \mathbb{R}, \;\;\; x_0 = 0,\;\;\; n = 7
+    \] 
+    \[
+    exp(x) = e^x
+    \] 
+    \[
+    exp'(x) = exp
+    \] 
+    \[
+    exp''(x) = exp' = exp
+    \] 
+    \[
+      exp^{(j)} = exp \;\;\; \forall j \in \mathbb{N}
+    \] 
+    \[
+    exp(0) = 1
+    \] 
+    Polinomio di Taylor:
+    \[
+      P(x) = \sum_{j=0}^{7} \frac{1}{j!}x^j = 1 + x + \frac{x^2}{2} + \ldots + \frac{x^7}{7!}
+    \] 
+  \end{example}
+\end{figure}
 \end{document}
