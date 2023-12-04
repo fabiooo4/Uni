@@ -2804,6 +2804,54 @@ Dopo la sostituzione sono state create delle nuove variabili legate.
 \end{figure}
 
 \begin{figure}[H]
+  \begin{definition}[Sostituzione]
+    \( \phi[t/x] \) t libero per \( x \) in \( \phi \) 
+    \begin{itemize}
+      \item \textbf{Termini}:
+        \begin{itemize}
+          \item 
+            \(
+            x[t/x] = t
+            \) 
+          \item 
+            \(
+            y[t/x] = y\;\;\;\;\; y \equiv x
+            \) 
+          \item 
+            \(
+            c[t/x] = c
+            \) 
+          \item 
+            \(
+            f(t_1 \ldots t_n)[t/x] = f(t_1[t/x] \ldots t_n[t/x])
+            \) 
+        \end{itemize}
+      \item \textbf{Formule}:
+        \begin{enumerate}
+          \item \( \phi \) atomica
+            \begin{enumerate}
+              \item[1.1] \(
+              \bot[t/x] = \bot
+              \) 
+            \item[1.2]
+              \( R(t_1 \ldots t_n)[t/n] = R(t_1[t/x] \ldots t_n[t/x]) \) 
+            \item [1.3]
+              \( (t_1 = t_2)[t/x] = t_1[t/x] = t_2[t/x] \)
+            \end{enumerate}
+          \item \( (\phi \circ \psi)[t/x] \equiv \phi[t/x] \circ \psi[t/x] \;\;\;\;\;\; \circ \in \{\wedge, \vee, \to \} \)
+          \item \( \phi \equiv Qy\;.\;\psi \hspace{3.5cm} Q \in \{\forall , \exists \}  \) \\
+                \(
+                  \phi[t/x] = \begin{cases}
+                    \phi\;\;\; x \equiv y\\
+                    Qy\;.\;(\psi[t/x])
+                  \end{cases}
+                \) 
+        \end{enumerate}
+    \end{itemize}
+  \end{definition}
+\end{figure}
+
+\begin{figure}[H]
   \begin{example}
     \[
     R(\_\;,\_)
@@ -2820,4 +2868,73 @@ Dopo la sostituzione sono state create delle nuove variabili legate.
     \( f(x) \) non è libero per \( x \) in \( \sigma \)
   \end{example}
 \end{figure}
+
+\section{Estensione della deduzione naturale}
+\subsection{Regole del \( \forall  \)}
+\subsubsection{Introduzione}
+    \large\[
+      \frac{\underset{\phi(x)}{D}}{\forall x.\; \phi(x)}\forall I \;\;\; x \notin FV(hp(D))\; \text{(x è generica)}
+    \]
+\subsubsection{Eliminazione}
+  \large\[
+    \frac{\underset{\forall x.\; \phi(x)}{D}}{\phi(t)} \forall E \;\;\;\;\; \text{t sia libero per x in \( \phi \) }
+  \] 
+  \begin{figure}[H]
+    \begin{exercise}
+      \[
+        \frac{\frac{\forall x.\; P(x)}{P(c)}\forall E}{\forall x.\; P(x) \to P(c)} \to I^1 \;\;\;\;\; \text{P unario e \(c \in TERM \) non catturo variabili }
+      \] 
+    \end{exercise}
+  \end{figure}
+
+  \begin{figure}[H]
+    \begin{exercise}
+      \[
+        \vdash \forall x.\; (\phi \to \psi) \to ((\forall x.\; \phi) \to (\forall x.\; \psi))
+      \] 
+      \label{D1}
+      \[
+        \frac{\frac{\frac{\frac{\frac{[\forall x.\; (\phi \to \psi)]^3}{\phi \to \psi} \forall E \;\;\;\frac{[\forall x.\;\phi]^1}{\phi} \forall E}{\psi} \to E}{\forall x.\;\psi}\forall I \text{si può fare perchè si rispettano i vincoli}}{\forall x.\;\phi \to \forall x.\; \psi} \to I^1}{\forall x.\;(\phi \to \psi) \to (\forall x.\;  \phi \to  \forall x.\; \psi)}
+      \] 
+    \end{exercise}
+
+    \end{figure}
+        \begin{figure}[H]
+          \begin{exercise}[A casa]
+        \[
+          \vdash(\forall x.\;) ???
+        \] 
+      \end{exercise}
+    \end{figure}
+    \begin{figure}[H]
+      \begin{exercise}[A casa]
+        \[
+          \vdash \forall x.\; \forall y.\; \phi(x,y) \to \forall y.\; \forall x.\; \phi(x,y)
+        \] 
+      \end{exercise}
+    \end{figure}
+
+    \begin{figure}[H]
+      \begin{exercise}
+        \[
+        \vdash \forall x.\; (\phi \wedge \psi) \to (\forall x.\; \phi \wedge \forall x.\; \psi)
+        \] 
+      \end{exercise}
+    \end{figure}
+        \begin{figure}[H]
+      \begin{exercise}
+        \[
+          \vdash \forall x.\; (\phi \to \psi(x)) \to (\phi \to \forall x.\; \psi(x)) \;\;\; \text{con \( x \notin FV(\phi) \) }
+        \] 
+      \end{exercise}
+    \end{figure}
+
+        \begin{figure}[H]
+      \begin{exercise}
+        \[
+          \vdash ((\forall x.\;\phi) \vee (\forall x.\;\psi)) \to \forall x.\; (\phi \vee \psi)
+        \] 
+      \end{exercise}
+    \end{figure}
+
 \end{document}
