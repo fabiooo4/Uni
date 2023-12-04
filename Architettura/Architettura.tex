@@ -4163,4 +4163,268 @@ la cricca massima dell'ultimo grafo:
     \end{tabular}
   \end{center}
 \end{table}
+
+\section{Componenti del datapath}
+Il \textbf{Datapath} è un progetto di un'unità di elaborazione mediante l'aggregazione di componenti elementari.
+Esistono 2 tipi di componenti:
+\begin{itemize}
+  \item \textbf{Memorizzazione} (registri):
+  \item \textbf{Elaborazione} (unità funzionali):
+\end{itemize}
+
+\subsection{Registri}
+\subsubsection{Registro parallelo/parallelo}
+Consente di memorizzare un valore e di restituirlo in uscita.
+\label{D1}
+\begin{figure}[H]
+  \begin{lstlisting}[language=Verilog]
+    module RegistroParalleloParallelo #( parameter N = 8)(
+      input [N-1:0] D,
+      input clock,
+      output [N-1:0] Q);
+      reg [N-1:0] dato = 8'b00000000;
+      assign Q = dato;
+      always @(posedge clock) begin
+        dato = D;
+      end
+    endmodule
+  \end{lstlisting}
+\end{figure}
+
+\subsubsection{Registro seriale/seriale}
+Memorizza i valori come sliding window e restituisce in output il valore più vecchio.
+\label{D2}
+\begin{figure}[H]
+  \begin{lstlisting}[language=Verilog]
+    module RegistroSerialeSeriale (input I0, input clock,
+      output O);
+      parameter N = 8; reg [N-1:0] dato = 8'b00000000;
+      assign O = dato[0];
+      always @(posedge clock) begin
+      dato = {I0, dato[N-1:1]};
+        end
+      endmodule
+  \end{lstlisting}
+\end{figure}
+
+\subsubsection{Registro parallelo/seriale}
+È un misto tra i 2 precedenti, ma con un valore che decide in che modo si comporta.
+\label{D3}
+\begin{figure}[H]
+  \begin{lstlisting}[language=Verilog]
+    module RegistroParalleloSeriale #(parameter N=8)(
+      input PS, input I0, input [N-1:0] D, input clock,
+      output [N-1:0] Q, output O);
+      reg [N-1:0] dato = 8'b00000000;
+      assign Q = dato;
+      assign O = dato[0];
+      always @(posedge clock) begin
+        if(PS) dato = D;
+        else dato = {I0, dato[N-1:1]};
+      end
+    endmodule
+  \end{lstlisting}
+\end{figure}
+
+\subsection{Unità funzionali}
+\subsubsection{Multiplexer}
+Arrivano vari segnali e decido quale tenere.
+\label{D4}
+\begin{figure}[H]
+  \begin{lstlisting}[language=Verilog]
+    module Multiplexer #(parameter N=8)(
+      input [1:0] S, input [N-1:0] A3, input [N-1:0] A2,
+      input [N-1:0] A1, input [N-1:0] A0,
+      output reg [N-1:0] O);
+      always @(A3, A2, A1, A0, S) begin
+        case(S)
+          2'b00: O = A0;
+          2'b01: O = A1;
+          2'b10: O = A2;
+          2'b11: O = A3;
+          default: O = 8'b00000000;
+        endcase
+      end
+    endmodule
+  \end{lstlisting}
+\end{figure}
+
+\subsubsection{Demultiplexer}
+Arriva un segnale e decido dove mandarlo.
+\label{D5}
+\begin{figure}[H]
+  \begin{lstlisting}[language=Verilog]
+    module Demultiplexer #(parameter N = 8) (
+      input [1:0] S, input [N-1:0] A,
+      output reg [N-1:0] O3, output reg [N-1:0] O2,
+      output reg [N-1:0] O1, output reg [N-1:0] O0);
+      
+      always @(S,A) begin
+        case(S)
+          2'b00: begin
+             O0 = A; O1 = 0; O2 = 0; O3 = 0;
+           end
+          2'b01: begin
+             O0 = 0; O1 = A; O2 = 0; O3 = 0;
+           end
+          2'b10: begin
+             O0 = 0; O1 = 0; O2 = A; O3 = 0;
+           end
+          2'b11: begin
+             O0 = 0; O1 = 0; O2 = 0; O3 = A;
+           end
+        endcase
+      end
+    endmodule
+  \end{lstlisting}
+\end{figure}
+
+\subsubsection{Decoder}
+In uscita si ha un segnale che indica quale ingresso è attivo.
+\label{D6}
+\begin{figure}[H]
+  \begin{lstlisting}[language=Verilog]
+    module Decoder #(parameter N = 8)(
+      input [N-1:0] A, output reg [(2**N)-1:0] O);
+      integer i;
+      always @(A)
+      begin
+        for(i = 0; i < (2**N); i = i + 1) begin
+          if(i == A) O[i] = 1'b1;
+          else O[i] = 1'b0;
+        end
+      end
+    endmodule
+  \end{lstlisting}
+\end{figure}
+
+\subsubsection{Shifter}
+Si inserisce un valore e si decide di quanto si vuole shiftare.
+\label{D7}
+\begin{figure}[H]
+  \begin{lstlisting}[language=Verilog]
+    module Shifter #(parameter N = 8)
+      (input DS, input [N-1:0] A, input I0,
+      output reg [N-1:0] O);
+      always @(A, I0) begin
+      if(DS) O = {I0, A[N-1:1]};
+      else O = {A[N-2:0], I0};
+      end
+    endmodule
+  \end{lstlisting}
+\end{figure}
+
+\subsection{Unità aritmetiche}
+\subsubsection{Sommatore}
+Fa la somma tra 2 numeri in complemento a 2.
+\label{D8}
+\begin{figure}[H]
+  \begin{lstlisting}[language=Verilog]
+    module Sommatore #(parameter N = 8)(
+      input [N-1:0] A, input [N-1:0] B,
+      output [N-1:0] O);
+      assign O = A + B;
+    endmodule
+  \end{lstlisting}
+\end{figure}
+
+
+\subsubsection{Moltiplicatore}
+Moltiplica 2 numeri in complemento a 2.
+\label{D9}
+\begin{figure}[H]
+  \begin{lstlisting}[language=Verilog]
+    module Moltiplicatore #(parameter N = 8)(
+      input [N-1:0] A, input [N-1:0] B,
+      output [(N**2)-1:0] O);
+      assign O = A * B;
+    endmodule
+  \end{lstlisting}
+\end{figure}
+
+
+\subsection{Unità logiche}
+\subsubsection{And}
+Fa l'and tra 2 numeri nella stessa posizione, ad esempio: \( A_1 \wedge B_1 \ldots A_k \wedge B_k \) .
+\label{D10}
+\begin{figure}[H]
+  \begin{lstlisting}[language=Verilog]
+    module And #(parameter N = 8)(
+      input [N-1:0] A, input [N-1:0] B,
+      output reg [N-1:0] O);
+        integer i;
+        always @(A, B) begin
+          for(i = 0; i < N; i = i + 1) begin
+            O[i] = A[i] & B[i];
+          end
+        end
+    endmodule
+  \end{lstlisting}
+\end{figure}
+
+\subsubsection{Not}
+Inverte i valori di un numero.
+\label{D11}
+\begin{figure}[H]
+  \begin{lstlisting}[language=Verilog]
+    module Not #(parameter N = 8)(
+      input [N-1:0] A
+      output reg [N-1:0] O);
+        integer i;
+        always @(A) begin
+          for(i = 0; i < N; i = i + 1) begin
+            O[i] = ~A[i];
+          end
+        end
+    endmodule
+  \end{lstlisting}
+\end{figure}
+
+\subsubsection{Altri operatori logici}
+\begin{itemize}
+  \item Or
+  \item Nand
+  \item Nor
+  \item Xor
+  \item XNor
+\end{itemize}
+
+\subsection{Operatori di controllo}
+\subsubsection{Maggiore}
+\label{D12}
+\begin{figure}[H]
+  \begin{lstlisting}[language=Verilog]
+    module Maggiore #(parameter N = 8)(
+     input [N-1:0] A, input [N-1:0] B,
+     output reg O);
+
+       always @(A, B) begin
+         if( A > B ) O = 1'b1;
+         else O = 1'b0;
+       end
+    endmodule
+  \end{lstlisting}
+\end{figure}
+
+
+\begin{figure}[H]
+  \begin{example}
+    Si vuole costruire un ALU da 8 bit (in complemento a 2) con accumulatore (registro che salva
+    l'ultimo risultato calcolato) che esegue 4 operazioni:
+    \begin{itemize}
+      \item Somma
+      \item Sottrazione
+      \item Maggiore/Minore
+    \end{itemize}
+
+    Manca il componente del sottrattore, ma si può creare facilmente facendo la somma di
+    un numero negativo. Si implementa quindi un componente che inverte un numero:
+    \label{D13}
+    Un segnale di input "STORED" mi dice se usare "OP2" o un accumulatore
+    \label{D14}
+
+
+  \end{example}
+\end{figure}
+
 \end{document}
