@@ -2888,7 +2888,6 @@ Dopo la sostituzione sono state create delle nuove variabili legate.
       \[
         \vdash \forall x.\; (\phi \to \psi) \to ((\forall x.\; \phi) \to (\forall x.\; \psi))
       \] 
-      \label{D1}
       \[
         \dfrac{\dfrac{\dfrac{\dfrac{\dfrac{[\forall x.\; (\phi \to \psi)]^3}{\phi \to \psi} \forall E \;\;\;\dfrac{[\forall x.\;\phi]^1}{\phi} \forall E}{\psi} \to E}{\forall x.\;\psi}\forall I \text{vincoli \( \surd \) }}{\forall x.\;\phi \to \forall x.\; \psi} \to I^1}{\forall x.\;(\phi \to \psi) \to (\forall x.\;  \phi \to  \forall x.\; \psi)}
       \] 
@@ -2980,7 +2979,7 @@ x \notin FV(hp(D_1))\;\; \text{a parte \( \phi(x) \) stessa}
     \vdash (\neg \exists x.\; \neg \phi) \to \forall x.\; \phi
     \] 
     \[
-      \dfrac{\dfrac{\dfrac{\dfrac{[\neg \exists x.\; \neg \phi]^2 \;\;\;\;\dfrac{[\neg \phi]^1}{\exists x.\; \neg \phi} \exists I}{\bot} \to E}{\phi} RAA^1}{\forall x.\; \phi} \forall I}{\neg \exists x.\; \neg \phi \to \forall x.\; \phi} \to I^2
+      \dfrac{\dfrac{\dfrac{\dfrac{[\neg \exists x.\; \neg \phi]^2 \;\;\;\;\dfrac{[\neg \phi]^1}{\exists x.\; \neg \phi} \scriptstyle\exists I}{\bot} \scriptstyle\to E}{\phi} \scriptstyle RAA^1}{\forall x.\; \phi} \scriptstyle\forall I}{\neg \exists x.\; \neg \phi \to \forall x.\; \phi} \scriptstyle\to I^2
     \] 
   \end{exercise}
 \end{figure}
@@ -2991,7 +2990,7 @@ x \notin FV(hp(D_1))\;\; \text{a parte \( \phi(x) \) stessa}
     \vdash \neg \exists x.\; \phi \to \forall x.\; \neg \phi
     \] 
     \[
-      \dfrac{\dfrac{\dfrac{\dfrac{[\neg \exists x.\; \phi]^2 \;\;\;\;\dfrac{[\phi]^1}{\exists x.\;\phi} \exists I}{\bot}\to E}{\neg \phi} \to I^1}{\forall x.\; \neg \phi}\forall I}{\neg \exists x.\; \phi \to \forall x.\; \neg \phi} \to I^2
+      \dfrac{\dfrac{\dfrac{\dfrac{[\neg \exists x.\; \phi]^2 \;\;\;\;\dfrac{[\phi]^1}{\exists x.\;\phi} \scriptstyle\exists I}{\bot}\scriptstyle\to E}{\neg \phi} \scriptstyle\to I^1}{\forall x.\; \neg \phi}\scriptstyle\forall I}{\neg \exists x.\; \phi \to \forall x.\; \neg \phi} \scriptstyle\to I^2
     \] 
   \end{exercise}
 \end{figure}
