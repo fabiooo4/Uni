@@ -2937,4 +2937,153 @@ Dopo la sostituzione sono state create delle nuove variabili legate.
       \end{exercise}
     \end{figure}
 
+\subsection{Regole del \( \exists  \)}
+\subsubsection{Introduzione}
+\[
+\frac{\phi(t)}{\exists x.\; \phi(x)} \exists I \;\;\;\;\; \text{t sia libero per x in \( \phi \) }
+\] 
+cioè:
+\[
+  \underbrace{\frac{\phi[t/x]}{\exists x.\; \phi}}_{\text{se una "proprietà" vale per t allora
+  esiste un valore per cui vale}}
+\] 
+
+\begin{figure}[H]
+  \begin{example}
+    R binaria, \( \overline{c} \in C \) 
+    \[
+    \vdash R(c,c) \to \exists x.\; R(x,x)
+    \] 
+
+    \[
+      \frac{\frac{R(c,c)}{\exists x.\; R(x,x)} \exists I}{R(c,c) \to \exists x.\; R(x,x)} \to I
+    \] 
+  \end{example}
+  
+\end{figure}
+
+\subsubsection{Eliminazione}
+\[
+  x \to \mathbb{R} \;\;\;\;\; \text{x \( \phi \) proprietà su \( \mathbb{N} \)}
+\] 
+\[
+  \exists x.\;\phi(x) \equiv \phi(0) \vee \phi(1) \vee \ldots \vee \phi(n) \vee \ldots
+\] 
+\[
+  \frac{\exists x.\;\phi(x) \;\;\; \underset{\gamma}{\stackrel{[\phi(x)]^n}{D_1}}}{\gamma} \exists E^n
+\] 
+Con i seguenti vincoli:
+\[
+  x \notin FV(\gamma)
+\] 
+\[
+x \notin FV(hp(D_1))\;\; \text{a parte \( \phi(x) \) stessa}
+\] 
+
+\begin{figure}[H]
+  \begin{exercise}
+    \[
+    \vdash \exists x.\; (\phi(x) \wedge \psi(x)) \to \exists x.\; \phi(x)
+    \] 
+    \[
+      \frac{\frac{[\exists x.\; (\phi(x) \vee \psi(x))]^1\;\; \frac{\frac{[\phi(x) \wedge \psi(x)]^2}{\phi(x)} \wedge E_1}{\exists x.\;\phi(x)} \exists I}{\exists x.\;\phi(x)} \exists E^2}{\exists x.\;(\phi(x) \wedge \psi(x)) \to \exists x.\; \phi(x)} \to I^1
+    \]  
+  \end{exercise}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{exercise}
+    \[
+    \vdash \forall x.\; \phi \to \exists x.\;\phi
+    \] 
+    \[
+      \frac{\frac{\frac{[\forall x.\;\phi]^1}{\phi} \forall E}{\exists x.\;\phi} \exists I}{\forall x.\; \phi \to \exists x.\; \phi} \to I^1
+    \] 
+  \end{exercise}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{exercise}
+    \[
+    \vdash \forall x.\; \phi \to \neg \forall x. \neg \phi
+    \]
+    \[
+      \frac{\frac{\frac{\frac{[\forall x.\; \phi]^2}{\phi} \forall E \;\;\; \frac{[\forall x.\; \neg \phi]^1}{\neg \phi} \forall E}{\bot} \to E}{\neg \forall x.\; \neg \phi}\to I^1}{\forall x.\; \phi \to  \neg \forall x.\; \neg \phi} \to I^2
+    \] 
+
+    \( \neg \forall x.\; \neg \phi \) "non è vero che per ogni valore di x \( \phi \) non vale" equivale a dire
+    \( \exists x \) per cui \( \phi \) vale. \( \exists x. \;\phi \) 
+  \end{exercise}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{exercise}
+    \[
+    \vdash (\neg \exists x.\; \neg \phi) \to \forall x.\; \phi
+    \] 
+    \[
+      \frac{\frac{\frac{\frac{[\neg \exists x.\; \neg \phi]^2 \;\;\;\;\frac{[\neg \phi]^1}{\exists x.\; \neg \phi} \exists I}{\bot} \to E}{\phi} RAA^1}{\forall x.\; \phi} \forall I}{\neg \exists x.\; \neg \phi \to \forall x.\; \phi} \to I^2
+    \] 
+  \end{exercise}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{exercise}
+    \[
+    \vdash \neg \exists x.\; \phi \to \forall x.\; \neg \phi
+    \] 
+    \[
+      \frac{\frac{\frac{\frac{[\neg \exists x.\; \phi]^2 \;\;\;\;\frac{[\phi]^1}{\exists x.\;\phi} \exists I}{\bot}\to E}{\neg \phi} \to I^1}{\forall x.\; \neg \phi}\forall I}{\neg \exists x.\; \phi \to \forall x.\; \neg \phi} \to I^2
+    \] 
+  \end{exercise}
+\end{figure}
+
+\section{Semantica della logica del primo ordine}
+\subsection{Struttura matematica}
+È formata da una quadrupla:
+\[
+V = <A, \mathbb{R}, \mathbb{F}, \mathbb{C}>
+\]  
+\begin{enumerate}
+  \item \( A \neq 0 \) dominio
+  \item \( \mathbb{R} \) insieme di relazioni su \( A \) 
+  \item \( \mathbb{F} \) insieme di funzioni su \( A \)
+  \item \( \mathbb{C} \subseteq A \) insieme di costanti
+\end{enumerate}
+
+\begin{figure}[H]
+  \begin{example}
+    \[
+    <\mathbb{N}, \le , +, \cdot, succ, 0, 1> 
+    \] 
+  \end{example}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{definition}[L\_Struttura]
+    \(
+  \leftrightarrow\;\;     \) associa struttura \( m \) a un linguaggio di primo ordine
+
+    \[
+    U = <A, (\;)^U>:
+    \] 
+    \[
+    A \neq \emptyset \;\;\;,\;\;\; (\;)^U \;\;\text{funzione}
+    \] 
+    \begin{itemize}
+      \item[a.] \( \forall c \in C \) \( C^U \in A \) 
+      \item[b.] \( \forall f \in F, \;\;\; k>0 \to f^U : A^k \to A \;\; in \;\;F \) 
+      \item [c.] \( \forall \mathbb{R} \in \mathbb{R}^n \to \mathbb{R}^U \subseteq \underbrace{A}_{\underbrace{A \times \ldots \times A}_{n}} \;\; in \;\;\mathbb{R} \) 
+    \end{itemize}
+  \end{definition}
+  \[
+    \underbrace{f(c_1,c_2)}{\text{sintassi}} = \underbrace{c_3}_{\underbrace{c_1+c_2}_{\text{struttura}}}
+  \] 
+  \[
+    (c_1)^U = 5 \;\;\text{(il 5 è semantica)}
+  \] 
+  \[
+    (c_2)^U = 2 \;\;\text{(il 2 è semantica)}
+  \] 
+\end{figure}
 \end{document}
