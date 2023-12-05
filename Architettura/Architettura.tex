@@ -4175,7 +4175,14 @@ Esistono 2 tipi di componenti:
 \subsection{Registri}
 \subsubsection{Registro parallelo/parallelo}
 Consente di memorizzare un valore e di restituirlo in uscita.
-\label{D1}
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.50\textwidth]{figures/reg-pp}
+  \end{center}
+  \caption{Registro parallelo/parallelo}
+\end{figure}
+
+
 \begin{figure}[H]
   \begin{lstlisting}[language=Verilog]
     module RegistroParalleloParallelo #( parameter N = 8)(
@@ -4193,7 +4200,13 @@ Consente di memorizzare un valore e di restituirlo in uscita.
 
 \subsubsection{Registro seriale/seriale}
 Memorizza i valori come sliding window e restituisce in output il valore più vecchio.
-\label{D2}
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.50\textwidth]{figures/reg-ss}
+  \end{center}
+  \caption{Registro seriale/seriale}
+\end{figure}
+
 \begin{figure}[H]
   \begin{lstlisting}[language=Verilog]
     module RegistroSerialeSeriale (input I0, input clock,
@@ -4209,7 +4222,13 @@ Memorizza i valori come sliding window e restituisce in output il valore più ve
 
 \subsubsection{Registro parallelo/seriale}
 È un misto tra i 2 precedenti, ma con un valore che decide in che modo si comporta.
-\label{D3}
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.50\textwidth]{figures/reg-ps}
+  \end{center}
+  \caption{Registro parallelo/seriale}
+\end{figure}
+
 \begin{figure}[H]
   \begin{lstlisting}[language=Verilog]
     module RegistroParalleloSeriale #(parameter N=8)(
@@ -4229,7 +4248,13 @@ Memorizza i valori come sliding window e restituisce in output il valore più ve
 \subsection{Unità funzionali}
 \subsubsection{Multiplexer}
 Arrivano vari segnali e decido quale tenere.
-\label{D4}
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.40\textwidth]{figures/mux}
+  \end{center}
+  \caption{Multiplexer}
+\end{figure}
+
 \begin{figure}[H]
   \begin{lstlisting}[language=Verilog]
     module Multiplexer #(parameter N=8)(
@@ -4251,7 +4276,13 @@ Arrivano vari segnali e decido quale tenere.
 
 \subsubsection{Demultiplexer}
 Arriva un segnale e decido dove mandarlo.
-\label{D5}
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.40\textwidth]{figures/demux}
+  \end{center}
+  \caption{Demultiplexer}
+\end{figure}
+
 \begin{figure}[H]
   \begin{lstlisting}[language=Verilog]
     module Demultiplexer #(parameter N = 8) (
@@ -4281,7 +4312,13 @@ Arriva un segnale e decido dove mandarlo.
 
 \subsubsection{Decoder}
 In uscita si ha un segnale che indica quale ingresso è attivo.
-\label{D6}
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.25\textwidth]{figures/decoder}
+  \end{center}
+  \caption{Decoder}
+\end{figure}
+
 \begin{figure}[H]
   \begin{lstlisting}[language=Verilog]
     module Decoder #(parameter N = 8)(
@@ -4300,7 +4337,13 @@ In uscita si ha un segnale che indica quale ingresso è attivo.
 
 \subsubsection{Shifter}
 Si inserisce un valore e si decide di quanto si vuole shiftare.
-\label{D7}
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.40\textwidth]{figures/shifter}
+  \end{center}
+  \caption{Shifter}
+\end{figure}
+
 \begin{figure}[H]
   \begin{lstlisting}[language=Verilog]
     module Shifter #(parameter N = 8)
@@ -4317,7 +4360,13 @@ Si inserisce un valore e si decide di quanto si vuole shiftare.
 \subsection{Unità aritmetiche}
 \subsubsection{Sommatore}
 Fa la somma tra 2 numeri in complemento a 2.
-\label{D8}
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.40\textwidth]{figures/sum}
+  \end{center}
+  \caption{Sommatore}
+\end{figure}
+
 \begin{figure}[H]
   \begin{lstlisting}[language=Verilog]
     module Sommatore #(parameter N = 8)(
@@ -4331,7 +4380,13 @@ Fa la somma tra 2 numeri in complemento a 2.
 
 \subsubsection{Moltiplicatore}
 Moltiplica 2 numeri in complemento a 2.
-\label{D9}
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.40\textwidth]{figures/mul}
+  \end{center}
+  \caption{Moltiplicatore}
+\end{figure}
+
 \begin{figure}[H]
   \begin{lstlisting}[language=Verilog]
     module Moltiplicatore #(parameter N = 8)(
@@ -4346,7 +4401,13 @@ Moltiplica 2 numeri in complemento a 2.
 \subsection{Unità logiche}
 \subsubsection{And}
 Fa l'and tra 2 numeri nella stessa posizione, ad esempio: \( A_1 \wedge B_1 \ldots A_k \wedge B_k \) .
-\label{D10}
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.40\textwidth]{figures/and}
+  \end{center}
+  \caption{And}
+\end{figure}
+
 \begin{figure}[H]
   \begin{lstlisting}[language=Verilog]
     module And #(parameter N = 8)(
@@ -4364,7 +4425,13 @@ Fa l'and tra 2 numeri nella stessa posizione, ad esempio: \( A_1 \wedge B_1 \ldo
 
 \subsubsection{Not}
 Inverte i valori di un numero.
-\label{D11}
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.40\textwidth]{figures/not}
+  \end{center}
+  \caption{Not}
+\end{figure}
+
 \begin{figure}[H]
   \begin{lstlisting}[language=Verilog]
     module Not #(parameter N = 8)(
@@ -4391,7 +4458,13 @@ Inverte i valori di un numero.
 
 \subsection{Operatori di controllo}
 \subsubsection{Maggiore}
-\label{D12}
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.40\textwidth]{figures/greater}
+  \end{center}
+  \caption{Maggiore}
+\end{figure}
+
 \begin{figure}[H]
   \begin{lstlisting}[language=Verilog]
     module Maggiore #(parameter N = 8)(
@@ -4406,9 +4479,7 @@ Inverte i valori di un numero.
   \end{lstlisting}
 \end{figure}
 
-
-\begin{figure}[H]
-  \begin{example}
+\subsection{Esempio}
     Si vuole costruire un ALU da 8 bit (in complemento a 2) con accumulatore (registro che salva
     l'ultimo risultato calcolato) che esegue 4 operazioni:
     \begin{itemize}
@@ -4419,12 +4490,69 @@ Inverte i valori di un numero.
 
     Manca il componente del sottrattore, ma si può creare facilmente facendo la somma di
     un numero negativo. Si implementa quindi un componente che inverte un numero:
-    \label{D13}
+    \begin{figure}[H]
+      \centering
+        \begin{circuitikz}[square/.style={regular polygon,regular polygon sides=4}]
+          \draw[-latex]
+            (0,0) node[square,draw, minimum size=2cm, scale=0.7] (not) {NOT}
+            (not.north) -- ++(0,1) node[above] {$A$}
+            (0.5, -2) node[square,draw, minimum size=2cm, scale=0.7] (sum) {\huge$+$}
+            (not.south) -- ++(0,-0.5) -- ++(0.35,0) to (0.35, -1.5);
+          \draw[-latex] (0.7, 1.5) node[above right, xshift=-10] {\tiny$00000001$} to (0.7, -1.5)
+            ;
+          \draw[-latex] (sum.south) -- ++(0,-1);
+
+          \draw (-0.1, 1) -- ++(0.2, 0.2) node[right] {\tiny 8};
+          \draw (0.4, -3) -- ++(0.2, 0.2) node[right] {\tiny 8};
+
+          \draw (0,1.35) -- ++(1.5,0) -- ++(0, -4.5) -- ++(-2.5,0) -- ++(0,4.5) -- (0,1.35);
+          \end{circuitikz}
+        \caption{Circuito invertitore}
+     \end{figure}
+     Questo circuito diventerà quindi un nuovo componente:
+     \begin{figure}[H]
+       \centering
+         \begin{circuitikz}[square/.style={regular polygon,regular polygon sides=4}]
+           \draw[-latex] (0,0) node[left] {A} -- ++(1,0) node[square,draw, minimum size=2cm, scale=0.7, xshift=20] (inv) {\huge $-$};
+           \draw[-latex] (inv.east) -- ++(1,0) node[right] {O};
+
+          \draw (0.4, -0.1) -- ++(0.2, 0.2) node[above] {\small n};
+          \draw (2.4, -0.1) -- ++(0.2, 0.2) node[above] {\small n};
+         \end{circuitikz}
+     \end{figure}
     Un segnale di input "STORED" mi dice se usare "OP2" o un accumulatore
-    \label{D14}
+    \begin{figure}[H]
+      \centering
+        \begin{circuitikz}[square/.style={regular polygon,regular polygon sides=4}]
+          % Multiplexer 2 to 1
+          \draw (0,0) node (mux1-0) {0};
+          \draw (0.5,0) node (mux1-1) {1};
+          \draw (0.0,0.2) node (mux1-i0) {};
+          \draw (0.5,0.2) node (mux1-i1) {};
+          \draw (-0.3,0) node (mux1-s) {};
+          \draw (-0.5,0.3) -- ++(1.5,0) -- ++(-0.25, -0.6) -- ++(-1,0) -- ++(-0.25,0.6) -- (-0.5,0.3);
+          % ------------------
 
+          % Register
+          \draw (2,1.3) node[rectangle ,draw, minimum width=2cm, minimum height=0.7cm, scale=0.7] (reg) {REG};
+          \draw (reg.east) -- ++(0,0.15) -- ++(-0.2, -0.15) -- ++(0.2,-0.15);
+          \draw[latex-] (reg.east) -- ++(0.5,0) node[below] {\tiny CLK};
+          % ------------------
 
-  \end{example}
-\end{figure}
+          \draw[latex-] (mux1-i0) -- ++(0,1) node[above] {\small OP2};
+          \draw[latex-] (mux1-s) -- ++(-1,0) -- ++(0,1.2) node[above] {\small STORED};
+          \draw[latex-] (mux1-i1) -- ++(0,0.5) -- ++(1.5,0) -- (reg.south);
+
+          \draw (3,-2) node[square,draw, minimum size=2cm, scale=0.6] (greater) {\huge$>$};
+          \draw (1,-2) node[square,draw, minimum size=2cm, scale=0.6] (lesser) {\huge$<$};
+          \draw (-1.5,-3.5) node[square,draw, minimum size=2cm, scale=0.6] (sum2) {\huge$+$};
+          \draw (-1,-2) node[square,draw, minimum size=2cm, scale=0.6] (sub) {\huge$-$};
+          \draw (-3,-2) node[square,draw, minimum size=2cm, scale=0.6] (sum1) {\huge$+$};
+
+        \end{circuitikz}
+    \end{figure}
+    Il codice del circuito è il seguente:
+    \label{D1}
+
 
 \end{document}
