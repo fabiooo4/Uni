@@ -2962,6 +2962,167 @@ conoscendo l'operatore bit-wise corrispondente ad ogni porta.
   \end{lstlisting}
 \end{example}
 \end{figure}
+
+\subsection{Circuiti sequenziali e macchine a stati finiti}
+Vedere il capitolo \ref{sec:circuiti-sequenziali} e \ref{sec:macchine-a-stati-finiti}.
+\subsubsection{Circuiti sequenziali}
+
+I circuiti sequenziali possono essere:
+\begin{itemize}
+  \item \textbf{Sinctoni} se i valori delle uscite assumono significato in corrispondenza
+    di un evento su un segnale di sincronismo (solitamente detto clock).
+  \item \textbf{Asincroni} se i valori delle uscite cambiano al variare degli ingressi senza
+    tenere conto di un segnale di sincronismo.
+\end{itemize}
+L’uscita di un circuito sequenziale dipende dai valori in ingresso anche negli
+istanti passati, occorre quindi una sorta di memoria di tale storia passata.
+Questa memoria è rappresentata dallo \textbf{stato}.
+
+L’elettronica digitale mette a disposizione due tipi di componenti detti
+\textbf{latch} e \textbf{flip-flop} in grado di memorizzare il valore di un bit (stato binario).
+Occorre quindi codificare tutti gli stati che può assumere il circuito
+mediante dei numeri binari e poi utilizzare dei latch o flip-flop per
+memorizzare tali numeri.
+
+Una FSM con \( N \) stati necessita di \( log_2 N \) componenti di memoria elementari.
+
+\subsubsection{Circuiti sequenziali in SIS}
+È necessario definire la tabella delle transizioni ed eventualmente definire manualmente la 
+codifica degli stati (esiste un comando che permette di eseguire la codifica in modo automatico).
+\begin{enumerate}
+  \item La tabella delle transizioni viene scritta tra:
+    \begin{figure}[H]
+      \begin{lstlisting}[language=Verilog]
+        .start_kiss
+        .i 2 // Input
+        .o 2 // Output
+        .s 2 // Numero degli stati
+        .r NAME // Stato di reset
+        .p 5 // Numero di transizioni 
+        .end_kiss
+      \end{lstlisting}
+    \end{figure}
+  Letransizioni devono essere specificate come un insieme di righe che
+  riportano in ordine: valore degli ingressi, stato presente, stato
+  prossimo, valore delle uscite.
+  
+  La tabella delle transizioni deve essere precedura da 5 righe che specificano:
+  \begin{itemize}
+    \item il numero di segnali di input
+    \item il numero di segnali di output
+    \item il numero di transizioni
+    \item il numero di stati
+    \item lo stato di reset
+  \end{itemize}
+  \item Dopo la tabella delle transizioni (dopo \( .end\_kiss \) ) possono essere
+riportate le istruzioni necessarie per definire la codifica degli stati
+qualora non si decida di farla definire a SIS in modo automatico. La
+keyword da utilizzare per definire la codifica è .code seguita dal nome
+dello stato e dalla sua codifica binaria.
+\end{enumerate}
+
+Un esempio di implementazione è il seguente:
+
+\begin{figure}[H]
+  \begin{example}
+    Implementazione di un semaforo con priorità
+    \begin{figure}[H]
+  \begin{lstlisting}[language=Verilog]
+    .model SEMAFORO
+    .inputs TRAFFICONS TRAFFICOEO
+    .outputs LUCENS LUCEEO
+    .start_kiss
+    .i 2
+    .o 2
+    .s 2
+    .r VERDENS
+    .p 5
+    \end{lstlisting}
+  \end{figure}
+
+  \begin{figure}[H]
+  \begin{lstlisting}[language=Verilog]
+    00 VERDENS VERDENS 10
+    01 VERDENS VERDEEO 01
+    1- VERDENS VERDENS 10
+    0- VERDEEO VERDEEO 01
+    1- VERDEEO VERDENS 10
+    .end_kiss
+    .code VERDENS 0
+    .code VERDEEO 1
+    .end
+  \end{lstlisting}
+\end{figure}
+  \end{example}
+\end{figure}
+
+\subsubsection{Minimizzazione ed assegnamento degli stati}
+\begin{enumerate}
+  \item[3.] Dopo aver modellato il circuito, è possibile procedere con la
+  minimizzazione degli stati. Una volta caricato il file \( .blif \) , la
+  minimizzazione degli stati si esegue con il comando \( state\_minimize\;stamina \) 
+\item [4.] Generazione logica funzioni \( \delta \) e \( \lambda \):
+  \begin{itemize}
+    \item se il file contiene già la codifica binaria degli stati (.code) allora
+    occorre generare le funzioni \( \delta \) e \( \lambda \)  con il comando \( stg\_to\_network \)
+    \item altrimenti occorre assegnare automaticamente gli stati con il comando
+    \( state\_assign\;jedi \) (che genera anche le funzioni \( \delta \)  e \( \lambda \)).
+    Attenzione che prima occorre minimizzare gli stati e poi farne l’assegnazione.
+    \item Eseguire la minimizzazione delle funzioni \( \delta \) e \( \lambda \), ad esempio lanciando
+    lo script \(script.rugged\) come visto per la minimizzazione dei circuiti
+    combinatori.
+  \end{itemize}
+
+\end{enumerate}
+
+\subsubsection{Modellare FSM in Verilog}
+Dopo aver dichiarato due segnali di stato: uno che contiene lo stato
+corrente, e uno che contiene lo stato prossimo. Ad ogni ciclo di clock, lo
+stato corrente viene aggiornato con lo stato prossimo.
+
+Bisogna avere 2 blocchi sequenziali:
+\begin{itemize}
+  \item \textbf{Blocco sincrono}: che aggiorna ad ogni ciclo di clock lo stato utilizzando
+    lo stato prossimo. Eventualmente, il blocco sequenziale può utilizzare può utilizzare un
+    costrutto condizionale per gestire la fase di reset.
+  \item \textbf{Blocco asincrono}: sensibile a tutti i segnali di ingresso della funzione \( \delta \),
+    che calcola lo stato prossimo.
+\end{itemize}
+
+\begin{figure}[H]
+  \begin{lstlisting}[language=Verilog]
+    module semaforo(
+      input rst, clk, trafficons, trafficoeo,
+      output reg lucens, luceeo);
+        reg stato = 1'b0,
+            stato_prossimo = 1'b0;
+        always @(posedge clk) begin : SEQ
+          if(rst) stato = 1'b0;
+          else stato = stato_prossimo;
+        end
+        always @(stato, trafficons, trafficoeo) begin : COMB_OUT
+          case(stato)
+            1'b0:
+              if(~trafficons && trafficoeo) begin
+                lucens = 1'b0; luceeo = 1'b1;
+                stato_prossimo = 1'b1;
+                end else begin
+                lucens = 1'b1; luceeo = 1'b0;
+                stato_prossimo = 1'b0;
+            end
+            1'b1:
+              if(~trafficons) begin
+                lucens = 1'b0; luceeo = 1'b1;
+                stato_prossimo = 1'b1;
+              end else begin
+                lucens = 1'b1; luceeo = 1'b0;
+                stato_prossimo = 1'b0;
+              end
+          endcase
+        end
+    endmodule
+  \end{lstlisting}
+\end{figure}
 % Fine laboratorio
 
 
@@ -2984,7 +3145,7 @@ programmazione non sono fatti per questo). Per questo motivo c'è una netta diff
 di simulazione e il tempo simulato (tempo reale). Un HDL che useremo è Verilog in cui tutto concorre
 (quindi in parallelo) e non ci sono istruzioni sequenziali.
 
-\section{Circuiti sequenziali}
+\section{Circuiti sequenziali} \label{sec:circuiti-sequenziali}
 È un circuito i cui valori di uscita non dipendono soltanto dai valori di ingresso
 correnti, ma anche da quelli precedenti. Questa la differenza dispetto a una rete
 combinatoria, che invece non tiene traccia della sequenza passata di input.
@@ -3331,7 +3492,7 @@ Un altro elemento di memoria è il flip-flop D (oppure Latch Master-Slave):
 Il campionamento degli ingressi avviene sul fronte di salita del clock.
 
 
-\section{Macchine a stati finiti (FSM)}
+\section{Macchine a stati finiti (FSM)} \label{sec:macchine-a-stati-finiti}
 Per descrivere un qualsiasi comportamento sequenziale si usano come \textbf{modello}
 le FSM (Final State Machines).
 Tutte le macchine sensate avranno delle sequenze finite e conterranno l'evoluzione da
