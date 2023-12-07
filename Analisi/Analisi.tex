@@ -2746,4 +2746,161 @@ Quando \( x_0 = 0 \), si parla anche di polinomio di McLaurin.
     \] 
   \end{example}
 \end{figure}
+
+\begin{figure}[H]
+  \begin{theorem}
+    Sia \( I \subseteq \mathbb{R} \) intervallo, \( x_0 \in I \), \( f: I \to \mathbb{R} \) una
+    funzione differenziabile \( n \) volte, \( P \) il suo polinomio di Taylor di centro \( x_0 \) 
+    ed ordine \( n \). Allora:
+    \[
+    f(x) = P(x) + o((x-x_0)^n)\;\;\;\;\;\; per\; x \to x_0
+    \] 
+  \end{theorem}
+\end{figure}
+
+\subsection{Polinomi notevoli}
+\begin{itemize}
+  \item \[
+      e^x = 1+x+\frac{x^2}{2} + \frac{x^3}{3!} + \frac{x^4}{4!} + \ldots + \frac{x^n}{n!} + o(x^n)
+  \] 
+  \item \[
+    \sin(x) = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \ldots + (-1)^n \frac{x^{2n+1}}{(2n+1)!} + o(x^{2n+1})
+\] 
+  \item
+    \[
+    \cos(x) = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \frac{x^8}{8!} + \ldots + (-1)^n \frac{x^{2n}}{(2n)!} + o(x^{2n})
+    \] 
+  \item
+    \[
+    \log(1+x) = x - \frac{x^2}{2} + \frac{x^3}{3} - \frac{x^4}{4} + \ldots + (-1)^{n-1} \frac{x^n}{n} + o(x^n)
+    \] 
+  \item
+    \[
+    \arctan(x) = x - \frac{x^3}{3} + \frac{x^5}{5} - \frac{x^7}{7} + \ldots + (-1)^{n-1} \frac{x^{2n-1}}{2n-1} + o(x^{2n-1})
+    \] 
+\end{itemize}
+
+\begin{figure}[H]
+  \begin{exercise}
+    \[
+    \lim_{n \to +\infty} \left( \left( \frac{2n^2+1}{2n^2} \right)^n -1-\frac{1}{2n} \right) n^2
+    \] 
+    Chiamo \( a_n \) l'espressione da calcolare: 
+    \[
+    a_n = \left( \left( \frac{2n^2+1}{2n^2} \right)^n -1-\frac{1}{2n} \right) n^2
+    \] 
+    \[
+    = n^2 \left( \left( 1 + \frac{1}{2n^2} \right) -1-\frac{1}{2n} \right)
+    \] 
+    \[
+    = n^2 \left( exp\left(n\log\left(1+\frac{1}{2n^2}\right) \right) -1-\frac{1}{2n} \right)
+    \] 
+    Per la regola dell'o piccolo \( \log(1+x) = x +o(x) \;\; per\; x \to 0 \):
+    \[
+    = n^2 \left( exp \left( n \left( \frac{1}{2n^2} + o \left( \frac{1}{2n^2} \right)  \right) -1 -\frac{1}{2n} \right)  \right) 
+    \] 
+    \[
+    = n^2 \left( exp \left( \frac{1}{2n} + o \left( \frac{1}{n} \right)  \right) -1 - \frac{1}{2n} \right) 
+    \] 
+    Per la regola dell'o piccolo \( exp(x) = 1 + x + o(x) \):
+    \[
+      = n^2 \left( \not1 + \not\frac{1}{2n} + o \left( \frac{1}{n} \right) -\not1 -\not\frac{1}{2n} \right) 
+    \] 
+    \[
+    n^2 \cdot o \left( \frac{1}{n} \right) = o(n) = n \cdot o(1)\;\;\; per n \to +\infty
+    \] 
+
+    Questa è una forma indeterminata \( \infty \cdot 0 \).
+    \[
+    a_n = n^2 \left( exp \left( n log \left( 1+\frac{1}{2n^2} \right) -1 -\frac{1}{2n} \right)  \right) 
+    \] 
+    Applico \( log(1+x) = x - \frac{x^2}{2} + o(x^2) \) per \( x \to 0 \), con \( x = \frac{1}{2n} \to 0 \) 
+    per \( n \to +\infty \).
+    \[
+    a_n = n^2 \left( exp \left( n \left( \frac{1}{2n^2} - \frac{1}{2} \cdot \frac{1}{4n^4} + o \left( \frac{1}{n^4} \right)  \right) -1 -\frac{1}{2n} \right)  \right) 
+    \] 
+    \[
+    = n^2 \left( exp \left( \frac{1}{2n} - \frac{1}{8n^3} + o \left( \frac{1}{n^3} \right)  \right) -1 -\frac{1}{2n} \right) 
+    \] 
+    Applico \( e^x = 1 + x + \frac{x^2}{2} + o(x) \) con \( x = \frac{1}{2n} - \frac{1}{8n^3}+ o(\frac{1}{n^3}) \to 0 \) 
+    \small\[
+    a_n = n^2 \left( 1 + \frac{1}{2n} - \frac{1}{8n^3} + o \left( \frac{1}{n^3} \right) + \frac{1}{2} \left( \frac{1}{2n} - \frac{1}{8n^3} + o \left( \frac{1}{n^3} \right)  \right)^2 -\not1 -\not\frac{1}{2n}  \right) 
+    \] 
+    \[
+    = n^2 \left( -\frac{1}{8n^3} + o \left( \frac{1}{n^3} \right) + \frac{1}{8n^2} + o \left( \frac{1}{2n^2} \right)  \right) 
+    \] 
+    \[
+    = n^2 \left( \frac{1}{8n^2} + o \left( \frac{1}{n^2} \right)  \right) = \frac{1}{8} + o(1) \;\;\; per\; n \to +\infty
+    \] 
+  \end{exercise}
+\end{figure}
+
+\section{Integrali}
+\( f: [a,b] \to \mathbb{R}\) continua (su un intervallo chiuso e limitato).
+\label{D3}
+Sia \( N \in \mathbb{N} \), \( N \ge 1 \). Suddivido \( [a,b] \) in \( N \) intervalli,
+delimitati da punti equidistanti:
+\[
+a=x_0 < x_1 < x_2 < \ldots < x_N = b
+\] 
+(dove \( x_j - x_{j-1} = \frac{1}{N}(b-a)\) per ogni \( j=1, \ldots, N \)).
+
+Considero la \textbf{somma di Riemann} associata a tale suddivisione di \( [a,b] \)
+\[
+ \sum_{j=1}^{N} f(x_j)(x_j-x_{j-1})
+\] 
+Se \( f: [a,b] \to \mathbb{R} \) è continua, si dimostra che esiste ed è finito:
+\[
+ \int_{a}^{b}f(x)\;dx = \lim_{N \to +\infty} \sum_{j=1}^{N} f(x_j)(x_j-x_{j-1}) 
+\] 
+Tale limite si dice \textbf{integrale} (definito) di \( f \).
+
+\subsection{Osservazioni}
+\begin{enumerate}
+  \item Si possono considerare varianti diverse, senza che il valore del limite cambi. Ad esempio:
+    \[
+      \int_{a}^{b} f(x)\;dx = \lim_{N \to +\infty} \sum_{j=1}^{N} f(x_j)(x_j-x_{j-1})
+    \] 
+    \[
+      = \lim_{N \to +\infty} \sum_{j=1}^{N} f(\underset{[x_{j-1}, x_j]}{max} f)(x_j-x_{j-1})
+    \] 
+    \[
+    = \lim_{N \to +\infty} \sum_{j=1}^{N} f(\underset{[x_{j-1}, x_j]}{min} f)(x_j-x_{j-1})
+    \] 
+    (purchè \( f \) sia continua).
+    \label{D4}
+    \label{D5}
+    \label{D6}
+  \item Se \( f>=0 \), \( \int_{a}^{b} f(x) \) rappresenta l'area racchiusa tra il grafico
+    di \( f \) e l'asse \( x \).
+  \item In generale, \( \int_{a}^{b} f(x) \) rappresenta l'area \textbf{con segno} racchiusa
+    tra il grafico di \( f \) e l'asse \( x \).
+    \[
+    \int_{a}^{b} f(x)\;dx =\;\; \text{Area della regione gialla - area della regione azzurra}
+    \] 
+    \label{D7}
+\end{enumerate}
+
+\subsection{Proprietà di base}
+\begin{itemize}
+  \item \[
+      \int_{a}^{b} (f(x) + g(x)) \; dx = \int_{a}^{b} f(x)\;dx + \int_{a}^{b} g(x)\;dx
+  \] 
+  \item Se \( k \) è costante
+  \[
+    \int_{a}^{b} (k \cdot f(x))\;dx = k \cdot \int_{a}^{b} f(x)\;dx
+  \] 
+  ma in generale \textbf{non vale}
+  \[
+    \int_{a}^{b} f(x) \cdot g(x) \; dx \neq \int_{a}^{b} f(x)\;dx \cdot \int_{a}^{b} g(x)\;dx
+  \] 
+  \item Se \( f(x) \le g(x) \) per ogni \( x \in [a,b] \), allora:
+    \[
+      \int_{a}^{b} f(x)\;dx \le \int_{a}^{b} g(x)\;dx
+    \] 
+  \item Se \( a < b < c \), allora:
+    \[
+      \int_{a}^{c} f(x)\; dx = \int_{a}^{b} f(x)\;dx + \int_{b}^{c} f(x)\;dx
+    \] 
+\end{itemize}
 \end{document}
