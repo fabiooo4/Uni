@@ -11,9 +11,14 @@
 \usepackage{float}
 \usepackage{tikz}
 \usepackage{pgfplots}
+\usetikzlibrary{pgfplots.fillbetween}
 \pgfplotsset{compat=newest, ticks=none}
 \usepackage{graphicx}
 \graphicspath{{./figures/}}
+
+\pgfdeclarelayer{ft}
+\pgfdeclarelayer{bg}
+\pgfsetlayers{bg,main,ft}
 
 \usepackage{import}
 \usepackage{pdfpages}
@@ -2688,7 +2693,21 @@ Si può dimostrare che per ogni \( \alpha > 0 \),
 \[
 \lim_{x \to +\infty} \frac{log(x)}{x^\alpha} = 0
 \] 
-\label{D1}
+	\begin{figure}[H]
+		\begin{center}
+			\begin{tikzpicture}
+				\draw[->] (-0.5, 0) -- (3, 0) node[right] {$x$};
+				\draw[->] (0, -1.5) -- (0, 3) node[left] {$y$};
+				\draw[domain=-0.5:1.1, smooth, variable=\x, red, thick, yscale=1, xscale=1] plot ({\x}, {e^\x}) node [right] {\( e^x \) };
+				\draw[domain=0:1.75, smooth, variable=\x, green, thick, yscale=1, xscale=1] plot ({\x}, {\x^2}) node [right] {\( x^2 \) };
+				\draw[domain=0:3, smooth, variable=\x, green, thick, yscale=1, xscale=1] plot ({\x}, {\x}) node [right] {\( x \) };
+        \draw[domain=0:3, smooth, variable=\x, green, thick, yscale=1, xscale=1] plot ({\x}, {\x^(1/2)}) node [right] {\( x^{\frac{1}{2}} \) };
+				\draw[domain=0.2:3, smooth, variable=\x, blue, thick, yscale=1, xscale=1] plot ({\x}, {ln(\x)}) node [right] {\( \ln(x) \) };
+			\end{tikzpicture}
+		\end{center}
+    \caption{Confronto tra funzioni}
+	\end{figure}
+
 Quando \( x \to +\infty \), l'esponenziale cresce più velocemente di tutte le potenze
 (ad esponente positivo); il logaritmo più lentamente.
 
@@ -2698,7 +2717,32 @@ differenziabile \( x_0 \in I \). Per definizione di differenziabilità:
 \[
   f(x) = \underbrace{f(x_0) + f'(x_0)(x-x_0)}_{\text{retta tangente valutata in \( x_0 \) }} + o(x-x_0) \;\;\; per\; x \to x_0
 \] 
-\label{D2}
+\begin{figure}[H]
+	\begin{center}
+		\begin{tikzpicture}[scale=0.8, domain=0:8.5]
+			\draw[->] (-0.5,0) -- (5.5,0) node[right] {$x$};
+			\draw[->] (0,-0.5) -- (0,6) node[above] {$y$};
+
+			\coordinate (C) at (0,1.9);
+			\coordinate (D) at (1,2);
+			\coordinate (E) at (2,1.9);
+			\coordinate (F) at (3,4);
+			\coordinate (G) at (4,5.5);
+			\coordinate (H) at (5,6.1);
+
+			\draw [red, thick] plot [smooth, tension=0.7] coordinates { (C) (D) (E) (F) (G) (H) };
+
+      \draw[dashed] (2, 1.9) -- (2, 0) node[below] {\( x_0 \)};
+      \draw[dashed] (2.5, 2.8) -- (2.5, 0) node[below] {\( x \)};
+      
+      \draw[orange] (0,0.45) -- (5,4);
+
+      \draw[fill, orange] (2,1.9) circle (2pt);
+		\end{tikzpicture}
+	\end{center}
+  \caption{Sviluppo di Taylor}
+\end{figure}
+
 Se \( f \) è differenziabile due o più volte, si possono dare approssimazioni locali ancora
 migliori.
 
@@ -2837,7 +2881,64 @@ Quando \( x_0 = 0 \), si parla anche di polinomio di McLaurin.
 
 \section{Integrali}
 \( f: [a,b] \to \mathbb{R}\) continua (su un intervallo chiuso e limitato).
-\label{D3}
+\begin{figure}[H]
+	\begin{center}
+		\begin{tikzpicture}[scale=0.8, domain=0:8.5]
+			\draw[->] (-0.5,0) -- (5.5,0) node[right] {$x$};
+			\draw[->] (0,-0.5) -- (0,6) node[above] {$y$};
+
+			\coordinate (C) at (0,3.5);
+			\coordinate (D) at (1,3);
+			\coordinate (E) at (2,4);
+			\coordinate (F) at (3,3.5);
+			\coordinate (G) at (4,4);
+			\coordinate (H) at (5,6);
+
+			\draw [red, thick] plot [smooth, tension=0.7] coordinates { (C) (D) (E) (F) (G) (H) };
+
+      \draw[fill, orange] (0.5,3.13) circle (1.5pt);
+
+      \draw[orange] (0,0) rectangle (0.5,3.13);
+      \draw[fill, orange, opacity=0.3] (0,0) rectangle (0.5,3.13);
+
+      \draw[orange] (0.5,0) rectangle (1,3);
+      \draw[fill, orange, opacity=0.3] (0.5,0) rectangle (1,3);
+
+      \draw[orange] (1,0) rectangle (1.5,3.5);
+      \draw[fill, orange, opacity=0.3] (1,0) rectangle (1.5,3.5);
+
+      \draw[orange] (1.5,0) rectangle (2,4);
+      \draw[fill, orange, opacity=0.3] (1.5,0) rectangle (2,4);
+
+      \draw[orange] (2,0) rectangle (2.5,3.8);
+      \draw[fill, orange, opacity=0.3] (2,0) rectangle (2.5,3.8);
+
+      \draw[orange] (2.5,0) rectangle (3,3.5);
+      \draw[fill, orange, opacity=0.3] (2.5,0) rectangle (3,3.5);
+
+      \draw[orange] (3,0) rectangle (3.5,3.56);
+      \draw[fill, orange, opacity=0.3] (3,0) rectangle (3.5,3.56);
+
+      \draw[orange] (3.5,0) rectangle (4,4);
+      \draw[fill, orange, opacity=0.3] (3.5,0) rectangle (4,4);
+
+      \draw[orange] (4,0) rectangle (4.5,4.88);
+      \draw[fill, orange, opacity=0.3] (4,0) rectangle (4.5,4.88);
+
+      \draw[orange] (4.5,0) rectangle (5,6);
+      \draw[fill, orange, opacity=0.3] (4.5,0) rectangle (5,6);
+
+      \node at (0,0) [below, scale=0.5] {\( a = x_0 \)};
+      \node at (5,0) [below, scale=0.5] {\( b = x_N \)};
+
+      \node at (0.5,0) [below, scale=0.5] {\( x_1 \)};
+      \node at (1,0) [below, scale=0.5] {\( x_2 \)};
+      \node at (1.5,0) [below, scale=0.5] {\( x_3 \)};
+		\end{tikzpicture}
+	\end{center}
+  \caption{Somma di Riemann}
+\end{figure}
+
 Sia \( N \in \mathbb{N} \), \( N \ge 1 \). Suddivido \( [a,b] \) in \( N \) intervalli,
 delimitati da punti equidistanti:
 \[
@@ -2859,26 +2960,200 @@ Tale limite si dice \textbf{integrale} (definito) di \( f \).
 \begin{enumerate}
   \item Si possono considerare varianti diverse, senza che il valore del limite cambi. Ad esempio:
     \[
-      \int_{a}^{b} f(x)\;dx = \lim_{N \to +\infty} \sum_{j=1}^{N} f(x_j)(x_j-x_{j-1})
+      \int_{a}^{b} f(x)\;dx = \lim_{N \to +\infty} \sum_{j=1}^{N} f(x_j)(x_j-x_{j-1}) \;\;\; \text{(Figura \ref{fig:SommadiRiemann1})}
     \] 
     \[
-      = \lim_{N \to +\infty} \sum_{j=1}^{N} f(\underset{[x_{j-1}, x_j]}{max} f)(x_j-x_{j-1})
+      = \lim_{N \to +\infty} \sum_{j=1}^{N} (\underset{[x_{j-1}, x_j]}{max} f)(x_j-x_{j-1})\;\;\; \text{(Figura \ref{fig:SommadiRiemann2})}
     \] 
     \[
-    = \lim_{N \to +\infty} \sum_{j=1}^{N} f(\underset{[x_{j-1}, x_j]}{min} f)(x_j-x_{j-1})
+    = \lim_{N \to +\infty} \sum_{j=1}^{N} (\underset{[x_{j-1}, x_j]}{min} f)(x_j-x_{j-1}) \;\;\; \text{(Figura \ref{fig:SommadiRiemann3})}
     \] 
     (purchè \( f \) sia continua).
-    \label{D4}
-    \label{D5}
-    \label{D6}
-  \item Se \( f>=0 \), \( \int_{a}^{b} f(x) \) rappresenta l'area racchiusa tra il grafico
+    \begin{figure}[H]
+	\begin{center}
+		\begin{tikzpicture}[scale=0.8, domain=0:8.5]
+			\draw[->] (-0.5,0) -- (5.5,0) node[right] {$x$};
+			\draw[->] (0,-0.5) -- (0,6) node[above] {$y$};
+
+			\coordinate (C) at (0,3.5);
+			\coordinate (D) at (1,3);
+			\coordinate (E) at (2,4);
+			\coordinate (F) at (3,3.5);
+			\coordinate (G) at (4,4);
+			\coordinate (H) at (5,6);
+
+			\draw [red, thick] plot [smooth, tension=0.7] coordinates { (C) (D) (E) (F) (G) (H) };
+
+
+      \draw[orange] (0,0) rectangle (0.5,3.5);
+      \draw[fill, orange, opacity=0.3] (0,0) rectangle (0.5,3.5);
+
+      \draw[orange] (0.5,0) rectangle (1,3.13);
+      \draw[fill, orange, opacity=0.3] (0.5,0) rectangle (1,3.13);
+
+      \draw[orange] (1,0) rectangle (1.5,3);
+      \draw[fill, orange, opacity=0.3] (1,0) rectangle (1.5,3);
+
+      \draw[orange] (1.5,0) rectangle (2,3.5);
+      \draw[fill, orange, opacity=0.3] (1.5,0) rectangle (2,3.5);
+
+      \draw[orange] (2,0) rectangle (2.5,4);
+      \draw[fill, orange, opacity=0.3] (2,0) rectangle (2.5,4);
+
+      \draw[orange] (2.5,0) rectangle (3,3.8);
+      \draw[fill, orange, opacity=0.3] (2.5,0) rectangle (3,3.8);
+
+      \draw[orange] (3,0) rectangle (3.5,3.5);
+      \draw[fill, orange, opacity=0.3] (3,0) rectangle (3.5,3.5);
+
+      \draw[orange] (3.5,0) rectangle (4,3.58);
+      \draw[fill, orange, opacity=0.3] (3.5,0) rectangle (4,3.58);
+
+      \draw[orange] (4,0) rectangle (4.5,4);
+      \draw[fill, orange, opacity=0.3] (4,0) rectangle (4.5,4);
+
+      \draw[orange] (4.5,0) rectangle (5,4.88);
+      \draw[fill, orange, opacity=0.3] (4.5,0) rectangle (5,4.88);
+		\end{tikzpicture}
+	\end{center}
+  \caption{Variante 1}
+  \label{fig:SommadiRiemann1}
+\end{figure}
+
+    \begin{figure}[H]
+	\begin{center}
+		\begin{tikzpicture}[scale=0.8, domain=0:8.5]
+			\draw[->] (-0.5,0) -- (5.5,0) node[right] {$x$};
+			\draw[->] (0,-0.5) -- (0,6) node[above] {$y$};
+
+			\coordinate (C) at (0,3.5);
+			\coordinate (D) at (1,3);
+			\coordinate (E) at (2,4);
+			\coordinate (F) at (3,3.5);
+			\coordinate (G) at (4,4);
+			\coordinate (H) at (5,6);
+
+			\draw [red, thick] plot [smooth, tension=0.7] coordinates { (C) (D) (E) (F) (G) (H) };
+
+
+      \draw[orange] (0,0) rectangle (0.5,3.5);
+      \draw[fill, orange, opacity=0.3] (0,0) rectangle (0.5,3.5);
+
+      \draw[orange] (0.5,0) rectangle (1,3.13);
+      \draw[fill, orange, opacity=0.3] (0.5,0) rectangle (1,3.13);
+
+      \draw[orange] (1,0) rectangle (1.5,3.5);
+      \draw[fill, orange, opacity=0.3] (1,0) rectangle (1.5,3.5);
+
+      \draw[orange] (1.5,0) rectangle (2,4);
+      \draw[fill, orange, opacity=0.3] (1.5,0) rectangle (2,4);
+
+      \draw[orange] (2,0) rectangle (2.5,4);
+      \draw[fill, orange, opacity=0.3] (2,0) rectangle (2.5,4);
+
+      \draw[orange] (2.5,0) rectangle (3,3.8);
+      \draw[fill, orange, opacity=0.3] (2.5,0) rectangle (3,3.8);
+
+      \draw[orange] (3,0) rectangle (3.5,3.56);
+      \draw[fill, orange, opacity=0.3] (3,0) rectangle (3.5,3.56);
+
+      \draw[orange] (3.5,0) rectangle (4,4);
+      \draw[fill, orange, opacity=0.3] (3.5,0) rectangle (4,4);
+
+      \draw[orange] (4,0) rectangle (4.5,4.88);
+      \draw[fill, orange, opacity=0.3] (4,0) rectangle (4.5,4.88);
+
+      \draw[orange] (4.5,0) rectangle (5,6);
+      \draw[fill, orange, opacity=0.3] (4.5,0) rectangle (5,6);
+		\end{tikzpicture}
+	\end{center}
+  \caption{Variante 2}
+  \label{fig:SommadiRiemann2}
+\end{figure}
+
+    \begin{figure}[H]
+	\begin{center}
+		\begin{tikzpicture}[scale=0.8, domain=0:8.5]
+			\draw[->] (-0.5,0) -- (5.5,0) node[right] {$x$};
+			\draw[->] (0,-0.5) -- (0,6) node[above] {$y$};
+
+			\coordinate (C) at (0,3.5);
+			\coordinate (D) at (1,3);
+			\coordinate (E) at (2,4);
+			\coordinate (F) at (3,3.5);
+			\coordinate (G) at (4,4);
+			\coordinate (H) at (5,6);
+
+			\draw [red, thick] plot [smooth, tension=0.7] coordinates { (C) (D) (E) (F) (G) (H) };
+
+
+      \draw[orange] (0,0) rectangle (0.5,3.13);
+      \draw[fill, orange, opacity=0.3] (0,0) rectangle (0.5,3.13);
+
+      \draw[orange] (0.5,0) rectangle (1,3);
+      \draw[fill, orange, opacity=0.3] (0.5,0) rectangle (1,3);
+
+      \draw[orange] (1,0) rectangle (1.5,3);
+      \draw[fill, orange, opacity=0.3] (1,0) rectangle (1.5,3);
+
+      \draw[orange] (1.5,0) rectangle (2,3.5);
+      \draw[fill, orange, opacity=0.3] (1.5,0) rectangle (2,3.5);
+
+      \draw[orange] (2,0) rectangle (2.5,3.8);
+      \draw[fill, orange, opacity=0.3] (2,0) rectangle (2.5,3.8);
+
+      \draw[orange] (2.5,0) rectangle (3,3.5);
+      \draw[fill, orange, opacity=0.3] (2.5,0) rectangle (3,3.5);
+
+      \draw[orange] (3,0) rectangle (3.5,3.5);
+      \draw[fill, orange, opacity=0.3] (3,0) rectangle (3.5,3.5);
+
+      \draw[orange] (3.5,0) rectangle (4,3.58);
+      \draw[fill, orange, opacity=0.3] (3.5,0) rectangle (4,3.58);
+
+      \draw[orange] (4,0) rectangle (4.5,4);
+      \draw[fill, orange, opacity=0.3] (4,0) rectangle (4.5,4);
+
+      \draw[orange] (4.5,0) rectangle (5,4.88);
+      \draw[fill, orange, opacity=0.3] (4.5,0) rectangle (5,4.88);
+		\end{tikzpicture}
+	\end{center}
+  \caption{Variante 3}
+  \label{fig:SommadiRiemann3}
+\end{figure}
+
+  \item Se \( f \ge  0 \), \( \int_{a}^{b} f(x) \) rappresenta l'area racchiusa tra il grafico
     di \( f \) e l'asse \( x \).
   \item In generale, \( \int_{a}^{b} f(x) \) rappresenta l'area \textbf{con segno} racchiusa
     tra il grafico di \( f \) e l'asse \( x \).
     \[
-    \int_{a}^{b} f(x)\;dx =\;\; \text{Area della regione gialla - area della regione azzurra}
+    \int_{a}^{b} f(x)\;dx =\;\; \text{Area della regione gialla \( - \)  area della regione azzurra}
     \] 
-    \label{D7}
+ 	\begin{figure}[H]
+		\begin{center}
+			\begin{tikzpicture}
+				\draw[name path=x] (-0.5, 0) -- (9, 0) node[right] {};
+				\draw[->] (9, 0) -- (10, 0) node[right] {$x$};
+				\draw[->] (0, -1.5) -- (0, 3) node[left] {$y$};
+				\draw[domain=0:3.15, smooth, variable=\x, thick, yscale=1, xscale=1, name path=sin1] plot ({\x}, {sin(\x r)}) node [right] {};
+				\draw[domain=3.15:6.28, smooth, variable=\x, thick, yscale=1, xscale=1, name path=sin2] plot ({\x}, {sin(\x r)}) node [right] {};
+				\draw[domain=6.28:9, smooth, variable=\x, thick, yscale=1, xscale=1, name path=sin3] plot ({\x}, {sin(\x r)}) node [right] {};
+
+        \draw[dashed] (9, 0.4) -- (9, 0) node[below] {\( b \)};
+        \node at (0, 0) [below right] {\( a \)};
+
+        \tikzfillbetween[of=sin1 and x, on layer=ft]{yellow, opacity=0.3};
+        \tikzfillbetween[of=sin2 and x, on layer=ft]{blue, opacity=0.3};
+        \tikzfillbetween[of=sin3 and x, on layer=ft]{yellow, opacity=0.3};
+
+      \node[scale=1.5] at (1.6, 0.5) {$+$};
+      \node[scale=1.5] at (4.7, -0.5) {$-$};
+      \node[scale=1.5] at (7.8, 0.5) {$+$};
+			\end{tikzpicture}
+		\end{center}
+    \caption{Confronto tra funzioni}
+	\end{figure}
+
 \end{enumerate}
 
 \subsection{Proprietà di base}
@@ -2903,4 +3178,76 @@ Tale limite si dice \textbf{integrale} (definito) di \( f \).
       \int_{a}^{c} f(x)\; dx = \int_{a}^{b} f(x)\;dx + \int_{b}^{c} f(x)\;dx
     \] 
 \end{itemize}
+
+\subsection{Teorema fondamentale del calcolo integrale}
+\begin{figure}[H]
+  \begin{theorem}
+    Sia \( f: [a,b] \to \mathbb{R} \) continua. Allora la funzione \( F: [a,b] \to \mathbb{R} \) definita da:
+    \[
+    F(x):= \int_{a}^{x} f(t)\;dt \;\;\; \forall x \in [a,b]
+    \] 
+    è differenziabile e \( F'(x) = f(x) \;\;\; \forall x \in [a,b] \).
+    
+  \end{theorem}
+\end{figure}
+
+\subsubsection{Corollario}
+Sia \( f: [a,b] \to \mathbb{R} \) una funzione continua. Sia \( P:[a,b] \to \mathbb{R} \) una funzione
+differenziabile tale che \( P' = f \). Allora:
+\[
+\int_{a}^{b} f(x)\;dx = P(b) - P(a)
+\] 
+Una funzione differenziabile \( P \) tale che \( P'=f \) si chiama una \textbf{primitiva} di \( f \).
+L'insieme di tutte le primitive di \( f \) si chiama \textbf{integrale indefinito} di \( f \) e
+si denota con:
+\[
+\int f(x)\;dx
+\] 
+
+\subsection{Esempi}
+\begin{figure}[H]
+  \begin{example}
+    \[
+    \int 0\;dx
+    \] 
+  \end{example}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{example}
+    \[
+    \int 1\;dx 
+    \] 
+  \end{example}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{example}
+    \[
+    \int e^x\;dx
+    \] 
+  \end{example}
+\end{figure}
+
+\subsection{Alcune primitive elementari}
+\begin{enumerate}
+  \item \[
+  \int e^x\;dx = e^x + C
+  \] 
+  \item \[
+  \int sin(x)\;dx = -cos(x) + C
+  \] 
+  \item \[
+  \int cos(x)\;dx = sin(x) + C
+  \] 
+  \item \[
+  \int x^\alpha\; dx = \frac{x^{\alpha+1}}{\alpha+1} + C,\;\;\; \text{con \( \alpha \in \mathbb{R} \) costante e \( \alpha \neq -1 \) }
+  \] 
+  \item \[
+  \int x^{-1}\;dx = \int \frac{1}{x}\;dx = \log|x| + C
+  \] 
+  \item \[
+  \int \frac{1}{1+x^2}\;dx = \arctan(x) + C
+  \] 
+\end{enumerate}
 \end{document}
