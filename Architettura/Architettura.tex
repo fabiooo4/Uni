@@ -4681,6 +4681,7 @@ Inverte i valori di un numero.
          \end{circuitikz}
      \end{figure}
     Un segnale di input "STORED" mi dice se usare "OP2" o un accumulatore
+    \label{D1}
     \begin{figure}[H]
       \centering
         \begin{circuitikz}[square/.style={regular polygon,regular polygon sides=4}]
@@ -4712,7 +4713,84 @@ Inverte i valori di un numero.
         \end{circuitikz}
     \end{figure}
     Il codice del circuito è il seguente:
-    \label{D1}
+    \begin{figure}[H]
+      \begin{lstlisting}[language=Verilog]
+        module Opposto #(parameter N = 8)(
+          input [N-1:0] operando,
+          output [N-1:0] risultato);
+            assign risultato = -operando;
+        endmodule
+      \end{lstlisting}
+    \end{figure}
 
+    \begin{figure}[H]
+      \begin{lstlisting}[language=Verilog]
+        module ALU #(parameter N = 8)(
+          input clock,
+          input [N-1:0] op1,
+          input [N-1:0] op2,
+          input stored,
+          input [1:0] oper,
+          output [N-1:0] O);
+          
+            wire [N-1:0] acc, sel, t1, t2, t3, t4, t5, out;
+            wire s1, s2;
 
+            RegistroParalleloParallelo registro(out, clock, acc);
+            Multiplexer2 mux1(stored, acc, op2, sel);
+            Multiplexer2 mux2(s1, op1, sel, t3);
+            Multiplexer2 mux3(s2, op1, sel, t4);
+            Multiplexer mux4(oper, t4, t3, t2, t1, out);
+            Sommatore sum1(op1, sel, t1);
+            Opposto opp1(sel, t5);
+            Sommatore sum2(op1, t5, t2);
+            Maggiore mag(op1, sel, s1);
+            Minore min(op1, sel, s2);
+
+            assign O = out;
+        endmodule
+      \end{lstlisting}
+    \end{figure}
+
+    Di seguito il codice implementato con il metodo Behavioural:
+    \begin{figure}[H]
+      \begin{lstlisting}[language=Verilog]
+        module ALU_behav #(parameter N = 8)(
+          input clock,
+          input [N-1:0] op1,
+          input [N-1:0] op2,
+          input stored,
+          input [1:0] oper,
+          output [N-1:0] O);
+
+            reg [N-1:0] acc, sel, out;
+
+            always @(stored, acc, op2) begin
+              if(stored) sel = acc;
+              else sel = op2;
+            end
+
+            always @(posedge clock) begin
+              if(clock) acc = out;
+            end
+
+            assign O = out;
+
+            always @(op1, sel, oper) begin
+              case(oper)
+              2'b00 :
+                out = op1 + sel;
+              2'b01 :
+                out = op1 - sel;
+              2'b10 :
+                if(op1 > sel) out = op1;
+                else out = sel;
+              2'b11 :
+                if(op1 < sel) out = op1;
+                else out = sel;
+              endcase
+            end
+        endmodule
+      \end{lstlisting}
+    \end{figure}
 \end{document}
