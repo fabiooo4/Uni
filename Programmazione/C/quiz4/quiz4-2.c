@@ -13,7 +13,6 @@ int main() {
   int m1[M][N];
   int proprieta = 1;
   int mul;
-  int prevMul;
 
   // Acquisizione dati
   scanf("%d", &n);
@@ -32,11 +31,11 @@ int main() {
       mul = 1;
       for (int l = 0; l < n; l++) {
         for (int k = 0; k < n; k++) {
-          mul *= m1[l][k];
+          mul *= m1[i + l][j + k];
         }
       }
-      printf("%d ", mul);
-      prevMul = mul;
+      if (mul != 0)
+        proprieta = 0;
     }
   }
 
