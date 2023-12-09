@@ -4691,7 +4691,42 @@ Inverte i valori di un numero.
           \draw (0.0,0.2) node (mux1-i0) {};
           \draw (0.5,0.2) node (mux1-i1) {};
           \draw (-0.3,0) node (mux1-s) {};
+          \draw (0.25,-0.18) node (mux1-o) {};
           \draw (-0.5,0.3) -- ++(1.5,0) -- ++(-0.25, -0.6) -- ++(-1,0) -- ++(-0.25,0.6) -- (-0.5,0.3);
+          % ------------------
+
+          % Multiplexer2 2 to 1
+          \draw (2,-3.6) node (mux2-0) {0};
+          \draw (2.5,-3.6) node (mux2-1) {1};
+          \draw (2,-3.4) node (mux2-i0) {};
+          \draw (2.5,-3.4) node (mux2-i1) {};
+          \draw (1.7,-3.6) node (mux2-s) {};
+          \draw (2.25,-3.78) node (mux2-o) {};
+          \draw (1.5,-3.3) -- ++(1.5,0) -- ++(-0.25, -0.6) -- ++(-1,0) -- ++(-0.25,0.6) -- cycle;
+          % ------------------
+          
+          % Multiplexer3 2 to 1
+          \draw (4.5,-3.6) node (mux3-0) {0};
+          \draw (5,-3.6) node (mux3-1) {1};
+          \draw (4.5,-3.4) node (mux3-i0) {};
+          \draw (5,-3.4) node (mux3-i1) {};
+          \draw (4.2,-3.6) node (mux3-s) {};
+          \draw (4.75,-3.78) node (mux3-o) {};
+          \draw (4,-3.3) -- ++(1.5,0) -- ++(-0.25, -0.6) -- ++(-1,0) -- ++(-0.25,0.6) -- cycle;
+          % ------------------
+
+          % Multiplexer 4 to 1
+          \draw (-0.7,-6) node (mux4-0) {00};
+          \draw (0,-6) node (mux4-1) {01};
+          \draw (0.7,-6) node (mux4-2) {10};
+          \draw (1.4,-6) node (mux4-3) {11};
+          \draw (-0.7,-5.8) node (mux4-i0) {};
+          \draw (0,-5.8) node (mux4-i1) {};
+          \draw (0.7,-5.8) node (mux4-i2) {};
+          \draw (1.4,-5.8) node (mux4-i3) {};
+          \draw (-1.1,-6) node (mux4-s) {};
+          \draw (0.25,-6.18) node (mux4-o) {};
+          \draw (-1.3,-5.7) -- ++(3.3,0) -- ++(-0.25, -0.6) -- ++(-2.8,0) -- ++(-0.25,0.6) -- cycle;
           % ------------------
 
           % Register
@@ -4700,15 +4735,79 @@ Inverte i valori di un numero.
           \draw[latex-] (reg.east) -- ++(0.5,0) node[below] {\tiny CLK};
           % ------------------
 
+
+          % Operators
+          \draw (3.5,-2) node[square,draw, minimum size=2cm, scale=0.6] (lesser) {\huge$<$};
+          \draw (1,-2) node[square,draw, minimum size=2cm, scale=0.6] (greater) {\huge$>$};
+          \draw (-1.5,-3.5) node[square,draw, minimum size=2cm, scale=0.6] (sum2) {\huge$+$};
+          \draw (-1,-2) node[square,draw, minimum size=2cm, scale=0.6] (sub) {\huge$-$};
+          \draw (-3,-2) node[square,draw, minimum size=2cm, scale=0.6] (sum1) {\huge$+$};
+          % ------------------
+
           \draw[latex-] (mux1-i0) -- ++(0,1) node[above] {\small OP2};
           \draw[latex-] (mux1-s) -- ++(-1,0) -- ++(0,1.2) node[above] {\small STORED};
           \draw[latex-] (mux1-i1) -- ++(0,0.5) -- ++(1.5,0) -- (reg.south);
 
-          \draw (3,-2) node[square,draw, minimum size=2cm, scale=0.6] (greater) {\huge$>$};
-          \draw (1,-2) node[square,draw, minimum size=2cm, scale=0.6] (lesser) {\huge$<$};
-          \draw (-1.5,-3.5) node[square,draw, minimum size=2cm, scale=0.6] (sum2) {\huge$+$};
-          \draw (-1,-2) node[square,draw, minimum size=2cm, scale=0.6] (sub) {\huge$-$};
-          \draw (-3,-2) node[square,draw, minimum size=2cm, scale=0.6] (sum1) {\huge$+$};
+          % OP1
+          \draw[latex-] (-3.2, 52 |- sum1.north) -- ++(0,2.8) node[above] (OP1) {\small OP1};
+
+          \draw[-latex] (mux1-o) -- ++(0,-1) to[short, *-] ++(3.5,0) to[short, *-] ++(0,-0.39);
+          \draw[-latex] (mux1-o) -- ++(0,-1) to[short] ++(1,0) to[short, *-] ++(0,-0.39);
+          \draw[-latex] (mux1-o) -- ++(0,-1) to[short] ++(-1,0) to[short, *-] ++(0,-0.39);
+          \draw[-latex] (mux1-o) -- ++(0,-1) to[short] ++(-3,0) to[short, *-] ++(0,-0.39);
+          \draw[-latex] (mux1-o) -- ++(0,-1) to[short] (mux2-i1 |- 52,-1.18) to[short, *-] (mux2-i1);
+          \draw[-latex] (mux1-o) -- ++(0,-1) to[short] (mux3-i1 |- 52,-1.18) to[short, *-] (mux3-i1);
+
+          \draw[-latex] (sub.south) -- ++(0,-0.25) -- ++(-0.25,0) -- ++(0,-0.4);
+          \draw[-latex] (greater.south) |- (mux2-s);
+          \draw[-latex] (lesser.south) |- (mux3-s);
+
+          \draw[-latex] (OP1) -- ++(0, -2.2) to[short, *-] ++(2,0) to[short, *-] (-1.2, 52 |- sub.north);
+          \draw[-latex] (OP1) -- ++(0, -2.2) to[short, *-] ++(1.5,0) to[short, *-] (-1.7, 52 |- sum2.north);
+          \draw[-latex] (OP1) -- ++(0, -2.2) to[short] ++(4,0) to[short, *-] (0.8, 52 |- greater.north);
+          \draw[-latex] (OP1) -- ++(0, -2.2) to[short] ++(6.5,0) to[short, *-] (3.3, 52 |- lesser.north);
+          \draw[-latex] (OP1) -- ++(0, -2.2) to[short] (mux2-i0 |- 52,-0.74) to[short, *-] (mux2-i0);
+          \draw[-latex] (OP1) -- ++(0, -2.2) to[short] (mux3-i0 |- 52,-0.74) to[short, *-] (mux3-i0);
+
+          \draw[-latex] (sum1.south) -- ++(0,-2.5) |- (mux4-i0 |- 52,-5) -- (mux4-i0);
+          \draw[-latex] (sum2.south) -- ++(0,-0.5) -- ++(1.5,0) |- (mux4-i1 |- 52,-5) -- (mux4-i1);
+          \draw[-latex] (mux2-o) -- ++(0,-0.65) -- ++(-1.55,0) |- (mux4-i2 |- 52,-5) -- (mux4-i2);
+          \draw[-latex] (mux3-o) -- ++(0,-1.22) -- ++(-3.1,0) |- (mux4-i3 |- 52,-5) -- (mux4-i3);
+ 
+          \draw[-latex] (mux4-o) -- ++(0,-0.5) -- ++(5.8,0) -- ++(0,8.5) |- (reg.north |- 52,2) -- (reg.north);
+
+          \draw[latex-] (mux4-s) -- ++(-3,0) -- ++(0,7.23) node[above] {\small OP};
+
+          % Bit numbers
+          % OP2
+          \draw (-0.1, 0.9) -- ++(0.2, 0.2) node[right, yshift=-2] {\tiny 8};
+          % STORED 
+          \draw (-1.4, 0.9) -- ++(0.2, 0.2) node[right, yshift=-2] {\tiny 1};
+          % OP1
+          \draw (-3.3, 0.9) -- ++(0.2, 0.2) node[right, yshift=-2] {\tiny 8};
+          % OP
+          \draw (-4.2, 0.9) -- ++(0.2, 0.2) node[right, yshift=-2] {\tiny 2};
+          % mux1
+          \draw (0.15, -0.6) -- ++(0.2, 0.2) node[right, yshift=-2] {\tiny 8 SEL};
+          % reg
+          \draw (1.9, 0.8) -- ++(0.2, 0.2) node[right, yshift=-2] {\tiny 8};
+          % mux2
+          \draw (2.15, -4.2) -- ++(0.2, 0.2) node[right, yshift=-2] {\tiny 8};
+          % mux3
+          \draw (4.65, -4.2) -- ++(0.2, 0.2) node[right, yshift=-2] {\tiny 8};
+          % mux4
+          \draw (0.15, -6.6) -- ++(0.2, 0.2) node[right, yshift=-2] {\tiny 8};
+          % greater
+          \draw (0.9, -2.7) -- ++(0.2, 0.2) node[right, yshift=-2] {\tiny 1};
+          % lesser
+          \draw (3.4, -2.7) -- ++(0.2, 0.2) node[right, yshift=-2] {\tiny 1};
+          % sum1
+          \draw (-3.1, -2.7) -- ++(0.2, 0.2) node[right, yshift=-2] {\tiny 8};
+          % sub
+          \draw (-1.07, -2.64) -- ++(0.15, 0.15) node[right, yshift=-2] {\tiny 8};
+          % sum2
+          \draw (-1.6, -4.2) -- ++(0.2, 0.2) node[right, yshift=-2] {\tiny 8};
+          % ------------------
 
         \end{circuitikz}
     \end{figure}
