@@ -2999,10 +2999,10 @@ x \notin FV(hp(D_1))\;\; \text{a parte \( \phi(x) \) stessa}
 \subsection{Struttura matematica}
 È formata da una quadrupla:
 \[
-V = <A, \mathbb{R}, \mathbb{F}, \mathbb{C}>
+U = <A, \mathbb{R}, \mathbb{F}, \mathbb{C}>
 \]  
 \begin{enumerate}
-  \item \( A \neq 0 \) dominio
+  \item \( A \neq \emptyset \) dominio
   \item \( \mathbb{R} \) insieme di relazioni su \( A \) 
   \item \( \mathbb{F} \) insieme di funzioni su \( A \)
   \item \( \mathbb{C} \subseteq A \) insieme di costanti
@@ -3019,7 +3019,7 @@ V = <A, \mathbb{R}, \mathbb{F}, \mathbb{C}>
 \begin{figure}[H]
   \begin{definition}[L\_Struttura]
     \(
-  \leftrightarrow\;\;     \) associa struttura \( m \) a un linguaggio di primo ordine
+  \leftrightarrow\;\;     \) associa struttura \( u \) a un linguaggio di primo ordine
 
     \[
     U = <A, (\;)^u>:
@@ -3047,7 +3047,7 @@ V = <A, \mathbb{R}, \mathbb{F}, \mathbb{C}>
 \subsection{Valutazione}
 
 \begin{figure}[H]
-  \begin{definition}[U\footnote{legaata alla struttura matematica presa in considerazione}\_Valutazione]
+  \begin{definition}[U\footnote{legata alla struttura matematica presa in considerazione}\_Valutazione]
     È una funzione:
     \[
       \rho_u: Var \to \underbrace{|U|}_{\text{dominio di \( U \) \( (A) \neq \emptyset \)  }}
@@ -3110,7 +3110,7 @@ V = <A, \mathbb{R}, \mathbb{F}, \mathbb{C}>
         \] 
         o in alternativa:
         \[
-          \rho_u \models \alpha \to \beta \Leftrightarrow (\rho_u \not\models \alpha \;OR\; \rho_u models \beta)
+          \rho_u \models \alpha \to \beta \Leftrightarrow (\rho_u \not\models \alpha \;OR\; \rho_u \models \beta)
         \] 
       \item \[
       \rho_u \models \alpha \wedge \beta \Leftrightarrow \rho_u \models \alpha \;AND\; \rho_u \models \beta
