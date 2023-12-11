@@ -4681,7 +4681,6 @@ Inverte i valori di un numero.
          \end{circuitikz}
      \end{figure}
     Un segnale di input "STORED" mi dice se usare "OP2" o un accumulatore
-    \label{D1}
     \begin{figure}[H]
       \centering
         \begin{circuitikz}[square/.style={regular polygon,regular polygon sides=4}]
@@ -4892,4 +4891,181 @@ Inverte i valori di un numero.
         endmodule
       \end{lstlisting}
     \end{figure}
+
+\section{Modello FSMD (FSM con Datapath o Controllore/Datapath)}
+È composto da 2 parti:
+\begin{itemize}
+  \item \textbf{Controllo}: Finite State Machine
+  \item \textbf{Elaborazione}: Datapath
+\end{itemize}
+\label{D1}
+Per progettare il modello precedente servono diversi passaggi:
+\begin{enumerate}
+  \item Definire l'insieme di operazioni necessarie (identificare le unità funzionali necessarie)
+  \item Identificare le operazioni che le unità funzionali devono svolgere 
+  \item Identificare le necessità di memorizzare i dati (ad esempio i risultati intermedi)
+  \item Progetto il datapath di ogni operazione
+  \item Identificare i segnali di controllo
+  \item Progettare il controllore (FSM) che genera i segnali di controllo
+\end{enumerate}
+Questi passi non danno sempre una decisione univoca, infatti si possono prendere più decisioni
+che permettono di bilanciare il modello per avere una parte preponderante di macchina a stati,
+oppure una parte preponderante di datapath.
+\subsection{Esempio}
+    Prendiamo in considerazione l'esempio del semaforo:
+
+    Per evitare incidenti, il circuito di controllo deve garantire che le luci sulle
+    strade NS e EO siano sempre accese in opposizione. Il circuito assegna
+    priorità alla strada NS e commuta dal verde al rosso su NS solo se
+    TRAFFICONS=0 e TRAFFICOEO=1, in caso contrario mantiene il verde
+    su NS. In assenza di traffico sia su NS che su EO il semaforo non modifica
+    la configurazione raggiunta. Non appena giunge traffico su NS,
+    indipendentemente da cosa succede su EO, il semaforo assegna la luce
+    verde a NS e la luce rossa a EO.
+
+    Gli input sono:
+    \begin{itemize}
+      \item \textbf{TRAFFICONS[1]}: 1 indica traffico su nord-sud
+      \item \textbf{TRAFFICOEO[1]}: 1 indica traffico su est-ovest
+    \end{itemize}
+
+    Le uscite sono:
+    \begin{itemize}
+      \item \textbf{LUCENS[1]}: 1 indica luce verde su nord-sud
+      \item \textbf{LUCENEO[1]}: 1 indica luce verde su est-ovest
+    \end{itemize}
+\begin{figure}[H]
+  \begin{center}
+    \begin{tikzpicture}[node distance=4cm and 2cm,>=stealth',auto, every place/.style={draw}]
+      \node [place] (A) {VERDENS};
+      \coordinate[node distance=1.3cm,left of=A] (left-A);
+      \coordinate[node distance=1.3cm,right of=A] (right-A);
+
+      \node [place] (B) [right of= A] {VERDEEO};
+
+
+      \path[->] (A) edge [loop left] node[xshift=2,scale=0.9] {-0/10} ();
+
+      \path[<-] (A) edge [bend left=20] node[scale=0.9] {1-/10} (B);
+      \path[<-] (B) edge [bend left=20] node[scale=0.9] {01/01} (A);
+      \path[->] (B) edge [loop right] node[xshift=-2,scale=0.9] {0-/01} ();
+    \end{tikzpicture}
+  \end{center}
+  \caption{FSM del semaforo}
+\end{figure}
+    Aggiungiamo la funzionalità che il controllore non commuta mai da verde a rosso senza aver
+    prima atteso 1024 cicli di clock.
+    \label{D2}
+\begin{figure}[H]
+  \begin{center}
+    \begin{tikzpicture}[node distance=4cm and 2cm,>=stealth',auto, every place/.style={draw}]
+      \node [place] (A) {VERDENS};
+      \coordinate[node distance=1.3cm,left of=A] (left-A);
+      \coordinate[node distance=1.3cm,right of=A] (right-A);
+
+      \node [place] (B) [below of= A, align=center] {INIZIO\\ CONTO};
+      \node [place] (C) [right of= B] {VERDEEO};
+      \node [place] (D) [above of= C, align=center] {CONTO 2};
+
+
+      \path[->] (A) edge [loop left] node[xshift=2,scale=0.9, align=center] {00-/100\\
+        10-/100\\
+        11-/100 } ();
+
+      \path[<-] (A) edge [bend left=20] node[scale=0.9, align=center] {01-/101} (B);
+      \path[<-] (B) edge [bend left=20] node[scale=0.9, align=center] {1--/100} (A);
+      \path[->] (B) edge [loop left] node[xshift=-2,scale=0.9] {0-0/100} ();
+      \path[->] (B) edge [bend right=20] node[scale=0.9, align=center] {011/010\\001/010} (C);
+      \path[->] (C) edge [loop right] node[xshift=-2,scale=0.9] {0--/010} ();
+      \path[->] (C) edge [bend right=20] node[scale=0.9, align=center] {1--/011} (D);
+      \path[->] (D) edge [loop right] node[xshift=-2,scale=0.9] {--0/010} ();
+      \path[->] (D) edge [bend right=20] node[scale=0.9, align=center] {--1/100} (A);
+    \end{tikzpicture}
+  \end{center}
+  \caption{FSM del semaforo}
+\end{figure}
+\label{D3}
+L'implementazione in Verilog è la seguente:
+\begin{figure}[H]
+  \begin{lstlisting}[language=Verilog]
+  module SemaforoTemporizzato(
+    input rst, clk, trafficons, trafficoeo,
+    output reg lucens, luceeo);
+    
+    reg [1:0] stato = 2'b00;
+    reg [1:0] stato_prossimo = 2'b00;
+    reg inizio = 1'b0, fine = 1'b0;
+    reg [3:0] registro = 3'b000;
+
+    always @(clk) begin : UPDATE
+      if(rst) stato = 2'b00;
+      else stato = stato_prossimo;
+    end
+
+    always @(clk) begin : DATAPATH
+      if(inizio) begin
+        registro = 3'b000;
+        fine = 1'b0;
+      end else begin
+
+      if(registro < 3'b111) begin
+        registro = registro + 1'b1;
+        fine = 1'b0;
+      end
+      else begin
+        fine = 1'b1;
+      end
+    end
+    ...
+  \end{lstlisting}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{lstlisting}[language=Verilog]
+    ...
+    always @(stato, trafficons, trafficoeo, fine) begin : FSM
+      case(stato)
+      2'b00:
+        if(~trafficons && trafficoeo) begin
+          lucens = 1'b1; luceeo = 1'b0; inizio = 1'b1;
+          stato_prossimo = 2'b10;
+        end else begin
+          lucens = 1'b1; luceeo = 1'b0;
+          stato_prossimo = 2'b00;
+        end
+      2'b01:
+        if(~trafficons) begin
+          lucens = 1'b0; luceeo = 1'b1;
+          stato_prossimo = 2'b01;
+        end else begin
+          lucens = 1'b0; luceeo = 1'b1; inizio = 1'b1;
+          stato_prossimo = 2'b11;
+        end
+      2'b10:
+        begin inizio = 1'b0;
+        if(trafficons) begin
+          lucens = 1'b1; luceeo = 1'b0;
+          stato_prossimo = 2'b00;
+        end
+        else if(fine) begin
+          lucens = 1'b0; luceeo = 1'b1;
+          stato_prossimo = 2'b01;
+        end else begin
+          lucens = 1'b1; luceeo = 1'b0;
+          stato_prossimo = 2'b10;
+        end end
+      2'b11:
+        begin inizio = 1'b0;
+        if(fine) begin
+          lucens = 1'b1; luceeo = 1'b0;
+          stato_prossimo = 2'b00;
+        end else begin
+          lucens = 1'b0; luceeo = 1'b1;
+          stato_prossimo = 2'b11;
+        end end
+      endcase
+    end
+  end
+  \end{lstlisting}
+\end{figure}
 \end{document}
