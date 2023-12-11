@@ -6,6 +6,7 @@
 \usepackage{xcolor}
 \usepackage{amsmath}
 \usepackage{mathtools}
+\usepackage{ebproof}
 \usepackage{float}
 \usepackage{graphicx}
 \graphicspath{ {./figures/} }
@@ -2888,9 +2889,25 @@ Dopo la sostituzione sono state create delle nuove variabili legate.
       \[
         \vdash \forall x.\; (\varphi \to \psi) \to ((\forall x.\; \varphi) \to (\forall x.\; \psi))
       \] 
-      \[
-        \dfrac{\dfrac{\dfrac{\dfrac{\dfrac{[\forall x.\; (\varphi \to \psi)]^3}{\varphi \to \psi} \forall E \;\;\;\dfrac{[\forall x.\;\varphi]^1}{\varphi} \forall E}{\psi} \to E}{\forall x.\;\psi}\forall I \text{vincoli \( \surd \) }}{\forall x.\;\varphi \to \forall x.\; \psi} \to I^1}{\forall x.\;(\varphi \to \psi) \to (\forall x.\;  \varphi \to  \forall x.\; \psi)}
-      \] 
+      \begin{center}
+        \large
+        \begin{prooftree}
+
+          \hypo{ [\forall x.\; (\varphi \to \psi)]^2 }
+          \infer1[\( \forall E \) ]{ \varphi \to \psi }
+
+          \hypo{ [\forall x.\; \varphi]^1 }
+          \infer1[\( \forall E \) ]{ \varphi }
+
+          \infer2[\( \to E \) ]{ \psi }
+
+          \infer1[\( \forall I \;\; \text{Vincoli \( \;\surd \) } \) ]{ \forall x.\;\psi }
+
+          \infer1[\(\to I^1\)]{ \forall x.\;\varphi \to \forall x.\;\psi }
+
+          \infer1[\(\to I^2\)]{ \forall x.\; (\varphi \to \psi) \to (\forall x.\; \varphi \to  \forall x.\; \psi)}
+        \end{prooftree}
+      \end{center}
     \end{exercise}
     \end{figure}
 
@@ -2942,9 +2959,20 @@ x \notin FV(hp(D_1))\;\; \text{a parte \( \varphi(x) \) stessa}
     \[
     \vdash \exists x.\; (\varphi(x) \wedge \psi(x)) \to \exists x.\; \varphi(x)
     \] 
-    \[
-      \dfrac{\dfrac{[\exists x.\; (\varphi(x) \vee \psi(x))]^1\;\; \dfrac{\dfrac{[\varphi(x) \wedge \psi(x)]^2}{\varphi(x)} \wedge E_1}{\exists x.\;\varphi(x)} \exists I}{\exists x.\;\varphi(x)} \exists E^2}{\exists x.\;(\varphi(x) \wedge \psi(x)) \to \exists x.\; \varphi(x)} \to I^1
-    \]  
+
+    \begin{center}
+      \large
+      \begin{prooftree}
+        \hypo{ [\varphi(x) \wedge \psi (x) ]^2 }
+        \infer1[\( \wedge E_1 \)]{ \varphi(x) }
+        \infer1[\( \exists I \)]{ \exists x.\; \varphi(x) }
+
+        \hypo{ [\exists x.\; (\varphi(x) \vee \psi(x))]^1 }
+
+        \infer2[\( \exists E^2 \)]{ \exists x.\; \varphi(x) }
+        \infer1[\( \to I^1 \)]{ \exists x.\; (\varphi(x) \wedge \psi(x) ) \to \exists x.\;\varphi(x) }
+      \end{prooftree}
+    \end{center}
   \end{exercise}
 \end{figure}
 
@@ -2953,9 +2981,16 @@ x \notin FV(hp(D_1))\;\; \text{a parte \( \varphi(x) \) stessa}
     \[
     \vdash \forall x.\; \varphi \to \exists x.\;\varphi
     \] 
-    \[
-      \dfrac{\dfrac{\dfrac{[\forall x.\;\varphi]^1}{\varphi} \forall E}{\exists x.\;\varphi} \exists I}{\forall x.\; \varphi \to \exists x.\; \varphi} \to I^1
-    \] 
+
+    \begin{center}
+      \large
+      \begin{prooftree}
+        \hypo{ [\forall x.\; \varphi ]^1 }
+        \infer1[\( \forall E \)]{ \varphi }
+        \infer1[\( \exists I \)]{ \exists x.\; \varphi  }
+        \infer1[\( \to I^1 \)]{ \forall x.\; \varphi \to \exists x.\; \varphi  }
+      \end{prooftree}
+    \end{center}
   \end{exercise}
 \end{figure}
 
@@ -2964,9 +2999,21 @@ x \notin FV(hp(D_1))\;\; \text{a parte \( \varphi(x) \) stessa}
     \[
     \vdash \forall x.\; \varphi \to \neg \forall x. \neg \varphi
     \]
-    \[
-      \dfrac{\dfrac{\dfrac{\dfrac{[\forall x.\; \varphi]^2}{\varphi} \forall E \;\;\; \dfrac{[\forall x.\; \neg \varphi]^1}{\neg \varphi} \forall E}{\bot} \to E}{\neg \forall x.\; \neg \varphi}\to I^1}{\forall x.\; \varphi \to  \neg \forall x.\; \neg \varphi} \to I^2
-    \] 
+
+    \begin{center}
+      \large
+      \begin{prooftree}
+        \hypo{ [\forall x.\; \varphi ]^2 }
+        \infer1[\( \forall E \)]{ \varphi  }
+
+        \hypo{ [\forall x.\; \neg \varphi ]^1 }
+        \infer1[\( \forall E \)]{ \neg \varphi  }
+
+        \infer2[\( \to E \)]{ \bot }
+        \infer1[\( \to I^1 \)]{ \neg \forall x.\; \neg \varphi  }
+        \infer1[\( \to I^2 \)]{ \forall x.\;\varphi \to \neg \forall x.\; \neg \varphi }
+      \end{prooftree}
+    \end{center}
 
     \( \neg \forall x.\; \neg \varphi \) "non è vero che per ogni valore di x \( \varphi \) non vale" equivale a dire
     \( \exists x \) per cui \( \varphi \) vale. \( \exists x. \;\varphi \) 
@@ -2978,9 +3025,21 @@ x \notin FV(hp(D_1))\;\; \text{a parte \( \varphi(x) \) stessa}
     \[
     \vdash (\neg \exists x.\; \neg \varphi) \to \forall x.\; \varphi
     \] 
-    \[
-      \dfrac{\dfrac{\dfrac{\dfrac{[\neg \exists x.\; \neg \varphi]^2 \;\;\;\;\dfrac{[\neg \varphi]^1}{\exists x.\; \neg \varphi} \scriptstyle\exists I}{\bot} \scriptstyle\to E}{\varphi} \scriptstyle RAA^1}{\forall x.\; \varphi} \scriptstyle\forall I}{\neg \exists x.\; \neg \varphi \to \forall x.\; \varphi} \scriptstyle\to I^2
-    \] 
+
+    \begin{center}
+      \large
+      \begin{prooftree}
+        \hypo{ [\neg \exists x.\; \neg \varphi]^2  }
+
+        \hypo{ [\neg \varphi]^1  }
+        \infer1[\( \exists I \)]{ \exists x.\; \neg \varphi  }
+
+        \infer2[\( \to E \)]{ \bot }
+        \infer1[\( RAA^1 \)]{ \varphi  }
+        \infer1[\( \forall I \)]{ \forall x.\; \varphi }
+        \infer1[\( \to I^2 \)]{ \neg \exists x.\; \neg \varphi \to \forall x.\; \varphi }
+      \end{prooftree}
+    \end{center}
   \end{exercise}
 \end{figure}
 
@@ -2989,9 +3048,21 @@ x \notin FV(hp(D_1))\;\; \text{a parte \( \varphi(x) \) stessa}
     \[
     \vdash \neg \exists x.\; \varphi \to \forall x.\; \neg \varphi
     \] 
-    \[
-      \dfrac{\dfrac{\dfrac{\dfrac{[\neg \exists x.\; \varphi]^2 \;\;\;\;\dfrac{[\varphi]^1}{\exists x.\;\varphi} \scriptstyle\exists I}{\bot}\scriptstyle\to E}{\neg \varphi} \scriptstyle\to I^1}{\forall x.\; \neg \varphi}\scriptstyle\forall I}{\neg \exists x.\; \varphi \to \forall x.\; \neg \varphi} \scriptstyle\to I^2
-    \] 
+
+    \begin{center}
+      \large
+      \begin{prooftree}
+        \hypo{ [\neg \exists x.\;\varphi]^2  }
+
+        \hypo{ [\varphi]^1 }
+        \infer1[\( \exists I \)]{ \exists x.\;\varphi  }
+
+        \infer2[\( \to E \)]{ \bot }
+        \infer1[\( \to I^1 \)]{ \neg \varphi  }
+        \infer1[\( \forall I \)]{ \forall x.\; \neg \varphi }
+        \infer1[\( \to I^2 \)]{ \neg \exists x.\; \varphi \to \forall x.\; \neg \varphi}
+      \end{prooftree}
+    \end{center}
   \end{exercise}
 \end{figure}
 
