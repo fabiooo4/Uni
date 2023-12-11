@@ -614,10 +614,10 @@ valore dei suoi atomi.
 
 \subsection{Formule privilegiate}
 \begin{theorem}
-	\( \phi \in PROP \) sia \( \phi^{AT} = \{ p | p \in AT\; \&\; p \) è in \( \phi\} \) \\
+	\( \varphi \in PROP \) sia \( \varphi^{AT} = \{ p | p \in AT\; \&\; p \) è in \( \varphi\} \) \\
 	Siano \( v_1 \) e \( v_2 \) valutazioni atomiche\\
-	tali che: \( \forall p \in \phi^{AT} \) \( v_1[p]=v_2[p] \) \\
-	allora \( [|\phi|]_{v_1} = [|\phi|]_{v_2} \)
+	tali che: \( \forall p \in \varphi^{AT} \) \( v_1[p]=v_2[p] \) \\
+	allora \( [|\varphi|]_{v_1} = [|\varphi|]_{v_2} \)
 \end{theorem}
 
 \begin{figure}[H]
@@ -625,7 +625,7 @@ valore dei suoi atomi.
         \( \alpha \in PROP \) è detta \textbf{tautologia} se per ogni valutazione
         v: \( [|\alpha|]_v = 1 \)\\
         \(
-        \models \phi
+        \models \varphi
         \) indica una formula privilegiata (di cui fa parte la tautologia)
     \end{definition}
 \end{figure}
@@ -721,7 +721,7 @@ Si definisce:
 \( \Gamma \) insieme formule proposizionali\\
 \( \Gamma \) è soddisfacibile quando:
 \[
-	\exists v\; t.c.\; \forall \phi \in \Gamma\; [|\phi|]_v = 1
+	\exists v\; t.c.\; \forall \varphi \in \Gamma\; [|\varphi|]_v = 1
 \]
 \section{Conseguenza logica}
 \begin{center}
@@ -740,7 +740,7 @@ Si può leggere in più modi:
 	\begin{definition}
 		La verità dell'ipotesi fa conseguire la verità della tesi.
 		\begin{center}
-			\( \Gamma \models \alpha \) sse \( \forall v \) se \( \forall \phi \in \Gamma \) allora \( [|\phi|]_v = 1 \) allora \( [|\alpha|]_v = 1 \)
+			\( \Gamma \models \alpha \) sse \( \forall v \) se \( \forall \varphi \in \Gamma \) allora \( [|\varphi|]_v = 1 \) allora \( [|\alpha|]_v = 1 \)
 		\end{center}
 		Le denotazione dell'insieme vuol dire che tutte le formule dell'insieme
 		sono vere.
@@ -831,7 +831,7 @@ Si può leggere in più modi:
 \end{exercise}
 \begin{exercise}[a casa]
 	\[
-		\phi \models \psi \vee \phi
+		\varphi \models \psi \vee \varphi
 	\]
 \end{exercise}
 \begin{exercise}[a casa]
@@ -931,25 +931,25 @@ Diventa:
 \section{Definizione di sostituzione}
 \begin{definition}
    \[
-       \phi \in PROP\;\; \phi[\psi/p]\;\; \psi \in PROP\;\;
+       \varphi \in PROP\;\; \varphi[\psi/p]\;\; \psi \in PROP\;\;
    \]  
    \( p \) è un simbolo proposizionale che \textbf{occorre}\footnote{L' \textbf{occorrenza} è il numero di volte
    in cui appare una formula:
 \[
-   \phi=((p_1 \to (p_5 \vee p_1))\wedge p_3)
+   \varphi=((p_1 \to (p_5 \vee p_1))\wedge p_3)
 \] 
 Per osservare le occorrenze scrivo il simbolo + la posizione in cui appare (il numero del carattere ad esempio):
 \[
     (p_1, 2), (p_1, 7)
 \]
-Quindi se si vuole sostituire \( p_1 \): \[ \phi[\psi/p_1] = ((\psi \to (p_5 \vee \psi))\wedge p_3)) \]
-} in \( \phi \)
+Quindi se si vuole sostituire \( p_1 \): \[ \varphi[\psi/p_1] = ((\psi \to (p_5 \vee \psi))\wedge p_3)) \]
+} in \( \varphi \)
 \begin{itemize}
-    \item \( \phi[\psi/p] = \bot\;\; se\; \phi = \bot \)
-    \item \( \phi[\psi/p] = \phi\;\; se\;\phi \in AT\; e\; \phi \neq p \) (non c'è la p, quindi non sostituisco niente)
-    \item \( \phi[\psi/p] = \psi\;\; \phi = p \) 
-    \item \( (\neg \phi)[\psi/p] =  \neg (\phi[\psi/p])\) 
-    \item \( (\phi_1 \circ \phi_2)[\psi/p]=(\phi_1[\psi/p] \circ \phi_2[\psi/p]) \)  \(\;\; \circ \in  \{ \wedge, \vee, \to  \} \) 
+    \item \( \varphi[\psi/p] = \bot\;\; se\; \varphi = \bot \)
+    \item \( \varphi[\psi/p] = \varphi\;\; se\;\varphi \in AT\; e\; \varphi \neq p \) (non c'è la p, quindi non sostituisco niente)
+    \item \( \varphi[\psi/p] = \psi\;\; \varphi = p \) 
+    \item \( (\neg \varphi)[\psi/p] =  \neg (\varphi[\psi/p])\) 
+    \item \( (\varphi_1 \circ \varphi_2)[\psi/p]=(\varphi_1[\psi/p] \circ \varphi_2[\psi/p]) \)  \(\;\; \circ \in  \{ \wedge, \vee, \to  \} \) 
 \end{itemize}
 \end{definition}
 
@@ -961,11 +961,11 @@ Deriviamo \( \leftrightarrow \) che finora abbiamo usato semanticamente come \( 
 \begin{theorem}
     Due formule equivalenti si comportano nello stesso modo davanti alla sostituzione:
     \[
-    se\; \models \phi_1 \leftrightarrow \phi_2 = (\models (\phi_1 \to \phi_2) \wedge (\models (\phi_2 \to \phi_1))
+    se\; \models \varphi_1 \leftrightarrow \varphi_2 = (\models (\varphi_1 \to \varphi_2) \wedge (\models (\varphi_2 \to \varphi_1))
     \] 
     allora
     \[
-        \models \psi[\phi_1/p] \leftrightarrow \psi[\phi_2/p]
+        \models \psi[\varphi_1/p] \leftrightarrow \psi[\varphi_2/p]
     \].
 \end{theorem}
 \[
@@ -978,16 +978,16 @@ Deriviamo \( \leftrightarrow \) che finora abbiamo usato semanticamente come \( 
     (basta fare l'unfolding di \( \leftrightarrow \))
     Lemma che va a sancire la semantica del se e solo se
     \[
-        [|\phi \leftrightarrow \psi|]_v=1 \Leftrightarrow [|\phi|]_v=[|\psi|]_v
+        [|\varphi \leftrightarrow \psi|]_v=1 \Leftrightarrow [|\varphi|]_v=[|\psi|]_v
     \] 
     La semantica di \( \leftrightarrow \) è vera quando entrambi gli elementi sono uguali. 
     \[
-        [|\phi \to \psi|]_v=1 \& [|\psi \to \phi|]_v \Leftrightarrow
+        [|\varphi \to \psi|]_v=1 \& [|\psi \to \varphi|]_v \Leftrightarrow
     \] 
     \[
-        ([|\phi|]_v=0\; or\; [|\psi|]_v=1)\; \&\; ([|\psi|]_v=0\; or\; [|\phi|]_v=1) 
+        ([|\varphi|]_v=0\; or\; [|\psi|]_v=1)\; \&\; ([|\psi|]_v=0\; or\; [|\varphi|]_v=1) 
     \] 
-    Vero quando \( \phi \) e \( \psi \) valutano allo stesso valore.
+    Vero quando \( \varphi \) e \( \psi \) valutano allo stesso valore.
 \end{exercise}
 
 \section{Relazione di equivalenza}
@@ -1005,40 +1005,40 @@ R è detta relazione di equivalenza sse: \( (x,y) \in R \), si può scrivere anc
 \approx \; \subseteq PROP \times PROP
 \] 
 \[
-    \phi\;\approx\;\psi \stackrel{def}{\Leftrightarrow} \models \phi \leftrightarrow \psi
+    \varphi\;\approx\;\psi \stackrel{def}{\Leftrightarrow} \models \varphi \leftrightarrow \psi
 \] 
 \begin{theorem}
     Si può dimostrare che \( \approx \) è una relazione di equivalenza
     \begin{enumerate}
         \item \textbf{Riflessività}: \[
-                \forall \phi \in PROP \;\;\; \phi\; \approx \; \phi \] 
+                \forall \varphi \in PROP \;\;\; \varphi\; \approx \; \varphi \] 
             \[
-                \models \phi \leftrightarrow \phi \Leftrightarrow \forall v.\; [|(\phi \to \phi) \wedge (\phi \to \phi)|]_v = 1
+                \models \varphi \leftrightarrow \varphi \Leftrightarrow \forall v.\; [|(\varphi \to \varphi) \wedge (\varphi \to \varphi)|]_v = 1
             \]\[
-            \Leftrightarrow \forall v.\; [|\phi \to \phi|]_v = 1 \Leftrightarrow
+            \Leftrightarrow \forall v.\; [|\varphi \to \varphi|]_v = 1 \Leftrightarrow
             \]  
             \[
-                \forall v.\; ([|\phi|]_v=0\; or\; [|\phi|]_v=1)
+                \forall v.\; ([|\varphi|]_v=0\; or\; [|\varphi|]_v=1)
             \] 
        \item \textbf{Simmetria}: \[
-       \forall \phi,\psi \in  PROP\;\;\; \phi \approx \psi \Rightarrow \psi \approx \phi
+       \forall \varphi,\psi \in  PROP\;\;\; \varphi \approx \psi \Rightarrow \psi \approx \varphi
        \] 
        Presa una \( v \) generica:
        \[
-           [|\phi \leftrightarrow \psi|]_v = 1 \Leftrightarrow [|(\phi \to \psi) \wedge (\psi \to \phi|)]_v=1 \Leftrightarrow 
+           [|\varphi \leftrightarrow \psi|]_v = 1 \Leftrightarrow [|(\varphi \to \psi) \wedge (\psi \to \varphi|)]_v=1 \Leftrightarrow 
        \] 
        \[
-           [|(\phi \to  \psi)|]_v=1\; \&\; [|\psi \to \phi|]_v=1 \Leftrightarrow
+           [|(\varphi \to  \psi)|]_v=1\; \&\; [|\psi \to \varphi|]_v=1 \Leftrightarrow
        \] 
         \[
-        [|(\psi \to \phi) \wedge (\phi \to \psi)|]_v=1 \Leftrightarrow \psi\; \approx\; \phi
+        [|(\psi \to \varphi) \wedge (\varphi \to \psi)|]_v=1 \Leftrightarrow \psi\; \approx\; \varphi
         \] 
 
         \item \textbf{Transitività}: \[
-                \forall \phi,\psi,\gamma ((\phi\; \approx\; \psi\; \& \psi\; \approx\; \gamma) \to (\phi\; \approx\; \gamma)) 
+                \forall \varphi,\psi,\gamma ((\varphi\; \approx\; \psi\; \& \psi\; \approx\; \gamma) \to (\varphi\; \approx\; \gamma)) 
         \] 
         \[
-            \forall v. [|\phi \leftrightarrow \psi|]_v=1 \;\&\; [|\psi \leftrightarrow \gamma|]_v=1 \Rightarrow [|\phi \to \gamma|]_v=1
+            \forall v. [|\varphi \leftrightarrow \psi|]_v=1 \;\&\; [|\psi \leftrightarrow \gamma|]_v=1 \Rightarrow [|\varphi \to \gamma|]_v=1
         \] 
         Il risultato segue dal lemma: \( [|\alpha \leftrightarrow \beta|]_v=1 \Leftrightarrow [|\alpha|]_v=[|\beta|]_v \) 
         
@@ -1048,33 +1048,33 @@ R è detta relazione di equivalenza sse: \( (x,y) \in R \), si può scrivere anc
 
 \section{Tautologie notevoli}
 \begin{enumerate}
-    \item \( \models \neg (\phi \wedge \psi) \leftrightarrow (\neg \phi \vee \neg \psi) \) Prima legge di \textbf{De Morgan}
-    \item \( \models \neg (\phi \vee \psi) \leftrightarrow (\neg \phi \wedge \neg \psi) \) Seconda legge di \textbf{De Morgan}
-    \item \( \models \phi \leftrightarrow \neg \neg \phi \) Negazione involutiva
-    \item \( \models (\phi \wedge \psi) \leftrightarrow (\psi \wedge \phi) \)  Commutatività
-    \item \( \models (\phi \vee \psi) \leftrightarrow (\psi \vee \phi) \) Commutatività
-    \item \( \models \phi \wedge (\psi \vee \gamma) \leftrightarrow ((\phi \wedge \psi) \vee (\phi \wedge \gamma)) \) Distributività
-    \item \( \models \phi \vee (\psi \wedge \gamma) \leftrightarrow ((\phi \vee \psi) \wedge (\phi \vee \gamma)) \) Distributività
-    \item \( \models \phi \vee (\psi \vee \gamma) \leftrightarrow (\phi \vee \psi) \vee \gamma \) Associatività per AND
-    \item \( \models \phi \wedge (\psi \wedge \gamma) \leftrightarrow (\phi \wedge \psi) \wedge \gamma \) Associatività per OR
+    \item \( \models \neg (\varphi \wedge \psi) \leftrightarrow (\neg \varphi \vee \neg \psi) \) Prima legge di \textbf{De Morgan}
+    \item \( \models \neg (\varphi \vee \psi) \leftrightarrow (\neg \varphi \wedge \neg \psi) \) Seconda legge di \textbf{De Morgan}
+    \item \( \models \varphi \leftrightarrow \neg \neg \varphi \) Negazione involutiva
+    \item \( \models (\varphi \wedge \psi) \leftrightarrow (\psi \wedge \varphi) \)  Commutatività
+    \item \( \models (\varphi \vee \psi) \leftrightarrow (\psi \vee \varphi) \) Commutatività
+    \item \( \models \varphi \wedge (\psi \vee \gamma) \leftrightarrow ((\varphi \wedge \psi) \vee (\varphi \wedge \gamma)) \) Distributività
+    \item \( \models \varphi \vee (\psi \wedge \gamma) \leftrightarrow ((\varphi \vee \psi) \wedge (\varphi \vee \gamma)) \) Distributività
+    \item \( \models \varphi \vee (\psi \vee \gamma) \leftrightarrow (\varphi \vee \psi) \vee \gamma \) Associatività per AND
+    \item \( \models \varphi \wedge (\psi \wedge \gamma) \leftrightarrow (\varphi \wedge \psi) \wedge \gamma \) Associatività per OR
 \end{enumerate}
 
 \begin{exercise}
     Dimostrazione della seconda legge di De Morgan:
     \[
-    \models \neg (\phi \vee \psi) \to (\neg \phi \wedge \neg \psi)
+    \models \neg (\varphi \vee \psi) \to (\neg \varphi \wedge \neg \psi)
     \] 
     \[
-        \forall v.\; [|\neg(\phi \vee \psi) \to (\neg \phi \wedge \neg \psi)|]_v=1 \Leftrightarrow
+        \forall v.\; [|\neg(\varphi \vee \psi) \to (\neg \varphi \wedge \neg \psi)|]_v=1 \Leftrightarrow
     \] 
     \[
-        ([|\neg (\phi \vee \psi)|]_v=0\; or\; [|\neg \phi \wedge \neg \psi|]_v=1) \Leftrightarrow
+        ([|\neg (\varphi \vee \psi)|]_v=0\; or\; [|\neg \varphi \wedge \neg \psi|]_v=1) \Leftrightarrow
     \] 
     \[
-        ([|\phi \vee \psi|]_v = 1 \;or\; ([|\neg \phi]_v=1\; \&\; [|\neg \psi|]_v=1)) \Leftrightarrow
+        ([|\varphi \vee \psi|]_v = 1 \;or\; ([|\neg \varphi]_v=1\; \&\; [|\neg \psi|]_v=1)) \Leftrightarrow
     \] 
     \[
-        ([|\phi|]_v=1\;or\;[|\psi|]_v=1\;or\;( [|\phi|]_v=0\; \&\; [|\psi|]_v=0)) \Leftrightarrow
+        ([|\varphi|]_v=1\;or\;[|\psi|]_v=1\;or\;( [|\varphi|]_v=0\; \&\; [|\psi|]_v=0)) \Leftrightarrow
     \] 
     Tutti i casi \( \Rightarrow \) OK \( \square \)  
 \end{exercise}
@@ -1082,22 +1082,22 @@ R è detta relazione di equivalenza sse: \( (x,y) \in R \), si può scrivere anc
 \begin{figure}[H]
     \begin{exercise}
         \[
-            \models \neg (\phi \vee \psi) \leftrightarrow (\neg \phi \wedge \neg \psi)
+            \models \neg (\varphi \vee \psi) \leftrightarrow (\neg \varphi \wedge \neg \psi)
         \] 
         \[
-            \forall v.\; [|\neg (\phi \vee \psi)|]_v=1 \Leftrightarrow
+            \forall v.\; [|\neg (\varphi \vee \psi)|]_v=1 \Leftrightarrow
         \] 
         \[
-            [|(\phi \vee \psi)|]_v=0 \Leftrightarrow
+            [|(\varphi \vee \psi)|]_v=0 \Leftrightarrow
         \] 
         \[
-            [|\phi|]_v=0\; \&\; [|\psi|]_v=0 \Leftrightarrow
+            [|\varphi|]_v=0\; \&\; [|\psi|]_v=0 \Leftrightarrow
         \] 
         \[
-            [|\neg \phi|]_v=1 \; \&\; [|\neg \psi|]_v=1 \Leftrightarrow
+            [|\neg \varphi|]_v=1 \; \&\; [|\neg \psi|]_v=1 \Leftrightarrow
         \] 
         \[
-            [|(\neg \phi \wedge \neg \psi)|]_v=1
+            [|(\neg \varphi \wedge \neg \psi)|]_v=1
         \] 
     \end{exercise}
 \end{figure}
@@ -1477,23 +1477,23 @@ La struttura di una derivazione è la seguente:
 \begin{figure}[H]
     \begin{exercise}[a casa]
         \[
-            \vdash (\phi \to \psi) \to \neg (\phi \wedge \neg \psi)
+            \vdash (\varphi \to \psi) \to \neg (\varphi \wedge \neg \psi)
         \] 
         \[
-            (\phi \to \psi) \to ((\phi \wedge (\psi \to \bot)) \to \bot)
+            (\varphi \to \psi) \to ((\varphi \wedge (\psi \to \bot)) \to \bot)
         \] 
         \begin{center}
-            \hspace{-8cm}\( [(\phi \wedge (\psi \to \bot))]^2 \) \\
+            \hspace{-8cm}\( [(\varphi \wedge (\psi \to \bot))]^2 \) \\
             \hspace{-7cm}\line(1,0){80}\(\;\;\; \wedge E_1 \) \hspace{4cm}\\
-            \hspace{1cm}\( \phi \hspace{2.6cm}[(\phi \to \psi)]^1 \hspace{1cm} \hspace{1cm} [(\phi \wedge (\psi \to \bot))]^2\) \\
+            \hspace{1cm}\( \varphi \hspace{2.6cm}[(\varphi \to \psi)]^1 \hspace{1cm} \hspace{1cm} [(\varphi \wedge (\psi \to \bot))]^2\) \\
             \hspace{0.7cm}\line(1,0){150}\(\;\;\; \to E \) \hspace{0.8cm}\line(1,0){70}\(\;\;\; \wedge E_2 \)\\
             \hspace{2cm}\( \psi \hspace{5cm} \psi \to \bot\)\\ 
             \hspace{1cm}\line(1,0){250}\(\;\;\; \to E\)\\
             \( \bot \) \\
             \hspace{1cm}\line(1,0){100}\(\;\;\; \to I^2 \)\\
-            \( ((\phi \wedge (\psi \to \bot)) \to \bot) \) \\
+            \( ((\varphi \wedge (\psi \to \bot)) \to \bot) \) \\
             \hspace{1cm}\line(1,0){160}\(\;\;\; \to I^1 \)\\
-            \( (\phi \to \psi) \to ((\phi \wedge (\psi \to \bot)) \to \bot) \)
+            \( (\varphi \to \psi) \to ((\varphi \wedge (\psi \to \bot)) \to \bot) \)
         \end{center}
     \end{exercise}
 \end{figure}
@@ -1817,7 +1817,7 @@ non è vero. Perchè:
 \subsection{Prove indirette}
 \( p \) è un simbolo proposizionale:
 \[
-    \vdash \alpha \leftrightarrow \beta \Rightarrow \phi[\alpha/p] \leftrightarrow \phi[\beta/p]
+    \vdash \alpha \leftrightarrow \beta \Rightarrow \varphi[\alpha/p] \leftrightarrow \varphi[\beta/p]
 \] 
 Dati i successivi 2 teoremi \textbf{già dimostrati}:
 \[
@@ -1837,10 +1837,10 @@ Consideriamo le leggi di de Morgan:
 \end{enumerate}
 Proviamo a dimostrare indirettamente la seconda legge di de Morgan usando altri teoremi:
 \begin{enumerate}
-    \item[a.] \( \vdash \phi \leftrightarrow \psi \Rightarrow \sigma[\phi/p] \leftrightarrow \sigma[\psi/p] \) 
-    \item[b.] (Ragionamento per contrapposizione) \( \vdash \phi \to \psi \Leftrightarrow \neg \psi \to \neg \phi\) 
-    \item[c.] \( \phi \to \psi\; \& \; \vdash \psi \to \gamma \Rightarrow \phi \to \gamma \)
-    \item[d.] \( \vdash \phi \leftrightarrow \neg \neg \phi \) 
+    \item[a.] \( \vdash \varphi \leftrightarrow \psi \Rightarrow \sigma[\varphi/p] \leftrightarrow \sigma[\psi/p] \) 
+    \item[b.] (Ragionamento per contrapposizione) \( \vdash \varphi \to \psi \Leftrightarrow \neg \psi \to \neg \varphi\) 
+    \item[c.] \( \varphi \to \psi\; \& \; \vdash \psi \to \gamma \Rightarrow \varphi \to \gamma \)
+    \item[d.] \( \vdash \varphi \leftrightarrow \neg \neg \varphi \) 
 \end{enumerate}
 \begin{example}
    \[
@@ -1858,57 +1858,57 @@ Proviamo a dimostrare indirettamente la seconda legge di de Morgan usando altri 
 \] 
 Istanzio le formule per togliere le negazioni:
 \[
-\alpha = \neg \phi
+\alpha = \neg \varphi
 \] 
 \[
 \beta = \neg \psi
 \] 
 E la formula diventa:
 \[
-    \vdash (\neg \phi \wedge \neg \psi) \leftrightarrow \neg(\neg \neg \phi \vee \neg \neg \psi) \stackrel{a}{\Leftrightarrow}
+    \vdash (\neg \varphi \wedge \neg \psi) \leftrightarrow \neg(\neg \neg \varphi \vee \neg \neg \psi) \stackrel{a}{\Leftrightarrow}
 \] 
 \[
-\vdash (\neg \phi \wedge \neg \psi) \leftrightarrow \neg(\phi \vee \psi)\;\;\;\;\; \square
+\vdash (\neg \varphi \wedge \neg \psi) \leftrightarrow \neg(\varphi \vee \psi)\;\;\;\;\; \square
 \] 
 \end{example}
 
 \section{Definizione rigorosa di derivazione}
 L'insieme delle \textbf{derivazioni} è il più piccolo insieme \( x \) tc:
 \begin{enumerate}
-    \item \( \phi \in X \) (\( \phi \) è una formula)
-    \item se \( \underset{\phi_1}{D_1}\; \underset{\phi_2}{D_2} \in X \Rightarrow \)
+    \item \( \varphi \in X \) (\( \varphi \) è una formula)
+    \item se \( \underset{\varphi_1}{D_1}\; \underset{\varphi_2}{D_2} \in X \Rightarrow \)
         \begin{center}
              \(
-            \underset{\phi_1}{D_1}\;\;\;\; \underset{\phi_2}{D_2}
+            \underset{\varphi_1}{D_1}\;\;\;\; \underset{\varphi_2}{D_2}
             \)\\
             \hspace{1.8cm}\line(1,0){50}\(\;\;\; \wedge I\;\;\;\; \in X\)\\  
-             \( \phi_1 \wedge \phi_2 \)
+             \( \varphi_1 \wedge \varphi_2 \)
         \end{center}
-    \item se \( \underset{\phi_1 \wedge \phi_2}{D} \in X  \Rightarrow\)
+    \item se \( \underset{\varphi_1 \wedge \varphi_2}{D} \in X  \Rightarrow\)
         \begin{center}
              \(
-            \underset{\phi_1 \wedge \phi_2}{D}
+            \underset{\varphi_1 \wedge \varphi_2}{D}
             \)\\
             \hspace{3.8cm}\line(1,0){40}\(\;\;\; \wedge E_i\;\;\;\; \in X\;\;\;\; (i = 1,2)\)\\  
-             \( \phi_i \)
+             \( \varphi_i \)
         \end{center}
 
-    \item \( \underset{\phi_1}{D_1}, \underset{\phi_1 \to \phi_2}{D_2} \in X \Rightarrow \)
+    \item \( \underset{\varphi_1}{D_1}, \underset{\varphi_1 \to \varphi_2}{D_2} \in X \Rightarrow \)
         \begin{center}
              \(
-            \underset{\phi_1}{D_1}\;\;\;\; \underset{\phi_1 \to \phi_2}{D_2}
+            \underset{\varphi_1}{D_1}\;\;\;\; \underset{\varphi_1 \to \varphi_2}{D_2}
             \)\\
             \hspace{2.1cm}\line(1,0){50}\(\;\;\; \to E\;\;\;\; \in X\)\\  
-             \( \phi_2 \)
+             \( \varphi_2 \)
         \end{center}
 
-    \item \( \underset{\psi}{\stackrel{\phi}{D}}\;\; \in X \Rightarrow \)
+    \item \( \underset{\psi}{\stackrel{\varphi}{D}}\;\; \in X \Rightarrow \)
         \begin{center}
              \(
-             \underset{\psi}{\stackrel{[\phi]^*}{D}}
+             \underset{\psi}{\stackrel{[\varphi]^*}{D}}
             \)\\
             \hspace{2.3cm}\line(1,0){40}\(\;\;\; \to I^*\;\;\;\; \in X\)\\  
-             \( \phi \to \psi \)
+             \( \varphi \to \psi \)
         \end{center}
 
     \item \( \underset{\bot}{D} \in X \Rightarrow \)
@@ -1917,31 +1917,31 @@ L'insieme delle \textbf{derivazioni} è il più piccolo insieme \( x \) tc:
             \underset{\bot}{D}
             \)\\
             \hspace{2.2cm}\line(1,0){20}\(\;\;\; \bot_i\;\;\;\; \in X\;\;\;\;\)\\  
-             \( \phi \)
+             \( \varphi \)
         \end{center}
 
-    \item \( \underset{\bot}{\stackrel{\neg \phi}{D}}\; \in X \Rightarrow \)
+    \item \( \underset{\bot}{\stackrel{\neg \varphi}{D}}\; \in X \Rightarrow \)
         \begin{center}
              \(
-             \underset{\bot}{\stackrel{[\neg \phi]^*}{D}}
+             \underset{\bot}{\stackrel{[\neg \varphi]^*}{D}}
             \)\\
             \hspace{2.8cm}\line(1,0){20}\(\;\;\; RAA^*\;\;\;\; \in X\;\;\;\;\)\\  
-             \( \phi \)
+             \( \varphi \)
         \end{center}
 
-    \item \( \underset{\phi_i}{D}\; \in X \Rightarrow \)
+    \item \( \underset{\varphi_i}{D}\; \in X \Rightarrow \)
         \begin{center}
              \(
-             \underset{\phi_i}{D}
+             \underset{\varphi_i}{D}
             \)\\
             \hspace{3.6cm}\line(1,0){40}\(\;\;\; \vee I_i\;\;\;\; \in X\;\;\;\;(i = 1,2)\)\\  
-             \( \phi_1 \vee \phi_2 \)
+             \( \varphi_1 \vee \varphi_2 \)
         \end{center}
 
-    \item \( \underset{\phi \vee \phi}{D}, \underset{\gamma}{\stackrel{\phi}{D_1}}, \underset{\gamma}{\stackrel{\psi}{D_2}}\;\in X \Rightarrow \)
+    \item \( \underset{\varphi \vee \varphi}{D}, \underset{\gamma}{\stackrel{\varphi}{D_1}}, \underset{\gamma}{\stackrel{\psi}{D_2}}\;\in X \Rightarrow \)
         \begin{center}
              \(
-             \underset{\phi \vee \phi}{D}\;\;\; \underset{\gamma}{\stackrel{[\phi]}{D_1}}\;\;\; \underset{\gamma}{\stackrel{[\psi]}{D_2}}
+             \underset{\varphi \vee \varphi}{D}\;\;\; \underset{\gamma}{\stackrel{[\varphi]}{D_1}}\;\;\; \underset{\gamma}{\stackrel{[\psi]}{D_2}}
             \)\\
             \hspace{2cm}\line(1,0){70}\(\;\;\; \vee E\;\;\;\; \in X\)\\  
              \( \gamma \)
@@ -1953,7 +1953,7 @@ L'insieme delle \textbf{derivazioni} è il più piccolo insieme \( x \) tc:
 \section{Definizione di altezza di una derivazione \( h[D] \) }
     \begin{flalign*}
         \bullet\qquad & 
-        h[\phi] = 0 
+        h[\varphi] = 0 
         &
     \end{flalign*}
 
@@ -1989,13 +1989,13 @@ L'insieme delle \textbf{derivazioni} è il più piccolo insieme \( x \) tc:
 
         \begin{flalign*}
         \bullet\qquad &
-        h\left[ \frac{\underset{\bot}{\stackrel{[\neg \phi]}{D}}}{\phi} \right] = h\left[ \underset{\bot}{\stackrel{\neg \phi}{D}} \right] +1
+        h\left[ \frac{\underset{\bot}{\stackrel{[\neg \varphi]}{D}}}{\varphi} \right] = h\left[ \underset{\bot}{\stackrel{\neg \varphi}{D}} \right] +1
         &
     \end{flalign*}
 
         \begin{flalign*}
         \bullet\qquad &
-        h\left[ \frac{\underset{\phi_i}{D}}{\phi_1 \vee \phi_2} \right]_{i=1,2} = h\left[ \underset{\phi_i}{D} \right] +1
+        h\left[ \frac{\underset{\varphi_i}{D}}{\varphi_1 \vee \varphi_2} \right]_{i=1,2} = h\left[ \underset{\varphi_i}{D} \right] +1
         &
     \end{flalign*}
 
@@ -2027,12 +2027,12 @@ sono in grado di assumere (\textbf{per ipotesi induttiva}) la proprietà su \( \
 
 \section{Teorema di semantica}
     \begin{enumerate}
-        \item \( \Gamma,\psi \models \phi\;\; \Rightarrow\;\; \Gamma \models \psi \to \phi \) (Introduzione dell'implica)
-        \item \( \Gamma \models \phi \to \psi \;\&\; \Delta \models \phi \;\;\Rightarrow\;\; \Gamma,\Delta \models \psi \) (Modus ponens)
-        \item \( \Gamma \models \phi \;\&\; \Delta \models \psi \;\;\Rightarrow\;\; \Gamma,\Delta \models \phi \wedge \psi \) (Introduzione dell AND)
-        \item \( \Gamma \models \phi_1 \wedge \phi_2 \;\;\Rightarrow\;\; \Gamma \models \phi_i \;\;\;\; i \in \{1,2\}  \) (Eliminazione dell'AND)
-        \item \( \Gamma \models \bot \;\;\Rightarrow\;\; \Gamma \models \phi \;\;\;\; \forall \phi \) (Ex falso)
-        \item \( \Gamma, \neg \phi \models \bot \;\;\Rightarrow\;\; \Gamma \models \phi \) (Riduzione ad assurdo)
+        \item \( \Gamma,\psi \models \varphi\;\; \Rightarrow\;\; \Gamma \models \psi \to \varphi \) (Introduzione dell'implica)
+        \item \( \Gamma \models \varphi \to \psi \;\&\; \Delta \models \varphi \;\;\Rightarrow\;\; \Gamma,\Delta \models \psi \) (Modus ponens)
+        \item \( \Gamma \models \varphi \;\&\; \Delta \models \psi \;\;\Rightarrow\;\; \Gamma,\Delta \models \varphi \wedge \psi \) (Introduzione dell AND)
+        \item \( \Gamma \models \varphi_1 \wedge \varphi_2 \;\;\Rightarrow\;\; \Gamma \models \varphi_i \;\;\;\; i \in \{1,2\}  \) (Eliminazione dell'AND)
+        \item \( \Gamma \models \bot \;\;\Rightarrow\;\; \Gamma \models \varphi \;\;\;\; \forall \varphi \) (Ex falso)
+        \item \( \Gamma, \neg \varphi \models \bot \;\;\Rightarrow\;\; \Gamma \models \varphi \) (Riduzione ad assurdo)
     \end{enumerate}
     L'OR è superfluo perchè si può definire in termini dei seguenti connettivi:
     \[
@@ -2049,7 +2049,7 @@ sono in grado di assumere (\textbf{per ipotesi induttiva}) la proprietà su \( \
 \subsubsection{Lemma 1}
 Questo lemma lega la nozione di derivazione a quella di conseguenza logica:
 \[
-    \underset{\phi}{D} \Rightarrow hp(D) \models \phi
+    \underset{\varphi}{D} \Rightarrow hp(D) \models \varphi
 \] 
 Utilizziamo:
 \begin{itemize}
@@ -2058,12 +2058,12 @@ Utilizziamo:
 \end{itemize}
 Tecnica: induzione su \( h(D) \) e per casi sull'ultima regola
 \begin{enumerate}
-    \item \textbf{Base} \( h[D]=0 \;\;\;D = \phi \;\;\; hp(D) =\phi \;\; hp(D)=\phi \models \phi \) 
+    \item \textbf{Base} \( h[D]=0 \;\;\;D = \varphi \;\;\; hp(D) =\varphi \;\; hp(D)=\varphi \models \varphi \) 
     \item \textbf{Passo induttivo}
         \begin{enumerate}
             \item [Caso 1.]
             \[
-                D = \frac{\stackrel{[\phi]}{\underset{\psi}{D_1}}}{\phi \to \psi} \to I \;\;\;
+                D = \frac{\stackrel{[\varphi]}{\underset{\psi}{D_1}}}{\varphi \to \psi} \to I \;\;\;
                 \;\;\;\;\;\;\; h[D_1] < h[D]
             \]
             per ipotesi induttiva \( hp(D_1) \models \psi \), cioè:
@@ -2071,40 +2071,40 @@ Tecnica: induzione su \( h(D) \) e per casi sull'ultima regola
                 \underset{\psi}{D_1} \Rightarrow hp(D_1) \models \psi
             \] 
             \begin{enumerate}
-                \item \[ \phi \in  hp(D_1), hp(D_1) = \Delta \cup \{\phi\}  \] 
+                \item \[ \varphi \in  hp(D_1), hp(D_1) = \Delta \cup \{\varphi\}  \] 
                     \[
-                        (ipotesi\;induttiva)\; \Delta \cup \{\phi\} \models \psi \stackrel{1}{\Rightarrow} \Delta \models \phi \to \psi 
+                        (ipotesi\;induttiva)\; \Delta \cup \{\varphi\} \models \psi \stackrel{1}{\Rightarrow} \Delta \models \varphi \to \psi 
                     \] 
                     \[
-                    \Delta = hp(D_1) - \{\phi\} = hp(D)
+                    \Delta = hp(D_1) - \{\varphi\} = hp(D)
                     \] 
                     \[
-                        \underset{\Delta}{hp(D)} \models \phi \to \psi\;\;\; \square
+                        \underset{\Delta}{hp(D)} \models \varphi \to \psi\;\;\; \square
                     \] 
                 \item  \[
-                \phi \not\in hp(D_1)
+                \varphi \not\in hp(D_1)
                 \]  
                 \[
                     (ipotesi\;induttiva)\; hp(D_1) \models \psi
                 \] 
-                Aggiungo \( \phi \) per weakening:
+                Aggiungo \( \varphi \) per weakening:
                 \[
-                    hp(D_1),\phi \models \psi \stackrel{1}{\Rightarrow}
+                    hp(D_1),\varphi \models \psi \stackrel{1}{\Rightarrow}
                 \] 
                 \[ 
-                hp(D_1) \models \phi \to \psi
+                hp(D_1) \models \varphi \to \psi
                 \] 
                 \[
-                hp(D) \models \phi \to \psi
+                hp(D) \models \varphi \to \psi
                 \] 
             \end{enumerate}
             \item [Caso 2.]
                 \[
-                    D= \frac{\underset{\phi}{D_1}\;\; \underset{\phi \to \psi}{D_2}}{\psi} \to E
+                    D= \frac{\underset{\varphi}{D_1}\;\; \underset{\varphi \to \psi}{D_2}}{\psi} \to E
                 \] 
                 Per ipotesi induttiva:
                 \[
-                hp(D_1) \models \phi\;\;\;\;\; hp(D_2) \models \phi \to \psi \stackrel{2}{\Rightarrow}
+                hp(D_1) \models \varphi\;\;\;\;\; hp(D_2) \models \varphi \to \psi \stackrel{2}{\Rightarrow}
                 \] 
                 \[
                 hp(D_1) \cup hp(D_2) \models \psi
@@ -2114,31 +2114,31 @@ Tecnica: induzione su \( h(D) \) e per casi sull'ultima regola
                 \] 
               \item [Caso 3.] 
                 \[
-                  D=\frac{\underset{\phi}{D_1}\;\;\;\underset{\psi}{D_2}}{\phi \wedge \psi} \wedge I
+                  D=\frac{\underset{\varphi}{D_1}\;\;\;\underset{\psi}{D_2}}{\varphi \wedge \psi} \wedge I
                 \] 
                 Per ipotesi induttiva:
                 \[
-                hp(D_1) \models \phi\;\;\;\;\; hp(D_2) \models \psi \stackrel{3}{\Rightarrow}
+                hp(D_1) \models \varphi\;\;\;\;\; hp(D_2) \models \psi \stackrel{3}{\Rightarrow}
                 \] 
                 \[
-                hp(D_1) \cup hp(D_2) \models \phi \wedge \psi
+                hp(D_1) \cup hp(D_2) \models \varphi \wedge \psi
                 \] 
                 \[
-                hp(D) \models \phi \wedge \psi
+                hp(D) \models \varphi \wedge \psi
                 \] 
               \item [Caso 4.] 
                 \[
-                  D=\frac{\underset{\phi_1 \wedge \phi_2}{D_1}}{\phi_i}_{i=1,2} \wedge E_i
+                  D=\frac{\underset{\varphi_1 \wedge \varphi_2}{D_1}}{\varphi_i}_{i=1,2} \wedge E_i
                 \] 
                 Per ipotesi induttiva:
                 \[
-                hp(D_1) \models \phi_1 \wedge \phi_2 \stackrel{4}{\Rightarrow}
+                hp(D_1) \models \varphi_1 \wedge \varphi_2 \stackrel{4}{\Rightarrow}
                 \]  
                 \[
-                hp(D_1) \models \phi_i
+                hp(D_1) \models \varphi_i
                 \] 
                 \[
-                hp(D) \models \phi_i
+                hp(D) \models \varphi_i
                 \] 
               \item [Caso 5.]
                 \[
@@ -2156,41 +2156,41 @@ Tecnica: induzione su \( h(D) \) e per casi sull'ultima regola
                 \] 
               \item [Caso 6.]
                 \[
-                  D= \frac{\underset{\bot}{\stackrel{[\neg \phi]}{D_1}}}{\phi} RAA
+                  D= \frac{\underset{\bot}{\stackrel{[\neg \varphi]}{D_1}}}{\varphi} RAA
                 \] 
                 Per ipotesi induttiva:
                 \[
                 hp(D_1) \models \bot
                 \] 
                 \[
-                  (hp(D_1)-\{\neg \phi\}) \cup \{\neg \phi\} \models \bot \stackrel{6}{\Rightarrow}
+                  (hp(D_1)-\{\neg \varphi\}) \cup \{\neg \varphi\} \models \bot \stackrel{6}{\Rightarrow}
                 \] 
                 \[
-                hp(D_1) - \{\neg \phi\} \models \phi 
+                hp(D_1) - \{\neg \varphi\} \models \varphi 
                 \] 
                 \[
-                hp(D) \models \phi
+                hp(D) \models \varphi
                 \] 
         \end{enumerate}
 \end{enumerate}
 
 \begin{itemize}
-  \item \textbf{Lemma1} \( \underset{\phi}{D} \Rightarrow hp(D) \models \phi \)
-  \item \textbf{Lemma2} \( E \subseteq \Gamma\;\;\; E \models \phi \Rightarrow \Gamma \models \phi \)
+  \item \textbf{Lemma1} \( \underset{\varphi}{D} \Rightarrow hp(D) \models \varphi \)
+  \item \textbf{Lemma2} \( E \subseteq \Gamma\;\;\; E \models \varphi \Rightarrow \Gamma \models \varphi \)
 \end{itemize}
 
 \begin{theorem} [Soundness]
   \[
-  \Gamma \vdash \phi \Rightarrow \Gamma \models \phi
+  \Gamma \vdash \varphi \Rightarrow \Gamma \models \varphi
   \] 
 \end{theorem}
 Dimostrazione:\\
-se \( \Gamma \vdash \phi \stackrel{def}{\Leftrightarrow} \exists \underset{\phi}{D} \) e \( hp(D) \subseteq \Gamma \)  
+se \( \Gamma \vdash \varphi \stackrel{def}{\Leftrightarrow} \exists \underset{\varphi}{D} \) e \( hp(D) \subseteq \Gamma \)  
 \[
-  \Rightarrow Lemma1\;\;\; hp(D) \models \phi
+  \Rightarrow Lemma1\;\;\; hp(D) \models \varphi
 \] 
 \[
-\Rightarrow Lemma2\;\;\; \Gamma \models \phi
+\Rightarrow Lemma2\;\;\; \Gamma \models \varphi
 \] 
 Per la dimostrazione:
 \[
@@ -2223,25 +2223,25 @@ Prendiamo in considerazione \(<A, \subseteq> p.o\;\;\;\;\; A \subseteq P(PROP) \
 Sono equivalenti:
 \begin{enumerate}
   \item \( \Gamma \vdash \bot \) 
-  \item \( \forall \phi \; \Gamma \vdash \phi \) 
-  \item \( \exists \; \phi\;\;\; \Gamma \vdash \phi\;\; \&\;\; \Gamma \vdash \neg \phi \) 
+  \item \( \forall \varphi \; \Gamma \vdash \varphi \) 
+  \item \( \exists \; \varphi\;\;\; \Gamma \vdash \varphi\;\; \&\;\; \Gamma \vdash \neg \varphi \) 
 \end{enumerate}
 \( 1. \Rightarrow 2. \Rightarrow 3. \Rightarrow 1. \)\\
 \textbf{Prova (1)}\\
 1. allora \( \exists\;\; \underset{\bot}{D} \;\;\;\; hp(D) \subseteq \Gamma \) 
 \[
-  \frac{\underset{\bot}{D}}{\phi}\bot_i \Rightarrow \Gamma \vdash \phi \;\;\;\; \square
+  \frac{\underset{\bot}{D}}{\varphi}\bot_i \Rightarrow \Gamma \vdash \varphi \;\;\;\; \square
 \] 
 \( 2. \Rightarrow 3.\;\;\; \surd \)\\
 \( 3. \Rightarrow 1. \):
 \[
-  \Gamma \vdash \phi\;\;\; \exists \;\;\; \underset{\phi}{D_1} \;\;\; hp(D_1) \subseteq \Gamma
+  \Gamma \vdash \varphi\;\;\; \exists \;\;\; \underset{\varphi}{D_1} \;\;\; hp(D_1) \subseteq \Gamma
 \] 
 \[
-  \Gamma \vdash \neg \phi \;\; \exists  \;\; \underset{\neg \phi}{D_2} \;\;\; hp(D_2) \subseteq \Gamma
+  \Gamma \vdash \neg \varphi \;\; \exists  \;\; \underset{\neg \varphi}{D_2} \;\;\; hp(D_2) \subseteq \Gamma
 \] 
 \[
-  \frac{\underset{\phi}{D_1}\;\;\;\underset{\neg \phi}{D_2}}{\bot} \to E \Rightarrow \Gamma \vdash \bot \;\;\; (1)\; \square
+  \frac{\underset{\varphi}{D_1}\;\;\;\underset{\neg \varphi}{D_2}}{\bot} \to E \Rightarrow \Gamma \vdash \bot \;\;\; (1)\; \square
 \] 
 \subsubsection{Proposizione 1}
 Se sono un insieme inconsistente, allora non rtovo mai una valutazione che renda vera tutte le formule (sono insoddisfacibile)
@@ -2293,7 +2293,7 @@ Se \( \Gamma \not\vdash \bot \) allora \( \exists \; \Delta \) massimale consist
 \textbf{Parte 1}:\\
 Fissiamo un'enumerazione di tutte le formule:
 \[
-\phi_0, \phi_1, \phi_2, \ldots, \phi_k, \ldots
+\varphi_0, \varphi_1, \varphi_2, \ldots, \varphi_k, \ldots
 \] 
 Ora definiamo la successione \( (\Gamma_i)_{i \in \mathbb{N}} \) di insiemi consistenti di formule:
 \[
@@ -2301,7 +2301,7 @@ Ora definiamo la successione \( (\Gamma_i)_{i \in \mathbb{N}} \) di insiemi cons
 \] 
 \[
   \Gamma_{i+1} = \begin{cases}
-    \Gamma_i + \{\phi_i\}\;\;se\;\; \Gamma_i,\phi_i \not\vdash \bot \\
+    \Gamma_i + \{\varphi_i\}\;\;se\;\; \Gamma_i,\varphi_i \not\vdash \bot \\
     \Gamma_i\;\;\;\;\; \text{altrimenti}
   \end{cases}
 \]  
@@ -2318,7 +2318,7 @@ Vale che:
             \[
               \Gamma_{i+1} \not\vdash \bot
             \] 
-        \item[b)] \( \Gamma_{i+1} = \Gamma_i \cup \{\phi_i\} \not\vdash \bot \) per costruzione
+        \item[b)] \( \Gamma_{i+1} = \Gamma_i \cup \{\varphi_i\} \not\vdash \bot \) per costruzione
         \end{enumerate}
     \end{itemize}
 \end{enumerate}
@@ -2339,7 +2339,7 @@ nel seguente modo:
       \underbrace{hp(D)}_{finite} = \{\psi_1, \ldots, \psi_n\} \subseteq \Gamma^* 
     \] 
     \[
-      \forall j \in [1 \ldots n]\;\;\;\;\;\phi_j \in {\Gamma_i}_j \text{(un insieme nella successione)}
+      \forall j \in [1 \ldots n]\;\;\;\;\;\varphi_j \in {\Gamma_i}_j \text{(un insieme nella successione)}
     \] 
     \[
       \psi_1 \in  \Gamma_{i1} \ldots \psi_n \in \Gamma_{in}
@@ -2361,17 +2361,17 @@ nel seguente modo:
     \] 
     quindi avremo almeno una \( \psi \in \Delta \setminus \Gamma^* \).
 
-    \underline{Per l'enumerazione} \( \exists,\;k \;\;tc\;\; \psi = \phi_k \) per costruzione
+    \underline{Per l'enumerazione} \( \exists,\;k \;\;tc\;\; \psi = \varphi_k \) per costruzione
     della successione
     \[
-      \phi_k \in \Gamma_{k+1} \;\;\;\; (\Gamma_k, \phi_k \vdash \bot \;\;\; \text{altrimenti})
+      \varphi_k \in \Gamma_{k+1} \;\;\;\; (\Gamma_k, \varphi_k \vdash \bot \;\;\; \text{altrimenti})
     \] 
-    e dato che \( \Gamma_k \cup \{\phi_k\} \subseteq \Delta\) avremmo:
+    e dato che \( \Gamma_k \cup \{\varphi_k\} \subseteq \Delta\) avremmo:
     \[
     \Delta \vdash \bot\;\;\;\;\; \text{impossibile}
     \] 
     \[
-    \phi_k \in \Gamma^*
+    \varphi_k \in \Gamma^*
     \] 
 \end{enumerate}
 \begin{itemize}
@@ -2395,18 +2395,18 @@ Supponiamo per assurdo che \( \alpha \notin \Gamma \) allora:
 \] 
 \subsubsection{Teorema 3}
 \[
-  \Gamma\;MC\; \text{allora}\; \forall \phi\;.\; \underbrace{\phi \in \Gamma = \neg \phi \in \Gamma}_{A \to B\;\;OR\;\; \neg A \vee B}
+  \Gamma\;MC\; \text{allora}\; \forall \varphi\;.\; \underbrace{\varphi \in \Gamma = \neg \varphi \in \Gamma}_{A \to B\;\;OR\;\; \neg A \vee B}
 \]  
 dimostrazione equivalente:
 \[
-\phi \notin \Gamma \Rightarrow \neg \phi \in \Gamma
+\varphi \notin \Gamma \Rightarrow \neg \varphi \in \Gamma
 \] 
 \textbf{Prova:}
 \[
-\text{se}\;\; \phi \notin \Gamma \Rightarrow \Gamma, \phi \vdash \bot \Rightarrow
+\text{se}\;\; \varphi \notin \Gamma \Rightarrow \Gamma, \varphi \vdash \bot \Rightarrow
 \] 
 \[
-  \Gamma \vdash \neg \phi\; \stackrel{TH2}{\Leftrightarrow}\; \neg \phi \in \Gamma
+  \Gamma \vdash \neg \varphi\; \stackrel{TH2}{\Leftrightarrow}\; \neg \varphi \in \Gamma
 \] 
 
 \subsubsection{Teorema 4}
@@ -2414,22 +2414,22 @@ dimostrazione equivalente:
 \text{se}\;\Gamma\;\;MC
 \] 
 \begin{itemize}
-  \item \( \phi \wedge \psi \in \Gamma\; \Leftrightarrow\; (\phi \in \Gamma\;\&\; \psi \in\Gamma)\) 
-  \item \( \phi \to \psi \in \Gamma\; \Leftrightarrow\; (\phi \in  \Gamma \;\Rightarrow\; \psi \in \Gamma) \) 
+  \item \( \varphi \wedge \psi \in \Gamma\; \Leftrightarrow\; (\varphi \in \Gamma\;\&\; \psi \in\Gamma)\) 
+  \item \( \varphi \to \psi \in \Gamma\; \Leftrightarrow\; (\varphi \in  \Gamma \;\Rightarrow\; \psi \in \Gamma) \) 
 \end{itemize}
 \begin{itemize}
   \item 
     \textbf{Prova a:}
     \[
-      \phi \wedge \psi \in \Gamma \; \stackrel{TH2}{\Leftrightarrow}\; \Gamma \vdash \phi \wedge \psi\;\;sse 
+      \varphi \wedge \psi \in \Gamma \; \stackrel{TH2}{\Leftrightarrow}\; \Gamma \vdash \varphi \wedge \psi\;\;sse 
     \] 
-    per regole di deduzione naturale: \( \Gamma \vdash \phi \;\&\; \Gamma \vdash \psi\;\;\; per:\; \frac{\underset{\phi}{\ldots}\;\;\underset{\psi}{\ldots}}{\phi \wedge \psi} \) 
+    per regole di deduzione naturale: \( \Gamma \vdash \varphi \;\&\; \Gamma \vdash \psi\;\;\; per:\; \frac{\underset{\varphi}{\ldots}\;\;\underset{\psi}{\ldots}}{\varphi \wedge \psi} \) 
     \[
-      \stackrel{TH2}{\Leftrightarrow} \phi \in \Gamma\;\&\; \psi \in \Gamma
+      \stackrel{TH2}{\Leftrightarrow} \varphi \in \Gamma\;\&\; \psi \in \Gamma
     \] 
   \item \textbf{Prova b:}
     \[
-      \underbrace{\phi \to \psi \in \Gamma}_{A} \Leftrightarrow (\underbrace{\phi \in  \Gamma}_{B} \Rightarrow \underbrace{\psi \in \Gamma}_{C})
+      \underbrace{\varphi \to \psi \in \Gamma}_{A} \Leftrightarrow (\underbrace{\varphi \in  \Gamma}_{B} \Rightarrow \underbrace{\psi \in \Gamma}_{C})
     \] 
     \begin{enumerate}
       \item [\( \Rightarrow\)] 
@@ -2437,8 +2437,8 @@ dimostrazione equivalente:
           (\Rightarrow)\;\;\;\;        A \Rightarrow B \Rightarrow C
         \] 
         \begin{itemize}
-          \item \textbf{A} \( \;\;\; \phi \to  \psi \in \Gamma\; \stackrel{TH2}{\Rightarrow} \Gamma \vdash \phi \to \psi \) per \( \to E \) 
-          \item \textbf{B} \( \;\;\;\phi \in \Gamma\; \stackrel{TH2}{\Rightarrow} \Gamma \vdash \phi \) per \( \to E \) 
+          \item \textbf{A} \( \;\;\; \varphi \to  \psi \in \Gamma\; \stackrel{TH2}{\Rightarrow} \Gamma \vdash \varphi \to \psi \) per \( \to E \) 
+          \item \textbf{B} \( \;\;\;\varphi \in \Gamma\; \stackrel{TH2}{\Rightarrow} \Gamma \vdash \varphi \) per \( \to E \) 
         \end{itemize}
         \[
           \Gamma \vdash \psi \stackrel{TH2}{\Leftrightarrow} \psi \in \Gamma (\text{\textbf{C}})
@@ -2448,27 +2448,27 @@ dimostrazione equivalente:
           (\Leftarrow)\;\;\;\; (B \Rightarrow C) \Rightarrow A
         \] 
         \begin{enumerate}
-          \item [Caso 1] \( \phi \in \Gamma \) 
+          \item [Caso 1] \( \varphi \in \Gamma \) 
                     \[
           \psi \in \Gamma \stackrel{TH2}{\Leftrightarrow} \Gamma \vdash \psi
         \] 
         Per costruzione di \( \Gamma \) 
         \[
-          \Gamma,\phi \vdash \psi \Rightarrow \Gamma \vdash \phi \Rightarrow \psi \stackrel{TH2}{\Leftrightarrow} \phi \to \psi \in \Gamma
+          \Gamma,\varphi \vdash \psi \Rightarrow \Gamma \vdash \varphi \Rightarrow \psi \stackrel{TH2}{\Leftrightarrow} \varphi \to \psi \in \Gamma
         \] 
 
-          \item [Caso 2] \( \phi \notin \Gamma \) 
+          \item [Caso 2] \( \varphi \notin \Gamma \) 
             \[
-              \phi \notin \Gamma \; \stackrel{TH2,3}{\Rightarrow} \Gamma \vdash \neg \phi\;\; (\phi \notin \Gamma\; \stackrel{TH3}{\Leftrightarrow} \neg \phi \in \Gamma\; \stackrel{TH2}{\Leftrightarrow}\; \Gamma \vdash \neg \phi)
+              \varphi \notin \Gamma \; \stackrel{TH2,3}{\Rightarrow} \Gamma \vdash \neg \varphi\;\; (\varphi \notin \Gamma\; \stackrel{TH3}{\Leftrightarrow} \neg \varphi \in \Gamma\; \stackrel{TH2}{\Leftrightarrow}\; \Gamma \vdash \neg \varphi)
             \]
             \[
-            \Rightarrow \Gamma, \phi \vdash \bot
+            \Rightarrow \Gamma, \varphi \vdash \bot
             \] 
             \[
-              \Rightarrow \Gamma, \phi \vdash \psi\;\;\;\;per:\; \frac{\underset{\bot}{\stackrel{[\phi]}{D}}}{\frac{\psi}{\phi \to \psi}\to I}\bot_i
+              \Rightarrow \Gamma, \varphi \vdash \psi\;\;\;\;per:\; \frac{\underset{\bot}{\stackrel{[\varphi]}{D}}}{\frac{\psi}{\varphi \to \psi}\to I}\bot_i
             \] 
             \[
-              \Gamma \vdash \phi \to \psi \stackrel{TH2}{\Leftrightarrow} \phi \to \psi \in \Gamma\;\;(\text{\textbf{A}})
+              \Gamma \vdash \varphi \to \psi \stackrel{TH2}{\Leftrightarrow} \varphi \to \psi \in \Gamma\;\;(\text{\textbf{A}})
             \] 
         \end{enumerate}
     \end{enumerate}
@@ -2484,12 +2484,12 @@ dimostrazione equivalente:
 \[
 \text{è accettabile}\;\;v(\neg p) = 0 \;\;\text{quando}\;\; \neg p \notin \Gamma\;(MC)
 \] 
-Dimostrazione per induzione sul rango di \( \phi \):
+Dimostrazione per induzione sul rango di \( \varphi \):
 \[
-  [|\phi|]_v = 1 \Leftrightarrow \phi \in \Gamma
+  [|\varphi|]_v = 1 \Leftrightarrow \varphi \in \Gamma
 \] 
 \begin{itemize}
-  \item \textbf{Base:} \( \phi \) atomica
+  \item \textbf{Base:} \( \varphi \) atomica
    \begin{itemize}
      \item \( \bot\;\;\;\;\; \) 
        \(
@@ -2499,9 +2499,9 @@ Dimostrazione per induzione sul rango di \( \phi \):
    \end{itemize} 
   \item \textbf{Passo induttivo:} 
     \begin{itemize}
-      \item \( \phi = \psi \wedge \gamma\) 
+      \item \( \varphi = \psi \wedge \gamma\) 
         \[
-          \phi \in \Gamma \Leftrightarrow [|\phi|]_v=1
+          \varphi \in \Gamma \Leftrightarrow [|\varphi|]_v=1
         \] 
         \[
         \psi \wedge \gamma \in \Gamma \stackrel{def}{\Leftrightarrow} [|\psi|]_v=1\;\&\; [|\gamma|]_v=1
@@ -2509,9 +2509,9 @@ Dimostrazione per induzione sul rango di \( \phi \):
         \[
           \stackrel{TH4}{\Leftrightarrow} \psi \in \Gamma\; \& \; \gamma \in \Gamma\;\;\; \surd
         \] 
-      \item \( \phi = \psi \to \gamma\)
+      \item \( \varphi = \psi \to \gamma\)
         \[
-        \phi \in \Gamma \Leftrightarrow [|\phi|]_v=1
+        \varphi \in \Gamma \Leftrightarrow [|\varphi|]_v=1
         \] 
         \[
           \psi \to \gamma \in \Gamma \stackrel{def}{\Leftrightarrow} [|\psi|]_v=0 \; OR\; [|\gamma|]_v=1
@@ -2537,20 +2537,20 @@ Se \( \Gamma \not\vdash \bot \) allora \( \exists v. [|\Gamma|]_v=1 \)
 \] 
 \subsubsection{Teorema 6 (Completezza)}
 \[
-\Gamma \models \phi \Rightarrow \Gamma \vdash \phi
+\Gamma \models \varphi \Rightarrow \Gamma \vdash \varphi
 \] 
 Riscriviamo il risultato usando il ragionamento per contrapposizione (\( \alpha \to \beta = \neg \beta \to \neg \alpha \) )
 \[
-\Gamma \not\vdash \phi \Rightarrow \Gamma \not\models \phi
+\Gamma \not\vdash \varphi \Rightarrow \Gamma \not\models \varphi
 \] 
 \[
-  \Gamma \not\vdash \phi \Rightarrow \Gamma,\neg \phi \not\vdash \bot \stackrel{COR1}{\Rightarrow}
+  \Gamma \not\vdash \varphi \Rightarrow \Gamma,\neg \varphi \not\vdash \bot \stackrel{COR1}{\Rightarrow}
 \] 
 \[
-  \exists v.\;\;\; [|\Gamma|]_v=1 \;\&\; [|\neg \phi|]_v=1 \; \Leftrightarrow
+  \exists v.\;\;\; [|\Gamma|]_v=1 \;\&\; [|\neg \varphi|]_v=1 \; \Leftrightarrow
 \] 
 \[
-  \exists v.\;\;\; [|\Gamma|]_v=1\; \&\; [|\phi|]_v=0 \Rightarrow \Gamma \not\models \phi
+  \exists v.\;\;\; [|\Gamma|]_v=1\; \&\; [|\varphi|]_v=0 \Rightarrow \Gamma \not\models \varphi
 \] 
 
 \subsection{Estensione}
@@ -2641,25 +2641,25 @@ L'insieme delle formule \( FORM \) delle formule è il più piccolo insieme \( X
 \end{enumerate}
 Le precedenti 3 formule sono dette \textbf{atomiche}. 
 \begin{enumerate}
-  \item [4.] se \( \phi, \psi \in X \) allora \( (\phi \circ \psi) \in X \;\;\;\;\; \circ \in  \{\wedge, \vee, \to \} \) 
-  \item [5.] se \( x \in Var \) e \( \phi \in X \) allora \( (\forall x.\; (\phi)) \in X \) 
-  \item [6.] se \( x \in Var \) e \( \phi \in X \) allora \( (\exists x.\; (\phi)) \in X \) 
+  \item [4.] se \( \varphi, \psi \in X \) allora \( (\varphi \circ \psi) \in X \;\;\;\;\; \circ \in  \{\wedge, \vee, \to \} \) 
+  \item [5.] se \( x \in Var \) e \( \varphi \in X \) allora \( (\forall x.\; (\varphi)) \in X \) 
+  \item [6.] se \( x \in Var \) e \( \varphi \in X \) allora \( (\exists x.\; (\varphi)) \in X \) 
 \end{enumerate}
 
 \subsection{Convenzione}
 I quantificatori \( \forall , \exists  \) legano piu di ogni altro connettivo.
 \[
-\forall y.\; \phi \wedge \psi \equiv (\forall y.\; \phi) \wedge \psi
+\forall y.\; \varphi \wedge \psi \equiv (\forall y.\; \varphi) \wedge \psi
 \] 
 \[
-\neq \;\; \forall y.\; (\phi \wedge \psi)
+\neq \;\; \forall y.\; (\varphi \wedge \psi)
 \] 
 
 \subsubsection{Concetto di variabile libera e legata}
 \[
   (\forall x.\; (P(\underbrace{x}_{\text{non libera}},\underbrace{y}_{\text{libera}}))) \to \forall z.\; (Q(\underbrace{z}_{\text{non libera}},\underbrace{x}_{\text{libera}}))
 \] 
-Sia \( \phi \in FORM \); si dice che un'occorrenza di \( x \in Var \) è libera se non occorre
+Sia \( \varphi \in FORM \); si dice che un'occorrenza di \( x \in Var \) è libera se non occorre
 in una sottoformula del tipo:
 \[ \forall x.\; \psi \] o \[ \exists x.\; \psi \] 
 Nozione duale \( \to  \) \textbf{variabile legata}
@@ -2673,7 +2673,7 @@ Nozione duale \( \to  \) \textbf{variabile legata}
     FV(\psi) = \{y,x\}
     \] 
     \[
-    FV(\phi) = \{x | \text{esiste un'occorrenza libera di \( x \) in \( \phi \) }\} 
+    FV(\varphi) = \{x | \text{esiste un'occorrenza libera di \( x \) in \( \varphi \) }\} 
     \] 
   \end{example}
 \end{figure}
@@ -2702,13 +2702,13 @@ Nozione duale \( \to  \) \textbf{variabile legata}
         FV(P(t_1 \ldots t_n)) = FV(t_1) \cup \ldots \cup FV(t_n)
         \] 
         \[
-        FV(\phi \circ \psi) = FV(\phi) \cup FV(\psi) \;\;\;\;\; \circ \in \{\wedge, \vee, \to \}
+        FV(\varphi \circ \psi) = FV(\varphi) \cup FV(\psi) \;\;\;\;\; \circ \in \{\wedge, \vee, \to \}
         \] 
         \[
-        FV(\forall x.\; \phi) = FV(\phi) \setminus \{x\}
+        FV(\forall x.\; \varphi) = FV(\varphi) \setminus \{x\}
         \] 
         \[
-        FV(\exists x.\; \phi) = FV(\phi) \setminus \{x\}
+        FV(\exists x.\; \varphi) = FV(\varphi) \setminus \{x\}
         \] 
     \end{itemize} 
   \end{definition}
@@ -2717,7 +2717,7 @@ Nozione duale \( \to  \) \textbf{variabile legata}
 \begin{figure}[H]
   \begin{definition}[Variabile legata]
     \begin{itemize}
-      \item \textbf{FORM} \( BV(\phi)\;\;\;\phi \in FORM \) 
+      \item \textbf{FORM} \( BV(\varphi)\;\;\;\varphi \in FORM \) 
         \[
         BV(\bot) = \emptyset
         \] 
@@ -2728,13 +2728,13 @@ Nozione duale \( \to  \) \textbf{variabile legata}
         BV(P(t_1 \ldots t_n)) = BV(t_1) \cup  \ldots  \cup  BV(t_n)
         \] 
         \[
-        BV(\phi \circ \psi) = BV(\phi) \cup BV(\psi) \;\;\;\; \circ \in \{\wedge, \vee, \to \} 
+        BV(\varphi \circ \psi) = BV(\varphi) \cup BV(\psi) \;\;\;\; \circ \in \{\wedge, \vee, \to \} 
         \] 
         \[
-        BV(\forall x.\; \phi) = BV(\phi) \cup \{x\} 
+        BV(\forall x.\; \varphi) = BV(\varphi) \cup \{x\} 
         \] 
         \[
-        BV(\exists x.\; \phi) = BV(\phi) \cup \{x\} 
+        BV(\exists x.\; \varphi) = BV(\varphi) \cup \{x\} 
         \] 
     \end{itemize} 
   \end{definition}
@@ -2762,46 +2762,46 @@ SF(t_1 = t_2) = \{t_1 = t_2\}
 SF(P(t_1 \ldots t_n)) = \{P(t_1 \ldots t_n)\} 
 \] 
 \[
-SF(\phi \circ \psi) = SF(\phi) \cup SF(\psi) \cup \{\phi \circ \psi\}\;\;\;\; \circ \in \{\wedge, \vee, \to \}  
+SF(\varphi \circ \psi) = SF(\varphi) \cup SF(\psi) \cup \{\varphi \circ \psi\}\;\;\;\; \circ \in \{\wedge, \vee, \to \}  
 \] 
 \[
-  SF(\underset{\exists}{\forall}x.\; \phi) = SF(\phi) \cup \{\underset{\exists}{\forall}x.\; \phi\}
+  SF(\underset{\exists}{\forall}x.\; \varphi) = SF(\varphi) \cup \{\underset{\exists}{\forall}x.\; \varphi\}
 \] 
 \subsection{Vincoli}
 \( t \in TERM \) si dice chiuso se \( FV(t) = \emptyset \) o\\
-\( \phi \in \) \( \underbrace{ FORM  \text{si dice chiusa}}_{\text{Enunciato (Sentence SENT)}} \)  se \( FV(\phi) = \emptyset \)
+\( \varphi \in \) \( \underbrace{ FORM  \text{si dice chiusa}}_{\text{Enunciato (Sentence SENT)}} \)  se \( FV(\varphi) = \emptyset \)
 \vspace{1em}\\
-Prendendo in considerazione la sostituzione \( \phi[t/x] \) esistono 2 tipi di vincoli:
+Prendendo in considerazione la sostituzione \( \varphi[t/x] \) esistono 2 tipi di vincoli:
 \begin{enumerate}
   \item non posso sostituire variabili legate
   \item non tutti i termini vanno bene
 \end{enumerate}
 Questi vincoli servono ad evitare errori, ad esempio:
 \[
-\phi = \forall x.\; R(x,y) \in FORM\;\;\;\;tc=f(x) \in TERM
+\varphi = \forall x.\; R(x,y) \in FORM\;\;\;\;tc=f(x) \in TERM
 \] 
 \[
-  \phi[f(x)/y] = \forall x.\; R(x, \underbrace{f(x)}_{legato})\;\;\; \text{Questo risultato non è accettabile}
+  \varphi[f(x)/y] = \forall x.\; R(x, \underbrace{f(x)}_{legato})\;\;\; \text{Questo risultato non è accettabile}
 \] 
 \[
-  \phi[f(x),x] = \phi
+  \varphi[f(x),x] = \varphi
 \] 
 Dopo la sostituzione sono state create delle nuove variabili legate.
 \begin{figure}[H]
   \begin{definition}
     Termini liberi per una variabile in una formula.
     \vspace{1em}\\
-    \( t \) libero per \( x \) in \( \phi \) se dopo la sostituzione \( \phi[t/x] \) tutte
+    \( t \) libero per \( x \) in \( \varphi \) se dopo la sostituzione \( \varphi[t/x] \) tutte
     le occorrenze delle variabili in \( t \) sono libere.
     \vspace{1em}\\
-    \( \phi[t/x] \) è corretta se dopo la sostituzione tutte le occorrenze
+    \( \varphi[t/x] \) è corretta se dopo la sostituzione tutte le occorrenze
     delle variabili in \( t \) sono libere.
   \end{definition}
 \end{figure}
 
 \begin{figure}[H]
   \begin{definition}[Sostituzione]
-    \( \phi[t/x] \) t libero per \( x \) in \( \phi \) 
+    \( \varphi[t/x] \) t libero per \( x \) in \( \varphi \) 
     \begin{itemize}
       \item \textbf{Termini}:
         \begin{itemize}
@@ -2824,7 +2824,7 @@ Dopo la sostituzione sono state create delle nuove variabili legate.
         \end{itemize}
       \item \textbf{Formule}:
         \begin{enumerate}
-          \item \( \phi \) atomica
+          \item \( \varphi \) atomica
             \begin{enumerate}
               \item[1.1] \(
               \bot[t/x] = \bot
@@ -2834,11 +2834,11 @@ Dopo la sostituzione sono state create delle nuove variabili legate.
             \item [1.3]
               \( (t_1 = t_2)[t/x] = t_1[t/x] = t_2[t/x] \)
             \end{enumerate}
-          \item \( (\phi \circ \psi)[t/x] \equiv \phi[t/x] \circ \psi[t/x] \;\;\;\;\;\; \circ \in \{\wedge, \vee, \to \} \)
-          \item \( \phi \equiv Qy\;.\;\psi \hspace{3.5cm} Q \in \{\forall , \exists \}  \) \\
+          \item \( (\varphi \circ \psi)[t/x] \equiv \varphi[t/x] \circ \psi[t/x] \;\;\;\;\;\; \circ \in \{\wedge, \vee, \to \} \)
+          \item \( \varphi \equiv Qy\;.\;\psi \hspace{3.5cm} Q \in \{\forall , \exists \}  \) \\
                 \(
-                  \phi[t/x] = \begin{cases}
-                    \phi\;\;\; x \equiv y\\
+                  \varphi[t/x] = \begin{cases}
+                    \varphi\;\;\; x \equiv y\\
                     Qy\;.\;(\psi[t/x])
                   \end{cases}
                 \) 
@@ -2869,11 +2869,11 @@ Dopo la sostituzione sono state create delle nuove variabili legate.
 \subsection{Regole del \( \forall  \)}
 \subsubsection{Introduzione}
     \large\[
-      \frac{\underset{\phi(x)}{D}}{\forall x.\; \phi(x)}\forall I \;\;\; x \notin FV(hp(D))\; \text{(x è generica)}
+      \frac{\underset{\varphi(x)}{D}}{\forall x.\; \varphi(x)}\forall I \;\;\; x \notin FV(hp(D))\; \text{(x è generica)}
     \]
 \subsubsection{Eliminazione}
   \large\[
-    \frac{\underset{\forall x.\; \phi(x)}{D}}{\phi(t)} \forall E \;\;\;\;\; \text{t sia libero per x in \( \phi \) }
+    \frac{\underset{\forall x.\; \varphi(x)}{D}}{\varphi(t)} \forall E \;\;\;\;\; \text{t sia libero per x in \( \varphi \) }
   \] 
   \begin{figure}[H]
     \begin{exercise}
@@ -2886,10 +2886,10 @@ Dopo la sostituzione sono state create delle nuove variabili legate.
   \begin{figure}[H]
     \begin{exercise}
       \[
-        \vdash \forall x.\; (\phi \to \psi) \to ((\forall x.\; \phi) \to (\forall x.\; \psi))
+        \vdash \forall x.\; (\varphi \to \psi) \to ((\forall x.\; \varphi) \to (\forall x.\; \psi))
       \] 
       \[
-        \dfrac{\dfrac{\dfrac{\dfrac{\dfrac{[\forall x.\; (\phi \to \psi)]^3}{\phi \to \psi} \forall E \;\;\;\dfrac{[\forall x.\;\phi]^1}{\phi} \forall E}{\psi} \to E}{\forall x.\;\psi}\forall I \text{vincoli \( \surd \) }}{\forall x.\;\phi \to \forall x.\; \psi} \to I^1}{\forall x.\;(\phi \to \psi) \to (\forall x.\;  \phi \to  \forall x.\; \psi)}
+        \dfrac{\dfrac{\dfrac{\dfrac{\dfrac{[\forall x.\; (\varphi \to \psi)]^3}{\varphi \to \psi} \forall E \;\;\;\dfrac{[\forall x.\;\varphi]^1}{\varphi} \forall E}{\psi} \to E}{\forall x.\;\psi}\forall I \text{vincoli \( \surd \) }}{\forall x.\;\varphi \to \forall x.\; \psi} \to I^1}{\forall x.\;(\varphi \to \psi) \to (\forall x.\;  \varphi \to  \forall x.\; \psi)}
       \] 
     \end{exercise}
     \end{figure}
@@ -2897,11 +2897,11 @@ Dopo la sostituzione sono state create delle nuove variabili legate.
 \subsection{Regole del \( \exists  \)}
 \subsubsection{Introduzione}
 \[
-\frac{\phi(t)}{\exists x.\; \phi(x)} \exists I \;\;\;\;\; \text{t sia libero per x in \( \phi \) }
+\frac{\varphi(t)}{\exists x.\; \varphi(x)} \exists I \;\;\;\;\; \text{t sia libero per x in \( \varphi \) }
 \] 
 cioè:
 \[
-  \underbrace{\frac{\phi[t/x]}{\exists x.\; \phi}}_{\text{se una "proprietà" vale per t allora
+  \underbrace{\frac{\varphi[t/x]}{\exists x.\; \varphi}}_{\text{se una "proprietà" vale per t allora
   esiste un valore per cui vale}}
 \] 
 
@@ -2921,29 +2921,29 @@ cioè:
 
 \subsubsection{Eliminazione}
 \[
-  x \to \mathbb{R} \;\;\;\;\; \text{x \( \phi \) proprietà su \( \mathbb{N} \)}
+  x \to \mathbb{R} \;\;\;\;\; \text{x \( \varphi \) proprietà su \( \mathbb{N} \)}
 \] 
 \[
-  \exists x.\;\phi(x) \equiv \phi(0) \vee \phi(1) \vee \ldots \vee \phi(n) \vee \ldots
+  \exists x.\;\varphi(x) \equiv \varphi(0) \vee \varphi(1) \vee \ldots \vee \varphi(n) \vee \ldots
 \] 
 \[
-  \frac{\exists x.\;\phi(x) \;\;\; \underset{\gamma}{\stackrel{[\phi(x)]^n}{D_1}}}{\gamma} \exists E^n
+  \frac{\exists x.\;\varphi(x) \;\;\; \underset{\gamma}{\stackrel{[\varphi(x)]^n}{D_1}}}{\gamma} \exists E^n
 \] 
 Con i seguenti vincoli:
 \[
   x \notin FV(\gamma)
 \] 
 \[
-x \notin FV(hp(D_1))\;\; \text{a parte \( \phi(x) \) stessa}
+x \notin FV(hp(D_1))\;\; \text{a parte \( \varphi(x) \) stessa}
 \] 
 
 \begin{figure}[H]
   \begin{exercise}
     \[
-    \vdash \exists x.\; (\phi(x) \wedge \psi(x)) \to \exists x.\; \phi(x)
+    \vdash \exists x.\; (\varphi(x) \wedge \psi(x)) \to \exists x.\; \varphi(x)
     \] 
     \[
-      \dfrac{\dfrac{[\exists x.\; (\phi(x) \vee \psi(x))]^1\;\; \dfrac{\dfrac{[\phi(x) \wedge \psi(x)]^2}{\phi(x)} \wedge E_1}{\exists x.\;\phi(x)} \exists I}{\exists x.\;\phi(x)} \exists E^2}{\exists x.\;(\phi(x) \wedge \psi(x)) \to \exists x.\; \phi(x)} \to I^1
+      \dfrac{\dfrac{[\exists x.\; (\varphi(x) \vee \psi(x))]^1\;\; \dfrac{\dfrac{[\varphi(x) \wedge \psi(x)]^2}{\varphi(x)} \wedge E_1}{\exists x.\;\varphi(x)} \exists I}{\exists x.\;\varphi(x)} \exists E^2}{\exists x.\;(\varphi(x) \wedge \psi(x)) \to \exists x.\; \varphi(x)} \to I^1
     \]  
   \end{exercise}
 \end{figure}
@@ -2951,10 +2951,10 @@ x \notin FV(hp(D_1))\;\; \text{a parte \( \phi(x) \) stessa}
 \begin{figure}[H]
   \begin{exercise}
     \[
-    \vdash \forall x.\; \phi \to \exists x.\;\phi
+    \vdash \forall x.\; \varphi \to \exists x.\;\varphi
     \] 
     \[
-      \dfrac{\dfrac{\dfrac{[\forall x.\;\phi]^1}{\phi} \forall E}{\exists x.\;\phi} \exists I}{\forall x.\; \phi \to \exists x.\; \phi} \to I^1
+      \dfrac{\dfrac{\dfrac{[\forall x.\;\varphi]^1}{\varphi} \forall E}{\exists x.\;\varphi} \exists I}{\forall x.\; \varphi \to \exists x.\; \varphi} \to I^1
     \] 
   \end{exercise}
 \end{figure}
@@ -2962,24 +2962,24 @@ x \notin FV(hp(D_1))\;\; \text{a parte \( \phi(x) \) stessa}
 \begin{figure}[H]
   \begin{exercise}
     \[
-    \vdash \forall x.\; \phi \to \neg \forall x. \neg \phi
+    \vdash \forall x.\; \varphi \to \neg \forall x. \neg \varphi
     \]
     \[
-      \dfrac{\dfrac{\dfrac{\dfrac{[\forall x.\; \phi]^2}{\phi} \forall E \;\;\; \dfrac{[\forall x.\; \neg \phi]^1}{\neg \phi} \forall E}{\bot} \to E}{\neg \forall x.\; \neg \phi}\to I^1}{\forall x.\; \phi \to  \neg \forall x.\; \neg \phi} \to I^2
+      \dfrac{\dfrac{\dfrac{\dfrac{[\forall x.\; \varphi]^2}{\varphi} \forall E \;\;\; \dfrac{[\forall x.\; \neg \varphi]^1}{\neg \varphi} \forall E}{\bot} \to E}{\neg \forall x.\; \neg \varphi}\to I^1}{\forall x.\; \varphi \to  \neg \forall x.\; \neg \varphi} \to I^2
     \] 
 
-    \( \neg \forall x.\; \neg \phi \) "non è vero che per ogni valore di x \( \phi \) non vale" equivale a dire
-    \( \exists x \) per cui \( \phi \) vale. \( \exists x. \;\phi \) 
+    \( \neg \forall x.\; \neg \varphi \) "non è vero che per ogni valore di x \( \varphi \) non vale" equivale a dire
+    \( \exists x \) per cui \( \varphi \) vale. \( \exists x. \;\varphi \) 
   \end{exercise}
 \end{figure}
 
 \begin{figure}[H]
   \begin{exercise}
     \[
-    \vdash (\neg \exists x.\; \neg \phi) \to \forall x.\; \phi
+    \vdash (\neg \exists x.\; \neg \varphi) \to \forall x.\; \varphi
     \] 
     \[
-      \dfrac{\dfrac{\dfrac{\dfrac{[\neg \exists x.\; \neg \phi]^2 \;\;\;\;\dfrac{[\neg \phi]^1}{\exists x.\; \neg \phi} \scriptstyle\exists I}{\bot} \scriptstyle\to E}{\phi} \scriptstyle RAA^1}{\forall x.\; \phi} \scriptstyle\forall I}{\neg \exists x.\; \neg \phi \to \forall x.\; \phi} \scriptstyle\to I^2
+      \dfrac{\dfrac{\dfrac{\dfrac{[\neg \exists x.\; \neg \varphi]^2 \;\;\;\;\dfrac{[\neg \varphi]^1}{\exists x.\; \neg \varphi} \scriptstyle\exists I}{\bot} \scriptstyle\to E}{\varphi} \scriptstyle RAA^1}{\forall x.\; \varphi} \scriptstyle\forall I}{\neg \exists x.\; \neg \varphi \to \forall x.\; \varphi} \scriptstyle\to I^2
     \] 
   \end{exercise}
 \end{figure}
@@ -2987,10 +2987,10 @@ x \notin FV(hp(D_1))\;\; \text{a parte \( \phi(x) \) stessa}
 \begin{figure}[H]
   \begin{exercise}
     \[
-    \vdash \neg \exists x.\; \phi \to \forall x.\; \neg \phi
+    \vdash \neg \exists x.\; \varphi \to \forall x.\; \neg \varphi
     \] 
     \[
-      \dfrac{\dfrac{\dfrac{\dfrac{[\neg \exists x.\; \phi]^2 \;\;\;\;\dfrac{[\phi]^1}{\exists x.\;\phi} \scriptstyle\exists I}{\bot}\scriptstyle\to E}{\neg \phi} \scriptstyle\to I^1}{\forall x.\; \neg \phi}\scriptstyle\forall I}{\neg \exists x.\; \phi \to \forall x.\; \neg \phi} \scriptstyle\to I^2
+      \dfrac{\dfrac{\dfrac{\dfrac{[\neg \exists x.\; \varphi]^2 \;\;\;\;\dfrac{[\varphi]^1}{\exists x.\;\varphi} \scriptstyle\exists I}{\bot}\scriptstyle\to E}{\neg \varphi} \scriptstyle\to I^1}{\forall x.\; \neg \varphi}\scriptstyle\forall I}{\neg \exists x.\; \varphi \to \forall x.\; \neg \varphi} \scriptstyle\to I^2
     \] 
   \end{exercise}
 \end{figure}
