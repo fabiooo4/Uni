@@ -2999,10 +2999,10 @@ x \notin FV(hp(D_1))\;\; \text{a parte \( \varphi(x) \) stessa}
 \subsection{Struttura matematica}
 È formata da una quadrupla:
 \[
-V = <A, \mathbb{R}, \mathbb{F}, \mathbb{C}>
+U = <A, \mathbb{R}, \mathbb{F}, \mathbb{C}>
 \]  
 \begin{enumerate}
-  \item \( A \neq 0 \) dominio
+  \item \( A \neq \emptyset \) dominio
   \item \( \mathbb{R} \) insieme di relazioni su \( A \) 
   \item \( \mathbb{F} \) insieme di funzioni su \( A \)
   \item \( \mathbb{C} \subseteq A \) insieme di costanti
@@ -3019,28 +3019,198 @@ V = <A, \mathbb{R}, \mathbb{F}, \mathbb{C}>
 \begin{figure}[H]
   \begin{definition}[L\_Struttura]
     \(
-  \leftrightarrow\;\;     \) associa struttura \( m \) a un linguaggio di primo ordine
+  \leftrightarrow\;\;     \) associa struttura \( u \) a un linguaggio di primo ordine
 
     \[
-    U = <A, (\;)^U>:
+    U = <A, (\;)^u>:
     \] 
     \[
-    A \neq \emptyset \;\;\;,\;\;\; (\;)^U \;\;\text{funzione}
+    A \neq \emptyset \;\;\;,\;\;\; (\;)^u \;\;\text{funzione}
     \]
     \begin{itemize}
-      \item[a.] \( \forall c \in C \) \( C^U \in A \) 
-      \item[b.] \( \forall f \in F, \;\;\; k>0 \to f^U : A^k \to A \;\; in \;\;F \) 
-      \item [c.] \( \forall \mathbb{R} \in \mathbb{R}^n \to \mathbb{R}^U \subseteq \underbrace{A}_{\underbrace{A \times \ldots \times A}_{n}} \;\; in \;\;\mathbb{R} \) 
+      \item[a.] \( \forall c \in C \) \( C^u \in A \) 
+      \item[b.] \( \forall f \in F, \;\;\; k>0 \to f^u : A^k \to A \;\; in \;\;F \) 
+      \item [c.] \( \forall \mathbb{R} \in \mathbb{R}^n \to \mathbb{R}^u \subseteq \underbrace{A}_{\underbrace{A \times \ldots \times A}_{n}} \;\; in \;\;\mathbb{R} \) 
     \end{itemize}
   \end{definition}
   \[
     \underbrace{f(c_1,c_2)}{\text{sintassi}} = \underbrace{c_3}_{\underbrace{c_1+c_2}_{\text{struttura}}}
   \] 
   \[
-    (c_1)^U = 5 \;\;\text{(il 5 è semantica)}
+    (c_1)^u = 5 \;\;\text{(il 5 è semantica)}
   \] 
   \[
-    (c_2)^U = 2 \;\;\text{(il 2 è semantica)}
+    (c_2)^u = 2 \;\;\text{(il 2 è semantica)}
   \] 
+\end{figure}
+
+\subsection{Valutazione}
+
+\begin{figure}[H]
+  \begin{definition}[U\footnote{legata alla struttura matematica presa in considerazione}\_Valutazione]
+    È una funzione:
+    \[
+      \rho_u: Var \to \underbrace{|U|}_{\text{dominio di \( U \) \( (A) \neq \emptyset \)  }}
+    \] 
+    Si associa a una variabile un oggetto del dominio.
+    \[
+    \rho_u\;,\; x \in Var \;\; a \in A (=|U|)
+    \] 
+    \(
+      \rho_u[a/x]
+    \) è la U\_Valutazione
+    \[
+      \rho_u[a/x](y)= \begin{cases}
+        \rho_u(y)\;\;\;\;\;\; x \not\equiv y\\
+        a \;\;\;\;\;\; \text{altrimenti}
+      \end{cases}    \] 
+  \end{definition}
+\end{figure}
+
+\subsection{Interpretazione}
+\begin{figure}[H]
+  \begin{definition}[Interpretazione dei termini]
+    \[
+      [| \cdot |]^u
+    \] 
+    Utilizzo la struttura matematica \( ( \cdot )^u \) e la valutazione \( \rho_u \)
+    \begin{itemize}
+      \item \( [|c|]^u = c^u \) 
+      \item \( [|x|]^u_{\rho_u} = \rho_u(x)\;\;\;\;\;\;(=a \in A = |U|) \) 
+      \item \( [|f(t_1 \ldots t_k)] = f^u([|t_1|]^u_{\rho_u} \ldots [|t_k|]^u_{\rho_u}) \) 
+    \end{itemize}
+  \end{definition}
+\end{figure}
+\begin{figure}[H]
+  \begin{example}
+    \[
+      \overline{f}(t_1,t_2)
+    \] 
+    \[
+      [|t_1|]^u_{\rho_u} = 4 \;\;\;\;\;\; [|t_2|]^u_{\rho_u} = 2
+    \] 
+    \[
+      (\overline{f})^u = +
+    \] 
+    \[
+      [|\overline{f}(t_1,t_2)|]^u_{\rho_u} =  +(4,2) ~ 4+2 = 6 
+    \] 
+  \end{example}
+\end{figure}
+
+\subsection{Relazione di soddisfacibilità}
+\begin{figure}[H]
+  \begin{definition}[Relazione di soddisfacibilità]
+    \begin{enumerate}
+      \item \( \rho_u \not\models \bot \) 
+      \item \( \rho_u \models t_1 = t_2 \Leftrightarrow [|t_1|]^u_{\rho_u}= [|t_2|]^u_{\rho_u} \) 
+      \item \( \rho_u \models R(t_1 \ldots t_n) \Leftrightarrow ([|t_1|]^u_{\rho_u} \ldots [|t_n|]^u_{\rho_u}) \in R^u \) 
+      \item \[
+          \rho_u \models \alpha \to \beta \Leftrightarrow (\rho_u \models \alpha \Rightarrow \rho_u \models \beta)
+        \] 
+        o in alternativa:
+        \[
+          \rho_u \models \alpha \to \beta \Leftrightarrow (\rho_u \not\models \alpha \;OR\; \rho_u \models \beta)
+        \] 
+      \item \[
+      \rho_u \models \alpha \wedge \beta \Leftrightarrow \rho_u \models \alpha \;AND\; \rho_u \models \beta
+        \]
+      \item \[
+      \rho_u \models \alpha \vee \beta \Leftrightarrow \rho_u \models \alpha \;OR\; \rho_u \models \beta
+      \] 
+    \item \[
+        \rho_u \models \forall x.\; \alpha \Leftrightarrow \forall a \in [|U|] \;.\; \rho_u[a/x] \models \alpha
+      \]
+    \item \[
+        \rho_u \models \exists x.\; \alpha \Leftrightarrow \exists a \in [|U|] \;.\; \rho_u[a/x] \models \alpha
+      \]
+     
+    \end{enumerate}
+  \end{definition}
+\end{figure}
+\begin{figure}[H]
+  \begin{example}
+   \[
+     \overline{R}(t_1,t_2) \;\;\;\;\;\; \overline{R}^u = "<" 
+   \]  
+   \[
+     [|t_1|]^u_{\rho_u} = 3 \in A \;\;\;\;\;\; [|t_2|]^u_{\rho_u} = 4 \in  A
+   \] 
+   \[
+     (3,4) \in < (~\; 3<4)
+   \] 
+  \end{example}
+\end{figure}
+
+\subsection{Modello}
+\begin{itemize}
+  \item 
+    \[
+      U \models \alpha \;\;\; per \;\;\; \forall \rho_u \;.\; \rho_u \models \alpha
+    \] 
+    e diciamo che \( U \) è un modello di \( \alpha \) oppure \( \alpha \) è \textbf{vera} nella struttura \( U \) 
+  \item \[
+      U \models \Gamma \Leftrightarrow \forall \sigma \in \Gamma, U \models \sigma
+  \] 
+\end{itemize}
+\subsubsection{Validità}
+\( \models \alpha \) è \textbf{valida} sse \( \forall U \; . \; U \models \alpha \) 
+
+\subsubsection{Conseguenza logica}
+\[
+  \Gamma \models \alpha \Leftrightarrow \forall U \; e \; \rho_u \; . \; \underbrace{\rho_u \models \Gamma}_{\forall \sigma \in \Gamma \; . \; \rho_u \models \sigma} \Rightarrow \rho_u \models \alpha
+\] 
+
+\subsection{Esercizi}
+\begin{figure}[H]
+  \begin{exercise}
+    \[
+      \stackrel{?}{\models} \underbrace{\forall x.\; \phi}_{\sigma_1} \to \underbrace{\exists x.\; \phi}_{\sigma_2} \;\;\; \text{è valida? Sì}
+    \] 
+    \[
+      \Leftrightarrow \forall U\;.\; U \underbrace{\models}_{\text{Modello}} \sigma_1 \to \sigma_2 \;sse\; \forall \rho_u \;.\; \rho_u \models \sigma_1 \to \sigma_2
+    \] 
+    Sia \( U \) generica (per togliere il \( \forall  \))
+    \[
+      \forall \rho_u\;.\; \rho_u \models \forall x\;.\;\phi \stackrel{def\;7}{\Leftrightarrow} \forall a \in [|U|] \;.\; \rho_u[a/x] \models \phi
+    \] 
+    \( \forall \rho_u \) in particolare vale per un elemento \( \Rightarrow \) \[\forall \rho_u \exists a \in [|U|]\;.\;\rho[a/x] \models \phi \stackrel{def\;8}{\Leftrightarrow}\] 
+    \[
+    \forall \rho_u \rho_u \models \exists x.\; \phi\;\;(\equiv \sigma_2)
+    \] 
+  \end{exercise}
+\end{figure}
+\begin{figure}[H]
+  \begin{exercise}
+    \[
+      \models \underbrace{\forall x. \; (\alpha \wedge \beta)}_{\sigma_2} \to \underbrace{(\forall x.\;\alpha \wedge \forall x.\; \beta)}_{\sigma_2}
+    \] 
+    \[
+      \models \sigma_1 \to \sigma_2 \Leftrightarrow \forall U \;.\; U \models \sigma_1 \to \sigma_2 \stackrel{def}{\Leftrightarrow}
+    \] 
+    \[
+    \forall \rho_u \;.\; \rho_u \models \sigma_1 \to \sigma_2 \Leftrightarrow
+    \] 
+    Sia \( U \) generica
+    \[
+      \forall \rho_u\;.\; \rho_u \models \forall x.\; (\alpha \wedge \beta) \Leftrightarrow \forall a \in [|U|]\;.\; \rho_u[a/x] \models \alpha \wedge \beta
+    \] 
+    \[
+      \forall \rho_u \;.\; \forall a \in [|U|]\;.\; \rho_u[a/x] \models \alpha \wedge \forall \rho_u \;.\; \forall a \in [|U|]\;.\; \rho_u[a/x] \models \beta
+    \] 
+    \[
+    \forall \rho_u\;.\; \rho_u \models \forall x.\;\alpha \;AND\;\rho_u \models \forall x.\; \beta \Leftrightarrow
+    \] 
+    \[
+    \forall \rho_u\;.\; \rho_u \models \forall x.\;\alpha \wedge \forall x.\; \beta
+    \] 
+  \end{exercise}
+\end{figure}
+\begin{figure}[H]
+  \begin{exercise}[a casa]
+    \[
+    \models (\forall x.\;\alpha \wedge \forall x.\; \beta) \to \forall x. \; (\alpha \wedge \beta)
+  \] 
+  \end{exercise}
 \end{figure}
 \end{document}
