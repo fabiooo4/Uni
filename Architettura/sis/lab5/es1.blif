@@ -1,0 +1,57 @@
+.model es1
+.inputs i1 i2
+.outputs o1 o2
+
+.start_kiss 
+  .i 2 # inputs
+  .o 2 # outputs
+  .s 9 # states
+  .p 36 # elements
+  .r A # reset
+
+  # inputs state nextState output
+  00 A D 10
+  00 B B 1-
+  00 C C 0-
+  00 D A 10
+  00 E G 10
+  00 F H --
+  00 G A 10
+  00 H D 1-
+  00 I F --
+
+  01 A D 00
+  01 B A --
+  01 C H -1
+  01 D A -0
+  01 E G --
+  01 F H -0
+  01 G G -0
+  01 H G -0
+  01 I F 11
+
+  10 A A 11
+  10 B B -1
+  10 C I -0
+  10 D D 11
+  10 E C -1
+  10 F A 01
+  10 G H 00
+  10 H H 00
+  10 I E 00
+  
+  11 A D 11
+  11 B C --
+  11 C A -0
+  11 D A 11
+  11 E I 1-
+  11 F B 10
+  11 G D 11
+  11 H A -1
+  11 I A 01
+.end_kiss
+
+.end
+
+# Number of states before minimization: 9
+# Number of states after minimization: 7

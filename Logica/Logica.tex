@@ -3231,6 +3231,39 @@ U = <A, \mathbb{R}, \mathbb{F}, \mathbb{C}>
 \[
   \Gamma \models \alpha \Leftrightarrow \forall U \; e \; \rho_u \; . \; \underbrace{\rho_u \models \Gamma}_{\forall \sigma \in \Gamma \; . \; \rho_u \models \sigma} \Rightarrow \rho_u \models \alpha
 \] 
+    \begin{figure}[H]
+      \begin{definition}
+        \[
+          \rho_u \not\models \alpha \Leftrightarrow \rho_u \models \neg \alpha
+        \] 
+      \end{definition}
+    \end{figure}
+\begin{figure}[H]
+  \begin{figure}[H]
+    \begin{definition}[Principio di contrapposizione]
+      \[
+        \alpha \to \beta \Leftrightarrow \neg \beta \to \neg \alpha
+      \] 
+    \end{definition}
+  \end{figure}
+  \begin{definition}[Soundness]
+    \[
+    \vdash \varphi  \Rightarrow \models \varphi 
+    \] 
+    Usando il principio di contrapposizione:
+    \[
+    \not\models \varphi  \Rightarrow \not\vdash \varphi 
+    \] 
+    Se \textbf{esibisco un contromodello}, allora la formula non è un teorema.
+  \end{definition}
+\end{figure}
+\begin{figure}[H]
+  \begin{definition}[Completeness]
+    \[
+    \models \varphi  \Rightarrow \vdash \varphi 
+    \] 
+  \end{definition}
+\end{figure}
 
 \subsection{Esercizi}
 \begin{figure}[H]
@@ -3282,6 +3315,293 @@ U = <A, \mathbb{R}, \mathbb{F}, \mathbb{C}>
     \[
     \models (\forall x.\;\alpha \wedge \forall x.\; \beta) \to \forall x. \; (\alpha \wedge \beta)
   \] 
+  \end{exercise}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{exercise}
+    \[
+      \models \underbrace{\forall x.\; (\varphi(x) \vee \psi )}_{\sigma_1} \to \underbrace{(\forall x.\; \varphi(x)) \vee \psi}_{\sigma_2} \;\;\;\;\; x \notin FV(\psi )
+    \] 
+    \[
+    \models \sigma_1 \to \sigma_2 \Leftrightarrow \forall U \;.\; U \models \sigma_1 \to \sigma_2 \stackrel{def}{\Leftrightarrow}
+    \] 
+    \[
+    \forall \rho_u \;.\; \rho_u \models \sigma_1 \to \sigma_2 \Leftrightarrow
+    \] 
+    Sia \( U \) generica
+    \[
+      \forall \rho_u \;.\; \rho_u \models \forall x.\; (\varphi \vee \psi) \;\;\; (\sigma_1) \Leftrightarrow
+    \] 
+    \[
+      \forall \rho_u \;\forall a \in |U| \;.\; \rho_u [a/x] \models \varphi \vee \psi \Leftrightarrow
+    \] 
+    \[
+     \forall \rho_u\; \forall a \in |U| \;.\; \rho_u [a/x] \models \varphi \;\;\;OR\;\;\; \forall a \in |U| \;.\; \rho_u [a/x] \models \psi \Leftrightarrow
+    \] 
+    (per ipotesi \( x \notin FV(\psi ) \), quindi \( \rho_u \models \psi \Leftrightarrow \rho_u [a/x] \models \psi  \) )
+    \[
+      \forall a \in |U| \;.\; \rho_u [a/x] \models \;\;\;OR\;\;\; \rho_u \models \psi \Leftrightarrow
+    \] 
+    \[
+      \rho_u \models \forall x.\; \varphi \;\;\;OR\;\;\; \rho_u \models \psi \Leftrightarrow 
+    \] 
+    \[
+    \rho_u \models (\forall x.\; \varphi ) \vee \psi \;\;\; (\equiv \sigma_2)
+    \] 
+  \end{exercise}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{exercise}
+    \[
+      \models \underbrace{\exists x.\; (\alpha \to \beta)}_{\sigma_1} \to \underbrace{(\exists x.\; \alpha \to \exists x.\; \beta)}_{\sigma_2}
+    \] 
+    \[
+    \models \sigma_1 \to \sigma_2 \Leftrightarrow \forall U \;.\; U \models \sigma_1 \to \sigma_2 \Leftrightarrow
+    \] 
+    \[
+    \forall \rho_u \;.\; \rho_u \models \sigma_1 \to \sigma_2 \Leftrightarrow
+    \] 
+    Sia \( U \) generica
+    \[
+      \forall \rho_u \;.\; \rho_u \models \exists x.\; (\alpha \to  \beta) \Leftrightarrow
+    \] 
+    \[
+      \forall \rho_u \;.\; \exists a \in |U| \;.\; \rho_u[a/x] \models \alpha \to \beta \Leftrightarrow
+    \] 
+    \[
+      \forall \rho_u \;.\; \exists a \in |U| \;.\; \rho_u[a/x] \models \alpha \;\;\; \Rightarrow \;\;\; \exists a \in |U| \;.\; \rho_u \models \beta
+    \] 
+    \[
+      \forall \rho_u \;.\; \rho_u \models \exists x.\; \alpha \;\;\; \Rightarrow \;\;\; \rho_u \models \exists x.\; \beta
+    \] 
+    \[
+    \forall \rho_u \;.\; \rho_u \models \exists x.\; \alpha \to \exists x.\; \beta \;\;\; (\equiv \sigma_2)
+    \] 
+  \end{exercise}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{exercise}
+    \[
+      \models \underbrace{(\forall x.\; \varphi \wedge \exists x.\; \neg \psi )}_{\sigma_1} \to \underbrace{\exists x.\; (\varphi \wedge \neg \psi )}_{\sigma_2}
+    \] 
+    \[
+    \models \sigma_1 \to \sigma_2 \Leftrightarrow \forall U \;.\; U \models \sigma_1 \to \sigma_2 \Leftrightarrow
+    \] 
+    \[
+    \forall \rho_u \;.\; \rho_u \models \sigma_1 \to \sigma_2 \Leftrightarrow
+    \] 
+    Siano \( U \) e \( \rho_u \) generiche
+    \[
+      \rho_u \models \forall x.\; \varphi \wedge \exists x.\; \neg \psi \Leftrightarrow
+    \] 
+    \[
+    \rho_u \models \forall x.\; \varphi  \;\;\;AND\;\;\; \rho_u \models \exists x.\; \neg \psi \Leftrightarrow
+    \] 
+    \[
+      \forall a \in |U| \;.\; \rho_u[a/x] \models \varphi \;\;\;AND\;\;\; \exists a \in |U| \;.\; \rho_u[a/x] \models \neg \psi \Leftrightarrow
+    \] 
+    \( \forall \rho_u \) in particolare vale per un elemento \( \Rightarrow \) 
+    \[
+    \exists a \in |U| \;.\; \rho_u[a/x] \models \varphi \;\;\;AND\;\;\; \exists a \in |U| \;.\; \rho_u[a/x] \models \neg \psi \Leftrightarrow
+    \] 
+    \[
+      \exists a \in |U| \;.\; \rho_u[a/x] \models \varphi \wedge \neg \psi \Leftrightarrow
+    \] 
+    \[
+    \rho_u \models \exists x.\; (\varphi \wedge \neg \psi ) \;\;\; (\equiv \sigma_2)
+    \] 
+  \end{exercise}
+\end{figure}
+
+\subsection{Esercizi con il contromodello}
+\begin{figure}[H]
+  \begin{definition}
+    \[
+    \rho_u \not\models \forall x.\; P \;\; \Leftrightarrow\;\; \rho_u \models \neg (\forall x.\; P)
+    \] 
+    \[
+    \Leftrightarrow \rho_u \models \exists x.\; \neg P
+    \] 
+    \[
+    \Leftrightarrow \exists u \in \{a,b\} \;.\; \rho_u[u/x] \models \neg P
+    \] 
+
+    Valgono le seguenti equivalenze:
+    \[
+    \neg \forall x.\; \alpha \equiv \exists x.\; \neg \alpha
+    \] 
+    \[
+    \neg (\forall x.\; \exists y.\; \alpha) \equiv \exists x.\; \forall y.\; \neg \alpha
+    \] 
+  \end{definition}
+\end{figure}
+\begin{figure}[H]
+  \begin{exercise}
+    \[
+    \not\vdash \varphi(x) \to \forall x.\; \varphi(x) \equiv \alpha
+    \] 
+    \[
+      \not\models \alpha \to \underbrace{\exists \overline{U}}_{\text{contromodello}} \;.\; \overline{U} \not\models \alpha
+    \] 
+    \[
+    \Leftrightarrow \exists \rho_{\overline{u}} \;.\; \rho_{\overline{u}} \not\models \alpha
+    \] 
+    \[
+    U = <\{a,b\}, P>
+    \] 
+    \( P \) è una relazione unaria e definita come \( P(a) \;\; a \in P \), su \( b \) non vale \( P \) 
+    \[
+      \rho_{\overline{u}}(x) = a
+    \] 
+    \[
+      \overline{U} \not\models \alpha \Leftrightarrow \exists \rho_{\overline{u}} \not\models \alpha
+    \] 
+    Osserviamo che:
+    \[
+    \rho_u \models P \;\;\text{ma} \;\; \rho_u \not\models \forall x.\; P(x) 
+    \] 
+    infatti non è vero \( \forall u \in \{a,b\} \;.\; \rho_u[u/x] \models P \), infatti su \( b \) 
+    \( P \) non è definita.
+  \end{exercise}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{exercise}
+    \[
+      \not\vdash \underbrace{\exists x.\; \varphi}_{\sigma_1}  \to  \underbrace{\forall x.\; \varphi}_{\sigma_2}
+    \] 
+    \[
+    \not\models \exists x.\; \varphi  \to \forall x.\; \varphi 
+    \] 
+    \[
+    U = <\{a,b\}, P> \;\;\; P(a)
+    \] 
+    \[
+    \not\models \exists x.\; P \to \forall x.\; P
+    \] 
+    \[
+    U \not\models \sigma_1 \to \sigma_2 \Leftrightarrow \exists \rho_u \;.\; \rho_u \not\models \sigma_1 \to \sigma_2
+    \] 
+    Mostriamo che \( \rho_u \models \sigma_1 \) (riusciamo a soddisfare \( \sigma_1 \)), ma
+    \( \underbrace{\rho_u \not\models \sigma_2}_{1} \) (non riusciamo mai a soddisfare \( \underbrace{\sigma_2}_{2} \)).
+    \begin{enumerate}
+      \item 
+        \[
+          \rho_u \models \exists x.\; P \; \text{vale} \; \Leftrightarrow \exists u \in \{a,b\} \;t.c.\; \rho_u[\stackrel{u = a}{u}/x] \models P
+        \] 
+      \item \[
+      \rho_u \not\models \forall x.\; P
+      \] 
+      \begin{center}
+        In effetti per nessuna \( \rho_u \;\; \Leftrightarrow\) 
+      \end{center}
+      \[
+      \forall u \in \{a,b\} \;.\; \rho_u[u/x] \models P \;\;\; \times \; \text{su \( b \) non vale \( P \)}
+      \] 
+    \end{enumerate}
+  \end{exercise}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{exercise}
+    \[
+    \models \forall x.\; \exists y.\; x < y \equiv \sigma 
+    \] 
+    \[
+    \not\models \sigma \Leftrightarrow \exists U \;.\; U \not\models \sigma
+    \] 
+    \[
+    U = < \{1,2,3\}, \overline{<}\} \;\;\; \text{contromodello} \;\; \rho_u[3/x] \;\; \text{non fa valere}
+    \] 
+    \[
+    \rho_u \not\models \forall x.\; \exists y.\; (x < y)
+    \] 
+    Infatti nessuna \( \rho_u \) può soddisfare \( \sigma  \), altrimenti:
+    \[
+    \forall a \in \{1,2,3\} \;.\; \exists b \in \{1,2,3\} \;.\; \rho_u[a/x, b/y] \models x < y
+    \] 
+    \[
+    \rho_u \not\models \forall x.\; \exists y.\; (x < y)
+    \] 
+    \[
+    \Leftrightarrow \rho_u \models \neg \sigma \Leftrightarrow \rho_u \models \exists x.\; \forall y.\; \neg(x < y)
+    \] 
+  \end{exercise}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{exercise}[a casa]
+    \[
+    \not\models \exists y.\; \forall x.\; x < y
+    \] 
+  \end{exercise}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{exercise}
+    \[
+      \stackrel{\not\vdash}{\not\models} \underbrace{\exists x.\; \varphi(x) \wedge \exists x.\; \psi(x)}_{\sigma_1} \to \underbrace{\exists x.\; (\varphi(x) \wedge \psi(x))}_{\sigma_2}
+    \]
+    \[
+    U \;tc\; U \not\models \sigma 
+    \] 
+    \[
+    U = <\{a,b\}, P, Q> \;\;\; P(a), a \in P \;\;\; Q(b), b \in Q
+    \] 
+    Mostriamo \( \rho_u \models \sigma_1  \) ma \( \rho_u \not\models \sigma_2 \)
+    \[
+    \rho_u \models \exists x.\; P(x) \wedge \exists x.\; Q(x) \Leftrightarrow
+    \] 
+    \[
+      \exists u \in \{a,b\} \;.\; \rho_u[\underbrace{u}_{a,\; \rho_u(x) = a}/x] \models P \;\;AND\;\; \exists w \in \{a,b\} \;.\; \rho_u[\underbrace{w}_{b\; \surd\; \text{sì}}/x] \models Q \Leftrightarrow
+    \] 
+    \[
+      \rho_u \not\models \exists x.\; P(x) \wedge Q(x)
+    \] 
+    Infatti per nessuna \( \rho_u \;.\; \rho_u \models \exists x.\; (P(x) \wedge Q(x))\) infatti
+    vorrebbe dire:
+    \[
+      \exists u \in \{a,b\} \;.\; (\rho[u/x] \models P \;\;\; AND \;\;\; \rho[u/x] \models Q)])\;\;\text{(è impossibile)}
+    \] 
+    \[
+    \Leftrightarrow \rho_u \models \neg(\exists x.\; (P(x) \wedge Q(x))) \Leftrightarrow
+    \] 
+    \[
+      \rho_u \models \forall x.\; \underbrace{\neg(P(x) \wedge Q(x))}_{\neg P \vee \neg Q} \Leftrightarrow
+    \] 
+    \[
+    \forall u \in \{a,b\} \;.\; \rho_u[u/x] \models \neg P \vee \neg Q \Leftrightarrow
+    \] 
+    È vero perchè se \( \rho(x) = a \Rightarrow \neg Q \)  e \( b \Rightarrow \neg P \) 
+  \end{exercise}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{exercise}[a casa]
+    \[
+      \not\models \underbrace{(\forall x.\; \varphi (x) \to \forall x.\; \psi(x))}_{\alpha} \to \underbrace{\forall x.\; (\varphi(x) \to \psi(x))}_{\beta}
+    \] 
+    \[
+    \not\models \alpha \to \beta \Leftrightarrow \exists U \;.\; U \models \alpha \to \beta \;\;\; \exists \rho_u \;.\; \rho_u \not\models \alpha \to \beta
+    \] 
+    \[
+    U = <\{a,b\}, P, Q> \;\;\; p = \{a\} , \varphi  \;\;\; q = \{b\} , \psi 
+    \]
+    \[
+      \rho_u \models \alpha \;\; ma \;\; \rho_u \not\models \beta
+    \]
+  \end{exercise}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{exercise}[a casa]
+    \[
+    \not\vdash \forall x.\; \exists y.\; \varphi \to \exists y.\; \forall x.\; \varphi
+    \] 
+    Suggerimento: \( \varphi <\sim> "\le" \) su \( \mathbb{N} \) 
   \end{exercise}
 \end{figure}
 \end{document}
