@@ -4898,7 +4898,38 @@ Inverte i valori di un numero.
   \item \textbf{Controllo}: Finite State Machine
   \item \textbf{Elaborazione}: Datapath
 \end{itemize}
-\label{D1}
+\begin{figure}[H]
+  \begin{center}
+    \begin{tikzpicture}
+      \draw (0,0) rectangle (2,2) node[pos=.5] {FSM};
+      \draw[->] (1,0) -- (1,-1) node[below, align=center, scale=0.8] {Uscite di\\ controllo};
+      \draw[<-] (1,2) -- (1,3) node[above, align=center, scale=0.8] {Ingressi di\\ controllo};
+
+      \draw (4,0) rectangle (6,2) node[pos=.5] {Datapath};
+      \node[draw, single arrow,
+              minimum height=10mm, minimum width=8mm,
+              single arrow head extend=2mm,
+              anchor=west, rotate=-90] at (5,0) {};
+      \node[draw, single arrow,
+              minimum height=10mm, minimum width=8mm,
+              single arrow head extend=2mm,
+              anchor=west, rotate=-90] at (5,3) {};
+      \node at (5,-1) [below, align=center, scale=0.8] {Risultati};
+      \node at (5,3) [above, align=center, scale=0.8] {Dati in\\ingresso};
+
+      \draw[->] (4,1.5) -- (2,1.5) node[pos=.5, above, align=center, scale=0.8] {Segnali di\\ stato};
+      \draw[<-] (4,0.5) -- (2,0.5) node[pos=.5, below, align=center, scale=0.8] {Segnali di\\ controllo};
+
+      \draw[<-] (0.5,0) -- ++(0,-0.5) -- ++(-1,0) node[left, align=center, scale=0.8] {CLK};
+      \draw[fill] (0.5,-0.5) circle (0.05);
+      \draw[->] (0.5,-0.5) -- (4.5, -0.5) -- ++(0,0.5);
+
+      \draw (6.5,3) -- ++(0.3,0) -- ++(0,-1) node[right, yshift=15, align=center] {Primary\\input} -- ++(-0.3,0);
+      \draw (6.5,0) -- ++(0.3,0) -- ++(0,-1) node[right, yshift=15, align=center] {Primary\\output} -- ++(-0.3,0);
+    \end{tikzpicture}
+  \end{center}
+  \caption{Modello FSMD}
+\end{figure}
 Per progettare il modello precedente servono diversi passaggi:
 \begin{enumerate}
   \item Definire l'insieme di operazioni necessarie (identificare le unità funzionali necessarie)
@@ -4955,7 +4986,52 @@ oppure una parte preponderante di datapath.
 \end{figure}
     Aggiungiamo la funzionalità che il controllore non commuta mai da verde a rosso senza aver
     prima atteso 1024 cicli di clock.
-    \label{D2}
+        \begin{figure}[H]
+      \centering
+        \begin{circuitikz}[square/.style={regular polygon,regular polygon sides=4}, scale=1.3, transform shape]
+          % Multiplexer 2 to 1
+          \draw (0,0) node (mux1-0) {0};
+          \draw (0.5,0) node (mux1-1) {1};
+          \draw (0.0,0.2) node (mux1-i0) {};
+          \draw (0.5,0.2) node (mux1-i1) {};
+          \draw (-0.3,0) node (mux1-s) {};
+          \draw (0.25,-0.18) node (mux1-o) {};
+          \draw (-0.5,0.3) -- ++(1.5,0) -- ++(-0.25, -0.6) -- ++(-1,0) -- ++(-0.25,0.6) -- (-0.5,0.3);
+          % ------------------
+
+
+          % Register
+          \draw (0.25,-1) node[rectangle ,draw, minimum width=2cm, minimum height=0.7cm, scale=0.7] (reg) {REG};
+          \draw (reg.west) -- ++(0,0.15) -- ++(0.2, -0.15) -- ++(-0.2,-0.15);
+          % ------------------
+
+          % Operators
+          \draw (1.2,-2.5) node[square,draw, minimum size=2cm, scale=0.6] (sum) {\huge$+$};
+          \node[xshift=-5, yshift=-3] at (sum.north) (sum-i0) {};
+          \node[xshift=5, yshift=-3] at (sum.north) (sum-i1) {};
+
+          \draw (-0.75,-2.5) node[square,draw, minimum size=2cm, scale=0.6] (equiv) {\huge$=$};
+          \node[xshift=-5, yshift=-3] at (equiv.north) (equiv-i0) {};
+          \node[xshift=5, yshift=-3] at (equiv.north) (equiv-i1) {};
+          % ------------------
+
+          \draw[-latex] (mux1-i0) -- ++(0,1) node[above left, xshift=7] {\tiny 0000000000};
+          \draw[latex-] (mux1-s) -- ++(-1,0) node[left, align=center, scale=0.8] {Inizio};
+
+          \draw[-latex] (mux1-o) -- (reg.north);
+
+          \draw[-latex] (reg.south) to[short] ++(0,-0.2) -| (sum-i0);
+          \draw[-latex] (reg.south) to[short] ++(0,-0.2) -| (equiv-i0);
+
+          \draw[latex-] (sum-i1) -- ++(0,0.8) node[above right, xshift=-7] {\tiny 0000000001};
+          \draw[latex-] (equiv-i1) -- ++(0,0.4) node[above right, xshift=-7] {\tiny 1111111111};
+
+          \draw[-latex] (equiv.south) -- ++(0,-0.5) -- ++(-1,0) node[left, align=center, scale=0.8] {Fine};
+          \draw[-latex] (sum.south) -- ++(0,-0.5) -- ++(1.7,0) -- ++(0,4.5) -| (mux1-i1);
+
+        \end{circuitikz}
+        \caption{Datapath del contatore 1024}
+    \end{figure}
 \begin{figure}[H]
   \begin{center}
     \begin{tikzpicture}[node distance=4cm and 2cm,>=stealth',auto, every place/.style={draw}]
@@ -4984,7 +5060,31 @@ oppure una parte preponderante di datapath.
   \end{center}
   \caption{FSM del semaforo}
 \end{figure}
-\label{D3}
+\begin{figure}[H]
+  \begin{center}
+    \begin{tikzpicture}
+      \draw (0,0) rectangle (2,2) node[pos=.5] {FSM};
+      \draw[<-] (0.5,2) -- (0.5,3) node[above, align=center, scale=0.8, xshift=-10] {TrafficoNS};
+      \draw[<-] (1.5,2) -- (1.5,3) node[above, align=center, scale=0.8, xshift=10] {TrafficoEO};
+
+      \draw[->] (0.5,0) -- (0.5,-1) node[below, align=center, scale=0.8, xshift=-10] {LuceNS};
+      \draw[->] (1.5,0) -- (1.5,-1) node[below, align=center, scale=0.8, xshift=10] {LuceEO};
+
+      \draw (4,0) rectangle (6,2) node[pos=.5] {Datapath};
+
+      \draw[<-] (4,1.5) -- (2,1.5) node[pos=.5, above, align=center, scale=0.8] {Inizio};
+      \draw[->] (4,0.5) -- (2,0.5) node[pos=.5, below, align=center, scale=0.8] {Fine};
+
+      \draw[<-] (0,0.5) -- ++(-0.5,0) -- ++(0,-1) -- ++(-1,0) node[left, align=center, scale=0.8] {CLK};
+      \draw[fill] (-0.5,-0.5) circle (0.05);
+      \draw[->] (-0.5,-0.5) -- (4.5, -0.5) -- ++(0,0.5);
+
+      \draw (3.5, 1.4) -- ++(0.2, 0.2) node[below, yshift=-2] {\tiny 1};
+      \draw (3.5, 0.4) -- ++(0.2, 0.2) node[below, yshift=-2] {\tiny 1};
+    \end{tikzpicture}
+  \end{center}
+  \caption{Modello FSMD del semaforo}
+\end{figure}
 L'implementazione in Verilog è la seguente:
 \begin{figure}[H]
   \begin{lstlisting}[language=Verilog]
