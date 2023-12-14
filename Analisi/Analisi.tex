@@ -3190,8 +3190,52 @@ Tutte queste proprietà si applicano a funzioni continue di segno qualsiasi.
     \] 
     è differenziabile e \( F'(x) = f(x) \;\;\; \forall x \in [a,b] \).
     
+    Una funzione differenziabile \( P \) tale che \( P'=f \) si chiama una \textbf{primitiva} di \( f \).
+    L'insieme di tutte le primitive di \( f \) si chiama \textbf{integrale indefinito} di \( f \) e
+    si denota con:
+    \[
+      \int f(x)\;dx
+    \] 
   \end{theorem}
 \end{figure}
+
+\subsubsection{Dimostrazione}
+Prendiamo un qualsiasi \( x_0 \in [a,b] \). Sia:
+\[
+  R.I.\footnote{\textbf{R.I.}: Rapporto Incrementale}(x) := \frac{F(x) - F(x_0)}{x-x_0} \;\;\; per x \in [a,b]
+\] 
+Dobbiamo dimostrare che \( \lim_{x \to x_0} R.I.(x) = f(x_0) \), cioè che:
+\[
+  \forall \varepsilon > 0\;\; \exists \delta > 0 \;t.c.\; \forall x \in [a,b],
+\] 
+\[
+x_0 - \delta \le x \le x_0 + \delta, \;\; x \neq x_0 \to f(x_0) -\varepsilon \le R.I.(x) \le f(x_0) + \varepsilon 
+\] 
+Prendiamo \( \varepsilon > 0 \) qualsiasi. Poichè \( f \) è continua, sappiamo che \( \lim_{x \to x_0} f(x) =f(x_0) \) 
+e dunque esiste \( \delta > 0 \) tale che per ogni \( x \in [a,b] \),
+\[
+  x_0 - \delta \le x \le x_0 + \delta.\;\;\; x \neq 0 \to \underbrace{f(x_0) - \varepsilon \le f(x) \le f(x_0) +\varepsilon}_{\circ}
+\] 
+Prendiamo ora \( x \in [a,b] \) tale che \( x_0 < x \le x_0 + \delta \) 
+\[
+  R.I.(x) = \frac{1}{x-x_0} \left( \int_{a}^{x} f(t)\;dt - \int_{a}^{x_0} f(t)\;dt \right) =
+\] 
+\[
+  = \frac{1}{x-x_0} \int_{x_0}^{x} f(t)\;dt
+\] 
+Grazie a \( \circ \):
+\[
+\frac{1}{x-x_0} \int_{x_0}^{x} (f(x_0) -\varepsilon )\; dt \le R.I.(x) \le \frac{1}{x-x_0} \int_{x_0}^{x} (f(x_0) + \varepsilon )\;dt
+\] 
+Se \( c \) è costante:
+\[
+  \int_{x_0}^{x} c\;dt = c(x-x_0) \;\;\; \text{(area di un rettangolo)}
+\] 
+e quindi:
+\[
+f(x_0) - \varepsilon \le R.I.(x) \le f(x_0) + \varepsilon
+\] 
+Stesso ragionamento se \( x_0 -\delta \le  x < x_0 \). \( \;\; \square \) 
 
 \subsubsection{Corollario}
 Sia \( f: [a,b] \to \mathbb{R} \) una funzione continua. Sia \( P:[a,b] \to \mathbb{R} \) una funzione
@@ -3199,12 +3243,25 @@ differenziabile tale che \( P' = f \). Allora:
 \[
 \int_{a}^{b} f(x)\;dx = P(b) - P(a)
 \] 
-Una funzione differenziabile \( P \) tale che \( P'=f \) si chiama una \textbf{primitiva} di \( f \).
-L'insieme di tutte le primitive di \( f \) si chiama \textbf{integrale indefinito} di \( f \) e
-si denota con:
+
+\subsubsection{Dimostrazione del corollario}
+Come prima, sia \( F(x):= \int_{a}^{x} f(t)\;dt \) per \( x \in [a,b] \). Allora:
 \[
-\int f(x)\;dx
+  (F-P)' = F' - P' = f - f = 0
 \] 
+Quindi \( F-P=C \), con \( C \in \mathbb{R} \) costante. Inoltre,
+\[
+C = F(a) - P(a) = \int_{a}^{a} f(t)\;dt - P(a) = 0 - P(a) = -P(a)
+\] 
+Quindi:
+\[
+  \int_{a}^{b} f(t)\;dt = F(b) = F(b) - P(b) + P(b)
+\] 
+\[
+= C + P(b) = -P(a) + P(b)
+\] 
+
+
 
 \subsection{Esempi}
 \begin{figure}[H]
@@ -3251,6 +3308,17 @@ si denota con:
   \item \[
   \int \frac{1}{1+x^2}\;dx = \arctan(x) + C
   \] 
+\end{enumerate}
+
+\subsection{Osservazioni}
+Data una funzione continua \( f: [a,b] \to \mathbb{R} \), si definisce:
+\[
+  \int_{a}^{a} f(x)\;dx := 0
+\] 
+\[
+\int_{b}^{a} f(x)\;dx := - \int_{a}^{b} f(x)\;dx
+\] 
+Questa notazione è utile soprattutto quando si integra per sostituzione.
 
 \subsubsection{Esempi}
 \begin{figure}[H]
@@ -3331,5 +3399,156 @@ si denota con:
   \end{example}
 \end{figure}
 
+\begin{figure}[H]
+  \begin{example}
+    \[
+      \int_{0}^{\sqrt{\pi } } x \sin(x^2)\;dx
+    \] 
+    Sostituiamo \( \left[ y=x^2 \right]  \) quindi \( dy = 2x \cdot dx \) (anche gli estremi di integrazione)
+    \[
+      \frac{1}{2} \int_{0}^{\pi } \sin(y)\;dy = \frac{1}{2} \left[ -\cos(y) \right]_{0}^{\pi } = 
+    \] 
+    \[
+    = \frac{1}{2} (-\cos(\pi ) - (-\cos(0))) = \frac{1}{2} (+1 + 1) = 1
+    \] 
+  \end{example}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{example}
+    \[
+      \int_{\frac{1}{\pi }}^{\frac{2}{\pi }} \frac{1}{x^2} \cos(\frac{1}{x})\;dx
+    \] 
+    Sostituiamo \( y = \frac{1}{x} \) quindi \( dy = -\frac{1}{x^2}\;dx \) 
+    \[
+      = - \int_{\pi }^{\frac{\pi }{2}} \cos(y)\;dy =  \int_{\frac{\pi }{2}}^{\pi } \cos(y)\;dy = \left[ \sin(y) \right]_{y=\frac{\pi }{2}}^{\pi } =
+    \] 
+    \[
+    = \sin(\pi ) - \sin(\frac{\pi }{2}) = 0 - 1 = -1
+    \] 
+  \end{example}
+\end{figure}
+
+\subsection{Integrazione delle funzioni razionali}
+Esiste, di fatto, un algoritmo che permette di calcolare gli integrali delle funzioni razionali
+(quozienti di polinomi). Lo schema generale è:
+\begin{enumerate}
+  \item ricondursi al caso in cui il grado del \textbf{denominatore} sia maggiore del grado
+    del \textbf{numeratore};
+  \item scomporre il denominatore;
+  \item scrivere l'integranda come somma di funzioni più semplici;
+  \item integrare ogni frazione singolarmente.
 \end{enumerate}
+Si ricorda che un polinomio di grado due \( P(x) =ax^2 + bx + c \), si scompone come:
+\[
+P(x) = a(x-x_+)(x-x_-)
+\] 
+dove:
+\[
+x_{\pm} = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+\] 
+sono gli zeri di \( P \). (Purchè \( b^2 - 4ac \ge 0\) )
+
+\subsubsection{Esempi}
+\begin{figure}[H]
+  \begin{example}
+    \[
+    \int \frac{1}{x^2-3x+2}\;dx
+    \] 
+    Ho \( x^2 -3x + 2 = (x-1)(x-2)\). Cerco di scrivere:
+    \[
+    \frac{1}{x^2-3x+2} = \frac{A}{x-1} + \frac{B}{x-2}
+    \] 
+    Con \( A,B \) costanti da determinare 
+    \[
+      \frac{A}{x-1} + \frac{B}{x-2} = \frac{Ax - 2A + Bx - B}{(x-1)(x-2)} = \frac{(A+B)x -2A-B}{X^2-3x+2}
+    \] 
+    Per far si che questa sia uguale a \( \frac{1}{x^2-3x+2} \) devo imporre delle condizioni su \( A \) e \( B \) 
+    
+    \[
+      \begin{cases}
+        A+B = 0 \\
+        -2A-B = 1
+      \end{cases}
+      \Leftrightarrow\;\;
+      \begin{cases}
+        B = -A\\
+        -A = 1
+      \end{cases}
+      \Leftrightarrow\;\;
+      \begin{cases}
+        A = -1\\
+        B = 1
+      \end{cases}
+    \] 
+
+    \[
+    \int \frac{dx}{x^2-3x+2} = \int \left(\frac{-1}{x-1} + \frac{1}{x-2}\right)\;dx = 
+    \] 
+    \[
+    = -\int \frac{1}{x-1}\;dx + \int \frac{1}{x-2}\;dx = -\log|x-1| + \log|x-2| + C
+    \] 
+  \end{example}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{example}
+    \[
+    \int \frac{x^2-2}{x^2-3x+2}\;dx
+    \] 
+    Verifico che il grado del numeratore sia minore del grado del denominatore:
+    \[
+      \frac{x^2-2}{x^2-3x+2} = \frac{x^2 \overbrace{-3x+2 + 3x-2}^{\text{sommo e sottraggo}}  -2}{x^2-3x+2} =
+    \] 
+    \[
+    \frac{x^2-3x+2}{x^2-3x+2} + \frac{3x-4}{x^2-3x+2} = 1 + \frac{3x-4}{x^2-3x+2}
+    \] 
+    Scompongo il denominatore: \( x^2-3x+2 = (x-1)(x-2) \) e voglio trovare \( A \) e \( B \) 
+    costanti tali che:
+    \[
+    \frac{3x-4}{x^2-3x+2} = \frac{A}{x-1} + \frac{B}{x-2} = \frac{(A+B)x -2A-B}{x^2-3x+2}
+    \] 
+    Devo imporre:
+    \[
+    \begin{cases}
+      A+B = 3 \\
+      -2A-B = -4
+    \end{cases}
+    \Leftrightarrow\;\;
+    \begin{cases}
+      A = 1 \\
+      B = 3 - A = 2
+    \end{cases}
+    \] 
+    \[
+    \int \frac{x^2-2}{x^2-3x+2}\;dx = \int \left( 1 + \frac{1}{x-1} + \frac{2}{x-2} \right)\; dx=
+    \] 
+    \[
+    = \int 1\;dx + \int \frac{1}{x-1}\;dx + \int \frac{2}{x-2}\;dx = x - \log|x-1| + 2 \log|x-2| + C
+    \] 
+  \end{example}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{example}
+    \[
+    \int \frac{1}{x^2+4x+5}\;dx
+    \] 
+    \( x^2 + 4x + 5 \) non ha radici reali! Uso:
+    \[
+    \int \frac{1}{1+y^2}\;dy = \arctan(y) + C
+    \] 
+    Devo ricondurmi a scrivere \( x^2+4x+5 \) come \textbf{somma di quadrati}:
+    \[
+    x^2+4x+5 = x^2 + 4x + 4 - 4 + 5 = (x+2)^2 + 1
+    \] 
+    \[
+    \int \frac{1}{x^2+4x+5}\;dx = \int \frac{1}{(x+2)^2 + 1}\;dx=
+    \] 
+    Sostituisco \( y = x+2 \) quindi \( dy = dx \) e:
+    \[
+    = \int \frac{1}{y^2 + 1}\;dy = \arctan(y) + C = \arctan(x+2) + C
+    \] 
+  \end{example}
+\end{figure}
 \end{document}
