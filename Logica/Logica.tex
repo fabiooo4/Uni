@@ -3514,7 +3514,7 @@ U = <A, \mathbb{R}, \mathbb{F}, \mathbb{C}>
     \not\models \sigma \Leftrightarrow \exists U \;.\; U \not\models \sigma
     \] 
     \[
-    U = < \{1,2,3\}, \overline{<}\} \;\;\; \text{contromodello} \;\; \rho_u[3/x] \;\; \text{non fa valere}
+    U = < \{1,2,3\}, \overline{<}> \;\;\; \text{contromodello} \;\; \rho_u[3/x] \;\; \text{non fa valere}
     \] 
     \[
     \rho_u \not\models \forall x.\; \exists y.\; (x < y)
@@ -3535,7 +3535,23 @@ U = <A, \mathbb{R}, \mathbb{F}, \mathbb{C}>
 \begin{figure}[H]
   \begin{exercise}[a casa]
     \[
-    \not\models \exists y.\; \forall x.\; x < y
+    \not\models \exists y.\; \forall x.\; x < y \equiv \sigma 
+    \] 
+    \[
+    U = < \{1,2,3\}, \overline{<}> \;\;\; \text{contromodello} \;\; \rho_u[1/y] \;\; \text{non fa valere}
+    \] 
+    \[
+    \rho_u \not\models \exists y.\; \forall x.\; (x < y)
+    \] 
+    Infatti nessuna \( \rho_u \) può soddisfare \( \sigma  \), altrimenti:
+    \[
+      \exists b \in \{1, 2, 3\} \;.\; \forall a \in \{1,2,3\} \;.\; \rho_u[a/x,b/y] \models x < y 
+    \] 
+    \[
+    \rho_u \not\models \exists y.\; \forall x.\; (x < y)
+    \] 
+    \[
+    \Leftrightarrow \rho_u \models \neg \sigma \Leftrightarrow \rho_u \models \forall y.\; \exists x.\; \neg(x < y)
     \] 
   \end{exercise}
 \end{figure}
@@ -3593,6 +3609,26 @@ U = <A, \mathbb{R}, \mathbb{F}, \mathbb{C}>
     \[
       \rho_u \models \alpha \;\; ma \;\; \rho_u \not\models \beta
     \]
+    \[
+      \rho_u \models \forall x.\; P \to \forall x.\; Q \Leftrightarrow
+    \] 
+    \[
+      \forall p \in \{a\} \;.\; \rho_u[p/x] \models P \Rightarrow \forall q \in \{b\} \;.\; \rho_u[q/x] \models Q \Leftrightarrow
+    \] 
+    \[
+      \rho_u \not\models \forall x.\; (P(x) \to Q(x))
+    \] 
+    Infatti per nessuna \( \rho_u \;.\; \rho_u \models \forall x.\; (P(x) \to Q(x)) \) infatti vorrebbe dire:
+    \[
+      \forall p \in \{a\} \;.\; \rho_u[p/x] \models P \to Q \Leftrightarrow
+    \] 
+    Non è possibile perchè \( P \) è valida, mentre \( Q \) no perchè è definita su \( b \).
+    \[
+      \rho_u \models \neg(\forall x.\; (P(x) \to Q(x))) \Leftrightarrow
+    \] 
+    \[
+      \rho_u \models \exists x.\; \neg(P(x) \to Q(x)) 
+    \] 
   \end{exercise}
 \end{figure}
 
@@ -3602,6 +3638,29 @@ U = <A, \mathbb{R}, \mathbb{F}, \mathbb{C}>
     \not\vdash \forall x.\; \exists y.\; \varphi \to \exists y.\; \forall x.\; \varphi
     \] 
     Suggerimento: \( \varphi <\sim> "\le" \) su \( \mathbb{N} \) 
+    \[
+    U = <\mathbb{N}, \le>
+    \]
+    \[
+      \rho_u \models \forall x.\; \exists y.\; \varphi  \Leftrightarrow
+    \]
+    \[
+      \forall a \in \mathbb{N} \;.\; \exists b \in \mathbb{N} \;.\; \rho_u[a/x, b/y] \models \varphi  \Leftrightarrow
+    \]
+    \[
+      \rho_u \not\models \exists y.\; \forall x.\; \varphi 
+    \]
+    Infatti per nessuna \( \rho_u \;.\; \rho_u \models \exists y.\; \forall x.\; \varphi  \) infatti vorrebbe dire:
+    \[
+      \exists b \in \mathbb{N} \;.\; \forall a \in \mathbb{N} \;.\; \rho_u[a/x, b/y] \models \varphi  \Leftrightarrow
+    \]
+    Impossibile
+    \[
+      \rho_u \models \neg(\exists y.\; \forall x.\; \varphi ) \Leftrightarrow
+    \]
+    \[
+      \forall b \in \mathbb{N} \;.\; \exists a \in \mathbb{N} \;.\; \rho_u[a/x, b/y] \models \neg \varphi
+    \]
   \end{exercise}
 \end{figure}
 \end{document}
