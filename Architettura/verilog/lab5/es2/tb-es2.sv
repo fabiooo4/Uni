@@ -1,10 +1,10 @@
 module tb_es2();
 
   // Inputs
-  reg rst;
-  reg clk;
-  reg i1;
-  reg i2;
+  reg[1:0] rst;
+  reg[1:0] clk;
+  reg[1:0] i1;
+  reg[1:0] i2;
 
   // Outputs
   wire o;
