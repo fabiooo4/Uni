@@ -1,8 +1,8 @@
 module es2(
   input rst, clk, i1, i2,
   output reg o);
-  reg state = 2'b00;
-  reg nextState = 2'b00;
+  reg[1:0] state = 2'b00;
+  reg[1:0] nextState = 2'b00;
 
   always @(posedge clk) begin: SEQ
     if (rst) state = 2'b00;
