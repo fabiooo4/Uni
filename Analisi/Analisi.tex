@@ -3551,4 +3551,312 @@ sono gli zeri di \( P \). (Purchè \( b^2 - 4ac \ge 0\) )
     \] 
   \end{example}
 \end{figure}
+
+\begin{figure}[H]
+  \begin{example}
+    \[
+      \int \frac{x^2}{x^2+4x+5}\;dx
+    \] 
+    \[
+      \frac{x^2}{x^2+4x+5} = \frac{x^2 + 4x + 5 - 4x - 5}{x^2+4x+5} = 1 - \frac{4x+5}{x^2+4x+5}
+    \] 
+    Denominatore privo di radici reali, quindi cerco di utilizzare:
+    \[
+      \int \frac{f'(x)}{f(x)}\;dx = \log|f(x)| + C
+    \] 
+    Osservo:
+    \[
+    \frac{d}{dx} (x^2+4x+5) = 2x + 4
+    \] 
+    \[
+    \frac{x^2}{x^2+4x+5} = 1 - \frac{2 \cdot 2x + 2 \cdot 4 + -2 \cdot 4 + 5}{x^2+4x+5} =
+    \] 
+    \[
+    = 1 - 2 \cdot \frac{2x+4}{x^2+4x+5} - \frac{3}{x^2+4x+5} =
+    \] 
+    \[
+    1 - 2 \cdot \frac{2x+4}{x^2+4x+5} - \frac{3}{(x+2)^2 + 1}
+    \] 
+    \[
+    \int \frac{x^2}{x^2+4x+5}\;dx = x - 2 \log(x^2+4x+5) - 3 \arctan(x+2) + C
+    \] 
+  \end{example}
+\end{figure}
+
+\subsection{Integrazione per parti}
+\begin{definition}[Proposizione]
+  Siano \( f,g : [a,b] \to \mathbb{R} \) due funzioni differenziabili. Allora, vale:
+  \[
+    \int_{a}^{b} f(x)\;g'(x)\;dx = \left[ f(x)\;g(x) \right]_{a}^{b} - \int_{a}^{b} f'(x)\;g(x)\;dx
+  \] 
+  \[
+    \int f(x)\;g'(x)\;dx = \left[ f(x)\;g(x) \right] - \int f(x)\;g'(x)\;dx
+  \] 
+\end{definition}
+
+\subsubsection{Esempi}
+\begin{figure}[H]
+  \begin{example}
+    \[
+      \int \underbrace{x}_{f(x)}\,\underbrace{e^x}_{g'(x)}\;dx
+    \] 
+    \[
+    \int x\,e^x\;dx = x\,e^x - \int e^x\;dx = x\,e^x - e^x + C
+    \] 
+  \end{example}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{example}
+    \[
+      \int log(x)\;dx = \int \underbrace{1}_{g'(x)} \cdot \underbrace{log(x)}_{f(x)}\;dx =
+    \] 
+    \[
+    = xlog(x) - \int \frac{1}{x} x \; dx = xlog(x) - x + C
+    \] 
+  \end{example}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{example}
+    \[
+      \int_{0}^{\pi } \sin^2(x)\;dx = \int_{0}^{\pi } \sin(x) \cdot \sin(x)\;dx =
+    \] 
+    \[
+      = -\left[\cos(x) \cdot \sin(x) \right]_{0}^{\pi } + \int_{0}^{\pi } \cos(x) \cdot \cos(x)\;dx =
+    \] 
+    \[
+      = -0 + 0 + \int_{0}^{\pi } \cos^2(x)\;dx = 
+    \] 
+    \[
+      = \int_{0}^{\pi } (1 - \sin^2(x))\;dx = \int_{0}^{\pi } 1\;dx - \int_{0}^{\pi } \sin^2(x)\;dx
+    \] 
+    \[
+      1 \cdot (\pi  - 0) - \int_{0}^{\pi } \sin^2(x)\;dx
+    \] 
+    Abbiamo dimostrato:
+    \[
+      \left[ A = \pi -A \Leftrightarrow 2A = \pi \Leftrightarrow A = \frac{\pi }{2} \right] 
+    \] 
+    Quindi:
+    \[
+      \int_{0}^{\pi } \sin^2(x)\;dx = \frac{\pi }{2}
+    \] 
+  \end{example}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{example}
+    \[
+      \int_{0}^{2} \frac{\log(2x+1)}{(2x+1)^2}\;dx
+    \] 
+    La funzione integranda è ben definita e continua su \( [0,2] \). Cambio di variabile:
+    \[
+    y = 2x+1
+    \] 
+    \[
+    dy = \frac{d}{dx}(2x+1)\;dx = 2\;dx
+    \] 
+    \[
+      \int_{0}^{2} \frac{\log(2x+1)}{(2x+1)^2}\;dx = \frac{1}{2} \int_{1}^{5} \frac{\log(y)}{y^2}\;dy = \frac{1}{2} \int_{1}^{5} y^{-2} \cdot \log(y) \;dy =
+    \] 
+    \[
+      = \frac{1}{2} \left[ -y^{-1} \cdot \log(y) \right]_{y=1}^{5} + \int_{1}^{5} y^{-2}\;dx =
+    \] 
+    \[
+      = \frac{1}{2} \left[ -\frac{\log(y)}{y} \right]_{y=1}^{5} + \left[ -y^{-1} \right]_{y=1}^{5} =
+    \] 
+    \[
+      = \frac{1}{2} \left( -\frac{\log(5)}{5} + \frac{\log(1)}{1} \right) + \left( -\frac{1}{5} + \frac{1}{1} \right) = \frac{1}{2} \left( -\frac{\log(5)}{5} \right) - \frac{4}{5} =
+    \] 
+    \[
+      = -\frac{\log(5)}{10} - \frac{4}{5} = -\frac{1}{10} \log(5) - \frac{4}{5} 
+    \] 
+  \end{example}
+\end{figure}
+
+\section{Serie}
+Sia \( \{a_n\}_{n \in \mathbb{N}}  \) una successione di numeri reali (cioè, una funzione \( \mathbb{N} \to \mathbb{R} \)).
+Vogliamo dare un senso preciso alla "somma infinita"
+\[
+a_0 + a_1 + a_2 + a_3 + a_4 + \ldots
+\] 
+
+\begin{figure}[H]
+  \begin{definition}
+    Data una successione di numeri reali \( \{a_n\}  \), si definisce la somma della \textbf{serie}
+    di termine generale \( \{a_n\}  \) come:
+    \[
+    \sum_{n=0}^{+\infty} a_n = \lim_{N \to +\infty} \sum_{n=0}^{N} a_n
+    \] 
+    Si dice che la serie \( \begin{cases}
+      \text{converge}\\
+      \text{diverge}\\
+      \text{oscilla}
+    \end{cases} \) se il limite \( \begin{cases}
+      \text{esiste finito}\\
+      \text{esiste infinito}\\
+      \text{non esiste}
+    \end{cases} \) 
+  \end{definition}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{example}
+    \[
+      \sum_{n=0}^{+\infty} 2^{-n} = 1 + \frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \ldots = \lim_{N \to +\infty} \sum_{n=0}^{N} 2^{-n}
+    \] 
+    \begin{center}
+      \begin{tikzpicture}
+        \draw (0,0) -- (10,0);
+
+        \foreach \x in {0,1,2} {
+          \draw (\x*3,-0.2) -- (\x*3,0.2);
+          \node[scale=0.8] at (\x*3, -0.5) {\x};
+        }
+
+        \node[scale=0.8] at (4.5, -0.5) {1.5};
+        \draw (4.5,-0.2) -- (4.5,0.2);
+
+        \draw (5,-0.2) -- (5,0.2);
+
+        \draw (5.25,-0.2) -- (5.25,0.2);
+
+        \draw[fill, yellow, opacity=0.5] (0,-0.2) rectangle (6,0.2);
+
+        \draw (0,0.3) -- ++(0,0.2) -- ++(3,0) node[above, scale=0.8, xshift=-50] {\( 1 \) } -- ++(0,-0.2);
+        \draw (3,0.3) -- ++(0,0.2) -- ++(1.5,0) node[above, scale=0.8, xshift=-25] {\( \frac{1}{2} \) } -- ++(0,-0.2);
+        \draw (4.5,0.3) -- ++(0,0.2) -- ++(0.5,0) node[above, scale=0.8, xshift=-10] {\( \frac{1}{4} \) } -- ++(0,-0.2);
+        \draw (5,0.3) -- ++(0,0.2) -- ++(0.25,0) node[above, scale=0.8, xshift=-5] {\( \frac{1}{8} \) } -- ++(0,-0.2);
+      \end{tikzpicture}
+    \end{center}
+    Considero prima:
+    \[
+      \sum_{n=0}^{N} 2^{-n} \;\;\text{con \( N \in \mathbb{N} \) qualsiasi.}
+    \] 
+    \[
+    \left(\sum_{n=0}^{N} (1/2)^n \right) \cdot \left( 1- \frac{1}{2} \right) =
+    \] 
+    \[
+    = \left( 1 + \frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \ldots + \frac{1}{2^N} \right) \cdot \left( 1 - \frac{1}{3} \right) =
+    \] 
+    Somma telescopica:
+    \[
+      = 1 \cancel{+ \frac{1}{2}} \cancel{+\frac{1}{4}} \cancel{+ \frac{1}{8}} \cancel{+ \ldots} \cancel{+ \frac{1}{2^N}} \cancel{- \frac{1}{2}} \cancel{- \frac{1}{4}} \cancel{- \frac{1}{8}} \cancel{- \ldots} - \frac{1}{2^{N+1}} = 1 - \frac{1}{2^{N+1}}
+    \] 
+    Dunque:
+    \[
+      \sum_{n=0}^{N} \left( \frac{1}{2} \right)^n = \frac{1 - \frac{1}{2^{N+1}}}{1 - \frac{1}{2}} \underset{N \to +\infty}{\to } \frac{1}{1-\frac{1}{2}} = 2
+    \] 
+  \end{example}
+\end{figure}
+
+\subsection{Osservazioni}
+\begin{itemize}
+  \item Possiamo anche definire
+    \[
+    \sum_{n=1}^{+\infty} a_n = \lim_{N \to +\infty} \sum_{n=1}^{N} a_n
+    \] 
+    \[
+    \sum_{n=57}^{+\infty} a_n = \lim_{N \to +\infty} \sum_{n=57}^{N} a_n \ldots
+    \] 
+  \item Nessuno garantisce che la somma della serie esista. Ad esempio, sia:
+    \[
+    a_n = (-1)^n = \begin{cases}
+      1 \;\;\; \text{se \( n \) pari}\\
+      -1 \;\;\; \text{se \( n \) dispari}
+    \end{cases}
+    \] 
+    \[
+    \sum_{n=0}^{+\infty} a_n = 1 - 1 + 1 - 1 + 1 - 1 + \ldots
+    \] 
+    La serie \textbf{Oscilla}. La somma delle serie \textbf{non esiste}, infatti:
+    \[
+    \sum_{n=0}^{N} a_n = \begin{cases}
+      1 \;\;\; \text{se \( N \) pari}\\
+      0 \;\;\; \text{se \( N \) dispari}
+    \end{cases}
+    \] 
+  \item Se la serie \( \sum_{n=0}^{+\infty} a_n \) converge, allora necessariamente \( \lim_{n \to +\infty} a_n = 0 \).
+    Infatti, sia \( S:= \sum_{n=0}^{+\infty} a_n \in \mathbb{R} \). Allora
+    \[
+      a_N = \sum_{n=0}^{N} a_n - \sum_{n=0}^{N-1} a_n \underset{N \to +\infty}{\to } S - S = 0
+    \] 
+    (perchè se \( f(N) \underset{N \to +\infty}{\to } S \) allora \( f(N-1) \underset{N \to +\infty}{\to } S \)).
+    \textbf{Non vale} il viceversa: potrebbe benissimo capitare che \( \lim_{n \to +\infty} a_n = 0 \),
+    pero \( \sum_{n=0}^{+\infty} a_n \) non converga.
+\end{itemize}
+
+\subsubsection{Esempi importanti}
+\begin{enumerate}
+  \item \textbf{Serie geometrica} (di ragione \( x \in \mathbb{R} \)):
+    \[
+    \sum_{n=1}^{+\infty} x^n
+    \] 
+    Essa converge se e solo se \( -1 < x < 1 \) e in tal caso si ha:
+    \[
+    \sum_{n=0}^{+\infty} x^n = \frac{1}{1-x}
+    \] 
+    \textbf{Conseguenza}: \( 0,\overline{9} = 1 \) \\
+    \textbf{Dimostrazione}: \( 0,\overline{9} = \frac{9}{10} + \frac{9}{100} + \frac{9}{1000} + \frac{9}{10000} + \ldots = \) 
+    \[
+    = 9 \cdot \sum_{n=1}^{+\infty} \frac{1}{10^n} = 9 \cdot \left( \sum_{n=1}^{+\infty} \frac{1}{10^n} -1 \right) =
+    \] 
+    \[
+    = 9 \cdot \left( \frac{1}{1-\frac{1}{10}} -1 \right) = 9 \cdot \frac{10}{9} - 9 = 10 - 9 = 1
+    \] 
+  \item \textbf{Serie esponenziale}:
+    \[
+    \text{per ogni}\;\; x \in \mathbb{R},\;\; \sum_{n=0}^{+\infty} \frac{x^n}{n!} = e^x
+    \] 
+  \item \textbf{Serie armonica}:
+    \[
+    \sum_{n=1}^{+\infty} \frac{1}{n} = +\infty
+    \] 
+    \textbf{Dimostrazione}:
+    \begin{center}
+      \begin{tikzpicture}
+				\draw[->] (-0.5, 0) -- (3, 0) node[right] {$x$};
+				\draw[->] (0, -0.5) -- (0, 3) node[left] {$y$};
+				\draw[domain=0.3:3, smooth, variable=\x, red, thick, yscale=1, xscale=1] plot ({\x}, {1/\x}) node [above] {\( \frac{1}{x} \) };
+
+        \draw[fill, blue, opacity=0.3] (0.35,0) rectangle (0.7,3);
+        \draw[blue, thin] (0.35,0) rectangle (0.7,3);
+        \draw[fill, blue, opacity=0.3] (0.7,0) rectangle (1.05,2);
+        \draw[blue, thin] (0.7,0) rectangle (1.05,2);
+        \draw[fill, blue, opacity=0.3] (1.05,0) rectangle (1.4,1.5);
+        \draw[blue, thin] (1.05,0) rectangle (1.4,1.5);
+        \draw[fill, blue, opacity=0.3] (1.4,0) rectangle (1.75,1.2);
+        \draw[blue, thin] (1.4,0) rectangle (1.75,1.2);
+        \draw[fill, blue, opacity=0.3] (1.75,0) rectangle (2.1,1);
+        \draw[blue, thin] (1.75,0) rectangle (2.1,1);
+        \draw[fill, blue, opacity=0.3] (2.1,0) rectangle (2.45,0.8);
+        \draw[blue, thin] (2.1,0) rectangle (2.45,0.8);
+        \draw[fill, blue, opacity=0.3] (2.45,0) rectangle (2.8,0.7);
+        \draw[blue, thin] (2.45,0) rectangle (2.8,0.7);
+
+        \node[scale=0.8, below] at (0.35, 0) {\( 1 \)};
+        \node[scale=0.8, below] at (0.7, 0) {\( 2 \)};
+        \node[scale=0.8, below] at (1.05, 0) {\( 3 \)};
+        \node[scale=0.8, below] at (2.1, 0) {\( N \)};
+        \node[scale=0.8, below] at (2.45, 0) {\( N+1 \)};
+      \end{tikzpicture}
+    \end{center}
+    Area dell'unione dei rettangoli = \( 1 + \frac{1}{2} + \frac{1}{3} + \ldots + \frac{1}{N} \) \\
+    Area sottesa al grafico \( y = \frac{1}{x} \) per \( 1 \le x \le N+1 =\)
+    \[= \int_{1}^{N+1} \frac{1}{x}\;dx  = \log(N+1) \]
+    Dunque:
+    \[
+    \sum_{n=1}^{N} \frac{1}{n} \ge \log(N+1) \underset{N \to +\infty}{\to } +\infty
+    \] 
+    \textbf{Osservazione}:\\
+    Facendo stime più precise, si potrebbe dimostrare che vale:
+    \[
+    \sum_{n=1}^{N} \frac{1}{n} = \log(N+1) + \gamma + o(1) \;\; per N \to +\infty
+    \] 
+    dove \( \gamma  \) è un opportuno numero reale, chiamato la costante di \textbf{Eulero-Mascheroni}
+    (\( \gamma \approx 0.577 \ldots \)).
+  \item \textbf{Serie armonica generalizzata}:
+    Sia \( s \in \mathbb{R} \) un parametro. La serie
+\end{enumerate}
 \end{document}
