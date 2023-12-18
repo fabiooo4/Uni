@@ -5168,4 +5168,128 @@ L'implementazione in Verilog è la seguente:
   end
   \end{lstlisting}
 \end{figure}
+
+\section{High Level Synthesis}
+Verrà fatto vedere in C come si può scrivere un codice che verrà poi sintetizzato in VHDL. Implementiamo
+l'algoritmo per calcolare il massimo comune divisore:
+\begin{figure}[H]
+  \begin{center}
+    \begin{circuitikz}[square/.style={regular polygon,regular polygon sides=4}]
+      \draw (0,0) node[square,draw, minimum size=2cm, scale=0.6] (gcd) {\huge GCD};
+      \draw[latex-] (-0.8,0.3) -- ++(-0.8,0) node[left] {x};
+      \draw[latex-] (-0.8,-0.3) -- ++(-0.8,0) node[left] {y};
+      \draw[-latex] (0.8,-0.3) -- ++(0.8,0) node[right] {out};
+      \draw[-latex] (0.8,0.3) -- ++(0.8,0) node[right] {done};
+    \end{circuitikz}
+  \end{center}
+  \caption{Circuito per il calcolo del massimo comune divisore}
+\end{figure}
+Il codice è il seguente:
+\begin{figure}[H]
+  \begin{lstlisting}[language=C]
+    int gcd(int x, int y) {
+      int temp;
+      while(x > 0) {
+        if(y <= x) { // Si mette y <= x per poter riutilizzare lo stesso componente del > ma negato
+          temp = x;
+          x = y;
+          y = temp;
+        }
+        x = x - y;
+      }
+      return y;
+    }
+  \end{lstlisting}
+\end{figure}
+\begin{figure}[H]
+  \begin{center}
+    \begin{tikzpicture}
+      \draw (0,0) rectangle (2,2) node[pos=.5] {FSM};
+
+      \draw[-latex] (3,4) -- ++(0,-1) -| (1,2);
+      \draw[-latex] (3,3) -| (5,2);
+
+      \draw (1,0) |- (3,-1.5);
+      \draw (5,0) |- (3,-1.5);
+      \draw[-latex] (3,-1.5) -- ++(0,-1);
+
+      \draw (4,0) rectangle (6,2) node[pos=.5] {Datapath};
+
+      \draw[<-] (4,1.5) -- (2,1.5) node[pos=.5, above, align=center, scale=0.8] {};
+      \draw[->] (4,0.5) -- (2,0.5) node[pos=.5, below, align=center, scale=0.8] {};
+
+      \draw[<-] (0,0.5) -- ++(-0.5,0) -- ++(0,-1) -- ++(-1,0) node[left, align=center, scale=0.8] {CLK};
+      \draw[fill] (-0.5,-0.5) circle (0.05);
+      \draw[->] (-0.5,-0.5) -- (4.5, -0.5) -- ++(0,0.5);
+
+    \end{tikzpicture}
+  \end{center}
+  \caption{Modello del progetto a cui si vuole arrivare}
+\end{figure}
+
+\begin{itemize}
+  \item \textbf{Scheduling}: si decide in che cicli di clock effettuare le operazioni
+  \item \textbf{Allocation}: si decide dove allocare le operazioni
+\end{itemize}
+
+
+\begin{figure}[H]
+  \begin{center}
+    \begin{tikzpicture}[node distance=4cm and 2cm,>=stealth',auto, every place/.style={draw}]
+      \node [place] (Init) {Init};
+      \coordinate[node distance=1.3cm,left of=Init] (left-Init);
+      \coordinate[node distance=1.3cm,right of=Init] (right-Init);
+
+      \node [place] (While) [right of= Init, align=center] {While};
+      \node [place] (If) [below of= While] {If};
+      \node [place] (EndIf) [left of= If, align=center] {End\\if};
+      \node [place] (End) [right of= While, align=center] {End};
+
+      \path[->] (Init) edge [bend left=20] node[scale=0.9, align=center] {/read x\\/read y} (While);
+      \path[->] (While) edge [bend left=20] node[scale=0.9, align=center] {$x>0$/} (If);
+      \path[->] (While) edge [bend left=20] node[scale=0.9, align=center] {$x \le 0/out=y$\\$x \le 0 / done = 1$} (End);
+      \path[->] (If) edge [bend left=20] node[scale=0.9, align=center] {$y>x/temp = x$\\
+        $y > x /x = y$\\$y > x/ y = temp$} (EndIf);
+      \path[->] (If) edge [bend right=20] node[scale=0.9, align=center] {$x \le y$} (EndIf);
+      \path[->] (EndIf) edge node[scale=0.9, align=center] {/x = x - y} (While);
+    \end{tikzpicture}
+  \end{center}
+  \caption{FSM annotata}
+\end{figure}
+Ad esempio con 8 cicli di clock si produce il risultato se \( x = 8 \) e \( y = 4 \). Per capire
+quali sono i registri necessari dalla FSM si controlla quali sono le variabili che vengono assegnate
+in un ciclo di clock e vengono utilizzate in un ciclo di clock diverso, in quel caso si utilizza
+un registro. In questo caso si utilizzano 2 registri, uno per \( x \) e uno per \( y \), \( temp \) 
+è soltanto un filo perchè viene usato soltanto in un cilclo di clock.
+
+Bisogna indicare al circuito quando il risultato è giusto, quindi si aggiunge un segnale di controllo
+per indicare che il risultato è pronto e la chiamo \textbf{done}.
+
+Per implementare il circuito controllore e per farlo si utilizzano le condizioni definite
+nel diagramma di stato. Si aggiunge un segnale di controllo per ogni condizione:
+\label{D1}
+
+\begin{figure}[H]
+  \begin{center}
+    \begin{tikzpicture}[node distance=4cm and 2cm,>=stealth',auto, every place/.style={draw}]
+      \node [place] (Init) {Init};
+      \coordinate[node distance=1.3cm,left of=Init] (left-Init);
+      \coordinate[node distance=1.3cm,right of=Init] (right-Init);
+
+      \node [place] (While) [right of= Init, align=center] {While};
+      \node [place] (If) [below of= While] {If};
+      \node [place] (EndIf) [left of= If, align=center] {End\\if};
+      \node [place] (End) [right of= While, align=center] {End};
+
+      \path[->] (Init) edge [bend right=20] node[scale=0.9, align=center] {--/0010} (While);
+      \path[->] (While) edge [bend left=20] node[scale=0.9, align=center] {1-/0100} (If);
+      \path[->] (While) edge [bend right=20] node[scale=0.9, align=center] {0-/1101} (End);
+      \path[->] (If) edge [bend left=20] node[scale=0.9, align=center] {-1/1000} (EndIf);
+      \path[->] (If) edge [bend right=20] node[scale=0.9, align=center] {-0/0110} (EndIf);
+      \path[->] (EndIf) edge node[scale=0.9, align=center] {--/1010} (While);
+      \path[->] (End) edge [bend right=30] node[scale=0.9, align=center] {--/1101} (Init);
+    \end{tikzpicture}
+  \end{center}
+  \caption{STG con segnali di controllo}
+\end{figure}
 \end{document}
