@@ -3663,4 +3663,181 @@ U = <A, \mathbb{R}, \mathbb{F}, \mathbb{C}>
     \]
   \end{exercise}
 \end{figure}
+
+\section{Formalizzazione della logica del primo ordine}
+Sia \( v_0, v_1, \ldots \) una enumerazione di tutte le variabili.
+\begin{define}[Notazione]
+  Per indicare quali sono le variabili libere di una formula si usa la seguente notazione:
+  \[
+    \varphi[v_0 \ldots v_m] = FV(\varphi ) = \{v_0 \ldots v_m\} 
+  \] 
+  
+\end{define}
+\begin{itemize}
+  \item \textbf{Relazione}: Sia \( R \subseteq |U|^n \;\;\;\;\; \equiv |U| \times |U| \times \ldots \times |U|\) \\
+    Una formula \( \varphi  \) in \( FORM \) formalizza \( R \) se:
+    \begin{enumerate}
+      \item \( FV(\varphi_R) = \{x_0 \ldots x_n-1\}  \) 
+      \item \( (a_0, \ldots, a_{n-1}) \in R \Leftrightarrow U \models \varphi_R[a_0 \ldots a_{n-1}] \) 
+    \end{enumerate}
+\end{itemize}
+
+\subsection{Struttura di Peano}
+Prendiamo in considerazione \( R = \emptyset,\;\;\;F = \{\overbrace{s}_{succ}, \overline{+}, \overline{\times}\},\;\;\; C = \{0\}\)
+sul dominio in \( \mathbb{N} \).
+\[
+Nat = \left< \mathbb{N}, succ, +, \times , 0 \right>
+\] 
+\[
+  (s)^{Nat} = succ \;\;\; (F)^{Nat} = + \;\;\; (\times )^{Nat} = \times \;\;\; (0)^{Nat} = 0
+\] 
+Con questa codifica si possono rappresentare tutti i numeri naturali:
+\[
+  \overline{1} = S(\overline{0}) \;\;\; \overline{2} = S(S(\overline{0})) \;\;\; \overline{n} = S...(S(\overline{0}))
+\] 
+\( \overline{n} \) è la codifica di \( n \in  \mathbb{N} \) 
+\subsubsection{Esempi}
+\begin{figure}[H]
+  \begin{example}[Disuguaglianze]
+    \begin{itemize}
+      \item 
+        \[
+          \varphi_{\le} [v_0, v_1] = \exists v_2.\; v_0 \overline{+} v_2 = v_1
+        \] 
+      \item \[
+          \varphi_{<} [v_0, v_1] = (\exists v_2.\; v_0 \overline{+}v_2 = v_1) \wedge \neg(v_2 = \overline{0})
+      \] 
+      \item \[
+      \varphi_{\ge } [v_0, v_1] = \exists v_2.\; v_1 \overline{+} v_2 = v_0
+      \] 
+      \item \[
+      \varphi_{>} [v_0, v_1] = (\exists v_2.\; v_1 \overline{+}v_2 = v_0) \wedge \neg(v_2 = \overline{0})
+      \] 
+    \end{itemize}
+  \end{example}
+\end{figure}
+\begin{figure}[H]
+  \begin{example}[Divisibilità (a casa)]
+    La divisibilità dice che \( m|n \Leftrightarrow \exists k \ge 1.\; n \cdot k = m \) 
+  \end{example}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{example}[Essere pari]
+    \[
+      \varphi_{P}[v_0] := \exists x.\; (v_0 = x \overline{+} x)
+    \] 
+  \end{example}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{example}[Essere dispari]
+    Definizione indiretta:
+    \[
+      \varphi_{P}[v_0] := \neg \varphi_{P}[v_0]
+    \] 
+    Definizione diretta:
+    \[
+      \varphi_{D}[v_0] := \exists x.\; (v_0 = S(x \overline{+} x))
+    \] 
+  \end{example}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{example}[Essere primo]
+    Primo \( \subseteq \mathbb{N} \):
+    \[
+    Pr(n) \Leftrightarrow \;\; \text{\( n \) è primo}
+    \] 
+    \[
+      \overline{1} = S(\overline{0})
+    \] 
+    \[
+      \varphi_{Pr}[v_0] := \neg(v_0 = \overline{0}) \wedge \neg(v_0 = \overline{1})\; \wedge
+    \] 
+    \[
+     \forall x.\; \forall y.\; (v_0 = x \overline{\times} y \to (x=\overline{1} \wedge x = v_0))
+    \] 
+  \end{example}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{example}[Ci sono infiniti primi]
+    \[
+      \forall x.\; (\varphi _{Pr}(x) \to \exists y.\; (x < y \wedge \varphi _{Pr}(y)))
+    \] 
+  \end{example}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{example}
+    Per ogni primo \( n \), \( \exists m \) pari con \( m > n \) 
+    \[
+      \varphi_{Pr},\; \varphi_{P},\; \varphi_{<}
+    \] 
+    \[
+      \forall n.\; (\varphi_{Pr}(n) \to \exists m.\; (\varphi_{P}(m) \wedge \varphi_{>}(m,n) ))
+    \] 
+  \end{example}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{example}
+    I numeri primi hanno un minimo ma non un massimo:
+    \[
+      \varphi_{Pr},\; \varphi_{>}
+    \] 
+    \[
+      \exists x.\; (\varphi_{Pr}(x) \to \not\exists y.\; (\varphi_{Pr}(y) \wedge \varphi_{<}(y,x))) \wedge 
+    \] 
+    \[
+    \forall n.\; (\varphi_{Pr}(n) \to \exists m.\; (\varphi_{Pr}(m) \wedge \varphi_{>}(m,n) ))
+    \] 
+  \end{example}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{example}
+    Ogni primo \( >2 \) è successore di un numero pari
+    \[
+      \overline{2} = S(S(\overline{0}))
+    \] 
+    \[
+      \forall x.\; ((\varphi _{Pr}(x) \wedge \varphi_{>}(x, \overline{2})) \to \exists y.\; (\varphi_{P}(y) \wedge x = S(y)))
+    \] 
+  \end{example}
+\end{figure}
+
+Si possono creare anche altre strutture, come ad esempio una sui reali:
+\[
+\left< \mathbb{R}; <; "-"; \_ \right>
+\] 
+
+\begin{figure}[H]
+  \begin{exercise}[A casa]
+    \[
+      Pos[x] := \varphi_{Pos}[v_0] := \overline{0} < v_0 \ldots
+    \] 
+  \end{exercise}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{exercise}[A casa]
+    \( \mathbb{R} \) è denso (tra due reali c'è sempre un altro reale)
+  \end{exercise}
+\end{figure}
+    
+
+\begin{figure}[H]
+  \begin{exercise}[A casa]
+    \[
+    ABS(p,q) := \; \text{\( p \) valore assoluto di \( q \)}
+    \] 
+  \end{exercise}
+\end{figure}
+
+\subsection{Alcune proprietà}
+Se \( [|t|]_{\rho_u}^U = a \in |U| \;\;\; [|u[t/x]|]_{\rho} = [|u|]_{\rho[a/x]} \) \\
+se \( t \) libero per \( x \) in \( \varphi  \)\\
+se \( [|t|]_{\rho } = a \) allora \( \rho \models \varphi[t/x] \Leftrightarrow \rho[a/x] \models \varphi  \) 
 \end{document}
