@@ -4968,11 +4968,11 @@ oppure una parte preponderante di datapath.
 \begin{figure}[H]
   \begin{center}
     \begin{tikzpicture}[node distance=4cm and 2cm,>=stealth',auto, every place/.style={draw}]
-      \node [place] (A) {VERDENS};
+      \node [place] (A) [scale=0.7] {VERDENS};
       \coordinate[node distance=1.3cm,left of=A] (left-A);
       \coordinate[node distance=1.3cm,right of=A] (right-A);
 
-      \node [place] (B) [right of= A] {VERDEEO};
+      \node [place] (B) [right of= A, scale=0.7] {VERDEEO};
 
 
       \path[->] (A) edge [loop left] node[xshift=2,scale=0.9] {-0/10} ();
@@ -5035,13 +5035,13 @@ oppure una parte preponderante di datapath.
 \begin{figure}[H]
   \begin{center}
     \begin{tikzpicture}[node distance=4cm and 2cm,>=stealth',auto, every place/.style={draw}]
-      \node [place] (A) {VERDENS};
+      \node [place] (A) [scale=0.7] {VERDENS};
       \coordinate[node distance=1.3cm,left of=A] (left-A);
       \coordinate[node distance=1.3cm,right of=A] (right-A);
 
-      \node [place] (B) [below of= A, align=center] {INIZIO\\ CONTO};
-      \node [place] (C) [right of= B] {VERDEEO};
-      \node [place] (D) [above of= C, align=center] {CONTO 2};
+      \node [place] (B) [below of= A, align=center, scale=0.7] {INIZIO\\ CONTO};
+      \node [place] (C) [right of= B, scale=0.7] {VERDEEO};
+      \node [place] (D) [above of= C, align=center, scale=0.7] {CONTO 2};
 
 
       \path[->] (A) edge [loop left] node[xshift=2,scale=0.9, align=center] {00-/100\\
@@ -5184,7 +5184,11 @@ l'algoritmo per calcolare il massimo comune divisore:
   \end{center}
   \caption{Circuito per il calcolo del massimo comune divisore}
 \end{figure}
-Il codice è il seguente:
+Bisogna indicare al circuito quando il risultato è giusto, quindi si aggiunge un segnale di controllo
+per indicare che il risultato è pronto e la chiamo \textbf{done}.
+
+\vspace{1em}
+Il codice in C è il seguente:
 \begin{figure}[H]
   \begin{lstlisting}[language=C]
     int gcd(int x, int y) {
@@ -5235,14 +5239,14 @@ Il codice è il seguente:
 
 \begin{figure}[H]
   \begin{center}
-    \begin{tikzpicture}[node distance=4cm and 2cm,>=stealth',auto, every place/.style={draw}]
+    \begin{tikzpicture}[node distance=3cm and 2cm,>=stealth',auto, every place/.style={draw}]
       \node [place] (Init) {Init};
       \coordinate[node distance=1.3cm,left of=Init] (left-Init);
       \coordinate[node distance=1.3cm,right of=Init] (right-Init);
 
-      \node [place] (While) [right of= Init, align=center] {While};
+      \node [place] (While) [right of= Init, align=center, scale=0.8] {While};
       \node [place] (If) [below of= While] {If};
-      \node [place] (EndIf) [left of= If, align=center] {End\\if};
+      \node [place] (EndIf) [left of= If, align=center, scale=0.7] {End\\if};
       \node [place] (End) [right of= While, align=center] {End};
 
       \path[->] (Init) edge [bend left=20] node[scale=0.9, align=center] {/read x\\/read y} (While);
@@ -5262,23 +5266,158 @@ in un ciclo di clock e vengono utilizzate in un ciclo di clock diverso, in quel 
 un registro. In questo caso si utilizzano 2 registri, uno per \( x \) e uno per \( y \), \( temp \) 
 è soltanto un filo perchè viene usato soltanto in un cilclo di clock.
 
-Bisogna indicare al circuito quando il risultato è giusto, quindi si aggiunge un segnale di controllo
-per indicare che il risultato è pronto e la chiamo \textbf{done}.
-
-Per implementare il circuito controllore e per farlo si utilizzano le condizioni definite
+\vspace{1em}
+Per implementare il circuito controllore si utilizzano le condizioni definite
 nel diagramma di stato. Si aggiunge un segnale di controllo per ogni condizione:
-\label{D1}
+\begin{figure}[H]
+  \centering
+    \begin{circuitikz}[square/.style={regular polygon,regular polygon sides=4}, scale=1.3, transform shape]
+      % Multiplexer 6 to 1
+      \draw (-1,0.2) node (mux1-i1) {};
+      \node at (mux1-i1) [below, scale=0.7, yshift=-1] {001};
+      \draw (-0.5,0.2) node (mux1-i2) {};
+      \node at (mux1-i2) [below, scale=0.7, yshift=-1] {010};
+      \draw (0.0,0.2) node (mux1-i3) {};
+      \node at (mux1-i3) [below, scale=0.7, yshift=-1] {011};
+      \draw (0.5,0.2) node (mux1-i4) {};
+      \node at (mux1-i4) [below, scale=0.7, yshift=-1] {100};
+      \draw (1.0,0.2) node (mux1-i5) {};
+      \node at (mux1-i5) [below, scale=0.7, yshift=-1] {101};
+      \draw (1.5,0.2) node (mux1-i6) {};
+      \node at (mux1-i6) [below, scale=0.7, yshift=-1] {110};
+
+      \draw (-1.3,0) node (mux1-s) {};
+      \draw (0.25,-0.18) node (mux1-o) {};
+
+      \draw (-1.5,0.3) -- ++(3.5,0) -- ++(-0.25, -0.6) -- ++(-3,0) -- ++(-0.25,0.6) -- cycle;
+      % ------------------
+
+      % Multiplexer2 6 to 1
+      \draw (3,0.2) node (mux2-i1) {};
+      \node at (mux2-i1) [below, scale=0.7, yshift=-1] {001};
+      \draw (3.5,0.2) node (mux2-i2) {};
+      \node at (mux2-i2) [below, scale=0.7, yshift=-1] {010};
+      \draw (4,0.2) node (mux2-i3) {};
+      \node at (mux2-i3) [below, scale=0.7, yshift=-1] {011};
+      \draw (4.5,0.2) node (mux2-i4) {};
+      \node at (mux2-i4) [below, scale=0.7, yshift=-1] {100};
+      \draw (5,0.2) node (mux2-i5) {};
+      \node at (mux2-i5) [below, scale=0.7, yshift=-1] {101};
+      \draw (5.5,0.2) node (mux2-i6) {};
+      \node at (mux2-i6) [below, scale=0.7, yshift=-1] {110};
+
+      \draw (2.7,0) node (mux2-s) {};
+      \draw (4.25,-0.18) node (mux2-o) {};
+
+      \draw (2.5,0.3) -- ++(3.5,0) -- ++(-0.25, -0.6) -- ++(-3,0) -- ++(-0.25,0.6) -- cycle;
+      % ------------------
+
+
+      % Register x
+      \draw (0.25,-1) node[rectangle ,draw, minimum width=2cm, minimum height=0.7cm, scale=0.7] (regX) {x};
+      \draw (regX.east) -- ++(0,0.15) -- ++(-0.2, -0.15) -- ++(0.2,-0.15);
+      % ------------------
+
+      % Register y
+      \draw (4.25,-1) node[rectangle ,draw, minimum width=2cm, minimum height=0.7cm, scale=0.7] (regY) {y};
+      \draw (regY.east) -- ++(0,0.15) -- ++(-0.2, -0.15) -- ++(0.2,-0.15);
+      % ------------------
+
+      % Operators
+      \draw (0.43,-2.5) node[square,draw, minimum size=2cm, scale=0.6] (sub) {\huge$-$};
+      \node[xshift=-5, yshift=-3] at (sub.north) (sub-i0) {};
+      \node[xshift=5, yshift=-3] at (sub.north) (sub-i1) {};
+
+      \draw (-1,-2.5) node[square,draw, minimum size=2cm, scale=0.6] (greater1) {\huge$>$};
+      \node[xshift=-5, yshift=-3] at (greater1.north) (greater1-i0) {};
+      \node[xshift=5, yshift=-3] at (greater1.north) (greater1-i1) {};
+
+      \draw (2.5,-2.5) node[square,draw, minimum size=2cm, scale=0.6] (greater2) {\huge$>$};
+      \node[xshift=-5, yshift=-3] at (greater2.north) (greater2-i0) {};
+      \node[xshift=5, yshift=-3] at (greater2.north) (greater2-i1) {};
+      % ------------------
+
+      \node at (mux1-i1) [below, scale=0.6, yshift=-11] {$t_1$};
+      \node at (mux1-i2) [below, scale=0.6, yshift=-11] {$t_2$};
+      \node at (mux1-i3) [below, scale=0.6, yshift=-11] {$t_3$};
+      \node at (mux1-i4) [below, scale=0.6, yshift=-11] {$t_4$};
+      \node at (mux1-i5) [below, scale=0.6, yshift=-11] {$t_5$};
+      \node at (mux1-i6) [below, scale=0.6, yshift=-11] {$t_6$};
+
+      \node at (mux2-i1) [below, scale=0.6, yshift=-11] {$t_1$};
+      \node at (mux2-i2) [below, scale=0.6, yshift=-11] {$t_2$};
+      \node at (mux2-i3) [below, scale=0.6, yshift=-11] {$t_3$};
+      \node at (mux2-i4) [below, scale=0.6, yshift=-11] {$t_4$};
+      \node at (mux2-i5) [below, scale=0.6, yshift=-11] {$t_5$};
+      \node at (mux2-i6) [below, scale=0.6, yshift=-11] {$t_6$};
+
+      \draw[-latex] (mux1-o) -- (regX.north);
+      \draw[-latex] (mux2-o) -- (regY.north);
+
+      \draw[latex-] (mux1-i1) -- ++(0,1.5) node[above] {x};
+      \draw[latex-] (mux2-i1) -- ++(0,1.5) node[above] {y};
+
+      \draw[-latex] (regX.south) -| (sub-i0);
+      \draw[-latex] (sub.south) -- ++(0,-0.5) -- ++(-2.5,0) -- ++(0,4.7) -| (mux1-i5);
+
+      \draw[-latex] (regY.south) -- ++(0,-3) node[below, align=center, scale=0.8] {out};
+      \draw[latex-] (sub-i1) -- ++(0,0.5) -| (regY.south |- 52, -1.68);
+      \draw[fill] (regY.south |- 52, -1.68) circle (0.03);
+
+      \draw[latex-] (greater2-i0) -- ++(0,0.5);
+      \draw[fill] (greater2-i0 |- 52, -1.68) circle (0.03);
+
+      \draw[-latex] (regY.south |- 52, -2) -| (6.5,1) -| (mux1-i4);
+      \draw[fill] (regY.south |- 52, -2) circle (0.03);
+
+      \draw[latex-] (mux2-i2) -- (mux2-i2 |- 52,1);
+      \draw[fill] (mux2-i2 |- 52,1) circle (0.03);
+      \draw[latex-] (mux2-i3) -- (mux2-i3 |- 52,1);
+      \draw[fill] (mux2-i3 |- 52,1) circle (0.03);
+      \draw[latex-] (mux2-i5) -- (mux2-i5 |- 52,1);
+      \draw[fill] (mux2-i5 |- 52,1) circle (0.03);
+      \draw[latex-] (mux2-i6) -- (mux2-i6 |- 52,1);
+      \draw[fill] (mux2-i6 |- 52,1) circle (0.03);
+      
+      \draw[-latex] (regX.south |- 52, -1.45) -- ++(-2,0) -| (-1.75,0.7) -| (mux2-i4);
+      \draw[fill] (regX.south |- 52, -1.45) circle (0.03);
+      \draw[latex-] (mux1-i2) -- (mux1-i2 |- 52,0.7);
+      \draw[fill] (mux1-i2 |- 52,0.7) circle (0.03);
+      \draw[latex-] (mux1-i3) -- (mux1-i3 |- 52,0.7);
+      \draw[fill] (mux1-i3 |- 52,0.7) circle (0.03);
+      \draw[latex-] (mux1-i6) -- (mux1-i6 |- 52,0.7);
+      \draw[fill] (mux1-i6 |- 52,0.7) circle (0.03);
+
+      \draw[latex-] (greater1-i0) -- (greater1-i0 |- 52,-1.45);
+      \draw[fill] (greater1-i0 |- 52,-1.45) circle (0.03);
+      \draw[latex-] (greater1-i1) -- ++(0,0.4) node[above, align=center, scale=0.6] {000};
+
+      \draw[-latex] (greater1.west) -- ++(-0.9,0) node[left, align=center, scale=0.8] {$c_1$};
+      \draw[-latex] (greater2.south) -- ++(0,-1) -- ++(-4.8,0) node[left, align=center, scale=0.8] {$c_2$};
+
+      \draw[latex-] (regX.east) -- ++(0.5,0) -- ++(0,-2.5) -| (6.5,-3.5) node[above left, align=center, scale=0.8] {clk};
+      \draw[latex-] (regY.east) -- ++(0.5,0) -- ++(0,-2.5) -| (5.455,-3.5);
+      \draw[fill] (5.455,-3.5) circle (0.03);
+
+      \draw[latex-] (mux1-s) -- ++(-1,0) node[left, align=center, scale=0.8] {s};
+      \draw[latex-] (mux2-s) -- ++(-0.5,0) -- ++(0,-0.5) -- ++(-4.1,0) -| (-1.9, 52 |- mux1-s);
+      \draw[fill] (-1.9, 52 |- mux1-s) circle (0.03);
+
+    \end{circuitikz}
+    \caption{Datapath del massimo comune divisore}
+\end{figure}
+
 
 \begin{figure}[H]
   \begin{center}
-    \begin{tikzpicture}[node distance=4cm and 2cm,>=stealth',auto, every place/.style={draw}]
+    \begin{tikzpicture}[node distance=3cm and 2cm,>=stealth',auto, every place/.style={draw}]
       \node [place] (Init) {Init};
       \coordinate[node distance=1.3cm,left of=Init] (left-Init);
       \coordinate[node distance=1.3cm,right of=Init] (right-Init);
 
-      \node [place] (While) [right of= Init, align=center] {While};
+      \node [place] (While) [right of= Init, align=center, scale=0.7] {While};
       \node [place] (If) [below of= While] {If};
-      \node [place] (EndIf) [left of= If, align=center] {End\\if};
+      \node [place] (EndIf) [left of= If, align=center, scale=0.7] {End\\if};
       \node [place] (End) [right of= While, align=center] {End};
 
       \path[->] (Init) edge [bend right=20] node[scale=0.9, align=center] {--/0010} (While);
@@ -5290,6 +5429,34 @@ nel diagramma di stato. Si aggiunge un segnale di controllo per ogni condizione:
       \path[->] (End) edge [bend right=30] node[scale=0.9, align=center] {--/1101} (Init);
     \end{tikzpicture}
   \end{center}
-  \caption{STG con segnali di controllo}
+  \caption{FSM con segnali di controllo}
+\end{figure}
+
+Unendo la FSM con il datapath si ottiene il circuito finale:
+\begin{figure}[H]
+  \begin{center}
+    \begin{tikzpicture}
+      \draw (0,0) rectangle (2,2) node[pos=.5] {FSM};
+      \draw[-latex] (1,0) -- ++(0,-1) node[below, align=center, scale=0.8] {done};
+
+
+      \draw (4,0) rectangle (6,2) node[pos=.5] {Datapath};
+      \draw[latex-] (4.5,2) -- ++(0,1) node[above, align=center, scale=0.8] {x}; 
+      \draw[latex-] (5.5,2) -- ++(0,1) node[above, align=center, scale=0.8] {y};
+
+      \draw[-latex] (5,0) -- ++(0,-1) node[below, align=center, scale=0.8] {out};
+
+      \draw[<-] (4,1.5) -- (2,1.5) node[pos=.5, above, align=center, scale=0.8] {s};
+      \draw[->] (4,0.7) -- (2,0.7) node[pos=.5, above, align=center, scale=0.8] {$c_1$};
+      \draw[->] (4,0.3) -- (2,0.3) node[pos=.5, below, align=center, scale=0.8] {$c_2$};
+
+
+      \draw[<-] (0,0.5) -- ++(-0.5,0) -- ++(0,-1) -- ++(-1,0) node[left, align=center, scale=0.8] {CLK};
+      \draw[fill] (-0.5,-0.5) circle (0.05);
+      \draw[->] (-0.5,-0.5) -- (4.5, -0.5) -- ++(0,0.5);
+
+    \end{tikzpicture}
+  \end{center}
+  \caption{FSMD Finale}
 \end{figure}
 \end{document}
