@@ -101,7 +101,7 @@ Un esempio è il seguente:
 
 \subsection{Ordinamento parziale}
 \[
-<A, R>\;\;\;\;\; R \subseteq A \times A
+\left<A, R\right>\;\;\;\;\; R \subseteq A \times A
 \] 
 \( R \) è ordinamento parziale se ha 3 proprietà:
 \begin{enumerate}
@@ -118,7 +118,7 @@ Un esempio è il seguente:
 
 \subsection{Massimale di un insieme}
 \(
-  <A,R>
+  \left<A,R\right>
   \) sia o.p. (Ordine Parziale anche scritto \emph{po}) possiamo avere 2 definizioni:
   \begin{enumerate}
     \item \( m \in A \) è \textbf{massimo} se \( \forall a \in A\;\; aRm \) 
@@ -136,7 +136,7 @@ Un esempio è il seguente:
     Prendo come insieme supporto i numeri naturali \( \mathbb{N} \) e come insieme generico l'insieme \( A \subseteq P(\mathbb{N})\footnote{Sottoinsieme delle parti} \) 
 
     \[
-      <A, \subseteq> p.o
+      \left<A, \subseteq\right> p.o
     \] 
     \[
       A=\{\{4\},\{2\},\underbrace{\{2,4\}}_{Massimo} \} 
@@ -160,7 +160,7 @@ Un esempio è il seguente:
     P = \{\{n\} | n \in \mathbb{N}\} \;\;\; P = \{\{0\} ,\{1\} ,\{2\} , \ldots\} 
     \] 
     \[
-    <P,\subseteq> p.o
+    \left<P,\subseteq\right> p.o
     \] 
     ha \( \infty \) massimali
   \end{example}
@@ -2219,7 +2219,7 @@ Contromodello \( \Rightarrow \) prova di \textbf{non} derivabilità
   se \( \Gamma \not\vdash \bot \). Quindi ad esempio \( \Gamma \) è inconsistente se
   \( \Gamma \vdash \bot \) 
 \end{definition}
-Prendiamo in considerazione \(<A, \subseteq> p.o\;\;\;\;\; A \subseteq P(PROP) \) 
+Prendiamo in considerazione \(\left<A, \subseteq\right> p.o\;\;\;\;\; A \subseteq P(PROP) \) 
 \subsubsection{Teorema 0}
 Sono equivalenti:
 \begin{enumerate}
@@ -2275,7 +2275,7 @@ che sarebbe la definizione di conseguenza logica:
   \end{itemize}
   Ci chiediamo se esistono insiemi massimali consistenti. Sì, ma bisogna dimostrarli:
   \[
-  C = \{\Gamma | \Gamma \not\vdash \bot\} <C,\subseteq> p.o
+  C = \{\Gamma | \Gamma \not\vdash \bot\} \left<C,\subseteq\right> p.o
   \] 
   \( \Rightarrow \) proviamo che ha massimali
 \end{definition}
@@ -3070,7 +3070,7 @@ x \notin FV(hp(D_1))\;\; \text{a parte \( \varphi(x) \) stessa}
 \subsection{Struttura matematica}
 È formata da una quadrupla:
 \[
-U = <A, \mathbb{R}, \mathbb{F}, \mathbb{C}>
+U = \left<A, \mathbb{R}, \mathbb{F}, \mathbb{C}\right>
 \]  
 \begin{enumerate}
   \item \( A \neq \emptyset \) dominio
@@ -3082,7 +3082,7 @@ U = <A, \mathbb{R}, \mathbb{F}, \mathbb{C}>
 \begin{figure}[H]
   \begin{example}
     \[
-    <\mathbb{N}, \le , +, \cdot, succ, 0, 1> 
+    \left<\mathbb{N}, \le , +, \cdot, succ, 0, 1\right> 
     \] 
   \end{example}
 \end{figure}
@@ -3093,7 +3093,7 @@ U = <A, \mathbb{R}, \mathbb{F}, \mathbb{C}>
   \leftrightarrow\;\;     \) associa struttura \( u \) a un linguaggio di primo ordine
 
     \[
-    U = <A, (\;)^u>:
+    U = \left<A, (\;)^u\right>:
     \] 
     \[
     A \neq \emptyset \;\;\;,\;\;\; (\;)^u \;\;\text{funzione}
@@ -3450,7 +3450,7 @@ U = <A, \mathbb{R}, \mathbb{F}, \mathbb{C}>
     \Leftrightarrow \exists \rho_{\overline{u}} \;.\; \rho_{\overline{u}} \not\models \alpha
     \] 
     \[
-    U = <\{a,b\}, P>
+    U = \left<\{a,b\}, P\right>
     \] 
     \( P \) è una relazione unaria e definita come \( P(a) \;\; a \in P \), su \( b \) non vale \( P \) 
     \[
@@ -3477,7 +3477,7 @@ U = <A, \mathbb{R}, \mathbb{F}, \mathbb{C}>
     \not\models \exists x.\; \varphi  \to \forall x.\; \varphi 
     \] 
     \[
-    U = <\{a,b\}, P> \;\;\; P(a)
+    U = \left<\{a,b\}, P\right> \;\;\; P(a)
     \] 
     \[
     \not\models \exists x.\; P \to \forall x.\; P
@@ -3514,7 +3514,7 @@ U = <A, \mathbb{R}, \mathbb{F}, \mathbb{C}>
     \not\models \sigma \Leftrightarrow \exists U \;.\; U \not\models \sigma
     \] 
     \[
-    U = < \{1,2,3\}, \overline{<}> \;\;\; \text{contromodello} \;\; \rho_u[3/x] \;\; \text{non fa valere}
+    U = \left< \{1,2,3\}, \overline{<}\right> \;\;\; \text{contromodello} \;\; \rho_u[3/x] \;\; \text{non fa valere}
     \] 
     \[
     \rho_u \not\models \forall x.\; \exists y.\; (x < y)
@@ -3538,7 +3538,7 @@ U = <A, \mathbb{R}, \mathbb{F}, \mathbb{C}>
     \not\models \exists y.\; \forall x.\; x < y \equiv \sigma 
     \] 
     \[
-    U = < \{1,2,3\}, \overline{<}> \;\;\; \text{contromodello} \;\; \rho_u[1/y] \;\; \text{non fa valere}
+    U = \left< \{1,2,3\}, \overline{<}\right> \;\;\; \text{contromodello} \;\; \rho_u[1/y] \;\; \text{non fa valere}
     \] 
     \[
     \rho_u \not\models \exists y.\; \forall x.\; (x < y)
@@ -3565,7 +3565,7 @@ U = <A, \mathbb{R}, \mathbb{F}, \mathbb{C}>
     U \;tc\; U \not\models \sigma 
     \] 
     \[
-    U = <\{a,b\}, P, Q> \;\;\; P(a), a \in P \;\;\; Q(b), b \in Q
+    U = \left<\{a,b\}, P, Q\right> \;\;\; P(a), a \in P \;\;\; Q(b), b \in Q
     \] 
     Mostriamo \( \rho_u \models \sigma_1  \) ma \( \rho_u \not\models \sigma_2 \)
     \[
@@ -3604,7 +3604,7 @@ U = <A, \mathbb{R}, \mathbb{F}, \mathbb{C}>
     \not\models \alpha \to \beta \Leftrightarrow \exists U \;.\; U \models \alpha \to \beta \;\;\; \exists \rho_u \;.\; \rho_u \not\models \alpha \to \beta
     \] 
     \[
-    U = <\{a,b\}, P, Q> \;\;\; p = \{a\} , \varphi  \;\;\; q = \{b\} , \psi 
+    U = \left<\{a,b\}, P, Q\right> \;\;\; p = \{a\} , \varphi  \;\;\; q = \{b\} , \psi 
     \]
     \[
       \rho_u \models \alpha \;\; ma \;\; \rho_u \not\models \beta
@@ -3639,7 +3639,7 @@ U = <A, \mathbb{R}, \mathbb{F}, \mathbb{C}>
     \] 
     Suggerimento: \( \varphi <\sim> "\le" \) su \( \mathbb{N} \) 
     \[
-    U = <\mathbb{N}, \le>
+    U = \left<\mathbb{N}, \le\right>
     \]
     \[
       \rho_u \models \forall x.\; \exists y.\; \varphi  \Leftrightarrow
@@ -3785,13 +3785,10 @@ Con questa codifica si possono rappresentare tutti i numeri naturali:
   \begin{example}
     I numeri primi hanno un minimo ma non un massimo:
     \[
-      \varphi_{Pr},\; \varphi_{>}
+      \forall n.\; (\varphi_{Pr}[n] \to (\exists x.\; (\varphi_{Pr}[x] \wedge \varphi_{<}[n,x])) \wedge
     \] 
     \[
-      \exists x.\; (\varphi_{Pr}(x) \to \not\exists y.\; (\varphi_{Pr}(y) \wedge \varphi_{<}(y,x))) \wedge 
-    \] 
-    \[
-    \forall n.\; (\varphi_{Pr}(n) \to \exists m.\; (\varphi_{Pr}(m) \wedge \varphi_{>}(m,n) ))
+      \exists y.\; (\varphi_{Pr}[y] \wedge \forall x.\; (\neg(x = y) \wedge \varphi_{Pr}[x]) \to \varphi_{<}[y,x])
     \] 
   \end{example}
 \end{figure}
@@ -3840,4 +3837,217 @@ Si possono creare anche altre strutture, come ad esempio una sui reali:
 Se \( [|t|]_{\rho_u}^U = a \in |U| \;\;\; [|u[t/x]|]_{\rho} = [|u|]_{\rho[a/x]} \) \\
 se \( t \) libero per \( x \) in \( \varphi  \)\\
 se \( [|t|]_{\rho } = a \) allora \( \rho \models \varphi[t/x] \Leftrightarrow \rho[a/x] \models \varphi  \) 
+
+\subsubsection{Esercizi}
+\begin{figure}[H]
+  \begin{exercise}
+    Per ogni coppia di numeri pari diversi esiste un dispari intermedio
+    \[
+      \varphi_{\le} \;\;\; \varphi_{<}
+    \] 
+    \[
+    \forall x.\; \forall y.\; (\varphi_{P}(x) \wedge \varphi_{P}(y) \wedge \neg(x = y) \to \exists z.\; (\varphi_{D}(z) \wedge \varphi_{>}(z,x) \wedge \varphi_{<}(z,y)))
+    \] 
+  \end{exercise}
+\end{figure}
+\begin{figure}[H]
+  \begin{exercise}[a casa]
+    Per ogni coppia di numeri pari diversi esiste un dispari intermedio con \( y=x+2 \) 
+  \end{exercise}
+\end{figure}
+\begin{figure}[H]
+  \begin{exercise}[a casa]
+    \( \mathbb{N} \) non è denso
+  \end{exercise}
+\end{figure}
+
+\subsection{Identità}
+\[
+R \subseteq A^2
+\] 
+Quando una relazione è di uguaglianza?
+\begin{enumerate}
+  \item è almeno di equivalenza
+  \item è una congruenza: \[ x = y \to f(x) = f(y) \]
+    \[
+    x = y \to P(x) \Rightarrow P(y) \;\;\; P \subseteq R^1
+    \] 
+    Le regole di congruenza sono:
+    \begin{figure}[H]
+      \begin{center}
+        \begin{prooftree}
+          \infer0[rifl.]{t=t}
+        \end{prooftree}
+      \end{center}
+    \end{figure}
+    \begin{figure}[H]
+      \begin{center}
+        \begin{prooftree}
+          \hypo{ t_1 = t_2 }
+          \infer1[sim.]{ t_2 = t_1 }
+        \end{prooftree}
+      \end{center}
+    \end{figure}
+    \begin{figure}[H]
+      \begin{center}
+        \begin{prooftree}
+          \hypo{ t_1 = t_2 }
+          \hypo{ t_2 = t_3 }
+          \infer2[trans.]{ t_1 = t_3 }
+        \end{prooftree}
+      \end{center}
+    \end{figure}
+    \begin{figure}[H]
+      \begin{center}
+        \begin{prooftree}
+          \hypo{ v = u }
+          \hypo{ \varphi [v/x] }
+          \infer2[\( cng. \)]{ \varphi[u/x] }
+        \end{prooftree}
+      \end{center}
+    \end{figure}
+    La riflessività e la congruenza fanno parte del sistema minimale
+\end{enumerate}
+
+\begin{figure}[H]
+  \begin{exercise}
+    \[
+    \vdash \forall x. \; \exists y.\; (x=y)
+    \] 
+    \begin{center}
+      \begin{prooftree}
+        \infer0[\(  \)]{ x=x }
+        \infer1[\( \exists I \)]{ \exists y.\; (x=y) }
+        \infer1[\( \forall I \)]{ \forall x.\; \exists y.\; (x=y) }
+      \end{prooftree}
+    \end{center}
+    Si può introdurre il \( \forall  \) perchè \( x \) non appare libera tra le ipotesi.
+  \end{exercise}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{exercise}
+    \[
+    \vdash \forall x.\; (\varphi (x) \to \forall y.\; (x=y \to \varphi (y))) \;\;\; y \notin FV(\varphi )
+    \] 
+    \begin{center}
+      \begin{prooftree}
+        \hypo{ [x=y]^1 }
+        \hypo{ [\varphi(x)]^2 }
+        \infer2[\( cng \)]{ \varphi(y) }
+        \infer1[\( \to I^1 \)]{ x=y \to \varphi(y) }
+        \infer1[\( \forall I \)]{ \forall y.\; (x=y \to \varphi(y)) }
+        \infer1[\( \to I^2 \)]{ \varphi(x) \to \forall y.\; (x=y \to \varphi(y)) }
+        \infer1[\( \forall I \)]{ \forall x.\; (\varphi(x) \to \forall y.\; (x=y \to \varphi(y))) }
+      \end{prooftree}
+    \end{center}
+  \end{exercise}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{exercise}
+    \[
+      \vdash \forall x.\; (\exists y.\;((x=y \wedge \varphi (y)) \to \varphi (x))) \;\;\; y \notin FV(\varphi )
+    \] 
+    \begin{center}
+      \begin{prooftree}
+        \hypo{ [\exists y.\; (x=y \wedge \varphi (y))]^2 }
+
+        \hypo{ [x=y \wedge \varphi(y)]^1 }
+        \infer1[\( \wedge E_1 \)]{ x=y }
+        \infer1[\( sim \)]{ y=x }
+
+        \hypo{ [(x=y \wedge \varphi(y))]^1 }
+        \infer1[\( \wedge E_2 \)]{ \varphi(y) }
+        \infer2[\( cng \)]{ \varphi(x) }
+        \infer2[\( \exists E^1\)]{ \varphi(x) }
+        \infer1[\( \to I^2 \)]{ \exists y.\;((x=y \wedge \varphi (y)) \to \varphi (x)) }
+        \infer1[\( \forall I \)]{ \forall x.\; (\exists y.\;((x=y \wedge \varphi (y)) \to \varphi (x))) }
+      \end{prooftree}
+
+    \end{center}
+    
+  \end{exercise}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{exercise}
+    \[
+    \vdash (\varphi \to \exists x.\; \psi(x)) \to \exists x.\; (\varphi \to \psi(x)) \;\;\; x \notin FV(\varphi )
+    \] 
+    \begin{center}
+      \begin{prooftree}[separation=0.1em,label separation=0.1em]
+        \hypo{ [\neg \exists x.\; (\varphi \to \psi )]^3 }
+
+        \hypo{ \varphi \to \exists x.\; \psi }
+        \hypo{ [\varphi ]^2 }
+        \infer2[\( \to E  \)]{ \exists x.\; \psi }
+
+        \hypo{ [\psi ]^1}
+        \infer1[\( \to I \)]{ \varphi \to \psi }
+        \infer1[\( \exists I \)]{ \exists x.\; (\varphi \to \psi) }
+        \infer2[\( \exists E^1 \)]{ \exists x.\; (\varphi \to \psi) }
+
+        \hypo{ [\neg \exists x.\; (\varphi \to \psi )]^3 }
+        \infer2[\( \to E \)]{ \bot }
+        \infer1[\( \bot_i \)]{ \psi  }
+        \infer1[\( \to I^2 \)]{ \varphi \to \psi  }
+        \infer1[\( \exists I \)]{ \exists x.\; (\varphi \to \psi) }
+        \infer2[\( \to E \)]{ \bot }
+        \infer1[\( RAA^3 \)]{ \exists x.\; (\varphi \to \psi) }
+      \end{prooftree}
+    \end{center}
+  \end{exercise}
+\end{figure}
+
+\section{Svolgimento tema d'esame}
+\begin{enumerate}
+  \item [\textbf{Esercizio 1}]
+    Dato un'insieme \( \Gamma  \) di formule proposizionali, dare la definizione
+    di '\( \Gamma  \) consistente'. Dimostrare che se \( \Gamma  \) consistente allora è
+    soddisfacibile.
+  \item [\textbf{Esercizio 2}]
+    Utilizzando metodi esclusivamente semantici e senza usare le tavole di verità mostrare che
+    \[
+    \models \neg(\varphi \to \psi ) \leftrightarrow (\varphi \wedge \neg \psi )
+    \] 
+    \( \forall v \), valutazione
+    \[
+      [| \neg(\varphi \to \psi ) |]_v = 1 \Leftrightarrow [| \varphi \to \psi |]_v = 0 \Leftrightarrow
+    \] 
+    \[
+      [|\varphi|]_v = 1 \;\&\; [|\psi|]_v = 0 \Leftrightarrow
+    \] 
+    \[
+      [|\varphi|]_v = 1 \;\&\; [|\neg \psi |]_v = 1 \Leftrightarrow [|\varphi \wedge \neg \psi|]_v = 1
+    \] 
+  \item [\textbf{Esercizio 3}]
+    Sia \( \gamma  \) la formula
+    \[
+      (\forall x.\; \varphi(x) \to \forall x.\;\psi (x)) \to \forall x.\; (\varphi (x) \to \psi(x))
+    \] 
+    utilizzando \textbf{esclusivamente metodi semantici} stabilire se \( \models \gamma  \). \\
+    \textbf{Contromodello} 
+    \[
+      \exists U\;.\; U \models \sigma  \Leftrightarrow \exists \rho_u \not\models \sigma_1 \to \sigma_2
+    \] 
+    \[
+      U = \left<\{a,b\}, P, Q\right> \;\;\; P(a), a \in P \;\;\; Q(b), b \in Q
+    \] 
+  \item [\textbf{Esercizio 4}]
+    Usando esclusivamente la deduzione naturale dimostrare che se \( x \notin FV(\psi) \) allora
+    \[
+      ((\exists x,\; \varphi(x)) \wedge \psi) \to \exists x.\; (\varphi(x) \wedge \psi )
+    \] 
+  \item [\textbf{Esercizio 5}]
+    Si consideri la struttura dei numeri naturali \( N = \left< \mathbb{N}, +, \times, S, 0 \right> \) dove
+    \( S \) è la funzione successore ed il linguaggio del primo ordine con alfabeto:
+    \begin{itemize}
+      \item [] \textbf{Simbolo di predicato} \( = \) ;
+      \item [] \textbf{Simboli di funzione} \( +, \times, S \);
+      \item [] \textbf{Costante} \( 0 \) ;
+    \end{itemize}
+    Si formalizzi con una formula del primo ordine il seguente enunciato matematico: \emph{ogni numero
+    primo maggiore di 2 è il successore di un numero pari}
+\end{enumerate}
 \end{document}
