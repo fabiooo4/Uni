@@ -1,0 +1,54 @@
+bsis> read_blif es3.blif
+
+bsis> print_stats
+
+es3             pi= 2   po= 1   nodes=  1       latches= 0
+lits(sop)=   0  #states(STG)=   2
+
+bsis> state_minimize stamina
+
+Running stamina, written by June Rho, University of Colorado at Boulder
+Number of states in original machine : 2
+Number of states in minimized machine : 2
+
+bsis> state_assign jedi
+
+Running jedi, written by Bill Lin,  UC Berkeley
+
+bsis> print_stats
+
+es3             pi= 2   po= 1   nodes=  2       latches= 1
+lits(sop)=  14  #states(STG)=   2
+
+bsis> source script.rugged
+
+bsis> print_stats
+
+es3             pi= 2   po= 1   nodes=  3       latches= 1
+lits(sop)=  11  #states(STG)=   2
+
+
+
+bsis> read_blif es3_manuale.blif
+
+bsis> print_stats
+
+es3             pi= 2   po= 1   nodes=  1       latches= 0
+lits(sop)=   0  #states(STG)=   2
+
+bsis> stg_to_network
+
+bsis> print_stats
+
+es3             pi= 2   po= 1   nodes=  3       latches= 2
+lits(sop)=  14  #states(STG)=   2
+
+bsis> source script.rugged
+
+bsis> print_stats
+
+es3             pi= 2   po= 1   nodes=  3       latches= 1
+lits(sop)=  11  #states(STG)=   2
+
+bsis>
+

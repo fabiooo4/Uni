@@ -3060,11 +3060,13 @@ Un esempio di implementazione è il seguente:
 \begin{enumerate}
   \item[3.] Dopo aver modellato il circuito, è possibile procedere con la
   minimizzazione degli stati. Una volta caricato il file \( .blif \) , la
-  minimizzazione degli stati si esegue con il comando \( state\_minimize\;stamina \) 
+  minimizzazione degli stati si esegue con il comando \( state\_minimize\;stamina \) se
+  non è stata fatta la codifica binaria degli stati.
 \item [4.] Generazione logica funzioni \( \delta \) e \( \lambda \):
   \begin{itemize}
     \item se il file contiene già la codifica binaria degli stati (.code) allora
-    occorre generare le funzioni \( \delta \) e \( \lambda \)  con il comando \( stg\_to\_network \)
+    occorre generare le funzioni \( \delta \) e \( \lambda \)  con il comando \( stg\_to\_network \),
+    in questo caso non c'è bisogno del comando \( state\_minimize\;stamina \).
     \item altrimenti occorre assegnare automaticamente gli stati con il comando
     \( state\_assign\;jedi \) (che genera anche le funzioni \( \delta \)  e \( \lambda \)).
     Attenzione che prima occorre minimizzare gli stati e poi farne l’assegnazione.
