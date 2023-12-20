@@ -1,0 +1,28 @@
+.model es3
+.inputs a b
+.outputs o
+
+.start_kiss
+  .i 2 # inputs
+  .o 1 # outputs
+  .s 2 # states
+  .p 8 # elements
+  .r N # reset
+
+  # inputs state nextState output
+  # N = No carry
+  # C = Carry
+  00 N N 0
+  01 N N 1
+  10 N N 1
+  11 N C 0
+  11 C C 1
+  01 C N 0
+  10 C N 0
+  00 C N 1
+.end_kiss
+
+.code N 00
+.code C 01
+
+.end
