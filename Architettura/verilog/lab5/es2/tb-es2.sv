@@ -1,10 +1,10 @@
 module tb_es2();
 
   // Inputs
-  reg[1:0] rst;
-  reg[1:0] clk;
-  reg[1:0] i1;
-  reg[1:0] i2;
+  reg rst;
+  reg clk;
+  reg i1;
+  reg i2;
 
   // Outputs
   wire o;
@@ -22,41 +22,49 @@ module tb_es2();
     i1 = 1'b0;
     i2 = 1'b0;
     rst = 1'b1;
+    $display("%t: rst=%b, clk=%b, i1=%b, i2=%b, o=%b \n", $time, rst, clk, i1, i2, o);
     #20
     i1 = 1'b1;
     i2 = 1'b1;
     rst = 1'b0;
+    $display("%t: rst=%b, clk=%b, i1=%b, i2=%b, o=%b \n", $time, rst, clk, i1, i2, o);
     #20
     i1 = 1'b0;
     i2 = 1'b0;
     rst = 1'b0;
+    $display("%t: rst=%b, clk=%b, i1=%b, i2=%b, o=%b \n", $time, rst, clk, i1, i2, o);
     #20
     i1 = 1'b1;
     i2 = 1'b1;
     rst = 1'b0;
+    $display("%t: rst=%b, clk=%b, i1=%b, i2=%b, o=%b \n", $time, rst, clk, i1, i2, o);
     #20
     i1 = 1'b1;
     i2 = 1'b1;
     rst = 1'b0;
+    $display("%t: rst=%b, clk=%b, i1=%b, i2=%b, o=%b \n", $time, rst, clk, i1, i2, o);
     #20
     i1 = 1'b0;
     i2 = 1'b0;
     rst = 1'b0;
+    $display("%t: rst=%b, clk=%b, i1=%b, i2=%b, o=%b \n", $time, rst, clk, i1, i2, o);
     #20
     i1 = 1'b1;
     i2 = 1'b1;
     rst = 1'b0;
+    $display("%t: rst=%b, clk=%b, i1=%b, i2=%b, o=%b \n", $time, rst, clk, i1, i2, o);
     #20
     i1 = 1'b0;
     i2 = 1'b0;
     rst = 1'b0;
+    $display("%t: rst=%b, clk=%b, i1=%b, i2=%b, o=%b \n", $time, rst, clk, i1, i2, o);
     #20
     i1 = 1'b0;
     i2 = 1'b1;
     rst = 1'b0;
-    #20
-
-    $display("%t: rst=%b, clk=%b, i1=%b, i2=%b, o=%b s=%b", $time, rst, clk, i1, i2, o, state);
+    #10
+    $display("%t: rst=%b, clk=%b, i1=%b, i2=%b, o=%b \n", $time, rst, clk, i1, i2, o);
+    #10
     $finish;
   end
 endmodule
