@@ -3126,6 +3126,38 @@ Bisogna avere 2 blocchi sequenziali:
   \end{lstlisting}
 \end{figure}
 
+\subsubsection{Testbench per circuiti sequenziali}
+\begin{itemize}
+  \item È necessario stimolare il segnale di clock. Si utilizza un costrutto always temporizzato
+    che inverte il clock.
+  \item Si consiglia di utilizzare la funzione \( \$finish \) al termine del blocco sequenziale
+    \( alwats\;begin\) 
+\end{itemize}
+\begin{figure}[H]
+  \begin{example}
+    Esempio di testbench per il semaforo:
+    \begin{lstlisting}[language=Verilog]
+    module tb_semaforo();
+
+      reg rst, clk, trafficons, trafficoeo;
+      wire lucens, luceeo;
+
+      semaforo sem(rst, clk, trafficons, trafficoeo, lucens, luceeo);
+
+      always #10 clk = ~clk;
+
+      initial begin
+        $dumpfile("dump.vcd");
+        $dumpvars(1);
+        clk = 1'b0;
+        ... # Assegnamenti sugli ingressi.
+        $finish;
+      end
+    endmodule
+    \end{lstlisting}
+  \end{example}
+\end{figure}
+
 \subsection{Progettare FSMD in SIS}
 Per includere un componente all'interno di un modello \( .blif \) si usano le seguenti istruzioni:
 \begin{figure}[H]
@@ -3313,7 +3345,6 @@ Per includere un componente all'interno di un modello \( .blif \) si usano le se
     .subckt xor A=A4 B=B4 X=X4
     .subckt xor A=A3 B=B3 X=X3
     .subckt xor A=A2 B=B2 X=X2
-    4
     .subckt xor A=A1 B=B1 X=X1
     .subckt xor A=A0 B=B0 X=X0
     .names A5 A4 A3 A2 A1 A0 X5 X4 X3 X2 X1 X0 AgtB
@@ -3342,6 +3373,161 @@ Per includere un componente all'interno di un modello \( .blif \) si usano le se
     specificare con la direttiva \( .search \) il file del Controllore ottenuto dopo la codifica
     degli stati e non quello scritto a mano.
 \end{itemize}
+
+\subsection{Progettare FSMD in Verilog}
+Si divide un file in 3 processi:
+\begin{itemize}
+  \item Blocco sequenziale sincrono che emula il comportamento dei registri
+  del modello di Huffman
+  \item Blocco sequenziale asincrono, sensibile ai cambiamenti di stato, dei
+  segnali di ingresso della FSM, che implementa la macchina a stati. Il
+  processo è solitamente implementato con costrutti \( case \) ed \( if \) 
+  \item Blocco sequenziale sincrono che implementa le operazioni nel
+  datapath. Il flusso di controllo del blocco sequenziale è solitamente
+  regolato dai valori dei segnali di controllo generati dalla FSM (ed
+  eventualmente, dai segnali d’ingresso nel datapath)
+\end{itemize}
+\begin{figure}[H]
+  \begin{example}
+    \begin{lstlisting}[language=Verilog]
+    module SemaforoTemporizzato(
+      input clk, trafficons, trafficoeo,
+      output reg lucens, luceeo);
+      reg [1:0] stato = 2'b00;
+      reg [1:0] stato_prossimo = 2'b00;
+      reg inizio = 1'b0, fine = 1'b0;
+      reg [2:0] registro = 3'b000;
+
+      // Blocchi sincroni
+      always @(clk) begin : UPDATE
+        stato = stato_prossimo;
+      end
+
+      always @(posedge clk) begin : DATAPATH
+        if(inizio) begin
+          registro = 3'b000;
+          fine = 1'b0;
+        end else begin
+          if(registro < 3'b111) begin
+            registro = registro + 1'b1;
+            fine = 1'b0;
+          end else begin
+          fine = 1'b1;
+          end
+        end
+      end
+
+      // Blocco asincrono
+      always @(stato, trafficons, trafficoeo, fine)
+      begin : FSM
+        case(stato)
+        2'b00:
+          if(~trafficons && trafficoeo) begin
+            lucens = 1'b1; luceeo = 1'b0;
+            inizio = 1'b1;
+            stato_prossimo = 2'b10;
+          end else begin
+            lucens = 1'b1; luceeo = 1'b0;
+            stato_prossimo = 2'b00;
+          end
+        2'b11:
+          begin inizio = 1'b0;
+          if(fine) begin
+            lucens = 1'b1; luceeo = 1'b0;
+            stato_prossimo = 2'b00;
+          end else begin
+            lucens = 1'b0; luceeo = 1'b1;
+            stato_prossimo = 2'b11;
+          end end
+        endcase
+      end
+    endmodule
+    \end{lstlisting}
+  \end{example}
+\end{figure}
+
+\subsection{Testbench per Verilog e SIS}
+\begin{itemize}
+  \item Il modello Verilog (più astratto) deve guidare lo sviluppo della sua implementazione di SIS.
+  \item Il comportamento del modello Verilog (più semplice da verificare), può
+  essere utilizzato per verificare il comportamento del modello SIS
+  \item A parità di ingressi, i modelli Verilog e SIS devono produrre la stessa
+  sequenza di uscite
+\end{itemize}
+Dunque, si modifica il testbench Verilog per produrre i file necessari alla
+verifica del modello SIS. Per creare file in Verilog:
+\begin{itemize}
+  \item Dichiarazione di una variabile intera fd che identifichi il file (i.e., file
+  descriptor)
+  \item \( fd = \$fopen("nome\;file", "w") \): apertura del file in scrittura 
+  \item \( \$fclose(fd) \): chiusura del file
+  \item \( \$fdisplay(fd, "stringa\;da\;stampare") \): funzione per la stampa
+\end{itemize}
+
+\begin{figure}[H]
+  \begin{example}
+    Un esempio di file testbench che generi anche un testbench per SIS è il seguente.
+
+    Si creano due file: uno script \( testbench.sis \) che farà si che SIS esegua
+    il test; un file \( output_verilog.txt \) che salva i valori di output ad ogni
+    ciclo di clock.
+    \begin{lstlisting}[language=Verilog]
+      module tb_semaforo();
+      // File descriptors.
+      integer tbf, outf;
+      ...
+
+      initial begin
+      ...
+        tbf = $fopen("testbench.script", "w");
+        outf = $fopen("output_verilog.txt", "w");
+
+        // funzione $fdisplay per stampare sul file tbf
+        $fdisplay(tbf,"read_blif semaforo_temporizzato.blif");
+
+        // Gli ingressi vengono scritti nel file testbench.script,
+        // mentre le uscite vanno salvate nel 
+        // file output_verilog.txt
+        clk = 1'b0;
+        trafficons = 1'b0;
+        trafficoeo = 1'b0;
+        $fdisplay(tbf, "simulate %b %b", trafficons, trafficoeo);
+        #20
+        $fdisplay(outf, "Outputs: %b %b", lucens, luceeo);
+        trafficons = 1'b0;
+        trafficoeo = 1'b1;
+        $fdisplay(tbf, "simulate %b %b", trafficons, trafficoeo);
+        #20
+        $fdisplay(outf, "Outputs: %b %b", lucens, luceeo);
+        ...
+        #20
+        $fdisplay(outf, "Outputs: %b %b", lucens, luceeo);
+        $fdisplay(tbf, "quit");
+        // E'fondamentale chiudere i file con $fclose.
+        $fclose(tbf);
+        $fclose(outf);
+        $finish;
+      end
+      endmodule
+    \end{lstlisting}
+  \end{example}
+\end{figure}
+\subsubsection{Utilizzo del file in SIS}
+Utilizzare il file testbench.script per stimolare l’esecuzione del sistema
+in Sis, filtrando le uscite (filtrate) nel file \( output_sis.txt \):
+\begin{figure}[H]
+  \begin{lstlisting}[language=bash]
+    bash> sis -f testbench.script -x | grep Outputs: > output_sis.txt
+  \end{lstlisting}
+\end{figure}
+Verificare le differenze tra l’output del modello verilog e l’output del
+modello sis:
+\begin{figure}[H]
+  \begin{lstlisting}[language=bash]
+    bash> diff output_sis.txt output_verilog.sis
+  \end{lstlisting}
+\end{figure}
+Se il comando non stampa nulla, i due output sono equivalenti.
 % Fine laboratorio
 
 \section{Hardware design su FPGA con HDL}
