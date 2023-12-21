@@ -3125,6 +3125,223 @@ Bisogna avere 2 blocchi sequenziali:
     endmodule
   \end{lstlisting}
 \end{figure}
+
+\subsection{Progettare FSMD in SIS}
+Per includere un componente all'interno di un modello \( .blif \) si usano le seguenti istruzioni:
+\begin{figure}[H]
+  \begin{lstlisting}[language=Verilog]
+    .subckt nomecomponente parametroformale=parametroattuale ...
+    .search nomefilecomponente.blif
+  \end{lstlisting}
+\end{figure}
+\subsubsection{Esempi}
+\begin{figure}[H]
+  \begin{example}
+    Registro a 1 bit:
+    \begin{lstlisting}[language=Verilog]
+      .latch <input> <output> <type> <control> <init-val>
+    \end{lstlisting}
+    \begin{itemize}
+      \item \textbf{input}: è l'ingresso del latch
+      \item \textbf{output}: è l'uscita del latch
+      \item \textbf{type}: può essere:
+        \begin{itemize}
+          \item \textbf{fe}: falling edge
+          \item \textbf{re}: rising edge
+          \item \textbf{ah}: active high
+          \item \textbf{al}: active low
+          \item \textbf{as}: asynchronous
+        \end{itemize}
+      \item \textbf{control}: è il segnale di clock per il latch. Può essere un clock del modello,
+        l'uscita di una qualsiasi funzione del modello, o la parola "NIL" per nessun clock
+        interno. Ciò significa che il registro utilizza il clock generale del circuito in cui è
+        inserito (a ogni \( simulate \) viene generato un colpo di clock).
+      \item \textbf{init-val}: è lo stato iniziale del latch, che può essere 0,1,2,3. "2" indica
+        "don't care" e "3" indica "unknown" o non specificato.
+    \end{itemize}
+    Un esempio di registro è il seguente:
+    \begin{lstlisting}[language=Verilog]
+      .model REGISTRO
+      .inputs A
+      .outputs O
+      .latch A O re NIL 0
+      .end
+    \end{lstlisting}
+    Utilizzando il registro a 1 bit si può creare un registro a \( N \) bit:
+    \begin{lstlisting}[language=Verilog]
+      .model REGISTRO4
+      .inputs A3 A2 A1 A0
+      .outputs O3 O2 O1 O0
+      .subckt REGISTRO A=A3 O=O3
+      .subckt REGISTRO A=A2 O=O2
+      .subckt REGISTRO A=A1 O=O1
+      .subckt REGISTRO A=A0 O=O0
+      .search registro.blif
+      .end
+    \end{lstlisting}
+  \end{example}
+\end{figure}
+\begin{figure}[H]
+  \begin{example}
+    Sommatore a 1 bit:
+    \begin{lstlisting}[language=Verilog]
+      .model SOMMATORE
+      .inputs A B CIN
+      .outputs O COUT
+      .names A B K
+      10 1
+      01 1
+      .names K CIN O
+      10 1
+      01 1
+      .names A B CIN COUT
+      11- 1
+      1-1 1
+      -11 1
+      .end
+    \end{lstlisting}
+    Un sommatore a 2 bit si può creare utilizzando il sommatore a 1 bit:
+    \begin{lstlisting}[language=Verilog]
+      .model SOMMATORE2
+      .inputs A1 A0 B1 B0 CIN
+      .outputs O1 O0 COUT
+      .subckt SOMMATORE A=A0 B=B0 CIN=CIN O=O0 COUT=C0
+      .subckt SOMMATORE A=A1 B=B1 CIN=C0 O=O1 COUT=COUT
+      .search sommatore.blif
+      .end
+    \end{lstlisting}
+  \end{example}
+\end{figure}
+\begin{figure}[H]
+  \begin{example}
+    Multiplexer a 4 ingressi 1 bit ciascuno:
+    \begin{lstlisting}[language=Verilog]
+    .model MUX1
+    .inputs S1 S0 i3 i2 i1 i0
+    .outputs out
+    .names S1 S0 i3 i2 i1 i0 out
+    001--- 1
+    01-1-- 1
+    10--1- 1
+    11---1 1
+    .end
+    \end{lstlisting}
+    Le prime due colonne sono i segnali di controllo. Se \( S1=0 \) e \( S0=0 \) allora
+    viene selezionato \( i0 \) e così via. 
+
+    Multiplexer a 4 ingressi 2 bit ciascuno:
+    \begin{lstlisting}[language=Verilog]
+    .model MUX2
+    .inputs X1 X0 a1 a0 b1 b0 c1 c0 d1 d0
+    .outputs o1 o0
+    .subckt MUX1 S1=X1 S0=X0 i3=a1 i2=b1 i1=c1 i0=d1 out=o1
+    .subckt MUX1 S1=X1 S0=X0 i3=a0 i2=b0 i1=c0 i0=d0
+    out=o0
+    .search mux1.blif
+    .end
+    \end{lstlisting}
+  \end{example}
+\end{figure}
+\begin{figure}[H]
+  \begin{example}
+    Multiplexer a 2 ingressi 3 bit ciascuno:
+    \begin{lstlisting}[language=Verilog]
+    .model MUX3
+    .inputs A2 A1 A0 B2 B1 B0 S
+    .outputs O2 O1 O0
+    .names S A2 B2 O2
+    11- 1
+    0-1 1
+    .names S A1 B1 O1
+    11- 1
+    0-1 1
+    .names S A0 B0 O0
+    11- 1
+    0-1 1
+    .end
+    \end{lstlisting}
+  \end{example}
+\end{figure}
+\begin{figure}[H]
+  \begin{example}
+    Demultiplexer a 1 bit e 4 uscite:
+    \begin{lstlisting}[language=Verilog]
+    .model DEMUX
+    .inputs S1 S0 IN
+    .outputs X Y Z W
+    .names S1 S0 IN X
+    001 1
+    .names S1 S0 IN Y
+    011 1
+    .names S1 S0 IN Z
+    101 1
+    .names S1 S0 IN W
+    111 1
+    .end
+    \end{lstlisting}
+  \end{example}
+\end{figure}
+\begin{figure}[H]
+  \begin{example}
+    Comparatore a 4 bit:
+    \begin{lstlisting}[language=Verilog]
+    .model UGUALE4
+    .inputs A3 A2 A1 A0 B3 B2 B1 B0
+    .outputs O
+    .subckt xnor A=A3 B=B3 X=X3
+    .subckt xnor A=A2 B=B2 X=X2
+    .subckt xnor A=A1 B=B1 X=X1
+    .subckt xnor A=A0 B=B0 X=X0
+    .names X3 X2 X1 X0 O
+    1111 1
+    .search xnor.blif
+    .end
+    \end{lstlisting}
+    Gli \( xnor \) danno in output \( 1 \) se i bit sono uguali. Se tutti gli \( xnor \) \( X \) 
+    sono \( 1 \) allora \( O=1 \) altrimenti \( O=0 \).
+  \end{example}
+\end{figure}
+\begin{figure}[H]
+  \begin{example}
+    “Maggiore” a 6 bit (restituisce 1 se il numero rappresentato dai primi 6 bit è
+    maggiore del numero rappresentato dai successivi 6 bit):
+    \begin{lstlisting}[language=Verilog]
+    .model 6_gt
+    .inputs A5 A4 A3 A2 A1 A0 B5 B4 B3 B2 B1 B0
+    .outputs AgtB
+    .subckt xor A=A5 B=B5 X=X5
+    .subckt xor A=A4 B=B4 X=X4
+    .subckt xor A=A3 B=B3 X=X3
+    .subckt xor A=A2 B=B2 X=X2
+    4
+    .subckt xor A=A1 B=B1 X=X1
+    .subckt xor A=A0 B=B0 X=X0
+    .names A5 A4 A3 A2 A1 A0 X5 X4 X3 X2 X1 X0 AgtB
+    1-----1----- 1
+    -1----01---- 1
+    --1---001--- 1
+    ---1--0001-- 1
+    ----1-00001- 1
+    -----1000001 1
+    .search xor.blif
+    .end
+    \end{lstlisting}
+  \end{example}
+\end{figure}
+
+\subsubsection{Passi di progettazione}
+\begin{itemize}
+  \item Modellare la FSM del Controllore mediante la tabella delle transizioni e assegnare la
+    codifica agli stati con \( state\_assign\;jedi \) 
+  \item Salvare il Controllore ottenuto dopo la codifica degli stati in un file diverso da quello
+    originale usando il comando \( write\_blif\;nomefile \) 
+  \item Modellare il Datapath come una interconnessione di componenti funzionali, quali
+    sommatori, moltiplicatori, multiplexer, registri, ecc
+  \item Inglobare il Controllore e il Datapath in un unico file blif come se fossero due
+    componenti, collegando opportunamente i segnali di comunicazione. E’ importante
+    specificare con la direttiva \( .search \) il file del Controllore ottenuto dopo la codifica
+    degli stati e non quello scritto a mano.
+\end{itemize}
 % Fine laboratorio
 
 \section{Hardware design su FPGA con HDL}
