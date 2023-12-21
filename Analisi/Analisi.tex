@@ -3858,5 +3858,232 @@ a_0 + a_1 + a_2 + a_3 + a_4 + \ldots
     (\( \gamma \approx 0.577 \ldots \)).
   \item \textbf{Serie armonica generalizzata}:
     Sia \( s \in \mathbb{R} \) un parametro. La serie
+    \[
+    \sum_{n=1}^{+\infty} \frac{1}{n^s}
+    \] 
+    Converge se \( x > 1 \) e diverge se \( s \le 1 \) (o oscilla)
 \end{enumerate}
+
+\subsection{Criteri per studiare il carattere di una serie}
+Per carattere si intende:
+\begin{itemize}
+  \item Convergente
+  \item Divergente
+  \item Oscillante
+\end{itemize}
+\begin{enumerate}
+  \item \textbf{Serie a termini positivi}: criteri del \( \begin{cases}
+      \text{confronto}\\
+      \text{confronto asintotico}\\
+      \text{rapporto}
+    \end{cases} \) 
+  \item \textbf{Serie a segno alterno}: criterio di Leibniz
+  \item \textbf{Serie generali}: convergenza assoluta
+\end{enumerate}
+\subsubsection{Serie a termini positivi}
+\[
+\sum_{n=0}^{+\infty} a_n, \;\;\; con\;\; a_n \ge 0 \;\;\; \forall n \in \mathbb{N}
+\] 
+\textbf{Osservazioni generali}:
+\begin{enumerate}
+  \item Le serie a termini positivi convergono o divergono, ma \textbf{non} oscillano mai,
+    perchè 
+    \[
+    a_0 \le a_0 + a_1 \le a_0 + a_1 + a_2 \le a_0 + a_1 + a_2 + a_3 \le \ldots
+    \] 
+    Siccome \( a_n \ge 0  \forall n\), la successione delle somme parziali è non decrescente,
+    quindi
+    \[
+    \lim_{N \to +\infty} \sum_{n=0}^{N} a_n \;\;\;\text{esiste per monotonia}
+    \] 
+  \item I criteri qui di seguito si applicano anche alle serie i cui termini sono positivi
+    "da un certo punto in pou" (cioè, \( a_n \ge 0 \) per ogni \( n \) abbastanza grande, maggiore
+    o uguale di un certo \( n_0 \) ). Infatti
+    \[
+      \sum_{n=0}^{+\infty} a_n = \underbrace{\sum_{n=0}^{n_0-1} a_n}_{\text{Somma \textbf{finita}}} + \sum_{n=n_0}^{+\infty} a_n
+    \] 
+    Il carattere della prima serie dipende soltanto dal carattere della serie con somma infinita.
+    Quindi \( \sum_{n=0}^{+\infty} a_n \) converge se e solo se \( \sum_{n=n_0}^{+\infty} a_n \) converge.
+\end{enumerate}
+\subsubsection{Criterio del confronto}
+Siano \( \{a_n\}_{n \in \mathbb{N}},\;\{b_n\}_{n \in \mathbb{N}}  \) successioni di numeri reali
+tali che:
+\[
+0 \le a_n \le b_n \;\;\; \forall n \in \mathbb{N}
+\] 
+Se \( \sum_{n=0}^{+\infty} b_n \) converge, allora \( \sum_{n=0}^{+\infty} a_n \) converge e vale:
+\[
+\sum_{n=0}^{+\infty} a_n \le \sum_{n=0}^{+\infty} b_n
+\] 
+Se \( \sum_{n=0}^{+\infty} a_n \) diverge, allora \( \sum_{n=0}^{+\infty} b_n \) diverge.
+\begin{figure}[H]
+  \begin{example}
+    \[
+    \sum_{n=1}^{+\infty} \frac{\sin^2(n)}{n^2}
+    \] 
+    \[
+    0 \le \frac{\sin^2(n)}{n^2} \le \frac{1}{n^2} \;\;\; \forall n \in \mathbb{N} \;\; n \ge 1
+    \] 
+    \[
+    \sum_{n=1}^{+\infty} \frac{1}{n^2} \;\;\text{converge (serie armonica generalizzata)}
+    \] 
+    Per confronto \( \sum_{n=1}^{+\infty} \frac{\sin^2(n)}{n^2} \) converge.
+  \end{example}
+\end{figure}
+\begin{figure}[H]
+  \begin{example}
+    \[
+    \sum_{n=1}^{+\infty} \frac{\ln(n)}{n}
+    \] 
+    \[
+    0 \le \frac{\ln(n)}{n},\;\; \frac{\ln(n)}{n} \ge \frac{\ln(2)}{n} \;\;\; \forall n \in \mathbb{N} \;\; n \ge 2
+    \] 
+    \[
+    \sum_{n=2}^{+\infty} \frac{\ln(2)}{n} = (\ln(2)) \sum_{n=2}^{+\infty} \frac{1}{n} = +\infty
+    \] 
+    Per confronto \( \sum_{n=2}^{+\infty} \frac{\ln(n)}{n} \) diverge.
+  \end{example}
+\end{figure}
+\subsubsection{Criterio del confronto asintotico}
+Siano \( \{a_n\}_{n \in \mathbb{N}},\;\{b_n\}_{n \in \mathbb{N}}  \) successioni di numeri reali tali che
+\( a_n \ge 0,\;\; b_n \ge 0 \;\;\; \forall n \in \mathbb{N} \).
+
+Supponiamo che il limite
+\[
+\Lambda := \lim_{n \to +\infty} \frac{a_n}{b_n}
+\] 
+esista e sia \( 0 < \Lambda < +\infty \). Allora:
+\[
+\sum_{n=0}^{+\infty} a_n \;\; \text{converge se e solo se}\;\; \sum_{n=0}^{+\infty} b_n \;\; \text{converge.}
+\] 
+\begin{figure}[H]
+  \begin{example}
+    \[
+    \sum_{n=1}^{+\infty} \frac{5n}{7n^3+n\sin(n)}
+    \] 
+    È una serie a termini positivi, perchè \( 5n \ge 0 \), \( |n\sin(n)| \le |n| \),
+    \( 7n^3+n\sin(n) \ge 7n^3 - n \ge 0 \;\;\forall n \in \mathbb{N} \). Sia:
+    \[
+    a_n := \frac{5n}{7n^3+n\sin(n)},\;\;\; b_n := \frac{n}{n^3} = \frac{1}{n^2}
+    \] 
+    \[
+    \lim_{n \to +\infty} \frac{a_n}{b_n} = \lim_{n \to +\infty} \frac{5n \cdot n^2}{7n^3+n\sin(n)} =
+    \] 
+    \[
+    = \lim_{n \to +\infty} \frac{5}{7 + \frac{\sin(n)}{n^2}} = \frac{5}{7}
+    \] 
+    \[
+    \sum_{n=1}^{+\infty} b_n = \sum_{n=1}^{+\infty} \frac{1}{n^2} \;\;\text{converge}
+    \] 
+    Per confronto asintotico
+  \end{example}
+\end{figure}
+\subsubsection{Corollario/Caso particolare}
+\( P \) è un polinomio di grado \( p \) e \( Q \) è un polinomio di grado \( q \) , allora
+\[
+\sum_{n=0}^{+\infty} \frac{P(n)}{Q(n)} \;\;\text{converge se e solo se}\;\; \sum_{n=1}^{+\infty} \frac{n^p}{n^q}\;\; \text{converge}
+\] 
+\begin{figure}[H]
+  \begin{example}
+    \[
+      \sum_{n=1}^{+\infty} \frac{n^{23} + 42 n^2 + 3}{n^{25} - 31n^2 + 23n - 3}
+    \] 
+    \[
+      \sum_{n=1}^{+\infty} \frac{n^{23}}{n^{25}} = \sum_{n=1}^{+\infty} \frac{1}{n^2} \;\;\text{converge}
+    \] 
+    La serie iniziale converge per confronto asintotico.
+  \end{example}
+\end{figure}
+\subsubsection{Criterio del rapporto}
+Sia \( \{a_n\}_{n \in \mathbb{N}}  \) una successione di numeri reali tale che \( a_n > 0 \;\; \forall n \in \mathbb{N} \).
+Supponiamo che il limite \[
+L := \lim_{n \to +\infty} \frac{a_n+1}{a_n}
+\] 
+esista, finito o infinito.
+\begin{itemize}
+  \item Se \( L < 1 \), allora \( \sum_{n=0}^{+\infty} a_n \) converge.
+  \item Se \( L > 1 \), allora \( \sum_{n=0}^{+\infty} a_n \) diverge.
+  \item Se \( L = 1 \), allora non possiamo concludere nulla.
+\end{itemize}
+
+\begin{figure}[H]
+  \begin{example}
+    \[
+    \sum_{n=0}^{+\infty} \frac{n^3+1}{n!}
+    \] 
+    Serie a termini \( > 0 \), \( a_n := \frac{n^3+1}{n!} \) 
+    \[
+    \frac{a_n+1}{a_n} = \frac{(n+1)^3+1}{(n+1)!} \cdot \frac{n!}{n^3+1} = \frac{(n+1)^3 + 1}{n^3+1} \cdot \frac{n!}{(n+1)!} =
+    \] 
+    \[
+      \left[ (n+1)! = (n!)\cdot (n+1) \right] 
+    \] 
+    \[
+      = \frac{1}{n+1} \cdot \frac{\cancel{n^3} ((1+\frac{1}{n})^3 + \frac{1}{n^3})}{\cancel{n^3} (1+ \frac{1}{n^3})}
+    \] 
+    \[
+    \frac{a_n+1}{a_n} \to 0 \;\;\text{per \( n \to +\infty \)}
+    \] 
+    Per il criterio del rapporto \( \sum_{n=0}^{+\infty} \frac{n^3+1}{n!} \) converge.
+  \end{example}
+\end{figure}
+\begin{figure}[H]
+  \begin{example}
+    Per ogni \( x \in (0, +\infty) \) dato, \( \sum_{n=0}^{+\infty} \frac{x^n}{n!} \) converge.
+
+    Serie a termini \( >0 \). Sia:
+    \[
+    a_n := \frac{x^n}{n!}
+    \] 
+    \[
+      \frac{a_n +1}{a_n} = \frac{x^{n+1}}{(n+1)!} \cdot \frac{n!}{x^n} = \frac{x}{n+1} \underset{n \to +\infty}{\to } 0 < 1
+    \] 
+    Per il criterio del rapporto \( \sum_{n=0}^{+\infty} \frac{x^n}{n!} \) converge.
+  \end{example}
+\end{figure}
+\subsubsection{Serie a segni alterni}
+\[
+\sum_{n=0}^{+\infty} (-1)^n b_n = b_0 - b_1 + b_2 - b_3 + b_4 - \ldots
+\] 
+con \( b_n > 0 \) per ogni \( n \in  \mathbb{N} \). Ad esempio:
+\[
+\sum_{n=1}^{+\infty} \frac{(-1)^n}{n} = -1 + \frac{1}{2} - \frac{1}{3} + \frac{1}{4} - \ldots
+\] 
+è una serie a segni alterni,
+\[
+\sum_{n=1}^{+\infty} (-1)^n \sin(n) = -\sin(1) + \sin(2) - \sin(3) + \sin(4) - \ldots
+\] 
+\textbf{Non} è una serie a segni alterni. Invece lo è:
+\[
+\sum_{n=1}^{+\infty} (-1)^n |\sin(n)| = -|\sin(1)| + |\sin(2)| - |\sin(3)| + |\sin(4)| - \ldots
+\] 
+\subsubsection{Criterio di Leibnitz}
+Sia \( \{b_n\}_{n \in \mathbb{N}}  \) una successione di numeri reali, tali che:
+\begin{itemize}
+  \item \( b_n \ge 0\;\;\; \forall n \in \mathbb{N} \) 
+  \item \( b_{n+1} \le b_n\;\;\;\forall n \in \mathbb{N} \) 
+  \item \( \lim_{n \to +\infty} b_n = 0 \)
+\end{itemize}
+(successione decresccente)
+\[
+\text{Allora}\;\; \sum_{n=0}^{+\infty} (-1)^n b_n \;\;\;\text{converge}
+\] 
+\begin{figure}[H]
+  \begin{example}
+    \[
+    \sum_{n=1}^{+\infty} \frac{(-1)^n}{n}
+    \] 
+    Sia \( b_n := \frac{1}{n} \). Valgono le ipotesi del criterio di Leibnitz:
+    \begin{itemize}
+      \item \( b_n \ge 0 \;\;\; \forall n \in \mathbb{N} \;\;\; \surd\)
+      \item \( b_{n+1} \le b_n \Leftrightarrow \frac{1}{n+1} \le \frac{1}{n} \;\;\;\forall n \in \mathbb{N} \;\;\; \surd \)
+      \item \( \lim_{n \to +\infty} b_n =  0 \;\;\; \surd \)
+    \end{itemize}
+    Quindi \( \sum_{n=1}^{+\infty} (-1)^n b_n = -1 + \frac{1}{2} - \frac{1}{3} + \frac{1}{4} - \ldots \) 
+    \label{D1}
+    \[
+    \sum_{n=1}^{+\infty} \frac{1}{n} = +\infty
+    \] 
+  \end{example}
+\end{figure}
 \end{document}
