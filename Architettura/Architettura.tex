@@ -3267,8 +3267,7 @@ Per includere un componente all'interno di un modello \( .blif \) si usano le se
     .inputs X1 X0 a1 a0 b1 b0 c1 c0 d1 d0
     .outputs o1 o0
     .subckt MUX1 S1=X1 S0=X0 i3=a1 i2=b1 i1=c1 i0=d1 out=o1
-    .subckt MUX1 S1=X1 S0=X0 i3=a0 i2=b0 i1=c0 i0=d0
-    out=o0
+    .subckt MUX1 S1=X1 S0=X0 i3=a0 i2=b0 i1=c0 i0=d0 out=o0
     .search mux1.blif
     .end
     \end{lstlisting}
