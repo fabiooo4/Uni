@@ -1,0 +1,83 @@
+.model es2
+.inputs apri num3 num2 num1 num0
+.outputs aperta
+
+# Costanti
+.names ZERO
+
+.subckt COSTANTE00 O1=CO1 O0=CO0
+.subckt COSTANTE01 O1=CO11 O0=CO10
+.subckt COSTANTE11 O1=CO13 O0=CO12
+.subckt COSTANTE0000 O3=CO5 O2=CO4 O1=CO3 O0=CO2
+.subckt COMBINAZIONE O3=CO9 O2=CO8 O1=CO7 O0=CO6
+
+# Elaborazione
+# Multiplexer che seleziona il valore di num se apri = 1, altrimenti la costante 0000
+.subckt MUX4BIT2IN A3=num3 A2=num2 A1=num1 A0=num0 B3=CO5 B2=CO4 B1=CO3 B0=CO2 S=apri O3=M1O3 O2=M1O2 O1=M1O1 O0=M1O0
+
+# Comparatore che verifica se num = 0110
+.subckt EQUAL4BIT A3=M1O3 A2=M1O2 A1=M1O1 A0=M1O0 B3=CO9 B2=CO8 B1=CO7 B0=CO6 O=EO
+
+# Multiplexer che seleziona il valore del registro se la cassaforte è apri = 1 e 
+# la combinazione è corretta, altrimenti la costante 00
+.subckt MUX2BIT2IN A1=SO1 A0=SO0 B1=CO1 B0=CO0 S=EO O1=M2O1 O0=M2O0
+
+# Registro che conta 4 cicli di clock
+.subckt REG2BIT A1=M2O1 A0=M2O0 O1=RO1 O0=RO0
+
+# Sommatore che incrementa il registro di 1
+.subckt SUM2BIT A1=RO1 A0=RO0 B1=CO11 B0=CO10 CIN=ZERO O1=SO1 O0=SO0 COUT=COUT
+
+# Comparatore che verifica se il registro non è uguale a 11
+.subckt NEQUAL2BIT A1=RO1 A0=RO0 B1=CO13 B0=CO12 O=NEO
+
+# And che verifica se la cassaforte è aperta per 4 cicli di clock
+.subckt and A=EO B=NEO X=aperta
+
+.model COSTANTE00
+.outputs O1 O0
+.names O1
+.names O0
+.end
+
+.model COSTANTE01
+.outputs O1 O0
+.names O1
+.names O0
+1
+.end
+
+.model COSTANTE11
+.outputs O1 O0
+.names O1
+1
+.names O0
+1
+.end
+
+.model COSTANTE0000
+.outputs O3 O2 O1 O0
+.names O3 
+.names O2
+.names O1
+.names O0
+.end
+
+.model COMBINAZIONE # 0110
+.outputs O3 O2 O1 O0
+.names O3
+.names O2
+1
+.names O1
+1
+.names O0
+.end
+
+# Componenti
+.search mux4bit2in.blif
+.search mux2bit2in.blif
+.search sum2bit.blif
+.search reg2bit.blif
+.search equal4bit.blif
+.search nequal2bit.blif
+.search and.blif
