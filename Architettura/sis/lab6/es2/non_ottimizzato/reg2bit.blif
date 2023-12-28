@@ -1,0 +1,7 @@
+.model REG2BIT
+.inputs A1 A0
+.outputs O1 O0
+.subckt REG1BIT A=A1 O=O1
+.subckt REG1BIT A=A0 O=O0
+.search reg1bit.blif
+.end
