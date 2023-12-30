@@ -38,16 +38,24 @@ int main() {
   }
 
   // Verifica la proprietà
+  if (l == 2 || l == 1) {
+    proprieta = 1;
+  }
+
   for (int i = 0; i < M && !proprieta; i++) {
     for (int j = 0; j < N - l + 1; j++) {
-      for (int k = 0; k < l; k++) {
-        for (int k = 0; k < l - 1; k++) {
-          if (l == 2 && k > 0) {
-            if (m[j + k - 1][i] == m[j + k][i] - 1) {
+      for (int k = 0; k < l - 1; k++) {
+        int diff = 0;
+        for (int h = 0; h < l - 1; h++) {
+          if (h > 0) {
+            if (diff != m[j + k + h - 1][i] - m[j + k + h][i])
+              break;
+            if (h == l - 2)
               proprieta = 1;
-            }
-          } else if (m[j + k][i] - m[j + k + 1][i] != m[j][i] - m[j + 1][i]) {
-            proprieta = 1;
+
+            diff = m[j + h][i] - m[j + k][i];
+          } else {
+            diff = m[j + h][i] - m[j + k][i];
           }
         }
       }
