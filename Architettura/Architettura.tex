@@ -2969,7 +2969,7 @@ Vedere il capitolo \ref{sec:circuiti-sequenziali} e \ref{sec:macchine-a-stati-fi
 
 I circuiti sequenziali possono essere:
 \begin{itemize}
-  \item \textbf{Sinctoni} se i valori delle uscite assumono significato in corrispondenza
+  \item \textbf{Sincroni} se i valori delle uscite assumono significato in corrispondenza
     di un evento su un segnale di sincronismo (solitamente detto clock).
   \item \textbf{Asincroni} se i valori delle uscite cambiano al variare degli ingressi senza
     tenere conto di un segnale di sincronismo.
@@ -2999,6 +2999,8 @@ codifica degli stati (esiste un comando che permette di eseguire la codifica in 
         .s 2 // Numero degli stati
         .r NAME // Stato di reset
         .p 5 // Numero di transizioni 
+
+        input stato statoProssimo output
         .end_kiss
       \end{lstlisting}
     \end{figure}
@@ -3037,11 +3039,7 @@ Un esempio di implementazione è il seguente:
     .s 2
     .r VERDENS
     .p 5
-    \end{lstlisting}
-  \end{figure}
 
-  \begin{figure}[H]
-  \begin{lstlisting}[language=Verilog]
     00 VERDENS VERDENS 10
     01 VERDENS VERDEEO 01
     1- VERDENS VERDENS 10
