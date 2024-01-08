@@ -5864,4 +5864,60 @@ Unendo la FSM con il datapath si ottiene il circuito finale:
   \end{center}
   \caption{FSMD Finale}
 \end{figure}
+
+\section{Architettura di un elaboratore}
+Si vuole costruire un dispositivo che sia configurabile e quindi possa eseguire diversi programmi.
+\subsection{Componenti base}
+\begin{itemize}
+  \item Sommatore
+  \item Moltiplicatore
+  \item Invertitore
+  \item Selettore del numero maggiore
+\end{itemize}
+\label{D1}
+
+\begin{figure}[H]
+  \begin{example}
+    Alcuni esempi di operazioni che si possono fare con i componenti base:
+    \begin{table}[H]
+      \begin{center}
+        \begin{tabular}{c|c|c|c|c|c}
+          A B & SelOp1 SelOp2 & SelOpr & LoarA LoadB & SelOut & Out \\
+          \hline
+          \tiny Dati & \tiny Operandi & \tiny Operazione & \tiny Memorizzazione & \multicolumn{2}{c}{\tiny Risultato} \\
+          \hline
+          \multicolumn{6}{l}{\scriptsize \( A = B + C \)} \\
+          \hline
+          B C & 00 \hspace{1mm} 01 & 00 & -- \hspace{5mm} -- & 10 & \small \( B + C \) \\
+          \hline
+          \multicolumn{6}{l}{\scriptsize \( C = A \times 2 \)} \\
+          \hline
+          A 2 & 00 \hspace{1mm} 01 & 01 & 10 \hspace{5mm} -- & 11 & \small \( 0 \ldots 0 \) \\
+          \hline
+          \multicolumn{6}{l}{\scriptsize \( D = C + B \)} \\
+          \hline
+          - B & 10 \hspace{1mm} 01 & 00 & -- \hspace{5mm} -- & 10 & \tiny\( D = A \cdot 2 + B \) \\
+          \hline
+          \multicolumn{6}{l}{\scriptsize \( E = A - B \;\;\;\;\) RegistroA \( \leftarrow \)  -B} \\
+          \hline
+          B - & 00 \hspace{1mm} -- & 10 & 10 \hspace{5mm} -- & 11 & \small \( 0 \ldots 0 \) \\
+          \hline
+          \multicolumn{6}{l}{\scriptsize \( if(E > A)\; O = E; \;\;\;\; \) RegistroB \( \leftarrow \)  A} \\
+          \hline
+          A 0 & 00 \hspace{1mm} 01 & 00 & 00 \hspace{5mm} 10 & 11 & \small \( 0 \ldots 0 \) \\
+          - - & 11 \hspace{1mm} 10 & 00 & 10 \hspace{5mm} 00 & 11 & \small \( 0 \ldots 0 \) \\
+          - - & 10 \hspace{1mm} 11 & 11 & -- \hspace{5mm} -- & 10 & \footnotesize\( O \) \\
+          \hline
+        \end{tabular}
+      \end{center}
+    \end{table}
+  \end{example}
+\end{figure}
+Si vuole costruire un dispositivo che sia abbastanza configurabile da poter rappresentare tutti
+gli algoritmi possibili. Se una macchina è in grado di rappresentare tutti gli algoritmi possibili
+allora è detta \textbf{Turing Complete}.
+
+Questo approccio permette di programmare in binario, che risulta scomodo e complicato, quindi sono
+stati creati linguaggi di livello sempre più alto per semplificare la programmazione. Il passo
+più alto del binario è l'\textbf{Assembly}, seguito dai linguaggi di programmazione come il \textbf{C}.
 \end{document}
