@@ -3717,8 +3717,11 @@ Con questa codifica si possono rappresentare tutti i numeri naturali:
   \end{example}
 \end{figure}
 \begin{figure}[H]
-  \begin{example}[Divisibilità (a casa)]
+  \begin{example}[Divisibilità]
     La divisibilità dice che \( m|n \Leftrightarrow \exists k \ge 1.\; n \cdot k = m \) 
+    \[
+      \varphi_{Div}[m,n] = \exists k\;.\; k \ge S(\overline{0}) \to n \overline{\times} k = m
+    \] 
   \end{example}
 \end{figure}
 
@@ -3811,24 +3814,30 @@ Si possono creare anche altre strutture, come ad esempio una sui reali:
 \] 
 
 \begin{figure}[H]
-  \begin{exercise}[A casa]
+  \begin{exercise}[Positivo]
     \[
-      Pos[x] := \varphi_{Pos}[v_0] := \overline{0} < v_0 \ldots
+      Pos[x] := \varphi_{Pos}[v_0] := \overline{0} < v_0 
     \] 
   \end{exercise}
 \end{figure}
 
 \begin{figure}[H]
-  \begin{exercise}[A casa]
+  \begin{exercise}[R è denso]
     \( \mathbb{R} \) è denso (tra due reali c'è sempre un altro reale)
+    \[
+      \forall x.\; \forall y.\;( \varphi_{<}[x,y] \to \exists z.\; (\varphi_{<}[x,z] \wedge \varphi_{<}[z < y]))
+    \] 
   \end{exercise}
 \end{figure}
     
 
 \begin{figure}[H]
-  \begin{exercise}[A casa]
+  \begin{exercise}[Valore assoluto]
     \[
     ABS(p,q) := \; \text{\( p \) valore assoluto di \( q \)}
+    \] 
+    \[
+      \varphi_{Abs}[p,q] := (\varphi_{<}[q,\overline{0}] \to p = -q) \wedge (\varphi_{\le}[\overline{0},q] \to p = q)
     \] 
   \end{exercise}
 \end{figure}
@@ -3851,13 +3860,82 @@ se \( [|t|]_{\rho } = a \) allora \( \rho \models \varphi[t/x] \Leftrightarrow \
   \end{exercise}
 \end{figure}
 \begin{figure}[H]
-  \begin{exercise}[a casa]
-    Per ogni coppia di numeri pari diversi esiste un dispari intermedio con \( y=x+2 \) 
+  \begin{exercise}    Per ogni coppia di numeri pari diversi esiste un dispari intermedio con \( y=x+2 \) 
+    \[
+      \forall x.\; \forall y.\; ((\varphi_{P}[x] \wedge \varphi_{P}[y] \wedge y = x \overline{+} S(S(\overline{0}))) \to \exists z.\; (\varphi_{D}[z] \wedge z = x \overline{+} S(\overline{0})))
+    \] 
   \end{exercise}
 \end{figure}
 \begin{figure}[H]
-  \begin{exercise}[a casa]
+  \begin{exercise}
     \( \mathbb{N} \) non è denso
+    \[
+      \forall x.\; \forall y.\; ((y = x \overline{+} S(\overline{0})) \not\exists z.\; (\varphi_{>}[z,x] \wedge \varphi_{<}[z,y]))
+    \] 
+  \end{exercise}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{exercise}
+    Per ogni \( n \) dispari esiste un dispari più grande
+    \[
+      \forall n.\; (\varphi_{D}[n] \to \exists m.\; (\varphi_{D}[m] \wedge \varphi_{>}[m,n])))
+    \] 
+  \end{exercise}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{exercise}
+    Relazione "due primi sono consecutivi"
+    \[
+      \varphi_{Pcons}[x,y] := \varphi_{Pr}[x] \wedge \varphi_{Pr}[y] \wedge (y = x \overline{+} S(\overline{0}) \vee x = y \overline{+} S(\overline{0}) )
+    \] 
+  \end{exercise}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{exercise}
+    Coppie di primi la cui media sia un multiplo di 5
+    \[
+      \varphi_{/}[x,y] := \neg(y = \overline{0}) \to \exists z.\; z \overline{\times } y = x 
+    \] 
+    \[
+      \overline{2} = S(S(\overline{0}))
+    \] 
+    \[
+      \overline{5} = S(S(S(S(S(\overline{0})))))
+    \] 
+    \[
+      \forall x.\; \forall y.\; (\varphi_{Pr}[x] \wedge \varphi_{Pr}[y] \wedge \varphi_{Div}[\varphi_{/}[(x+y), \overline{2}], \overline{5}])
+    \] 
+  \end{exercise}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{exercise}
+    \( R \subseteq \mathbb{N}^3 \), \( x,y,z \) sono 3 numeri diversi
+    \[
+      \varphi_{R}[x,y,z] :=  \neg (x = y) \wedge \neg (x = z) \wedge \neg(y = z)
+    \] 
+  \end{exercise}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{exercise}
+    Proprietà:  \( P(n) \Leftrightarrow n>2 \) e il suo predecessore è primo
+    
+    \[
+      \varphi_{P}[n] := n > S(S(\overline{0})) \wedge \exists m.\; (n = m \overline{+} S(\overline{0}) \wedge \varphi_{Pr}[m])
+    \] 
+  \end{exercise}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{exercise}
+    \( R \subseteq \mathbb{N}^2 \)  \( R(n,m) \Leftrightarrow \) non ammettono divisori comuni diversi da 1
+    \[
+      \varphi_{R}[n,m] := \not\exists x.\; (\neg(x = S(\overline{0})) \wedge \varphi_{Div}[n,x] \wedge \varphi_{Div}[m,x])
+    \] 
   \end{exercise}
 \end{figure}
 

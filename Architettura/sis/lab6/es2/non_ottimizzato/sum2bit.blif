@@ -1,0 +1,7 @@
+.model SUM2BIT
+.inputs A1 A0 B1 B0 CIN
+.outputs O1 O0 COUT
+.subckt SUM1BIT A=A0 B=B0 CIN=CIN O=O0 COUT=C0
+.subckt SUM1BIT A=A1 B=B1 CIN=C0 O=O1 COUT=COUT
+.search sum1bit.blif
+.end

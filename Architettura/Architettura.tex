@@ -2969,7 +2969,7 @@ Vedere il capitolo \ref{sec:circuiti-sequenziali} e \ref{sec:macchine-a-stati-fi
 
 I circuiti sequenziali possono essere:
 \begin{itemize}
-  \item \textbf{Sinctoni} se i valori delle uscite assumono significato in corrispondenza
+  \item \textbf{Sincroni} se i valori delle uscite assumono significato in corrispondenza
     di un evento su un segnale di sincronismo (solitamente detto clock).
   \item \textbf{Asincroni} se i valori delle uscite cambiano al variare degli ingressi senza
     tenere conto di un segnale di sincronismo.
@@ -2999,6 +2999,8 @@ codifica degli stati (esiste un comando che permette di eseguire la codifica in 
         .s 2 // Numero degli stati
         .r NAME // Stato di reset
         .p 5 // Numero di transizioni 
+
+        input stato statoProssimo output
         .end_kiss
       \end{lstlisting}
     \end{figure}
@@ -3037,11 +3039,7 @@ Un esempio di implementazione è il seguente:
     .s 2
     .r VERDENS
     .p 5
-    \end{lstlisting}
-  \end{figure}
 
-  \begin{figure}[H]
-  \begin{lstlisting}[language=Verilog]
     00 VERDENS VERDENS 10
     01 VERDENS VERDEEO 01
     1- VERDENS VERDENS 10
@@ -3267,8 +3265,7 @@ Per includere un componente all'interno di un modello \( .blif \) si usano le se
     .inputs X1 X0 a1 a0 b1 b0 c1 c0 d1 d0
     .outputs o1 o0
     .subckt MUX1 S1=X1 S0=X0 i3=a1 i2=b1 i1=c1 i0=d1 out=o1
-    .subckt MUX1 S1=X1 S0=X0 i3=a0 i2=b0 i1=c0 i0=d0
-    out=o0
+    .subckt MUX1 S1=X1 S0=X0 i3=a0 i2=b0 i1=c0 i0=d0 out=o0
     .search mux1.blif
     .end
     \end{lstlisting}
@@ -3468,8 +3465,8 @@ verifica del modello SIS. Per creare file in Verilog:
   \begin{example}
     Un esempio di file testbench che generi anche un testbench per SIS è il seguente.
 
-    Si creano due file: uno script \( testbench.sis \) che farà si che SIS esegua
-    il test; un file \( output_verilog.txt \) che salva i valori di output ad ogni
+    Si creano due file: uno script \( testbench.script \) che farà si che SIS esegua
+    il test; un file \( output\_verilog.txt \) che salva i valori di output ad ogni
     ciclo di clock.
     \begin{lstlisting}[language=Verilog]
       module tb_semaforo();
@@ -3514,7 +3511,7 @@ verifica del modello SIS. Per creare file in Verilog:
 \end{figure}
 \subsubsection{Utilizzo del file in SIS}
 Utilizzare il file testbench.script per stimolare l’esecuzione del sistema
-in Sis, filtrando le uscite (filtrate) nel file \( output_sis.txt \):
+in Sis, filtrando le uscite (filtrate) nel file \( output\_sis.txt \):
 \begin{figure}[H]
   \begin{lstlisting}[language=bash]
     bash> sis -f testbench.script -x | grep Outputs: > output_sis.txt
@@ -3524,7 +3521,7 @@ Verificare le differenze tra l’output del modello verilog e l’output del
 modello sis:
 \begin{figure}[H]
   \begin{lstlisting}[language=bash]
-    bash> diff output_sis.txt output_verilog.sis
+    bash> diff output_sis.txt output_verilog.txt
   \end{lstlisting}
 \end{figure}
 Se il comando non stampa nulla, i due output sono equivalenti.
