@@ -1,0 +1,19 @@
+.model es2
+.inputs apri num3 num2 num1 num0
+.outputs aperta
+.default_input_arrival 0.00 0.00 
+.default_output_required 0.00 0.00 
+.default_input_drive 0.20 0.20 
+.default_output_load 1.00 
+.default_max_input_load 999.00 
+.latch    [538] RO1 re NIL 0
+.latch    [601] RO0 re NIL 0
+.names apri num3 num2 num1 num0 RO1 [601] aperta
+------1 1
+101100- 1
+.names RO1 RO0 aperta [601] [538]
+-11- 1
+1--1 1
+.names apri num3 num2 num1 num0 RO0 [601]
+101100 1
+.end
