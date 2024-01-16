@@ -1655,75 +1655,6 @@ Le derivate destra e sinistra in \( x_0 = 0 \) esistono e sono entrambe finite, 
   \end{example}
 \end{figure}
 
-\begin{definition}
-  Un punto \( x_0 \in A \) si dice punto di \( \begin{cases}
-    \text{massimo}\\
-    \text{minimo}
-  \end{cases} \)  locale di una funzione \( f: A \to \mathbb{R} \)
-  se esiste \( \delta > 0 \) tc \( \begin{cases}
-    f(x_0) \ge f(x) \\
-    f(x_0) \le f(x)
-  \end{cases} \) per ogni:
-  \[
-    x \in (x_0 - \delta, x_0 + \delta) \cap A
-  \]
-  \begin{figure}[H]
-    \begin{center}
-      \begin{tikzpicture}[scale=0.6, domain=0:13]
-        \draw[->] (-0.5,0) -- (13,0) node[right] {$x$};
-
-        \coordinate (A) at (0,6);
-        \coordinate (B) at (1,3);
-        \coordinate (C) at (2,4);
-        \coordinate (D) at (3,1);
-        \coordinate (E) at (4,2);
-        \coordinate (F) at (5,0);
-        \coordinate (G) at (6,-1);
-        \coordinate (H) at (7,0);
-        \coordinate (I) at (8,3);
-        \coordinate (J) at (9,2);
-        \coordinate (K) at (10,4);
-        \coordinate (L) at (11,5.5);
-        \coordinate (M) at (12,6);
-        \coordinate (N) at (13,6);
-
-        \draw [red, thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
-
-        \draw[fill, blue] (1, 0) circle (4pt);
-        \draw[blue, dashed] (1, 0) -- (1, 3);
-
-        \draw[fill, green] (1.9, 0) circle (4pt);
-        \draw[green, dashed] (1.9, 0) -- (1.9, 4);
-
-        \draw[fill, blue] (3.1, 0) circle (4pt);
-        \draw[blue, dashed] (3.1, 0) -- (3.1, 1);
-
-        \draw[fill, green] (3.9, 0) circle (4pt);
-        \draw[green, dashed] (3.9, 0) -- (3.9, 2);
-
-        \draw[fill, blue] (6, 0) circle (4pt);
-        \draw[blue, dashed] (6, 0) -- (6, -1);
-        \node[blue, above, scale=0.8] at (6, 0.5) {\( x_0 \) };
-        \draw (5.2, 0.1) -- (5.2, -1) node[below, scale=0.6] {\( x_0 - \delta \)};
-        \draw (6.8, 0.1) -- (6.8, -1) node[below, scale=0.6] {\( x_0 + \delta \)};
-
-        \draw[fill, green] (8.1, 0) circle (4pt);
-        \draw[green, dashed] (8.1, 0) -- (8.1, 3);
-
-        \draw[fill, blue] (9, 0) circle (4pt);
-        \draw[blue, dashed] (9, 0) -- (9, 2);
-
-        \draw[fill, green] (12, 0) circle (4pt);
-        \draw[green, dashed] (12, 0) -- (12, 6);
-      \end{tikzpicture}
-    \end{center}
-    \caption{Teorema degli zeri}
-  \end{figure}
-
-  I punti di massimo o minimo locale si chiamano anche \textbf{estremi locali}.
-\end{definition}
-
-
 \subsection{Derivate delle funzioni inverse}
 \begin{figure}[H]
   \begin{example}
@@ -2128,7 +2059,7 @@ In maniera equivalente, \( f \) è convessa se e solo se per ogni \( x \in I \),
 \end{theorem}
 
 \subsection{Teorema di Weiestrass}
-\begin{definition}
+\begin{theorem}
   Teorema di Weierstrass
 
   Sia \( [a, b] \) un intervallo chiuso e limitato, \( f: [a,b]  \to \mathbb{R}\) continua.
@@ -2154,7 +2085,75 @@ In maniera equivalente, \( f \) è convessa se e solo se per ogni \( x \in I \),
     \caption{Teorema di Weiestrass}
   \end{figure}
   Ogni funzione continua, avrà quindi un punto di minimo e un punto di massimo
+\end{theorem}
+\begin{definition}
+  Un punto \( x_0 \in A \) si dice punto di \( \begin{cases}
+    \text{massimo}\\
+    \text{minimo}
+  \end{cases} \)  locale di una funzione \( f: A \to \mathbb{R} \)
+  se esiste \( \delta > 0 \) tc \( \begin{cases}
+    f(x_0) \ge f(x) \\
+    f(x_0) \le f(x)
+  \end{cases} \) per ogni:
+  \[
+    x \in (x_0 - \delta, x_0 + \delta) \cap A
+  \]
+  \begin{figure}[H]
+    \begin{center}
+      \begin{tikzpicture}[scale=0.6, domain=0:13]
+        \draw[->] (-0.5,0) -- (13,0) node[right] {$x$};
+
+        \coordinate (A) at (0,6);
+        \coordinate (B) at (1,3);
+        \coordinate (C) at (2,4);
+        \coordinate (D) at (3,1);
+        \coordinate (E) at (4,2);
+        \coordinate (F) at (5,0);
+        \coordinate (G) at (6,-1);
+        \coordinate (H) at (7,0);
+        \coordinate (I) at (8,3);
+        \coordinate (J) at (9,2);
+        \coordinate (K) at (10,4);
+        \coordinate (L) at (11,5.5);
+        \coordinate (M) at (12,6);
+        \coordinate (N) at (13,6);
+
+        \draw [red, thick] plot [smooth, tension=0.7] coordinates { (A) (B) (C) (D) (E) (F) (G) (H) (I) (J) (K) (L) (M) (N) };
+
+        \draw[fill, blue] (1, 0) circle (4pt);
+        \draw[blue, dashed] (1, 0) -- (1, 3);
+
+        \draw[fill, green] (1.9, 0) circle (4pt);
+        \draw[green, dashed] (1.9, 0) -- (1.9, 4);
+
+        \draw[fill, blue] (3.1, 0) circle (4pt);
+        \draw[blue, dashed] (3.1, 0) -- (3.1, 1);
+
+        \draw[fill, green] (3.9, 0) circle (4pt);
+        \draw[green, dashed] (3.9, 0) -- (3.9, 2);
+
+        \draw[fill, blue] (6, 0) circle (4pt);
+        \draw[blue, dashed] (6, 0) -- (6, -1);
+        \node[blue, above, scale=0.8] at (6, 0.5) {\( x_0 \) };
+        \draw (5.2, 0.1) -- (5.2, -1) node[below, scale=0.6] {\( x_0 - \delta \)};
+        \draw (6.8, 0.1) -- (6.8, -1) node[below, scale=0.6] {\( x_0 + \delta \)};
+
+        \draw[fill, green] (8.1, 0) circle (4pt);
+        \draw[green, dashed] (8.1, 0) -- (8.1, 3);
+
+        \draw[fill, blue] (9, 0) circle (4pt);
+        \draw[blue, dashed] (9, 0) -- (9, 2);
+
+        \draw[fill, green] (12, 0) circle (4pt);
+        \draw[green, dashed] (12, 0) -- (12, 6);
+      \end{tikzpicture}
+    \end{center}
+    \caption{Teorema degli zeri}
+  \end{figure}
+
+  I punti di massimo o minimo locale si chiamano anche \textbf{estremi locali}.
 \end{definition}
+
 \subsubsection{Osservazioni}
 \begin{itemize}
   \item In particolare, \( f \) è limitata
@@ -2288,9 +2287,25 @@ Se vengono meno le ipotesi del teorema, può venir meno la conclusione.
 
   Questa funzione \textbf{non} ammette punti di massimo e di minimo perchè non è continua.
 \end{example}
+
+\subsection{Teorema di Rolle}
+\begin{figure}[H]
+  \begin{theorem}
+    Data una funzione \( f \) quando:
+    \begin{itemize}
+      \item È continua su \( [a,b] \) 
+      \item È derivabile su \( (a,b) \)
+    \end{itemize}
+    Se \( f(a) = f(b) \) allora esiste almeno un punto \( c \in (a,b) \) tale che \( f'(c) = 0 \).
+  \end{theorem}
+\end{figure}
+
+Una funzione continua e derivabile su un intervallo chiuso e limitato, se assume lo stesso valore
+agli estremi, ha almeno un punto che annulla la derivata.
+
 \subsection{Teorema degli zeri}
 \begin{figure}[H]
-  \begin{definition}
+  \begin{theorem}
     Teorema degli zeri (o di Bolzano)
 
     Sia \( [a,b] \) un intervallo chiuso e limitato, \( f: [a,b] \to \mathbb{R} \) una funzione continua.
@@ -2328,7 +2343,7 @@ Se vengono meno le ipotesi del teorema, può venir meno la conclusione.
       \caption{Teorema degli zeri}
     \end{figure}
 
-  \end{definition}
+  \end{theorem}
 \end{figure}
 Se vengono meno le ipotesi, può venir meno la conclusione.
 \subsubsection{Esempi}
@@ -2386,6 +2401,21 @@ Se vengono meno le ipotesi, può venir meno la conclusione.
   ,ma un intervallo privato di un valore, quindi non si applica il teorema.
 \end{example}
 
+\subsection{Teorema dei valori intermedi}
+Generalizza il teorema degli zeri.
+\begin{figure}[H]
+  \begin{theorem}
+    Sia \( f: [a,b] \) una funzione continua. Se \( f(a) < f(b) \) e \( y \in (f(a),f(b)) \), allora esiste
+    \( c \in (a,b) \) tale che \( f(c) = y \).
+  \end{theorem}
+\end{figure}
+
+\subsubsection{Dimostrazione}
+Sia \( g(x) := f(x) - y \). Allora:
+\[
+  g(a) = f(a) - y < 0 \;\;\; \text{e} \;\;\; g(b) = f(b) - y > 0
+\] 
+Esiste \( c \in (a,b) \) tale che \( g(c) = 0 \) , cioè \( f(c) = y \).
 
 \subsection{Teorema di Fermat}
 \begin{theorem}[di Fermat]
@@ -2448,7 +2478,7 @@ e i due limiti sono uguali tra loro e uguali a \( f'(x_0) \). L'unica possibilit
 
 \subsection{Teorema di Lagrange}
 \begin{figure}[H]
-  \begin{definition}
+  \begin{theorem}
     Teorema di Lagrange o del valor medio. Sia \( f: [a,b]  \to \mathbb{R}\) una funzione
     continua in \( [a,b] \) e differenziabile in \( (a,b) \). Allora esiste 
     \( c \in (a,b) \) tale che:
@@ -2490,7 +2520,7 @@ e i due limiti sono uguali tra loro e uguali a \( f'(x_0) \). L'unica possibilit
       \caption{Teorema di Lagrange}
     \end{figure}
 
-  \end{definition}
+  \end{theorem}
 \end{figure}
 \textbf{Corollario}: Sia \( I \) un intervallo, \( f: I \to \mathbb{R} \) una funzione
 differenziabile se:
@@ -2627,6 +2657,32 @@ differenziabile in \( (a,b) \) e quindi, per il teorema di Lagrange, esiste \( c
   f'(c)=\frac{f(b)-f(a)}{b-a}
 \] 
 Ma, per ipotesi, \( f'(c)=0 \), da cioè \( f(b)-f(a)=0 \), cioè \( f(b)=f(a) \).
+
+\subsection{Teorema di Cauchy}
+\begin{figure}[H]
+  \begin{theorem}
+    Date due funzioni \( f \) e \( g \) continue in \( [a,b] \) e differenziabili in \( (a,b) \),
+    con \( g'(x) \neq 0 \;\;\; \forall x \in (a,b) \), allora esiste \( c \in (a,b) \) tale che:
+    \[
+      \frac{f(b) - f(a)}{g(b) - g(a)} = \frac{f'(c)}{g'(c)}
+    \]
+  \end{theorem}
+\end{figure}
+Questo teorema è una generalizzazione del \textbf{teorema di Lagrange}.
+
+\subsubsection{Dimostrazione}
+Si consideri la funzione \( F(x) = f(x) - kg(x) \), con:
+\[
+  F(a) = f(a) -kg(a),\;\;\; F(b) = f(b) - kg(b)
+\] 
+Si può applicare il teorema di Rolle a \( F \) se \( k = \frac{f(b) - f(a)}{g(b) - g(a)} \), in tal caso
+\( F'(c) = 0 \) per \( c \in (a,b) \), quindi:
+\[
+f'(c) - kg'(x) = 0
+\] 
+\[
+\frac{f'(c)}{g'(c)} = \frac{f(b) - f(a)}{g(b) - g(a)}
+\] 
 
 \subsection{Teorema de l'Hopital}
 Si applica al calcolo dei limiti della forma \( \lim_{x \to x_0} \frac{f(x)}{g(x)} \), con \( f,g \) 
