@@ -17,6 +17,11 @@
 \usepackage{enumitem}
 \usepackage{xcolor}
 
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=false,
+}
+
 \newtheorem{theorem}{Teorema}
 
 % Inkscape figures
@@ -238,7 +243,7 @@ Esempi di proposizioni corrette e scorrette:
 	\item \( \neg \neg \bot \notin PROP \)
 \end{itemize}
 
-\subsection{Definizione induttiva formale dell'insieme \( PROP \)}
+\subsection{Definizione induttiva formale dell'insieme \texorpdfstring{\( PROP \)}{PROP}}
 Adesso l'insieme \( PROP \) viene definito in modo formale usando i simboli proposizionali.
 \begin{definition}
 	L'insieme \( PROP \) è il più piccolo insieme \( X \) di stringhe tale che:
@@ -283,7 +288,7 @@ Altri modi per dire che \( a \) gode della proprietà \( P \) sono:
 	\( P[4] \) \( \surd \)
 \end{example}
 
-\subsection{Principio di induzione sui numeri naturali \( \mathbb{N} \)}
+\subsection{Principio di induzione sui numeri naturali \texorpdfstring{\( \mathbb{N} \)}{N}}
 \( P \subseteq \mathbb{N} \)
 \begin{enumerate}
 	\item \textbf{Caso base}: se \( P[0] \) e
@@ -299,7 +304,7 @@ il fatto che esiste un minimo a cui prima o poi si arriva.
 	\[\sum_{i=0}^{n} i = \frac{n(n+1)}{2}\]
 
 \end{exercise}
-\section{Teorema del principio di induzione delle proprietà su \( PROP \)}
+\section{Teorema del principio di induzione delle proprietà su \texorpdfstring{\( PROP \)}{PROP}}
 \begin{definition}
 	\( P \subseteq PROP \)
 	\begin{enumerate}
@@ -548,7 +553,7 @@ Considerando una formula \( \alpha \) si associano 2 possibli valori:
 Il valore di verità di una formula è determinato (universalmente) dal
 valore dei suoi atomi.
 
-\subsubsection{Tavola di verità per \( \vee \) }
+\subsubsection{Tavola di verità per \texorpdfstring{\( \vee \)}{OR} }
 \( [|(\alpha \vee \beta)]_v = 1 \leftrightarrow [|\alpha|]_v = 1\; or\; [|\beta|]_v = 1 \)
 \begin{center}
 	\begin{tabular}{c|c|c}
@@ -560,7 +565,7 @@ valore dei suoi atomi.
 		1            & 1           & 1                       \\
 	\end{tabular}
 \end{center}
-\subsubsection{Tavola di verità per \( \wedge \) }
+\subsubsection{Tavola di verità per \texorpdfstring{\( \wedge \)}{AND} }
 \begin{center}
 	\begin{tabular}{c|c|c}
 		\( \alpha \) & \( \beta \) & \( \alpha \wedge \beta \) \\
@@ -572,7 +577,7 @@ valore dei suoi atomi.
 	\end{tabular}
 \end{center}
 
-\subsubsection{Tavola di verità per \( \to  \) }
+\subsubsection{Tavola di verità per \texorpdfstring{\( \to  \)}{->} }
 \begin{center}
 	\begin{tabular}{c|c|c}
 		\( \alpha \) & \( \beta \) & \( \alpha \to \beta \) \\
@@ -1951,7 +1956,7 @@ L'insieme delle \textbf{derivazioni} è il più piccolo insieme \( x \) tc:
 
 \end{enumerate}
 
-\section{Definizione di altezza di una derivazione \( h[D] \) }
+\section{Definizione di altezza di una derivazione \texorpdfstring{\( h[D] \)}{h[D]} }
     \begin{flalign*}
         \bullet\qquad & 
         h[\varphi] = 0 
@@ -2867,7 +2872,7 @@ Dopo la sostituzione sono state create delle nuove variabili legate.
 \end{figure}
 
 \section{Estensione della deduzione naturale}
-\subsection{Regole del \( \forall  \)}
+\subsection{Regole del \texorpdfstring{\( \forall  \)}{per ogni}}
 \subsubsection{Introduzione}
     \large\[
       \frac{\underset{\varphi(x)}{D}}{\forall x.\; \varphi(x)}\forall I \;\;\; x \notin FV(hp(D))\; \text{(x è generica)}
@@ -2911,7 +2916,7 @@ Dopo la sostituzione sono state create delle nuove variabili legate.
     \end{exercise}
     \end{figure}
 
-\subsection{Regole del \( \exists  \)}
+    \subsection{Regole del \texorpdfstring{\( \exists  \)}{Esiste}}
 \subsubsection{Introduzione}
 \[
 \frac{\varphi(t)}{\exists x.\; \varphi(x)} \exists I \;\;\;\;\; \text{t sia libero per x in \( \varphi \) }
