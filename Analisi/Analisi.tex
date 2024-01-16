@@ -26,6 +26,12 @@
 \usepackage{transparent}
 \usepackage{xcolor}
 
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=false,
+    linktocpage,
+}
+
 \usepackage{ntheorem}
 \newtheorem{theorem}{Teorema}
 
@@ -840,7 +846,7 @@ Se \( \lim_{x \to +\infty} f(x)= -\infty \) allora \( \lim_{x \to +\infty} g(x) 
   \caption{Teorema del confronto tra i limiti con 2 funzioni negative}
 \end{figure}
 
-\subsection{Limiti per \( x \to -\infty \) }
+\subsection{Limiti per \texorpdfstring{\( x \to -\infty \)}{x -> -∞} }
 Sia \( A \subseteq \mathbb{R} \) un insieme non limitato inferiormente, \( f: A \to \mathbb{R} \) ,
 \( L \in \mathbb{R} \cup \{+\infty, -\infty\}  \).
 Diremo che:
@@ -859,7 +865,7 @@ se e solo se
   allora \( t \to +\infty \)
 \end{center}
 
-\subsection{Limiti per \( x \to x_0 \) }
+\subsection{Limiti per \texorpdfstring{\( x \to x_0 \)}{x -> x\_0} }
 Sia \( f: A \subseteq \mathbb{R} \), \( x_0 \in \mathbb{R} \). Per definire il limite di \( f \)
 quando \( x \to 0 \), serve che \( f \) sia definita "vicino a \( x_0 \)", in un senso opportuno.
 Noi supporremo, ad esempio, che il dominio \( A \) contenga almeno un intervallo del tipo
@@ -1388,7 +1394,7 @@ Ad esempio:
   \]
 \end{example}
 
-\subsection{Sviluppi di alcune funzioni elementari per \( x \to 0 \) }
+\subsection{Sviluppi di alcune funzioni elementari per \texorpdfstring{\( x \to 0 \)}{x -> 0} }
 \begin{itemize}
   \item \(
     e^x = 1 + x + o(x)
@@ -1498,7 +1504,7 @@ il grafico nei punti \( (x_0, f(x_0)), \;\; (x_0+h, f(x_0+h)) \) è:
   del suo dominio.
 \end{definition}
 
-\subsubsection{Osservazioni}
+\subsection{Osservazioni}
 \begin{enumerate}
   \item La retta tangente al grafico di \( f \) in \( (x_0, f(x_0)) \) è definita
     come l'unica retta di pendenza \( f'(x_0) \) passante per \( (x_0, f(x_0) \).
@@ -4162,7 +4168,7 @@ Ad esempio sono serie di potenze:
   \end{example}
 \end{figure}
 Le serie di potenze in sostanza rappresenta un polinomio di grado infinito, che dipende dal parametro \( x \).
-\subsubsection{Serie di potenze notevoli con centro \( x_0 = 0 \)}
+\subsubsection{Serie di potenze notevoli con centro \texorpdfstring{\( x_0 = 0 \)}{x\_0 = 0}}
 \begin{itemize}
   \item \[
       \sum_{n=0}^{+\infty} \frac{x^n}{n!} = e^x \;\;\;\;\;\;\;\;\;\; \text{per}\;\; x \in (-\infty, +\infty)
