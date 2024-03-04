@@ -1,0 +1,87 @@
+.model controllo
+.inputs primo1 primo0 secondo1 secondo0 inizia
+.outputs manche1 manche0
+
+.start_kiss
+  .i 5 # inputs
+  .o 2 # outputs
+  .s 7 # states
+  .p 84 # elements
+  .r Par # reset
+
+  # inputs state nextState output
+  00--0 Par Par 00
+  00--0 PrS PrS 00
+  00--0 PrC PrC 00
+  00--0 PrF PrF 00
+  00--0 SeS SeS 00
+  00--0 SeC SeC 00
+  00--0 SeF SeF 00
+  --000 Par Par 00
+  --000 PrS PrS 00
+  --000 PrC PrC 00
+  --000 PrF PrF 00
+  --000 SeS SeS 00
+  --000 SeC SeC 00
+  --000 SeF SeF 00
+  01--0 PrS PrS 00
+  10--0 PrC PrC 00
+  11--0 PrF PrF 00
+  --010 SeS SeS 00
+  --100 SeC SeC 00
+  --110 SeF SeF 00
+  01010 Par Par 11
+  01010 PrC Par 11
+  01010 PrF Par 11
+  01010 SeC Par 11
+  01010 SeF Par 11
+  01100 Par SeC 10
+  01100 PrC SeC 10
+  01100 PrF SeC 10
+  01100 SeS SeC 10
+  01100 SeF SeC 10
+  01110 Par PrS 01
+  01110 PrC PrS 01
+  01110 PrF PrS 01
+  01110 SeS PrS 01
+  01110 SeC PrS 01
+  10010 Par PrC 01
+  10010 PrS PrC 01
+  10010 PrF PrC 01
+  10010 SeC PrC 01
+  10010 SeF PrC 01
+  10100 Par Par 11
+  10100 PrS Par 11
+  10100 PrF Par 11
+  10100 SeS Par 11
+  10100 SeF Par 11
+  10110 Par SeF 10
+  10110 PrS SeF 10
+  10110 PrF SeF 10
+  10110 SeS SeF 10
+  10110 SeC SeF 10
+  11010 Par SeS 10
+  11010 PrS SeS 10
+  11010 PrC SeS 10
+  11010 SeC SeS 10
+  11010 SeF SeS 10
+  11100 Par PrF 01
+  11100 PrS PrF 01
+  11100 PrC PrF 01
+  11100 SeS PrF 01
+  11100 SeF PrF 01
+  11110 Par Par 11
+  11110 PrS Par 11
+  11110 PrC Par 11
+  11110 SeS Par 11
+  11110 SeC Par 11
+  ----1 Par Par 00
+  ----1 PrS Par 00
+  ----1 PrC Par 00
+  ----1 PrF Par 00
+  ----1 SeS Par 00
+  ----1 SeC Par 00
+  ----1 SeF Par 00
+.end_kiss
+
+.end

@@ -1,0 +1,183 @@
+.model controlloAssegnato
+.inputs primo1 primo0 secondo1 secondo0 inizia
+.outputs manche1 manche0
+.latch    [2] LatchOut_v5   0
+.latch    [3] LatchOut_v6   1
+.latch    [4] LatchOut_v7   0
+.start_kiss
+.i 5
+.o 2
+.p 72
+.s 7
+.r Par
+00--0 Par Par 00
+--000 Par Par 00
+01010 Par Par 11
+01100 Par SeC 10
+01110 Par PrS 01
+10010 Par PrC 01
+10100 Par Par 11
+10110 Par SeF 10
+11010 Par SeS 10
+11100 Par PrF 01
+11110 Par Par 11
+----1 Par Par 00
+00--0 SeC SeC 00
+--000 SeC SeC 00
+--100 SeC SeC 00
+01010 SeC Par 11
+01110 SeC PrS 01
+10010 SeC PrC 01
+10110 SeC SeF 10
+11010 SeC SeS 10
+11110 SeC Par 11
+----1 SeC Par 00
+00--0 PrS PrS 00
+--000 PrS PrS 00
+01--0 PrS PrS 00
+10010 PrS PrC 01
+10100 PrS Par 11
+10110 PrS SeF 10
+11010 PrS SeS 10
+11100 PrS PrF 01
+11110 PrS Par 11
+----1 PrS Par 00
+00--0 PrC PrC 00
+--000 PrC PrC 00
+10--0 PrC PrC 00
+01010 PrC Par 11
+01100 PrC SeC 10
+01110 PrC PrS 01
+11010 PrC SeS 10
+11100 PrC PrF 01
+11110 PrC Par 11
+----1 PrC Par 00
+00--0 SeF SeF 00
+--000 SeF SeF 00
+--110 SeF SeF 00
+01010 SeF Par 11
+01100 SeF SeC 10
+10010 SeF PrC 01
+10100 SeF Par 11
+11010 SeF SeS 10
+11100 SeF PrF 01
+----1 SeF Par 00
+00--0 SeS SeS 00
+--000 SeS SeS 00
+--010 SeS SeS 00
+01100 SeS SeC 10
+01110 SeS PrS 01
+10100 SeS Par 11
+10110 SeS SeF 10
+11100 SeS PrF 01
+11110 SeS Par 11
+----1 SeS Par 00
+00--0 PrF PrF 00
+--000 PrF PrF 00
+11--0 PrF PrF 00
+01010 PrF Par 11
+01100 PrF SeC 10
+01110 PrF PrS 01
+10010 PrF PrC 01
+10100 PrF Par 11
+10110 PrF SeF 10
+----1 PrF Par 00
+.end_kiss
+.latch_order LatchOut_v5 LatchOut_v6 LatchOut_v7
+.code Par 010
+.code SeC 110
+.code PrS 111
+.code PrC 001
+.code SeF 000
+.code SeS 011
+.code PrF 100
+.names primo1 primo0 secondo1 secondo0 inizia LatchOut_v5 LatchOut_v6 \
+LatchOut_v7 [2]
+00--01-- 1
+--0001-- 1
+0---01-1 1
+11--010- 1
+---00110 1
+111000-- 1
+011000-- 1
+01100-0- 1
+11100--1 1
+011100-1 1
+011101-0 1
+01110-10 1
+.names primo1 primo0 secondo1 secondo0 inizia LatchOut_v5 LatchOut_v6 \
+LatchOut_v7 [3]
+----1--- 1
+0-----1- 1
+--00--1- 1
+--0-0011 1
+---00110 1
+110100-- 1
+11110-1- 1
+01100-0- 1
+11110--1 1
+01-10-01 1
+01010--0 1
+1101011- 1
+10100-11 1
+011101-0 1
+101000-0 1
+10100-00 1
+.names primo1 primo0 secondo1 secondo0 inizia LatchOut_v5 LatchOut_v6 \
+LatchOut_v7 [4]
+00--0--1 1
+--000--1 1
+0---01-1 1
+-0--0-01 1
+--0-0011 1
+100101-- 1
+110100-- 1
+10010--0 1
+1101011- 1
+011100-1 1
+011101-0 1
+01110-10 1
+.names primo1 primo0 secondo1 secondo0 inizia LatchOut_v5 LatchOut_v6 \
+LatchOut_v7 manche1
+1-110-1- 1
+011000-- 1
+01100-0- 1
+101-010- 1
+-101000- 1
+11110--1 1
+01010--0 1
+-1010-10 1
+1101011- 1
+10100-11 1
+101000-0 1
+.names primo1 primo0 secondo1 secondo0 inizia LatchOut_v5 LatchOut_v6 \
+LatchOut_v7 manche0
+100101-- 1
+111000-- 1
+11110-1- 1
+11110--1 1
+11100--1 1
+01-10-01 1
+01010--0 1
+10010--0 1
+011100-1 1
+10100-11 1
+011101-0 1
+101000-0 1
+01110-10 1
+10100-00 1
+.exdc 
+.inputs primo1 primo0 secondo1 secondo0 inizia LatchOut_v5 LatchOut_v6 \
+LatchOut_v7
+.outputs [2] [3] [4] manche1 manche0
+.names LatchOut_v5 LatchOut_v6 LatchOut_v7 [2]
+101 1
+.names LatchOut_v5 LatchOut_v6 LatchOut_v7 [3]
+101 1
+.names LatchOut_v5 LatchOut_v6 LatchOut_v7 [4]
+101 1
+.names LatchOut_v5 LatchOut_v6 LatchOut_v7 manche1
+101 1
+.names LatchOut_v5 LatchOut_v6 LatchOut_v7 manche0
+101 1
+.end

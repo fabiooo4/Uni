@@ -1,0 +1,202 @@
+\documentclass[a4paper]{article}
+\usepackage[italian]{babel}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{circuitikz}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=false,
+}
+
+\begin{document}
+\input{title.tex}
+
+\tableofcontents
+\pagebreak
+
+\section{Specifiche}
+Si progetti un dispositivo per la gestione di partite di \textbf{Morra Cinese}, conosciuta anche come "sasso-carta-forbici".
+Il dispositivo dovrà essere modellato come un circuito sequenziale FSMD (Finite State Machine + Datapath) in Sis e Verilog.
+Si considerino due giocatori che inseriscono una mossa che può essere sasso, carta o forbici. Ad ogni manche, il giocatore vincente è decretato dalle seguenti regole:
+\begin{itemize}
+	\item Sasso batte Forbici
+	\item Forbici batte Carta
+	\item Carta batte Sasso
+\end{itemize}
+Nell'eventualità che i due giocatori scelgano la stessa mossa verrà decretato un pareggio.
+In aggiunta, ogni partita di \textbf{Morra Cinese} si articola su più manche, con le seguenti regole:
+\begin{enumerate}
+	\item Si devono giocare un \textbf{minimo} di \textbf{quattro manche};
+	\item Si possono giocare un \textbf{massimio} di \textbf{diciannove manche}. Il numero delle stesse viene settato al ciclo di clock in cui viene iniziata la partita;
+	\item Vince il primo giocatore che riesce a \textbf{vincere due manche in più del proprio avversario} (avendo giocato le quattro manche \textbf{minime});
+	\item Ad ogni manche, il giocatore \textbf{vincente della manche precedente} è tenuto a non ripetere l'ultima mossa utilizzata. Nel caso lo facesse (indipendentemente dal risultato della manche attuale) la manche non sarebbe valida (non sarebbe conteggiata nel \textbf{mancheIdx}) e andrebbe quindi ripetuta;
+	\item Ad ogni manche, in caso di pareggio essa \textbf{viene conteggiata}. Alla manche successiva entrambi i giocatori possono usare \textbf{tutte le mosse};
+\end{enumerate}
+Il circuito ha \textbf{tre ingressi}:
+\begin{itemize}
+	\item \textbf{PRIMO [2 bit]}: mossa selezionata dal primo giocatore. Le mosse hanno i seguenti codici:
+	      \begin{itemize}
+		      \item \textbf{00}: Nessuna mossa utilizzata;
+		      \item \textbf{01}: Sasso;
+		      \item \textbf{10}: Carta;
+		      \item \textbf{11}: Forbici;
+	      \end{itemize}
+	\item \textbf{SECONDO [2 bit]}: mossa selezionata dal secondo giocatore. Le mosse hanno codici identici a quelli del primo giocatore.
+	\item \textbf{INIZIA [1 bit]}: quando il valore è uguale ad 1, riporta il sistema alla configurazione iniziale. Inoltre, la concatenazione degli ingressi \textbf{PRIMO} e \textbf{SECONDO} viene utilizzata per stabilire il numero massimo di manche (le \textbf{quattro manche} obbligatorie sommate al \textbf{valore concatenato di PRIMO e SECONDO}).
+	      Per fare un esempio inserendo i valori \textbf{PRIMO = 01} e \textbf{SECONDO = 10} si dovrà sommare il numero \textbf{quattro} (in base due) al numero \textbf{0110} ottenendo un massimo di \textbf{dieci manche} per tale partita.
+\end{itemize}
+Il circuito ha \textbf{due uscite}:
+\begin{itemize}
+	\item \textbf{MANCHE [2 bit]}: fornisce in output il risultato dell'ultima manche giocata con la seguente codifica:
+	      \begin{itemize}
+		      \item \textbf{00}: manche non valida;
+		      \item \textbf{01}: manche vinta dal giocatore 1;
+		      \item \textbf{10}: manche vinta dal giocatore 2;
+		      \item \textbf{11}: manche pareggiata;
+	      \end{itemize}
+	\item \textbf{PARTITA [2 bit]}: fornisce in output il risultato della partita con la seguente codifica:
+	      \begin{itemize}
+		      \item \textbf{00}: la partita non è ancora terminata;
+		      \item \textbf{01}: la partita è terminata, vittoria del \textbf{giocatore 1};
+		      \item \textbf{10}: la partita è terminata, vittoria del giocatore 2;
+		      \item \textbf{11}: la partita è terminata in pareggio;
+	      \end{itemize}
+\end{itemize}
+\section{Architettura generale}
+<<<<<<< HEAD
+\begin{figure}[H]
+	\begin{center}
+		\begin{tikzpicture}
+			\draw (0,0) rectangle (2,2) node[pos=.5] {FSM};
+			\draw[latex-] (0.25,2) -- ++(0,1) node[above, align=center, scale=0.8] {primo};
+			\draw[latex-] (1,2) -- ++(0,1.5) node[above, align=center, scale=0.8] {secondo};
+			\draw[latex-] (1.75,2) -- ++(0,1) node[above, align=center, scale=0.8] {inizia};
+
+			\draw[-latex] (1,0) -- ++(0,-1) node[below, align=center, scale=0.8] {manche};
+
+
+			\draw (4,0) rectangle (6,2) node[pos=.5] {Datapath};
+			\draw[latex-] (4.25,2) -- ++(0,1) node[above, align=center, scale=0.8, yshift=-2] {primo};
+			\draw[latex-] (5,2) -- ++(0,1.5) node[above, align=center, scale=0.8] {secondo};
+			\draw[latex-] (5.75,2) -- ++(0,1) node[above, align=center, scale=0.8] {inizia};
+
+			\draw[-latex] (5,0) -- ++(0,-1) node[below, align=center, scale=0.8] {partita};
+
+			\draw[latex-] (4,1) -- (2,1) node[pos=.5, above, align=center, scale=0.8] {manche};
+
+			\draw[latex-] (0,0.5) -- ++(-0.5,0) -- ++(0,-1) -- ++(-1,0) node[left, align=center, scale=0.8] {CLK};
+			\draw[fill] (-0.5,-0.5) circle (0.05);
+			\draw[-latex] (-0.5,-0.5) -- (4.5, -0.5) -- ++(0,0.5);
+
+		\end{tikzpicture}
+	\end{center}
+	\caption{Architettura generale della FSMD}
+\end{figure}
+=======
+Il circuito è costituito da FSM (Controllore) e Data-path (elaboratore). I due file che racchiudono la rappresentazione di tali componenti sono presenti nella cartella SIS.
+Sono presenti entrambi in modo che il circuito sia completo e possa funzionare.
+>>>>>>> 6010bb3ef24cf2363d927e15f73ce15961771bb9
+
+Di seguito verranno riportati i componenti utilizzati.
+
+\section{Diagramma degli stati del controllore}
+È riportato di seguito il diagramma degli stati del controllore rappresentato in tabella di mealy
+con gli ingressi codificati nel seguente modo:
+\begin{itemize}
+	\item \textbf{Nessuna scelta}: $N = 00$
+	\item \textbf{Sasso}: $S = 01$
+	\item \textbf{Carta}: $C = 10$
+	\item \textbf{Forbice}: $F = 11$
+\end{itemize}
+e gli stati codificati come:
+\begin{itemize}
+	\item \textbf{Par}: Pareggio
+	\item \textbf{PrS}: Primo giocatore vince con sasso
+	\item \textbf{PrC}: Primo giocatore vince con carta
+	\item \textbf{PrF}: Primo giocatore vince con forbice
+	\item \textbf{SeS}: Secondo giocatore vince con sasso
+	\item \textbf{SeC}: Secondo giocatore vince con carta
+	\item \textbf{SeF}: Secondo giocatore vince con forbice
+\end{itemize}
+Dato l'elevato numero di ingressi nella seguente tabella è stato deciso di mettere in riga gli stati e in
+colonna gli ingressi per una migliore leggibilità.
+\begin{table}[H]
+	\begin{center}
+		\begin{tabular}{l|c|c|c|c|c|c|c}
+			   & Par    & PrS    & PrC    & PrF    & SeS    & SeC    & SeF    \\
+			\hline
+			N- & Par/00 & PrS/00 & PrC/00 & PrF/00 & SeS/00 & SeC/00 & SeF/00 \\
+			\hline
+			-N & Par/00 & PrS/00 & PrC/00 & PrF/00 & SeS/00 & SeC/00 & SeF/00 \\
+			\hline
+			SS & Par/11 & PrS/00 & Par/11 & Par/11 & SeS/00 & Par/11 & Par/11 \\
+			\hline
+			SC & SeC/10 & PrS/00 & SeC/10 & SeC/10 & SeC/10 & SeC/00 & SeC/10 \\
+			\hline
+			SF & PrS/01 & PrS/00 & PrS/01 & PrS/01 & PrS/01 & Prs/01 & SeF/00 \\
+			\hline
+			CS & PrC/01 & PrC/01 & PrC/00 & PrC/01 & SeS/00 & PrC/01 & PrC/01 \\
+			\hline
+			CC & Par/11 & Par/11 & PrC/00 & Par/11 & Par/11 & SeC/00 & Par/11 \\
+			\hline
+			CF & SeF/10 & SeF/10 & PrC/00 & SeF/10 & SeF/10 & SeF/10 & SeF/00 \\
+			\hline
+			FS & SeS/10 & SeS/10 & SeS/10 & PrF/00 & SeS/00 & SeS/10 & SeS/10 \\
+			\hline
+			FC & PrF/01 & PrF/01 & PrF/01 & PrF/00 & PrF/01 & SeC/00 & PrF/01 \\
+			\hline
+			FF & Par/11 & Par/11 & Par/11 & PrF/00 & Par/11 & Par/11 & SeF/00 \\
+			\hline
+		\end{tabular}
+	\end{center}
+	\caption{Diagramma degli stati del controllore}
+\end{table}
+
+
+\section{Architettura del datapath}
+Le componenti che sono state utilizzate per la realizzazione del Data-path sono:
+\begin{itemize}
+	\item
+\end{itemize}
+
+
+\section{Simulazioni}
+Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit commodo officia dolor Lorem duis laboris cupidatat officia voluptate. Culpa proident adipisicing id nulla nisi laboris ex in Lorem sunt duis officia eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim. Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et culpa duis.
+
+
+
+\section{Statistiche del circuito}
+Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit commodo officia dolor Lorem duis laboris cupidatat officia voluptate. Culpa proident adipisicing id nulla nisi laboris ex in Lorem sunt duis officia eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim. Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et culpa duis.
+
+\subsection{Prima della minimizzazione}
+Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit commodo officia dolor Lorem duis laboris cupidatat officia voluptate. Culpa proident adipisicing id nulla nisi laboris ex in Lorem sunt duis officia eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim. Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et culpa duis.
+
+
+\subsection{Dopo la minimizzazione}
+Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit commodo officia dolor Lorem duis laboris cupidatat officia voluptate. Culpa proident adipisicing id nulla nisi laboris ex in Lorem sunt duis officia eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim. Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et culpa duis.
+
+\subsubsection{Minimizzazione degli stati}
+Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit commodo officia dolor Lorem duis laboris cupidatat officia voluptate. Culpa proident adipisicing id nulla nisi laboris ex in Lorem sunt duis officia eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim. Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et culpa duis.
+
+\subsubsection{Minimizzazione per area}
+Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit commodo officia dolor Lorem duis laboris cupidatat officia voluptate. Culpa proident adipisicing id nulla nisi laboris ex in Lorem sunt duis officia eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim. Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et culpa duis.
+
+
+
+\section{Numero di gate e ritardo}
+Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit commodo officia dolor Lorem duis laboris cupidatat officia voluptate. Culpa proident adipisicing id nulla nisi laboris ex in Lorem sunt duis officia eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim. Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et culpa duis.
+
+\subsection{Prima della minimizzazione}
+Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit commodo officia dolor Lorem duis laboris cupidatat officia voluptate. Culpa proident adipisicing id nulla nisi laboris ex in Lorem sunt duis officia eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim. Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et culpa duis.
+
+\subsection{Dopo la minimizzazione per area}
+Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit commodo officia dolor Lorem duis laboris cupidatat officia voluptate. Culpa proident adipisicing id nulla nisi laboris ex in Lorem sunt duis officia eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim. Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et culpa duis.
+
+
+
+\section{Scelte progettuali}
+Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit commodo officia dolor Lorem duis laboris cupidatat officia voluptate. Culpa proident adipisicing id nulla nisi laboris ex in Lorem sunt duis officia eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim. Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et culpa duis.
+
+
+
+\end{document}
