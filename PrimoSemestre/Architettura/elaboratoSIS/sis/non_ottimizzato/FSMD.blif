@@ -1,0 +1,13 @@
+.model MorraCinese
+.inputs primo1 primo0 secondo1 secondo0 inizia
+.outputs manche1 manche0 partita1 partita0
+
+# Controllo
+.subckt controlloAssegnato primo1=primo1 primo0=primo0 secondo1=secondo1 secondo0=secondo0 inizia=inizia manche1=manche1 manche0=manche0
+
+# Elaborazione
+.subckt elaborazione manche1=manche1 manche0=manche0 primo1=primo1 primo0=primo0 secondo1=secondo1 secondo0=secondo0 inizia=inizia partita1=partita1 partita0=partita0
+
+.end
+.search controlloAssegnato.blif
+.search elaborazione.blif

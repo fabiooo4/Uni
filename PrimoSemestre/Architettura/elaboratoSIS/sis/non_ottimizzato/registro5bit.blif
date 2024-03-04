@@ -1,0 +1,10 @@
+.model registro5bit
+.inputs A4 A3 A2 A1 A0
+.outputs O4 O3 O2 O1 O0
+.subckt registro1bit A=A4 O=O4
+.subckt registro1bit A=A3 O=O3
+.subckt registro1bit A=A2 O=O2
+.subckt registro1bit A=A1 O=O1
+.subckt registro1bit A=A0 O=O0
+.search registro1bit.blif
+.end
