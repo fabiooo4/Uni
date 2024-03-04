@@ -1,0 +1,570 @@
+\documentclass[a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage[italian]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage[makeroom]{cancel}
+\usepackage{amsfonts}
+\usepackage{mdframed}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usetikzlibrary{pgfplots.fillbetween}
+\pgfplotsset{compat=newest, ticks=none}
+\usepackage{graphicx}
+\graphicspath{{./figures/}}
+
+\pgfdeclarelayer{ft}
+\pgfdeclarelayer{bg}
+\pgfsetlayers{bg,main,ft}
+
+\usepackage{import}
+\usepackage{pdfpages}
+\usepackage{transparent}
+\usepackage{xcolor}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=false,
+}
+
+\usepackage{ntheorem}
+\newtheorem{theorem}{Teorema}
+
+% Useful definitions frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	innertopmargin=8pt,%
+	ntheorem]{define}{Definizioni utili}[section]
+
+% Example frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	innertopmargin=8pt,%
+	ntheorem]{example}{Esempio}[section]
+
+% Important definition frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	backgroundcolor=gray!40,%
+	innertopmargin=8pt,%
+	ntheorem]{definition}{Definizione}[section]
+
+% Exercise frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	innertopmargin=8pt,%
+	ntheorem]{exercise}{Esercizio}[section]
+
+
+% figure support
+\usepackage{import}
+\usepackage{xifthen}
+\pdfminorversion=7
+\usepackage{pdfpages}
+\usepackage{transparent}
+\newcommand{\incfig}[1]{%
+	\def\svgwidth{\columnwidth}
+	\import{./figures/}{#1.pdf_tex}
+}
+
+\pdfsuppresswarningpagegroup=1
+
+\begin{document}
+\input{title.tex}
+
+\tableofcontents
+\pagebreak
+
+% Info sul corso
+% Programma su moodle
+% Lezioni sia in presenza che su online
+% Ogni terza ora del lunedì si discutono gli esercizi votati nel sondaggio su moodle
+% Esercizi da fare a gruppi con un punto extra per il voto finale
+% Esame esame molto simile agli esercizi assegnati
+% Esame di 2 ore con 4 esercizi
+
+\section{Numeri complessi}
+\subsection{Insiemi di numeri}
+I numeri sono divisi in insiemi in base alle operazioni che si possono fare con essi:
+\begin{itemize}
+	\item
+	      I numeri sono stati pensati per contare e per farlo è stato definito l'insieme dei numeri naturali
+	      che è definito come \[  \mathbb{N} = \{0, 1, 2, 3, \ldots\} \]
+	\item
+	      Per fare operazioni di sottrazione è stato definito l'insieme dei numeri interi che è
+	      definito come \[ \mathbb{Z} = \{\ldots, -3, -2, -1, 0, 1, 2, 3, \ldots\} \]
+	\item
+	      Per fare operazioni di divisione è stato definito l'insieme dei numeri razionali che è
+	      definito come \[ \mathbb{Q} = \left\{ \frac{p}{q} \mid p, q \in \mathbb{Z}, q \neq 0 \right\} \]
+	\item
+	      Per fare operazioni di radice quadrata è stato definito l'insieme dei numeri reali che è
+	      definito come \[ \mathbb{R} = \left\{ x \mid x \in \mathbb{Q} \right\} \]
+	\item
+	      Infine, per fare operazioni di radice quadrata di numeri negativi è stato definito
+	      l'insieme dei numeri complessi che è definito come
+	      \[ \mathbb{C} = \left\{ z \mid z = a + bi,\;\;\; a, b \in \mathbb{R}, i^2 = -1 \right\} \]
+\end{itemize}
+
+\noindent Ognuno di questi insiemi è un sottoinsieme dell'insieme successivo, ovvero
+\[ \mathbb{N} \subset \mathbb{Z} \subset \mathbb{Q} \subset \mathbb{R} \subset \mathbb{C} \]
+
+\noindent Le equazioni non risolvibili in un insieme vengono risolte in un insieme successivo, ad esempio
+\[ x^2 + 1 = 0 \] non ha soluzioni in $\mathbb{R}$, ma ha soluzioni in $\mathbb{C}$.
+
+\begin{figure}[H]
+	\begin{theorem}
+		\textbf{(Teorema fondamentale dell'algebra)}\\
+		Qualsiasi equazione di forma:
+		\[
+			a_nx^n + a_{n-1}x^{n-1} + \ldots + a_1x + a_0 = 0
+		\]
+		dove
+		\[
+			n \in \mathbb{N},\;\; a_0, a_1, \ldots, a_n \in \mathbb{C},\;\; a_n \neq 0
+		\]
+		ed \( x \) è un incognita, ammette \( n \) soluzioni
+
+	\end{theorem}
+
+	\begin{define}
+		\[
+			a_nx^n + a_{n-1}x^{n-1} + \ldots + a_1x + a_0 \;\; \text{con} \;\; a_n \neq 0
+		\]
+		è detto \textbf{polinomio di grado \( n \)} con \textbf{coefficienti} \( a_0, \ldots, a_n \in \mathbb{C} \)
+	\end{define}
+\end{figure}
+
+\subsection{Numeri immaginari}
+Aggiungiamo ai numeri reali un "nuovo" numero $i$ che è definito come $i^2 = -1$. Questo numero
+è detto: \textbf{unità immaginaria}. Per agevolare le operazioni con i numeri immaginari si
+definisce l'insieme dei \textbf{numeri complessi} in modo da poter moltiplicare e sommare un
+numero reale con un numero immaginario:
+\[
+	\mathbb{C} = \{ a + bi \;|\; a,b \in \mathbb{R} \}
+\]
+
+\( z = a bi \) è detta \textbf{forma algebrica} di un numero complesso \( z \in \mathbb{C} \).
+\[
+	a = \Re(z) \quad \text{è detta parte reale di } z
+\]
+\[
+	b = \Im(z) \quad \text{è detta parte immaginaria di } z
+\]
+
+\begin{figure}[H]
+	\begin{define}
+		Per agevolare la scrittura, al posto di scrivere:
+		\[
+			a + (-b)i
+		\]
+		si scrive:
+		\[
+			a - bi
+		\]
+	\end{define}
+\end{figure}
+
+\subsubsection{Esempi}
+\begin{figure}[H]
+	\begin{example}
+		\begin{itemize}
+			\item $3 + 2i$
+			\item $-12 + \frac{1}{2}i$
+			\item $3-\sqrt{2}i $
+			\item $1+0 \cdot i = 1\;\; \in \mathbb{R}$
+		\end{itemize}
+	\end{example}
+\end{figure}
+
+\subsection{Operazioni tra i numeri complessi}
+\subsubsection{Somma}
+\begin{figure}[H]
+	\begin{definition}
+		L'addizione tra due numeri complessi è definita come:
+		\[
+			z_1 = a + bi \quad z_2 = c + di \quad \in \mathbb{C}
+		\]
+		\[
+			z_1 + z_2 = (a + bi) + (c + di) = (a + c) + (b + d)i
+		\]
+	\end{definition}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{example}
+		\[
+			z_1 = 6 + 7i \quad z_2 = -12 + 1732i
+		\]
+		\[
+			z_1 + z_2 = (6 + 7i) + (-12 + 1732i) = -6 + 1739i
+		\]
+	\end{example}
+\end{figure}
+
+\subsubsection{Prodotto}
+\begin{figure}[H]
+	\begin{definition}
+		Il prodotto tra due numeri complessi è definito come:
+		\[
+			z_1 = a + bi \quad z_2 = c + di \quad \in \mathbb{C}
+		\]
+		\[
+			z_1 \cdot z_2 = (a + bi) \cdot (c + di) = ac + adi + bci + bdi^2
+		\]
+		visto che $i^2 = -1$ si ha che $bdi^2 = -bd$ quindi
+		\[
+			z_1 \cdot z_2 = ac + adi + bci - bd = (ac - bd) + (ad + bc)i
+		\]
+	\end{definition}
+
+	\begin{example}
+		\[
+			z_1 = 3 + 2i \quad z_2 = 10 - i
+		\]
+		\[
+			z_1 \cdot z_2 = (3 + 2i) \cdot (10 - i) = 30 - 3i + 20i - 2i^2 = 32 + 17i
+		\]
+	\end{example}
+\end{figure}
+
+\subsubsection{Sottrazione}
+Notiamo che per ogni numero complesso \( z = a + bi \; \in \mathbb{C} \), il numero complesso
+\( -a -bi \) è l'unico numero complesso tale che \( z + (-z) = 0 \). Questo numero complesso è
+detto \textbf{opposto} di \( z \) e si indica con \( -z \).
+
+\begin{figure}[H]
+	\begin{definition}
+		La sottrazione tra due numeri complessi è definita come:
+		\[
+			z_1 = a + bi \quad z_2 = c + di \quad \in \mathbb{C}
+		\]
+		\[
+			z_1 - z_2 = z_1 + (-z_2) = (a + bi) - (c + di) = (a - c) + (b - d)i
+		\]
+	\end{definition}
+
+	\begin{example}
+		\[
+			z_1 = 3 + 2i \quad z_2 = 10 - i
+		\]
+		\[
+			z_1 - z_2 = (3 + 2i) - (10 - i) = -7 + 3i
+		\]
+	\end{example}
+\end{figure}
+
+\subsubsection{Divisione}
+\begin{definition}
+	La divisione tra due numeri complessi è definita come:
+	\[
+		z_1, z_2, z_2 \neq 0 \quad \in \mathbb{C}
+	\]
+	Definiamo \( \frac{1}{z_2} \) come l'unico numero complesso tale che:
+	\[
+		z_2 \cdot \frac{1}{z_2} = 1
+	\]
+	\[
+		\frac{z_1}{z_2} = z_1 \cdot \frac{1}{z_2}
+	\]
+	Sia \( z = a + bi\;\; \in \mathbb{C} \) e \( z \neq 0 \). Supponiamo che \( z'= c + di \) sia
+	un numero complesso tale che \( z \cdot z' = 1 \), cioè:
+	\[
+		1 = z \cdot z' = (a + bi) \cdot (c + di) = (ac - bd) + (ad + bc)i
+	\]
+	Abbiamo \( ac-bd=1 \) e \( ad+bc=0 \).
+
+	\noindent Possiamo trovare \( c \) sostituendo \( d = \frac{-1-ac}{b} \) nella prima equazione:
+	\[
+		c = -\frac{ad}{b} \quad d = \frac{-(1-ac)}{b} = \frac{1-ac}{b}
+	\]
+	\[
+		c = \frac{-a (\frac{-1+ac}{b})}{b} = \frac{-a (\frac{-1+ac}{b})}{b} \cdot \frac{b}{b} = \frac{-a (-1 + ac)}{b^2}
+	\]
+	\[
+		cb^2 = a - a^2c
+	\]
+	\[
+		c(a^2 + b^2) = a
+	\]
+	\[
+		c = \frac{a}{a^2 + b^2}
+	\]
+	\noindent Possiamo trovare \( d \) sostituendo \( c = \frac{-ad}{b} \) nella seconda equazione:
+	\[
+		d = \frac{-bc}{a} \quad c = \frac{-(1-bd)}{a} = \frac{1-bd}{a}
+	\]
+	\[
+		d = \frac{-b (\frac{1-bd}{a})}{a} = \frac{-b (\frac{1-bd}{a})}{a} \cdot \frac{a}{a} = \frac{-b (1 - bd)}{a^2}
+	\]
+	\[
+		ad^2 = b - b^2d
+	\]
+	\[
+		d(a^2 + b^2) = b
+	\]
+	\[
+		d = \frac{b}{a^2 + b^2}
+	\]
+	Quindi:
+	\[
+		z' = \frac{a}{a^2 + b^2} - \frac{b}{a^2 + b^2}i = \frac{a - bi}{a^2 + b^2}
+	\]
+	di conseguenza \[ \frac{1}{z} = \frac{a-bi}{a^2+b^2} \]
+
+	\noindent Siano \( z_1 = a+bi, z_2 = c+di \neq 0 \in \mathbb{C} \). Definiamo:
+	\[
+		\frac{z_1}{z_2} = z_1 \cdot \frac{1}{z_2} = z_1 \cdot \frac{c-di}{c^2+d^2} = \frac{ac+bd}{c^2+d^2} + \frac{bc-ad}{c^2+d^2}i
+	\]
+\end{definition}
+
+\begin{figure}[H]
+	\begin{example}
+		\[
+			\frac{1+2i}{2-i} = \left(1+2i\right)\left(\frac{2}{5}+\frac{1}{5}i\right) = \left( \frac{2}{5}-\frac{2}{5} \right) + \left( \frac{1}{5} + \frac{4}{5} \right) i = i
+		\]
+	\end{example}
+\end{figure}
+
+\noindent Un trucco per dividere i numeri complessi è moltiplicare per \( 1 \) la frazione:
+\[
+	(a+bi)(a-bi) = a^2 \cancel{+abi} \cancel{- abi} + b^2 = a^2 + b^2 \quad \in \mathbb{R}
+\]
+In questo modo si arriva ad ottenere un numero reale al denominatore facilitando la divisione.
+\begin{figure}[H]
+	\begin{example}
+		\[
+			\frac{1+2i}{2-i}
+		\]
+		\[
+			\left( \frac{1+2i}{2-i} \right) \left( \frac{2+i}{2+i} \right) = \frac{(1+2i)(2+i)}{2^2+(-1)^2} =
+		\]
+		\[
+			= \frac{(1+2i)(2+i)}{5} = \frac{2+4i+i+2i^2}{5} = \frac{2+5i-2}{5} = \frac{5i}{5} = i
+		\]
+	\end{example}
+\end{figure}
+
+\subsection{Coniugato e modulo}
+\subsubsection{Coniugato}
+Sia \( z = a +bi \in \mathbb{C} \). Il numero complesso \( \overline{z} = a - bi \) è detto
+\textbf{coniugato} di \( z \).
+
+\subsubsection{Modulo}
+Il \textbf{modulo} di \( z \) è definito come:
+\[
+	|z| = \sqrt{a^2 + b^2} \quad \in \mathbb{R}
+\]
+
+\subsubsection{Proprietà}
+Siano \( z_1 = a + bi, z_2 = c + di \quad \in \mathbb{C} \)
+\begin{enumerate}
+	\item \( z_1 \overline{z_1} = a^2 + b^2 = |z_1|^2 \)
+	\item \( \overline{z_1 + z_2} = \overline{(a+c) + (b+d)i} = (a-bi) + (c-di) = \overline{z_1} + \overline{z_2} \)
+	\item \( \overline{z_1 z_2} = \overline{z_1} \cdot \overline{z_2} \)
+	\item Se \[ z_1 \neq 0, \; \overline{\frac{1}{z_1}} = \frac{1}{\overline{z_1}} \]
+	      Infatti:
+	      \[
+		      \overline{z_1} \cdot \left( \overline{\frac{1}{z_1}} \right) = \left(\overline{ z_1 \cdot \frac{1}{z_1}} \right) = \overline{1+0i} = 1 - 0i = 1
+	      \]
+	\item Se \( z_2 \neq 0 \) allora:
+	      \[
+		      \left( \overline{\frac{z_1}{z_2}} \right) = \left( \overline{z_1 \cdot \frac{1}{z_2}} \right) = \overline{z_1} \cdot \overline{\frac{1}{z_2}} = \overline{z_1} \cdot \frac{1}{\overline{z_2}} = \frac{\overline{z_1}}{\overline{z_2}}
+	      \]
+	\item Se \( z_1 \neq 0 \), allora
+	      \[
+		      \frac{1}{z_1} \stackrel{def}{=} \frac{a-bi}{a^2+b^2}= \frac{\overline{z_1}}{|z_1|^2}
+	      \]
+\end{enumerate}
+
+\begin{example}
+	\[
+		z = \frac{1 + i}{2 - i} = \left( 1+i \right) \left( \frac{1}{2-i} \right)
+	\]
+	\[
+		\frac{1}{2-i} = \frac{2+i}{5} = \frac{2+i}{5} = \frac{2}{5} + \frac{1}{5}i
+	\]
+	\[
+		z = \left( 1+i \right) \left( \frac{2}{5} + \frac{1}{5}i \right) = \left( \frac{2}{5}-\frac{1}{5} \right) + \left( \frac{2}{5} + \frac{1}{5} \right)i = \frac{1}{5} + \frac{3}{5}i
+	\]
+	\[
+		\overline{z} = \frac{1}{5} - \frac{3}{5}i
+	\]
+\end{example}
+
+\subsection{Coordinate polari}
+Per ogni numero complesso si ha una coppia di coordinate:
+\[
+	z = a + bi \quad \in \mathbb{C}
+\]
+\[ (a,b) = (\Re(z), \Im(z)) \in \mathbb{R}^2 \]
+
+
+\begin{figure}[H]
+	\begin{center}
+		\begin{tikzpicture}[scale=0.8, domain=0:13]
+			\draw[->] (-0.5,0) -- (6,0) node[right] {$\Re$};
+			\draw[->] (0,-0.5) -- (0,5) node[above] {$\Im$};
+
+			\draw[fill, blue] (5, 4) circle (4pt) node[above right] {$z = (a,b)$};
+
+			\draw[blue, thick] (0, 0) -- (5, 4);
+
+			\draw[red, thick] (3, 0) arc (0:38:3) node[right] {$\alpha$};
+		\end{tikzpicture}
+	\end{center}
+
+	\caption{Rappresentazione di un numero complesso}
+\end{figure}
+\noindent Possiamo esprimere \( z \) in coordinate polari \( (r, \alpha) \) dove \( r \) è la lunghezza del
+segmento \( OZ \), detto \textbf{raggio polare}, ed \( \alpha \) è l'angolo compreso tra l'asse delle x
+e \( OZ \) in senso antiorario. \( \alpha \) viene misurato in radianti
+
+\begin{figure}[H]
+	\begin{example}
+		\[
+			z_1 = (1,0) \to 1
+		\]
+		\[
+			z_2 = (1, \frac{\pi}{2}) \to i
+		\]
+		\[
+			z_3 = (1, \pi) \to -1
+		\]
+		\[
+			z_4 = (1, \frac{3\pi}{2}) \to -i
+		\]
+
+		\begin{center}
+			\begin{tikzpicture}[scale=0.5, domain=0:13]
+				\draw[->] (-4,0) -- (4,0) node[right] {$\Re$};
+				\draw[->] (0,-4) -- (0,4) node[above] {$\Im$};
+
+				\draw[fill, blue] (3, 0) circle (4pt) node[below right] {$z_1 = (1,0)$};
+				\draw[fill, blue] (0, 3) circle (4pt) node[above left] {$z_2 = (1, \frac{\pi}{2})$};
+				\draw[fill, blue] (-3, 0) circle (4pt) node[below left] {$z_3 = (1, \pi)$};
+				\draw[fill, blue] (0, -3) circle (4pt) node[below left] {$z_4 = (1, \frac{3\pi}{2})$};
+
+			\end{tikzpicture}
+		\end{center}
+		\caption{Esempi di numeri complessi in coordinate polari}
+	\end{example}
+\end{figure}
+
+\subsection{Forma trigonometrica di un numero complesso}
+Dato un \( z = (r, \alpha) \) in coordinate polari, vogliamo ricavare la forma algebrica. Per
+fare ciò usiamo il seno e il coseno:
+\[
+	\cos(\alpha) = \frac{a}{r} \quad \sin(\alpha) = \frac{b}{r}
+\]
+\begin{figure}[H]
+	\begin{center}
+		\begin{tikzpicture}[scale=0.8, domain=0:13]
+			\draw[->] (-0.5,0) -- (6,0) node[right] {$\Re$};
+			\draw[->] (0,-0.5) -- (0,5) node[above] {$\Im$};
+
+			\draw[fill, blue] (5, 4) circle (4pt);
+
+			\draw[blue, thick] (0, 0) -- (5, 4);
+
+			\draw[red, thick] (3, 0) arc (0:38:3) node[right] {$\alpha$};
+
+			\draw[green, dashed] (5, 0) -- (5, 4) node[midway, right] {$b$};
+			\draw[green, dashed] (0, 4) -- (5, 4) node[midway, above] {$a$};
+		\end{tikzpicture}
+	\end{center}
+
+	\caption{Forma trigonometrica di un numero complesso}
+\end{figure}
+\begin{figure}[H]
+	\begin{definition}
+		La \textbf{forma trigonometrica} di un numero complesso è definita come:
+		\[
+			z = (r \cdot \cos(\alpha)) + (r \cdot \sin(\alpha))i = r \cdot (\cos(\alpha) + i \cdot \sin(\alpha))
+		\]
+	\end{definition}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{example}
+		\[
+			1 = \cos(0) + i \cdot \sin(0)
+		\]
+		\[
+			i = \cos(\frac{\pi}{2}) + i \cdot \sin(\frac{\pi}{2})
+		\]
+		\[
+			-1 = \cos(\pi) + i \cdot \sin(\pi)
+		\]
+		\[
+			-i = \cos(\frac{3\pi}{2}) + i \cdot \sin(\frac{3\pi}{2})
+		\]
+
+	\end{example}
+\end{figure}
+
+\subsection{Prodotto di numeri complessi in forma trigonometrica}
+\begin{figure}[H]
+	\begin{definition}
+		\[
+			z_1 = r\left(\cos(\alpha) + i \sin(\alpha)\right), \quad z_2 = s\left(\cos(\beta) + i \sin(\beta)\right) \quad \in \mathbb{C}
+		\]
+		\vspace{0.1cm}
+		\[
+			z_1  z_2 = r  s  (\cos(\alpha) + i \sin(\alpha))  (\cos(\beta) + i \sin(\beta)) =
+		\]
+		\[
+			= r  s  \left( (\cos{\alpha} \cos(\beta) - \sin(\alpha) \sin(\beta)) + (\cos(\alpha) \sin(\beta) + \sin(\alpha) \cos(\beta))i \right) =
+		\]
+		\[
+			= r  s  \left( \cos(\alpha + \beta) + i \sin(\alpha + \beta) \right)
+		\]
+	\end{definition}
+\end{figure}
+\subsection{Formula di de Moivre}
+Dati \( n \in \mathbb{N}, \quad z = r(\cos(\alpha) + i \sin(\alpha)) \in \mathbb{C} \)
+\[
+	z^n = r^n \cdot (\cos(n\alpha) + i \sin(n\alpha))
+\]
+
+\begin{figure}[H]
+	\begin{example}
+		\[
+			z = \sqrt{3} + i = 2 \cdot \left( \cos(\frac{\pi}{6}) + i \sin(\frac{\pi}{6}) \right)
+		\]
+		\[
+			z^6 = 2^6 \cdot \left( \cos(\frac{\pi}{6} \cdot 6) + i \sin(\frac{\pi}{6} \cdot 6) \right) = 64 \cdot \left( \cos(\pi) + i \sin(\pi) \right) = -64
+		\]
+	\end{example}
+\end{figure}
+
+\subsection{Definizione di radice n-esima}
+\[
+	y \in  \mathbb{C}, \quad n \in \mathbb{N}
+\]
+Si dicono \textbf{radici n-esime} di \( y \) le soluzioni dell'equazione \( x^n = y \).
+
+\subsection{Teorema delle radici n-esime}
+Siano \( y \in \mathbb{C} \) e \( n \in \mathbb{N} \). Esistono precisamente \( n \) radici n-esime
+complesse distinte \( z_0, z_1, \ldots, z_{n-1} \) di \( y \). Se \( y = r(\cos(\alpha)+i\sin(\alpha)) \),
+allora per \( k = 0, \ldots, n-1 \) :
+\[
+	z_k = \sqrt[n]{r} \left( \cos\left(\frac{\alpha + 2k\pi}{n}\right) + i \sin\left(\frac{\alpha + 2k\pi}{n}\right) \right)
+\]
+Si somma \( 2k \pi  \) per ottenere tutte le radici n-esime, siccome \( \sin \) e \( \cos \) sono periodiche.
+\end{document}

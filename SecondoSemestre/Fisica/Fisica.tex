@@ -1,0 +1,264 @@
+\documentclass[a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage[italian]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage[makeroom]{cancel}
+\usepackage{amsfonts}
+\usepackage{mdframed}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usetikzlibrary{pgfplots.fillbetween}
+\pgfplotsset{compat=newest, ticks=none}
+\usepackage{graphicx}
+\graphicspath{{./figures/}}
+
+\pgfdeclarelayer{ft}
+\pgfdeclarelayer{bg}
+\pgfsetlayers{bg,main,ft}
+
+\usepackage{import}
+\usepackage{pdfpages}
+\usepackage{transparent}
+\usepackage{xcolor}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=false,
+}
+
+\usepackage{ntheorem}
+\newtheorem{theorem}{Teorema}
+
+% Useful definitions frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	innertopmargin=8pt,%
+	ntheorem]{define}{Definizioni utili}[section]
+
+% Example frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	innertopmargin=8pt,%
+	ntheorem]{example}{Esempio}[section]
+
+% Important definition frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	backgroundcolor=gray!40,%
+	innertopmargin=8pt,%
+	ntheorem]{definition}{Definizione}[section]
+
+% Exercise frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	innertopmargin=8pt,%
+	ntheorem]{exercise}{Esercizio}[section]
+
+
+% figure support
+\usepackage{import}
+\usepackage{xifthen}
+\pdfminorversion=7
+\usepackage{pdfpages}
+\usepackage{transparent}
+\newcommand{\incfig}[1]{%
+	\def\svgwidth{\columnwidth}
+	\import{./figures/}{#1.pdf_tex}
+}
+
+\pdfsuppresswarningpagegroup=1
+
+\begin{document}
+\input{title.tex}
+
+\tableofcontents
+\pagebreak
+
+% Parte fatta con il prof di esercitazione
+\section{Sistema di riferimento}
+È un \textbf{sistema di coordinate} rispetto al quale vengono misurate le grandezze coinvolte in un problema.
+Per fissare un sistema di riferimento si devono fissare:
+\begin{itemize}
+	\item Un punto di origine $O$
+	\item Un insieme di assi lungo determinate direzioni
+\end{itemize}
+
+\subsection{Spazio cartesiano}
+È il sistema di riferimento più comune, individuato da 2 o 3 rette mutuamente perpendicolari,
+dette \textbf{assi cartesiani}, avendo in comune un unico punto chiamato \textbf{origine}.
+\label{D1}
+\begin{definition}[Coordinate cartesiane]
+	Le coordinate cartesiane di un punto $P$ nello spazio vengono determinate tracciando il segmento
+	di perpendicolare da \( P \) ad ognuno degli assi. La lunghezza di ciascun segmento da \( O \) fino al
+	piede della perpendicolare determina il valore della coordinata cartesiana.
+	\label{D2}
+\end{definition}
+
+\section{Grandezze}
+\subsection{Grandezze scalari}
+Sono grandezze che si possono rappresentare con un numero reale, ad esempio la massa, la temperatura, ecc.
+Per definire una grandezza scalare è necessario specificare:
+\begin{itemize}
+	\item Il valore numerico
+	\item L'unità di misura
+\end{itemize}
+
+\subsection{Grandezze vettoriali}
+Sono grandezze che si possono rappresentare con un \textbf{vettore}, ad esempio la forza, la velocità, ecc.
+Per definire una grandezza vettoriale è necessario utilizzare un vettore, cioè un segmento orientato
+definito da:
+\begin{itemize}
+	\item Intensità
+	\item Direzione
+	\item Verso
+\end{itemize}
+\label{D3}
+
+\noindent Si può moltiplicare un vettore per uno scalare, ottenendo un vettore con direzione del primo vettore
+e intensità uguale al prodotto del modulo del primo vettore per lo scalare. Il verso resterà lo stesso
+del primo vettore in caso di scalare positivo, sarà opposto in caso di scalare negativo.
+
+\subsubsection{Scomposizione di un vettore}
+Un vettore può essere scomposto in due vettori, detti \textbf{componenti}, lungo due direzioni ortogonali.
+\[
+	\vec{v} = \vec{v_x} + \vec{v_y} \quad \text{\textbf{somma vettoriale}}
+\]
+\label{D4}
+Il modulo del vettore \( \vec{v} \) si trova applicando il teorema di Pitagora al modulo delle componenti:
+\[
+	|\vec{v}| = \sqrt{|\vec{v_x}|^2 + |\vec{v_y}|^2}
+\]
+\subsubsection{Versori}
+Sono \textbf{vettori unitari} (con \( modulo=1 \)) diretti come gli assi, in genere indicati come
+\( \vec{i},\vec{j},\vec{k} \).
+
+\noindent Un vettore può essere indicato come somma dei versori, ciascuno moltiplicato per il modulo
+della rispettiva componente del vettore:
+\[
+	\vec{v} = v_x\hat{i} + v_y\hat{j}
+\]
+Ad esempio:
+\[
+	\vec{a} = 2\hat{i} + 3\hat{j} \quad \text{o} \;\; \vec{a}(2,3)
+\]
+
+\subsubsection{Somma di vettori}
+La somma di due vettori si ottiene sommando le rispettive componenti:
+\label{D5}
+\[
+	\vec{C} = \vec{A} + \vec{B}
+\]
+\[
+	A_x+B_x = C_x \quad A_y+B_y = C_y
+\]
+\[
+	\vec{C} = C_x\hat{i} + C_y\hat{j}
+\]
+
+\subsubsection{Differenza di vettori}
+La differenza di due vettori si ottiene sottraendo le rispettive componenti:
+\label{D6}
+\[
+	\vec{C} = \vec{A} - \vec{B} = \vec{A} + (-\vec{B})
+\]
+\[
+	A_x-B_x = C_x \quad A_y-B_y = C_y
+\]
+\[
+	\vec{C} = C_x\hat{i} + C_y\hat{j}
+\]
+
+\subsection{Rapporti trigonometrici}
+\[
+	\sin(\alpha) = \frac{opposto}{ipotenusa}
+\]
+\[
+	\cos(\alpha) = \frac{adiacente}{ipotenusa}
+\]
+\[
+	\tan(\alpha) = \frac{opposto}{adiacente}
+\]
+
+\subsection{Prodotto scalare}
+Il prodotto scalare tra due vettori \( \vec{A} \) e \( \vec{B} \) è definito come:
+\[
+	\vec{A} \cdot \vec{B} = |\vec{A}| |\vec{B}|\cos(\theta)
+\]
+Dove \( \theta \) è l'angolo tra i due vettori.
+\[
+	\theta = 0 \quad \vec{A} \cdot \vec{B} = AB
+\]
+\[
+	\theta = 90\quad \vec{A} \cdot \vec{B} = 0
+\]
+\[
+	\theta = 180\quad \vec{A} \cdot \vec{B} = -AB
+\]
+Il prodotto scalare è quindi il numero che si ottiene moltiplicando il modulo di un vettore per
+l'intensità del vettore componente del secondo lungo il primo. Un altro modo per scriverlo è:
+\[
+	\vec{a} \cdot \vec{b} = ab\cos(\theta) = ab_a
+\]
+Dove \( b_a = b\cos(\theta) \)
+
+\subsubsection{Prodotto scalare tramite componenti}
+Presi 2 vettori:
+\[
+	\vec{A} = a_x\hat{i} + a_y\hat{j} + a_z\hat{k} \quad \vec{A}(a_x,a_y,a_z)
+\]
+\[
+	\vec{B} = b_x\hat{i} + b_y\hat{j} + b_z\hat{k} \quad \vec{B}(b_x,b_y,b_z)
+\]
+Il prodotto scalare si può calcolare come:
+\[
+	C = \vec{A} \cdot \vec{B} = a_xb_x + a_yb_y + a_zb_z
+\]
+Perchè:
+\[
+	\hat{i} \cdot \hat{i} = \hat{j} \cdot \hat{j} = \hat{k} \cdot \hat{k} = 1
+\]
+\[
+	\hat{i} \cdot \hat{j} = \hat{i} \cdot \hat{k} = \hat{j} \cdot \hat{k} = 0
+\]
+
+\begin{figure}[H]
+	\begin{example}
+		\[
+			\vec{A} = 3\hat{i} + 2\hat{j} \quad \vec{B} = \hat{i} + 2\hat{j}
+		\]
+		\[
+			\vec{A} \cdot \vec{B} = 2\cdot3 + 3\cdot4 = 6 + 12 = 18
+		\]
+		\[
+			C = \vec{A} \cdot \vec{B} = (3\hat{i} + 2\hat{j}) \cdot (\hat{i} + 2\hat{j}) = 3\cdot1 + 2\cdot2 = 3 + 4 = 7
+		\]
+	\end{example}
+\end{figure}
+
+\subsection{Prodotto vettoriale}
+Il prodotto vettoriale tra 2 vettori, è un vettore avente modulo uguale al prodotto dei loro
+moduli per il seno dell'angolo compreso tra essi:
+\[
+	|\vec{a} \times \vec{b}| = ab \sin(\theta)
+\]
+La direzione si individuano con la regola della mano destra.
+\label{D7}
+Il modulo del vettore risultante è uguale all'area del parallelogramma generato dai vettori \( \vec{a} \) e \( \vec{b} \).
+\end{document}
