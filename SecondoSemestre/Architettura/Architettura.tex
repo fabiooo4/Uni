@@ -163,5 +163,208 @@
 \tableofcontents
 \pagebreak
 
-\section{Introduzione}
+\section{Architettura di Von Neumann}
+L'esigenza era quella di avere un'architettura che permettesse di eseguire programmi
+in modo automatico, senza dover cambiare il cablaggio del calcolatore, quindi il circuito
+deve essere abbastanza generale per poter eseguire programmi diversi.
+
+\subsection{Struttura}
+L'architettura di Von Neumann è composta da 5 parti principali:
+\begin{itemize}
+	\item \textbf{Unità aritmetico-logica}: si occupa di eseguire le operazioni aritmetiche e logiche
+	\item \textbf{Unità di controllo}: si occupa di controllare il flusso delle istruzioni
+	\item \textbf{Memoria}: contiene i dati e le istruzioni
+	\item \textbf{Input/Output}: permette di comunicare con l'esterno
+	\item \textbf{Bus}: permette di trasferire i dati tra la memoria e l'unità aritmetico-logica (generalmente in oro)
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		% CPU
+		\node[draw, rectangle, minimum width=2cm, minimum height=1.5cm] (cpu) at (0, 0) {\textbf{CPU}};
+		% Memoria
+		\node[draw, rectangle, align=center, minimum width=2cm, minimum height=1.5cm] (memory) at (4, 0) {\textbf{Memoria}\\\footnotesize Dati\\\footnotesize Istruzioni};
+
+		% Bus
+		\draw (-2,-2) -- (6.5,-2) node[right] {Bus};
+		\draw[<->] (cpu) -- ++(0,-2);
+		\draw[<->] (memory) -- ++(0,-2);
+
+		% Input/Output below bus
+		\node[draw, rectangle, minimum width=0.7cm, minimum height=0.7cm] (io) at (2, -3) {\textbf{I/O}};
+		\draw[<->] (io) -- (2,-2);
+
+		% Keyboard and mouse below I/O
+		\node (keyboard) at (1, -4) {Tastiera};
+		\node (mouse) at (3, -4) {Mouse};
+		\draw[->] (keyboard) -- (io);
+		\draw[->] (mouse) -- (io);
+
+
+	\end{tikzpicture}
+\end{figure}
+
+\subsection{Caratteristiche}
+Le istruzioni hanno bisogno di un'operazione che permetta di effettuare dei salti,
+in modo da poter implementare i cicli e le strutture di controllo. Inoltre le istruzioni
+devono essere eseugite in sequenza (un'istruzione alla volta).
+
+\subsection{CPU}
+Ogni processore ha un'set di istruzioni diverso in base all'architettura,
+questo set di istruzioni è chiamato \textbf{ISA} (Instruction Set Architecture).
+\textbf{Assembly} è un linguaggio di programmazione che permette di scrivere programmi
+in base all'ISA del processore e questo linguaggio viene tradotto in linguaggio binario
+attraverso un \textbf{assembler}. In questo corso viene usata l'architettura x86 (80x86).
+
+\subsubsection{Modello semplificato}
+Per rappresentare il funzionamento di un processore si può usare un modello semplificato
+rappresentato ad alto livello. Questo modello è composto da:
+\begin{itemize}
+	\item \textbf{Central Processing Unit (CPU)}: esegue le istruzioni
+	\item \textbf{Control Unit (CU)}: controlla il flusso delle istruzioni
+	\item \textbf{Bus Dati (BD)}: trasferisce i dati alla CPU
+	\item \textbf{Bus Istruzioni (BI)}: trasferisce le istruzioni alla CPU
+	\item \textbf{Bus di Controllo (BC)}: trasferisce i segnali di controllo
+	\item \textbf{Memory Address Register (MAR)}: contiene l'indirizzo di memoria da leggere
+	\item \textbf{Memory Data Register (MDR)}: contiene i dati letti dalla memoria
+	\item \textbf{Program Counter (PC)}: tiene conto dell'indirizzo dell'istruzione da eseguire
+	\item \textbf{Instruction Register (IR)}: contiene l'istruzione corrente
+	\item \textbf{Program Status Word (PSW)}: contiene i flag del processore (es. zero, carry, overflow)
+	\item \textbf{Register File}: contiene i registri del processore (es. EAX, EBX, ECX, EDX, ESI, EDI, ESP, EBP)
+	\item \textbf{Arithmetic Logic Unit (ALU)}: esegue le operazioni aritmetiche e logiche
+\end{itemize}
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[scale=1.5]
+		\draw (0,0) rectangle (4,4);
+		\node[above left, scale=0.7] at (4,0) {CPU};
+
+		\draw (2,2) rectangle (4,4);
+		\node[above left, scale=0.7] at (3.4,2) {CU};
+
+		\node[draw, rectangle, align=center, scale=0.8, minimum width=1cm, minimum height=0.8cm] (pc) at (2.4, 2.35) {PC};
+		\node[draw, rectangle, align=center, scale=0.8, minimum width=1cm, minimum height=0.8cm] (ir) at (2.4, 2.95) {IR};
+		\node[draw, rectangle, align=center, scale=0.8, minimum width=1cm, minimum height=0.5cm] (psw) at (3.4, 3.55) {PSW};
+
+		% Bus Istruzioni
+		\draw (-0.5,0) -- (-0.5,4) node[above, scale=0.7] {BI};
+
+		% Bus Dati
+		\draw (-1,0) -- (-1,4) node[above, scale=0.7] {BD};
+
+		% Bus di controllo
+		\draw (4.5,0) -- (4.5,4) node[above, scale=0.7] {BC};
+
+		% MAR (Memory Address Register)
+		\node[draw, rectangle, align=center, scale=0.8, minimum width=0.5cm, minimum height=0.5cm] (mar) at (0.5, 3) {M\\A\\R};
+		\draw[latex-latex] (mar) -- (-0.5,3);
+
+		% MDR (Memory Data Register)
+		\node[draw, rectangle, align=center, scale=0.8, minimum width=0.5cm, minimum height=0.5cm] (mdr) at (0.5, 1) {M\\D\\R};
+		\draw[latex-latex] (mdr) -- (-1,1);
+
+		\draw[latex-latex] (4,3) -- (4.5,3);
+
+		% Register file
+		\draw (1,0.4) rectangle (2,1.6);
+		\draw (1,0.6) -- (2,0.6);
+		\draw (1,0.8) -- (2,0.8);
+		\draw (1,1) -- (2,1);
+		\draw (1,1.2) -- (2,1.2);
+		\draw (1,1.4) -- (2,1.4);
+
+		\node[below left, xshift=8, scale=0.7] at (1.82,0.4) {Register File};
+
+		% ALU
+		\draw (2.7,0.5) -- (3.3,0.5) -- (3.5,1.5) -- (3.2,1.5) -- (3,1.2) -- (2.8,1.5) -- (2.5,1.5) -- cycle;
+		\node[above, scale=0.6] at (3,0.5) {ALU};
+
+		% Collegamenti
+		\draw[latex-] (2.6,1.5) -- ++(0,0.2) -- ++(-0.8,0) -- ++(0,-0.1);
+		\draw[latex-] (3.4, 1.5) -- ++(0,0.4) -- ++(-2.2,0) -- ++(0,-0.3);
+		\draw[-latex] (3.4,1) -- ++(0.4,0) -- ++(0,2) -- ++(-0.2,0) -| (psw);
+		\draw[-latex] (3,0.5) -- ++(0,-0.3) -- ++(-0.5,0) -- ++(0,0.3) -- ++(-0.5,0);
+		\draw[-latex] (2.3,2) -- ++(0,-1) -- ++(0.3,0);
+	\end{tikzpicture}
+	\caption{Struttura di un processore}
+\end{figure}
+
+\noindent Il flusso di esecuzione delle istruzioni è il seguente:
+\begin{itemize}
+	\item \textbf{Fetch}: CU legge l'istruzione dalla memoria
+	\item \textbf{Decode}: CU decodifica l'istruzione
+	\item \textbf{Execute}: ALU esegue l'istruzione
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=3cm,
+			thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
+
+		\node[main node] (1) {\footnotesize Fetch};
+		\node[main node] (2) [right of=1] {\footnotesize Decode};
+		\node[main node] (3) [right of=2] {\footnotesize Execute};
+
+		\path[every node/.style={font=\sffamily\small}]
+		(1) edge [bend left] node {} (2)
+		(2) edge [bend left] node {} (3)
+		(3) edge [bend left] node {} (1);
+	\end{tikzpicture}
+	\caption{Flusso di esecuzione delle istruzioni}
+\end{figure}
+
+\subsubsection{Istruzioni}
+Ogni istruzione è codificata nel seguente modo:
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		% Opcode
+		\draw (0,0) rectangle (1.5,1);
+		\node at (0.75,0.5) {Opcode};
+
+		% Metodi di indirizzamento
+		\draw (1.8,0) -- (1.8,1);
+		\node[align=center, scale=0.7] at (1.65,0.5) {M\\I};
+
+		% Source
+		\draw (1.5,0) rectangle (3.6,1);
+		\node at (2.55,0.5) {Source};
+
+		% Metodi di indirizzamento
+		\draw (3.3,0) -- (3.3,1);
+		\node[align=center, scale=0.7] at (3.45,0.5) {M\\I};
+
+		% Destination
+		\draw (3.6,0) rectangle (5.6,1);
+		\node at (4.6,0.5) {Destination};
+
+	\end{tikzpicture}
+\end{figure}
+
+Le istruzioni più comuni sono:
+\begin{itemize}
+	\item \textbf{MOV} (o MOVL): copia il contenuto di un registro in un altro
+\end{itemize}
+
+
+\subsubsection{Metodi di indirizzamento}
+I metodi di indirizzamento (MI) sono diversi modi per accedere ai dati in memoria, i
+più comuni sono:
+\begin{itemize}
+	\item \textbf{Registro}: Un'istruzione può accedere direttamente ai registri
+	      ad esempio: \texttt{MOVL \%EAX, \%EBX}
+	\item \textbf{Immediato}: Un'istruzione può accedere direttamente ai dati
+	      ad esempio: \texttt{MOVL \$10, \%EBX}
+	\item \textbf{Assoluto}: Un'istruzione può accedere direttamente ai dati
+	      ad esempio: \texttt{MOVL DATO, \%EBX}\\
+	      dove \texttt{DATO} è un'etichetta che punta ad un'indirizzo di memoria
+	\item \textbf{Indiretto Registro}: Un'istruzione può contenere un registro che punta ad un altro registro
+	      ad esempio: \texttt{MOVL (\%EAX), \%EBX}
+	\item \textbf{Indiretto Registro con Spiazzamento}: Un'istruzione può mettere un offset
+	      rispetto al registro contenuto nell'istruzione
+	      ad esempio: \texttt{MOVL \$8(\%EAX), \%EBX}
+\end{itemize}
+
 \end{document}
