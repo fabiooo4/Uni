@@ -85,6 +85,14 @@
 
 \pdfsuppresswarningpagegroup=1
 
+% Matrices
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{#1}}
+\makeatother
+
 \begin{document}
 \input{title.tex}
 
@@ -159,7 +167,7 @@ numero reale con un numero immaginario:
 	\mathbb{C} = \{ a + bi \;|\; a,b \in \mathbb{R} \}
 \]
 
-\( z = a bi \) è detta \textbf{forma algebrica} di un numero complesso \( z \in \mathbb{C} \).
+\( z = a + bi \) è detta \textbf{forma algebrica} di un numero complesso \( z \in \mathbb{C} \).
 \[
 	a = \Re(z) \quad \text{è detta parte reale di } z
 \]
@@ -497,6 +505,24 @@ fare ciò usiamo il seno e il coseno:
 		\[
 			z = (r \cdot \cos(\alpha)) + (r \cdot \sin(\alpha))i = r \cdot (\cos(\alpha) + i \cdot \sin(\alpha))
 		\]
+		\[
+			r = |z| = \sqrt{a^2 + b^2}
+		\]
+		\[
+			\alpha = \arctan\left(\frac{b}{a}\right) \quad \text{se} \; a > 0,\; b > 0
+		\]
+		\[
+			\alpha = \arctan\left(\frac{b}{a}\right) + \pi \quad \text{se} \; a > 0, b < 0
+		\]
+		\[
+			\alpha = \arctan\left(\frac{b}{a}\right) - \pi \quad \text{se} \; a < 0, \; b \; \text{qualsiasi}
+		\]
+		\[
+			\alpha = \frac{\pi}{2} \quad \text{se} \; a = 0, \; b > 0
+		\]
+		\[
+			\alpha = -\frac{\pi}{2} \quad \text{se} \; a = 0, \; b < 0
+		\]
 	\end{definition}
 \end{figure}
 
@@ -560,11 +586,443 @@ Dati \( n \in \mathbb{N}, \quad z = r(\cos(\alpha) + i \sin(\alpha)) \in \mathbb
 Si dicono \textbf{radici n-esime} di \( y \) le soluzioni dell'equazione \( x^n = y \).
 
 \subsection{Teorema delle radici n-esime}
-Siano \( y \in \mathbb{C} \) e \( n \in \mathbb{N} \). Esistono precisamente \( n \) radici n-esime
-complesse distinte \( z_0, z_1, \ldots, z_{n-1} \) di \( y \). Se \( y = r(\cos(\alpha)+i\sin(\alpha)) \),
-allora per \( k = 0, \ldots, n-1 \) :
+\begin{figure}[H]
+	\begin{theorem}
+		Siano \( y \in \mathbb{C} \) e \( n \in \mathbb{N} \). Esistono precisamente \( n \) radici n-esime
+		complesse distinte \( z_0, z_1, \ldots, z_{n-1} \) di \( y \). Se \( y = r(\cos(\alpha)+i\sin(\alpha)) \),
+		allora per \( k = 0, \ldots, n-1 \) :
+		\[
+			z_k = \sqrt[n]{r} \left( \cos\left(\frac{\alpha + 2k\pi}{n}\right) + i \sin\left(\frac{\alpha + 2k\pi}{n}\right) \right)
+		\]
+		Si somma \( 2k \pi  \) per ottenere tutte le radici n-esime, siccome \( \sin \) e \( \cos \) sono periodiche.
+		\label{th:radici_n-esime}
+	\end{theorem}
+\end{figure}
+
+\subsubsection{Dimostrazione}
+Per la formula di de Moivre sappiamo che:
 \[
-	z_k = \sqrt[n]{r} \left( \cos\left(\frac{\alpha + 2k\pi}{n}\right) + i \sin\left(\frac{\alpha + 2k\pi}{n}\right) \right)
+	z_k^n = \left( \sqrt[n]{r} \right)^n \left( \cos{\alpha + (2 \pi )k} + i \sin{\alpha + (2 \pi )k} \right)  =
 \]
-Si somma \( 2k \pi  \) per ottenere tutte le radici n-esime, siccome \( \sin \) e \( \cos \) sono periodiche.
+\[
+	= r \left( \cos{\alpha} + i \sin{\alpha} \right) = y
+\]
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\draw[->] (-2,0) -- (2,0) node[right] {$\Re$};
+		\draw[->] (0,-2) -- (0,2) node[above] {$\Im$};
+		\draw (0,0) circle (1.5cm);
+
+		\draw[red, thick] (0,0) -- (1.05,1.05);
+		\draw[blue, thick] (0.5,0) arc (0:45:0.5) node[right] {$\alpha$};
+
+		\draw[green, dashed] (1.05,1.05) -- (1.05,0) node[below] {$\cos{x}$};
+
+		\draw[green, dashed] (1.05,1.05) -- (0,1.05) node[left] {$\sin{x}$};
+
+	\end{tikzpicture}
+	\caption{Circonferenza goinometrica}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		% Draw the axes
+		\draw[->] (-0.5,0) -- (7,0) node[right] {$\alpha$};
+		\draw[->] (0,-2) -- (0,2) node[above] {$\sin{x}$};
+
+		% plot sine
+		\draw[domain=0:7, smooth, variable=\x, blue] plot ({\x}, {sin(\x r)});
+
+		% radians labels
+		\foreach \x/\xtext in {
+				1.5708/\frac{\pi}{2},
+				3.14159/\pi,
+				4.71239/\frac{3\pi}{2},
+				6.28319/2\pi,
+			}
+		\draw (\x,0.1) -- (\x,-0.1) node[below] {$\xtext$};
+
+	\end{tikzpicture}
+	\caption{Funzione seno}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		% Draw the axes
+		\draw[->] (-0.5,0) -- (7,0) node[right] {$\alpha$};
+		\draw[->] (0,-2) -- (0,2) node[above] {$\cos{x}$};
+
+		% plot cosine
+		\draw[domain=0:7, smooth, variable=\x, red] plot ({\x}, {cos(\x r)});
+
+		% radians labels
+		\foreach \x/\xtext in {
+				1.5708/\frac{\pi}{2},
+				3.14159/\pi,
+				4.71239/\frac{3\pi}{2},
+				6.28319/2\pi,
+			}
+		\draw (\x,0.1) -- (\x,-0.1) node[below] {$\xtext$};
+	\end{tikzpicture}
+	\caption{Funzione coseno}
+\end{figure}
+
+Quindi \( z_0, \ldots, z_{n-1} \) sono soluzioni di \( y = x^n \) , cioè sono radici
+n-esime di \( y \).
+
+Siccome il periodo di \( \sin{} \) e \( \cos{} \) è \( 2 \pi \), le radici n-esime sono
+tutte distinte.
+
+\subsection{Radici quadrate di numeri reali negativi}
+Sia \( a \in \mathbb{R} \; \subseteq \mathbb{C} \) tale che \( a < 0 \). Esistono
+precisamente due radici quadrate di \( a \) in \( \mathbb{C} \). Infatti, abbiamo:
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\draw[->] (-2,0) -- (2,0) node[right] {$\Re$};
+		\draw[->] (0,-2) -- (0,2) node[above] {$\Im$};
+
+		\draw[fill, blue] (-1, 0) circle (2pt) node[below, align=center, yshift=-2] {$-a$\\$\alpha = \pi $};
+		\draw[fill, blue] (1, 0) circle (2pt) node[below, align=center, yshift=-2] {$a$\\$\alpha = 0$};
+
+		\draw[red, thick, ->] (1, 0) arc (0:175:1) node[midway, above right] {$\alpha$};
+
+		\draw[fill, green] (0, 1) circle (2pt) node[above left, align=center] {$\frac{\pi }{2}$};
+		\draw[fill, green] (0, -1) circle (2pt) node[below left, align=center] {$\frac{3 \pi }{2}$};
+	\end{tikzpicture}
+	\caption{Radici quadrate di numeri reali negativi}
+\end{figure}
+\[
+	a = (-a) (\cos{\pi } + i \sin{\pi })
+\]
+Per il teorema \ref{th:radici_n-esime}:
+\[
+	z_0 = \sqrt{a} \left( \cos{\frac{\pi}{2}} + i \sin{\frac{\pi}{2}} \right) = i \sqrt{-a}
+\]
+\[
+	z_1 = \sqrt{-a} \left( \cos{\frac{3\pi}{2}} + i \sin{\frac{3\pi}{2}} \right) = -i \sqrt{-a}
+\]
+
+\begin{figure}[H]
+	\begin{define}
+		Se abbiamo un polinomio della forma:
+		\[
+			ax^2 + bx + c, \quad a,\;b,\;c \in \mathbb{R}
+		\]
+		Le soluzioni sono:
+		\[
+			\frac{-b \pm \sqrt{b^2 -4ac}}{2a}
+		\]
+		\[
+			\Delta = b^2 - 4ac
+		\]
+		In \( \mathbb{C} \) esistono 2 soluzioni anche se \( \Delta < 0 \).
+	\end{define}
+\end{figure}
+
+\section{Sistemi lineari e matrici}
+\subsection{Sistemi lineari}
+Un \textbf{sistema lineare} è un insieme di \( m \) equazioni in \( n \) incognite
+che può essere scritto nella forma:
+\[
+	\begin{cases}
+		a_{11}x_1 + a_{12}x_2 + \ldots + a_{1n}x_n = b_1 \\
+		a_{21}x_1 + a_{22}x_2 + \ldots + a_{2n}x_n = b_2 \\
+		\vdots                                           \\
+		a_{m1}x_1 + a_{m2}x_2 + \ldots + a_{mn}x_n = b_m \\
+	\end{cases}
+\]
+dove \( b_k,\; a_{ij} \in \mathbb{C} \) oppure \( \mathbb{R} \) per \( 1 \le i \le m,\;
+1 \le j \le n,\; 1 \le k \le m\). Se i \textbf{termini noti} sono tutti nulli il sistema è detto
+\textbf{omogeneo}. Una n-upla \( (x_1, \ldots, x_n) \) di numeri complessi (o reali) è
+una soluzione se soddisfa tutte le \( m \) equazioni.
+
+\begin{example}
+	Presa in considerazione la seguente tabella nutrizionale di cereali (per porzione):
+	\begin{center}
+		\begin{tabular}{c|c|c}
+			                & Cheerios & Quakers \\
+			\hline
+			Proteine (g)    & 4        & 3       \\
+			Carboidrati (g) & 20       & 18      \\
+			Grassi (g)      & 2        & 5       \\
+		\end{tabular}
+	\end{center}
+	Quante porzioni di Cheerios e Quakers dobbiamo mangiare per ottenere \( 9g \) di
+	proteine, \( 48g \) di carboidrati e \( 89g \) di grassi?
+	\[
+		\begin{cases}
+			4C + 3Q = 9 \quad \text{(P)}    \\
+			20C + 18Q = 48 \quad \text{(C)} \\
+			2C + 5Q = 8 \quad \text{(G)}
+		\end{cases}
+	\]
+
+	Per risolvere il sistema lineare:
+	\begin{itemize}
+		\item
+		      Moltiplichiamo le per \( \frac{1}{4} \)
+		      e otteniamo un sistema lineare \textbf{equivalente} (cioè con
+		      \textbf{esattamente} le stesse soluzioni):
+		      \[
+			      (P') \quad C + \frac{3}{4}Q = \frac{9}{4}
+		      \]
+		      \[
+			      (C) \quad 20C + 18Q = 48
+		      \]
+		      \[
+			      (G) \quad 2C + 5Q = 8
+		      \]
+		\item Calcoliamo \( (C)-20(P') \) e \( (G)-2(P') \) e otteniamo:
+		      \[
+			      (P') \quad C + \frac{3}{4}Q = \frac{9}{4}
+		      \]
+		      \[
+			      (C') \quad 0C + 15Q = 18
+		      \]
+		      \[
+			      (G') \quad 0C + \frac{7}{2}Q = \frac{7}{2}
+		      \]
+		\item Moltiplichiamo \( (C') \) per \( \frac{1}{3} \) e otteniamo:
+		      \[
+			      (P') \quad C + \frac{3}{4}Q = \frac{9}{4}
+		      \]
+		      \[
+			      (C') \quad 0C + Q = 1
+		      \]
+		      \[
+			      (G') \quad 0C + \frac{7}{2}Q = \frac{7}{2}
+		      \]
+		\item Calcoliamo \( (G') - \frac{7}{2} (C") \) e otteniamo:
+		      \[
+			      (P') \quad C + \frac{3}{4}Q = \frac{9}{4}
+		      \]
+		      \[
+			      (C') \quad 0C + Q = 1
+		      \]
+		      \[
+			      (G') \quad 0C + 0Q = 0
+		      \]
+	\end{itemize}
+
+  \noindent Otteniamo dunque che \( Q = 1 \) e \( C = \frac{9}{4} - \frac{3}{4} = \frac{7}{4} \) 
+
+  \vspace{0.5cm}
+
+  \noindent Per agevolare la risoluzione del sistema lineare si può utilizzare una matrice:
+  \begin{itemize}
+    \item \textbf{R1} = Riga 1
+    \item \textbf{R2} = Riga 2
+    \item \textbf{R3} = Riga 3
+  \end{itemize}
+	\[
+		\begin{pmatrix}[cc|c]
+			4  & 3  & 9  \\
+			20 & 18 & 48 \\
+			2  & 5  & 8
+		\end{pmatrix}
+	\]
+  \[\downarrow \frac{1}{4} \cdot R1 \]
+	\[
+		\begin{pmatrix}[cc|c]
+			1  & \frac{3}{4} & \frac{9}{4} \\
+			20 & 18          & 48          \\
+			2  & 5           & 8
+		\end{pmatrix}
+	\]
+  \[
+  \downarrow R2 - 20 \cdot R1
+  \] 
+  \[
+  \downarrow R3 - 2 \cdot R1
+  \] 
+	\[
+		\begin{pmatrix} [cc|c]
+			1 & \frac{3}{4} & \frac{9}{4} \\
+			0 & 3           & 3           \\
+			0 & \frac{7}{2} & \frac{7}{2}
+		\end{pmatrix}
+	\]
+  \[
+  \downarrow \frac{1}{3} \cdot R2
+  \] 
+	\[
+		\begin{pmatrix}[cc|c]
+			1 & \frac{3}{4} & \frac{9}{4} \\
+			0 & 1           & 1           \\
+			0 & \frac{7}{2}           &\frac{7}{2} 
+		\end{pmatrix}
+	\]
+  \[
+  \downarrow R3 - \frac{7}{2} \cdot R2
+  \] 
+  \[
+    \begin{pmatrix}[ccc|c]
+      1 & \frac{3}{4} & \frac{9}{4} & \frac{9}{4}\\
+      0 & 1           & 1           & 1 \\
+      0 & 0           & 0 & 0 
+  \end{pmatrix} 
+  \] 
+  \noindent Otteniamo dunque che \( Q = 1 \) e \( C = \frac{9}{4} - \frac{3}{4} = \frac{7}{4} \)
+\end{example}
+
+\subsection{Definizione}
+\begin{figure}[H]
+	\begin{definition}
+		Siano \( m\;,n,;\ < 1 \). Una tabella \( A \) tale che:
+		\[
+			A = \begin{pmatrix}
+				a_{11} & a_{12} & \ldots & a_{1n} \\
+				a_{21} & a_{22} & \ldots & a_{2n} \\
+				\vdots & \vdots & \ddots & \vdots \\
+				a_{m1} & a_{m2} & \ldots & a_{mn} \\
+			\end{pmatrix}
+			= (a_{ij})_{m \times n}
+		\]
+		di \( m \times n \) elementi di \( \mathbb{C} \) disposti in \( m \) righe e \( n \) colonne
+		si chiama una \textbf{matrice} di \textbf{dimensione} \( m \times n \).
+		Gli elementi si chiamano \textbf{coefficienti} (o entrate) della matrice e sono
+		contrassegnati con un doppio indice \( ij \) dove \( i \) indica la riga e \( j \)
+		la colonna di appartenenza.
+
+		\vspace{0.5cm}
+		L'insieme di tutte le matrici di dimensione \( m \times n \) con entrate in \( \mathbb{C} \)
+		si indica con \( M_{m \times n}(\mathbb{C}) \).
+
+		\vspace{0.5cm}
+		L'insieme di tutte le matrici di dimensione \( m \times n \) con entrate in \( \mathbb{R} \)
+		si indica con \( M_{m \times n}(\mathbb{R}) \).
+	\end{definition}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{example}
+		\[
+			\begin{pmatrix} 3 & i & 2+7i \\
+                0 & 1 & \pi
+			\end{pmatrix} \in M_{2 \times 3}(\mathbb{C})
+		\]
+		\[
+			\begin{pmatrix}
+				0 & 1  \\
+				1 & -1
+			\end{pmatrix} \in M_{2 \times 2}(\mathbb{R}) \subseteq M_{2 \times 2}(\mathbb{C})
+		\]
+	\end{example}
+\end{figure}
+
+\subsection{Definizione}
+Un sistema lineare di \( n \) incognite e \( m \) equazioni:
+\[
+	a_{11}x_1 + a_{12}x_2 + \ldots + a_{1n}x_n = b_1
+\]
+\[
+	\vdots
+\]
+\[
+	a_{m1}x_1 + a_{m2}x_2 + \ldots + a_{mn}x_n = b_m
+\]
+può essere rappresentato nella forma \textbf{matriciale}:
+\[
+	Ax = b
+\]
+\[
+	\underbrace{
+		A = \begin{pmatrix}
+			a_{11} & a_{12} & \ldots & a_{1n} \\
+			a_{21} & a_{22} & \ldots & a_{2n} \\
+			\vdots & \vdots & \ddots & \vdots \\
+			a_{m1} & a_{m2} & \ldots & a_{mn} \\
+		\end{pmatrix}}_{\text{Matrice dei coefficienti}} \quad \underbrace{x = \begin{pmatrix}
+			x_1    \\
+			x_2    \\
+			\vdots \\
+			x_n
+		\end{pmatrix}}_{\text{Vettore delle incognite}} \quad \underbrace{b = \begin{pmatrix}
+			b_1    \\
+			b_2    \\
+			\vdots \\
+			b_m
+		\end{pmatrix}}_{\text{Vettore dei termini noti}}
+\]
+La matrice \[ (A \;|\; B) = \begin{pmatrix}[cccc|c]
+		a_{1n} & a_{12} & \ldots & a_{1n} & b_1    \\
+		\vdots & \vdots & \ddots & \vdots & \vdots \\
+		a_{m1} & a_{m2} & \ldots & a_{mn} & b_n
+	\end{pmatrix}  \] è detta \textbf{matrice aumentata}.
+
+\begin{figure}[H]
+	\begin{example}
+		\[
+			\begin{cases}
+				2x_1 + 6x_2 + 3x_3 + 2x_4 = 4                    \\
+				x_1 - 2x_2 + \frac{1}{2}x_3 + \frac{9}{4}x_4 = 1 \\
+				-x_1 + x_2 - \frac{1}{2}x_3 - x_4 = \frac{2}{5}
+			\end{cases}
+		\]
+		Scritto come matrice aumentata diventa:
+		\[
+			\begin{pmatrix}[cccc|c]
+				2  & 6  & 3            & 2           & 4           \\
+				1  & -2 & \frac{1}{2}  & \frac{9}{4} & 1           \\
+				-1 & 1  & -\frac{1}{2} & -1          & \frac{2}{5}
+			\end{pmatrix}
+		\]
+		\[
+			\frac{1}{2}R1
+		\]
+		\[
+      \begin{pmatrix}[cccc|c]
+        1  & 3  & \frac{3}{2}  & 1 & 2            \\
+        1  & -2 & \frac{1}{2}  & \frac{9}{4} & 1  \\
+        -1 & 1  & -\frac{1}{2} & -1 & \frac{2}{5}
+			\end{pmatrix}
+		\]
+		\[
+			R2 - R1 \quad R3 + R1
+		\]
+		\[
+      \begin{pmatrix}[cccc|c]
+        1 & 3  & \frac{3}{2} & 1 & 2            \\
+        0 & -5 & -1          & \frac{5}{4} & -1 \\
+        0 & 4  & 1           & 0 & \frac{12}{5}
+			\end{pmatrix}
+		\]
+		\[
+			\frac{-1}{5}R2
+		\]
+		\[
+			\begin{pmatrix}[cccc|c]
+				1 & 3 & \frac{3}{2} & 1            & 2            \\
+				0 & 1 & \frac{1}{5} & -\frac{1}{4} & \frac{1}{5}  \\
+				0 & 4 & 1           & 0            & \frac{12}{5}
+			\end{pmatrix}
+		\]
+		\[
+			R3 - 4R2
+		\]
+		\[
+			\begin{pmatrix}[cccc|c]
+				1 & 3 & \frac{3}{2} & 1            & 2           \\
+				0 & 1 & \frac{1}{5} & -\frac{1}{4} & \frac{1}{5} \\
+				0 & 0 & \frac{1}{5} & 1            & \frac{4}{5}
+			\end{pmatrix}
+		\]
+		\[
+			5R3
+		\]
+		\[
+			\begin{pmatrix}[cccc|c]
+				1 & 3 & \frac{3}{2} & 1            & 2           \\
+				0 & 1 & \frac{1}{5} & -\frac{1}{4} & \frac{1}{5} \\
+				0 & 0 & 1           & 5            & 8
+			\end{pmatrix}
+		\]
+	\end{example}
+\end{figure}
 \end{document}
