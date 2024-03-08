@@ -230,7 +230,8 @@ rappresentato ad alto livello. Questo modello è composto da:
 	\item \textbf{Memory Data Register (MDR)}: contiene i dati letti dalla memoria
 	\item \textbf{Program Counter (PC)}: tiene conto dell'indirizzo dell'istruzione da eseguire
 	\item \textbf{Instruction Register (IR)}: contiene l'istruzione corrente
-	\item \textbf{Program Status Word (PSW)}: contiene i flag del processore (es. zero, carry, overflow)
+	\item \textbf{Program Status Word (PSW)}: contiene i flag del processore (es. zero, carry, overflow).
+	      È come se fosse un array in cui ad ogni indice corrisponde un flag per ogni operazione.
 	\item \textbf{Register File}: contiene i registri del processore (es. EAX, EBX, ECX, EDX, ESI, EDI, ESP, EBP)
 	\item \textbf{Arithmetic Logic Unit (ALU)}: esegue le operazioni aritmetiche e logiche
 \end{itemize}
@@ -314,7 +315,8 @@ rappresentato ad alto livello. Questo modello è composto da:
 	\caption{Flusso di esecuzione delle istruzioni}
 \end{figure}
 
-\subsubsection{Istruzioni}
+\section{Assembly (Intel x86)}
+\subsection{Codifica}
 Ogni istruzione è codificata nel seguente modo:
 
 \begin{figure}[H]
@@ -343,11 +345,57 @@ Ogni istruzione è codificata nel seguente modo:
 	\end{tikzpicture}
 \end{figure}
 
-Le istruzioni più comuni sono:
+\subsection{Istruzioni}
+\subsubsection{Istruzioni base}
 \begin{itemize}
-	\item \textbf{MOV} (o MOVL): copia il contenuto di un registro in un altro
+	\item \textbf{\texttt{MOVL <source> <destination>}}: copia il contenuto di un registro (o costante) in un altro.
+	      Questa istruzione di solito viene utilizzata per spostare i valori dalla memoria ai
+	      registri e viceversa, in modo da poter effettuare operazioni solo su dati presenti
+	      nei registri e non direttamente in memoria, questo rende l'esecuzione più efficiente.
+	\item \textbf{\texttt{NOP}}: non fa nulla e occupa solo un byte. La sua utilità è quella
+	      di "riempire i buchi", cioè delle zone di memoria non occupate da nessuna istruzione.
 \end{itemize}
 
+\subsubsection{Istruzioni aritmetiche}
+\begin{itemize}
+	\item \textbf{\texttt{ADDL <source> <destination>}}: somma il contenuto di due registri (o costante).
+	      Siccome sono disponibili solo 2 parametri, il risultato viene salvato nel secondo parametro
+	      perchè viene visto sia come sorgente che destinazione per evitare di aggiungerne un terzo.
+	\item \textbf{\texttt{SUBL <source> <destination>}}: sottrae il contenuto di due registri (o costante)
+	\item \textbf{\texttt{MULL <source> <destination>}}: moltiplica il contenuto di due registri (o costante)
+	\item \textbf{\texttt{INC <source>}}: incrementa il contenuto di un registro (o costante) di 1
+	\item \textbf{\texttt{DEC <source>}}: decrementa il contenuto di un registro (o costante) di 1
+\end{itemize}
+
+\subsubsection{Istruzioni logiche}
+
+\begin{itemize}
+	\item \textbf{\texttt{CMPL <source> <destination>}}: confronta il contenuto di due registri (o costanti) e
+	      modifica il flag \textbf{\texttt{PSW}} in base al risultato del confronto.
+\end{itemize}
+
+\subsubsection{Istruzioni di salto}
+Se il salto è \textbf{assoluto} l'indirizzo fa riferimento alla memoria diretta, mentre se il salto è
+\textbf{relativo} l'indirizzo è relativo al Program Counter.
+\begin{itemize}
+	\item \textbf{\texttt{JMP <etichetta>}}: salta all'istruzione con etichetta
+	\item \textbf{\texttt{JE <etichetta>}}: salta all'istruzione con etichetta se i flag sono settati in modo che i due operandi siano uguali
+	\item \textbf{\texttt{JNE <etichetta>}}: salta all'istruzione con etichetta se i flag sono settati in modo che i due operandi siano diversi
+	\item \textbf{\texttt{JG <etichetta>}}: salta all'istruzione con etichetta se i flag sono settati in modo che il primo operando sia maggiore del secondo
+	\item \textbf{\texttt{JGE <etichetta>}}: salta all'istruzione con etichetta se i flag sono settati in modo che il primo operando sia maggiore o uguale del secondo
+	\item \textbf{\texttt{JL <etichetta>}}: salta all'istruzione con etichetta se i flag sono settati in modo che il primo operando sia minore del secondo
+	\item \textbf{\texttt{JLE <etichetta>}}: salta all'istruzione con etichetta se i flag sono settati in modo che il primo operando sia minore o uguale del secondo
+\end{itemize}
+Comparando e poi utilizzando i salti si possono implementare le strutture di controllo come i cicli e le condizioni.
+Nell'etichetta si può inserire un'indirizzo di memoria assoluto che permette di saltare a quell'indirizzo,
+questo però non è molto utile perchè il programma potrebbe essere caricato in un'area diversa della memoria.
+
+\subsubsection{Istruzioni di gestione dello Stack}
+\begin{itemize}
+	\item \textbf{\texttt{PUSHL <source>}}: inserisce il contenuto di un registro (o costante) nello stack
+	\item \textbf{\texttt{POPL <destination>}}: estrae il contenuto dello stack e lo mette in un registro (o costante)
+	\item \textbf{\texttt{CALL <etichetta>}}: salva l'indirizzo successivo al Program Counter nello stack e salta all'istruzione con etichetta
+\end{itemize}
 
 \subsubsection{Metodi di indirizzamento}
 I metodi di indirizzamento (MI) sono diversi modi per accedere ai dati in memoria, i
@@ -366,5 +414,61 @@ più comuni sono:
 	      rispetto al registro contenuto nell'istruzione
 	      ad esempio: \texttt{MOVL \$8(\%EAX), \%EBX}
 \end{itemize}
+
+\noindent Non tutte le istruzioni ammettono tutti i metodi di indirizzamento e alcuni metodi di indirizzamento
+possono essere usati solo con alcune istruzioni.
+
+\subsection{Esempi}
+Un esempio di codice in C è il seguente:
+\begin{lstlisting}[language=C]
+  ...
+  int a; // INDA (etichetta che punta ad un indirizzo di memoria con valore intero)
+  int b; // INDB
+  int c; // INDB
+  ...
+  a = 5; // %EAX
+  b = 10; // %EBX
+
+  if (a > b) {
+    c = a - b; // %ECX
+  } else { // ELSE
+    c = a + b;
+  }
+  \end{lstlisting}
+
+La traduzione in assembly è la seguente:
+\begin{lstlisting}[language={[x86masm]Assembler}]
+  MOVL INDA, %EAX // Ridondante
+  MOVL $5, %EAX
+  MOVL INDB, %EBX // Ridondante
+  MOVL $10, %EBX
+  MOVL %EAX, %ECX
+  COMPL %EAX, %EBX
+  JLE ELSE
+  SUBL %ECX, %EAX
+  JMP ENDIF
+  ELSE:
+  ADDL %EBX, %ECX
+  ENDIF:
+\end{lstlisting}
+
+\noindent Un altro esempio di un for loop in C:
+\begin{lstlisting}[language=C]
+  for (int i = 0; i < 10; i++) { // int i; %EDX
+    ...
+  }
+\end{lstlisting}
+
+\noindent La traduzione in assembly è la seguente:
+\begin{lstlisting}[language={[x86masm]Assembler}]
+  MOVL $0, %EDX
+  FOR:
+  COMPL $10, %EDX
+  JE ENDFOR
+  ...
+  INC %EDX
+  JMP FOR
+  ENDFOR:
+\end{lstlisting}
 
 \end{document}
