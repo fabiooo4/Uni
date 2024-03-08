@@ -1,0 +1,232 @@
+\documentclass[a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage[italian]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage[makeroom]{cancel}
+\usepackage{amsfonts}
+\usepackage{mdframed}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usetikzlibrary{pgfplots.fillbetween}
+\pgfplotsset{compat=newest, ticks=none}
+\usepackage{graphicx}
+\graphicspath{{./figures/}}
+
+\pgfdeclarelayer{ft}
+\pgfdeclarelayer{bg}
+\pgfsetlayers{bg,main,ft}
+
+\usepackage{import}
+\usepackage{pdfpages}
+\usepackage{transparent}
+\usepackage{xcolor}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=false,
+}
+
+\usepackage{ntheorem}
+\newtheorem{theorem}{Teorema}
+
+% Useful definitions frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	innertopmargin=8pt,%
+	ntheorem]{define}{Definizioni utili}[section]
+
+% Example frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	innertopmargin=8pt,%
+	ntheorem]{example}{Esempio}[section]
+
+% Important definition frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	backgroundcolor=gray!40,%
+	innertopmargin=8pt,%
+	ntheorem]{definition}{Definizione}[section]
+
+% Exercise frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	innertopmargin=8pt,%
+	ntheorem]{exercise}{Esercizio}[section]
+
+
+% figure support
+\usepackage{import}
+\usepackage{xifthen}
+\pdfminorversion=7
+\usepackage{pdfpages}
+\usepackage{transparent}
+\newcommand{\incfig}[1]{%
+	\def\svgwidth{\columnwidth}
+	\import{./figures/}{#1.pdf_tex}
+}
+
+\pdfsuppresswarningpagegroup=1
+
+\begin{document}
+\input{title.tex}
+
+\tableofcontents
+\pagebreak
+
+% Libro: S.M ROSS, Probabilità e Statistica per l'ingegneria e le scienze Apogeo, 2015 (ed. 3)
+
+\section{Cos'è la probabilità e la statistica?}
+La statistica è una scienza che si occupa di raccogliere, organizzare, analizzare
+e interpretare i dati. Nella statistica si cerca di estrapolare informazioni da
+esperimenti \textbf{aleatori} (esperimenti che non si possono ripetere esattamente allo stesso
+modo) e di prendere decisioni basate su queste informazioni. Ogni esperimento aleatorio
+ha bisogno di un \textbf{modello probabilistico} che ne descriva le caratteristiche principali.
+
+\subsection{Popolazione, variabili e campione}
+\begin{itemize}
+	\item \textbf{Popolazione}: tutti i possibili oggetti di un'indagine statistica
+	\item \textbf{Individuo}: un singolo oggetto della popolazione
+	\item \textbf{Variabile}: una qualsiasi caratteristica di un individuo della
+	      popolazione soggetta a possibili variazioni (es. altezza, peso, sesso, ecc.)
+	\item \textbf{Range della variabile}: \( R_x \) è l'insieme di tutti i possibili
+	      valori che la variabile \( x \) può assumere
+	\item \textbf{Campione}: un sottoinsieme rappresentativo della popolazione
+	      composto dalle variabili relative ad un sottoinsieme di indibidui
+	\item \textbf{TODO}
+\end{itemize}
+
+\subsection{Parametro e Stima}
+\begin{itemize}
+	\item \textbf{Parametro}:una misura che descrive una proprietà dell'intera popolazione
+	\item \textbf{Stima}: una misura che descrive una proprietà del campione che
+	      fornisce informazioni sul parametro
+\end{itemize}
+
+\section{Variabili}
+Le variabili possono essere di diverso tipo:
+\begin{itemize}
+	\item \textbf{Variabili qualitative nominali}:
+	      \begin{itemize}
+		      \item \textbf{Ordinali}: possono essere ordinate
+		      \item \textbf{Non ordinali}: non possono essere ordinate
+	      \end{itemize}
+	\item \textbf{Variabili quantitative}:
+	      \begin{itemize}
+		      \item \textbf{Aleatorie continue}: derivano da processi di misura e assumono
+		            i loro range. Sono sottoinsiemi reali
+		      \item \textbf{Aleatorie discrete}: assumono valori interi
+	      \end{itemize}
+\end{itemize}
+
+\section{Statistica descrittiva}
+Consiste nella raccolta, organizzazione, rappresentazione e analisi dei \textbf{dati}.
+
+\subsection{Strumenti di sintesi}
+\subsubsection{Tabelle di frequenza}
+Sono tabelle di individui con una certa caratteristica o aventi una caratteristica
+appartenenta ad un certo intervallo.
+\begin{itemize}
+	\item \textbf{Frequenza assoluta}: conteggio del numero di individui
+	\item \textbf{Frequenza relativa}: percentuale del numero di individui
+	\item \textbf{Frequenza cumulativa}: conteggio o percentuale del numero di individui
+	      fino ad un certo punto
+\end{itemize}
+
+\subsubsection{Distribuzioni}
+Sono rappresentazioni grafiche delle frequenze di una variabile. Possono essere:
+\begin{itemize}
+	\item \textbf{Caso discreto}: valore variabile \( \to  \) frequenza relativa
+	\item \textbf{Caso continuo o numerabile}: intervallo di valori variabile \( \to  \) frequenza relativa
+\end{itemize}
+
+\subsubsection{Distribuzioni cumulative}
+Sono distribuzioni che rappresentano la frequenza cumulativa di una variabile. Possono essere:
+\begin{itemize}
+	\item \textbf{Caso discreto}: valore variabile \( \to  \) frequenza cumulativa relativa
+	\item \textbf{Caso continuo o numerabile}: intervallo \( \to  \) frequenza cumulativa relativa
+\end{itemize}
+
+\subsubsection{Grafici}
+Sono rappresentazioni grafiche delle distribuzioni. Possono essere:
+\begin{itemize}
+	\item \textbf{Istogrammi}: è costituito da rettangoli, insistenti sulle classi
+	      della partizione, attigui le cui aree sono confrontabili con le probabilità.
+	\item \textbf{Poligoni di frequenza}: rappresentano le frequenze di una variabile
+	\item \textbf{Diagrammi a torta}: rappresentano le frequenze relative di una variabile
+	\item \textbf{Boxplot}: rappresentano le frequenze di una variabile
+\end{itemize}
+
+\subsubsection{Indici statistici-stime}
+Sono misure quantitative che fornicono informazioni sulla distribuzione di una certa
+caratteristica.
+
+\section{Frequenze campionarie}
+Siano \( \underline{x} = (\tilde{x}_1, \ldots, \tilde{x}_n) \) i valori assunti da una variabile
+
+\section{Indici statistici}
+\subsection{Indici di posizione}
+Forniscono informazioni del valore attorno al quale si posizionano i dati. Sono:
+\begin{itemize}
+	\item \textbf{Media campionaria}: valore medio dei dati
+	\item \textbf{Moda campionaria}: valore che si ripete più frequentemente. Ci possono
+	      essere più valori modali. Sia \( \underline{y} = (y_1, \ldots, y_n) \) il campione
+	      ordinato (\( y_i \in \{\tilde{x_1}, \ldots, \tilde{x_n}\}  \) e \( y_i \le y_{i+1} \) )
+	\item \textbf{Mediana campionaria}: è il valore centrale del campione, una volta ordinato.
+	      \[
+		      M = \begin{cases}
+			      y_{\frac{n+1}{2}}                             & \text{se } n \text{ è dispari} \\
+			      \frac{y_{\frac{n}{2}} + y_{\frac{n}{2}+1}}{2} & \text{se } n \text{ è pari}
+		      \end{cases}
+	      \]
+\end{itemize}
+
+\subsection{Indici di dispersione}
+Forniscono informazioni su quanto i dati si disperdono attorno ad un valore centrale. Sono:
+\begin{itemize}
+	\item \textbf{Scarto Quadratico Medio}: misura la dispersione dei dati attorno alla media
+	      \[
+		      s'^2 = \frac{1}{n} \sum_{i=1}^{n} (\tilde{x_i} - \bar{x})^2
+	      \]
+	\item \textbf{Varianza campionaria}: misura la dispersione dei dati attorno alla media
+	      \[
+		      s^2 = \frac{1}{n-1} \sum_{i=1}^{n} (\tilde{x_i} - \bar{x})^2
+	      \]
+	\item \textbf{Deviazione standard campionaria}: misura la distanza dei dati attorno alla media
+	      \[
+		      s = \sqrt{s^2} = \sqrt{\frac{1}{n-1} \sum_{i=1}^{n} (\tilde{x_i} - \bar{x})^2}
+	      \]
+	\item \textbf{Range}: Sia \( \underline{x} = (\tilde{x_1}, \ldots, \tilde{x_n}) \) un campione
+	      di dimensione \( n \). Il range è definito come:
+	      \[
+		      R = \max(\underline{x}) - \min(\underline{x})
+	      \]
+\end{itemize}
+
+\subsection{Valori usuali}
+Si possono definire \textbf{valori usuali} di una variabile i valori del campione compresi
+tra:
+\begin{itemize}
+	\item \textbf{Minimo valore "usuale"}: media campionaria - 2 deviazioni standard
+	\item \textbf{Massimo valore "usuale"}: media campionaria + 2 deviazioni standard
+\end{itemize}
+
+
+\end{document}
