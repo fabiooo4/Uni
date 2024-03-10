@@ -28,7 +28,7 @@
 
 \usepackage{hyperref}
 \hypersetup{
-    colorlinks=false,
+	colorlinks=false,
 }
 
 \usepackage{ntheorem}
@@ -88,9 +88,9 @@
 % Matrices
 \makeatletter
 \renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
-  \hskip -\arraycolsep
-  \let\@ifnextchar\new@ifnextchar
-  \array{#1}}
+	\hskip -\arraycolsep
+	\let\@ifnextchar\new@ifnextchar
+	\array{#1}}
 \makeatother
 
 \begin{document}
@@ -508,16 +508,16 @@ fare ciò usiamo il seno e il coseno:
 		\[
 			r = |z| = \sqrt{a^2 + b^2}
 		\]
-        \[
-        \alpha = \begin{cases}
-            \frac{\pi}{2} \quad \text{se} \; a = 0,\; b > 0\\
-            -\frac{\pi}{2} \quad \text{se} \; a = 0,\; b < 0\\
-            \text{non definito} \quad \text{se} \; a = 0,\; b = 0\\
-            \arctan\left(\frac{b}{a}\right) \quad \text{se} \; a > 0,\; b \; \text{qualsiasi}\\
-            \arctan\left(\frac{b}{a}\right) + \pi \quad \text{se} \; a < 0,\; b \ge 0\\
-            \arctan\left(\frac{b}{a}\right) - \pi \quad \text{se} \; a < 0,\; b < 0\\
-        \end{cases}
-        \] 
+		\[
+			\alpha = \begin{cases}
+				\frac{\pi}{2} \quad \text{se} \; a = 0,\; b > 0                                   \\
+				-\frac{\pi}{2} \quad \text{se} \; a = 0,\; b < 0                                  \\
+				\text{non definito} \quad \text{se} \; a = 0,\; b = 0                             \\
+				\arctan\left(\frac{b}{a}\right) \quad \text{se} \; a > 0,\; b \; \text{qualsiasi} \\
+				\arctan\left(\frac{b}{a}\right) + \pi \quad \text{se} \; a < 0,\; b \ge 0         \\
+				\arctan\left(\frac{b}{a}\right) - \pi \quad \text{se} \; a < 0,\; b < 0           \\
+			\end{cases}
+		\]
 	\end{definition}
 \end{figure}
 
@@ -697,7 +697,7 @@ precisamente due radici quadrate di \( a \) in \( \mathbb{C} \). Infatti, abbiam
 \]
 Per il teorema \ref{th:radici_n-esime}:
 \[
-	z_0 = \sqrt{a} \left( \cos{\frac{\pi}{2}} + i \sin{\frac{\pi}{2}} \right) = i \sqrt{-a}
+	z_0 = \sqrt{-a} \left( \cos{\frac{\pi}{2}} + i \sin{\frac{\pi}{2}} \right) = i \sqrt{-a}
 \]
 \[
 	z_1 = \sqrt{-a} \left( \cos{\frac{3\pi}{2}} + i \sin{\frac{3\pi}{2}} \right) = -i \sqrt{-a}
@@ -805,16 +805,16 @@ una soluzione se soddisfa tutte le \( m \) equazioni.
 		      \]
 	\end{itemize}
 
-  \noindent Otteniamo dunque che \( Q = 1 \) e \( C = \frac{9}{4} - \frac{3}{4} = \frac{7}{4} \) 
+	\noindent Otteniamo dunque che \( Q = 1 \) e \( C = \frac{9}{4} - \frac{3}{4} = \frac{7}{4} \)
 
-  \vspace{0.5cm}
+	\vspace{0.5cm}
 
-  \noindent Per agevolare la risoluzione del sistema lineare si può utilizzare una matrice:
-  \begin{itemize}
-    \item \textbf{R1} = Riga 1
-    \item \textbf{R2} = Riga 2
-    \item \textbf{R3} = Riga 3
-  \end{itemize}
+	\noindent Per agevolare la risoluzione del sistema lineare si può utilizzare una matrice:
+	\begin{itemize}
+		\item \textbf{R1} = Riga 1
+		\item \textbf{R2} = Riga 2
+		\item \textbf{R3} = Riga 3
+	\end{itemize}
 	\[
 		\begin{pmatrix}[cc|c]
 			4  & 3  & 9  \\
@@ -822,7 +822,7 @@ una soluzione se soddisfa tutte le \( m \) equazioni.
 			2  & 5  & 8
 		\end{pmatrix}
 	\]
-  \[\downarrow \frac{1}{4} \cdot R1 \]
+	\[\downarrow \frac{1}{4} \cdot R1 \]
 	\[
 		\begin{pmatrix}[cc|c]
 			1  & \frac{3}{4} & \frac{9}{4} \\
@@ -830,12 +830,12 @@ una soluzione se soddisfa tutte le \( m \) equazioni.
 			2  & 5           & 8
 		\end{pmatrix}
 	\]
-  \[
-  \downarrow R2 - 20 \cdot R1
-  \] 
-  \[
-  \downarrow R3 - 2 \cdot R1
-  \] 
+	\[
+		\downarrow R2 - 20 \cdot R1
+	\]
+	\[
+		\downarrow R3 - 2 \cdot R1
+	\]
 	\[
 		\begin{pmatrix} [cc|c]
 			1 & \frac{3}{4} & \frac{9}{4} \\
@@ -843,27 +843,27 @@ una soluzione se soddisfa tutte le \( m \) equazioni.
 			0 & \frac{7}{2} & \frac{7}{2}
 		\end{pmatrix}
 	\]
-  \[
-  \downarrow \frac{1}{3} \cdot R2
-  \] 
+	\[
+		\downarrow \frac{1}{3} \cdot R2
+	\]
 	\[
 		\begin{pmatrix}[cc|c]
 			1 & \frac{3}{4} & \frac{9}{4} \\
 			0 & 1           & 1           \\
-			0 & \frac{7}{2}           &\frac{7}{2} 
+			0 & \frac{7}{2} & \frac{7}{2}
 		\end{pmatrix}
 	\]
-  \[
-  \downarrow R3 - \frac{7}{2} \cdot R2
-  \] 
-  \[
-    \begin{pmatrix}[ccc|c]
-      1 & \frac{3}{4} & \frac{9}{4} & \frac{9}{4}\\
-      0 & 1           & 1           & 1 \\
-      0 & 0           & 0 & 0 
-  \end{pmatrix} 
-  \] 
-  \noindent Otteniamo dunque che \( Q = 1 \) e \( C = \frac{9}{4} - \frac{3}{4} = \frac{7}{4} \)
+	\[
+		\downarrow R3 - \frac{7}{2} \cdot R2
+	\]
+	\[
+		\begin{pmatrix}[ccc|c]
+			1 & \frac{3}{4} & \frac{9}{4} & \frac{9}{4} \\
+			0 & 1           & 1           & 1           \\
+			0 & 0           & 0           & 0
+		\end{pmatrix}
+	\]
+	\noindent Otteniamo dunque che \( Q = 1 \) e \( C = \frac{9}{4} - \frac{3}{4} = \frac{7}{4} \)
 \end{example}
 
 \subsection{Definizione}
@@ -972,20 +972,20 @@ La matrice \[ (A \;|\; B) = \begin{pmatrix}[cccc|c]
 			\frac{1}{2}R1
 		\]
 		\[
-      \begin{pmatrix}[cccc|c]
-        1  & 3  & \frac{3}{2}  & 1 & 2            \\
-        1  & -2 & \frac{1}{2}  & \frac{9}{4} & 1  \\
-        -1 & 1  & -\frac{1}{2} & -1 & \frac{2}{5}
+			\begin{pmatrix}[cccc|c]
+				1  & 3  & \frac{3}{2}  & 1           & 2           \\
+				1  & -2 & \frac{1}{2}  & \frac{9}{4} & 1           \\
+				-1 & 1  & -\frac{1}{2} & -1          & \frac{2}{5}
 			\end{pmatrix}
 		\]
 		\[
 			R2 - R1 \quad R3 + R1
 		\]
 		\[
-      \begin{pmatrix}[cccc|c]
-        1 & 3  & \frac{3}{2} & 1 & 2            \\
-        0 & -5 & -1          & \frac{5}{4} & -1 \\
-        0 & 4  & 1           & 0 & \frac{12}{5}
+			\begin{pmatrix}[cccc|c]
+				1 & 3  & \frac{3}{2} & 1           & 2            \\
+				0 & -5 & -1          & \frac{5}{4} & -1           \\
+				0 & 4  & 1           & 0           & \frac{12}{5}
 			\end{pmatrix}
 		\]
 		\[
