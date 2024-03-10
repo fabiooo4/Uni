@@ -503,26 +503,21 @@ fare ciò usiamo il seno e il coseno:
 	\begin{definition}
 		La \textbf{forma trigonometrica} di un numero complesso è definita come:
 		\[
-			z = (r \cdot \cos(\alpha)) + (r \cdot \sin(\alpha))i = r \cdot (\cos(\alpha) + i \cdot \sin(\alpha))
+			z = (r \cdot \cos(\alpha)) + (r \cdot \sin(\alpha)i) = r \cdot (\cos(\alpha) + i \cdot \sin(\alpha))
 		\]
 		\[
 			r = |z| = \sqrt{a^2 + b^2}
 		\]
-		\[
-			\alpha = \arctan\left(\frac{b}{a}\right) \quad \text{se} \; a > 0,\; b > 0
-		\]
-		\[
-			\alpha = \arctan\left(\frac{b}{a}\right) + \pi \quad \text{se} \; a > 0, b < 0
-		\]
-		\[
-			\alpha = \arctan\left(\frac{b}{a}\right) - \pi \quad \text{se} \; a < 0, \; b \; \text{qualsiasi}
-		\]
-		\[
-			\alpha = \frac{\pi}{2} \quad \text{se} \; a = 0, \; b > 0
-		\]
-		\[
-			\alpha = -\frac{\pi}{2} \quad \text{se} \; a = 0, \; b < 0
-		\]
+        \[
+        \alpha = \begin{cases}
+            \frac{\pi}{2} \quad \text{se} \; a > 0,\; b > 0\\
+            -\frac{\pi}{2} \quad \text{se} \; a < 0,\; b < 0\\
+            \text{non definito} \quad \text{se} \; a = 0,\; b = 0\\
+            \arctan\left(\frac{b}{a}\right) \quad \text{se} \; a > 0,\; b \; \text{qualsiasi}\\
+            \arctan\left(\frac{b}{a}\right) + \pi \quad \text{se} \; a < 0,\; b \ge 0\\
+            \arctan\left(\frac{b}{a}\right) - \pi \quad \text{se} \; a < 0,\; b < 0\\
+        \end{cases}
+        \] 
 	\end{definition}
 \end{figure}
 
