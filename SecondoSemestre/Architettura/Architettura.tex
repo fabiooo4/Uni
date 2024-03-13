@@ -471,4 +471,142 @@ La traduzione in assembly è la seguente:
   ENDFOR:
 \end{lstlisting}
 
+\subsection{File assembly}
+Un file assembly ha estensione \texttt{.s} e può contenere diverse sezioni:
+\begin{itemize}
+	\item \textbf{.section .data}: contiene le variabili globali e le costanti
+	      \begin{lstlisting}[language={[x86masm]Assembler}]
+  .section .data
+  hello:
+    .ascii "Hello, world!\n" ; Dichiarazione di una stringa costante
+
+  hello_len:
+    .long . - hello ; Lunghezza della stringa (posizione corrente (.) - posizione iniziale)
+  \end{lstlisting}
+
+	\item \textbf{.section .text}: contiene il codice assembly composto da istruzioni, etichette
+	      e sottoprogrammi
+	      \begin{lstlisting}[language={[x86masm]Assembler}]
+  .section .text
+  .global _start ; Nome convenzionale del punto di inizio del programma
+  _start:
+    movl ...
+    ...
+  \end{lstlisting}
+
+	\item \textbf{.section .bss}: contiene le variabili globali non inizializzate (spazio da riservare)
+\end{itemize}
+
+\subsection{Compilazione}
+Per compilare un file assembly si compiono i seguenti passi:
+\begin{enumerate}
+	\item \textbf{Compilazione}: si compila il file assembly con il comando \texttt{as} che
+	      crea un file binario (\texttt{.o}) contenente
+	      l'implementazione di ogni singolo file.
+	\item \textbf{Linking}: si uniscono i file binari con il comando \texttt{ld} che crea un file eseguibile
+	      a partire dai file binari.
+	\item \textbf{Esecuzione}: si rende eseguibile il file e si esegue con il comando \\\texttt{./<nomefile>}
+\end{enumerate}
+
+
+\section{Memoria}
+La memoria è una lista indicizzata di celle, a cui ognuna è associata un indirizzo.
+La memoria è composta da due parti principali:
+\begin{itemize}
+	\item \textbf{Codice}: contiene le istruzioni
+	\item \textbf{Dati statici}: contiene i dati
+\end{itemize}
+
+\noindent Non si può sapere a priori dove verrà caricato il programma in memoria, quindi
+è necessario utilizzare lo spostamento relativo per accedere ai dati e alle istruzioni.
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\draw (0,0) rectangle (2,1);
+		\node at (1,0.5) {Codice};
+
+		\draw (0,0) rectangle (2,-2);
+		\node at (1,-1) {Istruzioni};
+
+		\draw (0,-2) rectangle (2,-4);
+		\node[align=center] at (1,-3) {Dati\\statici};
+
+		\draw[<-] (0,-0.2) -- ++(-0.5,0) node[left] {Program Counter};
+	\end{tikzpicture}
+	\caption{Struttura della memoria}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{define}
+		\textbf{Footprint}: è l'area di memoria occupata da un programma:
+		\begin{itemize}
+			\item \textbf{L}: 32 bit
+			\item \textbf{V}: 16 bit
+			\item \textbf{B}: 8 bit
+		\end{itemize}
+	\end{define}
+\end{figure}
+
+\subsection{Memoria dinamica}
+La memoria dinamica è composta da due parti principali:
+\begin{itemize}
+	\item \textbf{Heap}: contiene le variabili allocate dinamicamente e ha una dimensione variabile
+	\item \textbf{Stack}: contiene le variabili locali e i parametri delle funzioni. Ha una dimensione fissa
+	      e limitata. Lo stack cresce con la modalità \textbf{LIFO} (Last In First Out), cioè l'ultimo
+	      elemento inserito è il primo ad essere estratto e nell'architettura x86 cresce verso l'alto.
+	      Lo stack è composta anche da 2 puntatori:
+	      \begin{itemize}
+		      \item \textbf{ESP} (Extended Stack Pointer): punta all'ultimo elemento inserito nello stack
+		      \item \textbf{EBP} (Extended Base Pointer): punta alla base dello stack
+	      \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\draw (0,0) rectangle (2,1);
+		\node[align=center] at (1,0.5) {Dati\\Statici};
+
+		\draw (0,0) rectangle (2,-2);
+		\node[align=center] at (1,-1) {Variabili\\dinamiche};
+
+		\draw (0,-2) rectangle (2,-4.1);
+		\node at (1,-2.3) {Stack};
+
+		\draw (0,-2.6) -- (2,-2.6) node[midway, below, yshift=-1, scale=0.8] {...};
+		\draw (0,-2.9) -- (2,-2.9) node[midway, below, yshift=1, scale=0.8] {b};
+		\draw (0,-3.2) -- (2,-3.2) node[midway, below, yshift=1, scale=0.8] {a};
+		\draw (0,-3.5) -- (2,-3.5) node[midway, below, yshift=1, scale=0.8] {y};
+		\draw (0,-3.8) -- (2,-3.8) node[midway, below, yshift=1, scale=0.8] {x};
+
+
+		\draw[<-] (0,-3.2) -- ++(-0.5,0) node[left] {ESP};
+		\draw[<-] (0,-3.8) -- ++(-0.5,0) node[left] {EBP};
+	\end{tikzpicture}
+\end{figure}
+
+\noindent Per gestire i dati nello stack si utilizzano le seguenti istruzioni:
+\begin{itemize}
+	\item \textbf{\texttt{PUSHL <source>}}: inserisce il contenuto di un registro (o costante) nello stack
+	\item \textbf{\texttt{POPL <destination>}}: estrae il contenuto dello stack e lo mette in un registro (o costante)
+\end{itemize}
+
+\subsection{Richiamare una funzione}
+Per richiamare uan funzione bisogna far saltare il Program Counter all'indirizzo della funzione
+e poi salvare l'indirizzo successivo nello stack. Per fare ciò si utilizza l'istruzione \texttt{CALL}.
+\begin{itemize}
+	\item \textbf{\texttt{CALL <etichetta>}}: salva l'indirizzo successivo al Program Counter nello stack e salta all'istruzione con etichetta.
+	      Quando la funzione termina, per tornare al punto di chiamata si utilizza l'istruzione \texttt{RET}.
+	\item \textbf{\texttt{RET}}: estrae l'indirizzo successivo al Program Counter dallo stack e salta a quell'indirizzo (torna al punto di chiamata).
+\end{itemize}
+
+Per recuperare i dati in memoria si utilizza l'istruzione \texttt{LEAL} (Load Effective Address):
+\begin{itemize}
+	\item \textbf{\texttt{LEAL <source>, <destination>}}: prende l'indirizzo di memoria in cui è stato salvato qualcosa
+	      e lo mette in un registro
+\end{itemize}
+
+
+
 \end{document}
