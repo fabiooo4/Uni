@@ -1570,4 +1570,182 @@ Possiamo ricavare le condizioni \( [1],\;[\infty],\;[0] \) usando il rango:
 		\hspace{1cm} "rk(U) < rk(U|c)"
 	\]
 \end{theorem}
+
+\section{Matrici e le loro operazioni}
+\subsection{Definizione di somma}
+\begin{figure}[H]
+  \begin{definition}
+    Siano \( A=(a_{ij}) \quad 1<=i<=m \; , \; 1<=j<=n \) e 
+    \( B=(b_{ij}) \quad 1<=i<=m \; , \; 1<=j<=n \) due matrici in \( M_{m \times n}(\mathbb{C}) \).
+    La \textbf{somma} di \( A \) e \( B \) è la matrice \[
+    A + B (a_{ij} + b_{ij}) \quad 1<=i<=m\;,\;1<=j<=n  = 
+  \] 
+  \[
+    = \begin{pmatrix} 
+      a_{11} + b_{11} & \ldots & a_{1n} + b_{1n} \\
+      \vdots          & \ddots & \vdots          \\
+      a_{m1} + b_{m1} & \ldots & a_{mn} + b_{mn}
+    \end{pmatrix} 
+  \] 
+  in \( M_{m \times n}(\mathbb{C}) \) 
+  \end{definition}
+\end{figure}
+\begin{figure}[H]
+  \begin{example}
+    \[
+    \begin{pmatrix} 
+      1 & 0 & i \\
+      -3 & 1 & 4
+    \end{pmatrix} 
+    +
+    \begin{pmatrix} 
+      2 & 4 & 1 \\
+      2 & -i & 1+i 
+    \end{pmatrix} 
+    =
+    \begin{pmatrix} 
+      3 & 4 & 1+i \\
+      -1 & 1-i & 5+i
+    \end{pmatrix}
+    \]
+  \end{example}
+\end{figure}
+
+\subsubsection{Proprietà}
+L'addizione di matrici è:
+\begin{itemize}
+  \item \textbf{Associativa}, cioè:
+    \[
+      A + (B + C) = (A + B) + C
+    \] 
+  \item \textbf{Commutativa}, cioè:
+    \[
+      A + B = B + A
+    \]
+\end{itemize}
+
+\subsection{Definizione di prodotto per uno scalare}
+\begin{figure}[H]
+  \begin{definition}
+    Data una matrice \( A = (a_{ij})_{1<=i<=m\;,\;1<=j<=n} \in M_{m \times n}(\mathbb{C}) \) e
+    \( \alpha \in \mathbb{C} \), il \textbf{prodotto} della matrice \( A \) per lo scalare
+    \( \alpha \) è la matrice:
+    \[
+      \alpha A = (\alpha a_{ij})_{1<=i<=m\;,\;1<=j<=n} \in M_{m \times n}(\mathbb{C})
+    \] 
+  \end{definition}
+\end{figure}
+\begin{figure}[H]
+  \begin{example}
+    \[
+    \frac{1}{2}\begin{pmatrix} 
+      2+i & 5\\
+      i & 1-2i
+    \end{pmatrix} 
+    =
+    \begin{pmatrix} 
+      1+\frac{1}{2}i & \frac{5}{2} \\
+      \frac{1}{2}i & \frac{1}{2}-i
+    \end{pmatrix}
+    \] 
+  \end{example}
+\end{figure}
+
+\subsubsection{Proprietà}
+Il prodotto di una matrice per uno scalare gode delle seguenti proprietà:
+\begin{itemize}
+  \item \textbf{Distributiva rispetto all'addizione}, cioè:
+    \[
+      \alpha(A+B) = \alpha A + \alpha B
+    \] 
+    \[
+      (\alpha + \beta)A = \alpha A + \beta A
+    \] 
+    per \( A,b \in M_{m \times n}(\mathbb{C})\;,\; \alpha,\beta \in \mathbb{C} \) 
+\end{itemize}
+
+\subsection{Definizione di matrice trasposta}
+\begin{figure}[H]
+  \begin{definition}
+    Accanto a una matrice \( A = (a_{ij}) \in M_{m \times n}(\mathbb{C}) \), consideriamo
+    la matrice \( A^T \) ottenuta da \( A \) scambiando le righe con le colonne,
+    è detta \textbf{trasposta} di \( A \).
+  \end{definition}
+\end{figure}
+\begin{figure}[H]
+  \begin{example}
+    \[
+    A = \begin{pmatrix} 
+      1 & i & 7\\
+      \pi & \frac{1}{12} & 0
+    \end{pmatrix} 
+    \quad
+    A^T = \begin{pmatrix} 
+      1 & \pi \\
+      i & \frac{1}{12} \\
+      7 & 0
+    \end{pmatrix}
+    \] 
+  \end{example}
+\end{figure}
+
+\subsection{Definizione di prodotto di matrici}
+\begin{itemize}
+  \item Una matrice di dimensione \( m \times 1 \) è detta \textbf{vettore} (colonna) e
+    si usa la notazione \( v = \begin{pmatrix} v_1 \\ \vdots \\ v_m \end{pmatrix} \in M_{m \times 1}(\mathbb{C})  \).
+
+    Una matrice di dimensione \( 1 \times n \) è detta \textbf{vettore riga} e si usa la notazione
+    \( v^T = \begin{pmatrix} v_1 & \ldots & v_n \end{pmatrix} \in M_{1 \times n}(\mathbb{C}) \).
+
+    Sia \( v^T = \begin{pmatrix} v_1 & \ldots & v_n \end{pmatrix} \)  un vettore riga
+    in \( M_{1 \times n}(\mathbb{C}) \) e \( u = \begin{pmatrix} v_1 \\ \vdots \\ v_n \end{pmatrix} \)
+    un vettore colonna in \( M_{n \times 1}(\mathbb{C}) \). Il \textbf{prodotto} di \( v^T \) per \( u \) è
+    il numero complesso: \( v^Tu = v_1u_1 + v_2u_2 + \ldots + v_nu_n \in \mathbb{C} \) 
+
+    \begin{example}
+      \[
+        v^T=\begin{pmatrix} 1 & 2 & 3 \end{pmatrix} \quad u=\begin{pmatrix} 1 \\ 0 \\ 3 \end{pmatrix}
+      \] 
+      \[
+      v^Tu = 1 \cdot 1 + 2 \cdot 0 + 3 \cdot 3 = 1 + 0 + 9 = 10
+      \] 
+    \end{example}
+  \item Possiamo vedere una matrice \( A=(a_{ij})_{1<=i<=m\;,\;1<=j<=n} \)  come \( m \)
+    vettori riga \( Ri=(a_{i1} \ldots a_{in})_{1<=i<=m} \) detti \textbf{righe di \( A \)}
+    oppure \( n \) vettori colonna \( Cj=\begin{pmatrix} a_{1j} \\ \vdots \\ a_{mj} \end{pmatrix} _{1<=j<=n} \) detti \textbf{colonne di \( A \)}.
+
+    Siano \[ A = (a_{ij})_{1<=i<=m\;,\;1<=j<=n} \in M_{m \times n}(\mathbb{C}) \]
+    \[ B = (b_{ij})_{1<=i<=s\;,\;1<=j<=t} \in M_{n \times t}(\mathbb{C}) \]
+    Se \( n=s \), allora possiamo formare il prodotto di \( A \) e \( B \):
+    \[
+      AB = (c_{ij})_{1<=i<=m\;,\;1<=j<=t}
+    \] 
+    dove
+    \[
+      c_{ij} = RiCj = \begin{pmatrix} a_{i1} & \ldots & a_{in} \end{pmatrix} 
+      \begin{pmatrix} b_{1j} \\ \vdots \\ b_{nj} \end{pmatrix} = a_{i1}b_{1j} + \ldots + a_{in}b_{nj}
+    \] 
+    è il prodotto della riga \( i \) di \( A \) e la colonna \( j \) di \( B \).
+
+    \begin{example}
+      \[
+        \begin{pmatrix} 1 & 2 & 3\\
+        0 & 1 & 4\end{pmatrix} 
+          \begin{pmatrix} 1 & 4 & 0\\
+            0 & 1 & 5\\
+          1 & 2 & 4\end{pmatrix} 
+          =
+          \begin{pmatrix} R1C1 & R1C2 & R1C3\\
+            R2C1 & R2C2 & R2C3\end{pmatrix} =
+          \] 
+          \[
+            =
+            \begin{pmatrix} 
+              4 & 12 & 22\\
+              4 & 9 & 21
+            \end{pmatrix}
+          \] 
+        \end{example}
+\end{itemize}
+
 \end{document}
