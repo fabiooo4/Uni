@@ -1,9 +1,10 @@
 ---
-title: "Exercise 2"
+title: "Lab 1"
+subtitle: "Exercise 2"
+author: "Irimie Fabio"
 output: pdf
 ---
 
-# Exercise 2
 ## A
 Create 2 vectos twice: using the colon oprator and the seq(function)
 
@@ -64,3 +65,25 @@ mat
 mat_pos
 ```
 
+## E
+Plot exp(x) for values of x ranging from -2 to 2 in steps of 0.1. Put 
+an appropriate title on the plot, and label the axes.
+<!-- echo = FALSE to remove code and leave only the plot -->
+```{r} 
+x <- seq(-2, 2, 0.1)
+y <- exp(x)
+plot(x, y, type = "l")
+```
+
+## F
+Create a vector x with values ranging from 1 to 100 in steps of 5.
+Create a vector y which is the square root of each value in x.
+Plot these points. Now, use the barplot() function instead of plot()
+to get a bar chart. Keep both plots together.
+```{r}
+x <- seq(1, 100, 5)
+y <- sqrt(x)
+par(mfrow = c(1, 2))
+plot(x, y)
+barplot(x, y)
+```
