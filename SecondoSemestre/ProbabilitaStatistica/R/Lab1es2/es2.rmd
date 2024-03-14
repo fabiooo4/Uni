@@ -28,13 +28,39 @@ mymat <- matrix(
   2
 )
 cat("Starting matrix:\n")
-print(mymat)
+mymat
 mymat[2, 1] <- 3
 mymat[2, 2] <- 6
 cat("Replaced matrix:\n")
-print(mymat)
+mymat
 ```
 
 ## C
-Create a vector x which consists of 20 equally spaced points in the range from $-\infty$ to $+\infty$. Create a y
-vector which is sin(x).
+Create a vector x which consists of 20 equally spaced points in the range
+from $-\pi$ to $+\pi$. Create a y vector which is sin(x).
+```{r}
+x <- seq(-pi, pi, length.out = 20)
+x
+
+y <- sin(x)
+y
+```
+
+## D
+Create a 4x6 matrix of random integers, each in the range 
+from -5 to 5; store it in a variable (mat).
+Create another matrix that stores for each element the 
+absolute value of the corresponding element in
+the original matrix (mat_pos).
+```{r}
+mat <- matrix(
+  round(runif(4 * 6, -5, 5), digits = 0),
+  4,
+  6
+)
+mat_pos <- abs(mat)
+
+mat
+mat_pos
+```
+
