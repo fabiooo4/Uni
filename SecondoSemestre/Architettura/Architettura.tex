@@ -346,7 +346,7 @@ Ogni istruzione è codificata nel seguente modo:
 \end{figure}
 
 \subsection{Istruzioni}
-\subsubsection{Istruzioni base}
+\subsubsection{Istruzioni di inizializzazione}
 \begin{itemize}
 	\item \textbf{\texttt{MOVL <source> <destination>}}: copia il contenuto di un registro (o costante) in un altro.
 	      Questa istruzione di solito viene utilizzata per spostare i valori dalla memoria ai
@@ -607,6 +607,290 @@ Per recuperare i dati in memoria si utilizza l'istruzione \texttt{LEAL} (Load Ef
 	      e lo mette in un registro
 \end{itemize}
 
+% Laboratorio
+\section{Laboratorio}
+\subsection{Vantaggi e svantaggi di assembly}
+\subsubsection{Vantaggi}
+Siccome assembly è un linguaggio di basso livello, è molto vicino all'hardware e quindi è possibile:
+\begin{itemize}
+	\item accedere direttamente ai \textbf{registri} della CPU
+	\item scrivere \textbf{codice ottimizzato} per una specifica architettura di CPU
+	\item ottimizzare le \textbf{sezioni "critiche"} dei programmi
+\end{itemize}
 
+\subsubsection{Svantaggi}
+I principali svantaggi sono:
+\begin{itemize}
+	\item possono essere richieste \textbf{molte più righe} di codice
+	\item è facile introdurre dei \textbf{bug} perchè la programmazione è più complessa
+	\item il \textbf{debugging} è complesso
+	\item \textbf{non è garantita la compatibilità} del codice per altri hardware
+\end{itemize}
+
+\subsection{Utilità}
+Assembly permette di gestire direttamente il funzionamento della CPU, di conseguenza,
+i programmi Assembly, una volta compilati sono tipicamente più veloci e più piccoli dei
+programmi scritti in linguaggi di alto livello. Per questo motivo, l'assembly è utilizzato
+per scrivere codice che deve essere il più veloce possibile, come ad esempio i driver di
+hardware specifici.
+
+\subsection{Registri}
+Tutti i processori della famiglia x86 hanno i seguenti registri:
+AX, BX, CX, DX, CS, DS, ES, SS, SP, BP, SI, DI, IP, FLAGS.
+
+\vspace{1em}
+\noindent Originariamente i registri AX, BX, CX, DX, SP, BP, SI, DI, IP e FLAGS avevano una dimensione
+di 16 bit. A partire dal 80386, la loro dimensione è stata estesa a 32 bit e al loro nome
+è stato aggiunto il prefisso E (Extended). Per ragioni di retrocompatibilità, i registri
+di 16 bit possono essere utilizzati anche nei processori a 32 bit utilizzando il loro
+nome originale.
+
+\subsubsection{Registri general purpose}
+I seguenti registri sono generici, pertanto è possibile assegnargli qualunque valore. Tuttavia,
+durante l'esecuzione di alcune istruzioni i registri generici vengono utilizzati per
+memorizzare valori ben determinati:
+\begin{itemize}
+	\item \textbf{EAX} (Accumulator register): è usato come accumulatore per
+	      operazioni aritmetiche e contiene il risultato dell'operazione
+	\item \textbf{EBX} (Base register): è usato per operazioni di indirizzamento della
+	      memoria
+	\item \textbf{ECX} (Counter register):  è usato per "contare", ad esempio nelle
+	      operazioni di loop
+	\item \textbf{EDX} (Data register): è usato nelle operazioni di input/output, nelle
+	      divisioni e nelle moltiplicazioni
+
+\end{itemize}
+
+\subsubsection{Registri di segmento}
+CS, DS, ES e SS sono i \textbf{registri di segmento} (segment registers) e devono
+essere utilizzati con cautela:
+\begin{itemize}
+	\item \textbf{CS} (Code Segment): punta alla zona di memoria che contiene il codice.
+	      Durante l'esecuzione del programma, assieme al registro IP, serve per
+	      accedere alla prossima istruzione da eseguire (attenzione: non può
+	      essere modificato!)
+	\item \textbf{DS} (Data Segment): punta alla zona di memoria che contiene i dati
+	\item \textbf{ES} (Extra Segment):  può essere usato come registro di segmento
+	      ausiliario
+	\item \textbf{SS} (Stack Segment): punta alla zona di memoria in cui risiede lo stack
+\end{itemize}
+
+\subsubsection{Registri puntatore}
+ESP, EBP, EIP sono i registri puntatore (pointer registers):
+\begin{itemize}
+	\item \textbf{ESP} (Stack Pointer):  punta alla cima dello stack. Viene modificato
+	      dalle operazioni di PUSH (inserimento di un dato nello stack) e POP
+	      (estrazioni di un dato dallo stack). Si ricordi che lo stack è una
+	      struttura di tipo LIFO (Last In First Out - l'ultimo che entra è il primo
+	      che esce). È possibile modificarlo manualmente ma occorre cautela!
+	\item \textbf{EBP} (Base Pointer): punta alla base della porzione di stack gestita in
+	      quel punto del codice. È possibile modificarlo manualmente ma
+	      occorre cautela!
+	\item \textbf{EIP} (Instruction Pointer): punta alla prossima istruzione da eseguire.
+	      Non può essere modificato!
+\end{itemize}
+
+\subsubsection{Registri indice}
+ESI e EDI sono i registri indice (index registers) e vengono utilizzati per
+operazioni con stringhe e vettori:
+\begin{itemize}
+	\item \textbf{ESI} (Source Index):  punta alla stringa/vettore sorgente
+	\item \textbf{EDI} (Destination Index): punta alla stringa/vettore destinazione
+	\item \textbf{EFLAGS}: è utilizzato per memorizzare lo stato corrente del processore.
+	      Ciascuna flag (bit) del registro fornisce una particolare informazione.
+	      Ad esempio, la flag in prima posizione (carry flag) viene posta a 1
+	      quando c;è stato un riporto o un prestito durante un'operazione
+	      aritmetica; la flag in seconda posizione (parity flag) viene usata come
+	      bit di parità e viene posta a 1 quando il risultato dell'ultima
+	      operazione ha un numero pari di 1
+\end{itemize}
+
+\subsubsection{Composizione dei registri}
+I registri sono composti da 32 bit e possono essere divisi in registri più piccoli:
+\begin{itemize}
+	\item \textbf{EAX}: AX, AH, AL
+	\item \textbf{EBX}: BX, BH, BL
+	\item \textbf{ECX}: CX, CH, CL
+	\item \textbf{EDX}: DX, DH, DL
+	\item \textbf{ESP}: SP
+	\item \textbf{EBP}: BP
+	\item \textbf{ESI}: SI
+	\item \textbf{EDI}: DI
+\end{itemize}
+
+\subsubsection{Composizione del registro EFLAGS}
+Il registro EFLAGS è composto da 32 bit e ogni bit corrisponde ad un flag:
+\begin{itemize}
+	\item \textbf{ZF} (Zero flag):  impostato a 1 se il risultato dell'operazione è 0
+	\item \textbf{SF} (Sign flag): impostato a 1 se il risultato dell'operazione è un
+	      numero negativo, a 0 se è positivo (rappresentazione in complemento
+	      a 2)
+	\item \textbf{OF} (Overflow flag): impostato a 1 nel caso di overflow di
+	      un'operazione
+	\item \textbf{TF} (Trap flag): impostato a 1 genera un'interruzione ad ogni
+	      istruzione. Utilizzato per l'esecuzione passo-passo dei programmi
+	\item \textbf{IF} (Interrupt flag): impostato a 1 abilita gli interrupt esterni, con 0 li
+	      disabilita
+	\item \textbf{DF} (Direction flag): impostato a 1 indica che nelle operazioni di
+	      spostamento di stringhe i registri DI e SI si autodecrementano (con 0
+	      tali registri si auto incrementano)
+\end{itemize}
+
+\subsection{Modalità di indirizzamento}
+Si rifersce al modo in cui un'istruzione assembly accede ai dati in memoria e può essere:
+\begin{itemize}
+	\item \textbf{Indirizzamento a registro}: l'operando è contenuto in un registro ed
+	      il nome del registro è specificato nell'istruzione. Ad esempio:
+	      \begin{center}
+		      \texttt{\%Ri}
+	      \end{center}
+
+	\item \textbf{Indirizzamento diretto} (o assoluto): l'operando è contenuto in una
+	      locazione di memoria, e l'indirizzo della locazione viene specificato
+	      nell'istruzione. Ad esempio:
+	      \begin{center}
+		      \texttt{(IND)}
+	      \end{center}
+
+	\item \textbf{Indirizzamento immediato} (o di costante): l'operando è un valore
+	      costante ed è definito esplicitamente nell'istruzione. Ad esempio:
+	      \begin{center}
+		      \texttt{\$VAL}
+	      \end{center}
+
+	\item \textbf{Indirizzamento indiretto}: l'indirizzo di un operando è contenuto in
+	      un registro o in una locazione di memoria. L'indirizzo della locazione o
+	      il registro viene specificato nell'istruzione. Ad esempio:
+	      \begin{center}
+		      \texttt{(\%Ri)} \quad o \quad \texttt{(\$VAL)}
+	      \end{center}
+
+	\item \textbf{Indirizzamento indicizzato} (Base e spiazzamento): l'indirizzo
+	      effettivo dell'operando è calcolato sommando un valore costante al
+	      contenuto di un registro. Ad esempio:
+	      \begin{center}
+		      \texttt{SPI(\%Ri)}
+	      \end{center}
+
+	\item \textbf{Indirizzamento con autoincremento}: l'indirizzo effettivo
+	      dell'operando è il contenuto di un registro specificato nell'istruzione.
+	      Dopo l'accesso, il contenuto del registro viene incrementato per
+	      puntare all'elemento successivo
+
+	\item \textbf{Indirizzamento con autodecremento}: il contenuto di un registro
+	      specificato nell'istruzione viene decrementato. Il nuovo contenuto
+	      viene usato come indirizzo effettivo dell'operando
+
+\end{itemize}
+
+\subsection{Istruzioni}
+\subsubsection{Istruzioni di inizializzazione}
+\begin{itemize}
+	\item \texttt{mov src, dst} \quad \textbf{Move}: consente l'inizializzazione di un registro o di
+	      un'area di memoria. Accetta i modificatori \texttt{l}, \texttt{w} e \texttt{b} per
+	      indicare la dimensione dell'operando \texttt{s rc}
+	\item \texttt{lea src, dst} \quad \textbf{Load Effective Address}: trasferisce l'indirizzo
+	      effettivo dell'operando \texttt{src} nel registro \texttt{dst}
+\end{itemize}
+
+\subsubsection{Istruzioni aritmetiche e logiche}
+\begin{itemize}
+  \item \texttt{sar op1, op2} \quad \textbf{Shift Arithmetic Right}: esegue lo shift a destra sul
+    registro \texttt{op2} di tanti bit quanti specificati in \texttt{op1}. Il bit
+    più significativo viene replicato (così da funzionare anche
+    con numeri negativi in complemento 2) e il bit scartato
+    viene messo nel \textbf{Carry Flag}. \texttt{op1} può essere un registro
+    o un valore immediato, \texttt{op2} deve essere un registro 
+  \item \texttt{sal op1, op2} \quad \textbf{Shift Arithmetic Left}: esegue lo shift a sinistra sul
+    registro \texttt{op2} di tanti bit quanti specificati in \texttt{op1}. Il bit
+    meno significativo viene messo a \( 0 \)  e il bit scartato viene
+    messo nel \textbf{Carry Flag}. \texttt{op1} può essere un registro o un
+    valore immediato, \texttt{op2} deve essere un registro 
+  \item \texttt{inc op} \quad \textbf{Increment}: incrementa di 1 il valore memorizzato in 
+    \texttt{op}. \texttt{op} può essere un registro o una locazione di memoria 
+  \item \texttt{dec op} \quad \textbf{Decrement}: decrementa di 1 il valore memorizzato in
+    \texttt{op}. \texttt{op} può essere un registro o una locazione di
+    memoria 
+  \item \texttt{add src, dst} \quad \textbf{Add}: somma a \texttt{dst} il valore di \texttt{src} 
+    e memorizza il risultato in \texttt{dst} 
+  \item \texttt{sub src, dst} \quad \textbf{Subtract}: sottrae da \texttt{dst} il valore di \texttt{src} 
+    e memorizza il risultato in \texttt{dst}
+  \item \texttt{mul moltipl} \quad \textbf{Unsigned Multiplication}: esegue la moltiplicazione
+    senza segno. \texttt{moltipl} deve essere un registro o una
+    variabile. Se \texttt{moltipl} è un byte il registro \texttt{AL} viene
+    moltiplicato per l'operando e il risultato viene
+    memorizzato in \texttt{AX}. Se \texttt{moltipl} è una word il
+    contenuto del registro \texttt{AX} viene moltiplicato per
+    l'operando e il risultato viene memorizzato nella coppia
+    di registri \texttt{DX}:\texttt{AX} (\texttt{DX} conterrà i 16 bit più significativi
+    del risultato). Se \texttt{moltipl} è un long il contenuto del
+    registro E\texttt{AX} viene moltiplicato per l'operando e il
+    risultato viene memorizzato nella coppia di registri
+    \texttt{EDX}:\texttt{EAX} (\texttt{EDX} conterrà i 32 bit più significativi del
+    risultato). 
+  \item \texttt{imul moltipl} \quad moltiplicazione con segno
+  \item \texttt{div divisore} \quad \textbf{Unsigned Division}: 
+    esegue la divisione senza segno.
+    \texttt{divisore} deve essere un registro o una variabile. Se
+    \texttt{divisore} è un byte il registro \texttt{AX} viene diviso per
+    l'operando, il quoziente viene memorizzato in \texttt{AL}, e il
+    resto in \texttt{AH}. Se \texttt{divisore} è una word, il valore ottenuto
+    concatenando il contenuto di \texttt{DX} e \texttt{AX} viene diviso per
+    l'operando (i 16 bit più significativi del dividendo
+    devono essere memorizzati nel registro \texttt{DX}), il quoziente
+    viene memorizzato nel registro \texttt{AX} e il resto in \texttt{DX}. Se
+    \texttt{divisore} è un long, il valore ottenuto concatenando il
+    contenuto di \texttt{EDX} e \texttt{EAX} viene diviso per l'operando (i
+    32 bit più significativi del dividendo sono nel registro
+    \texttt{EDX}), il quoziente viene memorizzato nel registro \texttt{EAX}
+    e il resto in \texttt{EDX} 
+  \item \texttt{xor src, dst} \quad \textbf{Logical Exclusive OR}: calcola l'OR esclusivo bit a bit
+    dei due operandi e lo memorizza nell'operando \texttt{dst}.
+    Spesso si utilizza per azzerare un registro, utilizzandolo
+    sia come \texttt{src} che come \texttt{dst}) 
+  \item \texttt{or src, dst} \quad \textbf{Logical OR}: calcola l'OR logico bit a bit dei due
+    operandi e lo memorizza nell'operando \texttt{dst}
+  \item \texttt{and src, dst} \quad \textbf{Logical AND}: calcola l'AND bit a bit dei due operandi
+    e lo memorizza nell'operando \texttt{dst} 
+  \item \texttt{not op} \quad \textbf{Logical NOT}: inverte ogni singolo bit dell'operando op 
+\end{itemize}
+
+\subsection{AT\&T vs Intel}
+Le principali differenze tra la sintassi AT\&T e Intel sono:
+\begin{itemize}
+  \item In AT\&T i nomi dei registri hanno il carattere \texttt{\%} come prefisso
+  \item In AT\&T l'ordine degli operandi è \texttt{<sorgente>, <destinazione>}, opposto
+    rispetto alla sintassi Intel
+  \item In AT\&T la lunghezza dell'operando è specificata tramite un suffisso al nome
+    dell'istruzione. \texttt{b} per \textbf{byte} (8 bit), \texttt{w} per \textbf{word} (16 bit),
+    \texttt{l} per \textbf{double word} (32 bit)
+  \item Gli operandi immediati in AT\&T sono preceduti dal simbolo \texttt{\$}
+  \item la presenza di prefisso in un operando indica che si tratta di un
+indirizzo di memoria. Ad esempio:
+\begin{center}
+  \texttt{movl \$pippo, \%eax} \quad è diverso da \quad \texttt{movl pippo, \%eax}
+\end{center}
+\item l'indicizzazione o l'indirezione è ottenuta racchiudendo tra parentesi
+l'indirizzo di base espresso tramite un registro o un valore immediato.
+Ad esempio:
+\begin{center}
+  \texttt{movl 5, 17(\%ebp)}
+\end{center}
+\end{itemize}
+
+\subsection{Compilazione}
+Prima di tutto bisogna creare un file con estensione \texttt{.s} e scrivere il codice assembly.
+Dopo aver scritto il codice assembly, si compila il file con il comando \texttt{as} che crea un file binario
+(\texttt{.o}) contenente l'implementazione di ogni singolo file. Infine si uniscono i file binari con il comando
+\texttt{ld} che crea un file eseguibile a partire dai file binari.
+
+\begin{lstlisting}[language=bash]
+ $  as -o <nomefile>.o <nomefile>.s
+ $  ld -o <nomefile> <nomefile>.o
+ $  ./<nomefile>
+  
+\end{lstlisting}
+
+% Fine laboratorio
 
 \end{document}
