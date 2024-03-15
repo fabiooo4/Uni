@@ -1,0 +1,120 @@
+---
+title: "Lab2"
+subtitle: "Exercises"
+author: "Irimie Fabio"
+output: 
+  pdf_document:
+    toc: true
+    keep_tex: true 
+---
+
+# Exercise 1
+- A: 
+
+  Create the Lab2 project. Use the same structure used for Lab1:
+  - scripts,
+  - plots,
+  - data
+- B:
+
+  Install the palmerpenguins package, load the penguins dataset or,
+  alternatively, download the .RData object from moodle and import it
+  after placing it inside the data directory of the project (hint:
+  use the load() function). 
+- C:
+
+  Compute the mean, the standard deviation, and the median for the 
+  numeric variables of
+  the dataset.
+- D:
+
+  Create a function called stat_auto that simultaneously returns both
+  the mean and the
+  standard deviation of a given vector (hint: return an object of type
+  list or simply a vector). Then try it on the same numeric variables in
+  C. to check the results (hint: if you obtain NA
+  maybe you forgot to remove NA terms in the vector).
+- E:
+
+  Create a function called stat_manual that simultaneously returns
+  both the mean and the
+  standard deviation of a given vector without using the mean() and the
+  sd() functions
+  (hint: you can use length(), sum(), and na.omit() functions). Then
+  try it on the same
+  numeric variables in C. to check the results.
+
+
+## B
+```{r}
+library(palmerpenguins)
+data(penguins)
+```
+
+## C
+```{r, collapse=TRUE}
+# Means
+cat("Means: \n")
+colMeans(penguins[, c(3:6, 8)], na.rm = TRUE)
+cat("\n")
+
+# Medians
+cat("Medians: \n")
+sapply(penguins[, c(3:6, 8)], median, na.rm = TRUE)
+cat("\n")
+
+# Standard deviations
+cat("Standard deviations: \n")
+sapply(penguins[, c(3:6, 8)], sd, na.rm = TRUE)
+cat("\n")
+```
+
+## D
+```{r}
+stat_auto <- function(vec, na.rm = FALSE) {
+  if (na.rm) {
+    mean <- mean(vec, na.rm = TRUE)
+    sd <- sd(vec, na.rm = TRUE)
+
+    return(list("mean" = mean, "sd" = sd))
+  }
+
+  mean <- mean(vec)
+  sd <- sd(vec)
+
+  return(list("mean" = mean, "sd" = sd))
+}
+
+sapply(penguins[, c(3:6, 8)], stat_auto, na.rm = TRUE)
+```
+
+## E
+```{r}
+stat_manual <- function(vec, na.rm = FALSE) {
+  if (na.rm) {
+    sum <- sum(vec, na.rm = TRUE)
+    mean <- sum / na.omit(length(vec))
+
+    sum <- sum((vec - mean)^2, na.rm = TRUE)
+    denom <- na.omit(length(vec)) - 1
+    varianza <- sum / denom
+
+    sd <- sqrt(varianza)
+
+    return(list("mean" = mean, "sd" = sd))
+  }
+
+  sum <- sum(vec)
+  mean <- sum / length(vec)
+
+  sum <- sum((vec - mean)^2)
+  denom <- length(vec) - 1
+  varianza <- sum / denom
+
+  sd <- sqrt(varianza)
+
+  return(list("mean" = mean, "sd" = sd))
+}
+
+sapply(penguins[, c(3:6, 8)], stat_manual, na.rm = TRUE)
+```
