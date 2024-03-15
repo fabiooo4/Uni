@@ -72,7 +72,12 @@ an appropriate title on the plot, and label the axes.
 ```{r} 
 x <- seq(-2, 2, 0.1)
 y <- exp(x)
-plot(x, y, type = "l")
+plot(x, y,
+  type = "l",
+  xlab = "x",
+  ylab = "y",
+  main = "Exponential function"
+)
 ```
 
 ## F
