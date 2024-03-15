@@ -1,0 +1,142 @@
+---
+title: "Lab1"
+subtitle: "Exercise 3"
+author: "Irimie Fabio"
+output: 
+  pdf_document:
+    toc: true
+    keep_tex: true 
+---
+
+## A
+Load the sunspot.year dataset from the datasets package. Use
+data("sunspot.year") and then sunspot.year to load it in the workspace.
+```{r}
+data("sunspot.year")
+sunspot.year
+```
+
+## B
+See the documentation to obtain information about the dataset and create
+a sequence vector corresponding to the years. Call this variable year.
+```{r}
+data <- sunspot.year
+year <- seq(start(data)[1], end(data)[1], 1)
+year
+```
+
+## C
+Create a variable called sunspot, containing the values from the dataset
+```{r}
+sunspot <- c(data)
+sunspot
+```
+
+## D
+Put together the variables into a data.frame object.
+```{r}
+x <- data.frame(
+  Year = year,
+  Sunspots = sunspot
+)
+x
+```
+
+## E
+Make a line plot of sunspots vs. year.
+
+```{r, echo=FALSE}
+plot(
+  year,
+  sunspot,
+  type = "l",
+  xlab = "Year",
+  ylab = "Sunspots"
+)
+```
+
+## F
+Superimpose data points as red asterisks. Add a second layer to the plot
+by using the points() function. Use pch = "*" and col = "red" in the
+points() arguments. 
+```{r}
+plot(
+  year,
+  sunspot,
+  type = "l",
+  xlab = "Year",
+  ylab = "Sunspots"
+)
+points(year, sunspot, pch = "*", col = "red")
+```
+
+## G
+Create a title ‘Sunspots by year’.
+```{r}
+plot(
+  year,
+  sunspot,
+  type = "l",
+  xlab = "Year",
+  ylab = "Sunspots",
+  main = "Sunspots by year"
+)
+points(year, sunspot, pch = "*", col = "red")
+```
+
+## H
+Make a column with 3 panels for the plot created in G., a barplot of
+sunspots (you can use the as.vector() function to convert a a data type 
+to a vector data type), and a histogram of sunspots.
+```{r}
+par(mfrow = c(3, 1))
+
+plot(
+  year,
+  sunspot,
+  type = "l",
+  xlab = "Year",
+  ylab = "Sunspots",
+  main = "Sunspots by year"
+)
+points(year, sunspot, pch = "*", col = "red")
+
+barplot(
+  year,
+  sunspot,
+  xlab = "Year",
+  ylab = "Sunspots",
+  main = "Sunspots by year"
+)
+
+plot(
+  year,
+  sunspot,
+  type = "h",
+  xlab = "Year",
+  ylab = "Sunspots",
+  main = "Sunspots by year"
+)
+```
+## I
+Save the plot in the ./plots directory of the project as a .png file.
+```{r, warning=FALSE,message=FALSE}
+png("./plots/sunspots.png")
+plot(
+  year,
+  sunspot,
+  type = "l",
+  xlab = "Year",
+  ylab = "Sunspots",
+  main = "Sunspots by year"
+)
+points(year, sunspot, pch = "*", col = "red")
+dev.off()
+```
+
+## J
+Save the data frame as a .csv file in the ./data directory of the 
+project.
+```{r}
+write.csv(x, "./data/data.csv")
+```
