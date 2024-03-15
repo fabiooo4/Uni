@@ -11,7 +11,9 @@
 \usepackage{xcolor}
 \usepackage{float}
 \usepackage{tikz}
+\usepackage{nicematrix}
 \usepackage{pgfplots}
+\usetikzlibrary{fit}
 \usetikzlibrary{pgfplots.fillbetween}
 \pgfplotsset{compat=newest, ticks=none}
 \usepackage{graphicx}
@@ -1747,5 +1749,368 @@ Il prodotto di una matrice per uno scalare gode delle seguenti proprietà:
           \] 
         \end{example}
 \end{itemize}
+
+\subsubsection{Proprietà}
+Il prodotto di matrici gode delle seguenti proprietà:
+\begin{itemize}
+  \item \textbf{Associativa}, cioè:
+    \[
+      A(BC) = (AB)C
+    \] 
+  \item \textbf{Distributiva rispetto all'addizione}, cioè:
+    \[
+      (A+B)C = AC + BC
+    \] 
+      Con \( A,B \in M_{m \times n}(\mathbb{C}) \) e \( C \in M_{n \times t}(\mathbb{C}) \)
+      \[
+      A(B+C) = AB + AC
+      \] 
+      In sostanza le matrici devono avere il numero di colonne uguale al numero di righe.
+    \item Scriviamo \( I_n \in M_{m \times n}(\mathbb{C}) \) per la matrice:
+      \[
+        \begin{pmatrix} 
+          1 & 0 & \ldots & 0\\
+          0 & 1 & \ldots & 0\\
+          \vdots & \vdots & \ddots & \vdots\\
+          0 & 0 & \ldots & 1
+        \end{pmatrix}
+      \] 
+      Questa matrice viene detta \textbf{matrice identità}.
+
+      Per ogni matrice \( M \in M_{m \times n}(\mathbb{C}) \), abbiamo che:
+      \[ M \cdot I_m = I_m \cdot M =  M \]
+      \begin{figure}[H]
+        \begin{example}
+          \[
+          I_3 = \begin{pmatrix} 
+            1 & 0 & 0\\
+            0 & 1 & 0\\
+            0 & 0 & 1
+          \end{pmatrix}
+          \quad
+          I_2 = \begin{pmatrix} 
+            1 & 0\\
+            0 & 1
+          \end{pmatrix}
+          \] 
+        \end{example}
+      \end{figure}
+      \begin{figure}[H]
+        \begin{example}
+          \[
+          M = \begin{pmatrix} 
+            1 & 2\\
+            3 & 4
+          \end{pmatrix}
+          \quad
+          M \cdot I_2 = \begin{pmatrix} 
+            1 & 2\\
+            3 & 4
+          \end{pmatrix}
+          \begin{pmatrix} 
+            1 & 0 \\
+            0 & 1
+          \end{pmatrix} 
+          =
+          \begin{pmatrix} 
+            1 & 2\\
+            3 & 4
+          \end{pmatrix}
+          = M
+          \] 
+        \end{example}
+      \end{figure}
+    \item \( (AB)^T = B^T A^T \) con \[ A \in M_{m \times n}(\mathbb{C}) \quad
+        B \in M_{n \times t}(\mathbb{C}) \]
+        \[
+        A^T \in M_{n \times m}(\mathbb{C}) \quad
+        B^T \in M_{t \times n}(\mathbb{C})
+        \] 
+        \begin{figure}[H]
+          \begin{example}
+            \[
+              A = \begin{pmatrix}
+                1 & 0\\
+                2 & 1
+              \end{pmatrix} 
+              \quad
+              B = \begin{pmatrix} 
+                1 & 2 & 4\\
+                0 & 1 & 5
+              \end{pmatrix} 
+            \] 
+            \[
+            AB = \begin{pmatrix} 
+              1 & 2 & 4\\
+              2 & 5 & 13
+            \end{pmatrix} 
+            \] 
+            \[
+              A^T = \begin{pmatrix}
+              1 & 2\\
+              0 & 1
+            \end{pmatrix} 
+            \quad
+            B^T = \begin{pmatrix} 
+              1 & 0\\
+              2 & 1\\
+              4 & 5
+            \end{pmatrix} 
+            \] 
+            \[
+              (AB)^T = \begin{pmatrix} 
+                1 & 2\\
+                2 & 5\\
+                4 & 13
+              \end{pmatrix} 
+            \] 
+            \[
+            B^T A^T = \begin{pmatrix} 
+              1 & 0\\
+              2 & 1\\
+              4 & 5 
+            \end{pmatrix}
+            \begin{pmatrix} 
+              1 & 2\\
+              0 & 1
+            \end{pmatrix}
+            =
+            \begin{pmatrix} 
+              1 & 2\\
+              2 & 5\\
+              4 & 13
+            \end{pmatrix}
+            \] 
+          \end{example}
+        \end{figure}
+
+      \item Il prodotto di matrici \textbf{non} è commutativo:
+        \[
+        AB \neq BA
+        \] 
+        Infatti:
+        \[
+        AB = \begin{pmatrix} 
+          0 & 1\\
+          0 & 0
+        \end{pmatrix}
+        \begin{pmatrix} 
+          0 & 2\\
+          0 & 4
+        \end{pmatrix} 
+        =
+        \begin{pmatrix} 
+          0 & 4\\
+          0 & 0
+        \end{pmatrix} 
+        \] 
+        \[
+        BA = \begin{pmatrix} 
+          0 & 2\\
+          0 & 4
+        \end{pmatrix} 
+        \begin{pmatrix} 
+          0 & 1\\
+          0 & 0
+        \end{pmatrix} 
+        =
+        \begin{pmatrix} 
+          0 & 0\\
+          0 & 0
+        \end{pmatrix} 
+        \] 
+\end{itemize}
+
+\subsection{Osservazione}
+Siano \( A = (a_{ij})_{1<=i<=m\;,\;1<=j<=n} \in M_{m \times n}(\mathbb{C}) \) e
+\( b = \begin{pmatrix} b_1 \\ \vdots \\ b_m \end{pmatrix} \in M_{m \times i}(\mathbb{C}) \),
+\( x = \begin{pmatrix} x_1 \\ \vdots \\ x_n \end{pmatrix}  \).
+Consideriamo \( Ax=b \) in forma matriciale. Abbiamo
+\[
+  Ax = \underbrace{\begin{pmatrix} 
+  a_{11} & \ldots & a_{1n}\\
+  \vdots & \ddots & \vdots\\
+  a_{m1} & \ldots & a_{mn}
+\end{pmatrix}}_{\in M_{m \times n}(\mathbb{C})}
+\underbrace{\begin{pmatrix} 
+  x_1\\
+  \vdots\\
+  x_n
+\end{pmatrix}}_{\in M_{n \times 1}(\mathbb{C})}
+=
+\underbrace{\begin{pmatrix} 
+  a_{11}x_1 + \ldots + a_{1n}x_n\\
+  \vdots\\
+  a_{m1}x_1 + \ldots + a_{mn}x_n
+\end{pmatrix}}_{\in M_{m \times 1}(\mathbb{C})}
+\]
+che è uguale a \( b = \begin{pmatrix} b_1 \\ \vdots \\ b_m \end{pmatrix}  \) 
+\[
+\begin{pmatrix} 
+  b_1\\
+  \vdots\\
+  b_m
+\end{pmatrix} 
+=
+\begin{pmatrix} 
+  a_{11}x_1 + \ldots + a_{1n}x_n\\
+  \vdots\\
+  a_{m1}x_1 + \ldots + a_{mn}x_n
+\end{pmatrix} 
+\] 
+\[
+\leadsto \begin{cases}
+  a_{11}x_1 + \ldots + a_{1n}x_n = b_1\\
+  \vdots\\
+  a_{m1}x_1 + \ldots + a_{mn}x_n = b_m
+\end{cases}
+\] 
+\begin{figure}[H]
+  \begin{example}
+    \[
+    \begin{cases}
+      2x_1 + 6x_2 = 4\\
+      x_1 - 2x_2 = 1\\
+      -x_1 + x_2 = \frac{2}{5}
+    \end{cases}
+    \] 
+    \[
+    A = 
+    \begin{pmatrix} 
+      2 & 6 \\
+      1 & -2 \\
+      -1 & 1
+    \end{pmatrix} 
+    \quad
+    x = \begin{pmatrix} 
+      x_1\\
+      x_2
+    \end{pmatrix} 
+    \quad
+    b = \begin{pmatrix} 
+      4\\
+      1\\
+      \frac{2}{5}
+    \end{pmatrix} 
+    \] 
+    \[
+    Ax = \begin{pmatrix} 
+      2 & 6\\
+      1 & -2\\
+      -1 & 1
+    \end{pmatrix} 
+    \begin{pmatrix} 
+      x_1\\
+      x_2
+    \end{pmatrix} 
+    =
+    \begin{pmatrix} 
+      2x_1 + 6x_2\\
+      x_1 - 2x_2\\
+      -x_1 + x_2
+    \end{pmatrix}
+    =
+    \begin{pmatrix} 
+      4\\
+      1\\
+      \frac{2}{5}
+    \end{pmatrix} 
+    \] 
+  \end{example}
+\end{figure}
+
+\subsection{Definizione}
+Una matrice \( A = (a_{ij})_{1<=i,j<=n} \in M_{n \times n}(\mathbb{C}) \) di dimensione
+\( n \times n \) si dice \textbf{matrice quadrata} di ordine \( n \).
+Gli elementi di \( A \): \( a_{ii}\quad 1<=i<=n \) formano la \textbf{diagonale} di \( A \).
+\begin{figure}[H]
+  \begin{example}
+    \[
+      \begin{pNiceArray}{>{\strut}ccc}[margin,extra-margin = 1pt]
+        0 & -10 & i\\
+        7 & 8 & 0\\
+        100 & \frac{1}{2} & -i
+        \CodeAfter
+        \begin{tikzpicture}
+          \node [draw=green, fill=green, opacity=0.3, rounded corners=2pt, inner ysep = 0pt,
+          rotate fit=-22, fit = (1-1) (3-3) ] {} ;
+        \end{tikzpicture}
+      \end{pNiceArray}
+    \] 
+  \end{example}
+\end{figure}
+\noindent Se tutti gli elementi fuorri dalla diagonale sono nulli, la matrice è detta
+\textbf{matrice diagonale}.
+\begin{figure}[H]
+  \begin{example}
+    \[
+      \begin{pNiceArray}{>{\strut}ccc}[margin,extra-margin = 1pt]
+        0 & 0 & 0\\
+        0 & 8 & 0\\
+        0 & 0 & -i
+        \CodeAfter
+        \begin{tikzpicture}
+          \node [draw=green, fill=green, opacity=0.3, rounded corners=2pt, inner ysep = 0pt,
+          rotate fit=-33, fit = (1-1) (3-3) ] {} ;
+        \end{tikzpicture}
+      \end{pNiceArray}
+    \] 
+  \end{example}
+\end{figure}
+
+\noindent Se tutti i coefficienti al di sotto della diagonale sono nulli, allora la
+matrice è detta \textbf{matrice triangolare superiore}.
+\begin{figure}[H]
+  \begin{example}
+    \[
+    \begin{pmatrix} 
+      0 & -10 & i\\
+      0 & 8 & 0\\
+      0 & 0 & -i 
+    \end{pmatrix} 
+    \] 
+    \[
+      \begin{pNiceArray}{>{\strut}ccc}[margin,extra-margin = 1pt]
+        0 & -10 & i\\
+        0 & 8 & 0\\
+        0 & 0 & -i
+        \CodeAfter
+        \begin{tikzpicture}
+          \node [draw=green, fill=green, opacity=0.3, rounded corners=2pt, inner ysep = 0pt,
+          rotate fit=-28, fit = (2-1) (3-2) ] {} ;
+          \node [draw=green, fill=green, opacity=0.3, rounded corners=2pt, inner ysep = 0pt,
+          rotate fit=-28, fit = (3-1) ] {} ;
+        \end{tikzpicture}
+      \end{pNiceArray}
+    \] 
+  \end{example}
+\end{figure}
+\noindent Se tutti i coefficienti al di sopra della diagonale sono nulli, allora la matrice è detta
+\textbf{matrice triangolare inferiore}.
+\begin{figure}[H]
+  \begin{example}
+    \[
+    \begin{pmatrix} 
+      0 & 0 & 0\\
+      7 & 8 & 0\\
+      100 & \frac{1}{2} &-i 
+    \end{pmatrix} 
+    \] 
+    \[
+      \begin{pNiceArray}{>{\strut}ccc}[margin,extra-margin = 1pt]
+        0 & 0 & 0\\
+        7 & 8 & 0\\
+        100 & \frac{1}{2} & -i
+        \CodeAfter
+        \begin{tikzpicture}
+          \node [draw=green, fill=green, opacity=0.3, rounded corners=2pt, inner ysep = 2pt,
+          rotate fit=-33, fit = (1-2) (2-3) ] {} ;
+          \node [draw=green, fill=green, opacity=0.3, rounded corners=2pt, inner ysep = 2pt,
+          rotate fit=-33, fit = (1-3) ] {} ;
+        \end{tikzpicture}
+      \end{pNiceArray}
+    \]
+  \end{example}
+\end{figure}
 
 \end{document}
