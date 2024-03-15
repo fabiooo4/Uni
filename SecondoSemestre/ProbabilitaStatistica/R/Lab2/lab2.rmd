@@ -1,0 +1,37 @@
+---
+title: "Lab2"
+author: "Irimie Fabio"
+output: 
+  pdf_document:
+    toc: true
+    keep_tex: true 
+---
+
+# Statistica descrittiva
+## Dataset
+Il dataset *palmerpenguins* è un dataset che contiene i dati su 3 specie
+di pinguini: *Adelie*, *Gentoo* e *Chinstrap*.
+
+### Installazione
+Per installare il pacchetto *palmerpenguins* è necessario eseguire i
+seguenti comandi:
+
+```{r}
+# install.packages("palmerpenguins")
+# library(palmerpenguins)
+```
+
+### Utilizzo
+Per utilizzare il dataset *palmerpenguins* è necessario caricare in
+memoria i dati con il comando:
+```{r}
+data(penguins)
+```
+
+Per visualizzare i dati è possibile utilizzare i comandi:
+```{r}
+penguins
+head(penguins)
+str(penguins)
+View(penguins)
+```
