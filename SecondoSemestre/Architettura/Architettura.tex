@@ -562,6 +562,7 @@ La memoria dinamica è composta da due parti principali:
 	      \end{itemize}
 \end{itemize}
 
+\label{D1}
 \begin{figure}[H]
 	\centering
 	\begin{tikzpicture}
@@ -606,6 +607,254 @@ Per recuperare i dati in memoria si utilizza l'istruzione \texttt{LEAL} (Load Ef
 	\item \textbf{\texttt{LEAL <source>, <destination>}}: prende l'indirizzo di memoria in cui è stato salvato qualcosa
 	      e lo mette in un registro
 \end{itemize}
+
+\subsection{Scambio di dati tra registri}
+Le micro operazioni sono le operazioni elementari che la CPU esegue per eseguire un'istruzione.
+\label{D2}
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[scale=1.5]
+		\draw (0,0) rectangle (4,4);
+		\node[above left, scale=0.7] at (4,0) {CPU};
+
+		\draw (2,2) rectangle (4,4);
+		\node[above left, scale=0.7] at (3.4,2) {CU};
+
+		\node[draw, rectangle, align=center, scale=0.8, minimum width=1cm, minimum height=0.8cm] (pc) at (0.8, 2.35) {PC};
+
+		% Bus
+		\draw (1.5,0.2) -- (1.5,3.8) node[above, scale=0.7] {};
+		\draw[latex-latex] (pc) -- (1.5,2.35);
+
+
+
+
+
+		% \node[draw, rectangle, align=center, scale=0.8, minimum width=1cm, minimum height=0.8cm] (ir) at (2.4, 2.95) {IR};
+		% \node[draw, rectangle, align=center, scale=0.8, minimum width=1cm, minimum height=0.5cm] (psw) at (3.4, 3.55) {PSW};
+		%
+		% % Bus Istruzioni
+		% \draw (-0.5,0) -- (-0.5,4) node[above, scale=0.7] {BI};
+		%
+		% % Bus Dati
+		% \draw (-1,0) -- (-1,4) node[above, scale=0.7] {BD};
+		%
+		% % Bus di controllo
+		% \draw (4.5,0) -- (4.5,4) node[above, scale=0.7] {BC};
+		%
+		% % MAR (Memory Address Register)
+		% \node[draw, rectangle, align=center, scale=0.8, minimum width=0.5cm, minimum height=0.5cm] (mar) at (0.5, 3) {M\\A\\R};
+		% \draw[latex-latex] (mar) -- (-0.5,3);
+		%
+		% % MDR (Memory Data Register)
+		% \node[draw, rectangle, align=center, scale=0.8, minimum width=0.5cm, minimum height=0.5cm] (mdr) at (0.5, 1) {M\\D\\R};
+		% \draw[latex-latex] (mdr) -- (-1,1);
+		%
+		% \draw[latex-latex] (4,3) -- (4.5,3);
+		%
+		% % Register file
+		% \draw (1,0.4) rectangle (2,1.6);
+		% \draw (1,0.6) -- (2,0.6);
+		% \draw (1,0.8) -- (2,0.8);
+		% \draw (1,1) -- (2,1);
+		% \draw (1,1.2) -- (2,1.2);
+		% \draw (1,1.4) -- (2,1.4);
+		%
+		% \node[below left, xshift=8, scale=0.7] at (1.82,0.4) {Register File};
+		%
+		% % ALU
+		% \draw (2.7,0.5) -- (3.3,0.5) -- (3.5,1.5) -- (3.2,1.5) -- (3,1.2) -- (2.8,1.5) -- (2.5,1.5) -- cycle;
+		% \node[above, scale=0.6] at (3,0.5) {ALU};
+		%
+		% % Collegamenti
+		% \draw[latex-] (2.6,1.5) -- ++(0,0.2) -- ++(-0.8,0) -- ++(0,-0.1);
+		% \draw[latex-] (3.4, 1.5) -- ++(0,0.4) -- ++(-2.2,0) -- ++(0,-0.3);
+		% \draw[-latex] (3.4,1) -- ++(0.4,0) -- ++(0,2) -- ++(-0.2,0) -| (psw);
+		% \draw[-latex] (3,0.5) -- ++(0,-0.3) -- ++(-0.5,0) -- ++(0,0.3) -- ++(-0.5,0);
+		% \draw[-latex] (2.3,2) -- ++(0,-1) -- ++(0.3,0);
+	\end{tikzpicture}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[scale=1.5]
+		\node[draw, rectangle, align=center, scale=0.8, minimum width=1cm, minimum height=0.8cm]
+		(pc) at (0.3, -1) {PC};
+
+		% Bus
+		\draw (1.5,1.5) -- (1.5,-3) node[above, scale=0.7] {};
+
+		%multiplexer 2 in 1 out above pc
+		% Multiplexer 2 to 1
+		\draw (0,0) node (mux1-0) {0};
+		\draw (0.5,0) node (mux1-1) {1};
+		\draw (0.0,0.2) node (mux1-i0) {};
+		\draw (0.5,0.2) node (mux1-i1) {};
+		\draw (-0.3,0) node (mux1-s) {};
+		\draw (0.25,-0.18) node (mux1-o) {};
+		\draw (-0.5,0.3) -- ++(1.5,0) -- ++(-0.25, -0.6) -- ++(-1,0) -- ++(-0.25,0.6) -- (-0.5,0.3);
+		% ------------------
+
+		\draw (mux1-i0) -- ++(0,0.8) -- ++(1.5,0);
+		\draw (mux1-i1) -- ++(0,0.5) -- ++(0.6,0) -- ++(0,-2.43);
+		\draw (pc.south) -- ++(0,-0.5) -- ++(0.9,0);
+    \draw (1.3,-1.71) circle (0.1);
+    \draw (1.3,-1.71) node (x) {X};
+    \draw (x) -- ++(0.2,0);
+
+	\end{tikzpicture}
+\end{figure}
+
+\noindent Con segnale a 0 il segnale passa attraverso un \textbf{buffer tri-state} che permette di
+disabilitare il segnale.
+
+Per mandare 2 valori alla ALU si utilizza un registro collegato ad un multiplexer
+che permette di selezionare quale valore mandare alla ALU.
+
+Ogni indirizzo di memoria è gestito in \textbf{byte} indipendentemente. Quindi per accedere
+a parole da 32 bit bisogna andare avanti di 4 byte, mentre per accedere a parole da 64 bit
+bisogna andare avanti di 8 byte.
+
+\section{Micro operazioni}
+\begin{figure}[H]
+  \begin{define}
+    \textbf{CPI} (Clock Per Instruction): è il numero di cicli di clock necessari per
+    eseguire un'istruzione.
+  \end{define}
+\end{figure}
+
+\begin{example}
+Andiamo ad analizzare la sequenza di micro operazioni (Fetch, Decode, Execute) per la 
+seguente istruzione:
+\begin{center}
+  \texttt{MOVL \%EAX, \%EBX}
+\end{center}
+
+\begin{enumerate}
+  \item[F]
+  \begin{enumerate}
+    \item[1.] \( PC_{out},\; MAR_{in},\; READ ,\; SELECT_4,\; ADD,\; Z_{in}\) \\
+      Il Program Counter manda l'indirizzo di memoria in cui si trova l'istruzione da eseguire
+      al Memory Address Register e manda un segnale di lettura.
+
+      Il segnale di selezione 4 manda un segnale al multiplexer per selezionare il valore
+      da mandare alla ALU e il segnale di addizione manda un segnale alla ALU per sommare
+      4 all'indirizzo di memoria. Ciò vuol dire che l'indirizzo di memoria successivo è
+      l'indirizzo di memoria corrente + 1 word. Tutto ciò per incrementare il Program
+      Counter in modo da accedere all'istruzione successiva.
+
+    \item[2.] \( WMFC,\; Z_{out},\; PC_{in}\)  \\
+      \textbf{WMFC}(Wait for Memory Fetch Complete): è un segnale che blocca il clock
+      successivo della CPU finchè il dato viene messo nel bus dati.
+
+      Siccome in questo ciclo di clock il bus non viene utilizzato viene sfruttato per
+      mandare il segnale di incremento al Program Counter.
+
+      Il segnale di lettura manda un segnale di attesa finchè il dato non viene messo nel bus dati.
+    \item[3.] \( MDR_{out},\; IR_{in} \) \\
+      Il Memory Data Register manda il dato letto dall'indirizzo di memoria all'Instruction Register.
+  \end{enumerate}
+
+\item[DE]
+  \begin{enumerate}
+    \item[4.] \( EAX_{out},\; EBX_{in},\; END \) \\
+      Il contenuto del registro EAX viene mandato in uscita e viene messo in ingresso
+      al registro EBX. Successivamente viene messo a 1 il segnale di fine che fa
+      ripartire il ciclo di Fetch-Decode-Execute.
+  \end{enumerate}
+\end{enumerate}
+\end{example}
+
+\begin{example}
+  \begin{center}
+    \texttt{MOVL (\%EAX), \%EBX}
+  \end{center}
+
+  \begin{enumerate}
+    \item[F]
+      \begin{enumerate}
+        \item[1.] \( PC_{out},\; MAR_{in},\; READ ,\; SELECT_4,\; ADD,\; Z_{in}\)
+        \item[2.] \( WMFC,\; Z_{out},\; PC_{in}\)
+        \item[3.] \( MDR_{out},\; IR_{in} \)
+      \end{enumerate}
+    \item[D]
+      \begin{enumerate}
+        \item[4.] \( EAX_{out},\; MAR_{in},\; READ \)
+        \item[5.] \( WMFC \)
+      \end{enumerate}
+    \item[E]
+      \begin{enumerate}
+        \item[6.] \( MDR_{out},\; EBX_{in},\; END \)
+      \end{enumerate}
+  \end{enumerate}
+\end{example}
+
+\begin{example}
+  \begin{center}
+    \texttt{ADDL \$4, \%ECX}
+  \end{center}
+  La costante 4 è già presente nell'Instruction Register, quindi non c'è bisogno di
+  andare a leggerla dalla memoria.
+  \begin{enumerate}
+    \item[F]
+      \begin{enumerate}
+        \item[1.] \( PC_{out},\; MAR_{in},\; READ ,\; SELECT_4,\; ADD,\; Z_{in}\)
+        \item[2.] \( WMFC,\; Z_{out},\; PC_{in}\)
+        \item[3.] \( MDR_{out},\; IR_{in} \)
+      \end{enumerate}
+    \item[DE]
+      \begin{enumerate}
+        \item[4.] \( OFFSET_{IR_{out}},\; y_{in} \) \\
+          L'offset dell'Instruction Register serve per prendere il pezzo in cui è situata
+          la costante 4
+        \item[5.] \( ECX_{out},\; SELECT_{y},\;ADD,\; Z_{in} \) 
+        \item[6.] \( Z_{out},\; ECX_{in},\; END \) 
+      \end{enumerate}
+  \end{enumerate}
+\end{example}
+
+\begin{example}
+  \begin{center}
+    \texttt{JZ END} \quad (salto relativo)
+  \end{center}
+  Il valore dell'etichetta \texttt{END} è già calcolato dall'assembler e viene memorizzato
+  nell'Instruction Register
+  \begin{enumerate}
+    \item [F]
+      \begin{enumerate}
+        \item[1.] \( PC_{out},\; MAR_{in},\; READ ,\; SELECT_4,\; ADD,\; Z_{in}\)
+        \item[2.] \( WMFC,\; Z_{out},\; PC_{in}\)
+        \item[3.] \( MDR_{out},\; IR_{in} \)
+      \end{enumerate}
+    \item[DE]
+      \begin{enumerate}
+        \item[4.] (if ZERO == 0 END) \(,\; OFFSET_{IR_{out}},\; y_{in} \)\\
+          L'if e il resto vengono eseguiti insieme, sempre
+        \item[5.] \( PC_{out},\; SELECT_{y},\; ADD,\; Z_{in} \) 
+        \item[6.] \( Z_{out},\; PC_{in},\; END \)
+      \end{enumerate}
+  \end{enumerate}
+\end{example}
+
+\subsection{Struttura della Control Unit}
+\noindent Per rappresentare i cicli di clock delle micro istruzioni si utilizza un
+registro chiamato \textbf{Micro Program Counter} che indica la prossima micro istruzione
+da eseguire. È un contatore con un segnale di reset che permette di far ripartire
+l'esecuzione delle micro istruzioni. 
+
+Questo registro viene poi collegato ad un decoder con 16 uscite che indica il tempo
+del ciclo di clock. Se il segnale \( T_2 = 1 \) allora il segnale \( PC_{in} = 1 \),
+quindi \( PC_{in} = T_2 \).
+
+È presente un decoder che parte dall'Istruction Register e ha in uscite tutte le istruzioni
+\( I_n \). Si possono così realizzare tutte le equazioni in logica combinatoria, ad esempio:
+\[
+  END = (I_1 + I_2 + I_3 + \ldots) \cdot T_6 + I_3 \cdot T_4 \cdot \overline{ZERO}
+\] 
+
+È presente una memoria che contiene tutte le micro istruzioni chiamata \textbf{Firmware}.
+Le \textbf{CPU cablate} in questo modo non si realizzano più.
+
 
 % Laboratorio
 \section{Laboratorio}
@@ -795,87 +1044,87 @@ Si rifersce al modo in cui un'istruzione assembly accede ai dati in memoria e pu
 
 \subsubsection{Istruzioni aritmetiche e logiche}
 \begin{itemize}
-  \item \texttt{sar op1, op2} \quad \textbf{Shift Arithmetic Right}: esegue lo shift a destra sul
-    registro \texttt{op2} di tanti bit quanti specificati in \texttt{op1}. Il bit
-    più significativo viene replicato (così da funzionare anche
-    con numeri negativi in complemento 2) e il bit scartato
-    viene messo nel \textbf{Carry Flag}. \texttt{op1} può essere un registro
-    o un valore immediato, \texttt{op2} deve essere un registro 
-  \item \texttt{sal op1, op2} \quad \textbf{Shift Arithmetic Left}: esegue lo shift a sinistra sul
-    registro \texttt{op2} di tanti bit quanti specificati in \texttt{op1}. Il bit
-    meno significativo viene messo a \( 0 \)  e il bit scartato viene
-    messo nel \textbf{Carry Flag}. \texttt{op1} può essere un registro o un
-    valore immediato, \texttt{op2} deve essere un registro 
-  \item \texttt{inc op} \quad \textbf{Increment}: incrementa di 1 il valore memorizzato in 
-    \texttt{op}. \texttt{op} può essere un registro o una locazione di memoria 
-  \item \texttt{dec op} \quad \textbf{Decrement}: decrementa di 1 il valore memorizzato in
-    \texttt{op}. \texttt{op} può essere un registro o una locazione di
-    memoria 
-  \item \texttt{add src, dst} \quad \textbf{Add}: somma a \texttt{dst} il valore di \texttt{src} 
-    e memorizza il risultato in \texttt{dst} 
-  \item \texttt{sub src, dst} \quad \textbf{Subtract}: sottrae da \texttt{dst} il valore di \texttt{src} 
-    e memorizza il risultato in \texttt{dst}
-  \item \texttt{mul moltipl} \quad \textbf{Unsigned Multiplication}: esegue la moltiplicazione
-    senza segno. \texttt{moltipl} deve essere un registro o una
-    variabile. Se \texttt{moltipl} è un byte il registro \texttt{AL} viene
-    moltiplicato per l'operando e il risultato viene
-    memorizzato in \texttt{AX}. Se \texttt{moltipl} è una word il
-    contenuto del registro \texttt{AX} viene moltiplicato per
-    l'operando e il risultato viene memorizzato nella coppia
-    di registri \texttt{DX}:\texttt{AX} (\texttt{DX} conterrà i 16 bit più significativi
-    del risultato). Se \texttt{moltipl} è un long il contenuto del
-    registro E\texttt{AX} viene moltiplicato per l'operando e il
-    risultato viene memorizzato nella coppia di registri
-    \texttt{EDX}:\texttt{EAX} (\texttt{EDX} conterrà i 32 bit più significativi del
-    risultato). 
-  \item \texttt{imul moltipl} \quad moltiplicazione con segno
-  \item \texttt{div divisore} \quad \textbf{Unsigned Division}: 
-    esegue la divisione senza segno.
-    \texttt{divisore} deve essere un registro o una variabile. Se
-    \texttt{divisore} è un byte il registro \texttt{AX} viene diviso per
-    l'operando, il quoziente viene memorizzato in \texttt{AL}, e il
-    resto in \texttt{AH}. Se \texttt{divisore} è una word, il valore ottenuto
-    concatenando il contenuto di \texttt{DX} e \texttt{AX} viene diviso per
-    l'operando (i 16 bit più significativi del dividendo
-    devono essere memorizzati nel registro \texttt{DX}), il quoziente
-    viene memorizzato nel registro \texttt{AX} e il resto in \texttt{DX}. Se
-    \texttt{divisore} è un long, il valore ottenuto concatenando il
-    contenuto di \texttt{EDX} e \texttt{EAX} viene diviso per l'operando (i
-    32 bit più significativi del dividendo sono nel registro
-    \texttt{EDX}), il quoziente viene memorizzato nel registro \texttt{EAX}
-    e il resto in \texttt{EDX} 
-  \item \texttt{xor src, dst} \quad \textbf{Logical Exclusive OR}: calcola l'OR esclusivo bit a bit
-    dei due operandi e lo memorizza nell'operando \texttt{dst}.
-    Spesso si utilizza per azzerare un registro, utilizzandolo
-    sia come \texttt{src} che come \texttt{dst}) 
-  \item \texttt{or src, dst} \quad \textbf{Logical OR}: calcola l'OR logico bit a bit dei due
-    operandi e lo memorizza nell'operando \texttt{dst}
-  \item \texttt{and src, dst} \quad \textbf{Logical AND}: calcola l'AND bit a bit dei due operandi
-    e lo memorizza nell'operando \texttt{dst} 
-  \item \texttt{not op} \quad \textbf{Logical NOT}: inverte ogni singolo bit dell'operando op 
+	\item \texttt{sar op1, op2} \quad \textbf{Shift Arithmetic Right}: esegue lo shift a destra sul
+	      registro \texttt{op2} di tanti bit quanti specificati in \texttt{op1}. Il bit
+	      più significativo viene replicato (così da funzionare anche
+	      con numeri negativi in complemento 2) e il bit scartato
+	      viene messo nel \textbf{Carry Flag}. \texttt{op1} può essere un registro
+	      o un valore immediato, \texttt{op2} deve essere un registro
+	\item \texttt{sal op1, op2} \quad \textbf{Shift Arithmetic Left}: esegue lo shift a sinistra sul
+	      registro \texttt{op2} di tanti bit quanti specificati in \texttt{op1}. Il bit
+	      meno significativo viene messo a \( 0 \)  e il bit scartato viene
+	      messo nel \textbf{Carry Flag}. \texttt{op1} può essere un registro o un
+	      valore immediato, \texttt{op2} deve essere un registro
+	\item \texttt{inc op} \quad \textbf{Increment}: incrementa di 1 il valore memorizzato in
+	      \texttt{op}. \texttt{op} può essere un registro o una locazione di memoria
+	\item \texttt{dec op} \quad \textbf{Decrement}: decrementa di 1 il valore memorizzato in
+	      \texttt{op}. \texttt{op} può essere un registro o una locazione di
+	      memoria
+	\item \texttt{add src, dst} \quad \textbf{Add}: somma a \texttt{dst} il valore di \texttt{src}
+	      e memorizza il risultato in \texttt{dst}
+	\item \texttt{sub src, dst} \quad \textbf{Subtract}: sottrae da \texttt{dst} il valore di \texttt{src}
+	      e memorizza il risultato in \texttt{dst}
+	\item \texttt{mul moltipl} \quad \textbf{Unsigned Multiplication}: esegue la moltiplicazione
+	      senza segno. \texttt{moltipl} deve essere un registro o una
+	      variabile. Se \texttt{moltipl} è un byte il registro \texttt{AL} viene
+	      moltiplicato per l'operando e il risultato viene
+	      memorizzato in \texttt{AX}. Se \texttt{moltipl} è una word il
+	      contenuto del registro \texttt{AX} viene moltiplicato per
+	      l'operando e il risultato viene memorizzato nella coppia
+	      di registri \texttt{DX}:\texttt{AX} (\texttt{DX} conterrà i 16 bit più significativi
+	      del risultato). Se \texttt{moltipl} è un long il contenuto del
+	      registro E\texttt{AX} viene moltiplicato per l'operando e il
+	      risultato viene memorizzato nella coppia di registri
+	      \texttt{EDX}:\texttt{EAX} (\texttt{EDX} conterrà i 32 bit più significativi del
+	      risultato).
+	\item \texttt{imul moltipl} \quad moltiplicazione con segno
+	\item \texttt{div divisore} \quad \textbf{Unsigned Division}:
+	      esegue la divisione senza segno.
+	      \texttt{divisore} deve essere un registro o una variabile. Se
+	      \texttt{divisore} è un byte il registro \texttt{AX} viene diviso per
+	      l'operando, il quoziente viene memorizzato in \texttt{AL}, e il
+	      resto in \texttt{AH}. Se \texttt{divisore} è una word, il valore ottenuto
+	      concatenando il contenuto di \texttt{DX} e \texttt{AX} viene diviso per
+	      l'operando (i 16 bit più significativi del dividendo
+	      devono essere memorizzati nel registro \texttt{DX}), il quoziente
+	      viene memorizzato nel registro \texttt{AX} e il resto in \texttt{DX}. Se
+	      \texttt{divisore} è un long, il valore ottenuto concatenando il
+	      contenuto di \texttt{EDX} e \texttt{EAX} viene diviso per l'operando (i
+	      32 bit più significativi del dividendo sono nel registro
+	      \texttt{EDX}), il quoziente viene memorizzato nel registro \texttt{EAX}
+	      e il resto in \texttt{EDX}
+	\item \texttt{xor src, dst} \quad \textbf{Logical Exclusive OR}: calcola l'OR esclusivo bit a bit
+	      dei due operandi e lo memorizza nell'operando \texttt{dst}.
+	      Spesso si utilizza per azzerare un registro, utilizzandolo
+	      sia come \texttt{src} che come \texttt{dst})
+	\item \texttt{or src, dst} \quad \textbf{Logical OR}: calcola l'OR logico bit a bit dei due
+	      operandi e lo memorizza nell'operando \texttt{dst}
+	\item \texttt{and src, dst} \quad \textbf{Logical AND}: calcola l'AND bit a bit dei due operandi
+	      e lo memorizza nell'operando \texttt{dst}
+	\item \texttt{not op} \quad \textbf{Logical NOT}: inverte ogni singolo bit dell'operando op
 \end{itemize}
 
 \subsection{AT\&T vs Intel}
 Le principali differenze tra la sintassi AT\&T e Intel sono:
 \begin{itemize}
-  \item In AT\&T i nomi dei registri hanno il carattere \texttt{\%} come prefisso
-  \item In AT\&T l'ordine degli operandi è \texttt{<sorgente>, <destinazione>}, opposto
-    rispetto alla sintassi Intel
-  \item In AT\&T la lunghezza dell'operando è specificata tramite un suffisso al nome
-    dell'istruzione. \texttt{b} per \textbf{byte} (8 bit), \texttt{w} per \textbf{word} (16 bit),
-    \texttt{l} per \textbf{double word} (32 bit)
-  \item Gli operandi immediati in AT\&T sono preceduti dal simbolo \texttt{\$}
-  \item la presenza di prefisso in un operando indica che si tratta di un
-indirizzo di memoria. Ad esempio:
-\begin{center}
-  \texttt{movl \$pippo, \%eax} \quad è diverso da \quad \texttt{movl pippo, \%eax}
-\end{center}
-\item l'indicizzazione o l'indirezione è ottenuta racchiudendo tra parentesi
-l'indirizzo di base espresso tramite un registro o un valore immediato.
-Ad esempio:
-\begin{center}
-  \texttt{movl 5, 17(\%ebp)}
-\end{center}
+	\item In AT\&T i nomi dei registri hanno il carattere \texttt{\%} come prefisso
+	\item In AT\&T l'ordine degli operandi è \texttt{<sorgente>, <destinazione>}, opposto
+	      rispetto alla sintassi Intel
+	\item In AT\&T la lunghezza dell'operando è specificata tramite un suffisso al nome
+	      dell'istruzione. \texttt{b} per \textbf{byte} (8 bit), \texttt{w} per \textbf{word} (16 bit),
+	      \texttt{l} per \textbf{double word} (32 bit)
+	\item Gli operandi immediati in AT\&T sono preceduti dal simbolo \texttt{\$}
+	\item la presenza di prefisso in un operando indica che si tratta di un
+	      indirizzo di memoria. Ad esempio:
+	      \begin{center}
+		      \texttt{movl \$pippo, \%eax} \quad è diverso da \quad \texttt{movl pippo, \%eax}
+	      \end{center}
+	\item l'indicizzazione o l'indirezione è ottenuta racchiudendo tra parentesi
+	      l'indirizzo di base espresso tramite un registro o un valore immediato.
+	      Ad esempio:
+	      \begin{center}
+		      \texttt{movl 5, 17(\%ebp)}
+	      \end{center}
 \end{itemize}
 
 \subsection{Compilazione}
@@ -892,5 +1141,4 @@ Dopo aver scritto il codice assembly, si compila il file con il comando \texttt{
 \end{lstlisting}
 
 % Fine laboratorio
-
 \end{document}
