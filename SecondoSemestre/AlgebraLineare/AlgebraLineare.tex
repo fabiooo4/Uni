@@ -30,7 +30,7 @@
 
 \usepackage{hyperref}
 \hypersetup{
-	colorlinks=false,
+  colorlinks=false,
 }
 
 \usepackage{ntheorem}
@@ -40,38 +40,38 @@
 \theoremstyle{break}
 \theoremheaderfont{\bfseries}
 \newmdtheoremenv[%
-	linecolor=gray,leftmargin=0,%
-	rightmargin=0,
-	innertopmargin=8pt,%
-	ntheorem]{define}{Definizioni utili}[section]
+linecolor=gray,leftmargin=0,%
+rightmargin=0,
+innertopmargin=8pt,%
+ntheorem]{define}{Definizioni utili}[section]
 
 % Example frame
 \theoremstyle{break}
 \theoremheaderfont{\bfseries}
 \newmdtheoremenv[%
-	linecolor=gray,leftmargin=0,%
-	rightmargin=0,
-	innertopmargin=8pt,%
-	ntheorem]{example}{Esempio}[section]
+linecolor=gray,leftmargin=0,%
+rightmargin=0,
+innertopmargin=8pt,%
+ntheorem]{example}{Esempio}[section]
 
 % Important definition frame
 \theoremstyle{break}
 \theoremheaderfont{\bfseries}
 \newmdtheoremenv[%
-	linecolor=gray,leftmargin=0,%
-	rightmargin=0,
-	backgroundcolor=gray!40,%
-	innertopmargin=8pt,%
-	ntheorem]{definition}{Definizione}[section]
+linecolor=gray,leftmargin=0,%
+rightmargin=0,
+backgroundcolor=gray!40,%
+innertopmargin=8pt,%
+ntheorem]{definition}{Definizione}[section]
 
 % Exercise frame
 \theoremstyle{break}
 \theoremheaderfont{\bfseries}
 \newmdtheoremenv[%
-	linecolor=gray,leftmargin=0,%
-	rightmargin=0,
-	innertopmargin=8pt,%
-	ntheorem]{exercise}{Esercizio}[section]
+linecolor=gray,leftmargin=0,%
+rightmargin=0,
+innertopmargin=8pt,%
+ntheorem]{exercise}{Esercizio}[section]
 
 
 % figure support
@@ -81,8 +81,8 @@
 \usepackage{pdfpages}
 \usepackage{transparent}
 \newcommand{\incfig}[1]{%
-	\def\svgwidth{\columnwidth}
-	\import{./figures/}{#1.pdf_tex}
+  \def\svgwidth{\columnwidth}
+  \import{./figures/}{#1.pdf_tex}
 }
 
 \pdfsuppresswarningpagegroup=1
@@ -90,9 +90,9 @@
 % Matrices
 \makeatletter
 \renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
-	\hskip -\arraycolsep
-	\let\@ifnextchar\new@ifnextchar
-	\array{#1}}
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+\array{#1}}
 \makeatother
 
 \begin{document}
@@ -113,22 +113,22 @@
 \subsection{Insiemi di numeri}
 I numeri sono divisi in insiemi in base alle operazioni che si possono fare con essi:
 \begin{itemize}
-	\item
-	      I numeri sono stati pensati per contare e per farlo è stato definito l'insieme dei numeri naturali
-	      che è definito come \[  \mathbb{N} = \{0, 1, 2, 3, \ldots\} \]
-	\item
-	      Per fare operazioni di sottrazione è stato definito l'insieme dei numeri interi che è
-	      definito come \[ \mathbb{Z} = \{\ldots, -3, -2, -1, 0, 1, 2, 3, \ldots\} \]
-	\item
-	      Per fare operazioni di divisione è stato definito l'insieme dei numeri razionali che è
-	      definito come \[ \mathbb{Q} = \left\{ \frac{p}{q} \mid p, q \in \mathbb{Z}, q \neq 0 \right\} \]
-	\item
-	      Per fare operazioni di radice quadrata è stato definito l'insieme dei numeri reali che è
-	      definito come \[ \mathbb{R} = \left\{ x \mid x \in \mathbb{Q} \right\} \]
-	\item
-	      Infine, per fare operazioni di radice quadrata di numeri negativi è stato definito
-	      l'insieme dei numeri complessi che è definito come
-	      \[ \mathbb{C} = \left\{ z \mid z = a + bi,\;\;\; a, b \in \mathbb{R}, i^2 = -1 \right\} \]
+  \item
+    I numeri sono stati pensati per contare e per farlo è stato definito l'insieme dei numeri naturali
+    che è definito come \[  \mathbb{N} = \{0, 1, 2, 3, \ldots\} \]
+  \item
+    Per fare operazioni di sottrazione è stato definito l'insieme dei numeri interi che è
+    definito come \[ \mathbb{Z} = \{\ldots, -3, -2, -1, 0, 1, 2, 3, \ldots\} \]
+  \item
+    Per fare operazioni di divisione è stato definito l'insieme dei numeri razionali che è
+    definito come \[ \mathbb{Q} = \left\{ \frac{p}{q} \mid p, q \in \mathbb{Z}, q \neq 0 \right\} \]
+  \item
+    Per fare operazioni di radice quadrata è stato definito l'insieme dei numeri reali che è
+    definito come \[ \mathbb{R} = \left\{ x \mid x \in \mathbb{Q} \right\} \]
+  \item
+    Infine, per fare operazioni di radice quadrata di numeri negativi è stato definito
+    l'insieme dei numeri complessi che è definito come
+    \[ \mathbb{C} = \left\{ z \mid z = a + bi,\;\;\; a, b \in \mathbb{R}, i^2 = -1 \right\} \]
 \end{itemize}
 
 \noindent Ognuno di questi insiemi è un sottoinsieme dell'insieme successivo, ovvero
@@ -138,26 +138,26 @@ I numeri sono divisi in insiemi in base alle operazioni che si possono fare con 
 \[ x^2 + 1 = 0 \] non ha soluzioni in $\mathbb{R}$, ma ha soluzioni in $\mathbb{C}$.
 
 \begin{figure}[H]
-	\begin{theorem}
-		\textbf{(Teorema fondamentale dell'algebra)}\\
-		Qualsiasi equazione di forma:
-		\[
-			a_nx^n + a_{n-1}x^{n-1} + \ldots + a_1x + a_0 = 0
-		\]
-		dove
-		\[
-			n \in \mathbb{N},\;\; a_0, a_1, \ldots, a_n \in \mathbb{C},\;\; a_n \neq 0
-		\]
-		ed \( x \) è un incognita, ammette \( n \) soluzioni
+  \begin{theorem}
+    \textbf{(Teorema fondamentale dell'algebra)}\\
+    Qualsiasi equazione di forma:
+    \[
+      a_nx^n + a_{n-1}x^{n-1} + \ldots + a_1x + a_0 = 0
+    \]
+    dove
+    \[
+      n \in \mathbb{N},\;\; a_0, a_1, \ldots, a_n \in \mathbb{C},\;\; a_n \neq 0
+    \]
+    ed \( x \) è un incognita, ammette \( n \) soluzioni
 
-	\end{theorem}
+  \end{theorem}
 
-	\begin{define}
-		\[
-			a_nx^n + a_{n-1}x^{n-1} + \ldots + a_1x + a_0 \;\; \text{con} \;\; a_n \neq 0
-		\]
-		è detto \textbf{polinomio di grado \( n \)} con \textbf{coefficienti} \( a_0, \ldots, a_n \in \mathbb{C} \)
-	\end{define}
+  \begin{define}
+    \[
+      a_nx^n + a_{n-1}x^{n-1} + \ldots + a_1x + a_0 \;\; \text{con} \;\; a_n \neq 0
+    \]
+    è detto \textbf{polinomio di grado \( n \)} con \textbf{coefficienti} \( a_0, \ldots, a_n \in \mathbb{C} \)
+  \end{define}
 \end{figure}
 
 \subsection{Numeri immaginari}
@@ -166,91 +166,91 @@ Aggiungiamo ai numeri reali un "nuovo" numero $i$ che è definito come $i^2 = -1
 definisce l'insieme dei \textbf{numeri complessi} in modo da poter moltiplicare e sommare un
 numero reale con un numero immaginario:
 \[
-	\mathbb{C} = \{ a + bi \;|\; a,b \in \mathbb{R} \}
+  \mathbb{C} = \{ a + bi \;|\; a,b \in \mathbb{R} \}
 \]
 
 \( z = a + bi \) è detta \textbf{forma algebrica} di un numero complesso \( z \in \mathbb{C} \).
 \[
-	a = \Re(z) \quad \text{è detta parte reale di } z
+  a = \Re(z) \quad \text{è detta parte reale di } z
 \]
 \[
-	b = \Im(z) \quad \text{è detta parte immaginaria di } z
+  b = \Im(z) \quad \text{è detta parte immaginaria di } z
 \]
 
 \begin{figure}[H]
-	\begin{define}
-		Per agevolare la scrittura, al posto di scrivere:
-		\[
-			a + (-b)i
-		\]
-		si scrive:
-		\[
-			a - bi
-		\]
-	\end{define}
+  \begin{define}
+    Per agevolare la scrittura, al posto di scrivere:
+    \[
+      a + (-b)i
+    \]
+    si scrive:
+    \[
+      a - bi
+    \]
+  \end{define}
 \end{figure}
 
 \subsubsection{Esempi}
 \begin{figure}[H]
-	\begin{example}
-		\begin{itemize}
-			\item $3 + 2i$
-			\item $-12 + \frac{1}{2}i$
-			\item $3-\sqrt{2}i $
-			\item $1+0 \cdot i = 1\;\; \in \mathbb{R}$
-		\end{itemize}
-	\end{example}
+  \begin{example}
+    \begin{itemize}
+      \item $3 + 2i$
+      \item $-12 + \frac{1}{2}i$
+      \item $3-\sqrt{2}i $
+      \item $1+0 \cdot i = 1\;\; \in \mathbb{R}$
+    \end{itemize}
+  \end{example}
 \end{figure}
 
 \subsection{Operazioni tra i numeri complessi}
 \subsubsection{Somma}
 \begin{figure}[H]
-	\begin{definition}
-		L'addizione tra due numeri complessi è definita come:
-		\[
-			z_1 = a + bi \quad z_2 = c + di \quad \in \mathbb{C}
-		\]
-		\[
-			z_1 + z_2 = (a + bi) + (c + di) = (a + c) + (b + d)i
-		\]
-	\end{definition}
+  \begin{definition}
+    L'addizione tra due numeri complessi è definita come:
+    \[
+      z_1 = a + bi \quad z_2 = c + di \quad \in \mathbb{C}
+    \]
+    \[
+      z_1 + z_2 = (a + bi) + (c + di) = (a + c) + (b + d)i
+    \]
+  \end{definition}
 \end{figure}
 
 \begin{figure}[H]
-	\begin{example}
-		\[
-			z_1 = 6 + 7i \quad z_2 = -12 + 1732i
-		\]
-		\[
-			z_1 + z_2 = (6 + 7i) + (-12 + 1732i) = -6 + 1739i
-		\]
-	\end{example}
+  \begin{example}
+    \[
+      z_1 = 6 + 7i \quad z_2 = -12 + 1732i
+    \]
+    \[
+      z_1 + z_2 = (6 + 7i) + (-12 + 1732i) = -6 + 1739i
+    \]
+  \end{example}
 \end{figure}
 
 \subsubsection{Prodotto}
 \begin{figure}[H]
-	\begin{definition}
-		Il prodotto tra due numeri complessi è definito come:
-		\[
-			z_1 = a + bi \quad z_2 = c + di \quad \in \mathbb{C}
-		\]
-		\[
-			z_1 \cdot z_2 = (a + bi) \cdot (c + di) = ac + adi + bci + bdi^2
-		\]
-		visto che $i^2 = -1$ si ha che $bdi^2 = -bd$ quindi
-		\[
-			z_1 \cdot z_2 = ac + adi + bci - bd = (ac - bd) + (ad + bc)i
-		\]
-	\end{definition}
+  \begin{definition}
+    Il prodotto tra due numeri complessi è definito come:
+    \[
+      z_1 = a + bi \quad z_2 = c + di \quad \in \mathbb{C}
+    \]
+    \[
+      z_1 \cdot z_2 = (a + bi) \cdot (c + di) = ac + adi + bci + bdi^2
+    \]
+    visto che $i^2 = -1$ si ha che $bdi^2 = -bd$ quindi
+    \[
+      z_1 \cdot z_2 = ac + adi + bci - bd = (ac - bd) + (ad + bc)i
+    \]
+  \end{definition}
 
-	\begin{example}
-		\[
-			z_1 = 3 + 2i \quad z_2 = 10 - i
-		\]
-		\[
-			z_1 \cdot z_2 = (3 + 2i) \cdot (10 - i) = 30 - 3i + 20i - 2i^2 = 32 + 17i
-		\]
-	\end{example}
+  \begin{example}
+    \[
+      z_1 = 3 + 2i \quad z_2 = 10 - i
+    \]
+    \[
+      z_1 \cdot z_2 = (3 + 2i) \cdot (10 - i) = 30 - 3i + 20i - 2i^2 = 32 + 17i
+    \]
+  \end{example}
 \end{figure}
 
 \subsubsection{Sottrazione}
@@ -259,115 +259,115 @@ Notiamo che per ogni numero complesso \( z = a + bi \; \in \mathbb{C} \), il num
 detto \textbf{opposto} di \( z \) e si indica con \( -z \).
 
 \begin{figure}[H]
-	\begin{definition}
-		La sottrazione tra due numeri complessi è definita come:
-		\[
-			z_1 = a + bi \quad z_2 = c + di \quad \in \mathbb{C}
-		\]
-		\[
-			z_1 - z_2 = z_1 + (-z_2) = (a + bi) - (c + di) = (a - c) + (b - d)i
-		\]
-	\end{definition}
+  \begin{definition}
+    La sottrazione tra due numeri complessi è definita come:
+    \[
+      z_1 = a + bi \quad z_2 = c + di \quad \in \mathbb{C}
+    \]
+    \[
+      z_1 - z_2 = z_1 + (-z_2) = (a + bi) - (c + di) = (a - c) + (b - d)i
+    \]
+  \end{definition}
 
-	\begin{example}
-		\[
-			z_1 = 3 + 2i \quad z_2 = 10 - i
-		\]
-		\[
-			z_1 - z_2 = (3 + 2i) - (10 - i) = -7 + 3i
-		\]
-	\end{example}
+  \begin{example}
+    \[
+      z_1 = 3 + 2i \quad z_2 = 10 - i
+    \]
+    \[
+      z_1 - z_2 = (3 + 2i) - (10 - i) = -7 + 3i
+    \]
+  \end{example}
 \end{figure}
 
 \subsubsection{Divisione}
 \begin{definition}
-	La divisione tra due numeri complessi è definita come:
-	\[
-		z_1, z_2, z_2 \neq 0 \quad \in \mathbb{C}
-	\]
-	Definiamo \( \frac{1}{z_2} \) come l'unico numero complesso tale che:
-	\[
-		z_2 \cdot \frac{1}{z_2} = 1
-	\]
-	\[
-		\frac{z_1}{z_2} = z_1 \cdot \frac{1}{z_2}
-	\]
-	Sia \( z = a + bi\;\; \in \mathbb{C} \) e \( z \neq 0 \). Supponiamo che \( z'= c + di \) sia
-	un numero complesso tale che \( z \cdot z' = 1 \), cioè:
-	\[
-		1 = z \cdot z' = (a + bi) \cdot (c + di) = (ac - bd) + (ad + bc)i
-	\]
-	Abbiamo \( ac-bd=1 \) e \( ad+bc=0 \).
+  La divisione tra due numeri complessi è definita come:
+  \[
+    z_1, z_2, z_2 \neq 0 \quad \in \mathbb{C}
+  \]
+  Definiamo \( \frac{1}{z_2} \) come l'unico numero complesso tale che:
+  \[
+    z_2 \cdot \frac{1}{z_2} = 1
+  \]
+  \[
+    \frac{z_1}{z_2} = z_1 \cdot \frac{1}{z_2}
+  \]
+  Sia \( z = a + bi\;\; \in \mathbb{C} \) e \( z \neq 0 \). Supponiamo che \( z'= c + di \) sia
+  un numero complesso tale che \( z \cdot z' = 1 \), cioè:
+  \[
+    1 = z \cdot z' = (a + bi) \cdot (c + di) = (ac - bd) + (ad + bc)i
+  \]
+  Abbiamo \( ac-bd=1 \) e \( ad+bc=0 \).
 
-	\noindent Possiamo trovare \( c \) sostituendo \( d = \frac{-1-ac}{b} \) nella prima equazione:
-	\[
-		c = -\frac{ad}{b} \quad d = \frac{-(1-ac)}{b} = \frac{1-ac}{b}
-	\]
-	\[
-		c = \frac{-a (\frac{-1+ac}{b})}{b} = \frac{-a (\frac{-1+ac}{b})}{b} \cdot \frac{b}{b} = \frac{-a (-1 + ac)}{b^2}
-	\]
-	\[
-		cb^2 = a - a^2c
-	\]
-	\[
-		c(a^2 + b^2) = a
-	\]
-	\[
-		c = \frac{a}{a^2 + b^2}
-	\]
-	\noindent Possiamo trovare \( d \) sostituendo \( c = \frac{-ad}{b} \) nella seconda equazione:
-	\[
-		d = \frac{-bc}{a} \quad c = \frac{-(1-bd)}{a} = \frac{1-bd}{a}
-	\]
-	\[
-		d = \frac{-b (\frac{1-bd}{a})}{a} = \frac{-b (\frac{1-bd}{a})}{a} \cdot \frac{a}{a} = \frac{-b (1 - bd)}{a^2}
-	\]
-	\[
-		ad^2 = b - b^2d
-	\]
-	\[
-		d(a^2 + b^2) = b
-	\]
-	\[
-		d = \frac{b}{a^2 + b^2}
-	\]
-	Quindi:
-	\[
-		z' = \frac{a}{a^2 + b^2} - \frac{b}{a^2 + b^2}i = \frac{a - bi}{a^2 + b^2}
-	\]
-	di conseguenza \[ \frac{1}{z} = \frac{a-bi}{a^2+b^2} \]
+  \noindent Possiamo trovare \( c \) sostituendo \( d = \frac{-1-ac}{b} \) nella prima equazione:
+  \[
+    c = -\frac{ad}{b} \quad d = \frac{-(1-ac)}{b} = \frac{1-ac}{b}
+  \]
+  \[
+    c = \frac{-a (\frac{-1+ac}{b})}{b} = \frac{-a (\frac{-1+ac}{b})}{b} \cdot \frac{b}{b} = \frac{-a (-1 + ac)}{b^2}
+  \]
+  \[
+    cb^2 = a - a^2c
+  \]
+  \[
+    c(a^2 + b^2) = a
+  \]
+  \[
+    c = \frac{a}{a^2 + b^2}
+  \]
+  \noindent Possiamo trovare \( d \) sostituendo \( c = \frac{-ad}{b} \) nella seconda equazione:
+  \[
+    d = \frac{-bc}{a} \quad c = \frac{-(1-bd)}{a} = \frac{1-bd}{a}
+  \]
+  \[
+    d = \frac{-b (\frac{1-bd}{a})}{a} = \frac{-b (\frac{1-bd}{a})}{a} \cdot \frac{a}{a} = \frac{-b (1 - bd)}{a^2}
+  \]
+  \[
+    ad^2 = b - b^2d
+  \]
+  \[
+    d(a^2 + b^2) = b
+  \]
+  \[
+    d = \frac{b}{a^2 + b^2}
+  \]
+  Quindi:
+  \[
+    z' = \frac{a}{a^2 + b^2} - \frac{b}{a^2 + b^2}i = \frac{a - bi}{a^2 + b^2}
+  \]
+  di conseguenza \[ \frac{1}{z} = \frac{a-bi}{a^2+b^2} \]
 
-	\noindent Siano \( z_1 = a+bi, z_2 = c+di \neq 0 \in \mathbb{C} \). Definiamo:
-	\[
-		\frac{z_1}{z_2} = z_1 \cdot \frac{1}{z_2} = z_1 \cdot \frac{c-di}{c^2+d^2} = \frac{ac+bd}{c^2+d^2} + \frac{bc-ad}{c^2+d^2}i
-	\]
+  \noindent Siano \( z_1 = a+bi, z_2 = c+di \neq 0 \in \mathbb{C} \). Definiamo:
+  \[
+    \frac{z_1}{z_2} = z_1 \cdot \frac{1}{z_2} = z_1 \cdot \frac{c-di}{c^2+d^2} = \frac{ac+bd}{c^2+d^2} + \frac{bc-ad}{c^2+d^2}i
+  \]
 \end{definition}
 
 \begin{figure}[H]
-	\begin{example}
-		\[
-			\frac{1+2i}{2-i} = \left(1+2i\right)\left(\frac{2}{5}+\frac{1}{5}i\right) = \left( \frac{2}{5}-\frac{2}{5} \right) + \left( \frac{1}{5} + \frac{4}{5} \right) i = i
-		\]
-	\end{example}
+  \begin{example}
+    \[
+      \frac{1+2i}{2-i} = \left(1+2i\right)\left(\frac{2}{5}+\frac{1}{5}i\right) = \left( \frac{2}{5}-\frac{2}{5} \right) + \left( \frac{1}{5} + \frac{4}{5} \right) i = i
+    \]
+  \end{example}
 \end{figure}
 
 \noindent Un trucco per dividere i numeri complessi è moltiplicare per \( 1 \) la frazione:
 \[
-	(a+bi)(a-bi) = a^2 \cancel{+abi} \cancel{- abi} + b^2 = a^2 + b^2 \quad \in \mathbb{R}
+  (a+bi)(a-bi) = a^2 \cancel{+abi} \cancel{- abi} + b^2 = a^2 + b^2 \quad \in \mathbb{R}
 \]
 In questo modo si arriva ad ottenere un numero reale al denominatore facilitando la divisione.
 \begin{figure}[H]
-	\begin{example}
-		\[
-			\frac{1+2i}{2-i}
-		\]
-		\[
-			\left( \frac{1+2i}{2-i} \right) \left( \frac{2+i}{2+i} \right) = \frac{(1+2i)(2+i)}{2^2+(-1)^2} =
-		\]
-		\[
-			= \frac{(1+2i)(2+i)}{5} = \frac{2+4i+i+2i^2}{5} = \frac{2+5i-2}{5} = \frac{5i}{5} = i
-		\]
-	\end{example}
+  \begin{example}
+    \[
+      \frac{1+2i}{2-i}
+    \]
+    \[
+      \left( \frac{1+2i}{2-i} \right) \left( \frac{2+i}{2+i} \right) = \frac{(1+2i)(2+i)}{2^2+(-1)^2} =
+    \]
+    \[
+      = \frac{(1+2i)(2+i)}{5} = \frac{2+4i+i+2i^2}{5} = \frac{2+5i-2}{5} = \frac{5i}{5} = i
+    \]
+  \end{example}
 \end{figure}
 
 \subsection{Coniugato e modulo}
@@ -378,294 +378,294 @@ Sia \( z = a +bi \in \mathbb{C} \). Il numero complesso \( \overline{z} = a - bi
 \subsubsection{Modulo}
 Il \textbf{modulo} di \( z \) è definito come:
 \[
-	|z| = \sqrt{a^2 + b^2} \quad \in \mathbb{R}
+  |z| = \sqrt{a^2 + b^2} \quad \in \mathbb{R}
 \]
 
 \subsubsection{Proprietà}
 Siano \( z_1 = a + bi, z_2 = c + di \quad \in \mathbb{C} \)
 \begin{enumerate}
-	\item \( z_1 \overline{z_1} = a^2 + b^2 = |z_1|^2 \)
-	\item \( \overline{z_1 + z_2} = \overline{(a+c) + (b+d)i} = (a-bi) + (c-di) = \overline{z_1} + \overline{z_2} \)
-	\item \( \overline{z_1 z_2} = \overline{z_1} \cdot \overline{z_2} \)
-	\item Se \[ z_1 \neq 0, \; \overline{\frac{1}{z_1}} = \frac{1}{\overline{z_1}} \]
-	      Infatti:
-	      \[
-		      \overline{z_1} \cdot \left( \overline{\frac{1}{z_1}} \right) = \left(\overline{ z_1 \cdot \frac{1}{z_1}} \right) = \overline{1+0i} = 1 - 0i = 1
-	      \]
-	\item Se \( z_2 \neq 0 \) allora:
-	      \[
-		      \left( \overline{\frac{z_1}{z_2}} \right) = \left( \overline{z_1 \cdot \frac{1}{z_2}} \right) = \overline{z_1} \cdot \overline{\frac{1}{z_2}} = \overline{z_1} \cdot \frac{1}{\overline{z_2}} = \frac{\overline{z_1}}{\overline{z_2}}
-	      \]
-	\item Se \( z_1 \neq 0 \), allora
-	      \[
-		      \frac{1}{z_1} \stackrel{def}{=} \frac{a-bi}{a^2+b^2}= \frac{\overline{z_1}}{|z_1|^2}
-	      \]
+  \item \( z_1 \overline{z_1} = a^2 + b^2 = |z_1|^2 \)
+  \item \( \overline{z_1 + z_2} = \overline{(a+c) + (b+d)i} = (a-bi) + (c-di) = \overline{z_1} + \overline{z_2} \)
+  \item \( \overline{z_1 z_2} = \overline{z_1} \cdot \overline{z_2} \)
+  \item Se \[ z_1 \neq 0, \; \overline{\frac{1}{z_1}} = \frac{1}{\overline{z_1}} \]
+    Infatti:
+    \[
+      \overline{z_1} \cdot \left( \overline{\frac{1}{z_1}} \right) = \left(\overline{ z_1 \cdot \frac{1}{z_1}} \right) = \overline{1+0i} = 1 - 0i = 1
+    \]
+  \item Se \( z_2 \neq 0 \) allora:
+    \[
+      \left( \overline{\frac{z_1}{z_2}} \right) = \left( \overline{z_1 \cdot \frac{1}{z_2}} \right) = \overline{z_1} \cdot \overline{\frac{1}{z_2}} = \overline{z_1} \cdot \frac{1}{\overline{z_2}} = \frac{\overline{z_1}}{\overline{z_2}}
+    \]
+  \item Se \( z_1 \neq 0 \), allora
+    \[
+      \frac{1}{z_1} \stackrel{def}{=} \frac{a-bi}{a^2+b^2}= \frac{\overline{z_1}}{|z_1|^2}
+    \]
 \end{enumerate}
 
 \begin{example}
-	\[
-		z = \frac{1 + i}{2 - i} = \left( 1+i \right) \left( \frac{1}{2-i} \right)
-	\]
-	\[
-		\frac{1}{2-i} = \frac{2+i}{5} = \frac{2+i}{5} = \frac{2}{5} + \frac{1}{5}i
-	\]
-	\[
-		z = \left( 1+i \right) \left( \frac{2}{5} + \frac{1}{5}i \right) = \left( \frac{2}{5}-\frac{1}{5} \right) + \left( \frac{2}{5} + \frac{1}{5} \right)i = \frac{1}{5} + \frac{3}{5}i
-	\]
-	\[
-		\overline{z} = \frac{1}{5} - \frac{3}{5}i
-	\]
+  \[
+    z = \frac{1 + i}{2 - i} = \left( 1+i \right) \left( \frac{1}{2-i} \right)
+  \]
+  \[
+    \frac{1}{2-i} = \frac{2+i}{5} = \frac{2+i}{5} = \frac{2}{5} + \frac{1}{5}i
+  \]
+  \[
+    z = \left( 1+i \right) \left( \frac{2}{5} + \frac{1}{5}i \right) = \left( \frac{2}{5}-\frac{1}{5} \right) + \left( \frac{2}{5} + \frac{1}{5} \right)i = \frac{1}{5} + \frac{3}{5}i
+  \]
+  \[
+    \overline{z} = \frac{1}{5} - \frac{3}{5}i
+  \]
 \end{example}
 
 \subsection{Coordinate polari}
 Per ogni numero complesso si ha una coppia di coordinate:
 \[
-	z = a + bi \quad \in \mathbb{C}
+  z = a + bi \quad \in \mathbb{C}
 \]
 \[ (a,b) = (\Re(z), \Im(z)) \in \mathbb{R}^2 \]
 
 
 \begin{figure}[H]
-	\begin{center}
-		\begin{tikzpicture}[scale=0.8, domain=0:13]
-			\draw[->] (-0.5,0) -- (6,0) node[right] {$\Re$};
-			\draw[->] (0,-0.5) -- (0,5) node[above] {$\Im$};
+  \begin{center}
+    \begin{tikzpicture}[scale=0.8, domain=0:13]
+      \draw[->] (-0.5,0) -- (6,0) node[right] {$\Re$};
+      \draw[->] (0,-0.5) -- (0,5) node[above] {$\Im$};
 
-			\draw[fill, blue] (5, 4) circle (4pt) node[above right] {$z = (a,b)$};
+      \draw[fill, blue] (5, 4) circle (4pt) node[above right] {$z = (a,b)$};
 
-			\draw[blue, thick] (0, 0) -- (5, 4);
+      \draw[blue, thick] (0, 0) -- (5, 4);
 
-			\draw[red, thick] (3, 0) arc (0:38:3) node[right] {$\alpha$};
-		\end{tikzpicture}
-	\end{center}
+      \draw[red, thick] (3, 0) arc (0:38:3) node[right] {$\alpha$};
+    \end{tikzpicture}
+  \end{center}
 
-	\caption{Rappresentazione di un numero complesso}
+  \caption{Rappresentazione di un numero complesso}
 \end{figure}
 \noindent Possiamo esprimere \( z \) in coordinate polari \( (r, \alpha) \) dove \( r \) è la lunghezza del
 segmento \( OZ \), detto \textbf{raggio polare}, ed \( \alpha \) è l'angolo compreso tra l'asse delle x
 e \( OZ \) in senso antiorario. \( \alpha \) viene misurato in radianti
 
 \begin{figure}[H]
-	\begin{example}
-		\[
-			z_1 = (1,0) \to 1
-		\]
-		\[
-			z_2 = (1, \frac{\pi}{2}) \to i
-		\]
-		\[
-			z_3 = (1, \pi) \to -1
-		\]
-		\[
-			z_4 = (1, \frac{3\pi}{2}) \to -i
-		\]
+  \begin{example}
+    \[
+      z_1 = (1,0) \to 1
+    \]
+    \[
+      z_2 = (1, \frac{\pi}{2}) \to i
+    \]
+    \[
+      z_3 = (1, \pi) \to -1
+    \]
+    \[
+      z_4 = (1, \frac{3\pi}{2}) \to -i
+    \]
 
-		\begin{center}
-			\begin{tikzpicture}[scale=0.5, domain=0:13]
-				\draw[->] (-4,0) -- (4,0) node[right] {$\Re$};
-				\draw[->] (0,-4) -- (0,4) node[above] {$\Im$};
+    \begin{center}
+      \begin{tikzpicture}[scale=0.5, domain=0:13]
+        \draw[->] (-4,0) -- (4,0) node[right] {$\Re$};
+        \draw[->] (0,-4) -- (0,4) node[above] {$\Im$};
 
-				\draw[fill, blue] (3, 0) circle (4pt) node[below right] {$z_1 = (1,0)$};
-				\draw[fill, blue] (0, 3) circle (4pt) node[above left] {$z_2 = (1, \frac{\pi}{2})$};
-				\draw[fill, blue] (-3, 0) circle (4pt) node[below left] {$z_3 = (1, \pi)$};
-				\draw[fill, blue] (0, -3) circle (4pt) node[below left] {$z_4 = (1, \frac{3\pi}{2})$};
+        \draw[fill, blue] (3, 0) circle (4pt) node[below right] {$z_1 = (1,0)$};
+        \draw[fill, blue] (0, 3) circle (4pt) node[above left] {$z_2 = (1, \frac{\pi}{2})$};
+        \draw[fill, blue] (-3, 0) circle (4pt) node[below left] {$z_3 = (1, \pi)$};
+        \draw[fill, blue] (0, -3) circle (4pt) node[below left] {$z_4 = (1, \frac{3\pi}{2})$};
 
-			\end{tikzpicture}
-		\end{center}
-		\caption{Esempi di numeri complessi in coordinate polari}
-	\end{example}
+      \end{tikzpicture}
+    \end{center}
+    \caption{Esempi di numeri complessi in coordinate polari}
+  \end{example}
 \end{figure}
 
 \subsection{Forma trigonometrica di un numero complesso}
 Dato un \( z = (r, \alpha) \) in coordinate polari, vogliamo ricavare la forma algebrica. Per
 fare ciò usiamo il seno e il coseno:
 \[
-	\cos(\alpha) = \frac{a}{r} \quad \sin(\alpha) = \frac{b}{r}
+  \cos(\alpha) = \frac{a}{r} \quad \sin(\alpha) = \frac{b}{r}
 \]
 \begin{figure}[H]
-	\begin{center}
-		\begin{tikzpicture}[scale=0.8, domain=0:13]
-			\draw[->] (-0.5,0) -- (6,0) node[right] {$\Re$};
-			\draw[->] (0,-0.5) -- (0,5) node[above] {$\Im$};
+  \begin{center}
+    \begin{tikzpicture}[scale=0.8, domain=0:13]
+      \draw[->] (-0.5,0) -- (6,0) node[right] {$\Re$};
+      \draw[->] (0,-0.5) -- (0,5) node[above] {$\Im$};
 
-			\draw[fill, blue] (5, 4) circle (4pt);
+      \draw[fill, blue] (5, 4) circle (4pt);
 
-			\draw[blue, thick] (0, 0) -- (5, 4);
+      \draw[blue, thick] (0, 0) -- (5, 4);
 
-			\draw[red, thick] (3, 0) arc (0:38:3) node[right] {$\alpha$};
+      \draw[red, thick] (3, 0) arc (0:38:3) node[right] {$\alpha$};
 
-			\draw[green, dashed] (5, 0) -- (5, 4) node[midway, right] {$b$};
-			\draw[green, dashed] (0, 4) -- (5, 4) node[midway, above] {$a$};
-		\end{tikzpicture}
-	\end{center}
+      \draw[green, dashed] (5, 0) -- (5, 4) node[midway, right] {$b$};
+      \draw[green, dashed] (0, 4) -- (5, 4) node[midway, above] {$a$};
+    \end{tikzpicture}
+  \end{center}
 
-	\caption{Forma trigonometrica di un numero complesso}
+  \caption{Forma trigonometrica di un numero complesso}
 \end{figure}
 \begin{figure}[H]
-	\begin{definition}
-		La \textbf{forma trigonometrica} di un numero complesso è definita come:
-		\[
-			z = (r \cdot \cos(\alpha)) + (r \cdot \sin(\alpha)i) = r \cdot (\cos(\alpha) + i \cdot \sin(\alpha))
-		\]
-		\[
-			r = |z| = \sqrt{a^2 + b^2}
-		\]
-		\[
-			\alpha = \begin{cases}
-				\frac{\pi}{2} \quad \text{se} \; a = 0,\; b > 0                                   \\
-				\frac{3\pi}{2} \quad \text{se} \; a = 0,\; b < 0                                  \\
-				\text{non definito} \quad \text{se} \; a = 0,\; b = 0                             \\
-				\arctan\left(\frac{b}{a}\right) \quad \text{se} \; a > 0,\; b \ge 0\\
-				\arctan\left(\frac{b}{a}\right) + 2\pi \quad \text{se} \; a > 0,\; b < 0         \\
-				\arctan\left(\frac{b}{a}\right) + \pi \quad \text{se} \; a < 0,\; b \;\text{qualsiasi}
-			\end{cases}
-		\]
-	\end{definition}
+  \begin{definition}
+    La \textbf{forma trigonometrica} di un numero complesso è definita come:
+    \[
+      z = (r \cdot \cos(\alpha)) + (r \cdot \sin(\alpha)i) = r \cdot (\cos(\alpha) + i \cdot \sin(\alpha))
+    \]
+    \[
+      r = |z| = \sqrt{a^2 + b^2}
+    \]
+    \[
+      \alpha = \begin{cases}
+        \frac{\pi}{2} \quad \text{se} \; a = 0,\; b > 0                                   \\
+        \frac{3\pi}{2} \quad \text{se} \; a = 0,\; b < 0                                  \\
+        \text{non definito} \quad \text{se} \; a = 0,\; b = 0                             \\
+        \arctan\left(\frac{b}{a}\right) \quad \text{se} \; a > 0,\; b \ge 0\\
+        \arctan\left(\frac{b}{a}\right) + 2\pi \quad \text{se} \; a > 0,\; b < 0         \\
+        \arctan\left(\frac{b}{a}\right) + \pi \quad \text{se} \; a < 0,\; b \;\text{qualsiasi}
+      \end{cases}
+    \]
+  \end{definition}
 \end{figure}
 
 \begin{figure}[H]
-	\begin{example}
-		\[
-			1 = \cos(0) + i \cdot \sin(0)
-		\]
-		\[
-			i = \cos(\frac{\pi}{2}) + i \cdot \sin(\frac{\pi}{2})
-		\]
-		\[
-			-1 = \cos(\pi) + i \cdot \sin(\pi)
-		\]
-		\[
-			-i = \cos(\frac{3\pi}{2}) + i \cdot \sin(\frac{3\pi}{2})
-		\]
+  \begin{example}
+    \[
+      1 = \cos(0) + i \cdot \sin(0)
+    \]
+    \[
+      i = \cos(\frac{\pi}{2}) + i \cdot \sin(\frac{\pi}{2})
+    \]
+    \[
+      -1 = \cos(\pi) + i \cdot \sin(\pi)
+    \]
+    \[
+      -i = \cos(\frac{3\pi}{2}) + i \cdot \sin(\frac{3\pi}{2})
+    \]
 
-	\end{example}
+  \end{example}
 \end{figure}
 
 \subsection{Prodotto di numeri complessi in forma trigonometrica}
 \begin{figure}[H]
-	\begin{definition}
-		\[
-			z_1 = r\left(\cos(\alpha) + i \sin(\alpha)\right), \quad z_2 = s\left(\cos(\beta) + i \sin(\beta)\right) \quad \in \mathbb{C}
-		\]
-		\vspace{0.1cm}
-		\[
-			z_1  z_2 = r  s  (\cos(\alpha) + i \sin(\alpha))  (\cos(\beta) + i \sin(\beta)) =
-		\]
-		\[
-			= r  s  \left( (\cos{\alpha} \cos(\beta) - \sin(\alpha) \sin(\beta)) + (\cos(\alpha) \sin(\beta) + \sin(\alpha) \cos(\beta))i \right) =
-		\]
-		\[
-			= r  s  \left( \cos(\alpha + \beta) + i \sin(\alpha + \beta) \right)
-		\]
-	\end{definition}
+  \begin{definition}
+    \[
+      z_1 = r\left(\cos(\alpha) + i \sin(\alpha)\right), \quad z_2 = s\left(\cos(\beta) + i \sin(\beta)\right) \quad \in \mathbb{C}
+    \]
+    \vspace{0.1cm}
+    \[
+      z_1  z_2 = r  s  (\cos(\alpha) + i \sin(\alpha))  (\cos(\beta) + i \sin(\beta)) =
+    \]
+    \[
+      = r  s  \left( (\cos{\alpha} \cos(\beta) - \sin(\alpha) \sin(\beta)) + (\cos(\alpha) \sin(\beta) + \sin(\alpha) \cos(\beta))i \right) =
+    \]
+    \[
+      = r  s  \left( \cos(\alpha + \beta) + i \sin(\alpha + \beta) \right)
+    \]
+  \end{definition}
 \end{figure}
 \subsection{Formula di de Moivre}
 Dati \( n \in \mathbb{N}, \quad z = r(\cos(\alpha) + i \sin(\alpha)) \in \mathbb{C} \)
 \[
-	z^n = r^n \cdot (\cos(n\alpha) + i \sin(n\alpha))
+  z^n = r^n \cdot (\cos(n\alpha) + i \sin(n\alpha))
 \]
 
 \begin{figure}[H]
-	\begin{example}
-		\[
-			z = \sqrt{3} + i = 2 \cdot \left( \cos(\frac{\pi}{6}) + i \sin(\frac{\pi}{6}) \right)
-		\]
-		\[
-			z^6 = 2^6 \cdot \left( \cos(\frac{\pi}{6} \cdot 6) + i \sin(\frac{\pi}{6} \cdot 6) \right) = 64 \cdot \left( \cos(\pi) + i \sin(\pi) \right) = -64
-		\]
-	\end{example}
+  \begin{example}
+    \[
+      z = \sqrt{3} + i = 2 \cdot \left( \cos(\frac{\pi}{6}) + i \sin(\frac{\pi}{6}) \right)
+    \]
+    \[
+      z^6 = 2^6 \cdot \left( \cos(\frac{\pi}{6} \cdot 6) + i \sin(\frac{\pi}{6} \cdot 6) \right) = 64 \cdot \left( \cos(\pi) + i \sin(\pi) \right) = -64
+    \]
+  \end{example}
 \end{figure}
 
 \subsection{Definizione di radice n-esima}
 \[
-	y \in  \mathbb{C}, \quad n \in \mathbb{N}
+  y \in  \mathbb{C}, \quad n \in \mathbb{N}
 \]
 Si dicono \textbf{radici n-esime} di \( y \) le soluzioni dell'equazione \( x^n = y \).
 
 \subsection{Teorema delle radici n-esime}
 \begin{figure}[H]
-	\begin{theorem}
-		Siano \( y \in \mathbb{C} \) e \( n \in \mathbb{N} \). Esistono precisamente \( n \) radici n-esime
-		complesse distinte \( z_0, z_1, \ldots, z_{n-1} \) di \( y \). Se \( y = r(\cos(\alpha)+i\sin(\alpha)) \),
-		allora per \( k = 0, \ldots, n-1 \) :
-		\[
-			z_k = \sqrt[n]{r} \left( \cos\left(\frac{\alpha + 2k\pi}{n}\right) + i \sin\left(\frac{\alpha + 2k\pi}{n}\right) \right)
-		\]
-		Si somma \( 2k \pi  \) per ottenere tutte le radici n-esime, siccome \( \sin \) e \( \cos \) sono periodiche.
-		\label{th:radici_n-esime}
-	\end{theorem}
+  \begin{theorem}
+    Siano \( y \in \mathbb{C} \) e \( n \in \mathbb{N} \). Esistono precisamente \( n \) radici n-esime
+    complesse distinte \( z_0, z_1, \ldots, z_{n-1} \) di \( y \). Se \( y = r(\cos(\alpha)+i\sin(\alpha)) \),
+    allora per \( k = 0, \ldots, n-1 \) :
+    \[
+      z_k = \sqrt[n]{r} \left( \cos\left(\frac{\alpha + 2k\pi}{n}\right) + i \sin\left(\frac{\alpha + 2k\pi}{n}\right) \right)
+    \]
+    Si somma \( 2k \pi  \) per ottenere tutte le radici n-esime, siccome \( \sin \) e \( \cos \) sono periodiche.
+    \label{th:radici_n-esime}
+  \end{theorem}
 \end{figure}
 
 \subsubsection{Dimostrazione}
 Per la formula di de Moivre sappiamo che:
 \[
-	z_k^n = \left( \sqrt[n]{r} \right)^n \left( \cos{\alpha + (2 \pi )k} + i \sin{\alpha + (2 \pi )k} \right)  =
+  z_k^n = \left( \sqrt[n]{r} \right)^n \left( \cos{\alpha + (2 \pi )k} + i \sin{\alpha + (2 \pi )k} \right)  =
 \]
 \[
-	= r \left( \cos{\alpha} + i \sin{\alpha} \right) = y
+  = r \left( \cos{\alpha} + i \sin{\alpha} \right) = y
 \]
 
 \begin{figure}[H]
-	\centering
-	\begin{tikzpicture}
-		\draw[->] (-2,0) -- (2,0) node[right] {$\Re$};
-		\draw[->] (0,-2) -- (0,2) node[above] {$\Im$};
-		\draw (0,0) circle (1.5cm);
+  \centering
+  \begin{tikzpicture}
+    \draw[->] (-2,0) -- (2,0) node[right] {$\Re$};
+    \draw[->] (0,-2) -- (0,2) node[above] {$\Im$};
+    \draw (0,0) circle (1.5cm);
 
-		\draw[red, thick] (0,0) -- (1.05,1.05);
-		\draw[blue, thick] (0.5,0) arc (0:45:0.5) node[right] {$\alpha$};
+    \draw[red, thick] (0,0) -- (1.05,1.05);
+    \draw[blue, thick] (0.5,0) arc (0:45:0.5) node[right] {$\alpha$};
 
-		\draw[green, dashed] (1.05,1.05) -- (1.05,0) node[below] {$\cos{x}$};
+    \draw[green, dashed] (1.05,1.05) -- (1.05,0) node[below] {$\cos{x}$};
 
-		\draw[green, dashed] (1.05,1.05) -- (0,1.05) node[left] {$\sin{x}$};
+    \draw[green, dashed] (1.05,1.05) -- (0,1.05) node[left] {$\sin{x}$};
 
-	\end{tikzpicture}
-	\caption{Circonferenza goinometrica}
+  \end{tikzpicture}
+  \caption{Circonferenza goinometrica}
 \end{figure}
 
 \begin{figure}[H]
-	\centering
-	\begin{tikzpicture}
-		% Draw the axes
-		\draw[->] (-0.5,0) -- (7,0) node[right] {$\alpha$};
-		\draw[->] (0,-2) -- (0,2) node[above] {$\sin{x}$};
+  \centering
+  \begin{tikzpicture}
+    % Draw the axes
+    \draw[->] (-0.5,0) -- (7,0) node[right] {$\alpha$};
+    \draw[->] (0,-2) -- (0,2) node[above] {$\sin{x}$};
 
-		% plot sine
-		\draw[domain=0:7, smooth, variable=\x, blue] plot ({\x}, {sin(\x r)});
+    % plot sine
+    \draw[domain=0:7, smooth, variable=\x, blue] plot ({\x}, {sin(\x r)});
 
-		% radians labels
-		\foreach \x/\xtext in {
-				1.5708/\frac{\pi}{2},
-				3.14159/\pi,
-				4.71239/\frac{3\pi}{2},
-				6.28319/2\pi,
-			}
-		\draw (\x,0.1) -- (\x,-0.1) node[below] {$\xtext$};
+    % radians labels
+    \foreach \x/\xtext in {
+      1.5708/\frac{\pi}{2},
+      3.14159/\pi,
+      4.71239/\frac{3\pi}{2},
+      6.28319/2\pi,
+    }
+    \draw (\x,0.1) -- (\x,-0.1) node[below] {$\xtext$};
 
-	\end{tikzpicture}
-	\caption{Funzione seno}
+  \end{tikzpicture}
+  \caption{Funzione seno}
 \end{figure}
 
 \begin{figure}[H]
-	\centering
-	\begin{tikzpicture}
-		% Draw the axes
-		\draw[->] (-0.5,0) -- (7,0) node[right] {$\alpha$};
-		\draw[->] (0,-2) -- (0,2) node[above] {$\cos{x}$};
+  \centering
+  \begin{tikzpicture}
+    % Draw the axes
+    \draw[->] (-0.5,0) -- (7,0) node[right] {$\alpha$};
+    \draw[->] (0,-2) -- (0,2) node[above] {$\cos{x}$};
 
-		% plot cosine
-		\draw[domain=0:7, smooth, variable=\x, red] plot ({\x}, {cos(\x r)});
+    % plot cosine
+    \draw[domain=0:7, smooth, variable=\x, red] plot ({\x}, {cos(\x r)});
 
-		% radians labels
-		\foreach \x/\xtext in {
-				1.5708/\frac{\pi}{2},
-				3.14159/\pi,
-				4.71239/\frac{3\pi}{2},
-				6.28319/2\pi,
-			}
-		\draw (\x,0.1) -- (\x,-0.1) node[below] {$\xtext$};
-	\end{tikzpicture}
-	\caption{Funzione coseno}
+    % radians labels
+    \foreach \x/\xtext in {
+      1.5708/\frac{\pi}{2},
+      3.14159/\pi,
+      4.71239/\frac{3\pi}{2},
+      6.28319/2\pi,
+    }
+    \draw (\x,0.1) -- (\x,-0.1) node[below] {$\xtext$};
+  \end{tikzpicture}
+  \caption{Funzione coseno}
 \end{figure}
 
 Quindi \( z_0, \ldots, z_{n-1} \) sono soluzioni di \( y = x^n \) , cioè sono radici
@@ -679,47 +679,47 @@ Sia \( a \in \mathbb{R} \; \subseteq \mathbb{C} \) tale che \( a < 0 \). Esiston
 precisamente due radici quadrate di \( a \) in \( \mathbb{C} \). Infatti, abbiamo:
 
 \begin{figure}[H]
-	\centering
-	\begin{tikzpicture}
-		\draw[->] (-2,0) -- (2,0) node[right] {$\Re$};
-		\draw[->] (0,-2) -- (0,2) node[above] {$\Im$};
+  \centering
+  \begin{tikzpicture}
+    \draw[->] (-2,0) -- (2,0) node[right] {$\Re$};
+    \draw[->] (0,-2) -- (0,2) node[above] {$\Im$};
 
-		\draw[fill, blue] (-1, 0) circle (2pt) node[below, align=center, yshift=-2] {$-a$\\$\alpha = \pi $};
-		\draw[fill, blue] (1, 0) circle (2pt) node[below, align=center, yshift=-2] {$a$\\$\alpha = 0$};
+    \draw[fill, blue] (-1, 0) circle (2pt) node[below, align=center, yshift=-2] {$-a$\\$\alpha = \pi $};
+    \draw[fill, blue] (1, 0) circle (2pt) node[below, align=center, yshift=-2] {$a$\\$\alpha = 0$};
 
-		\draw[red, thick, ->] (1, 0) arc (0:175:1) node[midway, above right] {$\alpha$};
+    \draw[red, thick, ->] (1, 0) arc (0:175:1) node[midway, above right] {$\alpha$};
 
-		\draw[fill, green] (0, 1) circle (2pt) node[above left, align=center] {$\frac{\pi }{2}$};
-		\draw[fill, green] (0, -1) circle (2pt) node[below left, align=center] {$\frac{3 \pi }{2}$};
-	\end{tikzpicture}
-	\caption{Radici quadrate di numeri reali negativi}
+    \draw[fill, green] (0, 1) circle (2pt) node[above left, align=center] {$\frac{\pi }{2}$};
+    \draw[fill, green] (0, -1) circle (2pt) node[below left, align=center] {$\frac{3 \pi }{2}$};
+  \end{tikzpicture}
+  \caption{Radici quadrate di numeri reali negativi}
 \end{figure}
 \[
-	a = (-a) (\cos{\pi } + i \sin{\pi })
+  a = (-a) (\cos{\pi } + i \sin{\pi })
 \]
 Per il teorema \ref{th:radici_n-esime}:
 \[
-	z_0 = \sqrt{-a} \left( \cos{\frac{\pi}{2}} + i \sin{\frac{\pi}{2}} \right) = i \sqrt{-a}
+  z_0 = \sqrt{-a} \left( \cos{\frac{\pi}{2}} + i \sin{\frac{\pi}{2}} \right) = i \sqrt{-a}
 \]
 \[
-	z_1 = \sqrt{-a} \left( \cos{\frac{3\pi}{2}} + i \sin{\frac{3\pi}{2}} \right) = -i \sqrt{-a}
+  z_1 = \sqrt{-a} \left( \cos{\frac{3\pi}{2}} + i \sin{\frac{3\pi}{2}} \right) = -i \sqrt{-a}
 \]
 
 \begin{figure}[H]
-	\begin{define}
-		Se abbiamo un polinomio della forma:
-		\[
-			ax^2 + bx + c, \quad a,\;b,\;c \in \mathbb{R}
-		\]
-		Le soluzioni sono:
-		\[
-			\frac{-b \pm \sqrt{b^2 -4ac}}{2a}
-		\]
-		\[
-			\Delta = b^2 - 4ac
-		\]
-		In \( \mathbb{C} \) esistono 2 soluzioni anche se \( \Delta < 0 \).
-	\end{define}
+  \begin{define}
+    Se abbiamo un polinomio della forma:
+    \[
+      ax^2 + bx + c, \quad a,\;b,\;c \in \mathbb{R}
+    \]
+    Le soluzioni sono:
+    \[
+      \frac{-b \pm \sqrt{b^2 -4ac}}{2a}
+    \]
+    \[
+      \Delta = b^2 - 4ac
+    \]
+    In \( \mathbb{C} \) esistono 2 soluzioni anche se \( \Delta < 0 \).
+  \end{define}
 \end{figure}
 
 \section{Sistemi lineari e matrici}
@@ -727,12 +727,12 @@ Per il teorema \ref{th:radici_n-esime}:
 Un \textbf{sistema lineare} è un insieme di \( m \) equazioni in \( n \) incognite
 che può essere scritto nella forma:
 \[
-	\begin{cases}
-		a_{11}x_1 + a_{12}x_2 + \ldots + a_{1n}x_n = b_1 \\
-		a_{21}x_1 + a_{22}x_2 + \ldots + a_{2n}x_n = b_2 \\
-		\vdots                                           \\
-		a_{m1}x_1 + a_{m2}x_2 + \ldots + a_{mn}x_n = b_m \\
-	\end{cases}
+  \begin{cases}
+    a_{11}x_1 + a_{12}x_2 + \ldots + a_{1n}x_n = b_1 \\
+    a_{21}x_1 + a_{22}x_2 + \ldots + a_{2n}x_n = b_2 \\
+    \vdots                                           \\
+    a_{m1}x_1 + a_{m2}x_2 + \ldots + a_{mn}x_n = b_m \\
+  \end{cases}
 \]
 dove \( b_k,\; a_{ij} \in \mathbb{C} \) oppure \( \mathbb{R} \) per \( 1 \le i \le m,\;
 1 \le j \le n,\; 1 \le k \le m\). Se i \textbf{termini noti} sono tutti nulli il sistema è detto
@@ -740,310 +740,310 @@ dove \( b_k,\; a_{ij} \in \mathbb{C} \) oppure \( \mathbb{R} \) per \( 1 \le i \
 una soluzione se soddisfa tutte le \( m \) equazioni.
 
 \begin{example}
-	Presa in considerazione la seguente tabella nutrizionale di cereali (per porzione):
-	\begin{center}
-		\begin{tabular}{c|c|c}
-			                & Cheerios & Quakers \\
-			\hline
-			Proteine (g)    & 4        & 3       \\
-			Carboidrati (g) & 20       & 18      \\
-			Grassi (g)      & 2        & 5       \\
-		\end{tabular}
-	\end{center}
-	Quante porzioni di Cheerios e Quakers dobbiamo mangiare per ottenere \( 9g \) di
-	proteine, \( 48g \) di carboidrati e \( 8g \) di grassi?
-	\[
-		\begin{cases}
-			4C + 3Q = 9 \quad \text{(P)}    \\
-			20C + 18Q = 48 \quad \text{(C)} \\
-			2C + 5Q = 8 \quad \text{(G)}
-		\end{cases}
-	\]
+  Presa in considerazione la seguente tabella nutrizionale di cereali (per porzione):
+  \begin{center}
+    \begin{tabular}{c|c|c}
+                      & Cheerios & Quakers \\
+                      \hline
+      Proteine (g)    & 4        & 3       \\
+      Carboidrati (g) & 20       & 18      \\
+      Grassi (g)      & 2        & 5       \\
+    \end{tabular}
+  \end{center}
+  Quante porzioni di Cheerios e Quakers dobbiamo mangiare per ottenere \( 9g \) di
+  proteine, \( 48g \) di carboidrati e \( 8g \) di grassi?
+  \[
+    \begin{cases}
+      4C + 3Q = 9 \quad \text{(P)}    \\
+      20C + 18Q = 48 \quad \text{(C)} \\
+      2C + 5Q = 8 \quad \text{(G)}
+    \end{cases}
+  \]
 
-	Per risolvere il sistema lineare:
-	\begin{itemize}
-		\item
-		      Moltiplichiamo le per \( \frac{1}{4} \)
-		      e otteniamo un sistema lineare \textbf{equivalente} (cioè con
-		      \textbf{esattamente} le stesse soluzioni):
-		      \[
-			      (P') \quad C + \frac{3}{4}Q = \frac{9}{4}
-		      \]
-		      \[
-			      (C) \quad 20C + 18Q = 48
-		      \]
-		      \[
-			      (G) \quad 2C + 5Q = 8
-		      \]
-		\item Calcoliamo \( (C)-20(P') \) e \( (G)-2(P') \) e otteniamo:
-		      \[
-			      (P') \quad C + \frac{3}{4}Q = \frac{9}{4}
-		      \]
-		      \[
-			      (C') \quad 0C + 15Q = 18
-		      \]
-		      \[
-			      (G') \quad 0C + \frac{7}{2}Q = \frac{7}{2}
-		      \]
-		\item Moltiplichiamo \( (C') \) per \( \frac{1}{3} \) e otteniamo:
-		      \[
-			      (P') \quad C + \frac{3}{4}Q = \frac{9}{4}
-		      \]
-		      \[
-			      (C') \quad 0C + Q = 1
-		      \]
-		      \[
-			      (G') \quad 0C + \frac{7}{2}Q = \frac{7}{2}
-		      \]
-		\item Calcoliamo \( (G') - \frac{7}{2} (C") \) e otteniamo:
-		      \[
-			      (P') \quad C + \frac{3}{4}Q = \frac{9}{4}
-		      \]
-		      \[
-			      (C') \quad 0C + Q = 1
-		      \]
-		      \[
-			      (G') \quad 0C + 0Q = 0
-		      \]
-	\end{itemize}
+  Per risolvere il sistema lineare:
+  \begin{itemize}
+    \item
+      Moltiplichiamo le per \( \frac{1}{4} \)
+      e otteniamo un sistema lineare \textbf{equivalente} (cioè con
+      \textbf{esattamente} le stesse soluzioni):
+      \[
+        (P') \quad C + \frac{3}{4}Q = \frac{9}{4}
+      \]
+      \[
+        (C) \quad 20C + 18Q = 48
+      \]
+      \[
+        (G) \quad 2C + 5Q = 8
+      \]
+    \item Calcoliamo \( (C)-20(P') \) e \( (G)-2(P') \) e otteniamo:
+      \[
+        (P') \quad C + \frac{3}{4}Q = \frac{9}{4}
+      \]
+      \[
+        (C') \quad 0C + 15Q = 18
+      \]
+      \[
+        (G') \quad 0C + \frac{7}{2}Q = \frac{7}{2}
+      \]
+    \item Moltiplichiamo \( (C') \) per \( \frac{1}{3} \) e otteniamo:
+      \[
+        (P') \quad C + \frac{3}{4}Q = \frac{9}{4}
+      \]
+      \[
+        (C') \quad 0C + Q = 1
+      \]
+      \[
+        (G') \quad 0C + \frac{7}{2}Q = \frac{7}{2}
+      \]
+    \item Calcoliamo \( (G') - \frac{7}{2} (C") \) e otteniamo:
+      \[
+        (P') \quad C + \frac{3}{4}Q = \frac{9}{4}
+      \]
+      \[
+        (C') \quad 0C + Q = 1
+      \]
+      \[
+        (G') \quad 0C + 0Q = 0
+      \]
+  \end{itemize}
 
-	\noindent Otteniamo dunque che \( Q = 1 \) e \( C = \frac{9}{4} - \frac{3}{4} = \frac{7}{4} \)
+  \noindent Otteniamo dunque che \( Q = 1 \) e \( C = \frac{9}{4} - \frac{3}{4} = \frac{7}{4} \)
 
-	\vspace{0.5cm}
+  \vspace{0.5cm}
 
-	\noindent Per agevolare la risoluzione del sistema lineare si può utilizzare una matrice:
-	\begin{itemize}
-		\item \textbf{R1} = Riga 1
-		\item \textbf{R2} = Riga 2
-		\item \textbf{R3} = Riga 3
-	\end{itemize}
-	\[
-		\begin{pmatrix}[cc|c]
-			4  & 3  & 9  \\
-			20 & 18 & 48 \\
-			2  & 5  & 8
-		\end{pmatrix}
-	\]
-	\[\downarrow \frac{1}{4} \cdot R1 \]
-	\[
-		\begin{pmatrix}[cc|c]
-			1  & \frac{3}{4} & \frac{9}{4} \\
-			20 & 18          & 48          \\
-			2  & 5           & 8
-		\end{pmatrix}
-	\]
-	\[
-		\downarrow R2 - 20 \cdot R1
-	\]
-	\[
-		\downarrow R3 - 2 \cdot R1
-	\]
-	\[
-		\begin{pmatrix} [cc|c]
-			1 & \frac{3}{4} & \frac{9}{4} \\
-			0 & 3           & 3           \\
-			0 & \frac{7}{2} & \frac{7}{2}
-		\end{pmatrix}
-	\]
-	\[
-		\downarrow \frac{1}{3} \cdot R2
-	\]
-	\[
-		\begin{pmatrix}[cc|c]
-			1 & \frac{3}{4} & \frac{9}{4} \\
-			0 & 1           & 1           \\
-			0 & \frac{7}{2} & \frac{7}{2}
-		\end{pmatrix}
-	\]
-	\[
-		\downarrow R3 - \frac{7}{2} \cdot R2
-	\]
-	\[
-		\begin{pmatrix}[cc|c]
-			1 & \frac{3}{4} & \frac{9}{4} \\
-			0 & 1           & 1           \\
-			0 & 0           & 0
-		\end{pmatrix}
-	\]
-	\noindent Otteniamo dunque che \( Q = 1 \) e \( C = \frac{9}{4} - \frac{3}{4} = \frac{7}{4} \)
+  \noindent Per agevolare la risoluzione del sistema lineare si può utilizzare una matrice:
+  \begin{itemize}
+    \item \textbf{R1} = Riga 1
+    \item \textbf{R2} = Riga 2
+    \item \textbf{R3} = Riga 3
+  \end{itemize}
+  \[
+    \begin{pmatrix}[cc|c]
+      4  & 3  & 9  \\
+      20 & 18 & 48 \\
+      2  & 5  & 8
+    \end{pmatrix}
+  \]
+  \[\downarrow \frac{1}{4} \cdot R1 \]
+  \[
+    \begin{pmatrix}[cc|c]
+      1  & \frac{3}{4} & \frac{9}{4} \\
+      20 & 18          & 48          \\
+      2  & 5           & 8
+    \end{pmatrix}
+  \]
+  \[
+    \downarrow R2 - 20 \cdot R1
+  \]
+  \[
+    \downarrow R3 - 2 \cdot R1
+  \]
+  \[
+    \begin{pmatrix} [cc|c]
+      1 & \frac{3}{4} & \frac{9}{4} \\
+      0 & 3           & 3           \\
+      0 & \frac{7}{2} & \frac{7}{2}
+    \end{pmatrix}
+  \]
+  \[
+    \downarrow \frac{1}{3} \cdot R2
+  \]
+  \[
+    \begin{pmatrix}[cc|c]
+      1 & \frac{3}{4} & \frac{9}{4} \\
+      0 & 1           & 1           \\
+      0 & \frac{7}{2} & \frac{7}{2}
+    \end{pmatrix}
+  \]
+  \[
+    \downarrow R3 - \frac{7}{2} \cdot R2
+  \]
+  \[
+    \begin{pmatrix}[cc|c]
+      1 & \frac{3}{4} & \frac{9}{4} \\
+      0 & 1           & 1           \\
+      0 & 0           & 0
+    \end{pmatrix}
+  \]
+  \noindent Otteniamo dunque che \( Q = 1 \) e \( C = \frac{9}{4} - \frac{3}{4} = \frac{7}{4} \)
 \end{example}
 
 \subsection{Definizione}
 \begin{figure}[H]
-	\begin{definition}
-		Siano \( m\;,n,;\ < 1 \). Una tabella \( A \) tale che:
-		\[
-			A = \begin{pmatrix}
-				a_{11} & a_{12} & \ldots & a_{1n} \\
-				a_{21} & a_{22} & \ldots & a_{2n} \\
-				\vdots & \vdots & \ddots & \vdots \\
-				a_{m1} & a_{m2} & \ldots & a_{mn} \\
-			\end{pmatrix}
-			= (a_{ij})_{m \times n}
-		\]
-		di \( m \times n \) elementi di \( \mathbb{C} \) disposti in \( m \) righe e \( n \) colonne
-		si chiama una \textbf{matrice} di \textbf{dimensione} \( m \times n \).
-		Gli elementi si chiamano \textbf{coefficienti} (o entrate) della matrice e sono
-		contrassegnati con un doppio indice \( ij \) dove \( i \) indica la riga e \( j \)
-		la colonna di appartenenza.
+  \begin{definition}
+    Siano \( m\;,n,;\ < 1 \). Una tabella \( A \) tale che:
+    \[
+      A = \begin{pmatrix}
+        a_{11} & a_{12} & \ldots & a_{1n} \\
+        a_{21} & a_{22} & \ldots & a_{2n} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        a_{m1} & a_{m2} & \ldots & a_{mn} \\
+      \end{pmatrix}
+      = (a_{ij})_{m \times n}
+    \]
+    di \( m \times n \) elementi di \( \mathbb{C} \) disposti in \( m \) righe e \( n \) colonne
+    si chiama una \textbf{matrice} di \textbf{dimensione} \( m \times n \).
+    Gli elementi si chiamano \textbf{coefficienti} (o entrate) della matrice e sono
+    contrassegnati con un doppio indice \( ij \) dove \( i \) indica la riga e \( j \)
+    la colonna di appartenenza.
 
-		\vspace{0.5cm}
-		L'insieme di tutte le matrici di dimensione \( m \times n \) con entrate in \( \mathbb{C} \)
-		si indica con \( M_{m \times n}(\mathbb{C}) \).
+    \vspace{0.5cm}
+    L'insieme di tutte le matrici di dimensione \( m \times n \) con entrate in \( \mathbb{C} \)
+    si indica con \( M_{m \times n}(\mathbb{C}) \).
 
-		\vspace{0.5cm}
-		L'insieme di tutte le matrici di dimensione \( m \times n \) con entrate in \( \mathbb{R} \)
-		si indica con \( M_{m \times n}(\mathbb{R}) \).
-	\end{definition}
+    \vspace{0.5cm}
+    L'insieme di tutte le matrici di dimensione \( m \times n \) con entrate in \( \mathbb{R} \)
+    si indica con \( M_{m \times n}(\mathbb{R}) \).
+  \end{definition}
 \end{figure}
 
 \begin{figure}[H]
-	\begin{example}
-		\[
-			\begin{pmatrix} 3 & i & 2+7i \\
-                0 & 1 & \pi
-			\end{pmatrix} \in M_{2 \times 3}(\mathbb{C})
-		\]
-		\[
-			\begin{pmatrix}
-				0 & 1  \\
-				1 & -1
-			\end{pmatrix} \in M_{2 \times 2}(\mathbb{R}) \subseteq M_{2 \times 2}(\mathbb{C})
-		\]
-	\end{example}
-\end{figure}
+  \begin{example}
+    \[
+      \begin{pmatrix} 3 & i & 2+7i \\
+        0 & 1 & \pi
+      \end{pmatrix} \in M_{2 \times 3}(\mathbb{C})
+      \]
+      \[
+        \begin{pmatrix}
+          0 & 1  \\
+          1 & -1
+        \end{pmatrix} \in M_{2 \times 2}(\mathbb{R}) \subseteq M_{2 \times 2}(\mathbb{C})
+      \]
+    \end{example}
+  \end{figure}
 
 \subsection{Definizione}
 Un sistema lineare di \( n \) incognite e \( m \) equazioni:
 \[
-	a_{11}x_1 + a_{12}x_2 + \ldots + a_{1n}x_n = b_1
+a_{11}x_1 + a_{12}x_2 + \ldots + a_{1n}x_n = b_1
 \]
 \[
-	\vdots
+\vdots
 \]
 \[
-	a_{m1}x_1 + a_{m2}x_2 + \ldots + a_{mn}x_n = b_m
+a_{m1}x_1 + a_{m2}x_2 + \ldots + a_{mn}x_n = b_m
 \]
 può essere rappresentato nella forma \textbf{matriciale}:
 \[
-	Ax = b
+Ax = b
 \]
 \[
-	\underbrace{
-		A = \begin{pmatrix}
-			a_{11} & a_{12} & \ldots & a_{1n} \\
-			a_{21} & a_{22} & \ldots & a_{2n} \\
-			\vdots & \vdots & \ddots & \vdots \\
-			a_{m1} & a_{m2} & \ldots & a_{mn} \\
-		\end{pmatrix}}_{\text{Matrice dei coefficienti}} \quad \underbrace{x = \begin{pmatrix}
-			x_1    \\
-			x_2    \\
-			\vdots \\
-			x_n
-		\end{pmatrix}}_{\text{Vettore delle incognite}} \quad \underbrace{b = \begin{pmatrix}
-			b_1    \\
-			b_2    \\
-			\vdots \\
-			b_m
-		\end{pmatrix}}_{\text{Vettore dei termini noti}}
+\underbrace{
+  A = \begin{pmatrix}
+    a_{11} & a_{12} & \ldots & a_{1n} \\
+    a_{21} & a_{22} & \ldots & a_{2n} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    a_{m1} & a_{m2} & \ldots & a_{mn} \\
+    \end{pmatrix}}_{\text{Matrice dei coefficienti}} \quad \underbrace{x = \begin{pmatrix}
+    x_1    \\
+    x_2    \\
+    \vdots \\
+    x_n
+    \end{pmatrix}}_{\text{Vettore delle incognite}} \quad \underbrace{b = \begin{pmatrix}
+    b_1    \\
+    b_2    \\
+    \vdots \\
+    b_m
+\end{pmatrix}}_{\text{Vettore dei termini noti}}
 \]
 La matrice \[ (A \;|\; B) = \begin{pmatrix}[cccc|c]
-		a_{11} & a_{12} & \ldots & a_{1n} & b_1    \\
-		\vdots & \vdots & \ddots & \vdots & \vdots \\
-		a_{m1} & a_{m2} & \ldots & a_{mn} & b_n
-	\end{pmatrix}  \] è detta \textbf{matrice aumentata}.
+a_{11} & a_{12} & \ldots & a_{1n} & b_1    \\
+\vdots & \vdots & \ddots & \vdots & \vdots \\
+a_{m1} & a_{m2} & \ldots & a_{mn} & b_n
+\end{pmatrix}  \] è detta \textbf{matrice aumentata}.
 
 \begin{example}
-	\[
-		\begin{cases}
-			2x_1 + 6x_2 + 3x_3 + 2x_4 = 4                    \\
-			x_1 - 2x_2 + \frac{1}{2}x_3 + \frac{9}{4}x_4 = 1 \\
-			-x_1 + x_2 - \frac{1}{2}x_3 - x_4 = \frac{2}{5}
-		\end{cases}
-	\]
-	Scritto come matrice aumentata diventa:
-	\[
-		\begin{pmatrix}[cccc|c]
-			2  & 6  & 3            & 2           & 4           \\
-			1  & -2 & \frac{1}{2}  & \frac{9}{4} & 1           \\
-			-1 & 1  & -\frac{1}{2} & -1          & \frac{2}{5}
-		\end{pmatrix}
-	\]
-	\[
-		\frac{1}{2}R1
-	\]
-	\[
-		\begin{pmatrix}[cccc|c]
-			1  & 3  & \frac{3}{2}  & 1           & 2           \\
-			1  & -2 & \frac{1}{2}  & \frac{9}{4} & 1           \\
-			-1 & 1  & -\frac{1}{2} & -1          & \frac{2}{5}
-		\end{pmatrix}
-	\]
-	\[
-		R2 - R1 \quad R3 + R1
-	\]
-	\[
-		\begin{pmatrix}[cccc|c]
-			1 & 3  & \frac{3}{2} & 1           & 2            \\
-			0 & -5 & -1          & \frac{5}{4} & -1           \\
-			0 & 4  & 1           & 0           & \frac{12}{5}
-		\end{pmatrix}
-	\]
-	\[
-		\frac{-1}{5}R2
-	\]
-	\[
-		\begin{pmatrix}[cccc|c]
-			1 & 3 & \frac{3}{2} & 1            & 2            \\
-			0 & 1 & \frac{1}{5} & -\frac{1}{4} & \frac{1}{5}  \\
-			0 & 4 & 1           & 0            & \frac{12}{5}
-		\end{pmatrix}
-	\]
-	\[
-		R3 - 4R2
-	\]
-	\[
-		\begin{pmatrix}[cccc|c]
-			1 & 3 & \frac{3}{2} & 1            & 2           \\
-			0 & 1 & \frac{1}{5} & -\frac{1}{4} & \frac{1}{5} \\
-			0 & 0 & \frac{1}{5} & 1            & \frac{4}{5}
-		\end{pmatrix}
-	\]
-	\[
-		5R3
-	\]
-	\[
-		\begin{pmatrix}[cccc|c]
-			1 & 3 & \frac{3}{2} & 1            & 2           \\
-			0 & 1 & \frac{1}{5} & -\frac{1}{4} & \frac{1}{5} \\
-			0 & 0 & 1           & 5            & 8
-		\end{pmatrix}
-	\]
+\[
+  \begin{cases}
+    2x_1 + 6x_2 + 3x_3 + 2x_4 = 4                    \\
+    x_1 - 2x_2 + \frac{1}{2}x_3 + \frac{9}{4}x_4 = 1 \\
+    -x_1 + x_2 - \frac{1}{2}x_3 - x_4 = \frac{2}{5}
+  \end{cases}
+\]
+Scritto come matrice aumentata diventa:
+\[
+  \begin{pmatrix}[cccc|c]
+    2  & 6  & 3            & 2           & 4           \\
+    1  & -2 & \frac{1}{2}  & \frac{9}{4} & 1           \\
+    -1 & 1  & -\frac{1}{2} & -1          & \frac{2}{5}
+  \end{pmatrix}
+\]
+\[
+  \frac{1}{2}R1
+\]
+\[
+  \begin{pmatrix}[cccc|c]
+    1  & 3  & \frac{3}{2}  & 1           & 2           \\
+    1  & -2 & \frac{1}{2}  & \frac{9}{4} & 1           \\
+    -1 & 1  & -\frac{1}{2} & -1          & \frac{2}{5}
+  \end{pmatrix}
+\]
+\[
+  R2 - R1 \quad R3 + R1
+\]
+\[
+  \begin{pmatrix}[cccc|c]
+    1 & 3  & \frac{3}{2} & 1           & 2            \\
+    0 & -5 & -1          & \frac{5}{4} & -1           \\
+    0 & 4  & 1           & 0           & \frac{12}{5}
+  \end{pmatrix}
+\]
+\[
+  \frac{-1}{5}R2
+\]
+\[
+  \begin{pmatrix}[cccc|c]
+    1 & 3 & \frac{3}{2} & 1            & 2            \\
+    0 & 1 & \frac{1}{5} & -\frac{1}{4} & \frac{1}{5}  \\
+    0 & 4 & 1           & 0            & \frac{12}{5}
+  \end{pmatrix}
+\]
+\[
+  R3 - 4R2
+\]
+\[
+  \begin{pmatrix}[cccc|c]
+    1 & 3 & \frac{3}{2} & 1            & 2           \\
+    0 & 1 & \frac{1}{5} & -\frac{1}{4} & \frac{1}{5} \\
+    0 & 0 & \frac{1}{5} & 1            & \frac{4}{5}
+  \end{pmatrix}
+\]
+\[
+  5R3
+\]
+\[
+  \begin{pmatrix}[cccc|c]
+    1 & 3 & \frac{3}{2} & 1            & 2           \\
+    0 & 1 & \frac{1}{5} & -\frac{1}{4} & \frac{1}{5} \\
+    0 & 0 & 1           & 5            & 8
+  \end{pmatrix}
+\]
 \end{example}
 
 \noindent Si ottiene il sistema lineare equivalente:
 \[
-	\begin{cases}
-		x_1 + 3x_2 + \frac{3}{2}x_3 + x_4 = 2                                  \\
-		\quad \quad \;\;\, x_2 + \frac{1}{5}x_3 - \frac{1}{4}x_4 = \frac{1}{5} \\
-		\quad \quad \quad \quad \quad x_3 + 5x_4 = 8
-	\end{cases}
+\begin{cases}
+  x_1 + 3x_2 + \frac{3}{2}x_3 + x_4 = 2                                  \\
+  \quad \quad \;\;\, x_2 + \frac{1}{5}x_3 - \frac{1}{4}x_4 = \frac{1}{5} \\
+  \quad \quad \quad \quad \quad x_3 + 5x_4 = 8
+\end{cases}
 \]
 Assegiamo un parametro alla \textbf{variabile libera} \( x_4 \) :
 \[
-	t = x_4 \quad x_4 = t
+t = x_4 \quad x_4 = t
 \]
 \[
-	x_3 = 8 - 5t
+x_3 = 8 - 5t
 \]
 \[
-	x_2 = \frac{1}{5}- \frac{1}{5}(8-5t) + \frac{1}{4}t = \frac{-7}{5}+ t + \frac{1}{4}t = \frac{-7}{5} + \frac{5}{4}t
+x_2 = \frac{1}{5}- \frac{1}{5}(8-5t) + \frac{1}{4}t = \frac{-7}{5}+ t + \frac{1}{4}t = \frac{-7}{5} + \frac{5}{4}t
 \]
 \[
-	x_1 = 2 - 3(\frac{-7}{5} + \frac{5}{4}t) \frac{-3}{2}(8-5t)-t = 2 + \frac{21}{5} - 12 - \frac{15}{4}t - \frac{15}{2}t - t =
+x_1 = 2 - 3(\frac{-7}{5} + \frac{5}{4}t) \frac{-3}{2}(8-5t)-t = 2 + \frac{21}{5} - 12 - \frac{15}{4}t - \frac{15}{2}t - t =
 \]
 \[
-	\frac{10 + 21 - 60}{5} + \frac{15+30}{4}t - t = \frac{-29}{5} + \frac{15}{4}t - \frac{4}{4}t = \frac{-29}{5} + \frac{11}{4}t
+\frac{10 + 21 - 60}{5} + \frac{15+30}{4}t - t = \frac{-29}{5} + \frac{15}{4}t - \frac{4}{4}t = \frac{-29}{5} + \frac{11}{4}t
 \]
 Il sistema ha infinite soluzioni, una per ogni \( t \in \mathbb{C} \).
 
@@ -1051,137 +1051,137 @@ Il sistema ha infinite soluzioni, una per ogni \( t \in \mathbb{C} \).
 Attraverso le seguenti operazioni sulla matrice aumenta \( (A | b) \), si ottiene un sistema
 equivalente di forma più semplice:
 \begin{itemize}
-	\item Moltiplicare una riga \( (R_i) \) per uno scalare \( \alpha \in \mathbb{C} \) \textbf{non nullo}:
-	      \[
-		      \alpha R_i
-	      \]
-	\item Sommare una riga \( (R_i) \) con un multiplo di un'altra riga \( (R_j) \):
-	      \[
-		      R_i + \alpha R_j
-	      \]
-	\item Scambiare riga \( R_i \) con riga \( R_j \):
-	      \[
-		      R_i \leftrightarrow R_j
-	      \]
+\item Moltiplicare una riga \( (R_i) \) per uno scalare \( \alpha \in \mathbb{C} \) \textbf{non nullo}:
+  \[
+    \alpha R_i
+  \]
+\item Sommare una riga \( (R_i) \) con un multiplo di un'altra riga \( (R_j) \):
+  \[
+    R_i + \alpha R_j
+  \]
+\item Scambiare riga \( R_i \) con riga \( R_j \):
+  \[
+    R_i \leftrightarrow R_j
+  \]
 \end{itemize}
 
 \begin{example}
-	Prendiamo il seguente sistema lineare:
-	\[
-		\begin{cases}
-			2x_1 + 6x_2 + 3x_3 = 4          \\
-			x_1 - 2x_2 + \frac{1}{2}x_3 = 1 \\
-			-x_1 + x_2 - \frac{7}{10}x_3 = \frac{2}{5}
-		\end{cases}
-	\]
-	Scritto come matrice aumentata diventa:
-	\[
-		\begin{pmatrix}[ccc|c]
-			2  & 6  & 3             & 4           \\
-			1  & -2 & \frac{1}{2}   & 1           \\
-			-1 & 1  & -\frac{7}{10} & \frac{2}{5}
-		\end{pmatrix}
-		\stackrel{\frac{1}{2}R1}{\sim}
-		\begin{pmatrix}[ccc|c]
-			1  & 3  & \frac{3}{2}   & 2           \\
-			1  & -2 & \frac{1}{2}   & 1           \\
-			-1 & 1  & -\frac{7}{10} & \frac{2}{5}
-		\end{pmatrix}
-	\]
-	\[
-		\stackrel{R2 - R1}{\underset{R3+R1}{\sim}}
-		\begin{pmatrix} [ccc|c]
-			1 & 3  & \frac{3}{2} & 2            \\
-			0 & -5 & -1          & -1           \\
-			0 & 4  & \frac{4}{5} & \frac{12}{5}
-		\end{pmatrix}
-		\stackrel{\frac{-1}{5}R2}{\sim}
-		\begin{pmatrix}[ccc|c]
-			1 & 3 & \frac{3}{2} & 2            \\
-			0 & 1 & \frac{1}{5} & \frac{1}{5}  \\
-			0 & 4 & \frac{4}{5} & \frac{12}{5}
-		\end{pmatrix}
-	\]
-	\[
-		\stackrel{R3 - 4R2}{\sim}
-		\begin{pmatrix}[ccc|c]
-			1 & 3 & \frac{3}{2} & 2           \\
-			0 & 1 & \frac{1}{5} & \frac{1}{5} \\
-			0 & 0 & 0           & \frac{8}{5}
-		\end{pmatrix}
-		\stackrel{\frac{5}{8}R3}{\sim}
-		\begin{pmatrix}[ccc|c]
-			1 & 3 & \frac{3}{2} & 2           \\
-			0 & 1 & \frac{1}{5} & \frac{1}{5} \\
-			0 & 0 & 0           & 1
-		\end{pmatrix}
-	\]
-	Otteniamo un sistema lineare equivalente:
-	\[
-		\begin{cases}
-			x_1 + 3x_2 + \frac{3}{2}x_3 = 2                       \\
-			\quad \quad \;\;\, x_2 + \frac{1}{5}x_3 = \frac{1}{5} \\
-			\quad \quad \quad \quad \quad \quad  0 = 1
-		\end{cases}
-	\]
-	Il sistema è impossibile, non ha soluzioni.
+Prendiamo il seguente sistema lineare:
+\[
+  \begin{cases}
+    2x_1 + 6x_2 + 3x_3 = 4          \\
+    x_1 - 2x_2 + \frac{1}{2}x_3 = 1 \\
+    -x_1 + x_2 - \frac{7}{10}x_3 = \frac{2}{5}
+  \end{cases}
+\]
+Scritto come matrice aumentata diventa:
+\[
+  \begin{pmatrix}[ccc|c]
+    2  & 6  & 3             & 4           \\
+    1  & -2 & \frac{1}{2}   & 1           \\
+    -1 & 1  & -\frac{7}{10} & \frac{2}{5}
+  \end{pmatrix}
+  \stackrel{\frac{1}{2}R1}{\sim}
+  \begin{pmatrix}[ccc|c]
+    1  & 3  & \frac{3}{2}   & 2           \\
+    1  & -2 & \frac{1}{2}   & 1           \\
+    -1 & 1  & -\frac{7}{10} & \frac{2}{5}
+  \end{pmatrix}
+\]
+\[
+  \stackrel{R2 - R1}{\underset{R3+R1}{\sim}}
+  \begin{pmatrix} [ccc|c]
+    1 & 3  & \frac{3}{2} & 2            \\
+    0 & -5 & -1          & -1           \\
+    0 & 4  & \frac{4}{5} & \frac{12}{5}
+  \end{pmatrix}
+  \stackrel{\frac{-1}{5}R2}{\sim}
+  \begin{pmatrix}[ccc|c]
+    1 & 3 & \frac{3}{2} & 2            \\
+    0 & 1 & \frac{1}{5} & \frac{1}{5}  \\
+    0 & 4 & \frac{4}{5} & \frac{12}{5}
+  \end{pmatrix}
+\]
+\[
+  \stackrel{R3 - 4R2}{\sim}
+  \begin{pmatrix}[ccc|c]
+    1 & 3 & \frac{3}{2} & 2           \\
+    0 & 1 & \frac{1}{5} & \frac{1}{5} \\
+    0 & 0 & 0           & \frac{8}{5}
+  \end{pmatrix}
+  \stackrel{\frac{5}{8}R3}{\sim}
+  \begin{pmatrix}[ccc|c]
+    1 & 3 & \frac{3}{2} & 2           \\
+    0 & 1 & \frac{1}{5} & \frac{1}{5} \\
+    0 & 0 & 0           & 1
+  \end{pmatrix}
+\]
+Otteniamo un sistema lineare equivalente:
+\[
+  \begin{cases}
+    x_1 + 3x_2 + \frac{3}{2}x_3 = 2                       \\
+    \quad \quad \;\;\, x_2 + \frac{1}{5}x_3 = \frac{1}{5} \\
+    \quad \quad \quad \quad \quad \quad  0 = 1
+  \end{cases}
+\]
+Il sistema è impossibile, non ha soluzioni.
 \end{example}
 
 \subsection{Linee in \texorpdfstring{\( \mathbb{R}^2 \)}{R²} }
 2 equazioni a 2 incognite con coefficienti in \( \mathbb{R} \):
 \[
-	\begin{cases}
-		a_{11}x + a_{12}y = b_1 \quad (I) \\
-		a_{21}x + a_{22}y = b_2
-	\end{cases}
+\begin{cases}
+  a_{11}x + a_{12}y = b_1 \quad (I) \\
+  a_{21}x + a_{22}y = b_2
+\end{cases}
 \]
 \[
-	a_{11},\;a_{12},\;a_{21},\;a_{22},\;b_1,\;b_2 \in \mathbb{R}
+a_{11},\;a_{12},\;a_{21},\;a_{22},\;b_1,\;b_2 \in \mathbb{R}
 \]
 Questo sistema lineare può essere rappresentato come:
 \[
-	y = \frac{-a_{11}}{a_{12}}x + \frac{b_1}{a_{12}} \quad (I)
+y = \frac{-a_{11}}{a_{12}}x + \frac{b_1}{a_{12}} \quad (I)
 \]
 \[
-	y = \frac{-a_{21}}{a_{22}}x + \frac{b_2}{a_{22}} \quad (II)
+y = \frac{-a_{21}}{a_{22}}x + \frac{b_2}{a_{22}} \quad (II)
 \]
 
 \noindent Il sistema può essere rappresentato come un sistema di rette nel piano cartesiano in cui
 la soluzione è l'intersezione delle rette.
 
 \begin{figure}[H]
-	\centering
-	\begin{tikzpicture}
-		\draw[->] (-2,0) -- (2,0) node[right] {\( x \)};
-		\draw[->] (0,-2) -- (0,2) node[above] {\( y \)};
-		\draw[red, thick] (-2,1) -- (1.5,-1.5) node[right] {(I)};
-		\draw[blue, thick] (-1.5,-1) -- (2,1) node[right] {(II)};
-	\end{tikzpicture}
-	\caption{Intersezione di due rette}
+\centering
+\begin{tikzpicture}
+  \draw[->] (-2,0) -- (2,0) node[right] {\( x \)};
+  \draw[->] (0,-2) -- (0,2) node[above] {\( y \)};
+  \draw[red, thick] (-2,1) -- (1.5,-1.5) node[right] {(I)};
+  \draw[blue, thick] (-1.5,-1) -- (2,1) node[right] {(II)};
+\end{tikzpicture}
+\caption{Intersezione di due rette}
 \end{figure}
 
 \noindent Può anche succedere che le rette siano parallele, in questo caso il sistema è impossibile:
 \begin{figure}[H]
-	\centering
-	\begin{tikzpicture}
-		\draw[->] (-2,0) -- (2,0) node[right] {\( x \)};
-		\draw[->] (0,-2) -- (0,2) node[above] {\( y \)};
-		\draw[red, thick] (-2,1) -- (1.5,-1.5) node[right] {(I)};
-		\draw[blue, thick] (-2,2) -- (1.5,-0.5) node[right] {(II)};
-	\end{tikzpicture}
-	\caption{Retta parallela}
+\centering
+\begin{tikzpicture}
+  \draw[->] (-2,0) -- (2,0) node[right] {\( x \)};
+  \draw[->] (0,-2) -- (0,2) node[above] {\( y \)};
+  \draw[red, thick] (-2,1) -- (1.5,-1.5) node[right] {(I)};
+  \draw[blue, thick] (-2,2) -- (1.5,-0.5) node[right] {(II)};
+\end{tikzpicture}
+\caption{Retta parallela}
 \end{figure}
 
 \noindent Oppure che le rette siano coincidenti, in questo caso il sistema è indeterminato,
 cioè con infinite soluzioni:
 \begin{figure}[H]
-	\centering
-	\begin{tikzpicture}
-		\draw[->] (-2,0) -- (2,0) node[right] {\( x \)};
-		\draw[->] (0,-2) -- (0,2) node[above] {\( y \)};
-		\draw[red, thick] (-2,1) -- (1.5,-1.5) node[right] {\( (I) = (II) \) };
-	\end{tikzpicture}
-	\caption{Retta coincidente}
+\centering
+\begin{tikzpicture}
+  \draw[->] (-2,0) -- (2,0) node[right] {\( x \)};
+  \draw[->] (0,-2) -- (0,2) node[above] {\( y \)};
+  \draw[red, thick] (-2,1) -- (1.5,-1.5) node[right] {\( (I) = (II) \) };
+\end{tikzpicture}
+\caption{Retta coincidente}
 \end{figure}
 
 \subsection{Metodo di eliminazione di Gauss (EG)}
@@ -1189,347 +1189,347 @@ Data una matrice \( M = (a_{ij}) \quad 1<=i<=m \;\; 1<=j<=n \) in \( M_{m \times
 (oppure in \( M_{m \times n}(\mathbb{R}) \)) con righe \( R1, \ldots, Rn \), eseguiamo le
 seguenti opreazioni elementari:
 \begin{enumerate}
-	\item Scegliamo la prima colonna non nulla \( j \) di \( M \) (partendo da sinistra).
-	      Dopo aver eventualmente scambiato 2 righe di \( M \), otteniamo una matrice
-	      della forma:
-	      \[
-		      \begin{pmatrix}
-			      0      & \ldots & 0      & a_{1j} & \ldots & a_{1n} \\
-			      \vdots & \ddots & \vdots & \vdots & \ddots & \vdots \\
-			      0      & \ldots & 0      & a_{mj} & \ldots & a_{mn} \\
-		      \end{pmatrix} \quad \text{con \( a_{ij} \neq 0 \) }
-	      \]
-	      Moltiplicando \( R1 \) per \( \frac{1}{a_{ij}} \), si ottiene:
-	      \[
-		      \begin{pmatrix}
-			      0      & \ldots & 0      & 1      & *        & \ldots & *      \\
-			      \vdots & \ddots & \vdots & \vdots & \vdots   & \ddots & \vdots \\
-			      0      & \ldots & 0      & a_{mj} & a_{mj+1} & \ldots & a_{mn} \\
-		      \end{pmatrix}
-	      \]
-	      Adesso, per ogni \( 2 \le i \le m \), eseguiamo l'operazione elementare \( Ri - a_{ij}R1 \).
-	      Otteniamo una matrice della forma:
-	      \begin{figure}[H]
-		      \centering
-		      \begin{tikzpicture}
-			      \node at (0,0) {
-				      \(
-				      \begin{pmatrix}
-					      0      & \ldots & 0      & 1      & *      & \ldots & *      \\
-					      \vdots & \ddots & \vdots & 0      & *      & \ldots & *      \\
-					      \vdots & \ddots & \vdots & \vdots & \vdots &        & \vdots \\
-					      0      & \ldots & 0      & 0      & *      & \ldots & *      \\
-				      \end{pmatrix}
-				      \)
-			      };
+\item Scegliamo la prima colonna non nulla \( j \) di \( M \) (partendo da sinistra).
+  Dopo aver eventualmente scambiato 2 righe di \( M \), otteniamo una matrice
+  della forma:
+  \[
+    \begin{pmatrix}
+      0      & \ldots & 0      & a_{1j} & \ldots & a_{1n} \\
+      \vdots & \ddots & \vdots & \vdots & \ddots & \vdots \\
+      0      & \ldots & 0      & a_{mj} & \ldots & a_{mn} \\
+    \end{pmatrix} \quad \text{con \( a_{ij} \neq 0 \) }
+  \]
+  Moltiplicando \( R1 \) per \( \frac{1}{a_{ij}} \), si ottiene:
+  \[
+    \begin{pmatrix}
+      0      & \ldots & 0      & 1      & *        & \ldots & *      \\
+      \vdots & \ddots & \vdots & \vdots & \vdots   & \ddots & \vdots \\
+      0      & \ldots & 0      & a_{mj} & a_{mj+1} & \ldots & a_{mn} \\
+    \end{pmatrix}
+  \]
+  Adesso, per ogni \( 2 \le i \le m \), eseguiamo l'operazione elementare \( Ri - a_{ij}R1 \).
+  Otteniamo una matrice della forma:
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \node at (0,0) {
+          \(
+          \begin{pmatrix}
+            0      & \ldots & 0      & 1      & *      & \ldots & *      \\
+            \vdots & \ddots & \vdots & 0      & *      & \ldots & *      \\
+            \vdots & \ddots & \vdots & \vdots & \vdots &        & \vdots \\
+            0      & \ldots & 0      & 0      & *      & \ldots & *      \\
+          \end{pmatrix}
+          \)
+        };
 
-			      \draw[red, thick] (0.3,-1.1) rectangle (2,0.4) node[midway, xshift=2] {\( M' \) };
-			      \draw[<-] (0,-1.1) -- (0,-1.5) node[below] {Colonna \( j \) };
-		      \end{tikzpicture}
-	      \end{figure}
-	\item Ripetiamo il procedimento 1. su \( M' \) per ottenere:
-	      \begin{figure}[H]
-		      \centering
-		      \begin{tikzpicture}
-			      \node at (0,0) {
-				      \(
-				      \begin{pmatrix}
-					      0      & \ldots & 0      & 1      & *      & \ldots & \ldots & \ldots & \ldots & *      \\
-					      \vdots & \ddots & \vdots & 0      & \ldots & 0      & 1      & *      & \ldots & *      \\
-					      \vdots & \ddots & \vdots & \vdots & \ddots & \vdots & 0      & *      & \ldots & *      \\
-					      \vdots & \ddots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots &        & \vdots \\
-					      0      & \ldots & 0      & 0      & \ldots & 0      & 0      & 0      & \ldots & 0
-				      \end{pmatrix}
-				      \)
-			      };
+      \draw[red, thick] (0.3,-1.1) rectangle (2,0.4) node[midway, xshift=2] {\( M' \) };
+      \draw[<-] (0,-1.1) -- (0,-1.5) node[below] {Colonna \( j \) };
+    \end{tikzpicture}
+  \end{figure}
+\item Ripetiamo il procedimento 1. su \( M' \) per ottenere:
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \node at (0,0) {
+          \(
+          \begin{pmatrix}
+            0      & \ldots & 0      & 1      & *      & \ldots & \ldots & \ldots & \ldots & *      \\
+            \vdots & \ddots & \vdots & 0      & \ldots & 0      & 1      & *      & \ldots & *      \\
+            \vdots & \ddots & \vdots & \vdots & \ddots & \vdots & 0      & *      & \ldots & *      \\
+            \vdots & \ddots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots &        & \vdots \\
+            0      & \ldots & 0      & 0      & \ldots & 0      & 0      & 0      & \ldots & 0
+          \end{pmatrix}
+          \)
+        };
 
-			      \draw[red, thick] (1.45,-1.45) rectangle (3.25,0.1) node[midway, xshift=3] {\( M'' \) };
-		      \end{tikzpicture}
-	      \end{figure}
-	      e così via...
-	\item Dopo un numero finito di passi, si ottiene una matrice che si chiama
-	      \textbf{matrice a scala}:
-	      \begin{figure}[H]
-		      \centering
-		      \begin{tikzpicture}
-			      \node at (0,0) {
-				      \(
-				      r
-				      \left(
-				      \begin{matrix}
-					      0      & \ldots & 0      & 1      & *      & \ldots & *      & *      & *      & \ldots \\
-					      \vdots & \ddots & \vdots & 0      & 0      & \ldots & 0      & 1      & *      & \ldots \\
-					      \vdots & \ddots & \vdots & \vdots & \vdots & \ddots & \vdots & 0      & 0      & \ldots \\
-					      \vdots & \ddots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \ddots \\
-					      \vdots & \ddots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \ddots \\
-					      \vdots & \ddots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \ddots \\
-					      0      & \ldots & 0      & 0      & 0      & \ldots & 0      & 0      & 0      & \ldots
-				      \end{matrix}
-				      \;\;\;
-				      \begin{matrix}
-					      *      & \ldots & \ldots & *      & *      & \ldots & *      \\
-					      *      & \ldots & \ddots & *      & *      & \ldots & *      \\
-					      0      & 1      & \ddots & \vdots & \vdots & \ddots & \vdots \\
-					      \vdots & 0      & \ddots & 1      & *      & \ldots & *      \\
-					      \vdots & \vdots & \ddots & 0      & 0      & \ldots & 0      \\
-					      \vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots \\
-					      0      & 0      & \ldots & 0      & 0      & \ldots & 0
-				      \end{matrix}
-				      \right)
-				      \)
-			      };
-			      \draw[green,thick] (-3.2, 2) -- (-3.2,1.6) -- ++(2.35,0) -- ++(0,-0.65) -- ++(2.35,0)
-			      -- ++(0,-0.65) -- ++(0.6,0) -- ++(0.8,-0.65) -- ++(2.35,0);
+      \draw[red, thick] (1.45,-1.45) rectangle (3.25,0.1) node[midway, xshift=3] {\( M'' \) };
+    \end{tikzpicture}
+  \end{figure}
+  e così via...
+\item Dopo un numero finito di passi, si ottiene una matrice che si chiama
+  \textbf{matrice a scala}:
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \node at (0,0) {
+          \(
+          r
+          \left(
+            \begin{matrix}
+              0      & \ldots & 0      & 1      & *      & \ldots & *      & *      & *      & \ldots \\
+              \vdots & \ddots & \vdots & 0      & 0      & \ldots & 0      & 1      & *      & \ldots \\
+              \vdots & \ddots & \vdots & \vdots & \vdots & \ddots & \vdots & 0      & 0      & \ldots \\
+              \vdots & \ddots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \ddots \\
+              \vdots & \ddots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \ddots \\
+              \vdots & \ddots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \ddots \\
+              0      & \ldots & 0      & 0      & 0      & \ldots & 0      & 0      & 0      & \ldots
+            \end{matrix}
+            \;\;\;
+          \begin{matrix}
+            *      & \ldots & \ldots & *      & *      & \ldots & *      \\
+            *      & \ldots & \ddots & *      & *      & \ldots & *      \\
+            0      & 1      & \ddots & \vdots & \vdots & \ddots & \vdots \\
+            \vdots & 0      & \ddots & 1      & *      & \ldots & *      \\
+            \vdots & \vdots & \ddots & 0      & 0      & \ldots & 0      \\
+            \vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots \\
+            0      & 0      & \ldots & 0      & 0      & \ldots & 0
+          \end{matrix}
+        \right)
+        \)
+      };
+    \draw[green,thick] (-3.2, 2) -- (-3.2,1.6) -- ++(2.35,0) -- ++(0,-0.65) -- ++(2.35,0)
+      -- ++(0,-0.65) -- ++(0.6,0) -- ++(0.8,-0.65) -- ++(2.35,0);
 
-			      \draw[green, thick] (-2.95,1.87) circle (0.21);
-			      \draw[<-] (-2.95,2.15) -- (-2.95,2.5) node[above] {Pivot};
-			      \draw[green, thick] (-0.6,1.24) circle (0.21);
-			      \draw[green, thick] (1.78,0.59) circle (0.21);
-			      \draw[green, thick] (3.18,-0.07) circle (0.21);
+    \draw[green, thick] (-2.95,1.87) circle (0.21);
+    \draw[<-] (-2.95,2.15) -- (-2.95,2.5) node[above] {Pivot};
+    \draw[green, thick] (-0.6,1.24) circle (0.21);
+    \draw[green, thick] (1.78,0.59) circle (0.21);
+    \draw[green, thick] (3.18,-0.07) circle (0.21);
 
-			      \draw (-3.2,-1.9) -- ++(0,-0.2) -- ++(0.5,0) -- ++(0,0.2) node[below] (dom1) {};
-			      \draw[green, fill, opacity=0.2] (-3.2,-2.1) rectangle (-2.7,2.1);
-			      \draw (-0.88,-1.9) -- ++(0,-0.2) -- ++(0.5,0) -- ++(0,0.2) node[below left] (dom2) {};
-			      \draw[green, fill, opacity=0.2] (-0.88,-2.1) rectangle (-0.38,2.1);
-			      \draw (1.55,-1.9) -- ++(0,-0.2) -- ++(0.5,0) -- ++(0,0.2) node[below left, yshift=-2] (dom3) {};
-			      \draw[green, fill, opacity=0.2] (1.55,-2.1) rectangle (2.05,2.1);
-			      \draw (2.95,-1.9) -- ++(0,-0.2) -- ++(0.5,0) -- ++(0,0.2) node[below left, yshift=-3] (dom4) {};
-			      \draw[green, fill, opacity=0.2] (2.95,-2.1) rectangle (3.45,2.1);
+    \draw (-3.2,-1.9) -- ++(0,-0.2) -- ++(0.5,0) -- ++(0,0.2) node[below] (dom1) {};
+    \draw[green, fill, opacity=0.2] (-3.2,-2.1) rectangle (-2.7,2.1);
+    \draw (-0.88,-1.9) -- ++(0,-0.2) -- ++(0.5,0) -- ++(0,0.2) node[below left] (dom2) {};
+    \draw[green, fill, opacity=0.2] (-0.88,-2.1) rectangle (-0.38,2.1);
+    \draw (1.55,-1.9) -- ++(0,-0.2) -- ++(0.5,0) -- ++(0,0.2) node[below left, yshift=-2] (dom3) {};
+    \draw[green, fill, opacity=0.2] (1.55,-2.1) rectangle (2.05,2.1);
+    \draw (2.95,-1.9) -- ++(0,-0.2) -- ++(0.5,0) -- ++(0,0.2) node[below left, yshift=-3] (dom4) {};
+    \draw[green, fill, opacity=0.2] (2.95,-2.1) rectangle (3.45,2.1);
 
-			      \node[align=center] at (0,-3.5) (col) {Colonne\\dominanti};
+    \node[align=center] at (0,-3.5) (col) {Colonne\\dominanti};
 
-			      \draw[->] (col) -- (dom1);
-			      \draw[->] (col) -- (dom2);
-			      \draw[->] (col) -- (dom3);
-			      \draw[->] (col) -- (dom4);
+    \draw[->] (col) -- (dom1);
+    \draw[->] (col) -- (dom2);
+    \draw[->] (col) -- (dom3);
+    \draw[->] (col) -- (dom4);
 
-		      \end{tikzpicture}
-	      \end{figure}
-	      cioè esiste un numero \( 1<=r<=m \) tale che:
-	      \begin{enumerate}
-		      \item Le righe \( 1 \le i \le r \) non sono nulle.
-		      \item Ogni riga \( 2 \le i \le m \) ha un numero di zeri iniziali superiore alla
-		            riga precedente.
-		      \item le righe \( r+1 \le i \le m \) sono tutte nulle.
-	      \end{enumerate}
-	      Inoltre il primo coefficiente non nullo di ogni riga \( i \) è uguale a \( 1 \) e si chiama \textbf{pivot}.
-	      La matrice è detta \textbf{forma ridotta} di \( M \). Le colonne che contengono pivot
-	      sono dette \textbf{dominanti}.
+  \end{tikzpicture}
+\end{figure}
+cioè esiste un numero \( 1<=r<=m \) tale che:
+\begin{enumerate}
+  \item Le righe \( 1 \le i \le r \) non sono nulle.
+  \item Ogni riga \( 2 \le i \le m \) ha un numero di zeri iniziali superiore alla
+    riga precedente.
+  \item le righe \( r+1 \le i \le m \) sono tutte nulle.
+\end{enumerate}
+Inoltre il primo coefficiente non nullo di ogni riga \( i \) è uguale a \( 1 \) e si chiama \textbf{pivot}.
+La matrice è detta \textbf{forma ridotta} di \( M \). Le colonne che contengono pivot
+sono dette \textbf{dominanti}.
 \end{enumerate}
 
 \begin{example}
-	Prendiamo in considerazione la matrice:
-	\[
-		M = \begin{pmatrix}
-			0 & 0  & 0 & 5  & 4 \\
-			0 & 10 & 0 & 30 & 2 \\
-			0 & -i & 0 & 6  & 7
-		\end{pmatrix} \in M_{3 \times 5}(\mathbb{C})
-	\]
-	\[
-		\stackrel{R1 \leftrightarrow R2}{\leadsto}
-		\begin{pmatrix}
-			0 & 10 & 0 & 30 & 2 \\
-			0 & 0  & 0 & 5  & 4 \\
-			0 & -i & 0 & 6  & 7
-		\end{pmatrix}
-		\stackrel{\frac{1}{10}R1}{\leadsto}
-		\begin{pmatrix}
-			0 & 1  & 0 & 3 & \frac{1}{5} \\
-			0 & 0  & 0 & 5 & 4           \\
-			0 & -i & 0 & 6 & 7
-		\end{pmatrix}
-	\]
-	\begin{tikzpicture}
-		\node at (0,0) {
-			\(
-			\stackrel{R3 + iR1}{\leadsto}
-			\begin{pmatrix}
-				0 & 1 & 0 & 3      & \frac{1}{5}      \\
-				0 & 0 & 0 & 5      & 4                \\
-				0 & 0 & 0 & 6 + 3i & 7 + \frac{1}{5}i
-			\end{pmatrix}
-			\stackrel{\frac{1}{5}R2}{\leadsto}
-			\begin{pmatrix}
-				0 & 1 & 0 & 3      & \frac{1}{5}      \\
-				0 & 0 & 0 & 1      & \frac{4}{5}      \\
-				0 & 0 & 0 & 6 + 3i & 7 + \frac{1}{5}i
-			\end{pmatrix}
-			\)
-		};
+Prendiamo in considerazione la matrice:
+\[
+M = \begin{pmatrix}
+  0 & 0  & 0 & 5  & 4 \\
+  0 & 10 & 0 & 30 & 2 \\
+  0 & -i & 0 & 6  & 7
+\end{pmatrix} \in M_{3 \times 5}(\mathbb{C})
+\]
+\[
+\stackrel{R1 \leftrightarrow R2}{\leadsto}
+\begin{pmatrix}
+  0 & 10 & 0 & 30 & 2 \\
+  0 & 0  & 0 & 5  & 4 \\
+  0 & -i & 0 & 6  & 7
+\end{pmatrix}
+\stackrel{\frac{1}{10}R1}{\leadsto}
+\begin{pmatrix}
+  0 & 1  & 0 & 3 & \frac{1}{5} \\
+  0 & 0  & 0 & 5 & 4           \\
+  0 & -i & 0 & 6 & 7
+\end{pmatrix}
+\]
+\begin{tikzpicture}
+\node at (0,0) {
+    \(
+    \stackrel{R3 + iR1}{\leadsto}
+    \begin{pmatrix}
+      0 & 1 & 0 & 3      & \frac{1}{5}      \\
+      0 & 0 & 0 & 5      & 4                \\
+      0 & 0 & 0 & 6 + 3i & 7 + \frac{1}{5}i
+    \end{pmatrix}
+    \stackrel{\frac{1}{5}R2}{\leadsto}
+    \begin{pmatrix}
+      0 & 1 & 0 & 3      & \frac{1}{5}      \\
+      0 & 0 & 0 & 1      & \frac{4}{5}      \\
+      0 & 0 & 0 & 6 + 3i & 7 + \frac{1}{5}i
+    \end{pmatrix}
+    \)
+  };
 
-		\draw[green, fill, opacity=0.2] (-3.5,-0.7) rectangle (-3.1,0.7);
-		\draw[green, thick] (-3.29,0.45) circle (0.2);
+\draw[green, fill, opacity=0.2] (-3.5,-0.7) rectangle (-3.1,0.7);
+\draw[green, thick] (-3.29,0.45) circle (0.2);
 
-		\draw[red, thick] (-3,-0.7) rectangle (-0.07,0.25);
+\draw[red, thick] (-3,-0.7) rectangle (-0.07,0.25);
 
-		\draw[green, fill, opacity=0.2] (1.65,-0.7) rectangle (2.05,0.7);
-		\draw[green, thick] (1.85,0.45) circle (0.2);
+\draw[green, fill, opacity=0.2] (1.65,-0.7) rectangle (2.05,0.7);
+\draw[green, thick] (1.85,0.45) circle (0.2);
 
-		\draw[red, thick] (2.2,-0.7) rectangle (5.05,0.2);
+\draw[red, thick] (2.2,-0.7) rectangle (5.05,0.2);
 
-	\end{tikzpicture}
-	\\
-	\begin{tikzpicture}
-		\node at (0,0) {
-			\(
-			\stackrel{R3 - (6 + 3i)R2}{\leadsto}
-			\begin{pmatrix}
-				0 & 1 & 0 & 3 & \frac{1}{5}                  \\
-				0 & 0 & 0 & 1 & \frac{4}{5}                  \\
-				0 & 0 & 0 & 0 & \frac{11}{5} - \frac{11}{5}i
-			\end{pmatrix}
-			\stackrel{\frac{R3}{\frac{11}{5}-\frac{11}{5}i}}{\leadsto}
-			\begin{pmatrix}
-				0 & 1 & 0 & 3 & \frac{1}{5} \\
-				0 & 0 & 0 & 1 & \frac{4}{5} \\
-				0 & 0 & 0 & 0 & 1
-			\end{pmatrix}
-			\)
-		};
+\end{tikzpicture}
+\\
+\begin{tikzpicture}
+\node at (0,0) {
+    \(
+    \stackrel{R3 - (6 + 3i)R2}{\leadsto}
+    \begin{pmatrix}
+      0 & 1 & 0 & 3 & \frac{1}{5}                  \\
+      0 & 0 & 0 & 1 & \frac{4}{5}                  \\
+      0 & 0 & 0 & 0 & \frac{11}{5} - \frac{11}{5}i
+    \end{pmatrix}
+    \stackrel{\frac{R3}{\frac{11}{5}-\frac{11}{5}i}}{\leadsto}
+    \begin{pmatrix}
+      0 & 1 & 0 & 3 & \frac{1}{5} \\
+      0 & 0 & 0 & 1 & \frac{4}{5} \\
+      0 & 0 & 0 & 0 & 1
+    \end{pmatrix}
+    \)
+  };
 
-		\draw[green, fill, opacity=0.2] (-1.4,-0.7) rectangle (-1.0,0.7);
-		\draw[green, thick] (-1.19,0.45) circle (0.2);
+\draw[green, fill, opacity=0.2] (-1.4,-0.7) rectangle (-1.0,0.7);
+\draw[green, thick] (-1.19,0.45) circle (0.2);
 
-		\draw[green, fill, opacity=0.2] (-2.45,-0.7) rectangle (-2.05,0.7);
-		\draw[green, thick] (-2.25,0.45) circle (0.2);
+\draw[green, fill, opacity=0.2] (-2.45,-0.7) rectangle (-2.05,0.7);
+\draw[green, thick] (-2.25,0.45) circle (0.2);
 
-		\draw[red, thick] (-0.8,-0.7) rectangle (0.6,-0.19);
+\draw[red, thick] (-0.8,-0.7) rectangle (0.6,-0.19);
 
-		\draw[green, fill, opacity=0.2] (2.75,-0.7) rectangle (3.2,0.7);
-		\draw[green, thick] (2.97,0.45) circle (0.2);
+\draw[green, fill, opacity=0.2] (2.75,-0.7) rectangle (3.2,0.7);
+\draw[green, thick] (2.97,0.45) circle (0.2);
 
-		\draw[green, fill, opacity=0.2] (4.35,-0.7) rectangle (4.78,0.7);
-		\draw[green, thick] (4.57,0.43) circle (0.24);
+\draw[green, fill, opacity=0.2] (4.35,-0.7) rectangle (4.78,0.7);
+\draw[green, thick] (4.57,0.43) circle (0.24);
 
-		\draw[green, fill, opacity=0.2] (3.8,-0.7) rectangle (4.24,0.7);
-		\draw[green, thick] (4.02,0.45) circle (0.2);
+\draw[green, fill, opacity=0.2] (3.8,-0.7) rectangle (4.24,0.7);
+\draw[green, thick] (4.02,0.45) circle (0.2);
 
-		\draw[green] (2.65,0.7) -- ++(0,-0.5) -- ++(1.08,0) -- ++(0,-0.35) -- ++(0.6,0) -- ++(0,-0.45) -- ++(0.4,0);
-	\end{tikzpicture}
+\draw[green] (2.65,0.7) -- ++(0,-0.5) -- ++(1.08,0) -- ++(0,-0.35) -- ++(0.6,0) -- ++(0,-0.45) -- ++(0.4,0);
+\end{tikzpicture}
 \end{example}
 
 \subsection{Risoluzione di un sistema lineare}
 Dato un sistema lineare
 \[
-	(*)\quad Ax=b
+(*)\quad Ax=b
 \]
 con \( A \in M_{m \times n}(\mathbb{C}),\; b \in M_{m \times 1}(\mathbb{C}) \) procediamo con
 il metodo di eliminazione di Gauss sulla matrice aumentata \( (A | b) \) fino ad ottenere la
 forma ridotta \( (U | c) \) e un sistema lineare corrispondente
 \[
-	Ux = c
+Ux = c
 \]
 che è equivalente a \( (*) \). Chiamiamo \textbf{variabili dominanti} le \( r \) variabili
 che corrispondono alle colonne dominanti e \textbf{variabili libere} le rimanenti.
 
 \begin{example}
-	Prendiamo in considerazione il seguente sistema lineare:
-	\[
-		\begin{cases}
-			10x_1 + 10x_2 + 30x_3 = 2 \\
-			\hspace{1.5cm} 5x_3 = 4   \\
-			-x_1 - x_2 + 6x_3 = 7
-		\end{cases}
-	\]
-	Scritto come matrice aumentata diventa:
-	\[
-		\begin{pmatrix}[ccc|c]
-			10 & 10 & 30 & 2 \\
-			0  & 0  & 5  & 4 \\
-			-1 & -1 & 6  & 7
-		\end{pmatrix}
-		\stackrel{EG}{\leadsto}
-		\begin{pmatrix}[ccc|c]
-			1 & 1 & 3 & \frac{1}{5} \\
-			0 & 0 & 1 & \frac{4}{5} \\
-			0 & 0 & 0 & 0
-		\end{pmatrix}
-	\]
-	\[
-		\hspace{3.3cm} x_1 \;\, x_2 \;\, x_3
-	\]
-	\( x_1 \) e \( x_3 \) sono variabili dominanti e \( x_2 \) è variabile libera.
+Prendiamo in considerazione il seguente sistema lineare:
+\[
+\begin{cases}
+  10x_1 + 10x_2 + 30x_3 = 2 \\
+  \hspace{1.5cm} 5x_3 = 4   \\
+  -x_1 - x_2 + 6x_3 = 7
+\end{cases}
+\]
+Scritto come matrice aumentata diventa:
+\[
+\begin{pmatrix}[ccc|c]
+  10 & 10 & 30 & 2 \\
+  0  & 0  & 5  & 4 \\
+  -1 & -1 & 6  & 7
+\end{pmatrix}
+\stackrel{EG}{\leadsto}
+\begin{pmatrix}[ccc|c]
+  1 & 1 & 3 & \frac{1}{5} \\
+  0 & 0 & 1 & \frac{4}{5} \\
+  0 & 0 & 0 & 0
+\end{pmatrix}
+\]
+\[
+\hspace{3.3cm} x_1 \;\, x_2 \;\, x_3
+\]
+\( x_1 \) e \( x_3 \) sono variabili dominanti e \( x_2 \) è variabile libera.
 \end{example}
 
 \noindent Si ha uno dei seguenti casi:
 \begin{enumerate}
-	\item[1)] Tutte le colonne di \( (U|c) \) tranne \( c \) sono dominanti. In questo caso il sistema
-	      ha una soluzione unica. Ad esempio:
-	      \begin{figure}[H]
-		      \centering
-		      \begin{tikzpicture}
-			      \node at (0,0) {
-				      \(
-				      \begin{pmatrix}[cc|c]
-					      1 & \frac{3}{4} & \frac{9}{4} \\
-					      0 & 1           & 1           \\
-					      0 & 0           & 0
-				      \end{pmatrix}
-				      \)
-			      };
+\item[1)] Tutte le colonne di \( (U|c) \) tranne \( c \) sono dominanti. In questo caso il sistema
+ha una soluzione unica. Ad esempio:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node at (0,0) {
+        \(
+        \begin{pmatrix}[cc|c]
+          1 & \frac{3}{4} & \frac{9}{4} \\
+          0 & 1           & 1           \\
+          0 & 0           & 0
+        \end{pmatrix}
+        \)
+      };
 
-			      \draw[green, fill, opacity=0.2] (-0.76,-0.7) rectangle (-0.37,0.7);
-			      \draw[green, thick] (-0.57,0.45) circle (0.2);
+    \draw[green, fill, opacity=0.2] (-0.76,-0.7) rectangle (-0.37,0.7);
+    \draw[green, thick] (-0.57,0.45) circle (0.2);
 
-			      \draw[green, fill, opacity=0.2] (-0.22,-0.7) rectangle (0.17,0.7);
-			      \draw[green, thick] (-0.02,0.02) circle (0.2);
-		      \end{tikzpicture}
-	      \end{figure}
-	\item[\( \infty \))] L'ultima colonna e almeno una colonna di \( U \) \textbf{non} sono dominanti. In
-	      tal caso il sistema ha infinite soluzioni che si ottengono assegnando parametri alle
-	      \( n-r \) variabili libere. Ad esempio:
-	      \begin{figure}[H]
-		      \centering
-		      \begin{tikzpicture}
-			      \node at (0,0) {
-				      \(
-				      \begin{pmatrix}[cccc|c]
-					      1 & 3 & \frac{3}{2} & 1            & 2           \\
-					      0 & 1 & \frac{1}{5} & -\frac{1}{4} & \frac{1}{5} \\
-					      0 & 0 & 1           & 5            & 8
-				      \end{pmatrix}
-				      \)
-			      };
+    \draw[green, fill, opacity=0.2] (-0.22,-0.7) rectangle (0.17,0.7);
+    \draw[green, thick] (-0.02,0.02) circle (0.2);
+  \end{tikzpicture}
+\end{figure}
+\item[\( \infty \))] L'ultima colonna e almeno una colonna di \( U \) \textbf{non} sono dominanti. In
+tal caso il sistema ha infinite soluzioni che si ottengono assegnando parametri alle
+\( n-r \) variabili libere. Ad esempio:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node at (0,0) {
+        \(
+        \begin{pmatrix}[cccc|c]
+          1 & 3 & \frac{3}{2} & 1            & 2           \\
+          0 & 1 & \frac{1}{5} & -\frac{1}{4} & \frac{1}{5} \\
+          0 & 0 & 1           & 5            & 8
+        \end{pmatrix}
+        \)
+      };
 
-			      \draw[green, fill, opacity=0.2] (-1.45,-0.7) rectangle (-1.05,0.7);
-			      \draw[green, thick] (-1.25,0.45) circle (0.2);
+    \draw[green, fill, opacity=0.2] (-1.45,-0.7) rectangle (-1.05,0.7);
+    \draw[green, thick] (-1.25,0.45) circle (0.2);
 
-			      \draw[green, fill, opacity=0.2] (-0.94,-0.7) rectangle (-0.54,0.7);
-			      \draw[green, thick] (-0.74,0) circle (0.2);
+    \draw[green, fill, opacity=0.2] (-0.94,-0.7) rectangle (-0.54,0.7);
+    \draw[green, thick] (-0.74,0) circle (0.2);
 
-			      \draw[green, fill, opacity=0.2] (-0.4,-0.7) rectangle (0,0.7);
-			      \draw[green, thick] (-0.2,-0.42) circle (0.2);
-		      \end{tikzpicture}
-	      \end{figure}
-	\item[0)] L'ultima colonna \( c \) è dominante. In questo tal caso il sistema non ammette
-	      soluzioni. Ad esempio:
-	      \begin{figure}[H]
-		      \centering
-		      \begin{tikzpicture}
-			      \node at (0,0) {
-				      \(
-				      \begin{pmatrix}[ccc|c]
-					      1 & 3 & \frac{3}{2} & 2           \\
-					      0 & 1 & \frac{1}{5} & \frac{1}{5} \\
-					      0 & 0 & 0           & 1
-				      \end{pmatrix}
-				      \)
-			      };
+    \draw[green, fill, opacity=0.2] (-0.4,-0.7) rectangle (0,0.7);
+    \draw[green, thick] (-0.2,-0.42) circle (0.2);
+  \end{tikzpicture}
+\end{figure}
+\item[0)] L'ultima colonna \( c \) è dominante. In questo tal caso il sistema non ammette
+soluzioni. Ad esempio:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node at (0,0) {
+        \(
+        \begin{pmatrix}[ccc|c]
+          1 & 3 & \frac{3}{2} & 2           \\
+          0 & 1 & \frac{1}{5} & \frac{1}{5} \\
+          0 & 0 & 0           & 1
+        \end{pmatrix}
+        \)
+      };
 
-			      % green highlight for first column
-			      \draw[green, fill, opacity=0.2] (-1.05,-0.7) rectangle (-0.64,0.7);
-			      \draw[green, thick] (-0.85,0.45) circle (0.2);
+    % green highlight for first column
+    \draw[green, fill, opacity=0.2] (-1.05,-0.7) rectangle (-0.64,0.7);
+    \draw[green, thick] (-0.85,0.45) circle (0.2);
 
-			      % green highlight for second column
-			      \draw[green, fill, opacity=0.2] (-0.53,-0.7) rectangle (-0.12,0.7);
-			      \draw[green, thick] (-0.33,0) circle (0.2);
+    % green highlight for second column
+    \draw[green, fill, opacity=0.2] (-0.53,-0.7) rectangle (-0.12,0.7);
+    \draw[green, thick] (-0.33,0) circle (0.2);
 
-			      % green highlight for last column
-			      \draw[green, fill, opacity=0.2] (0.6,-0.7) rectangle (1,0.7);
-			      \draw[green, thick] (0.8,-0.42) circle (0.2);
-		      \end{tikzpicture}
-	      \end{figure}
+    % green highlight for last column
+    \draw[green, fill, opacity=0.2] (0.6,-0.7) rectangle (1,0.7);
+    \draw[green, thick] (0.8,-0.42) circle (0.2);
+  \end{tikzpicture}
+\end{figure}
 \end{enumerate}
 
 \noindent \textbf{Attenzione:} la forma ridotta di una matrice \textbf{non} è unicovamente
@@ -1537,9 +1537,9 @@ determinata, ma le colonne dominanti sono univocamente determinate.
 
 \subsection{Definizione di rango di una matrice}
 \begin{definition}
-	Sia \( A \in M_{m \times n}(\mathbb{C}) \) con forma ridotta \( U \). Il numero \( r \) di righe non
-	nulle, pari al numero di colonne dominanti, è detto \textbf{rango} di \( U \) e si indica
-	con \( rk(U) \).
+Sia \( A \in M_{m \times n}(\mathbb{C}) \) con forma ridotta \( U \). Il numero \( r \) di righe non
+nulle, pari al numero di colonne dominanti, è detto \textbf{rango} di \( U \) e si indica
+con \( rk(U) \).
 \end{definition}
 Verrà dimostrato più avanti che ogni forma ridotta di \( A \) ha lo stesso rango, quindi
 definiamo il rango di \( A \) come \( rk(A) = rk(U) \).
@@ -1549,206 +1549,208 @@ definiamo il rango di \( A \) come \( rk(A) = rk(U) \).
 \subsection{Osservazione}
 Possiamo ricavare le condizioni \( [1],\;[\infty],\;[0] \) usando il rango:
 
-\begin{theorem}[Teprema di Rouchè-Cappelli]
-	Sia \( A \in M_{m \times n}(\mathbb{C}) \), sia \( b \in M_{m \times 1}(\mathbb(C)) \).
-	\[
-		[1] \Leftrightarrow rk(A) = rk(A|b) = n
-	\]
-	\[
-		\hspace{0.3cm} "rk(U) = rk(U|c)"
-	\]
-	\vspace{0.05cm}
-	\[
-		[\infty] \Leftrightarrow rk(A) = rk(A|b) < n
-	\]
-	\[
-		\hspace{1.1cm} "rk(U) = rk(U|c) < n"
-	\]
-	\vspace{0.05cm}
-	\[
-		[0] \Leftrightarrow rk(A) < rk(A|b)
-	\]
-	\[
-		\hspace{1cm} "rk(U) < rk(U|c)"
-	\]
-\end{theorem}
+\begin{figure}[H]
+  \begin{theorem}[Teprema di Rouchè-Capelli]
+    Sia \( A \in M_{m \times n}(\mathbb{C}) \), sia \( b \in M_{m \times 1}(\mathbb(C)) \).
+    \[
+      [1] \Leftrightarrow rk(A) = rk(A|b) = n
+    \]
+    \[
+      \hspace{0.3cm} "rk(U) = rk(U|c)"
+    \]
+    \vspace{0.05cm}
+    \[
+      [\infty] \Leftrightarrow rk(A) = rk(A|b) < n
+    \]
+    \[
+      \hspace{1.1cm} "rk(U) = rk(U|c) < n"
+    \]
+    \vspace{0.05cm}
+    \[
+      [0] \Leftrightarrow rk(A) < rk(A|b)
+    \]
+    \[
+      \hspace{1cm} "rk(U) < rk(U|c)"
+    \]
+  \end{theorem}
+\end{figure}
 
 \section{Matrici e le loro operazioni}
 \subsection{Definizione di somma}
 \begin{figure}[H]
-  \begin{definition}
-    Siano \( A=(a_{ij}) \quad 1<=i<=m \; , \; 1<=j<=n \) e 
-    \( B=(b_{ij}) \quad 1<=i<=m \; , \; 1<=j<=n \) due matrici in \( M_{m \times n}(\mathbb{C}) \).
-    La \textbf{somma} di \( A \) e \( B \) è la matrice \[
-    A + B (a_{ij} + b_{ij}) \quad 1<=i<=m\;,\;1<=j<=n  = 
-  \] 
-  \[
-    = \begin{pmatrix} 
-      a_{11} + b_{11} & \ldots & a_{1n} + b_{1n} \\
-      \vdots          & \ddots & \vdots          \\
-      a_{m1} + b_{m1} & \ldots & a_{mn} + b_{mn}
-    \end{pmatrix} 
-  \] 
-  in \( M_{m \times n}(\mathbb{C}) \) 
-  \end{definition}
+\begin{definition}
+Siano \( A=(a_{ij}) \quad 1<=i<=m \; , \; 1<=j<=n \) e 
+\( B=(b_{ij}) \quad 1<=i<=m \; , \; 1<=j<=n \) due matrici in \( M_{m \times n}(\mathbb{C}) \).
+La \textbf{somma} di \( A \) e \( B \) è la matrice \[
+  A + B (a_{ij} + b_{ij}) \quad 1<=i<=m\;,\;1<=j<=n  = 
+\] 
+\[
+  = \begin{pmatrix} 
+    a_{11} + b_{11} & \ldots & a_{1n} + b_{1n} \\
+    \vdots          & \ddots & \vdots          \\
+    a_{m1} + b_{m1} & \ldots & a_{mn} + b_{mn}
+  \end{pmatrix} 
+\] 
+in \( M_{m \times n}(\mathbb{C}) \) 
+\end{definition}
 \end{figure}
 \begin{figure}[H]
-  \begin{example}
-    \[
-    \begin{pmatrix} 
-      1 & 0 & i \\
-      -3 & 1 & 4
-    \end{pmatrix} 
-    +
-    \begin{pmatrix} 
-      2 & 4 & 1 \\
-      2 & -i & 1+i 
-    \end{pmatrix} 
-    =
-    \begin{pmatrix} 
-      3 & 4 & 1+i \\
-      -1 & 1-i & 5+i
-    \end{pmatrix}
-    \]
-  \end{example}
+\begin{example}
+\[
+  \begin{pmatrix} 
+    1 & 0 & i \\
+    -3 & 1 & 4
+  \end{pmatrix} 
+  +
+  \begin{pmatrix} 
+    2 & 4 & 1 \\
+    2 & -i & 1+i 
+  \end{pmatrix} 
+  =
+  \begin{pmatrix} 
+    3 & 4 & 1+i \\
+    -1 & 1-i & 5+i
+  \end{pmatrix}
+\]
+\end{example}
 \end{figure}
 
 \subsubsection{Proprietà}
 L'addizione di matrici è:
 \begin{itemize}
-  \item \textbf{Associativa}, cioè:
-    \[
-      A + (B + C) = (A + B) + C
-    \] 
-  \item \textbf{Commutativa}, cioè:
-    \[
-      A + B = B + A
-    \]
+\item \textbf{Associativa}, cioè:
+\[
+  A + (B + C) = (A + B) + C
+\] 
+\item \textbf{Commutativa}, cioè:
+\[
+  A + B = B + A
+\]
 \end{itemize}
 
 \subsection{Definizione di prodotto per uno scalare}
 \begin{figure}[H]
-  \begin{definition}
-    Data una matrice \( A = (a_{ij})_{1<=i<=m\;,\;1<=j<=n} \in M_{m \times n}(\mathbb{C}) \) e
-    \( \alpha \in \mathbb{C} \), il \textbf{prodotto} della matrice \( A \) per lo scalare
-    \( \alpha \) è la matrice:
-    \[
-      \alpha A = (\alpha a_{ij})_{1<=i<=m\;,\;1<=j<=n} \in M_{m \times n}(\mathbb{C})
-    \] 
-  \end{definition}
+\begin{definition}
+Data una matrice \( A = (a_{ij})_{1<=i<=m\;,\;1<=j<=n} \in M_{m \times n}(\mathbb{C}) \) e
+\( \alpha \in \mathbb{C} \), il \textbf{prodotto} della matrice \( A \) per lo scalare
+\( \alpha \) è la matrice:
+\[
+  \alpha A = (\alpha a_{ij})_{1<=i<=m\;,\;1<=j<=n} \in M_{m \times n}(\mathbb{C})
+\] 
+\end{definition}
 \end{figure}
 \begin{figure}[H]
-  \begin{example}
-    \[
-    \frac{1}{2}\begin{pmatrix} 
-      2+i & 5\\
-      i & 1-2i
-    \end{pmatrix} 
-    =
-    \begin{pmatrix} 
-      1+\frac{1}{2}i & \frac{5}{2} \\
-      \frac{1}{2}i & \frac{1}{2}-i
-    \end{pmatrix}
-    \] 
-  \end{example}
+\begin{example}
+\[
+  \frac{1}{2}\begin{pmatrix} 
+    2+i & 5\\
+    i & 1-2i
+  \end{pmatrix} 
+  =
+  \begin{pmatrix} 
+    1+\frac{1}{2}i & \frac{5}{2} \\
+    \frac{1}{2}i & \frac{1}{2}-i
+  \end{pmatrix}
+\] 
+\end{example}
 \end{figure}
 
 \subsubsection{Proprietà}
 Il prodotto di una matrice per uno scalare gode delle seguenti proprietà:
 \begin{itemize}
-  \item \textbf{Distributiva rispetto all'addizione}, cioè:
-    \[
-      \alpha(A+B) = \alpha A + \alpha B
-    \] 
-    \[
-      (\alpha + \beta)A = \alpha A + \beta A
-    \] 
-    per \( A,b \in M_{m \times n}(\mathbb{C})\;,\; \alpha,\beta \in \mathbb{C} \) 
+\item \textbf{Distributiva rispetto all'addizione}, cioè:
+\[
+  \alpha(A+B) = \alpha A + \alpha B
+\] 
+\[
+  (\alpha + \beta)A = \alpha A + \beta A
+\] 
+per \( A,b \in M_{m \times n}(\mathbb{C})\;,\; \alpha,\beta \in \mathbb{C} \) 
 \end{itemize}
 
 \subsection{Definizione di matrice trasposta}
 \begin{figure}[H]
-  \begin{definition}
-    Accanto a una matrice \( A = (a_{ij}) \in M_{m \times n}(\mathbb{C}) \), consideriamo
-    la matrice \( A^T \) ottenuta da \( A \) scambiando le righe con le colonne,
-    è detta \textbf{trasposta} di \( A \).
-  \end{definition}
+\begin{definition}
+Accanto a una matrice \( A = (a_{ij}) \in M_{m \times n}(\mathbb{C}) \), consideriamo
+la matrice \( A^T \) ottenuta da \( A \) scambiando le righe con le colonne,
+è detta \textbf{trasposta} di \( A \).
+\end{definition}
 \end{figure}
 \begin{figure}[H]
-  \begin{example}
-    \[
-    A = \begin{pmatrix} 
-      1 & i & 7\\
-      \pi & \frac{1}{12} & 0
-    \end{pmatrix} 
-    \quad
-    A^T = \begin{pmatrix} 
-      1 & \pi \\
-      i & \frac{1}{12} \\
-      7 & 0
-    \end{pmatrix}
-    \] 
-  \end{example}
+\begin{example}
+\[
+  A = \begin{pmatrix} 
+    1 & i & 7\\
+    \pi & \frac{1}{12} & 0
+  \end{pmatrix} 
+  \quad
+  A^T = \begin{pmatrix} 
+    1 & \pi \\
+    i & \frac{1}{12} \\
+    7 & 0
+  \end{pmatrix}
+\] 
+\end{example}
 \end{figure}
 
 \subsection{Definizione di prodotto di matrici}
 \begin{itemize}
-  \item Una matrice di dimensione \( m \times 1 \) è detta \textbf{vettore} (colonna) e
-    si usa la notazione \( v = \begin{pmatrix} v_1 \\ \vdots \\ v_m \end{pmatrix} \in M_{m \times 1}(\mathbb{C})  \).
+\item Una matrice di dimensione \( m \times 1 \) è detta \textbf{vettore} (colonna) e
+si usa la notazione \( v = \begin{pmatrix} v_1 \\ \vdots \\ v_m \end{pmatrix} \in M_{m \times 1}(\mathbb{C})  \).
 
-    Una matrice di dimensione \( 1 \times n \) è detta \textbf{vettore riga} e si usa la notazione
-    \( v^T = \begin{pmatrix} v_1 & \ldots & v_n \end{pmatrix} \in M_{1 \times n}(\mathbb{C}) \).
+Una matrice di dimensione \( 1 \times n \) è detta \textbf{vettore riga} e si usa la notazione
+\( v^T = \begin{pmatrix} v_1 & \ldots & v_n \end{pmatrix} \in M_{1 \times n}(\mathbb{C}) \).
 
-    Sia \( v^T = \begin{pmatrix} v_1 & \ldots & v_n \end{pmatrix} \)  un vettore riga
-    in \( M_{1 \times n}(\mathbb{C}) \) e \( u = \begin{pmatrix} v_1 \\ \vdots \\ v_n \end{pmatrix} \)
-    un vettore colonna in \( M_{n \times 1}(\mathbb{C}) \). Il \textbf{prodotto} di \( v^T \) per \( u \) è
-    il numero complesso: \( v^Tu = v_1u_1 + v_2u_2 + \ldots + v_nu_n \in \mathbb{C} \) 
+Sia \( v^T = \begin{pmatrix} v_1 & \ldots & v_n \end{pmatrix} \)  un vettore riga
+in \( M_{1 \times n}(\mathbb{C}) \) e \( u = \begin{pmatrix} v_1 \\ \vdots \\ v_n \end{pmatrix} \)
+un vettore colonna in \( M_{n \times 1}(\mathbb{C}) \). Il \textbf{prodotto} di \( v^T \) per \( u \) è
+il numero complesso: \( v^Tu = v_1u_1 + v_2u_2 + \ldots + v_nu_n \in \mathbb{C} \) 
 
-    \begin{example}
-      \[
-        v^T=\begin{pmatrix} 1 & 2 & 3 \end{pmatrix} \quad u=\begin{pmatrix} 1 \\ 0 \\ 3 \end{pmatrix}
-      \] 
-      \[
-      v^Tu = 1 \cdot 1 + 2 \cdot 0 + 3 \cdot 3 = 1 + 0 + 9 = 10
-      \] 
-    \end{example}
-  \item Possiamo vedere una matrice \( A=(a_{ij})_{1<=i<=m\;,\;1<=j<=n} \)  come \( m \)
-    vettori riga \( Ri=(a_{i1} \ldots a_{in})_{1<=i<=m} \) detti \textbf{righe di \( A \)}
-    oppure \( n \) vettori colonna \( Cj=\begin{pmatrix} a_{1j} \\ \vdots \\ a_{mj} \end{pmatrix} _{1<=j<=n} \) detti \textbf{colonne di \( A \)}.
+\begin{example}
+  \[
+    v^T=\begin{pmatrix} 1 & 2 & 3 \end{pmatrix} \quad u=\begin{pmatrix} 1 \\ 0 \\ 3 \end{pmatrix}
+  \] 
+  \[
+    v^Tu = 1 \cdot 1 + 2 \cdot 0 + 3 \cdot 3 = 1 + 0 + 9 = 10
+  \] 
+\end{example}
+\item Possiamo vedere una matrice \( A=(a_{ij})_{1<=i<=m\;,\;1<=j<=n} \)  come \( m \)
+vettori riga \( Ri=(a_{i1} \ldots a_{in})_{1<=i<=m} \) detti \textbf{righe di \( A \)}
+oppure \( n \) vettori colonna \( Cj=\begin{pmatrix} a_{1j} \\ \vdots \\ a_{mj} \end{pmatrix} _{1<=j<=n} \) detti \textbf{colonne di \( A \)}.
 
-    Siano \[ A = (a_{ij})_{1<=i<=m\;,\;1<=j<=n} \in M_{m \times n}(\mathbb{C}) \]
-    \[ B = (b_{ij})_{1<=i<=s\;,\;1<=j<=t} \in M_{n \times t}(\mathbb{C}) \]
-    Se \( n=s \), allora possiamo formare il prodotto di \( A \) e \( B \):
-    \[
-      AB = (c_{ij})_{1<=i<=m\;,\;1<=j<=t}
-    \] 
-    dove
-    \[
-      c_{ij} = RiCj = \begin{pmatrix} a_{i1} & \ldots & a_{in} \end{pmatrix} 
-      \begin{pmatrix} b_{1j} \\ \vdots \\ b_{nj} \end{pmatrix} = a_{i1}b_{1j} + \ldots + a_{in}b_{nj}
-    \] 
-    è il prodotto della riga \( i \) di \( A \) e la colonna \( j \) di \( B \).
+Siano \[ A = (a_{ij})_{1<=i<=m\;,\;1<=j<=n} \in M_{m \times n}(\mathbb{C}) \]
+\[ B = (b_{ij})_{1<=i<=s\;,\;1<=j<=t} \in M_{n \times t}(\mathbb{C}) \]
+Se \( n=s \), allora possiamo formare il prodotto di \( A \) e \( B \):
+\[
+  AB = (c_{ij})_{1<=i<=m\;,\;1<=j<=t}
+\] 
+dove
+\[
+  c_{ij} = RiCj = \begin{pmatrix} a_{i1} & \ldots & a_{in} \end{pmatrix} 
+  \begin{pmatrix} b_{1j} \\ \vdots \\ b_{nj} \end{pmatrix} = a_{i1}b_{1j} + \ldots + a_{in}b_{nj}
+\] 
+è il prodotto della riga \( i \) di \( A \) e la colonna \( j \) di \( B \).
 
-    \begin{example}
-      \[
-        \begin{pmatrix} 1 & 2 & 3\\
-        0 & 1 & 4\end{pmatrix} 
-          \begin{pmatrix} 1 & 4 & 0\\
-            0 & 1 & 5\\
-          1 & 2 & 4\end{pmatrix} 
+\begin{example}
+  \[
+    \begin{pmatrix} 1 & 2 & 3\\
+    0 & 1 & 4\end{pmatrix} 
+      \begin{pmatrix} 1 & 4 & 0\\
+        0 & 1 & 5\\
+      1 & 2 & 4\end{pmatrix} 
+      =
+        \begin{pmatrix} R1C1 & R1C2 & R1C3\\
+        R2C1 & R2C2 & R2C3\end{pmatrix} =
+        \] 
+        \[
           =
-          \begin{pmatrix} R1C1 & R1C2 & R1C3\\
-            R2C1 & R2C2 & R2C3\end{pmatrix} =
-          \] 
-          \[
-            =
-            \begin{pmatrix} 
-              4 & 12 & 22\\
-              4 & 9 & 21
-            \end{pmatrix}
-          \] 
-        \end{example}
-\end{itemize}
+          \begin{pmatrix} 
+            4 & 12 & 22\\
+            4 & 9 & 21
+          \end{pmatrix}
+        \] 
+      \end{example}
+  \end{itemize}
 
 \subsubsection{Proprietà}
 Il prodotto di matrici gode delle seguenti proprietà:
@@ -1761,27 +1763,27 @@ Il prodotto di matrici gode delle seguenti proprietà:
     \[
       (A+B)C = AC + BC
     \] 
-      Con \( A,B \in M_{m \times n}(\mathbb{C}) \) e \( C \in M_{n \times t}(\mathbb{C}) \)
-      \[
+    Con \( A,B \in M_{m \times n}(\mathbb{C}) \) e \( C \in M_{n \times t}(\mathbb{C}) \)
+    \[
       A(B+C) = AB + AC
-      \] 
-      In sostanza le matrici devono avere il numero di colonne uguale al numero di righe.
-    \item Scriviamo \( I_n \in M_{m \times n}(\mathbb{C}) \) per la matrice:
-      \[
-        \begin{pmatrix} 
-          1 & 0 & \ldots & 0\\
-          0 & 1 & \ldots & 0\\
-          \vdots & \vdots & \ddots & \vdots\\
-          0 & 0 & \ldots & 1
-        \end{pmatrix}
-      \] 
-      Questa matrice viene detta \textbf{matrice identità}.
+    \] 
+    In sostanza le matrici devono avere il numero di colonne uguale al numero di righe.
+  \item Scriviamo \( I_n \in M_{m \times n}(\mathbb{C}) \) per la matrice:
+    \[
+      \begin{pmatrix} 
+        1 & 0 & \ldots & 0\\
+        0 & 1 & \ldots & 0\\
+        \vdots & \vdots & \ddots & \vdots\\
+        0 & 0 & \ldots & 1
+      \end{pmatrix}
+    \] 
+    Questa matrice viene detta \textbf{matrice identità}.
 
-      Per ogni matrice \( M \in M_{m \times n}(\mathbb{C}) \), abbiamo che:
-      \[ M \cdot I_m = I_m \cdot M =  M \]
-      \begin{figure}[H]
-        \begin{example}
-          \[
+    Per ogni matrice \( M \in M_{m \times n}(\mathbb{C}) \), abbiamo che:
+    \[ M \cdot I_m = I_m \cdot M =  M \]
+    \begin{figure}[H]
+      \begin{example}
+        \[
           I_3 = \begin{pmatrix} 
             1 & 0 & 0\\
             0 & 1 & 0\\
@@ -1792,12 +1794,12 @@ Il prodotto di matrici gode delle seguenti proprietà:
             1 & 0\\
             0 & 1
           \end{pmatrix}
-          \] 
-        \end{example}
-      \end{figure}
-      \begin{figure}[H]
-        \begin{example}
-          \[
+        \] 
+      \end{example}
+    \end{figure}
+    \begin{figure}[H]
+      \begin{example}
+        \[
           M = \begin{pmatrix} 
             1 & 2\\
             3 & 4
@@ -1817,108 +1819,108 @@ Il prodotto di matrici gode delle seguenti proprietà:
             3 & 4
           \end{pmatrix}
           = M
-          \] 
-        \end{example}
-      \end{figure}
-    \item \( (AB)^T = B^T A^T \) con \[ A \in M_{m \times n}(\mathbb{C}) \quad
-        B \in M_{n \times t}(\mathbb{C}) \]
-        \[
-        A^T \in M_{n \times m}(\mathbb{C}) \quad
-        B^T \in M_{t \times n}(\mathbb{C})
         \] 
-        \begin{figure}[H]
-          \begin{example}
-            \[
-              A = \begin{pmatrix}
-                1 & 0\\
-                2 & 1
-              \end{pmatrix} 
-              \quad
-              B = \begin{pmatrix} 
-                1 & 2 & 4\\
-                0 & 1 & 5
-              \end{pmatrix} 
-            \] 
-            \[
-            AB = \begin{pmatrix} 
-              1 & 2 & 4\\
-              2 & 5 & 13
-            \end{pmatrix} 
-            \] 
-            \[
-              A^T = \begin{pmatrix}
-              1 & 2\\
-              0 & 1
-            \end{pmatrix} 
-            \quad
-            B^T = \begin{pmatrix} 
-              1 & 0\\
-              2 & 1\\
-              4 & 5
-            \end{pmatrix} 
-            \] 
-            \[
-              (AB)^T = \begin{pmatrix} 
-                1 & 2\\
-                2 & 5\\
-                4 & 13
-              \end{pmatrix} 
-            \] 
-            \[
-            B^T A^T = \begin{pmatrix} 
-              1 & 0\\
-              2 & 1\\
-              4 & 5 
-            \end{pmatrix}
-            \begin{pmatrix} 
-              1 & 2\\
-              0 & 1
-            \end{pmatrix}
-            =
-            \begin{pmatrix} 
-              1 & 2\\
-              2 & 5\\
-              4 & 13
-            \end{pmatrix}
-            \] 
-          \end{example}
-        \end{figure}
+      \end{example}
+    \end{figure}
+  \item \( (AB)^T = B^T A^T \) con \[ A \in M_{m \times n}(\mathbb{C}) \quad
+    B \in M_{n \times t}(\mathbb{C}) \]
+    \[
+      A^T \in M_{n \times m}(\mathbb{C}) \quad
+      B^T \in M_{t \times n}(\mathbb{C})
+    \] 
+    \begin{figure}[H]
+      \begin{example}
+        \[
+          A = \begin{pmatrix}
+            1 & 0\\
+            2 & 1
+          \end{pmatrix} 
+          \quad
+          B = \begin{pmatrix} 
+            1 & 2 & 4\\
+            0 & 1 & 5
+          \end{pmatrix} 
+        \] 
+        \[
+          AB = \begin{pmatrix} 
+            1 & 2 & 4\\
+            2 & 5 & 13
+          \end{pmatrix} 
+        \] 
+        \[
+          A^T = \begin{pmatrix}
+            1 & 2\\
+            0 & 1
+          \end{pmatrix} 
+          \quad
+          B^T = \begin{pmatrix} 
+            1 & 0\\
+            2 & 1\\
+            4 & 5
+          \end{pmatrix} 
+        \] 
+        \[
+          (AB)^T = \begin{pmatrix} 
+            1 & 2\\
+            2 & 5\\
+            4 & 13
+          \end{pmatrix} 
+        \] 
+        \[
+          B^T A^T = \begin{pmatrix} 
+            1 & 0\\
+            2 & 1\\
+            4 & 5 
+          \end{pmatrix}
+          \begin{pmatrix} 
+            1 & 2\\
+            0 & 1
+          \end{pmatrix}
+          =
+          \begin{pmatrix} 
+            1 & 2\\
+            2 & 5\\
+            4 & 13
+          \end{pmatrix}
+        \] 
+      \end{example}
+    \end{figure}
 
-      \item Il prodotto di matrici \textbf{non} è commutativo:
-        \[
-        AB \neq BA
-        \] 
-        Infatti:
-        \[
-        AB = \begin{pmatrix} 
-          0 & 1\\
-          0 & 0
-        \end{pmatrix}
-        \begin{pmatrix} 
-          0 & 2\\
-          0 & 4
-        \end{pmatrix} 
-        =
-        \begin{pmatrix} 
-          0 & 4\\
-          0 & 0
-        \end{pmatrix} 
-        \] 
-        \[
-        BA = \begin{pmatrix} 
-          0 & 2\\
-          0 & 4
-        \end{pmatrix} 
-        \begin{pmatrix} 
-          0 & 1\\
-          0 & 0
-        \end{pmatrix} 
-        =
-        \begin{pmatrix} 
-          0 & 0\\
-          0 & 0
-        \end{pmatrix} 
-        \] 
+  \item Il prodotto di matrici \textbf{non} è commutativo:
+    \[
+      AB \neq BA
+    \] 
+    Infatti:
+    \[
+      AB = \begin{pmatrix} 
+        0 & 1\\
+        0 & 0
+      \end{pmatrix}
+      \begin{pmatrix} 
+        0 & 2\\
+        0 & 4
+      \end{pmatrix} 
+      =
+      \begin{pmatrix} 
+        0 & 4\\
+        0 & 0
+      \end{pmatrix} 
+    \] 
+    \[
+      BA = \begin{pmatrix} 
+        0 & 2\\
+        0 & 4
+      \end{pmatrix} 
+      \begin{pmatrix} 
+        0 & 1\\
+        0 & 0
+      \end{pmatrix} 
+      =
+      \begin{pmatrix} 
+        0 & 0\\
+        0 & 0
+      \end{pmatrix} 
+    \] 
 \end{itemize}
 
 \subsection{Osservazione}
@@ -1928,93 +1930,93 @@ Siano \( A = (a_{ij})_{1<=i<=m\;,\;1<=j<=n} \in M_{m \times n}(\mathbb{C}) \) e
 Consideriamo \( Ax=b \) in forma matriciale. Abbiamo
 \[
   Ax = \underbrace{\begin{pmatrix} 
-  a_{11} & \ldots & a_{1n}\\
-  \vdots & \ddots & \vdots\\
-  a_{m1} & \ldots & a_{mn}
-\end{pmatrix}}_{\in M_{m \times n}(\mathbb{C})}
-\underbrace{\begin{pmatrix} 
-  x_1\\
-  \vdots\\
-  x_n
-\end{pmatrix}}_{\in M_{n \times 1}(\mathbb{C})}
-=
-\underbrace{\begin{pmatrix} 
-  a_{11}x_1 + \ldots + a_{1n}x_n\\
-  \vdots\\
-  a_{m1}x_1 + \ldots + a_{mn}x_n
-\end{pmatrix}}_{\in M_{m \times 1}(\mathbb{C})}
+      a_{11} & \ldots & a_{1n}\\
+      \vdots & \ddots & \vdots\\
+      a_{m1} & \ldots & a_{mn}
+  \end{pmatrix}}_{\in M_{m \times n}(\mathbb{C})}
+  \underbrace{\begin{pmatrix} 
+      x_1\\
+      \vdots\\
+      x_n
+  \end{pmatrix}}_{\in M_{n \times 1}(\mathbb{C})}
+  =
+  \underbrace{\begin{pmatrix} 
+      a_{11}x_1 + \ldots + a_{1n}x_n\\
+      \vdots\\
+      a_{m1}x_1 + \ldots + a_{mn}x_n
+  \end{pmatrix}}_{\in M_{m \times 1}(\mathbb{C})}
 \]
 che è uguale a \( b = \begin{pmatrix} b_1 \\ \vdots \\ b_m \end{pmatrix}  \) 
 \[
-\begin{pmatrix} 
-  b_1\\
-  \vdots\\
-  b_m
-\end{pmatrix} 
-=
-\begin{pmatrix} 
-  a_{11}x_1 + \ldots + a_{1n}x_n\\
-  \vdots\\
-  a_{m1}x_1 + \ldots + a_{mn}x_n
-\end{pmatrix} 
+  \begin{pmatrix} 
+    b_1\\
+    \vdots\\
+    b_m
+  \end{pmatrix} 
+  =
+  \begin{pmatrix} 
+    a_{11}x_1 + \ldots + a_{1n}x_n\\
+    \vdots\\
+    a_{m1}x_1 + \ldots + a_{mn}x_n
+  \end{pmatrix} 
 \] 
 \[
-\leadsto \begin{cases}
-  a_{11}x_1 + \ldots + a_{1n}x_n = b_1\\
-  \vdots\\
-  a_{m1}x_1 + \ldots + a_{mn}x_n = b_m
-\end{cases}
+  \leadsto \begin{cases}
+    a_{11}x_1 + \ldots + a_{1n}x_n = b_1\\
+    \vdots\\
+    a_{m1}x_1 + \ldots + a_{mn}x_n = b_m
+  \end{cases}
 \] 
 \begin{figure}[H]
   \begin{example}
     \[
-    \begin{cases}
-      2x_1 + 6x_2 = 4\\
-      x_1 - 2x_2 = 1\\
-      -x_1 + x_2 = \frac{2}{5}
-    \end{cases}
+      \begin{cases}
+        2x_1 + 6x_2 = 4\\
+        x_1 - 2x_2 = 1\\
+        -x_1 + x_2 = \frac{2}{5}
+      \end{cases}
     \] 
     \[
-    A = 
-    \begin{pmatrix} 
-      2 & 6 \\
-      1 & -2 \\
-      -1 & 1
-    \end{pmatrix} 
-    \quad
-    x = \begin{pmatrix} 
-      x_1\\
-      x_2
-    \end{pmatrix} 
-    \quad
-    b = \begin{pmatrix} 
-      4\\
-      1\\
-      \frac{2}{5}
-    \end{pmatrix} 
+      A = 
+      \begin{pmatrix} 
+        2 & 6 \\
+        1 & -2 \\
+        -1 & 1
+      \end{pmatrix} 
+      \quad
+      x = \begin{pmatrix} 
+        x_1\\
+        x_2
+      \end{pmatrix} 
+      \quad
+      b = \begin{pmatrix} 
+        4\\
+        1\\
+        \frac{2}{5}
+      \end{pmatrix} 
     \] 
     \[
-    Ax = \begin{pmatrix} 
-      2 & 6\\
-      1 & -2\\
-      -1 & 1
-    \end{pmatrix} 
-    \begin{pmatrix} 
-      x_1\\
-      x_2
-    \end{pmatrix} 
-    =
-    \begin{pmatrix} 
-      2x_1 + 6x_2\\
-      x_1 - 2x_2\\
-      -x_1 + x_2
-    \end{pmatrix}
-    =
-    \begin{pmatrix} 
-      4\\
-      1\\
-      \frac{2}{5}
-    \end{pmatrix} 
+      Ax = \begin{pmatrix} 
+        2 & 6\\
+        1 & -2\\
+        -1 & 1
+      \end{pmatrix} 
+      \begin{pmatrix} 
+        x_1\\
+        x_2
+      \end{pmatrix} 
+      =
+      \begin{pmatrix} 
+        2x_1 + 6x_2\\
+        x_1 - 2x_2\\
+        -x_1 + x_2
+      \end{pmatrix}
+      =
+      \begin{pmatrix} 
+        4\\
+        1\\
+        \frac{2}{5}
+      \end{pmatrix} 
     \] 
   \end{example}
 \end{figure}
@@ -2063,11 +2065,11 @@ matrice è detta \textbf{matrice triangolare superiore}.
 \begin{figure}[H]
   \begin{example}
     \[
-    \begin{pmatrix} 
-      0 & -10 & i\\
-      0 & 8 & 0\\
-      0 & 0 & -i 
-    \end{pmatrix} 
+      \begin{pmatrix} 
+        0 & -10 & i\\
+        0 & 8 & 0\\
+        0 & 0 & -i 
+      \end{pmatrix} 
     \] 
     \[
       \begin{pNiceArray}{>{\strut}ccc}[margin,extra-margin = 1pt]
@@ -2090,11 +2092,11 @@ matrice è detta \textbf{matrice triangolare superiore}.
 \begin{figure}[H]
   \begin{example}
     \[
-    \begin{pmatrix} 
-      0 & 0 & 0\\
-      7 & 8 & 0\\
-      100 & \frac{1}{2} &-i 
-    \end{pmatrix} 
+      \begin{pmatrix} 
+        0 & 0 & 0\\
+        7 & 8 & 0\\
+        100 & \frac{1}{2} &-i 
+      \end{pmatrix} 
     \] 
     \[
       \begin{pNiceArray}{>{\strut}ccc}[margin,extra-margin = 1pt]
@@ -2112,5 +2114,555 @@ matrice è detta \textbf{matrice triangolare superiore}.
     \]
   \end{example}
 \end{figure}
+
+\subsection{Matrici elementari}
+Prendiamo la matrice identità:
+\[
+  I_n = \begin{pmatrix} 
+    1 & 0 & \ldots & 0\\
+    0 & 1 & \ldots & 0\\
+    \vdots & \vdots & \ddots & \vdots\\
+    0 & 0 & \ldots & 1
+  \end{pmatrix}
+\] 
+Applichiamo le operazioni elementari alla matrice identità \( I_n \) per ottenere le
+matrici elementari che denotiamo come segue:
+\begin{itemize}
+  \item 
+    \(E_{ij}\) la matrice ottenuta da \( I_n \) scambiando la riga \( i \)
+    con la riga \( j \) 
+    \begin{example}
+      \[
+        n = 3 \quad I_3 = \begin{pmatrix} 
+          1 & 0 & 0\\
+          0 & 1 & 0\\
+          0 & 0 & 1
+        \end{pmatrix}
+      \] 
+      \[
+        E_{12} = \begin{pmatrix} 
+          0 & 1 & 0\\
+          1 & 0 & 0\\
+          0 & 0 & 1
+        \end{pmatrix}
+      \] 
+    \end{example}
+  \item \( E_i(\alpha) \) ottenuta da \( I_n \) moltiplicando la riga \( i \) per lo 
+    scalare \( 0 \neq \alpha \in \mathbb{C} \) 
+    \begin{example}
+      \[
+        n = 3 \quad \alpha = i + 5 \in \mathbb{C}
+      \] 
+      \[
+        E_3(i+5) = \begin{pmatrix} 
+          1 & 0 & 0\\
+          0 & 1 & 0\\
+          0 & 0 & i+5 
+        \end{pmatrix}
+      \] 
+    \end{example}
+
+  \item \( E_{ij}(\alpha) \) ottenuta da \( I_n \) sommando la riga \( i \) con la 
+    riga \( j \) moltiplicata per lo scalare \( \alpha \in \mathbb{C} \) 
+    \begin{example}
+      \[
+        n = 3 \quad \alpha = \frac{-5}{6} \in \mathbb{C}
+      \] 
+      \[
+        E_{13} = \begin{pmatrix} 
+          1 & 0 & \frac{-5}{6}\\
+          0 & 1 & 0\\
+          0 & 0 & 1
+        \end{pmatrix}
+      \] 
+    \end{example}
+\end{itemize}
+
+\subsection{Moltiplicazione con matrici elementari}
+\begin{figure}[H]
+  \begin{example}
+    \[
+      A = \begin{pmatrix} 
+        1 & 0\\
+        0 & 3\\
+        -1 & 5
+      \end{pmatrix} 
+    \] 
+    \[
+      E_{23}A = \begin{pmatrix} 
+        1 & 0 & 0\\
+        0 & 0 & 1\\
+        0 & 1 & 0
+      \end{pmatrix}
+      \begin{pmatrix} 
+        1 & 0\\
+        0 & 3\\
+        -1 & 5
+      \end{pmatrix}
+      =
+      \begin{pmatrix} 
+        1 & 0\\
+        -1 & 5\\
+        0 & 3
+      \end{pmatrix}
+    \] 
+    \[
+      E_3(i+5)A = \begin{pmatrix} 
+        1 & 0 & 0\\
+        0 & 1 & 0\\
+        0 & 0 & i+5
+      \end{pmatrix}
+      \begin{pmatrix} 
+        1 & 0\\
+        0 & 3\\
+        -1 & 5
+      \end{pmatrix}
+      =
+      \begin{pmatrix} 
+        1 & 0\\
+        0 & 3\\
+        -i-5 & 5(i+5)
+      \end{pmatrix}
+    \] 
+    \[
+      E_{13}A = \begin{pmatrix} 
+        1 & 0 & \frac{-5}{6}\\
+        0 & 1 & 0\\
+        0 & 0 & 1
+      \end{pmatrix}
+      \begin{pmatrix} 
+        1 & 0\\
+        0 & 3\\
+        -1 & 5
+      \end{pmatrix}
+      =
+      \begin{pmatrix} 
+        \frac{11}{6} & \frac{-25}{6}\\
+        0 & 3\\
+        -1 & 5
+      \end{pmatrix}
+    \] 
+  \end{example}
+\end{figure}
+\noindent Osserviamo che ogni operazione elementare su una matrice \( A \in M_{m \times n} (\mathbb{C}) \)
+corrisponde alla (pre)moltiplicazione di \( A \) con la matrice elementare ottenuta da
+\( I_m \) effettuando la medesima operazione elementare.
+\begin{figure}[H]
+  \begin{define}
+    \[
+      AE_1(-\pi ) = \begin{pmatrix} 
+        1 & 0\\
+        0 & 3\\
+        -1 & 5
+      \end{pmatrix}
+      \begin{pmatrix} 
+        -\pi & 0\\
+        0 & 1\\
+      \end{pmatrix} 
+      =
+      \begin{pmatrix} 
+        -\pi & 0\\
+        0 & 3\\
+        \pi & 5
+      \end{pmatrix}
+    \] 
+  \end{define}
+\end{figure}
+\begin{figure}[H]
+  \begin{example}
+    \[
+      A = \begin{pmatrix} 
+        1 & -1 & 0\\
+        3 & 2 & 15
+      \end{pmatrix} 
+      \stackrel{EG}{\leadsto}
+    \] 
+    \[
+      \stackrel{R2-3R1}{\underset{E_{21}(-3)}{\leadsto}}
+      \underbrace{
+        \begin{pmatrix} 
+          1 & -1 & 0\\
+          0 & 5 & 15
+      \end{pmatrix}}_{\equiv E_{21}A}
+      \stackrel{\frac{1}{5}R2}{\underset{E_2(\frac{1}{5})}{\leadsto}}
+      \underbrace{
+        \begin{pmatrix} 
+          1 & -1 & 0\\
+          0 & 1 & 3
+      \end{pmatrix}}_{\equiv E_2(\frac{1}{5})(E_{21}(-3)A)}
+      =U
+    \] 
+    Otteniamo una matrice con 2 pivot e 2 colonne dominanti. Questa matrice viene chiamata
+    \textbf{forma ridotta di \( A \) }. Quindi il calcolo può essere anche fatto in questo modo:
+    \[
+      U = E_2\left(\frac{1}{5}\right)(E_{21}(-3)A)=
+    \] 
+    \[
+      = \begin{pmatrix}
+        1 & 0\\
+        0 & \frac{1}{5}
+      \end{pmatrix} 
+      \begin{pmatrix} 
+        1 & 0\\
+        -3 & 1
+      \end{pmatrix} 
+      \begin{pmatrix} 
+        1 & -1 & 0\\
+        3 & 2 & 15
+      \end{pmatrix} =
+    \] 
+    \[
+      = \underbrace{\begin{pmatrix} 
+          1 & 0\\
+          -\frac{3}{5} & \frac{1}{5}
+      \end{pmatrix} }_{E}
+      \begin{pmatrix} 
+        1 & -1 & 0\\
+        3 & 2 & 15
+      \end{pmatrix} 
+    \] 
+    \vspace{0.5cm}
+    \[
+      \begin{pmatrix}[ccc|cc]
+        1 & -1 & 0 & 1 & 0\\
+        3 & 2 & 15 & 0 & 1
+      \end{pmatrix} 
+      \stackrel{R2-3R1}{\leadsto}
+      \begin{pmatrix}[ccc|cc] 
+        1 & -1 & 0 & 1 & 0\\
+        0 & 5 & 15 & -3 & 1
+      \end{pmatrix} 
+    \] 
+    \[
+      \stackrel{\frac{1}{5}R2}{\leadsto}
+      \begin{pmatrix}[ccc|cc] 
+        1 & -1 & 0 & 1 & 0\\
+        0 & 1 & 3 & -\frac{3}{5} & \frac{1}{5}
+      \end{pmatrix}
+    \] 
+    A sinistra della barra abbiamo la matrice \( U \) e a destra la matrice \( E \).
+  \end{example}
+\end{figure}
+
+\subsection{Definizione di matrice invertibile}
+Una matrice \( A \in M_{n \times n}(\mathbb{C}) \) si dice \textbf{invertibile} se esiste
+\( C \in M_{n \times n}(\mathbb{C}) \) tale che:
+\[
+  CA = I_n \quad \text{e} \quad AC = I_n
+\]
+In tal caso, \( C \) è detta \textbf{inversa} di \( A \). L'inversa di \( A \), quando
+esiste, è univocamente determinata e si denota con \( A^{-1} \). Infatti, se \( C \) e \( C' \) 
+sono due matrici inverse di \( A \) , allora:
+\[
+  C = I_nC = (C'A)C = C'(AC) = C'I_n = C'
+\] 
+\begin{figure}[H]
+  \begin{example}
+    \[
+    A = \begin{pmatrix}
+      2 & 5\\
+      -3 & -7
+    \end{pmatrix} 
+    \quad
+    C = \begin{pmatrix} 
+      -7 & -5\\
+      3 & 2
+    \end{pmatrix} 
+    \] 
+    \[
+    AC = \begin{pmatrix} 
+      2 & 5\\
+      -3 & -7
+    \end{pmatrix}
+    \begin{pmatrix} 
+      -7 & -5\\
+      3 & 2
+    \end{pmatrix}
+    =
+    \begin{pmatrix} 
+      1 & 0\\
+      0 & 1
+    \end{pmatrix}
+    \] 
+    \[
+    CA = \begin{pmatrix} 
+      -7 & -5\\
+      3 & 2
+    \end{pmatrix}
+    \begin{pmatrix} 
+      2 & 5\\
+      -3 & -7
+    \end{pmatrix}
+    =
+    \begin{pmatrix} 
+      1 & 0\\
+      0 & 1
+    \end{pmatrix}
+    \] 
+    \[
+      \leadsto C = A^{-1}
+    \] 
+  \end{example}
+\end{figure}
+
+\noindent Se \( A,B \in M_{m \times n}(\mathbb{C}) \) sono invertibili, allora lo è anche
+il loro prodotto \( AB \). Infatti l'inversa di \( AB \) è \( B^{-1}A^{-1} \).
+Infatti:
+\[
+  (AB)(B^{-1}A^{-1}) = A(BB^{-1})A^{-1} = A I_n A^{-1} = AA^{-1} = I_n
+\] 
+\begin{center}
+  oppure
+\end{center}
+\[
+  (B^{-1}A^{-1})(AB) = B^{-1}(A^{-1}A)B = (B^{-1}I_n)B = B^{-1}B = I_n
+\] 
+Quindi \( (AB)^{-1} = B^{-1}A^{-1} \).
+
+\subsection{Inverse di matrici elementari}
+Le matrici elementari sono tutte invertibili con inverse:
+\[
+  E_{ij}^{-1} = E_{ij}
+\] 
+\begin{figure}[H]
+  \begin{example}
+    \[
+      E_{23} = \begin{pmatrix} 
+        1 & 0 & 0\\
+        0 & 0 & 1\\
+        0 & 1 & 0
+      \end{pmatrix}
+    \] 
+    \[
+      \begin{pmatrix} 
+        1 & 0 & 0\\
+        0 & 0 & 1\\
+        0 & 1 & 0
+      \end{pmatrix} 
+      \begin{pmatrix} 
+        1 & 0 & 0\\
+        0 & 0 & 1\\
+        0 & 1 & 0
+      \end{pmatrix}
+      =
+      \begin{pmatrix} 
+        1 & 0 & 0\\
+        0 & 1 & 0\\
+        0 & 0 & 1
+      \end{pmatrix}
+    \] 
+  \end{example}
+\end{figure}
+\[
+  E_i(\alpha)^{-1} = E_i(\frac{1}{\alpha})
+\] 
+\begin{figure}[H]
+  \begin{example}
+    \[
+      E_3(i+5) = \begin{pmatrix} 
+        1 & 0 & 0\\
+        0 & 1 & 0\\
+        0 & 0 & i+5
+      \end{pmatrix}
+    \] 
+    \[
+      E_3(\frac{1}{i+5})E_3(i+5) = I_3
+    \]
+    \[
+      \begin{pmatrix} 
+        1 & 0 & 0\\
+        0 & 1 & 0\\
+        0 & 0 & i+5
+      \end{pmatrix}
+      \begin{pmatrix} 
+        1 & 0 & 0\\
+        0 & 1 & 0\\
+        0 & 0 & \frac{1}{1+5} 
+      \end{pmatrix}
+      =
+      \begin{pmatrix} 
+        1 & 0 & 0\\
+        0 & 1 & 0\\
+        0 & 0 & 1
+      \end{pmatrix}
+    \] 
+  \end{example}
+\end{figure}
+\[
+  E_{ij}(\alpha)^{-1} = E_{ij}(-\alpha)
+\] 
+\begin{figure}[H]
+  \begin{example}
+    \[
+      E_{23}(-\frac{5}{6}) = \begin{pmatrix} 
+        1 & 0 & \frac{-5}{6}\\
+        0 & 1 & 0\\
+        0 & 0 & 1
+      \end{pmatrix}
+    \] 
+    \[
+      E_{23}(\frac{5}{6})E_{23}(-\frac{5}{6}) = I_3
+    \] 
+    \[
+      \begin{pmatrix} 
+        1 & 0 & 0\\
+        0 & 1 & 0\\
+        0 & 0 & \frac{5}{6}
+      \end{pmatrix}
+      \begin{pmatrix} 
+        1 & 0 & \frac{-5}{6}\\
+        0 & 1 & 0\\
+        0 & 0 & 1
+      \end{pmatrix}
+      =
+      \begin{pmatrix} 
+        1 & 0 & 0\\
+        0 & 1 & 0\\
+        0 & 0 & 1
+      \end{pmatrix}
+    \] 
+  \end{example}
+\end{figure}
+
+\subsection{Proposizione}
+Sia \( Ax = b \) un sistema lineare in forma matriciale, cioè \( A \in M_{m \times n}(\mathbb{C}) \) 
+e \( b \in M_{m \times 1}(\mathbb{C}) \). Se \( (U|c) \) è una forma ridotta della matrice
+aumentata \( (A|b) \), allora i sistemi lineari \( Ax = b \) e \( Ux = c \) hanno le
+stesse soluzioni, cioè sono equivalenti.
+
+\subsubsection{Dimostrazione}
+Siano \( E_1, \ldots, E_s \) le matrici elementari che trasformano \( (A|b) \) nella forma
+ridotta \( (U|c) \). Allora:
+\[
+  (A|b) \underset{E_1}{\sim} (A'|b') \underset{E_2}{\sim} \ldots \underset{E_s}{\sim} (U|c)
+\] 
+Allora abbiamo:
+\[
+  (U|c) = E_s \ldots \underbrace{E_1(A|b)}_{(A'|b')}
+\] 
+Per 3.10, le matrici elementari \( E_1, \ldots, E_s \) sono invertibili. Dunque anche il
+prodotto \( E = E_s \ldots E_1 \) è invertibile con \( E^{-1} = E_1^{-1} \ldots E_s^{-1} \).
+Abbiamo che \( E(A|b) = (U|c) \), ovvero \( EA = U \) e \( Eb = c \).
+Pertanto, se \( v \in M_{n \times 1}(\mathbb{C}) \) è una soluzione di \( Ax = b \),
+cioè \( Av = b \), allora:
+\[
+  Uv = (EA)v = E(Av) = Eb = c
+\] 
+Quindi \( v \) è soluzione di \( Ux = c \).
+
+Se \( v \in M_{a \times  1})\mathbb{C} \) è soluzione di \( Ux = c \), cioè \( Uv = c \),
+allora:
+\[
+  Av = \underbrace{(E^{-1}E)}_{I_m}Av = E^{-1}(EA)v = E^{-1}(Uv) = E^{-1}c =
+\] 
+\[
+  = E^{-1}(Eb) = \underbrace{(E^{-1}E)}_{I_m}b = b
+\] 
+Quindi \( v \) è soluzione di \( Ax = b \quad \square \). 
+
+\subsection{Proposizione}
+Sono equivalenti i seguenti enunciati per \( A \in  M_{m \times n}(\mathbb{C}) \):
+\begin{enumerate}
+  \item Il sistema lineare \( Ax = b \) ammette soluzione per qualsiasi \( b \in M_{m \times 1}(\mathbb{C}) \).
+  \item Il rango \( rk(A) \) di \( A \) è pari al numero di righe di \( A \).
+\end{enumerate}
+
+\subsubsection{Dimostrazione}
+Dimostriamo che 1. implica 2. Supponiamo (1.)
+
+\vspace{1em}
+\noindent Sia \( U \) una forma ridotta di \( A \):
+\begin{itemize}
+  \item[] 
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \node at (0,0) {
+          \(
+          r
+          \left(
+            \begin{matrix}
+              0      & \ldots & 0      & 1      & *      & \ldots & *      & *      & *      & \ldots \\
+              \vdots & \ddots & \vdots & 0      & 0      & \ldots & 0      & 1      & *      & \ldots \\
+              \vdots & \ddots & \vdots & \vdots & \vdots & \ddots & \vdots & 0      & 0      & \ldots \\
+              \vdots & \ddots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \ddots \\
+              \vdots & \ddots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \ddots \\
+              \vdots & \ddots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots & \ddots \\
+              0      & \ldots & 0      & 0      & 0      & \ldots & 0      & 0      & 0      & \ldots
+            \end{matrix}
+            \;\;\;
+          \begin{matrix}
+            *      & \ldots & \ldots & *      & *      & \ldots & *      \\
+            *      & \ldots & \ddots & *      & *      & \ldots & *      \\
+            0      & 1      & \ddots & \vdots & \vdots & \ddots & \vdots \\
+            \vdots & 0      & \ddots & 1      & *      & \ldots & *      \\
+            \vdots & \vdots & \ddots & 0      & 0      & \ldots & 0      \\
+            \vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots \\
+            0      & 0      & \ldots & 0      & 0      & \ldots & 0
+          \end{matrix}
+        \right)
+        \)
+      };
+    \draw[green,thick] (-3.2, 2) -- (-3.2,1.6) -- ++(2.35,0) -- ++(0,-0.65) -- ++(2.35,0)
+      -- ++(0,-0.65) -- ++(0.6,0) -- ++(0.8,-0.65) -- ++(2.35,0);
+
+    \draw[green, thick] (-2.95,1.87) circle (0.21);
+    \draw[<-] (-2.95,2.15) -- (-2.95,2.5) node[above] {Pivot};
+    \draw[green, thick] (-0.6,1.24) circle (0.21);
+    \draw[green, thick] (1.78,0.59) circle (0.21);
+    \draw[green, thick] (3.18,-0.07) circle (0.21);
+
+    \draw (-3.2,-1.9) -- ++(0,-0.2) -- ++(0.5,0) -- ++(0,0.2) node[below] (dom1) {};
+    \draw[green, fill, opacity=0.2] (-3.2,-2.1) rectangle (-2.7,2.1);
+    \draw (-0.88,-1.9) -- ++(0,-0.2) -- ++(0.5,0) -- ++(0,0.2) node[below left] (dom2) {};
+    \draw[green, fill, opacity=0.2] (-0.88,-2.1) rectangle (-0.38,2.1);
+    \draw (1.55,-1.9) -- ++(0,-0.2) -- ++(0.5,0) -- ++(0,0.2) node[below left, yshift=-2] (dom3) {};
+    \draw[green, fill, opacity=0.2] (1.55,-2.1) rectangle (2.05,2.1);
+    \draw (2.95,-1.9) -- ++(0,-0.2) -- ++(0.5,0) -- ++(0,0.2) node[below left, yshift=-3] (dom4) {};
+    \draw[green, fill, opacity=0.2] (2.95,-2.1) rectangle (3.45,2.1);
+
+    \node[align=center] at (0,-3.5) (col) {Colonne\\dominanti};
+
+    \draw[->] (col) -- (dom1);
+    \draw[->] (col) -- (dom2);
+    \draw[->] (col) -- (dom3);
+    \draw[->] (col) -- (dom4);
+
+  \end{tikzpicture}
+\end{figure}
+\end{itemize}
+Queste righe esistono se e solo se \( rk(U) < \) numero di righe di \( U \). 
+
+\vspace{1em}
+\noindent Esiste una matrice invertibile \( E \) tale che \( U = EA \) (\( E = \) prodotto
+delle matrici elementari dell'Eliminaizone di Gauss). Consideriamo il vettore
+\( C = \begin{pmatrix} 0 \\ \vdots \\ 0 \\ 1 \end{pmatrix} \) e mettiamo \( b = E^{-1}C \).
+Allora il sistema lineare \( Ax=b \) ammette una soluzione \( v \) per (1.), cioè
+\( Av = b \). Allora \( Uv = Eb = E(E^{-1}C) = C \) per (3.11). Per il teorema di
+\textbf{Rouché-Capelli}, \( rk(U) = rk(U|c) \), cioè:
+\[
+  (U|c) = \begin{pmatrix}[ccccccc|c]
+    1 & * & \ldots & * & * & \ldots & * & 0\\
+    0 & 0 & \ldots & 0 & 1 & \ldots & * & 0\\
+    \vdots & \vdots & \ddots & \vdots & \vdots & \ddots & \vdots & \vdots\\
+    * & * & \ldots & * & * & \ldots & * & 1
+  \end{pmatrix} 
+\] 
+L'ultima riga non può essere nulla, altrimenti l'ultima colonna di \( (U|c) \) sarebbe una
+colonna dominante.
+
+\vspace{1em}
+\noindent Dunque \( rk(A) = rk(U) = \) numero di righe di \( U \) \( = \) numero di righe di \( A \).
+
+\vspace{2em}
+\noindent Dimostriamo che 2. implica 1. Supponiamo (2.)
+
+\vspace{1em}
+\noindent Sia \( b \in  M_{m \times 1}(\mathbb{C}) \) e consideriamo \( Ax = b \). Eseguendo l'Eliminazione
+di Gauss sulla matrice \( (A|b) \), otteniamo una forma ridotta \( (U|c) \).
+Siccome \( rk(U) = \) numero di righe di \( U \), ogni riga di \( U \) contiene un pivot.
+Perciò \( rk(U) = rk(U|c) \) e quindi \( rk(A) = rk(A|b) \). Quindi siamo nel caso di
+una soluzione unica, oppure nel caso di infinite soluzioni del teorema di \textbf{Rouché-Capelli}.
+\( \quad \square \) 
 
 \end{document}
