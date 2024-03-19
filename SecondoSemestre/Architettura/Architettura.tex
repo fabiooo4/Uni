@@ -614,11 +614,14 @@ Le micro operazioni sono le operazioni elementari che la CPU esegue per eseguire
 \begin{figure}[H]
 	\centering
 	\begin{tikzpicture}[scale=1.5]
-		\draw (0,0) rectangle (4,4);
-		\node[above left, scale=0.7] at (4,0) {CPU};
 
-		\draw (2,2) rectangle (4,4);
-		\node[above left, scale=0.7] at (3.4,2) {CU};
+		\draw (2,2) rectangle (3,3);
+		\node[above left, scale=0.7] at (2.4,2) {CU};
+
+		\node[draw, scale=0.7] at (2.7,2.8) {PSW};
+
+		\node[draw, scale=1] at (2.5,1.5) (ir) {IR};
+    \draw[-latex] (ir) -- ++(0,0.5);
 
 		\node[draw, rectangle, align=center, scale=0.8, minimum width=1cm, minimum height=0.8cm] (pc) at (0.8, 2.35) {PC};
 
