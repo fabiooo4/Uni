@@ -309,73 +309,147 @@ Forniscono informazioni su quanto i dati si disperdono attorno ad un valore cent
           \item \textbf{Massimo valore "usuale"}: media campionaria + 2 deviazioni standard
         \end{itemize}
 
-	\item \textbf{Range}: Sia \( \underline{x} = (\tilde{x_1}, \ldots, \tilde{x_n}) \) un campione
-	      di dimensione \( n \). Il range è definito come:
-	      \[
-		      R = \max(\underline{x}) - \min(\underline{x})
-	      \]
 \end{itemize}
 
-\subsection{Indici di posizione relativi}
-Rappresentano indici di posizione, ma non centrali, bensì indici di posizionamento relativo.
+\subsubsection{Indici di forma}
+Sia \( \underline{x} = (\tilde{x}_1, \ldots, \tilde{x}_n) \) un campione di dimensione 
+\( n \).
 \begin{itemize}
-	\item \textbf{Percentili}: Se \( p \) è un numero tra \( 0 \) e \( 100 \), il \textbf{percentile
-		      di ordine p} (o \( p \)-esimo percentile, se \( p \) è intero) è il dato che delimita il primo
-	      \( p\% \) dei dati (ordinati) dai rimanenti dati.
-	      \begin{figure}[H]
-		      \centering
-		      \begin{tikzpicture}
-			      % line of numbers be ginning with x_min and ending with x_max with random points
-			      \draw[thick, ->] (0,0) -- (10,0);
-			      \foreach \x in {1,2,3,4,5,6,7,8,9}
-			      \draw (\x cm,3pt) -- (\x cm,-3pt);
-
-			      % bracket inder line for 25% of data
-			      \draw (0,-0.2) -- ++(0,-0.3) -- ++(2,0) -- ++(0,0.3);
-
-
-		      \end{tikzpicture}
-	      \end{figure}
-	\item \textbf{Quartili}: Valori che separano i dati in quattro parti, una volta ordinati.
-	\item \textbf{Boxplot}: Rappresentazione grafica dei quartili
+  \item \textbf{Asimmetria / Skewness}: misura la simmetria della distribuzione
+    \[
+      \gamma_1 = \frac{1}{n-1} \sum_{j=1}^{n} \left( \frac{\tilde{x}_j - \bar{x}}{s} \right)^3
+    \] 
+      \begin{itemize}
+        \item \( \gamma_1 > 0 \): distribuzione asimmetrica a destra (con coda più lunga 
+          a destra)
+        \item \( \gamma_1 < 0 \): distribuzione asimmetrica a sinistra (con coda più
+          lunga a sinistra)
+        \item \( \gamma_1 = 0 \): distribuzione simmetrica
+      \end{itemize}
+  \item \textbf{Curtosi}: misura la "appuntitura" della distribuzione
+    \[
+      \gamma_2 = \frac{1}{n-1} \sum_{j=1}^{n} \left( \frac{\tilde{x}_j - \bar{x}}{s} \right)^4
+    \]
+    \begin{itemize}
+      \item \( \gamma_2 = 3 \): curtosi della normale standard, (variabile di riferimento)
+      \item \( \gamma_2 > 3 \): ci sono meno valori agli estremi di quanto aspettato, e
+        di conseguenza si ha una minore dispersione dei dati. In tal caso la distribuzione
+        risulta abbastanza appuntita
+      \item \( \gamma_2 < 3 \): ci sono più valori agli estremi di quanto aspettato, e
+        di conseguenza si ha una maggiore dispersione dei dati. In tal caso la distribuzione
+        risulta piatta
+    \end{itemize}
 \end{itemize}
 
-\subsubsection{Quartili}
-\[
-	\underline{x} = (\tilde{x_1}, \ldots, \tilde{x_n}) \quad \text{campione di dimensione } n
-\]
-\[
-	\underline{y} = (y_1, \ldots, y_n) \quad \text{campione ordinato}
-\]
-Il primo quartile è il valore che separa il \( 25\% \) inferiore dal \( 75\% \) superiore
-dei dati.
-\[
-	Q_1 = \begin{cases}
-		\frac{y_\frac{n}{4} + y_\frac{n}{4}+1}{2} & \frac{n}{4} \text{  intero}    \\
-		y_{\lceil \frac{n}{4} \rceil}             & \frac{n}{4} \text{ non intero}
-	\end{cases}
-\]
-Il secondo quartile è il 50-esimo percentile, ovvero la mediana. È il valore che separa
-il \( 50\% \) inferiore dal \( 50\% \) superiore dei dati.
-\[
-	Q_2 = M = \begin{cases}
-		\frac{y_{\frac{n}{2}} + y_{\frac{n}{2}+1}}{2} & \frac{n}{2} \text{  intero}    \\
-		y_{\lceil \frac{n}{2} \rceil}                 & \frac{n}{2} \text{ non intero}
-	\end{cases}
-\]
-Il terzo quartil è il 75-esimo percentile, ovvero il valore che separa il \( 75\% \)
-inferiore dal \( 25\% \) superiore dei dati.
-\[
-	Q_3 = \begin{cases}
-		\frac{y_{\frac{3n}{4}} + y_{\frac{3n}{4}+1}}{2} & \frac{3n}{4} \text{  intero}    \\
-		y_{\lceil \frac{3n}{4} \rceil}                  & \frac{3n}{4} \text{ non intero}
-	\end{cases}
-\]
-Lo scarto (o distanza interquartile) è la differenza tra il terzo e il primo quartile:
-\[
-	IR = Q_3 - Q_1
-\]
-\subsubsection{Boxplot}
+\subsubsection{Indici di posizione relativi}
+Rappresentano indici di posizione, ma non centrali, bensì indici di posizionamento 
+relativo.
+\begin{itemize}
+	\item \textbf{Percentili}: Se \( p \) è un numero tra \( 0 \) e \( 100 \), 
+    il \textbf{percentile di ordine p} (o \( p \)-esimo percentile, se \( p \) è intero) 
+    è il dato che delimita il primo \( p\% \) dei dati (ordinati) dai rimanenti dati.
+	\item \textbf{Quartili}: Valori che separano i dati in quattro parti, una volta ordinati.
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \draw[thick, ->] (0,0) -- (12,0);
+        \foreach \x in {1,2,3,4,5,6,7,8,9,10,11}
+        \draw (\x cm,3pt) -- (\x cm,-3pt);
+
+        \draw (0,-0.2) -- ++(0,-0.3) -- ++(2.95,0) node[midway, below]
+          {Primo Quartile} -- ++(0,0.3);
+
+        \draw (3,-0.2) -- ++(0,-0.3) -- ++(2.95,0) node[midway, below]
+          {Secondo Quartile} -- ++(0,0.3);
+
+        \draw (6,-0.2) -- ++(0,-0.3) -- ++(2.95,0) node[midway, below]
+          {Terzo Quartile} -- ++(0,0.3);
+
+        \draw (9,-0.2) -- ++(0,-0.3) -- ++(3,0) node[midway, below]
+          {Quarto Quartile} -- ++(0,0.3);
+
+      \end{tikzpicture}
+    \end{figure}
+    \[
+      \underline{x} = (\tilde{x_1}, \ldots, \tilde{x_n}) \quad \text{campione di dimensione } n
+    \]
+    \[
+      \underline{y} = (y_1, \ldots, y_n) \quad \text{campione ordinato}
+    \]
+    Il primo quartile è il valore che separa il \( 25\% \) inferiore dal \( 75\% \) superiore
+    dei dati.
+    \[
+      Q_1 = \begin{cases}
+        \frac{y_\frac{n}{4} + y_\frac{n}{4}+1}{2} & \frac{n}{4} \text{  intero}    \\
+        y_{\lceil \frac{n}{4} \rceil}             & \frac{n}{4} \text{ non intero}
+      \end{cases}
+    \]
+    Il secondo quartile è il 50-esimo percentile, ovvero la mediana. È il valore che separa
+    il \( 50\% \) inferiore dal \( 50\% \) superiore dei dati.
+    \[
+      Q_2 = M = \begin{cases}
+        \frac{y_{\frac{n}{2}} + y_{\frac{n}{2}+1}}{2} & \frac{n}{2} \text{  intero}    \\
+        y_{\lceil \frac{n}{2} \rceil}                 & \frac{n}{2} \text{ non intero}
+      \end{cases}
+    \]
+    Il terzo quartil è il 75-esimo percentile, ovvero il valore che separa il \( 75\% \)
+    inferiore dal \( 25\% \) superiore dei dati.
+    \[
+      Q_3 = \begin{cases}
+        \frac{y_{\frac{3n}{4}} + y_{\frac{3n}{4}+1}}{2} & \frac{3n}{4} \text{  intero}    \\
+        y_{\lceil \frac{3n}{4} \rceil}                  & \frac{3n}{4} \text{ non intero}
+      \end{cases}
+    \]
+    Lo scarto (o distanza interquartile) è la differenza tra il terzo e il primo quartile:
+    \[
+      IR = Q_3 - Q_1
+    \]
+\end{itemize}
+
+\subsubsection{Box-Plot}
+Fornisce informazioni sulla forma della distribuzione:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      y=1.5cm,
+      x=1.5cm,
+      axis lines=left,
+      axis line style={-},
+      xmin=0,
+      xmax=5,
+      ymin=0,
+      ymax=0.001,
+      xtick={1,2,3,4},
+      xticklabels={, \( Q_1 \), \( M \), \( Q_3 \),},
+      ytick=\empty,
+      xlabel={},
+      ylabel={},
+      xlabel style={below right},
+      ylabel style={above left},
+      x label style={at={(axis description cs:0.5,-0.1)},anchor=north},
+      y label style={at={(axis description cs:-0.1,0.5)},anchor=south},
+      title={Box-Plot},
+      title style={at={(axis cs:2.5,1.5)}},
+      clip=false
+    ]
+    \addplot[boxplot prepared={
+      lower whisker=0.5,
+      lower quartile=1,
+      median=2.5,
+      upper quartile=3,
+      upper whisker=4
+    }, color=black] coordinates {};
+
+    % Draw dashed lines from whiskers and quartiles to x axis
+    \draw[dashed] (axis cs:0.5,0.6) -- (axis cs:0.5,0) node[below, scale=0.7] {Minimo};
+    \draw[dashed] (axis cs:1,0.6) -- (axis cs:1,0) node[below, scale=0.7] {$Q_1$};
+    \draw[dashed] (axis cs:2.5,0.6) -- (axis cs:2.5,0) node[below, scale=0.7] {Mediana};
+    \draw[dashed] (axis cs:3,0.6) -- (axis cs:3,0) node[below, scale=0.7] {$Q_3$};
+    \draw[dashed] (axis cs:4,0.6) -- (axis cs:4,0) node[below, scale=0.7] {Massimo};
+    \end{axis}
+  \end{tikzpicture}
+\end{figure}
 
 \subsection{Outliers}
 \begin{figure}[H]
