@@ -975,6 +975,144 @@ quindi \( PC_{in} = T_2 \). È presente poi un decoder che parte dall'Istruction
 \noindent Esiste una memoria che contiene tutte le micro istruzioni chiamata \textbf{Firmware},
 ma \textbf{CPU cablate} in questo modo non si realizzano più.
 
+\section{Dispositivi di input e output}
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		% CPU
+		\node[draw, rectangle, minimum width=2cm, minimum height=1.5cm] (cpu) at (0, 0) {\textbf{CPU}};
+		% Memoria
+		\node[draw, rectangle, align=center, minimum width=2cm, minimum height=1.5cm] (memory) at (4, 0) {\textbf{Memoria}\\\footnotesize Dati\\\footnotesize Istruzioni};
+
+		% Bus
+		\draw (-2,-2) -- (6.5,-2) node[right] {Bus};
+		\draw[<->] (cpu) -- ++(0,-2);
+		\draw[<->] (memory) -- ++(0,-2);
+
+		% Input/Output below bus
+		\node[draw, rectangle, minimum width=0.7cm, minimum height=0.7cm] (io) at (2, -3) {\textbf{I/O}};
+		\draw[<->] (io) -- (2,-2);
+
+		% Keyboard and mouse below I/O
+		\node (keyboard) at (1, -4) {Tastiera};
+		\node (mouse) at (3, -4) {Mouse};
+		\draw[->] (keyboard) -- (io);
+		\draw[->] (mouse) -- (io);
+	\end{tikzpicture}
+  \caption{Schema di un sistema con dispositivi di input e output}
+\end{figure}
+
+\noindent Per poter ottenere un'interazione con l'utente è necessario avere dei dispositivi
+di input e output e a loro volta devono essere codificati per far corrispondere 
+l'intenzione dell'utente con l'azione del computer. La strutture del microcontrollore
+input/output è composto da:
+\begin{itemize}
+  \item \textbf{Dato}: contiene i dati da inviare o ricevere
+  \item \textbf{Stato}: contiene lo stato del dispositivo
+  \item \textbf{MC}: contiene il microcontrollore del dispositivo
+  \item \textbf{IntA/D}: contiene l'interfaccia di analogico/digitale
+\end{itemize}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw (0,0) rectangle (4,4);
+    \draw (0.5,2.5) rectangle (1.8,3.5) node[midway] {Dato};
+    \draw (2.2,2.5) rectangle (3.5,3.5) node[midway] {Stato};
+    \draw (1.5,1) rectangle (2.5,2) node[midway] {MC};
+    \draw (0,0) rectangle (1,1) node[midway, scale=0.7] {IntA/D};
+    \node at (4,0) [above left, scale=0.7] {I/O};
+  \end{tikzpicture}
+  \caption{Struttura del microcontrollore input/output}
+\end{figure}
+
+\noindent La CPU accede ai valori dei registri di input/outpit tramite degli indirizzi
+che vengono riservati in un intervallo di memoria. Gli indirizzi di \texttt{Dato} e
+\texttt{Stato} sono:
+\begin{itemize}
+  \item \texttt{IND DATA KEY} (Dato)
+  \item \texttt{IND STATUS KEY} (Stato)
+\end{itemize}
+Questi indirizzi sono assegnati in fase di progettazione del sistema e sono fissi,
+ma si possono anche cambiare in certe architetture.
+
+\vspace{1em}
+\noindent Ogni bit nel registro \texttt{status} ha un preciso significato, ad esempio
+se vale 0 significa che nessun tasto è stato premuto, se vale 1 significa che un tasto
+è stato premuto.
+
+\vspace{1em}
+\noindent Un esempio in assembly è il seguente:
+\begin{lstlisting}[language={[x86masm]Assembler}]
+ TEST_KEY:
+  MOVL IND_STATUS_KEY, %EAX ; Carica lo stato della tastiera nel registro EAX
+  CMPL $0, %EAX ; Compara il valore di EAX con 0
+  JE TEST_KEY ; Se EAX = 0 allora salta a TEST_KEY
+  MOV IND_DATA_KEY, %EBX ; Carica il tasto premuto nel registro EBX
+  MOV %EBX, INDC ; Carica il tasto premuto nel registro C
+\end{lstlisting}
+\noindent La verifica di un dispositivo di input/output è un'operazione che viene detta
+\textbf{polling}.
+
+\vspace{1em}
+\noindent Ogni volta che si vuole leggere un dato da un dispositivo di input/output si deve
+effettuare una \textbf{SVC} (Supervisor Call) che permette di richiamare del pezzo
+di codice al livello del sistema operativo che permette di effettuare diverse operazioni.
+
+\subsection{Ottimizzazione}
+Ogni operazione di lettura effettuata con il bus richiede circa 10 cicli di clock.
+\begin{lstlisting}[language={[x86masm]Assembler}]
+ TEST_KEY:
+  MOVL IND_STATUS_KEY, %EAX ; 1 Read 1 Read Bus
+  CMPL $0, %EAX ; 1 Read
+  JE TEST_KEY ; 1 Read
+  MOV IND_DATA_KEY, %EBX 
+  MOV %EBX, INDC 
+\end{lstlisting}
+\noindent In totale si avranno \( 10 + 3 \) cicli di clock \( \approx 10 \). Con una
+frequenza di \( 10GHz \) si avranno \( 10^9 clock/sec \). Visto che un umano può premere
+un tasto al massimo 10 volte al secondo, si può dire che la frequenza di lettura è
+troppo alta, quindi si sprecano cicli di clock e non può essere gestito in polling.
+
+\subsection{Interrupt}
+Al posto di fare polling, cioè la CPU che controlla continuamente lo stato del dispositivo,
+si può utilizzare un \textbf{interrupt} che è un segnale hardware che interrompe il normale
+flusso di esecuzione del programma solo quando il dispositivo è pronto. La CPU
+\textbf{prima di ogni fetch} controlla se c'è qualche richiesta di interrupt.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw (0,0) rectangle (2,2) node[midway] {CPU};
+    \draw[latex-] (2,1.5) -- ++(4,0) node[right, scale=0.7] {BC};
+    \draw[-latex] (2,1) -- ++(4,0) node[right, scale=0.7] {BD};
+    \draw[-latex] (2,0.5) -- ++(4,0) node[right, scale=0.7] {BI};
+
+    \node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm] 
+      (io1) at (2.8,-1) {I/O};
+    \node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm]
+      (io2) at (4.5,-1) {I/O};
+    \node at (5.5,-1) {$\ldots$};
+
+    \draw[-latex] (io1) -- (2.8,1.5);
+    \draw[-latex] (io2) -- (4.5,1.5);
+    \draw[-latex] (io1) -- (io2);
+
+    \draw[-latex] (1,0) -- ++(0,-1) node[below, scale=0.7] {INTACK} |- (io1);
+  \end{tikzpicture}
+\end{figure}
+
+\noindent Esiste un bit \( \overline{INTERRUPT} \) che è sempre a 1 (negato a 0) che
+vale 1 solo quando c'è una \textbf{interrupt request}. Ogni interrupt ha un valore
+che contiene un pezzo di codice chiamato \textbf{Interrupt Service Routine (ISR)} 
+che viene passato alla CPU attraverso il \texttt{INTACK} (Interrupt Acknowledge). 
+Le ISR sono gestite dal sistema operativo e tutto l'insieme viene chiamato \textbf{Device Driver}.
+Ogni dispositivo input/output ha interrupt con valori diversi.
+
+\vspace{1em}
+\noindent Siccome l'esecuzione di un interrupt può modificare i registri della CPU può esserci
+qualche conflitto con dei programmi già in esecuzione, quindi c'è bisogno di un meccanismo
+per eseguire l'ISR senza che vengano modificati i registri della CPU. Questo viene
+effettuato dal dispositivo input/output che salva il valore dei registri \texttt{PSW} e
+\texttt{PC} ed eventuali altri registri salvaldoli nello stack prima di eseguire l'ISR.
 
 % Laboratorio
 \section{Laboratorio}
