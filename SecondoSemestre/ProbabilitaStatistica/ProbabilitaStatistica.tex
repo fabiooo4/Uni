@@ -105,22 +105,28 @@ ha bisogno di un \textbf{modello probabilistico} che ne descriva le caratteristi
 	\item \textbf{Popolazione}: tutti i possibili oggetti di un'indagine statistica
 	\item \textbf{Individuo}: un singolo oggetto della popolazione
 	\item \textbf{Variabile}: una qualsiasi caratteristica di un individuo della
-	      popolazione soggetta a possibili variazioni (es. altezza, peso, sesso, ecc.)
+	      popolazione soggetta a possibili variazioni da individuo a individuo; è l'oggetto
+        di interesse in uno studio
 	\item \textbf{Range della variabile}: \( R_x \) è l'insieme di tutti i possibili
 	      valori che la variabile \( x \) può assumere
 	\item \textbf{Campione}: un sottoinsieme rappresentativo della popolazione
-	      composto dalle variabili relative ad un sottoinsieme di indibidui
-	\item \textbf{TODO}
+	      composto dalle variabili relative ad un sottoinsieme di individui
+	\item \textbf{Realizzazione del campione di dimension \( n \)}: (post esperimento)
+    le osservazioni del campione:\[
+      \underline{x} = (\tilde{x}_1, \ldots, \tilde{x}_n)
+    \] 
+  \item \textbf{Range dei dati}: \( \mathcal{R}_{\underline{x}} \) i valori che la
+    variabile può assumere tra il minimo e il massimo
 \end{itemize}
 
 \subsection{Parametro e Stima}
 \begin{itemize}
 	\item \textbf{Parametro}:una misura che descrive una proprietà dell'intera popolazione
-	\item \textbf{Stima}: una misura che descrive una proprietà del campione che
+	\item \textbf{Stima}: una misura che descrive una proprietà del campione e che
 	      fornisce informazioni sul parametro
 \end{itemize}
 
-\section{Variabili}
+\subsection{Variabili}
 Le variabili possono essere di diverso tipo:
 \begin{itemize}
 	\item \textbf{Variabili qualitative nominali}:
@@ -128,21 +134,25 @@ Le variabili possono essere di diverso tipo:
 		      \item \textbf{Ordinali}: possono essere ordinate
 		      \item \textbf{Non ordinali}: non possono essere ordinate
 	      \end{itemize}
+      I valori che assumono si definiscono anche \textbf{modalità}
 	\item \textbf{Variabili quantitative}:
+    Sono valori numerici e si distinguono in:
 	      \begin{itemize}
 		      \item \textbf{Aleatorie continue}: derivano da processi di misura e assumono
-		            i loro range. Sono sottoinsiemi reali
-		      \item \textbf{Aleatorie discrete}: assumono valori interi
+		            i loro range (valori che possono assumere). Sono sottoinsiemi reali
+		      \item \textbf{Aleatorie discrete}: derivano da processi di conteggio e
+            assumono valori interi
 	      \end{itemize}
 \end{itemize}
+
 
 \section{Statistica descrittiva}
 Consiste nella raccolta, organizzazione, rappresentazione e analisi dei \textbf{dati}.
 
 \subsection{Strumenti di sintesi}
 \subsubsection{Tabelle di frequenza}
-Sono tabelle di individui con una certa caratteristica o aventi una caratteristica
-appartenenta ad un certo intervallo.
+Sono tabelle di frequenze di individui con una certa caratteristica o aventi una caratteristica
+appartenente ad un certo intervallo.
 \begin{itemize}
 	\item \textbf{Frequenza assoluta}: conteggio del numero di individui
 	\item \textbf{Frequenza relativa}: percentuale del numero di individui
@@ -151,17 +161,20 @@ appartenenta ad un certo intervallo.
 \end{itemize}
 
 \subsubsection{Distribuzioni}
-Sono rappresentazioni grafiche delle frequenze di una variabile. Possono essere:
+Sono rappresentazioni del modo in cui diverse \textbf{modalità} si distribuiscono tra
+gli individui di una popolazione.
 \begin{itemize}
-	\item \textbf{Caso discreto}: valore variabile \( \to  \) frequenza relativa
-	\item \textbf{Caso continuo o numerabile}: intervallo di valori variabile \( \to  \) frequenza relativa
+	\item \textbf{Caso discreto}: \( f \): valore variabile \( \to  \) frequenza relativa
+	\item \textbf{Caso continuo o numerabile}: \( f \): intervallo di valori variabile \( \to  \) frequenza relativa
 \end{itemize}
 
 \subsubsection{Distribuzioni cumulative}
 Sono distribuzioni che rappresentano la frequenza cumulativa di una variabile. Possono essere:
 \begin{itemize}
-	\item \textbf{Caso discreto}: valore variabile \( \to  \) frequenza cumulativa relativa
-	\item \textbf{Caso continuo o numerabile}: intervallo \( \to  \) frequenza cumulativa relativa
+	\item \textbf{Caso discreto}: \( f \): valore variabile \( \to  \) frequenza cumulaiva
+    relativa
+	\item \textbf{Caso continuo o numerabile}: \( f \): intervallo \( \to  \) frequenza 
+    cumulativa relativa
 \end{itemize}
 
 \subsubsection{Grafici}
@@ -169,63 +182,138 @@ Sono rappresentazioni grafiche delle distribuzioni. Possono essere:
 \begin{itemize}
 	\item \textbf{Istogrammi}: è costituito da rettangoli, insistenti sulle classi
 	      della partizione, attigui le cui aree sono confrontabili con le probabilità.
-	\item \textbf{Poligoni di frequenza}: rappresentano le frequenze di una variabile
+        \[
+        \text{area rettangolo} \quad i = h_i \cdot |\pi _i| \approx P_X(\pi ) \approx f_i
+        \] 
+        \[
+          h_i = \frac{f_i}{|\pi _i|} \quad \text{per ogni} \; i \in I
+        \] 
+      L'area del rettangolo che insiste sulla classe \( \pi_i  \) della partizione è pari
+      alla frequenza relativa della classe, quindi l'area torale è 1.
+  \item \textbf{Diagrammi a barre}: rappresentano le frequenze di una variabile. Le barre
+        sono separate e la loro altezza è proporzionale alla frequenza
 	\item \textbf{Diagrammi a torta}: rappresentano le frequenze relative di una variabile
 	\item \textbf{Boxplot}: rappresentano le frequenze di una variabile
+  \item \textbf{Poligono di frequenza (ogiva)}: è un grafico a linee continue che ha
+    sull'asse delle ordinate le frequenze cumulative. Questo tipo di grafici è il più comune
+    per rappresentare le frequenze cumulative.
 \end{itemize}
 
-\subsubsection{Indici statistici-stime}
+
+\section{Frequenze}
+Siano \( \underline{x} = (\tilde{x}_1, \ldots, \tilde{x}_n) \) una realizzazione del
+campione di dimensione \( n \) e \( \mathcal{R}_{\underline{x}} \) il range dei dati.
+Si dice \textbf{partizione} di \( \mathcal{R}_{\underline{x}} \):
+\[
+  \pi = \{\pi_i\}_{i \in I}
+\] 
+La \textbf{classe i-esima} è l'elemento i-esimo della partizione
+
+\subsection{Frequenze campionarie}
+\subsubsection{Frequenza assoluta}
+Si dice \textbf{frequenza assoluta} \( n_i \) per ogni \( i \in I \) il numero di
+osservazioni che appartengono a \( \pi_i  \), cioè:
+\[
+  n_i = card(\tilde{x}_j \in \pi_i, \quad j = 1, \ldots, n) \quad \text{(cardinalità)}
+\] 
+\[
+  0 \le n_i \le n, \; \text{per ogni}\; i \in I \quad e \quad \sum_{i \in I} n_i = n
+\] 
+
+\subsubsection{Frequenza relativa}
+Si dice \textbf{frequenza relativa} \( f_i \) per ogni \( i \in I \) la percentuale delle
+osservazioni che appartengono a \( \pi _i \), cioè:
+\[
+  f_i = \frac{n_i}{n}
+\]
+\[
+  0 \le f_i \le 1, \; \text{per ogni}\; i \in I \quad e \quad \sum_{i \in I} f_i = 1
+\] 
+
+\subsection{Frequenze cumulative}
+\subsubsection{Frequenza cumulativa assoluta}
+Si dice \textbf{frequenza cumulativa assoluta} \( N_i \) il numero di osservazioni che
+appartengono alle classi \( \pi_h \), con \( h \le i \), cioè:
+\[
+  N_i = \sum_{h=1}^{i} n_h
+\] 
+\[
+  0 \le N_i \le n, \; \text{per ogni}\; i \in I \quad e \quad N_i \le N_j, \; i<j
+\] 
+
+\subsubsection{Frequenza cumulativa relativa}
+Si dice \textbf{frequenza cumulativa relativa} \( F_i \) della i-esima classe la somma
+delle frequenze relative delle classi \( \pi _h \), con \( h \le i \), cioè:
+\[
+  F_i = \sum_{h=1}^{i} f_h = \frac{1}{n}N_i = \frac{1}{n}N_{i-1} + f_i
+\] 
+\[
+  0 \le F_i \le 1, \; \text{per ogni}\; i \in I \quad e \quad F_i \le F_j, \; i<j
+\] 
+
+\section{Statistica descrittiva}
+\subsection{Indici statistici}
 Sono misure quantitative che fornicono informazioni sulla distribuzione di una certa
 caratteristica.
+\subsubsection{Indici di posizione o centralità}
+Forniscono informazioni del valore attorno al quale si posizionano i dati. Consentono
+di valutare l'ordine di grandezza della variabile aleatoria e aiutano a "localizzare"
+la distribuzione. Sono espressi nella stessa unità di misura della variabile.
 
-\section{Frequenze campionarie}
-Siano \( \underline{x} = (\tilde{x}_1, \ldots, \tilde{x}_n) \) i valori assunti da una variabile
-
-\section{Indici statistici}
-\subsection{Indici di posizione}
-Forniscono informazioni del valore attorno al quale si posizionano i dati. Sono:
+\vspace{1em}
+\noindent Sia \( \underline{x} = (\tilde{x_1}, \ldots, \tilde{x_n}) \) un campione di dimensione \( n \).
 \begin{itemize}
-	\item \textbf{Media campionaria}: valore medio dei dati
-	\item \textbf{Moda campionaria}: valore che si ripete più frequentemente. Ci possono
-	      essere più valori modali. Sia \( \underline{y} = (y_1, \ldots, y_n) \) il campione
+	\item \textbf{Media campionaria}: è il valore medio dei dati (baricentro dei dati):
+    \[
+      \overline{x} = \frac{1}{n} \sum_{j=1}^{n} \tilde{x}_j
+    \] 
+	\item \textbf{Moda campionaria}: \( m \) , valore che si ripete più frequentemente. Ci possono
+	      essere più valori modali.
+
+        \vspace{1em}
+        \noindent Sia \( \underline{y} = (y_1, \ldots, y_n) \) il campione
 	      ordinato (\( y_i \in \{\tilde{x_1}, \ldots, \tilde{x_n}\}  \) e \( y_i \le y_{i+1} \) )
-	\item \textbf{Mediana campionaria}: è il valore centrale del campione, una volta ordinato.
+	\item \textbf{Mediana campionaria}:\( M \): è il valore centrale del campione, una 
+    volta ordinato.
 	      \[
 		      M = \begin{cases}
 			      y_{\frac{n+1}{2}}                             & \text{se } n \text{ è dispari} \\
-			      \frac{y_{\frac{n}{2}} + y_{\frac{n}{2}+1}}{2} & \text{se } n \text{ è pari}
+			      \frac{1}{2}(y_{\frac{n}{2}} + y_{\frac{n}{2}+1}) & \text{se } n \text{ è pari}
 		      \end{cases}
 	      \]
 \end{itemize}
 
-\subsection{Indici di dispersione}
+\subsubsection{Indici di dispersione}
 Forniscono informazioni su quanto i dati si disperdono attorno ad un valore centrale. Sono:
 \begin{itemize}
-	\item \textbf{Scarto Quadratico Medio}: misura la dispersione dei dati attorno alla media
+  \item \textbf{Range}: differenza tra il massimo e il minimo valore:
+    \[
+      r = \underset{j \in \{1, \ldots, n\} }{\max} \tilde{x}_j - \underset{j \in \{1, \ldots, n\} }{\min} \tilde{x}_j
+    \] 
+	\item \textbf{Scarto Quadratico Medio campionario}: misura la dispersione dei dati attorno alla media
 	      \[
-		      s'^2 = \frac{1}{n} \sum_{i=1}^{n} (\tilde{x_i} - \bar{x})^2
+		      s'^2 = \frac{1}{n} \sum_{j=1}^{n} (\tilde{x_j} - \bar{x})^2
 	      \]
 	\item \textbf{Varianza campionaria}: misura la dispersione dei dati attorno alla media
 	      \[
-		      s^2 = \frac{1}{n-1} \sum_{i=1}^{n} (\tilde{x_i} - \bar{x})^2
+		      s^2 = \frac{1}{n-1} \sum_{j=1}^{n} (\tilde{x_j} - \bar{x})^2
 	      \]
 	\item \textbf{Deviazione standard campionaria}: misura la distanza dei dati attorno alla media
 	      \[
-		      s = \sqrt{s^2} = \sqrt{\frac{1}{n-1} \sum_{i=1}^{n} (\tilde{x_i} - \bar{x})^2}
+		      s = \sqrt{s^2} = \sqrt{\frac{1}{n-1} \sum_{j=1}^{n} (\tilde{x_j} - \bar{x})^2}
 	      \]
+        Per interpretare la deviazione standard si possono definire 
+        \textbf{valori usuali} di una variabile i valori del campione compresi tra:
+        \begin{itemize}
+          \item \textbf{Minimo valore "usuale"}: media campionaria - 2 deviazioni standard
+          \item \textbf{Massimo valore "usuale"}: media campionaria + 2 deviazioni standard
+        \end{itemize}
+
 	\item \textbf{Range}: Sia \( \underline{x} = (\tilde{x_1}, \ldots, \tilde{x_n}) \) un campione
 	      di dimensione \( n \). Il range è definito come:
 	      \[
 		      R = \max(\underline{x}) - \min(\underline{x})
 	      \]
-\end{itemize}
-
-\subsection{Valori usuali}
-Si possono definire \textbf{valori usuali} di una variabile i valori del campione compresi
-tra:
-\begin{itemize}
-	\item \textbf{Minimo valore "usuale"}: media campionaria - 2 deviazioni standard
-	\item \textbf{Massimo valore "usuale"}: media campionaria + 2 deviazioni standard
 \end{itemize}
 
 \subsection{Indici di posizione relativi}
