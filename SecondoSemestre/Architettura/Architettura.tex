@@ -562,7 +562,6 @@ La memoria dinamica è composta da due parti principali:
 	      \end{itemize}
 \end{itemize}
 
-\label{D1}
 \begin{figure}[H]
 	\centering
 	\begin{tikzpicture}
@@ -585,6 +584,7 @@ La memoria dinamica è composta da due parti principali:
 		\draw[<-] (0,-3.2) -- ++(-0.5,0) node[left] {ESP};
 		\draw[<-] (0,-3.8) -- ++(-0.5,0) node[left] {EBP};
 	\end{tikzpicture}
+	\caption{Struttura della memoria}
 \end{figure}
 
 \noindent Per gestire i dati nello stack si utilizzano le seguenti istruzioni:
@@ -608,255 +608,372 @@ Per recuperare i dati in memoria si utilizza l'istruzione \texttt{LEAL} (Load Ef
 	      e lo mette in un registro
 \end{itemize}
 
-\subsection{Scambio di dati tra registri}
-Le micro operazioni sono le operazioni elementari che la CPU esegue per eseguire un'istruzione.
-\label{D2}
+\subsection{Struttura dettagliata della CPU}
+Di seguito è riportato uno schema più dettagliato dei componenti della CPU
+in modo da capire come vengono eseguite le istruzioni.
 \begin{figure}[H]
 	\centering
 	\begin{tikzpicture}[scale=1.5]
+		\draw (-1,-3) rectangle (3.5,5.4);
+		\node[above left] at (3.5,-3) {CPU};
 
 		\draw (2,2) rectangle (3,3);
 		\node[above left, scale=0.7] at (2.4,2) {CU};
+		\draw[latex-latex] (3,2.5) -- (4,2.5);
+
+		\draw[-latex, dashed] (2.2,3) -- ++(0,0.5) node[above, scale=0.7] {$PC_{in}$};
+		\draw[-latex, dashed] (2.4,3) -- ++(0,0.5);
+		\draw[-latex, dashed] (2.6,3) -- ++(0,0.5);
+		\draw[-latex, dashed] (2.8,3) -- ++(0,0.5) node[above, scale=0.7, xshift=8] {$PC_{out}$};
 
 		\node[draw, scale=0.7] at (2.7,2.8) {PSW};
 
 		\node[draw, scale=1] at (2.5,1.5) (ir) {IR};
-    \draw[-latex] (ir) -- ++(0,0.5);
-
-		\node[draw, rectangle, align=center, scale=0.8, minimum width=1cm, minimum height=0.8cm] (pc) at (0.8, 2.35) {PC};
-
-		% Bus
-		\draw (1.5,0.2) -- (1.5,3.8) node[above, scale=0.7] {};
-		\draw[latex-latex] (pc) -- (1.5,2.35);
+		\draw[-latex] (ir) -- ++(0,0.5);
+		\draw[latex-] (ir) -- ++(-1,0);
 
 
+		\node[draw, rectangle, align=center, scale=0.8, minimum width=1.3cm, minimum height=0.8cm]
+		(pc) at (0.8, 3.85) {PC};
+		\draw (pc.west) -- ++(0,0.15) -- ++(0.15, -0.15) -- ++(-0.15,-0.15);
 
+		% Tri state buffer
+		\draw (1.2,3.3) circle (0.1) node (tristate-buffer) {};
+		\draw (1.2,3.3) circle (0.1) node[below, yshift=-15, align=center, scale=0.5] {Tri-state\\buffer};
+		\draw (1.2,3.3) -- ++(0.07,0.07);
+		\draw (1.2,3.3) -- ++(-0.07,-0.07);
+		\draw (1.2,3.3) -- ++(0.07,-0.07);
+		\draw (1.2,3.3) -- ++(-0.07,0.07);
+		% ----------------
 
+		\draw[latex-] (tristate-buffer) -- ++(0,-0.3) -- ++(-0.5,0) node[left, scale=0.7]
+		{$PC_{out}$};
 
-		% \node[draw, rectangle, align=center, scale=0.8, minimum width=1cm, minimum height=0.8cm] (ir) at (2.4, 2.95) {IR};
-		% \node[draw, rectangle, align=center, scale=0.8, minimum width=1cm, minimum height=0.5cm] (psw) at (3.4, 3.55) {PSW};
-		%
-		% % Bus Istruzioni
-		% \draw (-0.5,0) -- (-0.5,4) node[above, scale=0.7] {BI};
-		%
-		% % Bus Dati
-		% \draw (-1,0) -- (-1,4) node[above, scale=0.7] {BD};
-		%
-		% % Bus di controllo
-		% \draw (4.5,0) -- (4.5,4) node[above, scale=0.7] {BC};
-		%
-		% % MAR (Memory Address Register)
-		% \node[draw, rectangle, align=center, scale=0.8, minimum width=0.5cm, minimum height=0.5cm] (mar) at (0.5, 3) {M\\A\\R};
-		% \draw[latex-latex] (mar) -- (-0.5,3);
-		%
-		% % MDR (Memory Data Register)
-		% \node[draw, rectangle, align=center, scale=0.8, minimum width=0.5cm, minimum height=0.5cm] (mdr) at (0.5, 1) {M\\D\\R};
-		% \draw[latex-latex] (mdr) -- (-1,1);
-		%
-		% \draw[latex-latex] (4,3) -- (4.5,3);
-		%
-		% % Register file
-		% \draw (1,0.4) rectangle (2,1.6);
-		% \draw (1,0.6) -- (2,0.6);
-		% \draw (1,0.8) -- (2,0.8);
-		% \draw (1,1) -- (2,1);
-		% \draw (1,1.2) -- (2,1.2);
-		% \draw (1,1.4) -- (2,1.4);
-		%
-		% \node[below left, xshift=8, scale=0.7] at (1.82,0.4) {Register File};
-		%
-		% % ALU
-		% \draw (2.7,0.5) -- (3.3,0.5) -- (3.5,1.5) -- (3.2,1.5) -- (3,1.2) -- (2.8,1.5) -- (2.5,1.5) -- cycle;
-		% \node[above, scale=0.6] at (3,0.5) {ALU};
-		%
-		% % Collegamenti
-		% \draw[latex-] (2.6,1.5) -- ++(0,0.2) -- ++(-0.8,0) -- ++(0,-0.1);
-		% \draw[latex-] (3.4, 1.5) -- ++(0,0.4) -- ++(-2.2,0) -- ++(0,-0.3);
-		% \draw[-latex] (3.4,1) -- ++(0.4,0) -- ++(0,2) -- ++(-0.2,0) -| (psw);
-		% \draw[-latex] (3,0.5) -- ++(0,-0.3) -- ++(-0.5,0) -- ++(0,0.3) -- ++(-0.5,0);
-		% \draw[-latex] (2.3,2) -- ++(0,-1) -- ++(0.3,0);
-	\end{tikzpicture}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\begin{tikzpicture}[scale=1.5]
-		\node[draw, rectangle, align=center, scale=0.8, minimum width=1cm, minimum height=0.8cm]
-		(pc) at (0.3, -1) {PC};
-
-		% Bus
-		\draw (1.5,1.5) -- (1.5,-3) node[above, scale=0.7] {};
-
-		%multiplexer 2 in 1 out above pc
 		% Multiplexer 2 to 1
-		\draw (0,0) node (mux1-0) {0};
-		\draw (0.5,0) node (mux1-1) {1};
-		\draw (0.0,0.2) node (mux1-i0) {};
-		\draw (0.5,0.2) node (mux1-i1) {};
-		\draw (-0.3,0) node (mux1-s) {};
-		\draw (0.25,-0.18) node (mux1-o) {};
-		\draw (-0.5,0.3) -- ++(1.5,0) -- ++(-0.25, -0.6) -- ++(-1,0) -- ++(-0.25,0.6) -- (-0.5,0.3);
-		% ------------------
+		\begin{scope}[shift={(0.67,4.5)}, scale=0.5]
+			\draw (0,0) node (mux1-0) {1};
+			\draw (0.5,0) node (mux1-1) {0};
+			\draw (0.0,0.2) node (mux1-i0) {};
+			\draw (0.5,0.2) node (mux1-i1) {};
+			\draw (-0.3,0) node (mux1-s) {};
+			\draw (0.25,-0.18) node (mux1-o) {};
+			\draw (-0.5,0.3) -- ++(1.5,0) -- ++(-0.25, -0.6) -- ++(-1,0) -- ++(-0.25,0.6) -- (-0.5,0.3);
+		\end{scope}
+		\draw[-latex] (mux1-o) -- (pc);
 
-		\draw (mux1-i0) -- ++(0,0.8) -- ++(1.5,0);
-		\draw (mux1-i1) -- ++(0,0.5) -- ++(0.6,0) -- ++(0,-2.43);
-		\draw (pc.south) -- ++(0,-0.5) -- ++(0.9,0);
-    \draw (1.3,-1.71) circle (0.1);
-    \draw (1.3,-1.71) node (x) {X};
-    \draw (x) -- ++(0.2,0);
+		\draw[-latex] (pc.south) -- ++(0,-0.3) |- (tristate-buffer);
+		\draw[-latex] (tristate-buffer) -- ++(0.3,0);
+		\draw[-latex] (0.8,3.5) -- ++(0.5,0) -- ++(0,1.4) -| (mux1-i1);
+		\draw[latex-] (mux1-i0) -- ++(0,0.5) -- ++(0.83,0);
+		\draw[latex-] (mux1-s) -- ++(-0.4,0) node[left, scale=0.7] {$PC_{in}$};
 
+		% ALU
+		\begin{scope}[shift={(-2.5,-0.5)}]
+			\draw (2.7,0.5) -- (3.3,0.5) -- (3.5,1.5) -- (3.2,1.5) -- (3,1.2) -- (2.8,1.5) -- (2.5,1.5) -- cycle;
+			\node[above, scale=0.6] at (3,0.5) {ALU};
+		\end{scope}
+
+		% Multiplexer 4 to 1
+		\begin{scope}[shift={(0,4.5)}, scale=0.5]
+			\draw (-0.7,-6) node (mux4-0) {00};
+			\draw (0,-6) node (mux4-1) {01};
+			\draw (0.7,-6) node (mux4-2) {10};
+			\draw (1.4,-6) node[scale=0.8] () {$\ldots$};
+			\draw (1.4,-5.87) node (mux4-3) {};
+			\draw (-0.7,-5.8) node (mux4-i0) {};
+			\draw (0,-5.8) node (mux4-i1) {};
+			\draw (0.7,-5.8) node (mux4-i2) {};
+			\draw (1.4,-5.8) node (mux4-i3) {};
+			\draw (1.7,-6) node (mux4-s) {};
+			\draw (0.25,-6.18) node (mux4-o) {};
+			\draw (-1.3,-5.7) -- ++(3.3,0) -- ++(-0.25, -0.6) -- ++(-2.8,0) -- ++(-0.25,0.6) -- cycle;
+		\end{scope}
+
+		% Register y
+		\begin{scope}[shift={(0.1,3.5)}]
+			\draw (0.25,-1) node[rectangle ,draw, minimum width=2cm, minimum height=0.7cm, scale=0.7] (y) {y};
+			\draw (y.west) -- ++(0,0.15) -- ++(0.15, -0.15) -- ++(-0.15,-0.15);
+		\end{scope}
+
+		\draw[-latex] (y.east) -- ++(0.7,0);
+
+		% Mux to alu
+		\draw[latex-] (mux4-0) -- ++(0,0.4) node[above, scale=0.7] {0};
+		\draw[latex-] (mux4-1) -- ++(0,0.4) node[above, scale=0.7] {4};
+		\draw[latex-] (mux4-2) -- (y);
+		\draw[latex-] (mux4-3) -- ++(0,0.34) node[above, scale=0.7] {cost};
+		\draw[latex-] (mux4-s) -- ++(0.4,0) node[above, scale=0.7] {select};
+
+		\draw[latex-] (0.15,1) -- ++(0,0.35);
+		\draw[latex-] (0.85,1) -- ++(0,0.2) -- ++(0.65,0);
+
+		% Alu in out
+		\draw[-latex] (0.5,0) -- ++(0,-0.33);
+
+		\draw[latex-] (0.1,0.4) -- ++(-0.5,0) node[left, align=center, scale=0.5] {ADD\\SUB\\MUL\\CR\\$\ldots$};
+
+		% Register z
+		\begin{scope}[shift={(0.25,0.5)}]
+			\draw (0.25,-1) node[rectangle ,draw, minimum width=2cm, minimum height=0.7cm, scale=0.7] (z) {z};
+			\draw (z.west) -- ++(0,0.15) -- ++(0.15, -0.15) -- ++(-0.15,-0.15);
+		\end{scope}
+
+		\draw[-latex] (z.east) -- ++(0.51,0);
+
+
+		% MAR (Memory Address Register)
+		\node[draw, rectangle, align=center, scale=0.8, minimum width=0.5cm, minimum height=0.5cm]
+		(mdr) at (0.5, -2) {MDR};
+		\draw[latex-latex] (mdr) -- ++(-2.5,0);
+		\draw[latex-latex] (mdr) -- ++(1,0);
+
+		% MDR (Memory Data Register)
+		\node[draw, rectangle, align=center, scale=0.8, minimum width=0.5cm, minimum height=0.5cm]
+		(mar) at (0.5, -1.5) {MAR};
+		\draw[latex-latex] (mar) -- ++(-2,0);
+		\draw[latex-] (mar) -- ++(1,0);
+
+		% Register file
+		\node[draw, scale=1] at (2.5,1.5) (ir) {IR};
+		\draw (2, 0.8) rectangle (3, 1);
+		\node[scale=0.7] at (2.5,0.9) {EAX};
+		\draw (2, 0.6) rectangle (3, 0.8);
+		\node[scale=0.7] at (2.5,0.7) {EBX};
+		\draw (2, 0.4) rectangle (3, 0.6);
+		\node[scale=0.7] at (2.5,0.5) {ECX};
+		\draw (2, 0.2) rectangle (3, 0.4);
+		\node[scale=0.7] at (2.5,0.3) {EDX};
+		\draw (2, 0) rectangle (3, 0.2);
+		\node[scale=0.7] at (2.5,0.1) {ESP};
+		\draw (2, -0.2) rectangle (3, 0);
+		\node[scale=0.7] at (2.5,-0.105) {Reg File};
+
+		\draw[latex-latex] (2,0.4) -- ++(-0.5,0);
+
+		% Bus CPU
+		\draw (1.5,-3) -- (1.5,5.4) node[below right, scale=0.7, align=center] {Bus\\CPU};
+
+		% Bus Istruzioni
+		\draw (-1.5,-3) -- (-1.5,5.4) node[above, scale=0.7, align=center] {BI};
+
+		% Bus Dati
+		\draw (-2,-3) -- (-2,5.4) node[above, scale=0.7, align=center] {BD};
+
+		% Bus di controllo
+		\draw (4,-3) -- (4,5.4) node[above, scale=0.7, align=center] {BC};
 	\end{tikzpicture}
+	\caption{Schema della CPU}
 \end{figure}
 
-\noindent Con segnale a 0 il segnale passa attraverso un \textbf{buffer tri-state} che permette di
-disabilitare il segnale.
-
-Per mandare 2 valori alla ALU si utilizza un registro collegato ad un multiplexer
-che permette di selezionare quale valore mandare alla ALU.
-
-Ogni indirizzo di memoria è gestito in \textbf{byte} indipendentemente. Quindi per accedere
-a parole da 32 bit bisogna andare avanti di 4 byte, mentre per accedere a parole da 64 bit
-bisogna andare avanti di 8 byte.
+\noindent Da questo schema si possono notare le seguenti caratteristiche:
+\begin{itemize}
+	\item Nella gestione del Program Counter il segnale passa attraverso un \textbf{Buffer
+		      Tri-State} che permette di disabilitare il segnale.
+	\item Per mandare 2 valori alla ALU si utilizza un registro collegato ad un multiplexer
+	      che permette di selezionare quale valore mandare alla ALU. Nel multiplexer sono
+	      cablate delle costanti utili da passare alla ALU.
+	\item Ogni indirizzo di memoria è gestito in \textbf{byte} indipendentemente.
+	      Quindi per accedere a parole da 32 bit bisogna andare avanti di 4 byte, mentre
+	      per accedere a parole da 64 bit bisogna andare avanti di 8 byte.
+\end{itemize}
 
 \section{Micro operazioni}
+Le micro operazioni sono le operazioni elementari che la CPU esegue per eseguire
+un'istruzione.
+
 \begin{figure}[H]
-  \begin{define}
-    \textbf{CPI} (Clock Per Instruction): è il numero di cicli di clock necessari per
-    eseguire un'istruzione.
-  \end{define}
+	\begin{define}
+		\textbf{CPI} (Clock Per Instruction): è il numero di cicli di clock necessari per
+		eseguire un'istruzione. L'obiettivo è avere un CPI il più basso possibile.
+	\end{define}
 \end{figure}
 
 \begin{example}
-Andiamo ad analizzare la sequenza di micro operazioni (Fetch, Decode, Execute) per la 
-seguente istruzione:
-\begin{center}
-  \texttt{MOVL \%EAX, \%EBX}
-\end{center}
+	Andiamo ad analizzare la sequenza di micro operazioni (Fetch, Decode, Execute) per la
+	seguente istruzione:
+	\begin{center}
+		\texttt{MOVL \%EAX, \%EBX}
+	\end{center}
 
-\begin{enumerate}
-  \item[F]
-  \begin{enumerate}
-    \item[1.] \( PC_{out},\; MAR_{in},\; READ ,\; SELECT_4,\; ADD,\; Z_{in}\) \\
-      Il Program Counter manda l'indirizzo di memoria in cui si trova l'istruzione da eseguire
-      al Memory Address Register e manda un segnale di lettura.
+	\begin{enumerate}
+		\item[F]
+		      \begin{enumerate}
+			      \item[1.] \( PC_{out},\; MAR_{in},\; READ ,\; SELECT_4,\; ADD,\; Z_{in}\) \\
+			            Il Program Counter manda l'indirizzo di memoria in cui si trova l'istruzione da eseguire
+			            al Memory Address Register e manda un segnale di lettura.
 
-      Il segnale di selezione 4 manda un segnale al multiplexer per selezionare il valore
-      da mandare alla ALU e il segnale di addizione manda un segnale alla ALU per sommare
-      4 all'indirizzo di memoria. Ciò vuol dire che l'indirizzo di memoria successivo è
-      l'indirizzo di memoria corrente + 1 word. Tutto ciò per incrementare il Program
-      Counter in modo da accedere all'istruzione successiva.
+			            Il segnale di selezione 4 manda un segnale al multiplexer per selezionare il valore
+			            da mandare alla ALU e il segnale di addizione manda un segnale alla ALU per sommare
+			            4 all'indirizzo di memoria. Ciò vuol dire che l'indirizzo di memoria successivo è
+			            l'indirizzo di memoria corrente + 1 word. Tutto ciò per incrementare il Program
+			            Counter in modo da accedere all'istruzione successiva.
 
-    \item[2.] \( WMFC,\; Z_{out},\; PC_{in}\)  \\
-      \textbf{WMFC}(Wait for Memory Fetch Complete): è un segnale che blocca il clock
-      successivo della CPU finchè il dato viene messo nel bus dati.
+			      \item[2.] \( WMFC,\; Z_{out},\; PC_{in}\)  \\
+			            \textbf{WMFC}(Wait for Memory Fetch Complete): è un segnale che blocca il clock
+			            successivo della CPU finchè il dato viene messo nel bus dati.
 
-      Siccome in questo ciclo di clock il bus non viene utilizzato viene sfruttato per
-      mandare il segnale di incremento al Program Counter.
+			            Siccome in questo ciclo di clock il bus non viene utilizzato viene sfruttato per
+			            mandare il segnale di incremento al Program Counter.
 
-      Il segnale di lettura manda un segnale di attesa finchè il dato non viene messo nel bus dati.
-    \item[3.] \( MDR_{out},\; IR_{in} \) \\
-      Il Memory Data Register manda il dato letto dall'indirizzo di memoria all'Instruction Register.
-  \end{enumerate}
+			            Il segnale di lettura manda un segnale di attesa finchè il dato non viene messo nel bus dati.
+			      \item[3.] \( MDR_{out},\; IR_{in} \) \\
+			            Il Memory Data Register manda il dato letto dall'indirizzo di memoria all'Instruction Register.
+		      \end{enumerate}
 
-\item[DE]
-  \begin{enumerate}
-    \item[4.] \( EAX_{out},\; EBX_{in},\; END \) \\
-      Il contenuto del registro EAX viene mandato in uscita e viene messo in ingresso
-      al registro EBX. Successivamente viene messo a 1 il segnale di fine che fa
-      ripartire il ciclo di Fetch-Decode-Execute.
-  \end{enumerate}
-\end{enumerate}
+		\item[DE]
+		      \begin{enumerate}
+			      \item[4.] \( EAX_{out},\; EBX_{in},\; END \) \\
+			            Il contenuto del registro EAX viene mandato in uscita e viene messo in ingresso
+			            al registro EBX. Successivamente viene messo a 1 il segnale di fine che fa
+			            ripartire il ciclo di Fetch-Decode-Execute.
+		      \end{enumerate}
+	\end{enumerate}
+\end{example}
+\begin{figure}[H]
+
+\end{figure}
+
+\begin{example}
+	Istruzione:
+	\begin{center}
+		\texttt{MOVL (\%EAX), \%EBX}
+	\end{center}
+
+	\begin{enumerate}
+		\item[F]
+		      \begin{enumerate}
+			      \item[1.] \( PC_{out},\; MAR_{in},\; READ ,\; SELECT_4,\; ADD,\; Z_{in}\)
+			      \item[2.] \( WMFC,\; Z_{out},\; PC_{in}\)
+			      \item[3.] \( MDR_{out},\; IR_{in} \)
+		      \end{enumerate}
+		\item[D]
+		      \begin{enumerate}
+			      \item[4.] \( EAX_{out},\; MAR_{in},\; READ \)
+			      \item[5.] \( WMFC \)
+		      \end{enumerate}
+		\item[E]
+		      \begin{enumerate}
+			      \item[6.] \( MDR_{out},\; EBX_{in},\; END \)
+		      \end{enumerate}
+	\end{enumerate}
 \end{example}
 
 \begin{example}
-  \begin{center}
-    \texttt{MOVL (\%EAX), \%EBX}
-  \end{center}
+	Istruzione:
+	\begin{center}
+		\texttt{ADDL \$4, \%ECX}
+	\end{center}
 
-  \begin{enumerate}
-    \item[F]
-      \begin{enumerate}
-        \item[1.] \( PC_{out},\; MAR_{in},\; READ ,\; SELECT_4,\; ADD,\; Z_{in}\)
-        \item[2.] \( WMFC,\; Z_{out},\; PC_{in}\)
-        \item[3.] \( MDR_{out},\; IR_{in} \)
-      \end{enumerate}
-    \item[D]
-      \begin{enumerate}
-        \item[4.] \( EAX_{out},\; MAR_{in},\; READ \)
-        \item[5.] \( WMFC \)
-      \end{enumerate}
-    \item[E]
-      \begin{enumerate}
-        \item[6.] \( MDR_{out},\; EBX_{in},\; END \)
-      \end{enumerate}
-  \end{enumerate}
+	\noindent La costante 4 è già presente nell'Instruction Register, quindi non c'è bisogno di
+	andare a leggerla dalla memoria.
+	\begin{enumerate}
+		\item[F]
+		      \begin{enumerate}
+			      \item[1.] \( PC_{out},\; MAR_{in},\; READ ,\; SELECT_4,\; ADD,\; Z_{in}\)
+			      \item[2.] \( WMFC,\; Z_{out},\; PC_{in}\)
+			      \item[3.] \( MDR_{out},\; IR_{in} \)
+		      \end{enumerate}
+		\item[DE]
+		      \begin{enumerate}
+			      \item[4.] \( OFFSET_{IR_{out}},\; y_{in} \) \\
+			            L'offset dell'Instruction Register serve per prendere il pezzo in cui è situata
+			            la costante 4
+			      \item[5.] \( ECX_{out},\; SELECT_{y},\;ADD,\; Z_{in} \)
+			      \item[6.] \( Z_{out},\; ECX_{in},\; END \)
+		      \end{enumerate}
+	\end{enumerate}
 \end{example}
 
 \begin{example}
-  \begin{center}
-    \texttt{ADDL \$4, \%ECX}
-  \end{center}
-  La costante 4 è già presente nell'Instruction Register, quindi non c'è bisogno di
-  andare a leggerla dalla memoria.
-  \begin{enumerate}
-    \item[F]
-      \begin{enumerate}
-        \item[1.] \( PC_{out},\; MAR_{in},\; READ ,\; SELECT_4,\; ADD,\; Z_{in}\)
-        \item[2.] \( WMFC,\; Z_{out},\; PC_{in}\)
-        \item[3.] \( MDR_{out},\; IR_{in} \)
-      \end{enumerate}
-    \item[DE]
-      \begin{enumerate}
-        \item[4.] \( OFFSET_{IR_{out}},\; y_{in} \) \\
-          L'offset dell'Instruction Register serve per prendere il pezzo in cui è situata
-          la costante 4
-        \item[5.] \( ECX_{out},\; SELECT_{y},\;ADD,\; Z_{in} \) 
-        \item[6.] \( Z_{out},\; ECX_{in},\; END \) 
-      \end{enumerate}
-  \end{enumerate}
-\end{example}
+	\begin{center}
+		\texttt{JZ END} \quad (salto relativo)
+	\end{center}
 
-\begin{example}
-  \begin{center}
-    \texttt{JZ END} \quad (salto relativo)
-  \end{center}
-  Il valore dell'etichetta \texttt{END} è già calcolato dall'assembler e viene memorizzato
-  nell'Instruction Register
-  \begin{enumerate}
-    \item [F]
-      \begin{enumerate}
-        \item[1.] \( PC_{out},\; MAR_{in},\; READ ,\; SELECT_4,\; ADD,\; Z_{in}\)
-        \item[2.] \( WMFC,\; Z_{out},\; PC_{in}\)
-        \item[3.] \( MDR_{out},\; IR_{in} \)
-      \end{enumerate}
-    \item[DE]
-      \begin{enumerate}
-        \item[4.] (if ZERO == 0 END) \(,\; OFFSET_{IR_{out}},\; y_{in} \)\\
-          L'if e il resto vengono eseguiti insieme, sempre
-        \item[5.] \( PC_{out},\; SELECT_{y},\; ADD,\; Z_{in} \) 
-        \item[6.] \( Z_{out},\; PC_{in},\; END \)
-      \end{enumerate}
-  \end{enumerate}
+	\noindent Il valore dell'etichetta \texttt{END} è già calcolato dall'assembler e viene memorizzato
+	nell'Instruction Register
+	\begin{enumerate}
+		\item [F]
+		      \begin{enumerate}
+			      \item[1.] \( PC_{out},\; MAR_{in},\; READ ,\; SELECT_4,\; ADD,\; Z_{in}\)
+			      \item[2.] \( WMFC,\; Z_{out},\; PC_{in}\)
+			      \item[3.] \( MDR_{out},\; IR_{in} \)
+		      \end{enumerate}
+		\item[DE]
+		      \begin{enumerate}
+			      \item[4.] (if ZERO == 0 END) \(,\; OFFSET_{IR_{out}},\; y_{in} \)\\
+			            L'if e il resto vengono eseguiti insieme, sempre
+			      \item[5.] \( PC_{out},\; SELECT_{y},\; ADD,\; Z_{in} \)
+			      \item[6.] \( Z_{out},\; PC_{in},\; END \)
+		      \end{enumerate}
+	\end{enumerate}
 \end{example}
 
 \subsection{Struttura della Control Unit}
 \noindent Per rappresentare i cicli di clock delle micro istruzioni si utilizza un
 registro chiamato \textbf{Micro Program Counter} che indica la prossima micro istruzione
 da eseguire. È un contatore con un segnale di reset che permette di far ripartire
-l'esecuzione delle micro istruzioni. 
-
-Questo registro viene poi collegato ad un decoder con 16 uscite che indica il tempo
+l'esecuzione delle micro istruzioni. Questo registro viene poi collegato ad un decoder con 16 uscite che indica il tempo
 del ciclo di clock. Se il segnale \( T_2 = 1 \) allora il segnale \( PC_{in} = 1 \),
-quindi \( PC_{in} = T_2 \).
-
-È presente un decoder che parte dall'Istruction Register e ha in uscite tutte le istruzioni
+quindi \( PC_{in} = T_2 \). È presente poi un decoder che parte dall'Istruction Register e ha in uscita tutte le istruzioni
 \( I_n \). Si possono così realizzare tutte le equazioni in logica combinatoria, ad esempio:
 \[
-  END = (I_1 + I_2 + I_3 + \ldots) \cdot T_6 + I_3 \cdot T_4 \cdot \overline{ZERO}
-\] 
+	END = (I_1 + I_2 + I_3 + \ldots) \cdot T_6 + I_3 \cdot T_4 \cdot \overline{ZERO}
+\]
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\draw (0,0) rectangle (4,4);
+		\node[align=center] (logica-combinatoria) at (2,2) {Logica\\combinatoria};
+		\draw[-latex] (0.3,0) -- ++(0,-0.5) node[below, scale=0.7] {$PC_{in}$};
+		\draw[-latex] (1.15,0) -- ++(0,-0.5) node[below, scale=0.7] {$PC_{out}$};
+		\draw[-latex] (2,0) -- ++(0,-0.5) node[below, xshift=2, scale=0.7] {$MAR_{in}$};
+		\draw[-latex] (2.85,0) -- ++(0,-0.5) node[below, yshift=-3, scale=0.7] {$\ldots$};
+		\draw[-latex] (3.7,0) -- ++(0,-0.5) node[below, scale=0.7] {$END$} --
+		++(2,0) -- ++(0,5) |- (3,5.75);
 
-È presente una memoria che contiene tutte le micro istruzioni chiamata \textbf{Firmware}.
-Le \textbf{CPU cablate} in questo modo non si realizzano più.
+
+		\draw (-1,0) rectangle (-0.5,4);
+		\node[label={[label distance=0cm,text depth=-1ex,rotate=-90]right:Decoder}]
+		at (-0.85,2.6) {};
+		\draw[-latex] (-0.5,3.6) -- (0,3.6) node[midway, above, scale=0.7] {$I_1$};
+		\draw[-latex] (-0.5,3.2) -- (0,3.2) node[midway, above, scale=0.7] {$I_2$};
+		\draw[-latex] (-0.5,2.8) -- (0,2.8) node[midway, above, scale=0.7] {$I_3$};
+		\draw[-latex] (-0.5,2.4) -- (0,2.4);
+		\draw[-latex] (-0.5,2) -- (0,2);
+		\draw[-latex] (-0.5,1.6) -- (0,1.6);
+		\draw[-latex] (-0.5,1.2) -- (0,1.2);
+		\draw[-latex] (-0.5,0.8) -- (0,0.8);
+		\draw[-latex] (-0.5,0.4) -- (0,0.4) node[midway, above, scale=0.7] {$I_{16}$};
+
+		\draw (-2,0) rectangle (-1.5,4);
+		\node[label={[label distance=0cm,text depth=-1ex,rotate=-90]right:IR}]
+		at (-1.86,2.3) {};
+		\draw[-latex] (-1.5,2) -- (-1,2);
+
+		\draw (4.5,0) rectangle (5,4);
+		\node[label={[label distance=0cm,text depth=-1ex,rotate=90]right:PSW}]
+		at (4.65,1.5) {};
+		\draw[latex-] (4,2) -- (4.5,2);
+
+		\draw (0.5, 4.5) rectangle (3.5, 5);
+		\node[align=center] at (2,4.75) {Decoder};
+		\draw[latex-] (1,4) -- (1,4.5) node[midway, left, scale=0.7] {$T_1$};
+		\draw[latex-] (1.5,4) -- (1.5,4.5) node[midway, left, scale=0.7] {$T_2$};
+		\draw[latex-] (2,4) -- (2,4.5) node[midway, left, scale=0.7] {$T_3$};
+		\node[align=center, scale=0.6] at (2.3,4.25) {$\ldots$};
+		\draw[latex-] (3,4) -- (3,4.5) node[midway, left, scale=0.7] {$T_{16}$};
+
+		\draw (1, 5.5) rectangle (3, 6);
+		\node at (2,5.75) (mpc) {MPC};
+		\draw (1,5.9) -- ++(0.15, -0.15) -- ++(-0.15,-0.15);
+		\draw[latex-] (1,5.75) -- ++(-0.5,0) node[left, scale=0.7] {CLK};
+		\draw[-latex] (2,5.5) -- (2,5);
+		\draw (1.9,5.23) -- ++(0.2,0.2) node[right, yshift=-3, scale=0.7] {4};
+	\end{tikzpicture}
+\end{figure}
+
+\noindent Esiste una memoria che contiene tutte le micro istruzioni chiamata \textbf{Firmware},
+ma \textbf{CPU cablate} in questo modo non si realizzano più.
 
 
 % Laboratorio
