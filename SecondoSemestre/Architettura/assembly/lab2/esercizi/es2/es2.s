@@ -4,33 +4,35 @@
 
 .section .data
 numero1:
-.long 69
+  .long 69 
 
 numero2:
-.long 420
-
-numero:
-  .ascii "Il numero "
-numeroLen:
-  .long . - numero
+  .long 420 
 
 uguali:
   .ascii "I due numeri sono uguali\n"
 ugualiLen:
   .long . - uguali
 
-maggiore:
-  .ascii " e' maggiore"
-maggioreLen:
-  .long . - maggiore
+primoMaggiore:
+  .ascii " è maggiore di "
+primoMaggioreLen:
+  .long . - primoMaggiore
 
-minore:
-  .ascii " e' minore"
-minoreLen:
-  .long . - minore
+primoMinore:
+  .ascii " è minore di "
+primoMinoreLen:
+  .long . - primoMinore
 
 risultato:
-  .ascii "00000\n"
+  .ascii "000"
+risultatoLen:
+  .long . - risultato
+risultatoOffset:
+  .long . - risultatoLen - 2
+
+lf:
+  .long 10
 
 .section .text
 .global _start
@@ -42,34 +44,95 @@ _start:
 
   # Confronta i due numeri
   cmpl %eax, %ebx
-  je uguali
-  jle 1minore2
-  # Else: se il numero 1 è maggiore del numero 2
-  # Stampa: Il numero 
+  je uguale
+
+  # Stampa il primo numero
+  # Salva l'indirizzo di memoria del placeholder del risultato
+  leal risultato, %esi
+  addl risultatoOffset, %esi
+  movl risultatoLen, %ecx
+
+  # Converti il primo numero da intero a stringa e mettilo in risultato
+convertiPrimo:
+  movl $10, %ebx
+  div %bl
+  addb $48, %ah
+  movb %ah, (%esi)
+  xorb %ah, %ah
+  decl %esi
+  loop convertiPrimo
+
+  # Stampa
   movl $4, %eax
   movl $1, %ebx
-  leal numero, %ecx
-  movl numeroLen, %edx
+  leal risultato, %ecx
+  movl risultatoLen, %edx
   int $0x80
-  # Stampa: risultato
-  # TODO
 
-  # Stampa: e' maggiore
+  # Se maggiore stampa "maggiore di" altrimenti "minore di"
+  movl numero2, %ebx
+  cmpl numero1, %ebx
+  jg stampaMinore
+  # Stampa "maggiore di"
+  movl $4, %eax
+  movl $1, %ebx
+  leal primoMaggiore, %ecx
+  movl primoMaggioreLen, %edx
+  int $0x80
+  jmp stampaSecondo
 
-uguali:
+  # Stampa "minore di"
+stampaMinore:
+  movl $4, %eax
+  movl $1, %ebx
+  leal primoMinore, %ecx
+  movl primoMinoreLen, %edx
+  int $0x80
+
+  # Stampa il secondo numero
+  # Salva l'indirizzo di memoria del placeholder del risultato
+stampaSecondo:
+  leal risultato, %esi
+  addl risultatoOffset, %esi
+  movl risultatoLen, %ecx
+
+  # Converti il secondo numero da intero a stringa e mettilo in risultato
+  movl numero2, %eax
+convertiSecondo:
+  movl $10, %ebx
+  div %bl
+  addb $48, %ah
+  movb %ah, (%esi)
+  xorb %ah, %ah
+  decl %esi
+  loop convertiSecondo
+
+  # Stampa
+  movl $4, %eax
+  movl $1, %ebx
+  leal risultato, %ecx
+  movl risultatoLen, %edx
+  int $0x80
+
+  # A capo
+  movl $4, %eax
+  movl $1, %ebx
+  leal lf, %ecx
+  movl $1, %edx
+  int $0x80
+
+  jmp end
+
+uguale:
   # Stampa: I numeri sono uguali
   movl $4, %eax
   movl $1, %ebx
   leal uguali, %ecx
   movl ugualiLen, %edx
   int $0x80
-
-1minore2:
-  movl $4, %eax
-  movl $1, %ebx
-  leal numero, %ecx
-  movl numeroLen, %edx
-  int $0x80
-
-intStr:
   
+# Termina il programma
+end:
+  movl $1, %eax
+  movl $0, %ebx
+  int $0x80
