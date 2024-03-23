@@ -2665,4 +2665,76 @@ Perciò \( rk(U) = rk(U|c) \) e quindi \( rk(A) = rk(A|b) \). Quindi siamo nel c
 una soluzione unica, oppure nel caso di infinite soluzioni del teorema di \textbf{Rouché-Capelli}.
 \( \quad \square \) 
 
+\section{Matrici inverse e determinante}
+\begin{figure}[H]
+  \begin{example}
+    \[
+      A = \begin{pmatrix} 
+        1 & 2 & 0\\
+        5 & 11 & -1\\
+        -4 & -10 & -2
+      \end{pmatrix} 
+    \] 
+    Eseguiamo l'Eliminazione di Gauss e calcoliamo il prodotto delle matrici elementari
+    contemporaneamente:
+    \[
+      \begin{pmatrix}[ccc|ccc] 
+        1 & 2 & 0 & 1 & 0 & 0\\
+      5 & 11 & -1 & 0 & 1 & 0\\
+      -4 & -10 & -2 & 0 & 0 & 1
+    \end{pmatrix} 
+    \stackrel{E_{21}(-5)}{\underset{E_{31}4}{\leadsto}}
+    \begin{pmatrix}[ccc|ccc] 
+      1 & 2 & 0 & 1 & 0 & 0\\
+      0 & 1 & -1 & -5 & 1 & 0\\
+      0 & -2 & -2 & 4 & 0 & 1
+    \end{pmatrix}
+   \]
+   \[
+     \stackrel{E_{32}(2)}{\leadsto}
+     \begin{pmatrix}[ccc|ccc]
+       1 & 2 & 0 & 1 & 0 & 0\\
+       0 & 1 & -1 & -5 & 1 & 0\\
+       0 & 0 & -4 & -6 & 2 & 1
+     \end{pmatrix}
+     \stackrel{E_3(-\frac{1}{4})}{\leadsto}
+     \begin{pmatrix}[ccc|ccc]
+       1 & 2 & 0 & 1 & 0 & 0\\
+       0 & 1 & -1 & -5 & 1 & 0\\
+       0 & 0 & 1 & \frac{3}{2} & -\frac{1}{2} & -\frac{1}{4}
+      \end{pmatrix}
+   \] 
+   A sinistra della barra abbiamo la matrice ridotta \( U \) , a destra abbiamo il prodotto delle
+   matrici elementari. Cioè: 
+   \[
+     E_3(-\frac{1}{4})E_{32}(2)E_{31}(4)E_{21}(-5)
+   \] 
+   Siccome \( rk(U) = 3 \), possiamo continuare per ottenere la matrice identità:
+   \[
+     (U|E) \stackrel{E_{23}(1)}{\leadsto} \begin{pmatrix}[ccc|ccc]
+       1 & 2 & 0 & 1 & 0 & 0\\
+       0 & 1 & 0 & -\frac{3}{2} & \frac{1}{2} & -\frac{1}{4}\\
+       0 & 0 & 1 & \frac{3}{2} & -\frac{1}{2} & -\frac{1}{4}
+     \end{pmatrix} 
+   \] 
+   \[
+     \stackrel{E_{12}(-2)}{\leadsto}
+     \begin{pmatrix}[ccc|ccc]
+       1 & 0 & 0 & 8 & -1 & \frac{1}{2}\\
+       0 & 1 & 0 & -\frac{3}{2} & \frac{1}{2} & -\frac{1}{4}\\
+       0 & 0 & 1 & \frac{3}{2} & -\frac{1}{2} & -\frac{1}{4}
+     \end{pmatrix} 
+   \] 
+   A sinistra della barra abbiamo la matrice identità, a destra abbiamo la matrice 
+   \( E' = E_{12}(-2)E_{23}(1)E \). Allora:
+   \[
+     I_3 = E_{12}(-2)E_{23}(1)U = E_{12}(-2)E_{23}(1)E \cdot A =
+   \] 
+   \[
+     = E'A
+   \] 
+   Osserviamo che (24:58)
+  \end{example}
+\end{figure}
+
 \end{document}
