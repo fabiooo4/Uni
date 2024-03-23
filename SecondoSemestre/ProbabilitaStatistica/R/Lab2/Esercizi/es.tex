@@ -225,13 +225,15 @@
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{stat\_auto }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(vec, }\AttributeTok{na.rm =} \ConstantTok{FALSE}\NormalTok{) \{}
-  \ControlFlowTok{if}\NormalTok{ (na.rm }\SpecialCharTok{==} \ConstantTok{TRUE}\NormalTok{) \{}
+  \ControlFlowTok{if}\NormalTok{ (na.rm) \{}
 \NormalTok{    mean }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(vec, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
 \NormalTok{    sd }\OtherTok{\textless{}{-}} \FunctionTok{sd}\NormalTok{(vec, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
-\NormalTok{  \} }\ControlFlowTok{else}\NormalTok{ \{}
-\NormalTok{    mean }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(vec)}
-\NormalTok{    sd }\OtherTok{\textless{}{-}} \FunctionTok{sd}\NormalTok{(vec)}
+
+    \FunctionTok{return}\NormalTok{(}\FunctionTok{list}\NormalTok{(}\StringTok{"mean"} \OtherTok{=}\NormalTok{ mean, }\StringTok{"sd"} \OtherTok{=}\NormalTok{ sd))}
 \NormalTok{  \}}
+
+\NormalTok{  mean }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(vec)}
+\NormalTok{  sd }\OtherTok{\textless{}{-}} \FunctionTok{sd}\NormalTok{(vec)}
 
   \FunctionTok{return}\NormalTok{(}\FunctionTok{list}\NormalTok{(}\StringTok{"mean"} \OtherTok{=}\NormalTok{ mean, }\StringTok{"sd"} \OtherTok{=}\NormalTok{ sd))}
 \NormalTok{\}}
@@ -241,15 +243,50 @@
 \end{Shaded}
 
 \begin{verbatim}
-##      bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
-## mean 43.92193       17.15117      200.9152          4201.754   
-## sd   5.459584       1.974793      14.06171          801.9545   
-##      year     
-## mean 2008.029 
-## sd   0.8183559
+##      bill_length_mm bill_depth_mm flipper_length_mm body_mass_g year     
+## mean 43.92193       17.15117      200.9152          4201.754    2008.029 
+## sd   5.459584       1.974793      14.06171          801.9545    0.8183559
 \end{verbatim}
 
 \hypertarget{e}{%
 \subsection{E}\label{e}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{stat\_manual }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(vec, }\AttributeTok{na.rm =} \ConstantTok{FALSE}\NormalTok{) \{}
+  \ControlFlowTok{if}\NormalTok{ (na.rm) \{}
+\NormalTok{    sum }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(vec, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{    mean }\OtherTok{\textless{}{-}}\NormalTok{ sum }\SpecialCharTok{/} \FunctionTok{na.omit}\NormalTok{(}\FunctionTok{length}\NormalTok{(vec))}
+
+\NormalTok{    sum }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{((vec }\SpecialCharTok{{-}}\NormalTok{ mean)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{    denom }\OtherTok{\textless{}{-}} \FunctionTok{na.omit}\NormalTok{(}\FunctionTok{length}\NormalTok{(vec)) }\SpecialCharTok{{-}} \DecValTok{1}
+\NormalTok{    varianza }\OtherTok{\textless{}{-}}\NormalTok{ sum }\SpecialCharTok{/}\NormalTok{ denom}
+
+\NormalTok{    sd }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(varianza)}
+
+    \FunctionTok{return}\NormalTok{(}\FunctionTok{list}\NormalTok{(}\StringTok{"mean"} \OtherTok{=}\NormalTok{ mean, }\StringTok{"sd"} \OtherTok{=}\NormalTok{ sd))}
+\NormalTok{  \}}
+
+\NormalTok{  sum }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(vec)}
+\NormalTok{  mean }\OtherTok{\textless{}{-}}\NormalTok{ sum }\SpecialCharTok{/} \FunctionTok{length}\NormalTok{(vec)}
+
+\NormalTok{  sum }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{((vec }\SpecialCharTok{{-}}\NormalTok{ mean)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}
+\NormalTok{  denom }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(vec) }\SpecialCharTok{{-}} \DecValTok{1}
+\NormalTok{  varianza }\OtherTok{\textless{}{-}}\NormalTok{ sum }\SpecialCharTok{/}\NormalTok{ denom}
+
+\NormalTok{  sd }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(varianza)}
+
+  \FunctionTok{return}\NormalTok{(}\FunctionTok{list}\NormalTok{(}\StringTok{"mean"} \OtherTok{=}\NormalTok{ mean, }\StringTok{"sd"} \OtherTok{=}\NormalTok{ sd))}
+\NormalTok{\}}
+
+\FunctionTok{sapply}\NormalTok{(penguins[, }\FunctionTok{c}\NormalTok{(}\DecValTok{3}\SpecialCharTok{:}\DecValTok{6}\NormalTok{, }\DecValTok{8}\NormalTok{)], stat\_manual, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      bill_length_mm bill_depth_mm flipper_length_mm body_mass_g year     
+## mean 43.66657       17.05145      199.7471          4177.326    2008.029 
+## sd   5.449612       1.971543      14.06909          799.985     0.8183559
+\end{verbatim}
 
 \end{document}
