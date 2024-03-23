@@ -1028,6 +1028,26 @@ probabilità deve soddisfare per poter essere dichiarata tale.
 \end{figure}
 
 \section{Modelli probabilistici}
+\subsection{Regola per l'unione e l'intersezione di eventi}
+Sia \( (\Omega, \mathcal{A}, P) \) uno spazio di probabilità. Siano \( A,B \in \mathcal{A} \)
+due eventi. Allora:
+\begin{itemize}
+  \item \textbf{L'unione di \( A \) e \( B \)}:
+    \[
+    P(A \cup B) = \begin{cases}
+      P(A) + P(B) & \text{se \( A \) e \( B \) sono disgiunti} \\
+      P(A) + P(B) - P(A \cap B) & \text{caso generale}
+    \end{cases}
+    \] 
+  \item \textbf{L'intersezione di \( A \) e \( B \)}:
+    \[
+    P(A \cap B) = \begin{cases}
+      P(A)P(B) & \text{se \( A \) e \( B \) sono indipendenti} \\
+      P(A|B)P(B) = P(A)P(B|A) & \text{caso generale}
+    \end{cases}
+    \] 
+\end{itemize}
+
 \subsection{Modello equiprobabile}
 L'equiprobabilità è un modello in cui tutti gli eventi elementari hanno la \textbf{stessa
 	probabilità} di verificarsi. Ciò implica che lo spazio dei campioni deve essere \textbf{finito}.
@@ -1131,6 +1151,19 @@ due eventi. Allora \( A \) e \( B \) si dicono \textbf{indipendenti} se:
 \]
 In breve due eventi si dicono indipendenti se l'occorrenza di uno dei due non influenza
 la probabilità di occorrenza dell'altro.
+
+\subsubsection{Proposizione}
+Siano \( A,B \in \mathcal{A} \) due eventi indipendenti. Allora:
+\[
+  P(A|B) = \frac{P(A \cap B)}{P(B)} = \frac{P(A) \cdot P(B)}{P(B)} = P(A)
+\] 
+L'intersezione:
+\[
+   P(A \cap B) = \begin{cases}
+    P(A)P(B) & \text{se \( A \) e \( B \) sono indipendenti} \\
+    P(A|B)P(B) = P(A)P(B|A) & \text{caso generale} 
+   \end{cases}
+\] 
 
 \subsection{Probabilità condizionata}
 Sia \( (\Omega, \mathcal{A}, P) \) uno spazio di probabilità \textbf{uniforme}. Siano \( A,B \in \mathcal{A} \)
@@ -1249,5 +1282,62 @@ condizionata, per ogni \( A \subseteq \Omega \):
 \[
 	P_B(A) = P(A|B) = \frac{P(A \cap B)}{P(B)}
 \]
+
+\subsection{Probabilità a Priori e a Posteriori (Formula di Bayes)}
+Sia \( (\Omega, \mathcal{A}, P) \) uno spazio di probabilità. Si dice \textbf{partizione
+di \( \Omega \)} un insieme di eventi \( \{E_j\}_{1 \le j \le n} \) tali che:
+\begin{enumerate}
+  \item sono disgiunti:
+    \[
+      i,j \in I \quad \text{tale che} \quad i \neq j,\; E_i \cap E_j = \emptyset
+    \] 
+  \item per ogni \( i \in I \):
+    \[
+    P(E_i) > 0
+    \] 
+  \item ricoprono tutto lo spazio:
+    \[
+    \bigcup_{j = 1}^n E_j = \Omega
+    \]
+\end{enumerate}
+
+\subsubsection{Teorema delle probabilità totali}
+Sia \( (\Omega, \mathcal{A}, P) \) uno spazio di probabilità e sia \( \{E_j\}_{1 \le j \le n} \)
+una partizione di \( \Omega \). Sia \( B \in \mathcal{A} \) un evento. Allora:
+\[
+  P(B) = \sum_{j = 1}^n P(B|E_j)P(E_j)
+\] 
+\subsubsection{Dimostrazione}
+\[
+  B = B \cap \Omega = B \cap \bigcup_{j=1}^n E_j = \bigcup_{j=1}^n (B \cap E_j)
+\] 
+\[
+  P(B) = P\left( \bigcup_{j=1}^n (B \cap E_j) \right) \sum_{j=1}^n P(B \cap E_j) =
+  \sum_{j=1}^n P(B|E_j)P(E_j)
+\] 
+
+\subsubsection{Teorema di Bayes}
+Sia \( \{E_i\}_{i \in I}  \) una partizione di \( \Omega \) (finita o numerabile) e sia
+\( P(A) > 0 \). Allora per un generico elemento della partizione \( E_n \), con
+\( n \in I \), si ha:
+\[
+P(E_n|A) = \frac{P(A|E_n)P(E_n)}{\sum_{i \in I} P(A|E_i)P(E_i)}
+\] 
+
+\subsubsection{Dimostrazione}
+\[
+  P(E_n|A) = \frac{P(A \cap E_n)}{P(A)} = \frac{P(A|E_n)P(E_n)}{P(A)} = \frac{P(A|E_n)P(E_n)}{
+  \sum_{i \in I} P(A|E_i)P(E_i)}
+\] 
+
+\subsection{Probabilità a priori e a posteriori}
+\subsubsection{Probabilità a priori}
+\( P(A) \): è una probabilità da determinare senza altre informazioni. Non si hanno
+informaizoni sufficienti per determinarla.
+
+\subsubsection{Probabilità a posteriori}
+\( P(A|E_n) \): si hanno strumenti ed informazioni sufficienti per determinare queste
+probabilità. Se si conoscono delle altre informazioni, quindi se si restringe lo spazio
+campionario, si riescono a determinare.
 
 \end{document}
