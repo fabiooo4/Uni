@@ -11,6 +11,7 @@
 \usepackage{xcolor}
 \usepackage{float}
 \usepackage{tikz}
+\usepackage{tikz-cd}
 \usepackage{nicematrix}
 \usepackage{pgfplots}
 \usetikzlibrary{fit}
@@ -2713,7 +2714,7 @@ una soluzione unica, oppure nel caso di infinite soluzioni del teorema di \textb
    \[
      (U|E) \stackrel{E_{23}(1)}{\leadsto} \begin{pmatrix}[ccc|ccc]
        1 & 2 & 0 & 1 & 0 & 0\\
-       0 & 1 & 0 & -\frac{3}{2} & \frac{1}{2} & -\frac{1}{4}\\
+       0 & 1 & 0 & -\frac{7}{2} & \frac{1}{2} & -\frac{1}{4}\\
        0 & 0 & 1 & \frac{3}{2} & -\frac{1}{2} & -\frac{1}{4}
      \end{pmatrix} 
    \] 
@@ -2721,7 +2722,7 @@ una soluzione unica, oppure nel caso di infinite soluzioni del teorema di \textb
      \stackrel{E_{12}(-2)}{\leadsto}
      \begin{pmatrix}[ccc|ccc]
        1 & 0 & 0 & 8 & -1 & \frac{1}{2}\\
-       0 & 1 & 0 & -\frac{3}{2} & \frac{1}{2} & -\frac{1}{4}\\
+       0 & 1 & 0 & -\frac{7}{2} & \frac{1}{2} & -\frac{1}{4}\\
        0 & 0 & 1 & \frac{3}{2} & -\frac{1}{2} & -\frac{1}{4}
      \end{pmatrix} 
    \] 
@@ -2733,8 +2734,289 @@ una soluzione unica, oppure nel caso di infinite soluzioni del teorema di \textb
    \[
      = E'A
    \] 
-   Osserviamo che (24:58)
+   Osserviamo che:
+   \[
+   AE' = \begin{pmatrix} 
+     1 & 2 & 0\\
+     5 & 11 & -1\\
+     -4 & -10 & -2
+   \end{pmatrix} 
+   \begin{pmatrix} 
+     8 & -1 & \frac{1}{2}\\
+     -\frac{7}{2} & \frac{1}{2} & -\frac{1}{4}\\
+     \frac{3}{2} & -\frac{1}{2} & -\frac{1}{4}
+   \end{pmatrix} 
+   =
+   \begin{pmatrix} 
+     1 & 0 & 0\\
+     0 & 1 & 0\\
+     0 & 0 & 1
+   \end{pmatrix} 
+   \] 
+   Dunque \( A^{-1}=E' \) 
   \end{example}
 \end{figure}
+
+\subsection{Proposizione}
+Sia \( A \in M_{n \times n}(\mathbb{C}) \). Allora \( A \) è invertibile se e solo se
+esiste una sequenza di matrici elementari \( E_1, \ldots, E_t \) tale che \( I_n = 
+(E_t \ldots E_1 A) \).
+
+\subsubsection{Dimostrazione}
+Supponiamo che \( A \) sia invertibile. Per ogni \( b \in M_{n \times 1}(\mathbb{C}) \),
+il vettore \( A^{-1}b =: v \) è soluzione del sistema lineare \( Ax = b \). Infatti:
+\[
+  Av = b = A(A^{-1}b) = (AA^{-1})b = I_nb = b
+\] 
+Per (3.12), abbiamo che \( rk(A) = n \). Esiste una forma ridotta \( U \) di \( A \) tale
+che \( rk(U) = n \) e
+\[
+  U = \begin{pmatrix} 
+    1 & * & \ldots & \ldots & * & *\\
+    0 & 1 & * & \ldots & * & *\\
+    \vdots & \vdots & \vdots & \ddots & \vdots & \vdots\\
+    0 & 0 & 0 & \ldots & 0 & 1
+  \end{pmatrix} 
+\] 
+con 1 sulla diagnoale e matrici elementari \( E_1, \ldots, E_t \) tali che \( U = E_t
+\ldots E_1A \). Proseguendo come nell'esempio precedente, otteniamo le matrici elementari
+\( E_{t+1}, \ldots, E_s \) tali che:
+\[ I_n = E_s \ldots E_{t+1}U = E_s \ldots E_{t+1}E_t
+\ldots E_1A \]
+Ora supponiamo che esistano le matrici elementari \( E_1, \ldots, E_s \) tali che:
+\[
+ I_n = E_s \ldots E_1A
+\] 
+Per 3.10, le matrici elementari sono invertibili. Dunque:
+\[
+  E_i^{-1} \ldots E_s^{-1} = E_i^{-1} \ldots E_s^{-1}I_n =
+  \overbrace{\underbrace{E_i^{-1} \ldots E_s^{-1}}_{(E_s \ldots E_1)^{-1}}E_s \ldots E_1}^{I_n}
+  A = A
+\]
+\( A \) è un prodotto di matrici invertibili, quindi è invertibile con \( A^{-1} = Es \ldots E_1 \) 
+\( \quad \square \) 
+
+\subsection{Calcolo della matrice inversa}
+Data una matrice invertibile \( A \in M_{m \times n}(\mathbb{C}) \). Usiamo le operazioni
+elementari per trasformare \( A \) nella matrice identità, e eseguiamo le stesse
+operazioni elementari su \( I_n \) per ottenere \( A^{-1} \):
+\[
+  (A|I_n) \stackrel{E_1}{\leadsto} (A'|E') \stackrel{E_2}{\leadsto} \ldots \stackrel{E_s}{\leadsto}
+  (I_n|A^{-1})
+\] 
+\begin{figure}[H]
+  \begin{example}
+    \[
+    A = \begin{pmatrix} 
+      1 & 2 & 3\\
+      0 & 1 & 4\\
+      5 & 6 & 0
+    \end{pmatrix} 
+    \] 
+    \[
+      \begin{pmatrix}[ccc|ccc]
+        1 & 2 & 3 & 1 & 0 & 0\\
+        0 & 1 & 4 & 0 & 1 & 0\\
+        5 & 6 & 0 & 0 & 0 & 1
+    \end{pmatrix} 
+    \stackrel{E_{31}(-5)}{\underset{R3-5R1}{\leadsto}}
+    \begin{pmatrix}[ccc|ccc] 
+      1 & 2 & 3 & 1 & 0 & 0\\
+      0 & 1 & 4 & 0 & 1 & 0\\
+      0 & -4 & -15 & -5 & 0 & 1
+    \end{pmatrix}
+    \] 
+    \[
+      \stackrel{E_{32}(4)}{\underset{R3+4R2}{\leadsto}}
+      \begin{pmatrix}[ccc|ccc] 
+        1 & 2 & 3 & 1 & 0 & 0\\
+        0 & 1 & 4 & 0 & 1 & 0\\
+        0 & 0 & 1 & -5 & 4 & 1
+    \end{pmatrix} 
+    \stackrel{E_{23}(-4)}{\underset{R2-4R3}{\leadsto}}
+    \begin{pmatrix}[ccc|ccc] 
+      1 & 2 & 3 & 1 & 0 & 0\\
+      0 & 1 & 0 & 20 & -15 & -4\\
+      0 & 0 & 1 & -5 & 4 & 1
+    \end{pmatrix}
+    \] 
+    \[
+      \stackrel{E_{13}(-3)}{\underset{R1-3R3}{\leadsto}}
+      \begin{pmatrix}[ccc|ccc] 
+        1 & 2 & 0 & 16 & -12 & -3\\
+        0 & 1 & 0 & 20 & -15 & -4\\
+        0 & 0 & 1 & -5 & 4 & 1
+      \end{pmatrix}
+      \stackrel{E_{12}(-2)}{\underset{R1-2R2}{\leadsto}}
+      \begin{pmatrix}[ccc|ccc] 
+        1 & 0 & 0 & 24 & 18 & 5\\
+        0 & 1 & 0 & 20 & -15 & -4\\
+        0 & 0 & 1 & -5 & 4 & 1
+      \end{pmatrix}
+    \] 
+    A sinistra della barra abbiamo la matrice identità \( I_3 \) , a destra abbiamo 
+    la matrice inversa \( A^{-1} \) 
+  \end{example}
+\end{figure}
+
+\subsection{Teorema delle matrici invertibili}
+Sono equivalenti i seguenti enunciati per \( A \in M_{n \times n}(\mathbb{C}) \):
+\begin{enumerate}
+  \item[(a)] \( A \) è invertibile.
+  \item[(b)] Esiste una sequenza di matrici elementari \( E_1, \ldots, E_t \) tale che:
+    \[
+      I_n = E_t \ldots E_1 A
+    \]
+  \item[(c)] \( rk(a) = n \)
+  \item[(d)] Il sistema lineare \( Ax = b \) ammette una soluzione per qualsiasi vettore \( b \in 
+    M_{n \times 1}(\mathbb{C}) \).
+  \item[(e)] Il sistema lineare \( Ax = \underbrace{o}_{\text{vettore nullo}} \) ha una
+    sola soluzione, cioè: \[ x = 0 = \begin{pmatrix} 0 \\ \vdots \\ 0 \end{pmatrix}  \]
+  \item[(f)] Esiste una matrice \( C \in M_{n \times n}(\mathbb{C}) \) tale che:
+    \[
+      CA = I_n
+    \]
+  \item[(g)] Esiste una matrice \( D \in M_{n \times n}(\mathbb{C}) \) tale che:
+    \[
+      AD = I_n
+    \]
+\end{enumerate}
+
+\subsubsection{Dimostrazione}
+\begin{figure}[H]
+  \centering
+  \begin{tikzcd}
+    & (b) \arrow[d, Leftrightarrow, "\surd\;(4.2)"] \\
+    (g) \arrow[r, Leftarrow, "\surd"] & (a) \arrow[r, Rightarrow, "\surd"] & (f) \arrow[d,Rightarrow, "\surd"]\\
+    (d) \arrow[u, Leftarrow, "dim\;(4.1)"]& \arrow[l, Leftarrow, "dim\;(3.12)"] (c) \arrow[u, Rightarrow, "dim\;(4.1)"] 
+                                          & \arrow[l, Rightarrow, "1 soluz."] (e)\\
+  \end{tikzcd}
+  \caption{Diagramma delle implicazioni}
+\end{figure}
+\begin{itemize}
+  \item[\( (f) \Rightarrow (e) \) ] Supponiamo che \( \exists C \in M_{n \times n}(\mathbb{C}) \)
+    tale che \( CA = I_n \). Sia \( v \in  M_{n \times 1}(\mathbb{C}) \) una soluzione
+    del sistema \( Ax = 0 \). Allora: 
+    \[ v = I_nv = (CA)v = C(Av) = Co = 0 \]
+    Ad esempio:
+    \[
+    \begin{pmatrix} 
+      1 & 2\\
+      3 & 4
+    \end{pmatrix} 
+    \begin{pmatrix} 0\\0 \end{pmatrix} 
+    =
+    \begin{pmatrix} 0\\0 \end{pmatrix}
+    \] 
+    \( \square \) 
+\end{itemize}
+
+\begin{figure}[H]
+  \begin{define}
+    Sia \( D \) la matrice inversa destra:
+    \[
+    D = I_nD = (CA)D = C(AD) = CI_n = C
+    \] 
+    Osserviamo che \( D = C \). Quindi:
+    \[
+      C = D = A^{-1}
+    \] 
+  \end{define}
+\end{figure}
+
+\subsection{Proposizione (Determinante di una matrice)}
+Sia \( A \in M_{2 \times 2}(\mathbb{C}) \) tale che:
+\[
+A = \begin{pmatrix} 
+  a & b\\
+  c & d
+\end{pmatrix} 
+\] 
+Se \( ad-bc \neq 0 \), allora \( A \) è invertibile e \( A^{-1} = \frac{1}{ad-bc} \begin{pmatrix} 
+  d & -b\\
+  -c & a
+\end{pmatrix}  \) 
+Se \( ad-bc = 0 \), allora \( A \) non è invertibile.
+
+\vspace{1em}
+\noindent \( ad-bc \) è detto \textbf{determinante} di \( A \) e si indica con \( \det(A) \).
+\subsubsection{Dimostrazione}
+\[
+  \begin{pmatrix} 
+    a & b\\
+    c & d
+  \end{pmatrix} 
+  \left( 
+    \frac{1}{ad-bc}
+    \begin{pmatrix} 
+      d & -b\\
+      -c & a
+    \end{pmatrix} 
+  \right) =
+\] 
+\[
+  = \frac{1}{ad-bc}
+  \begin{pmatrix} 
+    a & b\\
+    c & d
+  \end{pmatrix} 
+  \begin{pmatrix} 
+    d & -b\\
+    -c & a
+  \end{pmatrix} 
+  =
+\] 
+\[
+  = \frac{1}{ad-bc}
+  \begin{pmatrix} 
+    ad-bc & 0\\
+    0 & ad-bc
+  \end{pmatrix} 
+  =
+  \begin{pmatrix} 
+    1 & 0\\
+    0 & 1
+  \end{pmatrix} 
+  = I_2
+\] 
+Quindi \( A \) è invertibile e \( A^{-1} = \frac{1}{ad-bc} \begin{pmatrix} 
+  d & -b\\
+  -c & a
+\end{pmatrix}  \).
+
+\vspace{1em}
+\noindent Se \( ad-bc = 0 \), allora:
+\[
+  \begin{pmatrix} 
+    a & b\\
+    c & d
+  \end{pmatrix} 
+  \begin{pmatrix} 
+    d\\-c
+  \end{pmatrix} 
+  =
+  \begin{pmatrix} 
+    ad-bc\\
+    cd-cd
+  \end{pmatrix} 
+  =
+  \begin{pmatrix} 
+    0\\0
+  \end{pmatrix}
+\] 
+Quindi \( \begin{pmatrix} d\\-c \end{pmatrix}  \) è soluzione al sistema \( Ax=0 \).
+Se \( \begin{pmatrix} d\\-c \end{pmatrix} \neq \begin{pmatrix} 0\\0 \end{pmatrix}  \),
+allora \( A \) non è invertibile per (4.3(e)).
+
+\vspace{1em}
+\noindent Se \( \begin{pmatrix} d\\-c \end{pmatrix} = \begin{pmatrix} 0\\0 \end{pmatrix}  \),
+allora \( d = c = 0 \) e:
+\[
+A = \begin{pmatrix} 
+  a & b\\
+  0 & 0
+\end{pmatrix} 
+\] 
+che ha rango \( <2 \), quindi \( A \) non è invertibile per (4.3(c)). \( \quad \square \) 
 
 \end{document}
