@@ -4,20 +4,17 @@
 %
 \documentclass[
 ]{article}
-\usepackage{amsmath,amssymb}
-\usepackage{iftex}
-\ifPDFTeX
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
 \else % if luatex or xetex
-  \usepackage{unicode-math} % this also loads fontspec
+  \usepackage{unicode-math}
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
-\fi
-\usepackage{lmodern}
-\ifPDFTeX\else
-  % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -36,6 +33,14 @@
   \KOMAoptions{parskip=half}}
 \makeatother
 \usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Lab2},
+  pdfauthor={Irimie Fabio},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
 \usepackage[margin=1in]{geometry}
 \usepackage{color}
 \usepackage{fancyvrb}
@@ -48,13 +53,13 @@
 \newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
 \newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
 \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
 \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
 \newcommand{\BuiltInTok}[1]{#1}
 \newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
 \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
 \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
 \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
 \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
@@ -62,7 +67,7 @@
 \newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
 \newcommand{\ExtensionTok}[1]{#1}
 \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
 \newcommand{\ImportTok}[1]{#1}
 \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
@@ -71,7 +76,7 @@
 \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
 \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
 \newcommand{\RegionMarkerTok}[1]{#1}
-\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
 \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
@@ -94,17 +99,6 @@
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{-\maxdimen} % remove section numbering
-\ifLuaTeX
-  \usepackage{selnolig}  % disable illegal ligatures
-\fi
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
-\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\urlstyle{same}
-\hypersetup{
-  pdftitle={Lab2},
-  pdfauthor={Irimie Fabio},
-  hidelinks,
-  pdfcreator={LaTeX via pandoc}}
 
 \title{Lab2}
 \usepackage{etoolbox}
@@ -128,215 +122,186 @@
 \section{Exercise 1 - Create a new mean and sd
 function}\label{exercise-1---create-a-new-mean-and-sd-function}}
 
+\hypertarget{a}{%
+\subsection{A}\label{a}}
+
+Create the Lab2 project. Use the same structure used for Lab1:
+
 \begin{itemize}
+\tightlist
 \item
-  A:
-
-  Create the Lab2 project. Use the same structure used for Lab1:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    scripts,
-  \item
-    plots,
-  \item
-    data
-  \end{itemize}
+  scripts,
 \item
-  B:
-
-  Install the palmerpenguins package, load the penguins dataset or,
-  alternatively, download the .RData object from moodle and import it
-  after placing it inside the data directory of the project (hint: use
-  the load() function).
+  plots,
 \item
-  C:
-
-  Compute the mean, the standard deviation, and the median for the
-  numeric variables of the dataset.
-\item
-  D:
-
-  Create a function called stat\_auto that simultaneously returns both
-  the mean and the standard deviation of a given vector (hint: return an
-  object of type list or simply a vector). Then try it on the same
-  numeric variables in C. to check the results (hint: if you obtain NA
-  maybe you forgot to remove NA terms in the vector).
-\item
-  E:
-
-  Create a function called stat\_manual that simultaneously returns both
-  the mean and the standard deviation of a given vector without using
-  the mean() and the sd() functions (hint: you can use length(), sum(),
-  and na.omit() functions). Then try it on the same numeric variables in
-  C. to check the results.
+  data
 \end{itemize}
 
 \hypertarget{b}{%
 \subsection{B}\label{b}}
 
+Install the palmerpenguins package, load the penguins dataset or,
+alternatively, download the .RData object from moodle and import it
+after placing it inside the data directory of the project (hint: use the
+load() function).
+
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{library}\NormalTok{(palmerpenguins)}
-\FunctionTok{data}\NormalTok{(penguins)}
+\KeywordTok{library}\NormalTok{(palmerpenguins)}
+\KeywordTok{data}\NormalTok{(penguins)}
 \end{Highlighting}
 \end{Shaded}
 
 \hypertarget{c}{%
 \subsection{C}\label{c}}
 
+Compute the mean, the standard deviation, and the median for the numeric
+variables of the dataset.
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Means}
-\FunctionTok{cat}\NormalTok{(}\StringTok{"Means: }\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
-\DocumentationTok{\#\# Means:}
-\FunctionTok{colMeans}\NormalTok{(penguins[, }\FunctionTok{c}\NormalTok{(}\DecValTok{3}\SpecialCharTok{:}\DecValTok{6}\NormalTok{, }\DecValTok{8}\NormalTok{)], }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
-\DocumentationTok{\#\#    bill\_length\_mm     bill\_depth\_mm flipper\_length\_mm       body\_mass\_g }
-\DocumentationTok{\#\#          43.92193          17.15117         200.91520        4201.75439 }
-\DocumentationTok{\#\#              year }
-\DocumentationTok{\#\#        2008.02907}
-\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\KeywordTok{cat}\NormalTok{(}\StringTok{"Means: }\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\CommentTok{\#\# Means:}
+\KeywordTok{colMeans}\NormalTok{(penguins[, }\KeywordTok{c}\NormalTok{(}\DecValTok{3}\OperatorTok{:}\DecValTok{6}\NormalTok{, }\DecValTok{8}\NormalTok{)], }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
+\CommentTok{\#\#    bill\_length\_mm     bill\_depth\_mm flipper\_length\_mm       body\_mass\_g }
+\CommentTok{\#\#          43.92193          17.15117         200.91520        4201.75439 }
+\CommentTok{\#\#              year }
+\CommentTok{\#\#        2008.02907}
+\KeywordTok{cat}\NormalTok{(}\StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
 
 \CommentTok{\# Medians}
-\FunctionTok{cat}\NormalTok{(}\StringTok{"Medians: }\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
-\DocumentationTok{\#\# Medians:}
-\FunctionTok{sapply}\NormalTok{(penguins[, }\FunctionTok{c}\NormalTok{(}\DecValTok{3}\SpecialCharTok{:}\DecValTok{6}\NormalTok{, }\DecValTok{8}\NormalTok{)], median, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
-\DocumentationTok{\#\#    bill\_length\_mm     bill\_depth\_mm flipper\_length\_mm       body\_mass\_g }
-\DocumentationTok{\#\#             44.45             17.30            197.00           4050.00 }
-\DocumentationTok{\#\#              year }
-\DocumentationTok{\#\#           2008.00}
-\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\KeywordTok{cat}\NormalTok{(}\StringTok{"Medians: }\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\CommentTok{\#\# Medians:}
+\KeywordTok{sapply}\NormalTok{(penguins[, }\KeywordTok{c}\NormalTok{(}\DecValTok{3}\OperatorTok{:}\DecValTok{6}\NormalTok{, }\DecValTok{8}\NormalTok{)], median, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
+\CommentTok{\#\#    bill\_length\_mm     bill\_depth\_mm flipper\_length\_mm       body\_mass\_g }
+\CommentTok{\#\#             44.45             17.30            197.00           4050.00 }
+\CommentTok{\#\#              year }
+\CommentTok{\#\#           2008.00}
+\KeywordTok{cat}\NormalTok{(}\StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
 
 \CommentTok{\# Standard deviations}
-\FunctionTok{cat}\NormalTok{(}\StringTok{"Standard deviations: }\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
-\DocumentationTok{\#\# Standard deviations:}
-\FunctionTok{sapply}\NormalTok{(penguins[, }\FunctionTok{c}\NormalTok{(}\DecValTok{3}\SpecialCharTok{:}\DecValTok{6}\NormalTok{, }\DecValTok{8}\NormalTok{)], sd, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
-\DocumentationTok{\#\#    bill\_length\_mm     bill\_depth\_mm flipper\_length\_mm       body\_mass\_g }
-\DocumentationTok{\#\#         5.4595837         1.9747932        14.0617137       801.9545357 }
-\DocumentationTok{\#\#              year }
-\DocumentationTok{\#\#         0.8183559}
-\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\KeywordTok{cat}\NormalTok{(}\StringTok{"Standard deviations: }\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\CommentTok{\#\# Standard deviations:}
+\KeywordTok{sapply}\NormalTok{(penguins[, }\KeywordTok{c}\NormalTok{(}\DecValTok{3}\OperatorTok{:}\DecValTok{6}\NormalTok{, }\DecValTok{8}\NormalTok{)], sd, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
+\CommentTok{\#\#    bill\_length\_mm     bill\_depth\_mm flipper\_length\_mm       body\_mass\_g }
+\CommentTok{\#\#         5.4595837         1.9747932        14.0617137       801.9545357 }
+\CommentTok{\#\#              year }
+\CommentTok{\#\#         0.8183559}
+\KeywordTok{cat}\NormalTok{(}\StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \hypertarget{d}{%
 \subsection{D}\label{d}}
 
+Create a function called stat\_auto that simultaneously returns both the
+mean and the standard deviation of a given vector (hint: return an
+object of type list or simply a vector). Then try it on the same numeric
+variables in C. to check the results (hint: if you obtain NA maybe you
+forgot to remove NA terms in the vector).
+
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{stat\_auto }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(vec, }\AttributeTok{na.rm =} \ConstantTok{FALSE}\NormalTok{) \{}
+\NormalTok{stat\_auto \textless{}{-}}\StringTok{ }\ControlFlowTok{function}\NormalTok{(vec, }\DataTypeTok{na.rm =} \OtherTok{FALSE}\NormalTok{) \{}
   \ControlFlowTok{if}\NormalTok{ (na.rm) \{}
-\NormalTok{    mean }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(vec, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
-\NormalTok{    sd }\OtherTok{\textless{}{-}} \FunctionTok{sd}\NormalTok{(vec, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{    mean \textless{}{-}}\StringTok{ }\KeywordTok{mean}\NormalTok{(vec, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{    sd \textless{}{-}}\StringTok{ }\KeywordTok{sd}\NormalTok{(vec, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
 
-    \FunctionTok{return}\NormalTok{(}\FunctionTok{list}\NormalTok{(}\StringTok{"mean"} \OtherTok{=}\NormalTok{ mean, }\StringTok{"sd"} \OtherTok{=}\NormalTok{ sd))}
+    \KeywordTok{return}\NormalTok{(}\KeywordTok{list}\NormalTok{(}\StringTok{"mean"}\NormalTok{ =}\StringTok{ }\NormalTok{mean, }\StringTok{"sd"}\NormalTok{ =}\StringTok{ }\NormalTok{sd))}
 \NormalTok{  \}}
 
-\NormalTok{  mean }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(vec)}
-\NormalTok{  sd }\OtherTok{\textless{}{-}} \FunctionTok{sd}\NormalTok{(vec)}
+\NormalTok{  mean \textless{}{-}}\StringTok{ }\KeywordTok{mean}\NormalTok{(vec)}
+\NormalTok{  sd \textless{}{-}}\StringTok{ }\KeywordTok{sd}\NormalTok{(vec)}
 
-  \FunctionTok{return}\NormalTok{(}\FunctionTok{list}\NormalTok{(}\StringTok{"mean"} \OtherTok{=}\NormalTok{ mean, }\StringTok{"sd"} \OtherTok{=}\NormalTok{ sd))}
+  \KeywordTok{return}\NormalTok{(}\KeywordTok{list}\NormalTok{(}\StringTok{"mean"}\NormalTok{ =}\StringTok{ }\NormalTok{mean, }\StringTok{"sd"}\NormalTok{ =}\StringTok{ }\NormalTok{sd))}
 \NormalTok{\}}
 
-\FunctionTok{sapply}\NormalTok{(penguins[, }\FunctionTok{c}\NormalTok{(}\DecValTok{3}\SpecialCharTok{:}\DecValTok{6}\NormalTok{, }\DecValTok{8}\NormalTok{)], stat\_auto, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+\KeywordTok{sapply}\NormalTok{(penguins[, }\KeywordTok{c}\NormalTok{(}\DecValTok{3}\OperatorTok{:}\DecValTok{6}\NormalTok{, }\DecValTok{8}\NormalTok{)], stat\_auto, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-##      bill_length_mm bill_depth_mm flipper_length_mm body_mass_g year     
-## mean 43.92193       17.15117      200.9152          4201.754    2008.029 
-## sd   5.459584       1.974793      14.06171          801.9545    0.8183559
+##      bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
+## mean 43.92193       17.15117      200.9152          4201.754   
+## sd   5.459584       1.974793      14.06171          801.9545   
+##      year     
+## mean 2008.029 
+## sd   0.8183559
 \end{verbatim}
 
 \hypertarget{e}{%
 \subsection{E}\label{e}}
 
+Create a function called stat\_manual that simultaneously returns both
+the mean and the standard deviation of a given vector without using the
+mean() and the sd() functions (hint: you can use length(), sum(), and
+na.omit() functions). Then try it on the same numeric variables in C. to
+check the results.
+
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{stat\_manual }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(vec, }\AttributeTok{na.rm =} \ConstantTok{FALSE}\NormalTok{) \{}
+\NormalTok{stat\_manual \textless{}{-}}\StringTok{ }\ControlFlowTok{function}\NormalTok{(vec, }\DataTypeTok{na.rm =} \OtherTok{FALSE}\NormalTok{) \{}
   \ControlFlowTok{if}\NormalTok{ (na.rm) \{}
-\NormalTok{    sum }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(vec, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
-\NormalTok{    mean }\OtherTok{\textless{}{-}}\NormalTok{ sum }\SpecialCharTok{/} \FunctionTok{na.omit}\NormalTok{(}\FunctionTok{length}\NormalTok{(vec))}
+\NormalTok{    sum \textless{}{-}}\StringTok{ }\KeywordTok{sum}\NormalTok{(vec, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{    mean \textless{}{-}}\StringTok{ }\NormalTok{sum }\OperatorTok{/}\StringTok{ }\KeywordTok{na.omit}\NormalTok{(}\KeywordTok{length}\NormalTok{(vec))}
 
-\NormalTok{    sum }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{((vec }\SpecialCharTok{{-}}\NormalTok{ mean)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
-\NormalTok{    denom }\OtherTok{\textless{}{-}} \FunctionTok{na.omit}\NormalTok{(}\FunctionTok{length}\NormalTok{(vec)) }\SpecialCharTok{{-}} \DecValTok{1}
-\NormalTok{    varianza }\OtherTok{\textless{}{-}}\NormalTok{ sum }\SpecialCharTok{/}\NormalTok{ denom}
+\NormalTok{    sum \textless{}{-}}\StringTok{ }\KeywordTok{sum}\NormalTok{((vec }\OperatorTok{{-}}\StringTok{ }\NormalTok{mean)}\OperatorTok{\^{}}\DecValTok{2}\NormalTok{, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{    denom \textless{}{-}}\StringTok{ }\KeywordTok{na.omit}\NormalTok{(}\KeywordTok{length}\NormalTok{(vec)) }\OperatorTok{{-}}\StringTok{ }\DecValTok{1}
+\NormalTok{    varianza \textless{}{-}}\StringTok{ }\NormalTok{sum }\OperatorTok{/}\StringTok{ }\NormalTok{denom}
 
-\NormalTok{    sd }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(varianza)}
+\NormalTok{    sd \textless{}{-}}\StringTok{ }\KeywordTok{sqrt}\NormalTok{(varianza)}
 
-    \FunctionTok{return}\NormalTok{(}\FunctionTok{list}\NormalTok{(}\StringTok{"mean"} \OtherTok{=}\NormalTok{ mean, }\StringTok{"sd"} \OtherTok{=}\NormalTok{ sd))}
+    \KeywordTok{return}\NormalTok{(}\KeywordTok{list}\NormalTok{(}\StringTok{"mean"}\NormalTok{ =}\StringTok{ }\NormalTok{mean, }\StringTok{"sd"}\NormalTok{ =}\StringTok{ }\NormalTok{sd))}
 \NormalTok{  \}}
 
-\NormalTok{  sum }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(vec)}
-\NormalTok{  mean }\OtherTok{\textless{}{-}}\NormalTok{ sum }\SpecialCharTok{/} \FunctionTok{length}\NormalTok{(vec)}
+\NormalTok{  sum \textless{}{-}}\StringTok{ }\KeywordTok{sum}\NormalTok{(vec)}
+\NormalTok{  mean \textless{}{-}}\StringTok{ }\NormalTok{sum }\OperatorTok{/}\StringTok{ }\KeywordTok{length}\NormalTok{(vec)}
 
-\NormalTok{  sum }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{((vec }\SpecialCharTok{{-}}\NormalTok{ mean)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}
-\NormalTok{  denom }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(vec) }\SpecialCharTok{{-}} \DecValTok{1}
-\NormalTok{  varianza }\OtherTok{\textless{}{-}}\NormalTok{ sum }\SpecialCharTok{/}\NormalTok{ denom}
+\NormalTok{  sum \textless{}{-}}\StringTok{ }\KeywordTok{sum}\NormalTok{((vec }\OperatorTok{{-}}\StringTok{ }\NormalTok{mean)}\OperatorTok{\^{}}\DecValTok{2}\NormalTok{)}
+\NormalTok{  denom \textless{}{-}}\StringTok{ }\KeywordTok{length}\NormalTok{(vec) }\OperatorTok{{-}}\StringTok{ }\DecValTok{1}
+\NormalTok{  varianza \textless{}{-}}\StringTok{ }\NormalTok{sum }\OperatorTok{/}\StringTok{ }\NormalTok{denom}
 
-\NormalTok{  sd }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(varianza)}
+\NormalTok{  sd \textless{}{-}}\StringTok{ }\KeywordTok{sqrt}\NormalTok{(varianza)}
 
-  \FunctionTok{return}\NormalTok{(}\FunctionTok{list}\NormalTok{(}\StringTok{"mean"} \OtherTok{=}\NormalTok{ mean, }\StringTok{"sd"} \OtherTok{=}\NormalTok{ sd))}
+  \KeywordTok{return}\NormalTok{(}\KeywordTok{list}\NormalTok{(}\StringTok{"mean"}\NormalTok{ =}\StringTok{ }\NormalTok{mean, }\StringTok{"sd"}\NormalTok{ =}\StringTok{ }\NormalTok{sd))}
 \NormalTok{\}}
 
-\FunctionTok{sapply}\NormalTok{(penguins[, }\FunctionTok{c}\NormalTok{(}\DecValTok{3}\SpecialCharTok{:}\DecValTok{6}\NormalTok{, }\DecValTok{8}\NormalTok{)], stat\_manual, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+\KeywordTok{sapply}\NormalTok{(penguins[, }\KeywordTok{c}\NormalTok{(}\DecValTok{3}\OperatorTok{:}\DecValTok{6}\NormalTok{, }\DecValTok{8}\NormalTok{)], stat\_manual, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-##      bill_length_mm bill_depth_mm flipper_length_mm body_mass_g year     
-## mean 43.66657       17.05145      199.7471          4177.326    2008.029 
-## sd   5.449612       1.971543      14.06909          799.985     0.8183559
+##      bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
+## mean 43.66657       17.05145      199.7471          4177.326   
+## sd   5.449612       1.971543      14.06909          799.985    
+##      year     
+## mean 2008.029 
+## sd   0.8183559
 \end{verbatim}
 
 \hypertarget{exercise-2---table-of-frequencies}{%
 \section{Exercise 2 - Table of
 frequencies}\label{exercise-2---table-of-frequencies}}
 
-\begin{itemize}
-\item
-  A:
+\hypertarget{a-1}{%
+\subsection{A}\label{a-1}}
 
-  In the penguins dataset, transform a numeric variable to a categorical
-  one by aggregating values into classes. Consider the flipper length
-  variable and create 10mm wide classes using the cut() function (hint:
-  use the range() function to determine the min and max values of the
-  variable, then define a sequence for the cuts).
-\item
-  B:
-
-  Use the table() function on the new variable generated by cut(). Then
-  transform it into a data.frame object. Rename the columns accordingly
-  using the colnames() function (hint: the second column correspond to
-  the absolute frequencies).
-\item
-  C:
-
-  Add the the columns for: relative frequencies, cumulative absolute
-  frequencies, and cumulative relative frequencies.
-\item
-  D:
-
-  Use the geom\_col() function to plot the frequence of each class.
-  Then, using the geom\_text(aes(label = \ldots)) function, add the
-  relative frequence as a percentage above each column (hint: substitute
-  the \ldots{} with the relative frequency values. Use the round()
-  function to choose the appropriate number of digits).
-\end{itemize}
-
-\hypertarget{a}{%
-\subsection{A}\label{a}}
+In the penguins dataset, transform a numeric variable to a categorical
+one by aggregating values into classes. Consider the flipper length
+variable and create 10mm wide classes using the cut() function (hint:
+use the range() function to determine the min and max values of the
+variable, then define a sequence for the cuts).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{r }\OtherTok{\textless{}{-}} \FunctionTok{range}\NormalTok{(penguins}\SpecialCharTok{$}\NormalTok{flipper\_length\_mm, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
-\NormalTok{splits }\OtherTok{\textless{}{-}} \FunctionTok{seq}\NormalTok{(r[}\DecValTok{1}\NormalTok{], r[}\DecValTok{2}\NormalTok{], }\DecValTok{10}\NormalTok{)}
-\NormalTok{splits }\OtherTok{\textless{}{-}} \FunctionTok{append}\NormalTok{(splits, r[}\DecValTok{2}\NormalTok{])}
+\NormalTok{r \textless{}{-}}\StringTok{ }\KeywordTok{range}\NormalTok{(penguins}\OperatorTok{$}\NormalTok{flipper\_length\_mm, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{splits \textless{}{-}}\StringTok{ }\KeywordTok{seq}\NormalTok{(r[}\DecValTok{1}\NormalTok{], r[}\DecValTok{2}\NormalTok{], }\DecValTok{10}\NormalTok{)}
+\NormalTok{splits \textless{}{-}}\StringTok{ }\KeywordTok{append}\NormalTok{(splits, r[}\DecValTok{2}\NormalTok{])}
 
-\NormalTok{classes }\OtherTok{\textless{}{-}} \FunctionTok{cut}\NormalTok{(penguins}\SpecialCharTok{$}\NormalTok{flipper\_length\_mm, splits, }\AttributeTok{ordered\_result =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{classes \textless{}{-}}\StringTok{ }\KeywordTok{cut}\NormalTok{(penguins}\OperatorTok{$}\NormalTok{flipper\_length\_mm, splits, }\DataTypeTok{ordered\_result =} \OtherTok{TRUE}\NormalTok{)}
 
-\FunctionTok{cat}\NormalTok{(}\StringTok{"Splits: "}\NormalTok{, splits, }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\KeywordTok{cat}\NormalTok{(}\StringTok{"Splits: "}\NormalTok{, splits, }\StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -346,7 +311,7 @@ frequencies}\label{exercise-2---table-of-frequencies}}
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{cat}\NormalTok{(}\StringTok{"Classes: }\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\KeywordTok{cat}\NormalTok{(}\StringTok{"Classes: }\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -425,97 +390,196 @@ frequencies}\label{exercise-2---table-of-frequencies}}
 \hypertarget{b-1}{%
 \subsection{B}\label{b-1}}
 
+Use the table() function on the new variable generated by cut(). Then
+transform it into a data.frame object. Rename the columns accordingly
+using the colnames() function (hint: the second column correspond to the
+absolute frequencies).
+
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{table}\NormalTok{(classes)}
+\NormalTok{df \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\KeywordTok{table}\NormalTok{(classes))}
+\KeywordTok{colnames}\NormalTok{(df) \textless{}{-}}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Classes"}\NormalTok{, }\StringTok{"AbsoluteFrequencies"}\NormalTok{)}
+\NormalTok{df}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## classes
-## (172,182] (182,192] (192,202] (202,212] (212,222] (222,231] 
-##        22        96        85        47        67        24
+##     Classes AbsoluteFrequencies
+## 1 (172,182]                  22
+## 2 (182,192]                  96
+## 3 (192,202]                  85
+## 4 (202,212]                  47
+## 5 (212,222]                  67
+## 6 (222,231]                  24
 \end{verbatim}
+
+\hypertarget{c-1}{%
+\subsection{C}\label{c-1}}
+
+Add the the columns for: relative frequencies, cumulative absolute
+frequencies, and cumulative relative frequencies.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df}\OperatorTok{$}\NormalTok{CumAbsFreq \textless{}{-}}\StringTok{ }\KeywordTok{cumsum}\NormalTok{(df}\OperatorTok{$}\NormalTok{AbsoluteFrequencies)}
+\NormalTok{df}\OperatorTok{$}\NormalTok{RelativeFrequencies \textless{}{-}}\StringTok{ }\NormalTok{df}\OperatorTok{$}\NormalTok{AbsoluteFrequencies }\OperatorTok{/}\StringTok{ }\KeywordTok{sum}\NormalTok{(df}\OperatorTok{$}\NormalTok{AbsoluteFrequencies)}
+\NormalTok{df}\OperatorTok{$}\NormalTok{RelAbsFreq \textless{}{-}}\StringTok{ }\KeywordTok{cumsum}\NormalTok{(df}\OperatorTok{$}\NormalTok{RelativeFrequencies)}
+\NormalTok{df}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     Classes AbsoluteFrequencies CumAbsFreq RelativeFrequencies
+## 1 (172,182]                  22         22          0.06451613
+## 2 (182,192]                  96        118          0.28152493
+## 3 (192,202]                  85        203          0.24926686
+## 4 (202,212]                  47        250          0.13782991
+## 5 (212,222]                  67        317          0.19648094
+## 6 (222,231]                  24        341          0.07038123
+##   RelAbsFreq
+## 1 0.06451613
+## 2 0.34604106
+## 3 0.59530792
+## 4 0.73313783
+## 5 0.92961877
+## 6 1.00000000
+\end{verbatim}
+
+\hypertarget{d-1}{%
+\subsection{D}\label{d-1}}
+
+Use the geom\_col() function to plot the frequence of each class. Then,
+using the geom\_text(aes(label = \ldots)) function, add the relative
+frequence as a percentage above each column (hint: substitute the
+\ldots{} with the relative frequency values. Use the round() function to
+choose the appropriate number of digits).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(ggplot2)}
+\KeywordTok{ggplot}\NormalTok{(}
+  \DataTypeTok{data =}\NormalTok{ df,}
+  \KeywordTok{aes}\NormalTok{(}
+    \DataTypeTok{x =}\NormalTok{ df}\OperatorTok{$}\NormalTok{Class,}
+    \DataTypeTok{y =}\NormalTok{ df}\OperatorTok{$}\NormalTok{AbsoluteFrequency,}
+\NormalTok{  )}
+\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_col}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{y =}\NormalTok{ df}\OperatorTok{$}\NormalTok{AbsoluteFrequencies)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_text}\NormalTok{(}
+    \KeywordTok{aes}\NormalTok{(}
+      \DataTypeTok{label =} \KeywordTok{paste}\NormalTok{(}\KeywordTok{round}\NormalTok{(df}\OperatorTok{$}\NormalTok{RelativeFrequencies }\OperatorTok{*}\StringTok{ }\DecValTok{100}\NormalTok{, }\DecValTok{2}\NormalTok{), }\StringTok{"\%"}\NormalTok{),}
+      \DataTypeTok{y =}\NormalTok{ df}\OperatorTok{$}\NormalTok{AbsoluteFrequencies,}
+\NormalTok{    ),}
+    \DataTypeTok{vjust =} \FloatTok{{-}0.5}\NormalTok{,}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}
+    \DataTypeTok{title =} \StringTok{"Flipper length by class"}\NormalTok{,}
+    \DataTypeTok{x =} \StringTok{"Flipper length class (mm)"}\NormalTok{,}
+    \DataTypeTok{y =} \StringTok{"Absolute frequency"}\NormalTok{,}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.position =} \StringTok{"bottom"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{es_files/figure-latex/unnamed-chunk-8-1.pdf}
 
 \hypertarget{exercise-3---histogram-boxplot-and-quartiles}{%
 \section{Exercise 3 - Histogram, Boxplot and
 quartiles}\label{exercise-3---histogram-boxplot-and-quartiles}}
 
-\begin{itemize}
-\item
-  A:
+\hypertarget{a-2}{%
+\subsection{A}\label{a-2}}
 
-  Using the geom\_histogram() function of the ggplot2 package plot the
-  flipper length distribution coloring each species with a different
-  color (hint: use the fill argument of the aes() function to fill the\\
-  histogram area and the position = ``identity'' argument of the
-  geom\_histogram()). Play with the binwidth argument. Try to insert y =
-  ..density.. in aes(). Do you notice any change?
-\item
-  B:
+Using the geom\_histogram() function of the ggplot2 package plot the
+flipper length distribution coloring each species with a different color
+(hint: use the fill argument of the aes() function to fill the\\
+histogram area and the position = ``identity'' argument of the
+geom\_histogram()). Play with the binwidth argument. Try to insert y =
+..density.. in aes(). Do you notice any change?
 
-  About the flipper length, for each species of penguins compute the:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(}
+  \DataTypeTok{data =}\NormalTok{ penguins,}
+  \KeywordTok{aes}\NormalTok{(}
+    \DataTypeTok{x =}\NormalTok{ penguins}\OperatorTok{$}\NormalTok{flipper\_length\_mm,}
+    \DataTypeTok{fill =}\NormalTok{ penguins}\OperatorTok{$}\NormalTok{species,}
+\NormalTok{  )}
+\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale\_fill\_manual}\NormalTok{(}\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"darkorange"}\NormalTok{, }\StringTok{"purple"}\NormalTok{, }\StringTok{"cyan4"}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_histogram}\NormalTok{(}
+    \DataTypeTok{position =} \StringTok{"identity"}\NormalTok{,}
+    \DataTypeTok{binwidth =} \DecValTok{2}\NormalTok{,}
+    \KeywordTok{aes}\NormalTok{(}\DataTypeTok{y =}\NormalTok{ ..density..),}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}
+    \DataTypeTok{title =} \StringTok{"Flipper length distribution"}\NormalTok{,}
+    \DataTypeTok{x =} \StringTok{"Flipper length (mm)"}\NormalTok{,}
+    \DataTypeTok{y =} \StringTok{"Density"}\NormalTok{,}
+    \DataTypeTok{fill =} \StringTok{"Species"}\NormalTok{,}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.position =} \StringTok{"bottom"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
-  \begin{enumerate}
-  \def\labelenumi{\arabic{enumi}.}
-  \tightlist
-  \item
-    Sample mean
-  \item
-    Sample median
-  \item
-    Sample standard deviation (use a division by \(n-1\))
-  \item
-    Sample variance
-  \end{enumerate}
+\includegraphics{es_files/figure-latex/unnamed-chunk-9-1.pdf}
 
-  (hint: to choose only a specific species use
-  penguins{[}penguins\$species == ``Gentoo'',{]})
-\item
-  C:
+\hypertarget{b-2}{%
+\subsection{B}\label{b-2}}
 
-  Using the geom\_boxplot() function of the ggplot2 package plot the
-  boxplot for the flipper length variable coloring each species with a
-  different color (hint: use the color argument of the aes() function).
-\item
-  D:
+About the flipper length, for each species of penguins compute the: 1.
+Sample mean 2. Sample median 3. Sample standard deviation (use a
+division by \(n-1\)) 4. Sample variance
 
-  Compute the flipper length quartiles for the ``Gentoo'' penguins (Q1,
-  Q2, Q3).
-\item
-  E:
+(hint: to choose only a specific species use
+penguins{[}penguins\$species == ``Gentoo'',{]})
 
-  Calculate the flipper length 40th percentile for the ``Adelie''
-  penguins.
-\end{itemize}
+\hypertarget{c-2}{%
+\subsection{C}\label{c-2}}
+
+Using the geom\_boxplot() function of the ggplot2 package plot the
+boxplot for the flipper length variable coloring each species with a
+different color (hint: use the color argument of the aes() function).
+
+\hypertarget{d-2}{%
+\subsection{D}\label{d-2}}
+
+Compute the flipper length quartiles for the ``Gentoo'' penguins (Q1,
+Q2, Q3).
+
+\hypertarget{e-1}{%
+\subsection{E}\label{e-1}}
+
+Calculate the flipper length 40th percentile for the ``Adelie''
+penguins.
 
 \hypertarget{exercise-4---multiple-boxplots-from-scratch}{%
 \section{Exercise 4 - Multiple boxplots from
 scratch}\label{exercise-4---multiple-boxplots-from-scratch}}
 
-\begin{itemize}
-\item
-  A:
+\hypertarget{a-3}{%
+\subsection{A}\label{a-3}}
 
-  Generate random data with some structure, and create one data set for
-  each day of the week (hint: use the for() cycle, data should have 7
-  columns). At the end you should obtain a matrix with N rows (N =
-  number of random number to generate each time) and 7 columns (one for
-  each day of the week).
-\item
-  B:
+Generate random data with some structure, and create one data set for
+each day of the week (hint: use the for() cycle, data should have 7
+columns). At the end you should obtain a matrix with N rows (N = number
+of random number to generate each time) and 7 columns (one for each day
+of the week).
 
-  Go from a wide to a long data format. You should create a data.frame
-  object with exactly two columns. One contains the values created in
-  A., the other contains the corresponding day of the week.
-\item
-  C:
+\hypertarget{b-3}{%
+\subsection{B}\label{b-3}}
 
-  Plot the seven boxplots (one for each day of the week) in one graph,
-  horizontally oriented (hint: coord\_flip() function translates the
-  axes, the ``limits'' argument of scale\_x\_discrete() allows you to
-  reorder the axis labels).
-\end{itemize}
+Go from a wide to a long data format. You should create a data.frame
+object with exactly two columns. One contains the values created in A.,
+the other contains the corresponding day of the week.
+
+\hypertarget{c-3}{%
+\subsection{C}\label{c-3}}
+
+Plot the seven boxplots (one for each day of the week) in one graph,
+horizontally oriented (hint: coord\_flip() function translates the axes,
+the ``limits'' argument of scale\_x\_discrete() allows you to reorder
+the axis labels).
 
 \hypertarget{exercise-5---exploratory-analysis-of-data}{%
 \section{Exercise 5 - Exploratory analysis of
@@ -525,48 +589,51 @@ Penguins dataset does not contain their weights and flipper lengths
 only. Many other variables are available. Let's explore it a little
 more:
 
-\begin{itemize}
-\item
-  A:
+\hypertarget{a-4}{%
+\subsection{A}\label{a-4}}
 
-  How many islands are there? And how many penguins are present in each
-  isle? Are the 3 species of penguins living together? (hint: use the
-  table() function).
-\item
-  B:
+How many islands are there? And how many penguins are present in each
+isle? Are the 3 species of penguins living together? (hint: use the
+table() function).
 
-  Try to use the geom\_bar() or geom\_col() functions to graphically
-  represent the population of each island, colored by species (hint:
-  islands in the x-axis, number of penguins in the y-axis).
-\item
-  C:
+\hypertarget{b-4}{%
+\subsection{B}\label{b-4}}
 
-  Use a scatter plot to represent flipper length vs.~body mass. Color
-  the point according to the ``sex'' variable. Try to use facets to see
-  if there are differences across species (hint: use
-  facet\_grid(\textasciitilde{} species) function to add facets for
-  species).
-\item
-  D:
+Try to use the geom\_bar() or geom\_col() functions to graphically
+represent the population of each island, colored by species (hint:
+islands in the x-axis, number of penguins in the y-axis).
 
-  The numeric variables shows some interesting relationships. Are they
-  correlated? Use the cor() and the corrplot() functions to study
-  correlations between numeric variables (hint: try to google corrplot()
-  to see which package you have to install to use it).
-\item
-  E:
+\hypertarget{c-4}{%
+\subsection{C}\label{c-4}}
 
-  Choose a pair of numeric variables, compute the correlation between
-  them without using the cor() function (hint: remember the formula).
-\item
-  F:
+Use a scatter plot to represent flipper length vs.~body mass. Color the
+point according to the ``sex'' variable. Try to use facets to see if
+there are differences across species (hint: use
+facet\_grid(\textasciitilde{} species) function to add facets for
+species).
 
-  Plot the scatter plot for bill length vs.~bill depth. Color the points
-  by species. Use the function geom\_smooth(formula = ``y
-  \textasciitilde{} x'') to add a line to represent the linear
-  relationship between the two variables. Then, again, use
-  geom\_smooth(formula = ``y \textasciitilde{} x'') colored by species.
-  What are you noticing?
-\end{itemize}
+\hypertarget{d-3}{%
+\subsection{D}\label{d-3}}
+
+The numeric variables shows some interesting relationships. Are they
+correlated? Use the cor() and the corrplot() functions to study
+correlations between numeric variables (hint: try to google corrplot()
+to see which package you have to install to use it).
+
+\hypertarget{e-2}{%
+\subsection{E}\label{e-2}}
+
+Choose a pair of numeric variables, compute the correlation between them
+without using the cor() function (hint: remember the formula).
+
+\hypertarget{f}{%
+\subsection{F}\label{f}}
+
+Plot the scatter plot for bill length vs.~bill depth. Color the points
+by species. Use the function geom\_smooth(formula = ``y
+\textasciitilde{} x'') to add a line to represent the linear
+relationship between the two variables. Then, again, use
+geom\_smooth(formula = ``y \textasciitilde{} x'') colored by species.
+What are you noticing?
 
 \end{document}
