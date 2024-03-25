@@ -534,6 +534,42 @@ division by \(n-1\)) 4. Sample variance
 (hint: to choose only a specific species use
 penguins{[}penguins\$species == ``Gentoo'',{]})
 
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{species \textless{}{-}}\StringTok{ }\KeywordTok{unique}\NormalTok{(penguins}\OperatorTok{$}\NormalTok{species)}
+\NormalTok{summary \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}
+  \DataTypeTok{Specie =}\NormalTok{ species}
+\NormalTok{)}
+
+\ControlFlowTok{for}\NormalTok{ (specie }\ControlFlowTok{in}\NormalTok{ species) \{}
+\NormalTok{  summary}\OperatorTok{$}\NormalTok{Mean[}\KeywordTok{which}\NormalTok{(specie }\OperatorTok{==}\StringTok{ }\NormalTok{species)] \textless{}{-}}
+\StringTok{    }\KeywordTok{mean}\NormalTok{(penguins[penguins}\OperatorTok{$}\NormalTok{species }\OperatorTok{==}\StringTok{ }\NormalTok{specie, ]}\OperatorTok{$}\NormalTok{flipper\_length\_mm,}
+      \DataTypeTok{na.rm =} \OtherTok{TRUE}
+\NormalTok{    )}
+\NormalTok{  summary}\OperatorTok{$}\NormalTok{Median[}\KeywordTok{which}\NormalTok{(specie }\OperatorTok{==}\StringTok{ }\NormalTok{species)] \textless{}{-}}
+\StringTok{    }\KeywordTok{median}\NormalTok{(penguins[penguins}\OperatorTok{$}\NormalTok{species }\OperatorTok{==}\StringTok{ }\NormalTok{specie, ]}\OperatorTok{$}\NormalTok{flipper\_length\_mm,}
+      \DataTypeTok{na.rm =} \OtherTok{TRUE}
+\NormalTok{    )}
+\NormalTok{  summary}\OperatorTok{$}\NormalTok{StandardDeviation[}\KeywordTok{which}\NormalTok{(specie }\OperatorTok{==}\StringTok{ }\NormalTok{species)] \textless{}{-}}
+\StringTok{    }\KeywordTok{sd}\NormalTok{(penguins[penguins}\OperatorTok{$}\NormalTok{species }\OperatorTok{==}\StringTok{ }\NormalTok{specie, ]}\OperatorTok{$}\NormalTok{flipper\_length\_mm,}
+      \DataTypeTok{na.rm =} \OtherTok{TRUE}
+\NormalTok{    )}
+\NormalTok{  summary}\OperatorTok{$}\NormalTok{Variance[}\KeywordTok{which}\NormalTok{(specie }\OperatorTok{==}\StringTok{ }\NormalTok{species)] \textless{}{-}}
+\StringTok{    }\KeywordTok{var}\NormalTok{(penguins[penguins}\OperatorTok{$}\NormalTok{species }\OperatorTok{==}\StringTok{ }\NormalTok{specie, ]}\OperatorTok{$}\NormalTok{flipper\_length\_mm,}
+      \DataTypeTok{na.rm =} \OtherTok{TRUE}
+\NormalTok{    )}
+\NormalTok{\}}
+\NormalTok{summary}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      Specie     Mean Median StandardDeviation Variance
+## 1    Adelie 189.9536    190          6.539457 42.76450
+## 2    Gentoo 217.1870    216          6.484976 42.05491
+## 3 Chinstrap 195.8235    196          7.131894 50.86392
+\end{verbatim}
+
 \hypertarget{c-2}{%
 \subsection{C}\label{c-2}}
 
@@ -541,17 +577,84 @@ Using the geom\_boxplot() function of the ggplot2 package plot the
 boxplot for the flipper length variable coloring each species with a
 different color (hint: use the color argument of the aes() function).
 
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(}
+\NormalTok{  penguins,}
+  \KeywordTok{aes}\NormalTok{(}
+    \DataTypeTok{x =}\NormalTok{ penguins}\OperatorTok{$}\NormalTok{flipper\_length\_mm,}
+    \DataTypeTok{color =}\NormalTok{ penguins}\OperatorTok{$}\NormalTok{species}
+\NormalTok{  )}
+\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale\_color\_manual}\NormalTok{(}\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"darkorange"}\NormalTok{, }\StringTok{"purple"}\NormalTok{, }\StringTok{"cyan4"}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_boxplot}\NormalTok{(}
+    \KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ penguins}\OperatorTok{$}\NormalTok{flipper\_length\_mm)}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Use of `penguins$flipper_length_mm` is discouraged.
+## i Use `flipper_length_mm` instead.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Use of `penguins$species` is discouraged.
+## i Use `species` instead.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 2 rows containing non-finite outside the scale range
+## (`stat_boxplot()`).
+\end{verbatim}
+
+\includegraphics{es_files/figure-latex/unnamed-chunk-11-1.pdf}
+
 \hypertarget{d-2}{%
 \subsection{D}\label{d-2}}
 
 Compute the flipper length quartiles for the ``Gentoo'' penguins (Q1,
 Q2, Q3).
 
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{gentoo \textless{}{-}}\StringTok{ }\NormalTok{penguins[penguins}\OperatorTok{$}\NormalTok{species }\OperatorTok{==}\StringTok{ "Gentoo"}\NormalTok{, ]}
+\NormalTok{quartiles \textless{}{-}}\StringTok{ }\KeywordTok{quantile}\NormalTok{(}
+\NormalTok{  gentoo}\OperatorTok{$}\NormalTok{flipper\_length\_mm,}
+  \KeywordTok{c}\NormalTok{(}\FloatTok{0.25}\NormalTok{, }\FloatTok{0.5}\NormalTok{, }\FloatTok{0.75}\NormalTok{),}
+  \DataTypeTok{na.rm =} \OtherTok{TRUE}
+\NormalTok{)}
+\NormalTok{quartiles}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 25% 50% 75% 
+## 212 216 221
+\end{verbatim}
+
 \hypertarget{e-1}{%
 \subsection{E}\label{e-1}}
 
 Calculate the flipper length 40th percentile for the ``Adelie''
 penguins.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{adelie \textless{}{-}}\StringTok{ }\NormalTok{penguins[penguins}\OperatorTok{$}\NormalTok{species }\OperatorTok{==}\StringTok{ "Adelie"}\NormalTok{, ]}
+\NormalTok{p40 \textless{}{-}}\StringTok{ }\KeywordTok{quantile}\NormalTok{(}
+\NormalTok{  adelie}\OperatorTok{$}\NormalTok{flipper\_length\_mm,}
+  \FloatTok{0.4}\NormalTok{,}
+  \DataTypeTok{na.rm =} \OtherTok{TRUE}
+\NormalTok{)}
+\NormalTok{p40}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 40% 
+## 189
+\end{verbatim}
 
 \hypertarget{exercise-4---multiple-boxplots-from-scratch}{%
 \section{Exercise 4 - Multiple boxplots from
@@ -566,12 +669,143 @@ columns). At the end you should obtain a matrix with N rows (N = number
 of random number to generate each time) and 7 columns (one for each day
 of the week).
 
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
+\NormalTok{n \textless{}{-}}\StringTok{ }\DecValTok{10}
+\NormalTok{days \textless{}{-}}\StringTok{ }\KeywordTok{c}\NormalTok{(}
+  \StringTok{"Monday"}\NormalTok{,}
+  \StringTok{"Tuesday"}\NormalTok{,}
+  \StringTok{"Wednesday"}\NormalTok{,}
+  \StringTok{"Thursday"}\NormalTok{,}
+  \StringTok{"Friday"}\NormalTok{,}
+  \StringTok{"Saturday"}\NormalTok{,}
+  \StringTok{"Sunday"}
+\NormalTok{)}
+\NormalTok{data \textless{}{-}}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\DataTypeTok{nrow =}\NormalTok{ n, }\DataTypeTok{ncol =} \DecValTok{7}\NormalTok{)}
+
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\DecValTok{7}\NormalTok{) \{}
+\NormalTok{  data[, i] \textless{}{-}}\StringTok{ }\KeywordTok{round}\NormalTok{(}\KeywordTok{runif}\NormalTok{(n, }\DataTypeTok{min =} \DecValTok{0}\NormalTok{, }\DataTypeTok{max =} \DecValTok{100}\NormalTok{), }\DecValTok{0}\NormalTok{)}
+\NormalTok{\}}
+
+\NormalTok{df \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(data)}
+\KeywordTok{colnames}\NormalTok{(df) \textless{}{-}}\StringTok{ }\NormalTok{days}
+\NormalTok{df}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Monday Tuesday Wednesday Thursday Friday Saturday Sunday
+## 1      29      96        89       96     14        5     67
+## 2      79      45        69       90     41       44      9
+## 3      41      68        64       69     41       80     38
+## 4      88      57        99       80     37       12     27
+## 5      94      10        66        2     15       56     81
+## 6       5      90        71       48     14       21     45
+## 7      53      25        54       76     23       13     81
+## 8      89       4        59       22     47       75     81
+## 9      55      33        29       32     27       90     79
+## 10     46      95        15       23     86       37     44
+\end{verbatim}
+
 \hypertarget{b-3}{%
 \subsection{B}\label{b-3}}
 
 Go from a wide to a long data format. You should create a data.frame
 object with exactly two columns. One contains the values created in A.,
 the other contains the corresponding day of the week.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df\_long \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}
+  \StringTok{"Day"}\NormalTok{ =}\StringTok{ }\KeywordTok{rep}\NormalTok{(days, }\DataTypeTok{each =}\NormalTok{ n),}
+  \StringTok{"Value"}\NormalTok{ =}\StringTok{ }\KeywordTok{c}\NormalTok{(}
+\NormalTok{    df}\OperatorTok{$}\NormalTok{Monday,}
+\NormalTok{    df}\OperatorTok{$}\NormalTok{Tuesday,}
+\NormalTok{    df}\OperatorTok{$}\NormalTok{Wednesday,}
+\NormalTok{    df}\OperatorTok{$}\NormalTok{Thursday,}
+\NormalTok{    df}\OperatorTok{$}\NormalTok{Friday,}
+\NormalTok{    df}\OperatorTok{$}\NormalTok{Saturday,}
+\NormalTok{    df}\OperatorTok{$}\NormalTok{Sunday}
+\NormalTok{  )}
+\NormalTok{)}
+\NormalTok{df\_long}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          Day Value
+## 1     Monday    29
+## 2     Monday    79
+## 3     Monday    41
+## 4     Monday    88
+## 5     Monday    94
+## 6     Monday     5
+## 7     Monday    53
+## 8     Monday    89
+## 9     Monday    55
+## 10    Monday    46
+## 11   Tuesday    96
+## 12   Tuesday    45
+## 13   Tuesday    68
+## 14   Tuesday    57
+## 15   Tuesday    10
+## 16   Tuesday    90
+## 17   Tuesday    25
+## 18   Tuesday     4
+## 19   Tuesday    33
+## 20   Tuesday    95
+## 21 Wednesday    89
+## 22 Wednesday    69
+## 23 Wednesday    64
+## 24 Wednesday    99
+## 25 Wednesday    66
+## 26 Wednesday    71
+## 27 Wednesday    54
+## 28 Wednesday    59
+## 29 Wednesday    29
+## 30 Wednesday    15
+## 31  Thursday    96
+## 32  Thursday    90
+## 33  Thursday    69
+## 34  Thursday    80
+## 35  Thursday     2
+## 36  Thursday    48
+## 37  Thursday    76
+## 38  Thursday    22
+## 39  Thursday    32
+## 40  Thursday    23
+## 41    Friday    14
+## 42    Friday    41
+## 43    Friday    41
+## 44    Friday    37
+## 45    Friday    15
+## 46    Friday    14
+## 47    Friday    23
+## 48    Friday    47
+## 49    Friday    27
+## 50    Friday    86
+## 51  Saturday     5
+## 52  Saturday    44
+## 53  Saturday    80
+## 54  Saturday    12
+## 55  Saturday    56
+## 56  Saturday    21
+## 57  Saturday    13
+## 58  Saturday    75
+## 59  Saturday    90
+## 60  Saturday    37
+## 61    Sunday    67
+## 62    Sunday     9
+## 63    Sunday    38
+## 64    Sunday    27
+## 65    Sunday    81
+## 66    Sunday    45
+## 67    Sunday    81
+## 68    Sunday    81
+## 69    Sunday    79
+## 70    Sunday    44
+\end{verbatim}
 
 \hypertarget{c-3}{%
 \subsection{C}\label{c-3}}
@@ -580,6 +814,31 @@ Plot the seven boxplots (one for each day of the week) in one graph,
 horizontally oriented (hint: coord\_flip() function translates the axes,
 the ``limits'' argument of scale\_x\_discrete() allows you to reorder
 the axis labels).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(}
+\NormalTok{  df\_long,}
+  \KeywordTok{aes}\NormalTok{(}
+    \DataTypeTok{x =}\NormalTok{ Day,}
+    \DataTypeTok{y =}\NormalTok{ Value,}
+    \DataTypeTok{color =}\NormalTok{ Day}
+\NormalTok{  )}
+\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale\_color\_manual}\NormalTok{(}\DataTypeTok{values =} \KeywordTok{rainbow}\NormalTok{(}\DecValTok{7}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale\_x\_discrete}\NormalTok{(}\DataTypeTok{limits =} \KeywordTok{rev}\NormalTok{(days)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_boxplot}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{coord\_flip}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}
+    \DataTypeTok{title =} \StringTok{"Random values by day of the week"}\NormalTok{,}
+    \DataTypeTok{x =} \StringTok{"Day of the week"}\NormalTok{,}
+    \DataTypeTok{y =} \StringTok{"Random value"}\NormalTok{,}
+    \DataTypeTok{color =} \StringTok{"Day of the week"}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{es_files/figure-latex/unnamed-chunk-16-1.pdf}
 
 \hypertarget{exercise-5---exploratory-analysis-of-data}{%
 \section{Exercise 5 - Exploratory analysis of
@@ -596,12 +855,70 @@ How many islands are there? And how many penguins are present in each
 isle? Are the 3 species of penguins living together? (hint: use the
 table() function).
 
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{cat}\NormalTok{(}\StringTok{"The number of islands is: "}\NormalTok{, }\KeywordTok{length}\NormalTok{(}\KeywordTok{unique}\NormalTok{(penguins}\OperatorTok{$}\NormalTok{island)), }\StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## The number of islands is:  3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(penguins}\OperatorTok{$}\NormalTok{island)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##    Biscoe     Dream Torgersen 
+##       168       124        52
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(penguins}\OperatorTok{$}\NormalTok{island, penguins}\OperatorTok{$}\NormalTok{species)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##            
+##             Adelie Chinstrap Gentoo
+##   Biscoe        44         0    124
+##   Dream         56        68      0
+##   Torgersen     52         0      0
+\end{verbatim}
+
 \hypertarget{b-4}{%
 \subsection{B}\label{b-4}}
 
 Try to use the geom\_bar() or geom\_col() functions to graphically
 represent the population of each island, colored by species (hint:
 islands in the x-axis, number of penguins in the y-axis).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(}
+\NormalTok{  penguins,}
+  \KeywordTok{aes}\NormalTok{(}
+    \DataTypeTok{x =}\NormalTok{ island,}
+    \DataTypeTok{fill =}\NormalTok{ species}
+\NormalTok{  )}
+\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_bar}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale\_fill\_manual}\NormalTok{(}\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"darkorange"}\NormalTok{, }\StringTok{"purple"}\NormalTok{, }\StringTok{"cyan4"}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}
+    \DataTypeTok{title =} \StringTok{"Penguins population by island"}\NormalTok{,}
+    \DataTypeTok{x =} \StringTok{"Island"}\NormalTok{,}
+    \DataTypeTok{y =} \StringTok{"Number of penguins"}\NormalTok{,}
+    \DataTypeTok{fill =} \StringTok{"Species"}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{es_files/figure-latex/unnamed-chunk-18-1.pdf}
 
 \hypertarget{c-4}{%
 \subsection{C}\label{c-4}}
@@ -612,6 +929,30 @@ there are differences across species (hint: use
 facet\_grid(\textasciitilde{} species) function to add facets for
 species).
 
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(}
+\NormalTok{  penguins,}
+  \KeywordTok{aes}\NormalTok{(}
+    \DataTypeTok{x =}\NormalTok{ penguins}\OperatorTok{$}\NormalTok{flipper\_length\_mm,}
+    \DataTypeTok{y =}\NormalTok{ penguins}\OperatorTok{$}\NormalTok{body\_mass\_g,}
+    \DataTypeTok{color =}\NormalTok{ penguins}\OperatorTok{$}\NormalTok{sex}
+\NormalTok{  )}
+\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_point}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{facet\_grid}\NormalTok{(}\OperatorTok{\textasciitilde{}}\NormalTok{species) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale\_color\_manual}\NormalTok{(}\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"blue"}\NormalTok{, }\StringTok{"magenta"}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}
+    \DataTypeTok{title =} \StringTok{"Flipper length vs. body mass"}\NormalTok{,}
+    \DataTypeTok{x =} \StringTok{"Flipper length (mm)"}\NormalTok{,}
+    \DataTypeTok{y =} \StringTok{"Body mass (g)"}\NormalTok{,}
+    \DataTypeTok{color =} \StringTok{"Sex"}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{es_files/figure-latex/unnamed-chunk-19-1.pdf}
+
 \hypertarget{d-3}{%
 \subsection{D}\label{d-3}}
 
@@ -620,11 +961,70 @@ correlated? Use the cor() and the corrplot() functions to study
 correlations between numeric variables (hint: try to google corrplot()
 to see which package you have to install to use it).
 
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(corrplot)}
+\NormalTok{correlation \textless{}{-}}\StringTok{ }\KeywordTok{cor}\NormalTok{(penguins[, }\KeywordTok{c}\NormalTok{(}\DecValTok{3}\OperatorTok{:}\DecValTok{6}\NormalTok{, }\DecValTok{8}\NormalTok{)], }\DataTypeTok{use =} \StringTok{"complete.obs"}\NormalTok{)}
+\KeywordTok{corrplot}\NormalTok{(correlation, }\DataTypeTok{method =} \StringTok{"number"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{es_files/figure-latex/unnamed-chunk-20-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{corrplot}\NormalTok{(correlation, }\DataTypeTok{method =} \StringTok{"color"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{es_files/figure-latex/unnamed-chunk-21-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{corrplot}\NormalTok{(correlation)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{es_files/figure-latex/unnamed-chunk-22-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{corrplot}\NormalTok{(correlation, }\DataTypeTok{order =} \StringTok{"AOE"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{es_files/figure-latex/unnamed-chunk-23-1.pdf}
+
 \hypertarget{e-2}{%
 \subsection{E}\label{e-2}}
 
 Choose a pair of numeric variables, compute the correlation between them
 without using the cor() function (hint: remember the formula).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x \textless{}{-}}\StringTok{ }\NormalTok{penguins}\OperatorTok{$}\NormalTok{flipper\_length\_mm}
+\NormalTok{y \textless{}{-}}\StringTok{ }\NormalTok{penguins}\OperatorTok{$}\NormalTok{body\_mass\_g}
+
+\NormalTok{n \textless{}{-}}\StringTok{ }\KeywordTok{length}\NormalTok{(x)}
+\NormalTok{mean\_x \textless{}{-}}\StringTok{ }\KeywordTok{mean}\NormalTok{(x, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{mean\_y \textless{}{-}}\StringTok{ }\KeywordTok{mean}\NormalTok{(y, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
+
+\NormalTok{covariance \textless{}{-}}\StringTok{ }\KeywordTok{sum}\NormalTok{((x }\OperatorTok{{-}}\StringTok{ }\NormalTok{mean\_x) }\OperatorTok{*}\StringTok{ }\NormalTok{(y }\OperatorTok{{-}}\StringTok{ }\NormalTok{mean\_y), }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{) }\OperatorTok{/}\StringTok{ }\NormalTok{(n }\OperatorTok{{-}}\StringTok{ }\DecValTok{1}\NormalTok{)}
+\NormalTok{sd\_x \textless{}{-}}\StringTok{ }\KeywordTok{sqrt}\NormalTok{(}\KeywordTok{sum}\NormalTok{((x }\OperatorTok{{-}}\StringTok{ }\NormalTok{mean\_x)}\OperatorTok{\^{}}\DecValTok{2}\NormalTok{, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{) }\OperatorTok{/}\StringTok{ }\NormalTok{(n }\OperatorTok{{-}}\StringTok{ }\DecValTok{1}\NormalTok{))}
+\NormalTok{sd\_y \textless{}{-}}\StringTok{ }\KeywordTok{sqrt}\NormalTok{(}\KeywordTok{sum}\NormalTok{((y }\OperatorTok{{-}}\StringTok{ }\NormalTok{mean\_y)}\OperatorTok{\^{}}\DecValTok{2}\NormalTok{, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{) }\OperatorTok{/}\StringTok{ }\NormalTok{(n }\OperatorTok{{-}}\StringTok{ }\DecValTok{1}\NormalTok{))}
+
+\NormalTok{correlation \textless{}{-}}\StringTok{ }\NormalTok{covariance }\OperatorTok{/}\StringTok{ }\NormalTok{(sd\_x }\OperatorTok{*}\StringTok{ }\NormalTok{sd\_y)}
+\KeywordTok{cat}\NormalTok{(}
+  \StringTok{"The correlation between flipper length and body mass is: "}\NormalTok{,}
+\NormalTok{  correlation, }\StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## The correlation between flipper length and body mass is:  0.8712018
+\end{verbatim}
 
 \hypertarget{f}{%
 \subsection{F}\label{f}}
@@ -635,5 +1035,34 @@ by species. Use the function geom\_smooth(formula = ``y
 relationship between the two variables. Then, again, use
 geom\_smooth(formula = ``y \textasciitilde{} x'') colored by species.
 What are you noticing?
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(}
+\NormalTok{  penguins,}
+  \KeywordTok{aes}\NormalTok{(}
+    \DataTypeTok{x =}\NormalTok{ penguins}\OperatorTok{$}\NormalTok{bill\_length\_mm,}
+    \DataTypeTok{y =}\NormalTok{ penguins}\OperatorTok{$}\NormalTok{bill\_depth\_mm,}
+    \DataTypeTok{color =}\NormalTok{ penguins}\OperatorTok{$}\NormalTok{species}
+\NormalTok{  )}
+\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_point}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_smooth}\NormalTok{(}
+    \DataTypeTok{formula =} \StringTok{"y \textasciitilde{} x"}\NormalTok{,}
+    \DataTypeTok{method =} \StringTok{"lm"}\NormalTok{,}
+    \KeywordTok{aes}\NormalTok{(}\DataTypeTok{color =}\NormalTok{ penguins}\OperatorTok{$}\NormalTok{species),}
+    \DataTypeTok{se =} \OtherTok{FALSE}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale\_color\_manual}\NormalTok{(}\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"darkorange"}\NormalTok{, }\StringTok{"purple"}\NormalTok{, }\StringTok{"cyan4"}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}
+    \DataTypeTok{title =} \StringTok{"Bill length vs. bill depth"}\NormalTok{,}
+    \DataTypeTok{x =} \StringTok{"Bill length (mm)"}\NormalTok{,}
+    \DataTypeTok{y =} \StringTok{"Bill depth (mm)"}\NormalTok{,}
+    \DataTypeTok{color =} \StringTok{"Species"}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{es_files/figure-latex/unnamed-chunk-25-1.pdf}
 
 \end{document}
