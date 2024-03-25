@@ -3019,4 +3019,764 @@ A = \begin{pmatrix}
 \] 
 che ha rango \( <2 \), quindi \( A \) non è invertibile per (4.3(c)). \( \quad \square \) 
 
+\subsection{Definizione di determinante}
+\begin{figure}[H]
+  \begin{definition}
+    Definiamo una funzione \( \det : M_{n \times n}(\mathbb{C}) \to \mathbb{C} \) detta
+    \textbf{determinante} per ricorrenza:
+    \begin{itemize}
+      \item \( n = 1 \):
+        \[
+        A = (a) \quad \det(A) = a
+        \] 
+      \item \( n = 2 \) (4.3):
+        \[
+        A = \begin{pmatrix} 
+          a & b\\
+          c & d
+        \end{pmatrix} 
+        \quad \det(A) = ad-bc
+        \]
+      \item \( n \ge 3 \):
+        \[
+          A = (A_{ij})_{1 \le j \le n}= \begin{pmatrix} 
+          a_{11} & a_{12} & \ldots & a_{1n}\\
+          a_{21} & a_{22} & \ldots & a_{2n}\\
+          \vdots & \vdots & \ddots & \vdots\\
+          a_{n1} & a_{n2} & \ldots & a_{nn}
+        \end{pmatrix} 
+        \]
+        \[
+        \det(A) = \sum_{j=1}^{n}(-1)^{1+j}a_{1j}\det(A_{1j})
+        \]
+        dove \( A_{1j} \) è la matrice ottenuta da \( A \) cancellando la prima riga e la
+        colonna \( j \).
+    \end{itemize}
+  \end{definition}
+\end{figure}
+\begin{figure}[H]
+  \begin{example}
+    \[
+      A = \begin{pmatrix} 
+        1 & 2 & 3\\
+        0 & 1 & 3\\
+        1 & 2 & 0
+      \end{pmatrix} 
+      =
+      \begin{pmatrix} 
+        a_{11} & a_{12} & a_{13}\\
+        a_{21} & a_{22} & a_{23}\\
+        a_{31} & a_{32} & a_{33}
+      \end{pmatrix} 
+    \] 
+    \[
+      \det(A) = (-1)^{2}1\det\begin{pmatrix} 
+        \cancel{1} & \cancel{2} & \cancel{3} \\
+        \cancel{0} & 1 & 3\\
+        \cancel{1} & 2 & 0
+      \end{pmatrix} +
+    \] 
+    \[
+      (-1)^3 2 \det\begin{pmatrix} 
+        \cancel{1} & \cancel{2} & \cancel{3} \\
+        0 & \cancel{1} & 3\\
+        1 & \cancel{2} & 0
+      \end{pmatrix} +
+    \] 
+    \[
+      (-1)^4 3 \det\begin{pmatrix} 
+        \cancel{1} & \cancel{2} & \cancel{3} \\
+        0 & 1 & \cancel{3}\\
+        1 & 2 & \cancel{0}
+      \end{pmatrix} =
+    \] 
+    \[
+     = -6 + 6 -3 = -3
+    \] 
+  \end{example}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{example}
+    \[
+      \det\begin{pmatrix} 
+        1 & 2 & 3\\
+        3 & 2 & 1\\
+        0 & 1 & -1
+      \end{pmatrix}
+      = (-1)^{1+1} \cdot 1 \cdot \det\begin{pmatrix} 
+        2 & 1\\
+        1 & -1
+      \end{pmatrix} +
+    \] 
+    \[
+      (-1)^{1+2} \cdot 2 \cdot \det\begin{pmatrix} 
+        3 & 1\\
+        0 & -1
+      \end{pmatrix} +
+    \] 
+    \[
+      (-1)^{1+3} \cdot 3 \cdot \det\begin{pmatrix} 
+        3 & 2\\
+        0 & 1
+      \end{pmatrix} =
+    \] 
+    \[
+      = 1(-2-1) - 2(-3-0) + 3(3-0) = -3 + 6 + 9 = 12
+    \] 
+  \end{example}
+\end{figure}
+
+\subsection{Regola di Sarrus}
+\begin{figure}[H]
+  \begin{definition}
+    Per una matrice di dimensione \( 3 \times 3 \) si può usare la regola di Sarrus:
+    \[
+      \begin{NiceArray}{>{\strut}ccccc}[margin,extra-margin = 1pt]
+        a_{11} & a_{12} & a_{13} & a_{11} & a_{12}\\
+        a_{21} & a_{22} & a_{23} & a_{21} & a_{22}\\
+        a_{31} & a_{32} & a_{33} & a_{31} & a_{32}
+        \CodeAfter
+        \begin{tikzpicture}
+          \node[scale=4.8] at (-3,0.1) {$\left(\quad\right)$};
+          \node [fill=red, opacity=0.3, rounded corners=2pt, inner ysep = 0.2pt,
+          rotate fit=-28, fit = (1-1) (3-3) ] {} ;
+          \node [fill=red, opacity=0.3, rounded corners=2pt, inner ysep = 0.2pt,
+          rotate fit=-28, fit = (1-2) (3-4) ] {} ;
+          \node [fill=red, opacity=0.3, rounded corners=2pt, inner ysep = 1.8pt,
+          rotate fit=-28, fit = (1-3) (3-5) ] {} ;
+
+
+          \node [fill=blue, opacity=0.3, rounded corners=2pt, inner ysep = 0pt,
+          rotate fit=25, fit = (1-3) (3-1) ] {} ;
+          \node [fill=blue, opacity=0.3, rounded corners=2pt, inner ysep = 0.2pt,
+          rotate fit=25, fit = (1-4) (3-2) ] {} ;
+          \node [fill=blue, opacity=0.3, rounded corners=2pt, inner ysep = 1pt,
+          rotate fit=25, fit = (1-5) (3-3) ] {} ;
+        \end{tikzpicture}
+      \end{NiceArray}
+    \] 
+    \[
+      \det A = \color{red} a_{11}a_{22}a_{33} + a_{12}a_{23}a_{31} + a_{13}a_{21}a_{32} 
+\color{blue}- a_{13}a_{22}a_{31} - a_{12}a_{21}a_{33} - a_{11}a_{23}a_{32}
+    \] 
+  \end{definition}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{example}
+    \[
+    A = \begin{pmatrix} 
+      1 & 2 & 3\\
+      0 & 1 & 3\\
+      1 & 2 & 0
+    \end{pmatrix} 
+    \] 
+    Per la regola di Sarrus:
+    \[
+      A = \begin{pmatrix} 
+        1 & 2 & 3\\
+        0 & 1 & 3\\
+        1 & 2 & 0
+      \end{pmatrix} 
+      \begin{matrix} 
+        1 & 2\\
+        0 & 1\\
+        1 & 2
+      \end{matrix} 
+    \] 
+    \[
+    \det(A) = 1 \cdot 1 \cdot 0 + 2 \cdot 3 \cdot 1 + 3 \cdot 0 \cdot 2 
+    \] 
+    \[
+    - 3 \cdot 1 \cdot 1 - 2 \cdot 0 \cdot 1 - 1 \cdot 3 \cdot 2 = -3
+    \] 
+    \[
+    = 6 - 3 - 6 = -3
+    \] 
+  \end{example}
+\end{figure}
+
+\subsection{Teorema di Laplace}
+\begin{figure}[H]
+  \begin{definition}
+    Il determinante di una matrice \( A = (a_{ij}) \) può essere sviluppato per qualsiasi
+    riga o colonna come segue:
+    \begin{itemize}
+      \item Sviluppo per la riga \( i \) 
+        \[
+        \det(A) = \sum_{j=1}^{n}(-1)^{i+j}a_{ij}\det(A_{ij})
+        \] 
+        dove \( A_{ij} \) è la matrice ottenuta da \( A \) cancellando la riga \( i \) e
+        la colonna \( j \).
+      \item Sviluppo per la colonna \( j \) 
+        \[
+        \det(A) = \sum_{i=1}^{n}(-1)^{i+j}a_{ij}\det(A_{ij})
+        \] 
+        dove \( A_{ij} \) è la matrice ottenuta da \( A \) cancellando la riga \( i \) e
+        la colonna \( j \).
+    \end{itemize}
+    Il valore \( (-1)^{i+j} \det(A_{ij}) \) è detto \textbf{complemento algebrico} di
+    \( a_{ij} \). Il segno si determina secondo:
+    \[
+      \begin{pmatrix} 
+        + & - & + & \ldots\\
+        - & + & - & \ldots\\
+        + & - & + & \ldots\\
+        \vdots & \vdots & \vdots & \ddots
+      \end{pmatrix} 
+    \] 
+  \end{definition}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{example}
+    \[
+    A = \begin{pmatrix} 
+      1^+ & 2^- & 3^+\\
+      0^- & 1^+ & 3^-\\
+      1^+ & 2^- & 0^+
+    \end{pmatrix} 
+    \] 
+    \begin{itemize}
+      \item \textbf{Riga \( 3 \)}:
+        \[
+        \det(A) = 1 \cdot \det\begin{pmatrix} 
+          \cancel{1} & 2 & 3\\
+          \cancel{0} & 1 & 3\\
+          \cancel{1} & \cancel{2} & \cancel{0}
+        \end{pmatrix}
+        \] 
+        \[
+        - 2 \cdot \det\begin{pmatrix} 
+          0 & \cancel{1} & 3\\
+          1 & \cancel{1} & 3\\
+          \cancel{1} & \cancel{2} & \cancel{0}
+        \end{pmatrix}
+        \] 
+        \[
+        = (6 - 3) - 2(3-0) = 3-6 = -3
+        \] 
+      \item \textbf{Colonna \( 3 \)}:
+        \[
+        \det(A) = 3 \cdot \det\begin{pmatrix} 
+          \cancel{1} & \cancel{2} & \cancel{3}\\
+          0 & 1 & \cancel{3}\\
+          1 & 2 & \cancel{0}
+        \end{pmatrix}
+        \] 
+        \[
+        - 3 \cdot \det\begin{pmatrix} 
+          1 & 2 & \cancel{3}\\
+          \cancel{0} & \cancel{1} & \cancel{3}\\
+          1 & 2 & \cancel{0}
+        \end{pmatrix}
+        \] 
+        \[
+        = 3(1-6) - 3(1-6) = -15 + 15 = 0
+        \]
+    \end{itemize}
+  \end{example}
+\end{figure}
+
+\subsection{Determinante e trasposta}
+\[
+A = \begin{pmatrix} 
+  a & b\\
+  c & d
+\end{pmatrix} 
+\quad
+A^T = \begin{pmatrix} 
+  a & c\\
+  b & d
+\end{pmatrix}
+\] 
+\[
+\det(A) = ad-bc \quad \det(A^T) = ad-cb
+\] 
+\[
+\Downarrow
+\] 
+\[
+\det(A) = \det(A^T)
+\] 
+\begin{figure}[H]
+  \begin{example}
+    \[
+    A = \begin{pmatrix} 
+      1 & 2 & 3\\
+      0 & 1 & 3\\
+      1 & 2 & 0
+    \end{pmatrix} 
+    \quad \det(A) = -3
+    \] 
+    \[
+    A^T = \begin{pmatrix} 
+      1 & 0 & 1\\
+      2 & 1 & 2\\
+      3 & 3 & 0
+    \end{pmatrix}
+    \] 
+    \[
+      \det(A) \stackrel{R1}{=} 1 \cdot \det\underbrace{\begin{pmatrix} 
+        1 & 3\\
+        2 & 0
+    \end{pmatrix}}_{A_{11}}
+    - 2 \cdot \det\underbrace{\begin{pmatrix} 
+        0 & 3\\
+        1 & 0
+    \end{pmatrix}}_{A_{12}}
+    + 3 \cdot \det\underbrace{\begin{pmatrix} 
+        0 & 1\\
+        1 & 2
+    \end{pmatrix}}_{A_{13}} = -3
+    \] 
+    \[
+    \det(A^T) \stackrel{C1}{=} 1 \cdot \det\underbrace{\begin{pmatrix} 
+      1 & 2\\
+      3 & 0
+    \end{pmatrix}}_{A^T_{11}}
+    - 2 \cdot \det\underbrace{\begin{pmatrix} 
+      0 & 1\\
+      3 & 0
+    \end{pmatrix}}_{A^T_{21}}
+    + 3 \cdot \det\underbrace{\begin{pmatrix} 
+      0 & 1\\
+      1 & 2
+    \end{pmatrix}}_{A^T_{31}} = -3
+    \] 
+  \end{example}
+\end{figure}
+Se \( A = (a_{ij})_{1 \le i,j \le n} \in M_{n \times n}(\mathbb{C}) \), allora:
+\[
+\det(A) = \det(A^T)
+\] 
+
+\subsection{Il principio di induzione}
+Il principio di induzione serve a dimostrare che per ogni \( n \ge 1 \) vale una 
+proprietà \( P(n) \). Nel nostro caso che ogni matrice \( A \) di dimensione \( n \times n \) 
+, \( \det(A) = \det(A^T) \). Si procede in due passi:
+\begin{itemize}
+  \item \textbf{Base dell'induzione}:
+
+    \( P(n) \) è vera per \( n = 1 \), ovvero \( P(1) \) è vera.
+  \item \textbf{Passo induttivo}:
+
+    Supponendo che \( p(n) \) sia vera; ne consegue che \( p(n+1) \) è vera.
+\end{itemize}
+Allora \( p(n) \) è vera per tutti gli \( n \in \mathbb{N} \).
+
+\begin{figure}[H]
+  \begin{example}
+    \[
+    A = \begin{pmatrix} 
+      1 & 2 & 3 & 4\\
+      0 & 5 & 6 & 7\\
+      0 & 0 & 8 & 9\\
+      0 & 0 & 0 & 10
+    \end{pmatrix} 
+    \] 
+    Sviluppo per la riga 4:
+    \[
+    \det(A) = 10 \cdot \det\begin{pmatrix} 
+      1 & 2 & 3 & \cancel{4}\\
+      0 & 5 & 6 & \cancel{7}\\
+      0 & 0 & 8 & \cancel{9}\\
+      \cancel{0} & \cancel{0} & \cancel{0} & \cancel{10}
+    \end{pmatrix}
+    \] 
+    Si utilizza di nuovo il teorema di Laplace per la matrice \( 3 \times 3 \) ottenuta:
+    \[
+    \stackrel{R3}{=} 10 \left( 8 \cdot \det\begin{pmatrix} 
+      1 & 2 \\
+      0 & 5
+    \end{pmatrix}
+    = 10 \cdot 8 \cdot (1 \cdot 5 - 0 \cdot 2) = 10 \cdot 8 \cdot 5 \cdot 1 = 400
+    \right) 
+    \] 
+  \end{example}
+\end{figure}
+
+\subsection{Proposizione}
+Sia \( A = (a_{ij})_{1 \le i,j \le n} \in M_{n \times n}(\mathbb{C}) \) una matrice
+triangolare superiore o inferiore. Allora:
+\[
+\det(A) = a_{11}a_{22} \ldots a_{nn}
+\] 
+\textbf{Dimostrazione} (superiore):
+
+\noindent Per induzione su \( n \):
+\begin{itemize}
+  \item \textbf{Proprietà \( P(n) \)}:
+
+    Per \( A \in M_{n \times n}(\mathbb{C}) \), \( \det(A) = a_{11} \ldots a_{nn} \) 
+
+  \item \textbf{Base dell'induzione}:
+    \[
+    A = (a_{11}) \in M_{1 \times 1}(\mathbb{C})
+    \] 
+    \[
+    \det(A) = a_{11} \quad \text{Per definizione}
+    \] 
+  \item \textbf{Passo induttivo}:
+
+    Supponiamo \( P(n) \) 
+    \[
+      A = (a_{ij}) \in M_{n+1 \times n+1}(\mathbb{C})
+    \] 
+    \[
+      \det(A) \stackrel{Rn+1}{=} a_{n+1n+1} \cdot \underbrace{\det(A_{n+1n+1})}_{
+        \text{mat. triang. sup. di dim. \( n \times n \) }
+      } = a_{n+1n+1} (a_{nn}\ldots a_{11})
+    \] 
+    Quindi \( P(n+1) \) è vera.
+\end{itemize}
+Per il principio di induzione, abbiamo dimostrato che \( P(n) \) vale per ogni \( n \in \mathbb{N} \).
+
+\noindent La dimostrazione per \( A \) triangolare inferiore è simile. \( \quad \square \) 
+
+\begin{figure}[H]
+  \begin{example}
+    \[
+      U = \begin{pmatrix} 
+        1 & 8 & 0 & i\\
+        0 & 1 & 2 & 0\\
+        0 & 0 & 1 & 5-i\\
+        0 & 0 & 0 & 1
+      \end{pmatrix} 
+    \] 
+    La matrice è una matrice ridotta, cioè una matrice triangolare superiore con 1 sulla
+    diagonale.
+    \[
+    \det(U) = 1
+    \] 
+    \[
+    U' = \begin{pmatrix} 
+      1 & 8 & 0 & i\\
+      0 & 0 & 1 & 7\\
+      0 & 0 & 0 & 1\\
+      0 & 0 & 0 & 0
+    \end{pmatrix} 
+    \] 
+    \[
+    \det(U') = 0
+    \] 
+  \end{example}
+\end{figure}
+
+  \begin{example}
+    \[
+    A = \begin{pmatrix} 
+      1 & 2 & 3\\
+      0 & 1 & 3\\
+      1 & 2 & 0
+    \end{pmatrix} 
+    \quad
+    \det(A) = -3
+    \] 
+    \begin{itemize}
+      \item 
+        \[
+          \det(E_{23} A) = \det \begin{pmatrix} 
+            1 & 2 & 3\\
+            1 & 2 & 0\\
+            0 & 1 & 3
+          \end{pmatrix} 
+        \] 
+        \[
+          \stackrel{C1}{=} 1 \cdot \det \begin{pmatrix} 
+            2 & 0\\
+            1 & 3
+          \end{pmatrix}
+          - 1 \cdot \det \begin{pmatrix} 
+            2 & 3\\
+            1 & 3
+          \end{pmatrix}
+        \] 
+        \[
+          = (6-0)-(6-3) = 6-6+3 = 3 = -\det(A)
+        \] 
+      \item 
+        \[
+        \det(E_2(2)A) = det \begin{pmatrix} 
+          1 & 2 & 3\\
+          0 & 2 & 6\\
+          1 & 2 & 0
+        \end{pmatrix}
+        \] 
+        \[
+        \stackrel{C2}{=} 1 \cdot \det \begin{pmatrix} 
+          2 & 6\\
+          2 & 0
+        \end{pmatrix}
+        + 1 \cdot \det \begin{pmatrix} 
+          2 & 3\\
+          2 & 6
+        \end{pmatrix}
+        \] 
+        \[
+        = -12 + 6 = -6 = 2\det(A)
+        \] 
+      \item
+        \[
+          \det(E_{13}(2)A) = \det \begin{pmatrix} 
+            3 & 6 & 3\\
+            0 & 1 & 3\\
+            1 & 2 & 0
+          \end{pmatrix}
+        \] 
+        \[
+        \stackrel{C1}{=} 3 \cdot \det \begin{pmatrix} 
+          1 & 3\\
+          2 & 0
+        \end{pmatrix}
+        + 1 \cdot \det \begin{pmatrix} 
+          6 & 3\\
+          1 & 3
+        \end{pmatrix}
+        \] 
+        \[
+        = 3(-6) + 1(18-3) = -3 = \det(A)
+        \] 
+    \end{itemize}
+  \end{example}
+
+\subsection{Teorema}
+Siano \( A \in M_{n \times n}(\mathbb{C}),\; 1 \le i,j \le n,\; 0 \neq \alpha \in \mathbb{C} \).
+Allora:
+\[
+\det(EA) = \begin{cases}
+  -\det(A) & \text{se } E = E_{ij}\\
+  \alpha \det(A) & \text{se } E = E_i(\alpha)\\
+  \det(A) & \text{se } E = E_{ij}(\alpha)
+\end{cases}
+\] 
+\textbf{Dimostrazione} (\( n=2 \)):
+\[
+A = \begin{pmatrix} 
+  a & b\\
+  c & d
+\end{pmatrix} 
+\in  M_{2 \times 2}(\mathbb{C})
+\] 
+\[
+\det(A) = ad-bc
+\] 
+\begin{itemize}
+  \item 
+    \[
+      \det(E_{12}A) = \det \begin{pmatrix} 
+        c & d\\
+        a & b
+      \end{pmatrix}
+      = cb - ad = -\det(A)
+    \] 
+  \item 
+    \[
+      \det(E_{12}A) = \det(E_{21}A)
+    \] 
+    \item
+      \[
+        \det(E_1(\alpha)A) = \det \begin{pmatrix} 
+          \alpha a & \alpha b\\
+          c & d
+        \end{pmatrix}
+        = \alpha ad - \alpha bc = \alpha(ad-bc) = \alpha \det(A)
+      \] 
+      \item
+        \[
+          \det(E_2(\alpha)A) = \det \begin{pmatrix} 
+            a & b\\
+            \alpha c & \alpha d
+          \end{pmatrix}
+          = a(\alpha d) - b(\alpha c) = \alpha(ad-bc) = \alpha \det(A)
+        \] 
+      \item 
+        \[
+          \det(E_{21}(\alpha)A) = \det \begin{pmatrix} 
+            a & b\\
+            c+\alpha a & d+\alpha b
+          \end{pmatrix} 
+          = a(d+\alpha b) - b(c+\alpha a) = 
+        \] 
+        \[
+          ad + \alpha ab - bc - \alpha ab = ad-bc = \det(A)
+        \] 
+      \item
+        \[
+          \det(E_{12}(\alpha)A) = \det \begin{pmatrix} 
+            a+\alpha c & b+\alpha d\\
+            c & d
+          \end{pmatrix}
+          = (a+\alpha c)d - (b+\alpha d)c = 
+        \] 
+        \[
+          ad + \alpha cd - bc - \alpha cd =  ad-bc = \det(A)
+        \] 
+\end{itemize}
+
+\begin{figure}[H]
+  \begin{example}
+    \[
+    A = \begin{pmatrix}
+      1 & 2 & 3\\
+      0 & 1 & 3\\
+      1 & 2 & 0
+    \end{pmatrix} 
+    \] 
+    Troviamo la forma ridotta della matrice:
+    \[
+    \begin{pmatrix} 
+      1 & 2 & 3\\
+      0 & 1 & 3\\
+      1 & 2 & 0
+    \end{pmatrix} 
+    \stackrel{E_{31}(-1)}{\leadsto}
+    \begin{pmatrix} 
+      1 & 2 & 3\\
+      0 & 1 & 3\\
+      0 & 0 & -3
+    \end{pmatrix}
+    \stackrel{E_3(-\frac{1}{3})}{\leadsto}
+    \begin{pmatrix} 
+      1 & 2 & 3\\
+      0 & 1 & 3\\
+      0 & 0 & 1
+    \end{pmatrix} = U
+    \] 
+    \[
+    \det(U) = 1
+    \] 
+    \[
+      U = E_3(-\frac{1}{3})E_{31}(-1)A
+    \] 
+    \[
+      A = E_{31}(-1)^{-1}E_3(-\frac{1}{3})^{-1}U = E_{31}(1)E_3(-3)U
+    \] 
+    \[
+    \det(A) = \det(E_{31}(1)E_3(-3)U) = 
+    \] 
+    \[
+    \det(E_3(-3)U) = -3\det(U) = -3
+    \] 
+  \end{example}
+\end{figure}
+
+\subsection{Corollario}
+Se \( A \in M_{n \times n} \), allora \( \det(A) \neq 0 \) se e solo se \( A \) è
+invertibile.
+
+\vspace{1em}
+\noindent \textbf{Dimostrazione}:
+
+Sia \( U \) una forma ridotta di \( A \):
+\[
+  \det(A) \neq 0 \underset{4.3}{\Leftrightarrow} \det(U) \neq 0 \underset{4.10}{\Leftarrow} rk(U) = n
+  \underset{4.3}{\Leftrightarrow} A \text{ è invertibile}
+\] 
+\[
+\square
+\] 
+\subsection{Corollario}
+Siano \( A,B \in M_{n \times n}(\mathbb{C}) \). Allora \( \det(AB) = \det(A) \det(B) \) 
+
+\vspace{1em}
+\noindent \textbf{Dimostrazione}:
+\begin{itemize}
+  \item \textbf{Caso 1}:
+
+    \( A \) non è invertibile, ovvero \( \det(A) = 0 \). Se \( AB \) è invertibile, allora
+    \[
+      A(B(AB)^{-1}) = AB(AB)^{-1} = I_n \quad \text{e} \quad B(AB)^{-1}
+    \] 
+    sarebbe l'inversa di \( A \). Quindi \( AB \) \textbf{non} è invertibile.
+    Allora \( \det(AB) = 0 = \det(A) \det(B) \) 
+
+  \item \textbf{Caso 2}:
+
+    \( A \) è invertibile. Per (4.1), esiste una sequenza \( E_1, \ldots, E_t \) di
+    matrici elementari tali che:
+    \[
+    E_t \ldots E_1 A = I_n
+    \] 
+    Siccome \( E_1, \ldots, E_t \) sono invertibili, possiamo considerare:
+    \[
+    A = (E_1^{-1} \ldots E_t^{-1})E_t \ldots E_1 A = E_1^{-1} \ldots E_t^{-1}
+    I_n = E_1^{-1} \ldots E_t^{-1}
+    \] 
+    Dunque (lo vedremo nella prossima puntata...)
+\end{itemize}
+
+\subsection{Formula per \texorpdfstring{\( A^{-1} \)}{A inversa}}
+Se \( \det(A) \neq 0 \) allora:
+\[
+  A^{-1} = \frac{1}{\det(A)} A^*
+\] 
+dove \( A^* \) è la matrice i cui coefficienti sono i complementi algebrici di \( A^T \)
+e \( \det(A^{-1}) = \frac{1}{\det(A)} \) 
+
+\begin{figure}[H]
+  \begin{example}
+    \[
+    A = \begin{pmatrix} 
+      1 & 2 & 3\\
+      0 & 1 & 3\\
+      1 & 2 & 0
+    \end{pmatrix} 
+    \quad
+    A^T = \begin{pmatrix} 
+      1 & 0 & 1\\
+      2 & 1 & 2\\
+      3 & 3 & 0
+    \end{pmatrix} 
+    \] 
+    \[
+    A^* = \begin{pmatrix} 
+      \det\begin{pmatrix} 
+        \cancel{1} & \cancel{0} & \cancel{1} \\
+        \cancel{2} & 1 & 2\\
+        \cancel{3} & 3 & 0
+      \end{pmatrix}  & -\det\begin{pmatrix} 
+      \cancel{1} & \cancel{0} & \cancel{1}\\
+      2 & \cancel{1} & 2\\
+      3 & \cancel{3} & 0
+    \end{pmatrix} & \det\begin{pmatrix} 
+    \cancel{1} & \cancel{0} & \cancel{1}\\
+    2 & 1 & \cancel{2} \\
+    3 & 3 & \cancel{0}
+    \end{pmatrix}\\
+      -\det \begin{pmatrix} 
+        \cancel{1} & 0 & 1 \\
+        \cancel{2} & \cancel{1} & \cancel{2}\\
+        \cancel{3} & 3 & 0
+      \end{pmatrix} & 
+      \det \begin{pmatrix} 
+        1 & \cancel{0} & 1 \\
+        \cancel{2} & \cancel{1} & \cancel{2}\\
+        3 & \cancel{3} & 0
+      \end{pmatrix} &
+      \det \begin{pmatrix} 
+        1 & 0 & \cancel{1} \\
+        \cancel{2} & \cancel{1} & \cancel{2}\\
+        3 & 3 & \cancel{0}
+      \end{pmatrix}\\
+      \det\begin{pmatrix} 
+        \cancel{1} & 0 & 1 \\
+        \cancel{2} & 1 & 2\\
+        \cancel{3} & \cancel{3} & \cancel{0}
+      \end{pmatrix} &
+      \det\begin{pmatrix} 
+        1 & \cancel{0} & 1 \\
+        2 & \cancel{1} & 2\\
+        \cancel{3} & \cancel{3} & \cancel{0}
+      \end{pmatrix} &
+      \det\begin{pmatrix} 
+        1 & 0 & \cancel{1} \\
+        2 & 1 & \cancel{2}\\
+        \cancel{3} & \cancel{3} & \cancel{0}
+        \end{pmatrix}\\
+    \end{pmatrix} 
+    \] 
+  \end{example}
+\end{figure}
 \end{document}

@@ -264,6 +264,19 @@ summary
 Using the geom_boxplot() function of the ggplot2 package plot the 
 boxplot for the flipper length variable coloring each species with 
 a different color (hint: use the color argument of the aes() function).
+```{r}
+ggplot(
+  penguins,
+  aes(
+    x = penguins$flipper_length_mm,
+    color = penguins$species
+  )
+) +
+  scale_fill_manual(values = c("darkorange", "purple", "cyan4")) +
+  geom_boxplot(
+    aes(x = penguins$flipper_length_mm)
+  )
+```
 
 ## D
 Compute the flipper length quartiles for the "Gentoo" penguins 
