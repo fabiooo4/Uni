@@ -272,7 +272,7 @@ ggplot(
     color = penguins$species
   )
 ) +
-  scale_fill_manual(values = c("darkorange", "purple", "cyan4")) +
+  scale_color_manual(values = c("darkorange", "purple", "cyan4")) +
   geom_boxplot(
     aes(x = penguins$flipper_length_mm)
   )
@@ -281,9 +281,27 @@ ggplot(
 ## D
 Compute the flipper length quartiles for the "Gentoo" penguins 
 (Q1, Q2, Q3).
+```{r}
+gentoo <- penguins[penguins$species == "Gentoo", ]
+quartiles <- quantile(
+  gentoo$flipper_length_mm,
+  c(0.25, 0.5, 0.75),
+  na.rm = TRUE
+)
+quartiles
+```
 
 ## E
 Calculate the flipper length 40th percentile for the "Adelie" penguins.
+```{r}
+adelie <- penguins[penguins$species == "Adelie", ]
+p40 <- quantile(
+  adelie$flipper_length_mm,
+  0.4,
+  na.rm = TRUE
+)
+p40
+```
 
 # Exercise 4 - Multiple boxplots from scratch
 ## A
@@ -292,17 +310,74 @@ each day of  the week (hint: use the for() cycle, data should have 7
 columns). At the end you should obtain a matrix with N rows 
 (N = number of random number to generate each time) and 7 columns 
 (one for each day of the week).
+```{r}
+set.seed(123)
+n <- 10
+days <- c(
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday"
+)
+data <- matrix(nrow = n, ncol = 7)
+
+for (i in 1:7) {
+  data[, i] <- round(runif(n, min = 0, max = 100), 0)
+}
+
+df <- data.frame(data)
+colnames(df) <- days
+df
+```
 
 ## B
 Go from a wide to a long data format. You should create a data.frame 
 object with  exactly two columns. One contains the values created in 
-A., the other contains the  corresponding day of the week.
+A., the other contains the corresponding day of the week.
+```{r}
+df_long <- data.frame(
+  "Day" = rep(days, each = n),
+  "Value" = c(
+    df$Monday,
+    df$Tuesday,
+    df$Wednesday,
+    df$Thursday,
+    df$Friday,
+    df$Saturday,
+    df$Sunday
+  )
+)
+df_long
+```
 
 ## C
 Plot the seven boxplots (one for each day of the week) in one graph,
 horizontally oriented (hint: coord_flip() function translates the axes,
-the "limits" argument of  scale_x_discrete() allows you to reorder the 
+the "limits" argument of scale_x_discrete() allows you to reorder the 
 axis labels).
+```{r}
+ggplot(
+  df_long,
+  aes(
+    x = Day,
+    y = Value,
+    color = Day
+  )
+) +
+  scale_color_manual(values = rainbow(7)) +
+  scale_x_discrete(limits = rev(days)) +
+  geom_boxplot() +
+  coord_flip() +
+  labs(
+    title = "Random values by day of the week",
+    x = "Day of the week",
+    y = "Random value",
+    color = "Day of the week"
+  )
+```
 
 # Exercise 5 - Exploratory analysis of data
 Penguins dataset does not contain their weights and flipper lengths only. 
@@ -312,27 +387,100 @@ Many other variables are  available. Let’s explore it a little more:
 How many islands are there? And how many penguins are present in each 
 isle? Are the 3 species of  penguins living together? (hint: use the 
 table() function).
+```{r}
+cat("The number of islands is: ", length(unique(penguins$island)), "\n")
+table(penguins$island)
+table(penguins$island, penguins$species)
+```
 
 ## B
 Try to use the geom_bar() or geom_col() functions to graphically 
 represent the population of each island, colored by species 
 (hint: islands in the x-axis, number of penguins in the y-axis).
+```{r}
+ggplot(
+  penguins,
+  aes(
+    x = island,
+    fill = species
+  )
+) +
+  geom_bar() +
+  scale_fill_manual(values = c("darkorange", "purple", "cyan4")) +
+  labs(
+    title = "Penguins population by island",
+    x = "Island",
+    y = "Number of penguins",
+    fill = "Species"
+  )
+```
 
 ## C
 Use a scatter plot to represent flipper length vs. body mass. Color 
 the point according to the "sex"  variable. Try to use facets to see 
 if there are differences across species (hint: use 
 facet_grid(~  species) function to add facets for species).
+```{r, warning=FALSE}
+ggplot(
+  penguins,
+  aes(
+    x = penguins$flipper_length_mm,
+    y = penguins$body_mass_g,
+    color = penguins$sex
+  )
+) +
+  geom_point() +
+  facet_grid(~species) +
+  scale_color_manual(values = c("blue", "magenta")) +
+  labs(
+    title = "Flipper length vs. body mass",
+    x = "Flipper length (mm)",
+    y = "Body mass (g)",
+    color = "Sex"
+  )
+```
 
 ## D
 The numeric variables shows some interesting relationships. Are they 
 correlated? Use the cor() and the  corrplot() functions to study 
 correlations between numeric variables (hint: try to google 
 corrplot() to see which package you have to install to use it).
+```{r}
+library(corrplot)
+correlation <- cor(penguins[, c(3:6, 8)], use = "complete.obs")
+corrplot(correlation, method = "number")
+```
+```{r}
+corrplot(correlation, method = "color")
+```
+```{r}
+corrplot(correlation)
+```
+```{r}
+corrplot(correlation, order = "AOE")
+```
 
 ## E
 Choose a pair of numeric variables, compute the correlation between 
 them without using the cor() function (hint: remember the formula).
+```{r}
+x <- penguins$flipper_length_mm
+y <- penguins$body_mass_g
+
+n <- length(x)
+mean_x <- mean(x, na.rm = TRUE)
+mean_y <- mean(y, na.rm = TRUE)
+
+covariance <- sum((x - mean_x) * (y - mean_y), na.rm = TRUE) / (n - 1)
+sd_x <- sqrt(sum((x - mean_x)^2, na.rm = TRUE) / (n - 1))
+sd_y <- sqrt(sum((y - mean_y)^2, na.rm = TRUE) / (n - 1))
+
+correlation <- covariance / (sd_x * sd_y)
+cat(
+  "The correlation between flipper length and body mass is: ",
+  correlation, "\n"
+)
+```
 
 ## F
 Plot the scatter plot for bill length vs. bill depth. Color the points 
@@ -340,3 +488,27 @@ by species. Use the function geom_smooth(formula = "y ~ x") to add a
 line to represent the linear relationship between the two variables.
 Then, again, use geom_smooth(formula = "y ~ x") colored by species. 
 What are you noticing?
+```{r, warning=FALSE}
+ggplot(
+  penguins,
+  aes(
+    x = penguins$bill_length_mm,
+    y = penguins$bill_depth_mm,
+    color = penguins$species
+  )
+) +
+  geom_point() +
+  geom_smooth(
+    formula = "y ~ x",
+    method = "lm",
+    aes(color = penguins$species),
+    se = FALSE
+  ) +
+  scale_color_manual(values = c("darkorange", "purple", "cyan4")) +
+  labs(
+    title = "Bill length vs. bill depth",
+    x = "Bill length (mm)",
+    y = "Bill depth (mm)",
+    color = "Species"
+  )
+```
