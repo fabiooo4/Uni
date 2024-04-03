@@ -1115,6 +1115,77 @@ per eseguire l'ISR senza che vengano modificati i registri della CPU. Questo vie
 effettuato dal dispositivo input/output che salva il valore dei registri \texttt{PSW} e
 \texttt{PC} ed eventuali altri registri salvaldoli nello stack prima di eseguire l'ISR.
 
+\subsection{DMA (Direct Memory Access)}
+Per trasferire grandi quantità di dati da un dispositivo di input/output alla memoria
+non conviene utilizzare degli interrupt perchè sarebbe uno spreco di risorse. Si utilizza
+il DMA che è un dispositivo che permette di trasferire dati dalla memoria al dispositivo
+di input/output senza passare per la CPU.
+
+TODO
+
+\begin{figure}[H]
+  \begin{center}
+    \begin{tikzpicture}[scale=0.8]
+      \draw [->] (0,0) -- (12,0) node[right] {t};
+      \draw (0,0) -- (0,8) node[above] {};
+      \draw [gray!50, ultra thin, help lines, ystep=10] (0,0) grid (12,8);
+
+      \draw [blue, ultra thick] plot coordinates { (0,8) (1,8) (1,8) (2,8) (2,7) (3,7) (3,7) (4,7) (4,7) (5,7) (5,7) (6,7) (6,7) (7,7) (7,7) (8.5,7) (8.5,8) (9,8) (12,8) };
+      \draw [magenta, ultra thick] plot coordinates { (0,5) (1,5) (1,5) (2,5) (2,5) (3,5) (3,6) (4,6) (4,6) (5,6) (5,6) (6,6) (6,6) (7,6) (7,6) (8,6) (8,6) (9,6) (9,6) (10,6) (10,5) (11,5) (11,5) (12,5) (12,5) };
+      \draw [red, ultra thick] plot coordinates { (0,3) (2,3) (2,3) (3.5,3) (3.5,4) (10.5,4) (10.5,3) (12,3)  };
+      \draw [green, ultra thick] plot coordinates { (0,1) (8,1) (8,2) (9,2) (9,1) (12,1) };
+
+      \draw[thick, opacity=0.3] (8,8) -- (8,0) node[below right, opacity=1] {BUS non usato};
+      \draw[thick, opacity=0.3] (9,8) -- (9,0);
+
+      \node[blue, anchor=east] at (0,7) {\( \overline{BR} \) };
+      \node[magenta, anchor=east] at (0,5) {\( BG_1 \) };
+      \node[red, anchor=east] at (0,3) {\( BG_2 \) };
+      \node[green, anchor=east] at (0,1) {\( \overline{BBSY} \) };
+    \end{tikzpicture}
+  \end{center}
+  \caption{Segnali di controllo DMA}
+\end{figure}
+
+\subsection{Bus}
+I bus sono delle linee di comunicazione che collegano i vari componenti di un sistema
+informatico. I bus possono essere divisi in:
+\subsubsection{Sincrono}
+Il segnale di clock è presente. Questo tipo di bus
+non viene mai realizzato perchè rallenta il sistema. Vengono invece utilizzati
+soltanto per collegare i componenti all'interno di un chip. Il segnale di clock
+può anche avere un ritardo, quindi non è detto che tutti i componenti ricevano
+il segnale di clock nello stesso momento.
+
+\subsubsection{Asincrono}
+Il segnale di clock non è presente. Ciò permette di
+adattare dinamicamente la velocità di trasmissione dei dati in base alla
+velocità di trasmissione dei componenti. 
+
+\subsubsection{Multitasking (multiprocesso)}
+Il multitasking è la capacità di un sistema operativo di eseguire più
+processi contemporaneamente e questa è una caratteristica che sta alla base di tutti
+i calcolatori moderni.
+
+\begin{figure}[H]
+  \begin{define}
+    Il concetto di \textbf{programma} è diverso da un \textbf{processo}. Un programma è
+    un file binario che contiene le istruzioni da eseguire, mentre un processo è un
+    programma in esecuzione.
+  \end{define}
+\end{figure}
+
+\begin{table}[H]
+  \begin{tabular}{r|c|c|}
+    \cline{2-3}
+    & \multicolumn{2}{|c|}{\textbf{Utenti}} \\
+    \hline
+    & MSDOS & X \\
+
+    \hline
+  \end{tabular}
+\end{table}
+
 % Laboratorio
 \section{Laboratorio}
 \subsection{Vantaggi e svantaggi di assembly}
@@ -1750,4 +1821,7 @@ meno che non si voglia conservarli per il debug (con l'opzione \texttt{--gstabs}
 condizionato. Se si vuole eseguire un ciclo per un certo numero di volte occorre utilizzare
 ECX come contatore. 
 % Fine laboratorio
+
+
+
 \end{document}
