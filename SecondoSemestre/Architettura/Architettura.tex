@@ -164,6 +164,642 @@
 \tableofcontents
 \pagebreak
 
+% Laboratorio
+\section{Laboratorio}
+\subsection{Vantaggi e svantaggi di assembly}
+\subsubsection{Vantaggi}
+Siccome assembly è un linguaggio di basso livello, è molto vicino all'hardware e quindi è possibile:
+\begin{itemize}
+	\item accedere direttamente ai \textbf{registri} della CPU
+	\item scrivere \textbf{codice ottimizzato} per una specifica architettura di CPU
+	\item ottimizzare le \textbf{sezioni "critiche"} dei programmi
+\end{itemize}
+
+\subsubsection{Svantaggi}
+I principali svantaggi sono:
+\begin{itemize}
+	\item possono essere richieste \textbf{molte più righe} di codice
+	\item è facile introdurre dei \textbf{bug} perchè la programmazione è più complessa
+	\item il \textbf{debugging} è complesso
+	\item \textbf{non è garantita la compatibilità} del codice per altri hardware
+\end{itemize}
+
+\subsection{Utilità}
+Assembly permette di gestire direttamente il funzionamento della CPU, di conseguenza,
+i programmi Assembly, una volta compilati sono tipicamente più veloci e più piccoli dei
+programmi scritti in linguaggi di alto livello. Per questo motivo, l'assembly è utilizzato
+per scrivere codice che deve essere il più veloce possibile, come ad esempio i driver di
+hardware specifici.
+
+\subsection{Registri}
+Tutti i processori della famiglia x86 hanno i seguenti registri:
+AX, BX, CX, DX, CS, DS, ES, SS, SP, BP, SI, DI, IP, FLAGS.
+
+\vspace{1em}
+\noindent Originariamente i registri AX, BX, CX, DX, SP, BP, SI, DI, IP e FLAGS avevano una dimensione
+di 16 bit. A partire dal 80386, la loro dimensione è stata estesa a 32 bit e al loro nome
+è stato aggiunto il prefisso E (Extended). Per ragioni di retrocompatibilità, i registri
+di 16 bit possono essere utilizzati anche nei processori a 32 bit utilizzando il loro
+nome originale.
+
+\subsubsection{Registri general purpose}
+I seguenti registri sono generici, pertanto è possibile assegnargli qualunque valore. Tuttavia,
+durante l'esecuzione di alcune istruzioni i registri generici vengono utilizzati per
+memorizzare valori ben determinati:
+\begin{itemize}
+	\item \textbf{EAX} (Accumulator register): è usato come accumulatore per
+	      operazioni aritmetiche e contiene il risultato dell'operazione
+	\item \textbf{EBX} (Base register): è usato per operazioni di indirizzamento della
+	      memoria
+	\item \textbf{ECX} (Counter register):  è usato per "contare", ad esempio nelle
+	      operazioni di loop
+	\item \textbf{EDX} (Data register): è usato nelle operazioni di input/output, nelle
+	      divisioni e nelle moltiplicazioni
+
+\end{itemize}
+
+\subsubsection{Registri di segmento}
+CS, DS, ES e SS sono i \textbf{registri di segmento} (segment registers) e devono
+essere utilizzati con cautela:
+\begin{itemize}
+	\item \textbf{CS} (Code Segment): punta alla zona di memoria che contiene il codice.
+	      Durante l'esecuzione del programma, assieme al registro IP, serve per
+	      accedere alla prossima istruzione da eseguire (attenzione: non può
+	      essere modificato!)
+	\item \textbf{DS} (Data Segment): punta alla zona di memoria che contiene i dati
+	\item \textbf{ES} (Extra Segment):  può essere usato come registro di segmento
+	      ausiliario
+	\item \textbf{SS} (Stack Segment): punta alla zona di memoria in cui risiede lo stack
+\end{itemize}
+
+\subsubsection{Registri puntatore}
+ESP, EBP, EIP sono i registri puntatore (pointer registers):
+\begin{itemize}
+	\item \textbf{ESP} (Stack Pointer):  punta alla cima dello stack. Viene modificato
+	      dalle operazioni di PUSH (inserimento di un dato nello stack) e POP
+	      (estrazioni di un dato dallo stack). Si ricordi che lo stack è una
+	      struttura di tipo LIFO (Last In First Out - l'ultimo che entra è il primo
+	      che esce). È possibile modificarlo manualmente ma occorre cautela!
+	\item \textbf{EBP} (Base Pointer): punta alla base della porzione di stack gestita in
+	      quel punto del codice. È possibile modificarlo manualmente ma
+	      occorre cautela!
+	\item \textbf{EIP} (Instruction Pointer): punta alla prossima istruzione da eseguire.
+	      Non può essere modificato!
+\end{itemize}
+
+\subsubsection{Registri indice}
+ESI e EDI sono i registri indice (index registers) e vengono utilizzati per
+operazioni con stringhe e vettori:
+\begin{itemize}
+	\item \textbf{ESI} (Source Index):  punta alla stringa/vettore sorgente
+	\item \textbf{EDI} (Destination Index): punta alla stringa/vettore destinazione
+	\item \textbf{EFLAGS}: è utilizzato per memorizzare lo stato corrente del processore.
+	      Ciascuna flag (bit) del registro fornisce una particolare informazione.
+	      Ad esempio, la flag in prima posizione (carry flag) viene posta a 1
+	      quando c;è stato un riporto o un prestito durante un'operazione
+	      aritmetica; la flag in seconda posizione (parity flag) viene usata come
+	      bit di parità e viene posta a 1 quando il risultato dell'ultima
+	      operazione ha un numero pari di 1
+\end{itemize}
+
+\subsubsection{Composizione dei registri}
+I registri sono composti da 32 bit e possono essere divisi in registri più piccoli:
+\begin{itemize}
+	\item \textbf{EAX}: AX, AH, AL
+	\item \textbf{EBX}: BX, BH, BL
+	\item \textbf{ECX}: CX, CH, CL
+	\item \textbf{EDX}: DX, DH, DL
+	\item \textbf{ESP}: SP
+	\item \textbf{EBP}: BP
+	\item \textbf{ESI}: SI
+	\item \textbf{EDI}: DI
+\end{itemize}
+
+\subsubsection{Composizione del registro EFLAGS}
+Il registro EFLAGS è composto da 32 bit e ogni bit corrisponde ad un flag:
+\begin{itemize}
+	\item \textbf{ZF} (Zero flag):  impostato a 1 se il risultato dell'operazione è 0
+	\item \textbf{SF} (Sign flag): impostato a 1 se il risultato dell'operazione è un
+	      numero negativo, a 0 se è positivo (rappresentazione in complemento
+	      a 2)
+	\item \textbf{OF} (Overflow flag): impostato a 1 nel caso di overflow di
+	      un'operazione
+	\item \textbf{TF} (Trap flag): impostato a 1 genera un'interruzione ad ogni
+	      istruzione. Utilizzato per l'esecuzione passo-passo dei programmi
+	\item \textbf{IF} (Interrupt flag): impostato a 1 abilita gli interrupt esterni, con 0 li
+	      disabilita
+	\item \textbf{DF} (Direction flag): impostato a 1 indica che nelle operazioni di
+	      spostamento di stringhe i registri DI e SI si autodecrementano (con 0
+	      tali registri si auto incrementano)
+\end{itemize}
+
+\subsection{Modalità di indirizzamento}
+Si rifersce al modo in cui un'istruzione assembly accede ai dati in memoria e può essere:
+\begin{itemize}
+	\item \textbf{Indirizzamento a registro}: l'operando è contenuto in un registro ed
+	      il nome del registro è specificato nell'istruzione. Ad esempio:
+	      \begin{center}
+		      \texttt{\%Ri}
+	      \end{center}
+
+	\item \textbf{Indirizzamento diretto} (o assoluto): l'operando è contenuto in una
+	      locazione di memoria, e l'indirizzo della locazione viene specificato
+	      nell'istruzione. Ad esempio:
+	      \begin{center}
+		      \texttt{(IND)}
+	      \end{center}
+
+	\item \textbf{Indirizzamento immediato} (o di costante): l'operando è un valore
+	      costante ed è definito esplicitamente nell'istruzione. Ad esempio:
+	      \begin{center}
+		      \texttt{\$VAL}
+	      \end{center}
+
+	\item \textbf{Indirizzamento indiretto}: l'indirizzo di un operando è contenuto in
+	      un registro o in una locazione di memoria. L'indirizzo della locazione o
+	      il registro viene specificato nell'istruzione. Ad esempio:
+	      \begin{center}
+		      \texttt{(\%Ri)} \quad o \quad \texttt{(\$VAL)}
+	      \end{center}
+
+	\item \textbf{Indirizzamento indicizzato} (Base e spiazzamento): l'indirizzo
+	      effettivo dell'operando è calcolato sommando un valore costante al
+	      contenuto di un registro. Ad esempio:
+	      \begin{center}
+		      \texttt{SPI(\%Ri)}
+	      \end{center}
+
+	\item \textbf{Indirizzamento con autoincremento}: l'indirizzo effettivo
+	      dell'operando è il contenuto di un registro specificato nell'istruzione.
+	      Dopo l'accesso, il contenuto del registro viene incrementato per
+	      puntare all'elemento successivo
+
+	\item \textbf{Indirizzamento con autodecremento}: il contenuto di un registro
+	      specificato nell'istruzione viene decrementato. Il nuovo contenuto
+	      viene usato come indirizzo effettivo dell'operando
+
+\end{itemize}
+
+\subsection{Istruzioni}
+\subsubsection{Istruzioni di inizializzazione}
+\begin{itemize}
+	\item \texttt{mov src, dst} \quad \textbf{Move}: consente l'inizializzazione di un registro o di
+	      un'area di memoria. Accetta i modificatori \texttt{l}, \texttt{w} e \texttt{b} per
+	      indicare la dimensione dell'operando \texttt{s rc}
+	\item \texttt{lea src, dst} \quad \textbf{Load Effective Address}: trasferisce l'indirizzo
+	      effettivo dell'operando \texttt{src} nel registro \texttt{dst}
+\end{itemize}
+
+\subsubsection{Istruzioni aritmetiche e logiche}
+\begin{itemize}
+	\item \texttt{sar op1, op2} \quad \textbf{Shift Arithmetic Right}: esegue lo shift a destra sul
+	      registro \texttt{op2} di tanti bit quanti specificati in \texttt{op1}. Il bit
+	      più significativo viene replicato (così da funzionare anche
+	      con numeri negativi in complemento 2) e il bit scartato
+	      viene messo nel \textbf{Carry Flag}. \texttt{op1} può essere un registro
+	      o un valore immediato, \texttt{op2} deve essere un registro
+	\item \texttt{sal op1, op2} \quad \textbf{Shift Arithmetic Left}: esegue lo shift a sinistra sul
+	      registro \texttt{op2} di tanti bit quanti specificati in \texttt{op1}. Il bit
+	      meno significativo viene messo a \( 0 \)  e il bit scartato viene
+	      messo nel \textbf{Carry Flag}. \texttt{op1} può essere un registro o un
+	      valore immediato, \texttt{op2} deve essere un registro
+	\item \texttt{inc op} \quad \textbf{Increment}: incrementa di 1 il valore memorizzato in
+	      \texttt{op}. \texttt{op} può essere un registro o una locazione di memoria
+	\item \texttt{dec op} \quad \textbf{Decrement}: decrementa di 1 il valore memorizzato in
+	      \texttt{op}. \texttt{op} può essere un registro o una locazione di
+	      memoria
+	\item \texttt{add src, dst} \quad \textbf{Add}: somma a \texttt{dst} il valore di \texttt{src}
+	      e memorizza il risultato in \texttt{dst}
+	\item \texttt{sub src, dst} \quad \textbf{Subtract}: sottrae da \texttt{dst} il valore di \texttt{src}
+	      e memorizza il risultato in \texttt{dst}
+	\item \texttt{mul moltipl} \quad \textbf{Unsigned Multiplication}: esegue la moltiplicazione
+	      senza segno. \texttt{moltipl} deve essere un registro o una
+	      variabile. Se \texttt{moltipl} è un byte il registro \texttt{AL} viene
+	      moltiplicato per l'operando e il risultato viene
+	      memorizzato in \texttt{AX}. Se \texttt{moltipl} è una word il
+	      contenuto del registro \texttt{AX} viene moltiplicato per
+	      l'operando e il risultato viene memorizzato nella coppia
+	      di registri \texttt{DX}:\texttt{AX} (\texttt{DX} conterrà i 16 bit più significativi
+	      del risultato). Se \texttt{moltipl} è un long il contenuto del
+	      registro E\texttt{AX} viene moltiplicato per l'operando e il
+	      risultato viene memorizzato nella coppia di registri
+	      \texttt{EDX}:\texttt{EAX} (\texttt{EDX} conterrà i 32 bit più significativi del
+	      risultato).
+	\item \texttt{imul moltipl} \quad moltiplicazione con segno
+	\item \texttt{div divisore} \quad \textbf{Unsigned Division}:
+	      esegue la divisione senza segno.
+	      \texttt{divisore} deve essere un registro o una variabile. Se
+	      \texttt{divisore} è un byte il registro \texttt{AX} viene diviso per
+	      l'operando, il quoziente viene memorizzato in \texttt{AL}, e il
+	      resto in \texttt{AH}. Se \texttt{divisore} è una word, il valore ottenuto
+	      concatenando il contenuto di \texttt{DX} e \texttt{AX} viene diviso per
+	      l'operando (i 16 bit più significativi del dividendo
+	      devono essere memorizzati nel registro \texttt{DX}), il quoziente
+	      viene memorizzato nel registro \texttt{AX} e il resto in \texttt{DX}. Se
+	      \texttt{divisore} è un long, il valore ottenuto concatenando il
+	      contenuto di \texttt{EDX} e \texttt{EAX} viene diviso per l'operando (i
+	      32 bit più significativi del dividendo sono nel registro
+	      \texttt{EDX}), il quoziente viene memorizzato nel registro \texttt{EAX}
+	      e il resto in \texttt{EDX}
+	\item \texttt{xor src, dst} \quad \textbf{Logical Exclusive OR}: calcola l'OR esclusivo bit a bit
+	      dei due operandi e lo memorizza nell'operando \texttt{dst}.
+	      Spesso si utilizza per azzerare un registro, utilizzandolo
+	      sia come \texttt{src} che come \texttt{dst})
+	\item \texttt{or src, dst} \quad \textbf{Logical OR}: calcola l'OR logico bit a bit dei due
+	      operandi e lo memorizza nell'operando \texttt{dst}
+	\item \texttt{and src, dst} \quad \textbf{Logical AND}: calcola l'AND bit a bit dei due operandi
+	      e lo memorizza nell'operando \texttt{dst}
+	\item \texttt{not op} \quad \textbf{Logical NOT}: inverte ogni singolo bit dell'operando op
+\end{itemize}
+
+\subsection{AT\&T vs Intel}
+Le principali differenze tra la sintassi AT\&T e Intel sono:
+\begin{itemize}
+	\item In AT\&T i nomi dei registri hanno il carattere \texttt{\%} come prefisso
+	\item In AT\&T l'ordine degli operandi è \texttt{<sorgente>, <destinazione>}, opposto
+	      rispetto alla sintassi Intel
+	\item In AT\&T la lunghezza dell'operando è specificata tramite un suffisso al nome
+	      dell'istruzione. \texttt{b} per \textbf{byte} (8 bit), \texttt{w} per \textbf{word} (16 bit),
+	      \texttt{l} per \textbf{double word} (32 bit)
+	\item Gli operandi immediati in AT\&T sono preceduti dal simbolo \texttt{\$}
+	\item la presenza di prefisso in un operando indica che si tratta di un
+	      indirizzo di memoria. Ad esempio:
+	      \begin{center}
+		      \texttt{movl \$pippo, \%eax} \quad è diverso da \quad \texttt{movl pippo, \%eax}
+	      \end{center}
+	\item l'indicizzazione o l'indirezione è ottenuta racchiudendo tra parentesi
+	      l'indirizzo di base espresso tramite un registro o un valore immediato.
+	      Ad esempio:
+	      \begin{center}
+		      \texttt{movl 5, 17(\%ebp)}
+	      \end{center}
+\end{itemize}
+
+\subsection{Assemblare, verificare ed eseguire un programma Assembly}
+% Prima di tutto bisogna creare un file con estensione \texttt{.s} e scrivere il codice assembly.
+% Dopo aver scritto il codice assembly, si compila il file con il comando \texttt{as} che crea un file binario
+% (\texttt{.o}) contenente l'implementazione di ogni singolo file. Infine si uniscono i file binari con il comando
+% \texttt{ld} che crea un file eseguibile a partire dai file binari.
+%
+% \begin{lstlisting}[language=bash]
+%  $  as -o <nomefile>.o <nomefile>.s
+%  $  ld -o <nomefile> <nomefile>.o
+%  $  ./<nomefile>
+%   
+% \end{lstlisting}
+
+Il processo di creazione di un programma Assembly passa attraverso le seguenti fasi:
+\begin{enumerate}
+	\item Scrittura di uno o più file ASCII (con estensione \texttt{.s}) contenenti il
+	      programma sorgente, tramite un normale editor di testo.
+	\item Assemblaggio dei file sorgenti, e generazione dei file \textbf{oggetto} (con
+	      estensione \texttt{.o}), tramite un \textbf{assemblatore}.
+	\item Creazione del file \textbf{eseguibile}, tramite un \textbf{linker}
+	\item Verifica del funzionamento e correzione degli eventuali errori tramite un
+	      \textbf{debugger}
+\end{enumerate}
+
+\subsubsection{L'assemblatore}
+L'Assemblatore trasforma i file contenenti il programma sorgente in altrettanti file
+oggetto contenenti il codice in linguaggio macchina. Durante questo corso verrà usato
+l'assemblatore \textbf{gas} della GNU.
+
+\noindent Per assemblare un file è necessario eseguire il seguente comando:
+\begin{lstlisting}[language=bash]
+  $  as -o <nomefile>.o <nomefile>.s
+\end{lstlisting}
+
+\subsubsection{Il linker}
+Il linker combina i moduli oggetto e produce un unico file eseguibile. In particolare
+unisce i moduli oggetto, risolvendo i riferimenti a simboli esterni; ricerca i file di
+libreria contenenti le procedure esterne utilizzate dai vari moduli e produce un file
+eseguibile. L'operazione di linking deve essere effettuata anche se il programma è
+composto da un solo modulo oggetto.
+
+\noindent Durante il corso verrà usato il linker \textbf{ld} della GNU.
+
+\noindent Per creare l'eseguibile a partire da un file oggetto è necessario eseguire il
+seguente comando:
+\begin{lstlisting}[language=bash]
+  $  ld -o <nomefile>.x <nomefile1>.o <nomefile2>.o ...
+\end{lstlisting}
+
+\subsubsection{Assembly 32bit su macchine 64bit}
+La gran parte del codice ASM32 è compatibile con macchine a 64bit, tuttavia alcune
+estensioni in particolari istruzioni non sono riconosciute dai compilatori. È possibile
+utilizzare codice ASM32 su architetture a 64bit utilizzando dei flag di compilazione che
+permettono di simulare il comportamento di una architettura a 32bit.
+\begin{lstlisting}[language=bash]
+  $  as --32 -o <nomefile>.o <nomefile>.s
+  $  ld -m elf_i386 -o <nomefile> <nomefile>.o
+\end{lstlisting}
+
+\subsection{Stampa di numeri}
+I numeri sono memorizzati nei registri e nelle variabili come interi in complemento a 2
+su 32 bit. Affinchè essi possano essere stampati a video occorre trasformarli in stringhe
+di caratteri cioè vettori di byte dove ciascun byte rappresenta un carattere secondo la
+codifica ASCII.
+
+\noindent Per trasformare un numero intero in una stringa occorre scomporlo nelle sue
+cifre mediante divisioni successive per 10. Per la particolare conformazione della tabella
+ASCII il codice del carattere corrispondente alla cifra \( n \) si ottiene come \( n+48 \).
+
+\subsubsection{Tabella dei caratteri ASCII}
+La tabella seguente è relativa al codice US ASCII, ANSI X3.4-1986 (ISO International
+Reference Version). I codici decimali da 0 a 31 e il 127 sono caratteri non stampabili
+(codici di controllo). Il 32 corrispondente al carattere "spazio". I codici dal 32 al 126
+sono caratteri stampabili.
+\begin{xltabular}{\textwidth}{|c|c|c|l|}
+	\hline
+	\textbf{Char} & \textbf{Dec} & \textbf{Nome} & \textbf{Descrizione} \\
+	\hline
+	& 0 & NUL (Ctrl-@) & NULL \\
+	\hline
+	& 1 & SOH (Ctrl-A) & Start of Heading \\
+	\hline
+	& 2 & STX (Ctrl-B) & Start of Text \\
+	\hline
+	& 3 & ETX (Ctrl-C) & End of Text \\
+	\hline
+	& 4 & EOT (Ctrl-D) & End of Transmission \\
+	\hline
+	& 5 & ENQ (Ctrl-E) & Enquiry \\
+	\hline
+	& 6 & ACK (Ctrl-F) & Acknowledge \\
+	\hline
+	& 7 & BEL (Ctrl-G) & Bell (Beep) \\
+	\hline
+	& 8 & BS (Ctrl-H) & Backspace \\
+	\hline
+	& 9 & HT (Ctrl-I) & Horizontal Tab \\
+	\hline
+	& 10 & LF (Ctrl-J) & Line Feed \\
+	\hline
+	& 11 & VT (Ctrl-K) & Vertical Tab \\
+	\hline
+	& 12 & FF (Ctrl-L) & Form Feed \\
+	\hline
+	& 13 & CR (Ctrl-M) & Carriage Return \\
+	\hline
+	& 14 & SO (Ctrl-N) & Shift Out \\
+	\hline
+	& 15 & SI (Ctrl-O) & Shift In \\
+	\hline
+	& 16 & DLE (Ctrl-P) & Data Link Escape \\
+	\hline
+	& 17 & DC1 (Ctrl-Q) & Device Control 1 (XON) \\
+	\hline
+	& 18 & DC2 (Ctrl-R) & Device Control 2 \\
+	\hline
+	& 19 & DC3 (Ctrl-S) & Device Control 3 (XOFF) \\
+	\hline
+	& 20 & DC4 (Ctrl-T) & Device Control 4 \\
+	\hline
+	& 21 & NAK (Ctrl-U) & Negative Acknowledge \\
+	\hline
+	& 22 & SYN (Ctrl-V) & Synchronous Idle \\
+	\hline
+	& 23 & ETB (Ctrl-W) & End of Transmission Block \\
+	\hline
+	& 24 & CAN (Ctrl-X) & Cancel \\
+	\hline
+	& 25 & EM (Ctrl-Y) & End of Medium \\
+	\hline
+	& 26 & SUB (Ctrl-Z) & Substitute \\
+	\hline
+	& 27 & ESC (Ctrl-[) & Escape \\
+	\hline
+	& 28 & FS (Ctrl-\textbackslash) & File Separator \\
+	\hline
+	& 29 & GS (Ctrl-]) & Group Separator \\
+	\hline
+	& 30 & RS (Ctrl-\textasciicircum) & Record Separator \\
+	\hline
+	& 31 & US (Ctrl-\_) & Unit Separator \\
+	\hline
+	\texttt{ } & 32 & & Space \\
+	\hline
+	\texttt{!} & 33 & & Exclamation mark \\
+	\hline
+	\texttt{"} & 34 & & Quotation mark \\
+	\hline
+	\texttt{\#} & 35 & & Number sign \\
+	\hline
+	\texttt{\$} & 36 & & Dollar sign \\
+	\hline
+	\texttt{\%} & 37 & & Percent sign \\
+	\hline
+	\texttt{\&} & 38 & & Ampersand \\
+	\hline
+	\texttt{'} & 39 & & Apostrophe \\
+	\hline
+	\texttt{(} & 40 & & Left parenthesis \\
+	\hline
+	\texttt{)} & 41 & & Right parenthesis \\
+	\hline
+	\texttt{*} & 42 & & Asterisk \\
+	\hline
+	\texttt{+} & 43 & & Plus sign \\
+	\hline
+	\texttt{,} & 44 & & Comma \\
+	\hline
+	\texttt{-} & 45 & & Hyphen \\
+	\hline
+	\texttt{.} & 46 & & Period, dot \\
+	\hline
+	\texttt{/} & 47 & & Slash \\
+	\hline
+	\texttt{0} & 48 & & Zero \\
+	\hline
+	\texttt{1} & 49 & & One \\
+	\hline
+	\texttt{2} & 50 & & Two \\
+	\hline
+	\texttt{3} & 51 & & Three \\
+	\hline
+	\texttt{4} & 52 & & Four \\
+	\hline
+	\texttt{5} & 53 & & Five \\
+	\hline
+	\texttt{6} & 54 & & Six \\
+	\hline
+	\texttt{7} & 55 & & Seven \\
+	\hline
+	\texttt{8} & 56 & & Eight \\
+	\hline
+	\texttt{9} & 57 & & Nine \\
+	\hline
+	\texttt{:} & 58 & & Colon \\
+	\hline
+	\texttt{;} & 59 & & Semicolon \\
+	\hline
+	\texttt{<} & 60 & & Less-than sign \\
+	\hline
+	\texttt{=} & 61 & & Equal sign \\
+	\hline
+	\texttt{>} & 62 & & Greater-than sign \\
+	\hline
+	\texttt{?} & 63 & & Question mark \\
+	\hline
+	\texttt{@} & 64 & & At sign \\
+	\hline
+	\texttt{A} & 65 & & Uppercase A \\
+	\hline
+	\texttt{B} & 66 & & Uppercase B \\
+	\hline
+	\texttt{C} & 67 & & Uppercase C \\
+	\hline
+	\texttt{D} & 68 & & Uppercase D \\
+	\hline
+	\texttt{E} & 69 & & Uppercase E \\
+	\hline
+	\texttt{F} & 70 & & Uppercase F \\
+	\hline
+	\texttt{G} & 71 & & Uppercase G \\
+	\hline
+	\texttt{H} & 72 & & Uppercase H \\
+	\hline
+	\texttt{I} & 73 & & Uppercase I \\
+	\hline
+	\texttt{J} & 74 & & Uppercase J \\
+	\hline
+	\texttt{K} & 75 & & Uppercase K \\
+	\hline
+	\texttt{L} & 76 & & Uppercase L \\
+	\hline
+	\texttt{M} & 77 & & Uppercase M \\
+	\hline
+	\texttt{N} & 78 & & Uppercase N \\
+	\hline
+	\texttt{O} & 79 & & Uppercase O \\
+	\hline
+	\texttt{P} & 80 & & Uppercase P \\
+	\hline
+	\texttt{Q} & 81 & & Uppercase Q \\
+	\hline
+	\texttt{R} & 82 & & Uppercase R \\
+	\hline
+	\texttt{S} & 83 & & Uppercase S \\
+	\hline
+	\texttt{T} & 84 & & Uppercase T \\
+	\hline
+	\texttt{U} & 85 & & Uppercase U \\
+	\hline
+	\texttt{V} & 86 & & Uppercase V \\
+	\hline
+	\texttt{W} & 87 & & Uppercase W \\
+	\hline
+	\texttt{X} & 88 & & Uppercase X \\
+	\hline
+	\texttt{Y} & 89 & & Uppercase Y \\
+	\hline
+	\texttt{Z} & 90 & & Uppercase Z\\
+	\hline
+	\texttt{[} & 91 & & Left square bracket \\
+	\hline
+	\texttt{\textbackslash} & 92 & & Backslash \\
+	\hline
+	\texttt{]} & 93 & & Right square bracket \\
+	\hline
+	\texttt{\textasciicircum} & 94 & & Circumflex accent\\
+	\hline
+	\texttt{\_} & 95 & & Underscore \\
+	\hline
+	\texttt{`} & 96 & & Grave accent \\
+	\hline
+	\texttt{a} & 97 & & Lowercase a \\
+	\hline
+	\texttt{b} & 98 & & Lowercase b \\
+	\hline
+	\texttt{c} & 99 & & Lowercase c \\
+	\hline
+	\texttt{d} & 100 & & Lowercase d \\
+	\hline
+	\texttt{e} & 101 & & Lowercase e \\
+	\hline
+	\texttt{f} & 102 & & Lowercase f \\
+	\hline
+	\texttt{g} & 103 & & Lowercase g \\
+	\hline
+	\texttt{h} & 104 & & Lowercase h \\
+	\hline
+	\texttt{i} & 105 & & Lowercase i \\
+	\hline
+	\texttt{j} & 106 & & Lowercase j \\
+	\hline
+	\texttt{k} & 107 & & Lowercase k \\
+	\hline
+	\texttt{l} & 108 & & Lowercase l \\
+	\hline
+	\texttt{m} & 109 & & Lowercase m \\
+	\hline
+	\texttt{n} & 110 & & Lowercase n \\
+	\hline
+	\texttt{o} & 111 & & Lowercase o \\
+	\hline
+	\texttt{p} & 112 & & Lowercase p \\
+	\hline
+	\texttt{q} & 113 & & Lowercase q \\
+	\hline
+	\texttt{r} & 114 & & Lowercase r \\
+	\hline
+	\texttt{s} & 115 & & Lowercase s \\
+	\hline
+	\texttt{t} & 116 & & Lowercase t \\
+	\hline
+	\texttt{u} & 117 & & Lowercase u \\
+	\hline
+	\texttt{v} & 118 & & Lowercase v \\
+	\hline
+	\texttt{w} & 119 & & Lowercase w \\
+	\hline
+	\texttt{x} & 120 & & Lowercase x \\
+	\hline
+	\texttt{y} & 121 & & Lowercase y \\
+	\hline
+	\texttt{z} & 122 & & Lowercase z \\
+	\hline
+	\texttt{\{} & 123 & & Left curly brace \\
+	\hline
+	\texttt{|} & 124 & & Vertical bar \\
+	\hline
+	\texttt{\}} & 125 & & Right curly brace \\
+	\hline
+	\texttt{\textasciitilde} & 126 & & Tilde \\
+	\hline
+	& 127 & DEL (Ctrl-?) & Delete \\
+	\hline
+\end{xltabular}
+
+\subsection{Etichette ed istruzioni di salto}
+In Assembly non esiste il costrutto \texttt{if} ... \texttt{then} ... \texttt{else}
+e quindi le istruzioni di salto
+servono per far saltare l'esecuzione del programma ad una certa istruzione in funzione
+del valore di una condizione. Le uniche condizioni che si possono valutare sono \(<,=,>\) tra
+due valori numerici e la presenza di zero nel registro ECX. In particolare, la valutazione
+di una condizione di \(<,=,>\) consiste di due istruzioni: la prima sottrae tra loro i due valori
+numerici e imposta i bit SF e ZF del registro EFLAGS, la seconda effettua il salto in base
+al valore di tali flags.
+
+\noindent Le etichette sono essenziali per le istruzioni di salto in quanto indicano a quale punto
+della sequenza di istruzioni bisogna saltare. Occorre inserire prima dell'istruzione a cui
+si vuole saltare un nome simbolico seguito dal carattere “\texttt{:}”. Ad esempio:
+\begin{lstlisting}[language={[x86masm]Assembler}]
+  etichetta:
+    istruzioni
+    ...
+\end{lstlisting}
+È importante che il nome dell'etichetta sia unico in tutto il programma. Anche in questo
+caso, come per i nomi delle variabili, l'assemblatore trasforma i nomi delle etichette
+in numeri binari (che in questo caso indicano l'indirizzo dell'istruzione che segue) a
+meno che non si voglia conservarli per il debug (con l'opzione \texttt{--gstabs}).
+
+\noindent In Assembly non esistono istruzioni ad alto livello per realizzare i cicli come \texttt{for} ...,
+\texttt{while} ...; essi si devono costruire manualmente a partire dalle istruzioni di salto
+condizionato. Se si vuole eseguire un ciclo per un certo numero di volte occorre utilizzare
+ECX come contatore.
+% Fine laboratorio
+
 \section{Architettura di Von Neumann}
 L'esigenza era quella di avere un'architettura che permettesse di eseguire programmi
 in modo automatico, senza dover cambiare il cablaggio del calcolatore, quindi il circuito
@@ -1000,38 +1636,38 @@ ma \textbf{CPU cablate} in questo modo non si realizzano più.
 		\draw[->] (keyboard) -- (io);
 		\draw[->] (mouse) -- (io);
 	\end{tikzpicture}
-  \caption{Schema di un sistema con dispositivi di input e output}
+	\caption{Schema di un sistema con dispositivi di input e output}
 \end{figure}
 
 \noindent Per poter ottenere un'interazione con l'utente è necessario avere dei dispositivi
-di input e output e a loro volta devono essere codificati per far corrispondere 
+di input e output e a loro volta devono essere codificati per far corrispondere
 l'intenzione dell'utente con l'azione del computer. La strutture del microcontrollore
 input/output è composto da:
 \begin{itemize}
-  \item \textbf{Dato}: contiene i dati da inviare o ricevere
-  \item \textbf{Stato}: contiene lo stato del dispositivo
-  \item \textbf{MC}: contiene il microcontrollore del dispositivo
-  \item \textbf{IntA/D}: contiene l'interfaccia di analogico/digitale
+	\item \textbf{Dato}: contiene i dati da inviare o ricevere
+	\item \textbf{Stato}: contiene lo stato del dispositivo
+	\item \textbf{MC}: contiene il microcontrollore del dispositivo
+	\item \textbf{IntA/D}: contiene l'interfaccia di analogico/digitale
 \end{itemize}
 \begin{figure}[H]
-  \centering
-  \begin{tikzpicture}
-    \draw (0,0) rectangle (4,4);
-    \draw (0.5,2.5) rectangle (1.8,3.5) node[midway] {Dato};
-    \draw (2.2,2.5) rectangle (3.5,3.5) node[midway] {Stato};
-    \draw (1.5,1) rectangle (2.5,2) node[midway] {MC};
-    \draw (0,0) rectangle (1,1) node[midway, scale=0.7] {IntA/D};
-    \node at (4,0) [above left, scale=0.7] {I/O};
-  \end{tikzpicture}
-  \caption{Struttura del microcontrollore input/output}
+	\centering
+	\begin{tikzpicture}
+		\draw (0,0) rectangle (4,4);
+		\draw (0.5,2.5) rectangle (1.8,3.5) node[midway] {Dato};
+		\draw (2.2,2.5) rectangle (3.5,3.5) node[midway] {Stato};
+		\draw (1.5,1) rectangle (2.5,2) node[midway] {MC};
+		\draw (0,0) rectangle (1,1) node[midway, scale=0.7] {IntA/D};
+		\node at (4,0) [above left, scale=0.7] {I/O};
+	\end{tikzpicture}
+	\caption{Struttura del microcontrollore input/output}
 \end{figure}
 
 \noindent La CPU accede ai valori dei registri di input/outpit tramite degli indirizzi
 che vengono riservati in un intervallo di memoria. Gli indirizzi di \texttt{Dato} e
 \texttt{Stato} sono:
 \begin{itemize}
-  \item \texttt{IND DATA KEY} (Dato)
-  \item \texttt{IND STATUS KEY} (Stato)
+	\item \texttt{IND DATA KEY} (Dato)
+	\item \texttt{IND STATUS KEY} (Stato)
 \end{itemize}
 Questi indirizzi sono assegnati in fase di progettazione del sistema e sono fissi,
 ma si possono anche cambiare in certe architetture.
@@ -1080,31 +1716,31 @@ si può utilizzare un \textbf{interrupt} che è un segnale hardware che interrom
 flusso di esecuzione del programma solo quando il dispositivo è pronto. La CPU
 \textbf{prima di ogni fetch} controlla se c'è qualche richiesta di interrupt.
 \begin{figure}[H]
-  \centering
-  \begin{tikzpicture}
-    \draw (0,0) rectangle (2,2) node[midway] {CPU};
-    \draw[latex-] (2,1.5) -- ++(4,0) node[right, scale=0.7] {BC};
-    \draw[-latex] (2,1) -- ++(4,0) node[right, scale=0.7] {BD};
-    \draw[-latex] (2,0.5) -- ++(4,0) node[right, scale=0.7] {BI};
+	\centering
+	\begin{tikzpicture}
+		\draw (0,0) rectangle (2,2) node[midway] {CPU};
+		\draw[latex-] (2,1.5) -- ++(4,0) node[right, scale=0.7] {BC};
+		\draw[-latex] (2,1) -- ++(4,0) node[right, scale=0.7] {BD};
+		\draw[-latex] (2,0.5) -- ++(4,0) node[right, scale=0.7] {BI};
 
-    \node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm] 
-      (io1) at (2.8,-1) {I/O};
-    \node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm]
-      (io2) at (4.5,-1) {I/O};
-    \node at (5.5,-1) {$\ldots$};
+		\node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm]
+		(io1) at (2.8,-1) {I/O};
+		\node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm]
+		(io2) at (4.5,-1) {I/O};
+		\node at (5.5,-1) {$\ldots$};
 
-    \draw[-latex] (io1) -- (2.8,1.5);
-    \draw[-latex] (io2) -- (4.5,1.5);
-    \draw[-latex] (io1) -- (io2);
+		\draw[-latex] (io1) -- (2.8,1.5);
+		\draw[-latex] (io2) -- (4.5,1.5);
+		\draw[-latex] (io1) -- (io2);
 
-    \draw[-latex] (1,0) -- ++(0,-1) node[below, scale=0.7] {INTACK} |- (io1);
-  \end{tikzpicture}
+		\draw[-latex] (1,0) -- ++(0,-1) node[below, scale=0.7] {INTACK} |- (io1);
+	\end{tikzpicture}
 \end{figure}
 
 \noindent Esiste un bit \( \overline{INTERRUPT} \) che è sempre a 1 (negato a 0) che
 vale 1 solo quando c'è una \textbf{interrupt request}. Ogni interrupt ha un valore
-che contiene un pezzo di codice chiamato \textbf{Interrupt Service Routine (ISR)} 
-che viene passato alla CPU attraverso il \texttt{INTACK} (Interrupt Acknowledge). 
+che contiene un pezzo di codice chiamato \textbf{Interrupt Service Routine (ISR)}
+che viene passato alla CPU attraverso il \texttt{INTACK} (Interrupt Acknowledge).
 Le ISR sono gestite dal sistema operativo e tutto l'insieme viene chiamato \textbf{Device Driver}.
 Ogni dispositivo input/output ha interrupt con valori diversi.
 
@@ -1121,46 +1757,135 @@ non conviene utilizzare degli interrupt perchè sarebbe uno spreco di risorse. S
 il DMA che è un dispositivo che permette di trasferire dati dalla memoria al dispositivo
 di input/output senza passare per la CPU.
 
-TODO
-
 \begin{figure}[H]
-  \begin{center}
-    \begin{tikzpicture}[scale=0.8]
-      \draw [->] (0,0) -- (12,0) node[right] {t};
-      \draw (0,0) -- (0,8) node[above] {};
-      \draw [gray!50, ultra thin, help lines, ystep=10] (0,0) grid (12,8);
+	\centering
+	\begin{tikzpicture}
+		% CPU
+		\node[draw, rectangle, minimum width=2cm, minimum height=1.5cm] (cpu) at (0, 0) {\textbf{CPU}};
+		% Memoria
+		\node[draw, rectangle, align=center, minimum width=2cm, minimum height=1.5cm] (memory) at (4, 0) {\textbf{Memoria}\\\footnotesize Dati\\\footnotesize Istruzioni};
 
-      \draw [blue, ultra thick] plot coordinates { (0,8) (1,8) (1,8) (2,8) (2,7) (3,7) (3,7) (4,7) (4,7) (5,7) (5,7) (6,7) (6,7) (7,7) (7,7) (8.5,7) (8.5,8) (9,8) (12,8) };
-      \draw [magenta, ultra thick] plot coordinates { (0,5) (1,5) (1,5) (2,5) (2,5) (3,5) (3,6) (4,6) (4,6) (5,6) (5,6) (6,6) (6,6) (7,6) (7,6) (8,6) (8,6) (9,6) (9,6) (10,6) (10,5) (11,5) (11,5) (12,5) (12,5) };
-      \draw [red, ultra thick] plot coordinates { (0,3) (2,3) (2,3) (3.5,3) (3.5,4) (10.5,4) (10.5,3) (12,3)  };
-      \draw [green, ultra thick] plot coordinates { (0,1) (8,1) (8,2) (9,2) (9,1) (12,1) };
+		% Bus
+		\draw (-2,-2) -- (6.5,-2) node[right] {Bus};
+		\draw[latex-latex] (cpu) -- ++(0,-2);
+		\draw[latex-latex] (memory) -- ++(0,-2);
 
-      \draw[thick, opacity=0.3] (8,8) -- (8,0) node[below right, opacity=1] {BUS non usato};
-      \draw[thick, opacity=0.3] (9,8) -- (9,0);
+		% Input/Output below bus
+		\node[draw, rectangle, minimum width=0.7cm, minimum height=0.7cm] (dma) at (2, -3) {\textbf{DMA}};
+		\draw[latex-latex] (dma) -- (2,-2);
 
-      \node[blue, anchor=east] at (0,7) {\( \overline{BR} \) };
-      \node[magenta, anchor=east] at (0,5) {\( BG_1 \) };
-      \node[red, anchor=east] at (0,3) {\( BG_2 \) };
-      \node[green, anchor=east] at (0,1) {\( \overline{BBSY} \) };
-    \end{tikzpicture}
-  \end{center}
-  \caption{Segnali di controllo DMA}
+	\end{tikzpicture}
+	\caption{Schema di un sistema con DMA}
 \end{figure}
 
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\draw (0,0) rectangle (4,4);
+		\draw (0.5,2.5) rectangle (1.8,3.5) node[midway] {Data};
+		\draw (2.2,2.5) rectangle (3.5,3.5) node[midway] {Status};
+
+		\node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm] (mem)
+		at (1.1,1.7) {MEM};
+		\node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm] (cpu)
+		at (2.9,1.7) {CPU};
+
+		\draw[latex-latex] (mem) -- (cpu);
+
+		\draw (0,0) rectangle (1,1) node[midway, scale=0.7] {A/D};
+		\node at (4,0) [above left, scale=0.7] {DMA};
+	\end{tikzpicture}
+	\caption{Struttura del DMA}
+\end{figure}
+
+
 \subsection{Bus}
-I bus sono delle linee di comunicazione che collegano i vari componenti di un sistema
-informatico. I bus possono essere divisi in:
-\subsubsection{Sincrono}
+Il bus è una linea di comunicazione che collegana i vari componenti di un sistema
+informatico. Vengono gestiti direttamente dalla CPU che quando non lo usa lo assegna ad
+altri componenti.
+
+\subsubsection{Bus Sincrono}
 Il segnale di clock è presente. Questo tipo di bus
 non viene mai realizzato perchè rallenta il sistema. Vengono invece utilizzati
 soltanto per collegare i componenti all'interno di un chip. Il segnale di clock
 può anche avere un ritardo, quindi non è detto che tutti i componenti ricevano
 il segnale di clock nello stesso momento.
 
-\subsubsection{Asincrono}
+\subsubsection{Bus Asincrono}
 Il segnale di clock non è presente. Ciò permette di
 adattare dinamicamente la velocità di trasmissione dei dati in base alla
-velocità di trasmissione dei componenti. 
+velocità di trasmissione dei componenti.
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\draw (0,0) rectangle (2,2) node[midway] {CPU};
+		\draw[latex-] (2,1.5) -- ++(4,0) node[right, scale=0.7] {\( \overline{BBSY} \) };
+		\draw[latex-] (2,0.5) -- ++(4,0) node[right, scale=0.7] {\( \overline{BR} \) };
+
+		\node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm]
+		(dma1) at (2.8,-1) {\( DMA_1 \) };
+		\node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm]
+		(dma2) at (5,-1) {\( DMA_2 \)};
+		\node at (6,-1) {$\ldots$};
+
+		\draw[latex-latex] (2.5,1.5) -- ++(0,-2.2);
+		\draw[latex-] (3.1,0.5) -- ++(0,-1.2);
+
+		\draw[latex-latex] (4.7,1.5) -- ++(0,-2.2);
+		\draw[latex-] (5.3,0.5) -- ++(0,-1.2);
+
+		\draw[-latex] (dma1) -- (dma2) node[midway, below, scale=0.9] {\( BG_2 \) };
+
+		\draw[-latex] (1,0) -- ++(0,-1) |- (dma1) node[midway, below right, scale=0.9]
+			{\( BG_1 \) };
+	\end{tikzpicture}
+	\caption{Schema di un sistema con bus}
+\end{figure}
+
+\noindent I segnali di controllo del bus sono:
+\begin{itemize}
+	\item \( \overline{BBSY} \) (Bus Busy): quando vale 0 indica che il bus è occupato
+	\item \( \overline{BR} \) (Bus Request): quando vale 0 indica che il dispositivo vuole
+	      utilizzare il bus
+	\item \( BG_1 \) (Bus Grant): indica che il bus è assegnato al DMA1
+	\item \( BG_2 \) (Bus Grant): indica che il bus è assegnato al DMA2
+\end{itemize}
+
+\begin{figure}[H]
+	\begin{center}
+		\begin{tikzpicture}[scale=0.8]
+			\draw [->] (0,0) -- (12,0) node[right] {t};
+			\draw (0,0) -- (0,8) node[above] {};
+			\draw [gray!50, ultra thin, help lines, ystep=10] (0,0) grid (12,8);
+
+			\draw [blue, ultra thick] plot coordinates { (0,8) (1,8) (1,8) (2,8) (2,7) (3,7) (3,7) (4,7) (4,7) (5,7) (5,7) (6,7) (6,7) (7,7) (7,7) (8.5,7) (8.5,8) (9,8) (12,8) };
+			\draw [magenta, ultra thick] plot coordinates { (0,5) (1,5) (1,5) (2,5) (2,5) (3,5) (3,6) (4,6) (4,6) (5,6) (5,6) (6,6) (6,6) (7,6) (7,6) (8,6) (8,6) (9,6) (9,6) (10,6) (10,5) (11,5) (11,5) (12,5) (12,5) };
+			\draw [red, ultra thick] plot coordinates { (0,3) (2,3) (2,3) (3.5,3) (3.5,4) (10.5,4) (10.5,3) (12,3)  };
+			\draw [orange, ultra thick] plot coordinates { (0,1) (8,1) (8,2) (9,2) (9,1) (12,1) };
+
+			\draw[thick, opacity=0.3] (8,8) -- (8,0) node[below right, opacity=1] {BUS non usato};
+			\draw[thick, opacity=0.3] (9,8) -- (9,0);
+
+			\node[blue, anchor=east] at (0,7) {\( \overline{BR} \) };
+			\node[magenta, anchor=east] at (0,5) {\( BG_1 \) };
+			\node[red, anchor=east] at (0,3) {\( BG_2 \) };
+			\node[orange, anchor=east] at (0,1) {\( \overline{BBSY} \) };
+		\end{tikzpicture}
+	\end{center}
+	\caption{Segnali di controllo DMA}
+\end{figure}
+
+\noindent Il \( DMA_2 \) vuole utilizzare il bus, che però è già in uso dalla CPU, quindi
+mette a 0 il \( \overline{BR} \) e aspetta che il bus venga liberato.
+Quando la CPU libera il BUS vede la request del \( DMA_2 \) e mette a 0 il \( BG_1 \) e
+il \( BG_2 \).
+Il \( \overline{BBSY} \) viene messo a 0 quando il bus è occupato e quando viene liberato
+viene messo a 1 mettendo a 1 il \( \overline{BR} \) e resettando a 0 il \( BG_1 \) e \( BG_2 \).
+
+\vspace{1em}
+\noindent In questo modo si riduce al minimo il tempo in cui il BUS \textbf{non} è
+utilizzato.
 
 \subsubsection{Multitasking (multiprocesso)}
 Il multitasking è la capacità di un sistema operativo di eseguire più
@@ -1168,660 +1893,11 @@ processi contemporaneamente e questa è una caratteristica che sta alla base di 
 i calcolatori moderni.
 
 \begin{figure}[H]
-  \begin{define}
-    Il concetto di \textbf{programma} è diverso da un \textbf{processo}. Un programma è
-    un file binario che contiene le istruzioni da eseguire, mentre un processo è un
-    programma in esecuzione.
-  \end{define}
+	\begin{define}
+		Il concetto di \textbf{programma} è diverso da un \textbf{processo}. Un programma è
+		un file binario che contiene le istruzioni da eseguire, mentre un processo è un
+		programma in esecuzione.
+	\end{define}
 \end{figure}
-
-\begin{table}[H]
-  \begin{tabular}{r|c|c|}
-    \cline{2-3}
-    & \multicolumn{2}{|c|}{\textbf{Utenti}} \\
-    \hline
-    & MSDOS & X \\
-
-    \hline
-  \end{tabular}
-\end{table}
-
-% Laboratorio
-\section{Laboratorio}
-\subsection{Vantaggi e svantaggi di assembly}
-\subsubsection{Vantaggi}
-Siccome assembly è un linguaggio di basso livello, è molto vicino all'hardware e quindi è possibile:
-\begin{itemize}
-	\item accedere direttamente ai \textbf{registri} della CPU
-	\item scrivere \textbf{codice ottimizzato} per una specifica architettura di CPU
-	\item ottimizzare le \textbf{sezioni "critiche"} dei programmi
-\end{itemize}
-
-\subsubsection{Svantaggi}
-I principali svantaggi sono:
-\begin{itemize}
-	\item possono essere richieste \textbf{molte più righe} di codice
-	\item è facile introdurre dei \textbf{bug} perchè la programmazione è più complessa
-	\item il \textbf{debugging} è complesso
-	\item \textbf{non è garantita la compatibilità} del codice per altri hardware
-\end{itemize}
-
-\subsection{Utilità}
-Assembly permette di gestire direttamente il funzionamento della CPU, di conseguenza,
-i programmi Assembly, una volta compilati sono tipicamente più veloci e più piccoli dei
-programmi scritti in linguaggi di alto livello. Per questo motivo, l'assembly è utilizzato
-per scrivere codice che deve essere il più veloce possibile, come ad esempio i driver di
-hardware specifici.
-
-\subsection{Registri}
-Tutti i processori della famiglia x86 hanno i seguenti registri:
-AX, BX, CX, DX, CS, DS, ES, SS, SP, BP, SI, DI, IP, FLAGS.
-
-\vspace{1em}
-\noindent Originariamente i registri AX, BX, CX, DX, SP, BP, SI, DI, IP e FLAGS avevano una dimensione
-di 16 bit. A partire dal 80386, la loro dimensione è stata estesa a 32 bit e al loro nome
-è stato aggiunto il prefisso E (Extended). Per ragioni di retrocompatibilità, i registri
-di 16 bit possono essere utilizzati anche nei processori a 32 bit utilizzando il loro
-nome originale.
-
-\subsubsection{Registri general purpose}
-I seguenti registri sono generici, pertanto è possibile assegnargli qualunque valore. Tuttavia,
-durante l'esecuzione di alcune istruzioni i registri generici vengono utilizzati per
-memorizzare valori ben determinati:
-\begin{itemize}
-	\item \textbf{EAX} (Accumulator register): è usato come accumulatore per
-	      operazioni aritmetiche e contiene il risultato dell'operazione
-	\item \textbf{EBX} (Base register): è usato per operazioni di indirizzamento della
-	      memoria
-	\item \textbf{ECX} (Counter register):  è usato per "contare", ad esempio nelle
-	      operazioni di loop
-	\item \textbf{EDX} (Data register): è usato nelle operazioni di input/output, nelle
-	      divisioni e nelle moltiplicazioni
-
-\end{itemize}
-
-\subsubsection{Registri di segmento}
-CS, DS, ES e SS sono i \textbf{registri di segmento} (segment registers) e devono
-essere utilizzati con cautela:
-\begin{itemize}
-	\item \textbf{CS} (Code Segment): punta alla zona di memoria che contiene il codice.
-	      Durante l'esecuzione del programma, assieme al registro IP, serve per
-	      accedere alla prossima istruzione da eseguire (attenzione: non può
-	      essere modificato!)
-	\item \textbf{DS} (Data Segment): punta alla zona di memoria che contiene i dati
-	\item \textbf{ES} (Extra Segment):  può essere usato come registro di segmento
-	      ausiliario
-	\item \textbf{SS} (Stack Segment): punta alla zona di memoria in cui risiede lo stack
-\end{itemize}
-
-\subsubsection{Registri puntatore}
-ESP, EBP, EIP sono i registri puntatore (pointer registers):
-\begin{itemize}
-	\item \textbf{ESP} (Stack Pointer):  punta alla cima dello stack. Viene modificato
-	      dalle operazioni di PUSH (inserimento di un dato nello stack) e POP
-	      (estrazioni di un dato dallo stack). Si ricordi che lo stack è una
-	      struttura di tipo LIFO (Last In First Out - l'ultimo che entra è il primo
-	      che esce). È possibile modificarlo manualmente ma occorre cautela!
-	\item \textbf{EBP} (Base Pointer): punta alla base della porzione di stack gestita in
-	      quel punto del codice. È possibile modificarlo manualmente ma
-	      occorre cautela!
-	\item \textbf{EIP} (Instruction Pointer): punta alla prossima istruzione da eseguire.
-	      Non può essere modificato!
-\end{itemize}
-
-\subsubsection{Registri indice}
-ESI e EDI sono i registri indice (index registers) e vengono utilizzati per
-operazioni con stringhe e vettori:
-\begin{itemize}
-	\item \textbf{ESI} (Source Index):  punta alla stringa/vettore sorgente
-	\item \textbf{EDI} (Destination Index): punta alla stringa/vettore destinazione
-	\item \textbf{EFLAGS}: è utilizzato per memorizzare lo stato corrente del processore.
-	      Ciascuna flag (bit) del registro fornisce una particolare informazione.
-	      Ad esempio, la flag in prima posizione (carry flag) viene posta a 1
-	      quando c;è stato un riporto o un prestito durante un'operazione
-	      aritmetica; la flag in seconda posizione (parity flag) viene usata come
-	      bit di parità e viene posta a 1 quando il risultato dell'ultima
-	      operazione ha un numero pari di 1
-\end{itemize}
-
-\subsubsection{Composizione dei registri}
-I registri sono composti da 32 bit e possono essere divisi in registri più piccoli:
-\begin{itemize}
-	\item \textbf{EAX}: AX, AH, AL
-	\item \textbf{EBX}: BX, BH, BL
-	\item \textbf{ECX}: CX, CH, CL
-	\item \textbf{EDX}: DX, DH, DL
-	\item \textbf{ESP}: SP
-	\item \textbf{EBP}: BP
-	\item \textbf{ESI}: SI
-	\item \textbf{EDI}: DI
-\end{itemize}
-
-\subsubsection{Composizione del registro EFLAGS}
-Il registro EFLAGS è composto da 32 bit e ogni bit corrisponde ad un flag:
-\begin{itemize}
-	\item \textbf{ZF} (Zero flag):  impostato a 1 se il risultato dell'operazione è 0
-	\item \textbf{SF} (Sign flag): impostato a 1 se il risultato dell'operazione è un
-	      numero negativo, a 0 se è positivo (rappresentazione in complemento
-	      a 2)
-	\item \textbf{OF} (Overflow flag): impostato a 1 nel caso di overflow di
-	      un'operazione
-	\item \textbf{TF} (Trap flag): impostato a 1 genera un'interruzione ad ogni
-	      istruzione. Utilizzato per l'esecuzione passo-passo dei programmi
-	\item \textbf{IF} (Interrupt flag): impostato a 1 abilita gli interrupt esterni, con 0 li
-	      disabilita
-	\item \textbf{DF} (Direction flag): impostato a 1 indica che nelle operazioni di
-	      spostamento di stringhe i registri DI e SI si autodecrementano (con 0
-	      tali registri si auto incrementano)
-\end{itemize}
-
-\subsection{Modalità di indirizzamento}
-Si rifersce al modo in cui un'istruzione assembly accede ai dati in memoria e può essere:
-\begin{itemize}
-	\item \textbf{Indirizzamento a registro}: l'operando è contenuto in un registro ed
-	      il nome del registro è specificato nell'istruzione. Ad esempio:
-	      \begin{center}
-		      \texttt{\%Ri}
-	      \end{center}
-
-	\item \textbf{Indirizzamento diretto} (o assoluto): l'operando è contenuto in una
-	      locazione di memoria, e l'indirizzo della locazione viene specificato
-	      nell'istruzione. Ad esempio:
-	      \begin{center}
-		      \texttt{(IND)}
-	      \end{center}
-
-	\item \textbf{Indirizzamento immediato} (o di costante): l'operando è un valore
-	      costante ed è definito esplicitamente nell'istruzione. Ad esempio:
-	      \begin{center}
-		      \texttt{\$VAL}
-	      \end{center}
-
-	\item \textbf{Indirizzamento indiretto}: l'indirizzo di un operando è contenuto in
-	      un registro o in una locazione di memoria. L'indirizzo della locazione o
-	      il registro viene specificato nell'istruzione. Ad esempio:
-	      \begin{center}
-		      \texttt{(\%Ri)} \quad o \quad \texttt{(\$VAL)}
-	      \end{center}
-
-	\item \textbf{Indirizzamento indicizzato} (Base e spiazzamento): l'indirizzo
-	      effettivo dell'operando è calcolato sommando un valore costante al
-	      contenuto di un registro. Ad esempio:
-	      \begin{center}
-		      \texttt{SPI(\%Ri)}
-	      \end{center}
-
-	\item \textbf{Indirizzamento con autoincremento}: l'indirizzo effettivo
-	      dell'operando è il contenuto di un registro specificato nell'istruzione.
-	      Dopo l'accesso, il contenuto del registro viene incrementato per
-	      puntare all'elemento successivo
-
-	\item \textbf{Indirizzamento con autodecremento}: il contenuto di un registro
-	      specificato nell'istruzione viene decrementato. Il nuovo contenuto
-	      viene usato come indirizzo effettivo dell'operando
-
-\end{itemize}
-
-\subsection{Istruzioni}
-\subsubsection{Istruzioni di inizializzazione}
-\begin{itemize}
-	\item \texttt{mov src, dst} \quad \textbf{Move}: consente l'inizializzazione di un registro o di
-	      un'area di memoria. Accetta i modificatori \texttt{l}, \texttt{w} e \texttt{b} per
-	      indicare la dimensione dell'operando \texttt{s rc}
-	\item \texttt{lea src, dst} \quad \textbf{Load Effective Address}: trasferisce l'indirizzo
-	      effettivo dell'operando \texttt{src} nel registro \texttt{dst}
-\end{itemize}
-
-\subsubsection{Istruzioni aritmetiche e logiche}
-\begin{itemize}
-	\item \texttt{sar op1, op2} \quad \textbf{Shift Arithmetic Right}: esegue lo shift a destra sul
-	      registro \texttt{op2} di tanti bit quanti specificati in \texttt{op1}. Il bit
-	      più significativo viene replicato (così da funzionare anche
-	      con numeri negativi in complemento 2) e il bit scartato
-	      viene messo nel \textbf{Carry Flag}. \texttt{op1} può essere un registro
-	      o un valore immediato, \texttt{op2} deve essere un registro
-	\item \texttt{sal op1, op2} \quad \textbf{Shift Arithmetic Left}: esegue lo shift a sinistra sul
-	      registro \texttt{op2} di tanti bit quanti specificati in \texttt{op1}. Il bit
-	      meno significativo viene messo a \( 0 \)  e il bit scartato viene
-	      messo nel \textbf{Carry Flag}. \texttt{op1} può essere un registro o un
-	      valore immediato, \texttt{op2} deve essere un registro
-	\item \texttt{inc op} \quad \textbf{Increment}: incrementa di 1 il valore memorizzato in
-	      \texttt{op}. \texttt{op} può essere un registro o una locazione di memoria
-	\item \texttt{dec op} \quad \textbf{Decrement}: decrementa di 1 il valore memorizzato in
-	      \texttt{op}. \texttt{op} può essere un registro o una locazione di
-	      memoria
-	\item \texttt{add src, dst} \quad \textbf{Add}: somma a \texttt{dst} il valore di \texttt{src}
-	      e memorizza il risultato in \texttt{dst}
-	\item \texttt{sub src, dst} \quad \textbf{Subtract}: sottrae da \texttt{dst} il valore di \texttt{src}
-	      e memorizza il risultato in \texttt{dst}
-	\item \texttt{mul moltipl} \quad \textbf{Unsigned Multiplication}: esegue la moltiplicazione
-	      senza segno. \texttt{moltipl} deve essere un registro o una
-	      variabile. Se \texttt{moltipl} è un byte il registro \texttt{AL} viene
-	      moltiplicato per l'operando e il risultato viene
-	      memorizzato in \texttt{AX}. Se \texttt{moltipl} è una word il
-	      contenuto del registro \texttt{AX} viene moltiplicato per
-	      l'operando e il risultato viene memorizzato nella coppia
-	      di registri \texttt{DX}:\texttt{AX} (\texttt{DX} conterrà i 16 bit più significativi
-	      del risultato). Se \texttt{moltipl} è un long il contenuto del
-	      registro E\texttt{AX} viene moltiplicato per l'operando e il
-	      risultato viene memorizzato nella coppia di registri
-	      \texttt{EDX}:\texttt{EAX} (\texttt{EDX} conterrà i 32 bit più significativi del
-	      risultato).
-	\item \texttt{imul moltipl} \quad moltiplicazione con segno
-	\item \texttt{div divisore} \quad \textbf{Unsigned Division}:
-	      esegue la divisione senza segno.
-	      \texttt{divisore} deve essere un registro o una variabile. Se
-	      \texttt{divisore} è un byte il registro \texttt{AX} viene diviso per
-	      l'operando, il quoziente viene memorizzato in \texttt{AL}, e il
-	      resto in \texttt{AH}. Se \texttt{divisore} è una word, il valore ottenuto
-	      concatenando il contenuto di \texttt{DX} e \texttt{AX} viene diviso per
-	      l'operando (i 16 bit più significativi del dividendo
-	      devono essere memorizzati nel registro \texttt{DX}), il quoziente
-	      viene memorizzato nel registro \texttt{AX} e il resto in \texttt{DX}. Se
-	      \texttt{divisore} è un long, il valore ottenuto concatenando il
-	      contenuto di \texttt{EDX} e \texttt{EAX} viene diviso per l'operando (i
-	      32 bit più significativi del dividendo sono nel registro
-	      \texttt{EDX}), il quoziente viene memorizzato nel registro \texttt{EAX}
-	      e il resto in \texttt{EDX}
-	\item \texttt{xor src, dst} \quad \textbf{Logical Exclusive OR}: calcola l'OR esclusivo bit a bit
-	      dei due operandi e lo memorizza nell'operando \texttt{dst}.
-	      Spesso si utilizza per azzerare un registro, utilizzandolo
-	      sia come \texttt{src} che come \texttt{dst})
-	\item \texttt{or src, dst} \quad \textbf{Logical OR}: calcola l'OR logico bit a bit dei due
-	      operandi e lo memorizza nell'operando \texttt{dst}
-	\item \texttt{and src, dst} \quad \textbf{Logical AND}: calcola l'AND bit a bit dei due operandi
-	      e lo memorizza nell'operando \texttt{dst}
-	\item \texttt{not op} \quad \textbf{Logical NOT}: inverte ogni singolo bit dell'operando op
-\end{itemize}
-
-\subsection{AT\&T vs Intel}
-Le principali differenze tra la sintassi AT\&T e Intel sono:
-\begin{itemize}
-	\item In AT\&T i nomi dei registri hanno il carattere \texttt{\%} come prefisso
-	\item In AT\&T l'ordine degli operandi è \texttt{<sorgente>, <destinazione>}, opposto
-	      rispetto alla sintassi Intel
-	\item In AT\&T la lunghezza dell'operando è specificata tramite un suffisso al nome
-	      dell'istruzione. \texttt{b} per \textbf{byte} (8 bit), \texttt{w} per \textbf{word} (16 bit),
-	      \texttt{l} per \textbf{double word} (32 bit)
-	\item Gli operandi immediati in AT\&T sono preceduti dal simbolo \texttt{\$}
-	\item la presenza di prefisso in un operando indica che si tratta di un
-	      indirizzo di memoria. Ad esempio:
-	      \begin{center}
-		      \texttt{movl \$pippo, \%eax} \quad è diverso da \quad \texttt{movl pippo, \%eax}
-	      \end{center}
-	\item l'indicizzazione o l'indirezione è ottenuta racchiudendo tra parentesi
-	      l'indirizzo di base espresso tramite un registro o un valore immediato.
-	      Ad esempio:
-	      \begin{center}
-		      \texttt{movl 5, 17(\%ebp)}
-	      \end{center}
-\end{itemize}
-
-\subsection{Assemblare, verificare ed eseguire un programma Assembly}
-% Prima di tutto bisogna creare un file con estensione \texttt{.s} e scrivere il codice assembly.
-% Dopo aver scritto il codice assembly, si compila il file con il comando \texttt{as} che crea un file binario
-% (\texttt{.o}) contenente l'implementazione di ogni singolo file. Infine si uniscono i file binari con il comando
-% \texttt{ld} che crea un file eseguibile a partire dai file binari.
-%
-% \begin{lstlisting}[language=bash]
-%  $  as -o <nomefile>.o <nomefile>.s
-%  $  ld -o <nomefile> <nomefile>.o
-%  $  ./<nomefile>
-%   
-% \end{lstlisting}
-
-Il processo di creazione di un programma Assembly passa attraverso le seguenti fasi:
-\begin{enumerate}
-  \item Scrittura di uno o più file ASCII (con estensione \texttt{.s}) contenenti il
-    programma sorgente, tramite un normale editor di testo.
-  \item Assemblaggio dei file sorgenti, e generazione dei file \textbf{oggetto} (con 
-    estensione \texttt{.o}), tramite un \textbf{assemblatore}.
-  \item Creazione del file \textbf{eseguibile}, tramite un \textbf{linker}
-  \item Verifica del funzionamento e correzione degli eventuali errori tramite un
-    \textbf{debugger}
-\end{enumerate}
-
-\subsubsection{L'assemblatore}
-L'Assemblatore trasforma i file contenenti il programma sorgente in altrettanti file
-oggetto contenenti il codice in linguaggio macchina. Durante questo corso verrà usato
-l'assemblatore \textbf{gas} della GNU.
-
-\noindent Per assemblare un file è necessario eseguire il seguente comando:
-\begin{lstlisting}[language=bash]
-  $  as -o <nomefile>.o <nomefile>.s
-\end{lstlisting}
-
-\subsubsection{Il linker}
-Il linker combina i moduli oggetto e produce un unico file eseguibile. In particolare
-unisce i moduli oggetto, risolvendo i riferimenti a simboli esterni; ricerca i file di
-libreria contenenti le procedure esterne utilizzate dai vari moduli e produce un file
-eseguibile. L'operazione di linking deve essere effettuata anche se il programma è
-composto da un solo modulo oggetto.
-
-\noindent Durante il corso verrà usato il linker \textbf{ld} della GNU.
-
-\noindent Per creare l'eseguibile a partire da un file oggetto è necessario eseguire il
-seguente comando:
-\begin{lstlisting}[language=bash]
-  $  ld -o <nomefile>.x <nomefile1>.o <nomefile2>.o ...
-\end{lstlisting}
-
-\subsubsection{Assembly 32bit su macchine 64bit}
-La gran parte del codice ASM32 è compatibile con macchine a 64bit, tuttavia alcune
-estensioni in particolari istruzioni non sono riconosciute dai compilatori. È possibile
-utilizzare codice ASM32 su architetture a 64bit utilizzando dei flag di compilazione che
-permettono di simulare il comportamento di una architettura a 32bit.
-\begin{lstlisting}[language=bash]
-  $  as --32 -o <nomefile>.o <nomefile>.s
-  $  ld -m elf_i386 -o <nomefile> <nomefile>.o
-\end{lstlisting}
-
-\subsection{Stampa di numeri}
-I numeri sono memorizzati nei registri e nelle variabili come interi in complemento a 2
-su 32 bit. Affinchè essi possano essere stampati a video occorre trasformarli in stringhe
-di caratteri cioè vettori di byte dove ciascun byte rappresenta un carattere secondo la
-codifica ASCII.
-
-\noindent Per trasformare un numero intero in una stringa occorre scomporlo nelle sue
-cifre mediante divisioni successive per 10. Per la particolare conformazione della tabella
-ASCII il codice del carattere corrispondente alla cifra \( n \) si ottiene come \( n+48 \).
-
-\subsubsection{Tabella dei caratteri ASCII}
-La tabella seguente è relativa al codice US ASCII, ANSI X3.4-1986 (ISO International
-Reference Version). I codici decimali da 0 a 31 e il 127 sono caratteri non stampabili
-(codici di controllo). Il 32 corrispondente al carattere "spazio". I codici dal 32 al 126
-sono caratteri stampabili.
-  \begin{xltabular}{\textwidth}{|c|c|c|l|}
-    \hline
-    \textbf{Char} & \textbf{Dec} & \textbf{Nome} & \textbf{Descrizione} \\
-    \hline
-                  & 0 & NUL (Ctrl-@) & NULL \\ 
-    \hline
-                  & 1 & SOH (Ctrl-A) & Start of Heading \\ 
-    \hline
-                  & 2 & STX (Ctrl-B) & Start of Text \\ 
-    \hline
-                  & 3 & ETX (Ctrl-C) & End of Text \\ 
-    \hline
-                  & 4 & EOT (Ctrl-D) & End of Transmission \\ 
-    \hline
-                  & 5 & ENQ (Ctrl-E) & Enquiry \\ 
-    \hline
-                  & 6 & ACK (Ctrl-F) & Acknowledge \\ 
-    \hline
-                  & 7 & BEL (Ctrl-G) & Bell (Beep) \\ 
-    \hline
-                  & 8 & BS (Ctrl-H) & Backspace \\ 
-    \hline
-                  & 9 & HT (Ctrl-I) & Horizontal Tab \\ 
-    \hline
-                  & 10 & LF (Ctrl-J) & Line Feed \\ 
-    \hline
-                  & 11 & VT (Ctrl-K) & Vertical Tab \\ 
-    \hline
-                  & 12 & FF (Ctrl-L) & Form Feed \\ 
-    \hline
-                  & 13 & CR (Ctrl-M) & Carriage Return \\ 
-    \hline
-                  & 14 & SO (Ctrl-N) & Shift Out \\ 
-    \hline
-                  & 15 & SI (Ctrl-O) & Shift In \\ 
-    \hline
-                  & 16 & DLE (Ctrl-P) & Data Link Escape \\ 
-    \hline
-                  & 17 & DC1 (Ctrl-Q) & Device Control 1 (XON) \\ 
-    \hline
-                  & 18 & DC2 (Ctrl-R) & Device Control 2 \\ 
-    \hline
-                  & 19 & DC3 (Ctrl-S) & Device Control 3 (XOFF) \\ 
-    \hline
-                  & 20 & DC4 (Ctrl-T) & Device Control 4 \\ 
-    \hline
-                  & 21 & NAK (Ctrl-U) & Negative Acknowledge \\ 
-    \hline
-                  & 22 & SYN (Ctrl-V) & Synchronous Idle \\ 
-    \hline
-                  & 23 & ETB (Ctrl-W) & End of Transmission Block \\ 
-    \hline
-                  & 24 & CAN (Ctrl-X) & Cancel \\ 
-    \hline
-                  & 25 & EM (Ctrl-Y) & End of Medium \\ 
-    \hline
-                  & 26 & SUB (Ctrl-Z) & Substitute \\ 
-    \hline
-                  & 27 & ESC (Ctrl-[) & Escape \\ 
-    \hline
-                  & 28 & FS (Ctrl-\textbackslash) & File Separator \\ 
-    \hline
-                  & 29 & GS (Ctrl-]) & Group Separator \\ 
-    \hline
-                  & 30 & RS (Ctrl-\textasciicircum) & Record Separator \\ 
-    \hline
-                  & 31 & US (Ctrl-\_) & Unit Separator \\ 
-    \hline
-    \texttt{ } & 32 & & Space \\ 
-    \hline
-    \texttt{!} & 33 & & Exclamation mark \\ 
-    \hline
-    \texttt{"} & 34 & & Quotation mark \\ 
-    \hline
-    \texttt{\#} & 35 & & Number sign \\ 
-    \hline
-    \texttt{\$} & 36 & & Dollar sign \\ 
-    \hline
-    \texttt{\%} & 37 & & Percent sign \\ 
-    \hline
-    \texttt{\&} & 38 & & Ampersand \\ 
-    \hline
-    \texttt{'} & 39 & & Apostrophe \\ 
-    \hline
-    \texttt{(} & 40 & & Left parenthesis \\ 
-    \hline
-    \texttt{)} & 41 & & Right parenthesis \\ 
-    \hline
-    \texttt{*} & 42 & & Asterisk \\ 
-    \hline
-    \texttt{+} & 43 & & Plus sign \\ 
-    \hline
-    \texttt{,} & 44 & & Comma \\ 
-    \hline
-    \texttt{-} & 45 & & Hyphen \\ 
-    \hline
-    \texttt{.} & 46 & & Period, dot \\ 
-    \hline
-    \texttt{/} & 47 & & Slash \\ 
-    \hline
-    \texttt{0} & 48 & & Zero \\ 
-    \hline
-    \texttt{1} & 49 & & One \\ 
-    \hline
-    \texttt{2} & 50 & & Two \\ 
-    \hline
-    \texttt{3} & 51 & & Three \\ 
-    \hline
-    \texttt{4} & 52 & & Four \\ 
-    \hline
-    \texttt{5} & 53 & & Five \\ 
-    \hline
-    \texttt{6} & 54 & & Six \\ 
-    \hline
-    \texttt{7} & 55 & & Seven \\ 
-    \hline
-    \texttt{8} & 56 & & Eight \\ 
-    \hline
-    \texttt{9} & 57 & & Nine \\ 
-    \hline
-    \texttt{:} & 58 & & Colon \\ 
-    \hline
-    \texttt{;} & 59 & & Semicolon \\ 
-    \hline
-    \texttt{<} & 60 & & Less-than sign \\ 
-    \hline
-    \texttt{=} & 61 & & Equal sign \\ 
-    \hline
-    \texttt{>} & 62 & & Greater-than sign \\ 
-    \hline
-    \texttt{?} & 63 & & Question mark \\ 
-    \hline
-    \texttt{@} & 64 & & At sign \\ 
-    \hline
-    \texttt{A} & 65 & & Uppercase A \\ 
-    \hline
-    \texttt{B} & 66 & & Uppercase B \\ 
-    \hline
-    \texttt{C} & 67 & & Uppercase C \\ 
-    \hline
-    \texttt{D} & 68 & & Uppercase D \\ 
-    \hline
-    \texttt{E} & 69 & & Uppercase E \\ 
-    \hline
-    \texttt{F} & 70 & & Uppercase F \\ 
-    \hline
-    \texttt{G} & 71 & & Uppercase G \\ 
-    \hline
-    \texttt{H} & 72 & & Uppercase H \\ 
-    \hline
-    \texttt{I} & 73 & & Uppercase I \\ 
-    \hline
-    \texttt{J} & 74 & & Uppercase J \\ 
-    \hline
-    \texttt{K} & 75 & & Uppercase K \\ 
-    \hline
-    \texttt{L} & 76 & & Uppercase L \\ 
-    \hline
-    \texttt{M} & 77 & & Uppercase M \\ 
-    \hline
-    \texttt{N} & 78 & & Uppercase N \\ 
-    \hline
-    \texttt{O} & 79 & & Uppercase O \\ 
-    \hline
-    \texttt{P} & 80 & & Uppercase P \\ 
-    \hline
-    \texttt{Q} & 81 & & Uppercase Q \\ 
-    \hline
-    \texttt{R} & 82 & & Uppercase R \\ 
-    \hline
-    \texttt{S} & 83 & & Uppercase S \\ 
-    \hline
-    \texttt{T} & 84 & & Uppercase T \\ 
-    \hline
-    \texttt{U} & 85 & & Uppercase U \\ 
-    \hline
-    \texttt{V} & 86 & & Uppercase V \\ 
-    \hline
-    \texttt{W} & 87 & & Uppercase W \\ 
-    \hline
-    \texttt{X} & 88 & & Uppercase X \\ 
-    \hline
-    \texttt{Y} & 89 & & Uppercase Y \\ 
-    \hline
-    \texttt{Z} & 90 & & Uppercase Z\\ 
-    \hline
-    \texttt{[} & 91 & & Left square bracket \\ 
-    \hline
-    \texttt{\textbackslash} & 92 & & Backslash \\ 
-    \hline
-    \texttt{]} & 93 & & Right square bracket \\ 
-    \hline
-    \texttt{\textasciicircum} & 94 & & Circumflex accent\\ 
-    \hline
-    \texttt{\_} & 95 & & Underscore \\ 
-    \hline
-    \texttt{`} & 96 & & Grave accent \\ 
-    \hline
-    \texttt{a} & 97 & & Lowercase a \\ 
-    \hline
-    \texttt{b} & 98 & & Lowercase b \\ 
-    \hline
-    \texttt{c} & 99 & & Lowercase c \\ 
-    \hline
-    \texttt{d} & 100 & & Lowercase d \\ 
-    \hline
-    \texttt{e} & 101 & & Lowercase e \\ 
-    \hline
-    \texttt{f} & 102 & & Lowercase f \\ 
-    \hline
-    \texttt{g} & 103 & & Lowercase g \\ 
-    \hline
-    \texttt{h} & 104 & & Lowercase h \\ 
-    \hline
-    \texttt{i} & 105 & & Lowercase i \\ 
-    \hline
-    \texttt{j} & 106 & & Lowercase j \\ 
-    \hline
-    \texttt{k} & 107 & & Lowercase k \\ 
-    \hline
-    \texttt{l} & 108 & & Lowercase l \\ 
-    \hline
-    \texttt{m} & 109 & & Lowercase m \\ 
-    \hline
-    \texttt{n} & 110 & & Lowercase n \\ 
-    \hline
-    \texttt{o} & 111 & & Lowercase o \\ 
-    \hline
-    \texttt{p} & 112 & & Lowercase p \\ 
-    \hline
-    \texttt{q} & 113 & & Lowercase q \\ 
-    \hline
-    \texttt{r} & 114 & & Lowercase r \\ 
-    \hline
-    \texttt{s} & 115 & & Lowercase s \\ 
-    \hline
-    \texttt{t} & 116 & & Lowercase t \\ 
-    \hline
-    \texttt{u} & 117 & & Lowercase u \\ 
-    \hline
-    \texttt{v} & 118 & & Lowercase v \\ 
-    \hline
-    \texttt{w} & 119 & & Lowercase w \\ 
-    \hline
-    \texttt{x} & 120 & & Lowercase x \\ 
-    \hline
-    \texttt{y} & 121 & & Lowercase y \\ 
-    \hline
-    \texttt{z} & 122 & & Lowercase z \\ 
-    \hline
-    \texttt{\{} & 123 & & Left curly brace \\ 
-    \hline
-    \texttt{|} & 124 & & Vertical bar \\ 
-    \hline
-    \texttt{\}} & 125 & & Right curly brace \\ 
-    \hline
-    \texttt{\textasciitilde} & 126 & & Tilde \\ 
-    \hline
-                  & 127 & DEL (Ctrl-?) & Delete \\ 
-    \hline
-  \end{xltabular}
-
-\subsection{Etichette ed istruzioni di salto}
-In Assembly non esiste il costrutto \texttt{if} ... \texttt{then} ... \texttt{else}
-e quindi le istruzioni di salto
-servono per far saltare l'esecuzione del programma ad una certa istruzione in funzione
-del valore di una condizione. Le uniche condizioni che si possono valutare sono \(<,=,>\) tra
-due valori numerici e la presenza di zero nel registro ECX. In particolare, la valutazione
-di una condizione di \(<,=,>\) consiste di due istruzioni: la prima sottrae tra loro i due valori
-numerici e imposta i bit SF e ZF del registro EFLAGS, la seconda effettua il salto in base
-al valore di tali flags.
-
-\noindent Le etichette sono essenziali per le istruzioni di salto in quanto indicano a quale punto
-della sequenza di istruzioni bisogna saltare. Occorre inserire prima dell'istruzione a cui
-si vuole saltare un nome simbolico seguito dal carattere “\texttt{:}”. Ad esempio:
-\begin{lstlisting}[language={[x86masm]Assembler}]
-  etichetta:
-    istruzioni
-    ...
-\end{lstlisting}
-È importante che il nome dell'etichetta sia unico in tutto il programma. Anche in questo
-caso, come per i nomi delle variabili, l'assemblatore trasforma i nomi delle etichette
-in numeri binari (che in questo caso indicano l'indirizzo dell'istruzione che segue) a
-meno che non si voglia conservarli per il debug (con l'opzione \texttt{--gstabs}).
-
-\noindent In Assembly non esistono istruzioni ad alto livello per realizzare i cicli come \texttt{for} ...,
-\texttt{while} ...; essi si devono costruire manualmente a partire dalle istruzioni di salto
-condizionato. Se si vuole eseguire un ciclo per un certo numero di volte occorre utilizzare
-ECX come contatore. 
-% Fine laboratorio
-
-
 
 \end{document}
