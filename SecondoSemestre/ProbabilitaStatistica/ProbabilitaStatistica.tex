@@ -626,6 +626,32 @@ si fa riferimento alla \textbf{statistica inferenziale}. Ma bisogna essere ingra
 parlare di probabilità e di distribuzioni teoriche (modelli probabilistici).
 
 \section{Probabilità}
+La probabilità di un evento \( A \in \mathcal{A} \) rappresenta una misura di quanto
+ci si aspetta che si verifichi l'evento \( A \).
+
+\vspace{1em}
+\noindent Calcolare le probabilità non significa "prevedere il futuro", ma trovare come
+distribuire un maggiore o minore \textbf{grado di fiducia} tra i vari possibili modi
+in cui si potrà presentare un certo fenomeno aleatorio.
+
+
+\begin{figure}[H]
+	\begin{define}
+		L'\textbf{ipotesi dei modelli} è lo spazio dei campioni \textbf{finito} \( \Leftrightarrow
+		card(\Omega) = n < \infty\)
+
+		\textbf{Eventi equiprobabili}:
+		\[
+			P(\omega_i) = P(\omega_j), \quad i,j \in \{1, \ldots, n\}
+		\]
+	\end{define}
+\end{figure}
+
+La probabilità di un evento \( A \in \mathcal{A} \) si calcola come:
+\[
+	P(A) = \frac{\text{casi favorevoli ad \( A \) }}{\text{casi possibili}} = \frac{card(A)}{card(\Omega)}
+\]
+
 \subsection{Esperimenti aleatori}
 Un fenomeno \textbf{casuale}, o aleatorio, è un fenomeno \textbf{osservabile}, ma non
 prevedibile. Cioè conoscendo i dati iniziali e le leggi, non possiamo prevederne il
@@ -902,32 +928,6 @@ Gli esperimenti possono essere di diversi tipi:
 		\]
 	\end{example}
 \end{figure}
-
-\section{Probabilità}
-La probabilità di un evento \( A \in \mathcal{A} \) rappresenta una misura di quanto
-ci si aspetta che si verifichi l'evento \( A \).
-
-\vspace{1em}
-\noindent Calcolare le probabilità non significa "prevedere il futuro", ma trovare come
-distribuire un maggiore o minore \textbf{grado di fiducia} tra i vari possibili modi
-in cui si potrà presentare un certo fenomeno aleatorio.
-
-\begin{figure}[H]
-	\begin{define}
-		L'\textbf{ipotesi dei modelli} è lo spazio dei campioni \textbf{finito} \( \Leftrightarrow
-		card(\Omega) = n < \infty\)
-
-		\textbf{Eventi equiprobabili}:
-		\[
-			P(\omega_i) = P(\omega_j), \quad i,j \in \{1, \ldots, n\}
-		\]
-	\end{define}
-\end{figure}
-
-La probabilità di un evento \( A \in \mathcal{A} \) si calcola come:
-\[
-	P(A) = \frac{\text{casi favorevoli ad \( A \) }}{\text{casi possibili}} = \frac{card(A)}{card(\Omega)}
-\]
 
 \subsection{Probabilità degli esperimenti 1-2}
 \subsubsection{Esperimento 1: Lancio di un dado}
@@ -1317,13 +1317,16 @@ una partizione di \( \Omega \). Sia \( B \in \mathcal{A} \) un evento. Allora:
 \] 
 
 \subsubsection{Teorema di Bayes}
-Sia \( \{E_i\}_{i \in I}  \) una partizione di \( \Omega \) (finita o numerabile) e sia
-\( P(A) > 0 \). Allora per un generico elemento della partizione \( E_n \), con
-\( n \in I \), si ha:
-\[
-P(E_n|A) = \frac{P(A|E_n)P(E_n)}{\sum_{i \in I} P(A|E_i)P(E_i)}
-\] 
-
+\begin{figure}[H]
+  \begin{definition}
+    Sia \( \{E_i\}_{i \in I}  \) una partizione di \( \Omega \) (finita o numerabile) e sia
+    \( P(A) > 0 \). Allora per un generico elemento della partizione \( E_n \), con
+    \( n \in I \), si ha:
+    \[
+      P(E_n|A) = \frac{P(A|E_n)P(E_n)}{\sum_{i \in I} P(A|E_i)P(E_i)}
+    \] 
+  \end{definition}
+\end{figure}
 \subsubsection{Dimostrazione}
 \[
   P(E_n|A) = \frac{P(A \cap E_n)}{P(A)} = \frac{P(A|E_n)P(E_n)}{P(A)} = \frac{P(A|E_n)P(E_n)}{
@@ -1340,4 +1343,305 @@ informaizoni sufficienti per determinarla.
 probabilità. Se si conoscono delle altre informazioni, quindi se si restringe lo spazio
 campionario, si riescono a determinare.
 
+\subsection{Esercizi}
+\subsubsection{Esercizio 1}
+Una popolazione si compone per un \( 40\% \)  di fumatori \((F)\) e per il restante 
+\( 60\% \) di non fumatori \( (N) \). Si sa che il \( 25\% \)  dei fumatori e il 
+\( 7\% \)  dei non fumatori ha una malattia respiratoria cronica \( (M) \) .
+\begin{enumerate}
+  \item Calcolare la probabilità che un individuo scelto a caso sia effetto dalla malattia
+    respiratoria 
+  \item Se l’individuo scelto è affetto dalla malattia, calcolare la probabilità che
+    sia un fumatore. 
+\end{enumerate}
+
+\[
+\Omega = \{F,F^c\} \quad \text{partizione}
+\] 
+\[
+M = \text{"Malattia respiratoria"}
+\] 
+\[
+P(M|F) = 0.25 \quad P(M|F^c) = 0.07
+\] 
+\[
+P(M) = P(M|F)P(F) + P(M|F^c)P(F^c) = 0.25 \cdot 0.4 + 0.07 \cdot 0.6 = 0.14
+\] 
+\[
+  P(F|M) \stackrel{\text{Bayes}}{=} \frac{P(M|F)P(F)}{P(M)} = \frac{0.25 \cdot 0.4}{0.14} = 0.70
+\] 
+
+\section{Variabili aleatorie}
+Sia \( (\Omega, \mathcal{F}, P) \) uno spazio di probabilità che modellizza un certo
+esperimento. Una \textbf{variabile aleatoria} è una funzione che associa un numero ad
+ogni esito possibile dell'esperimento. Formalmente:
+\[
+X: \Omega \to \mathbb{R}
+\] 
+Sia \( \mathcal{B} \) l'insieme degli eventi su \( \mathbb{R} \) (intervalli, unione ed 
+intersezione di intervalli), per ogni \( A \subset \mathbb{R} \):
+\[
+  X^{-1}(A) \in \mathcal{F}
+\] 
+è l'inversa di \( X \) su \( A \).
+
+\vspace{1em}
+\noindent Le variabili aleatorie possono essere:
+\begin{itemize}
+  \item \textbf{Discrete}: se assumono un numero finito o numerabile di valori. Ad esempio:
+    \[
+    X \leadsto \{0,1,2,3,4,5,6\}
+    \] 
+  \item \textbf{Continue}: se assumono valori in un intervallo reale. Ad esempio:
+    \[
+    X \leadsto \mathbb{R}
+    \]
+\end{itemize}
+
+\subsection{Distribuzione di una variabile aleatoria}
+Sia \( (\Omega, \mathcal{F}, P) \) uno spazio di probabilità che modella un certo
+esperimento e sia \( X: \Omega \to \mathbb{R} \) una variabile aleatoria.
+Sia \( \mathcal{B} \) l'insieme degli eventi su \( \mathbb{R} \) (intervalli, unione ed
+intersezione di intervalli). 
+
+\vspace{1em}
+\noindent La probabilità di un evento nella funzione \( X \) prendendo in considerazione
+il lancio di un dado si indica come:
+\[
+P(1) = P(X = 1) = P(\{\omega \in \Omega: X(\omega) = 1\} ) = \frac{1}{6}
+\] 
+L'insieme \( \{P(1), P(2), \ldots, P(6)\} \) rappresenta le densità di probabilità,
+chiamato anche \textbf{distribuzione di \( X \) }
+
+\subsection{Variabili aleatorie discrete}
+Sia \( (\Omega, \mathcal{B}, P) \) uno spazio di probabillità, si definisce \textbf{
+  variabile aleatoria discreta
+}:
+\[
+X : \Omega \to R_X = \{x_1, x_2, \ldots, x_n\} 
+\] 
+con \( card(R_X) \) al più numerabile.
+
+\begin{figure}[H]
+  \begin{definition}
+    Distribuzione o legge di \( X \) 
+    \[
+      P_X(\{x_i\} ) = P(X^{-1}(\{x_i\} )) = P(X=x_i) \quad \text{per ogni} \; x_i,\; i = 1, \ldots, n
+    \] 
+    La legge di una variabile aleatoria discreta è dunque caratterizzata da una
+    \textbf{funzione di probabilità}
+  \end{definition}
+\end{figure}
+
+\begin{example}
+  Prendiamo in considerazione il lancio di 2 dadi: lancio i 2 dadi e ne sommo i valori.
+  \[
+  \Omega = \{1,2,3,4,5,6\} \times \{1,2,3,4,5,6\}
+  \] 
+  \[
+    \mathcal{F} = \mathcal{P}(\Omega)
+  \] 
+  \[
+  P(\omega) = \frac{1}{36}
+  \] 
+  \[
+  X : \Omega \to \{2,3,4,5,6,7,8,9,10,11,12\} \subset \mathbb{N}
+  \] 
+  \[
+    (x,y) \to x+y
+  \] 
+  La legge di \( X \) è:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{|c|l|c|}
+      \hline
+      \( x_i \) & \( X^{-1}(x_i) \) & \( P_X(x_i) \) \\
+      \hline
+      2 & \(\{(1,1)\} \) & \( 1/36 \) \\
+      3 & \(\{(1,2), (2,1)\} \) & \( 2/36 \) \\
+      4 & \(\{(1,3), (2,2), (3,1)\} \) & \( 3/36 \) \\
+      5 & \(\{(1,4), (2,3), (3,2), (4,1)\} \) & \( 4/36 \) \\
+      6 & \(\{(1,5), (2,4), (3,3), (4,2), (5,1)\} \) & \( 5/36 \) \\
+      7 & \(\{(1,6), (2,5), (3,4), (4,3), (5,2), (6,1)\} \) & \( 6/36 \) \\
+      8 & \(\{(2,6), (3,5), (4,4), (5,3), (6,2)\} \) & \( 5/36 \) \\
+      9 & \(\{(3,6), (4,5), (5,4), (6,3)\} \) & \( 4/36 \) \\
+      10 & \(\{(4,6), (5,5), (6,4)\} \) & \( 3/36 \) \\
+      11 & \(\{(5,6), (6,5)\} \) & \( 2/36 \) \\
+      12 & \(\{(6,6)\} \) & \( 1/36 \) \\
+      \hline
+    \end{tabular}
+  \end{table}
+
+  \noindent La rappresentazione grafica della distribuzione di \( X \) è:
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        ybar,
+        enlargelimits=0.15,
+        legend style={at={(0.5,-0.15)},
+        anchor=north,legend columns=-1},
+        ylabel={\( P_X(x_i) \)},
+        xlabel={\( x_i \)},
+        symbolic x coords={2,3,4,5,6,7,8,9,10,11,12},
+        xtick=data,
+        ]
+        \addplot coordinates {(2,0.0278) (3,0.0556) (4,0.0833) (5,0.1111) (6,0.1389) (7,0.1667) (8,0.1389) (9,0.1111) (10,0.0833) (11,0.0556) (12,0.0278)};
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Distribuzione di \( X \)}
+  \end{figure}
+  cioè una distrubuzione triangolare.
+\end{example}
+
+\begin{figure}[H]
+  \begin{definition}
+    Il \textbf{Valore atteso} \( \mathbb{E}[X] \) è definito come:
+    \[
+      \mathbb{E}[X] = \sum_{i=1}^n x_i P_X(x_i)
+    \] 
+    Si tratta di una media pesata dei valori assunti dalla variabile aleatoria con i
+    pesi dati dalle probabilità che la variabile assuma quei valori.
+  \end{definition}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{definition}
+    La \textbf{Varianza} di \( X \) è definita come:
+    \[
+      Var(X) = \mathbb{E}[(X - \mathbb{E}[X])^2] = \sum_{i=1}^n (x_i - \mathbb{E}[X])^2 P_X(x_i)
+    \] 
+  \end{definition}
+\end{figure}
+
+\begin{example}
+  Prendiamo in considerazione il lancio di una moneta:
+  \[
+    \Omega = \{T,C\} \quad \mathcal{F} = \mathcal{P}(\Omega)
+  \] 
+  Si vuole calcolare swe esce testa, quindi \( X \) è la variabile aleatoria che
+  rappresenta il lancio della moneta:
+  \[
+  X : \Omega \to \{0,1\} \quad t.c.\;\; X(T) = 1, \quad X(C) = 0
+  \] 
+  Questa variabile viene chiamata \textbf{variabile aleatoria di Bernoulli} ed è una
+  variabile \textbf{dicotomica} (solo 2 valori).
+  \begin{itemize}
+    \item \textbf{Moneta equa}:
+      \[
+      P_1(\{T\} ) = P_1(\{C\} ) = \frac{1}{2}
+      \] 
+      \[
+      \Downarrow
+      \] 
+      \[
+      P_X(1) = P_1(X=1) = P_1(\{T\} ) = \frac{1}{2}
+      \] 
+      \[
+      P_X(0) = \frac{1}{2}
+      \] 
+    \item \textbf{Moneta non equa}:
+      \[
+      P_2(T) = \frac{1}{3} \quad P_2(C) = \frac{2}{3}
+      \] 
+      \[
+      P_X(1) = P_2(X=1) = P_2(\{T\} ) = \frac{1}{3}
+      \] 
+      \[
+      P_X(0) = 1 - P_X(1) = \frac{2}{3}
+      \] 
+  \end{itemize}
+\end{example}
+
+\section{Schema di Bernoulli}
+\subsection{Prove dicotomiche ripetute ed indipendenti}
+TODO
+
+\subsection{Conteggio del successo in ciascuna prova}
+\begin{figure}[H]
+  \begin{definition}[MOLTO IMPORTANTE]
+    \[
+      X \sim \mathcal{B}(p) \quad \text{X è una variabile di Bernoulli}
+    \] 
+    \[
+    p \equiv \text{probabilità di successo}
+    \] 
+    \[
+      \mathbb{E}[X] = p
+    \] 
+    \[
+      Var(X) = p(1-p)
+    \] 
+  \end{definition}
+\end{figure}
+
+\subsection{Conteggio del successo in cuascuna delle n volte }
+Si ripete l'esperimento dicotomico \( n \) volte in condizioni di indipendenza (lancio
+la moneta \( n \)  volte). Chiamo \( X_1, X_2, \ldots, X_n \) i risultati degli \( n \)
+lanci.
+\[
+X_i \sim \mathcal{B}(p) \quad \text{per ogni} \; i = 1, \ldots, n
+\] 
+Si è interessati all'evento:
+\[
+A = \text{"numero di successi ottenuti negli \( n \) lanci"} = \text{"numero di teste"}
+\] 
+La variabile che conta il numero di successi è:
+\[
+X = X_1 + X_2 + \ldots + X_n \equiv \text{"conta il numero di successi"}
+\] 
+\[
+  X \sim \mathcal{B}(n,p) \quad \text{\textbf{variabile binomiale}}
+\] 
+La variabile binomiale conta il numero di successi con:
+\[
+n \equiv \text{numero di prove}
+\] 
+\[
+p \equiv \text{probabilità di successo in ogni prova}
+\] 
+I valori che potrà assumere la variabile binomiale sono:
+\[
+X \leadsto \{0,1,2, \ldots, n\}
+\] 
+
+\subsubsection{Modello per il conteggio del successo}
+\textbf{Esito prova i-esima}:
+\[
+X_1 \sim \mathcal{B}(p) \quad P_X(x_i) = P^x_i(1-p)^{1-x_i}
+\] 
+perchè:
+\[
+P_x(0) = P^0(1-p)^1 = (1-p) \quad \text{"insuccesso"}
+\] 
+\[
+P_x(1) = P^1(1-p)^0 = p \quad \text{"successo"}
+\] 
+
+\vspace{1em}
+\noindent \textbf{Esito delle \( n \) prove}: Vettore aleatorio \( X_1, X_2, \ldots, X_n \) che
+assume valori:
+\[
+  (x_1, x_2, \ldots, x_n) \quad x_j \in \{0,1\}
+\] 
+
+\vspace{1em}
+\noindent \textbf{Prove indipendenti} (Distribuzione della variabile binomiale):
+\[
+P(X_1 = x_1, X_2 = x_2, \ldots, X_n = x_n) = P(X_1 = x_1)P(X_2 = x_2) \ldots P(X_n = x_n)
+\] 
+\[
+= P^{x_1}(1-p)^{1-x_1}P^{x_2}(1-p)^{1-x_2} \ldots P^{x_n}(1-p)^{1-x_n}
+\] 
+\[
+= p^{\sum_{i=1}^n x_i}(1-p)^{n - \sum_{i=1}^n x_i}
+\] 
+dove \( \sum_{i=1}^n x_i = k \) è il numero di successi ottenuti nei \( n \) lanci.
+
+\[
+P_X(X=n)\begin{pmatrix} n \\ k \end{pmatrix} = \frac{n!}{k!(n-k)!} \quad \text{\textbf{coefficiente
+binomiale}}
+\] 
+\[ \begin{pmatrix} n \\ k \end{pmatrix} \cdot p^k(1-p)^{n-k} \] è la probabilità di ottenere
+\( k \) successi in \( n \) prove.
 \end{document}
