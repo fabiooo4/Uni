@@ -1887,7 +1887,7 @@ viene messo a 1 mettendo a 1 il \( \overline{BR} \) e resettando a 0 il \( BG_1 
 \noindent In questo modo si riduce al minimo il tempo in cui il BUS \textbf{non} è
 utilizzato.
 
-\subsubsection{Multitasking (multiprocesso)}
+\section{Multitasking (multiprocesso)}
 Il multitasking è la capacità di un sistema operativo di eseguire più
 processi contemporaneamente e questa è una caratteristica che sta alla base di tutti
 i calcolatori moderni.
@@ -1899,5 +1899,152 @@ i calcolatori moderni.
 		programma in esecuzione.
 	\end{define}
 \end{figure}
+
+\noindent Per permettere che più processi vengano eseguiti contemporaneamente si
+ricorre al concetto di \textbf{time sharing}
+\begin{figure}[H]
+	\begin{center}
+		\begin{tikzpicture}[scale=0.8]
+			\draw [->] (0,0) -- (10,0) node[right] {t};
+			\draw (0,0) -- (0,6) node[above] {};
+			\draw [gray!50, ultra thin, help lines, ystep=10] (0,0) grid (4,6);
+			\draw [gray!50, ultra thin, help lines, ystep=10, xshift=-15] (4.5,0) grid (10,6);
+
+      \draw [magenta, ultra thick] plot coordinates { (0,5) (1,5) };
+      \draw [magenta, ultra thick] plot coordinates { (3,5) (4,5) };
+      \draw [magenta, ultra thick] plot coordinates { (6.5,5) (7.5,5) };
+
+      \draw [red, ultra thick] plot coordinates { (1,3) (2,3) }; 
+      \draw [red, ultra thick] plot coordinates { (4,3) (4.5,3) }; 
+      \draw [red, ultra thick] plot coordinates { (5.5,3) (6.5,3) }; 
+      \draw [red, ultra thick] plot coordinates { (8.5,3) (9.5,3) }; 
+
+      \draw [orange, ultra thick] plot coordinates { (2,1) (3,1) };
+      \draw [orange, ultra thick] plot coordinates { (4.5,1) (5.5,1) };
+      \draw [orange, ultra thick] plot coordinates { (7.5,1) (8.5,1) };
+
+			\node[magenta, anchor=east] at (0,5) {\( p_1 \) };
+			\node[red, anchor=east] at (0,3) {\( p_2 \) };
+			\node[orange, anchor=east] at (0,1) {\( p_3 \) };
+
+      \node[scale=0.6] at (4.1,3.45) (svc) {SVC};
+      \draw[-latex] (svc) -- (4.5,3);
+
+      \draw (0,-0.2) -- ++(0,-0.2) -- ++(1,0) node[below, midway, scale=0.7, align=center]
+      {quanto\\di tempo} -- ++(0,0.2);
+		\end{tikzpicture}
+	\end{center}
+	\caption{Time sharing tra i processi}
+\end{figure}
+\noindent Il quanto di tempo è stato messo a \( 1ms \) perchè è il tempo minimo per cui un
+umano non percepisce il cambio di processo. I processi vengono eseguiti per poco tempo,
+ma così frequentemente che sembra che vengano eseguiti contemporaneamente.
+
+\vspace{1em}
+\noindent Se un processo in esecuzione esegue una supervisor call (SVC) il processo viene 
+immediatamente interrotto e viene eseguita la SVC. Questo perchè finchè la SVC verrà
+eseguita si perderebbero migliaia di quanti di tempo. 
+
+\subsection{Kernel}
+La parte del sistema operativo che
+gestisce i processi si chiama \textbf{kernel} e lo fa dialogando direttamente con la CPU.
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=3cm,
+			thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
+
+		\node[main node] (1) {\footnotesize \( Exec_u \) };
+		\node[main node] (2) [below of=1] {\footnotesize \( Exec_s \) };
+		\node[main node] (3) [below of=2] {\footnotesize Attesa};
+		\node[main node] (4) [right of=3] {\footnotesize Pronto};
+
+		\path[every node/.style={font=\sffamily\small}]
+      (1) edge [bend right, align=center] node[left] {SVC\\ (int sw)} (2)
+		(2) edge [bend right] node {} (3)
+    (2) edge [bend right] node[right] {Iret} (1)
+    (3) edge [bend right] node[midway, below] {Evento} (4)
+    (4) edge [loop right] node {\( \begin{array}{c}
+        p_1\\
+        p_2\\
+        \vdots\\
+        p_n
+    \end{array} \) } (4)
+    (2) edge [bend left] node[right] {Preemption} (4);
+	\end{tikzpicture}
+	\caption{Flusso di esecuzione delle istruzioni}
+\end{figure}
+
+\noindent La chiamata di una SVC porta l'esecuzione dalla modalità utente (\( E_u \) )
+alla modalità supervisor (\( E_s \) ). Questo perchè la SVC può accedere a tutte le
+parti del sistema operativo e quindi deve avere i permessi necessari. Nell'architettura
+x86 gli SVC sono degli interrupt chiamati \textbf{Software Interrupt}. L'istruzione
+assembly è la seguente:
+\begin{lstlisting}[language={[x86masm]Assembler}]
+ INT $0x80 ; Numero dell'interrupt
+\end{lstlisting}
+
+\noindent La \textbf{preemption} è l'interruzione di un processo in esecuzione per
+eseguire un altro processo. Questo avviene quando un processo è stato eseguito per
+un tempo maggiore del quanto di tempo.
+
+\subsubsection{Scheduler}
+È una delle operazioni principali del sistema operativo. La CPU conta i cicli di clock
+che sono stati destinati ad un processo, in questo modo si può sapere che frazione del
+quanto di tempo è stata impiegata direttamente per il processo e non per eseguire gli
+interrupt. Per sapere quanto tempo è stato impiegato per eseguire un processo si
+usa il seguente comando bash:
+\begin{lstlisting}[language=bash]
+$ time ./programma
+\end{lstlisting}
+\noindent L'output è diviso in:
+\begin{itemize}
+  \item \textbf{User}: tempo impiegato per eseguire il programma
+  \item \textbf{System}: tempo impiegato per eseguire gli interrupt
+  \item \textbf{Real}: tempo reale impiegato per eseguire il programma
+\end{itemize}
+
+\vspace{1em}
+\noindent Lo scheduler controlla se il tempo dedicato ad un singolo processo è maggiore
+della metà di un quanto di tempo, in tal caso lo sospende e passa ad un altro processo,
+altrimenti lo fa continuare. Lo scheduler quindi decide quale processo della lista dei
+processi pronti deve essere eseguito. Ogni processo ha una certa priorità e lo scheduler
+deve decidere quale processo eseguire in base alla priorità e al tempo di esecuzione (
+tempo reale). Per modificare la priorità dei processi si utilizza i seguenti comandi bash:
+\begin{lstlisting}[language=bash]
+$ nice -n 10 ./programma
+\end{lstlisting}
+\noindent Il comando \texttt{nice} permette di modificare la priorità di un processo solo
+hardware, ma non software. Per modificare la priorità software si utilizza il comando:
+\begin{lstlisting}[language=bash]
+$ renice -n 10 -p 1234
+\end{lstlisting}
+\noindent Il comando \texttt{renice} permette di modificare la priorità di un processo
+software.
+
+\subsection{Realtime}
+Un processo può essere eseguito in tempo reale se il tempo di esecuzione è all'interno
+di un certo intervallo di tempo. Ci sono 2 tipi di realtime:
+\begin{itemize}
+  \item \textbf{Soft Realtime}: il processo deve essere eseguito entro un certo intervallo
+  di tempo ristretto ma non troppo.
+  \item \textbf{Hard Realtime}: il processo deve essere eseguito entro un certo intervallo
+  di tempo molto stretto.
+\end{itemize}
+
+\subsection{Caratteristiche di un processo}
+Ogni processo ha le seguenti caratteristiche contenute in un \textbf{descrittore}:
+\begin{itemize}
+  \item \textbf{PID}: identificatore del processo
+  \item \textbf{Proprietà}: proprietario del processo
+  \item \textbf{Stato}: indica lo stato della cpu
+  \item \textbf{Cache}: contiene le informazioni più utilizzate dal processo
+  \item \textbf{File ID}: contiene i file aperti dal processo
+\end{itemize}
+
+\noindent Questa struttura deve essere salvata dallo scheduler quando il processo viene
+sospeso e deve essere caricata quando il processo viene ripreso. Questa operazione
+viene chiamata \textbf{Context Switch}.
+
 
 \end{document}
