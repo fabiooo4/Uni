@@ -4242,8 +4242,7 @@ Allora il sistema lineare \( Ax = b \) possiede l'unica soluzione \( p = \begin{
       \end{pmatrix},\;
       e_3=\begin{pmatrix} 
         0\\0\\1
-      \end{pmatrix}\right\}
-    \} 
+      \end{pmatrix} \right\}
       \] 
       è un insieme di generatori di \( \mathbb{K}^3 = M_{3 \times 1}(\mathbb{K}) \) 
       (per \( \mathbb{K} = \mathbb{R} \) e \( \mathbb{K} = \mathbb{C} \) ).
@@ -4265,7 +4264,7 @@ Allora il sistema lineare \( Ax = b \) possiede l'unica soluzione \( p = \begin{
       \end{pmatrix} 
       \] 
       con \( 1 \) nella \( i \)-esima posizione, otteniamo l'insime di generatori di
-      \( \mathbb{K}^n \). Dunque \( \mathbb{K}^n \) è finitamente generato.
+      \( \mathbb{K}^n \): \( \{e_1, \ldots, e_n\}  \)  Dunque \( \mathbb{K}^n \) è finitamente generato.
     \end{example}
   \end{figure}
   \begin{figure}[H]
@@ -4277,7 +4276,7 @@ Allora il sistema lineare \( Ax = b \) possiede l'unica soluzione \( p = \begin{
         \right\} 
       \] 
       è un insieme di generatori di \( \mathbb{R}^2 \).
-      Infatti, se \( v = \begin{pmatrix} v_1\\v_2 \end{pmatrix} \in \mathbb{R}^2 \) a;;pra
+      Infatti, se \( v = \begin{pmatrix} v_1\\v_2 \end{pmatrix} \in \mathbb{R}^2 \) allora
       \[
       v = (v_1,-v_2)\begin{pmatrix} 1\\3 \end{pmatrix} + v_2 \begin{pmatrix} 1\\1 \end{pmatrix} + 3(v_2-v_1)
       \begin{pmatrix} 0\\1 \end{pmatrix}
@@ -4347,41 +4346,76 @@ Allora il sistema lineare \( Ax = b \) possiede l'unica soluzione \( p = \begin{
     \begin{example}
       \[
         \mathbb{K}_n[x] \subseteq \mathbb{K}[x] \quad \text{sottospazi}
+      \] 
+      \[
         \mathcal{S'} \subseteq \mathcal{S} \quad \text{sottospazi}
       \] 
     \end{example}
   \end{figure}
-  \begin{figure}[H]
-    \begin{example}
-      Il sottoinsieme
-      \[
-      u = \left\{ \begin{pmatrix} v_1\\v_2 \end{pmatrix} \in \mathbb{R}^2 \Big | v_2 = mv_1 \right\} 
+
+  \begin{example}
+    Il sottoinsieme
+    \[
+    u = \left\{ \begin{pmatrix} v_1\\v_2 \end{pmatrix} \in \mathbb{R}^2 \Big | v_2 = mv_1 \right\} 
+    \] 
+    è un sottospazio di \( \mathbb{R}^2 \) per qualsiasi \( m \in \mathbb{R} \).
+    Infatti:
+    \begin{enumerate}
+      \item \[
+      \begin{pmatrix} v\\mv \end{pmatrix}
+      +
+      \begin{pmatrix} u\\mu \end{pmatrix} =
+      \begin{pmatrix} v+u\\mv+mu \end{pmatrix}
       \] 
-      è un sottospazio di \( \mathbb{R}^2 \) per qualsiasi \( m \in \mathbb{R} \).
-      Infatti:
-      \begin{enumerate}
-        \item \[
-        \begin{pmatrix} v\\mv \end{pmatrix}
-        +
-        \begin{pmatrix} u\\mu \end{pmatrix} =
-        \begin{pmatrix} v+u\\mv+mu \end{pmatrix}
+      \item
+        \[
+        \alpha \begin{pmatrix} v\\mv \end{pmatrix} =
+        \begin{pmatrix} \alpha v\\\alpha mv \end{pmatrix} =
+        \begin{pmatrix} \alpha v\\m(\alpha v) \end{pmatrix} \in U
         \] 
-        \item
-      \end{enumerate}
-      Il sottoinsieme \( \mathcal{L} = \left\{ \begin{pmatrix} v_1\\v_2 \end{pmatrix} \in \mathbb{R} \Big | v_2 = mv_1 + c \right\}  \) non
-      è un sottospazio se \( c \neq 0 \). Infatti:
-      \[
-      \begin{pmatrix} v\\mv+c \end{pmatrix} +
-      \begin{pmatrix} u\\mu+c\end{pmatrix} 
-      =
-      \begin{pmatrix} v+u\\mv+mu+2c \end{pmatrix} \notin U
-      \] 
-    \end{example}
-  \end{figure}
+      \begin{center}
+        \begin{tikzpicture}[scale=0.7]
+          \draw[->] (-3,0) -- (3,0) node[right] {\( x \)};
+          \draw[->] (0,-3) -- (0,3) node[above] {\( y \)};
+
+          % draw line passing through origin
+          \draw[red, thick] (-2.5,-2.5) -- (2.5,2.5) node[right] {\( U \)};
+        \end{tikzpicture}
+      \end{center}
+    \end{enumerate}
+    Il sottoinsieme \( \mathcal{L} = \left\{ \begin{pmatrix} v_1\\v_2 \end{pmatrix} \in \mathbb{R} \Big | v_2 = mv_1 + c \right\}  \) non
+    è un sottospazio se \( c \neq 0 \).
+    \begin{center}
+      \begin{tikzpicture}[scale=0.7]
+        \draw[->] (-3,0) -- (3,0) node[right] {\( x \)};
+        \draw[->] (0,-3) -- (0,3) node[above] {\( y \)};
+
+        % draw line passing through origin
+        \draw[red, thick] (-2.5,-2.0) -- (2.5,3) node[right] {\( \mathcal{L} \)};
+      \end{tikzpicture}
+    \end{center}
+    Infatti:
+    \[
+    \begin{pmatrix} v\\mv+c \end{pmatrix} +
+    \begin{pmatrix} u\\mu+c\end{pmatrix} 
+    =
+    \begin{pmatrix} v+u\\mv+mu+2c \end{pmatrix} \notin U
+    \] 
+    \[
+    mv+mu+2c \neq m(v+u)+c
+    \] 
+  \end{example}
+
   \begin{figure}[H]
     \begin{example}
-      \( 0 = \{0_v\} \subseteq V \) è un sottospazio per ogni spazio vettoriale
-      TODO
+      \( O = \{0_v\} \subseteq V \) è un sottospazio per ogni spazio vettoriale \( V \).
+      Infatti 
+      \begin{enumerate}
+        \item \( 0_v + 0_v = 0_v \in O \) 
+        \item \( \alpha 0_v = 0_v \in O \) 
+      \end{enumerate}
+      Ogni sottospazio \( U \) di \( V \) contiene \( 0_v \). infatti \( \forall u \in U \)
+      abbiamo che \( (-1)u = -u \in U \). Quindi \( 0_v = u + (-u) \in U \) 
     \end{example}
   \end{figure}
   \begin{figure}[H]
@@ -4390,8 +4424,56 @@ Allora il sistema lineare \( Ax = b \) possiede l'unica soluzione \( p = \begin{
       \[
         T = \left\{ \begin{pmatrix} a & b\\
             0 & c
-        \end{pmatrix} \in M_{2 \times 2}(\mathbb{C})  \right\} 
+        \end{pmatrix} \in M_{2 \times 2}(\mathbb{C}) \Big | \;
+        a,b,c \in \mathbb{C} \right\}
       \] 
+      è un sottospazio di \( M_{2 \times 2}(\mathbb{C}) \). Infatti
+      \begin{enumerate}
+        \item \[
+        \begin{pmatrix} 
+          a & b\\
+          0 & c
+        \end{pmatrix} 
+        +
+        \begin{pmatrix} 
+          d & e\\
+          0 & f
+        \end{pmatrix} 
+        =
+        \begin{pmatrix} 
+          a+d & b+e\\
+          0 & c+f
+        \end{pmatrix} \in T
+        \] 
+        \item
+          \[
+          \alpha \begin{pmatrix} 
+            a & b\\
+            0 & c
+          \end{pmatrix}
+          =
+          \begin{pmatrix} 
+            \alpha a & \alpha b\\
+            0 & \alpha c
+          \end{pmatrix} \in T
+          \] 
+      \end{enumerate}
+    \end{example}
+  \end{figure}
+
+  \begin{figure}[H]
+    \begin{example}
+      \[
+      \overbrace{\mathbb{K}_n[x]}^{\text{polinomi di grado \( \le n \) }}
+      \subseteq
+      \overbrace{\mathbb{K}[x]}^{\text{polinomi}}
+      \]  
+      \[
+        \underbrace{\mathcal{S'}}_{\text{successioni che soddisfano una relazione}}
+        \subseteq
+        \underbrace{\mathcal{S}}_{\text{successioni}}
+      \] 
+      sono sottospazi
     \end{example}
   \end{figure}
 
@@ -4433,17 +4515,18 @@ Allora il sistema lineare \( Ax = b \) possiede l'unica soluzione \( p = \begin{
       V = \mathbb{R}^2 \quad \mathcal{L} \subseteq \mathbb{R}^2
     \] 
     \begin{center}
-      \begin{tikzpicture}
+      \begin{tikzpicture}[scale=0.7]
         \draw[->] (-3,0) -- (3,0) node[right] {\( x \)};
         \draw[->] (0,-3) -- (0,3) node[above] {\( y \)};
 
         % draw line passing through origin
-        \draw[red, thick] (-3,-3) -- (3,3) node[right] {\( \mathcal{L} \)};
+        \draw[red, thick] (-3,-3) -- (3,3) node[left, xshift=-3, yshift=3] (line) {\( \mathcal{L} \)};
+        \node[red, below right, xshift=5, yshift=-5] at (line) {\( y = mx \)};
       \end{tikzpicture}
     \end{center}
     \noindent è il sottospazio generato da \(  \left\{ \begin{pmatrix} 1\\m \end{pmatrix}  \right\} \)
     \[
-    \left< \begin{pmatrix} 1\\m \end{pmatrix}  \right> = \left\{ \alpha \begin{pmatrix} 1\\m \end{pmatrix} \Big | \alpha \in \mathbb{R}  \right\} 
+    \left< \begin{pmatrix} 1\\m \end{pmatrix}  \right> = \left\{ \alpha \begin{pmatrix} 1\\m \end{pmatrix} \Big | \; \alpha \in \mathbb{R}  \right\} 
     \] 
     \( \mathcal{S'} \) è il sottospazio di \( \mathcal{S} \) generato da \( u_1 \) e \( u_2 \).
   \end{example}
@@ -4468,7 +4551,7 @@ non è un sottospazio di \( V \).
       V = \mathbb{R}^2, \quad U = \left< \begin{pmatrix} 1\\0 \end{pmatrix}  \right> = \left\{ \alpha \begin{pmatrix} 1\\0 \end{pmatrix} \Big |\; \alpha \in \mathbb{R} \right\}
     \] 
     \[
-    W = \left< \begin{pmatrix} 0\\1 \end{pmatrix}  \right> = \left\{  \beta \begin{pmatrix} 0\\1 \end{pmatrix} \Big |\; \beta \in \mathbb{R} \right\}
+    W = \left< \begin{pmatrix} 0\\1 \end{pmatrix}  \right> = \left\{  \alpha \begin{pmatrix} 0\\1 \end{pmatrix} \Big |\; \alpha \in \mathbb{R} \right\}
     \] 
       \begin{center}
         \begin{tikzpicture}
@@ -4578,4 +4661,75 @@ generato dalle colonne di \( A \) è detto lo \textbf{spazio delle colonne} di \
 \end{figure}
 
 \subsection{Proposizione}
+Sia \( A = (a_{ij})_{1 \le i \le m,\; 1 \le j \le n} \in M_{m \times n}(\mathbb{K}) \) 
+Lo spazio delle colonne \( C(A) \) consiste di tutti i vettori \( b \in \mathbb{K}^m \)
+per i quali il sistema lineare \( Ax = b \) possiede soluzione.
+
+\subsubsection{Dimostrazione}
+\[
+  C(A) \stackrel{def}{=} \left\{ \begin{pmatrix} 
+      b_1\\
+      \vdots\\
+      b_m
+  \end{pmatrix}
+  =
+  v_1 \begin{pmatrix} 
+    a_{11}\\
+    \vdots\\
+    a_{m1}
+  \end{pmatrix} 
+  +
+  \ldots
+  +
+  v_n \begin{pmatrix} 
+    a_{1n}\\
+    \vdots\\
+    a_{mn}
+  \end{pmatrix}
+  \Big |\; v_1, \ldots, v_n \in \mathbb{K} 
+\right\}
+\] 
+\[
+ = \left\{
+   b \in \mathbb{K}^m \Big |\; \exists v = \begin{pmatrix}
+     v_1\\
+     \vdots\\
+     v_n
+   \end{pmatrix} 
+   \; \text{tale che }
+   Av = b
+\right\}
+\] 
+\[
+\square
+\] 
+
+\subsection{Definizione}
+Sia \( A \in M_{m \times n}(\mathbb{K}) \) l'insieme 
+\[
+  N(A) = \left\{ v \in \mathbb{K}^n \Big | \; Av = \mathbb{O} \right\} \subseteq \mathbb{K}^n 
+\] 
+(dove \( \mathbb{O} = \begin{pmatrix} 0\\ \vdots\\ 0 \end{pmatrix}  \) ) è detto
+\textbf{spazio nullo di \( A \) }.
+
+\subsection{Proposizione}
+Lo spazio nullo \( N(A) \) di una matrice \( A \in M_{m \times n}(\mathbb{K}) \) è un
+sottospazio di \( \mathbb{K}^n \).
+
+\subsubsection{Dimostrazione}
+Siano \( v,u \in N(A) \), cioè \( Av = \mathbb{O} \) e \( Au = \mathbb{O} \) e sia
+\( \alpha \in \mathbb{K} \). Allora
+\begin{itemize}
+  \item Per la legge distributiva del prodotto di matrici:
+  \[
+  A(v+u) = Av + Au = \mathbb{O} + \mathbb{O} = \mathbb{O}
+  \] 
+  Quindi \( v+u \in N(A) \)
+\item Per la proprietà di molitplicazione per uno scalare:
+  \[
+  A(\alpha v) = \alpha Av = \alpha \mathbb{O} = \mathbb{O}
+  \] 
+  Quindi \( \alpha v \in N(A) \)
+\end{itemize}
+Dunque \( N(A) \) è un sottospazio. \( \quad \square \) 
 \end{document}
