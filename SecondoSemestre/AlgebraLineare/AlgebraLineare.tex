@@ -4182,7 +4182,7 @@ Allora il sistema lineare \( Ax = b \) possiede l'unica soluzione \( p = \begin{
     \item \( (-\alpha)v = -(\alpha v) = \alpha (-v) \) 
   \end{enumerate}
 
-  \subsection{Definizione di sottospazio}
+  \subsection{Definizione combinazione lineare}
   Sia \( V \) uno spazio vettoriale su \( \mathbb{K} \) e siano \( v_1, \ldots, v_n \in V \),
   \( \alpha_1, \ldots, \alpha_n \in \mathbb{K} \). Il vettore:
   \[
@@ -4204,8 +4204,378 @@ Allora il sistema lineare \( Ax = b \) possiede l'unica soluzione \( p = \begin{
       \] 
       Un'altra combinazione lineare è:
       \[
-      \begin{pmatrix} 1\\2\\3 \end{pmatrix} = 2 \begin{pmatrix} 1\\i\\0 \end{pmatrix} - i \begin{pmatrix} 0\\1\\0 \end{pmatrix}
+      \begin{pmatrix} 1\\2\\3 \end{pmatrix} = 2 \begin{pmatrix} 1\\i\\0 \end{pmatrix} - i \begin{pmatrix} 0\\1\\0 \end{pmatrix} + 3 \begin{pmatrix} 0\\0\\1 \end{pmatrix}
       \] 
     \end{example}
   \end{figure}
+  \begin{figure}[H]
+    \begin{example}
+      Il polinomio
+      \[
+        f = 2x^2 + 4x + 3 \in \mathbb{R}[x]
+      \] 
+      è combinazione lineare di:
+      \[
+      g_1 = x^2 + 2x, \quad g_2 = x-1, \quad g_3 = \frac{1}{2}x - 1
+      \] 
+      Infatti:
+      \[
+      2g_1+3g_2+(-6)g_3 = 2(x^2+2x) + 3(x-1) - 6\left( \frac{1}{2}x-1 \right) = 2x^2 + 4x + 3 = f
+      \] 
+    \end{example}
+  \end{figure}
+
+  \subsection{Definizione di insieme di generatori}
+  Sia \( V \) uno spazio vettoriale e siano \( v_1, \ldots, v_n \in V \). Se ogni \( v \in V \) 
+  è combinazione lineare di \( v_1, \ldots, v_n \) si dice che \( \{v_1, \ldots, v_n\}  \) 
+  è un \textbf{insieme di generatori} e \( V \) è detto \textbf{finitamente generato}.
+
+  \subsubsection{Esempi}
+  \begin{figure}[H]
+    \begin{example}
+      \[
+      \left\{e_1=\begin{pmatrix} 
+          1\\0\\0
+      \end{pmatrix},\;
+      e_2=\begin{pmatrix} 
+        0\\1\\0
+      \end{pmatrix},\;
+      e_3=\begin{pmatrix} 
+        0\\0\\1
+      \end{pmatrix}\right\}
+    \} 
+      \] 
+      è un insieme di generatori di \( \mathbb{K}^3 = M_{3 \times 1}(\mathbb{K}) \) 
+      (per \( \mathbb{K} = \mathbb{R} \) e \( \mathbb{K} = \mathbb{C} \) ).
+
+      \noindent Infatti, se \( v = \begin{pmatrix} v_1\\v_2\\v_3 \end{pmatrix} \in \mathbb{K}^3 \), allora:
+      \[
+      v = v_1 \begin{pmatrix} 1\\0\\0 \end{pmatrix} + v_2 \begin{pmatrix} 0\\1\\0 \end{pmatrix} + v_3 \begin{pmatrix} 0\\0\\1 \end{pmatrix}
+      \] 
+      Scrivendo:
+      \[
+      e_i = \begin{pmatrix} 
+        0\\
+        \vdots\\
+        0\\
+        1\\
+        0\\
+        \vdots\\
+        0
+      \end{pmatrix} 
+      \] 
+      con \( 1 \) nella \( i \)-esima posizione, otteniamo l'insime di generatori di
+      \( \mathbb{K}^n \). Dunque \( \mathbb{K}^n \) è finitamente generato.
+    \end{example}
+  \end{figure}
+  \begin{figure}[H]
+    \begin{example}
+      \[
+        \left\{ \begin{pmatrix} 1\\3 \end{pmatrix},\;
+          \begin{pmatrix} 1\\1 \end{pmatrix},\;
+          \begin{pmatrix} 0\\1 \end{pmatrix} 
+        \right\} 
+      \] 
+      è un insieme di generatori di \( \mathbb{R}^2 \).
+      Infatti, se \( v = \begin{pmatrix} v_1\\v_2 \end{pmatrix} \in \mathbb{R}^2 \) a;;pra
+      \[
+      v = (v_1,-v_2)\begin{pmatrix} 1\\3 \end{pmatrix} + v_2 \begin{pmatrix} 1\\1 \end{pmatrix} + 3(v_2-v_1)
+      \begin{pmatrix} 0\\1 \end{pmatrix}
+      \] 
+      \[
+      = \begin{pmatrix} 
+        (v_1-v_2) + v_2\\
+        3(v_1-v_2) + v_2 + 3(v_2-v_1)
+      \end{pmatrix} 
+      \] 
+      I coefficienti della combinazione lineare non sono univocamente determinati:
+      \[
+      \begin{pmatrix} 2\\3 \end{pmatrix}  = -1 \begin{pmatrix} 1\\3 \end{pmatrix} 
+      + 3 \begin{pmatrix} 1\\1 \end{pmatrix} + 3 \begin{pmatrix} 0\\1 \end{pmatrix} 
+      \] 
+      \[
+      = 0 \begin{pmatrix} 1\\3 \end{pmatrix} + 2 \begin{pmatrix} 1\\1 \end{pmatrix} + 1 \begin{pmatrix} 0\\1 \end{pmatrix}
+      \] 
+    \end{example}
+  \end{figure}
+  \begin{figure}[H]
+    \begin{example}
+      Le successioni:
+      \[
+      u_1 = (1,0,-3,-15,-66, \ldots)
+      \] 
+      \[
+      u_2 = (0,1,5,22,95, \ldots)
+      \] 
+      formano un insieme di generatori di \( \mathcal{S}' \). Infatti, se:
+      \[
+        (a_n)_{n \in \mathbb{N}} = (a,b,5b-3a,5(5b-3a)-3b, \ldots) \in \mathcal{S}'
+      \] 
+      allora
+      \[
+        (a_n)_{n \in \mathbb{N}} = au_1 + bu_2
+      \] 
+    \end{example}
+  \end{figure}
+  \begin{figure}[H]
+    \begin{example}
+      Gli spazi vettoriali \( \mathcal{S},\; \mathbb{K}[X],\; \mathbb{R}^\mathbb{R} \) 
+      (successioni, polinomi, funzioni) \textbf{non} sono finitamente generati.
+    \end{example}
+  \end{figure}
+
+  \subsection{Definizione di sottospazio}
+  Sia \( V \) uno spazio vettoriale su \( \mathbb{K} \). Un sottoinsieme \( \emptyset \neq U \subseteq V \) 
+  è detto \textbf{sottospazio} di \( V \) se soddisfa le proprietà:
+  \begin{enumerate}
+    \item per ogni \( u,u' \in U \):
+      \[
+      u + u' \in U
+      \] 
+    \item per ogni \( u \in U \), \( \alpha \in \mathbb{K} \):
+      \[
+        \alpha u \in U
+      \] 
+  \end{enumerate}
+  \noindent \textbf{Osservazione:}
+  
+  \noindent In tal caso \( U \) è uno spazio vettoriale rispetto alle stesse operazioni
+  \( +,\; \cdot  \) di \( V \).
+
+  \subsubsection{Esempi}
+  \begin{figure}[H]
+    \begin{example}
+      \[
+        \mathbb{K}_n[x] \subseteq \mathbb{K}[x] \quad \text{sottospazi}
+        \mathcal{S'} \subseteq \mathcal{S} \quad \text{sottospazi}
+      \] 
+    \end{example}
+  \end{figure}
+  \begin{figure}[H]
+    \begin{example}
+      Il sottoinsieme
+      \[
+      u = \left\{ \begin{pmatrix} v_1\\v_2 \end{pmatrix} \in \mathbb{R}^2 \Big | v_2 = mv_1 \right\} 
+      \] 
+      è un sottospazio di \( \mathbb{R}^2 \) per qualsiasi \( m \in \mathbb{R} \).
+      Infatti:
+      \begin{enumerate}
+        \item \[
+        \begin{pmatrix} v\\mv \end{pmatrix}
+        +
+        \begin{pmatrix} u\\mu \end{pmatrix} =
+        \begin{pmatrix} v+u\\mv+mu \end{pmatrix}
+        \] 
+        \item
+      \end{enumerate}
+      Il sottoinsieme \( \mathcal{L} = \left\{ \begin{pmatrix} v_1\\v_2 \end{pmatrix} \in \mathbb{R} \Big | v_2 = mv_1 + c \right\}  \) non
+      è un sottospazio se \( c \neq 0 \). Infatti:
+      \[
+      \begin{pmatrix} v\\mv+c \end{pmatrix} +
+      \begin{pmatrix} u\\mu+c\end{pmatrix} 
+      =
+      \begin{pmatrix} v+u\\mv+mu+2c \end{pmatrix} \notin U
+      \] 
+    \end{example}
+  \end{figure}
+  \begin{figure}[H]
+    \begin{example}
+      \( 0 = \{0_v\} \subseteq V \) è un sottospazio per ogni spazio vettoriale
+      TODO
+    \end{example}
+  \end{figure}
+  \begin{figure}[H]
+    \begin{example}
+      Il sottoinsieme 
+      \[
+        T = \left\{ \begin{pmatrix} a & b\\
+            0 & c
+        \end{pmatrix} \in M_{2 \times 2}(\mathbb{C})  \right\} 
+      \] 
+    \end{example}
+  \end{figure}
+
+\subsection{Definizione di sottospazio generato}
+\begin{definition}
+  Dati \( v_1, \ldots, v_n  \in V\), l'insieme
+  \[ \left< v_1, \ldots, v_n \right> = \left\{ \alpha_1 v_1 + \ldots + \alpha_n v_n | \alpha_1, \ldots, \alpha_n \in \mathbb{K} \right\}  \]
+  di tutte le combinazioni lineari di \( v_1, \ldots, v_n \) è un sottospazio di \( V \).
+  Infatti:
+  \begin{enumerate}
+    \item \[
+        \left( \sum_{i=1}^n \alpha_i v_i \right) 
+        +
+        \left( \sum_{i=1}^n \beta_i v_i \right) 
+      \] 
+      \[
+        = \alpha_1 v_1 + \ldots + \alpha_n v_n + \beta_1 v_1 + \ldots + \beta_n v_n
+      \] 
+      \[
+        = (\alpha_1 v_1 + \beta_1 v_1) + \ldots + (\alpha_n v_n + \beta_n v_n)
+      \] 
+      \[
+        = (\alpha_1 + \beta_1)v_1 + \ldots + (\alpha_n + \beta_n)v_n
+      \] 
+      \[
+        = \sum_{i=1}^n (\alpha_i + \beta_i)v_i \quad \in \left< v_1, \ldots, v_n \right>
+      \] 
+    \item
+      \[
+        \beta \left( \sum_{i=1}^n \alpha_i v_i \right) = \sum_{i=1}^n (\beta \alpha_i)v_i \quad \in \left< v_1, \ldots, v_n \right>
+      \] 
+  \end{enumerate}
+  Diciamo che \( \left< v_1, \ldots, v_n \right> \) è il sottospazio generato da \( v_1, \ldots, v_n \).
+\end{definition}
+
+\begin{figure}[H]
+  \begin{example}
+    \[
+      V = \mathbb{R}^2 \quad \mathcal{L} \subseteq \mathbb{R}^2
+    \] 
+    \begin{center}
+      \begin{tikzpicture}
+        \draw[->] (-3,0) -- (3,0) node[right] {\( x \)};
+        \draw[->] (0,-3) -- (0,3) node[above] {\( y \)};
+
+        % draw line passing through origin
+        \draw[red, thick] (-3,-3) -- (3,3) node[right] {\( \mathcal{L} \)};
+      \end{tikzpicture}
+    \end{center}
+    \noindent è il sottospazio generato da \(  \left\{ \begin{pmatrix} 1\\m \end{pmatrix}  \right\} \)
+    \[
+    \left< \begin{pmatrix} 1\\m \end{pmatrix}  \right> = \left\{ \alpha \begin{pmatrix} 1\\m \end{pmatrix} \Big | \alpha \in \mathbb{R}  \right\} 
+    \] 
+    \( \mathcal{S'} \) è il sottospazio di \( \mathcal{S} \) generato da \( u_1 \) e \( u_2 \).
+  \end{example}
+\end{figure}
+
+\subsection{Definitione}
+Se \( U,W \) sono sottospazi di \( V \), allora l'intersezione
+\[
+  U \cap W = \left\{ v \in V \;|\; v \in U \land v \in W \right\}
+\] 
+è un sottospazio di \( V \).
+
+\noindent In generale, l'unione
+\[
+  U \cup W = \left\{ v \in V \;|\; v \in U \lor v \in W \right\}
+\] 
+non è un sottospazio di \( V \).
+
+\begin{figure}[H]
+  \begin{example}
+    \[
+      V = \mathbb{R}^2, \quad U = \left< \begin{pmatrix} 1\\0 \end{pmatrix}  \right> = \left\{ \alpha \begin{pmatrix} 1\\0 \end{pmatrix} \Big |\; \alpha \in \mathbb{R} \right\}
+    \] 
+    \[
+    W = \left< \begin{pmatrix} 0\\1 \end{pmatrix}  \right> = \left\{  \beta \begin{pmatrix} 0\\1 \end{pmatrix} \Big |\; \beta \in \mathbb{R} \right\}
+    \] 
+      \begin{center}
+        \begin{tikzpicture}
+          \draw[->] (-3,0) -- (3,0) node[right] {\( x \)};
+          \draw[->] (0,-3) -- (0,3) node[above] {\( y \)};
+
+          \draw[fill=red] (1,2) circle (0.05) node[above right] {\( \begin{pmatrix} a\\b \end{pmatrix}  \)};
+          
+          \draw[dashed] (1,2) -- (1,0) node[below] {\( a \)};
+          \draw[dashed] (1,2) -- (0,2) node[left] {\( b \)};
+
+          \draw[red, thick] (-3,0) -- (3,0) node[below] {\( U \)};
+          \draw[blue, thick] (0,-3) -- (0,3) node[left] {\( W \)};
+
+        \end{tikzpicture}
+      \end{center}
+      \[
+      \begin{pmatrix} a\\0 \end{pmatrix} 
+      +
+      \begin{pmatrix} 0\\b \end{pmatrix} 
+      =
+      \begin{pmatrix} a\\b \end{pmatrix} 
+      \notin U \cup W
+      \] 
+      Quindi \( U \cup W \subseteq V \) non soddisfa la prima proprietà dei sottospazi.
+  \end{example}
+\end{figure}
+
+\noindent L'insieme \( U + W = \left\{ u + w \; |\; u \in U,\; w \in W \right\}  \) è
+un sottospazio di \( V \), detto la \textbf{somma di \( U \) e \( W \)}.
+
+\vspace{1em}
+\noindent \textbf{NB:}
+
+\noindent \( U \cup U \subseteq U + W \) perchè
+\[
+U = \left\{ u = u + 0_v \;|\; u \in U \right\}
+\] 
+\[
+W = \left\{ w = 0_v + w \;|\; w \in W \right\}
+\] 
+\subsection{Definizione}
+Consideriamo lo spazio vettoriale \( \mathbb{K}^m \). Sia \( A = (a_{ij})_{1 \le i \le m,\; 1 \le j \le n} \in M_{m \times n}(\mathbb{K}) \) 
+Il sottospazio di \( \mathbb{K}^m \) 
+\[
+  C(A) = \left< \begin{pmatrix} a_{11} \\ \vdots \\ a_{m1} \end{pmatrix}, \ldots, \begin{pmatrix} a_{1n} \\ \vdots \\ a_{mn} \end{pmatrix} \right>
+\] 
+generato dalle colonne di \( A \) è detto lo \textbf{spazio delle colonne} di \( A \).
+
+\begin{figure}[H]
+  \begin{example}
+    \( \mathbb{K} = \mathbb{R} \) 
+    \[
+      A = \begin{pmatrix} 
+        1 & 2 & 0\\
+        0 & 6 & 3
+      \end{pmatrix}  \in M_{2 \times 3}(\mathbb{R})
+    \] 
+    \[
+    C(A) \subseteq \mathbb{R}^2
+    \] 
+    \[
+      C(A) = \left\{ x_1 \begin{pmatrix} 1\\0 \end{pmatrix} 
+        + x_2 \begin{pmatrix} 2\\6 \end{pmatrix}
+        + x_3 \begin{pmatrix} 0\\3 \end{pmatrix} \Big |\; x_1,x_2,x_3 \in \mathbb{R} \right\}
+    \] 
+    Ad esempio:
+    \[
+    2 \begin{pmatrix} 1\\0 \end{pmatrix}  + (-1) \begin{pmatrix} 2\\6 \end{pmatrix} + 3 \begin{pmatrix} 0\\3 \end{pmatrix} = \begin{pmatrix} 0\\3 \end{pmatrix} \in C(A)
+    \] 
+    \textbf{NB:}
+    \[
+    x_1 \begin{pmatrix} 1\\0 \end{pmatrix} + x_2 \begin{pmatrix} 2\\6 \end{pmatrix} + x_3 \begin{pmatrix} 0\\3 \end{pmatrix} = \begin{pmatrix} x_1 + 2x_2\\6x_2 + 3x_3 \end{pmatrix}
+    \] 
+    \[
+     = \begin{pmatrix} 
+       1 & 2 & 0\\
+       0 & 6 & 3
+     \end{pmatrix} 
+     \begin{pmatrix} 
+       x_1\\
+       x_2\\
+       x_3
+     \end{pmatrix} 
+    \] 
+    \[
+      \begin{pmatrix} a\\b \end{pmatrix} \in C(A) \Leftrightarrow \exists x_1,x_2,x_3 \in \mathbb{R}
+    \] 
+    tali che
+    \[
+    \begin{pmatrix} a\\b \end{pmatrix} = \begin{pmatrix}
+    1 & 2 & 0\\
+    0 & 6 & 3
+  \end{pmatrix} 
+  \begin{pmatrix} 
+    x_1\\
+    x_2\\
+    x_3
+  \end{pmatrix} 
+    \] 
+    \[
+      \Leftrightarrow
+    \] 
+    Il sistema lineare \( Ax = \begin{pmatrix} a\\b \end{pmatrix}  \) possiede soluzione
+
+  \end{example}
+\end{figure}
+
+\subsection{Proposizione}
 \end{document}
