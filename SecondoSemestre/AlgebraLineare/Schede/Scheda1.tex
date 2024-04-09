@@ -589,13 +589,82 @@ Date le seguenti matrici a coefficienti complessi:
 		      -1
 	      \end{pmatrix}   \)
 	      \[
+		      \begin{pmatrix} [cccc|c]
+			      1     & -1    & -1   & 7       & -1   \\
+			      3 + i & -3 -i & -2-i & 11 + 7i & -1-i \\
+			      3     & -3    & -2   & 11      & -1
+		      \end{pmatrix}
+		      \stackrel{R_2 - (3+i)R_1}{\leadsto}
+	      \]
+	      \[
+		      \begin{pmatrix} [cccc|c]
+			      1 & -1 & -1 & 7   & -1 \\
+			      0 & 0  & 1  & -10 & 2  \\
+			      3 & -3 & -2 & 11  & -1
+		      \end{pmatrix}
+		      \stackrel{R_3 - 3R_1}{\leadsto}
+	      \]
+	      \[
+		      \begin{pmatrix} [cccc|c]
+			      1 & -1 & -1 & 7   & -1 \\
+			      0 & 0  & 1  & -10 & 2  \\
+			      0 & 0  & 1  & -10 & 2
+		      \end{pmatrix}
+		      \stackrel{R_3 - R_2}{\leadsto}
+	      \]
+	      \[
+		      \begin{pmatrix} [cccc|c]
+			      1 & -1 & -1 & 7   & -1 \\
+			      0 & 0  & 1  & -10 & 2  \\
+			      0 & 0  & 0  & 0   & 0
+		      \end{pmatrix}
+	      \]
+
+	      \vspace{1em}
+	      \[
 		      \begin{cases}
-			      x_1 - x_2 - x_3 + 7x_4 = -1 \\
-			      x_3 -10x_4 = -1 -i          \\
-			      0 = -1
+			      x_1 - x_2 - x_3 +7x_4 = -1 \\
+			      x_3 - 10x_4 = 2            \\
+			      0 = 0
 		      \end{cases}
 	      \]
-	      Il sistema lineare non ha soluzioni
+	      \[
+		      \begin{cases}
+			      x_1 = x_2 + x_3 - 7x_4 - 1 \\
+			      x_3 = 10x_4 + 2
+		      \end{cases}
+	      \]
+
+	      Assegno dei parametri a \( x_2 \) e \( x_4 \)
+	      \[
+		      x_2 = t \quad x_4 = s
+	      \]
+	      \[
+		      \begin{cases}
+			      x_1 = t + 3s +1 \\
+			      x_2 = t         \\
+			      x_3 = 10s + 2   \\
+			      x_4 = s
+		      \end{cases}
+	      \]
+
+	      Le soluzioni del sistema lineare sono:
+	      \[
+		      \begin{pmatrix}
+			      x_1 \\
+			      x_2 \\
+			      x_3 \\
+			      x_4
+		      \end{pmatrix}
+		      =
+		      \begin{pmatrix}
+			      t + 3s + 1 \\
+			      t          \\
+			      10s + 2    \\
+			      s
+		      \end{pmatrix}
+	      \]
+
 	\item[(e)] Trovare tutte le soluzioni del sistema lineare omogeneo associato alla
 	      matrice \( B \)
 	      \[
