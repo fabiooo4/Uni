@@ -952,6 +952,155 @@ rappresentato ad alto livello. Questo modello è composto da:
 	\caption{Flusso di esecuzione delle istruzioni}
 \end{figure}
 
+\subsection{Modello concreto (LC-3)}
+L'LC-3 è un processore Turing complete, ovvero può eseguire qualsiasi programma. È un
+processore che nasce per motivi didattici, molto semplice e permette di capire come
+funziona un processore. L'LC-3 è composto da:
+\begin{itemize}
+	\item \textbf{Memoria}:
+	      \begin{itemize}
+		      \item \textbf{MAR}: Memory Address Register, contiene l'indirizzo di memoria da leggere
+		      \item \textbf{MDR}: Memory Data Register, contiene i dati letti dalla memoria
+	      \end{itemize}
+	\item \textbf{Processing Unit}:
+	      \begin{itemize}
+		      \item \textbf{ALU}
+		      \item \textbf{Registri}: 8 registri da 16 bit
+	      \end{itemize}
+	\item \textbf{Input}:
+	      \begin{itemize}
+		      \item \textbf{Tastiera}
+		      \item \textbf{Mouse}
+		      \item \textbf{Scanner}
+		      \item \textbf{Disco}
+	      \end{itemize}
+	\item \textbf{Output}:
+	      \begin{itemize}
+		      \item \textbf{Monitor}
+		      \item \textbf{Stampante}
+		      \item \textbf{LED}
+		      \item \textbf{Disco}
+	      \end{itemize}
+	      L'imput e l'output non vengono gestiti direttamente dai dispositivi, ma vengono
+	      gestiti dalla memoria.
+	\item \textbf{Control Unit}:
+	      \begin{itemize}
+		      \item \textbf{PC}: Program Counter, contiene l'indirizzo dell'istruzione da eseguire
+		      \item \textbf{IR}: Instruction Register, contiene l'istruzione corrente
+	      \end{itemize}
+\end{itemize}
+
+\subsubsection{Memoria}
+\( 2^16 \times 16 \) celle di memoria. Per interfacciarsi con la memoria si usa la
+\texttt{LOAD} e la \texttt{STORE}. Questo viene fatto:
+\begin{itemize}
+	\item \textbf{LOAD}: per caricare una cella \( (A) \):
+	      \begin{enumerate}
+		      \item Scrive l'indirizzo della cella da leggere nel MAR
+		      \item
+		            TODO
+	      \end{enumerate}
+\end{itemize}
+
+\subsubsection{Processing Unit}
+Questa unità può eseguire 3 operazioni:
+\begin{itemize}
+	\item \textbf{ADD}
+	\item \textbf{AND}
+	\item \textbf{NOT}
+\end{itemize}
+
+\vspace{1em}
+\noindent I registri sono 8 e vanno da \( R0, \ldots, R7 \) ognuno da 16 bit. La dimensione
+della parola del processore è di 16 bit. Anche le istruzioni sono di 16 bit.
+
+\subsubsection{Input e Output}
+Ci sono 2 tipi di periferiche:
+\begin{itemize}
+	\item \textbf{A caratteri}: tastiera, mouse, scanner. Sono periferiche che comunicano
+	      con il processore inviando un carattere alla volta.
+	\item \textbf{A blocchi}: monitor, stampante, disco. Sono periferiche che comunicano
+	      con il processore inviando un blocco di dati alla volta.
+\end{itemize}
+L'input e l'output viene gestito direttamente dalla CPU, quindi non c'è nessun componente
+esterno che lo fa.
+\begin{itemize}
+	\item Per gestire la tastiera ci sono 2 registri:
+	      \begin{itemize}
+		      \item \textbf{KBDR}: Keyboard Data Register, contiene il carattere letto dalla tastiera
+		      \item \textbf{KBSR}: Keyboard Status Register, contiene lo stato della tastiera
+	      \end{itemize}
+	\item Per gestire il monitor ci sono 2 registri:
+	      \begin{itemize}
+		      \item \textbf{DDR}: Display Data Register, contiene il carattere da scrivere sul monitor
+		      \item \textbf{DSR}: Display Status Register, contiene lo stato del monitor
+	      \end{itemize}
+\end{itemize}
+
+\subsubsection{Processazione delle istruzioni}
+Il loop di esecuzione delle istruzioni è il seguente:
+\begin{itemize}
+	\item \textbf{Fetch}: legge l'istruzione dalla memoria
+	\item \textbf{Decode}: decodifica l'istruzione
+	\item \textbf{Evaluate address}: calcola l'indirizzo dell'operando
+	\item \textbf{Fetch operands}: legge gli operandi dalla memoria
+	\item \textbf{Execute}: esegue l'istruzione
+	\item \textbf{Store result}: scrive il risultato nella memoria
+\end{itemize}
+
+\subsubsection{Istruzioni}
+Le istruzioni sono di 16 bit e sono specificate nel seguente modo:
+\begin{itemize}
+	\item \textbf{opcode}: specifica l'operazione da eseguire
+	\item \textbf{operands}: dati o indirizzi su cui operare
+\end{itemize}
+Ogni istruzione è codificata come una sequenza di bit ed è il componente più piccolo
+e non interrompibile del sistema.
+
+\vspace{1em}
+\noindent La specifica di come sono fatte le istruzioni è chiamata \textbf{ISA}
+(Instruction Set Architecture).
+
+\subsubsection{Operazioni}
+\begin{itemize}
+  \item \textbf{Operazioni di calcolo}:
+    \begin{itemize}
+      \item \textbf{ADD}: somma due numeri
+      \item \textbf{AND}: effettua l'AND bit a bit tra due numeri
+      \item \textbf{NOT}: effettua il NOT bit a bit di un numero
+    \end{itemize}
+  \item \textbf{Operazioni di movimento dei dati}:
+    \begin{itemize}
+      \item \textbf{LD}
+      \item \textbf{LDI}
+      \item \textbf{LDR}
+      \item \textbf{LEA}
+      \item \textbf{ST}
+      \item \textbf{STR}
+      \item \textbf{STI} 
+    \end{itemize}
+  \item \textbf{Operazioni di controllo}:
+    \begin{itemize}
+      \item \textbf{BR}
+      \item \textbf{JMP}
+      \item \textbf{JSR}
+      \item \textbf{JSRR}
+      \item \textbf{RTI}
+      \item \textbf{TRAP}
+    \end{itemize}
+\end{itemize}
+
+I tipi di dato sono gestiti come 16 bit codificati in complemento a 2.
+
+\subsubsection{Metodi di indirizzamento}
+\begin{itemize}
+  \item \textbf{Immediate}: l'operando è un valore costante
+  \item \textbf{Register}: l'operando è un registro
+  \item \textbf{PC-relative}: l'operando è un offset rispetto al PC
+  \item \textbf{Indirect}: l'operando è un indirizzo in memoria
+  \item \textbf{Base+offset}: l'operando è un indirizzo in memoria calcolato come somma di un registro e un offset
+\end{itemize}
+
 \section{Assembly (Intel x86)}
 \subsection{Codifica}
 Ogni istruzione è codificata nel seguente modo:
@@ -1910,28 +2059,28 @@ ricorre al concetto di \textbf{time sharing}
 			\draw [gray!50, ultra thin, help lines, ystep=10] (0,0) grid (4,6);
 			\draw [gray!50, ultra thin, help lines, ystep=10, xshift=-15] (4.5,0) grid (10,6);
 
-      \draw [magenta, ultra thick] plot coordinates { (0,5) (1,5) };
-      \draw [magenta, ultra thick] plot coordinates { (3,5) (4,5) };
-      \draw [magenta, ultra thick] plot coordinates { (6.5,5) (7.5,5) };
+			\draw [magenta, ultra thick] plot coordinates { (0,5) (1,5) };
+			\draw [magenta, ultra thick] plot coordinates { (3,5) (4,5) };
+			\draw [magenta, ultra thick] plot coordinates { (6.5,5) (7.5,5) };
 
-      \draw [red, ultra thick] plot coordinates { (1,3) (2,3) }; 
-      \draw [red, ultra thick] plot coordinates { (4,3) (4.5,3) }; 
-      \draw [red, ultra thick] plot coordinates { (5.5,3) (6.5,3) }; 
-      \draw [red, ultra thick] plot coordinates { (8.5,3) (9.5,3) }; 
+			\draw [red, ultra thick] plot coordinates { (1,3) (2,3) };
+			\draw [red, ultra thick] plot coordinates { (4,3) (4.5,3) };
+			\draw [red, ultra thick] plot coordinates { (5.5,3) (6.5,3) };
+			\draw [red, ultra thick] plot coordinates { (8.5,3) (9.5,3) };
 
-      \draw [orange, ultra thick] plot coordinates { (2,1) (3,1) };
-      \draw [orange, ultra thick] plot coordinates { (4.5,1) (5.5,1) };
-      \draw [orange, ultra thick] plot coordinates { (7.5,1) (8.5,1) };
+			\draw [orange, ultra thick] plot coordinates { (2,1) (3,1) };
+			\draw [orange, ultra thick] plot coordinates { (4.5,1) (5.5,1) };
+			\draw [orange, ultra thick] plot coordinates { (7.5,1) (8.5,1) };
 
 			\node[magenta, anchor=east] at (0,5) {\( p_1 \) };
 			\node[red, anchor=east] at (0,3) {\( p_2 \) };
 			\node[orange, anchor=east] at (0,1) {\( p_3 \) };
 
-      \node[scale=0.6] at (4.1,3.45) (svc) {SVC};
-      \draw[-latex] (svc) -- (4.5,3);
+			\node[scale=0.6] at (4.1,3.45) (svc) {SVC};
+			\draw[-latex] (svc) -- (4.5,3);
 
-      \draw (0,-0.2) -- ++(0,-0.2) -- ++(1,0) node[below, midway, scale=0.7, align=center]
-      {quanto\\di tempo} -- ++(0,0.2);
+			\draw (0,-0.2) -- ++(0,-0.2) -- ++(1,0) node[below, midway, scale=0.7, align=center]
+			{quanto\\di tempo} -- ++(0,0.2);
 		\end{tikzpicture}
 	\end{center}
 	\caption{Time sharing tra i processi}
@@ -1941,9 +2090,9 @@ umano non percepisce il cambio di processo. I processi vengono eseguiti per poco
 ma così frequentemente che sembra che vengano eseguiti contemporaneamente.
 
 \vspace{1em}
-\noindent Se un processo in esecuzione esegue una supervisor call (SVC) il processo viene 
+\noindent Se un processo in esecuzione esegue una supervisor call (SVC) il processo viene
 immediatamente interrotto e viene eseguita la SVC. Questo perchè finchè la SVC verrà
-eseguita si perderebbero migliaia di quanti di tempo. 
+eseguita si perderebbero migliaia di quanti di tempo.
 
 \subsection{Kernel}
 La parte del sistema operativo che
@@ -1960,17 +2109,17 @@ gestisce i processi si chiama \textbf{kernel} e lo fa dialogando direttamente co
 		\node[main node] (4) [right of=3] {\footnotesize Pronto};
 
 		\path[every node/.style={font=\sffamily\small}]
-      (1) edge [bend right, align=center] node[left] {SVC\\ (int sw)} (2)
+		(1) edge [bend right, align=center] node[left] {SVC\\ (int sw)} (2)
 		(2) edge [bend right] node {} (3)
-    (2) edge [bend right] node[right] {Iret} (1)
-    (3) edge [bend right] node[midway, below] {Evento} (4)
-    (4) edge [loop right] node {\( \begin{array}{c}
-        p_1\\
-        p_2\\
-        \vdots\\
-        p_n
-    \end{array} \) } (4)
-    (2) edge [bend left] node[right] {Preemption} (4);
+		(2) edge [bend right] node[right] {Iret} (1)
+		(3) edge [bend right] node[midway, below] {Evento} (4)
+		(4) edge [loop right] node {\( \begin{array}{c}
+					p_1    \\
+					p_2    \\
+					\vdots \\
+					p_n
+				\end{array} \) } (4)
+		(2) edge [bend left] node[right] {Preemption} (4);
 	\end{tikzpicture}
 	\caption{Flusso di esecuzione delle istruzioni}
 \end{figure}
@@ -1999,9 +2148,9 @@ $ time ./programma
 \end{lstlisting}
 \noindent L'output è diviso in:
 \begin{itemize}
-  \item \textbf{User}: tempo impiegato per eseguire il programma
-  \item \textbf{System}: tempo impiegato per eseguire gli interrupt
-  \item \textbf{Real}: tempo reale impiegato per eseguire il programma
+	\item \textbf{User}: tempo impiegato per eseguire il programma
+	\item \textbf{System}: tempo impiegato per eseguire gli interrupt
+	\item \textbf{Real}: tempo reale impiegato per eseguire il programma
 \end{itemize}
 
 \vspace{1em}
@@ -2026,20 +2175,20 @@ software.
 Un processo può essere eseguito in tempo reale se il tempo di esecuzione è all'interno
 di un certo intervallo di tempo. Ci sono 2 tipi di realtime:
 \begin{itemize}
-  \item \textbf{Soft Realtime}: il processo deve essere eseguito entro un certo intervallo
-  di tempo ristretto ma non troppo.
-  \item \textbf{Hard Realtime}: il processo deve essere eseguito entro un certo intervallo
-  di tempo molto stretto.
+	\item \textbf{Soft Realtime}: il processo deve essere eseguito entro un certo intervallo
+	      di tempo ristretto ma non troppo.
+	\item \textbf{Hard Realtime}: il processo deve essere eseguito entro un certo intervallo
+	      di tempo molto stretto.
 \end{itemize}
 
 \subsection{Caratteristiche di un processo}
 Ogni processo ha le seguenti caratteristiche contenute in un \textbf{descrittore}:
 \begin{itemize}
-  \item \textbf{PID}: identificatore del processo
-  \item \textbf{Proprietà}: proprietario del processo
-  \item \textbf{Stato}: indica lo stato della cpu
-  \item \textbf{Cache}: contiene le informazioni più utilizzate dal processo
-  \item \textbf{File ID}: contiene i file aperti dal processo
+	\item \textbf{PID}: identificatore del processo
+	\item \textbf{Proprietà}: proprietario del processo
+	\item \textbf{Stato}: indica lo stato della cpu
+	\item \textbf{Cache}: contiene le informazioni più utilizzate dal processo
+	\item \textbf{File ID}: contiene i file aperti dal processo
 \end{itemize}
 
 \noindent Questa struttura deve essere salvata dallo scheduler quando il processo viene
