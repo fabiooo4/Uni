@@ -1,4 +1,4 @@
-  # filename: readstr.s
+# filename: readstr.s
 #
 # Read a string from keyboard and outputs the same string to video
 
