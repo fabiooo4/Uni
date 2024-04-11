@@ -1555,7 +1555,12 @@ con \( card(R_X) \) al più numerabile.
 
 \section{Schema di Bernoulli}
 \subsection{Prove dicotomiche ripetute ed indipendenti}
-TODO
+Sia \( (\Omega, \mathcal{L}, P) \) uno spazio di probabilità che modella un certo
+esperimento. Considero \( A \in \mathcal{L} \) un successo e supponendo che
+\[
+P(A) = p \in (0,1)
+\] 
+ripeto un esperimento in modo indipendente
 
 \subsection{Conteggio del successo in ciascuna prova}
 \begin{figure}[H]
@@ -1566,9 +1571,31 @@ TODO
     \[
     p \equiv \text{probabilità di successo}
     \] 
+
+    \[ X: \Omega \to \{0,1\} \subset \mathbb{N}  \]
+    \[
+    \text{successo} \; \to 1
+    \] 
+    \[
+    \text{insuccesso} \; \to 0
+    \] 
+    La legge di \( X \) è:
+    \[
+    p_x(1) = P(X=1) = P(\text{"successo"}) = p
+    \] 
+    \[
+    p_x(0) = P(X=0) = P(\text{"insuccesso"}) = 1-p_x(1) = 1-p
+    \] 
+
+    \vspace{1em}
+    \noindent Il valore atteso è:
     \[
       \mathbb{E}[X] = p
     \] 
+    cioè il successo.
+
+    \vspace{1em}
+    \noindent La varianza si calcola come:
     \[
       Var(X) = p(1-p)
     \] 
@@ -1644,4 +1671,130 @@ binomiale}}
 \] 
 \[ \begin{pmatrix} n \\ k \end{pmatrix} \cdot p^k(1-p)^{n-k} \] è la probabilità di ottenere
 \( k \) successi in \( n \) prove.
+
+\subsection{Processi stocastici (prove indipendenti ripetute infinite volte)}
+Il \textbf{processo} consiste nel ripetere infinite volte un esperimento dicotomico,
+infatti si dice \textbf{processo di Bernoulli} la variabile \( \{X_n\}_{n \in \mathbb{N}}
+\) che fa riferimento ad una famiglia di variabili aleatorie indipendenti e identicamente
+distribuite:
+\[
+X-i \sim B(p)
+\] 
+Il \textbf{processo binomiale} \( \{Z_n\}_{n \in \mathbb{N}}  \) fa riferimento ad una
+famiglia di variabili aleatorie ad incrementi indipendenti che modella il numero di 
+successi in \( n \) prove all'aumentare del numero:
+\[
+Z_0 = 0 \quad Z_n = \sum_{i=1}^n X_i \sim B(n,p)
+\] 
+
+\subsection{La variabile geometrica}
+\begin{figure}[H]
+  \begin{definition}
+    \[
+      T \sim G(p)
+    \] 
+    Il valore atteso è:
+    \[
+      \mathbb{E}[T] = \frac{1}{p}
+    \] 
+    La varianza si calcola come:
+    \[
+    var(T) = \frac{1-p}{p^2}
+    \] 
+  \end{definition}
+\end{figure}
+Più la variabile è vicina a 1, più è probabile che il successo avvenga al primo tentativo.
+
+\subsection{Eventi rari: conteggio dei successi per un numero infinito di esperimenti}
+Supponiamo che il numero dei successi \( n \) cresca all'infinito e che la probabilità
+\( p_n \) di successa vada a zero, ma in modo tale che:
+\[
+np_n \to \lambda
+\] 
+Sia dunque \( Z_n \sim B(n,p_n) \) 
+
+\begin{figure}[H]
+  \begin{definition}[Poisson]
+    \textbf{Poisson:}
+    \[
+    Y \sim P(\lambda)
+    \] 
+    \textbf{Range:}
+    \[
+      \mathcal{R} = \mathbb{N}
+    \] 
+    \textbf{Legge:}
+    \[
+      p_y(k) = \frac{\lambda^k}{k!}e^{-\lambda}
+    \] 
+  \end{definition}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{definition}
+    \textbf{Binomiale converge alla Poisson}
+    \[
+    \lim_{n \to \infty, p_n \to 0} B(n,p_n) = P(\lambda)
+    \] 
+  \end{definition}
+\end{figure}
+
+\section{La variabile di Poisson}
+La variabile di Poisson di parametro \( \lambda > 0 \) modella il conteggio di successo
+in tempi continui.
+\begin{figure}[H]
+  \begin{definition}
+    \textbf{Variabile aleatoria di Poisson:}
+    \[
+    Y \sim P(\lambda)
+    \] 
+    \textbf{Range:}
+    \[
+      \mathcal{R} = \mathbb{N}
+    \] 
+    \textbf{Legge:} per ogni \( k = 0, 1, \ldots \) 
+    \[
+      p_y(k) = \frac{\lambda^k}{k!}e^{-\lambda}
+    \] 
+    Il valore atteso è:
+    \[
+      \mathbb{E}[Y] = \lambda
+    \] 
+    La varianza è:
+    \[
+    var(Y) = \lambda
+    \] 
+  \end{definition}
+\end{figure}
+Poisson approssima la binomiale quando \( n \) è grande e \( p \) è piccolo.
+
+\subsection{Eventi rari: il processo di Poisson}
+Il processo di Poisson modellizza il conteggio dei successi in intervalli di tempi
+sotto l'ipotesi che la probabilità di un successo in uno specifico intervallo di tempo
+piccolo è molto piccola:
+\[
+np_n = \lambda t
+\] 
+Il \textbf{processo di Poisson} \( \{Y_t\}_{t \in \mathbb{R}_+}  \) fa riferimento ad
+una famiglia di variabili aleatorie ad incrementi indipendenti che modella il
+numero di successi in un intervallo \( [0,t] \) tale che \( Y_0 = 0 \) e
+\[
+Y_t \sim P(\lambda t), \; \forall t \ge 0
+\] 
+\( \lambda \) rappresenta un numero medio di successi atteso per unità di tempo:
+\[
+  \mathbb{E}[Y_t] = \lambda t \quad \Rightarrow \quad \frac{\mathbb{E}[Y_t]}{t} = \lambda
+\] 
+
+\subsubsection{Conteggio del tempo del primo successo}
+Osservando un esperimento modellato da un processo di Poisson \( \{Y_t\}_t  \) di 
+parametro \( \lambda \). Si vuole modellare il tempo in cui si ha il primo successo:
+\[
+  \text{Tempo del primo successo:}\; T \;\text{con}\; \mathcal{R}_T = \mathbb{R}_+
+\] 
+Legge di \( T \):
+\[
+  F_T(t)= 1-e^{-\lambda t}, \quad f_T(t) = \lambda e^{-\lambda t}, \quad t \in \mathbb{R}_+
+\] 
+Esponenziale di parametro \( \lambda \quad \) \( T \sim exp(\lambda) \) 
 \end{document}
