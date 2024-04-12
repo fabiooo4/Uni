@@ -28,7 +28,7 @@
   mcdLen:
     .long . - mcd
   mcdOffset:
-    .long . - mcdLen - 1
+    .long . - mcdLen
 
 .section .bss
   aStr:
