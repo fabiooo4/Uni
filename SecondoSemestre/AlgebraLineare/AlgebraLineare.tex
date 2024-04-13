@@ -4732,4 +4732,508 @@ Siano \( v,u \in N(A) \), cioè \( Av = \mathbb{O} \) e \( Au = \mathbb{O} \) e 
   Quindi \( \alpha v \in N(A) \)
 \end{itemize}
 Dunque \( N(A) \) è un sottospazio. \( \quad \square \) 
+
+\begin{figure}[H]
+  \begin{example}
+    \[
+    \mathbb{K} = \mathbb{C}, \quad A = \begin{pmatrix} 
+      i & 0 \\
+      0 & 1 \\
+      i & -1
+    \end{pmatrix} 
+    , \quad
+    N(A) \subseteq \mathbb{C}^2
+    \] 
+    \[
+    N(A) = \{\text{Soluzioni del sistema lineare \( Ax=0 \) }\} 
+    \] 
+    Risolviamo il sistema lineare:
+    \[
+      \begin{pmatrix}[cc|c]
+        i & 0 & 0\\
+        0 & 1 & 0\\
+        i & -1 & 0
+    \end{pmatrix}
+    \stackrel{E_1(-i)}{\leadsto}
+    \begin{pmatrix}[cc|c]
+      1 & 0 & 0\\
+      0 & 1 & 0\\
+      i & -1 & 0
+    \end{pmatrix} 
+    \] 
+    \[
+      \stackrel{E_{31}(-i)}{\leadsto}
+      \begin{pmatrix}[cc|c]
+        1 & 0 & 0\\
+        0 & 1 & 0\\
+        0 & -1 & 0
+      \end{pmatrix} 
+      \stackrel{E_{23}(1)}{\leadsto}
+      \begin{pmatrix}[cc|c]
+        1 & 0 & 0\\
+        0 & 1 & 0\\
+        0 & 0 & 0
+      \end{pmatrix} 
+    \] 
+    
+    \[
+    \leadsto \begin{cases}
+      x_1 = 0 \\
+      x_2 = 0
+    \end{cases}
+    \quad \text{Quindi } N(A) = \left\{ \mathbb{O}=\begin{pmatrix} 0\\0 \end{pmatrix}  \right\} 
+    \] 
+  \end{example}
+\end{figure}
+\begin{figure}[H]
+  \begin{example}
+    \[
+    \mathbb{K} = \mathbb{R}, \quad A = \begin{pmatrix} 
+      1 & 2 & 0 \\
+      0 & 6 & 3
+    \end{pmatrix} 
+    , \quad
+    N(A) \subseteq \mathbb{R}^3
+    \] 
+    Risolviamo il sistema lineare \( Ax = 0 \) 
+    \[
+      \begin{pmatrix}[ccc|c]
+        1 & 2 & 0 & 0\\
+        0 & 6 & 3 & 0
+    \end{pmatrix} 
+    \stackrel{E_2(\frac{1}{6})}{\leadsto}
+    \begin{pmatrix}[ccc|c]
+      1 & 2 & 0 & 0\\
+      0 & 1 & \frac{1}{2} & 0
+    \end{pmatrix} 
+    \] 
+    \[
+    \leadsto \begin{cases}
+      _1 + 2x_2 = 0 \\
+      x_2 + \frac{1}{2}x_3 = 0
+    \end{cases}
+    \] 
+    Siccome la matrice ha soltanto 2 colonne dominanti bisogna introdurre un parametro
+    per la variabile libera \( x_3 \).
+    \[
+    x_3 = t, \quad t \in \mathbb{R}
+    \] 
+    \[
+    \begin{cases}
+      x_1 = -2 \left( -\frac{1}{2}t \right) = t \\
+      x_2 = -\frac{1}{2}t \\
+      x_3 = t
+    \end{cases}
+    \] 
+    Quindi \( N(A) = \left\{ \begin{pmatrix} t\\ -\frac{1}{2} \\ t \end{pmatrix} =
+    t \begin{pmatrix} 1\\-\frac{1}{2}\\1 \end{pmatrix} \Big |\; t \in \mathbb{R} \right\}
+    = \left< \begin{pmatrix} 1 \\ -\frac{1}{2} \\ 1 \end{pmatrix}  \right> 
+    \underset{\text{sottospazio}}{\subseteq} \mathbb{R}^3 \) 
+  \end{example}
+\end{figure}
+
+\section{Dipendenza e indipendenza lineare}
+\begin{figure}[H]
+  \begin{example}
+    \[
+      \mathbb{K} = \mathbb{R}, \quad V = \mathbb{R}^2 = \left\{ \begin{pmatrix} 
+          x_1 \\
+          x_2
+      \end{pmatrix} \in M_{2 \times 1}(\mathbb{R})  \right\}
+    \] 
+    \[
+      \mathcal{C} = \left\{ \begin{pmatrix} 
+          0\\1
+      \end{pmatrix},
+      \begin{pmatrix} 
+        1\\0
+      \end{pmatrix},
+      \begin{pmatrix} 
+        3\\2
+      \end{pmatrix} 
+    \right\}\; \text{insieme di generatori}
+    \] 
+    Infatti, per ogni \( v = \begin{pmatrix} v_1\\v_2 \end{pmatrix} \in V \) abbiamo che:
+    \[
+    \begin{pmatrix} 
+      v_1\\
+      v_2
+    \end{pmatrix} 
+    =
+    (v_2 - 2) \begin{pmatrix} 0\\1 \end{pmatrix} 
+    +
+    (v_1 - 3) \begin{pmatrix} 1\\0 \end{pmatrix}
+    +
+    1 \begin{pmatrix} 3\\2 \end{pmatrix}
+    \] 
+    \[
+    = v_2 \begin{pmatrix} 0\\1 \end{pmatrix}
+    +
+    v_1 \begin{pmatrix} 1\\0 \end{pmatrix}
+    +
+    0 \begin{pmatrix} 3\\2 \end{pmatrix}
+    \]
+    \[
+    = 0 \begin{pmatrix} 0\\1 \end{pmatrix} 
+    +
+    (v_1-\frac{3}{2}v_2) \begin{pmatrix} 1\\0 \end{pmatrix}
+    +
+    \frac{v_2}{2} \begin{pmatrix} 3\\2 \end{pmatrix}
+    \] 
+    Non è efficiente usare l'insieme di generatori \( \mathcal{C} \) perchè esistono
+    almeno 2 sottoinsiemi di generatori più piccoli:
+    \[
+    \left\{ \begin{pmatrix} 0\\1 \end{pmatrix}, \begin{pmatrix} 1\\0 \end{pmatrix}  \right\},
+    \left\{ \begin{pmatrix} 1\\0 \end{pmatrix}, \begin{pmatrix} 3\\2 \end{pmatrix}  \right\}
+    \subseteq \mathcal{C}
+    \] 
+    In particolare:
+    \[
+    \begin{pmatrix} 3\\2 \end{pmatrix} = 2 \begin{pmatrix} 0\\1 \end{pmatrix} +
+    3 \begin{pmatrix} 1\\0 \end{pmatrix}
+    \] 
+    \[
+    \begin{pmatrix} 0\\1 \end{pmatrix} = -\frac{3}{2} \begin{pmatrix} 1\\0 \end{pmatrix} +
+    \frac{1}{2} \begin{pmatrix} 3\\2 \end{pmatrix}
+    \] 
+  \end{example}
+\end{figure}
+
+\subsection{Proposizione}
+\label{prop:generatori}
+Se \( \{v_1, \ldots, v_n\}  \) è un insieme di generatori di uno spazio vettoriale \( V \) 
+su \( \mathbb{K} \) e \( v_n \) è una combinazione lineare di \( v_1, \ldots, v_{n-1} \),
+allora \( \{v_1, \ldots, v_{n-1}\}  \) è un insieme di generatori.
+
+
+\subsubsection{Dimostrazione}
+Siano \( \alpha_1, \ldots, \alpha_{n-1} \in \mathbb{K} \) tali che:
+\[
+v_n = \sum_{i=1}^{n-1} \alpha_i v_i
+\] 
+Per ogni \( v \in V \) esistono \( \beta_1, \ldots, \beta_n \in \mathbb{K} \) tali che:
+\[
+  v = \beta_1 v_1 + \ldots + \beta_{n-1} v_{n-1} + \beta_n v_n
+\] 
+\[
+  = \beta_1 v_1 + \ldots + \beta_{n-1} v_{n-1} + \beta_n \left(\sum_{i=1}^{n-1} \alpha_i v_i\right)
+\] 
+\[
+ = (\beta_1 + \beta_n \alpha_1) v_1 + \ldots + (\beta_{n-1} + \beta_n \alpha_{n-1}) v_{n-1}
+\] 
+Quindi \( \{v_1, \ldots, v_{n-1}\}  \) è un insieme di generatori. \( \quad \square \)
+
+\subsection{Definizione}
+Siano \( v_1, \ldots, v_n \in V \) vettori in uno spazio vettoriale \( V \). 
+Un insieme
+\( \{v_1, \ldots, v_n\}  \) è detto \textbf{linearmente dipendente} se almeno uno dei
+vettori \( v_1, \ldots, v_n \) è combinazione lineare dei rimanenti.
+
+\subsection{Teorema}
+Siano \( v_1, \ldots, v_n \in V \). Sono equivalenti i seguenti enunciati:
+\begin{enumerate}
+  \item \( \{v_1, \ldots, v_n\}  \) \textbf{non} è linearmente dipendente
+  \item Se \[ \sum_{i=1}^n \alpha_i v_i = \sum_{i=1}^n \beta_i v_i \] allora 
+    \( \alpha_i = \beta_i \) per ogni \( 1 \le i \le n \)
+  \item Se \( \alpha_1, \ldots, \alpha_n \in \mathbb{K} \) sono coefficienti tali che
+    \[
+    \alpha_1 v_1 + \ldots + \alpha_n v_n = 0_v
+    \] 
+    allora \( \alpha_1 = \alpha_2 = \ldots = 0 \) 
+\end{enumerate}
+Se valgono le condizioni (1), (2) + (3), allora \( \{v_1, \ldots, v_n\}  \) è detto
+\textbf{linearmente indipendente}.
+
+\subsubsection{Dimostrazione}
+Dimostriamo che \( (1) \Rightarrow (2) \Rightarrow (3) \Rightarrow (1) \), quindi:
+\[
+\neg (1) \Rightarrow \neg (2) \Rightarrow \neg (3) \land (2) \Rightarrow (3)
+\] 
+\begin{itemize}
+  \item \( [(2) \Rightarrow (3)] \) Supponiamo che:
+    \[
+    \left( \sum_{i=1}^n \alpha_i v_i \right) = \left( \sum_{i=1}^n \beta_i v_i \right) \Rightarrow
+    \alpha_i = \beta_i \quad \forall i \in \{1, \ldots, n\}
+    \] 
+    Supponiamo che:
+    \[
+    \alpha_1 v_1 + \alpha_2 v_2 + \ldots + \alpha_n v_n = 0_v
+    \] 
+    \[
+    \alpha_1 v_1 + \alpha_2 v_2 + \ldots + \alpha_n v_n = 0 \cdot v_1 + 0 \cdot v_2 + \ldots + 0 \cdot v_n
+    \] 
+    Quindi \( \alpha_1 = \ldots = \alpha_n = 0 \) per (2).
+
+  \item \( [\neg (2) \Rightarrow \neg (3)] \) Supponiamo che:
+    \[
+    \sum_{i=1}^n \alpha_i v_i = \sum_{i=1}^n \beta_i v_i
+    \] 
+    e \( a_j \neq \beta_j \) per qualche \( 1 \le j \le n \). Quindi:
+    \[
+    0_v = \sum_{i=1}^n \alpha_i v_i - \sum_{i=1}^n \beta_i v_i = \sum_{i=1}^n (\alpha_i - \beta_i) v_i
+    \] 
+    e allora:
+    \[ v_j = \sum_{i=1}^{j-1} \frac{\beta_i - \alpha_i}{\alpha_j - \beta_j}v_i + 
+    \sum_{i=j+1}^n \frac{\beta_i - \alpha_i}{\alpha_j - \beta_j}v_i \]
+    Dunque \( \{v_1, \ldots, v_n\}  \) è linearmente dipendente
+
+  \item \( [\neg (1) \Rightarrow \neg (3)] \) Supponiamo che \( \{v_1, \ldots, v_n\}  \) 
+    sia linearmente dipendente, cioè esistono \( \alpha_1, \ldots, \alpha_{j+1}, \ldots, \alpha_n \in \mathbb{K}\) 
+    tali che:
+    \[
+    v_j = \sum_{i=1}^{j-1} \alpha_i v_i + \sum_{i=j+1}^n \alpha_i v_i
+    \] 
+    Allora:
+    \[
+      0_v = \alpha_1 v_1 + \ldots + \alpha_{j-1} v_{j-1} + (-1) v_j + \alpha_{j+1} v_{j+1} + \ldots + \alpha_n v_n
+    \] 
+    Dunque (3) non è verificata. \( \quad \square \)
+\end{itemize}
+
+\subsubsection{Esempi}
+\begin{figure}[H]
+  \begin{example}
+    \[
+    \mathbb{K} = \mathbb{R}, \quad V = \mathbb{R}^2
+    \] 
+    L'insieme \( \left\{ \begin{pmatrix} 
+        1\\0
+    \end{pmatrix},
+    \begin{pmatrix} 
+      3\\2
+    \end{pmatrix} 
+  \right\}  \) è linearmente indipendente. Infatti se:
+  \[
+  \mathbb{O} = \begin{pmatrix} 0\\0 \end{pmatrix} = \alpha_1 + \begin{pmatrix} 1\\0 \end{pmatrix} 
+  + \alpha_2 \begin{pmatrix} 3\\2 \end{pmatrix}
+  = \begin{pmatrix} \alpha_1\\0 \end{pmatrix} 
+  +
+  \begin{pmatrix} 3 \alpha_2\\ 2 \alpha_2 \end{pmatrix} 
+  \] 
+  \[
+  = \begin{pmatrix} 
+    \alpha_1 + 3 \alpha_2\\
+    2 \alpha_2
+  \end{pmatrix} 
+  \] 
+  Quindi \( \alpha_1 + 3 \alpha_2 = 0 \) e \( 2 \alpha_2 = 0 \). Abbiamo che \( \alpha_2 = 0 \) e
+  \( \alpha_1 = 0 \). Quindi l'insieme è linearmente indipendente.
+  \end{example}
+\end{figure}
+\begin{figure}[H]
+  \begin{example}
+    Un insieme \( \{v_1, v_2\} \subseteq V \) è linearmente dipendente se e solo se esiste
+    \( \alpha \in \mathbb{K} \) tale che \( \alpha v_1 = v_2 \) oppure
+    \( v_1 = \alpha v_2 \) 
+  \end{example}
+\end{figure}
+\begin{figure}[H]
+  \begin{example}
+    Un insieme \( \{v\} \subseteq V \) è linearmente dipendente se e solo se \( v = 0_v \).
+    Inoltre, per ogni \( \{v_1, \ldots, v_n\}  \), se \( v_j = 0_v \) per qualche \( j \),
+    allora \( \{v_1, \ldots, v_n\}  \) è linearmente dipendente perchè:
+    \[
+    0_v = \underbrace{0 \cdot v_1}_{0_v} + \ldots + \underbrace{0 \cdot v_{j-1}}_{0_v} +
+    \underbrace{v_j}_{0_v} + \underbrace{0 \cdot v_{j+1}}_{0_v} + \ldots +
+    \underbrace{0 \cdot v_n}_{0_v}
+    \] 
+    e quindi abbiamo \( \neg (3) \) 
+  \end{example}
+\end{figure}
+
+\subsection{Definizione}
+\label{def:base}
+Sia \( V \) uno spazio vettoriale su \( \mathbb{K} \) e siano \( v_1, \ldots, v_n \in V \).
+L'insieme \( \mathcal{U} = \{v_1, \ldots, v_n\}  \) è detto \textbf{base} di \( V \) 
+se \( \mathcal{U} \) è un insieme di generatori di \( V \) e \( \mathcal{U} \) è linearmente
+indipendente.
+
+\subsection{Osservazione}
+Per il Teorema \ref{def:base} un sottoinsieme \( \mathcal{U} \subseteq V \) è una base
+se e solo se possiamo ricostruire in un modo unico tutti i vettori di \( V \) mediante
+combinazioni lineari. Possiamo pensare ad una base \( \mathcal{U} = \{b_1, \ldots, b_n\}  \) 
+di \( V \) come ad un sistema di coordinate:
+
+\noindent Sia \( v \in V \). Esiste un unico vettore \( \begin{pmatrix} 
+  \alpha_1 \\
+  \vdots \\
+  \alpha_n
+\end{pmatrix} \in \mathbb{K}^n  \) tale che \( v = \alpha_1 b_1 + \ldots + \alpha_n b_n \).
+
+\noindent Scriviamo \( [v]_\mathcal{U} \) per il vettore \( \begin{pmatrix} 
+  \alpha_1\\
+  \vdots\\
+  \alpha_n
+\end{pmatrix}  \) 
+
+\subsubsection{Esempi}
+\begin{figure}[H]
+  \begin{example}
+    \[
+      V = \mathbb{K}^n \quad \mathcal{C} = \left\{ \underbrace{\begin{pmatrix} 
+          1\\
+          0\\
+          \vdots\\
+          0
+      \end{pmatrix}}_{e_1},
+      \underbrace{\begin{pmatrix} 
+        0\\
+        1\\
+        \vdots\\
+        0
+    \end{pmatrix}}_{e_2},
+    \ldots,
+    \underbrace{\begin{pmatrix} 
+      0\\
+      0\\
+      \vdots\\
+      1
+  \end{pmatrix}}_{e_n}
+\right\}
+    \] 
+
+    \begin{center}
+      \begin{tikzpicture}
+        \draw[->] (-1,0) -- (3,0) node[right] {\( x_1 \)};
+        \draw[->] (0,-1) -- (0,3) node[above] {\( x_2 \)};
+
+        \node at (3,3) {\( \mathbb{R}^2 \)};
+
+        \draw[->, thick, red] (0,0) -- (1,0) node[below, scale=0.8, yshift=-2] {\( \begin{pmatrix} 0\\1 \end{pmatrix}  \)};
+        \draw[->, thick, blue] (0,0) -- (0,1) node[left, scale=0.8] {\( \begin{pmatrix} 1\\0 \end{pmatrix}  \)};
+      \end{tikzpicture}
+      \caption{Base canonica di \( \mathbb{K}^n \) }
+    \end{center}
+    Infatti, per ogni \( v = \begin{pmatrix} 
+        v_1\\
+        \vdots\\
+        v_n
+    \end{pmatrix} \in \mathbb{K}^n \) abbiamo che:
+    \[
+    v = v_1 e_1 + \ldots + v_n e_n
+    \] 
+    Supponiamo \( \mathbb{O} = v_1 e_1 + \ldots + v_n e_n = \begin{pmatrix} 
+    v_1\\
+    \vdots\\
+    v_n
+    \end{pmatrix}  \), quindi: \[ v_1 = 0,\; v_2 = 0, \ldots, v_n = 0 \]
+  \end{example}
+\end{figure}
+\begin{figure}[H]
+  \begin{example}
+    \[
+      V = \mathbb{R}^2, \quad \mathbb{K} = \mathbb{R} \quad \mathcal{B} = \left\{ \begin{pmatrix} 
+          1\\0
+      \end{pmatrix},
+      \begin{pmatrix} 
+        3\\2
+      \end{pmatrix}
+    \right\}
+    \] 
+    è una base di \( \mathbb{R}^2 \), quindi non esiste un unica base di \( \mathbb{R}^2 \).
+  \end{example}
+\end{figure}
+
+\subsection{Base di C(U) per una matrice U in forma ridotta }
+\begin{example}
+  \[
+  U = \begin{pmatrix} 
+    1 & 2 & 7 & 3 & 0 \\
+    0 & 0 & 1 & -1 & 1 \\
+    0 & 0 & 0 & 0 & 1 \\
+    0 & 0 & 0 & 0 & 0
+  \end{pmatrix} 
+  \] 
+  \[
+  C(U) = \left< \begin{pmatrix} 1\\0\\0\\0 \end{pmatrix},
+  \begin{pmatrix} 2\\0\\0\\0 \end{pmatrix},
+  \begin{pmatrix} 7\\1\\0\\0 \end{pmatrix},
+  \begin{pmatrix} 3\\-1\\0\\0 \end{pmatrix},
+  \begin{pmatrix} 0\\1\\1\\0 \end{pmatrix}
+\right> \subseteq \mathbb{R}^4
+  \] 
+  Le colonne dominanti formano una base di \( C(U) \), infatti:
+  \begin{itemize}
+    \item \textbf{Linearmente indipendente:} Siano \( \alpha_1, \alpha_2, \alpha_3 \in \mathbb{R} \) 
+      tali che:
+      \[
+      \begin{pmatrix} 
+        0\\
+        0\\
+        0\\
+        0
+      \end{pmatrix} 
+      =
+      \alpha_1 \begin{pmatrix} 1\\0\\0\\0 \end{pmatrix}
+      +
+      \alpha_2 \begin{pmatrix} 7\\1\\0\\0 \end{pmatrix}
+      +
+      \alpha_3 \begin{pmatrix} 0\\1\\1\\0 \end{pmatrix}
+      \] 
+      \[
+      = \begin{pmatrix} 
+        \alpha_1\\
+        0\\
+        0\\
+        0
+      \end{pmatrix} 
+      +
+      \begin{pmatrix} 
+        7\alpha_2\\
+        \alpha_2\\
+        0\\
+        0
+      \end{pmatrix}
+      +
+      \begin{pmatrix} 
+        0\\
+        \alpha_3\\
+        \alpha_3\\
+        0
+      \end{pmatrix}
+      \] 
+      \[
+      = \begin{pmatrix} 
+        \alpha_1 + 7\alpha_2\\
+        \alpha_2 + \alpha_3\\
+        \alpha_3\\
+        0
+      \end{pmatrix}
+      \] 
+     Quindi \( \alpha_3 = 0 \), \(\; \alpha_2 = \alpha_2 + \alpha_3 = 0 \),
+     \(\; \alpha_1 = \alpha_1 + 7 \alpha_2 = 0 \) 
+
+   \item \textbf{Insieme di generatori} Proposizione \ref{prop:generatori}:
+     \[
+     \begin{pmatrix} 
+       2\\
+       0\\
+       0\\
+       0
+     \end{pmatrix} 
+     =
+     2 \begin{pmatrix} 1\\0\\0\\0 \end{pmatrix}, \quad
+     \begin{pmatrix} 
+       3\\
+       -1\\
+       0\\
+       0\\
+     \end{pmatrix} 
+     =
+     -1 \begin{pmatrix} 7\\1\\0\\0 \end{pmatrix} +
+     10 \begin{pmatrix} 1\\0\\0\\0 \end{pmatrix}
+     \] 
+     Quindi \( \left\{ \begin{pmatrix} 
+         1\\0\\0\\0
+     \end{pmatrix},
+     \begin{pmatrix} 
+       7\\1\\0\\0
+     \end{pmatrix} ,
+     \begin{pmatrix} 
+       0\\1\\1\\0
+     \end{pmatrix} 
+   \right\}  \) è un insieme di generatori di \( C(U) \).
+  \end{itemize}
+\end{example}
+
 \end{document}
