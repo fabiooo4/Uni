@@ -3,7 +3,7 @@
 
 .section .data
   inputText:
-  .ascii "Inserisci un numero naturale fino a 12: "
+  .ascii "Inserisci un numero naturale fino a 6: "
   inputTextLen:
   .long . - inputText
 
@@ -84,8 +84,6 @@ _start:
   # Save memory address of the placeholder for the result
   leal result, %esi
   addl resultOffset, %esi
-  movl %ecx, %eax # Dividend
-
   movl resultLen, %ecx
 
   resultStr:
