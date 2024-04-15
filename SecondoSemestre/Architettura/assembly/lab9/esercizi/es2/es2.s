@@ -76,7 +76,7 @@ _start:
   movl $0, %ebx
 
   bLoop:
-  movb (%ecx,%esi,1), %bl # Load 1 byte from aStr into %bl using %ecx as offset
+  movb (%ecx,%esi,1), %bl # Load 1 byte from bStr into %bl using %ecx as offset
   cmp $10, %bl             # Check if the character "\n" is inside %bl
   je bEnd
 

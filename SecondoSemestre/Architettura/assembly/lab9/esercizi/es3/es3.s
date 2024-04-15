@@ -2,9 +2,6 @@
 # numero naturale letto da  tastiera e ne stampi il risultato a video.   
 
 .section .data
-  n:
-  .long 3
-
   inputText:
   .ascii "Inserisci un numero naturale fino a 12: "
   inputTextLen:
@@ -17,11 +14,13 @@
 
   result:
   .ascii "\0\0\0\0\0\n"
+  resultLen:
+    .long . - result
+  resultOffset:
+    .long . - resultLen
 
 .section .bss
   nStr:
-  .string ""
-  r:
   .string ""
 
 .section .text
@@ -42,7 +41,27 @@ _start:
   movl $9, %edx # string length
   int $0x80
 
-  movl n, %eax
+  # Convert nStr to integer
+  leal nStr, %esi
+  # Reset registers
+  movl $0, %eax
+  movl $0, %ecx
+  movl $0, %ebx
+
+  nLoop:
+  movb (%ecx,%esi,1), %bl # Load 1 byte from nStr into %bl using %ecx as offset
+  cmp $10, %bl             # Check if the character "\n" is inside %bl
+  je nEnd
+
+  subb $48, %bl            # Converts ASCII to its integer number
+  movl $10, %edx
+  mulb %dl                # %ebx = %ebx * 10
+  addl %ebx, %eax
+
+  inc %ecx
+  jmp nLoop 
+
+  nEnd:
   movl %eax, %ecx
 
   factorial:
@@ -60,6 +79,41 @@ _start:
 
   endFactorial:
   # Result is in %eax
+
+  # Convert the result into a string
+  # Save memory address of the placeholder for the result
+  leal result, %esi
+  addl resultOffset, %esi
+  movl %ecx, %eax # Dividend
+
+  movl resultLen, %ecx
+
+  resultStr:
+  movl $10, %ebx # Divisor
+  div %bl # Quotient in %al, Remainder in %ah
+  
+  addb $48, %ah
+  movb %ah, (%esi)
+  xorb %ah, %ah
+  decl %esi
+  cmp $0, %al
+  je end
+  loop resultStr
+
+  end:
+  # Print the result text
+  movl $4, %eax
+  movl $1, %ebx
+  leal resultText, %ecx
+  movl resultTextLen, %edx
+  int $0x80
+
+  # Print the result
+  movl $4, %eax
+  movl $1, %ebx
+  leal result, %ecx
+  movl resultLen, %edx
+  int $0x80
 
   # Terminate
   movl $1, %eax
