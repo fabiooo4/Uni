@@ -311,7 +311,6 @@ columns). At the end you should obtain a matrix with N rows
 (N = number of random number to generate each time) and 7 columns 
 (one for each day of the week).
 ```{r}
-set.seed(123)
 n <- 10
 days <- c(
   "Monday",
@@ -324,8 +323,8 @@ days <- c(
 )
 data <- matrix(nrow = n, ncol = 7)
 
-for (i in 1:7) {
-  data[, i] <- round(runif(n, min = 0, max = 100), 0)
+for (day in 1:7) {
+  data[, day] <- round(runif(n, min = 0, max = 100), 0)
 }
 
 df <- data.frame(data)
@@ -367,8 +366,8 @@ ggplot(
     color = Day
   )
 ) +
-  scale_color_manual(values = rainbow(7)) +
   scale_x_discrete(limits = rev(days)) +
+  scale_color_manual(values = rainbow(7)) +
   geom_boxplot() +
   coord_flip() +
   labs(
@@ -405,7 +404,7 @@ ggplot(
     fill = species
   )
 ) +
-  geom_bar() +
+  geom_bar(position = position_dodge(preserve = "single")) +
   scale_fill_manual(values = c("darkorange", "purple", "cyan4")) +
   labs(
     title = "Penguins population by island",
@@ -424,8 +423,8 @@ facet_grid(~  species) function to add facets for species).
 ggplot(
   penguins,
   aes(
-    x = penguins$flipper_length_mm,
-    y = penguins$body_mass_g,
+    x = penguins$body_mass_g,
+    y = penguins$flipper_length_mm,
     color = penguins$sex
   )
 ) +
@@ -437,7 +436,8 @@ ggplot(
     x = "Flipper length (mm)",
     y = "Body mass (g)",
     color = "Sex"
-  )
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
 ## D
@@ -447,7 +447,7 @@ correlations between numeric variables (hint: try to google
 corrplot() to see which package you have to install to use it).
 ```{r}
 library(corrplot)
-correlation <- cor(penguins[, c(3:6, 8)], use = "complete.obs")
+correlation <- cor(penguins[, 3:6], use = "complete.obs")
 corrplot(correlation, method = "number")
 ```
 ```{r}
@@ -492,8 +492,8 @@ What are you noticing?
 ggplot(
   penguins,
   aes(
-    x = penguins$bill_length_mm,
-    y = penguins$bill_depth_mm,
+    x = penguins$bill_depth_mm,
+    y = penguins$bill_length_mm,
     color = penguins$species
   )
 ) +
@@ -502,7 +502,6 @@ ggplot(
     formula = "y ~ x",
     method = "lm",
     aes(color = penguins$species),
-    se = FALSE
   ) +
   scale_color_manual(values = c("darkorange", "purple", "cyan4")) +
   labs(

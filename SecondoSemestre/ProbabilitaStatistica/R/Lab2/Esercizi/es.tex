@@ -4,17 +4,20 @@
 %
 \documentclass[
 ]{article}
-\usepackage{lmodern}
-\usepackage{amssymb,amsmath}
-\usepackage{ifxetex,ifluatex}
-\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
 \else % if luatex or xetex
-  \usepackage{unicode-math}
+  \usepackage{unicode-math} % this also loads fontspec
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -33,14 +36,6 @@
   \KOMAoptions{parskip=half}}
 \makeatother
 \usepackage{xcolor}
-\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
-\hypersetup{
-  pdftitle={Lab2},
-  pdfauthor={Irimie Fabio},
-  hidelinks,
-  pdfcreator={LaTeX via pandoc}}
-\urlstyle{same} % disable monospaced font for URLs
 \usepackage[margin=1in]{geometry}
 \usepackage{color}
 \usepackage{fancyvrb}
@@ -53,13 +48,13 @@
 \newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
 \newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
 \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
 \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
 \newcommand{\BuiltInTok}[1]{#1}
 \newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
 \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
 \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
 \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
 \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
@@ -67,7 +62,7 @@
 \newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
 \newcommand{\ExtensionTok}[1]{#1}
 \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
 \newcommand{\ImportTok}[1]{#1}
 \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
@@ -76,7 +71,7 @@
 \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
 \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
 \newcommand{\RegionMarkerTok}[1]{#1}
-\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
 \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
@@ -99,6 +94,17 @@
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Lab2},
+  pdfauthor={Irimie Fabio},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
 
 \title{Lab2}
 \usepackage{etoolbox}
@@ -147,8 +153,8 @@ load() function).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(palmerpenguins)}
-\KeywordTok{data}\NormalTok{(penguins)}
+\FunctionTok{library}\NormalTok{(palmerpenguins)}
+\FunctionTok{data}\NormalTok{(penguins)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -161,34 +167,34 @@ variables of the dataset.
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Means}
-\KeywordTok{cat}\NormalTok{(}\StringTok{"Means: }\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
-\CommentTok{\#\# Means:}
-\KeywordTok{colMeans}\NormalTok{(penguins[, }\KeywordTok{c}\NormalTok{(}\DecValTok{3}\OperatorTok{:}\DecValTok{6}\NormalTok{, }\DecValTok{8}\NormalTok{)], }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
-\CommentTok{\#\#    bill\_length\_mm     bill\_depth\_mm flipper\_length\_mm       body\_mass\_g }
-\CommentTok{\#\#          43.92193          17.15117         200.91520        4201.75439 }
-\CommentTok{\#\#              year }
-\CommentTok{\#\#        2008.02907}
-\KeywordTok{cat}\NormalTok{(}\StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Means: }\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\DocumentationTok{\#\# Means:}
+\FunctionTok{colMeans}\NormalTok{(penguins[, }\FunctionTok{c}\NormalTok{(}\DecValTok{3}\SpecialCharTok{:}\DecValTok{6}\NormalTok{, }\DecValTok{8}\NormalTok{)], }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+\DocumentationTok{\#\#    bill\_length\_mm     bill\_depth\_mm flipper\_length\_mm       body\_mass\_g }
+\DocumentationTok{\#\#          43.92193          17.15117         200.91520        4201.75439 }
+\DocumentationTok{\#\#              year }
+\DocumentationTok{\#\#        2008.02907}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
 
 \CommentTok{\# Medians}
-\KeywordTok{cat}\NormalTok{(}\StringTok{"Medians: }\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
-\CommentTok{\#\# Medians:}
-\KeywordTok{sapply}\NormalTok{(penguins[, }\KeywordTok{c}\NormalTok{(}\DecValTok{3}\OperatorTok{:}\DecValTok{6}\NormalTok{, }\DecValTok{8}\NormalTok{)], median, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
-\CommentTok{\#\#    bill\_length\_mm     bill\_depth\_mm flipper\_length\_mm       body\_mass\_g }
-\CommentTok{\#\#             44.45             17.30            197.00           4050.00 }
-\CommentTok{\#\#              year }
-\CommentTok{\#\#           2008.00}
-\KeywordTok{cat}\NormalTok{(}\StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Medians: }\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\DocumentationTok{\#\# Medians:}
+\FunctionTok{sapply}\NormalTok{(penguins[, }\FunctionTok{c}\NormalTok{(}\DecValTok{3}\SpecialCharTok{:}\DecValTok{6}\NormalTok{, }\DecValTok{8}\NormalTok{)], median, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+\DocumentationTok{\#\#    bill\_length\_mm     bill\_depth\_mm flipper\_length\_mm       body\_mass\_g }
+\DocumentationTok{\#\#             44.45             17.30            197.00           4050.00 }
+\DocumentationTok{\#\#              year }
+\DocumentationTok{\#\#           2008.00}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
 
 \CommentTok{\# Standard deviations}
-\KeywordTok{cat}\NormalTok{(}\StringTok{"Standard deviations: }\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
-\CommentTok{\#\# Standard deviations:}
-\KeywordTok{sapply}\NormalTok{(penguins[, }\KeywordTok{c}\NormalTok{(}\DecValTok{3}\OperatorTok{:}\DecValTok{6}\NormalTok{, }\DecValTok{8}\NormalTok{)], sd, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
-\CommentTok{\#\#    bill\_length\_mm     bill\_depth\_mm flipper\_length\_mm       body\_mass\_g }
-\CommentTok{\#\#         5.4595837         1.9747932        14.0617137       801.9545357 }
-\CommentTok{\#\#              year }
-\CommentTok{\#\#         0.8183559}
-\KeywordTok{cat}\NormalTok{(}\StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Standard deviations: }\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\DocumentationTok{\#\# Standard deviations:}
+\FunctionTok{sapply}\NormalTok{(penguins[, }\FunctionTok{c}\NormalTok{(}\DecValTok{3}\SpecialCharTok{:}\DecValTok{6}\NormalTok{, }\DecValTok{8}\NormalTok{)], sd, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+\DocumentationTok{\#\#    bill\_length\_mm     bill\_depth\_mm flipper\_length\_mm       body\_mass\_g }
+\DocumentationTok{\#\#         5.4595837         1.9747932        14.0617137       801.9545357 }
+\DocumentationTok{\#\#              year }
+\DocumentationTok{\#\#         0.8183559}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -203,31 +209,28 @@ forgot to remove NA terms in the vector).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{stat\_auto \textless{}{-}}\StringTok{ }\ControlFlowTok{function}\NormalTok{(vec, }\DataTypeTok{na.rm =} \OtherTok{FALSE}\NormalTok{) \{}
+\NormalTok{stat\_auto }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(vec, }\AttributeTok{na.rm =} \ConstantTok{FALSE}\NormalTok{) \{}
   \ControlFlowTok{if}\NormalTok{ (na.rm) \{}
-\NormalTok{    mean \textless{}{-}}\StringTok{ }\KeywordTok{mean}\NormalTok{(vec, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
-\NormalTok{    sd \textless{}{-}}\StringTok{ }\KeywordTok{sd}\NormalTok{(vec, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{    mean }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(vec, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{    sd }\OtherTok{\textless{}{-}} \FunctionTok{sd}\NormalTok{(vec, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
 
-    \KeywordTok{return}\NormalTok{(}\KeywordTok{list}\NormalTok{(}\StringTok{"mean"}\NormalTok{ =}\StringTok{ }\NormalTok{mean, }\StringTok{"sd"}\NormalTok{ =}\StringTok{ }\NormalTok{sd))}
+    \FunctionTok{return}\NormalTok{(}\FunctionTok{list}\NormalTok{(}\StringTok{"mean"} \OtherTok{=}\NormalTok{ mean, }\StringTok{"sd"} \OtherTok{=}\NormalTok{ sd))}
 \NormalTok{  \}}
 
-\NormalTok{  mean \textless{}{-}}\StringTok{ }\KeywordTok{mean}\NormalTok{(vec)}
-\NormalTok{  sd \textless{}{-}}\StringTok{ }\KeywordTok{sd}\NormalTok{(vec)}
+\NormalTok{  mean }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(vec)}
+\NormalTok{  sd }\OtherTok{\textless{}{-}} \FunctionTok{sd}\NormalTok{(vec)}
 
-  \KeywordTok{return}\NormalTok{(}\KeywordTok{list}\NormalTok{(}\StringTok{"mean"}\NormalTok{ =}\StringTok{ }\NormalTok{mean, }\StringTok{"sd"}\NormalTok{ =}\StringTok{ }\NormalTok{sd))}
+  \FunctionTok{return}\NormalTok{(}\FunctionTok{list}\NormalTok{(}\StringTok{"mean"} \OtherTok{=}\NormalTok{ mean, }\StringTok{"sd"} \OtherTok{=}\NormalTok{ sd))}
 \NormalTok{\}}
 
-\KeywordTok{sapply}\NormalTok{(penguins[, }\KeywordTok{c}\NormalTok{(}\DecValTok{3}\OperatorTok{:}\DecValTok{6}\NormalTok{, }\DecValTok{8}\NormalTok{)], stat\_auto, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
+\FunctionTok{sapply}\NormalTok{(penguins[, }\FunctionTok{c}\NormalTok{(}\DecValTok{3}\SpecialCharTok{:}\DecValTok{6}\NormalTok{, }\DecValTok{8}\NormalTok{)], stat\_auto, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-##      bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
-## mean 43.92193       17.15117      200.9152          4201.754   
-## sd   5.459584       1.974793      14.06171          801.9545   
-##      year     
-## mean 2008.029 
-## sd   0.8183559
+##      bill_length_mm bill_depth_mm flipper_length_mm body_mass_g year     
+## mean 43.92193       17.15117      200.9152          4201.754    2008.029 
+## sd   5.459584       1.974793      14.06171          801.9545    0.8183559
 \end{verbatim}
 
 \hypertarget{e}{%
@@ -241,43 +244,40 @@ check the results.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{stat\_manual \textless{}{-}}\StringTok{ }\ControlFlowTok{function}\NormalTok{(vec, }\DataTypeTok{na.rm =} \OtherTok{FALSE}\NormalTok{) \{}
+\NormalTok{stat\_manual }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(vec, }\AttributeTok{na.rm =} \ConstantTok{FALSE}\NormalTok{) \{}
   \ControlFlowTok{if}\NormalTok{ (na.rm) \{}
-\NormalTok{    sum \textless{}{-}}\StringTok{ }\KeywordTok{sum}\NormalTok{(vec, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
-\NormalTok{    mean \textless{}{-}}\StringTok{ }\NormalTok{sum }\OperatorTok{/}\StringTok{ }\KeywordTok{na.omit}\NormalTok{(}\KeywordTok{length}\NormalTok{(vec))}
+\NormalTok{    sum }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(vec, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{    mean }\OtherTok{\textless{}{-}}\NormalTok{ sum }\SpecialCharTok{/} \FunctionTok{na.omit}\NormalTok{(}\FunctionTok{length}\NormalTok{(vec))}
 
-\NormalTok{    sum \textless{}{-}}\StringTok{ }\KeywordTok{sum}\NormalTok{((vec }\OperatorTok{{-}}\StringTok{ }\NormalTok{mean)}\OperatorTok{\^{}}\DecValTok{2}\NormalTok{, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
-\NormalTok{    denom \textless{}{-}}\StringTok{ }\KeywordTok{na.omit}\NormalTok{(}\KeywordTok{length}\NormalTok{(vec)) }\OperatorTok{{-}}\StringTok{ }\DecValTok{1}
-\NormalTok{    varianza \textless{}{-}}\StringTok{ }\NormalTok{sum }\OperatorTok{/}\StringTok{ }\NormalTok{denom}
+\NormalTok{    sum }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{((vec }\SpecialCharTok{{-}}\NormalTok{ mean)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{    denom }\OtherTok{\textless{}{-}} \FunctionTok{na.omit}\NormalTok{(}\FunctionTok{length}\NormalTok{(vec)) }\SpecialCharTok{{-}} \DecValTok{1}
+\NormalTok{    varianza }\OtherTok{\textless{}{-}}\NormalTok{ sum }\SpecialCharTok{/}\NormalTok{ denom}
 
-\NormalTok{    sd \textless{}{-}}\StringTok{ }\KeywordTok{sqrt}\NormalTok{(varianza)}
+\NormalTok{    sd }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(varianza)}
 
-    \KeywordTok{return}\NormalTok{(}\KeywordTok{list}\NormalTok{(}\StringTok{"mean"}\NormalTok{ =}\StringTok{ }\NormalTok{mean, }\StringTok{"sd"}\NormalTok{ =}\StringTok{ }\NormalTok{sd))}
+    \FunctionTok{return}\NormalTok{(}\FunctionTok{list}\NormalTok{(}\StringTok{"mean"} \OtherTok{=}\NormalTok{ mean, }\StringTok{"sd"} \OtherTok{=}\NormalTok{ sd))}
 \NormalTok{  \}}
 
-\NormalTok{  sum \textless{}{-}}\StringTok{ }\KeywordTok{sum}\NormalTok{(vec)}
-\NormalTok{  mean \textless{}{-}}\StringTok{ }\NormalTok{sum }\OperatorTok{/}\StringTok{ }\KeywordTok{length}\NormalTok{(vec)}
+\NormalTok{  sum }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(vec)}
+\NormalTok{  mean }\OtherTok{\textless{}{-}}\NormalTok{ sum }\SpecialCharTok{/} \FunctionTok{length}\NormalTok{(vec)}
 
-\NormalTok{  sum \textless{}{-}}\StringTok{ }\KeywordTok{sum}\NormalTok{((vec }\OperatorTok{{-}}\StringTok{ }\NormalTok{mean)}\OperatorTok{\^{}}\DecValTok{2}\NormalTok{)}
-\NormalTok{  denom \textless{}{-}}\StringTok{ }\KeywordTok{length}\NormalTok{(vec) }\OperatorTok{{-}}\StringTok{ }\DecValTok{1}
-\NormalTok{  varianza \textless{}{-}}\StringTok{ }\NormalTok{sum }\OperatorTok{/}\StringTok{ }\NormalTok{denom}
+\NormalTok{  sum }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{((vec }\SpecialCharTok{{-}}\NormalTok{ mean)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}
+\NormalTok{  denom }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(vec) }\SpecialCharTok{{-}} \DecValTok{1}
+\NormalTok{  varianza }\OtherTok{\textless{}{-}}\NormalTok{ sum }\SpecialCharTok{/}\NormalTok{ denom}
 
-\NormalTok{  sd \textless{}{-}}\StringTok{ }\KeywordTok{sqrt}\NormalTok{(varianza)}
+\NormalTok{  sd }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(varianza)}
 
-  \KeywordTok{return}\NormalTok{(}\KeywordTok{list}\NormalTok{(}\StringTok{"mean"}\NormalTok{ =}\StringTok{ }\NormalTok{mean, }\StringTok{"sd"}\NormalTok{ =}\StringTok{ }\NormalTok{sd))}
+  \FunctionTok{return}\NormalTok{(}\FunctionTok{list}\NormalTok{(}\StringTok{"mean"} \OtherTok{=}\NormalTok{ mean, }\StringTok{"sd"} \OtherTok{=}\NormalTok{ sd))}
 \NormalTok{\}}
 
-\KeywordTok{sapply}\NormalTok{(penguins[, }\KeywordTok{c}\NormalTok{(}\DecValTok{3}\OperatorTok{:}\DecValTok{6}\NormalTok{, }\DecValTok{8}\NormalTok{)], stat\_manual, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
+\FunctionTok{sapply}\NormalTok{(penguins[, }\FunctionTok{c}\NormalTok{(}\DecValTok{3}\SpecialCharTok{:}\DecValTok{6}\NormalTok{, }\DecValTok{8}\NormalTok{)], stat\_manual, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-##      bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
-## mean 43.66657       17.05145      199.7471          4177.326   
-## sd   5.449612       1.971543      14.06909          799.985    
-##      year     
-## mean 2008.029 
-## sd   0.8183559
+##      bill_length_mm bill_depth_mm flipper_length_mm body_mass_g year     
+## mean 43.66657       17.05145      199.7471          4177.326    2008.029 
+## sd   5.449612       1.971543      14.06909          799.985     0.8183559
 \end{verbatim}
 
 \hypertarget{exercise-2---table-of-frequencies}{%
@@ -295,13 +295,13 @@ variable, then define a sequence for the cuts).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{r \textless{}{-}}\StringTok{ }\KeywordTok{range}\NormalTok{(penguins}\OperatorTok{$}\NormalTok{flipper\_length\_mm, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
-\NormalTok{splits \textless{}{-}}\StringTok{ }\KeywordTok{seq}\NormalTok{(r[}\DecValTok{1}\NormalTok{], r[}\DecValTok{2}\NormalTok{], }\DecValTok{10}\NormalTok{)}
-\NormalTok{splits \textless{}{-}}\StringTok{ }\KeywordTok{append}\NormalTok{(splits, r[}\DecValTok{2}\NormalTok{])}
+\NormalTok{r }\OtherTok{\textless{}{-}} \FunctionTok{range}\NormalTok{(penguins}\SpecialCharTok{$}\NormalTok{flipper\_length\_mm, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{splits }\OtherTok{\textless{}{-}} \FunctionTok{seq}\NormalTok{(r[}\DecValTok{1}\NormalTok{], r[}\DecValTok{2}\NormalTok{], }\DecValTok{10}\NormalTok{)}
+\NormalTok{splits }\OtherTok{\textless{}{-}} \FunctionTok{append}\NormalTok{(splits, r[}\DecValTok{2}\NormalTok{])}
 
-\NormalTok{classes \textless{}{-}}\StringTok{ }\KeywordTok{cut}\NormalTok{(penguins}\OperatorTok{$}\NormalTok{flipper\_length\_mm, splits, }\DataTypeTok{ordered\_result =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{classes }\OtherTok{\textless{}{-}} \FunctionTok{cut}\NormalTok{(penguins}\SpecialCharTok{$}\NormalTok{flipper\_length\_mm, splits, }\AttributeTok{ordered\_result =} \ConstantTok{TRUE}\NormalTok{)}
 
-\KeywordTok{cat}\NormalTok{(}\StringTok{"Splits: "}\NormalTok{, splits, }\StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Splits: "}\NormalTok{, splits, }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -311,7 +311,7 @@ variable, then define a sequence for the cuts).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{cat}\NormalTok{(}\StringTok{"Classes: }\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Classes: }\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -397,8 +397,8 @@ absolute frequencies).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{df \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\KeywordTok{table}\NormalTok{(classes))}
-\KeywordTok{colnames}\NormalTok{(df) \textless{}{-}}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Classes"}\NormalTok{, }\StringTok{"AbsoluteFrequencies"}\NormalTok{)}
+\NormalTok{df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\FunctionTok{table}\NormalTok{(classes))}
+\FunctionTok{colnames}\NormalTok{(df) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Classes"}\NormalTok{, }\StringTok{"AbsoluteFrequencies"}\NormalTok{)}
 \NormalTok{df}
 \end{Highlighting}
 \end{Shaded}
@@ -421,28 +421,21 @@ frequencies, and cumulative relative frequencies.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{df}\OperatorTok{$}\NormalTok{CumAbsFreq \textless{}{-}}\StringTok{ }\KeywordTok{cumsum}\NormalTok{(df}\OperatorTok{$}\NormalTok{AbsoluteFrequencies)}
-\NormalTok{df}\OperatorTok{$}\NormalTok{RelativeFrequencies \textless{}{-}}\StringTok{ }\NormalTok{df}\OperatorTok{$}\NormalTok{AbsoluteFrequencies }\OperatorTok{/}\StringTok{ }\KeywordTok{sum}\NormalTok{(df}\OperatorTok{$}\NormalTok{AbsoluteFrequencies)}
-\NormalTok{df}\OperatorTok{$}\NormalTok{RelAbsFreq \textless{}{-}}\StringTok{ }\KeywordTok{cumsum}\NormalTok{(df}\OperatorTok{$}\NormalTok{RelativeFrequencies)}
+\NormalTok{df}\SpecialCharTok{$}\NormalTok{CumAbsFreq }\OtherTok{\textless{}{-}} \FunctionTok{cumsum}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{AbsoluteFrequencies)}
+\NormalTok{df}\SpecialCharTok{$}\NormalTok{RelativeFrequencies }\OtherTok{\textless{}{-}}\NormalTok{ df}\SpecialCharTok{$}\NormalTok{AbsoluteFrequencies }\SpecialCharTok{/} \FunctionTok{sum}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{AbsoluteFrequencies)}
+\NormalTok{df}\SpecialCharTok{$}\NormalTok{RelAbsFreq }\OtherTok{\textless{}{-}} \FunctionTok{cumsum}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{RelativeFrequencies)}
 \NormalTok{df}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-##     Classes AbsoluteFrequencies CumAbsFreq RelativeFrequencies
-## 1 (172,182]                  22         22          0.06451613
-## 2 (182,192]                  96        118          0.28152493
-## 3 (192,202]                  85        203          0.24926686
-## 4 (202,212]                  47        250          0.13782991
-## 5 (212,222]                  67        317          0.19648094
-## 6 (222,231]                  24        341          0.07038123
-##   RelAbsFreq
-## 1 0.06451613
-## 2 0.34604106
-## 3 0.59530792
-## 4 0.73313783
-## 5 0.92961877
-## 6 1.00000000
+##     Classes AbsoluteFrequencies CumAbsFreq RelativeFrequencies RelAbsFreq
+## 1 (172,182]                  22         22          0.06451613 0.06451613
+## 2 (182,192]                  96        118          0.28152493 0.34604106
+## 3 (192,202]                  85        203          0.24926686 0.59530792
+## 4 (202,212]                  47        250          0.13782991 0.73313783
+## 5 (212,222]                  67        317          0.19648094 0.92961877
+## 6 (222,231]                  24        341          0.07038123 1.00000000
 \end{verbatim}
 
 \hypertarget{d-1}{%
@@ -456,28 +449,28 @@ choose the appropriate number of digits).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(ggplot2)}
-\KeywordTok{ggplot}\NormalTok{(}
-  \DataTypeTok{data =}\NormalTok{ df,}
-  \KeywordTok{aes}\NormalTok{(}
-    \DataTypeTok{x =}\NormalTok{ df}\OperatorTok{$}\NormalTok{Class,}
-    \DataTypeTok{y =}\NormalTok{ df}\OperatorTok{$}\NormalTok{AbsoluteFrequency,}
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\FunctionTok{ggplot}\NormalTok{(}
+  \AttributeTok{data =}\NormalTok{ df,}
+  \FunctionTok{aes}\NormalTok{(}
+    \AttributeTok{x =}\NormalTok{ df}\SpecialCharTok{$}\NormalTok{Class,}
+    \AttributeTok{y =}\NormalTok{ df}\SpecialCharTok{$}\NormalTok{AbsoluteFrequency,}
 \NormalTok{  )}
-\NormalTok{) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{geom\_col}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{y =}\NormalTok{ df}\OperatorTok{$}\NormalTok{AbsoluteFrequencies)) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{geom\_text}\NormalTok{(}
-    \KeywordTok{aes}\NormalTok{(}
-      \DataTypeTok{label =} \KeywordTok{paste}\NormalTok{(}\KeywordTok{round}\NormalTok{(df}\OperatorTok{$}\NormalTok{RelativeFrequencies }\OperatorTok{*}\StringTok{ }\DecValTok{100}\NormalTok{, }\DecValTok{2}\NormalTok{), }\StringTok{"\%"}\NormalTok{),}
-      \DataTypeTok{y =}\NormalTok{ df}\OperatorTok{$}\NormalTok{AbsoluteFrequencies,}
+\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_col}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{y =}\NormalTok{ df}\SpecialCharTok{$}\NormalTok{AbsoluteFrequencies)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_text}\NormalTok{(}
+    \FunctionTok{aes}\NormalTok{(}
+      \AttributeTok{label =} \FunctionTok{paste}\NormalTok{(}\FunctionTok{round}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{RelativeFrequencies }\SpecialCharTok{*} \DecValTok{100}\NormalTok{, }\DecValTok{2}\NormalTok{), }\StringTok{"\%"}\NormalTok{),}
+      \AttributeTok{y =}\NormalTok{ df}\SpecialCharTok{$}\NormalTok{AbsoluteFrequencies,}
 \NormalTok{    ),}
-    \DataTypeTok{vjust =} \FloatTok{{-}0.5}\NormalTok{,}
-\NormalTok{  ) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{labs}\NormalTok{(}
-    \DataTypeTok{title =} \StringTok{"Flipper length by class"}\NormalTok{,}
-    \DataTypeTok{x =} \StringTok{"Flipper length class (mm)"}\NormalTok{,}
-    \DataTypeTok{y =} \StringTok{"Absolute frequency"}\NormalTok{,}
-\NormalTok{  ) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.position =} \StringTok{"bottom"}\NormalTok{)}
+    \AttributeTok{vjust =} \SpecialCharTok{{-}}\FloatTok{0.5}\NormalTok{,}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Flipper length by class"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"Flipper length class (mm)"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Absolute frequency"}\NormalTok{,}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \StringTok{"bottom"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -499,26 +492,26 @@ geom\_histogram()). Play with the binwidth argument. Try to insert y =
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{ggplot}\NormalTok{(}
-  \DataTypeTok{data =}\NormalTok{ penguins,}
-  \KeywordTok{aes}\NormalTok{(}
-    \DataTypeTok{x =}\NormalTok{ penguins}\OperatorTok{$}\NormalTok{flipper\_length\_mm,}
-    \DataTypeTok{fill =}\NormalTok{ penguins}\OperatorTok{$}\NormalTok{species,}
+\FunctionTok{ggplot}\NormalTok{(}
+  \AttributeTok{data =}\NormalTok{ penguins,}
+  \FunctionTok{aes}\NormalTok{(}
+    \AttributeTok{x =}\NormalTok{ penguins}\SpecialCharTok{$}\NormalTok{flipper\_length\_mm,}
+    \AttributeTok{fill =}\NormalTok{ penguins}\SpecialCharTok{$}\NormalTok{species,}
 \NormalTok{  )}
-\NormalTok{) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{scale\_fill\_manual}\NormalTok{(}\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"darkorange"}\NormalTok{, }\StringTok{"purple"}\NormalTok{, }\StringTok{"cyan4"}\NormalTok{)) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{geom\_histogram}\NormalTok{(}
-    \DataTypeTok{position =} \StringTok{"identity"}\NormalTok{,}
-    \DataTypeTok{binwidth =} \DecValTok{2}\NormalTok{,}
-    \KeywordTok{aes}\NormalTok{(}\DataTypeTok{y =}\NormalTok{ ..density..),}
-\NormalTok{  ) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{labs}\NormalTok{(}
-    \DataTypeTok{title =} \StringTok{"Flipper length distribution"}\NormalTok{,}
-    \DataTypeTok{x =} \StringTok{"Flipper length (mm)"}\NormalTok{,}
-    \DataTypeTok{y =} \StringTok{"Density"}\NormalTok{,}
-    \DataTypeTok{fill =} \StringTok{"Species"}\NormalTok{,}
-\NormalTok{  ) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{legend.position =} \StringTok{"bottom"}\NormalTok{)}
+\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\StringTok{"darkorange"}\NormalTok{, }\StringTok{"purple"}\NormalTok{, }\StringTok{"cyan4"}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_histogram}\NormalTok{(}
+    \AttributeTok{position =} \StringTok{"identity"}\NormalTok{,}
+    \AttributeTok{binwidth =} \DecValTok{2}\NormalTok{,}
+    \FunctionTok{aes}\NormalTok{(}\AttributeTok{y =}\NormalTok{ ..density..),}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Flipper length distribution"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"Flipper length (mm)"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Density"}\NormalTok{,}
+    \AttributeTok{fill =} \StringTok{"Species"}\NormalTok{,}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \StringTok{"bottom"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -536,27 +529,27 @@ penguins{[}penguins\$species == ``Gentoo'',{]})
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{species \textless{}{-}}\StringTok{ }\KeywordTok{unique}\NormalTok{(penguins}\OperatorTok{$}\NormalTok{species)}
-\NormalTok{summary \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}
-  \DataTypeTok{Specie =}\NormalTok{ species}
+\NormalTok{species }\OtherTok{\textless{}{-}} \FunctionTok{unique}\NormalTok{(penguins}\SpecialCharTok{$}\NormalTok{species)}
+\NormalTok{summary }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{Specie =}\NormalTok{ species}
 \NormalTok{)}
 
 \ControlFlowTok{for}\NormalTok{ (specie }\ControlFlowTok{in}\NormalTok{ species) \{}
-\NormalTok{  summary}\OperatorTok{$}\NormalTok{Mean[}\KeywordTok{which}\NormalTok{(specie }\OperatorTok{==}\StringTok{ }\NormalTok{species)] \textless{}{-}}
-\StringTok{    }\KeywordTok{mean}\NormalTok{(penguins[penguins}\OperatorTok{$}\NormalTok{species }\OperatorTok{==}\StringTok{ }\NormalTok{specie, ]}\OperatorTok{$}\NormalTok{flipper\_length\_mm,}
-      \DataTypeTok{na.rm =} \OtherTok{TRUE}
+\NormalTok{  summary}\SpecialCharTok{$}\NormalTok{Mean[}\FunctionTok{which}\NormalTok{(specie }\SpecialCharTok{==}\NormalTok{ species)] }\OtherTok{\textless{}{-}}
+    \FunctionTok{mean}\NormalTok{(penguins[penguins}\SpecialCharTok{$}\NormalTok{species }\SpecialCharTok{==}\NormalTok{ specie, ]}\SpecialCharTok{$}\NormalTok{flipper\_length\_mm,}
+      \AttributeTok{na.rm =} \ConstantTok{TRUE}
 \NormalTok{    )}
-\NormalTok{  summary}\OperatorTok{$}\NormalTok{Median[}\KeywordTok{which}\NormalTok{(specie }\OperatorTok{==}\StringTok{ }\NormalTok{species)] \textless{}{-}}
-\StringTok{    }\KeywordTok{median}\NormalTok{(penguins[penguins}\OperatorTok{$}\NormalTok{species }\OperatorTok{==}\StringTok{ }\NormalTok{specie, ]}\OperatorTok{$}\NormalTok{flipper\_length\_mm,}
-      \DataTypeTok{na.rm =} \OtherTok{TRUE}
+\NormalTok{  summary}\SpecialCharTok{$}\NormalTok{Median[}\FunctionTok{which}\NormalTok{(specie }\SpecialCharTok{==}\NormalTok{ species)] }\OtherTok{\textless{}{-}}
+    \FunctionTok{median}\NormalTok{(penguins[penguins}\SpecialCharTok{$}\NormalTok{species }\SpecialCharTok{==}\NormalTok{ specie, ]}\SpecialCharTok{$}\NormalTok{flipper\_length\_mm,}
+      \AttributeTok{na.rm =} \ConstantTok{TRUE}
 \NormalTok{    )}
-\NormalTok{  summary}\OperatorTok{$}\NormalTok{StandardDeviation[}\KeywordTok{which}\NormalTok{(specie }\OperatorTok{==}\StringTok{ }\NormalTok{species)] \textless{}{-}}
-\StringTok{    }\KeywordTok{sd}\NormalTok{(penguins[penguins}\OperatorTok{$}\NormalTok{species }\OperatorTok{==}\StringTok{ }\NormalTok{specie, ]}\OperatorTok{$}\NormalTok{flipper\_length\_mm,}
-      \DataTypeTok{na.rm =} \OtherTok{TRUE}
+\NormalTok{  summary}\SpecialCharTok{$}\NormalTok{StandardDeviation[}\FunctionTok{which}\NormalTok{(specie }\SpecialCharTok{==}\NormalTok{ species)] }\OtherTok{\textless{}{-}}
+    \FunctionTok{sd}\NormalTok{(penguins[penguins}\SpecialCharTok{$}\NormalTok{species }\SpecialCharTok{==}\NormalTok{ specie, ]}\SpecialCharTok{$}\NormalTok{flipper\_length\_mm,}
+      \AttributeTok{na.rm =} \ConstantTok{TRUE}
 \NormalTok{    )}
-\NormalTok{  summary}\OperatorTok{$}\NormalTok{Variance[}\KeywordTok{which}\NormalTok{(specie }\OperatorTok{==}\StringTok{ }\NormalTok{species)] \textless{}{-}}
-\StringTok{    }\KeywordTok{var}\NormalTok{(penguins[penguins}\OperatorTok{$}\NormalTok{species }\OperatorTok{==}\StringTok{ }\NormalTok{specie, ]}\OperatorTok{$}\NormalTok{flipper\_length\_mm,}
-      \DataTypeTok{na.rm =} \OtherTok{TRUE}
+\NormalTok{  summary}\SpecialCharTok{$}\NormalTok{Variance[}\FunctionTok{which}\NormalTok{(specie }\SpecialCharTok{==}\NormalTok{ species)] }\OtherTok{\textless{}{-}}
+    \FunctionTok{var}\NormalTok{(penguins[penguins}\SpecialCharTok{$}\NormalTok{species }\SpecialCharTok{==}\NormalTok{ specie, ]}\SpecialCharTok{$}\NormalTok{flipper\_length\_mm,}
+      \AttributeTok{na.rm =} \ConstantTok{TRUE}
 \NormalTok{    )}
 \NormalTok{\}}
 \NormalTok{summary}
@@ -579,16 +572,16 @@ different color (hint: use the color argument of the aes() function).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{ggplot}\NormalTok{(}
+\FunctionTok{ggplot}\NormalTok{(}
 \NormalTok{  penguins,}
-  \KeywordTok{aes}\NormalTok{(}
-    \DataTypeTok{x =}\NormalTok{ penguins}\OperatorTok{$}\NormalTok{flipper\_length\_mm,}
-    \DataTypeTok{color =}\NormalTok{ penguins}\OperatorTok{$}\NormalTok{species}
+  \FunctionTok{aes}\NormalTok{(}
+    \AttributeTok{x =}\NormalTok{ penguins}\SpecialCharTok{$}\NormalTok{flipper\_length\_mm,}
+    \AttributeTok{color =}\NormalTok{ penguins}\SpecialCharTok{$}\NormalTok{species}
 \NormalTok{  )}
-\NormalTok{) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{scale\_color\_manual}\NormalTok{(}\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"darkorange"}\NormalTok{, }\StringTok{"purple"}\NormalTok{, }\StringTok{"cyan4"}\NormalTok{)) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{geom\_boxplot}\NormalTok{(}
-    \KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ penguins}\OperatorTok{$}\NormalTok{flipper\_length\_mm)}
+\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_color\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\StringTok{"darkorange"}\NormalTok{, }\StringTok{"purple"}\NormalTok{, }\StringTok{"cyan4"}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{(}
+    \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ penguins}\SpecialCharTok{$}\NormalTok{flipper\_length\_mm)}
 \NormalTok{  )}
 \end{Highlighting}
 \end{Shaded}
@@ -618,11 +611,11 @@ Q2, Q3).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{gentoo \textless{}{-}}\StringTok{ }\NormalTok{penguins[penguins}\OperatorTok{$}\NormalTok{species }\OperatorTok{==}\StringTok{ "Gentoo"}\NormalTok{, ]}
-\NormalTok{quartiles \textless{}{-}}\StringTok{ }\KeywordTok{quantile}\NormalTok{(}
-\NormalTok{  gentoo}\OperatorTok{$}\NormalTok{flipper\_length\_mm,}
-  \KeywordTok{c}\NormalTok{(}\FloatTok{0.25}\NormalTok{, }\FloatTok{0.5}\NormalTok{, }\FloatTok{0.75}\NormalTok{),}
-  \DataTypeTok{na.rm =} \OtherTok{TRUE}
+\NormalTok{gentoo }\OtherTok{\textless{}{-}}\NormalTok{ penguins[penguins}\SpecialCharTok{$}\NormalTok{species }\SpecialCharTok{==} \StringTok{"Gentoo"}\NormalTok{, ]}
+\NormalTok{quartiles }\OtherTok{\textless{}{-}} \FunctionTok{quantile}\NormalTok{(}
+\NormalTok{  gentoo}\SpecialCharTok{$}\NormalTok{flipper\_length\_mm,}
+  \FunctionTok{c}\NormalTok{(}\FloatTok{0.25}\NormalTok{, }\FloatTok{0.5}\NormalTok{, }\FloatTok{0.75}\NormalTok{),}
+  \AttributeTok{na.rm =} \ConstantTok{TRUE}
 \NormalTok{)}
 \NormalTok{quartiles}
 \end{Highlighting}
@@ -641,11 +634,11 @@ penguins.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{adelie \textless{}{-}}\StringTok{ }\NormalTok{penguins[penguins}\OperatorTok{$}\NormalTok{species }\OperatorTok{==}\StringTok{ "Adelie"}\NormalTok{, ]}
-\NormalTok{p40 \textless{}{-}}\StringTok{ }\KeywordTok{quantile}\NormalTok{(}
-\NormalTok{  adelie}\OperatorTok{$}\NormalTok{flipper\_length\_mm,}
+\NormalTok{adelie }\OtherTok{\textless{}{-}}\NormalTok{ penguins[penguins}\SpecialCharTok{$}\NormalTok{species }\SpecialCharTok{==} \StringTok{"Adelie"}\NormalTok{, ]}
+\NormalTok{p40 }\OtherTok{\textless{}{-}} \FunctionTok{quantile}\NormalTok{(}
+\NormalTok{  adelie}\SpecialCharTok{$}\NormalTok{flipper\_length\_mm,}
   \FloatTok{0.4}\NormalTok{,}
-  \DataTypeTok{na.rm =} \OtherTok{TRUE}
+  \AttributeTok{na.rm =} \ConstantTok{TRUE}
 \NormalTok{)}
 \NormalTok{p40}
 \end{Highlighting}
@@ -671,9 +664,8 @@ of the week).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
-\NormalTok{n \textless{}{-}}\StringTok{ }\DecValTok{10}
-\NormalTok{days \textless{}{-}}\StringTok{ }\KeywordTok{c}\NormalTok{(}
+\NormalTok{n }\OtherTok{\textless{}{-}} \DecValTok{10}
+\NormalTok{days }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}
   \StringTok{"Monday"}\NormalTok{,}
   \StringTok{"Tuesday"}\NormalTok{,}
   \StringTok{"Wednesday"}\NormalTok{,}
@@ -682,30 +674,30 @@ of the week).
   \StringTok{"Saturday"}\NormalTok{,}
   \StringTok{"Sunday"}
 \NormalTok{)}
-\NormalTok{data \textless{}{-}}\StringTok{ }\KeywordTok{matrix}\NormalTok{(}\DataTypeTok{nrow =}\NormalTok{ n, }\DataTypeTok{ncol =} \DecValTok{7}\NormalTok{)}
+\NormalTok{data }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\AttributeTok{nrow =}\NormalTok{ n, }\AttributeTok{ncol =} \DecValTok{7}\NormalTok{)}
 
-\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\DecValTok{7}\NormalTok{) \{}
-\NormalTok{  data[, i] \textless{}{-}}\StringTok{ }\KeywordTok{round}\NormalTok{(}\KeywordTok{runif}\NormalTok{(n, }\DataTypeTok{min =} \DecValTok{0}\NormalTok{, }\DataTypeTok{max =} \DecValTok{100}\NormalTok{), }\DecValTok{0}\NormalTok{)}
+\ControlFlowTok{for}\NormalTok{ (day }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\DecValTok{7}\NormalTok{) \{}
+\NormalTok{  data[, day] }\OtherTok{\textless{}{-}} \FunctionTok{round}\NormalTok{(}\FunctionTok{runif}\NormalTok{(n, }\AttributeTok{min =} \DecValTok{0}\NormalTok{, }\AttributeTok{max =} \DecValTok{100}\NormalTok{), }\DecValTok{0}\NormalTok{)}
 \NormalTok{\}}
 
-\NormalTok{df \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(data)}
-\KeywordTok{colnames}\NormalTok{(df) \textless{}{-}}\StringTok{ }\NormalTok{days}
+\NormalTok{df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(data)}
+\FunctionTok{colnames}\NormalTok{(df) }\OtherTok{\textless{}{-}}\NormalTok{ days}
 \NormalTok{df}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
 ##    Monday Tuesday Wednesday Thursday Friday Saturday Sunday
-## 1      29      96        89       96     14        5     67
-## 2      79      45        69       90     41       44      9
-## 3      41      68        64       69     41       80     38
-## 4      88      57        99       80     37       12     27
-## 5      94      10        66        2     15       56     81
-## 6       5      90        71       48     14       21     45
-## 7      53      25        54       76     23       13     81
-## 8      89       4        59       22     47       75     81
-## 9      55      33        29       32     27       90     79
-## 10     46      95        15       23     86       37     44
+## 1      71      73        79       39     81       80      7
+## 2      83      17        85       17      8       73     83
+## 3      89      31        88       32     12       22     48
+## 4      54      37        80       41     13       74     39
+## 5      56       8        64       76     74       87     30
+## 6      28      71        63       27     76       53     24
+## 7      66      55        27       12     99       60     42
+## 8      24      14         3        3     62       94     94
+## 9      29      97        42       81     29       95     26
+## 10     72      56        36       48     20       66     57
 \end{verbatim}
 
 \hypertarget{b-3}{%
@@ -717,16 +709,16 @@ the other contains the corresponding day of the week.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{df\_long \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}
-  \StringTok{"Day"}\NormalTok{ =}\StringTok{ }\KeywordTok{rep}\NormalTok{(days, }\DataTypeTok{each =}\NormalTok{ n),}
-  \StringTok{"Value"}\NormalTok{ =}\StringTok{ }\KeywordTok{c}\NormalTok{(}
-\NormalTok{    df}\OperatorTok{$}\NormalTok{Monday,}
-\NormalTok{    df}\OperatorTok{$}\NormalTok{Tuesday,}
-\NormalTok{    df}\OperatorTok{$}\NormalTok{Wednesday,}
-\NormalTok{    df}\OperatorTok{$}\NormalTok{Thursday,}
-\NormalTok{    df}\OperatorTok{$}\NormalTok{Friday,}
-\NormalTok{    df}\OperatorTok{$}\NormalTok{Saturday,}
-\NormalTok{    df}\OperatorTok{$}\NormalTok{Sunday}
+\NormalTok{df\_long }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \StringTok{"Day"} \OtherTok{=} \FunctionTok{rep}\NormalTok{(days, }\AttributeTok{each =}\NormalTok{ n),}
+  \StringTok{"Value"} \OtherTok{=} \FunctionTok{c}\NormalTok{(}
+\NormalTok{    df}\SpecialCharTok{$}\NormalTok{Monday,}
+\NormalTok{    df}\SpecialCharTok{$}\NormalTok{Tuesday,}
+\NormalTok{    df}\SpecialCharTok{$}\NormalTok{Wednesday,}
+\NormalTok{    df}\SpecialCharTok{$}\NormalTok{Thursday,}
+\NormalTok{    df}\SpecialCharTok{$}\NormalTok{Friday,}
+\NormalTok{    df}\SpecialCharTok{$}\NormalTok{Saturday,}
+\NormalTok{    df}\SpecialCharTok{$}\NormalTok{Sunday}
 \NormalTok{  )}
 \NormalTok{)}
 \NormalTok{df\_long}
@@ -735,76 +727,76 @@ the other contains the corresponding day of the week.
 
 \begin{verbatim}
 ##          Day Value
-## 1     Monday    29
-## 2     Monday    79
-## 3     Monday    41
-## 4     Monday    88
-## 5     Monday    94
-## 6     Monday     5
-## 7     Monday    53
-## 8     Monday    89
-## 9     Monday    55
-## 10    Monday    46
-## 11   Tuesday    96
-## 12   Tuesday    45
-## 13   Tuesday    68
-## 14   Tuesday    57
-## 15   Tuesday    10
-## 16   Tuesday    90
-## 17   Tuesday    25
-## 18   Tuesday     4
-## 19   Tuesday    33
-## 20   Tuesday    95
-## 21 Wednesday    89
-## 22 Wednesday    69
-## 23 Wednesday    64
-## 24 Wednesday    99
-## 25 Wednesday    66
-## 26 Wednesday    71
-## 27 Wednesday    54
-## 28 Wednesday    59
-## 29 Wednesday    29
-## 30 Wednesday    15
-## 31  Thursday    96
-## 32  Thursday    90
-## 33  Thursday    69
-## 34  Thursday    80
-## 35  Thursday     2
-## 36  Thursday    48
-## 37  Thursday    76
-## 38  Thursday    22
-## 39  Thursday    32
-## 40  Thursday    23
-## 41    Friday    14
-## 42    Friday    41
-## 43    Friday    41
-## 44    Friday    37
-## 45    Friday    15
-## 46    Friday    14
-## 47    Friday    23
-## 48    Friday    47
-## 49    Friday    27
-## 50    Friday    86
-## 51  Saturday     5
-## 52  Saturday    44
-## 53  Saturday    80
-## 54  Saturday    12
-## 55  Saturday    56
-## 56  Saturday    21
-## 57  Saturday    13
-## 58  Saturday    75
-## 59  Saturday    90
-## 60  Saturday    37
-## 61    Sunday    67
-## 62    Sunday     9
-## 63    Sunday    38
-## 64    Sunday    27
-## 65    Sunday    81
-## 66    Sunday    45
-## 67    Sunday    81
-## 68    Sunday    81
-## 69    Sunday    79
-## 70    Sunday    44
+## 1     Monday    71
+## 2     Monday    83
+## 3     Monday    89
+## 4     Monday    54
+## 5     Monday    56
+## 6     Monday    28
+## 7     Monday    66
+## 8     Monday    24
+## 9     Monday    29
+## 10    Monday    72
+## 11   Tuesday    73
+## 12   Tuesday    17
+## 13   Tuesday    31
+## 14   Tuesday    37
+## 15   Tuesday     8
+## 16   Tuesday    71
+## 17   Tuesday    55
+## 18   Tuesday    14
+## 19   Tuesday    97
+## 20   Tuesday    56
+## 21 Wednesday    79
+## 22 Wednesday    85
+## 23 Wednesday    88
+## 24 Wednesday    80
+## 25 Wednesday    64
+## 26 Wednesday    63
+## 27 Wednesday    27
+## 28 Wednesday     3
+## 29 Wednesday    42
+## 30 Wednesday    36
+## 31  Thursday    39
+## 32  Thursday    17
+## 33  Thursday    32
+## 34  Thursday    41
+## 35  Thursday    76
+## 36  Thursday    27
+## 37  Thursday    12
+## 38  Thursday     3
+## 39  Thursday    81
+## 40  Thursday    48
+## 41    Friday    81
+## 42    Friday     8
+## 43    Friday    12
+## 44    Friday    13
+## 45    Friday    74
+## 46    Friday    76
+## 47    Friday    99
+## 48    Friday    62
+## 49    Friday    29
+## 50    Friday    20
+## 51  Saturday    80
+## 52  Saturday    73
+## 53  Saturday    22
+## 54  Saturday    74
+## 55  Saturday    87
+## 56  Saturday    53
+## 57  Saturday    60
+## 58  Saturday    94
+## 59  Saturday    95
+## 60  Saturday    66
+## 61    Sunday     7
+## 62    Sunday    83
+## 63    Sunday    48
+## 64    Sunday    39
+## 65    Sunday    30
+## 66    Sunday    24
+## 67    Sunday    42
+## 68    Sunday    94
+## 69    Sunday    26
+## 70    Sunday    57
 \end{verbatim}
 
 \hypertarget{c-3}{%
@@ -817,23 +809,23 @@ the axis labels).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{ggplot}\NormalTok{(}
+\FunctionTok{ggplot}\NormalTok{(}
 \NormalTok{  df\_long,}
-  \KeywordTok{aes}\NormalTok{(}
-    \DataTypeTok{x =}\NormalTok{ Day,}
-    \DataTypeTok{y =}\NormalTok{ Value,}
-    \DataTypeTok{color =}\NormalTok{ Day}
+  \FunctionTok{aes}\NormalTok{(}
+    \AttributeTok{x =}\NormalTok{ Day,}
+    \AttributeTok{y =}\NormalTok{ Value,}
+    \AttributeTok{color =}\NormalTok{ Day}
 \NormalTok{  )}
-\NormalTok{) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{scale\_color\_manual}\NormalTok{(}\DataTypeTok{values =} \KeywordTok{rainbow}\NormalTok{(}\DecValTok{7}\NormalTok{)) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{scale\_x\_discrete}\NormalTok{(}\DataTypeTok{limits =} \KeywordTok{rev}\NormalTok{(days)) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{geom\_boxplot}\NormalTok{() }\OperatorTok{+}
-\StringTok{  }\KeywordTok{coord\_flip}\NormalTok{() }\OperatorTok{+}
-\StringTok{  }\KeywordTok{labs}\NormalTok{(}
-    \DataTypeTok{title =} \StringTok{"Random values by day of the week"}\NormalTok{,}
-    \DataTypeTok{x =} \StringTok{"Day of the week"}\NormalTok{,}
-    \DataTypeTok{y =} \StringTok{"Random value"}\NormalTok{,}
-    \DataTypeTok{color =} \StringTok{"Day of the week"}
+\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_x\_discrete}\NormalTok{(}\AttributeTok{limits =} \FunctionTok{rev}\NormalTok{(days)) }\SpecialCharTok{+}
+  \FunctionTok{scale\_color\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{rainbow}\NormalTok{(}\DecValTok{7}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Random values by day of the week"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"Day of the week"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Random value"}\NormalTok{,}
+    \AttributeTok{color =} \StringTok{"Day of the week"}
 \NormalTok{  )}
 \end{Highlighting}
 \end{Shaded}
@@ -857,7 +849,7 @@ table() function).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{cat}\NormalTok{(}\StringTok{"The number of islands is: "}\NormalTok{, }\KeywordTok{length}\NormalTok{(}\KeywordTok{unique}\NormalTok{(penguins}\OperatorTok{$}\NormalTok{island)), }\StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"The number of islands is: "}\NormalTok{, }\FunctionTok{length}\NormalTok{(}\FunctionTok{unique}\NormalTok{(penguins}\SpecialCharTok{$}\NormalTok{island)), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -867,7 +859,7 @@ table() function).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{table}\NormalTok{(penguins}\OperatorTok{$}\NormalTok{island)}
+\FunctionTok{table}\NormalTok{(penguins}\SpecialCharTok{$}\NormalTok{island)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -879,7 +871,7 @@ table() function).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{table}\NormalTok{(penguins}\OperatorTok{$}\NormalTok{island, penguins}\OperatorTok{$}\NormalTok{species)}
+\FunctionTok{table}\NormalTok{(penguins}\SpecialCharTok{$}\NormalTok{island, penguins}\SpecialCharTok{$}\NormalTok{species)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -900,20 +892,20 @@ islands in the x-axis, number of penguins in the y-axis).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{ggplot}\NormalTok{(}
+\FunctionTok{ggplot}\NormalTok{(}
 \NormalTok{  penguins,}
-  \KeywordTok{aes}\NormalTok{(}
-    \DataTypeTok{x =}\NormalTok{ island,}
-    \DataTypeTok{fill =}\NormalTok{ species}
+  \FunctionTok{aes}\NormalTok{(}
+    \AttributeTok{x =}\NormalTok{ island,}
+    \AttributeTok{fill =}\NormalTok{ species}
 \NormalTok{  )}
-\NormalTok{) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{geom\_bar}\NormalTok{() }\OperatorTok{+}
-\StringTok{  }\KeywordTok{scale\_fill\_manual}\NormalTok{(}\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"darkorange"}\NormalTok{, }\StringTok{"purple"}\NormalTok{, }\StringTok{"cyan4"}\NormalTok{)) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{labs}\NormalTok{(}
-    \DataTypeTok{title =} \StringTok{"Penguins population by island"}\NormalTok{,}
-    \DataTypeTok{x =} \StringTok{"Island"}\NormalTok{,}
-    \DataTypeTok{y =} \StringTok{"Number of penguins"}\NormalTok{,}
-    \DataTypeTok{fill =} \StringTok{"Species"}
+\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{(}\AttributeTok{position =} \FunctionTok{position\_dodge}\NormalTok{(}\AttributeTok{preserve =} \StringTok{"single"}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\StringTok{"darkorange"}\NormalTok{, }\StringTok{"purple"}\NormalTok{, }\StringTok{"cyan4"}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Penguins population by island"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"Island"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Number of penguins"}\NormalTok{,}
+    \AttributeTok{fill =} \StringTok{"Species"}
 \NormalTok{  )}
 \end{Highlighting}
 \end{Shaded}
@@ -931,23 +923,24 @@ species).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{ggplot}\NormalTok{(}
+\FunctionTok{ggplot}\NormalTok{(}
 \NormalTok{  penguins,}
-  \KeywordTok{aes}\NormalTok{(}
-    \DataTypeTok{x =}\NormalTok{ penguins}\OperatorTok{$}\NormalTok{flipper\_length\_mm,}
-    \DataTypeTok{y =}\NormalTok{ penguins}\OperatorTok{$}\NormalTok{body\_mass\_g,}
-    \DataTypeTok{color =}\NormalTok{ penguins}\OperatorTok{$}\NormalTok{sex}
+  \FunctionTok{aes}\NormalTok{(}
+    \AttributeTok{x =}\NormalTok{ penguins}\SpecialCharTok{$}\NormalTok{body\_mass\_g,}
+    \AttributeTok{y =}\NormalTok{ penguins}\SpecialCharTok{$}\NormalTok{flipper\_length\_mm,}
+    \AttributeTok{color =}\NormalTok{ penguins}\SpecialCharTok{$}\NormalTok{sex}
 \NormalTok{  )}
-\NormalTok{) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{geom\_point}\NormalTok{() }\OperatorTok{+}
-\StringTok{  }\KeywordTok{facet\_grid}\NormalTok{(}\OperatorTok{\textasciitilde{}}\NormalTok{species) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{scale\_color\_manual}\NormalTok{(}\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"blue"}\NormalTok{, }\StringTok{"magenta"}\NormalTok{)) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{labs}\NormalTok{(}
-    \DataTypeTok{title =} \StringTok{"Flipper length vs. body mass"}\NormalTok{,}
-    \DataTypeTok{x =} \StringTok{"Flipper length (mm)"}\NormalTok{,}
-    \DataTypeTok{y =} \StringTok{"Body mass (g)"}\NormalTok{,}
-    \DataTypeTok{color =} \StringTok{"Sex"}
-\NormalTok{  )}
+\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{facet\_grid}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{species) }\SpecialCharTok{+}
+  \FunctionTok{scale\_color\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\StringTok{"blue"}\NormalTok{, }\StringTok{"magenta"}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Flipper length vs. body mass"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"Flipper length (mm)"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Body mass (g)"}\NormalTok{,}
+    \AttributeTok{color =} \StringTok{"Sex"}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{angle =} \DecValTok{45}\NormalTok{, }\AttributeTok{hjust =} \DecValTok{1}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
 
@@ -963,9 +956,9 @@ to see which package you have to install to use it).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(corrplot)}
-\NormalTok{correlation \textless{}{-}}\StringTok{ }\KeywordTok{cor}\NormalTok{(penguins[, }\KeywordTok{c}\NormalTok{(}\DecValTok{3}\OperatorTok{:}\DecValTok{6}\NormalTok{, }\DecValTok{8}\NormalTok{)], }\DataTypeTok{use =} \StringTok{"complete.obs"}\NormalTok{)}
-\KeywordTok{corrplot}\NormalTok{(correlation, }\DataTypeTok{method =} \StringTok{"number"}\NormalTok{)}
+\FunctionTok{library}\NormalTok{(corrplot)}
+\NormalTok{correlation }\OtherTok{\textless{}{-}} \FunctionTok{cor}\NormalTok{(penguins[, }\DecValTok{3}\SpecialCharTok{:}\DecValTok{6}\NormalTok{], }\AttributeTok{use =} \StringTok{"complete.obs"}\NormalTok{)}
+\FunctionTok{corrplot}\NormalTok{(correlation, }\AttributeTok{method =} \StringTok{"number"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -973,7 +966,7 @@ to see which package you have to install to use it).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{corrplot}\NormalTok{(correlation, }\DataTypeTok{method =} \StringTok{"color"}\NormalTok{)}
+\FunctionTok{corrplot}\NormalTok{(correlation, }\AttributeTok{method =} \StringTok{"color"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -981,7 +974,7 @@ to see which package you have to install to use it).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{corrplot}\NormalTok{(correlation)}
+\FunctionTok{corrplot}\NormalTok{(correlation)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -989,7 +982,7 @@ to see which package you have to install to use it).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{corrplot}\NormalTok{(correlation, }\DataTypeTok{order =} \StringTok{"AOE"}\NormalTok{)}
+\FunctionTok{corrplot}\NormalTok{(correlation, }\AttributeTok{order =} \StringTok{"AOE"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1003,21 +996,21 @@ without using the cor() function (hint: remember the formula).
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{x \textless{}{-}}\StringTok{ }\NormalTok{penguins}\OperatorTok{$}\NormalTok{flipper\_length\_mm}
-\NormalTok{y \textless{}{-}}\StringTok{ }\NormalTok{penguins}\OperatorTok{$}\NormalTok{body\_mass\_g}
+\NormalTok{x }\OtherTok{\textless{}{-}}\NormalTok{ penguins}\SpecialCharTok{$}\NormalTok{flipper\_length\_mm}
+\NormalTok{y }\OtherTok{\textless{}{-}}\NormalTok{ penguins}\SpecialCharTok{$}\NormalTok{body\_mass\_g}
 
-\NormalTok{n \textless{}{-}}\StringTok{ }\KeywordTok{length}\NormalTok{(x)}
-\NormalTok{mean\_x \textless{}{-}}\StringTok{ }\KeywordTok{mean}\NormalTok{(x, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
-\NormalTok{mean\_y \textless{}{-}}\StringTok{ }\KeywordTok{mean}\NormalTok{(y, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{)}
+\NormalTok{n }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(x)}
+\NormalTok{mean\_x }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(x, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{mean\_y }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(y, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
 
-\NormalTok{covariance \textless{}{-}}\StringTok{ }\KeywordTok{sum}\NormalTok{((x }\OperatorTok{{-}}\StringTok{ }\NormalTok{mean\_x) }\OperatorTok{*}\StringTok{ }\NormalTok{(y }\OperatorTok{{-}}\StringTok{ }\NormalTok{mean\_y), }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{) }\OperatorTok{/}\StringTok{ }\NormalTok{(n }\OperatorTok{{-}}\StringTok{ }\DecValTok{1}\NormalTok{)}
-\NormalTok{sd\_x \textless{}{-}}\StringTok{ }\KeywordTok{sqrt}\NormalTok{(}\KeywordTok{sum}\NormalTok{((x }\OperatorTok{{-}}\StringTok{ }\NormalTok{mean\_x)}\OperatorTok{\^{}}\DecValTok{2}\NormalTok{, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{) }\OperatorTok{/}\StringTok{ }\NormalTok{(n }\OperatorTok{{-}}\StringTok{ }\DecValTok{1}\NormalTok{))}
-\NormalTok{sd\_y \textless{}{-}}\StringTok{ }\KeywordTok{sqrt}\NormalTok{(}\KeywordTok{sum}\NormalTok{((y }\OperatorTok{{-}}\StringTok{ }\NormalTok{mean\_y)}\OperatorTok{\^{}}\DecValTok{2}\NormalTok{, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{) }\OperatorTok{/}\StringTok{ }\NormalTok{(n }\OperatorTok{{-}}\StringTok{ }\DecValTok{1}\NormalTok{))}
+\NormalTok{covariance }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{((x }\SpecialCharTok{{-}}\NormalTok{ mean\_x) }\SpecialCharTok{*}\NormalTok{ (y }\SpecialCharTok{{-}}\NormalTok{ mean\_y), }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{/}\NormalTok{ (n }\SpecialCharTok{{-}} \DecValTok{1}\NormalTok{)}
+\NormalTok{sd\_x }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(}\FunctionTok{sum}\NormalTok{((x }\SpecialCharTok{{-}}\NormalTok{ mean\_x)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{/}\NormalTok{ (n }\SpecialCharTok{{-}} \DecValTok{1}\NormalTok{))}
+\NormalTok{sd\_y }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{(}\FunctionTok{sum}\NormalTok{((y }\SpecialCharTok{{-}}\NormalTok{ mean\_y)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{/}\NormalTok{ (n }\SpecialCharTok{{-}} \DecValTok{1}\NormalTok{))}
 
-\NormalTok{correlation \textless{}{-}}\StringTok{ }\NormalTok{covariance }\OperatorTok{/}\StringTok{ }\NormalTok{(sd\_x }\OperatorTok{*}\StringTok{ }\NormalTok{sd\_y)}
-\KeywordTok{cat}\NormalTok{(}
+\NormalTok{correlation }\OtherTok{\textless{}{-}}\NormalTok{ covariance }\SpecialCharTok{/}\NormalTok{ (sd\_x }\SpecialCharTok{*}\NormalTok{ sd\_y)}
+\FunctionTok{cat}\NormalTok{(}
   \StringTok{"The correlation between flipper length and body mass is: "}\NormalTok{,}
-\NormalTok{  correlation, }\StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}
+\NormalTok{  correlation, }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}
 \NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -1038,27 +1031,26 @@ What are you noticing?
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{ggplot}\NormalTok{(}
+\FunctionTok{ggplot}\NormalTok{(}
 \NormalTok{  penguins,}
-  \KeywordTok{aes}\NormalTok{(}
-    \DataTypeTok{x =}\NormalTok{ penguins}\OperatorTok{$}\NormalTok{bill\_length\_mm,}
-    \DataTypeTok{y =}\NormalTok{ penguins}\OperatorTok{$}\NormalTok{bill\_depth\_mm,}
-    \DataTypeTok{color =}\NormalTok{ penguins}\OperatorTok{$}\NormalTok{species}
+  \FunctionTok{aes}\NormalTok{(}
+    \AttributeTok{x =}\NormalTok{ penguins}\SpecialCharTok{$}\NormalTok{bill\_depth\_mm,}
+    \AttributeTok{y =}\NormalTok{ penguins}\SpecialCharTok{$}\NormalTok{bill\_length\_mm,}
+    \AttributeTok{color =}\NormalTok{ penguins}\SpecialCharTok{$}\NormalTok{species}
 \NormalTok{  )}
-\NormalTok{) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{geom\_point}\NormalTok{() }\OperatorTok{+}
-\StringTok{  }\KeywordTok{geom\_smooth}\NormalTok{(}
-    \DataTypeTok{formula =} \StringTok{"y \textasciitilde{} x"}\NormalTok{,}
-    \DataTypeTok{method =} \StringTok{"lm"}\NormalTok{,}
-    \KeywordTok{aes}\NormalTok{(}\DataTypeTok{color =}\NormalTok{ penguins}\OperatorTok{$}\NormalTok{species),}
-    \DataTypeTok{se =} \OtherTok{FALSE}
-\NormalTok{  ) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{scale\_color\_manual}\NormalTok{(}\DataTypeTok{values =} \KeywordTok{c}\NormalTok{(}\StringTok{"darkorange"}\NormalTok{, }\StringTok{"purple"}\NormalTok{, }\StringTok{"cyan4"}\NormalTok{)) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{labs}\NormalTok{(}
-    \DataTypeTok{title =} \StringTok{"Bill length vs. bill depth"}\NormalTok{,}
-    \DataTypeTok{x =} \StringTok{"Bill length (mm)"}\NormalTok{,}
-    \DataTypeTok{y =} \StringTok{"Bill depth (mm)"}\NormalTok{,}
-    \DataTypeTok{color =} \StringTok{"Species"}
+\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_smooth}\NormalTok{(}
+    \AttributeTok{formula =} \StringTok{"y \textasciitilde{} x"}\NormalTok{,}
+    \AttributeTok{method =} \StringTok{"lm"}\NormalTok{,}
+    \FunctionTok{aes}\NormalTok{(}\AttributeTok{color =}\NormalTok{ penguins}\SpecialCharTok{$}\NormalTok{species),}
+\NormalTok{  ) }\SpecialCharTok{+}
+  \FunctionTok{scale\_color\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\StringTok{"darkorange"}\NormalTok{, }\StringTok{"purple"}\NormalTok{, }\StringTok{"cyan4"}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}
+    \AttributeTok{title =} \StringTok{"Bill length vs. bill depth"}\NormalTok{,}
+    \AttributeTok{x =} \StringTok{"Bill length (mm)"}\NormalTok{,}
+    \AttributeTok{y =} \StringTok{"Bill depth (mm)"}\NormalTok{,}
+    \AttributeTok{color =} \StringTok{"Species"}
 \NormalTok{  )}
 \end{Highlighting}
 \end{Shaded}
