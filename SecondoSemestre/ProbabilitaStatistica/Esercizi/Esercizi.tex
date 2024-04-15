@@ -1,0 +1,135 @@
+\documentclass[a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage[italian]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage[makeroom]{cancel}
+\usepackage{amsfonts}
+\usepackage{mdframed}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{width=10cm,compat=1.9}
+\usetikzlibrary{pgfplots.fillbetween, pgfplots.statistics}
+\pgfplotsset{compat=newest, ticks=none}
+\usepackage{graphicx}
+\graphicspath{{./figures/}}
+
+\usepackage{import}
+\usepackage{pdfpages}
+\usepackage{transparent}
+\usepackage{xcolor}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=false,
+}
+
+\usepackage{ntheorem}
+\newtheorem{theorem}{Teorema}
+
+% Useful definitions frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	innertopmargin=8pt,%
+	ntheorem]{define}{Definizioni utili}[section]
+
+% Example frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	innertopmargin=8pt,%
+	ntheorem]{example}{Esempio}[section]
+
+% Important definition frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	backgroundcolor=gray!40,%
+	innertopmargin=8pt,%
+	ntheorem]{definition}{Definizione}[section]
+
+% Exercise frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	innertopmargin=8pt,%
+	ntheorem]{exercise}{Esercizio}[section]
+
+
+% figure support
+\usepackage{import}
+\usepackage{xifthen}
+\pdfminorversion=7
+\usepackage{pdfpages}
+\usepackage{transparent}
+\newcommand{\incfig}[1]{%
+	\def\svgwidth{\columnwidth}
+	\import{./figures/}{#1.pdf_tex}
+}
+
+\pdfsuppresswarningpagegroup=1
+
+\begin{document}
+\input{title.tex}
+
+\tableofcontents
+\pagebreak
+
+\section{Probabilità elementari e probabilità condizionate}
+\subsection{Esercizio 1}
+Un corso è frequentato da 10 studenti: 6 maschi e 4 femmine. Viene effettuato un
+esame ed i punteggi degli studenti sono tutti diversi. Si suppone ciascuna classifica
+equiprobabile.
+\begin{enumerate}
+	\item[a.] Qual è la cardinalità dello spazio dei campioni costituito da tutte le
+	      possibili classifiche? Qual è una possibile misura di probabilità associata?
+	      \[
+		      \Omega \subseteq \mathbb{R}
+	      \]
+	      Tutte le possibili classifiche equivalgono a tutti i modi in cui si possono
+	      ordinare i punteggi degli studenti. Quindi, la cardinalità dello spazio degli
+	      eventi è $10!$:
+	      \[
+		      card(\Omega) = 10!
+	      \]
+	      La probabilità associata è calcolata come il rapporto tra il numero di eventi
+	      favorevoli e il numero di eventi possibili:
+	      \[
+		      P(\omega) = \frac{card(\omega)}{card(\Omega)} = \frac{1}{10!}
+	      \]
+	\item[b.] Qual è la probabilità che le quattro studentesse ottengano punteggi migliori?
+	      \[
+		      E = \text{"Studentesse ottengono punteggi migliori"}
+	      \]
+	      La probabilità che le studentesse ottengano punteggi migliori è data dal rapporto
+	      tra il numero di eventi favorevoli e il numero di eventi possibili:
+	      \[
+		      P(E) = \frac{4!}{10!}
+	      \]
+\end{enumerate}
+
+\subsection{Esercizio 2}
+In uno stock di 100 prodotti, 20 sono difettosi.
+\begin{enumerate}
+	\item[a.] Dieci vengono scelti a caso, senza rimpiazzo.
+
+	      \noindent Qual è la probabilità che esattamente la metà siano difettosi?
+	\item[b.] Dieci vengono scelti a caso, con rimpiazzo.
+
+	      \noindent Qual è la probabilità che esattamente la metà siano difettosi?
+\end{enumerate}
+
+\end{document}
