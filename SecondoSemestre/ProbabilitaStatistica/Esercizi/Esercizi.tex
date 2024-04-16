@@ -127,9 +127,236 @@ In uno stock di 100 prodotti, 20 sono difettosi.
 	\item[a.] Dieci vengono scelti a caso, senza rimpiazzo.
 
 	      \noindent Qual è la probabilità che esattamente la metà siano difettosi?
+
+	      \vspace{1em}
+	      Per calcolare la probabilità che esattamente la metà dei prodotti siano difettosi
+	      si deve fare il rapporto tra la moltiplicazione del numero di modi in cui si possono
+	      scegliere 5 prodotti difettosi e 5 prodotti non difettosi e il numero di modi in
+	      cui si possono scegliere 10 prodotti:
+	      \[
+		      P(E) = \frac{\binom{20}{5} \cdot \binom{80}{5}}{\binom{100}{10}} =
+		      \frac{\frac{20!}{5! \cdot 15!}\cdot \frac{80!}{5! \cdot 75!}}{\frac{100!}{10! \cdot 90!}} =
+		      \frac{15504 \cdot 24040016}{1.731030946 \cdot 10^{13}} \approx 0.214 = 21.4\%
+	      \]
 	\item[b.] Dieci vengono scelti a caso, con rimpiazzo.
 
 	      \noindent Qual è la probabilità che esattamente la metà siano difettosi?
+	      \vspace{1em}
+	      Si può considerare una variabile di Bernoulli:
+	      \[
+		      X_i = \begin{cases}
+			      1 & \text{se il prodotto è difettoso} p = \frac{20}{100} = \frac{1}{5} \\
+			      0 & \text{altrimenti} p = \frac{80}{100} = \frac{4}{5}
+		      \end{cases}
+	      \]
+	      La probabilità che esattamente la metà dei prodotti siano difettosi è data dalla
+	      distribuzione binomiale:
+	      \[
+		      P(\omega) = \binom{k}{n} p^n (1-p)^{k-n}
+	      \]
+	      \[
+		      P(E) = \binom{10}{5} \left( \frac{1}{5} \right)^5 \left( \frac{4}{5} \right)^5 =
+		      \frac{10!}{5! \cdot 5!} \left( \frac{1}{5} \right)^5 \left( \frac{4}{5} \right)^5 \approx
+		      0.0264 = 2.64\%
+	      \]
 \end{enumerate}
 
+\subsection{Esercizio 3}
+Consideriamo l’estrazione di una carta da una mazzo di 40 carte napoletane (4 semi; per
+ciascun seme 10 carte dall’asso al 7 più tre figure).
+\begin{enumerate}
+	\item[a.] Qual'è la probabilità di estrarre un asso?
+
+	      \vspace{1em}
+	      \noindent Il numero di semi in un mazzo di carte napoletane è 4. Quindi ci sono 4
+	      assi, di conseguenza la probabilità di trovare un asso è:
+	      \[
+		      P(A) = \frac{4}{40} = \frac{1}{10} = 0.1 = 10\%
+	      \]
+\end{enumerate}
+Estraiamo ora 2 carte.
+\begin{enumerate}
+	\item[b.] Qual'è la probabilità di estrarre un asso e un re, rispettivamente?
+
+	      \noindent Calcolare le probabilità nel caso di:
+	      \begin{itemize}
+		      \item Estrazione con reinserimento
+
+		            \vspace{1em}
+		            \noindent La probabilità di estrarre un asso e un re con reinserimento è data dal
+		            prodotto delle probabilità di estrarre un asso e un re:
+		            \[
+			            P(A) = \frac{4}{40} = \frac{1}{10} = 0.1 = 10\% \quad \text{Estrarre un asso}
+		            \]
+		            \[
+			            P(R) = \frac{4}{40} = \frac{1}{10} = 0.1 = 10\% \quad \text{Estrarre un re}
+		            \]
+		            \[
+			            P(A \cap R) = P(A) \cdot P(R) = \frac{4}{40} \cdot \frac{4}{40} = \frac{1}{10} \cdot \frac{1}{10} = \frac{1}{100} = 0.01 = 1\%
+		            \]
+		      \item Estrazione senza reinserimento
+
+		            \vspace{1em}
+		            La probabilità di estrarre un re dopo aver estratto un asso è data dalla
+		            probabilità condizionata:
+		            \[
+			            P(R\,|\,A) = \frac{P(R \cap A)}{P(A)} = \frac{\frac{1}{10} \cdot \frac{1}{10}}{\frac{1}{10}} = \frac{1}{10} = 0.1 = 10\%
+		            \]
+	      \end{itemize}
+\end{enumerate}
+
+\subsection{Esercizio 4}
+Una popolazione si compone per un 40 percento di fumatori (F) e per il restante 60 per
+cento di non fumatori (N). Si sa che il 25 per cento dei fumatori e il 7 per cento dei
+non fumatori ha una malattia respiratoria cronica (M).
+\begin{enumerate}
+	\item Calcolare la probabilità che un individuo scelto a caso sia effetto dalla
+	      malattia respiratoria.
+
+	      \vspace{1em}
+	      \noindent Un individuo scelto a caso ha una probabilità di essere fumatore malato:
+	      \[
+		      P(M\,|\,F) = 0.25
+	      \]
+	      e una probabilità di essere non fumatore malato:
+	      \[
+		      P(M\,|\,N) = 0.07
+	      \]
+	      La probabilità che un individuo scelto a caso sia affetto dalla malattia respiratoria
+	      è data dalla probabilità totale:
+	      \[
+		      P(M) = P(M\,|\,F) \cdot P(F) + P(M\,|\,N) \cdot P(N)
+	      \]
+	      \[
+		      P(M) = 0.25 \cdot 0.4 + 0.07 \cdot 0.6 = 0.1 + 0.042 = 0.142 = 14.2\%
+	      \]
+	\item Se l’individuo scelto è affetto dalla malattia, calcolare la probabilità che
+	      sia un fumatore.
+
+	      \vspace{1em}
+	      \noindent La probabilità che un individuo affetto dalla malattia sia un fumatore è
+	      data dalla probabilità condizionata:
+	      \[
+		      P(F\,|\,M) = \frac{P(M\,|\,F) \cdot P(F)}{P(M)} = \frac{0.25 \cdot 0.4}{0.142}
+		      = \frac{0.1}{0.142} = 0.704 = 70.4\%
+	      \]
+\end{enumerate}
+
+\subsection{Esercizio 5}
+Una particolare analisi del sangue è efficace al 99\% nell’individuare una determinata
+malattia quando essa è presente. Si possono però verificare dei falsi positivi
+(ovvero una persona sana che si sottopone al test ha una probabilità pari a 0.01 di
+risultare erroneamente positiva al test). Se l’incidenza della malattia è del 0.5\%,
+calcolare la probabilità che un individuo risultato positivo al test sia effettivamente
+malato.
+
+\vspace{1em}
+\[
+	T = \text{Test positivo}
+\]
+\[
+	M = \text{Persona malata} \quad \overline{M} = \text{Persona sana}
+\]
+La probabilità che il test sia efficace è:
+\[
+	P(T\,|\,M) = 0.99
+\]
+La probabilità che il test non sia efficace è:
+\[
+	P(T\,|\,\overline{M}) = 0.01
+\]
+La probabilità di essere malato è:
+\[
+	P(M) = 0.005 = 0.5\%
+\]
+La probabilità che il test sia positivo è data dalla probabilità totale:
+\[
+	P(T) = P(T\,|\,M) \cdot P(M) + P(T\,|\,\overline{M}) \cdot P(\overline{M})
+\]
+\[
+	P(T) = 0.99 \cdot 0.005 + 0.01 \cdot 0.995 = 0.00495 + 0.00995 = 0.0149 = 1.49\%
+\]
+La probabilità che un individuo risultato positivo al test sia effettivamente malato è
+data dalla probabilità condizionata:
+\[
+	P(T\,|\,P) = \frac{P(T\,|\,M) \cdot P(M)}{P(T)}
+\]
+\[
+	P(T\,|\,P) = \frac{0.99 \cdot 0.005}{0.0149} = \frac{0.00495}{0.0149} \approx
+	0.332 = 33.2\%
+\]
+
+\subsection{Esercizio 6}
+In un vivaio si vendono dei sacchetti con 30 bulbi di dalie. I sacchetti sono
+di due tipi \( S_1 \)  e \( S_2 \) . Tre quarti di tali sacchetti sono di tipo \( S_1 \) e contengono
+10 bulbi di dalie rosse (R) e 20 bulbi di dalie gialle (G), mentre il restante
+quarto dei sacchetti è di tipo \( S_2 \) e contiene 5 bulbi di dalie rosse e 25 bulbi di
+dalie gialle.
+
+\noindent Mario compra un sacchetto a caso e pianta un bulbo e vede di
+che colore è.
+
+\vspace{1em}
+\noindent I sacchetti \( S_1 \)  sono:
+\[
+	P(S_1) = \frac{3}{4} = 0.75 = 75\%
+\]
+\[
+	P(R\,|\,S_1) = \frac{10}{30} = \frac{1}{3} \approx 0.333 = 33.3\%
+\]
+\[
+	P(G\,|\,S_1) = \frac{20}{30} = \frac{2}{3} \approx 0.666 = 66.6\%
+\]
+I sacchetti \( S_2 \)  sono:
+\[
+	P(S_2) = \frac{1}{4} = 0.25 = 25\%
+\]
+\[
+	P(R\,|\,S_2) = \frac{5}{30} = \frac{1}{6} \approx 0.166 = 16.6\%
+\]
+\[
+	P(G\,|\,S_2) = \frac{25}{30} = \frac{5}{6} \approx 0.833 = 83.3\%
+\]
+
+\begin{itemize}
+	\item Determinare la probabilità che il bulbo produca una dalia rossa.
+
+	      \vspace{1em}
+	      La probabilità che il bulbo produca una dalia rossa è data dalla probabilità totale:
+	      \[
+		      P(R) = P(R\,|\,S_1) \cdot P(S_1) + P(R\,|\,S_2) \cdot P(S_2)
+	      \]
+	      \[
+		      P(R) = \frac{1}{3} \cdot \frac{3}{4} + \frac{1}{6} \cdot \frac{1}{4} = \frac{1}{4} + \frac{1}{24} = \frac{7}{24} \approx 0.291 = 29.1\%
+	      \]
+	\item Se la dalia nata è rossa, qual è la probabilità che provenga da un sacchetto di
+	      tipo \( S_1 \)?
+
+	      \vspace{1em}
+	      La probabilità che una dalia rossa provenga da \( S_1 \) è data dalla probabilità
+	      condizionata:
+	      \[
+		      P(S_1\,|\,R) = \frac{P(R\,|\,S_1) \cdot P(S_1)}{P(R)}
+	      \]
+	      \[
+		      P(S_1\,|\,R) = \frac{\frac{1}{3} \cdot \frac{3}{4}}{\frac{7}{24}} = \frac{1}{4} \cdot \frac{24}{7} = \frac{6}{7} \approx 0.857 = 85.7\%
+	      \]
+\end{itemize}
+
+\subsection{Esercizio 7}
+In un test clinico, un individuo viene sottoposto ad un esame di laboratorio, per
+stabilire se ha o non ha una data malattia. Il test può avere esito positivo o negativo.
+C’è però sempre una possibilità di errore: può darsi che alcuni degli individui
+risultati positivi siano in realtà sani (falsi positivi), e che qualcuno degli individui
+risultati negativi siano in realtà malati (falsi negativi). Prima di applicare su larga
+scala un test nei laboratori, è quindi indispensabile valutarne la bontà, sottoponendo
+al test un campione di persone che sappiamo già se sono sane o malate. Uno dei parametri
+che definiscono la qualità diagnostica del test è la Sensibilità = 1 - P(falsi negativi).
+
+\noindent In Italia c’è un malato di HIV ogni 40.000 persone. Un paziente si sottopone
+ad un test con una procedura che fornisce statisticamente lo 0,7\% di falsi negativi e lo
+0,01\% di falsi positivi. Calcolare la probabilità a posteriori di essere ammalato, a
+test effettuato con esito positivo. Come cambia questa probabilità se però paziente e
+medico si convincono che, in base ai sintomi ed alle circostanze del possibile contagio,
+la probabilità a priori sia ad esempio 10 volte pi`u alta della media nazionale?
 \end{document}
