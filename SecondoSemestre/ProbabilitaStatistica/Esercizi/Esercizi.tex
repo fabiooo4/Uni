@@ -684,10 +684,73 @@ impiegati delle ferrovie di sesso maschile, con questi risultati:
 maggiore di 127 battiti al minuto e negativo altrimenti.
 \begin{enumerate}
   \item Qual è la probabilità di mortalità per malattie cardiovascolari in 20 anni?
+
+    \vspace{1em}
+    \[
+      T = \text{Test positivo}
+    \] 
+    \[
+      \overline{T} = \text{Test negativo}
+    \] 
+    \[
+      M = \text{Mortalità per malattie cardiovascolari in 20 anni}
+    \] 
+    \[
+      F_1 = \text{Frequenza cardiaca} \le 105
+    \] 
+    \[
+      F_2 = \text{Frequenza cardiaca} \in [106, 115]
+    \] 
+    \[
+      F_3 = \text{Frequenza cardiaca} \in [116, 127]
+    \] 
+    \[
+      F_4 = \text{Frequenza cardiaca} > 127
+    \] 
+    La probabilità di mortalità per malattie cardiovascolari in 20 anni è data dalla probabilità
+    totale:
+    \[
+      P(M) = P(M\,|\,F_1) \cdot P(F_1) + P(M\,|\,F_2) \cdot P(F_2) + 
+    \] 
+    \[
+      P(M\,|\,F_3) \cdot P(F_3) + P(M\,|\,F_4) \cdot P(F_4)
+    \] 
+    \[
+      P(M) = 0.092 \cdot 0.2 + 0.087 \cdot 0.3 + 0.116 \cdot 0.3 + 0.132 \cdot 0.2 = 0.1056 = 10.56\%
+    \] 
   \item Qual è la probabilità di avere avuto un test positivo tra gli uomini che sono 
     morti nel periodo di 20 anni?
+
+    \vspace{1em}
+    La probabilità di aver avuto un test positivo è data dalla probabilità condizionata:
+    \[
+      P(F_4\,|\,M) = \frac{P(M\,|\,F_4) \cdot P(F_4)}{P(M)}
+    \]
+    \[
+      P(F_4\,|\,M) = \frac{0.132 \cdot 0.2}{0.1056} \approx 0.25 = 25\%
+    \] 
   \item Qual è la probabilità di avere avuto un test positivo tra gli uomini che sono 
     sopravvissuti nel periodo di 20 anni?
+
+    \vspace{1em}
+    La probabilità di avere avuto un test positivo tra gli uomini che sono sopravvissuti
+    è data dalla probabilità condizionata:
+    \[
+      P(F_4\,|\,\overline{M}) = \frac{P(\overline{M}\,|\,F_4) \cdot P(F_4)}{P(\overline{M})}
+    \]
+    \[
+      P(F_4\,|\, \overline{M}) = \frac{(1-0.132) \cdot 0.2}{1-0.1056} \approx 0.1941 = 19.41\%
+    \] 
   \item Qual è la probabilità di morte tra gli uomini con un test negativo?
+
+    \vspace{1em}
+    La probabilità di morte tra gli uomini con un test negativo è data dalla probabilità
+    totale dei casi in cui il test è negativo:
+    \[
+      P(M\,|\,\overline{T}) = P(M\,|\,F_1) \cdot P(F_1) + P(M\,|\,F_2) \cdot P(F_2) +P(M\,|\,F_3) \cdot P(F_3)
+    \]
+    \[
+      P(M\,|\,\overline{T}) = 0.092 \cdot 0.2 + 0.087 \cdot 0.3 + 0.116 \cdot 0.3 = 0.0793 = 7.93\%
+    \] 
 \end{enumerate}
 \end{document}
