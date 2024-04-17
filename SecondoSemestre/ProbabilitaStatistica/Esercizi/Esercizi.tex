@@ -94,7 +94,7 @@ Un corso è frequentato da 10 studenti: 6 maschi e 4 femmine. Viene effettuato u
 esame ed i punteggi degli studenti sono tutti diversi. Si suppone ciascuna classifica
 equiprobabile.
 \begin{enumerate}
-	\item[a.] Qual è la cardinalità dello spazio dei campioni costituito da tutte le
+	\item Qual è la cardinalità dello spazio dei campioni costituito da tutte le
 	      possibili classifiche? Qual è una possibile misura di probabilità associata?
 	      \[
 		      \Omega \subseteq \mathbb{R}
@@ -110,7 +110,7 @@ equiprobabile.
 	      \[
 		      P(\omega) = \frac{card(\omega)}{card(\Omega)} = \frac{1}{10!}
 	      \]
-	\item[b.] Qual è la probabilità che le quattro studentesse ottengano punteggi migliori?
+	\item Qual è la probabilità che le quattro studentesse ottengano punteggi migliori?
 	      \[
 		      E = \text{"Studentesse ottengono punteggi migliori"}
 	      \]
@@ -124,7 +124,7 @@ equiprobabile.
 \subsection{Esercizio 2}
 In uno stock di 100 prodotti, 20 sono difettosi.
 \begin{enumerate}
-	\item[a.] Dieci vengono scelti a caso, senza rimpiazzo.
+	\item Dieci vengono scelti a caso, senza rimpiazzo.
 
 	      \noindent Qual è la probabilità che esattamente la metà siano difettosi?
 
@@ -138,7 +138,7 @@ In uno stock di 100 prodotti, 20 sono difettosi.
 		      \frac{\frac{20!}{5! \cdot 15!}\cdot \frac{80!}{5! \cdot 75!}}{\frac{100!}{10! \cdot 90!}} =
 		      \frac{15504 \cdot 24040016}{1.731030946 \cdot 10^{13}} \approx 0.214 = 21.4\%
 	      \]
-	\item[b.] Dieci vengono scelti a caso, con rimpiazzo.
+	\item Dieci vengono scelti a caso, con rimpiazzo.
 
 	      \noindent Qual è la probabilità che esattamente la metà siano difettosi?
 	      \vspace{1em}
@@ -165,7 +165,7 @@ In uno stock di 100 prodotti, 20 sono difettosi.
 Consideriamo l’estrazione di una carta da una mazzo di 40 carte napoletane (4 semi; per
 ciascun seme 10 carte dall’asso al 7 più tre figure).
 \begin{enumerate}
-	\item[a.] Qual'è la probabilità di estrarre un asso?
+	\item Qual'è la probabilità di estrarre un asso?
 
 	      \vspace{1em}
 	      \noindent Il numero di semi in un mazzo di carte napoletane è 4. Quindi ci sono 4
@@ -176,7 +176,7 @@ ciascun seme 10 carte dall’asso al 7 più tre figure).
 \end{enumerate}
 Estraiamo ora 2 carte.
 \begin{enumerate}
-	\item[b.] Qual'è la probabilità di estrarre un asso e un re, rispettivamente?
+	\item[2.] Qual'è la probabilità di estrarre un asso e un re, rispettivamente?
 
 	      \noindent Calcolare le probabilità nel caso di:
 	      \begin{itemize}
@@ -358,5 +358,336 @@ ad un test con una procedura che fornisce statisticamente lo 0,7\% di falsi nega
 0,01\% di falsi positivi. Calcolare la probabilità a posteriori di essere ammalato, a
 test effettuato con esito positivo. Come cambia questa probabilità se però paziente e
 medico si convincono che, in base ai sintomi ed alle circostanze del possibile contagio,
-la probabilità a priori sia ad esempio 10 volte pi`u alta della media nazionale?
+la probabilità a priori sia ad esempio 10 volte più alta della media nazionale?
+
+\vspace{1em}
+\[
+	M = \text{Persona malata} \quad \overline{M} = \text{Persona sana}
+\]
+\[
+	N = \text{Test negativo} \quad T = \text{Test positivo}
+\]
+\noindent La probabilità di avere l'HIV in Italia è:
+\[
+	P(M) = \frac{1}{40000} = 0.000025 = 0.0025\%
+\]
+La probabilità di non averlo è:
+\[
+	P(\overline{M}) = 1 - P(M) = 1 - 0.000025 = 0.999975 = 99.9975\%
+\]
+La probabilità che il test sia falso negativo è:
+\[
+	P(N\,|\,M) = 0.007 = 0.7\%
+\]
+La probabilità che il test sia falso positivo è:
+\[
+	P(T\,|\,\overline{M}) = 0.0001 = 0.01\%
+\]
+La probabilità a posteriori di essere ammalato a test effettuato con esito positivo è
+data dalla probabilità condizionata:
+\[
+	P(M\,|\,T) = \frac{P(T\,|\,M) \cdot P(M)}{P(T)}
+\]
+La probabilità che il test risulti positivo è data dalla probabilità totale:
+\[
+	P(T) = P(T\,|\,M) \cdot P(M) + P(T\,|\,\overline{M}) \cdot P(\overline{M})
+\]
+\[
+	P(T\,|\,M) = 1 - P(N\,|\,M) = 1 - 0.007 = 0.993 \quad \text{Sensibilità}
+\]
+\[
+	P(T) = 0.993 \cdot 0.000025 + 0.0001 \cdot 0.999975 \approx 0.000124822 = 0.0125\%
+\]
+
+\vspace{1em}
+\noindent Se la probabilità a priori è 10 volte più alta della media nazionale:
+\[
+	P(M) = 10 \cdot \frac{1}{40000} = 0.00025 = 0.025\%
+\]
+Le nuove probabilità che il test sia positivo è:
+\[
+	P(T) = 0.993 \cdot 0.00025 + 0.0001 \cdot 0.99975 \approx 0.000249822 = 0.0249\%
+\]
+
+\subsection{Esercizio 8}
+Si considerano due dadi apparentemente uguali, di cui uno equo (ossia fornisce un numero
+a caso con equiprobabilità) mentre l’altro fornisce un numero pari con probabilità doppia
+rispetto a quella dei numeri dispari.
+
+\noindent Viene scelto a caso un dado e lo si lancia.
+\begin{enumerate}
+	\item Calcolare la probabilità che esca un numero pari
+	      \[
+		      Par = \text{Esce un numero pari}
+	      \]
+        \[
+          Dis = \text{Esce un numero dispari}
+        \] 
+	      \[
+		      P(D_1) = \frac{1}{2} = 0.5 = 50\% \quad \text{Dado equo}
+	      \]
+	      \[
+		      P(D_2) = \frac{1}{2} = 0.5 = 50\% \quad \text{Dado non equo}
+	      \]
+	      \[
+		      P(Par\,|\,D_1) = \frac{1}{2} = 0.5 = 50\%
+	      \]
+        \[
+          P(Dis\,|\,D_1) = \frac{1}{2} = 0.5 = 50\%
+        \] 
+	      \[
+		      P(Par\,|\,D_2) = \frac{6}{9} = \frac{2}{3} \approx 0.666 = 66.6\%
+	      \]
+        La probabilità che esca un numero pari è data dalla probabilità totale:
+        \[
+          P(Par) = P(Par\,|\,D_1) \cdot P(D_1) + P(Par\,|\,D_2) \cdot P(D_2)
+        \] 
+        \[
+          P(Par) = \frac{1}{2} \cdot \frac{1}{2} + \frac{1}{2} \cdot \frac{2}{3} = \frac{1}{4} + \frac{1}{3} = \frac{3}{12} + \frac{4}{12} = \frac{7}{12} \approx 0.583 = 58.3\% 
+        \] 
+	\item Sapendo che è uscito un numero dispari, quanto vale la probabilità che il dado
+	      lanciato sia quello equo?
+
+        \vspace{1em}
+        \noindent La probabilità che il dado lanciato sia quello equo è data dalla probabilità
+        condizionata:
+        \[
+        P(D_1\,|\,Dis) = \frac{P(Dis\,|\,D_1)\cdot P(D_1)}{P(Dis)}
+        \] 
+        \[
+        P(D_1\,|\,Dis) = \frac{\frac{1}{2}*\frac{1}{2}}{1 - 0.583} = \frac{\frac{1}{4}}{0.417} \approx 0.6 = 60\%
+        \] 
+\end{enumerate}
+
+\subsection{Esercizio 9}
+Consideriamo una popolazione di \( N = 400 \) piantine in cui si presentano i seguenti 
+genotipi AA, Aa, aa. Supponiamo che una piantina venga estratta con uguale probabilità.
+Supponiamo inoltre che vi sono 196 piantine del genotipo AA, 168 del genotipo Aa, e 36 
+del genotipo aa.
+\[
+  N = 400
+\] 
+\[
+  AA = 196
+\] 
+\[
+  Aa = 168
+\] 
+\[
+  aa = 36
+\] 
+\begin{enumerate}
+  \item Qual è la distribuzione dei genotipi, cioè se estraggo a caso una piantina qual 
+    è la probabilità di ciascun genotipo?
+    \[
+    P(AA) = \frac{196}{400} = 0.49 = 49\%
+    \] 
+    \[
+    P(Aa) = \frac{168}{400} = 0.42 = 42\%
+    \] 
+    \[
+    P(aa) = \frac{36}{400} = 0.09 = 9\%
+    \] 
+\end{enumerate}
+Supponiamo che l’allele a sia un letale recessivo, che però si esprime solo nella pianta 
+allo stadio adulto.
+\begin{enumerate}
+  \item[2.] La distribuzione precedente è ancora valida per la fase adulta (sì, no 
+    e perchè)?
+
+    \vspace{1em}
+    \noindent La distribuzione precedente non è valida per la fase adulta. Infatti,
+    le piante con genotipo aa non sopravvivono allo stadio adulto, quindi la probabilità
+    di trovare una pianta adulta con genotipo aa è nulla. Di conseguenza le probabilità
+    in età adulta sono:
+    \[
+    N = 400 - 36 = 364
+    \] 
+    \[
+    P(AA) = \frac{196}{364} \approx 0.538 = 53.8\%
+    \] 
+    \[
+    P(Aa) = \frac{168}{364} \approx 0.462 = 46.2\%
+    \] 
+    \[
+    P(aa) = 0
+    \] 
+  \item[3.] Qual è la probabilità di trovare una pianta in vita dopo un certo periodo di 
+    tempo, quindi adulta?
+    
+    \vspace{1em}
+    \noindent La probabilità di trovare una pianta in vita dopo un certo periodo di tempo
+    è data dalla somma delle probabilità di trovare una pianta adulta con genotipo AA e
+    Aa:
+    \[
+    P(AA) + P(Aa) = 0.49 + 0.42 = 0.91 = 91\%
+    \] 
+  \item[4.] Qual è la probabilità di estrarre una pianta adulta del genotipo AA? E del 
+    tipo Aa?
+    \[
+      P(AA) = 0.538 = 53.8\%
+    \] 
+    \[
+      P(Aa) = 0.462 = 46.2\%
+    \]
+\end{enumerate}
+
+\subsection{Esercizio 10}
+Consideriamo la tabella che riporta i risultati di uno studio in cui sono stati osservati il numero di
+querce e lecci infestati da un certo insetto
+\begin{table}[H]
+  \centering
+  \begin{tabular}{c|ccc}
+    & Infestato & Non infestato & Totali \\
+    \hline
+    Quercia & 40 & 30 & 70 \\
+    Leccio & 52 & 10 & 62 \\
+    \hline
+    Totali & 92 & 40 & 132 
+  \end{tabular}
+\end{table}
+\begin{enumerate}
+  \item Calcolare la probabilità che un albero sia infestato.
+    \[
+    P(I) = \frac{92}{132} \approx 0.697 = 69.7\%
+    \] 
+  \item Calcolare la probabilità che una quercia sia infestata.
+    \[
+    P(Q_I) = \frac{40}{70} \approx 0.571 = 57.1\%
+    \] 
+  \item Calcolare la probabilità che un leccio sia infestato.
+    \[
+    P(L_I) = \frac{52}{62} \approx 0.839 = 83.9\%
+    \] 
+  \item Quale definizione di probabilità si è utilizzata nei punti precedenti?
+    
+    \vspace{1em}
+    La definizione utilizzata nei punti precedenti è: La probabilità è calcolata come
+    il rapporto tra i casi favorevoli e i casi possibili.
+\end{enumerate}
+
+\subsection{Esercizio 11}
+Tre scrivanie tra loro indistinguibili contengono ciascuna due cassetti. La prima 
+contiene una moneta d'oro in ciascun cassetto. La seconda una monta d'argento in un
+cassetto ed una moneta d'oro nell'altro, la terza due monte d'argento. Si apre un 
+cassetto e si trova una moneta d'oro. Qual è la probabilità che anche nell'altro cassetto
+della stessa scrivania ci sia una moneta d'oro?
+
+\vspace{1em}
+\noindent Avendo trovato una moneta d'oro, le uniche possibilità sono che la moneta sia stata
+trovata nella scrivania 1 o nella 2. La probabilità che la seconda moneta sia d'oro riduce
+le possibilità alla scrivania 1, quindi:
+\[
+  O = \text{Moneta d'oro}
+\]
+\[
+  P(S_1) = \frac{1}{3} = 0.333 = 33.3\%
+\] 
+\[
+  P(O\,|\,S_1) = 1
+\] 
+\[
+  P(O) = \left( 1 + \frac{1}{2} + 0 \right) \cdot \frac{1}{3} = \frac{1}{2} = 0.5 = 50\%
+\] 
+La probabilità che la seconda moneta sia d'oro è data dalla probabilità condizionata:
+\[
+  P(S_1\,|\,O) = \frac{P(O\,|\,S_1) \cdot P(S_1)}{P(O)}
+\] 
+\[
+  P(S_1\,|\,O) = \frac{1 \cdot \frac{1}{3}}{\frac{1}{2}} = \frac{2}{3} = 0.666 = 66.6\%
+\] 
+
+\subsection{Esercizio 12}
+Da un'indagine nelle scuole, risulta che la percentuale degli alunni che portano gli
+occhiali è il 10\% nelle scuole elementari, il 25\% nelle scuole medie e il 40\% nelle 
+superiori.
+\[
+  O = \text{Porta gli occhiali}
+\] 
+\[
+  E = \text{Frequenta le elementari}
+\] 
+\[
+  M = \text{Frequenta le medie}
+\] 
+\[
+  S = \text{Frequenta le superiori}
+\] 
+
+\[
+  P(O\,|\,E) = 0.1 = 10\% 
+\] 
+\[
+  P(O\,|\,M) = 0.25 = 25\%
+\] 
+\[
+  P(O\,|\,S) = 0.4 = 40\%
+\] 
+\begin{enumerate}
+  \item Calcolare la probabilità che scegliendo a caso 3 studenti, uno per fascia, almeno
+    uno porti gli occhiali.
+
+    \vspace{1em}
+    La probabilità che almeno uno porti gli occhiali è data dal complementare dell'evento
+    che nessuno porti gli occhiali:
+    \[
+      P(O \ge 1) = 1 - P(O = 0)
+    \] 
+    \[
+      P(O \ge 1) = 1 - \left( P(\overline{O}\,|\,E) \cdot P(\overline{O}\,|\,M) \cdot P(\overline{O}\,|\,S) \right) =
+    \] 
+    \[
+      = 1 - \left( 0.9 \cdot 0.75 \cdot 0.6 \right) = 1 - 0.405 = 0.595 = 59.5\%
+    \] 
+  \item Scegliendo uno studente a caso fra tutti (e supponendo che la scelta di ogni 
+    fascia sia equiprobabile) calcolare la probabilità che questo abbia gli occhiali.
+    
+    \vspace{1em}
+    La probabilità che uno studente scelto a caso è data dalla probabilità totale:
+    \[
+      P(O) = P(O\,|\,E) \cdot P(E) + P(O\,|\,M) \cdot P(M) + P(O\,|\,S) \cdot P(S)
+    \] 
+    \[
+      P(O) = 0.1 \cdot \frac{1}{3} + 0.25 \cdot \frac{1}{3} + 0.4 \cdot \frac{1}{3} = \frac{1}{4} = 0.25 = 25\%
+    \] 
+  \item Sapendo che lo studente porti gli occhiali, calcolare la probabilità che 
+    frequenti le elementari.
+
+    \vspace{1em}
+    \noindent La probabilità che uno studente frequenti le elementari sapendo che porta
+    gli occhiali è data dalla probabilità condizionata:
+    \[
+    P(E\,|\,O) = \frac{P(O\,|\,E) \cdot P(E)}{P(O)}
+    \] 
+    \[
+      P(E\,|\,O) = \frac{0.1 \cdot \frac{1}{3}}{\frac{1}{4}} \approx 0.2667 = 26.67\%
+    \] 
+\end{enumerate}
+
+\subsection{Esercizio 13}
+È stata studiata la relazione tra forma fisica e malattie cardiovascolari in un gruppo di
+impiegati delle ferrovie di sesso maschile, con questi risultati:
+\begin{table}[H]
+  \centering
+  \begin{tabular}{p{1.3in}|p{1.3in}|p{1.3in}}
+    Frequenza cardiaca\newline sotto esercizio\newline (battiti/minuto) &
+    Percentuale dei lavoratori &
+    Mortalità per malattie cardiovascolari in 20 anni\\
+    \hline
+    \centering{\( \le 105 \)} & \centering{20\%} & \centering{9.2\%} \cr
+    \centering{106-115} & \centering{30\%} & \centering{8.7\%} \cr
+    \centering{116-127} & \centering{30\%} & \centering{11.6\%} \cr
+    \centering{\( > 127 \) } & \centering{20\%} & \centering{13.2\%} 
+  \end{tabular}
+\end{table}
+\noindent Supponiamo che un certo test sia positivo se la frequenza cardiaca sotto esercizio è
+maggiore di 127 battiti al minuto e negativo altrimenti.
+\begin{enumerate}
+  \item Qual è la probabilità di mortalità per malattie cardiovascolari in 20 anni?
+  \item Qual è la probabilità di avere avuto un test positivo tra gli uomini che sono 
+    morti nel periodo di 20 anni?
+  \item Qual è la probabilità di avere avuto un test positivo tra gli uomini che sono 
+    sopravvissuti nel periodo di 20 anni?
+  \item Qual è la probabilità di morte tra gli uomini con un test negativo?
+\end{enumerate}
 \end{document}
