@@ -1584,6 +1584,7 @@ un'istruzione.
 	\end{define}
 \end{figure}
 
+\subsection{Esempi}
 \begin{example}
 	Andiamo ad analizzare la sequenza di micro operazioni (Fetch, Decode, Execute) per la
 	seguente istruzione:
@@ -1605,7 +1606,7 @@ un'istruzione.
 			            Counter in modo da accedere all'istruzione successiva.
 
 			      \item[2.] \( WMFC,\; Z_{out},\; PC_{in}\)  \\
-			            \textbf{WMFC}(Wait for Memory Fetch Complete): è un segnale che blocca il clock
+			            \textbf{WMFC}(Wait for Memory Function to Complete): è un segnale che blocca il clock
 			            successivo della CPU finchè il dato viene messo nel bus dati.
 
 			            Siccome in questo ciclo di clock il bus non viene utilizzato viene sfruttato per
@@ -1770,6 +1771,164 @@ quindi \( PC_{in} = T_2 \). È presente poi un decoder che parte dall'Istruction
 
 \noindent Esiste una memoria che contiene tutte le micro istruzioni chiamata \textbf{Firmware},
 ma \textbf{CPU cablate} in questo modo non si realizzano più.
+
+\subsection{Esercizi}
+
+\begin{exercise}
+  Descrivere le micro operazioni per l'istruzione:
+  \begin{center}
+    Fetch
+  \end{center}
+
+  \begin{enumerate}
+    \item[F]
+      \begin{enumerate}
+        \item[1.] \( PC_{out},\; MAR_{in},\; READ ,\; SELECT_4,\; ADD,\; Z_{in}\) \\
+          Il Program Counter manda l'indirizzo di memoria in cui si trova l'istruzione da eseguire
+          al Memory Address Register e manda un segnale di lettura.
+
+          Il segnale di selezione 4 manda un segnale al multiplexer per selezionare il valore
+          da mandare alla ALU e il segnale di addizione manda un segnale alla ALU per sommare
+          4 all'indirizzo di memoria. Ciò vuol dire che l'indirizzo di memoria successivo è
+          l'indirizzo di memoria corrente + 1 word. Tutto ciò per incrementare il Program
+          Counter in modo da accedere all'istruzione successiva.
+
+        \item[2.] \( Z_{out},\; PC_{in},\;WMFC \)  \\
+          \textbf{WMFC}(Wait for Memory Function to Complete): è un segnale che blocca il clock
+          successivo della CPU finchè il dato viene messo nel bus dati.
+
+          Siccome in questo ciclo di clock il bus non viene utilizzato viene sfruttato per
+          mandare il segnale di incremento al Program Counter.
+
+          Il segnale di lettura manda un segnale di attesa finchè il dato non viene messo nel bus dati.
+        \item[3.] \( MDR_{out},\; IR_{in} \) \\
+          Il Memory Data Register manda il dato letto dall'indirizzo di memoria all'Instruction Register.
+      \end{enumerate}
+  \end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+  Descrivere le micro operazioni per l'istruzione:
+  \begin{center}
+    \texttt{INC \%EAX}
+  \end{center}
+
+  \begin{enumerate}
+    \item[F]
+      \begin{enumerate}
+        \item[1.] \( PC_{out},\; MAR_{in},\; READ ,\; SELECT_4,\; ADD,\; Z_{in}\)
+        \item[2.] \( Z_{out},\; PC_{in},\;WMFC \)
+        \item[3.] \( MDR_{out},\; IR_{in} \)
+      \end{enumerate}
+
+    \item [DE]
+      \begin{enumerate}
+        \item[1.] \( EAX_{out},\; SELECT_0,\; CB,\; ADD,\; Z_{in} \)
+        \item[2.] \( Z_{out},\; EAX_{in},\; END \) 
+      \end{enumerate}
+  \end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+  Descrivere le micro operazioni per l'istruzione:
+  \begin{center}
+    \texttt{INC var}
+  \end{center}
+  Assumo la variabile come un indirizzo immediato nell'istruzione. Si fa
+  riferimento ad essa con \( IR_{imm\_field} \) 
+
+  \begin{enumerate}
+    \item[F]
+      \begin{enumerate}
+        \item[1.] \( PC_{out},\; MAR_{in},\; READ ,\; SELECT_4,\; ADD,\; Z_{in}\)
+        \item[2.] \( Z_{out},\; PC_{in},\;WMFC \)
+        \item[3.] \( MDR_{out},\; IR_{in} \)
+      \end{enumerate}
+
+    \item [DE]
+      \begin{enumerate}
+        \item[1.] \( IR_{imm\_field\_out},\; MAR_{in},\; READ ,\; WMFC \)
+        \item[2.] \( MDR_{out},\; SELECT_0 ,\; CB ,\; ADD ,\; Z_{in} \)
+        \item [3.] \( Z_{out} ,\; MDR_{in} ,\; WRITE ,\; WMFC ,\; END \) 
+      \end{enumerate}
+  \end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+  Descrivere le micro operazioni per l'istruzione:
+  \begin{center}
+    \texttt{CALL etichetta}
+  \end{center}
+  Dove etichetta è un indirizzo immediato, ma relativo al program counter 
+  \( PC + IR_{imm\_field} \) 
+
+  \begin{enumerate}
+    \item[F]
+      \begin{enumerate}
+        \item[1.] \( PC_{out},\; MAR_{in},\; READ ,\; SELECT_4,\; ADD,\; Z_{in}\)
+        \item[2.] \( Z_{out},\; PC_{in},\;WMFC \)
+        \item[3.] \( MDR_{out},\; IR_{in} \)
+      \end{enumerate}
+
+    \item [DE]
+      \begin{enumerate}
+        \item[1.] \( ESP_{out} ,\; SELECT_4 ,\; SUB,\; Z_{in} \)
+        \item[2.] \( Z_{out},\; MAR_{in} ,\; ESP_{in} \) 
+        \item[3.] \( PC_{out} ,\; MDR_{in} ,\; WRITE ,\; V_{in}\) 
+        \item[4.] \( IR_{imm\_field} ,\; SELECT_V, ADD ,\; Z_{in} ,\; WMFC \) 
+        \item[5.] \( Z_{out} ,\; PC_{in} ,\; END\) 
+      \end{enumerate}
+  \end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+  Descrivere le micro operazioni per l'istruzione:
+  \begin{center}
+    \texttt{RETURN}
+  \end{center}
+  \begin{enumerate}
+    \item[F]
+      \begin{enumerate}
+        \item[1.] \( PC_{out},\; MAR_{in},\; READ ,\; SELECT_4,\; ADD,\; Z_{in}\)
+        \item[2.] \( Z_{out},\; PC_{in},\;WMFC \)
+        \item[3.] \( MDR_{out},\; IR_{in} \)
+      \end{enumerate}
+
+    \item [DE]
+      \begin{enumerate}
+        \item[1.] \( ESP_{out} ,\; SELECT_4 ,\; ADD,\; Z_{in},\; MAR_{in},\; READ \)
+        \item[3.] \( Z_{out},\; ESP_{in},\; EMFC \)
+        \item[3.] \( MDR_{out}, PC_{in} \) 
+      \end{enumerate}
+  \end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+  Descrivere le micro operazioni per l'istruzione:
+  \begin{center}
+    \texttt{CALL (\%EAX, \%EBX)}
+  \end{center}
+  Viene fatta la call all'indirizzo ottenuto sommando EBX a EAX
+
+  \begin{enumerate}
+    \item[F]
+      \begin{enumerate}
+        \item[1.] \( PC_{out},\; MAR_{in},\; READ ,\; SELECT_4,\; ADD,\; Z_{in}\)
+        \item[2.] \( Z_{out},\; PC_{in},\;WMFC \)
+        \item[3.] \( MDR_{out},\; IR_{in} \)
+      \end{enumerate}
+
+    \item [DE]
+      \begin{enumerate}
+        \item[1.] \( ESP_{out} ,\; SELECT_4 ,\; SUB,\; Z_{in} \)
+        \item[2.] \( Z_{out},\; MAR_{in} ,\; ESP_{in} \) 
+        \item[6.] \( PC_{out} ,\; MDR_{in} ,\; WRITE \) 
+        \item[3.] \( EAX_{out} ,\; V_{in} \)
+        \item[4.] \( EBX_{out},\; SELECT_V,\; ADD ,\; Z_{in}, WMFC \) 
+        \item[5.] \( Z_{out} ,\; PC_{in} ,\; END\) 
+      \end{enumerate}
+  \end{enumerate}
+\end{exercise}
 
 \section{Dispositivi di input e output}
 \begin{figure}[H]
