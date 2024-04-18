@@ -4124,10 +4124,10 @@ Allora il sistema lineare \( Ax = b \) possiede l'unica soluzione \( p = \begin{
     \item \( V = \{0_v\}  \) è uno spazio vettoriale. Scriviamo \( V = \{0\} \).
   \end{enumerate}
 
-  \subsection{Osservazioni}
+  \subsection{Osservazioni} \label{oss:5.2}
   Sia \( V \) uno spazio vettoriale. Sia \( v \in V,\; \alpha \in \mathbb{K} \) 
   \begin{enumerate}
-    \item \( \alpha 0_v = 0_v \), infatti:
+    \item[a.] \( \alpha 0_v = 0_v \), infatti:
       \[
       \alpha 0_v = \alpha (0_v + 0_v) = \alpha 0_v + \alpha 0_v
       \] 
@@ -4144,7 +4144,7 @@ Allora il sistema lineare \( Ax = b \) possiede l'unica soluzione \( p = \begin{
       \[
       0_v = \alpha 0_v
       \] 
-    \item \( 0 \cdot v = 0_v \)
+    \item[b.] \( 0 \cdot v = 0_v \) 
       \[
       v = 1 \cdot v = (1+0)v = 1 \cdot v + 0 \cdot v = v + 0 \cdot v
       \] 
@@ -4162,7 +4162,7 @@ Allora il sistema lineare \( Ax = b \) possiede l'unica soluzione \( p = \begin{
       0_v = 0 \cdot v
       \] 
 
-    \item Se \( \alpha v = 0_v \), allora \( \alpha = 0 \) oppure \( v = 0_v \) 
+    \item[c.] Se \( \alpha v = 0_v \), allora \( \alpha = 0 \) oppure \( v = 0_v \) 
       \[
       \alpha v = 0_v
       \] 
@@ -4179,7 +4179,7 @@ Allora il sistema lineare \( Ax = b \) possiede l'unica soluzione \( p = \begin{
       0_v = 0_v
       \]
 
-    \item \( (-\alpha)v = -(\alpha v) = \alpha (-v) \) 
+    \item[d.] \( (-\alpha)v = -(\alpha v) = \alpha (-v) \) 
   \end{enumerate}
 
   \subsection{Definizione combinazione lineare}
@@ -5387,4 +5387,234 @@ una base di \( V \) è detto \textbf{dimensione} di \( V \) e si indica con
     \end{itemize}
   \end{example}
 \end{figure}
+
+\subsection{Corollario}
+In uno spazio vettoriale \( V \) di dimensione \( dim_{\mathbb{K}}(V) = n \), si ha
+\begin{enumerate}
+  \item Un insieme con \( > n \) vettori è linearmente dipendente.
+  \item Se \( n \) vettori sono linearmente indipendenti, allora formano una base di
+    \( V \).
+  \item Ogni insieme di generatori consiste di almeno \( n \) vettori
+\end{enumerate}
+
+\subsection{Proposizione}
+Sia \( dim_{\mathbb{K}}(V) = n \). Allora ogni sottospazio \( U \) di \( V \) ha dimensione
+\( dim_{\mathbb{K}}(U) \le n \). Inoltre \( dim_{\mathbb{K}}(U) = n \) se e solo se
+\( U = V \) 
+
+\subsubsection{Dimostrazione}
+Sia \( \mathcal{B} = \{u_1, \ldots, u_n\}  \) una base di \( U \). Allora \( \mathbb{B} \) 
+è linearmente indipendente in \( V \) perchè \( 0_v = 0_u \).
+Quindi possiamo completare \( \mathbb{B} \) a una base di \( V \) (usando il teorema
+di Steinitz). Allora \( \underbrace{\#\mathcal{B}}_{dim_{\mathbb{K}}(U)} \le 
+\underbrace{\#\mathcal{B}'}_{dim_{\mathbb{K}}(V)} \).
+Abbiamo che \( \mathcal{B} \) contiene \( n \) elementi (cioè \( dim_{\mathbb{K}}(U) = n \) )
+se e solo se \( \mathcal{B} \) è una base di \( V \). Quindi in tal caso
+abbiamo:
+\[
+U = \left< u_1, \ldots, u_n \right> = V \quad \square
+\] 
+
+\section{Applicazione lineare}
+D'ora in poi, tutti gli spazi vettoriali saranno \textbf{finitamente generati}.
+
+\subsection{Definizione} \label{def:applicazioneLineare}
+Siano \( U \) e \( V \) spazi vettoriali su \( \mathbb{K} \). Un'applicazione
+\( f: U \to V \) si dice \textbf{lineare} se, per \( u, u' \in U \) e \( \alpha \in \mathbb{K} \)
+si ha:
+\begin{enumerate}
+  \item \( f(u+u') = f(u) + f(u') \) 
+  \item \( f(\alpha u) = \alpha f(u) \) 
+\end{enumerate}
+
+\subsubsection{Osservazioni}
+\begin{enumerate}
+  \item \( f(0_u) \underset{\ref{oss:5.2}(b)}{=} f(0 \cdot 0_u) \underset{\ref{def:applicazioneLineare}(2)}{=}
+    0 \cdot f(0_u) \underset{\ref{oss:5.2}(b)}{=} 0_v\) 
+
+  \item \( f(-u) \underset{\ref{oss:5.2}(d)}{=} f((-1)\cdot u) \underset{\ref{def:applicazioneLineare}(2)}{=}
+    (-1) \cdot f(u) \underset{\ref{oss:5.2}(d)}{=} -f(u)\) 
+\end{enumerate}
+Per tutti gli elementi di \( U \) 
+
+\subsubsection{Esempi}
+\begin{example}
+  \[
+    U = \mathbb{R}_2[x] = \{a_0+a_1x+a_2x^2 \;|\; a_0,a_1,a_2 \in \mathbb{R}\} 
+  \] 
+  \[
+    V = \mathbb{R}^2 = M_{2 \times 1}(\mathbb{R})
+  \] 
+  \[
+  p = a_0 + a_1x+a_2x^2
+  \] 
+
+  \[
+  f: U \to V
+\]
+  \[
+  f(p) = \begin{pmatrix} p(0)\\p(1) \end{pmatrix} =
+  \begin{pmatrix} 
+    a_0 + a_1 \cdot 0 + a_2 \cdot 0^2\\
+    a_0 + a_1 \cdot 1 + a_2 \cdot 1^2
+  \end{pmatrix} =
+  \begin{pmatrix} 
+    a_0 \\
+    a_0 + a_1 + a_2
+  \end{pmatrix} 
+  \] 
+  \( f \) è lineare. Infatti per ogni \( p=a_0+a_1x+a_2x^2 \), \( q=b_0+b_1x+b_2x^2 \)
+  \begin{enumerate}
+    \item \[ f(p+q) = \left( (a_0 + b_0) + (a_1+b_1)x + (a_2+b_2)x^2 \right) = \]
+      \[
+      \begin{pmatrix} 
+        a_0+b_0\\
+        (a_0+b_0) + (a_1+b_1) + (a_2 + b_2)
+      \end{pmatrix} 
+      \] 
+
+      \vspace{1em}
+      \[
+        f(p) + f(q) = \begin{pmatrix} 
+          a_0\\
+          a_0 + a_1 + a_2
+        \end{pmatrix} 
+        +
+        \begin{pmatrix} 
+          v_0\\
+          b_0 + b_1 + b_2
+        \end{pmatrix} 
+        =
+      \] 
+      \[
+        \begin{pmatrix} 
+          a_0 + b_0\\
+          (a_0+a_1+a_2) + (b_0+b_1+b_2)
+        \end{pmatrix} 
+      \] 
+      Quindi \( f(p+q) = f(p) + f(q) \) 
+
+    \item \( \alpha \in \mathbb{R} \)
+      \[
+      f(\alpha p) = f((\alpha a_0) + (\alpha a_1)x + (\alpha a_2)x^2 ) =
+      \] 
+      \[
+      \begin{pmatrix} 
+        \alpha a_0\\
+        \alpha a_0 + \alpha a_1 + \alpha a_2
+      \end{pmatrix} 
+      \] 
+
+      \vspace{1em}
+      \[
+      \alpha f(p) = \alpha \begin{pmatrix} 
+        a_0 \\
+        a_0 + a_1 + a_2
+      \end{pmatrix} 
+      =
+      \begin{pmatrix} 
+        \alpha a_0\\
+        \alpha a_0 + \alpha a_1 + \alpha a_2
+      \end{pmatrix} 
+      \] 
+      Quindi \( f(\alpha p) = \alpha f(p) \) 
+  \end{enumerate}
+\end{example}
+
+\subsection{Applicazioni lineari \texorpdfstring{\( \mathbb{K}^n \to \mathbb{K}^m \)}{K\^n -> K\^m}}
+Sia \( A \in  M_{m \times n}(\mathbb{K}) \), definiamo \( f_A: \mathbb{K}^n \to \mathbb{K}^m \) 
+per ogni \( v = \begin{pmatrix} 
+  v_1\\
+  \vdots\\
+  v_n
+\end{pmatrix} \in \mathbb{K}^n\) \( f(v) = Av \). \( f_A \) è lineare:
+\begin{enumerate}
+  \item \( f_A(v+w) = A(v+w) = Av + Aw = f_A(v) + f_A(w) \) 
+
+  \item \( f_A(\alpha v) = A(\alpha v) = \alpha(Av) = \alpha f_A(v) \) 
+\end{enumerate}
+
+\subsubsection{Esempi}
+\begin{figure}[H]
+  \begin{example}
+    \[
+    A = \begin{pmatrix} 
+      2 & i\\
+      0 & 1-i \\
+      1 & 0
+    \end{pmatrix} \in M_{3 \times 2}(\mathbb{C})
+    \] 
+    \[
+    f_A: \mathbb{C}^2 \to \mathbb{C}^2
+    \] 
+    \[
+    f_A\left( \begin{pmatrix} x\\y \end{pmatrix}  \right) =
+    \begin{pmatrix} 
+      2 & i\\
+      0 & 1-i \\
+      1 & 0
+    \end{pmatrix} 
+    \begin{pmatrix} x\\y \end{pmatrix} 
+    =
+    \begin{pmatrix} 
+      2x + iy\\
+      (1-i)y\\
+      x
+    \end{pmatrix} 
+    \] 
+  \end{example}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{example}
+    \[
+    f: \mathbb{K}^3 \to \mathbb{K}^2, \quad f\left( \begin{pmatrix} 
+        x\\
+        y\\
+        z
+    \end{pmatrix}  \right) =
+    \begin{pmatrix} 
+      2x \\
+      3z - y
+    \end{pmatrix} 
+    \] 
+    \( f \) è lineare. Notiamo che, per ogni \( \begin{pmatrix} x\\y\\z \end{pmatrix} 
+    \in \mathbb{K}^3\), abbiamo:
+    \[
+    f\left( \begin{pmatrix} x\\y\\z \end{pmatrix}  \right) =
+    f\left( x \begin{pmatrix} 1\\0\\0 \end{pmatrix} +
+    y \begin{pmatrix} 0\\1\\0 \end{pmatrix} +
+  z \begin{pmatrix} 0\\0\\1 \end{pmatrix} \right) 
+    \] 
+    \[
+    = f\left(x \begin{pmatrix} 1\\0\\0 \end{pmatrix} \right) +
+    f\left( y \begin{pmatrix} 0\\1\\0 \end{pmatrix}  \right) +
+    f\left( z \begin{pmatrix} 0\\0\\1 \end{pmatrix}  \right) 
+    \] 
+    \[
+    = xf\left( \begin{pmatrix} 1\\0\\0 \end{pmatrix}  \right) +
+    yf\left( \begin{pmatrix} 0\\1\\0 \end{pmatrix}  \right) +
+    zf\left( \begin{pmatrix} 0\\0\\1 \end{pmatrix}  \right) 
+    \] 
+    \[
+    = x \begin{pmatrix} 2\\0 \end{pmatrix} +
+    y \begin{pmatrix} 0\\-1 \end{pmatrix} +
+    z \begin{pmatrix} 0\\3 \end{pmatrix} 
+    \] 
+    \[
+    = x \begin{pmatrix} 2\\0 \end{pmatrix} +
+    y \begin{pmatrix} 0\\-1 \end{pmatrix} +
+    z \begin{pmatrix} 0\\3 \end{pmatrix} 
+    \] 
+    \[
+    = \begin{pmatrix} 
+      2 & 0 & 0\\
+      0 & -1 & 3
+    \end{pmatrix} 
+    \begin{pmatrix} x\\y\\z \end{pmatrix} 
+    \] 
+    Dunque \( f = f_A \) dove \( A = \begin{pmatrix} 2 & 0 & 0\\ 0 & -1 & 3 \end{pmatrix}  \) 
+  \end{example}
+\end{figure}
+
 \end{document}
