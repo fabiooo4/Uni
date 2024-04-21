@@ -1,0 +1,182 @@
+---
+title: "Lab4"
+subtitle: "Exercises"
+author: "Irimie Fabio"
+output: 
+  pdf_document:
+    toc: true
+    keep_tex: true 
+---
+
+# Exercise 1
+
+## A
+Plot the Probability Mass Function for the Binomial distribution with 
+$n=18$ and $p=\frac{1}{3}$.
+Calculate:
+
+  1. $P(X=3)$
+```{r, collapse=TRUE}
+dbinom(3, 18, 1 / 3)
+```
+  2. $P(X \ge 3)$
+```{r, collapse=TRUE}
+1 - pbinom(2, 18, 1 / 3)
+# or
+pbinom(2, 18, 1 / 3, lower.tail = FALSE)
+```
+  3. $P(1 \le X > 5)$
+```{r, collapse=TRUE}
+pbinom(4, 18, 1 / 3) - pbinom(0, 18, 1 / 3)
+```
+  4. $P(X \ge 15)$
+```{r, collapse=TRUE}
+pbinom(14, 18, 1 / 3, lower.tail = FALSE)
+```
+
+```{r}
+library(ggplot2)
+df <- data.frame(x = 0:18, y = dbinom(0:18, 18, 1 / 3))
+
+ggplot(df, aes(x = x, y = y, fill = "PMF")) +
+  geom_col() +
+  scale_x_continuous(breaks = 0:18) +
+  scale_fill_manual(values = "red") +
+  labs(
+    title = "Binomial Distribution",
+    x = "x",
+    y = "P(X = x)"
+  )
+```
+
+## B
+Plot the Cumulative Distribution Function for the Poisson distribution 
+with $\lambda = 3$. Calculate:
+
+  1. $P(X=3)$
+```{r, collapse=TRUE}
+lambda <- 3
+dpois(3, lambda)
+```
+  2. $P(X \ge 3)$
+```{r, collapse=TRUE}
+ppois(2, lambda, lower.tail = FALSE)
+```
+  3. $P(1 \le X > 5)$
+```{r, collapse=TRUE}
+ppois(4, lambda) - ppois(0, lambda)
+```
+  4. $P(X \ge 15)$
+```{r, collapse=TRUE}
+ppois(14, lambda, lower.tail = FALSE)
+```
+
+```{r}
+df <- data.frame(x = 0:18, y = ppois(0:18, lambda))
+
+ggplot(df, aes(x = x, y = y, color = "CDF")) +
+  geom_step() +
+  scale_x_continuous(breaks = 0:18) +
+  scale_color_manual(values = "blue") +
+  labs(
+    title = "Poisson Distribution",
+    x = "x",
+    y = "P(X <= x)"
+  )
+```
+
+# Exercise 2
+Demonstrate that a Poisson r.v. may be used as an approximation for a
+binomial r.v.
+
+## A
+```{r}
+n <- c(20, 30, 40, 100)
+p <- c(1 / 4, 1 / 6, 1 / 8, 1 / 20)
+
+pmf <- matrix(NA, nrow = 21, ncol = 4)
+
+for (i in 1:4) {
+  pmf[, i] <- dbinom(0:20, n[i], p[i])
+}
+
+pmf <- as.data.frame(pmf)
+
+colnames(pmf) <- paste("Binomial", n, round(p, 2), sep = "_")
+
+pmf$Poisson <- dpois(0:20, n * p)
+
+pmf$X <- 0:20
+```
+## B
+```{r}
+library(reshape2)
+
+df_plot <- melt(pmf, id.vars = "X")
+df_plot
+
+library(ggplot2)
+library(RColorBrewer) # Color palettes
+
+ggplot(df_plot, aes(x = X, y = value, color = variable)) +
+  geom_line() +
+  scale_color_manual(values = c(brewer.pal(4, "PRGn"), "red")) +
+  labs(
+    title = "Binomial vs Poisson PMF",
+    x = "x",
+    y = "P(X = x)"
+  )
+```
+
+# Exercise 3
+
+## A
+Generate N=1000 random numbers from a binomial distribution with n=9
+trials and p=0.8. Thus each of the 1000 random numbers will be an
+integer between 0 and 9.
+```{r}
+set.seed(123)
+n <- 9
+p <- 0.8
+t <- 1000
+
+valori <- rbinom(t, n, p)
+```
+
+## B
+Plot the experimental probability using the geom_bar() function.
+```{r}
+df <- data.frame(x = valori)
+
+ggplot(df, aes(x = valori)) +
+  geom_bar() +
+  scale_x_continuous(breaks = 0:9) +
+  labs(
+    title = "Experimental Probability",
+    x = "Successes",
+    y = "Frequency"
+  )
+```
+
+## C
+For each value of the x-axis obtained in the previous plot, compute the real
+probability mass function and add it in the plot as red dots using geom_point().
+```{r}
+p_teo <- data.frame(p = dbinom(0:9, n, p))
+
+ggplot(df, aes(x = valori)) +
+  geom_bar(aes(y = after_stat(prop))) +
+  geom_point(
+    data = p_teo,
+    aes(
+      x = 0:9, y = p,
+      color = "red"
+    ),
+  ) +
+  scale_x_continuous(breaks = 0:9) +
+  labs(
+    title = "Experimental vs Real Probability",
+    x = "Successes",
+    y = "Frequency"
+  )
+```
