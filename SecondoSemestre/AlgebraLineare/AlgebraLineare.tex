@@ -2797,6 +2797,7 @@ Per 3.10, le matrici elementari sono invertibili. Dunque:
 \( \quad \square \) 
 
 \subsection{Calcolo della matrice inversa}
+\label{th:4.2}
 Data una matrice invertibile \( A \in M_{m \times n}(\mathbb{C}) \). Usiamo le operazioni
 elementari per trasformare \( A \) nella matrice identità, e eseguiamo le stesse
 operazioni elementari su \( I_n \) per ottenere \( A^{-1} \):
@@ -5616,5 +5617,383 @@ per ogni \( v = \begin{pmatrix}
     Dunque \( f = f_A \) dove \( A = \begin{pmatrix} 2 & 0 & 0\\ 0 & -1 & 3 \end{pmatrix}  \) 
   \end{example}
 \end{figure}
+
+Per ogni applicazione lineare \( f: \mathbb{K}^n \to \mathbb{K}^m \) e per 
+\( v = \begin{pmatrix} v_1\\\vdots\\v_n \end{pmatrix} \in \mathbb{K}^n \), abbiamo che
+\[
+  v = v_1 \underbrace{\begin{pmatrix} 
+  1\\0\\\vdots\\0
+\end{pmatrix}}_{e_1}
++ v_2 \underbrace{\begin{pmatrix} 
+  0\\1\\\vdots\\0
+\end{pmatrix}}_{e_2}
++ \ldots +
+v_n \underbrace{\begin{pmatrix} 
+  0\\0\\\vdots\\1
+\end{pmatrix}}_{e_n}
+\] 
+\[
+f(v) = f(v_1 e_1 + v_2 e_2 + \ldots + v_n e_n)
+\] 
+\[
+= f(v_1 e_1) + f(v_2 e_2) + \ldots + f(v_n e_n)
+\] 
+\[
+= v_1 f(e_1) + v_2 f(e_2) + \ldots + v_n f(e_n)
+\] 
+\[
+= \left( f(e_1) \ldots f(e_n) \right) \begin{pmatrix} v_1\\\vdots\\v_n \end{pmatrix} 
+\] 
+\[
+= Av
+\] 
+dove \( A = (f(e_1) \ldots f(e_n)) \) e \( \{e_1, \ldots, e_n\}  \) è la base canonica
+di \( \mathbb{K}^n \). Allora \( f = f_A \). La matrice \( A \) è detta la
+\textbf{matrice associata a \( f \) (rispetto alla base canonica)}
+
+\vspace{1em}
+\noindent \textbf{NB}: Per una matrice \( A \in M_{n \times n}(\mathbb{K}) \) invertibile
+abbiamo \( f_A: \mathbb{K}^n \to \mathbb{K}^n \) e \( f_{A^{-1}}: \mathbb{K}^n \to \mathbb{K}^n \).
+Osserviamo:
+\[
+  f_{A^{-1}}(f_A(v)) = f_{A^{-1}}(Av) = A^{-1}(Av) = (A_{-1}A)v = I_nv = v
+\] 
+\[
+  f_A(f_{A^{-1}}(v)) = f_A(A^{-1}v) = AA^{-1}v = I_nv = v
+\] 
+
+\subsection{Definizione}
+Un'applicazione lineare \( f: V \to W \) è detta \textbf{isomorfismo} se esiste
+\( g: W \to V \) tale che \( g(f(v)) = V \) per ogni \( v \in V \) e
+\( f(g(w)) = W \) per ogni \( w \in W \). L'applicazione lineare \( g \) è detta
+\textbf{inversa di \( f \) } e si dice che \( V \) e \( W \) sono \textbf{isomorfi}.
+Scriviamo \( f^{-1} = g \) e \( V \cong W \).
+
+\begin{example}
+  Sia \( f: \mathbb{K}^n \to \mathbb{K}^n \) un'applicazione lineare. Allora esiste
+  una matrice \( A \in M_{n \times n}(\mathbb{K}) \) tale che \( f = f_A \).
+  L'applicazione lineare \( f \) è un isomorfismo se e solo se \( A \) è invertibile.
+  Infatti, supponiamo che esista \( f^{-1} \) e consideriamo la matrice associata \( B \),
+  cioè \( f^{-1} = f_B \). Allora, per ogni \( v \in \mathbb{K}^n \), abbiamo:
+  \[
+    (BA)v = f_B f_A(v) = f^{-1} f(v) = v
+  \] 
+  \[
+   = f f^{-1}(v) = f_A f_B(v) =f_A (BV) = (AB)v
+  \] 
+  Ne segue \( AB = I_n = BA \). Quindi \( B = A^{-1} \) 
+\end{example}
+
+\subsection{Applicazione delle coordinate}
+Sia \( \mathcal{B} = \{b_1, \ldots, b_n\}  \) una base di uno spazio vettoriale \( V \) 
+su \( \mathbb{K} \). Per ogni \( \alpha_1 b_1 + \ldots + \alpha_n b_n = v \in V \) abbiamo
+definito il vettore: \[ [v]_{\mathcal{B}} = \begin{pmatrix} 
+  \alpha_1\\
+  \vdots\\
+  \alpha_n
+\end{pmatrix} \]
+L'applicazione \( C_{\mathcal{B}}: V \to \mathbb{K}^n \) definita come:
+\[
+  C_{\mathcal{B}}(v) = [v]_{\mathcal{B}}
+\] 
+è lineare ed è detta \textbf{applicazione delle coordinate rispetto a \( \mathcal{B} \)}.
+Infatti, per:
+\[
+v = \alpha_1 b_1 + \ldots + \alpha_n b_n, \quad w = \beta_1 b_1 + \ldots + \beta_n b_n \in V
+\] 
+e \( \alpha \in \mathbb{K} \), abbiamo
+\begin{enumerate}
+  \item \[
+      C_{\mathcal{B}}(v+w) = C_{\mathcal{B}}(\alpha_1 b_1 + \ldots + \alpha_n b_n + 
+      \beta_1 b_1 + \ldots + \beta_n b_n)
+  \] 
+  \[
+    = C_{\mathcal{B}}((\alpha_1 + \beta_1) b_1 + \ldots + (\alpha_n + \beta_n) b_n)
+  \] 
+  \[
+  = \begin{pmatrix} 
+    \alpha_1 + \beta_1\\
+    \vdots\\
+    \alpha_n + \beta_n
+  \end{pmatrix} 
+  \] 
+  \vspace{1em}
+  \[
+    C_{\mathcal{B}}(v) + C_{\mathcal{B}}(w) = \begin{pmatrix} 
+      \alpha_1\\
+      \vdots\\
+      \alpha_n
+    \end{pmatrix}
+    +
+    \begin{pmatrix} 
+      \beta_1\\
+      \vdots\\
+      \beta_n
+    \end{pmatrix}
+  \] 
+  \[
+  = \begin{pmatrix} 
+    \alpha_1 + \beta_1\\
+    \vdots\\
+    \alpha_n + \beta_n
+  \end{pmatrix} 
+  \] 
+  Quindi \( C_{\mathcal{B}}(v+w) = C_{\mathcal{B}}(v) + C_{\mathcal{B}}(w) \) 
+
+  \item 
+    \[
+      C_{\mathcal{B}}(\alpha v) = C_{\mathcal{B}}(\alpha(\alpha_1 b_1 + \ldots + \alpha_n b_n))
+    \] 
+    \[
+    = C_{\mathcal{B}}((\alpha \alpha_1) b_1 + \ldots + (\alpha \alpha_n) b_n)
+    \] 
+    \[
+    = \begin{pmatrix} 
+      \alpha \alpha_1\\
+      \vdots\\
+      \alpha \alpha_n
+    \end{pmatrix}
+    \] 
+    \vspace{1em}
+    \[
+    \alpha C_{\mathcal{B}}(v) = \alpha \begin{pmatrix} 
+      \alpha_1\\
+      \vdots\\
+      \alpha_n
+    \end{pmatrix}
+    = \begin{pmatrix} 
+      \alpha \alpha_1\\
+      \vdots\\
+      \alpha \alpha_n
+    \end{pmatrix}
+    \] 
+    Quindi \( C_{\mathcal{B}}(\alpha v) = \alpha C_{\mathcal{B}}(v) \)
+\end{enumerate}
+
+\begin{example}
+  \[
+    V = \mathbb{R}_2[x], \quad \mathbb{K} = \mathbb{R}
+  \] 
+  \[
+  V = \{a_0 + a_1x + a_2x^2 \;|\; a_0, a_1, a_2 \in \mathbb{R}\}
+  \] 
+  \[
+  \mathcal{B} = \{b_1 = 1+x, b_2 = 1+x^2, b_3 = x + x^2\} 
+  \] 
+  è una base di \( V \).
+
+  \vspace{1em}
+  \noindent Prendiamo \( v = 6 + 3x - x^2 \in V\). Poichè \( \mathcal{B} \) è una base di
+  \( V \), esistono \( \alpha_1, \alpha_2, \alpha_3 \in \mathbb{R} \) tali che
+  \( v = \alpha_1 b_1 + \alpha_2 b_2 + \alpha_3 b_3 \).
+  \[
+  6 + 3x - x^2 = \alpha_1(1+x) + \alpha_2(1+x^2) + \alpha_3(x+x^2)
+  \] 
+  \[
+  = (\alpha_1 + \alpha_1 x) + (\alpha_2 + \alpha_2 x^2) + (\alpha_3 x + \alpha_3 x^2)
+  \] 
+  \[
+  = (\alpha_1 + \alpha_2) + (\alpha_1 + \alpha_3)x + (\alpha_2 + \alpha_3)x^2
+  \] 
+  Quindi:
+  \[
+  \begin{cases}
+    \alpha_1 + \alpha_2 = 6 \\
+    \alpha_1 + \alpha_3 = 3 \\
+    \alpha_2 + \alpha_3 = -1
+  \end{cases}
+  \] 
+  Risolviamo il sistema lineare usando l'Eliminazione di Gauss:
+  \[
+    \begin{pmatrix}[ccc|c]
+      1 & 1 & 0 & 6\\
+      1 & 0 & 1 & 3\\
+      0 & 1 & 1 & -1
+  \end{pmatrix} 
+  \sim
+  \ldots
+  \sim
+  \begin{pmatrix}[ccc|c]
+    1 & 1 & 0 & 6\\
+    0 & 1 & -1 & 3\\
+    0 & 0 & 1 & -2
+  \end{pmatrix} 
+  \] 
+  \[
+  \leadsto \begin{cases}
+    \alpha_1 + \alpha_2 = 6\\
+    \alpha_2 - \alpha_3 = 3\\
+    \alpha_3 = -2
+  \end{cases}
+  \to
+  \begin{cases}
+    \alpha_1 = 6-\alpha_2 = 5\\
+    \alpha_2 = 3 + \alpha_3 = 1\\
+    \alpha_3 = -2
+  \end{cases}
+  \] 
+  Quindi:
+  \[
+  6 + 3x - x^2 = v = 5b_1 + b_2 - 2b_3 = 5(1+x) + (1+x^2) - 2(x+x^2)
+  \] 
+\end{example}
+
+\subsection{Applicazione delle coordinate \texorpdfstring{\( C_{\mathcal{B}}: \mathbb{K}^n \to \mathbb{K}^n \)}{C\_B: K\^n -> K\^n}}
+\begin{example}
+  \[
+  V = \mathbb{R}^2, \quad \mathcal{B} = \{b_1 = \begin{pmatrix}
+      -1\\2
+  \end{pmatrix},
+  b_2 = \begin{pmatrix} 
+    \frac{1}{2}\\
+    3
+  \end{pmatrix} 
+\} \; \text{base}
+  \] 
+  Per ogni \( v = \begin{pmatrix} v_1\\v_2 \end{pmatrix} \in \mathbb{R}^2 \), esistono
+  \( \alpha_1, \alpha_2 \in \mathbb{R} \) tali che:
+  \[
+  v = \alpha_1 b_1 + \alpha_2 b_2
+  \] 
+  \[
+  = \alpha_1 \begin{pmatrix} 
+    -1\\
+    2
+  \end{pmatrix} 
+  +
+  \alpha_2 \begin{pmatrix} 
+    \frac{1}{2}\\
+    3
+  \end{pmatrix} 
+  \] 
+  \[
+  = \begin{pmatrix} 
+    -\alpha_1 + \frac{1}{2}\alpha_2\\
+    2 \alpha_1 + 3 \alpha_2
+  \end{pmatrix} 
+  \] 
+  \[
+  = \begin{pmatrix} 
+    -1 & \frac{1}{2}\\
+    2 & 3
+  \end{pmatrix} 
+  \begin{pmatrix} 
+    \alpha_1\\
+    \alpha_2
+  \end{pmatrix} 
+  \] 
+  Quindi \( C_{\mathcal{B}}(v) = \begin{pmatrix} \alpha_1\\\alpha_2 \end{pmatrix}  \) 
+  è soluzione del sistema lineare \( Ax = v \) dove:
+  \[
+  A = \begin{pmatrix} 
+    -1 & \frac{1}{2}\\
+    2 & 3
+  \end{pmatrix} 
+  =
+  \begin{pmatrix} b_1 & b_2 \end{pmatrix} 
+  \] 
+  Siccome \( \mathcal{B} \) è una base, \( \alpha_1 \) e \( \alpha_2 \) sono univocamente
+  determinati e quindi \( Ax = v \) ha soluzione per ogni \( v \in \mathbb{R}^2 \).
+  Per il teorema \ref{th:4.2}, \( A \) è invertibile e
+  \[
+  \begin{pmatrix} 
+    \alpha_1\\
+    \alpha_2
+  \end{pmatrix} 
+  = A^{-1}v
+  \] 
+  Calcolando \( A^{-1} \) 
+  \[
+    \begin{pmatrix}[cc|cc]
+      -1 & \frac{1}{2} & 1 & 0\\
+      2 & 3 & 0 & 1
+  \end{pmatrix} 
+  \sim
+  \ldots
+  \sim
+  % \begin{pmatrix}[cc|cc]
+  %   1 & 0 & \frac{3}{4} & \frac{1}{8}\\
+  %   0 & 1 & \frac{1}{2} & \frac{1}{4}
+  % \end{pmatrix} 
+  \left(
+  \begin{array}{cc}
+    1 & 0\\
+    0 & 1
+  \end{array}
+  \right|
+  \underbrace{
+    \left.
+      \begin{array}{cc}
+        \frac{3}{4} & \frac{1}{8}\\
+        \frac{1}{2} & \frac{1}{4}
+      \end{array}
+    \right)
+  }_{A^{-1}}
+  \] 
+  Dunque, per ogni \( v = \begin{pmatrix} v_1\\v_2 \end{pmatrix} \in \mathbb{R}^2 \),
+  \[
+    C_{\mathcal{B}}(v) = \begin{pmatrix} \alpha_1\\\alpha_2 \end{pmatrix} =
+    A^{-1}v =
+  \] 
+  \[
+    =
+    \begin{pmatrix} 
+      \frac{3}{4} & \frac{1}{8}\\
+      \frac{1}{2} & \frac{1}{4}
+    \end{pmatrix} 
+    \begin{pmatrix} v_1\\v_2 \end{pmatrix} 
+    =
+    \begin{pmatrix} 
+      \frac{3}{4}v_1 + \frac{1}{8}v_2\\
+      \frac{1}{2}v_1 + \frac{1}{4}v_2
+    \end{pmatrix} 
+  \] 
+\end{example}
+
+\noindent In generale, per una base \( \mathcal{B} = \{b_1, \ldots, b_n\}  \) di
+\( \mathbb{K}^n \), la matrice \( A = \begin{pmatrix} b_1, \ldots, b_n \end{pmatrix}  \) è
+invertibile e \( C_{\mathcal{B}} = f_{A^{-1}} \). Dunque \( C_{\mathcal{B}}: \mathbb{K}^n
+\to \mathbb{K}^n\) è un isomorfismo con inversa \( f_A \).
+
+\subsection{Teorema}
+Sia \( V \) uno spazio vettoriale su \( \mathbb{K} \) con base \( \mathcal{B} = \{b_1,
+\ldots, b_n\}  \). L'applicazione lineare \( C_{\mathcal{B}}: V \to \mathbb{K}^n  \) è
+un isomorfismo.
+
+\subsubsection{Dimostrazione}
+Definiamo \( g_{\mathcal{B}}: \mathbb{K}^n \to V \),
+\[
+  g_{\mathcal{B}}\left( \begin{pmatrix} \alpha_1\\\vdots\\\alpha_n \end{pmatrix}  \right)=
+  \alpha_1 b_1 + \ldots + \alpha_n b_n
+\] 
+Mostriamo che \( g_{\mathcal{B}} \) è l'inversa di \( C_{\mathcal{B}} \). Infatti:
+\[
+  C_{\mathcal{B}}\left(g_{\mathcal{B}}\left( \begin{pmatrix} 
+      \alpha_1\\
+      \vdots\\
+      \alpha_n
+\end{pmatrix}  \right) \right) = C_{\mathcal{B}}(\alpha_1 b_1 + \ldots + \alpha_n b_n) =
+\begin{pmatrix} \alpha_1\\\vdots\\\alpha_n \end{pmatrix} 
+\] 
+Per ogni \( v = \alpha_1 b_1 + \ldots + \alpha_n b_n \in V \),
+\[
+  g_{\mathcal{B}}\left( C_{\mathcal{B}}(v) \right) = g_{\mathcal{B}}\left( \begin{pmatrix} 
+      \alpha_1\\
+      \vdots\\
+      \alpha_n
+  \end{pmatrix}  \right) = \alpha_1 b_1 + \ldots + \alpha_n b_n = v
+\] 
+Dunque \( g_{\mathcal{B}} = C_{\mathcal{B}}^{-1} \quad \square\) 
+
+\subsection{Osservazione}
+Se \( f: V \to W \) è un isomorfismo e \( \mathcal{B} = \{b_1, \ldots, b_n\}  \) è una
+base di \( V \), allora \( \{f(b_1), \ldots, f(b_n)\}  \) è una base di \( W \). In
+particolare, \( dim_{\mathbb{K}}(V) = dim_{\mathbb{K}}(W) \).
+
+\subsection{Corollario}
+Due spazi vettoriali \( V \) e \( W \) sono isomorfi se e solo se:
+\[
+  dim_{\mathbb{K}}(V) = dim_{\mathbb{K}}(W)
+\] 
 
 \end{document}
