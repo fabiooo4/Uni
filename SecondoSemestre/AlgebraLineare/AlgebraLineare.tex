@@ -5664,6 +5664,7 @@ Osserviamo:
 \] 
 
 \subsection{Definizione}
+\label{def:7.3}
 Un'applicazione lineare \( f: V \to W \) è detta \textbf{isomorfismo} se esiste
 \( g: W \to V \) tale che \( g(f(v)) = V \) per ogni \( v \in V \) e
 \( f(g(w)) = W \) per ogni \( w \in W \). L'applicazione lineare \( g \) è detta
@@ -6010,15 +6011,14 @@ Allora esiste una base di \( V \) \( \mathcal{B} = \{b_1, \ldots, b_n\}  \) e
 esiste una base di \( W \) \( \mathcal{C} = \{c_1, \ldots, c_n\}  \).
 Consideriamo \( C_{\mathcal{B}}: V \to \mathbb{K}^n \) e \( C_{\mathcal{C}}: W \to \mathbb{K}^n \).
 Notiamo che abbiamo:
-\label{D1}
-% \begin{figure}[H]
-%   \centering
-%   \begin{tikzcd}
-%     & (b) \arrow[d, Leftrightarrow, "\surd\;(4.2)"] \\
-%     (g) \arrow[r, Leftarrow, "\surd"] & & (f) \arrow[d,Rightarrow, "\surd"]
-%   \end{tikzcd}
-%   \caption{Diagramma delle implicazioni}
-% \end{figure}
+\begin{figure}[H]
+  \centering
+  \begin{tikzcd}
+    V \arrow[dr, swap, "C_{\mathcal{B}}"] \arrow[rr, "C_{\mathcal{C}}^{-1} \circ C_{\mathcal{B}}"] & & W\\
+                                                                                                   & \mathbb{K}^n \arrow[ur, swap, "C_{\mathcal{C}}^{-1}"] &
+  \end{tikzcd}
+  \caption{Diagramma delle implicazioni}
+\end{figure}
 L'applicazione lineare ha inversa:
 \[
 C_{\mathcal{B}}^{-1} \circ C_{\mathcal{C}}: W \to V
@@ -6131,15 +6131,14 @@ v = \beta_1d_1 + \beta_2d_2 = \beta_1 \begin{pmatrix}
 \[
   = C_{\mathcal{D}} \circ C_{\mathcal{B}}^{-1} \left( [v]_{\mathcal{B}} \right)
 \] 
-TODO
-% \begin{figure}[H]
-%   \centering
-%   \begin{tikzcd}
-%     & (b) \arrow[d, Leftrightarrow, "\surd\;(4.2)"] \\
-%     (g) \arrow[r, Leftarrow, "\surd"] & & (f) \arrow[d,Rightarrow, "\surd"]
-%   \end{tikzcd}
-%   \caption{Diagramma delle implicazioni}
-% \end{figure}
+\begin{figure}[H]
+  \centering
+  \begin{tikzcd}
+    & \stackrel{= \mathbb{K}^2}{V} \arrow[dl, swap, xshift=-5, "C_{\mathcal{B}}"] \arrow[dr, "C_{\mathcal{D}}"] & \\
+    \mathbb{K}^2 \arrow[rr, swap, "C_{\mathcal{D}} \circ C_{\mathcal{B}}"] \arrow[ur, swap, xshift=5, red, "C_{\mathcal{B}}^{-1}"] & & \mathbb{K}^2
+  \end{tikzcd}
+  \caption{Diagramma delle implicazioni}
+\end{figure}
 
 \noindent Per \ref{7.5}, \( C_{\mathcal{B}} \circ C_{\mathcal{B}}^{-1} = f_C \) per una matrice
 \( C \), cioè per ogni \( \begin{pmatrix} \alpha_1\\ \alpha_2 \end{pmatrix} \in \mathbb{K}^2 \),
@@ -6266,6 +6265,12 @@ Inoltre:
 \] 
 dove \( \{e_1, \ldots, e_n\}  \) è la base canonica.
 
+\subsubsection{Osservazione}
+L'applicazione lineare \( C_{\mathcal{C}} C_{\mathcal{B}}^{-1} \) è un isomorfismo con
+inversa \( C_{\mathcal{B}} C_{\mathcal{C}}^{-1} \). Dunque per \ref{def:7.3}, la matrice
+\( A_{\mathcal{B} \to \mathcal{C}} \) è invertibile e la sua inversa è la matrice del 
+cambio di base \( A_{\mathcal{B} \to \mathcal{C}}^{-1} = A_{\mathcal{C} \to \mathcal{B}} \).
+
 \begin{example}
   \[
     V = \mathbb{R}_2[x]=\{a_0 + a_1 x + a_2 x^2 \;|\; a_0,a_1,a_2 \in \mathbb{R}\} 
@@ -6356,8 +6361,8 @@ dove \( \{e_1, \ldots, e_n\}  \) è la base canonica.
 \begin{figure}[H]
   \centering
   \begin{tikzcd}
-    U \arrow[d, swap, "C_{\mathcal{C}}"] \arrow[r, "f"]& V \arrow[d, "C_{\mathcal{B}}"] \\
-    \mathbb{R}^3 \arrow[r, swap, "C_{\mathcal{B}} \circ f \circ C_{\mathcal{C}}^{-1}"] & \mathbb{R}^2
+    U \arrow[d, swap, xshift=-5, "C_{\mathcal{C}}"] \arrow[r, "f"]& V \arrow[d, "C_{\mathcal{B}}"] \\
+    \mathbb{R}^3 \arrow[r, swap, "C_{\mathcal{B}} \circ f \circ C_{\mathcal{C}}^{-1}"] \arrow[u, red, xshift=5, swap, "C_{\mathcal{C}}^{-1}"] & \mathbb{R}^2
   \end{tikzcd}
   \caption{Diagramma delle implicazioni}
 \end{figure}
@@ -6533,6 +6538,7 @@ N(f) := \{v \in V \;|\; f(v) = 0_w\}
   \; \Big | \;
   v_1, \ldots, v_n \in \mathbb{K} \right\} = C(A)
   \] 
+  (Combinazioni lineari delle colonne di \( A \) )
 \end{example}
 
 \begin{example}
@@ -6561,6 +6567,82 @@ N(f) := \{v \in V \;|\; f(v) = 0_w\}
   = \left\{\begin{pmatrix} a_0\\
   a_0 + a_1 + a_2\end{pmatrix} \Big |\; a_0, a_1, a_2 \in \mathbb{R} \right\} 
   \] 
+\end{example}
+
+\begin{example}
+ \[
+ i: \mathbb{R}^2 \to \mathbb{R}^3
+ \]  
+ \[
+ i \left( \begin{pmatrix} 
+     v_1\\
+     v_2
+ \end{pmatrix}  \right) = \begin{pmatrix} 
+     v_1\\
+     v_2\\
+     0
+  \end{pmatrix}
+ \] 
+ \[
+ N(i) = \left\{ \begin{pmatrix} 
+     v_1\\
+     v_2
+ \end{pmatrix} \in \mathbb{R}^2 \;\Big |\; i \left( \begin{pmatrix} 
+   v_1\\
+   v_2
+\end{pmatrix}  \right) = 
+\begin{pmatrix} 
+  v_1\\
+  v_2\\
+  0
+\end{pmatrix} 
+=
+\begin{pmatrix} 
+  0\\
+  0\\
+  0
+\end{pmatrix} 
+\right\} 
+ \] 
+ \[
+ = \left\{ \begin{pmatrix} 
+     v_1\\
+     v_2
+ \end{pmatrix} \in \mathbb{R}^2 
+ \; \Big | \; v_1 = v_2 = 0
+\right\} 
+ \] 
+ \[
+ = \left\{ \begin{pmatrix} 
+     0\\
+     0
+ \end{pmatrix}  \right\} 
+ \] 
+ \vspace{1em}
+ \[
+ Im(i) = \left\{ i \left( \begin{pmatrix} 
+      v_1\\
+      v_2
+ \end{pmatrix}  \right) =
+ \begin{pmatrix} 
+   v_1\\
+   v_2\\
+   0
+ \end{pmatrix} 
+ \; \Big | \; \begin{pmatrix} 
+   v_1\\
+   v_2
+  \end{pmatrix} \in \mathbb{R}^2 \right\}
+ \] 
+ \[
+ = \left\{ \begin{pmatrix} 
+     v_1\\
+     v_2\\
+     v_3
+ \end{pmatrix} 
+ \; \Big | \; v_3 = 0
+\right\} 
+ \] 
 \end{example}
 
 \end{document}
