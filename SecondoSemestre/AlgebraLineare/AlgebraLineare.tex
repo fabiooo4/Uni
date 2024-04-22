@@ -6452,4 +6452,115 @@ f(p) = 4b_1 - b_2 = 4 \begin{pmatrix} 1\\1 \end{pmatrix} - \begin{pmatrix} 1\\0 
   e alla base \( \mathcal{C} \) di \( V \) è la matrice del cambio di base \( A_{\mathcal{C} \to \mathcal{B}} \) 
 \end{example}
 
+\section{Rango + nullità}
+\subsection{Definizione}
+Sia \( f: V \to W \) un'applicazione lineare. Allora:
+\[
+N(f) := \{v \in V \;|\; f(v) = 0_w\} 
+\] 
+è un sottospazio di \( V \), detto \textbf{spazio nullo di \( f \)}. Inoltre \( Im(f) =
+\{f(v) \;|\; v \in V\} \) è un sottospazio di \( W \) detto \textbf{immagine di \( f \)}.
+
+\subsubsection{Esempi}
+\begin{example}
+  \[
+    A = (a_{ij})_{1 \le i \le m, 1 \le j \le n} \in M_{m \times n}(\mathbb{K})
+  \] 
+  \[
+  f_A: \mathbb{K}^n \to \mathbb{K}^m
+  \] 
+  \[
+  N(f_A) = \{v \in \mathbb{K}^n \;|\; Av = 0\} = N(A)
+  \] 
+  \[
+  Im(f_A) = \{Av \in \mathbb{K}^m \;|\; v \in \mathbb{K}^n\} =
+  \] 
+  \[
+  = \left\{ \begin{pmatrix} 
+      a_{11} & \ldots & a_{1n}\\
+      \vdots & \ddots & \vdots\\
+      a_{m1} & \ldots & a_{mn}
+  \end{pmatrix} \begin{pmatrix} 
+  v_1 \\
+  \vdots \\
+  v_n
+  \end{pmatrix} =
+  \begin{pmatrix} 
+    a_{11}v_1 + \ldots + a_{1n}v_n\\
+    \vdots\\
+    a_{m1}v_1 + \ldots + a_{mn}v_n
+  \end{pmatrix} 
+  |
+  \begin{pmatrix} 
+    v_1\\
+    \vdots\\
+    v_n
+  \end{pmatrix} 
+  \in \mathbb{K}^n \right\}
+  \] 
+  \[
+  = \left\{ \begin{pmatrix} 
+      a_{11}v_1\\
+      \vdots\\
+      a_{m1}v_1
+  \end{pmatrix}
+  +
+  \ldots
+  +
+  \begin{pmatrix} 
+    a_{1n}v_n\\
+    \vdots\\
+    a_{mn}v_n
+  \end{pmatrix}
+  =
+  \right.
+\]
+\[
+  \left.
+  v_1 \begin{pmatrix} 
+    a_{11}\\
+    \vdots\\
+    a_{m1}
+  \end{pmatrix}
+  + 
+  \ldots
+  +
+  v_n \begin{pmatrix} 
+    a_{1n}\\
+    \vdots\\
+    a_{mn}
+  \end{pmatrix}
+  \; \Big | \;
+  v_1, \ldots, v_n \in \mathbb{K} \right\} = C(A)
+  \] 
+\end{example}
+
+\begin{example}
+  \[
+    V = \mathbb{R}_2[x], \quad W = \mathbb{R}^2, \quad f(p) = \begin{pmatrix} p(0)\\p(1) \end{pmatrix}
+  \] 
+  \[
+  p = a_0 + a_1x + a_2x^2, \quad f(p) = \begin{pmatrix} 
+    a_0\\
+    a_0 + a_1 + a_2
+  \end{pmatrix} 
+  \] 
+  \[
+  N(f) = \{p = a_0 + a_1x + a_2x^2 \;|\; f(p) = \begin{pmatrix} a_0\\a_0+a_1+a_2 \end{pmatrix} = \begin{pmatrix} 0\\0 \end{pmatrix}  \} 
+  \] 
+  \[
+  = \{ p = a_0 + a_1x + a_2x^2 \;|\; a_0 = 0, a_1+a_2 = 0\} 
+  \] 
+  \[
+  Im(f) = \left\{f(p) = \begin{pmatrix} 
+      a_0\\
+      a_0 + a_1 + a_2
+  \end{pmatrix} \Big |\; p = a_0 + a_1x + a_2x^2 \right\} 
+  \] 
+  \[
+  = \left\{\begin{pmatrix} a_0\\
+  a_0 + a_1 + a_2\end{pmatrix} \Big |\; a_0, a_1, a_2 \in \mathbb{R} \right\} 
+  \] 
+\end{example}
+
 \end{document}
