@@ -25,7 +25,7 @@ dbinom(3, 18, 1 / 3)
 # or
 pbinom(2, 18, 1 / 3, lower.tail = FALSE)
 ```
-  3. $P(1 \le X > 5)$
+  3. $P(1 \le X < 5)$
 ```{r, collapse=TRUE}
 pbinom(4, 18, 1 / 3) - pbinom(0, 18, 1 / 3)
 ```
