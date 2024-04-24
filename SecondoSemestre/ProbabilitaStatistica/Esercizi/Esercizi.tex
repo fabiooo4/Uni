@@ -9,6 +9,7 @@
 \usepackage{amsfonts}
 \usepackage{mdframed}
 \usepackage{xcolor}
+\usepackage{listings}
 \usepackage{float}
 \usepackage{tikz}
 \usepackage{pgfplots}
@@ -30,6 +31,62 @@
 
 \usepackage{ntheorem}
 \newtheorem{theorem}{Teorema}
+
+% Code blocks
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.95}
+
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\ttfamily\footnotesize,
+	breakatwhitespace=false,
+	breaklines=true,
+	captionpos=b,
+	keepspaces=true,
+	numbers=left,
+	numbersep=5pt,
+	showspaces=false,
+	showstringspaces=false,
+	showtabs=false,
+	tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={\small\ttfamily},
+	numbers=none,
+	numberstyle=\tiny\color{gray},
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve},
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=3
+}
+
+\usepackage{import}
+\usepackage{pdfpages}
+\usepackage{transparent}
+\usepackage{xcolor}
+
+
 
 % Useful definitions frame
 \theoremstyle{break}
@@ -145,14 +202,14 @@ In uno stock di 100 prodotti, 20 sono difettosi.
 	      Si può considerare una variabile di Bernoulli:
 	      \[
 		      X_i = \begin{cases}
-			      1 & \text{se il prodotto è difettoso} p = \frac{20}{100} = \frac{1}{5} \\
-			      0 & \text{altrimenti} p = \frac{80}{100} = \frac{4}{5}
+			      1 & \text{se il prodotto è difettoso } p = \frac{20}{100} = \frac{1}{5} \\
+			      0 & \text{altrimenti } p = \frac{80}{100} = \frac{4}{5}
 		      \end{cases}
 	      \]
 	      La probabilità che esattamente la metà dei prodotti siano difettosi è data dalla
 	      distribuzione binomiale:
 	      \[
-		      P(\omega) = \binom{k}{n} p^n (1-p)^{k-n}
+		      P(\omega) = \binom{n}{k} p^k (1-p)^{n-k}
 	      \]
 	      \[
 		      P(E) = \binom{10}{5} \left( \frac{1}{5} \right)^5 \left( \frac{4}{5} \right)^5 =
@@ -420,9 +477,9 @@ rispetto a quella dei numeri dispari.
 	      \[
 		      Par = \text{Esce un numero pari}
 	      \]
-        \[
-          Dis = \text{Esce un numero dispari}
-        \] 
+	      \[
+		      Dis = \text{Esce un numero dispari}
+	      \]
 	      \[
 		      P(D_1) = \frac{1}{2} = 0.5 = 50\% \quad \text{Dado equo}
 	      \]
@@ -432,144 +489,144 @@ rispetto a quella dei numeri dispari.
 	      \[
 		      P(Par\,|\,D_1) = \frac{1}{2} = 0.5 = 50\%
 	      \]
-        \[
-          P(Dis\,|\,D_1) = \frac{1}{2} = 0.5 = 50\%
-        \] 
+	      \[
+		      P(Dis\,|\,D_1) = \frac{1}{2} = 0.5 = 50\%
+	      \]
 	      \[
 		      P(Par\,|\,D_2) = \frac{6}{9} = \frac{2}{3} \approx 0.666 = 66.6\%
 	      \]
-        La probabilità che esca un numero pari è data dalla probabilità totale:
-        \[
-          P(Par) = P(Par\,|\,D_1) \cdot P(D_1) + P(Par\,|\,D_2) \cdot P(D_2)
-        \] 
-        \[
-          P(Par) = \frac{1}{2} \cdot \frac{1}{2} + \frac{1}{2} \cdot \frac{2}{3} = \frac{1}{4} + \frac{1}{3} = \frac{3}{12} + \frac{4}{12} = \frac{7}{12} \approx 0.583 = 58.3\% 
-        \] 
+	      La probabilità che esca un numero pari è data dalla probabilità totale:
+	      \[
+		      P(Par) = P(Par\,|\,D_1) \cdot P(D_1) + P(Par\,|\,D_2) \cdot P(D_2)
+	      \]
+	      \[
+		      P(Par) = \frac{1}{2} \cdot \frac{1}{2} + \frac{1}{2} \cdot \frac{2}{3} = \frac{1}{4} + \frac{1}{3} = \frac{3}{12} + \frac{4}{12} = \frac{7}{12} \approx 0.583 = 58.3\%
+	      \]
 	\item Sapendo che è uscito un numero dispari, quanto vale la probabilità che il dado
 	      lanciato sia quello equo?
 
-        \vspace{1em}
-        \noindent La probabilità che il dado lanciato sia quello equo è data dalla probabilità
-        condizionata:
-        \[
-        P(D_1\,|\,Dis) = \frac{P(Dis\,|\,D_1)\cdot P(D_1)}{P(Dis)}
-        \] 
-        \[
-        P(D_1\,|\,Dis) = \frac{\frac{1}{2}*\frac{1}{2}}{1 - 0.583} = \frac{\frac{1}{4}}{0.417} \approx 0.6 = 60\%
-        \] 
+	      \vspace{1em}
+	      \noindent La probabilità che il dado lanciato sia quello equo è data dalla probabilità
+	      condizionata:
+	      \[
+		      P(D_1\,|\,Dis) = \frac{P(Dis\,|\,D_1)\cdot P(D_1)}{P(Dis)}
+	      \]
+	      \[
+		      P(D_1\,|\,Dis) = \frac{\frac{1}{2}*\frac{1}{2}}{1 - 0.583} = \frac{\frac{1}{4}}{0.417} \approx 0.6 = 60\%
+	      \]
 \end{enumerate}
 
 \subsection{Esercizio 9}
-Consideriamo una popolazione di \( N = 400 \) piantine in cui si presentano i seguenti 
+Consideriamo una popolazione di \( N = 400 \) piantine in cui si presentano i seguenti
 genotipi AA, Aa, aa. Supponiamo che una piantina venga estratta con uguale probabilità.
-Supponiamo inoltre che vi sono 196 piantine del genotipo AA, 168 del genotipo Aa, e 36 
+Supponiamo inoltre che vi sono 196 piantine del genotipo AA, 168 del genotipo Aa, e 36
 del genotipo aa.
 \[
-  N = 400
-\] 
+	N = 400
+\]
 \[
-  AA = 196
-\] 
+	AA = 196
+\]
 \[
-  Aa = 168
-\] 
+	Aa = 168
+\]
 \[
-  aa = 36
-\] 
+	aa = 36
+\]
 \begin{enumerate}
-  \item Qual è la distribuzione dei genotipi, cioè se estraggo a caso una piantina qual 
-    è la probabilità di ciascun genotipo?
-    \[
-    P(AA) = \frac{196}{400} = 0.49 = 49\%
-    \] 
-    \[
-    P(Aa) = \frac{168}{400} = 0.42 = 42\%
-    \] 
-    \[
-    P(aa) = \frac{36}{400} = 0.09 = 9\%
-    \] 
+	\item Qual è la distribuzione dei genotipi, cioè se estraggo a caso una piantina qual
+	      è la probabilità di ciascun genotipo?
+	      \[
+		      P(AA) = \frac{196}{400} = 0.49 = 49\%
+	      \]
+	      \[
+		      P(Aa) = \frac{168}{400} = 0.42 = 42\%
+	      \]
+	      \[
+		      P(aa) = \frac{36}{400} = 0.09 = 9\%
+	      \]
 \end{enumerate}
-Supponiamo che l’allele a sia un letale recessivo, che però si esprime solo nella pianta 
+Supponiamo che l’allele a sia un letale recessivo, che però si esprime solo nella pianta
 allo stadio adulto.
 \begin{enumerate}
-  \item[2.] La distribuzione precedente è ancora valida per la fase adulta (sì, no 
-    e perchè)?
+	\item[2.] La distribuzione precedente è ancora valida per la fase adulta (sì, no
+	      e perchè)?
 
-    \vspace{1em}
-    \noindent La distribuzione precedente non è valida per la fase adulta. Infatti,
-    le piante con genotipo aa non sopravvivono allo stadio adulto, quindi la probabilità
-    di trovare una pianta adulta con genotipo aa è nulla. Di conseguenza le probabilità
-    in età adulta sono:
-    \[
-    N = 400 - 36 = 364
-    \] 
-    \[
-    P(AA) = \frac{196}{364} \approx 0.538 = 53.8\%
-    \] 
-    \[
-    P(Aa) = \frac{168}{364} \approx 0.462 = 46.2\%
-    \] 
-    \[
-    P(aa) = 0
-    \] 
-  \item[3.] Qual è la probabilità di trovare una pianta in vita dopo un certo periodo di 
-    tempo, quindi adulta?
-    
-    \vspace{1em}
-    \noindent La probabilità di trovare una pianta in vita dopo un certo periodo di tempo
-    è data dalla somma delle probabilità di trovare una pianta adulta con genotipo AA e
-    Aa:
-    \[
-    P(AA) + P(Aa) = 0.49 + 0.42 = 0.91 = 91\%
-    \] 
-  \item[4.] Qual è la probabilità di estrarre una pianta adulta del genotipo AA? E del 
-    tipo Aa?
-    \[
-      P(AA) = 0.538 = 53.8\%
-    \] 
-    \[
-      P(Aa) = 0.462 = 46.2\%
-    \]
+	      \vspace{1em}
+	      \noindent La distribuzione precedente non è valida per la fase adulta. Infatti,
+	      le piante con genotipo aa non sopravvivono allo stadio adulto, quindi la probabilità
+	      di trovare una pianta adulta con genotipo aa è nulla. Di conseguenza le probabilità
+	      in età adulta sono:
+	      \[
+		      N = 400 - 36 = 364
+	      \]
+	      \[
+		      P(AA) = \frac{196}{364} \approx 0.538 = 53.8\%
+	      \]
+	      \[
+		      P(Aa) = \frac{168}{364} \approx 0.462 = 46.2\%
+	      \]
+	      \[
+		      P(aa) = 0
+	      \]
+	\item[3.] Qual è la probabilità di trovare una pianta in vita dopo un certo periodo di
+	      tempo, quindi adulta?
+
+	      \vspace{1em}
+	      \noindent La probabilità di trovare una pianta in vita dopo un certo periodo di tempo
+	      è data dalla somma delle probabilità di trovare una pianta adulta con genotipo AA e
+	      Aa:
+	      \[
+		      P(AA) + P(Aa) = 0.49 + 0.42 = 0.91 = 91\%
+	      \]
+	\item[4.] Qual è la probabilità di estrarre una pianta adulta del genotipo AA? E del
+	      tipo Aa?
+	      \[
+		      P(AA) = 0.538 = 53.8\%
+	      \]
+	      \[
+		      P(Aa) = 0.462 = 46.2\%
+	      \]
 \end{enumerate}
 
 \subsection{Esercizio 10}
 Consideriamo la tabella che riporta i risultati di uno studio in cui sono stati osservati il numero di
 querce e lecci infestati da un certo insetto
 \begin{table}[H]
-  \centering
-  \begin{tabular}{c|ccc}
-    & Infestato & Non infestato & Totali \\
-    \hline
-    Quercia & 40 & 30 & 70 \\
-    Leccio & 52 & 10 & 62 \\
-    \hline
-    Totali & 92 & 40 & 132 
-  \end{tabular}
+	\centering
+	\begin{tabular}{c|ccc}
+		        & Infestato & Non infestato & Totali \\
+		\hline
+		Quercia & 40        & 30            & 70     \\
+		Leccio  & 52        & 10            & 62     \\
+		\hline
+		Totali  & 92        & 40            & 132
+	\end{tabular}
 \end{table}
 \begin{enumerate}
-  \item Calcolare la probabilità che un albero sia infestato.
-    \[
-    P(I) = \frac{92}{132} \approx 0.697 = 69.7\%
-    \] 
-  \item Calcolare la probabilità che una quercia sia infestata.
-    \[
-    P(Q_I) = \frac{40}{70} \approx 0.571 = 57.1\%
-    \] 
-  \item Calcolare la probabilità che un leccio sia infestato.
-    \[
-    P(L_I) = \frac{52}{62} \approx 0.839 = 83.9\%
-    \] 
-  \item Quale definizione di probabilità si è utilizzata nei punti precedenti?
-    
-    \vspace{1em}
-    La definizione utilizzata nei punti precedenti è: La probabilità è calcolata come
-    il rapporto tra i casi favorevoli e i casi possibili.
+	\item Calcolare la probabilità che un albero sia infestato.
+	      \[
+		      P(I) = \frac{92}{132} \approx 0.697 = 69.7\%
+	      \]
+	\item Calcolare la probabilità che una quercia sia infestata.
+	      \[
+		      P(Q_I) = \frac{40}{70} \approx 0.571 = 57.1\%
+	      \]
+	\item Calcolare la probabilità che un leccio sia infestato.
+	      \[
+		      P(L_I) = \frac{52}{62} \approx 0.839 = 83.9\%
+	      \]
+	\item Quale definizione di probabilità si è utilizzata nei punti precedenti?
+
+	      \vspace{1em}
+	      La definizione utilizzata nei punti precedenti è: La probabilità è calcolata come
+	      il rapporto tra i casi favorevoli e i casi possibili.
 \end{enumerate}
 
 \subsection{Esercizio 11}
-Tre scrivanie tra loro indistinguibili contengono ciascuna due cassetti. La prima 
+Tre scrivanie tra loro indistinguibili contengono ciascuna due cassetti. La prima
 contiene una moneta d'oro in ciascun cassetto. La seconda una monta d'argento in un
-cassetto ed una moneta d'oro nell'altro, la terza due monte d'argento. Si apre un 
+cassetto ed una moneta d'oro nell'altro, la terza due monte d'argento. Si apre un
 cassetto e si trova una moneta d'oro. Qual è la probabilità che anche nell'altro cassetto
 della stessa scrivania ci sia una moneta d'oro?
 
@@ -578,179 +635,634 @@ della stessa scrivania ci sia una moneta d'oro?
 trovata nella scrivania 1 o nella 2. La probabilità che la seconda moneta sia d'oro riduce
 le possibilità alla scrivania 1, quindi:
 \[
-  O = \text{Moneta d'oro}
+	O = \text{Moneta d'oro}
 \]
 \[
-  P(S_1) = \frac{1}{3} = 0.333 = 33.3\%
-\] 
+	P(S_1) = \frac{1}{3} = 0.333 = 33.3\%
+\]
 \[
-  P(O\,|\,S_1) = 1
-\] 
+	P(O\,|\,S_1) = 1
+\]
 \[
-  P(O) = \left( 1 + \frac{1}{2} + 0 \right) \cdot \frac{1}{3} = \frac{1}{2} = 0.5 = 50\%
-\] 
+	P(O) = \left( 1 + \frac{1}{2} + 0 \right) \cdot \frac{1}{3} = \frac{1}{2} = 0.5 = 50\%
+\]
 La probabilità che la seconda moneta sia d'oro è data dalla probabilità condizionata:
 \[
-  P(S_1\,|\,O) = \frac{P(O\,|\,S_1) \cdot P(S_1)}{P(O)}
-\] 
+	P(S_1\,|\,O) = \frac{P(O\,|\,S_1) \cdot P(S_1)}{P(O)}
+\]
 \[
-  P(S_1\,|\,O) = \frac{1 \cdot \frac{1}{3}}{\frac{1}{2}} = \frac{2}{3} = 0.666 = 66.6\%
-\] 
+	P(S_1\,|\,O) = \frac{1 \cdot \frac{1}{3}}{\frac{1}{2}} = \frac{2}{3} = 0.666 = 66.6\%
+\]
 
 \subsection{Esercizio 12}
 Da un'indagine nelle scuole, risulta che la percentuale degli alunni che portano gli
-occhiali è il 10\% nelle scuole elementari, il 25\% nelle scuole medie e il 40\% nelle 
+occhiali è il 10\% nelle scuole elementari, il 25\% nelle scuole medie e il 40\% nelle
 superiori.
 \[
-  O = \text{Porta gli occhiali}
-\] 
+	O = \text{Porta gli occhiali}
+\]
 \[
-  E = \text{Frequenta le elementari}
-\] 
+	E = \text{Frequenta le elementari}
+\]
 \[
-  M = \text{Frequenta le medie}
-\] 
+	M = \text{Frequenta le medie}
+\]
 \[
-  S = \text{Frequenta le superiori}
-\] 
+	S = \text{Frequenta le superiori}
+\]
 
 \[
-  P(O\,|\,E) = 0.1 = 10\% 
-\] 
+	P(O\,|\,E) = 0.1 = 10\%
+\]
 \[
-  P(O\,|\,M) = 0.25 = 25\%
-\] 
+	P(O\,|\,M) = 0.25 = 25\%
+\]
 \[
-  P(O\,|\,S) = 0.4 = 40\%
-\] 
+	P(O\,|\,S) = 0.4 = 40\%
+\]
 \begin{enumerate}
-  \item Calcolare la probabilità che scegliendo a caso 3 studenti, uno per fascia, almeno
-    uno porti gli occhiali.
+	\item Calcolare la probabilità che scegliendo a caso 3 studenti, uno per fascia, almeno
+	      uno porti gli occhiali.
 
-    \vspace{1em}
-    La probabilità che almeno uno porti gli occhiali è data dal complementare dell'evento
-    che nessuno porti gli occhiali:
-    \[
-      P(O \ge 1) = 1 - P(O = 0)
-    \] 
-    \[
-      P(O \ge 1) = 1 - \left( P(\overline{O}\,|\,E) \cdot P(\overline{O}\,|\,M) \cdot P(\overline{O}\,|\,S) \right) =
-    \] 
-    \[
-      = 1 - \left( 0.9 \cdot 0.75 \cdot 0.6 \right) = 1 - 0.405 = 0.595 = 59.5\%
-    \] 
-  \item Scegliendo uno studente a caso fra tutti (e supponendo che la scelta di ogni 
-    fascia sia equiprobabile) calcolare la probabilità che questo abbia gli occhiali.
-    
-    \vspace{1em}
-    La probabilità che uno studente scelto a caso è data dalla probabilità totale:
-    \[
-      P(O) = P(O\,|\,E) \cdot P(E) + P(O\,|\,M) \cdot P(M) + P(O\,|\,S) \cdot P(S)
-    \] 
-    \[
-      P(O) = 0.1 \cdot \frac{1}{3} + 0.25 \cdot \frac{1}{3} + 0.4 \cdot \frac{1}{3} = \frac{1}{4} = 0.25 = 25\%
-    \] 
-  \item Sapendo che lo studente porti gli occhiali, calcolare la probabilità che 
-    frequenti le elementari.
+	      \vspace{1em}
+	      La probabilità che almeno uno porti gli occhiali è data dal complementare dell'evento
+	      che nessuno porti gli occhiali:
+	      \[
+		      P(O \ge 1) = 1 - P(O = 0)
+	      \]
+	      \[
+		      P(O \ge 1) = 1 - \left( P(\overline{O}\,|\,E) \cdot P(\overline{O}\,|\,M) \cdot P(\overline{O}\,|\,S) \right) =
+	      \]
+	      \[
+		      = 1 - \left( 0.9 \cdot 0.75 \cdot 0.6 \right) = 1 - 0.405 = 0.595 = 59.5\%
+	      \]
+	\item Scegliendo uno studente a caso fra tutti (e supponendo che la scelta di ogni
+	      fascia sia equiprobabile) calcolare la probabilità che questo abbia gli occhiali.
 
-    \vspace{1em}
-    \noindent La probabilità che uno studente frequenti le elementari sapendo che porta
-    gli occhiali è data dalla probabilità condizionata:
-    \[
-    P(E\,|\,O) = \frac{P(O\,|\,E) \cdot P(E)}{P(O)}
-    \] 
-    \[
-      P(E\,|\,O) = \frac{0.1 \cdot \frac{1}{3}}{\frac{1}{4}} \approx 0.2667 = 26.67\%
-    \] 
+	      \vspace{1em}
+	      La probabilità che uno studente scelto a caso è data dalla probabilità totale:
+	      \[
+		      P(O) = P(O\,|\,E) \cdot P(E) + P(O\,|\,M) \cdot P(M) + P(O\,|\,S) \cdot P(S)
+	      \]
+	      \[
+		      P(O) = 0.1 \cdot \frac{1}{3} + 0.25 \cdot \frac{1}{3} + 0.4 \cdot \frac{1}{3} = \frac{1}{4} = 0.25 = 25\%
+	      \]
+	\item Sapendo che lo studente porti gli occhiali, calcolare la probabilità che
+	      frequenti le elementari.
+
+	      \vspace{1em}
+	      \noindent La probabilità che uno studente frequenti le elementari sapendo che porta
+	      gli occhiali è data dalla probabilità condizionata:
+	      \[
+		      P(E\,|\,O) = \frac{P(O\,|\,E) \cdot P(E)}{P(O)}
+	      \]
+	      \[
+		      P(E\,|\,O) = \frac{0.1 \cdot \frac{1}{3}}{\frac{1}{4}} \approx 0.2667 = 26.67\%
+	      \]
 \end{enumerate}
 
 \subsection{Esercizio 13}
 È stata studiata la relazione tra forma fisica e malattie cardiovascolari in un gruppo di
 impiegati delle ferrovie di sesso maschile, con questi risultati:
 \begin{table}[H]
-  \centering
-  \begin{tabular}{p{1.3in}|p{1.3in}|p{1.3in}}
-    Frequenza cardiaca\newline sotto esercizio\newline (battiti/minuto) &
-    Percentuale dei lavoratori &
-    Mortalità per malattie cardiovascolari in 20 anni\\
-    \hline
-    \centering{\( \le 105 \)} & \centering{20\%} & \centering{9.2\%} \cr
-    \centering{106-115} & \centering{30\%} & \centering{8.7\%} \cr
-    \centering{116-127} & \centering{30\%} & \centering{11.6\%} \cr
-    \centering{\( > 127 \) } & \centering{20\%} & \centering{13.2\%} 
-  \end{tabular}
+	\centering
+	\begin{tabular}{p{1.3in}|p{1.3in}|p{1.3in}}
+		Frequenza cardiaca\newline sotto esercizio\newline (battiti/minuto) &
+		Percentuale dei lavoratori                                          &
+		Mortalità per malattie cardiovascolari in 20 anni                                                               \\
+		\hline
+		\centering{\( \le 105 \)}                                           & \centering{20\%} & \centering{9.2\%} \cr
+		\centering{106-115}                                                 & \centering{30\%} & \centering{8.7\%} \cr
+		\centering{116-127}                                                 & \centering{30\%} & \centering{11.6\%} \cr
+		\centering{\( > 127 \) }                                            & \centering{20\%} & \centering{13.2\%}
+	\end{tabular}
 \end{table}
 \noindent Supponiamo che un certo test sia positivo se la frequenza cardiaca sotto esercizio è
 maggiore di 127 battiti al minuto e negativo altrimenti.
 \begin{enumerate}
-  \item Qual è la probabilità di mortalità per malattie cardiovascolari in 20 anni?
+	\item Qual è la probabilità di mortalità per malattie cardiovascolari in 20 anni?
+
+	      \vspace{1em}
+	      \[
+		      T = \text{Test positivo}
+	      \]
+	      \[
+		      \overline{T} = \text{Test negativo}
+	      \]
+	      \[
+		      M = \text{Mortalità per malattie cardiovascolari in 20 anni}
+	      \]
+	      \[
+		      F_1 = \text{Frequenza cardiaca} \le 105
+	      \]
+	      \[
+		      F_2 = \text{Frequenza cardiaca} \in [106, 115]
+	      \]
+	      \[
+		      F_3 = \text{Frequenza cardiaca} \in [116, 127]
+	      \]
+	      \[
+		      F_4 = \text{Frequenza cardiaca} > 127
+	      \]
+	      La probabilità di mortalità per malattie cardiovascolari in 20 anni è data dalla probabilità
+	      totale:
+	      \[
+		      P(M) = P(M\,|\,F_1) \cdot P(F_1) + P(M\,|\,F_2) \cdot P(F_2) +
+	      \]
+	      \[
+		      P(M\,|\,F_3) \cdot P(F_3) + P(M\,|\,F_4) \cdot P(F_4)
+	      \]
+	      \[
+		      P(M) = 0.092 \cdot 0.2 + 0.087 \cdot 0.3 + 0.116 \cdot 0.3 + 0.132 \cdot 0.2 = 0.1056 = 10.56\%
+	      \]
+	\item Qual è la probabilità di avere avuto un test positivo tra gli uomini che sono
+	      morti nel periodo di 20 anni?
+
+	      \vspace{1em}
+	      La probabilità di aver avuto un test positivo è data dalla probabilità condizionata:
+	      \[
+		      P(F_4\,|\,M) = \frac{P(M\,|\,F_4) \cdot P(F_4)}{P(M)}
+	      \]
+	      \[
+		      P(F_4\,|\,M) = \frac{0.132 \cdot 0.2}{0.1056} \approx 0.25 = 25\%
+	      \]
+	\item Qual è la probabilità di avere avuto un test positivo tra gli uomini che sono
+	      sopravvissuti nel periodo di 20 anni?
+
+	      \vspace{1em}
+	      La probabilità di avere avuto un test positivo tra gli uomini che sono sopravvissuti
+	      è data dalla probabilità condizionata:
+	      \[
+		      P(F_4\,|\,\overline{M}) = \frac{P(\overline{M}\,|\,F_4) \cdot P(F_4)}{P(\overline{M})}
+	      \]
+	      \[
+		      P(F_4\,|\, \overline{M}) = \frac{(1-0.132) \cdot 0.2}{1-0.1056} \approx 0.1941 = 19.41\%
+	      \]
+	\item Qual è la probabilità di morte tra gli uomini con un test negativo?
+
+	      \vspace{1em}
+	      La probabilità di morte tra gli uomini con un test negativo è data dalla probabilità
+	      totale dei casi in cui il test è negativo:
+	      \[
+		      P(M\,|\,\overline{T}) = P(M\,|\,F_1) \cdot P(F_1) + P(M\,|\,F_2) \cdot P(F_2) +P(M\,|\,F_3) \cdot P(F_3)
+	      \]
+	      \[
+		      P(M\,|\,\overline{T}) = 0.092 \cdot 0.2 + 0.087 \cdot 0.3 + 0.116 \cdot 0.3 = 0.0793 = 7.93\%
+	      \]
+\end{enumerate}
+
+\section{Variabili aleatorie: Binomiale, Poisson, Normale, Uniforme}
+\subsection{Esercizio 1}
+Una persona arriva all'ascensore dell'edificio un minuto prima dell'orario di inizio del
+suo lavoro. Il tempo di attesa dell'ascensore, misurato in minuti, è una variabile
+aleatoria che ha una distribuzione uniforme in \( [0,3] \text{ (minuti)} \). Considerando
+trascurabile il tempo impiegato dall'ascensore:
+\begin{enumerate}
+	\item Qual'è la probabilità che la persona non arrivi in ritardo al lavoro?
+
+	      \vspace{1em}
+	      La probabilità che la persona arrivi in ritardo è:
+	      \[
+		      P(X > 1) = \frac{[1,3]}{[0,3]} = \frac{2}{3}
+	      \]
+	      La probabilità che la persona non arrivi in ritardo è:
+	      \[
+		      P(X \le 1) = 1 - P(X > 1) = 1 - \frac{2}{3} = \frac{1}{3}
+	      \]
+	\item La probabilità precedente viene considerata bassa. Con quanto anticipo la persona
+	      deve arrivare prima all'ascensore in modo tale che la probabilità di arrivare in
+	      ritardo sia al massimo 0.05?
+
+	      \vspace{1em}
+	      La probabilità che la persona arrivi in ritardo è:
+	      \[
+		      P(X > x) = 0.05
+	      \]
+	      \[
+		      P(X > x) = 1 - P(X \le x) = 1 - \frac{x}{3} = 0.05
+	      \]
+	      \[
+		      x = (1 - 0.05) \cdot 3 = 2.85 \text{ minuti}
+	      \]
+\end{enumerate}
+
+\subsection{Esercizio 2}
+Nel gioco del tiro al bersaglio si vincono 10 punti se si colpisce il bersaglio entro
+\( 2cm \) dal centro, 5 punti se si colpisce tra \( 2cm \)  e \( 3cm \) e 2 punti se si
+colpisce tra \( 3cm \) e \( 5cm \). Oltre \( 5cm \) non si vince nulla.
+
+\noindent Si supponga che la distanza del punto in cui si colpisce ed il centro del
+bersaglio abbia distribuzione uniforme sull'intervallo \( (0,10) \).
+
+\[
+	10 \text{ punti} = (0,2]
+\]
+\[
+	5 \text{ punti} = (2,3]
+\]
+\[
+	2 \text{ punti} = (3, 5]
+\]
+\[
+	0 \text{ punti} = (5,10)
+\]
+
+\begin{enumerate}
+	\item Qual'è il numero atteso di punti per lancio?
+
+	      \vspace{1em}
+	      Il numero atteso di punti per lancio è la media dei punti pesati per la probabilità
+	      di ottenere quel punteggio:
+	      \[
+		      \mathbb{E} = 10 \cdot \frac{2}{10} + 5 \cdot \frac{1}{10} + 2 \cdot \frac{2}{10} = 2 + 0.5 + 0.4 = 2.9
+	      \]
+	\item Qual'è la probabilità di avere 10 punti in un lancio?
+
+	      \vspace{1em}
+	      La probabilità di avere 10 punti in un lancio è:
+	      \[
+		      P(10) = \frac{2}{10} = \frac{1}{5} = 0.2 = 20\%
+	      \]
+	\item Assumendo i lanci indipendenti, qual'è la probabilità di ottenere 40 punti in 4
+	      lanci?
+
+	      \vspace{1em}
+	      La probabilità di ottenere 40 punti in 4 lanci è data dalla probabilità di avere
+	      10 punti in 1 lancio ripetuta 4 volte:
+	      \[
+		      P(40) = P(10)^4 = 0.2^4 = 0.0016
+	      \]
+\end{enumerate}
+
+\subsection{Esercizio 3}
+Arturo partecipa ad un gioco in cui la probabilità di vittoria è \( p = \frac{2}{3} \).
+\begin{enumerate}
+	\item Calcolare il numero minimo \( n \) di partite diverse che Arturo deve giocare,
+	      se vuole avere una probabilità superiore a \( \frac{9}{10} \) di vincere almeno una
+	      volta.
+
+	      \vspace{1em}
+	      La probabilità di perdere una partita è \( 1 - p = \frac{1}{3} \). La probabilità
+	      di vincere almeno una partita è il complementare di una sconfitta ripetuta \( n \)
+	      volte:
+	      \[
+		      P(X \ge 1) = 1- P(X = 0) = 1 - (1 - p)^n = \frac{9}{10}
+	      \]
+	      \[
+		      (1 - p)^n = \frac{1}{10}
+	      \]
+	      \[
+		      n = \log_{1-p} \frac{1}{10} = \log_{\frac{1}{3}} \frac{1}{10} = \log_{3}10 = 2.096
+	      \]
+	      Approssimando per eccesso all'intero più vicino, siccome non si possono giocare
+	      frazioni di partite, il numero minimo di partite da giocare è 3.
+	      \[
+		      n = 3 \text{ partite}
+	      \]
+	\item Supponendo che giochi \( n = 5 \) partite diverse, determinare la probabilità che
+	      in queste partite Arturo abbia ottenuto esattamente 3 vittorie.
+
+	      \vspace{1em}
+	      La probabilità che Arturo abbia ottenuto esattamente 3 vittorie in 5 partite è data
+	      dalla distribuzione binomiale:
+	      \[
+		      P(X = 3) = \binom{5}{3} \cdot p^3 \cdot (1-p)^2 =  10 \cdot \left( \frac{2}{3} \right)^3
+		      \cdot \left( \frac{1}{3} \right)^2 \approx 0.33 = 33\%
+	      \]
+	\item Supponendo che giochi \( n = 180 \) partite diverse, stimare la probabilità che
+	      in queste partite Arturo abbia ottenuto un numero di vittorie compreso tra 108 e 121,
+	      inclusi.
+
+	      \vspace{1em}
+	      La probabilità che Arturo abbia ottenuto un numero di vittorie compreso tra 108 e 121
+	      in 180 partite è data dalla distribuzione binomiale:
+	      \[
+		      P(108 \le X \le 121) = \sum_{k=108}^{121} \binom{180}{k} \cdot p^k \cdot (1-p)^{180-k}
+	      \]
+	      Questa probabilità è stata calcolata attraverso il seguente codice in linguaggio R:
+	      \begin{lstlisting}[language=R]
+
+  sum(dbinom(108:121, 180, 2 / 3)) 
+  # 0.5651441
+    \end{lstlisting}
+	      \[
+		      P(108 \le X \le 121) = 0.565 = 56.5\%
+	      \]
+\end{enumerate}
+
+\subsection{Esercizio 4}
+Un esperimento consiste nel ripetere 10 volte l'estrazione (con reinserimento) di una
+biglia da un urna contenente 50 biglie, 15 delle quali sono bianche. Sia \( Y_{10} \) la
+variabile aleatoria che descrive il numero totale di biglie bianche estratte.
+\[
+	\text{Biglie totali} = 50
+\]
+\[
+	\text{Biglie bianche} = 15
+\]
+\[
+	p = \frac{15}{50} = 0.3
+\]
+\begin{enumerate}
+	\item Determinare la probabilità che il numero di biglie bianche estratte siano almeno 2.
+
+	      \vspace{1em}
+	      La probabilità che il numero di biglie bianche estratte sia almeno 2 è data dalla
+	      distribuzione binomiale:
+	      \[
+		      P(Y_{10} \ge 2) = 1 - P(Y_{10} < 2) = 1 - (P(Y_{10} = 0) + P(Y_{10} = 1))
+	      \]
+	      \[
+		      P(Y_{10} \ge 2) = 1 - \left(\binom{10}{0} \cdot \left( 0.3 \right)^0
+		      \cdot \left( 0.7 \right)^{10} + \binom{10}{1} \cdot
+		      \left( 0.3 \right)^1 \cdot \left( 0.7 \right)^9\right) =
+	      \]
+	      \[
+		      = 1 - \left( \frac{10!}{10!} \cdot 1 \cdot \left(0.7\right)^{10} +
+		      \frac{10!}{9!} \cdot 0.3 \cdot \left( 0.7 \right)^9 \right)  =
+	      \]
+	      \[
+		      = 1 - \left( \left( 0.7 \right)^{10} + 3 \cdot \left( 0.7 \right)^9 \right)
+	      \]
+	      \[
+		      = 1 - \left( 0.149308346 \right) \approx 0.85 = 85\%
+	      \]
+	\item Come si calcola la probabilità che il numero di biglie estratte sia maggiore
+	      strettamente di 3 e minore o uguale di 6? (\( P(3 < Y_{10} \le 6) \))
+
+	      \vspace{1em}
+	      La probabilità si calcola sommando le probabilità di avere 4 biglie
+	      bianche, 5 biglie bianche e 6 biglie bianche:
+	      \[
+		      P(3 < Y_{10} \le 6) P(Y_{10} = 4) + P(Y_{10} = 5) + P(Y_{10} = 6)
+	      \]
+	      \[
+		      P(3 < Y_{10} \le 6) = \left( \binom{10}{4} \cdot 0.3^4 \cdot 0.7^6 \right) +
+	      \]
+	      \[
+		      \left( \binom{10}{5} \cdot 0.3^5 \cdot 0.7^5 \right) +
+	      \]
+	      \[
+		      \left( \binom{10}{6} \cdot 0.3^6 \cdot 0.7^4 \right) =
+	      \]
+	      \[
+		      = 0.200120949 + 0.102919345 + 0.036756909 \approx 0.34 = 34\%
+	      \]
+\end{enumerate}
+
+\subsection{Esercizio 5}
+Un calcolatore è collegato ad una rete che permette l'accesso ad un massimo di 20 persone.
+Collegati a questa rete vi sono i terminali di 24 operatori, ognuno dei quali, ad un dato
+istante, richiede con probabilità \( p = 0.6 \) di essere connesso al calcolatore centrale.
+
+\noindent Qual'è la probabilità che ad un dato istante la rete sia satura (cioè che tutti
+e 20 gli accessi siano utilizzati)?
+
+\vspace{1em}
+\noindent La probabilità che la rete sia satura è data dalla distribuzione binomiale:
+\[
+	P(X = 20) = \binom{24}{20} \cdot 0.6^{20} \cdot 0.4^4 = \frac{24!}{20! \cdot 4!} \cdot
+	0.000036562 \cdot 0.0256 =
+\]
+\[
+	= 10626 \cdot 0.000036562 \cdot 0.0256 \approx 0.0099 = 0.99\%
+\]
+
+\subsection{Esercizio 6}
+In una linea produttiva ogni pezzo ha probabilità \( p = 0.03 \) di essere difettoso.
+L'essere difettoso è indipendente da pezzo a pezzo.
+
+\noindent Calcolare la probabilità che su 30 pezzi non più di 2 siano difettosi.
+
+\vspace{1em}
+\noindent La probabilità che su 30 pezzi non più di 2 siano difettosi è data dalla distribuzione
+binomiale:
+\[
+	P(X \le 2) = P(X = 0) + P(X = 1) + P(X = 2)
+\]
+Per semplicità di calcolo uso una funzione di R:
+\begin{lstlisting}[language=R]
+  pbinom(2, 30, 0.03)
+  # 0.9399309
+\end{lstlisting}
+La probabilità che su 30 pezzi non più di 2 siano difettosi è:
+\[
+	P(X \le 2) = 0.9399 = 93.99\%
+\]
+
+\subsection{Esercizio 7}
+Una segreteria di un'azienda di statistica immette i dati in una banca dati con un ritmo
+medio di 200 immissioni all'ora. Si suppone indipendenza tra le immissioni.
+
+\noindent Quale modello probabilistico si può utilizzare per calcolare la probabilità che
+ci siano esattamente 5 immissioni nel successivo minuto? Si può ipotizzare che sia una
+Poisson? Determinare tale probabilità.
+
+\vspace{1em}
+\noindent Il modello probabilistico più adatto è la distribuzione di Poisson perchè
+abbiamo degli eventi indipendenti che si verificano con una certa frequenza in un
+certo intervallo.
+
+\noindent La probabilità che ci siano esattamente 5 immissioni nel successivo minuto è
+data dalla distribuzione di Poisson:
+\[
+	\mathcal{P}_{\lambda}(n) = \frac{\lambda^n}{n!}e^{-\lambda}
+\]
+\[
+	\lambda = 200 \text{ immissioni/ora} = \frac{200}{60} \text{ immissioni/minuto} = 3.33 \text{ immissioni/minuto}
+\]
+\[
+	n = 5 \text{ immissioni}
+\]
+\[
+	\mathcal{P}(5) = \frac{3.33^5}{5!}e^{-3.33} \approx 0.122
+\]
+
+\subsection{Esercizio 8}
+Un esperimento consiste nel ripetere 60 volte l'estrazione (con reinserimento) di una
+biglia da un'urna contenente 50 biglie, 15 delle quali sono bianche. Sia \( Y_{60} \) la
+variabile aleatoria che descrive il numero totale di biglie bianche estratte. Determinare
+la probabilità che il numero di bilglie estratte sia maggiore strettamente di 10 e minore
+o uguale di 30. (\( P(10 < Y_{60} \le 30) \))
+
+\vspace{1em}
+\noindent La probabilità che il numero di biglie estratte sia maggiore strettamente di 10 e
+minore o uguale di 30 è data dalla distribuzione binomiale:
+\[
+	P(10 < Y_{60} \le 30) = \sum_{k=11}^{30} \binom{60}{k} \cdot p^k \cdot (1-p)^{60-k}
+\]
+\[
+	P(10 < Y_{60} \le 30) = \sum_{k=11}^{30} \binom{60}{k} \cdot 0.3^k \cdot 0.7^{60-k}
+\]
+\begin{lstlisting}[language=R]
+  sum(dbinom(11:30, 60, 15 / 50))
+  # 0.9857581
+\end{lstlisting}
+\[
+	P(10 < Y_{60} \le 30) \approx 0.9857 = 98.57\%
+\]
+
+\subsection{Esercizio 9}
+In un corso di laurea a numero chiuso si ritiene che il numero di studenti non debba
+essere superiore a 80. Inoltre è noto, però, che il 25\% degli studenti che superano
+l'esame di ammissione cambiano idea e non confermano l'iscrizione.
+
+\noindent Se 100 studenti superano l'esame di ammissione, qualè la probabilità che più di
+80 decidano di iscriversi?
+
+\vspace{1em}
+\noindent La probabilità che uno studente che ha superato l'esame si iscriva è:
+\[
+	P(I) = 0.75
+\]
+La probabilità che più di 80 studenti si iscrivano è data dalla distribuzione binomiale:
+\[
+\]
+\[
+	P(X > 80) = \sum_{k=81}^{100} \binom{100}{k} \cdot 0.75^k \cdot 0.25^{100-k}
+\]
+\begin{lstlisting}[language=R]
+  pbinom(81, 100, 0.75, lower.tail=FALSE)
+  # 0.06301142
+\end{lstlisting}
+\[
+	P(X > 80) \approx 0.063 = 6.3\%
+\]
+
+\subsection{Esercizio 10}
+Da una rilevazione risulta che il numero di incidenti sul lavoro avvenuti in un'azienda
+in un mese è una variabile distribuita secondo Poisson con valor medio \( \lambda = 1.5 \).
+Calcolare:
+\[
+	\mathcal{P}_{\lambda}(n) = \frac{\lambda^n}{n!}e^{-\lambda}
+\]
+\begin{enumerate}
+	\item La probabilità che in un mese non ci siano incidenti.
+
+	      \vspace{1em}
+	      La probabilità che in un mese non ci siano incidenti è data dalla distribuzione
+	      di Poisson:
+	      \[
+		      \mathcal{P}(0) = \frac{1.5^0}{0!}e^{-1.5} = e^{-1.5} \approx 0.2231 = 22.31\%
+	      \]
+	\item La probabilità che in un mese ci siano più di 2 incidenti.
+
+	      \vspace{1em}
+	      La probabilità che in un mese ci siano più di 2 incidenti è data dal complementare
+	      della probabilità che in un mese ci siano al massimo 2 incidenti:
+	      \[
+		      P(X > 2) = 1 - P(X \le 2) = 1 - \left( P(X = 0) + P(X = 1) + P(X = 2) \right)
+	      \]
+	      \[
+		      P(X > 2) = 1 - \left( 0.2231 + \frac{1.5^1}{1!}e^{-1.5} +
+		      \frac{1.5^2}{2!}e^{-1.5} \right) =
+	      \]
+	      \[
+		      = 1 - \left( 0.2231 + 1.5e^{-1.5} + 1.125e^{-1.5} \right) \approx 0.1912 = 19.12\%
+	      \]
+\end{enumerate}
+
+\subsection{Esercizio 11}
+Da rilevazioni statistiche si è valutato che una persona su 100.000 è allergica ad un
+tipo di polline. In una popolazione di 300.000 abitanti calcola la probabilità che:
+\begin{enumerate}
+	\item Nessuna persona sia allergica.
 
     \vspace{1em}
+    \noindent Questo problema può essere risolto con la distribuzione di Poisson:
     \[
-      T = \text{Test positivo}
+      \lambda = 300000 \cdot \frac{1}{100000} = 3
     \] 
+    La probabilità che nessuno sia allergico è:
     \[
-      \overline{T} = \text{Test negativo}
+      \mathcal{P}(0) = \frac{3^0 \cdot e^{-3}}{0!} = e^{-3} \approx 0.0498 = 4.98\%
     \] 
-    \[
-      M = \text{Mortalità per malattie cardiovascolari in 20 anni}
-    \] 
-    \[
-      F_1 = \text{Frequenza cardiaca} \le 105
-    \] 
-    \[
-      F_2 = \text{Frequenza cardiaca} \in [106, 115]
-    \] 
-    \[
-      F_3 = \text{Frequenza cardiaca} \in [116, 127]
-    \] 
-    \[
-      F_4 = \text{Frequenza cardiaca} > 127
-    \] 
-    La probabilità di mortalità per malattie cardiovascolari in 20 anni è data dalla probabilità
-    totale:
-    \[
-      P(M) = P(M\,|\,F_1) \cdot P(F_1) + P(M\,|\,F_2) \cdot P(F_2) + 
-    \] 
-    \[
-      P(M\,|\,F_3) \cdot P(F_3) + P(M\,|\,F_4) \cdot P(F_4)
-    \] 
-    \[
-      P(M) = 0.092 \cdot 0.2 + 0.087 \cdot 0.3 + 0.116 \cdot 0.3 + 0.132 \cdot 0.2 = 0.1056 = 10.56\%
-    \] 
-  \item Qual è la probabilità di avere avuto un test positivo tra gli uomini che sono 
-    morti nel periodo di 20 anni?
+	\item Al massimo 3 persone siano allergiche.
 
     \vspace{1em}
-    La probabilità di aver avuto un test positivo è data dalla probabilità condizionata:
+    \noindent La probabilità che al massimo 3 persone siano allergiche è data dalla 
+    distribuzione di Poisson:
     \[
-      P(F_4\,|\,M) = \frac{P(M\,|\,F_4) \cdot P(F_4)}{P(M)}
-    \]
-    \[
-      P(F_4\,|\,M) = \frac{0.132 \cdot 0.2}{0.1056} \approx 0.25 = 25\%
+      \mathcal{P}(X \le 3) = \sum_{k=0}^{3} \frac{3^k \cdot e^{-3}}{k!}
     \] 
-  \item Qual è la probabilità di avere avuto un test positivo tra gli uomini che sono 
-    sopravvissuti nel periodo di 20 anni?
+    Il risultato della sommatoria è dato dal seguente codice in R:
+    \begin{lstlisting}[language=R]
 
-    \vspace{1em}
-    La probabilità di avere avuto un test positivo tra gli uomini che sono sopravvissuti
-    è data dalla probabilità condizionata:
+  ppois(3, 3)
+  # 0.6472319
+    \end{lstlisting}
     \[
-      P(F_4\,|\,\overline{M}) = \frac{P(\overline{M}\,|\,F_4) \cdot P(F_4)}{P(\overline{M})}
-    \]
-    \[
-      P(F_4\,|\, \overline{M}) = \frac{(1-0.132) \cdot 0.2}{1-0.1056} \approx 0.1941 = 19.41\%
-    \] 
-  \item Qual è la probabilità di morte tra gli uomini con un test negativo?
-
-    \vspace{1em}
-    La probabilità di morte tra gli uomini con un test negativo è data dalla probabilità
-    totale dei casi in cui il test è negativo:
-    \[
-      P(M\,|\,\overline{T}) = P(M\,|\,F_1) \cdot P(F_1) + P(M\,|\,F_2) \cdot P(F_2) +P(M\,|\,F_3) \cdot P(F_3)
-    \]
-    \[
-      P(M\,|\,\overline{T}) = 0.092 \cdot 0.2 + 0.087 \cdot 0.3 + 0.116 \cdot 0.3 = 0.0793 = 7.93\%
+    \mathcal{P}(X \le 3) \approx 0.6472 = 64.72\%
     \] 
 \end{enumerate}
+
+\subsection{Esercizio 12}
+La probabilità che un individuo contragga una malattia rara è dello 0.3 per mille individui.
+
+\noindent Qual è la probabilità che in una città dove vivono 20000 persone vi siano meno 
+di 4 persone che contraggono questa malattia?
+
+\[
+  p = \frac{0.3}{1000} = 0.0003
+\] 
+Questo problema è modellabile con la distribuzione di Poisson:
+\[
+  \lambda = 20000 \cdot 0.0003 = 6
+\]
+La probabilità che vi siano meno di 4 persone che contraggono la malattia è:
+\[
+  \mathcal{P}(X < 4) = \sum_{k=0}^{3} \frac{6^k \cdot e^{-6}}{k!}
+\]
+Il risultato della sommatoria è dato dal seguente codice in R:
+\begin{lstlisting}[language=R]
+  ppois(3, 6)
+  # 0.1512039
+\end{lstlisting}
+\[
+  \mathcal{P}(X < 4) \approx 0.1512 = 15.12\%
+\]
+
+\subsection{Esercizio 13}
+Alla focacceria arrivano mediamente 30 clienti l'ora. Calcolare la probabilità che in
+due minuti:
+\begin{enumerate}
+  \item Non arrivi nessuno.
+
+    \vspace{1em}
+    Questo problema è modellabile con la distribuzione di Poisson:
+    \[
+    \lambda = 30 \cdot \frac{2}{60} = 1
+    \] 
+    La probabilità che non arrivi nessuno è data da:
+    \[
+    \mathcal{P}(0) = \frac{1^0 \cdot e^{-1}}{0!} = e^{-1} \approx 0.3679 = 36.79\%
+    \] 
+  \item Arrivino almeno 3 clienti.
+
+    \vspace{1em}
+    La probabilità che arrivino almeno 3 clienti è data dal complementare della probabilità
+    che arrivino al massimo 2 clienti:
+    \[
+    \mathcal{P}(X \ge 3) = 1 - \mathcal{P}(X < 3) = 1 - \sum_{k=0}^{2} \frac{1^k \cdot e^{-1}}{k!}
+    \]
+    Il risultato della sommatoria è dato dal seguente codice in R:
+    \begin{lstlisting}[language=R]
+
+  1 - ppois(2, 1)
+  # 0.0803014
+    \end{lstlisting}
+    \[
+    \mathcal{P}(X \ge 3) \approx 0.0803 = 8.03\%
+    \]
+\end{enumerate}
+
+\subsection{Esercizio 14}
+Ad un esame universitario, il voto \( X \) medio è stato \( \mu = \mathbb{E}[X] = 24 \),
+con \( \sigma^2 = var(X) = 4^2 \). Supponendo i voti normalmente distribuiti, calcolare
+la probabilità che uno studente abbia riportato:
+\begin{enumerate}
+  \item Un voto superiore a 27.
+  \item Un voto non inferiore a 22.
+\end{enumerate}
+
 \end{document}
