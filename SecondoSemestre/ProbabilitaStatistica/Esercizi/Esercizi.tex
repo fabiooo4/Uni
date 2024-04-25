@@ -1021,12 +1021,42 @@ e 20 gli accessi siano utilizzati)?
 \vspace{1em}
 \noindent La probabilità che la rete sia satura è data dalla distribuzione binomiale:
 \[
+  P(X \ge 20) = \sum_{k=20}^{24} \binom{24}{k} \cdot p^k \cdot (1-p)^{24-k}
+\] 
+\[
 	P(X = 20) = \binom{24}{20} \cdot 0.6^{20} \cdot 0.4^4 = \frac{24!}{20! \cdot 4!} \cdot
 	0.000036562 \cdot 0.0256 =
 \]
 \[
-	= 10626 \cdot 0.000036562 \cdot 0.0256 \approx 0.0099 = 0.99\%
+	= 10626 \cdot 0.000036562 \cdot 0.0256 \approx 0.0099
 \]
+\[
+  P(X = 21) = \binom{24}{21} \cdot 0.6^{21} \cdot 0.4^3 = \frac{24!}{21! \cdot 3!} \cdot
+  0.000021937 \cdot 0.064 =
+\] 
+\[
+  = 2024 \cdot 0.000021937 \cdot 0.064 \approx 0.0028
+\] 
+\[
+  P(X = 22) = \binom{24}{22} \cdot 0.6^{22} \cdot 0.4^2 = \frac{24!}{22! \cdot 2!} \cdot
+  0.000013162 \cdot 0.16 =
+\] 
+\[
+  = 276 \cdot 0.000013162 \cdot 0.16 \approx 0.00058
+\] 
+\[
+  P(X = 23) = \binom{24}{23} \cdot 0.6^{23} \cdot 0.4^1 = \frac{24!}{23! \cdot 1!} \cdot
+  0.000007897 \cdot 0.4 =
+\] 
+\[
+  = 24 \cdot 0.000007897 \cdot 0.4 \approx 0.00008
+\] 
+\[
+  P(X = 24) = \binom{24}{24} \cdot 0.6^{24} \cdot 0.4^0 = 0.6^{24} \approx 0.000004
+\] 
+\[
+  P(X \ge 20) = 0.0099 + 0.0028 + 0.00058 + 0.00008 + 0.000004 \approx 0.0135 = 1.35\%
+\] 
 
 \subsection{Esercizio 6}
 In una linea produttiva ogni pezzo ha probabilità \( p = 0.03 \) di essere difettoso.
@@ -1262,7 +1292,89 @@ con \( \sigma^2 = var(X) = 4^2 \). Supponendo i voti normalmente distribuiti, ca
 la probabilità che uno studente abbia riportato:
 \begin{enumerate}
   \item Un voto superiore a 27.
+
+    \vspace{1em}
+    Questo problema è modellabile con la distribuzione normale standard, bisogna quindi
+    standardizzare il voto:
+    \[
+    Z = \frac{X - \mu}{\sigma} = \frac{27 - 24}{4} = 0.75
+    \]
+    Per trovare la probbailità di trovare un voto superiore a 27 bisogna cercare nelle
+    tabelle dei valori della distribuzione normale standard e prendere il complementare:
+    \[
+    P(Z > 0.75) = 1 - 0.7734 = 0.2266 = 22.66\%
+    \] 
   \item Un voto non inferiore a 22.
+
+    \vspace{1em}
+    Per trovare la probabilità di trovare un voto non inferiore a 22 bisogna standardizzare
+    il voto:
+    \[
+    Z = \frac{X - \mu}{\sigma} = \frac{22 - 24}{4} = -0.5
+    \]
+    Successivamente bisogna cercare il valore di probabilità nella tabella e prendere il
+    complementare:
+    \[
+    P(Z \ge -0.5) = 1 - 0.3085 = 0.6915 = 69.15\%
+    \] 
+\end{enumerate}
+
+\subsection{Esercizio 15}
+L'altezza X di un gruppo di 20.000 individui è distribuita normalmente con media
+\( \mu = \mathbb{E}[X] = 170cm \) e con deviazione standard \( \sigma = \sqrt{var(X)} = 10cm  \).
+\begin{enumerate}
+  \item Qual è la probabilità che l'altezza sia compresa fra \( 155cm \) e \( 180cm \)?
+
+    \vspace{1em}
+    Questo problema è modellabile con la distribuzione normale standard, bisogna quindi
+    standardizzare le altezze:
+    \[
+    Z_1 = \frac{155 - 170}{10} = -1.5
+    \] 
+    \[
+    Z_2 = \frac{180 - 170}{10} = 1
+    \] 
+    La probabilità che l'altezza sia compresa fra \( 155cm \) e \( 180cm \) è data dalla
+    differenza delle probabilità trovate dalle tabelle della distribuzione normale standard:
+    \[
+    P(-1.5 < Z < 1) = P(Z < 1) - P(Z < -1.5) 
+    \] 
+    \[
+    P(-1.5 < Z < 1) = 0.8413 - 0.0668 = 0.7745 = 77.45\%
+    \] 
+  \item Quante persone ci si aspetta che siano alte almeno 2 metri?
+
+    \vspace{1em}
+    Standardizzando l'altezza:
+    \[
+    Z = \frac{200 - 170}{10} = 3
+    \]
+    La probabilità che una persona sia alta almeno 2 metri è:
+    \[
+    P(Z > 3) = 1 - 0.9987 = 0.0013 = 0.13\%
+    \]
+    Per sapere quante persone ci si aspetta che siano alte almeno 2 metri bisogna moltiplicare
+    la probabilità per il numero di persone:
+    \[
+    0.0013 \cdot 20000 = 26
+    \]
+    Ci si aspetta, quindi, che 26 persone siano alte almeno 2 metri in un gruppo di 20.000
+    individui
+  \item Quante persone ci si aspetta che siano alte non più \( 160cm \)?
+
+    \vspace{1em}
+    Standardizzando l'altezza:
+    \[
+      Z = \frac{160 - 170}{10} = -1
+    \] 
+    La probabilità che una persona sia alta non più di \( 160cm \) è:
+    \[
+      P(Z < -1) = 0.1587
+    \]
+    Il numero di persone che ci si aspetta siano alte non più di \( 160cm \) è:
+    \[
+      0.1587 \cdot 20000 = 3174
+    \]
 \end{enumerate}
 
 \end{document}
