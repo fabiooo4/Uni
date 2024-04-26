@@ -188,27 +188,14 @@ df1 <- data.frame(x = 1:6, y = table(res) / n)
 df2 <- data.frame(x = 2:12, y = table(res + res2) / n)
 
 ggplot(data = df1, aes(
-  x = factor(x),
-  y = y.Freq
+  x = factor(df1$x),
+  y = df1$y
 )) +
   geom_col() +
   labs(
     title = "Absolute frequency of the dice",
     x = "Value", y = "Absolute frequency"
-  ) +
-  theme_minimal()
-```
-```{r}
-ggplot(data = df2, aes(
-  x = factor(x),
-  y = y.Freq
-)) +
-  geom_col() +
-  labs(
-    title = "Relative frequency of the sum of the dice",
-    x = "Value", y = "Relative frequency"
-  ) +
-  theme_minimal()
+  )
 ```
 
 # Exercise 5
@@ -216,52 +203,8 @@ ggplot(data = df2, aes(
 ## A
 Four people are in a room. What is the probability that no two of them
 celebrate their birthday on the same day of the year?
-```{r}
-people <- 4
-days <- 365
-
-n_bdays <- choose(days, people) * factorial(people)
-p_bdays <- n_bdays / days^people
-p_bdays
-```
 
 ## B
 $n$ people are in a room. What is the probability that no two of them
 celebrate their birthday on the same day of the year? Try this with
 $n$ from 1 to 100 and plot the probability for each value of $n$.
-```{r}
-n <- 100
-p_bdays <- rep(NA, n)
-
-for (i in 1:n) {
-  p_bdays[i] <- choose(days, i) * factorial(i) / days^i
-}
-
-df <- data.frame(x = 1:n, y = p_bdays)
-ggplot(data = df, aes(
-  x = x, y = y
-)) +
-  geom_line() +
-  labs(
-    title = "Probability of no two people having the same birthday",
-    x = "Number of people", y = "Probability"
-  ) +
-  theme_minimal()
-```
-
-# Exercise 6
-A laboratory blood test is 99% effective in detecting a certain 
-disease when it is, in fact, present. However, the test also yields 
-a “false positive” (FP – Type I error) result for 1% of the healthy 
-persons tested. If 0.5% of the population actually has the disease,
-what is the probability a person has the disease given that his test
-result is positive? (Hint: Use D as the event "the tested person has 
-the disease" and E as "The result of the test is positive").
-```{r}
-p_d <- 0.005
-p_e_d <- 0.99
-p_e_nd <- 0.01
-
-p_d_e <- p_d * p_e_d / (p_d * p_e_d + (1 - p_d) * p_e_nd)
-p_d_e
-```
