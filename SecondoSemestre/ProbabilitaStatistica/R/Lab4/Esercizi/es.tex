@@ -164,7 +164,7 @@ Plot the Probability Mass Function for the Binomial distribution with
 \setcounter{enumi}{2}
 \tightlist
 \item
-  \(P(1 \le X > 5)\)
+  \(P(1 \le X < 5)\)
 \end{enumerate}
 
 \begin{Shaded}
@@ -478,43 +478,9 @@ integer between 0 and 9.
 \NormalTok{p \textless{}{-}}\StringTok{ }\FloatTok{0.8}
 \NormalTok{t \textless{}{-}}\StringTok{ }\DecValTok{1000}
 
-\KeywordTok{rbinom}\NormalTok{(t, n, p)}
+\NormalTok{valori \textless{}{-}}\StringTok{ }\KeywordTok{rbinom}\NormalTok{(t, n, p)}
 \end{Highlighting}
 \end{Shaded}
-
-\begin{verbatim}
-##    [1] 8 6 8 6 5 9 7 6 7 7 5 7 7 7 9 6 8 9 8 5 6 7 7 4 7 7 7 7 8 8 5 6 7
-##   [34] 6 9 7 6 8 8 8 8 8 8 8 8 8 8 7 8 6 9 7 6 9 7 8 9 6 6 8 7 9 8 8 6 7
-##   [67] 6 6 6 7 6 7 7 9 7 8 8 7 8 9 8 7 8 6 9 8 4 6 6 8 9 7 8 7 8 8 6 9 7
-##  [100] 7 7 8 7 5 7 6 5 7 8 8 5 8 9 5 7 8 7 5 7 8 7 8 8 8 8 4 8 9 8 7 7 6
-##  [133] 7 7 7 7 6 6 5 7 8 8 9 8 6 8 8 9 8 7 6 7 8 8 9 8 7 8 7 8 7 8 7 8 8
-##  [166] 7 6 8 8 8 7 8 6 6 7 7 8 7 6 7 6 8 7 8 7 7 8 7 6 6 8 8 4 7 5 7 8 7
-##  [199] 8 7 8 5 7 7 8 6 8 8 8 8 7 8 8 7 9 7 8 8 6 5 8 5 7 7 9 8 7 7 7 5 7
-##  [232] 8 7 9 8 8 8 6 8 6 7 7 8 7 8 7 8 5 5 7 8 8 7 8 7 6 8 8 7 6 5 6 7 5
-##  [265] 7 7 8 8 9 7 6 9 9 8 6 7 5 7 9 7 6 8 8 8 9 8 9 8 9 7 8 9 9 6 6 6 4
-##  [298] 9 9 6 6 9 6 7 7 7 8 9 7 7 8 7 7 9 8 6 6 8 8 6 6 8 8 7 9 9 3 9 8 5
-##  [331] 7 8 7 6 8 7 7 7 7 5 8 9 7 8 7 8 4 8 8 7 8 5 7 8 7 4 7 8 8 6 8 8 6
-##  [364] 8 8 6 8 9 8 7 8 8 6 7 7 5 6 8 8 5 7 6 8 6 7 6 8 8 9 8 5 8 7 6 9 8
-##  [397] 8 9 9 4 4 8 6 7 8 7 7 9 8 7 8 6 8 7 8 8 5 8 7 9 7 7 7 8 6 7 8 8 8
-##  [430] 6 5 7 8 4 8 7 9 7 9 8 8 7 7 8 6 7 6 8 8 7 7 8 8 9 8 6 6 6 8 9 5 8
-##  [463] 7 8 7 8 8 7 8 6 9 6 8 6 7 7 7 9 8 7 8 6 8 7 5 9 9 7 8 6 5 9 7 7 9
-##  [496] 4 8 9 7 6 8 8 8 9 8 8 7 7 5 8 7 9 6 8 7 8 7 6 9 6 8 8 8 9 7 7 6 9
-##  [529] 4 8 5 7 7 6 9 6 8 6 7 8 6 9 6 8 6 5 9 6 6 8 8 8 7 6 7 7 7 7 7 9 9
-##  [562] 5 6 8 7 7 8 6 7 6 7 6 7 8 5 7 8 9 7 7 6 6 6 8 6 8 8 7 5 7 7 9 5 9
-##  [595] 9 6 7 8 6 9 8 7 8 8 8 6 8 6 8 8 7 9 9 4 7 6 6 6 5 9 6 6 6 8 9 8 8
-##  [628] 6 8 8 6 6 7 7 9 8 5 6 6 8 7 6 6 8 9 7 6 9 8 7 6 5 7 7 7 6 6 9 7 8
-##  [661] 6 6 9 7 8 9 5 8 7 8 9 7 9 8 8 7 6 8 7 7 7 7 6 6 5 7 7 8 7 8 9 7 7
-##  [694] 8 8 7 8 9 8 8 6 8 9 6 8 7 7 8 8 8 7 7 7 7 7 8 9 9 4 9 8 7 6 6 7 6
-##  [727] 6 7 6 9 8 6 7 5 8 8 6 4 8 9 4 8 9 7 8 7 6 9 7 5 8 8 8 9 7 7 7 6 9
-##  [760] 8 7 8 7 7 7 8 8 8 7 7 5 6 7 6 9 8 8 8 7 6 8 6 9 7 6 7 8 9 8 5 5 7
-##  [793] 8 7 6 8 9 8 8 8 7 8 9 9 8 5 7 7 6 7 9 7 8 6 6 8 8 9 7 7 7 8 7 4 6
-##  [826] 9 7 9 8 7 9 6 7 7 7 7 7 7 8 9 5 7 7 9 7 8 6 9 8 9 8 7 4 7 7 8 5 9
-##  [859] 9 6 8 9 7 7 7 8 8 9 7 7 8 8 6 7 6 7 9 7 6 7 9 5 7 8 6 5 8 8 8 8 7
-##  [892] 6 7 7 6 6 9 8 9 6 5 7 6 7 7 7 6 6 6 9 9 9 6 7 8 5 7 7 8 8 6 9 8 6
-##  [925] 7 7 8 7 8 6 6 8 6 7 5 8 7 6 6 9 5 7 8 8 9 8 8 8 8 8 7 8 5 9 8 5 7
-##  [958] 9 8 8 7 7 7 8 6 7 7 9 6 7 6 9 6 8 8 7 5 9 8 8 7 7 5 7 6 6 8 8 8 8
-##  [991] 9 8 7 8 7 6 7 8 7 9
-\end{verbatim}
 
 \hypertarget{b-2}{%
 \subsection{B}\label{b-2}}
@@ -523,15 +489,14 @@ Plot the experimental probability using the geom\_bar() function.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{df \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{rbinom}\NormalTok{(t, n, p))}
+\NormalTok{df \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ valori)}
 
-\KeywordTok{ggplot}\NormalTok{(df, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ x, }\DataTypeTok{fill =} \StringTok{"Frequency"}\NormalTok{)) }\OperatorTok{+}
+\KeywordTok{ggplot}\NormalTok{(df, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ valori)) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{geom\_bar}\NormalTok{() }\OperatorTok{+}
 \StringTok{  }\KeywordTok{scale\_x\_continuous}\NormalTok{(}\DataTypeTok{breaks =} \DecValTok{0}\OperatorTok{:}\DecValTok{9}\NormalTok{) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{scale\_fill\_manual}\NormalTok{(}\DataTypeTok{values =} \StringTok{"blue"}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{labs}\NormalTok{(}
     \DataTypeTok{title =} \StringTok{"Experimental Probability"}\NormalTok{,}
-    \DataTypeTok{x =} \StringTok{"x"}\NormalTok{,}
+    \DataTypeTok{x =} \StringTok{"Successes"}\NormalTok{,}
     \DataTypeTok{y =} \StringTok{"Frequency"}
 \NormalTok{  )}
 \end{Highlighting}
@@ -548,15 +513,18 @@ geom\_point().
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{ggplot}\NormalTok{(df, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ x, }\DataTypeTok{fill =} \StringTok{"Frequency"}\NormalTok{)) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{geom\_bar}\NormalTok{() }\OperatorTok{+}
+\NormalTok{p\_teo \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{p =} \KeywordTok{dbinom}\NormalTok{(}\DecValTok{0}\OperatorTok{:}\DecValTok{9}\NormalTok{, n, p))}
+
+\KeywordTok{ggplot}\NormalTok{(df, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ valori)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_bar}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{y =} \KeywordTok{after\_stat}\NormalTok{(prop))) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{geom\_point}\NormalTok{(}
-    \KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ x, }\DataTypeTok{y =} \KeywordTok{dbinom}\NormalTok{(x, n, p)),}
-    \DataTypeTok{color =} \StringTok{"red"}\NormalTok{,}
-    \DataTypeTok{size =} \DecValTok{2}
+    \DataTypeTok{data =}\NormalTok{ p\_teo,}
+    \KeywordTok{aes}\NormalTok{(}
+      \DataTypeTok{x =} \DecValTok{0}\OperatorTok{:}\DecValTok{9}\NormalTok{, }\DataTypeTok{y =}\NormalTok{ p,}
+      \DataTypeTok{color =} \StringTok{"red"}
+\NormalTok{    ),}
 \NormalTok{  ) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{scale\_x\_continuous}\NormalTok{(}\DataTypeTok{breaks =} \DecValTok{0}\OperatorTok{:}\DecValTok{9}\NormalTok{) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{scale\_fill\_manual}\NormalTok{(}\DataTypeTok{values =} \StringTok{"blue"}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{labs}\NormalTok{(}
     \DataTypeTok{title =} \StringTok{"Experimental vs Real Probability"}\NormalTok{,}
     \DataTypeTok{x =} \StringTok{"Successes"}\NormalTok{,}
@@ -566,5 +534,232 @@ geom\_point().
 \end{Shaded}
 
 \includegraphics{es_files/figure-latex/unnamed-chunk-15-1.pdf}
+
+\hypertarget{exercise-4}{%
+\section{Exercise 4}\label{exercise-4}}
+
+Suppose the number of customers visiting a retail store follows a
+Poisson distribution with a mean of 5 customers per hour. (hint:
+\(X \sim Poisson(\lambda=5)\))
+
+Find the probability that in a randomely chosen hour, there will be:
+
+\hypertarget{a-3}{%
+\subsection{A}\label{a-3}}
+
+No customers
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{lambda \textless{}{-}}\StringTok{ }\DecValTok{5}
+\KeywordTok{dpois}\NormalTok{(}\DecValTok{0}\NormalTok{, lambda)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.006737947
+\end{verbatim}
+
+\hypertarget{b-3}{%
+\subsection{B}\label{b-3}}
+
+At least 3 customers
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ppois}\NormalTok{(}\DecValTok{2}\NormalTok{, lambda, }\DataTypeTok{lower.tail =} \OtherTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.875348
+\end{verbatim}
+
+\hypertarget{c-1}{%
+\subsection{C}\label{c-1}}
+
+Exactly 7 customers
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{dpois}\NormalTok{(}\DecValTok{7}\NormalTok{, lambda)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.1044449
+\end{verbatim}
+
+\hypertarget{d}{%
+\subsection{D}\label{d}}
+
+Assuming that each customer buys something that costs a price from 10€
+to 50€. Which is the expected value of a customer expense? (hint: Y =
+customer expense \textasciitilde{} Uniform(10, 50))
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{a \textless{}{-}}\StringTok{ }\DecValTok{10}
+\NormalTok{b \textless{}{-}}\StringTok{ }\DecValTok{50}
+
+\NormalTok{e\_y \textless{}{-}}\StringTok{ }\NormalTok{(a }\OperatorTok{+}\StringTok{ }\NormalTok{b) }\OperatorTok{/}\StringTok{ }\DecValTok{2}
+\NormalTok{e\_y}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 30
+\end{verbatim}
+
+\hypertarget{e}{%
+\subsection{E}\label{e}}
+
+How many customers are expected in 8 working hours?
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{h \textless{}{-}}\StringTok{ }\DecValTok{8}
+
+\NormalTok{e\_x \textless{}{-}}\StringTok{ }\NormalTok{lambda }\OperatorTok{*}\StringTok{ }\NormalTok{h}
+\NormalTok{e\_x}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 40
+\end{verbatim}
+
+\hypertarget{f}{%
+\subsection{F}\label{f}}
+
+Using rpois() and runif() functions, simulate the customers and their
+expenses in a normal day made of 8 working hours. Represent the data as
+similar as possible to the plot below (hints: prepare a data.frame
+containing as many rows as the number of customers of the entire day.
+For each customer, store its ID number, the hour, and the money he/she
+spent. Use facet\_grid with scales = ``free\_x''. Search on google how
+to do the rest).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t \textless{}{-}}\StringTok{ }\DecValTok{5}
+\NormalTok{h \textless{}{-}}\StringTok{ }\DecValTok{8}
+
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
+\NormalTok{customers \textless{}{-}}\StringTok{ }\KeywordTok{rpois}\NormalTok{(h }\OperatorTok{*}\StringTok{ }\NormalTok{t, lambda)}
+\NormalTok{expenses \textless{}{-}}\StringTok{ }\KeywordTok{runif}\NormalTok{(t, }\DecValTok{10}\NormalTok{, }\DecValTok{50}\NormalTok{)}
+
+\NormalTok{df \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}
+  \DataTypeTok{customer =} \KeywordTok{rep}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\NormalTok{t, }\DataTypeTok{each =}\NormalTok{ h),}
+  \DataTypeTok{hour =} \KeywordTok{rep}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\NormalTok{h, t),}
+  \DataTypeTok{expense =}\NormalTok{ expenses}
+\NormalTok{)}
+
+\CommentTok{\# Plot each hour in a separate facet}
+\KeywordTok{ggplot}\NormalTok{(df, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ customer, }\DataTypeTok{y =}\NormalTok{ expense)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_col}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{facet\_grid}\NormalTok{(}\OperatorTok{\textasciitilde{}}\NormalTok{hour, }\DataTypeTok{scales =} \StringTok{"free\_x"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}
+    \DataTypeTok{title =} \StringTok{"Customer Expenses"}\NormalTok{,}
+    \DataTypeTok{x =} \StringTok{"Customer ID"}\NormalTok{,}
+    \DataTypeTok{y =} \StringTok{"Expense"}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme\_minimal}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{es_files/figure-latex/unnamed-chunk-21-1.pdf}
+
+\hypertarget{exercise-5}{%
+\section{Exercise 5}\label{exercise-5}}
+
+In a survey of a sample of 500 university students, they were asked if
+they know how to program in R. The collected data showed that 240
+students know how to program in R. Consider the discrete random variable
+X, which indicates the number of students in a random sample of 50
+students who know how to program in R.
+
+\hypertarget{a-4}{%
+\subsection{A}\label{a-4}}
+
+Compute the probability mass function of X and draw a plot.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{students \textless{}{-}}\StringTok{ }\DecValTok{500}
+\NormalTok{know\_r \textless{}{-}}\StringTok{ }\DecValTok{240}
+\NormalTok{sample\_size \textless{}{-}}\StringTok{ }\DecValTok{50}
+
+\KeywordTok{dhyper}\NormalTok{(}\DecValTok{0}\OperatorTok{:}\DecValTok{50}\NormalTok{, students, students }\OperatorTok{{-}}\StringTok{ }\NormalTok{know\_r, sample\_size)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] 1.712717e-25 2.029286e-23 1.170237e-21 4.377677e-20 1.194605e-18
+##  [6] 2.535451e-17 4.357806e-16 6.235766e-15 7.579816e-14 7.946693e-13
+## [11] 7.271586e-12 5.862735e-11 4.197005e-10 2.684693e-09 1.542586e-08
+## [16] 7.996764e-08 3.754012e-07 1.600830e-06 6.217258e-06 2.203976e-05
+## [21] 7.144235e-05 2.120738e-04 5.771781e-04 1.441491e-03 3.305727e-03
+## [26] 6.963691e-03 1.347683e-02 2.395881e-02 3.911283e-02 5.859870e-02
+## [31] 8.049996e-02 1.012849e-01 1.165483e-01 1.224346e-01 1.171659e-01
+## [36] 1.018762e-01 8.023788e-02 5.703308e-02 3.642637e-02 2.079578e-02
+## [41] 1.054554e-02 4.713777e-03 1.839816e-03 6.196420e-04 1.773653e-04
+## [46] 4.228946e-05 8.169881e-06 1.228289e-06 1.347904e-07 9.601336e-09
+## [51] 3.330925e-10
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{x =} \DecValTok{20}\OperatorTok{:}\DecValTok{44}\NormalTok{, }\DataTypeTok{y =} \KeywordTok{dhyper}\NormalTok{(}
+  \DecValTok{20}\OperatorTok{:}\DecValTok{44}\NormalTok{,}
+\NormalTok{  students,}
+\NormalTok{  students }\OperatorTok{{-}}\StringTok{ }\NormalTok{know\_r,}
+\NormalTok{  sample\_size}
+\NormalTok{))}
+
+\KeywordTok{ggplot}\NormalTok{(df, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ x, }\DataTypeTok{y =}\NormalTok{ y)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_col}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale\_x\_continuous}\NormalTok{(}\DataTypeTok{breaks =} \DecValTok{0}\OperatorTok{:}\DecValTok{50}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}
+    \DataTypeTok{title =} \StringTok{"Hypergeometric Distribution"}\NormalTok{,}
+    \DataTypeTok{x =} \StringTok{"x"}\NormalTok{,}
+    \DataTypeTok{y =} \StringTok{"P(X = x)"}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme\_minimal}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{es_files/figure-latex/unnamed-chunk-22-1.pdf}
+
+\hypertarget{b-4}{%
+\subsection{B}\label{b-4}}
+
+Calculate the probability that at least 30 students in the sample of 50
+know how to program in R.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DecValTok{1} \OperatorTok{{-}}\StringTok{ }\KeywordTok{phyper}\NormalTok{(}\DecValTok{29}\NormalTok{, students, students }\OperatorTok{{-}}\StringTok{ }\NormalTok{know\_r, sample\_size)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.8522509
+\end{verbatim}
+
+\hypertarget{c-2}{%
+\subsection{C}\label{c-2}}
+
+Calculate the expected value of X.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{students }\OperatorTok{*}\StringTok{ }\NormalTok{sample\_size }\OperatorTok{/}\StringTok{ }\NormalTok{students}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 50
+\end{verbatim}
 
 \end{document}
