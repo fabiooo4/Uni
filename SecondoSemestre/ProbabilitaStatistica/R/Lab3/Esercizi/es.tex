@@ -4,20 +4,17 @@
 %
 \documentclass[
 ]{article}
-\usepackage{amsmath,amssymb}
-\usepackage{iftex}
-\ifPDFTeX
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
 \else % if luatex or xetex
-  \usepackage{unicode-math} % this also loads fontspec
+  \usepackage{unicode-math}
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
-\fi
-\usepackage{lmodern}
-\ifPDFTeX\else
-  % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -36,6 +33,14 @@
   \KOMAoptions{parskip=half}}
 \makeatother
 \usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Lab3},
+  pdfauthor={Irimie Fabio},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
 \usepackage[margin=1in]{geometry}
 \usepackage{color}
 \usepackage{fancyvrb}
@@ -48,13 +53,13 @@
 \newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
 \newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
 \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
 \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
 \newcommand{\BuiltInTok}[1]{#1}
 \newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
 \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
-\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
 \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
 \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
 \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
@@ -62,7 +67,7 @@
 \newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
 \newcommand{\ExtensionTok}[1]{#1}
 \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
-\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
 \newcommand{\ImportTok}[1]{#1}
 \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
@@ -71,7 +76,7 @@
 \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
 \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
 \newcommand{\RegionMarkerTok}[1]{#1}
-\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
 \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
 \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
@@ -94,17 +99,6 @@
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{-\maxdimen} % remove section numbering
-\ifLuaTeX
-  \usepackage{selnolig}  % disable illegal ligatures
-\fi
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
-\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\urlstyle{same}
-\hypersetup{
-  pdftitle={Lab3},
-  pdfauthor={Irimie Fabio},
-  hidelinks,
-  pdfcreator={LaTeX via pandoc}}
 
 \title{Lab3}
 \usepackage{etoolbox}
@@ -140,15 +134,15 @@ Write a function to calculate the sum of integer numbers from 1 to n
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{sum\_integer }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(n) \{}
-\NormalTok{  sum }\OtherTok{\textless{}{-}} \DecValTok{0}
-  \ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{n) \{}
-\NormalTok{    sum }\OtherTok{\textless{}{-}}\NormalTok{ sum }\SpecialCharTok{+}\NormalTok{ i}
+\NormalTok{sum\_integer \textless{}{-}}\StringTok{ }\ControlFlowTok{function}\NormalTok{(n) \{}
+\NormalTok{  sum \textless{}{-}}\StringTok{ }\DecValTok{0}
+  \ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\NormalTok{n) \{}
+\NormalTok{    sum \textless{}{-}}\StringTok{ }\NormalTok{sum }\OperatorTok{+}\StringTok{ }\NormalTok{i}
 \NormalTok{  \}}
-  \FunctionTok{return}\NormalTok{(sum)}
+  \KeywordTok{return}\NormalTok{(sum)}
 \NormalTok{\}}
 
-\FunctionTok{cat}\NormalTok{(}\StringTok{"The sum of the first 10 integers is: "}\NormalTok{, }\FunctionTok{sum\_integer}\NormalTok{(}\DecValTok{10}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\KeywordTok{cat}\NormalTok{(}\StringTok{"The sum of the first 10 integers is: "}\NormalTok{, }\KeywordTok{sum\_integer}\NormalTok{(}\DecValTok{10}\NormalTok{), }\StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -164,15 +158,15 @@ known as n!
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{prod\_integer }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(n) \{}
-\NormalTok{  val }\OtherTok{\textless{}{-}}\NormalTok{ n}
-  \ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in}\NormalTok{ (n }\SpecialCharTok{{-}} \DecValTok{1}\NormalTok{)}\SpecialCharTok{:}\DecValTok{1}\NormalTok{) \{}
-\NormalTok{    val }\OtherTok{\textless{}{-}}\NormalTok{ val }\SpecialCharTok{*}\NormalTok{ i}
+\NormalTok{prod\_integer \textless{}{-}}\StringTok{ }\ControlFlowTok{function}\NormalTok{(n) \{}
+\NormalTok{  val \textless{}{-}}\StringTok{ }\NormalTok{n}
+  \ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in}\NormalTok{ (n }\OperatorTok{{-}}\StringTok{ }\DecValTok{1}\NormalTok{)}\OperatorTok{:}\DecValTok{1}\NormalTok{) \{}
+\NormalTok{    val \textless{}{-}}\StringTok{ }\NormalTok{val }\OperatorTok{*}\StringTok{ }\NormalTok{i}
 \NormalTok{  \}}
-  \FunctionTok{return}\NormalTok{(val)}
+  \KeywordTok{return}\NormalTok{(val)}
 \NormalTok{\}}
 
-\FunctionTok{cat}\NormalTok{(}\StringTok{"The factorial of 5 is: "}\NormalTok{, }\FunctionTok{prod\_integer}\NormalTok{(}\DecValTok{5}\NormalTok{), }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\KeywordTok{cat}\NormalTok{(}\StringTok{"The factorial of 5 is: "}\NormalTok{, }\KeywordTok{prod\_integer}\NormalTok{(}\DecValTok{5}\NormalTok{), }\StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -188,17 +182,23 @@ loop, remember to return 1 when n is equal to 0)
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{factorial }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(n) \{}
-  \ControlFlowTok{if}\NormalTok{ (n }\SpecialCharTok{==} \DecValTok{0}\NormalTok{) \{}
-    \FunctionTok{return}\NormalTok{(}\DecValTok{1}\NormalTok{)}
+\NormalTok{factorial \textless{}{-}}\StringTok{ }\ControlFlowTok{function}\NormalTok{(n) \{}
+  \ControlFlowTok{if}\NormalTok{ (n }\OperatorTok{==}\StringTok{ }\DecValTok{0}\NormalTok{) \{}
+    \KeywordTok{return}\NormalTok{(}\DecValTok{1}\NormalTok{)}
 \NormalTok{  \} }\ControlFlowTok{else}\NormalTok{ \{}
-\NormalTok{    val }\OtherTok{\textless{}{-}}\NormalTok{ n }\SpecialCharTok{*} \FunctionTok{factorial}\NormalTok{(n }\SpecialCharTok{{-}} \DecValTok{1}\NormalTok{)}
+\NormalTok{    val \textless{}{-}}\StringTok{ }\NormalTok{n }\OperatorTok{*}\StringTok{ }\KeywordTok{factorial}\NormalTok{(n }\OperatorTok{{-}}\StringTok{ }\DecValTok{1}\NormalTok{)}
 \NormalTok{  \}}
 
-  \FunctionTok{return}\NormalTok{(val)}
+  \KeywordTok{return}\NormalTok{(val)}
 \NormalTok{\}}
+
+\KeywordTok{cat}\NormalTok{(}\StringTok{"The factorial of 5 is: "}\NormalTok{, }\KeywordTok{factorial}\NormalTok{(}\DecValTok{5}\NormalTok{), }\StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
+
+\begin{verbatim}
+## The factorial of 5 is:  120
+\end{verbatim}
 
 \hypertarget{exercise-2}{%
 \section{Exercise 2}\label{exercise-2}}
@@ -215,17 +215,17 @@ using the sample() function)
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{library}\NormalTok{(ggplot2)}
+\KeywordTok{library}\NormalTok{(ggplot2)}
 
-\NormalTok{n }\OtherTok{\textless{}{-}} \DecValTok{100000} \CommentTok{\# Number of experiments}
-\NormalTok{e }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{) }\CommentTok{\# Event of interest}
+\NormalTok{n \textless{}{-}}\StringTok{ }\DecValTok{100000} \CommentTok{\# Number of experiments}
+\NormalTok{e \textless{}{-}}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{) }\CommentTok{\# Event of interest}
 
 \CommentTok{\# Outcomes of interest}
-\FunctionTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
-\NormalTok{res }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(}\AttributeTok{x =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\DecValTok{6}\NormalTok{), }\AttributeTok{size =}\NormalTok{ n, }\AttributeTok{replace =} \ConstantTok{TRUE}\NormalTok{)}
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
+\NormalTok{res \textless{}{-}}\StringTok{ }\KeywordTok{sample}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{6}\NormalTok{), }\DataTypeTok{size =}\NormalTok{ n, }\DataTypeTok{replace =} \OtherTok{TRUE}\NormalTok{)}
 
 \CommentTok{\# Outcomes of E (1 when in E, 0 otherwise)}
-\NormalTok{ne }\OtherTok{\textless{}{-}} \FunctionTok{ifelse}\NormalTok{(res }\SpecialCharTok{\%in\%}\NormalTok{ e, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)}
+\NormalTok{ne \textless{}{-}}\StringTok{ }\KeywordTok{ifelse}\NormalTok{(res }\OperatorTok{\%in\%}\StringTok{ }\NormalTok{e, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -236,19 +236,19 @@ Plot the first 40 outcomes of the experiment.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{ggplot}\NormalTok{(}
-  \AttributeTok{data =} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{x =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{40}\NormalTok{, }\AttributeTok{y =}\NormalTok{ res[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{40}\NormalTok{]),}
-  \FunctionTok{aes}\NormalTok{(}
-    \AttributeTok{x =}\NormalTok{ x,}
-    \AttributeTok{y =}\NormalTok{ y,}
-    \AttributeTok{color =} \FunctionTok{factor}\NormalTok{(res[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{40}\NormalTok{])}
+\KeywordTok{ggplot}\NormalTok{(}
+  \DataTypeTok{data =} \KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{x =} \DecValTok{1}\OperatorTok{:}\DecValTok{40}\NormalTok{, }\DataTypeTok{y =}\NormalTok{ res[}\DecValTok{1}\OperatorTok{:}\DecValTok{40}\NormalTok{]),}
+  \KeywordTok{aes}\NormalTok{(}
+    \DataTypeTok{x =}\NormalTok{ x,}
+    \DataTypeTok{y =}\NormalTok{ y,}
+    \DataTypeTok{color =} \KeywordTok{factor}\NormalTok{(res[}\DecValTok{1}\OperatorTok{:}\DecValTok{40}\NormalTok{])}
 \NormalTok{  )}
-\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+}
-  \FunctionTok{scale\_color\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{rainbow}\NormalTok{(}\DecValTok{6}\NormalTok{)) }\SpecialCharTok{+}
-  \FunctionTok{labs}\NormalTok{(}
-    \AttributeTok{title =} \StringTok{"First 40 outcomes of the dice"}\NormalTok{,}
-    \AttributeTok{x =} \StringTok{"Number of experiments"}\NormalTok{, }\AttributeTok{y =} \StringTok{"Value"}
+\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_point}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale\_color\_manual}\NormalTok{(}\DataTypeTok{values =} \KeywordTok{rainbow}\NormalTok{(}\DecValTok{6}\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}
+    \DataTypeTok{title =} \StringTok{"First 40 outcomes of the dice"}\NormalTok{,}
+    \DataTypeTok{x =} \StringTok{"Number of experiments"}\NormalTok{, }\DataTypeTok{y =} \StringTok{"Value"}
 \NormalTok{  )}
 \end{Highlighting}
 \end{Shaded}
@@ -266,8 +266,8 @@ frequency will converge exactly to the true probability)
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Probability of E}
-\NormalTok{pe }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(ne) }\SpecialCharTok{/}\NormalTok{ n}
-\FunctionTok{cat}\NormalTok{(}\StringTok{"The probability of E is: "}\NormalTok{, pe, }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\NormalTok{pe \textless{}{-}}\StringTok{ }\KeywordTok{sum}\NormalTok{(ne) }\OperatorTok{/}\StringTok{ }\NormalTok{n}
+\KeywordTok{cat}\NormalTok{(}\StringTok{"The probability of E is: "}\NormalTok{, pe, }\StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -277,18 +277,18 @@ frequency will converge exactly to the true probability)
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{cum\_pe }\OtherTok{\textless{}{-}} \FunctionTok{cumsum}\NormalTok{(ne) }\SpecialCharTok{/} \DecValTok{1}\SpecialCharTok{:}\NormalTok{n}
+\NormalTok{cum\_pe \textless{}{-}}\StringTok{ }\KeywordTok{cumsum}\NormalTok{(ne) }\OperatorTok{/}\StringTok{ }\DecValTok{1}\OperatorTok{:}\NormalTok{n}
 
-\NormalTok{df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{x =} \DecValTok{1}\SpecialCharTok{:}\NormalTok{n, }\AttributeTok{y =}\NormalTok{ cum\_pe)}
-\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =}\NormalTok{ df, }\FunctionTok{aes}\NormalTok{(}
-  \AttributeTok{x =}\NormalTok{ x, }\AttributeTok{y =}\NormalTok{ y,}
-\NormalTok{)) }\SpecialCharTok{+}
-  \FunctionTok{geom\_line}\NormalTok{() }\SpecialCharTok{+}
-  \FunctionTok{geom\_hline}\NormalTok{(}\AttributeTok{yintercept =} \DecValTok{1} \SpecialCharTok{/} \DecValTok{3}\NormalTok{, }\AttributeTok{col =} \StringTok{"red"}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{scale\_x\_continuous}\NormalTok{(}\AttributeTok{trans =} \StringTok{"log10"}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{labs}\NormalTok{(}
-    \AttributeTok{title =} \StringTok{"Cumulative probability of E"}\NormalTok{,}
-    \AttributeTok{x =} \StringTok{"Number of experiments"}\NormalTok{, }\AttributeTok{y =} \StringTok{"Cumulative probability"}
+\NormalTok{df \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{x =} \DecValTok{1}\OperatorTok{:}\NormalTok{n, }\DataTypeTok{y =}\NormalTok{ cum\_pe)}
+\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ df, }\KeywordTok{aes}\NormalTok{(}
+  \DataTypeTok{x =}\NormalTok{ x, }\DataTypeTok{y =}\NormalTok{ y,}
+\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_line}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_hline}\NormalTok{(}\DataTypeTok{yintercept =} \DecValTok{1} \OperatorTok{/}\StringTok{ }\DecValTok{3}\NormalTok{, }\DataTypeTok{col =} \StringTok{"red"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{scale\_x\_continuous}\NormalTok{(}\DataTypeTok{trans =} \StringTok{"log10"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}
+    \DataTypeTok{title =} \StringTok{"Cumulative probability of E"}\NormalTok{,}
+    \DataTypeTok{x =} \StringTok{"Number of experiments"}\NormalTok{, }\DataTypeTok{y =} \StringTok{"Cumulative probability"}
 \NormalTok{  )}
 \end{Highlighting}
 \end{Shaded}
@@ -307,17 +307,23 @@ Simulate the tossing of a fair dice and consider the following events:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{n }\OtherTok{\textless{}{-}} \DecValTok{100000} \CommentTok{\# Number of experiments}
+\NormalTok{n \textless{}{-}}\StringTok{ }\DecValTok{100000} \CommentTok{\# Number of experiments}
 
-\NormalTok{a }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{) }\CommentTok{\# Event A}
-\NormalTok{b }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{6}\NormalTok{) }\CommentTok{\# Event B}
-\NormalTok{c }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{5}\NormalTok{) }\CommentTok{\# Event C}
+\NormalTok{a \textless{}{-}}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{) }\CommentTok{\# Event A}
+\NormalTok{b \textless{}{-}}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{6}\NormalTok{) }\CommentTok{\# Event B}
+\NormalTok{c \textless{}{-}}\StringTok{ }\KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{5}\NormalTok{) }\CommentTok{\# Event C}
 
-\NormalTok{res }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(}\AttributeTok{x =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\DecValTok{6}\NormalTok{), }\AttributeTok{size =}\NormalTok{ n, }\AttributeTok{replace =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{res \textless{}{-}}\StringTok{ }\KeywordTok{sample}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{6}\NormalTok{), }\DataTypeTok{size =}\NormalTok{ n, }\DataTypeTok{replace =} \OtherTok{TRUE}\NormalTok{)}
 
-\NormalTok{pa }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(res }\SpecialCharTok{\%in\%}\NormalTok{ a) }\SpecialCharTok{/}\NormalTok{ n}
-\NormalTok{pb }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(res }\SpecialCharTok{\%in\%}\NormalTok{ b) }\SpecialCharTok{/}\NormalTok{ n}
-\NormalTok{pc }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(res }\SpecialCharTok{\%in\%}\NormalTok{ c) }\SpecialCharTok{/}\NormalTok{ n}
+\NormalTok{pa \textless{}{-}}\StringTok{ }\KeywordTok{sum}\NormalTok{(res }\OperatorTok{\%in\%}\StringTok{ }\NormalTok{a) }\OperatorTok{/}\StringTok{ }\NormalTok{n}
+\NormalTok{pa}
+\CommentTok{\#\# [1] 0.33191}
+\NormalTok{pb \textless{}{-}}\StringTok{ }\KeywordTok{sum}\NormalTok{(res }\OperatorTok{\%in\%}\StringTok{ }\NormalTok{b) }\OperatorTok{/}\StringTok{ }\NormalTok{n}
+\NormalTok{pb}
+\CommentTok{\#\# [1] 0.50041}
+\NormalTok{pc \textless{}{-}}\StringTok{ }\KeywordTok{sum}\NormalTok{(res }\OperatorTok{\%in\%}\StringTok{ }\NormalTok{c) }\OperatorTok{/}\StringTok{ }\NormalTok{n}
+\NormalTok{pc}
+\CommentTok{\#\# [1] 0.49959}
 \end{Highlighting}
 \end{Shaded}
 
@@ -326,6 +332,32 @@ Simulate the tossing of a fair dice and consider the following events:
 
 Verify that \(A\) and \(B\) are independent and that \(B\) and \(C\) are
 dependent.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# A and B}
+\NormalTok{pab \textless{}{-}}\StringTok{ }\KeywordTok{sum}\NormalTok{(res }\OperatorTok{\%in\%}\StringTok{ }\NormalTok{a }\OperatorTok{\&}\StringTok{ }\NormalTok{res }\OperatorTok{\%in\%}\StringTok{ }\NormalTok{b) }\OperatorTok{/}\StringTok{ }\NormalTok{n}
+
+\CommentTok{\# B and C}
+\NormalTok{pbc \textless{}{-}}\StringTok{ }\KeywordTok{sum}\NormalTok{(res }\OperatorTok{\%in\%}\StringTok{ }\NormalTok{b }\OperatorTok{\&}\StringTok{ }\NormalTok{res }\OperatorTok{\%in\%}\StringTok{ }\NormalTok{c) }\OperatorTok{/}\StringTok{ }\NormalTok{n}
+
+\KeywordTok{cat}\NormalTok{(}\StringTok{"A and B are independent: "}\NormalTok{, pab }\OperatorTok{==}\StringTok{ }\NormalTok{pa }\OperatorTok{*}\StringTok{ }\NormalTok{pb, }\StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## A and B are independent:  FALSE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{cat}\NormalTok{(}\StringTok{"B and C are dependent: "}\NormalTok{, pbc }\OperatorTok{!=}\StringTok{ }\NormalTok{pb }\OperatorTok{*}\StringTok{ }\NormalTok{pc, }\StringTok{"}\CharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## B and C are dependent:  TRUE
+\end{verbatim}
 
 \hypertarget{exercise-4}{%
 \section{Exercise 4}\label{exercise-4}}
@@ -336,10 +368,24 @@ dependent.
 Generate a sequence of \(N=10000\) random numbers that simulate the
 throwing of a dice.
 
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{n \textless{}{-}}\StringTok{ }\DecValTok{10000}
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
+\NormalTok{res \textless{}{-}}\StringTok{ }\KeywordTok{sample}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{6}\NormalTok{), }\DataTypeTok{size =}\NormalTok{ n, }\DataTypeTok{replace =} \OtherTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
 \hypertarget{b-3}{%
 \subsection{B}\label{b-3}}
 
 Then simulate the throwing of a second dice.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{res2 \textless{}{-}}\StringTok{ }\KeywordTok{sample}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{6}\NormalTok{), }\DataTypeTok{size =}\NormalTok{ n, }\DataTypeTok{replace =} \OtherTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 
 \hypertarget{c-2}{%
 \subsection{C}\label{c-2}}
@@ -347,6 +393,43 @@ Then simulate the throwing of a second dice.
 Plot the absolute and relative frequencies for A. and the relative
 frequency for the sum of the two dice for point B. using the geom\_bar()
 or geom\_col() functions.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df1 \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{x =} \DecValTok{1}\OperatorTok{:}\DecValTok{6}\NormalTok{, }\DataTypeTok{y =} \KeywordTok{table}\NormalTok{(res) }\OperatorTok{/}\StringTok{ }\NormalTok{n)}
+\NormalTok{df2 \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{x =} \DecValTok{2}\OperatorTok{:}\DecValTok{12}\NormalTok{, }\DataTypeTok{y =} \KeywordTok{table}\NormalTok{(res }\OperatorTok{+}\StringTok{ }\NormalTok{res2) }\OperatorTok{/}\StringTok{ }\NormalTok{n)}
+
+\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ df1, }\KeywordTok{aes}\NormalTok{(}
+  \DataTypeTok{x =} \KeywordTok{factor}\NormalTok{(x),}
+  \DataTypeTok{y =}\NormalTok{ y.Freq}
+\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_col}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}
+    \DataTypeTok{title =} \StringTok{"Absolute frequency of the dice"}\NormalTok{,}
+    \DataTypeTok{x =} \StringTok{"Value"}\NormalTok{, }\DataTypeTok{y =} \StringTok{"Absolute frequency"}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme\_minimal}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{es_files/figure-latex/unnamed-chunk-11-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ df2, }\KeywordTok{aes}\NormalTok{(}
+  \DataTypeTok{x =} \KeywordTok{factor}\NormalTok{(x),}
+  \DataTypeTok{y =}\NormalTok{ y.Freq}
+\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_col}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}
+    \DataTypeTok{title =} \StringTok{"Relative frequency of the sum of the dice"}\NormalTok{,}
+    \DataTypeTok{x =} \StringTok{"Value"}\NormalTok{, }\DataTypeTok{y =} \StringTok{"Relative frequency"}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme\_minimal}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{es_files/figure-latex/unnamed-chunk-12-1.pdf}
 
 \hypertarget{exercise-5}{%
 \section{Exercise 5}\label{exercise-5}}
@@ -357,11 +440,76 @@ or geom\_col() functions.
 Four people are in a room. What is the probability that no two of them
 celebrate their birthday on the same day of the year?
 
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{people \textless{}{-}}\StringTok{ }\DecValTok{4}
+\NormalTok{days \textless{}{-}}\StringTok{ }\DecValTok{365}
+
+\NormalTok{n\_bdays \textless{}{-}}\StringTok{ }\KeywordTok{choose}\NormalTok{(days, people) }\OperatorTok{*}\StringTok{ }\KeywordTok{factorial}\NormalTok{(people)}
+\NormalTok{p\_bdays \textless{}{-}}\StringTok{ }\NormalTok{n\_bdays }\OperatorTok{/}\StringTok{ }\NormalTok{days}\OperatorTok{\^{}}\NormalTok{people}
+\NormalTok{p\_bdays}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.9836441
+\end{verbatim}
+
 \hypertarget{b-4}{%
 \subsection{B}\label{b-4}}
 
 \(n\) people are in a room. What is the probability that no two of them
 celebrate their birthday on the same day of the year? Try this with
 \(n\) from 1 to 100 and plot the probability for each value of \(n\).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{n \textless{}{-}}\StringTok{ }\DecValTok{100}
+\NormalTok{p\_bdays \textless{}{-}}\StringTok{ }\KeywordTok{rep}\NormalTok{(}\OtherTok{NA}\NormalTok{, n)}
+
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\NormalTok{n) \{}
+\NormalTok{  p\_bdays[i] \textless{}{-}}\StringTok{ }\KeywordTok{choose}\NormalTok{(days, i) }\OperatorTok{*}\StringTok{ }\KeywordTok{factorial}\NormalTok{(i) }\OperatorTok{/}\StringTok{ }\NormalTok{days}\OperatorTok{\^{}}\NormalTok{i}
+\NormalTok{\}}
+
+\NormalTok{df \textless{}{-}}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{x =} \DecValTok{1}\OperatorTok{:}\NormalTok{n, }\DataTypeTok{y =}\NormalTok{ p\_bdays)}
+\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ df, }\KeywordTok{aes}\NormalTok{(}
+  \DataTypeTok{x =}\NormalTok{ x, }\DataTypeTok{y =}\NormalTok{ y}
+\NormalTok{)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom\_line}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}
+    \DataTypeTok{title =} \StringTok{"Probability of no two people having the same birthday"}\NormalTok{,}
+    \DataTypeTok{x =} \StringTok{"Number of people"}\NormalTok{, }\DataTypeTok{y =} \StringTok{"Probability"}
+\NormalTok{  ) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme\_minimal}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{es_files/figure-latex/unnamed-chunk-14-1.pdf}
+
+\hypertarget{exercise-6}{%
+\section{Exercise 6}\label{exercise-6}}
+
+A laboratory blood test is 99\% effective in detecting a certain disease
+when it is, in fact, present. However, the test also yields a ``false
+positive'' (FP -- Type I error) result for 1\% of the healthy persons
+tested. If 0.5\% of the population actually has the disease, what is the
+probability a person has the disease given that his test result is
+positive? (Hint: Use D as the event ``the tested person has the
+disease'' and E as ``The result of the test is positive'').
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p\_d \textless{}{-}}\StringTok{ }\FloatTok{0.005}
+\NormalTok{p\_e\_d \textless{}{-}}\StringTok{ }\FloatTok{0.99}
+\NormalTok{p\_e\_nd \textless{}{-}}\StringTok{ }\FloatTok{0.01}
+
+\NormalTok{p\_d\_e \textless{}{-}}\StringTok{ }\NormalTok{p\_d }\OperatorTok{*}\StringTok{ }\NormalTok{p\_e\_d }\OperatorTok{/}\StringTok{ }\NormalTok{(p\_d }\OperatorTok{*}\StringTok{ }\NormalTok{p\_e\_d }\OperatorTok{+}\StringTok{ }\NormalTok{(}\DecValTok{1} \OperatorTok{{-}}\StringTok{ }\NormalTok{p\_d) }\OperatorTok{*}\StringTok{ }\NormalTok{p\_e\_nd)}
+\NormalTok{p\_d\_e}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.3322148
+\end{verbatim}
 
 \end{document}

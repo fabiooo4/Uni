@@ -180,3 +180,130 @@ ggplot(df, aes(x = valori)) +
     y = "Frequency"
   )
 ```
+
+# Exercise 4
+Suppose the number of customers visiting a retail store follows a Poisson distribution with
+a mean of 5 customers per hour. (hint: $X \sim Poisson(\lambda=5)$)
+
+Find the probability that in a randomely chosen hour, there will be:
+
+## A
+No customers
+```{r}
+lambda <- 5
+dpois(0, lambda)
+```
+
+## B
+At least 3 customers
+```{r}
+ppois(2, lambda, lower.tail = FALSE)
+```
+
+## C
+Exactly 7 customers
+```{r}
+dpois(7, lambda)
+```
+
+## D
+Assuming that each customer buys something that costs a price from
+10€ to 50€. Which is the expected value of a customer expense?
+(hint: Y = customer expense ~ Uniform(10, 50))
+```{r}
+a <- 10
+b <- 50
+
+e_y <- (a + b) / 2
+e_y
+```
+
+## E
+How many customers are expected in 8 working hours?
+```{r}
+h <- 8
+
+e_x <- lambda * h
+e_x
+```
+
+## F
+Using rpois() and runif() functions, simulate the customers and their
+expenses in a normal day made of 8 working hours. Represent the data
+as similar as possible to the plot below (hints: prepare a data.frame 
+containing as many rows as the number of customers of the entire day.
+For each customer, store its ID number, the hour, and the money he/she
+spent. Use facet_grid with scales = "free_x". Search on google how to
+do the rest).
+```{r}
+t <- 5
+h <- 8
+
+set.seed(123)
+customers <- rpois(h * t, lambda)
+expenses <- runif(t, 10, 50)
+
+df <- data.frame(
+  customer = rep(1:t, each = h),
+  hour = rep(1:h, t),
+  expense = expenses
+)
+
+# Plot each hour in a separate facet
+ggplot(df, aes(x = customer, y = expense)) +
+  geom_col() +
+  facet_grid(~hour, scales = "free_x") +
+  labs(
+    title = "Customer Expenses",
+    x = "Customer ID",
+    y = "Expense"
+  ) +
+  theme_minimal()
+```
+
+# Exercise 5
+In a survey of a sample of 500 university students, they were asked if they know how to
+program in R. The collected data showed that 240 students know how to program in R.
+Consider the discrete random variable X, which indicates the number of students in a
+random sample of 50 students who know how to program in R.
+
+## A
+Compute the probability mass function of X and draw a plot.
+```{r}
+students <- 500
+know_r <- 240
+sample_size <- 50
+
+dhyper(0:50, students, students - know_r, sample_size)
+
+df <- data.frame(x = 20:44, y = dhyper(
+  20:44,
+  students,
+  students - know_r,
+  sample_size
+))
+
+ggplot(df, aes(x = x, y = y)) +
+  geom_col() +
+  scale_x_continuous(breaks = 0:50) +
+  labs(
+    title = "Hypergeometric Distribution",
+    x = "x",
+    y = "P(X = x)"
+  ) +
+  theme_minimal()
+```
+
+## B
+Calculate the probability that at least 30 students in the sample of 50 know how to
+program in R.
+
+```{r}
+1 - phyper(29, students, students - know_r, sample_size)
+```
+
+## C
+Calculate the expected value of X.
+```{r}
+students * sample_size / students
+```
