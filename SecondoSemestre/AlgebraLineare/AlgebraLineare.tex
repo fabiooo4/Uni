@@ -5136,6 +5136,7 @@ di \( V \) come ad un sistema di coordinate:
 \end{figure}
 
 \subsection{Base di C(U) per una matrice U in forma ridotta }
+\label{6.6}
 \begin{example}
   \[
   U = \begin{pmatrix} 
@@ -5351,6 +5352,7 @@ Ponendo \( \mathcal{G} = \mathcal{B}_2 \) e \( \mathcal{L} = \mathcal{B}_1 \) si
 \( n \le m \). Quindi \( m = n \). \( \quad \square \)
 
 \subsection{Definizione}
+\label{6.11}
 Sia \( V \) uno spazio vettoriale finitamente generato. Il numero di vettori che formano
 una base di \( V \) è detto \textbf{dimensione} di \( V \) e si indica con
 \( dim_\mathbb{K}(V) \). 
@@ -5989,6 +5991,7 @@ Per ogni \( v = \alpha_1 b_1 + \ldots + \alpha_n b_n \in V \),
 Dunque \( g_{\mathcal{B}} = C_{\mathcal{B}}^{-1} \quad \square\) 
 
 \subsection{Osservazione}
+\label{7.7}
 Se \( f: V \to W \) è un isomorfismo e \( \mathcal{B} = \{b_1, \ldots, b_n\}  \) è una
 base di \( V \), allora \( \{f(b_1), \ldots, f(b_n)\}  \) è una base di \( W \). In
 particolare, \( dim_{\mathbb{K}}(V) = dim_{\mathbb{K}}(W) \).
@@ -6645,4 +6648,473 @@ N(f) := \{v \in V \;|\; f(v) = 0_w\}
  \] 
 \end{example}
 
+\subsection{Teorema (nullità + rango)}
+Sia \( f: V \to W \) un'applicazione lineare. Allora:
+\[
+  \dim_{\mathbb{K}}(V) = \dim_{\mathbb{K}}(N(f)) + \dim_{\mathbb{K}}(Im(f))
+\] 
+
+\subsubsection{Dimostrazione}
+Notiamo che \( N(f) \subseteq V \) è un sottospazio di \( V \). Quindi:
+\[
+  \dim_{\mathbb{K}}(N(f)) = m \quad \le \quad n = \dim_{\mathbb{K}}(V)
+\] 
+per \ref{6.11}.
+
+\noindent Sia \( \{v_1, \ldots, v_m\} \subseteq N(f) \subseteq V  \) una base di \( N(f) \).
+Per il teorema di Steinitz, possiamo completare \( \{v_1, \ldots, v_m\} \) ad una base
+di \( V \), cioè esiste una base \( \{v_1, \ldots, v_m, v_{m+1}, \ldots, v_n\} \) di \( V \).
+Si può dimostrare che \( \{f(v_{m+1}), \ldots, f(v_n)\} \) è una base di \( Im(f) \),
+cioè \( dim_{\mathbb{K}}(Im(f)) \) è uguale a \( n - m \). Dunque:
+\[
+  \dim_{\mathbb{K}}(V) = n = m + (n - m) =  \dim_{\mathbb{K}}(Im(f)) + \dim_{\mathbb{K}}(N(f)) \quad \square
+\] 
+
+\begin{example}
+  \[
+    f: V \to W
+    \] 
+  \[
+    V = \mathbb{R}_2[x], \quad W = \mathbb{R}^2
+  \] 
+  Per ogni \( p = a_0 + a_1x + a_2x^2 \), definiamo:
+  \[
+  f(p) = \begin{pmatrix} 
+    p(0)\\
+    p(1)
+  \end{pmatrix} 
+  =
+  \begin{pmatrix} 
+    a_0\\
+    a_0 + a_1 + a_2
+  \end{pmatrix}
+  \] 
+  \[
+  N(f) = \{p = a_0 + a_1x + a_2x^2 \;|\; a_0 = 0, a_1 = - a_2 \}
+  \] 
+  \[
+   = \{ax - ax^2 \;|\; a \in \mathbb{R}\} \quad a = a_1
+  \] 
+  \[
+    = \{a(x-x^2) \;|\; a \in \mathbb{R}\} 
+  \] 
+  \[
+   = \left< x-x^2 \right>
+  \] 
+  L'insieme \( \{x-x^2\}  \) è un insieme di generatori e inoltre è linearmente 
+  indipendente, cioè è una base di \( N(f) \).
+
+  \vspace{1em}
+  \noindent Completiamo \( \{x-x^2\}  \) a una base di \( V = \mathbb{R}_2[x] \) 
+  \[
+  \{ x-x^2, 1, x \} \subseteq V
+  \] 
+  Dimostriamo che \[ \mathcal{B} = \{f(1), f(x)\} = \left\{ \begin{pmatrix} 1\\1 \end{pmatrix},
+\begin{pmatrix} 0\\1 \end{pmatrix} \right\}     \]
+è una base di \( Im(f) = \left\{ \begin{pmatrix} a_0\\a_0+a_1+a_2 \end{pmatrix} \Big |\; a_0,a_1,a_2 \in \mathbb{R} \right\}  \).
+\begin{itemize}
+  \item \textbf{Linearmente indipendente}: Siano \( \alpha, \beta \in \mathbb{R} \) tali
+    che:
+    \[
+    \alpha \begin{pmatrix} 1\\1 \end{pmatrix} 
+    +
+    \beta \begin{pmatrix} 0\\1 \end{pmatrix} 
+    =
+    \begin{pmatrix} 0\\0 \end{pmatrix} 
+    \] 
+    \[
+    \begin{pmatrix} \alpha\\\alpha \end{pmatrix} 
+    +
+    \begin{pmatrix} 0\\\beta \end{pmatrix}
+    =
+    \begin{pmatrix} 0\\0 \end{pmatrix}
+    \] 
+    \[
+    \begin{pmatrix} \alpha\\\alpha+\beta \end{pmatrix} 
+    =
+    \begin{pmatrix} 0\\0 \end{pmatrix}
+    \] 
+    Quindi \( \alpha = 0 \) e \( \beta = \alpha + \beta = 0 \).
+
+  \item \textbf{Insieme di generatori di \( Im() \) }:
+    Per ogni \( \begin{pmatrix} a_0\\a_0+a_1+a_2 \end{pmatrix} \in Im(f) \), abbiamo:
+    \[
+    \begin{pmatrix} 
+      a_0\\
+      a_0 + a_1 + a_2
+    \end{pmatrix} 
+    =
+    a_0 \begin{pmatrix} 1\\1 \end{pmatrix} 
+    +
+    (a_1 + a_2) \begin{pmatrix} 0\\1 \end{pmatrix}
+    \] 
+    Quindi \( \mathcal{B} \) è un insieme di generatori.
+\end{itemize}
+\end{example}
+
+\subsection{Dimensione di C(A)}
+\begin{example}
+  \[
+  A = \begin{pmatrix} 
+    3 & 2 & 0\\
+    -1 & 0 & 1\\
+    1 & \frac{2}{3} & 0
+  \end{pmatrix} 
+  \quad
+  C(A) = \left<
+  \begin{pmatrix} 
+    3\\-1\\1
+  \end{pmatrix},
+  \begin{pmatrix} 
+    2\\0\\\frac{2}{3}
+  \end{pmatrix},
+  \begin{pmatrix} 
+    0\\1\\0
+  \end{pmatrix}
+  \right> \subseteq \mathbb{R}^3
+  \] 
+  Troviamo la forma ridotta di \( A \):
+  \[
+  A = \begin{pmatrix} 
+    3 & 2 & 0\\
+    -1 & 0 & 1\\
+    1 & \frac{2}{3} & 0
+  \end{pmatrix} 
+  \stackrel{E_1(\frac{1}{3})}{\sim}
+  \begin{pmatrix} 
+    1 & \frac{2}{3} & 0\\
+    -1 & 0 & 1\\
+    1 & \frac{2}{3} & 0
+  \end{pmatrix} 
+  \stackrel{E_{21}(1)}{\underset{E_{31}(-1)}{\sim}}
+  \begin{pmatrix} 
+    1 & \frac{2}{3} & 0\\
+    0 & \frac{2}{3} & 1\\
+    0 & 0 & 0
+  \end{pmatrix} 
+  \] 
+  \[
+  \stackrel{E_{21}(\frac{3}{2})}{\sim}
+  \begin{pmatrix} 
+    1 & 0 & -\frac{2}{3}\\
+    0 & 1 & \frac{3}{2}\\
+    0 & 0 & 0
+  \end{pmatrix}
+  = U
+  \] 
+  In \ref{6.6} abbiamo visto che le colonne dominanti \( \begin{pmatrix} 
+    1\\0\\0
+  \end{pmatrix},
+  \begin{pmatrix} 
+    \frac{2}{3}\\1\\0
+  \end{pmatrix} \) formano una base di \( C(U) \) e \( dim_{\mathbb{K}}(C(U)) = 2 \).
+
+  \noindent Il problema è che \( C(U) \neq C(A) \), in particolare:
+  \[
+  \begin{pmatrix} 
+    3\\-1\\1
+  \end{pmatrix} \notin C(U)
+  \] 
+  \[
+  \left( \alpha \begin{pmatrix} 1\\0\\0 \end{pmatrix} +
+    \beta \begin{pmatrix} \frac{2}{3}\\1\\0 \end{pmatrix}
+    =
+    \begin{pmatrix} 3\\-1\\1 \end{pmatrix} 
+    \leadsto \begin{cases}
+      \alpha + \frac{2}{3}\beta = 3\\
+      \beta = -1\\
+      0 = 1
+    \end{cases}
+  \right) 
+  \] 
+  il sistema lineare non ha soluzione
+\end{example}
+
+\subsubsection{Proposizione}
+Sia \( A \in M_{m \times n}(\mathbb{K}) \) e sia \( U \in M_{m \times n}(\mathbb{K}) \) una
+forma ridotta di \( A \). Allora lo spazio delle colonne \( C(A) \) e lo spazio
+delle colonne \( C(U) \) sono isomorfi e quindi hanno la stessa dimensione:
+\[
+  dim_{\mathbb{K}}(C(A)) = dim_{\mathbb{K}}(C(U)) = rk(U)
+\] 
+
+\subsubsection{Dimostrazione}
+Sia \( E \in M_{m \times m}(\mathbb{K}) \) la matrice invertibile tale che \( U = EA \) e \( A = E^{-1}U \).
+Consideriamo l'applicazione lineare 
+\[ f: \mathbb{K}^m \to \mathbb{K}^m, \quad f_E(v) = Ev \]
+con inversa \( f_E^{-1}: \mathbb{K}^m \to \mathbb{K}^m \) \( f_E^{-1}(v) = f_{E^{-1}}(v) = E^{-1}v \) 
+\begin{figure}[H]
+  \centering
+  \begin{tikzcd}
+    \mathbb{K}^n \arrow[r, yshift=3, "f_E"] & \mathbb{K}^m \arrow[l, yshift=-3, "f_{E^{-1}}"] \\
+    C(A) \arrow[u, "\subseteq"] \arrow[r, yshift=3, dashed, "f_E"] & C(U) \arrow[u, swap, "\subseteq"] \arrow[l, yshift=-3, dashed, "f_{E^{-1}}"]
+  \end{tikzcd}
+\end{figure}
+
+\noindent Vogliamo dimostrare che per ogni \( v \in C(A) \), abbiamo \( f_E(v) \) è un elemento di
+\( C(U) \) e, per \( w \in C(U) \) abbiamo \( f_{E^{-1}}(w) \in C(A) \). Infatti,
+\( C(A) = \left<a_1, \ldots, a_n \right> \) dove \( A = \begin{pmatrix} a_1 & \ldots& a_n \end{pmatrix}  \) 
+e \( C(U) = \left<u_1, \ldots, u_n \right> \) dove \( U = \begin{pmatrix} u_1 & \ldots& u_n \end{pmatrix}  \).
+Inoltre \( \begin{pmatrix} u_1 & \ldots & u_n \end{pmatrix} = U = EA = E \begin{pmatrix} a_1 & \ldots & a_n \end{pmatrix} =
+\begin{pmatrix} Ea_1 & \ldots & Ea_n \end{pmatrix} \) e quindi \( Ea_1 = u_1, \ldots, Ea_n = u_n \).
+Abbiamo \( \begin{pmatrix} a_1 & \ldots & a_n \end{pmatrix} = A = E^{-1}U = \begin{pmatrix} 
+E^{-1}u_1 & \ldots & E^{-1}u_n
+\end{pmatrix}  \) e quindi \( a_1 = E^{-1}u_1, \ldots, a_n = E^{-1}u_n \). Dunque,
+per ogni \( v = \sum_{i=1}^{n} \alpha_i a_i \in C(A) \), abbiamo che:
+\[
+f_E(v) = f_E\left( \sum_{i=1}^{n} \alpha_i a_i \right) = \sum_{i=1}^{n} \alpha_i f_E(a_i) = \sum_{i=1}^{n} \alpha_i Ea_i = \sum_{i=1}^{n} \alpha_i u_i \in C(U)
+\] 
+e, per ogni \( w = \sum_{i=1}^{n} \beta_i u_i \in C(U) \), abbiamo che:
+\[
+  f_{E^{-1}}(w) = \sum_{i=1}^{n} \beta_i (E^{-1}u_i) = \sum_{i=1}^{n} \beta_i a_i \in C(A)
+\] 
+Quindi abbiamo un'applicazione lineare \( f_E: C(A) \to C(U) \) con inversa \( f_{E^{-1}}: C(U) \to C(A) \).
+Dunque \( f_E \) è un isomorfismo e
+\[
+  dim_{\mathbb{K}}(C(A)) \stackrel{\ref{7.7}}{=} dim_{\mathbb{K}}(C(U)) = rk(U) \quad \square
+\] 
+
+\begin{example}
+  \[
+  \left\{ \begin{pmatrix} 1\\0\\0 \end{pmatrix},
+    \begin{pmatrix} \frac{2}{3}\\1\\0 \end{pmatrix} 
+  \right\} \text{ è una base di } C(U)
+  \] 
+  quindi
+  \[
+    \left\{ f_{E^{-1}} \left( \underset{C_1(U)}{\begin{pmatrix} 1\\0\\0 \end{pmatrix}}  \right),
+      f_{E^{-1}} \left( \underset{C_2(U)}{\begin{pmatrix} \frac{2}{3}\\1\\0 \end{pmatrix}}  \right)
+  \right\} =
+  \left\{ \underset{C_1(A)}{\begin{pmatrix} 3\\-1\\1 \end{pmatrix}}, 
+  \underset{C_2(A)}{\begin{pmatrix} 2\\0\\\frac{2}{3} \end{pmatrix}} 
+  \right\} 
+  \] 
+  è una base di \( C(A) \) per \ref{7.7}.
+\end{example}
+In generale, le colonne di \( A \) che corrispondono alle colonne dominanti di \( U \) 
+formano una base di \( C(A) \).
+
+\subsection{Dimensione di N(A)}
+Sia \( A \in M_{m \times n}(\mathbb{K}) \). Per il teorema nullità + rango, abbiamo:
+\[
+ n = dim_{\mathbb{K}}(\mathbb{K}^n) = dim_{\mathbb{K}}(f_A) + dim_{\mathbb{K}}(Im(f_A)) =
+\] 
+\[
+ = dim_{\mathbb{K}}(N(A)) + dim_{\mathbb{K}}(C(A)) = dim_{\mathbb{K}}(N(A)) + rk(A)
+\] 
+
+\subsubsection{Corollario}
+Sia \( A \in  M_{m \times n}(\mathbb{K}) \). Allora
+\[
+  dim_{\mathbb{K}}(N(A)) = n - rk(A)
+\] 
+
+\subsection{Procedimento per determinare basi di C(A) e N(A)}
+Sia \( A \in M_{m \times n}(\mathbb{K}) \) con \( r = rk(A) \) e \( d = n-r = n - rk(A) \) 
+\begin{enumerate}
+  \item Per determinare una base di \( C(A) \):
+    \begin{itemize}
+      \item Trovare una forma ridotta \( U \) di \( A \)
+      \item Le colonne di \( A \) che corrispondono alle colonne dominanti di \( U \) 
+        formano una base di \( C(A) \)
+    \end{itemize}
+
+  \item Per determinare una base di \( N(A) \):
+    \begin{itemize}
+      \item Risolvere il sistema lineare omogeneo \( Ax = 0 \) assegnando parametri
+        \( t_1, \ldots, t_d \) alle \( d \) variabili libere e ricavando le rimanenti
+        variabili tramite "sostituzione all'indietro"
+      \item Per \( 1 \le  i \le d \) si ottiene una soluzione \( u_i \) di \( Ax=0 \) 
+        assegnando il valore 1 al parametro \( t_i \) e 0 ai rimanenti parametri.
+      \item Così facendo otteniamo \( \{u_i, \ldots, u_d\}  \) un insieme linearmente
+        indipendente.
+      \item Dunque \( \{u_i, \ldots, u_d\}  \) è una base di \( N(A) \).
+    \end{itemize}
+\end{enumerate}
+
+\begin{example}
+  \[
+  A = \begin{pmatrix} 
+    1 & 2 & 3 & 0\\
+    0 & 1 & 1 & 2\\
+    2 & 5 & 7 & 2
+  \end{pmatrix} 
+  \] 
+  \[
+  \begin{pmatrix} 
+    1 & 2 & 3 & 0\\
+    0 & 1 & 1 & 2\\
+    2 & 5 & 7 & 2
+  \end{pmatrix} 
+  \stackrel{E_{31}(-2)}{\sim}
+  \begin{pmatrix} 
+    1 & 2 & 3 & 0\\
+    0 & 1 & 1 & 2\\
+    0 & 1 & 1 & 2
+  \end{pmatrix} 
+  \stackrel{E_{31}(-1)}{\sim}
+  \begin{pmatrix} 
+    1 & 2 & 3 & 0\\
+    0 & 1 & 1 & 2\\
+    0 & 0 & 0 & 0
+  \end{pmatrix} 
+  = U
+  \] 
+  Le colonne \( \begin{pmatrix} 1\\0\\2 \end{pmatrix}, \begin{pmatrix} 2\\1\\5 \end{pmatrix} \) 
+  formano una base
+  \[
+  \mathcal{B} = \left\{ \begin{pmatrix} 1\\0\\2 \end{pmatrix},
+    \begin{pmatrix} 2\\1\\5 \end{pmatrix} 
+  \right\} 
+  \] 
+  di \( C(A) \).
+  Allora \( dim_{\mathbb{K}}(N(A)) = 4 - rk(A) = 4 - 2 = 2\). Risolviamo il sistema 
+  lineare \( Ax = \mathbb{O} \):
+  \[
+  \begin{cases}
+    x_1 +2x_2 +3x_3 =0\\
+        x_2 +x_3 +2x_4 =0
+  \end{cases}
+  \] 
+  variabili libere:
+  \[
+  x_3 = t_1 \quad x_4 = t_2
+  \] 
+  \[
+  \begin{cases}
+    x_1 = -2x_2 - 3x_3 = -2(-t_1-2t_2)-3t_1 = -t_1 + 4t_2\\
+    x_2 = -x_3 -2x_4 = -t_1-2t_2\\
+    x_3 = t_1\\
+    x_4 = t_2
+  \end{cases}
+  \] 
+  soluzioni:
+  \[
+  \begin{pmatrix} 
+    -t_1 + 4t_2\\
+    -t_1 - 2t_2\\
+    t_1\\
+    t_2
+  \end{pmatrix} 
+  =
+  \begin{pmatrix} 
+    -t_1\\
+    -t_1\\
+    t_1\\
+    0
+  \end{pmatrix} 
+  +
+  \begin{pmatrix} 
+    4t_2\\
+    -2t_2
+    0\\
+    t_2
+  \end{pmatrix} 
+  = t_1 \begin{pmatrix} 
+    -1\\
+    -1\\
+    1\\
+    0
+  \end{pmatrix} 
+  +
+  t_2 \begin{pmatrix} 
+    4\\
+    -2\\
+    0\\
+    1
+  \end{pmatrix} 
+\]
+L'insieme \( \left\{ \begin{pmatrix} 
+    -1\\-1\\1\\0
+\end{pmatrix},
+\begin{pmatrix} 4\\-2\\0\\1 \end{pmatrix} 
+\right\}  \) è una base di \( N(A) \).
+\end{example}
+
+\subsection{Proposizione}
+Sia \( f: V \to W \) un'applicazione lineare tra spazi vettoriali \( V,W \). Se \( A \) 
+è la matrice associata a \( f \) rispetto a una base \( \mathcal{B} \) di \( V \) e una
+base \( \mathcal{D} \) di \( W \), allora:
+\[
+  dim_{\mathbb{K}}(Im(f)) = rk(A)
+\] 
+Di conseguenza 
+\[
+  dim_{\mathbb{K}}(N(f)) = dim_{\mathbb{K}}(V) - rk(A)
+\] 
+La dimensione \( dim_{\mathbb{K}}(Im(f)) \) è detta \textbf{rango di \( f \)} e scriviamo
+\( rk(f) \). La dimensione \( dim_{\mathbb{K}}(N(f)) \) è detta \textbf{nullità di \( f \) }.
+
+\subsection{Teorema}
+Siano \( A \in M_{m \times n}(\mathbb{K}),\; b \in \mathbb{K}^m \). Se \( p \in \mathbb{K}^n \) 
+è una soluzione di \( Ax = b \), allora l'insieme di tutte le soluzioni di \( Ax = b \) è
+\[
+L = \{p + u \;|\; u \in N(A)\} 
+\] 
+
+\subsubsection{Dimostrazione}
+Se \( v = p + u \) con \( u \in  N(A) \), allora 
+\[
+  Av = A(p+u) = Ap + Au \underset{Au = 0}{=} Ap + 0 = b
+\]
+Quindi \( v \) è una soluzione di \( Ax = b \). Viceversa, se \( v \) è una soluzione
+di \( Ax = b \), allora \( Av = b = Ap \). Quindi
+\[
+  \mathbb{O} = Av - Ap = A(v-p) \quad \text{e } \underbrace{v-p}_{=u} \in N(A)
+\] 
+Dunque \( v = (v-p) + p = u + p \in L \quad \square \) 
+
+\begin{example}
+  \[
+  A = \begin{pmatrix} 
+    1 & 2 & 3 & 0\\
+    0 & 1 & 1 & 2\\
+    2 & 5 & 7 & 2
+  \end{pmatrix} 
+  \] 
+  \[
+  N(A) = \left\{ \left. t_1 \begin{pmatrix} -1\\-1\\1\\0 \end{pmatrix} +
+    t_2 \begin{pmatrix} 4\\-2\\0\\1 \end{pmatrix} \; \right| \;
+    t_1,t_2 \in \mathbb{R}
+  \right\} 
+  \] 
+  \[
+  b = \begin{pmatrix} 4\\6\\16 \end{pmatrix} 
+  \] 
+  Consideriamo \( Ax = b \) 
+  \[
+  \begin{pmatrix}[cccc|c]
+    1 & 2 & 3 & 0 & 4\\
+    0 & 1 & 1 & 2 & 6\\
+    2 & 5 & 7 & 2 & 16
+  \end{pmatrix} 
+  \stackrel{EG}{\sim}
+  \begin{pmatrix}[cccc|c]
+    1 & 2 & 3 & 0 & 6\\
+    0 & 1 & 2 & 2 & 4\\
+    0 & 0 & 0 & 0 & 0
+  \end{pmatrix} 
+  = U
+  \] 
+  \[
+  \leadsto \begin{cases}
+    x_1 + 2x_2 + 3x_3 = 6\\
+    x_2 + x_3 + 2x_4 = 4
+  \end{cases}
+  \] 
+  Ponendo le variabili libere uguali a 0: \( x_3 = x_4 = 0 \). Troviamo una soluzione
+  particolare:
+  \[
+  p = \begin{pmatrix} 
+    -2\\4\\0\\0
+  \end{pmatrix} 
+  \] 
+  Dunque l'insieme di soluzioni di \( Ax = b \) è:
+  \[
+  L = \left\{\left. \begin{pmatrix} 
+      -2\\4\\0\\0
+  \end{pmatrix} + t_1 \begin{pmatrix} -1\\-1\\1\\0 \end{pmatrix} +
+  t_2 \begin{pmatrix} 4\\-2\\0\\1 \end{pmatrix} \; \right|\; t_1,t_2 \in \mathbb{R} \right\}
+  \] 
+\end{example}
 \end{document}
