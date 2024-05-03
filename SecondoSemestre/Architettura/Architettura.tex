@@ -159,6 +159,7 @@
 \pdfsuppresswarningpagegroup=1
 
 \begin{document}
+
 \input{title.tex}
 
 \tableofcontents
@@ -2506,5 +2507,119 @@ il comando asm:
   ...
 
 \end{lstlisting}
+
+\section{Struttura della memoria}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    % Vertical array b7
+    \node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b7) at (0,0) {};
+
+    \node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b7-2) at (0,-2.5) {};
+    \draw (b7-2.west) -- ++(-0.5,0) node[above right] {} (b7-2.south) -- ++(0,-0.5);
+
+    \node at (0,-4.3) {\( \vdots \)};
+
+    \node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b7-15) at (0,-6) {};
+    \draw (b7-15.west) -- ++(-0.5,0) node[above right] {} (b7-15.south) -- ++(0,-0.5);
+
+    \draw (b7.south) -- ++(0,-0.5) (b7.west) -- ++(-0.5,0) node[above right] {\( b_7 \) }
+      -- ++(0,-7.8) -- ++(0.5,0) -- ++(0,-0.73);
+
+    \node[draw, rectangle, minimum width=1cm, minimum height=1cm, align=center, scale=0.7]
+      (cls1) at (0,-9) {Circuito di\\lettura e\\scrittura};
+
+
+
+    % Vertical array b6
+    \node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b6) at (2.5,0) {};
+
+    \node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b6-2) at (2.5,-2.5) {};
+    \draw (b6-2.west) -- ++(-0.5,0) node[above right] {} (b6-2.south) -- ++(0,-0.5);
+
+    \node at (2.5,-4.3) {\( \vdots \)};
+
+    \node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b6-15) at (2.5,-6) {};
+    \draw (b6-15.west) -- ++(-0.5,0) node[above right] {} (b6-15.south) -- ++(0,-0.5);
+
+    \draw (b6.south) -- ++(0,-0.5) (b6.west) -- ++(-0.5,0) node[above right] {\( b_6 \) }
+      -- ++(0,-7.8) -- ++(0.5,0) -- ++(0,-0.73);
+
+    \node[draw, rectangle, minimum width=1cm, minimum height=1cm, align=center, scale=0.7]
+      (cls2) at (2.5,-9) {Circuito di\\lettura e\\scrittura};
+
+
+
+    \node at (4.1,0) {\( \ldots \)};
+
+
+    % Vertical array b0
+    \node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b0) at (6,0) {};
+
+    \node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b0-2) at (6,-2.5) {};
+    \draw (b0-2.west) -- ++(-0.5,0) node[above right] {} (b0-2.south) -- ++(0,-0.5);
+
+    \node at (6,-4.3) {\( \vdots \)};
+
+    \node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b0-15) at (6,-6) {};
+    \draw (b0-15.west) -- ++(-0.5,0) node[above right] {} (b0-15.south) -- ++(0,-0.5);
+
+    \draw (b0.south) -- ++(0,-0.5) (b0.west) -- ++(-0.5,0) node[above right] {\( b_0 \) }
+      -- ++(0,-7.8) -- ++(0.5,0) -- ++(0,-0.73);
+
+    \node[draw, rectangle, minimum width=1cm, minimum height=1cm, align=center, scale=0.7]
+      (cls3) at (6,-9) {Circuito di\\lettura e\\scrittura};
+
+  \end{tikzpicture}
+  \label{D1}
+\end{figure}
+
+\subsection{Static RAM (SRAM)}
+La SRAM è una memoria statica, ovvero non ha bisogno di essere rinfrescata
+per mantenere i dati. Questo tipo di memoria è più veloce, ma occupa più spazio
+ed è più costosa.
+\label{D2}
+
+Una memoria è compattata in un chip con diversi pin con compiti diversi:
+\begin{itemize}
+  \item \textbf{8 Pin dati}: permettono di leggere o scrivere i dati
+  \item \textbf{4 Pin indirizzi}: permettono di selezionare la cella di memoria
+  \item \textbf{2 Pin controllo}: permettono di controllare la memoria
+  \textbf{2 pin di alimentazione}: permettono di alimentare la memoria
+\end{itemize}
+
+\[
+1Kbit = 32 \times 32 = 2^5 \times 2^5
+\] 
+Si avrà una SRAM che sarà una matrice da \( m \) bit \( 32 \times 32 \) 
+
+
+\subsection{Dynamic RAM (DRAM)}
+I condensatori permettono di mantenere una carica elettrica per un certo
+periodo di tempo, questa carica però si degrada nel tempo. Per mantenere la carica
+si deve rinfrescare ogni condensatore per ripristinare la carica. Questo rinfresco
+però riduce la velocità della memoria. Visto che la DRAM occupa meno spazio rispetto
+alla SRAM, è più lenta, ma è più economica e può essere fatta più capiente.
+\label{D3}
+
+\[
+256Mbit \;\; 32Mbit \times 8 = 16K \times 16K
+\] 
+Ogni riga ha 16384 bit divisi in 2048 byte. Sono presenti 2 segnali:
+\begin{itemize}
+  \item \textbf{\( \overline{RAS} \) (Row Address Strobe)}: permette di selezionare la riga
+  \item \textbf{\( \overline{CAS} \) (Column Address Strobe)}: permette di selezionare la colonna
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
   
 \end{document}
