@@ -1849,4 +1849,100 @@ P_X(A) = \int_A f_X(x)dx
 \int_{-\infty}^{+\infty} f_X(x)dx = 1
 \] 
 
+\section{Statistica inferenziale}
+La probabilità e la statistica sono due approcci complementari allo stesso problema che
+descrive fenomeni non deterministici. La statistica inferenziale introduce un modello
+probabilistico per descrivere la popolazione tramite una variabile aleatoria:
+\[
+X \sim \mathcal{N}(\mu, \sigma^2) \quad \mu, \sigma^2 \; \text{incogniti}
+\] 
+Gli individui sono le "realizzazioni" della \( X \).
+
+\begin{example}
+  \( X =\) "altezze degli italiani maschi di 40 anni"
+  \[
+  X \sim \mathcal{N}(\mu, \sigma^2)
+  \] 
+  Prendo \( X_1 \sim X \leadsto\) Mario, \( X_1(10) = x_1 \) (altezza di mario)
+  \[
+    \text{Campione: } \underline{X} = (X_1, X_2, \ldots, X_n) \quad X_i \sim X \sim \text{ Popolazione}
+  \] 
+  Le \( X_i \) sono indipendenti
+  \[
+  \text{Dati: } X_1(\omega) = x_1, X_2(\omega) = x_2, \ldots, X_n(\omega) = x_n
+  \] 
+  \[
+    \text{Dati: } \underline{x} = (x_1, x_2, \ldots, x_n)
+  \] 
+  una possibile realizzazione del campione aleatorio \( (X_1, X_2, \ldots, X_n) \)
+\end{example}
+
+\subsection{Distribuzione esponenziale}
+È una variabile aleatoria continua:
+\[
+f_X(x) = \begin{cases}
+  \lambda e^{-\lambda x} & x \ge 0 \\
+  0 & x < 0
+\end{cases}
+\] 
+\[
+  P(X \in [a,b]) = \int_a^b f_X(x) dx
+\] 
+\[
+f_X(x) = P(x \le x) = \begin{cases}
+  1-e^{-\lambda x} & x \ge 0 \\
+  0 & x < 0
+\end{cases}
+\] 
+\[
+  P(X \le x) = \int_{0}^x f_X(t) dt
+\] 
+\[
+  \mathbb{E}[X] = \frac{1}{\lambda} \quad \mathbb{E}[X] = \int_{0}^{\infty} x f_X(x) dx
+\] 
+\[
+  Var(X) = \frac{1}{\lambda^2}
+\] 
+La successiva è una \textbf{funzione di soppravivenza}, cioè fornisce la probabilità che
+un certo evento non si verifichi entro un certo tempo \( x \) :
+\[
+  S(x) = 1-f(x) = e^{-\lambda x}
+\] 
+La seguente è la "perdita di memoria" della variabile aleatoria esponenziale:
+\[
+ P(X > x+x' | X>x) = P(X > x')
+\] 
+
+\begin{example}
+  Il tempo (in ore) necessario per riparare un macchinario è una variabile aleatoria
+  esponenziale di parametro \( \lambda = 1 \) 
+  \[
+  X = \text{ Tempo necessario per la riparazione } \;\; X \sim \mathcal{E}(\lambda)
+  \] 
+  \[
+  f_X(x) = \begin{cases}
+    e^{-x} & x \ge 0 \\
+    0 & x < 0
+  \end{cases}
+  \] 
+  \[
+  \mathbb{E}[X] = \frac{1}{\lambda} = 1
+  \] 
+  \[
+  Var(X) = \frac{1}{\lambda^2} = 1
+  \] 
+  \begin{enumerate}
+    \item Qual'è la probabilità che la riparazione superi le 2 ore?
+      \[
+        P(X >2) = \int_2^{+\infty} e^{-x} dx = e^{-2} \approx 0.135
+      \] 
+    \item Qual'è la probabilità che la riparazione richieda almeno 3 ore, sapendo che
+      ne richiede più di 2?
+      \[
+        P(X \ge 3 \;|\; X> \ge 2) \underset{\text{assenza di memoria}}{=} P(X \ge 1)
+      \] 
+  \end{enumerate}
+\end{example}
+
+
 \end{document}
