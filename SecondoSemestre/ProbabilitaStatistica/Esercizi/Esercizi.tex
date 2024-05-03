@@ -935,19 +935,25 @@ Arturo partecipa ad un gioco in cui la probabilità di vittoria è \( p = \frac{
 
 	      \vspace{1em}
 	      La probabilità che Arturo abbia ottenuto un numero di vittorie compreso tra 108 e 121
-	      in 180 partite è data dalla distribuzione binomiale:
-	      \[
-		      P(108 \le X \le 121) = \sum_{k=108}^{121} \binom{180}{k} \cdot p^k \cdot (1-p)^{180-k}
-	      \]
-	      Questa probabilità è stata calcolata attraverso il seguente codice in linguaggio R:
-	      \begin{lstlisting}[language=R]
-
-  sum(dbinom(108:121, 180, 2 / 3)) 
-  # 0.5651441
-    \end{lstlisting}
-	      \[
-		      P(108 \le X \le 121) = 0.565 = 56.5\%
-	      \]
+	      in 180 partite è appssimata dalla distribuzione normale:
+        \[
+          \mu = n \cdot p = 180 \cdot \frac{2}{3} = 120
+        \]
+        \[
+          \sigma = \sqrt{n \cdot p \cdot (1-p)} = \sqrt{180 \cdot \frac{2}{3} \cdot \frac{1}{3}} = \sqrt{40} \approx 6.32
+        \]
+        \[
+          P(108 \le X \le 121) = P(108 - 0.5 \le X \le 121 + 0.5) =
+        \] 
+        \[
+          P(\frac{108 -0.5 -120}{6.32} \le Z \le \frac{121 + 0.5 - 120}{6.32}) =
+        \] 
+        \[
+          P(-1.978 \le Z \le 0.237) = P(Z \le 0.237) - P(Z \le -1.978) = 
+        \] 
+        \[
+          0.5946 - 0.0242 = 0.5704 = 57.04\%
+        \] 
 \end{enumerate}
 
 \subsection{Esercizio 4}
