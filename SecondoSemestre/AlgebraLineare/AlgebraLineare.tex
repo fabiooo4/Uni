@@ -204,6 +204,7 @@ numero reale con un numero immaginario:
 \end{figure}
 
 \subsection{Operazioni tra i numeri complessi}
+\label{1.3}
 \subsubsection{Somma}
 \begin{figure}[H]
   \begin{definition}
@@ -2861,6 +2862,7 @@ operazioni elementari su \( I_n \) per ottenere \( A^{-1} \):
 \end{figure}
 
 \subsection{Teorema delle matrici invertibili}
+\label{4.3}
 Sono equivalenti i seguenti enunciati per \( A \in M_{n \times n}(\mathbb{C}) \):
 \begin{enumerate}
   \item[(a)] \( A \) è invertibile.
@@ -7116,5 +7118,495 @@ Dunque \( v = (v-p) + p = u + p \in L \quad \square \)
   \end{pmatrix} + t_1 \begin{pmatrix} -1\\-1\\1\\0 \end{pmatrix} +
   t_2 \begin{pmatrix} 4\\-2\\0\\1 \end{pmatrix} \; \right|\; t_1,t_2 \in \mathbb{R} \right\}
   \] 
+\end{example}
+
+\section{Autovalori e autovettori}
+\[
+  f: \mathbb{K}^m \to \mathbb{K}^m
+\] 
+\[
+  \exists A \in M_{m \times m}(\mathbb{K}) \quad \text{take che } f = f_A
+\] 
+\textbf{Esempi:}
+
+\noindent Consideriamo un'applicazione lineare \( f_A: \mathbb{R}^2 \to \mathbb{R}^2 \) per una
+matrice \( A \in M_{2 \times 2}(\mathbb{R}) \).
+\begin{example}
+  \[
+  A = \begin{pmatrix} 
+    \alpha & 0\\
+    0 & \alpha
+  \end{pmatrix} 
+  , \alpha \in \mathbb{R}
+  \] 
+  Allora:
+  \[
+    f_A \left( \begin{pmatrix} v_1\\v_2 \end{pmatrix}  \right) =
+    \begin{pmatrix} 
+      \alpha & 0\\
+      0 & \alpha
+    \end{pmatrix} 
+    \begin{pmatrix} v_1\\v_2 \end{pmatrix} 
+    =
+  \] 
+  \[
+    = \begin{pmatrix} 
+      \alpha v_1\\
+      \alpha v_2
+    \end{pmatrix} 
+    =
+    \alpha \begin{pmatrix} 
+      v_1\\
+      v_2
+    \end{pmatrix}
+  \] 
+\end{example}
+
+\begin{example}
+  \[
+  A = \begin{pmatrix} 
+    \alpha & 0\\
+    0 & \beta
+  \end{pmatrix} 
+  , \alpha \neq \beta \in \mathbb{R}
+  \] 
+  Allora:
+  \[
+  f_A \left( \begin{pmatrix} v_1\\v_2 \end{pmatrix}  \right) = \begin{pmatrix} 
+  \alpha & 0\\
+  0 & \beta
+\end{pmatrix} 
+\begin{pmatrix} 
+  v_1\\
+  v_2
+\end{pmatrix} 
+  = \begin{pmatrix} 
+    \alpha v_1\\
+    \beta v_2
+  \end{pmatrix} 
+  \] 
+  \vspace{1em}
+  \[
+  f_A \left( \begin{pmatrix} v_1\\0 \end{pmatrix}  \right) =
+  \begin{pmatrix} 
+    \alpha & 0\\
+    0 & \beta
+  \end{pmatrix} 
+  \begin{pmatrix} 
+    v_1\\
+    0
+  \end{pmatrix} 
+  =
+  \begin{pmatrix} 
+    \alpha v_1\\
+    0
+  \end{pmatrix} 
+  =
+  \alpha
+  \begin{pmatrix} 
+    v_1\\
+    0
+  \end{pmatrix} 
+  \] 
+
+  \[
+  f_A \left( \begin{pmatrix} 0\\v_2 \end{pmatrix}  \right) =
+  \begin{pmatrix} 
+    \alpha & 0\\
+    0 & \beta
+  \end{pmatrix}
+  \begin{pmatrix} 
+    0\\
+    v_2
+  \end{pmatrix}
+  =
+  \begin{pmatrix} 
+    0\\
+    \beta v_2
+  \end{pmatrix} 
+  =
+  \beta \begin{pmatrix} 
+    0\\
+    v_2
+  \end{pmatrix} 
+  \] 
+\end{example}
+
+\begin{example}
+  \[
+    A = \begin{pmatrix} 
+      3 & -2\\
+      1 & 0
+    \end{pmatrix} 
+  \] 
+  Allora:
+  \[
+  f_A \left( \begin{pmatrix} v_1\\v_2 \end{pmatrix}  \right) =
+  \begin{pmatrix} 
+    3 & -2\\
+    1 & 0
+  \end{pmatrix} 
+  \begin{pmatrix} 
+    v_1\\
+    v_2
+  \end{pmatrix} 
+  =
+  \begin{pmatrix} 
+    3v_1 - 2v_2\\
+    v_1
+  \end{pmatrix} 
+  \] 
+  Per ogni \( \begin{pmatrix} t\\t \end{pmatrix} \in \mathbb{R}^2,\; t \in \mathbb{R} \),
+  abbiamo che:
+  \[
+  f_A \left( \begin{pmatrix} t\\t \end{pmatrix}  \right) =
+  \begin{pmatrix} 
+    3t - 2t\\
+    t
+  \end{pmatrix} 
+  =
+  \begin{pmatrix} 
+    t\\
+    t
+  \end{pmatrix} 
+  =
+  1 \begin{pmatrix} 
+    t\\
+    t
+  \end{pmatrix} 
+  \] 
+
+  \[
+    f_A \left( \begin{pmatrix} v_1\\v_2 \end{pmatrix}  \right) \stackrel{?}{=}
+    \alpha \begin{pmatrix} 
+      v_1\\
+      v_2
+    \end{pmatrix} 
+  \] 
+  Per ogni \( \begin{pmatrix} 2t\\t \end{pmatrix} \in \mathbb{R}^2,\; t \in \mathbb{R} \),
+  abbiamo che:
+  \[
+  f_A \left( \begin{pmatrix} 2t\\t \end{pmatrix}  \right) =
+  \begin{pmatrix} 
+    6t - 2t\\
+    2t
+  \end{pmatrix} 
+  =
+  \begin{pmatrix} 
+    4t\\
+    2t
+  \end{pmatrix} 
+  =
+  2 \begin{pmatrix} 
+    2t\\
+    t
+  \end{pmatrix} 
+  \] 
+\end{example}
+
+\subsection{Definizione}
+Sia \( A \in M_{n \times n}(\mathbb{K}) \). Uno scalare \( \lambda \in \mathbb{K} \) è
+detto \textbf{autovalore} di \( A \) se esiste un vettore \( \mathbb{O} \neq v \in \mathbb{K}^n \) 
+tale che \( Av = \lambda v \). In tal caso \( v \) è detto \textbf{autovettore} di \( A \)
+rispetto all'autovalore \( \lambda \).
+
+\noindent \textbf{N.B:} Se \( v = \mathbb{O} \), si ha sempre:
+\[
+Av = A\mathbb{O} = \mathbb{O} = \lambda \mathbb{O} = \lambda v \quad \text{ per qualsiasi } \lambda
+\] 
+Quindi è essenziale considerare \( v \neq 0 \) nella definizione, cioè soltanto
+i vettori non nulli possono essere autovettori.
+
+\begin{example}
+  \( \lambda_1 = 1 \) e \( \lambda_2 = 2 \) sono autovalori di \( A = \begin{pmatrix} 
+    3 & -2\\
+    1 & 0
+  \end{pmatrix}  \). Ogni vettore della forma \( v_1 = \begin{pmatrix} t\\t \end{pmatrix}  \) 
+  per \( t \neq 0 \) è autovettore di \( A \) rispetto a \( \lambda_1 = 1 \).
+
+  \noindent Ogni vettore di forma \( v_2 = \begin{pmatrix} 2t\\t \end{pmatrix}  \) per
+  \( t \neq 0 \) è autovettore di \( A \) rispetto a \( \lambda_2 = 2 \).
+\end{example}
+
+\subsection{Osservazione}
+Sia \( A \in M_{n \times n}(\mathbb{K}),\; v \neq 0 \) in \( \mathbb{K}^n \).
+\begin{enumerate}
+  \item \( v \) è un autovettore di \( A \) rispetto a \( \lambda \in \mathbb{K} \) se
+    e solo se:
+    \[
+      \underset{DEF}{\iff} Av = \lambda v \iff \mathbb{O} = Av - \lambda v =
+    \] 
+    \[
+     = Av - \begin{pmatrix} 
+       \lambda & 0 & 0\\
+       0 & \ddots & 0\\
+       0 & 0 & \lambda
+     \end{pmatrix} 
+     v
+     =
+     \left( A - \begin{pmatrix} 
+       \lambda & 0 & 0\\
+       0 & \ddots & 0\\
+       0 & 0 & \lambda
+     \end{pmatrix}  \right) v
+     =
+    \] 
+    \[
+    = \left( A - \lambda I_n \right) v
+    \] 
+    \[
+    \iff v \in N(A - \lambda I_n)
+    \] 
+    \[
+    \iff v \text{ è soluzione del sistema lineare } (A - \lambda I_n)x = \mathbb{O}
+    \] 
+
+  \item \( \lambda \in  \mathbb{K} \) è autovalore di \( A \) se e solo se:
+    \[
+    \iff \text{ il sistema lineare } (A - \lambda I_n)x = \mathbb{O} \text{ ha una
+      soluzione diversa da } \mathbb{O}.
+    \] 
+    \[
+      \underset{\ref{4.3}}{\iff} (A - \lambda I_n) \text{ non è invertibile.}
+    \] 
+    \[
+    \iff det(A - \lambda I_n) = 0.
+    \] 
+\end{enumerate}
+
+\begin{example}
+  \[
+  A = \begin{pmatrix} 
+    3 & -2\\
+    1 & 0
+  \end{pmatrix} 
+  ,\; \lambda \in \mathbb{K}
+  \] 
+
+  \[
+  A - \lambda I_2 = \begin{pmatrix} 
+    3-\lambda & -2\\
+    1 & -\lambda
+  \end{pmatrix}
+  \] 
+  \vspace{1em}
+  \[
+  det(A - \lambda I_2) = det \begin{pmatrix} 
+    3-\lambda & -2\\
+    1 & -\lambda
+  \end{pmatrix}
+  =
+  \] 
+  \[
+  = (3 - \lambda)(-\lambda) - (1)(-2) = -3 \lambda + \lambda^2 + 2 =
+  \] 
+  \[
+  = \lambda^2 - 3 \lambda + 2 = (\lambda - 1)(\lambda - 2)
+  \] 
+  \( \lambda \) è autovalore di \( A \) se e solo se:
+  \[
+  \iff (\lambda - 1)(\lambda - 2) = 0
+  \] 
+  \[
+  \iff \lambda = 1 \text{ o } \lambda = 2
+  \] 
+\end{example}
+
+\subsection{Definizione}
+Data una matrice \( A \in  M_{n \times n}(\mathbb{K}) \), il polinomio di grado \( n \):
+\[
+  p_A = det(A - \lambda I_n) \in \mathbb{K}[\lambda]
+\] 
+è detto \textbf{polinomio caratteristico}.
+
+\begin{example}
+  \[
+  A = \begin{pmatrix} 
+    1 & -1\\
+    1 & 0
+  \end{pmatrix} 
+  \] 
+  \vspace{1em}
+  \[
+  p_A = det(A - \lambda I_2) = det \begin{pmatrix} 
+    - \lambda & -1\\
+    1 & - \lambda
+  \end{pmatrix} 
+  =
+  \] 
+  \[
+  = (-\lambda)^2 + 1 = \lambda^2 + 1
+  \] 
+  Quindi \( A \) non possiede autovalori reali, però \( A \) ha autovalori complessi
+  \( \lambda_1 = i \) e \( \lambda_2 = -i \).
+\end{example}
+
+\subsection{Teorema}
+Sia \( A \in M_{n \times n}(\mathbb{K}) \)
+\begin{enumerate}
+  \item Gli autovalori di \( A \) sono esattamente gli zeri del polinomio caratteristico
+    \( p_A \).
+
+  \item Gli autovettori relativi a un autovalore \( \lambda \) sono esattamente le 
+    soluzioni non nulle del sistema lineare \( (A - \lambda I_n)x = \mathbb{O} \),
+    ovvero gli elementi non nulli di \( N(A - \lambda I_n) \).
+    Chiamiamo \( N(A - \lambda I_n) \) l'\textbf{autospazio} di \( \lambda \) e scriviamo
+    \( E_A(\lambda) = N(A - \lambda I_n) \).
+\end{enumerate}
+
+\subsection{Corollario}
+Ogni matrice \( A \in  M_{n \times n}(\mathbb{K}) \) ha al massimo \( n \) autovalori.
+Ogni matrice \( A \in M_{n \times n}(\mathbb{C}) \) possiede \( n \) autovalori in
+\( \mathbb{C} \) (non necessariamente distinti) per il teorema fondamentale dell'algebra
+(\ref{1.3}).
+\[
+  p_A = (-1)^n(\lambda - \lambda_1)^{m_1} \ldots (\lambda - \lambda_r)^{m_r}
+\] 
+
+\subsection{Definizione}
+Sia \( \lambda \in \mathbb{K} \) un autovalore di \( A \in M_{n \times n}(\mathbb{K}) \).
+\begin{enumerate}
+  \item Si dice \textbf{molteplicità algebrica} di \( \lambda \) la molteplicità \( m_\lambda \) 
+    di \( \lambda \) come uno zero di \( p_A \), cioè se:
+    \[
+    p_A = (\lambda - \lambda_1)^{m_1} \ldots (\lambda - \lambda_r)^{m_r}
+    \] 
+    allora la molteplicità algebrica di \( \lambda_i \) è \( m_i \) per ogni \( 1 \le i \le r \).
+
+  \item Si dice \textbf{molteplicità geometrica} di \( \lambda \) la dimensione di
+    \( E_A(\lambda) \).
+\end{enumerate}
+
+\begin{example}
+  \[
+  A = \begin{pmatrix} 
+    5 & -2\\
+    4 & -1
+  \end{pmatrix} 
+  \in  M_{2 \times 2}(\mathbb{C})
+  \] 
+  \begin{itemize}
+    \item \textbf{Autovalori di \( A \)}
+      \[
+      p_A = det(A - \lambda I_2) = det \begin{pmatrix} 
+        5 - \lambda & -2\\
+        4 & -1 - \lambda
+      \end{pmatrix}
+      = (5 - \lambda)(-1 - \lambda) + 8 =
+      \] 
+      \[
+      = \lambda^2 - 4\lambda + 3 = (\lambda - 3)(\lambda - 1)
+      \] 
+      Gli autovalori di \( A \) sono \( \lambda_1 = 3 \) e \( \lambda_2 = 1 \).
+
+    \item \textbf{Molteplicità algebrica}
+      \[
+      m_1 = 1, \quad m_2 = 1
+      \] 
+
+    \item \textbf{Molteplicità geometrica}
+      \[
+      E_A(\lambda) = N(A - \lambda I_2) = 
+      \] 
+      \[
+      = \left\{\left. v = \begin{pmatrix} v_1\\v_2 \end{pmatrix} \in \mathbb{C} \;\right|\;
+          \begin{pmatrix} 
+            5 - \lambda & -2\\
+            4 & -1 - \lambda
+          \end{pmatrix} 
+          \begin{pmatrix} 
+            v_1\\
+            v_2
+          \end{pmatrix} 
+          =
+          \begin{pmatrix} 
+            0\\
+            0
+          \end{pmatrix} 
+        \right\} 
+      \] 
+      \vspace{1em}
+      \[
+      E_A(3) = N \left( \begin{pmatrix} 
+          2 & -2\\
+          4 & -4
+      \end{pmatrix}  \right) 
+      =
+      \left\{\left. v = \begin{pmatrix} v_1\\v_2 \end{pmatrix} \;\right|\;
+          \begin{pmatrix} 
+            2 & -2\\
+            4 & -4
+          \end{pmatrix} 
+          \begin{pmatrix} 
+            v_1\\
+            v_2
+          \end{pmatrix} 
+          =
+          \begin{pmatrix} 
+            0\\
+            0
+          \end{pmatrix} 
+        \right\} 
+      \] 
+      \[
+        \alpha_1 = dim_{\mathbb{K}}(E_A(3)) = 2 - rk \begin{pmatrix} 
+          2 & -2\\
+          4 & -4
+        \end{pmatrix}
+      \] 
+      \[
+      \begin{pmatrix} 
+        2 & -2\\
+        4 & -4
+      \end{pmatrix} 
+      \sim
+      \begin{pmatrix} 
+        1 & -1\\
+        4 & -4
+      \end{pmatrix} 
+      \sim \begin{pmatrix} 
+        1 & -1\\
+        0 & 0
+      \end{pmatrix} 
+      \] 
+      \[
+      \alpha_1 = 2 - rk \begin{pmatrix} 
+        2 & -2\\
+        4 & -4
+      \end{pmatrix} 
+      = 2 - 1 = 1
+      \] 
+      \vspace{1em}
+      \[
+        E_A(1) = N \left( \begin{pmatrix} 
+            4 & -2\\
+            4 & -2
+        \end{pmatrix}  \right)
+      \] 
+      \[
+        \alpha_2 = dim_{\mathbb{K}}(E_A(1)) = 2 - rk \begin{pmatrix} 
+          4 & -2\\
+          4 & -2
+        \end{pmatrix}
+      \] 
+      \[
+      \begin{pmatrix} 
+        4 & -2\\
+        4 & -2
+      \end{pmatrix} 
+      \sim
+      \begin{pmatrix} 
+        1 & \frac{1}{2}\\
+        0 & 0
+      \end{pmatrix} 
+      \] 
+      \[
+      \alpha_2 = 2 - rk \begin{pmatrix} 
+        4 & -2\\
+        4 & -2
+      \end{pmatrix}
+      = 2 - 1 = 1
+      \] 
+  \end{itemize}
 \end{example}
 \end{document}
