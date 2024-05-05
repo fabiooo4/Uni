@@ -13,7 +13,7 @@
 \usepackage{listings}
 \usepackage{graphicx}
 \usepackage{tikz}
-\usetikzlibrary{shapes, arrows, automata, petri, positioning, calc}
+\usetikzlibrary{shapes, arrows, automata, petri, decorations.pathreplacing, positioning, calc}
 \usepackage{circuitikz}
 \usepackage[label=corner]{karnaugh-map}
 \graphicspath{{./figures/}}
@@ -2511,65 +2511,134 @@ il comando asm:
 \section{Struttura della memoria}
 \begin{figure}[H]
   \centering
-  \begin{tikzpicture}
+  \begin{tikzpicture}[scale=0.9]
     % Vertical array b7
     \node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b7) at (0,0) {};
 
     \node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b7-2) at (0,-2.5) {};
-    \draw (b7-2.west) -- ++(-0.5,0) node[above right] {} (b7-2.south) -- ++(0,-0.5);
+    \draw (b7-2.west) -- ++(-0.5,0) node[above right] {} 
+      (b7-2.east) -- ++(0.5,0);
 
     \node at (0,-4.3) {\( \vdots \)};
 
     \node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b7-15) at (0,-6) {};
-    \draw (b7-15.west) -- ++(-0.5,0) node[above right] {} (b7-15.south) -- ++(0,-0.5);
+    \draw (b7-15.west) -- ++(-0.5,0) node[above right] {} 
+      (b7-15.east) -- ++(0.5,0);
 
-    \draw (b7.south) -- ++(0,-0.5) (b7.west) -- ++(-0.5,0) node[above right] {\( b_7 \) }
-      -- ++(0,-7.8) -- ++(0.5,0) -- ++(0,-0.73);
+    \draw 
+      (b7.west) -- ++(-0.5,0) node[above right] {\( b_7 \) }
+      -- ++(0,-7.8) -- ++(0.5,0) -- ++(0,-0.73)
+      (b7.east) -- ++(0.5,0) -- ++(0,-7.8) -- ++(-0.5,0) -- ++(0,-0.73);
 
+    % cls b7
     \node[draw, rectangle, minimum width=1cm, minimum height=1cm, align=center, scale=0.7]
       (cls1) at (0,-9) {Circuito di\\lettura e\\scrittura};
-
-
+    \node[yshift=5, xshift=4] at (cls1.west) (cls1-iw1) {};
+    \node[yshift=-5, xshift=4] at (cls1.west) (cls1-iw2) {};
+    \node[xshift=-8, yshift=4] at (cls1.south) (cls1-is1) {};
+    \node[xshift=8, yshift=4] at (cls1.south) (cls1-is2) {};
+    \node[xshift=0, yshift=-7] at (cls1.south) (cls1-isc) {};
+    \draw (cls1-iw1) -- ++(-0.5,0) node[left] {\( R/\bar{w} \) } ;
+    \draw (cls1-iw2) -- ++(-0.5,0) node[left] {cs} ;
+    \draw[latex-] (cls1-is1) -- ++(0,-0.5) -- ++(0.55,0);
+    \draw[latex-latex] (cls1-isc) -- ++(0,-0.8);
+    \draw[-latex] (cls1-is2) -- ++(0,-0.5);
 
     % Vertical array b6
     \node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b6) at (2.5,0) {};
 
     \node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b6-2) at (2.5,-2.5) {};
-    \draw (b6-2.west) -- ++(-0.5,0) node[above right] {} (b6-2.south) -- ++(0,-0.5);
+    \draw (b6-2.west) -- ++(-0.5,0) node[above right] {} 
+      (b6-2.east) -- ++(0.5,0);
 
     \node at (2.5,-4.3) {\( \vdots \)};
 
     \node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b6-15) at (2.5,-6) {};
-    \draw (b6-15.west) -- ++(-0.5,0) node[above right] {} (b6-15.south) -- ++(0,-0.5);
+    \draw (b6-15.west) -- ++(-0.5,0) node[above right] {} 
+      (b6-15.east) -- ++(0.5,0);
 
-    \draw (b6.south) -- ++(0,-0.5) (b6.west) -- ++(-0.5,0) node[above right] {\( b_6 \) }
-      -- ++(0,-7.8) -- ++(0.5,0) -- ++(0,-0.73);
+    \draw 
+      (b6.west) -- ++(-0.5,0) node[above right] {\( b_6 \) }
+      -- ++(0,-7.8) -- ++(0.5,0) -- ++(0,-0.73)
+      (b6.east) -- ++(0.5,0) -- ++(0,-7.8) -- ++(-0.5,0) -- ++(0,-0.73);
 
+    % cls b6
     \node[draw, rectangle, minimum width=1cm, minimum height=1cm, align=center, scale=0.7]
       (cls2) at (2.5,-9) {Circuito di\\lettura e\\scrittura};
+    \node[xshift=-8, yshift=4] at (cls2.south) (cls2-is1) {};
+    \node[xshift=8, yshift=4] at (cls2.south) (cls2-is2) {};
+    \node[xshift=0, yshift=-7] at (cls2.south) (cls2-isc) {};
+    \draw[latex-] (cls2-is1) -- ++(0,-0.5) -- ++(0.55,0);
+    \draw[latex-latex] (cls2-isc) -- ++(0,-0.8);
+    \draw[-latex] (cls2-is2) -- ++(0,-0.5);
 
 
-
-    \node at (4.1,0) {\( \ldots \)};
+    \node at (4.3,0) {\( \ldots \)};
 
 
     % Vertical array b0
     \node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b0) at (6,0) {};
 
     \node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b0-2) at (6,-2.5) {};
-    \draw (b0-2.west) -- ++(-0.5,0) node[above right] {} (b0-2.south) -- ++(0,-0.5);
+    \draw (b0-2.west) -- ++(-0.5,0) node[above right] {} 
+      (b0-2.east) -- ++(0.5,0);
 
     \node at (6,-4.3) {\( \vdots \)};
 
     \node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b0-15) at (6,-6) {};
-    \draw (b0-15.west) -- ++(-0.5,0) node[above right] {} (b0-15.south) -- ++(0,-0.5);
+    \draw (b0-15.west) -- ++(-0.5,0) node[above right] {} 
+      (b0-15.east) -- ++(0.5,0);
 
-    \draw (b0.south) -- ++(0,-0.5) (b0.west) -- ++(-0.5,0) node[above right] {\( b_0 \) }
-      -- ++(0,-7.8) -- ++(0.5,0) -- ++(0,-0.73);
+    \draw 
+      (b0.west) -- ++(-0.5,0) node[above right] {\( b_0 \) }
+      -- ++(0,-7.8) -- ++(0.5,0) -- ++(0,-0.73)
+      (b0.east) -- ++(0.5,0) -- ++(0,-7.8) -- ++(-0.5,0) -- ++(0,-0.73);
 
+    % cls b0
     \node[draw, rectangle, minimum width=1cm, minimum height=1cm, align=center, scale=0.7]
       (cls3) at (6,-9) {Circuito di\\lettura e\\scrittura};
+    \node[xshift=-8, yshift=4] at (cls3.south) (cls3-is1) {};
+    \node[xshift=8, yshift=4] at (cls3.south) (cls3-is2) {};
+    \node[xshift=0, yshift=-7] at (cls3.south) (cls3-isc) {};
+    \draw[latex-] (cls3-is1) -- ++(0,-0.5) -- ++(0.55,0);
+    \draw[latex-latex] (cls3-isc) -- ++(0,-0.8);
+    \draw[-latex] (cls3-is2) -- ++(0,-0.5);
 
+
+    % Decoder 4 bit
+    \node[draw, rectangle, minimum width=1cm, minimum height=3cm, align=center]
+      (dec) at (-4,-3) {Decoder\\a 4 bit};
+    \node[yshift=30, xshift=-4] at (dec.east) (d-p0) {};
+    \node[yshift=15, xshift=-4] at (dec.east) (d-p1) {};
+    \node[yshift=-5, xshift=10] at (dec.east) {\( \vdots \) };
+    \node[yshift=-30, xshift=-4] at (dec.east) (d-p15) {};
+
+    \node[xshift=4, yshift=24] at (dec.west) (d-i0) {};
+    \node[xshift=4, yshift=9] at (dec.west) (d-i1) {};
+    \node[xshift=4, yshift=-9] at (dec.west) (d-i2) {};
+    \node[xshift=4, yshift=-24] at (dec.west) (d-i3) {};
+
+    \draw[latex-] (d-i0) -- ++(-0.8,0) node[left] {\( i_0 \)};
+    \draw[latex-] (d-i1) -- ++(-0.8,0) node[left] {\( i_1 \)};
+    \draw[latex-] (d-i2) -- ++(-0.8,0) node[left] {\( i_2 \)};
+    \draw[latex-] (d-i3) -- ++(-0.8,0) node[left] {\( i_3 \)};
+
+    
+
+    % b0 to decoder
+    \draw (b0.south) -- ++(0,-0.5) -- ++(-8.5,0) |- (d-p0) node[above right, xshift=5] {\( p_0 \) }
+      (b6.south) -- ++(0,-0.5)
+      (b7.south) -- ++(0,-0.5);
+
+    % b0-2 to decoder
+    \draw (b0-2.south) -- ++(0,-0.5) -- ++(-8.5,0) |- (d-p1) node[above right, xshift=5] {\( p_1 \) }
+      (b6-2.south) -- ++(0,-0.5)
+      (b7-2.south) -- ++(0,-0.5);
+
+    % b0-15 to decoder
+    \draw (b0-15.south) -- ++(0,-0.5) -- ++(-8.5,0) |- (d-p15) node[above right, xshift=5] {\( p_{15} \) }
+      (b6-15.south) -- ++(0,-0.5)
+      (b7-15.south) -- ++(0,-0.5);
   \end{tikzpicture}
   \label{D1}
 \end{figure}
@@ -2593,6 +2662,75 @@ Una memoria è compattata in un chip con diversi pin con compiti diversi:
 \] 
 Si avrà una SRAM che sarà una matrice da \( m \) bit \( 32 \times 32 \) 
 
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw, rectangle, minimum width=4cm, minimum height=4cm, align=center]
+      (mat) at (0,0) {Matrice di\\celle da\\\( n \) bit\\\\32x32};
+
+    % decoder 5 bit
+    \node[draw, rectangle, minimum width=1cm, minimum height=4cm, align=center]
+      (dec) at (-4,0) {Decoder\\a 5 bit};
+
+    \draw[-latex] (-3.25,1.5) node[above right] {$p_0$} -- ++(1.25,0);
+    \draw[-latex] (-3.25,1) node[above right] {$p_1$} -- ++(1.25,0);
+    \node at (-2.6,0) {\( \vdots \)};
+    \draw[-latex] (-3.25,-1.5) node[above right] {$p_{31}$} -- ++(1.25,0);
+
+    % inputs 0 to 4
+    \draw[latex-] (-4.75,1.1) -- ++(-1,0) node[left] {\( r_0 \)};
+    \draw[latex-] (-4.75,0.6) -- ++(-1,0) node[left] {\( r_1 \)};
+    \draw[latex-] (-4.75,0.1) -- ++(-1,0) node[left] {\( r_2 \)};
+    \draw[latex-] (-4.75,-0.4) -- ++(-1,0) node[left] {\( r_3 \)};
+    \draw[latex-] (-4.75,-0.9) -- ++(-1,0) node[left] {\( r_4 \)};
+
+    \node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm] (rw1) at (-1.5,-2.8) {};
+    \draw (-1.65,-2.55) -- ++(0,0.55)
+      (-1.35,-2.55) -- ++(0,0.55);
+
+    \node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm] (rw2) at (-0.5,-2.8) {};
+    \draw (-0.65,-2.55) -- ++(0,0.55)
+      (-0.35,-2.55) -- ++(0,0.55);
+
+    \node at (0.5,-2.8) {\( \underset{\times 32}{\ldots}\)};
+
+    \node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm] (rw32) at (1.5,-2.8) {};
+    \draw (1.35,-2.55) -- ++(0,0.55)
+      (1.65,-2.55) -- ++(0,0.55);
+
+    \node[draw, rectangle, minimum width=5.5cm, minimum height=1cm, align=center, scale=0.7]
+      (mul) at (0,-4.3) {Multiplatore\\(mux + demux)\\a 5 bit di\\selezione};
+
+    \draw[latex-latex] (rw1.south) -- ++(0,-0.6);
+    \draw[latex-latex] (rw2.south) -- ++(0,-0.6);
+    \draw[latex-latex] (rw32.south) -- ++(0,-0.6);
+
+    \draw[latex-] (-1.9,-3.8) -- ++(-3.9,0) node[left] {\( c_0 \) };
+    \draw[latex-] (-1.9,-4.05) -- ++(-3.9,0) node[left] {\( c_1 \) };
+    \draw[latex-] (-1.9,-4.3) -- ++(-3.9,0) node[left] {\( c_2 \) };
+    \draw[latex-] (-1.9,-4.55) -- ++(-3.9,0) node[left] {\( c_3 \) };
+    \draw[latex-] (-1.9,-4.8) -- ++(-3.9,0) node[left] {\( c_4 \) };
+
+    \draw [thick, decorate,decoration={brace,amplitude=10pt},yshift=2pt] 
+      (-6.3,-1.2) -- (-6.3,1.3) node [black,midway,xshift=-30pt,align=center]
+      {Indirizzi\\di riga};
+
+    \draw [thick, decorate,decoration={brace,amplitude=10pt},yshift=2pt] 
+      (-6.3,-5) -- (-6.3,-3.7) node [black,midway,xshift=-31pt,align=center]
+      {Indirizzi\\di colonna};
+
+    \draw [thick, decorate,decoration={brace,amplitude=10pt},yshift=2pt] 
+      (-8.4,-5) -- (-8.4,1.3) node [black,midway,xshift=-16pt,align=center]
+      {I};
+
+    \draw[latex-latex] (-1,-4.9) -- ++(0,-0.8) node[midway, left] {I/O};
+    \draw[latex-] (0.3,-4.9) -- ++(0,-0.8) node[midway, left] {\( R/\bar{w} \) };
+    \draw[latex-] (1,-4.9) -- ++(0,-0.8) node[midway, left] {cs};
+  \end{tikzpicture}
+\end{figure}
+
+\noindent Mediante gli indirizzi di riga e di colonna si può scegliere esattamente la
+cella desiderata.
 
 \subsection{Dynamic RAM (DRAM)}
 I condensatori permettono di mantenere una carica elettrica per un certo
@@ -2600,8 +2738,11 @@ periodo di tempo, questa carica però si degrada nel tempo. Per mantenere la car
 si deve rinfrescare ogni condensatore per ripristinare la carica. Questo rinfresco
 però riduce la velocità della memoria. Visto che la DRAM occupa meno spazio rispetto
 alla SRAM, è più lenta, ma è più economica e può essere fatta più capiente.
-\label{D3}
 
+
+\subsection{Syncronous DRAM (SDRAM)}
+La SDRAM è una DRAM sincrona, ovvero sincronizzata con il clock della CPU. Questo
+permette di avere una maggiore velocità di trasferimento dei dati.
 \[
 256Mbit \;\; 32Mbit \times 8 = 16K \times 16K
 \] 
@@ -2611,7 +2752,61 @@ Ogni riga ha 16384 bit divisi in 2048 byte. Sono presenti 2 segnali:
   \item \textbf{\( \overline{CAS} \) (Column Address Strobe)}: permette di selezionare la colonna
 \end{itemize}
 
+TODO
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw, rectangle, minimum width=4cm, minimum height=4cm, align=center]
+      (mat) at (0,0) {16384 righe\\da 2048 byte};
 
+    % decoder 5 bit
+    \node[draw, rectangle, minimum width=1cm, minimum height=4cm, align=center]
+      (dec) at (-4,0) {Decoder\\a 5 bit};
+
+    \draw[-latex] (-3.25,1.5) node[above right] {$p_0$} -- ++(1.25,0);
+    \draw[-latex] (-3.25,1) node[above right] {$p_1$} -- ++(1.25,0);
+    \node at (-2.6,0) {\( \vdots \)};
+    \draw[-latex] (-3.25,-1.5) node[above right] {$p_{31}$} -- ++(1.25,0);
+
+    % inputs 0 to 4
+    \draw[latex-] (-4.75,1.1) -- ++(-1,0) node[left] {\( r_0 \)};
+    \draw[latex-] (-4.75,0.6) -- ++(-1,0) node[left] {\( r_1 \)};
+    \draw[latex-] (-4.75,0.1) -- ++(-1,0) node[left] {\( r_2 \)};
+    \draw[latex-] (-4.75,-0.4) -- ++(-1,0) node[left] {\( r_3 \)};
+    \draw[latex-] (-4.75,-0.9) -- ++(-1,0) node[left] {\( r_4 \)};
+
+    \node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm] (rw1) at (-1.5,-2.8) {};
+    \draw (-1.65,-2.55) -- ++(0,0.55)
+      (-1.35,-2.55) -- ++(0,0.55);
+
+    \node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm] (rw2) at (-0.5,-2.8) {};
+    \draw (-0.65,-2.55) -- ++(0,0.55)
+      (-0.35,-2.55) -- ++(0,0.55);
+
+    \node at (0.5,-2.8) {\( \underset{\times 32}{\ldots}\)};
+
+    \node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm] (rw32) at (1.5,-2.8) {};
+    \draw (1.35,-2.55) -- ++(0,0.55)
+      (1.65,-2.55) -- ++(0,0.55);
+
+    \node[draw, rectangle, minimum width=5.5cm, minimum height=1cm, align=center, scale=0.7]
+      (mul) at (0,-4.3) {Multiplatore\\(mux + demux)\\a 5 bit di\\selezione};
+
+    \draw[latex-latex] (rw1.south) -- ++(0,-0.6);
+    \draw[latex-latex] (rw2.south) -- ++(0,-0.6);
+    \draw[latex-latex] (rw32.south) -- ++(0,-0.6);
+
+    \draw[latex-] (-1.9,-3.8) -- ++(-3.9,0) node[left] {\( c_0 \) };
+    \draw[latex-] (-1.9,-4.05) -- ++(-3.9,0) node[left] {\( c_1 \) };
+    \draw[latex-] (-1.9,-4.3) -- ++(-3.9,0) node[left] {\( c_2 \) };
+    \draw[latex-] (-1.9,-4.55) -- ++(-3.9,0) node[left] {\( c_3 \) };
+    \draw[latex-] (-1.9,-4.8) -- ++(-3.9,0) node[left] {\( c_4 \) };
+
+    \draw[latex-latex] (-1,-4.9) -- ++(0,-0.8) node[midway, left] {I/O};
+    \draw[latex-] (0.3,-4.9) -- ++(0,-0.8) node[midway, left] {\( R/\bar{w} \) };
+    \draw[latex-] (1,-4.9) -- ++(0,-0.8) node[midway, left] {cs};
+  \end{tikzpicture}
+\end{figure}
 
 
 
