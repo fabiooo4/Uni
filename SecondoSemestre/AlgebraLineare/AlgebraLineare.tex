@@ -6022,7 +6022,7 @@ Notiamo che abbiamo:
     V \arrow[dr, swap, "C_{\mathcal{B}}"] \arrow[rr, "C_{\mathcal{C}}^{-1} \circ C_{\mathcal{B}}"] & & W\\
                                                                                                    & \mathbb{K}^n \arrow[ur, swap, "C_{\mathcal{C}}^{-1}"] &
   \end{tikzcd}
-  \caption{Diagramma delle implicazioni}
+  
 \end{figure}
 L'applicazione lineare ha inversa:
 \[
@@ -6142,7 +6142,7 @@ v = \beta_1d_1 + \beta_2d_2 = \beta_1 \begin{pmatrix}
     & \stackrel{= \mathbb{K}^2}{V} \arrow[dl, swap, xshift=-5, "C_{\mathcal{B}}"] \arrow[dr, "C_{\mathcal{D}}"] & \\
     \mathbb{K}^2 \arrow[rr, swap, "C_{\mathcal{D}} \circ C_{\mathcal{B}}"] \arrow[ur, swap, xshift=5, red, "C_{\mathcal{B}}^{-1}"] & & \mathbb{K}^2
   \end{tikzcd}
-  \caption{Diagramma delle implicazioni}
+  
 \end{figure}
 
 \noindent Per \ref{7.5}, \( C_{\mathcal{B}} \circ C_{\mathcal{B}}^{-1} = f_C \) per una matrice
@@ -6254,7 +6254,7 @@ Allora, per ogni \( v \in V \), abbiamo:
     & V \arrow[dl, swap, "C_{\mathcal{B}}"] \arrow[dr, "C_{\mathcal{C}}"] &\\
     \mathbb{K}^n \arrow[rr, swap, "C_{\mathcal{C}} C_{\mathcal{B}}^{-1}"] & & \mathbb{K}^n
   \end{tikzcd}
-  \caption{Diagramma delle implicazioni}
+  
 \end{figure}
 
 Per \ref{7.2}, esiste una matrice \( A \) tale che \( C_{\mathcal{C}} C_{\mathcal{B}}^{-1} = f_A \).
@@ -6334,6 +6334,7 @@ cambio di base \( A_{\mathcal{B} \to \mathcal{C}}^{-1} = A_{\mathcal{C} \to \mat
 \end{example}
 
 \subsection{Matrice associata a f rispetto a basi}
+\label{7.10}
 \begin{example}
   \[
     U = \mathbb{R}_2[x], \quad V = \mathbb{R}^2
@@ -6369,7 +6370,7 @@ cambio di base \( A_{\mathcal{B} \to \mathcal{C}}^{-1} = A_{\mathcal{C} \to \mat
     U \arrow[d, swap, xshift=-5, "C_{\mathcal{C}}"] \arrow[r, "f"]& V \arrow[d, "C_{\mathcal{B}}"] \\
     \mathbb{R}^3 \arrow[r, swap, "C_{\mathcal{B}} \circ f \circ C_{\mathcal{C}}^{-1}"] \arrow[u, red, xshift=5, swap, "C_{\mathcal{C}}^{-1}"] & \mathbb{R}^2
   \end{tikzcd}
-  \caption{Diagramma delle implicazioni}
+  
 \end{figure}
 
 \noindent Per \ref{7.2} esiste una matrice \( A \) associata a \( C_{\mathcal{B}} \circ f \circ
@@ -6463,6 +6464,7 @@ f(p) = 4b_1 - b_2 = 4 \begin{pmatrix} 1\\1 \end{pmatrix} - \begin{pmatrix} 1\\0 
 \end{example}
 
 \section{Rango + nullità}
+\label{8}
 \subsection{Definizione}
 Sia \( f: V \to W \) un'applicazione lineare. Allora:
 \[
@@ -7609,4 +7611,517 @@ Sia \( \lambda \in \mathbb{K} \) un autovalore di \( A \in M_{n \times n}(\mathb
       \] 
   \end{itemize}
 \end{example}
+
+\subsection{Osservazione}
+\label{9.7}
+Siano \( v_1, \ldots, v_r \) autovettori di una matrice \( A \in M_{n \times n}(\mathbb{K}) \)
+rispetto a \( \lambda_1, \ldots, \lambda_r \). Supponiamo che \( \mathcal{B} = \{v_1, \ldots, v_r\}  \)  
+è linearmente indipendente.
+
+\noindent \textbf{NB:} \( U = \left< v_1, \ldots, v_r \right> \subseteq \mathbb{K}^n \) 
+dove \( \left< v_1, \ldots, v_r \right> \) indica:
+\[
+  \left\{\left. \sum_{i = 1}^r \alpha_i v_i \;\right|\; \alpha_i \in \mathbb{K} \right\} 
+\] 
+è una base di \( U \).
+
+\vspace{1em}
+\noindent Sia \( v = \alpha_1 v_1 + \ldots + \alpha_r v_r \in U \). Allora:
+\[
+Av = A(\alpha_1 v_1 + \ldots + \alpha_r v_r) = 
+\] 
+\[
+= \alpha_1 (Av_1) + \ldots + \alpha_r (Av_r) =
+\] 
+\[
+  \underset{A v_i = \lambda_i v_i}{=} \alpha_1 (\lambda_1 v_1) + \ldots + \alpha_r (\lambda_r v_r) =
+\] 
+\[
+= (\alpha_1 \lambda_1) v_1 + \ldots + (\alpha_r \lambda_r) v_r  \quad \in U
+\] 
+Abbiamo che \( f_A: U \to U \) è un applicazione lineare. Allora:
+\[
+ [f_A(v)]_{\mathcal{B}} = [Av]_{\mathcal{B}} = \begin{bmatrix} 
+   \lambda_1 \alpha_1\\
+   \vdots\\
+   \lambda_r \alpha_r
+  \end{bmatrix}
+  =
+  \begin{bmatrix} 
+    \lambda_1& 0 & 0\\
+    0 & \ddots & 0\\
+    0 & 0 & \lambda_r
+  \end{bmatrix} 
+  \begin{bmatrix} 
+    \alpha_1\\
+    \vdots\\
+    \alpha_r
+  \end{bmatrix} 
+  =
+  \begin{bmatrix} 
+    \lambda_1& 0 & 0\\
+    0 & \ddots & 0\\
+    0 & 0 & \lambda_r
+  \end{bmatrix} 
+  [v]_{\mathcal{B}}
+\] 
+Quindi:
+\(
+D = \begin{bmatrix} 
+  \lambda_1& 0 & 0\\
+  0 & \ddots & 0\\
+  0 & 0 & \lambda_r
+\end{bmatrix} 
+\) 
+è la matrice associata a \( f_A \) rispetto a \( \mathcal{B} \) nel dominio e nel
+codominio per il teorema \ref{7.10}. In particolare, se \( n = r \), allora
+\( \mathcal{B} \) è una base di \( \mathbb{K}^n \) e abbiamo
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzcd}
+    \mathbb{K}^n \arrow[r, "f_A"] \arrow[d, swap, "C_{\mathcal{B}}"] & \mathbb{K}^n \arrow[d, "C_{\mathcal{B}}"]\\
+    \mathbb{K}^n \arrow[r, swap, "f_D"] & \mathbb{K}^n
+  \end{tikzcd}
+  
+\end{figure}
+\noindent Che equivale a:
+\begin{figure}[H]
+  \centering
+  \begin{tikzcd}[row sep=large, column sep=large]
+     v = \sum_{i=1}^n \alpha_1 v_1 \arrow[r] \arrow[d, swap] & Av \arrow[d]\\
+     \begin{bmatrix} v \end{bmatrix}_{\mathcal{B}} = \begin{bmatrix} \alpha_1\\\vdots\\\alpha_n \end{bmatrix}  \arrow[r] & \underset{D[v]_{\mathcal{B}}}{[Av]_{\mathcal{B}}}
+  \end{tikzcd}
+\end{figure}
+\noindent quindi \( f_{D} = C_{\mathcal{B}} f_A C_{\mathcal{B}}^{-1} \).
+
+\noindent Abbiamo \( C_{\mathcal{B}}^{-1} = f_B \) dove \( (v_1, \ldots, v_n) = B \) per
+\ref{7.5} e \( C_{\mathcal{B}} = (C_{\mathcal{B}}^{-1})^{-1} = f_B^{-1} = F_{B^{-1}} \).
+Allora \( f_D = f_{B^{-1}} f_A f_B = f_{B^{-1}AB} \) e \( D = B^{-1}AB \).
+
+\begin{example}
+  \[
+  A = \begin{pmatrix} 
+    5 & -2\\
+    4 & -1
+  \end{pmatrix} 
+  \] 
+  Questa matrice ha autovalori:
+  \[
+  \lambda_1 = 3, \quad \lambda_2 = 1
+  \] 
+  Gli autovettori rispetto a \( \lambda_1 = 3 \):
+  \[
+  \begin{pmatrix} 
+    1\\
+    1
+  \end{pmatrix} 
+  t,\;\; t \neq 0
+  \] 
+
+\noindent  Gli autovettori rispetto a \( \lambda_2 = 1 \):
+  \[
+  \begin{pmatrix} 
+    1\\
+    2
+  \end{pmatrix}
+  s,\;\; s \neq 0
+  \]
+
+\noindent  Quindi \( \mathcal{B} = \left\{ \begin{pmatrix} 1\\1 \end{pmatrix},
+  \begin{pmatrix} 1\\2 \end{pmatrix} \right\}   \) è una base di \( \mathbb{R}^2 \)
+  formata da autovettori di A.
+
+  \vspace{1em}
+  \noindent Dunque
+  \[
+  D = \begin{pmatrix} 
+    \lambda_1 & 0\\
+    0 & \lambda_2
+  \end{pmatrix} 
+  =
+  \begin{pmatrix} 
+    3 & 0\\
+    0 & 1
+  \end{pmatrix} ,\quad
+  B = \begin{pmatrix} 
+    1 & 1\\
+    1 & 2
+  \end{pmatrix} 
+  \] 
+  abbiamo \( D = B^{-1}AB \). Calcoliamo:
+  \[
+    (I_n|B^{-1}) = \begin{pmatrix}[cc|cc]
+      1 & 1 & 1 & 0\\
+      1 & 2 & 0 & 1
+    \end{pmatrix} 
+    \sim
+    \begin{pmatrix}[cc|cc]
+      1 & 1 & 1 & 0\\
+      0 & 1 & -1 & 1
+    \end{pmatrix} 
+    \sim
+    \begin{pmatrix}[cc|cc]
+      1 & 0 & 2 & -1\\
+      0 & 1 & -1 & 1
+    \end{pmatrix} 
+  \] 
+
+  \[
+  \begin{pmatrix} 
+    3 & 0\\
+    0 & 1
+  \end{pmatrix} 
+  =
+  \begin{pmatrix} 
+    2 & -1\\
+    -1 & 1
+  \end{pmatrix} 
+  \begin{pmatrix} 
+    5 & -2\\
+    4 & -1
+  \end{pmatrix} 
+  \begin{pmatrix} 
+    1 & 1\\
+    1 & 2
+  \end{pmatrix} 
+  \] 
+\end{example}
+
+\subsection{Proposizione}
+Sia \( A \in M_{n \times n}(\mathbb{K}) \). Se \( v_1, \ldots, v_r \) sono autovettori
+di \( A \) che corrispondono a \( r \) autovalori distinti \( \lambda_1, \ldots, \lambda_r \),
+allora \( \{v_1, \ldots, v_r\}  \) è linearmente indipendente. In particolare,
+se abbiamo \( n \) autovalori distinti, allora esiste una base di \( \mathbb{K}^n \) 
+formata da autovettori.
+
+\subsubsection{Dimostrazione (r = 2)}
+\( \{v_1,v_2\}  \) è linearmente indipendente \( \iff \) \( v_1 \) \textbf{non} è
+combinazione lineare di \( v_2 \) (cioè \( v_1 \) non è multiplo di \( v_2 \)). Mostriamo
+che non è possibile trovare \( \alpha \in \mathbb{K} \) tale che \( \alpha v_2 = v_1 \).
+
+\vspace{1em}
+\noindent Se \( v_1 = \alpha v_2 \), allora:
+\[
+\lambda_1 v_1 = Av_1 = A(\alpha v_2) = \alpha(A v_2) = \alpha(\lambda_2 v_2)
+\] 
+Quindi:
+\[
+\alpha \lambda_2 v_2 = \lambda_1 v_2 = \lambda_1 (\alpha v_2) = \alpha \lambda_1 v_2
+\] 
+cioè:
+\[
+\phi = \alpha \lambda_2 v_2 - \alpha \lambda_1 v_2 = \alpha(\lambda_2 - \lambda_1) v_2 = \mathbb{O}
+\] 
+Perciò \( v_2 \neq \mathbb{O} \) (definizione di autovettore) e \( \lambda_2 \neq \lambda_1 \) 
+(quindi \( \lambda_2 - \lambda_1 \neq 0 \)), concludiamo che \( \alpha=0 \). Ma
+è impossibile che \( v_1 = \mathbb{O} \) perchè \( v_1 \) è autovettore.
+Dunque non esiste un tale scalare \( \alpha \). \( \quad \square \) 
+
+\begin{example}
+  \[
+  A = \begin{pmatrix} 
+    0 & 1 & 1\\
+    1 & 0 & 1\\
+    1 & 1 & 0
+  \end{pmatrix} 
+  \in M_{3 \times 3}(\mathbb{R})
+  \] 
+  Vogliamo calcolare:
+  \begin{enumerate}
+    \item \textbf{Autovalori di \( A \)}
+
+      \vspace{1em}
+      \noindent Calcoliamo \( p_A = det(A-\lambda I_3) \) il polinomio caratteristico
+      della matrice \( A \). Le radici di \( p_A \) sono gli autovalori di \( A \).
+      \[
+      p_A = det(A - \lambda I_3) = det \begin{pmatrix} 
+        -\lambda & 1 & 1\\
+        1 & -\lambda & 1\\
+        1 & 1 & -\lambda
+      \end{pmatrix}
+      \] 
+      Utilizzo la regola di sarrus:
+      \[
+      \begin{pmatrix} 
+        -\lambda & 1 & 1\\
+        1 & -\lambda & 1\\
+        1 & 1 & -\lambda
+      \end{pmatrix} 
+      \begin{matrix}
+        -\lambda & 1\\
+        1 & -\lambda\\
+        1 & 1
+      \end{matrix}
+      \] 
+      \[
+      det(A - \lambda I_3) = (-\lambda)^3 + 1 + 1 - (-\lambda) - (-\lambda) - (-\lambda) =
+      \] 
+      \[
+      = -\lambda^3 + 3\lambda + 2
+      \] 
+      Osserviamo che \( \lambda_1 = 2 \) è una radice di \( p_A \). Dividiamo per
+      \( \lambda-2 \):
+      \[
+        \begin{tabular}{c|ccc|c}
+          & -1 & 0 & 3 & 2 \\
+          2 & & -2 & -4 & -2\\
+          \hline
+          & -1 & -2 & -1 & 0
+      \end{tabular}
+      \leadsto p_A = (\lambda-2)(-\lambda^2 - 2\lambda - 1)
+      \] 
+      Allora le radici di \( -\lambda^2 -2 \lambda - 1 \) sono:
+      \[
+      \frac{-(-2) \pm \sqrt{(-2)^2 - 4(-1)(-1)}}{2(-1)} = \frac{2 \pm \sqrt{0}}{-2} = -1
+      \] 
+      Quindi \( p_A = -(\lambda - 2)(\lambda + 1)^2 \) e gli autovalori sono:
+      \[
+      \lambda_1 = 2, \quad \lambda_2 = -1
+      \] 
+
+    \item \textbf{Molteplicità algebriche}
+
+      \vspace{1em}
+      \noindent Sono gli esponenti dei fattori del polinomio caratteristico.
+      \[
+      m_1 = 1, \quad m_2 = 2
+      \] 
+    \item \textbf{Molteplicità geometriche e basi di \( E_A(\lambda_i) \)}
+
+      \vspace{1em}
+      \noindent È la dimensione dell'autospazio \( E_A(\lambda_i) \).
+      \[
+      d_1 = dim_{\mathbb{R}}(E_A(2)), \quad d_2 = dim_{\mathbb{R}}(E_A(-1))
+      \] 
+
+      \[
+      E_A(\lambda_i) = N(A - \lambda_i I_3)
+      \] 
+      \[
+      E_A(2) = N \left(\begin{pmatrix} 
+        -2 & 1 & 1\\
+        1 & -2 & 1\\
+        1 & 1 & -2
+      \end{pmatrix} \right)
+      d_1 = 3 - rk \left( 
+        \begin{pmatrix} 
+          -2 & 1 & 1\\
+          1 & -2 & 1\\
+          1 & 1 & -2
+        \end{pmatrix} 
+      \right) 
+      \] 
+      \[
+      E_A(-1) = N \left( \begin{pmatrix} 
+        1 & 1 & 1\\
+        1 & 1 & 1\\
+        1 & 1 & 1
+      \end{pmatrix}  \right)
+      d_2 = 3 - rk \left( \begin{pmatrix} 
+        1 & 1 & 1\\
+        1 & 1 & 1\\
+        1 & 1 & 1
+      \end{pmatrix}  \right)
+      \] 
+
+      \[
+        A - \lambda_1 I_3 = \begin{pmatrix} 
+          -2 & 1 & 1\\
+          1 & -2 & 1\\
+          1 & 1 & -2
+        \end{pmatrix}
+        \sim
+        \begin{pmatrix} 
+          1 & -\frac{1}{2} & -\frac{1}{2}\\
+          1 & -2 & 1\\
+          1 & 1 & -2 
+        \end{pmatrix}
+        \sim
+        \begin{pmatrix} 
+          1 & -\frac{1}{2} & -\frac{1}{2}\\
+          0 & -\frac{3}{2} & \frac{3}{2}\\
+          0 & \frac{3}{2} & -\frac{3}{2}
+        \end{pmatrix}
+      \] 
+      \[
+      \sim
+      \begin{pmatrix} 
+        1 & -\frac{1}{2} & -\frac{1}{2}\\
+        0 & 1 & -1\\
+        0 & \frac{3}{2} & -\frac{3}{2}
+      \end{pmatrix}
+      \sim
+      \begin{pmatrix} 
+        1 & -\frac{1}{2} & -\frac{1}{2}\\
+        0 & 1 & -1\\
+        0 & 0 & 0
+      \end{pmatrix}
+      \] 
+      \( rk(A - \lambda_1 I_3) = 2 \) Quindi \( d_1 = 3-2=1 \) 
+
+      \vspace{1em}
+      \[
+      A - \lambda_2 I_3 = \begin{pmatrix} 
+        1 & 1 & 1\\
+        1 & 1 & 1\\
+        1 & 1 & 1
+      \end{pmatrix}
+      \sim
+      \begin{pmatrix} 
+        1 & 1 & 1\\
+        0 & 0 & 0\\
+        0 & 0 & 0
+      \end{pmatrix}
+      \] 
+      \( rk(A - \lambda_2 I_3) = 1 \) Quindi \( d_2 = 3-1 = 2 \).
+
+      \vspace{2em}
+      \noindent Calcoliamo una base per \( E_A(2) = N \left( \begin{pmatrix} 
+          -2 & 1 & 1\\
+          1 & -2 & 1\\
+          1 & 1 & -2
+      \end{pmatrix}  \right)  \) usando il metodo (vedi capitolo \ref{8}) per il calcolo
+      di basi di spazi nulli, possiamo calcolare una base di \( E_A(2) \):
+
+      \noindent Risolviamo il sistema lineare che corrisponde alla forma ridotta di
+      \[ \begin{pmatrix} 
+        -2 & 1 & 1\\
+        1 & -2 & 1\\
+        1 & 1 & -2
+      \end{pmatrix}  \]
+      \[
+      \begin{cases}
+        x_1 - \frac{1}{2}x_2 - \frac{1}{2}x_3 = 0\\
+        x_2 - x_3 = 0\\
+        x_3 = t
+      \end{cases}
+      \leadsto
+      \begin{cases}
+        x_1 = \frac{1}{2}t + \frac{1}{2}t = t\\
+        x_2 = t\\
+        x_3 = t
+      \end{cases}
+      \] 
+      \( \mathcal{B}_1 = \left\{ \begin{pmatrix} 1\\1\\1 \end{pmatrix}  \right\}  \) è una base di
+      \( N \left( \begin{pmatrix} 
+        -2 & 1 & 1\\
+        1 & -2 & 1\\
+        1 & 1 & -2
+      \end{pmatrix}  \right)  \)
+
+      \vspace{1em}
+      \noindent Calcoliamo una base \( E_A(-1) = N \left( \begin{pmatrix} 
+        1 & 1 & 1\\
+        1 & 1 & 1\\
+        1 & 1 & 1
+      \end{pmatrix}  \right)  \) 
+      \[
+      \begin{cases}
+        x_1 + x_2 + x_3 = 0\\
+        x_2 = t\\
+        x_3 = s
+      \end{cases}
+      \leadsto
+      \begin{cases}
+        x_1 = -t - s\\
+        x_2 = t\\
+        x_3 = s
+      \end{cases}
+      \] 
+      \( \mathcal{B}_2 = \left\{ \begin{pmatrix} -1\\1\\0 \end{pmatrix},
+      \begin{pmatrix} -1\\0\\1 \end{pmatrix}  \right\}  \) è una base di
+      \( N \left( \begin{pmatrix} 
+        1 & 1 & 1\\
+        1 & 1 & 1\\
+        1 & 1 & 1
+      \end{pmatrix}  \right)  \)
+  \end{enumerate}
+  Osserviamo che \[ \mathcal{B} = \mathcal{B}_1 \cup \mathcal{B}_2 = 
+    \left\{ \begin{pmatrix} 1\\1\\1 \end{pmatrix},
+    \begin{pmatrix} -1\\1\\0 \end{pmatrix},
+    \begin{pmatrix} -1\\0\\1 \end{pmatrix}  \right\}  \]
+    è una base di \( \mathbb{R}^3 \). Infatti, \( \mathcal{B} \) è linearmente indipendente
+    se e solo se
+    \[
+    B = \begin{pmatrix} 
+      1 & -1 & -1\\
+      1 & 1 & 0\\
+      1 & 0 & 1
+    \end{pmatrix} 
+    \] 
+    ha rango 3, cioè se e solo se \( det(B) \neq 0 \).
+    \[
+    \begin{pmatrix} 
+      1 & -1 & -1\\
+      1 & 1 & 0\\
+      1 & 0 & 1
+    \end{pmatrix} 
+    \sim
+    \begin{pmatrix} 
+      1 & -1 & -1\\
+      0 & 2 & 1\\
+      0 & 1 & 2
+    \end{pmatrix}
+    \sim
+    \begin{pmatrix} 
+      1 & -1 & -1\\
+      0 & 1 & 2\\
+      0 & 2 & 1
+    \end{pmatrix} 
+    \] 
+    \[
+    \sim
+    \begin{pmatrix} 
+      1 & -1 & -1\\
+      0 & 1 & 2\\
+      0 & 0 & -3
+    \end{pmatrix} 
+    \sim
+    \begin{pmatrix} 
+      1 & -1 & -1\\
+      0 & 1 & 2\\
+      0 & 0 & 1
+    \end{pmatrix} \to rk(B) = 3
+    \] 
+    Quindi \( \mathcal{B} \) è linearmente indipendente. Siccome \( \mathcal{B} \) contiene
+    3 vettori, allora \( \mathcal{B} \) è una base
+    di \( \mathbb{R}^3 \).
+
+    \vspace{1em}
+    \noindent Per \ref{9.7}, la matrice diagonale:
+    \[
+    D = \begin{pmatrix} 
+      2 & 0 & 0\\
+      0 & -1 & 0\\
+      0 & 0 & -1
+    \end{pmatrix} 
+    \] 
+    e la matrice invertibile:
+    \[
+    B = \begin{pmatrix} 
+      1 & -1 & -1\\
+      1 & 1 & 0\\
+      1 & 0 & 1
+    \end{pmatrix} 
+    \] 
+    tali che: 
+    \[
+    D = B^{-1}AB \;\text{ e }\; BDB^{-1} = \overbrace{BB^{-1}}^{I_3}A\overbrace{B^{-1}B}^{I_3} = A 
+  \]
+\end{example}
+
+\subsection{Definizione}
+\begin{enumerate}
+  \item Due matrici \( A,B \in M_{n \times n}(\mathbb{K}) \) sono \textbf{simili} se
+    esiste una matrice invertibile \( S \in M_{n \times n}(\mathbb{K}) \) tale che:
+    \[
+    B = S^{-1}AS
+    \] 
+
+  \item Se \( A \in  M_{n \times n}(\mathbb{K}) \) è simile a una matrice diagonale,
+    allora \( A \) è \textbf{diagonalizzabile} su \( \mathbb{K} \).
+\end{enumerate}
+
+
 \end{document}
