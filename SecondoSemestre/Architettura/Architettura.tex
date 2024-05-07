@@ -2528,7 +2528,7 @@ il comando asm:
 		\draw
 		(b7.west) -- ++(-0.5,0) node[above right] {\( b_7 \) }
 		-- ++(0,-7.8) -- ++(0.5,0) -- ++(0,-0.73)
-		(b7.east) -- ++(0.5,0) -- ++(0,-7.8) -- ++(-0.5,0) -- ++(0,-0.73);
+    (b7.east) -- ++(0.5,0) node[above, midway] {\( b'_7 \) } -- ++(0,-7.8) -- ++(-0.5,0) -- ++(0,-0.73);
 
 		% cls b7
 		\node[draw, rectangle, minimum width=1cm, minimum height=1cm, align=center, scale=0.7]
@@ -2560,7 +2560,7 @@ il comando asm:
 		\draw
 		(b6.west) -- ++(-0.5,0) node[above right] {\( b_6 \) }
 		-- ++(0,-7.8) -- ++(0.5,0) -- ++(0,-0.73)
-		(b6.east) -- ++(0.5,0) -- ++(0,-7.8) -- ++(-0.5,0) -- ++(0,-0.73);
+		(b6.east) -- ++(0.5,0) node[above, midway] {\( b'_6 \) } -- ++(0,-7.8) -- ++(-0.5,0) -- ++(0,-0.73);
 
 		% cls b6
 		\node[draw, rectangle, minimum width=1cm, minimum height=1cm, align=center, scale=0.7]
@@ -2592,7 +2592,7 @@ il comando asm:
 		\draw
 		(b0.west) -- ++(-0.5,0) node[above right] {\( b_0 \) }
 		-- ++(0,-7.8) -- ++(0.5,0) -- ++(0,-0.73)
-		(b0.east) -- ++(0.5,0) -- ++(0,-7.8) -- ++(-0.5,0) -- ++(0,-0.73);
+		(b0.east) -- ++(0.5,0) node[above, midway] {\( b'_0 \) } -- ++(0,-7.8) -- ++(-0.5,0) -- ++(0,-0.73);
 
 		% cls b0
 		\node[draw, rectangle, minimum width=1cm, minimum height=1cm, align=center, scale=0.7]
@@ -2642,19 +2642,51 @@ il comando asm:
 	\end{tikzpicture}
 \end{figure}
 
+Una memoria è compattata in un chip con diversi pin con compiti diversi:
+\begin{itemize}
+	\item \textbf{8 Pin dati}: permettono di leggere o scrivere i dati
+	\item \textbf{4 Pin indirizzi}: permettono di selezionare la cella di memoria
+	\item \textbf{2 Pin controllo}: permettono di controllare la memoria
+  \item \textbf{2 pin di alimentazione}: permettono di alimentare la memoria
+\end{itemize}
+
+\subsection{Static RAM (SRAM)}
+La SRAM è una memoria statica, ovvero non ha bisogno di essere rinfrescata
+per mantenere i dati. Questo tipo di memoria è più veloce, ma occupa più spazio
+ed è più costosa.
+
 \noindent Ogni singola cella è strutturata in questo modo:
 
 \begin{figure}[H]
   \centering
   \begin{circuitikz}
-    \draw (0,0) -- ++(0.5,0) node[nmos, anchor=D, rotate=90] (nmos1) {}
+    \draw (0,0) to[short, *-] ++(0.5,0) node[nmos, anchor=D, rotate=90] (nmos1) {}
       (nmos1.S) to[short,-*] ++(0.5,0) node {}
-      to[short] ++(0,1) -- ++(0.5,0) node[not port, anchor=in, scale=0.7] (no1) {}
+      to[short] ++(0,1) -- ++(0.5,0) node[not port, anchor=in, scale=0.7, yscale=0.7] (not1) {}
+      (not1.out) to[short] ++(0.5,0) to[short, -*] ++(0,-1)
+      to[short] ++(0,-1) to[short] ++(-0.5,0) node[not port, anchor=in, rotate=180, scale=0.7, yscale=0.7] (not2) {}
+      (not2.out) to[short] ++(-0.5,0) to[short] ++(0,1)
+      (4.5,0) -- ++(0.5,0) node[nmos, anchor=D, rotate=90] (nmos2) {}
+      (nmos2.S) to[short,-*] ++(0.5,0) node {}
+      (nmos1.G) to[short, -*] ++(0,-1)
+      (nmos2.G) to[short, -*] ++(0,-1)
       ;
-    
+
+    % labels
+    \node at (nmos1.G) [right] {\( T_1 \) };
+    \node at (nmos2.G) [right] {\( T_2 \) };
+
+    % b line
+    \draw (0,-2.5) -- (0,2) node[above] {\( b \) line};
+    % b' line
+    \draw (7.05,-2.5) -- (7.05,2) node[above] {\( b' \) line};
+    % p line
+    \draw (-0.5,-2) -- (7.5,-2) node[above right] {\( p \) line};
   \end{circuitikz}
+  \caption{Struttura di una cella di memoria}
 \end{figure}
-TODO
+
+\noindent Considerando che la porta NOT è costruita nel seguente modo:
 
 \begin{figure}[H]
 	\begin{center}
@@ -2680,19 +2712,58 @@ TODO
     \caption{Circuito di negazione}
 \end{figure}
 
-\subsection{Static RAM (SRAM)}
-La SRAM è una memoria statica, ovvero non ha bisogno di essere rinfrescata
-per mantenere i dati. Questo tipo di memoria è più veloce, ma occupa più spazio
-ed è più costosa.
+\noindent La struttura della cella di memoria si può espandere ulteriormente in questo
+modo:
+\begin{figure}[H]
+  \centering
+  \begin{circuitikz}
+    \draw (0,0) to[short, *-] ++(0.5,0) node[nmos, anchor=D, rotate=90] (nmos1) {}
+      (nmos1.S) to[short,-*] ++(0.5,0) node {}
+      node[pmos, anchor=S, rotate=180] (pmos1) {}
+      (pmos1.D) to[short] ++(3,0)
+      node[pmos, anchor=S, rotate=0] (pmos2) {}
+      (pmos2.D) node[nmos, anchor=D, rotate=0] (nmos3) {}
+      (nmos3.S) to[short, -*] ++(-1.5,0) node[ground] (gnd) {}
+      (gnd) to[short] ++(-1.5,0) node[nmos, anchor=D, rotate=180] (nmos4) {}
 
-Una memoria è compattata in un chip con diversi pin con compiti diversi:
-\begin{itemize}
-	\item \textbf{8 Pin dati}: permettono di leggere o scrivere i dati
-	\item \textbf{4 Pin indirizzi}: permettono di selezionare la cella di memoria
-	\item \textbf{2 Pin controllo}: permettono di controllare la memoria
-	      \textbf{2 pin di alimentazione}: permettono di alimentare la memoria
-\end{itemize}
+      (pmos1.S) -- (nmos3.G)
+      (pmos2.D) -- (nmos4.G)
 
+      (pmos2.G) to[short, -*] (3.3,-0.28)
+      (pmos1.G) to[short, -*] (4.75,-0.28)
+      
+      (pmos2.D) to[short, *-] ++(0.5,0) node[nmos, anchor=D, rotate=90] (nmos2) {}
+      (nmos2.S) to[short,-*] ++(0.5,0) node {}
+      (nmos1.G) to[short, -*] ++(0,-1)
+      (nmos2.G) to[short, -*] ++(0,-1)
+      ;
+
+    % labels
+    \node at (nmos1.G) [right] {\( T_1 \) };
+    \node at (nmos2.G) [right] {\( T_2 \) };
+    \node at (nmos3.G) [below] {\( T_4 \) };
+    \node at (nmos4.G) [below] {\( T_3 \) };
+    \node at (pmos1.G) [above] {\( T_5 \) };
+    \node at (pmos2.G) [above] {\( T_6 \) };
+
+    % b line
+    \draw (0,-3) -- (0,2) node[above] {\( b \) line};
+    % b' line
+    \draw (8.08,-3) -- (8.08,2) node[above] {\( b' \) line};
+    % p line
+    \draw (-0.5,-2.5) -- (8.5,-2.5) node[above right] {\( p \) line};
+  \end{circuitikz}
+  \caption{Struttura di una cella di memoria}
+\end{figure}
+
+\subsection{Dynamic RAM (DRAM)}
+I condensatori permettono di mantenere una carica elettrica per un certo
+periodo di tempo, questa carica però si degrada nel tempo. Per mantenere la carica
+si deve rinfrescare ogni condensatore per ripristinare la carica. Questo rinfresco
+però riduce la velocità della memoria. Visto che la DRAM occupa meno spazio rispetto
+alla SRAM, è più lenta, ma è più economica e può essere fatta più capiente.
+
+\begin{example}
 \[
 	1Kbit = 32 \times 32 = 2^5 \times 2^5
 \]
@@ -2767,18 +2838,13 @@ Si avrà una SRAM che sarà una matrice da \( m \) bit \( 32 \times 32 \)
 
 \noindent Mediante gli indirizzi di riga e di colonna si può scegliere esattamente la
 cella desiderata.
-
-\subsection{Dynamic RAM (DRAM)}
-I condensatori permettono di mantenere una carica elettrica per un certo
-periodo di tempo, questa carica però si degrada nel tempo. Per mantenere la carica
-si deve rinfrescare ogni condensatore per ripristinare la carica. Questo rinfresco
-però riduce la velocità della memoria. Visto che la DRAM occupa meno spazio rispetto
-alla SRAM, è più lenta, ma è più economica e può essere fatta più capiente.
-
+\end{example}
 
 \subsection{Syncronous DRAM (SDRAM)}
 La SDRAM è una DRAM sincrona, ovvero sincronizzata con il clock della CPU. Questo
 permette di avere una maggiore velocità di trasferimento dei dati.
+
+\begin{example}
 \[
 	256Mbit \;\; 32Mbit \times 8 \quad \text{celle } 16K \times 16K
 \]
@@ -2857,7 +2923,7 @@ Ogni riga ha 16384 bit divisi in 2048 byte. Sono presenti 2 segnali:
 la riga, al secondo ciclo di clock viene attivato il segnale \( \overline{CAS} \) selezionando
 la colonna. In questo modo non servono \( 14 + 11 \) bit, ma ne bastano 14; si sacrifica
 il ritardo per guadagnare area.
-
+\end{example}
 \vspace{1em}
 \noindent La SDRAM è molto efficiente in lettura, perchè una volta impostati i segnali
 di riga e colonna, i dati vengono letti in sequenza senza dover cambiare i segnali, come
