@@ -1066,50 +1066,50 @@ e non interrompibile del sistema.
 
 \subsubsection{Operazioni}
 \begin{itemize}
-  \item \textbf{Operazioni di calcolo}:
-    \begin{itemize}
-      \item \textbf{ADD}: somma due numeri
-      \item \textbf{AND}: effettua l'AND bit a bit tra due numeri
-      \item \textbf{NOT}: effettua il NOT bit a bit di un numero
-    \end{itemize}
-  \item \textbf{Operazioni di movimento dei dati}:
-    \begin{itemize}
-      \item \textbf{LD}
-      \item \textbf{LDI}
-      \item \textbf{LDR}
-      \item \textbf{LEA}
-      \item \textbf{ST}
-      \item \textbf{STR}
-      \item \textbf{STI} 
-    \end{itemize}
-  \item \textbf{Operazioni di controllo}:
+	\item \textbf{Operazioni di calcolo}:
+	      \begin{itemize}
+		      \item \textbf{ADD}: somma due numeri
+		      \item \textbf{AND}: effettua l'AND bit a bit tra due numeri
+		      \item \textbf{NOT}: effettua il NOT bit a bit di un numero
+	      \end{itemize}
+	\item \textbf{Operazioni di movimento dei dati}:
+	      \begin{itemize}
+		      \item \textbf{LD}
+		      \item \textbf{LDI}
+		      \item \textbf{LDR}
+		      \item \textbf{LEA}
+		      \item \textbf{ST}
+		      \item \textbf{STR}
+		      \item \textbf{STI}
+	      \end{itemize}
+	\item \textbf{Operazioni di controllo}:
 
-    \noindent Sono gestite da 3 flag:
-    \begin{itemize}
-      \item \textbf{N}: negativo
-      \item \textbf{Z}: zero
-      \item \textbf{P}: positivo
-    \end{itemize}
-    Le operazioni sono:
-    \begin{itemize}
-      \item \textbf{BR}
-      \item \textbf{JMP}
-      \item \textbf{JSR}
-      \item \textbf{JSRR}
-      \item \textbf{RTI}
-      \item \textbf{TRAP}
-    \end{itemize}
+	      \noindent Sono gestite da 3 flag:
+	      \begin{itemize}
+		      \item \textbf{N}: negativo
+		      \item \textbf{Z}: zero
+		      \item \textbf{P}: positivo
+	      \end{itemize}
+	      Le operazioni sono:
+	      \begin{itemize}
+		      \item \textbf{BR}
+		      \item \textbf{JMP}
+		      \item \textbf{JSR}
+		      \item \textbf{JSRR}
+		      \item \textbf{RTI}
+		      \item \textbf{TRAP}
+	      \end{itemize}
 \end{itemize}
 
 I tipi di dato sono gestiti come 16 bit codificati in complemento a 2.
 
 \subsubsection{Metodi di indirizzamento}
 \begin{itemize}
-  \item \textbf{Immediate}: l'operando è un valore costante
-  \item \textbf{Register}: l'operando è un registro
-  \item \textbf{PC-relative}: l'operando è un offset rispetto al PC
-  \item \textbf{Indirect}: l'operando è un indirizzo in memoria
-  \item \textbf{Base+offset}: l'operando è un indirizzo in memoria calcolato come somma di un registro e un offset
+	\item \textbf{Immediate}: l'operando è un valore costante
+	\item \textbf{Register}: l'operando è un registro
+	\item \textbf{PC-relative}: l'operando è un offset rispetto al PC
+	\item \textbf{Indirect}: l'operando è un indirizzo in memoria
+	\item \textbf{Base+offset}: l'operando è un indirizzo in memoria calcolato come somma di un registro e un offset
 \end{itemize}
 
 \section{Assembly (Intel x86)}
@@ -1776,159 +1776,159 @@ ma \textbf{CPU cablate} in questo modo non si realizzano più.
 \subsection{Esercizi}
 
 \begin{exercise}
-  Descrivere le micro operazioni per l'istruzione:
-  \begin{center}
-    Fetch
-  \end{center}
+	Descrivere le micro operazioni per l'istruzione:
+	\begin{center}
+		Fetch
+	\end{center}
 
-  \begin{enumerate}
-    \item[F]
-      \begin{enumerate}
-        \item[1.] \( PC_{out},\; MAR_{in},\; READ ,\; SELECT_4,\; ADD,\; Z_{in}\) \\
-          Il Program Counter manda l'indirizzo di memoria in cui si trova l'istruzione da eseguire
-          al Memory Address Register e manda un segnale di lettura.
+	\begin{enumerate}
+		\item[F]
+		      \begin{enumerate}
+			      \item[1.] \( PC_{out},\; MAR_{in},\; READ ,\; SELECT_4,\; ADD,\; Z_{in}\) \\
+			            Il Program Counter manda l'indirizzo di memoria in cui si trova l'istruzione da eseguire
+			            al Memory Address Register e manda un segnale di lettura.
 
-          Il segnale di selezione 4 manda un segnale al multiplexer per selezionare il valore
-          da mandare alla ALU e il segnale di addizione manda un segnale alla ALU per sommare
-          4 all'indirizzo di memoria. Ciò vuol dire che l'indirizzo di memoria successivo è
-          l'indirizzo di memoria corrente + 1 word. Tutto ciò per incrementare il Program
-          Counter in modo da accedere all'istruzione successiva.
+			            Il segnale di selezione 4 manda un segnale al multiplexer per selezionare il valore
+			            da mandare alla ALU e il segnale di addizione manda un segnale alla ALU per sommare
+			            4 all'indirizzo di memoria. Ciò vuol dire che l'indirizzo di memoria successivo è
+			            l'indirizzo di memoria corrente + 1 word. Tutto ciò per incrementare il Program
+			            Counter in modo da accedere all'istruzione successiva.
 
-        \item[2.] \( Z_{out},\; PC_{in},\;WMFC \)  \\
-          \textbf{WMFC}(Wait for Memory Function to Complete): è un segnale che blocca il clock
-          successivo della CPU finchè il dato viene messo nel bus dati.
+			      \item[2.] \( Z_{out},\; PC_{in},\;WMFC \)  \\
+			            \textbf{WMFC}(Wait for Memory Function to Complete): è un segnale che blocca il clock
+			            successivo della CPU finchè il dato viene messo nel bus dati.
 
-          Siccome in questo ciclo di clock il bus non viene utilizzato viene sfruttato per
-          mandare il segnale di incremento al Program Counter.
+			            Siccome in questo ciclo di clock il bus non viene utilizzato viene sfruttato per
+			            mandare il segnale di incremento al Program Counter.
 
-          Il segnale di lettura manda un segnale di attesa finchè il dato non viene messo nel bus dati.
-        \item[3.] \( MDR_{out},\; IR_{in} \) \\
-          Il Memory Data Register manda il dato letto dall'indirizzo di memoria all'Instruction Register.
-      \end{enumerate}
-  \end{enumerate}
+			            Il segnale di lettura manda un segnale di attesa finchè il dato non viene messo nel bus dati.
+			      \item[3.] \( MDR_{out},\; IR_{in} \) \\
+			            Il Memory Data Register manda il dato letto dall'indirizzo di memoria all'Instruction Register.
+		      \end{enumerate}
+	\end{enumerate}
 \end{exercise}
 
 \begin{exercise}
-  Descrivere le micro operazioni per l'istruzione:
-  \begin{center}
-    \texttt{INC \%EAX}
-  \end{center}
+	Descrivere le micro operazioni per l'istruzione:
+	\begin{center}
+		\texttt{INC \%EAX}
+	\end{center}
 
-  \begin{enumerate}
-    \item[F]
-      \begin{enumerate}
-        \item[1.] \( PC_{out},\; MAR_{in},\; READ ,\; SELECT_4,\; ADD,\; Z_{in}\)
-        \item[2.] \( Z_{out},\; PC_{in},\;WMFC \)
-        \item[3.] \( MDR_{out},\; IR_{in} \)
-      \end{enumerate}
+	\begin{enumerate}
+		\item[F]
+		      \begin{enumerate}
+			      \item[1.] \( PC_{out},\; MAR_{in},\; READ ,\; SELECT_4,\; ADD,\; Z_{in}\)
+			      \item[2.] \( Z_{out},\; PC_{in},\;WMFC \)
+			      \item[3.] \( MDR_{out},\; IR_{in} \)
+		      \end{enumerate}
 
-    \item [DE]
-      \begin{enumerate}
-        \item[1.] \( EAX_{out},\; SELECT_0,\; CB,\; ADD,\; Z_{in} \)
-        \item[2.] \( Z_{out},\; EAX_{in},\; END \) 
-      \end{enumerate}
-  \end{enumerate}
+		\item [DE]
+		      \begin{enumerate}
+			      \item[1.] \( EAX_{out},\; SELECT_0,\; CB,\; ADD,\; Z_{in} \)
+			      \item[2.] \( Z_{out},\; EAX_{in},\; END \)
+		      \end{enumerate}
+	\end{enumerate}
 \end{exercise}
 
 \begin{exercise}
-  Descrivere le micro operazioni per l'istruzione:
-  \begin{center}
-    \texttt{INC var}
-  \end{center}
-  Assumo la variabile come un indirizzo immediato nell'istruzione. Si fa
-  riferimento ad essa con \( IR_{imm\_field} \) 
+	Descrivere le micro operazioni per l'istruzione:
+	\begin{center}
+		\texttt{INC var}
+	\end{center}
+	Assumo la variabile come un indirizzo immediato nell'istruzione. Si fa
+	riferimento ad essa con \( IR_{imm\_field} \)
 
-  \begin{enumerate}
-    \item[F]
-      \begin{enumerate}
-        \item[1.] \( PC_{out},\; MAR_{in},\; READ ,\; SELECT_4,\; ADD,\; Z_{in}\)
-        \item[2.] \( Z_{out},\; PC_{in},\;WMFC \)
-        \item[3.] \( MDR_{out},\; IR_{in} \)
-      \end{enumerate}
+	\begin{enumerate}
+		\item[F]
+		      \begin{enumerate}
+			      \item[1.] \( PC_{out},\; MAR_{in},\; READ ,\; SELECT_4,\; ADD,\; Z_{in}\)
+			      \item[2.] \( Z_{out},\; PC_{in},\;WMFC \)
+			      \item[3.] \( MDR_{out},\; IR_{in} \)
+		      \end{enumerate}
 
-    \item [DE]
-      \begin{enumerate}
-        \item[1.] \( IR_{imm\_field\_out},\; MAR_{in},\; READ ,\; WMFC \)
-        \item[2.] \( MDR_{out},\; SELECT_0 ,\; CB ,\; ADD ,\; Z_{in} \)
-        \item [3.] \( Z_{out} ,\; MDR_{in} ,\; WRITE ,\; WMFC ,\; END \) 
-      \end{enumerate}
-  \end{enumerate}
+		\item [DE]
+		      \begin{enumerate}
+			      \item[1.] \( IR_{imm\_field\_out},\; MAR_{in},\; READ ,\; WMFC \)
+			      \item[2.] \( MDR_{out},\; SELECT_0 ,\; CB ,\; ADD ,\; Z_{in} \)
+			      \item [3.] \( Z_{out} ,\; MDR_{in} ,\; WRITE ,\; WMFC ,\; END \)
+		      \end{enumerate}
+	\end{enumerate}
 \end{exercise}
 
 \begin{exercise}
-  Descrivere le micro operazioni per l'istruzione:
-  \begin{center}
-    \texttt{CALL etichetta}
-  \end{center}
-  Dove etichetta è un indirizzo immediato, ma relativo al program counter 
-  \( PC + IR_{imm\_field} \) 
+	Descrivere le micro operazioni per l'istruzione:
+	\begin{center}
+		\texttt{CALL etichetta}
+	\end{center}
+	Dove etichetta è un indirizzo immediato, ma relativo al program counter
+	\( PC + IR_{imm\_field} \)
 
-  \begin{enumerate}
-    \item[F]
-      \begin{enumerate}
-        \item[1.] \( PC_{out},\; MAR_{in},\; READ ,\; SELECT_4,\; ADD,\; Z_{in}\)
-        \item[2.] \( Z_{out},\; PC_{in},\;WMFC \)
-        \item[3.] \( MDR_{out},\; IR_{in} \)
-      \end{enumerate}
+	\begin{enumerate}
+		\item[F]
+		      \begin{enumerate}
+			      \item[1.] \( PC_{out},\; MAR_{in},\; READ ,\; SELECT_4,\; ADD,\; Z_{in}\)
+			      \item[2.] \( Z_{out},\; PC_{in},\;WMFC \)
+			      \item[3.] \( MDR_{out},\; IR_{in} \)
+		      \end{enumerate}
 
-    \item [DE]
-      \begin{enumerate}
-        \item[1.] \( ESP_{out} ,\; SELECT_4 ,\; SUB,\; Z_{in} \)
-        \item[2.] \( Z_{out},\; MAR_{in} ,\; ESP_{in} \) 
-        \item[3.] \( PC_{out} ,\; MDR_{in} ,\; WRITE ,\; V_{in}\) 
-        \item[4.] \( IR_{imm\_field} ,\; SELECT_V, ADD ,\; Z_{in} ,\; WMFC \) 
-        \item[5.] \( Z_{out} ,\; PC_{in} ,\; END\) 
-      \end{enumerate}
-  \end{enumerate}
+		\item [DE]
+		      \begin{enumerate}
+			      \item[1.] \( ESP_{out} ,\; SELECT_4 ,\; SUB,\; Z_{in} \)
+			      \item[2.] \( Z_{out},\; MAR_{in} ,\; ESP_{in} \)
+			      \item[3.] \( PC_{out} ,\; MDR_{in} ,\; WRITE ,\; V_{in}\)
+			      \item[4.] \( IR_{imm\_field} ,\; SELECT_V, ADD ,\; Z_{in} ,\; WMFC \)
+			      \item[5.] \( Z_{out} ,\; PC_{in} ,\; END\)
+		      \end{enumerate}
+	\end{enumerate}
 \end{exercise}
 
 \begin{exercise}
-  Descrivere le micro operazioni per l'istruzione:
-  \begin{center}
-    \texttt{RETURN}
-  \end{center}
-  \begin{enumerate}
-    \item[F]
-      \begin{enumerate}
-        \item[1.] \( PC_{out},\; MAR_{in},\; READ ,\; SELECT_4,\; ADD,\; Z_{in}\)
-        \item[2.] \( Z_{out},\; PC_{in},\;WMFC \)
-        \item[3.] \( MDR_{out},\; IR_{in} \)
-      \end{enumerate}
+	Descrivere le micro operazioni per l'istruzione:
+	\begin{center}
+		\texttt{RETURN}
+	\end{center}
+	\begin{enumerate}
+		\item[F]
+		      \begin{enumerate}
+			      \item[1.] \( PC_{out},\; MAR_{in},\; READ ,\; SELECT_4,\; ADD,\; Z_{in}\)
+			      \item[2.] \( Z_{out},\; PC_{in},\;WMFC \)
+			      \item[3.] \( MDR_{out},\; IR_{in} \)
+		      \end{enumerate}
 
-    \item [DE]
-      \begin{enumerate}
-        \item[1.] \( ESP_{out} ,\; SELECT_4 ,\; ADD,\; Z_{in},\; MAR_{in},\; READ \)
-        \item[3.] \( Z_{out},\; ESP_{in},\; EMFC \)
-        \item[3.] \( MDR_{out}, PC_{in} \) 
-      \end{enumerate}
-  \end{enumerate}
+		\item [DE]
+		      \begin{enumerate}
+			      \item[1.] \( ESP_{out} ,\; SELECT_4 ,\; ADD,\; Z_{in},\; MAR_{in},\; READ \)
+			      \item[3.] \( Z_{out},\; ESP_{in},\; EMFC \)
+			      \item[3.] \( MDR_{out}, PC_{in} \)
+		      \end{enumerate}
+	\end{enumerate}
 \end{exercise}
 
 \begin{exercise}
-  Descrivere le micro operazioni per l'istruzione:
-  \begin{center}
-    \texttt{CALL (\%EAX, \%EBX)}
-  \end{center}
-  Viene fatta la call all'indirizzo ottenuto sommando EBX a EAX
+	Descrivere le micro operazioni per l'istruzione:
+	\begin{center}
+		\texttt{CALL (\%EAX, \%EBX)}
+	\end{center}
+	Viene fatta la call all'indirizzo ottenuto sommando EBX a EAX
 
-  \begin{enumerate}
-    \item[F]
-      \begin{enumerate}
-        \item[1.] \( PC_{out},\; MAR_{in},\; READ ,\; SELECT_4,\; ADD,\; Z_{in}\)
-        \item[2.] \( Z_{out},\; PC_{in},\;WMFC \)
-        \item[3.] \( MDR_{out},\; IR_{in} \)
-      \end{enumerate}
+	\begin{enumerate}
+		\item[F]
+		      \begin{enumerate}
+			      \item[1.] \( PC_{out},\; MAR_{in},\; READ ,\; SELECT_4,\; ADD,\; Z_{in}\)
+			      \item[2.] \( Z_{out},\; PC_{in},\;WMFC \)
+			      \item[3.] \( MDR_{out},\; IR_{in} \)
+		      \end{enumerate}
 
-    \item [DE]
-      \begin{enumerate}
-        \item[1.] \( ESP_{out} ,\; SELECT_4 ,\; SUB,\; Z_{in} \)
-        \item[2.] \( Z_{out},\; MAR_{in} ,\; ESP_{in} \) 
-        \item[6.] \( PC_{out} ,\; MDR_{in} ,\; WRITE \) 
-        \item[3.] \( EAX_{out} ,\; V_{in} \)
-        \item[4.] \( EBX_{out},\; SELECT_V,\; ADD ,\; Z_{in}, WMFC \) 
-        \item[5.] \( Z_{out} ,\; PC_{in} ,\; END\) 
-      \end{enumerate}
-  \end{enumerate}
+		\item [DE]
+		      \begin{enumerate}
+			      \item[1.] \( ESP_{out} ,\; SELECT_4 ,\; SUB,\; Z_{in} \)
+			      \item[2.] \( Z_{out},\; MAR_{in} ,\; ESP_{in} \)
+			      \item[6.] \( PC_{out} ,\; MDR_{in} ,\; WRITE \)
+			      \item[3.] \( EAX_{out} ,\; V_{in} \)
+			      \item[4.] \( EBX_{out},\; SELECT_V,\; ADD ,\; Z_{in}, WMFC \)
+			      \item[5.] \( Z_{out} ,\; PC_{in} ,\; END\)
+		      \end{enumerate}
+	\end{enumerate}
 \end{exercise}
 
 \section{Dispositivi di input e output}
@@ -2396,38 +2396,38 @@ Nel file binario è presente un \textbf{header} che indica come interpretare il 
 Il file binario contiene un'immagine della memoria che verrà caricata in memoria
 prima di essere eseguito. Questo file binario contiene:
 \begin{itemize}
-  \item \textbf{Codice}: contiene le istruzioni da eseguire
-  \item \textbf{Dati statici}: contiene i dati che non cambiano durante l'esecuzione,
-    come ad esempio i \texttt{\#DEFINE} o le stringhe dei print, che sono tutti dati
-    che rimangono costanti durante l'esecuzione.
-  \item \textbf{Heap}: contiene i dati che vengono allocati dinamicamente durante
-    l'esecuzione del programma, ad esempio la funzione \texttt{malloc()} in C.
-  \item \textbf{Stack}: contiene i dati che vengono allocati durante l'esecuzione
-    di una funzione e che vengono deallocati quando la funzione termina, ad
-    esempio il \texttt{main} o le funzioni generiche. Lo stack pointer (ESP)
-    punta alla cima dello stack e cresce verso l'alto.
-  \item \textbf{Puntatori Limit e Base}: sono due registri che indicano la base
-    e il limite dello stack. Questi servono per evitare che il programma salvato in
-    memoria modifichi gli altri processi salvati in memoria nel caso in cui il
-    programma vada in \textbf{Segmentation Fault}. Se il programma va in Segmentation
-    Fault il sistema operativo lo termina tramite un interrupt.
+	\item \textbf{Codice}: contiene le istruzioni da eseguire
+	\item \textbf{Dati statici}: contiene i dati che non cambiano durante l'esecuzione,
+	      come ad esempio i \texttt{\#DEFINE} o le stringhe dei print, che sono tutti dati
+	      che rimangono costanti durante l'esecuzione.
+	\item \textbf{Heap}: contiene i dati che vengono allocati dinamicamente durante
+	      l'esecuzione del programma, ad esempio la funzione \texttt{malloc()} in C.
+	\item \textbf{Stack}: contiene i dati che vengono allocati durante l'esecuzione
+	      di una funzione e che vengono deallocati quando la funzione termina, ad
+	      esempio il \texttt{main} o le funzioni generiche. Lo stack pointer (ESP)
+	      punta alla cima dello stack e cresce verso l'alto.
+	\item \textbf{Puntatori Limit e Base}: sono due registri che indicano la base
+	      e il limite dello stack. Questi servono per evitare che il programma salvato in
+	      memoria modifichi gli altri processi salvati in memoria nel caso in cui il
+	      programma vada in \textbf{Segmentation Fault}. Se il programma va in Segmentation
+	      Fault il sistema operativo lo termina tramite un interrupt.
 \end{itemize}
 
 \begin{figure}[H]
-  \centering
-  \begin{tikzpicture}
-    \draw (0,0) rectangle (3,5);
+	\centering
+	\begin{tikzpicture}
+		\draw (0,0) rectangle (3,5);
 
-    \draw (0,4) -- (3,4) node[midway, above, yshift=8] {Codice};
-    \draw (0,3) -- (3,3) node[midway, above, yshift=8] {Dati statici};
-    \draw (0,1.5) -- (3,1.5) node[midway, above, yshift=13] {Heap};
-    \node at (1.5,0.75) {Stack};
+		\draw (0,4) -- (3,4) node[midway, above, yshift=8] {Codice};
+		\draw (0,3) -- (3,3) node[midway, above, yshift=8] {Dati statici};
+		\draw (0,1.5) -- (3,1.5) node[midway, above, yshift=13] {Heap};
+		\node at (1.5,0.75) {Stack};
 
-    \draw[latex-] (3,0) -- ++(0.5,0) node[right] {ESP};
-    \draw[latex-] (0,0) -- ++(-0.5,0) node[left] {LIMIT};
-    \draw[latex-] (0,5) -- ++(-0.5,0) node[left] {BASE};
-  \end{tikzpicture}
-  \caption{Struttura di un file binario}
+		\draw[latex-] (3,0) -- ++(0.5,0) node[right] {ESP};
+		\draw[latex-] (0,0) -- ++(-0.5,0) node[left] {LIMIT};
+		\draw[latex-] (0,5) -- ++(-0.5,0) node[left] {BASE};
+	\end{tikzpicture}
+	\caption{Struttura di un file binario}
 \end{figure}
 
 \noindent Lo stack è stato posizionato in basso perchè cresce verso l'alto, infatti
@@ -2445,29 +2445,29 @@ il comando asm:
 \noindent Lo stack del programma in C scritto sopra è il seguente:
 
 \begin{figure}[H]
-  \centering
-  \begin{tikzpicture}
-    \draw (0,0) rectangle (3,5) node[above left, xshift=-26] {Stack};
+	\centering
+	\begin{tikzpicture}
+		\draw (0,0) rectangle (3,5) node[above left, xshift=-26] {Stack};
 
-    \draw (0,0.3) -- (3,0.3) node[midway, below, scale=0.6] {info (PC OS)};
-    \draw (0,0.6) -- (3,0.6) node[midway, below, scale=0.6] {A = 5};
-    \draw (0,0.9) -- (3,0.9) node[midway, below, scale=0.6] {B = 7};
-    \draw (0,1.2) -- (3,1.2) node[midway, below, scale=0.6] {C};
-    \draw (0,1.5) -- (3,1.5) node[midway, below, scale=0.6] {RETURN = 35};
-    \draw (0,1.8) -- (3,1.8) node[midway, below, scale=0.6] {5};
-    \draw (0,2.1) -- (3,2.1) node[midway, below, scale=0.6] {7};
-    \draw (0,2.4) -- (3,2.4) node[midway, below, scale=0.6] {PC};
-    \draw (0,2.7) -- (3,2.7) node[midway, below, scale=0.6] {\( EBP_{pippo} \) };
-    \draw (0,3) -- (3,3) node[midway, below, scale=0.6] {x = 5};
-    \draw (0,3.3) -- (3,3.3) node[midway, below, scale=0.6] {y = 7};
-    \draw (0,3.6) -- (3,3.6) node[midway, below, scale=0.6] {z = 35};
-    \draw (0,3.9) -- (3,3.9) node[midway, below, scale=0.6] {EAX};
+		\draw (0,0.3) -- (3,0.3) node[midway, below, scale=0.6] {info (PC OS)};
+		\draw (0,0.6) -- (3,0.6) node[midway, below, scale=0.6] {A = 5};
+		\draw (0,0.9) -- (3,0.9) node[midway, below, scale=0.6] {B = 7};
+		\draw (0,1.2) -- (3,1.2) node[midway, below, scale=0.6] {C};
+		\draw (0,1.5) -- (3,1.5) node[midway, below, scale=0.6] {RETURN = 35};
+		\draw (0,1.8) -- (3,1.8) node[midway, below, scale=0.6] {5};
+		\draw (0,2.1) -- (3,2.1) node[midway, below, scale=0.6] {7};
+		\draw (0,2.4) -- (3,2.4) node[midway, below, scale=0.6] {PC};
+		\draw (0,2.7) -- (3,2.7) node[midway, below, scale=0.6] {\( EBP_{pippo} \) };
+		\draw (0,3) -- (3,3) node[midway, below, scale=0.6] {x = 5};
+		\draw (0,3.3) -- (3,3.3) node[midway, below, scale=0.6] {y = 7};
+		\draw (0,3.6) -- (3,3.6) node[midway, below, scale=0.6] {z = 35};
+		\draw (0,3.9) -- (3,3.9) node[midway, below, scale=0.6] {EAX};
 
-    \draw[latex-] (3,3.6) -- ++(0.5,0) node[right] {ESP};
-    \draw[latex-] (0,0.3) -- ++(-0.5,0) node[left] {EBP};
-    \draw[latex-] (0,2.55) -- ++(-0.5,0) node[left] {\( EBP_{pippo} \) };
-  \end{tikzpicture}
-  \caption{Stack con variabili}
+		\draw[latex-] (3,3.6) -- ++(0.5,0) node[right] {ESP};
+		\draw[latex-] (0,0.3) -- ++(-0.5,0) node[left] {EBP};
+		\draw[latex-] (0,2.55) -- ++(-0.5,0) node[left] {\( EBP_{pippo} \) };
+	\end{tikzpicture}
+	\caption{Stack con variabili}
 \end{figure}
 
 \noindent Di seguito il codice assembly per la gestione dello stack:
@@ -2510,227 +2510,251 @@ il comando asm:
 
 \section{Struttura della memoria}
 \begin{figure}[H]
-  \centering
-  \begin{tikzpicture}[scale=0.9]
-    % Vertical array b7
-    \node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b7) at (0,0) {};
+	\centering
+	\begin{tikzpicture}[scale=0.9]
+		% Vertical array b7
+		\node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b7) at (0,0) {};
 
-    \node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b7-2) at (0,-2.5) {};
-    \draw (b7-2.west) -- ++(-0.5,0) node[above right] {} 
-      (b7-2.east) -- ++(0.5,0);
+		\node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b7-2) at (0,-2.5) {};
+		\draw (b7-2.west) -- ++(-0.5,0) node[above right] {}
+		(b7-2.east) -- ++(0.5,0);
 
-    \node at (0,-4.3) {\( \vdots \)};
+		\node at (0,-4.3) {\( \vdots \)};
 
-    \node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b7-15) at (0,-6) {};
-    \draw (b7-15.west) -- ++(-0.5,0) node[above right] {} 
-      (b7-15.east) -- ++(0.5,0);
+		\node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b7-15) at (0,-6) {};
+		\draw (b7-15.west) -- ++(-0.5,0) node[above right] {}
+		(b7-15.east) -- ++(0.5,0);
 
-    \draw 
-      (b7.west) -- ++(-0.5,0) node[above right] {\( b_7 \) }
-      -- ++(0,-7.8) -- ++(0.5,0) -- ++(0,-0.73)
-      (b7.east) -- ++(0.5,0) -- ++(0,-7.8) -- ++(-0.5,0) -- ++(0,-0.73);
+		\draw
+		(b7.west) -- ++(-0.5,0) node[above right] {\( b_7 \) }
+		-- ++(0,-7.8) -- ++(0.5,0) -- ++(0,-0.73)
+    (b7.east) -- ++(0.5,0) node[above, midway] {\( b'_7 \) } -- ++(0,-7.8) -- ++(-0.5,0) -- ++(0,-0.73);
 
-    % cls b7
-    \node[draw, rectangle, minimum width=1cm, minimum height=1cm, align=center, scale=0.7]
-      (cls1) at (0,-9) {Circuito di\\lettura e\\scrittura};
-    \node[yshift=5, xshift=4] at (cls1.west) (cls1-iw1) {};
-    \node[yshift=-5, xshift=4] at (cls1.west) (cls1-iw2) {};
-    \node[xshift=-8, yshift=4] at (cls1.south) (cls1-is1) {};
-    \node[xshift=8, yshift=4] at (cls1.south) (cls1-is2) {};
-    \node[xshift=0, yshift=-7] at (cls1.south) (cls1-isc) {};
-    \draw (cls1-iw1) -- ++(-0.5,0) node[left] {\( R/\bar{w} \) } ;
-    \draw (cls1-iw2) -- ++(-0.5,0) node[left] {cs} ;
-    \draw[latex-] (cls1-is1) -- ++(0,-0.5) -- ++(0.55,0);
-    \draw[latex-latex] (cls1-isc) -- ++(0,-0.8);
-    \draw[-latex] (cls1-is2) -- ++(0,-0.5);
+		% cls b7
+		\node[draw, rectangle, minimum width=1cm, minimum height=1cm, align=center, scale=0.7]
+		(cls1) at (0,-9) {Circuito di\\lettura e\\scrittura};
+		\node[yshift=5, xshift=4] at (cls1.west) (cls1-iw1) {};
+		\node[yshift=-5, xshift=4] at (cls1.west) (cls1-iw2) {};
+		\node[xshift=-8, yshift=4] at (cls1.south) (cls1-is1) {};
+		\node[xshift=8, yshift=4] at (cls1.south) (cls1-is2) {};
+		\node[xshift=0, yshift=-7] at (cls1.south) (cls1-isc) {};
+		\draw (cls1-iw1) -- ++(-0.5,0) node[left] {\( R/\bar{w} \) } ;
+		\draw (cls1-iw2) -- ++(-0.5,0) node[left] {cs} ;
+		\draw[latex-] (cls1-is1) -- ++(0,-0.5) -- ++(0.55,0);
+		\draw[latex-latex] (cls1-isc) -- ++(0,-0.8);
+		\draw[-latex] (cls1-is2) -- ++(0,-0.5);
 
-    % Vertical array b6
-    \node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b6) at (2.5,0) {};
+		% Vertical array b6
+		\node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b6) at (2.5,0) {};
 
-    \node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b6-2) at (2.5,-2.5) {};
-    \draw (b6-2.west) -- ++(-0.5,0) node[above right] {} 
-      (b6-2.east) -- ++(0.5,0);
+		\node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b6-2) at (2.5,-2.5) {};
+		\draw (b6-2.west) -- ++(-0.5,0) node[above right] {}
+		(b6-2.east) -- ++(0.5,0);
 
-    \node at (2.5,-4.3) {\( \vdots \)};
+		\node at (2.5,-4.3) {\( \vdots \)};
 
-    \node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b6-15) at (2.5,-6) {};
-    \draw (b6-15.west) -- ++(-0.5,0) node[above right] {} 
-      (b6-15.east) -- ++(0.5,0);
+		\node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b6-15) at (2.5,-6) {};
+		\draw (b6-15.west) -- ++(-0.5,0) node[above right] {}
+		(b6-15.east) -- ++(0.5,0);
 
-    \draw 
-      (b6.west) -- ++(-0.5,0) node[above right] {\( b_6 \) }
-      -- ++(0,-7.8) -- ++(0.5,0) -- ++(0,-0.73)
-      (b6.east) -- ++(0.5,0) -- ++(0,-7.8) -- ++(-0.5,0) -- ++(0,-0.73);
+		\draw
+		(b6.west) -- ++(-0.5,0) node[above right] {\( b_6 \) }
+		-- ++(0,-7.8) -- ++(0.5,0) -- ++(0,-0.73)
+		(b6.east) -- ++(0.5,0) node[above, midway] {\( b'_6 \) } -- ++(0,-7.8) -- ++(-0.5,0) -- ++(0,-0.73);
 
-    % cls b6
-    \node[draw, rectangle, minimum width=1cm, minimum height=1cm, align=center, scale=0.7]
-      (cls2) at (2.5,-9) {Circuito di\\lettura e\\scrittura};
-    \node[xshift=-8, yshift=4] at (cls2.south) (cls2-is1) {};
-    \node[xshift=8, yshift=4] at (cls2.south) (cls2-is2) {};
-    \node[xshift=0, yshift=-7] at (cls2.south) (cls2-isc) {};
-    \draw[latex-] (cls2-is1) -- ++(0,-0.5) -- ++(0.55,0);
-    \draw[latex-latex] (cls2-isc) -- ++(0,-0.8);
-    \draw[-latex] (cls2-is2) -- ++(0,-0.5);
-
-
-    \node at (4.3,0) {\( \ldots \)};
+		% cls b6
+		\node[draw, rectangle, minimum width=1cm, minimum height=1cm, align=center, scale=0.7]
+		(cls2) at (2.5,-9) {Circuito di\\lettura e\\scrittura};
+		\node[xshift=-8, yshift=4] at (cls2.south) (cls2-is1) {};
+		\node[xshift=8, yshift=4] at (cls2.south) (cls2-is2) {};
+		\node[xshift=0, yshift=-7] at (cls2.south) (cls2-isc) {};
+		\draw[latex-] (cls2-is1) -- ++(0,-0.5) -- ++(0.55,0);
+		\draw[latex-latex] (cls2-isc) -- ++(0,-0.8);
+		\draw[-latex] (cls2-is2) -- ++(0,-0.5);
 
 
-    % Vertical array b0
-    \node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b0) at (6,0) {};
-
-    \node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b0-2) at (6,-2.5) {};
-    \draw (b0-2.west) -- ++(-0.5,0) node[above right] {} 
-      (b0-2.east) -- ++(0.5,0);
-
-    \node at (6,-4.3) {\( \vdots \)};
-
-    \node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b0-15) at (6,-6) {};
-    \draw (b0-15.west) -- ++(-0.5,0) node[above right] {} 
-      (b0-15.east) -- ++(0.5,0);
-
-    \draw 
-      (b0.west) -- ++(-0.5,0) node[above right] {\( b_0 \) }
-      -- ++(0,-7.8) -- ++(0.5,0) -- ++(0,-0.73)
-      (b0.east) -- ++(0.5,0) -- ++(0,-7.8) -- ++(-0.5,0) -- ++(0,-0.73);
-
-    % cls b0
-    \node[draw, rectangle, minimum width=1cm, minimum height=1cm, align=center, scale=0.7]
-      (cls3) at (6,-9) {Circuito di\\lettura e\\scrittura};
-    \node[xshift=-8, yshift=4] at (cls3.south) (cls3-is1) {};
-    \node[xshift=8, yshift=4] at (cls3.south) (cls3-is2) {};
-    \node[xshift=0, yshift=-7] at (cls3.south) (cls3-isc) {};
-    \draw[latex-] (cls3-is1) -- ++(0,-0.5) -- ++(0.55,0);
-    \draw[latex-latex] (cls3-isc) -- ++(0,-0.8);
-    \draw[-latex] (cls3-is2) -- ++(0,-0.5);
+		\node at (4.3,0) {\( \ldots \)};
 
 
-    % Decoder 4 bit
-    \node[draw, rectangle, minimum width=1cm, minimum height=3cm, align=center]
-      (dec) at (-4,-3) {Decoder\\a 4 bit};
-    \node[yshift=30, xshift=-4] at (dec.east) (d-p0) {};
-    \node[yshift=15, xshift=-4] at (dec.east) (d-p1) {};
-    \node[yshift=-5, xshift=10] at (dec.east) {\( \vdots \) };
-    \node[yshift=-30, xshift=-4] at (dec.east) (d-p15) {};
+		% Vertical array b0
+		\node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b0) at (6,0) {};
 
-    \node[xshift=4, yshift=24] at (dec.west) (d-i0) {};
-    \node[xshift=4, yshift=9] at (dec.west) (d-i1) {};
-    \node[xshift=4, yshift=-9] at (dec.west) (d-i2) {};
-    \node[xshift=4, yshift=-24] at (dec.west) (d-i3) {};
+		\node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b0-2) at (6,-2.5) {};
+		\draw (b0-2.west) -- ++(-0.5,0) node[above right] {}
+		(b0-2.east) -- ++(0.5,0);
 
-    \draw[latex-] (d-i0) -- ++(-0.8,0) node[left] {\( i_0 \)};
-    \draw[latex-] (d-i1) -- ++(-0.8,0) node[left] {\( i_1 \)};
-    \draw[latex-] (d-i2) -- ++(-0.8,0) node[left] {\( i_2 \)};
-    \draw[latex-] (d-i3) -- ++(-0.8,0) node[left] {\( i_3 \)};
+		\node at (6,-4.3) {\( \vdots \)};
 
-    
+		\node[draw, rectangle, minimum width=1cm, minimum height=1cm] (b0-15) at (6,-6) {};
+		\draw (b0-15.west) -- ++(-0.5,0) node[above right] {}
+		(b0-15.east) -- ++(0.5,0);
 
-    % b0 to decoder
-    \draw (b0.south) -- ++(0,-0.5) -- ++(-8.5,0) |- (d-p0) node[above right, xshift=5] {\( p_0 \) }
-      (b6.south) -- ++(0,-0.5)
-      (b7.south) -- ++(0,-0.5);
+		\draw
+		(b0.west) -- ++(-0.5,0) node[above right] {\( b_0 \) }
+		-- ++(0,-7.8) -- ++(0.5,0) -- ++(0,-0.73)
+		(b0.east) -- ++(0.5,0) node[above, midway] {\( b'_0 \) } -- ++(0,-7.8) -- ++(-0.5,0) -- ++(0,-0.73);
 
-    % b0-2 to decoder
-    \draw (b0-2.south) -- ++(0,-0.5) -- ++(-8.5,0) |- (d-p1) node[above right, xshift=5] {\( p_1 \) }
-      (b6-2.south) -- ++(0,-0.5)
-      (b7-2.south) -- ++(0,-0.5);
+		% cls b0
+		\node[draw, rectangle, minimum width=1cm, minimum height=1cm, align=center, scale=0.7]
+		(cls3) at (6,-9) {Circuito di\\lettura e\\scrittura};
+		\node[xshift=-8, yshift=4] at (cls3.south) (cls3-is1) {};
+		\node[xshift=8, yshift=4] at (cls3.south) (cls3-is2) {};
+		\node[xshift=0, yshift=-7] at (cls3.south) (cls3-isc) {};
+		\draw[latex-] (cls3-is1) -- ++(0,-0.5) -- ++(0.55,0);
+		\draw[latex-latex] (cls3-isc) -- ++(0,-0.8);
+		\draw[-latex] (cls3-is2) -- ++(0,-0.5);
 
-    % b0-15 to decoder
-    \draw (b0-15.south) -- ++(0,-0.5) -- ++(-8.5,0) |- (d-p15) node[above right, xshift=5] {\( p_{15} \) }
-      (b6-15.south) -- ++(0,-0.5)
-      (b7-15.south) -- ++(0,-0.5);
-  \end{tikzpicture}
-  \label{D1}
+
+		% Decoder 4 bit
+		\node[draw, rectangle, minimum width=1cm, minimum height=3cm, align=center]
+		(dec) at (-4,-3) {Decoder\\a 4 bit};
+		\node[yshift=30, xshift=-4] at (dec.east) (d-p0) {};
+		\node[yshift=15, xshift=-4] at (dec.east) (d-p1) {};
+		\node[yshift=-5, xshift=10] at (dec.east) {\( \vdots \) };
+		\node[yshift=-30, xshift=-4] at (dec.east) (d-p15) {};
+
+		\node[xshift=4, yshift=24] at (dec.west) (d-i0) {};
+		\node[xshift=4, yshift=9] at (dec.west) (d-i1) {};
+		\node[xshift=4, yshift=-9] at (dec.west) (d-i2) {};
+		\node[xshift=4, yshift=-24] at (dec.west) (d-i3) {};
+
+		\draw[latex-] (d-i0) -- ++(-0.8,0) node[left] {\( i_0 \)};
+		\draw[latex-] (d-i1) -- ++(-0.8,0) node[left] {\( i_1 \)};
+		\draw[latex-] (d-i2) -- ++(-0.8,0) node[left] {\( i_2 \)};
+		\draw[latex-] (d-i3) -- ++(-0.8,0) node[left] {\( i_3 \)};
+
+
+
+		% b0 to decoder
+		\draw (b0.south) -- ++(0,-0.5) -- ++(-8.5,0) |- (d-p0) node[above right, xshift=5] {\( p_0 \) }
+		(b6.south) -- ++(0,-0.5)
+		(b7.south) -- ++(0,-0.5);
+
+		% b0-2 to decoder
+		\draw (b0-2.south) -- ++(0,-0.5) -- ++(-8.5,0) |- (d-p1) node[above right, xshift=5] {\( p_1 \) }
+		(b6-2.south) -- ++(0,-0.5)
+		(b7-2.south) -- ++(0,-0.5);
+
+		% b0-15 to decoder
+		\draw (b0-15.south) -- ++(0,-0.5) -- ++(-8.5,0) |- (d-p15) node[above right, xshift=5] {\( p_{15} \) }
+		(b6-15.south) -- ++(0,-0.5)
+		(b7-15.south) -- ++(0,-0.5);
+	\end{tikzpicture}
 \end{figure}
+
+Una memoria è compattata in un chip con diversi pin con compiti diversi:
+\begin{itemize}
+	\item \textbf{8 Pin dati}: permettono di leggere o scrivere i dati
+	\item \textbf{4 Pin indirizzi}: permettono di selezionare la cella di memoria
+	\item \textbf{2 Pin controllo}: permettono di controllare la memoria
+  \item \textbf{2 pin di alimentazione}: permettono di alimentare la memoria
+\end{itemize}
 
 \subsection{Static RAM (SRAM)}
 La SRAM è una memoria statica, ovvero non ha bisogno di essere rinfrescata
 per mantenere i dati. Questo tipo di memoria è più veloce, ma occupa più spazio
 ed è più costosa.
-\label{D2}
 
-Una memoria è compattata in un chip con diversi pin con compiti diversi:
-\begin{itemize}
-  \item \textbf{8 Pin dati}: permettono di leggere o scrivere i dati
-  \item \textbf{4 Pin indirizzi}: permettono di selezionare la cella di memoria
-  \item \textbf{2 Pin controllo}: permettono di controllare la memoria
-  \textbf{2 pin di alimentazione}: permettono di alimentare la memoria
-\end{itemize}
-
-\[
-1Kbit = 32 \times 32 = 2^5 \times 2^5
-\] 
-Si avrà una SRAM che sarà una matrice da \( m \) bit \( 32 \times 32 \) 
+\noindent Ogni singola cella è strutturata in questo modo:
 
 \begin{figure}[H]
   \centering
-  \begin{tikzpicture}
-    \node[draw, rectangle, minimum width=4cm, minimum height=4cm, align=center]
-      (mat) at (0,0) {Matrice di\\celle da\\\( n \) bit\\\\32x32};
+  \begin{circuitikz}
+    \draw (0,0) to[short, *-] ++(0.5,0) node[nmos, anchor=D, rotate=90] (nmos1) {}
+      (nmos1.S) to[short,-*] ++(0.5,0) node {}
+      to[short] ++(0,1) -- ++(0.5,0) node[not port, anchor=in, scale=0.7, yscale=0.7] (not1) {}
+      (not1.out) to[short] ++(0.5,0) to[short, -*] ++(0,-1)
+      to[short] ++(0,-1) to[short] ++(-0.5,0) node[not port, anchor=in, rotate=180, scale=0.7, yscale=0.7] (not2) {}
+      (not2.out) to[short] ++(-0.5,0) to[short] ++(0,1)
+      (4.5,0) -- ++(0.5,0) node[nmos, anchor=D, rotate=90] (nmos2) {}
+      (nmos2.S) to[short,-*] ++(0.5,0) node {}
+      (nmos1.G) to[short, -*] ++(0,-1)
+      (nmos2.G) to[short, -*] ++(0,-1)
+      ;
 
-    % decoder 5 bit
-    \node[draw, rectangle, minimum width=1cm, minimum height=4cm, align=center]
-      (dec) at (-4,0) {Decoder\\a 5 bit};
+    % labels
+    \node at (nmos1.G) [right] {\( T_1 \) };
+    \node at (nmos2.G) [right] {\( T_2 \) };
 
-    \draw[-latex] (-3.25,1.5) node[above right] {$p_0$} -- ++(1.25,0);
-    \draw[-latex] (-3.25,1) node[above right] {$p_1$} -- ++(1.25,0);
-    \node at (-2.6,0) {\( \vdots \)};
-    \draw[-latex] (-3.25,-1.5) node[above right] {$p_{31}$} -- ++(1.25,0);
-
-    % inputs 0 to 4
-    \draw[latex-] (-4.75,1.1) -- ++(-1,0) node[left] {\( r_0 \)};
-    \draw[latex-] (-4.75,0.6) -- ++(-1,0) node[left] {\( r_1 \)};
-    \draw[latex-] (-4.75,0.1) -- ++(-1,0) node[left] {\( r_2 \)};
-    \draw[latex-] (-4.75,-0.4) -- ++(-1,0) node[left] {\( r_3 \)};
-    \draw[latex-] (-4.75,-0.9) -- ++(-1,0) node[left] {\( r_4 \)};
-
-    \node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm] (rw1) at (-1.5,-2.8) {};
-    \draw (-1.65,-2.55) -- ++(0,0.55)
-      (-1.35,-2.55) -- ++(0,0.55);
-
-    \node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm] (rw2) at (-0.5,-2.8) {};
-    \draw (-0.65,-2.55) -- ++(0,0.55)
-      (-0.35,-2.55) -- ++(0,0.55);
-
-    \node at (0.5,-2.8) {\( \underset{\times 32}{\ldots}\)};
-
-    \node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm] (rw32) at (1.5,-2.8) {};
-    \draw (1.35,-2.55) -- ++(0,0.55)
-      (1.65,-2.55) -- ++(0,0.55);
-
-    \node[draw, rectangle, minimum width=5.5cm, minimum height=1cm, align=center, scale=0.7]
-      (mul) at (0,-4.3) {Multiplatore\\(mux + demux)\\a 5 bit di\\selezione};
-
-    \draw[latex-latex] (rw1.south) -- ++(0,-0.6);
-    \draw[latex-latex] (rw2.south) -- ++(0,-0.6);
-    \draw[latex-latex] (rw32.south) -- ++(0,-0.6);
-
-    \draw[latex-] (-1.9,-3.8) -- ++(-3.9,0) node[left] {\( c_0 \) };
-    \draw[latex-] (-1.9,-4.05) -- ++(-3.9,0) node[left] {\( c_1 \) };
-    \draw[latex-] (-1.9,-4.3) -- ++(-3.9,0) node[left] {\( c_2 \) };
-    \draw[latex-] (-1.9,-4.55) -- ++(-3.9,0) node[left] {\( c_3 \) };
-    \draw[latex-] (-1.9,-4.8) -- ++(-3.9,0) node[left] {\( c_4 \) };
-
-    \draw [thick, decorate,decoration={brace,amplitude=10pt},yshift=2pt] 
-      (-6.3,-1.2) -- (-6.3,1.3) node [black,midway,xshift=-30pt,align=center]
-      {Indirizzi\\di riga};
-
-    \draw [thick, decorate,decoration={brace,amplitude=10pt},yshift=2pt] 
-      (-6.3,-5) -- (-6.3,-3.7) node [black,midway,xshift=-31pt,align=center]
-      {Indirizzi\\di colonna};
-
-    \draw [thick, decorate,decoration={brace,amplitude=10pt},yshift=2pt] 
-      (-8.4,-5) -- (-8.4,1.3) node [black,midway,xshift=-16pt,align=center]
-      {I};
-
-    \draw[latex-latex] (-1,-4.9) -- ++(0,-0.8) node[midway, left] {I/O};
-    \draw[latex-] (0.3,-4.9) -- ++(0,-0.8) node[midway, left] {\( R/\bar{w} \) };
-    \draw[latex-] (1,-4.9) -- ++(0,-0.8) node[midway, left] {cs};
-  \end{tikzpicture}
+    % b line
+    \draw (0,-2.5) -- (0,2) node[above] {\( b \) line};
+    % b' line
+    \draw (7.05,-2.5) -- (7.05,2) node[above] {\( b' \) line};
+    % p line
+    \draw (-0.5,-2) -- (7.5,-2) node[above right] {\( p \) line};
+  \end{circuitikz}
+  \caption{Struttura di una cella di memoria}
 \end{figure}
 
-\noindent Mediante gli indirizzi di riga e di colonna si può scegliere esattamente la
-cella desiderata.
+\noindent Considerando che la porta NOT è costruita nel seguente modo:
+
+\begin{figure}[H]
+	\begin{center}
+		\begin{circuitikz}
+			\node (Vcc) at (-1,0.3) {\( V_{cc} \) };
+			\node (Vcc) at (1,0.3) {\( 3V \) };
+			\draw (-1,0) -- (0,0) to[short,-*] ++(0,0) node[left] {}
+			(1,0) -- (0,0);
+			\draw (0,0) node[pmos, anchor=S] (pmos) {}
+			(pmos.G) to[short] ++(0,0) node[left] {}
+			(pmos.D) to[short] ++(0,0) node[left] {}
+			(pmos.D) -- ++(0,0) to[short,-*] (0,-1.6) node[left] {}
+			node[nmos,anchor=D] (nmos) {}
+			(nmos.G) to[short] ++(0,0) node[left] {}
+			(nmos.S) node[ground] {};
+			\draw (-2, -1.6) node[above] {\( x \) } to[short,-*] (-0.99,-1.6) node[left] {}
+			(pmos.G) -- ++(0,0) to[short,-*] (-0.99,-1.6) node[left] {}
+			(0,-1.6) -- ++(0,0) to[short] (1.2,-1.6) node[above] {O}
+			(nmos.G) -- ++(0,0) to[short] (-0.99,-1.6) node[left] {};
+			\node (0V) at (0.6,-3.5) {\( 0V \) };
+		\end{circuitikz}
+	\end{center}
+    \caption{Circuito di negazione}
+\end{figure}
+
+\noindent La struttura della cella di memoria si può espandere ulteriormente in questo
+modo:
+\begin{figure}[H]
+  \centering
+  \begin{circuitikz}
+    \draw (0,0) to[short, *-] ++(0.5,0) node[nmos, anchor=D, rotate=90] (nmos1) {}
+      (nmos1.S) to[short,-*] ++(0.5,0) node {}
+      node[pmos, anchor=S, rotate=180] (pmos1) {}
+      (pmos1.D) to[short] ++(3,0)
+      node[pmos, anchor=S, rotate=0] (pmos2) {}
+      (pmos2.D) node[nmos, anchor=D, rotate=0] (nmos3) {}
+      (nmos3.S) to[short, -*] ++(-1.5,0) node[ground] (gnd) {}
+      (gnd) to[short] ++(-1.5,0) node[nmos, anchor=D, rotate=180] (nmos4) {}
+
+      (pmos1.S) -- (nmos3.G)
+      (pmos2.D) -- (nmos4.G)
+
+      (pmos2.G) to[short, -*] (3.3,-0.28)
+      (pmos1.G) to[short, -*] (4.75,-0.28)
+      
+      (pmos2.D) to[short, *-] ++(0.5,0) node[nmos, anchor=D, rotate=90] (nmos2) {}
+      (nmos2.S) to[short,-*] ++(0.5,0) node {}
+      (nmos1.G) to[short, -*] ++(0,-1)
+      (nmos2.G) to[short, -*] ++(0,-1)
+      ;
+
+    % labels
+    \node at (nmos1.G) [right] {\( T_1 \) };
+    \node at (nmos2.G) [right] {\( T_2 \) };
+    \node at (nmos3.G) [below] {\( T_4 \) };
+    \node at (nmos4.G) [below] {\( T_3 \) };
+    \node at (pmos1.G) [above] {\( T_5 \) };
+    \node at (pmos2.G) [above] {\( T_6 \) };
+
+    % b line
+    \draw (0,-3) -- (0,2) node[above] {\( b \) line};
+    % b' line
+    \draw (8.08,-3) -- (8.08,2) node[above] {\( b' \) line};
+    % p line
+    \draw (-0.5,-2.5) -- (8.5,-2.5) node[above right] {\( p \) line};
+  \end{circuitikz}
+  \caption{Struttura di una cella di memoria}
+\end{figure}
 
 \subsection{Dynamic RAM (DRAM)}
 I condensatori permettono di mantenere una carica elettrica per un certo
@@ -2739,73 +2763,202 @@ si deve rinfrescare ogni condensatore per ripristinare la carica. Questo rinfres
 però riduce la velocità della memoria. Visto che la DRAM occupa meno spazio rispetto
 alla SRAM, è più lenta, ma è più economica e può essere fatta più capiente.
 
+\begin{example}
+\[
+	1Kbit = 32 \times 32 = 2^5 \times 2^5
+\]
+Si avrà una SRAM che sarà una matrice da \( m \) bit \( 32 \times 32 \)
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}
+		\node[draw, rectangle, minimum width=4cm, minimum height=4cm, align=center]
+		(mat) at (0,0) {Matrice di\\celle da\\\( n \) bit\\\\32x32};
+
+		% decoder 5 bit
+		\node[draw, rectangle, minimum width=1cm, minimum height=4cm, align=center]
+		(dec) at (-4,0) {Decoder\\a 5 bit};
+
+		\draw[-latex] (-3.25,1.5) node[above right] {$p_0$} -- ++(1.25,0);
+		\draw[-latex] (-3.25,1) node[above right] {$p_1$} -- ++(1.25,0);
+		\node at (-2.6,0) {\( \vdots \)};
+		\draw[-latex] (-3.25,-1.5) node[above right] {$p_{31}$} -- ++(1.25,0);
+
+		% inputs 0 to 4
+		\draw[latex-] (-4.75,1.1) -- ++(-1,0) node[left] {\( r_0 \)};
+		\draw[latex-] (-4.75,0.6) -- ++(-1,0) node[left] {\( r_1 \)};
+		\draw[latex-] (-4.75,0.1) -- ++(-1,0) node[left] {\( r_2 \)};
+		\draw[latex-] (-4.75,-0.4) -- ++(-1,0) node[left] {\( r_3 \)};
+		\draw[latex-] (-4.75,-0.9) -- ++(-1,0) node[left] {\( r_4 \)};
+
+		\node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm] (rw1) at (-1.5,-2.8) {};
+		\draw (-1.65,-2.55) -- ++(0,0.55)
+		(-1.35,-2.55) -- ++(0,0.55);
+
+		\node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm] (rw2) at (-0.5,-2.8) {};
+		\draw (-0.65,-2.55) -- ++(0,0.55)
+		(-0.35,-2.55) -- ++(0,0.55);
+
+		\node at (0.5,-2.8) {\( \underset{\times 32}{\ldots}\)};
+
+		\node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm] (rw32) at (1.5,-2.8) {};
+		\draw (1.35,-2.55) -- ++(0,0.55)
+		(1.65,-2.55) -- ++(0,0.55);
+
+		\node[draw, rectangle, minimum width=5.5cm, minimum height=1cm, align=center, scale=0.7]
+		(mul) at (0,-4.3) {Multiplatore\\(mux + demux)\\a 5 bit di\\selezione};
+
+		\draw[latex-latex] (rw1.south) -- ++(0,-0.6);
+		\draw[latex-latex] (rw2.south) -- ++(0,-0.6);
+		\draw[latex-latex] (rw32.south) -- ++(0,-0.6);
+
+		\draw[latex-] (-1.9,-3.8) -- ++(-3.9,0) node[left] {\( c_0 \) };
+		\draw[latex-] (-1.9,-4.05) -- ++(-3.9,0) node[left] {\( c_1 \) };
+		\draw[latex-] (-1.9,-4.3) -- ++(-3.9,0) node[left] {\( c_2 \) };
+		\draw[latex-] (-1.9,-4.55) -- ++(-3.9,0) node[left] {\( c_3 \) };
+		\draw[latex-] (-1.9,-4.8) -- ++(-3.9,0) node[left] {\( c_4 \) };
+
+		\draw [thick, decorate,decoration={brace,amplitude=10pt},yshift=2pt]
+		(-6.3,-1.2) -- (-6.3,1.3) node [black,midway,xshift=-30pt,align=center]
+		{Indirizzi\\di riga};
+
+		\draw [thick, decorate,decoration={brace,amplitude=10pt},yshift=2pt]
+		(-6.3,-5) -- (-6.3,-3.7) node [black,midway,xshift=-31pt,align=center]
+		{Indirizzi\\di colonna};
+
+		\draw [thick, decorate,decoration={brace,amplitude=10pt},yshift=2pt]
+		(-8.4,-5) -- (-8.4,1.3) node [black,midway,xshift=-16pt,align=center]
+		{I};
+
+		\draw[latex-latex] (-1,-4.9) -- ++(0,-0.8) node[midway, left] {I/O};
+		\draw[latex-] (0.3,-4.9) -- ++(0,-0.8) node[midway, left] {\( R/\bar{w} \) };
+		\draw[latex-] (1,-4.9) -- ++(0,-0.8) node[midway, left] {cs};
+	\end{tikzpicture}
+\end{figure}
+
+\noindent Mediante gli indirizzi di riga e di colonna si può scegliere esattamente la
+cella desiderata.
+\end{example}
 
 \subsection{Syncronous DRAM (SDRAM)}
 La SDRAM è una DRAM sincrona, ovvero sincronizzata con il clock della CPU. Questo
 permette di avere una maggiore velocità di trasferimento dei dati.
+
+\begin{example}
 \[
-256Mbit \;\; 32Mbit \times 8 = 16K \times 16K
-\] 
+	256Mbit \;\; 32Mbit \times 8 \quad \text{celle } 16K \times 16K
+\]
 Ogni riga ha 16384 bit divisi in 2048 byte. Sono presenti 2 segnali:
 \begin{itemize}
-  \item \textbf{\( \overline{RAS} \) (Row Address Strobe)}: permette di selezionare la riga
-  \item \textbf{\( \overline{CAS} \) (Column Address Strobe)}: permette di selezionare la colonna
+	\item \textbf{\( \overline{RAS} \) (Row Address Strobe)}: permette di selezionare la riga
+	\item \textbf{\( \overline{CAS} \) (Column Address Strobe)}: permette di selezionare la colonna
 \end{itemize}
 
-TODO
 \begin{figure}[H]
-  \centering
-  \begin{tikzpicture}
-    \node[draw, rectangle, minimum width=4cm, minimum height=4cm, align=center]
-      (mat) at (0,0) {16384 righe\\da 2048 byte};
+	\centering
+	\begin{tikzpicture}
+		\node[draw, rectangle, minimum width=4cm, minimum height=4cm, align=center]
+		(mat) at (0,0) {16384 righe\\da 2048 byte};
 
-    % decoder 5 bit
-    \node[draw, rectangle, minimum width=1cm, minimum height=4cm, align=center]
-      (dec) at (-4,0) {Decoder\\a 5 bit};
+		% decoder 5 bit
+		\node[draw, rectangle, minimum width=1cm, minimum height=4cm, align=center]
+		(dec) at (-4,0) {Decoder\\di riga};
 
-    \draw[-latex] (-3.25,1.5) node[above right] {$p_0$} -- ++(1.25,0);
-    \draw[-latex] (-3.25,1) node[above right] {$p_1$} -- ++(1.25,0);
-    \node at (-2.6,0) {\( \vdots \)};
-    \draw[-latex] (-3.25,-1.5) node[above right] {$p_{31}$} -- ++(1.25,0);
+		\draw[-latex] (-3.25,1.5) node[above right] {} -- ++(1.25,0);
+		\draw[-latex] (-3.25,1) node[above right] {} -- ++(1.25,0);
+		\node at (-2.6,0) {\( \vdots \)};
+		\draw[-latex] (-3.25,-1.5) node[above right] {} -- ++(1.25,0);
 
-    % inputs 0 to 4
-    \draw[latex-] (-4.75,1.1) -- ++(-1,0) node[left] {\( r_0 \)};
-    \draw[latex-] (-4.75,0.6) -- ++(-1,0) node[left] {\( r_1 \)};
-    \draw[latex-] (-4.75,0.1) -- ++(-1,0) node[left] {\( r_2 \)};
-    \draw[latex-] (-4.75,-0.4) -- ++(-1,0) node[left] {\( r_3 \)};
-    \draw[latex-] (-4.75,-0.9) -- ++(-1,0) node[left] {\( r_4 \)};
+		% inputs 0 to 4
+		\draw[latex-] (-4.75,0.1) -- ++(-1,0)
+		node[left, draw, rectangle, minimum width=1cm, minimum height=1cm, align=center]
+		(regR) {Registro\\indirizzo\\riga};
 
-    \node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm] (rw1) at (-1.5,-2.8) {};
-    \draw (-1.65,-2.55) -- ++(0,0.55)
-      (-1.35,-2.55) -- ++(0,0.55);
+		\node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm] (rw1) at (-1.5,-2.8) {};
+		\draw (-1.65,-2.55) -- ++(0,0.55)
+		(-1.35,-2.55) -- ++(0,0.55);
 
-    \node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm] (rw2) at (-0.5,-2.8) {};
-    \draw (-0.65,-2.55) -- ++(0,0.55)
-      (-0.35,-2.55) -- ++(0,0.55);
+		\node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm] (rw2) at (-0.5,-2.8) {};
+		\draw (-0.65,-2.55) -- ++(0,0.55)
+		(-0.35,-2.55) -- ++(0,0.55);
 
-    \node at (0.5,-2.8) {\( \underset{\times 32}{\ldots}\)};
+		\node at (0.5,-2.8) {\( \ldots \)};
 
-    \node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm] (rw32) at (1.5,-2.8) {};
-    \draw (1.35,-2.55) -- ++(0,0.55)
-      (1.65,-2.55) -- ++(0,0.55);
+		\node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm] (rw32) at (1.5,-2.8) {};
+		\draw (1.35,-2.55) -- ++(0,0.55)
+		(1.65,-2.55) -- ++(0,0.55);
 
-    \node[draw, rectangle, minimum width=5.5cm, minimum height=1cm, align=center, scale=0.7]
-      (mul) at (0,-4.3) {Multiplatore\\(mux + demux)\\a 5 bit di\\selezione};
+		\node[draw, rectangle, minimum width=5.5cm, minimum height=1cm, align=center, scale=0.7]
+		(mul) at (0,-4.3) {Decoder di colonna};
 
-    \draw[latex-latex] (rw1.south) -- ++(0,-0.6);
-    \draw[latex-latex] (rw2.south) -- ++(0,-0.6);
-    \draw[latex-latex] (rw32.south) -- ++(0,-0.6);
+		\draw[latex-latex] (rw1.south) -- ++(0,-0.85);
+		\draw[latex-latex] (rw2.south) -- ++(0,-0.85);
+		\draw[latex-latex] (rw32.south) -- ++(0,-0.85);
 
-    \draw[latex-] (-1.9,-3.8) -- ++(-3.9,0) node[left] {\( c_0 \) };
-    \draw[latex-] (-1.9,-4.05) -- ++(-3.9,0) node[left] {\( c_1 \) };
-    \draw[latex-] (-1.9,-4.3) -- ++(-3.9,0) node[left] {\( c_2 \) };
-    \draw[latex-] (-1.9,-4.55) -- ++(-3.9,0) node[left] {\( c_3 \) };
-    \draw[latex-] (-1.9,-4.8) -- ++(-3.9,0) node[left] {\( c_4 \) };
+		\draw[latex-] (-1.9,-4.3) -- ++(-1,0)
+		node[left, draw, rectangle, minimum width=1cm, minimum height=1cm, align=center]
+		(regC) {Registro\\indirizzo\\colonna};
 
-    \draw[latex-latex] (-1,-4.9) -- ++(0,-0.8) node[midway, left] {I/O};
-    \draw[latex-] (0.3,-4.9) -- ++(0,-0.8) node[midway, left] {\( R/\bar{w} \) };
-    \draw[latex-] (1,-4.9) -- ++(0,-0.8) node[midway, left] {cs};
-  \end{tikzpicture}
+		\draw[latex-latex] (-1,-4.65) -- ++(0,-0.8) node[midway, left] {I/O};
+		\draw[latex-] (0.3,-4.65) -- ++(0,-0.8) node[midway, left] {\( R/\bar{w} \) };
+		\draw[latex-] (1,-4.65) -- ++(0,-0.8) node[midway, left] {cs};
+
+		\draw[latex-] (regR.north) -- ++(0,0.5) -- ++(-1,0) node[midway, above] {\( \overline{RAS} \)};
+		\draw[latex-] (regC.south) -- ++(0,-0.5) -- ++(-1,0) node[midway, below] {\( \overline{CAS} \)};
+
+		\node at (-8.8,-2.5) (j) {};
+		\draw[latex-] (regR.west) -- ++(-0.5,0) |- (j);
+		\draw[latex-] (regC.west) -- ++(-3.35,0) |- (j);
+
+		% bit labels
+		\draw (-8.5,-2.6) -- ++(0.2,0.2) node[above, xshift=-2, scale=0.7] {14};
+		\draw (-7.9,-1.4) -- ++(0.2,0.2) node[right, yshift=-2, scale=0.7] {14};
+		\draw (-5.4,0) -- ++(0.2,0.2) node[above, xshift=-2, scale=0.7] {14};
+		\draw (-5.4,-4.4) -- ++(0.2,0.2) node[above, xshift=-2, scale=0.7] {11};
+		\draw (-2.6,-4.4) -- ++(0.2,0.2) node[above, xshift=-2, scale=0.7] {11};
+	\end{tikzpicture}
+\end{figure}
+
+\noindent Al primo ciclo di clock viene attivato il segnale \( \overline{RAS} \) selezionando
+la riga, al secondo ciclo di clock viene attivato il segnale \( \overline{CAS} \) selezionando
+la colonna. In questo modo non servono \( 14 + 11 \) bit, ma ne bastano 14; si sacrifica
+il ritardo per guadagnare area.
+\end{example}
+\vspace{1em}
+\noindent La SDRAM è molto efficiente in lettura, perchè una volta impostati i segnali
+di riga e colonna, i dati vengono letti in sequenza senza dover cambiare i segnali, come
+mostrato nel grafico seguente:
+
+\begin{figure}[H]
+	\begin{center}
+		\begin{tikzpicture}[scale=1]
+			\draw [->] (0,0) -- (7.5,0) node[right] {t};
+			\draw (0,0) -- (0,6) node[above] {};
+      \foreach \x in {0,0.5,...,7.5}
+      \draw[gray!50, ultra thin, help lines] (\x,0) -- (\x,6);
+
+			\draw [blue, ultra thick] plot coordinates { (0,5.5) (0.5,5.5) (0.5,6) (1,6) (1,5.5) (1.5,5.5) (1.5,6) (2,6) (2,5.5) (2.5,5.5) (2.5,6) (3,6) (3,5.5) (3.5,5.5) (3.5,6) (4,6) (4,5.5) (4.5,5.5) (4.5,6) (5,6) (5,5.5) (5.5,5.5) (5.5,6) (6,6) (6,5.5) (6.5,5.5) (6.5,6) (7,6) (7,5.5) (7.5,5.5)};
+      \draw [magenta, ultra thick] plot coordinates { (0,5) (0.5,5) (0.5,4.5) (1.5,4.5) (1.5,5) (7.5,5)};
+			\draw [red, ultra thick] plot coordinates { (0,4) (2.5,4) (2.5,3.5) (3.5,3.5) (3.5,4) (7.5,4)};
+			\draw [orange, ultra thick] plot coordinates { (0,2.75) (0.5,2.75) (0.75,3) (1.25,3) (1.5,2.75) (2.5,2.75) (2.75,3) (3.25,3) (3.5,2.75) (7.5,2.75)};
+			\draw [orange, ultra thick] plot coordinates { (0.5,2.75) (0.75,2.5) (1.25,2.5) (1.5,2.75) (2.5,2.75) (2.75,2.5) (3.25,2.5) (3.5,2.75)};
+      \draw [green, ultra thick] plot coordinates { (0,1.75) (4.5,1.75) (4.75,2) (5.25,2) (5.5,1.75) (5.75,2) (6.25,2) (6.5,1.75) (6.75,2) (7.25,2) (7.5,1.75) (7.5,1.75)};
+      \draw [green, ultra thick] plot coordinates { (4.5,1.75) (4.75,1.5) (5.25,1.5) (5.5,1.75) (5.75,1.5) (6.25,1.5) (6.5,1.75) (6.75,1.5) (7.25,1.5) (7.5,1.75)};
+      \draw [cyan, ultra thick] plot coordinates { (0,0.5) (0.5,0.5) (0.5,1) (1,1) (1.5,1) (1.5,0.5) (2.5,0.5) (2.5,1) (3.5,1) (3.5,0.5) (7.5,0.5) };
+
+			\node[blue, anchor=east] at (0,5.75) {CLK};
+      \node[magenta, anchor=east] at (0,4.75) {\( \overline{RAS} \) };
+      \node[red, anchor=east] at (0,3.75) {\( \overline{CAS} \) };
+			\node[orange, anchor=east] at (0,2.75) {Indirizzo};
+      \node[green, anchor=east] at (0,1.75) {Dati};
+      \node[cyan, anchor=east] at (0,0.75) {\( R/\bar{w} \) };
+
+      \node[scale=0.65] at (5, 1.75) {\textbf{Dato1}};
+      \node[scale=0.65] at (6, 1.75) {\textbf{Dato2}};
+      \node[scale=0.65] at (7, 1.75) {\textbf{Dato3}};
+		\end{tikzpicture}
+	\end{center}
+	\caption{Segnali di controllo SDRAM}
 \end{figure}
 
 
@@ -2816,5 +2969,4 @@ TODO
 
 
 
-  
 \end{document}
