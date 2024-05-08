@@ -9,7 +9,7 @@ bin/es1: obj/main.o obj/printStr.o
 
 obj/main.o: src/main.s src/printStr.s
 	as $(AS_FLAGS) $(DEBUG) src/main.s -o obj/main.o
-obj/printStr.o:
+obj/printStr.o: src/printStr.s
 	as $(AS_FLAGS) $(DEBUG) src/printStr.s -o obj/printStr.o
 
 clean:
