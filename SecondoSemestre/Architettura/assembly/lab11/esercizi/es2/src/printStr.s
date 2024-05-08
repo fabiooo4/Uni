@@ -22,7 +22,7 @@ countChars:
 print:
   movl $4, %eax
   movl $1, %ebx
-  # %ecx contains the string to pring
+  # %ecx contains the string to print
   # %edx contains the length of the string
   int $0x80
 

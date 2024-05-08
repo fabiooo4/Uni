@@ -4,6 +4,7 @@
 
 # Convert an ascii string in %esi to int
 atoi:
+  xorl %eax, %eax
   xorl %ebx, %ebx
   xorl %ecx, %ecx
 
