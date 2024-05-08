@@ -8,6 +8,7 @@
 \usepackage{booktabs,xltabular}
 \usepackage{amsfonts}
 \usepackage{mdframed}
+\usepackage{makecell}
 \usepackage{float}
 \usepackage{xcolor}
 \usepackage{listings}
@@ -2961,12 +2962,127 @@ mostrato nel grafico seguente:
 	\caption{Segnali di controllo SDRAM}
 \end{figure}
 
+\subsection{Caratteristiche}
+I dispositivi moderni hanno più di un banco di memoria, questo però rende più complesso
+il controllo della memoria. Di conseguenza la distanza dalla CPU alla memoria gioca
+un ruolo importante. La seguente tabella mostra le caratteristiche di alcune memorie
+ordinate in base alla distanza dalla CPU
+
+\begin{table}[H]
+  \centering
+  \scalebox{0.8}{
+    \begin{tabular}{|c|c|c|c|c|c|}
+      \hline
+      \textbf{CPU} & \textbf{Tecnologia} & \textbf{Accesso} & \makecell{\textbf{Velocità}\\$\begin{bmatrix} s \end{bmatrix} $} & \makecell{\textbf{Dimensione}\\$\begin{bmatrix} B \end{bmatrix} $} & \makecell{\textbf{Costo}\\$\begin{bmatrix} \text{€}/B \end{bmatrix} $} \\
+      \hline
+      \textbf{Registri} & \makecell{CMOS\\Elettronica\\Volatile} & Data path & \( 10^{-9} \)  & \( 10^4 \)  & \( 10^{-3} \)  \\
+      \hline
+      \textbf{Cache} & \makecell{Statica\\Elettronica\\Volatile} & Associativo & \( 10^{-8} \)  & \( 10^7 \)  & \( 10^{-6} \)  \\
+      \hline
+      \textbf{RAM} & \makecell{Dinamica\\Elettronica\\Volatile} & Casuale & \( 10^{-7} \)  & \( 10^{12} \)  & \( 10^{-8} \)  \\
+      \hline
+      \textbf{SSD} & \makecell{Elettronica\\Elettronica Flash\\Non volatile} & \makecell{Casuale\\a blocchi} & \( 10^{-5} \)  & \( 10^{10} \)  & \( 10^{-10} \)  \\
+      \hline
+      \hline
+      \textbf{Hard Disk} & \makecell{Magnetica meccanica\\Non volatile} & Diretto & \( 10^{-3} \)  & & \\
+      \hline
+      \textbf{CD/DVD} & & & & & \\
+      \hline
+      \textbf{Nastri DAT} & & Sequenziale & & & \\
+      \hline
+    \end{tabular}
+  }
+\end{table}
+
+\begin{itemize}
+  \item \textbf{SSD}: Solid State Drive
+  \item \textbf{Memoria Elettronica Flash}: È nata con le SIM card, è molto veloce
+    e nel tempo è stata utilizzata per realizzare le USB. I droganti del silicio che formano
+    le celle di memoria non sono fissi, ma si possono muovere permettendo di modificare
+    il silicio. Lo svantaggio è l'isteresi (si può tornare allo stato di origine, ma non sarà
+    mai perfettamente uguale a ciò che si aveva in partenza), ovvero la memoria non può essere sovrascritta
+    più di un certo numero di volte. All'inizio questo valore era di giorni, per aumentarlo
+    si è pensato di distribuire le scritture uniformemente su tutta la memoria per far 
+    durare di più la memoria. La memoria flash è circolare e si scrive su un blocco (unità
+    minima di lettura e scrittura). Il blocco letto viene copiato in un buffer, cioè una
+    memoria RAM. In scrittura invece si scrive prima nel buffer e poi si scrive sul primo
+    blocco libero.
+
+    \noindent MTBF (Mean Time Between Failure) è il tempo medio per cui un dispositivo si guasta.
+    Quando l'MTBF viene superato, la probabilità di guasto aumenta esponenzialmente.
+  \item \textbf{Nastri DAT}: (Digital Audio Tape) è un supporto di memorizzazione
+    di dati digitali su nastro magnetico
+  \item \textbf{RAM}: La memoria ram è "casuale", cioè la velocità di accesso è costante
+    indipendentemente dalla posizione del dato.
+
+  \item \textbf{Cache}: La cache è associativa, cioè il dato è associato ad un indirizzo
+    e non ad una posizione, è più veloce, ma bisogna controllare se il dato è presente
+    nella cache, se non lo è si verifica una \textbf{cache miss}.
+\end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[scale=0.7]
+    \draw[yscale=0.1] (0,30) arc (180:0:7);
+    \draw[->, yscale=0.1] (14,30) arc (0:-170:7);
+
+    \draw (0,0) rectangle (2,2) node[midway] {Blocco};
+    \draw (2,0) rectangle (4,2) node[midway] {};
+    \draw (4,0) rectangle (6,2) node[midway] {};
+    \draw (6,0) rectangle (8,2) node[midway] {};
+    \draw (8,0) rectangle (10,2) node[midway] {};
+    \draw (10,0) rectangle (12,2) node[midway] {};
+    \draw (12,0) rectangle (14,2) node[midway] {};
+
+    \node[draw, rectangle, minimum width=1cm, minimum height=1cm] (buffer) at (9,-2) {Buffer};
+    \draw[-latex] (5,0) -- (buffer.west);
+    \draw[-latex] (buffer.east) -- (13, 0);
+    \node at (buffer.south) [below] {RAM};
+  \end{tikzpicture}
+  \caption{Struttura della memoria flash}
+\end{figure}
 
 
+\subsection{Gerarchia della memoria}
+Il principio di località dice che se si accede ad un dato, è probabile che
+si acceda a dati vicini e si divide in:
+\begin{itemize}
+  \item \textbf{Spaziale}: Se al tempo \( t_j \) accedo alla cella di memoria \( M_i \) succede
+    che se considero un intervallo della memoria \( \Delta M_i \) accederò a tutte le celle per
+    un certo tempo \( \Delta t \):
+    \[
+    t_j \; M_i \to M_i + \Delta M \to t_j + \Delta t
+    \] 
 
+  \item \textbf{Temporale}: Se accedo ad una certa cella \( m_i \) al tempo \( t_j \) succede
+    che se considero un intervallo di tempo \( \Delta t \) accederò ad un intorno di celle
+    \( \Delta M_i \):
+    \[
+    M_i \; t_j \to t_j + \Delta t \; M_i + \Delta M
+    \] 
+\end{itemize}
 
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[scale=0.8]
+    \draw (0,0) -- (10,0) node[below right] {$t$};
+    \draw (0,0) -- (0,5) node[above left] {$t_{acc}$};
 
+    \node at (0,1.6) [left] {Cache};
+    \node at (0,3.2) [left] {RAM};
 
+    \draw[red] (0,3.2) -- (1,3.2) -- (1,1.6) -- (4,1.6) -- (4,3.2) -- (4.5,3.2) -- (4.5,1.6) -- (7,1.6) -- (7,3.2) -- (8,3.2) -- (8,1.6) -- (10,1.6);
 
+    \node at (10,1.6) [right] {\( 95\% \) HIT};
+    \node at (10,3.2) [right] {\( 5\% \) MISS};
+  \end{tikzpicture}
+\end{figure}
+
+\noindent La probabilità di trovare un dato in cache (\textbf{cache hit}) è del \( \approx 95\% \),
+la probabilità di non trovarlo (\textbf{cache miss}) è del \( \approx 5\% \).
+
+\vspace{1em}
+\noindent Più ci si allontana dalla CPU, più la memoria è grande, ma più è lenta, questa
+viene chiamato \textbf{gerarchia di memoria} per il principio di località.
 
 \end{document}
