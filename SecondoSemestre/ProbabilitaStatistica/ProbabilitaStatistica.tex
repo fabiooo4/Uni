@@ -1877,6 +1877,13 @@ Gli individui sono le "realizzazioni" della \( X \).
   una possibile realizzazione del campione aleatorio \( (X_1, X_2, \ldots, X_n) \)
 \end{example}
 
+Si parte da una teoria, cioè un modello con \textbf{parametri liberi} e si aggiungono dei
+dati sperimentali. Ci si chiede se si può fare delle inferenze su parametri.
+\begin{itemize}
+  \item \textbf{Design}: stabilire gli esperimenti
+  \item \textbf{Analisi}: analizzare i dati
+\end{itemize}
+
 \subsection{Distribuzione esponenziale}
 È una variabile aleatoria continua:
 \[
@@ -1944,5 +1951,237 @@ La seguente è la "perdita di memoria" della variabile aleatoria esponenziale:
   \end{enumerate}
 \end{example}
 
+% Inizia il Luigione
+
+\section{Tipi di stima}
+Esistono 2 tipi di stima:
+\begin{itemize}
+  \item \textbf{Stima puntuale}
+  \item \textbf{Stima intervallare}
+\end{itemize}
+
+\subsection{Stima intervallare}
+Si ottiene un intervallo di valori plausibili per il parametro \( \theta \) e a
+ciascuno di questi intervalli si associa un livello di confidenza che \( \theta \) vi
+appartenga.
+
+\subsection{Stima puntuale}
+Si ottiene un singolo valore come stima per il valore di \( \theta \)
+
+\subsubsection{Definizione}
+\begin{figure}[H]
+  \begin{definition}
+    Un \textbf{campione} (o campione casuele/aleatorio) di ampiezza \( n \) è una
+    collezione di \( n \) variabili aleatorie \( X_1, \ldots, X_n \) \textbf{indipendenti}
+    e tutte con la stessa distribuzione \( f(x; \theta) \), dove \( \theta \) è un
+    parametro incognito.
+    
+    \vspace{1em}
+    \noindent Una \textbf{statistica} è una variabile aleatoria ottenuta come funzione
+    del campione, cioè:
+    \[
+    T = T(X_1, \ldots, X_n)
+    \] 
+  \end{definition}
+\end{figure}
+
+\begin{example}
+  Sia \( X_1, \ldots, X_n \) un campione casuale. Le variabili aleatorie:
+  \begin{itemize}
+    \item \( \overline{X} = \frac{1}{n} \sum_{i=1}^n X_i \) (media campionaria)
+
+    \item \( S^2 = \frac{1}{n-1} \sum_{i=1}^n (X_i - \hat{X})^2 \) (varianza campionaria)
+
+    \item \( V = \min\{X_1, \ldots, X_n\} \) (minimo del campione)
+
+    \item \( W = \max\{X_1, \ldots, X_n\} \) (massimo del campione)
+  \end{itemize}
+  sono tutte statistiche.
+\end{example}
+
+\subsubsection{Stimatori}
+Uno \textbf{stimatore} (o statistica sufficienta) è una qualunque statistica
+\( T \) che non dipende dal parametro
+\( \theta \) e viene usata per stimare \( \theta \).
+
+\begin{example}
+  La media campionaria \( \overline{X} \) viene tipicamente usata come stimatore del valor
+  medio di una popolazione. La varianza campionaria \( S^2 \) viene tipicamente usata
+  come stimatore della varianza di una popolazione.
+\end{example}
+
+\noindent Una \textbf{Stima} è il \textbf{valore numerico} assunto dallo stimatore sui dati
+osservati \( x_1, \ldots, x_n \), cioè \( \hat{\theta} = T(x_1,\ldots,x_n) \) 
+
+\vspace{1em}
+\noindent \( T \) si chiama stimatore quando:
+\[
+  \mathbb{P}_{\theta}(x_1, \ldots, x_n \; | \; T(x_1, \ldots, x_n) = \theta)
+\] 
+
+\subsubsection{Stimatori di massima verosomiglianza}
+Sia \( X_1, \ldots, X_n \) un campione casuale estratto da una popolazione con densità
+\( f(x;\theta) \) (discreta o continua), che dipende dal parametro incognito \( \theta \).
+
+\noindent Se interpretiamo:
+\[
+f(x_1, \ldots, x_n; \theta)
+\] 
+come la verosomiglianza (o plausibilità) che si realizzi la n-upla di dati
+\( x_1, \ldots, x_n \) quando \( \theta \) è il vero valore del parametro, sempra
+ragionevole adottare come stima di \( \theta \) il valore che rende massima la la
+verosomiglianza per i dati osservati. In altri termini la stima di massima verosomiglianza
+\( \overline{\theta}_{mv} \) è definita come il valore di \( \theta \) che rende
+massima la funzione \( f(x_1, \ldots, x_n; \theta) \) quando i dati osservati sono
+\( x_1, \ldots, x_n \) 
+
+\vspace{1em}
+\noindent In breve si "sposta" \( \theta \) in modo che sia sul massimo dei valori possibili.
+Si salva questo valore di \( \theta \) e si chiama \( \overline{\theta} \):
+\[
+\overline{\theta} = \text{argmax}_{\theta} f(x_1, \ldots, x_n; \theta)
+\] 
+
+\begin{example}
+  Consideriamo gli esperimenti \( X_1, \ldots, X_n \) distribuiti indipendentemente
+  \[
+  X_i \quad f(x,\theta)
+  \] 
+  \[
+  f(x_1, \ldots, x_n; \theta) = \prod_{i=1}^n f(x_i; \theta)
+  \] 
+  \[
+    f'(\theta) = \frac{d}{d\theta} f(\hat{x}_1, \ldots, \hat{x}_n; \theta) = 0
+  \] 
+  \[
+    f'(\theta) = 0 \quad \hat{\theta} \text{ t.c.}
+  \] 
+  \[
+    \frac{d}{d\theta} f(x_1, \ldots, x_n; \theta) = f'(x) \text{ (è una statistica)}
+  \] 
+  \[
+    \hat{\theta} \text{ t.c. } \frac{d}{d \theta} f(x_1, \ldots, x_n; \hat{\theta}) = 0
+  \] 
+  \[
+    \Theta = g(X_1, \ldots, X_n) \text{ stimatore}
+  \] 
+\end{example}
+
+\begin{exercise}
+  Stimatore di massima verosomiglianza per il parametro di una Bernoulli:
+
+  \vspace{1em}
+  \noindent Sia \( X_1, \ldots, X_n \) un campione casuela estratto da una popolazione
+  con densità (discreta) di Bernoulli di parametro \( q \), dove \( q \in (0,1) \) è
+  incognito. Dal momento che la densità marginale delle \( X_i \) è data da
+  \[
+  f(x;q) = q^x(1-q)^{1-x} \quad x \in \{0,1\}
+  \] 
+  la densità congiunta (e quindi la verosomiglianza) è data da:
+  \[
+  f(x_1, \ldots, x_n; q) = q^{\sum_{i=1}^n x_i}(1-q)^{n - \sum_{i=1}^n x_i}
+  \] 
+  La verosomiglianza corrispondente risulta quindi pari a:
+  \[
+  log(f(x_1, \ldots, x_n; q)) = \left( \sum_{i=1}^n x_i \right) log(q) + \left( n - \sum_{i=1}^n x_i \right) log(1-q)
+  \] 
+  Derivando rispetto a \( q \) otteniamo:
+  \[
+  \frac{d}{dq} log(f(x_1, \ldots, x_n; q)) = \frac{\sum_{i=1}^n x_i}{q} - \frac{n - \sum_{i=1}^n x_i}{1-q}
+  \] 
+  Risolvendo \( \frac{d}{dq} log(f(x_1, \ldots, x_n; q)) = 0 \) rispetto alla variabile \( q \),
+  si ottiene \[ \hat{q} = \frac{1}{n} \sum_{i=1}^n x_i \] che è un punto di massimo
+  dal momento che:
+  \[
+  \frac{d^2}{dq^2} log(f(x_1, \ldots, x_n; q)) \le 0
+  \] 
+  Pertanto lo stimatore di massima verosomiglianza per il parametro \( q \) di una
+  distribuzione di Bernoulli è \( Q_{mv} = \overline{X} \) (stimatore di massima verosomiglianza).
+
+  \vspace{1em}
+  Supponiamo di aver osservato il seguente campione di dati:
+  \[
+  1\;0\;0\;0\;0\;0\;1\;0\;0\;1
+  \] 
+  Allora otteniamo la stima di massima verosomiglianza
+  \[
+    \hat{q} = \frac{1}{10}(1+0+0+0+0+0+1+0+0+1) = \frac{3}{10} = 0.3
+  \] 
+  (i dati sono stati generati con \(\mathcal{B}(0.25))\) che sarebbe il calore vero di \( q \))
+\end{exercise}
+
+\subsubsection{Bontà di uno stimatore}
+Sia \( X_1, \ldots, X_n \) un campione casuale estratto da una popolazione nota eccetto
+che per un parametro ignoto \( \theta \).
+
+\noindent Come scegliamo uno stimatore \( T = T(X_1, \ldots, X_n) \) per \( \theta \)?
+
+\noindent Come ne valutiamo la bontà?
+
+\vspace{1em}
+\noindent Vogliamo minimizzare la deviazione dal valore reale del parametro e per farlo ci
+basiamo sui valori di \( \mathbb{E}(T) \) e \( Var(T) \).
+
+\begin{figure}[H]
+  \begin{definition}[Bias]
+    Sia \( T = T(X_1, \ldots, X_n) \) uno stimatore del parametro \( \theta \). Allora
+    \( b(T) = \mathbb{E}(T) - \theta \) è detto \textbf{bias} (o distorsione) di \( T \)
+    come stimatore di \( \theta \).
+
+    \noindent Se esso è nullo, diciamo che \( T \) è uno stimatore corretto (o non distorto)
+    di \( \theta \).
+  \end{definition}
+\end{figure}
+
+\begin{example}
+  Sia \( X_1, \ldots, X_n \) un campione casuale estratto da una popolazione con media
+  \( \mu \). La media campionaria \( \overline{X} \) è uno stimatore corretto per il valor
+  medio \( \mu \). Infatti, calcoliamo:
+  \[
+    b(\overline{X}) = \mathbb{E}(\overline{X}) - \mu = \frac{1}{n} \sum_{i=1}^n \underbrace{\mathbb{E}(X_i)}_{\text{\( \mu \) per ogni \( i \) }} - \mu =
+    \frac{1}{n} \cdot n \mu - \mu = \mu - \mu = 0
+  \] 
+\end{example}
+
+\begin{definition}[Errore quadratico medio]
+  Sia \( T = T(X_1, \ldots, X_n) \) uno stimatore del parametro \( \theta \). Allora
+  \( MSE(T) = \mathbb{E}[(T- \theta)^2] \) è detto errore quadratico medio dello
+  stimatore \( T \).
+
+  \vspace{1em}
+  \noindent Possiamo esplicitare:
+  \[
+    MSE(T) = \mathbb{E}[(T-\theta)^2] = \mathbb{E}(T^2) - 2\theta \mathbb{E}(T) + \theta^2 =
+  \] 
+  \[
+    = \underbrace{\mathbb{E}(T^2) - \mathbb{E}(T)^2}_{= Var(T)} + \underbrace{\mathbb{E}(T)^2 - 2 \theta \mathbb{E}(T) + \theta^2}_{= (\mathbb{E}(T)-\theta)^2} =
+  \] 
+  \[
+    = Var(T) + b(T)^2
+  \] 
+  \begin{itemize}
+    \item \( Var(T) \) Misura la dispersione/variabilità dello stimatore e quindi la sua
+      \textbf{precisione}.
+    \item \( b(T)^2 \) Misura l'\textbf{accuratezza} dello stimatore.
+  \end{itemize}
+
+  \noindent Uno stimatore buono (o \textbf{efficiente}) controlla sia la varianza che la distorsione.
+  Se \( T \) è corretto, allora \( MSE(T) = Var(T) \).
+
+  \vspace{1em}
+  \noindent Uno stimatore corretto, ma con varianza molto elevata può avere un errore
+  quadratico medio maggiore di uno stimatore distorto, ma con varianza inferiore
+\end{definition}
+
+\begin{example}
+  Lo stimatore di massima verosomiglianza \( S^2_{mv} \) per la varianza di una popolazione
+  normale \textbf{non} è corretto, mentre la varianza campionaria lo è.
+
+  \vspace{1em}
+  \noindent Risulta però: \( MSE(S^2_{mv}) \le MSE(S^2) \).
+\end{example}
+
+\noindent Lo scopo della statistica è quello di trovare tra gli stimatori corretti (o
+asintoticamente corretti) quelli che hanno errore quadratico medio minore.
 
 \end{document}
