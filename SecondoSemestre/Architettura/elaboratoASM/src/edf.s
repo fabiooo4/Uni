@@ -24,9 +24,31 @@ edf:
 
   popl %ebp # Ripristina %ebp
 
+  xorl %edi, %edi
+
+  # Resetta il numero di valori e di linee letti
+  movl $0, values
+  movl $0, lines
+
+  # Siccome il file è già stato aperto nel main e questa potrebbe non essere la
+  # prima volta che viene letto bisogna "resettare" la posizione di lettura all'inizio
+  # del file ogni volta che si vuole leggere da esso
+  mov $19, %eax  # syscall lseek (riposizione il read/write offset)
+  mov fd, %ebx   # File descriptor
+  mov $1, %ecx   # Valore di offset
+  mov $0, %edx   # Posizione di riferimento (0 = inizio del file)
+  int $0x80
+
+  mov $19, %eax  # syscall lseek (riposizione il read/write offset)
+  mov fd, %ebx   # File descriptor
+  mov $-1, %ecx   # Valore di offset
+  mov $1, %edx   # Posizione di riferimento (0 = inizio del file)
+  int $0x80
+
 # Legge il file riga per riga
-xorl %edi, %edi
 readLine:
+
+  # Lettura di 1 byte alla volta (1 carattere)
   mov $3, %eax       # syscall read
   mov fd, %ebx       # File descriptor
   mov $buffer, %ecx  # Buffer di input
