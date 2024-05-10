@@ -2970,7 +2970,7 @@ ordinate in base alla distanza dalla CPU
 
 \begin{table}[H]
   \centering
-  \scalebox{0.8}{
+  \scalebox{0.83}{
     \begin{tabular}{|c|c|c|c|c|c|}
       \hline
       \textbf{CPU} & \textbf{Tecnologia} & \textbf{Accesso} & \makecell{\textbf{Velocità}\\$\begin{bmatrix} s \end{bmatrix} $} & \makecell{\textbf{Dimensione}\\$\begin{bmatrix} B \end{bmatrix} $} & \makecell{\textbf{Costo}\\$\begin{bmatrix} \text{€}/B \end{bmatrix} $} \\
@@ -2984,11 +2984,11 @@ ordinate in base alla distanza dalla CPU
       \textbf{SSD} & \makecell{Elettronica\\Elettronica Flash\\Non volatile} & \makecell{Casuale\\a blocchi} & \( 10^{-5} \)  & \( 10^{10} \)  & \( 10^{-10} \)  \\
       \hline
       \hline
-      \textbf{Hard Disk} & \makecell{Magnetica meccanica\\Non volatile} & Diretto & \( 10^{-3} \)  & & \\
+      \textbf{Hard Disk} & \makecell{Magnetica meccanica\\Non volatile} & Diretto & \( 10^{-3} \)  & \( 10^{13} \)  & \( 10^{-11} \)  \\
       \hline
-      \textbf{CD/DVD} & & & & & \\
+      \textbf{CD/DVD} & Ottica & Diretto & \( 10^{-1} \)  & \makecell{\( 10^{10} \)\\fino a\\\( 10^{11} \)  } & \( 10^{-9} \)  \\
       \hline
-      \textbf{Nastri DAT} & & Sequenziale & & & \\
+      \textbf{Nastri DAT} & Magnetica & Sequenziale & \( 10^0 \)  & \makecell{\( 10^9 \)\\fino a\\\( 10^{11} \) } & \( 10^{-9} \)  \\
       \hline
     \end{tabular}
   }
@@ -3018,6 +3018,63 @@ ordinate in base alla distanza dalla CPU
   \item \textbf{Cache}: La cache è associativa, cioè il dato è associato ad un indirizzo
     e non ad una posizione, è più veloce, ma bisogna controllare se il dato è presente
     nella cache, se non lo è si verifica una \textbf{cache miss}.
+  \item \textbf{Hard disk}: I dati vengono letti in blocchi da 512 byte. Il disco viene 
+    letto da una testina con una spira che ne legge la corrente inferita dalla carica
+    magnetica del disco, la testina si muove su un braccio che si muove su un asse.
+    Questo sistema però è molto fragile, perchè se la testina non è ad una distanza 
+    corretta dal disco, si può danneggiare il disco. Il tempo di lettura viene descritto
+    dalla seguente formula:
+    \[
+      T_{HD} = T_{seek} + T_{\omega} + T_{B}
+    \] 
+    Dove \( T_{seek} \) è il tempo di ricerca, \( T_{\omega} \) è il tempo di rotazione
+    e \( T_{B} \) è il tempo di trasferimento del blocco.
+
+    \vspace{1em}
+    \textbf{FAT} (File Allocation Table) è una tabella (localizzata nel cerchio più esterno)
+    che contiene le informazioni
+    sui file presenti nel disco, come la dimensione, la posizione, le directory, ecc. 
+    Ogni sistema operativo ha la sua FAT, ma la più famosa è la FAT32.
+
+    \vspace{1em}
+    \noindent \textbf{INODE} contiene un puntatore alla posizione del blocco successivo.
+    Tutti i blocchi sono collegati da un'unica catena di blocchi liberi. Quando un blocco
+    viene utilizzato viene tolto dalla catena di blocchi liberi e viene aggiunto ad
+    un file. Quando un file viene cancellato vengono tolti i blocchi relativi a quel file
+    e vengono aggiunti alla catena di blocchi liberi.
+
+    \vspace{1em}
+    \noindent \textbf{Defrag} è un'operazione che serve a riordinare i blocchi in modo
+    che siano tutti vicini tra loro, in modo da ridurre il tempo di accesso.
+
+    \vspace{1em}
+    \noindent I dischi moderni sono più di uno e sono in una pila, inoltre vengono
+    scritti su entrambi i lati (quindi 2 testine) e quando i dischi sono fermi le
+    vengono posizionate in una posizione di sicurezza.
+
+  \item \textbf{CD}: Sono nati per la musica con 700mb di spazio, ma poi sono stati utilizzati per i dati.
+    La lettura viene effettuata da un laser che viene riflesso su uno specchietto che
+    può ruotare in modo da riflettere il laser su tutte le parti possibili del disco.
+    Per creare uno 0 si effettuavano dei veri e propri buchi nel dusco. Il CD è composto
+    da una traccia unica che si sviluppa a spirale. All'inizio c'è il nome dei brani (massimo 13)
+    e di seguito i brani. In seguito i CD sono anche stati utilizzati per distribuire i
+    software.
+
+    \vspace{1em}
+    \noindent \textbf{WORM} (Write Once Read Many) è un CD che può essere scritto una sola
+    volta e letto più volte. La scrittura viene fatta da un laser più potente che crea
+    una cavità nel disco.
+
+    \vspace{1em}
+    \noindent Successivamente il CD si è evoluto per poter scrivere e cancellare i dati,
+    nasce così il \textbf{DVD}. È presente un gel all'interno del disco che cambia il colore in
+    base al colore del laser. Per scrivere si usa una luce rossa e una blu per l'1 e lo 0.
+    Per leggere si usa una luce bianca che riflette il colore assunto dal gel all'interno 
+    del disco.
+
+    \vspace{1em}
+    \noindent Aumentando l'area dei DVD a 10GB si riesce a memorizzare interi film su di
+    essi.
 \end{itemize}
 
 \begin{figure}[H]
