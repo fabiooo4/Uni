@@ -42,6 +42,7 @@ bubbleLoop:
   subl $4, %edx
   movl (%ebp, %edx, 4), %ebx  # Parametro 2
 
+<<<<<<< HEAD
   # Se viene usato hpf (%ecx != 3) ordina decrescente
   cmp $3, %ecx
   jne descending
