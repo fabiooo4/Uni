@@ -1,0 +1,778 @@
+\documentclass[a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage[italian]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage[makeroom]{cancel}
+\usepackage{amsfonts}
+\usepackage{mdframed}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usepackage{nicematrix}
+\usepackage{pgfplots}
+\usetikzlibrary{fit}
+\usetikzlibrary{pgfplots.fillbetween}
+\pgfplotsset{compat=newest, ticks=none}
+\usepackage{graphicx}
+\graphicspath{{./figures/}}
+
+\pgfdeclarelayer{ft}
+\pgfdeclarelayer{bg}
+\pgfsetlayers{bg,main,ft}
+
+\usepackage{import}
+\usepackage{pdfpages}
+\usepackage{transparent}
+\usepackage{xcolor}
+
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=false,
+}
+
+\usepackage{ntheorem}
+\newtheorem{theorem}{Teorema}
+
+% Useful definitions frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+linecolor=gray,leftmargin=0,%
+rightmargin=0,
+innertopmargin=8pt,%
+ntheorem]{define}{Definizioni utili}[section]
+
+% Example frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+linecolor=gray,leftmargin=0,%
+rightmargin=0,
+innertopmargin=8pt,%
+ntheorem]{example}{Esempio}[section]
+
+% Important definition frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+linecolor=gray,leftmargin=0,%
+rightmargin=0,
+backgroundcolor=gray!40,%
+innertopmargin=8pt,%
+ntheorem]{definition}{Definizione}[section]
+
+% Exercise frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+linecolor=gray,leftmargin=0,%
+rightmargin=0,
+innertopmargin=8pt,%
+ntheorem]{exercise}{Esercizio}[section]
+
+
+% figure support
+\usepackage{import}
+\usepackage{xifthen}
+\pdfminorversion=7
+\usepackage{pdfpages}
+\usepackage{transparent}
+\newcommand{\incfig}[1]{%
+  \def\svgwidth{\columnwidth}
+  \import{./figures/}{#1.pdf_tex}
+}
+
+\pdfsuppresswarningpagegroup=1
+
+% Matrices
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+\array{#1}}
+\makeatother
+
+\begin{document}
+\input{title.tex}
+
+\tableofcontents
+\pagebreak
+
+\section{Scheda 2}
+\subsection{Esercizio 1}
+Si consideri
+\[
+	f: \mathbb{C}^3 \to \mathbb{C}^3, \quad f \left( \begin{pmatrix}
+			x \\
+			y \\
+			z \\
+		\end{pmatrix}  \right) =
+	\begin{pmatrix}
+		ix + y \\
+		x + iy \\
+		x + 3z
+	\end{pmatrix}
+\]
+
+\begin{enumerate}
+	\item[(a)] Verificare che \( f \) è lineare.
+
+	      \vspace{1em}
+	      \noindent Verifico se valgono le seguenti proprietà con \( v, w \in \mathbb{C}^3 \) e \( \alpha \in \mathbb{C} \):
+	      \begin{itemize}
+		      \item
+		            \(
+		            f(v + w) = f(v) + f(w)
+		            \)
+		            \[
+			            f \left( \begin{pmatrix} v_1\\v_2\\v_3 \end{pmatrix} +
+			            \begin{pmatrix} w_1\\w_2\\w_3 \end{pmatrix}  \right)
+			            =
+			            f \left( \begin{pmatrix} v_1\\v_2\\v_3 \end{pmatrix}  \right)
+			            +
+			            f \left( \begin{pmatrix} w_1\\w_2\\w_3 \end{pmatrix}  \right)
+		            \]
+		            \[
+			            f \left( \begin{pmatrix} v_1 + w_1\\ v_2 + w_2\\ v_3 + w_3 \end{pmatrix}  \right)
+			            =
+			            \begin{pmatrix}
+				            iv_1 + v_2 \\
+				            v_1 + iv_2 \\
+				            v_1 + 3v_3
+			            \end{pmatrix}
+			            +
+			            \begin{pmatrix}
+				            iw_1 + w_2 \\
+				            w_1 + iw_2 \\
+				            w_1 + 3w_3
+			            \end{pmatrix}
+		            \]
+		            \[
+			            \begin{pmatrix}
+				            i(v_1 + w_1) + (v_2 + w_2) \\
+				            (v_1 + w_1) + i(v_2 + w_2) \\
+				            (v_1 + w_1) + 3(v_3 + w_3)
+			            \end{pmatrix}
+			            =
+			            \begin{pmatrix}
+				            iv_1 + v_2 + iw_1 + w_2 \\
+				            v_1 + iv_2 + w_1 + iw_2 \\
+				            v_1 + 3v_3 + w_1 + 3w_3
+			            \end{pmatrix}
+		            \]
+		            \[
+			            \begin{pmatrix}
+				            i(v_1 + w_1) + (v_2 + w_2) \\
+				            (v_1 + w_1) + i(v_2 + w_2) \\
+				            (v_1 + w_1) + 3(v_3 + w_3)
+			            \end{pmatrix}
+			            =
+			            \begin{pmatrix}
+				            i(v_1 + w_1) + (v_2 + w_2) \\
+				            (v_1 + w_1) + i(v_2 + w_2) \\
+				            (v_1 + w_1) + 3(v_3 + w_3)
+			            \end{pmatrix}
+		            \]
+		            \begin{center}
+			            Quindi vale la proprietà
+		            \end{center}
+
+		      \item
+		            \(
+		            f(\alpha v) = \alpha f(v)
+		            \)
+		            \[
+			            f \left( \alpha \begin{pmatrix} v_1\\v_2\\v_3 \end{pmatrix}  \right)
+			            =
+			            \alpha f \left( \begin{pmatrix} v_1\\v_2\\v_3 \end{pmatrix}  \right)
+		            \]
+		            \[
+			            f \left( \begin{pmatrix} \alpha v_1\\\alpha v_2\\\alpha v_3 \end{pmatrix}  \right)
+			            =
+			            \alpha \begin{pmatrix}
+				            iv_1 + v_2 \\
+				            v_1 + iv_2 \\
+				            v_1 + 3v_3
+			            \end{pmatrix}
+		            \]
+		            \[
+			            \begin{pmatrix}
+				            i(\alpha v_1) + (\alpha v_2) \\
+				            (\alpha v_1) + i(\alpha v_2) \\
+				            (\alpha v_1) + 3(\alpha v_3)
+			            \end{pmatrix}
+			            =
+			            \begin{pmatrix}
+				            \alpha (iv_1 + v_2) \\
+				            \alpha (v_1 + iv_2) \\
+				            \alpha (v_1 + 3v_3)
+			            \end{pmatrix}
+		            \]
+		            \[
+			            \begin{pmatrix}
+				            i\alpha v_1 + \alpha v_2 \\
+				            \alpha v_1 + i\alpha v_2 \\
+				            \alpha v_1 + 3\alpha v_3
+			            \end{pmatrix}
+			            =
+			            \begin{pmatrix}
+				            i\alpha v_1 + \alpha v_2  \\
+				            \alpha v_1 + i \alpha v_2 \\
+				            \alpha v_1 + 3 \alpha v_3
+			            \end{pmatrix}
+		            \]
+		            \begin{center}
+			            Quindi vale la proprietà
+		            \end{center}
+	      \end{itemize}
+	      Entrambe le proprietà sono verificate, quindi \( f \) è lineare.
+
+
+	\item[(b)] Determinare la matrice \( A \) associata ad \( f \) rispetto alla base canonica
+
+	      \vspace{1em}
+	      \[
+		      A = \begin{pmatrix}
+			      i & 1 & 0 \\
+			      1 & i & 0 \\
+			      1 & 0 & 3
+		      \end{pmatrix}
+	      \]
+
+	      \[
+		      f_A = A \begin{pmatrix}
+			      x \\
+			      y \\
+			      z
+		      \end{pmatrix}
+		      =
+		      \begin{pmatrix}
+			      i & 1 & 0 \\
+			      1 & i & 0 \\
+			      1 & 0 & 3
+		      \end{pmatrix}
+		      \begin{pmatrix}
+			      x \\
+			      y \\
+			      z
+		      \end{pmatrix}
+		      =
+		      \begin{pmatrix}
+			      ix + y \\
+			      x + iy \\
+			      x + 3z
+		      \end{pmatrix}
+	      \]
+
+	\item[(c)] Stabilire se \( f \) è un isomorfismo
+
+	      \vspace{1em}
+	      \noindent \( f \) è un isomorfismo se e solo se \( A \) è invertibile. \( A \) è
+	      invertibile se \( det(A) \neq 0 \).
+	      \[
+		      det(A) = det \begin{pmatrix}
+			      i & 1 & 0 \\
+			      1 & i & 0 \\
+			      1 & 0 & 3
+		      \end{pmatrix}
+		      = 3 \cdot det \begin{pmatrix}
+			      i & 1 \\
+			      1 & i
+		      \end{pmatrix}
+		      =
+	      \]
+	      \[
+		      = 3 \cdot (i \cdot i - (1 \cdot 1)) = 3 \cdot (-1 -1) = 3 \cdot (-2) = -6
+	      \]
+	      \( det(A) \neq 0 \) quindi \( f \) è un isomorfismo.
+	\item[(d)] Verificare che \( \mathcal{B} = \left\{
+	      b_1 = \begin{pmatrix}
+		      1 \\
+		      0 \\
+		      i
+	      \end{pmatrix} ,
+	      b_2 = \begin{pmatrix}
+		      0 \\
+		      1 \\
+		      0
+	      \end{pmatrix} ,
+	      b_3 = \begin{pmatrix}
+		      5 \\
+		      4 \\
+		      3
+	      \end{pmatrix}
+	      \right\}  \)
+	      è una base di \( \mathbb{C}^3 \)
+
+	      \vspace{1em}
+	      \[
+		      \begin{pmatrix}
+			      1 & 0 & 5 \\
+			      0 & 1 & 4 \\
+			      i & 0 & 3
+		      \end{pmatrix}
+		      \underset{E_{31}(-i)}{\stackrel{R_3 - iR_1}{\sim}}
+		      \begin{pmatrix}
+			      1 & 0 & 5      \\
+			      0 & 1 & 4      \\
+			      0 & 0 & 3 - i5
+		      \end{pmatrix}
+		      \underset{E_{3}(\frac{1}{3-i5})}{\stackrel{\frac{1}{3-i5}R_3}{\sim}}
+		      \begin{pmatrix}
+			      1 & 0 & 5 \\
+			      0 & 1 & 4 \\
+			      0 & 0 & 1
+		      \end{pmatrix}
+	      \]
+	      La matrice ridotta ha tutte le colonne dominanti, cioè tutti gli elementi
+	      di \( \mathcal{B} \) sono linearmente indipendenti, quindi \( \mathcal{B} \) è una base di \( \mathbb{C}^3 \).
+
+	\item[(e)] Verificare che \( \mathcal{C} = \left\{
+	      c_1 = \begin{pmatrix}
+		      1 \\
+		      1 \\
+		      1
+	      \end{pmatrix} ,
+	      c_2 = \begin{pmatrix}
+		      1 \\
+		      1 \\
+		      0
+	      \end{pmatrix} ,
+	      c_3 = \begin{pmatrix}
+		      i \\
+		      0 \\
+		      0
+	      \end{pmatrix}
+	      \right\}  \)
+	      è una base di \( \mathbb{C}^3 \)
+
+	      \vspace{1em}
+	      \[
+		      \begin{pmatrix}
+			      1 & 1 & i \\
+			      1 & 1 & 0 \\
+			      1 & 0 & 0
+		      \end{pmatrix}
+		      \underset{E_{21}(-1)}{\stackrel{R_2 - R_1}{\sim}}
+		      \begin{pmatrix}
+			      1 & 1 & i  \\
+			      0 & 0 & -i \\
+			      1 & 0 & 0
+		      \end{pmatrix}
+		      \underset{E_{31}(-1)}{\stackrel{R_3 - R_1}{\sim}}
+		      \begin{pmatrix}
+			      1 & 1  & i  \\
+			      0 & 0  & -i \\
+			      0 & -1 & -i
+		      \end{pmatrix}
+		      \underset{E_{32}}{\stackrel{R_3 \leftrightarrow R_2}{\sim}}
+	      \]
+	      \[
+		      \begin{pmatrix}
+			      1 & 1  & i  \\
+			      0 & -1 & -i \\
+			      0 & 0  & -i
+		      \end{pmatrix}
+		      \underset{E_{2}(-1)}{\stackrel{(-1)R_2}{\sim}}
+		      \begin{pmatrix}
+			      1 & 1 & i  \\
+			      0 & 1 & i  \\
+			      0 & 0 & -i
+		      \end{pmatrix}
+		      \underset{E_{3}(i)}{\stackrel{iR_3}{\sim}}
+		      \begin{pmatrix}
+			      1 & 1 & i \\
+			      0 & 1 & i \\
+			      0 & 0 & 1
+		      \end{pmatrix}
+	      \]
+	      La matrice ridotta ha tutte le colonne dominanti, cioè tutti gli elementi
+	      di \( \mathcal{C} \) sono linearmente indipendenti, quindi \( \mathcal{C} \) è una base di \( \mathbb{C}^3 \).
+
+
+	\item[(f)] Determinare la matrice \( D \) associata ad \( f \) rispetto alla base
+	      \( \mathcal{B} \) del dominio e alla base \( \mathcal{C} \) del codominio
+
+	      \vspace{1em}
+	      La matrice \( D \) avrà come colonne \( [f(b_i)]_{\mathcal{C}} \) con \( i = 1, 2, 3 \).
+	      \[
+		      f(b_1) = f \left( \begin{pmatrix} 1 \\ 0 \\ i \end{pmatrix} \right)
+		      = \begin{pmatrix} i \\ 1 \\ 1+3i \end{pmatrix}
+		      \Rightarrow
+		      [f(b_1)]_{\mathcal{C}} = \alpha_1 c_1 + \alpha_2 c_2 + \alpha_3 c_3
+	      \]
+	      \[
+		      = \alpha_1 \begin{pmatrix} 1 \\ 1 \\ 1 \end{pmatrix} + \alpha_2 \begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix} + \alpha_3 \begin{pmatrix} i \\ 0 \\ 0 \end{pmatrix}
+	      \]
+	      \[
+		      = \begin{pmatrix}
+			      \alpha_1 + \alpha_2 + i\alpha_3 \\
+			      \alpha_1 + \alpha_2             \\
+			      \alpha_1
+		      \end{pmatrix}
+	      \]
+	      \[
+		      \begin{cases}
+			      \alpha_1 + \alpha_2 + i\alpha_3 = i \\
+			      \alpha_1 + \alpha_2 = 1             \\
+			      \alpha_1 = 1+3i
+		      \end{cases}
+		      \leadsto
+		      \begin{cases}
+			      \alpha_1 = 1+3i \\
+			      \alpha_2 = -3i  \\
+			      \alpha_3 = \frac{i-1}{i}
+		      \end{cases}
+	      \]
+
+	      \vspace{1em}
+	      \[
+		      f(b_2) = f \left( \begin{pmatrix} 0 \\ 1 \\ 0 \end{pmatrix} \right)
+		      = \begin{pmatrix}
+			      1 \\
+			      i \\
+			      0
+		      \end{pmatrix}
+		      \Rightarrow
+		      [f(b_2)]_{\mathcal{C}} = \beta_1 c_1 + \beta_2 c_2 + \beta_3 c_3
+	      \]
+	      \[
+		      = \beta_1 \begin{pmatrix} 1\\1\\1 \end{pmatrix}
+		      + \beta_2 \begin{pmatrix} 1\\1\\0 \end{pmatrix}
+		      + \beta_3 \begin{pmatrix} i\\0\\0 \end{pmatrix}
+	      \]
+	      \[
+		      = \begin{pmatrix}
+			      \beta_1 + \beta_2 + i\beta_3 \\
+			      \beta_1 + \beta_2            \\
+			      \beta_1
+		      \end{pmatrix}
+	      \]
+	      \[
+		      \begin{cases}
+			      \beta_1 + \beta_2 + i\beta_3 = 1 \\
+			      \beta_1 + \beta_2 = i            \\
+			      \beta_1 = 0
+		      \end{cases}
+		      \leadsto
+		      \begin{cases}
+			      \beta_1 = 0 \\
+			      \beta_2 = i \\
+			      \beta_3 = \frac{1-i}{i}
+		      \end{cases}
+	      \]
+
+	      \vspace{1em}
+	      \[
+		      f(b_3) = f \left( \begin{pmatrix} 5\\4\\3 \end{pmatrix}  \right) =
+		      \begin{pmatrix}
+			      4 + 5i \\
+			      5 + 4i \\
+			      14
+		      \end{pmatrix}
+		      \Rightarrow
+		      [f(b_3)]_{\mathcal{C}} = \gamma_1 c_1 + \gamma_2 c_2 + \gamma_3 c_3
+	      \]
+	      \[
+		      = \gamma_1 \begin{pmatrix} 1\\1\\1 \end{pmatrix}
+		      + \gamma_2 \begin{pmatrix} 1\\1\\0 \end{pmatrix}
+		      + \gamma_3 \begin{pmatrix} i\\0\\0 \end{pmatrix}
+	      \]
+	      \[
+		      = \begin{pmatrix}
+			      \gamma_1 + \gamma_2 + i\gamma_3 \\
+			      \gamma_1 + \gamma_2             \\
+			      \gamma_1
+		      \end{pmatrix}
+	      \]
+	      \[
+		      \begin{cases}
+			      \gamma_1 + \gamma_2 + i\gamma_3 = 4+5i \\
+			      \gamma_1 + \gamma_2 = 5+4i             \\
+			      \gamma_1 = 14
+		      \end{cases}
+		      \leadsto
+		      \begin{cases}
+			      \gamma_1 = 14      \\
+			      \gamma_2 = -9 + 4i \\
+			      \gamma_3 = \frac{i-1}{i}
+		      \end{cases}
+	      \]
+
+	      \vspace{1em}
+	      \[
+		      D = \begin{pmatrix}
+			      \alpha_1 & \beta_1 & \gamma_1 \\
+			      \alpha_2 & \beta_2 & \gamma_2 \\
+			      \alpha_3 & \beta_3 & \gamma_3
+		      \end{pmatrix}
+		      =
+		      \begin{pmatrix}
+			      1+3i          & 0             & 14            \\
+			      -3i           & i             & -9+4i         \\
+			      \frac{i-1}{i} & \frac{1-i}{i} & \frac{i-1}{i}
+		      \end{pmatrix}
+	      \]
+
+	\item[(g)] Calcolare la matrice \( A_{\mathcal{B} \to \mathcal{C}} \) del cambio di base
+	      da \( \mathcal{B} \) a \( \mathcal{C} \)
+
+	      \vspace{1em}
+	      La matrice \( A_{\mathcal{B} \to \mathcal{C}} \) del cambio di base ha come
+	      colonne \( [b_i]_{\mathcal{C}} \) con \( i = 1, 2, 3 \).
+	      \[
+		      b_1 = \begin{pmatrix} 1 \\ 0 \\ i \end{pmatrix}
+		      \Rightarrow
+		      [b_1]_{\mathcal{C}} = \alpha_1 c_1 + \alpha_2 c_2 + \alpha_3 c_3
+	      \]
+	      \[
+		      = \alpha_1 \begin{pmatrix} 1 \\ 1 \\ 1 \end{pmatrix} + \alpha_2 \begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix} + \alpha_3 \begin{pmatrix} i \\ 0 \\ 0 \end{pmatrix}
+	      \]
+	      \[
+		      = \begin{pmatrix}
+			      \alpha_1 + \alpha_2 + i\alpha_3 \\
+			      \alpha_1 + \alpha_2             \\
+			      \alpha_1
+		      \end{pmatrix}
+	      \]
+	      \[
+		      \begin{cases}
+			      \alpha_1 + \alpha_2 + i\alpha_3 = 1 \\
+			      \alpha_1 + \alpha_2 = 0             \\
+			      \alpha_1 = i
+		      \end{cases}
+		      \leadsto
+		      \begin{cases}
+			      \alpha_1 = i  \\
+			      \alpha_2 = -i \\
+			      \alpha_3 = \frac{1}{i}
+		      \end{cases}
+	      \]
+
+	      \vspace{1em}
+	      \[
+		      b_2 = \begin{pmatrix} 0 \\ 1 \\ 0 \end{pmatrix}
+		      \Rightarrow
+		      [b_2]_{\mathcal{C}} = \beta_1 c_1 + \beta_2 c_2 + \beta_3 c_3
+	      \]
+	      \[
+		      = \beta_1 \begin{pmatrix} 1 \\ 1 \\ 1 \end{pmatrix}
+		      + \beta_2 \begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix}
+		      + \beta_3 \begin{pmatrix} i \\ 0 \\ 0 \end{pmatrix}
+	      \]
+	      \[
+		      = \begin{pmatrix}
+			      \beta_1 + \beta_2 + i\beta_3 \\
+			      \beta_1 + \beta_2            \\
+			      \beta_1
+		      \end{pmatrix}
+	      \]
+	      \[
+		      \begin{cases}
+			      \beta_1 + \beta_2 + i\beta_3 = 0 \\
+			      \beta_1 + \beta_2 = 1            \\
+			      \beta_1 = 0
+		      \end{cases}
+		      \leadsto
+		      \begin{cases}
+			      \beta_1 = 0 \\
+			      \beta_2 = 1 \\
+			      \beta_3 = -\frac{1}{i}
+		      \end{cases}
+	      \]
+
+	      \vspace{1em}
+	      \[
+		      b_3 = \begin{pmatrix} 5 \\ 4 \\ 3 \end{pmatrix}
+		      \Rightarrow
+		      [b_3]_{\mathcal{C}} = \gamma_1 c_1 + \gamma_2 c_2 + \gamma_3 c_3
+	      \]
+	      \[
+		      = \gamma_1 \begin{pmatrix} 1 \\ 1 \\ 1 \end{pmatrix}
+		      + \gamma_2 \begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix}
+		      + \gamma_3 \begin{pmatrix} i \\ 0 \\ 0 \end{pmatrix}
+	      \]
+	      \[
+		      = \begin{pmatrix}
+			      \gamma_1 + \gamma_2 + i\gamma_3 \\
+			      \gamma_1 + \gamma_2             \\
+			      \gamma_1
+		      \end{pmatrix}
+	      \]
+	      \[
+		      \begin{cases}
+			      \gamma_1 + \gamma_2 + i\gamma_3 = 5 \\
+			      \gamma_1 + \gamma_2 = 4             \\
+			      \gamma_1 = 3
+		      \end{cases}
+		      \leadsto
+		      \begin{cases}
+			      \gamma_1 = 3 \\
+			      \gamma_2 = 1 \\
+			      \gamma_3 = \frac{1}{i}
+		      \end{cases}
+	      \]
+
+	      \vspace{1em}
+	      \[
+		      A_{\mathcal{B} \to \mathcal{C}} = \begin{pmatrix}
+			      i           & 0            & 3           \\
+			      -i          & 1            & 1           \\
+			      \frac{1}{i} & -\frac{1}{i} & \frac{1}{i}
+		      \end{pmatrix}
+	      \]
+\end{enumerate}
+
+\subsection{Esercizio 2}
+Si consideri
+\[
+	g: M_{2 \times 2}(\mathbb{R}) \to M_{2 \times 2}(\mathbb{R}), \quad g(A) = AB - BA
+\]
+dove \( B = \begin{pmatrix}
+	-1 & 1 \\
+	0  & 1
+\end{pmatrix} \in M_{2 \times 2}(\mathbb{R}) \).
+
+\begin{enumerate}
+	\item[(a)] Verificare che
+	      \[
+		      \mathcal{D} = \left\{
+		      D_1 = \begin{pmatrix}
+			      1 & 0 \\
+			      0 & 0
+		      \end{pmatrix} ,
+		      D_2 = \begin{pmatrix}
+			      1 & 1 \\
+			      0 & 0
+		      \end{pmatrix} ,
+		      D_3 = \begin{pmatrix}
+			      1 & 1 \\
+			      1 & 0
+		      \end{pmatrix} ,
+		      D_4 = \begin{pmatrix}
+			      1 & 1 \\
+			      1 & 1
+		      \end{pmatrix}
+		      \right\}
+	      \]
+	      è una base di \( M_{2 \times 2}(\mathbb{R}) \)
+
+	\item[(b)] Verificare che
+	      \[
+		      \mathcal{E} = \left\{
+		      E_1 = \begin{pmatrix}
+			      1 & 0 \\
+			      0 & 0
+		      \end{pmatrix} ,
+		      E_2 = \begin{pmatrix}
+			      0 & 1 \\
+			      0 & 0
+		      \end{pmatrix} ,
+		      E_3 = \begin{pmatrix}
+			      0 & 0 \\
+			      1 & 0
+		      \end{pmatrix} ,
+		      E_4 = \begin{pmatrix}
+			      0 & 0 \\
+			      0 & 1
+		      \end{pmatrix}
+		      \right\}
+	      \]
+	      è una base di \( M_{2 \times 2}(\mathbb{R}) \)
+
+	\item[(c)] Calcolare la matrice \( M \) associata a \( g \) rispetto alla base \( \mathcal{D} \)
+	      del dominio e rispetto alla base \( \mathcal{E} \) del codominio.
+
+	\item[(d)] Calcolare il rango e la nullità di \( g \)
+
+	\item[(e)] Calcolare una base di \( N(f_M) \) ed una base di \( Im(f_M) \)
+\end{enumerate}
+
+\subsection{Esercizio 3}
+Data la matrice
+\[
+	N = \begin{pmatrix}
+		5  & 1 & 0  \\
+		-1 & 4 & -1 \\
+		0  & 1 & 3
+	\end{pmatrix}
+	\in M_{3 \times 3}(\mathbb{C})
+\]
+
+\begin{enumerate}
+	\item[(a)] Calcolare il polinomio caratteristico \( P_N \) di \( N \)
+
+	      \vspace{1em}
+	      \[
+		      P_N = det(N - \lambda I_3) = det \begin{pmatrix}
+			      5 - \lambda & 1           & 0           \\
+			      -1          & 4 - \lambda & -1          \\
+			      0           & 1           & 3 - \lambda
+		      \end{pmatrix}
+	      \]
+	      \[
+		      = - det \begin{pmatrix}
+			      5 - \lambda & 0  \\
+			      -1          & -1
+		      \end{pmatrix}
+		      + (3-\lambda) det \begin{pmatrix}
+			      5 - \lambda & 1           \\
+			      -1          & 4 - \lambda
+		      \end{pmatrix}
+	      \]
+	      \[
+		      = -(-5+\lambda) + (3-\lambda)((5-\lambda)(4-\lambda) + 1)
+	      \]
+	      \[
+		      = 5 - \lambda + (3 - \lambda) (20 - 5 \lambda - 4 \lambda + \lambda^2 + 1)
+	      \]
+	      \[
+		      = 5 - \lambda + (3 - \lambda) (21 - 9 \lambda + \lambda^2)
+	      \]
+	      \[
+		      = 5 - \lambda + 63 - 27 \lambda + 3 \lambda^2 - 21 \lambda + 9 \lambda^2 - \lambda^3
+	      \]
+	      \[
+		      = -\lambda^3 + 12 \lambda^2 - 49 \lambda + 68
+	      \]
+
+	\item[(b)] Calcolare tutti gli autovalori di \( N \) in \( \mathbb{C} \)
+
+	      \vspace{1em}
+	      Utilizzo Ruffini per trovare gli zeri del polinomio caratteristico:
+	      \[
+		      \begin{array}{c|ccc|c}
+			        & -1 & 12 & -49 & 68  \\
+			      \\
+			      4 &    & -4 & 32  & -68 \\
+			      \hline
+			        & -1 & 8  & -17 & 0
+		      \end{array}
+	      \]
+	      \[
+		      (\lambda-4)(-\lambda^2 + 8\lambda - 17) = 0
+	      \]
+	      \[
+		      \lambda_1 = 4
+	      \]
+	      \[
+		      \lambda_{1,2} = \frac{-8 \pm \sqrt{64 - 68}}{-2} = \frac{-8 \pm \sqrt{-4}}{-2} = \frac{-8 \pm 2i}{-2} = 4 \pm i
+	      \]
+	      \[
+		      \lambda_2 = 4 + i
+	      \]
+	      \[
+		      \lambda_3 = 4 - i
+	      \]
+
+	\item[(c)] Stabilire se la matrice \( N \) è diagonalizzabile
+
+	      \vspace{1em}
+	      Siccome la matrice \( N \in M_{3 \times 3}(\mathbb{C}) \) ha 3 autovalori distinti, allora è diagonalizzabile.
+\end{enumerate}
+
+\end{document}
