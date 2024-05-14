@@ -662,57 +662,99 @@ dove \( B = \begin{pmatrix}
 	      è una base di \( M_{2 \times 2}(\mathbb{R}) \)
 
         \vspace{1em}
-        \noindent Verifico se le matrici \( D_i \) sono linearmente indipendenti:
-        \[
-        \begin{pmatrix} 
-          0 & 0\\
-          0 & 0
-        \end{pmatrix} 
-        =
-        \alpha_1 \begin{pmatrix} 
-          1 & 0\\
-          0 & 0
-        \end{pmatrix}
-        +
-        \alpha_2 \begin{pmatrix} 
-          1 & 1\\
-          0 & 0
-        \end{pmatrix}
-        +
-        \alpha_3 \begin{pmatrix} 
-          1 & 1\\
-          1 & 0
-        \end{pmatrix}
-        +
-        \alpha_4 \begin{pmatrix} 
-          1 & 1\\
-          1 & 1
-        \end{pmatrix}
-        \] 
-        \[
-        = \begin{pmatrix} 
-          \alpha_1 + \alpha_2 + \alpha_3 + \alpha_4 & \alpha_2 + \alpha_3 + \alpha_4\\
-          \alpha_3 + \alpha_4 & \alpha_4
-        \end{pmatrix}
-        \] 
-        Quindi:
-        \[
-        \begin{cases}
-          \alpha_1 + \alpha_2 + \alpha_3 + \alpha_4 = 0\\
-          \alpha_2 + \alpha_3 + \alpha_4 = 0\\
-          \alpha_3 + \alpha_4 = 0\\
-          \alpha_4 = 0
-        \end{cases}
-        \leadsto
-        \begin{cases}
-          \alpha_1 = 0\\
-          \alpha_2 = 0\\
-          \alpha_3 = 0\\
-          \alpha_4 = 0
-        \end{cases}
-        \] 
-        Tutte le matrici di \( \mathcal{D} \) sono linearmente indipendenti, quindi
-        \( \mathcal{D} \) è una base di \( M_{2 \times 2}(\mathbb{R}) \).
+        \noindent L'insieme \( \mathcal{D} \) è una base di \( M_{2 \times 2}(\mathbb{R}) \) se e solo se
+        sono verificate le seguenti proprietà:
+        \begin{itemize}
+          \item \textbf{Indipendenza lineare}
+
+            \noindent Per ogni \( \alpha_1, \alpha_2, \alpha_3, \alpha_4 \in \mathbb{R} \) si ha:
+            \[
+              \begin{pmatrix} 
+                0 & 0\\
+                0 & 0
+              \end{pmatrix} 
+              =
+              \alpha_1 \begin{pmatrix} 
+                1 & 0\\
+                0 & 0
+              \end{pmatrix}
+              +
+              \alpha_2 \begin{pmatrix} 
+                1 & 1\\
+                0 & 0
+              \end{pmatrix}
+              +
+              \alpha_3 \begin{pmatrix} 
+                1 & 1\\
+                1 & 0
+              \end{pmatrix}
+              +
+              \alpha_4 \begin{pmatrix} 
+                1 & 1\\
+                1 & 1
+              \end{pmatrix}
+            \] 
+            \[
+              = \begin{pmatrix} 
+                \alpha_1 + \alpha_2 + \alpha_3 + \alpha_4 & \alpha_2 + \alpha_3 + \alpha_4\\
+                \alpha_3 + \alpha_4 & \alpha_4
+              \end{pmatrix}
+            \] 
+            Quindi:
+            \[
+              \begin{cases}
+                \alpha_1 + \alpha_2 + \alpha_3 + \alpha_4 = 0\\
+                \alpha_2 + \alpha_3 + \alpha_4 = 0\\
+                \alpha_3 + \alpha_4 = 0\\
+                \alpha_4 = 0
+              \end{cases}
+              \leadsto
+              \begin{cases}
+                \alpha_1 = 0\\
+                \alpha_2 = 0\\
+                \alpha_3 = 0\\
+                \alpha_4 = 0
+              \end{cases}
+            \] 
+            Quindi tutti gli elementi di \( \mathcal{D} \) sono linearmente indipendenti.
+
+          \item \textbf{Insieme di generatori}
+
+            \noindent Per ogni \( \begin{pmatrix} 
+              \alpha_1 + \alpha_2 + \alpha_3 + \alpha_4 & \alpha_2 + \alpha_3 + \alpha_4\\
+              \alpha_3 + \alpha_4 & \alpha_4
+            \end{pmatrix} \in M_{2 \times 2}(\mathbb{R}) \) si ha che:
+            \[
+              \begin{pmatrix} 
+                \alpha_1 + \alpha_2 + \alpha_3 + \alpha_4 & \alpha_2 + \alpha_3 + \alpha_4\\
+                \alpha_3 + \alpha_4 & \alpha_4
+              \end{pmatrix} = 
+            \]
+            \[
+              =
+              \alpha_1 \begin{pmatrix} 
+                1 & 0\\
+                0 & 0
+              \end{pmatrix}
+              +
+              \alpha_2 \begin{pmatrix} 
+                1 & 1\\
+                0 & 0
+              \end{pmatrix}
+              +
+              \alpha_3 \begin{pmatrix} 
+                1 & 1\\
+                1 & 0
+              \end{pmatrix}
+              +
+              \alpha_4 \begin{pmatrix} 
+                1 & 1\\
+                1 & 1
+              \end{pmatrix}
+            \]
+            Quindi \( \mathcal{D} \) è un insieme di generatori di \( M_{2 \times 2}(\mathbb{R}) \).
+        \end{itemize}
+        Entrambe le proprietà sono verificate, quindi \( \mathcal{D} \) è una base di \( M_{2 \times 2}(\mathbb{R}) \).
 
 	\item[(b)] Verificare che
 	      \[
@@ -738,50 +780,87 @@ dove \( B = \begin{pmatrix}
 	      è una base di \( M_{2 \times 2}(\mathbb{R}) \)
 
         \vspace{1em}
-        \noindent Verifico se le matrici \( E_i \) sono linearmente indipendenti:
-        \[
-        \begin{pmatrix} 
-          0 & 0\\
-          0 & 0
-        \end{pmatrix}
-        =
-        \alpha_1 \begin{pmatrix} 
-          1 & 0\\
-          0 & 0
-        \end{pmatrix}
-        +
-        \alpha_2 \begin{pmatrix} 
-          0 & 1\\
-          0 & 0
-        \end{pmatrix}
-        +
-        \alpha_3 \begin{pmatrix} 
-          0 & 0\\
-          1 & 0
-        \end{pmatrix}
-        +
-        \alpha_4 \begin{pmatrix} 
-          0 & 0\\
-          0 & 1
-        \end{pmatrix}
-        \]
-        \[
-        = \begin{pmatrix} 
-          \alpha_1 & \alpha_2\\
-          \alpha_3 & \alpha_4
-        \end{pmatrix}
-        \]
-        Quindi:
-        \[
-        \begin{cases}
-          \alpha_1 = 0\\
-          \alpha_2 = 0\\
-          \alpha_3 = 0\\
-          \alpha_4 = 0
-        \end{cases}
-        \]
-        Tutte le matrici di \( \mathcal{E} \) sono linearmente indipendenti, quindi
-        \( \mathcal{E} \) è una base di \( M_{2 \times 2}(\mathbb{R}) \).
+        \noindent L'insieme \( \mathcal{E} \) è una base di \( M_{2 \times 2}(\mathbb{R}) \) se e solo se
+        sono verificate le seguenti proprietà:
+        \begin{itemize}
+          \item 
+            \[
+              \begin{pmatrix} 
+                0 & 0\\
+                0 & 0
+              \end{pmatrix}
+              =
+              \alpha_1 \begin{pmatrix} 
+                1 & 0\\
+                0 & 0
+              \end{pmatrix}
+              +
+              \alpha_2 \begin{pmatrix} 
+                0 & 1\\
+                0 & 0
+              \end{pmatrix}
+              +
+              \alpha_3 \begin{pmatrix} 
+                0 & 0\\
+                1 & 0
+              \end{pmatrix}
+              +
+              \alpha_4 \begin{pmatrix} 
+                0 & 0\\
+                0 & 1
+              \end{pmatrix}
+            \]
+            \[
+              = \begin{pmatrix} 
+                \alpha_1 & \alpha_2\\
+                \alpha_3 & \alpha_4
+              \end{pmatrix}
+            \]
+            Quindi:
+            \[
+              \begin{cases}
+                \alpha_1 = 0\\
+                \alpha_2 = 0\\
+                \alpha_3 = 0\\
+                \alpha_4 = 0
+              \end{cases}
+            \]
+            Quindi tutti gli elementi di \( \mathcal{E} \) sono linearmente indipendenti.
+
+          \item \textbf{Insieme di generatori}
+
+            \noindent Per ogni \( \begin{pmatrix} 
+              \alpha_1 & \alpha_2\\
+              \alpha_3 & \alpha_4
+            \end{pmatrix} \in M_{2 \times 2}(\mathbb{R}) \) si ha che:
+            \[
+              \begin{pmatrix} 
+                \alpha_1 & \alpha_2\\
+                \alpha_3 & \alpha_4
+              \end{pmatrix} =
+              \alpha_1 \begin{pmatrix} 
+                1 & 0\\
+                0 & 0
+              \end{pmatrix}
+              +
+              \alpha_2 \begin{pmatrix} 
+                0 & 1\\
+                0 & 0
+              \end{pmatrix}
+              +
+              \alpha_3 \begin{pmatrix} 
+                0 & 0\\
+                1 & 0
+              \end{pmatrix}
+              +
+              \alpha_4 \begin{pmatrix} 
+                0 & 0\\
+                0 & 1
+              \end{pmatrix}
+            \]
+            Quindi \( \mathcal{E} \) è un insieme di generatori di \( M_{2 \times 2}(\mathbb{R}) \).
+        \end{itemize}
+        Entrambe le proprietà sono verificate, quindi \( \mathcal{E} \) è una base di \( M_{2 \times 2}(\mathbb{R}) \).
 
 	\item[(c)] Calcolare la matrice \( M \) associata a \( g \) rispetto alla base \( \mathcal{D} \)
 	      del dominio e rispetto alla base \( \mathcal{E} \) del codominio.
