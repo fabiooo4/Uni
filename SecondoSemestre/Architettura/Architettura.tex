@@ -7,6 +7,7 @@
 \usepackage{amsmath, amssymb}
 \usepackage{booktabs,xltabular}
 \usepackage{amsfonts}
+\usepackage{cancel}
 \usepackage{mdframed}
 \usepackage{makecell}
 \usepackage{float}
@@ -3141,5 +3142,287 @@ la probabilità di non trovarlo (\textbf{cache miss}) è del \( \approx 5\% \).
 \vspace{1em}
 \noindent Più ci si allontana dalla CPU, più la memoria è grande, ma più è lenta, questa
 viene chiamato \textbf{gerarchia di memoria} per il principio di località.
+
+\section{Cache}
+Nella maggior parte delle architettura la cache fa parte del microprocessore stesso.
+Avere una cache è fondamentale per portare il CPI (Clock Per Instruction) a 1.
+Consideriamo una dimensione della cache ragionevole di \( 4MB \) e una dimensione
+della ram di \( 4GB \). Definiamo ora la dimensione di una "pagina" di \( 1KB \), la
+lettura si fa pagina per pagina perchè per il principio di località si è praticamente
+certi che se si accede ad una cella si accederà anche a celle vicine. La parola è
+la dimensione minima di lettura nella ram, in questo caso è di \( 1B \) 
+\[
+\#dim \text{ cache} = 4MB
+\] 
+\[
+\#dim \text{ RAM} = 4GB
+\] 
+\[
+\#dim \text{ pagina} = 1KB
+\] 
+\[
+\#dim \text{ parola} = 1B
+\] 
+\[
+\#dim \text{ pagine RAM} = \frac{4GB}{1KB} = 4M
+\] 
+\[
+\#dim \text{ pagine Cache} = \frac{4MB}{1KB} = 4K
+\] 
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw (0,0) rectangle (4,5);
+    \node at (2,0) [below] {Cache};
+
+    \draw (4,4.5) -- (0,4.5) node[above left] {0};
+    \draw (4,4) -- (0,4) node[above left] {1};
+    \draw (4,3.5) -- (0,3.5) node[above left] {2};
+    \draw (4,3) -- (0,3) node[above left] {3};
+    \draw (4,2.5) -- (0,2.5) node[above left] {4};
+
+    \draw (4,0.5) -- (0,0.5) node[below left] {4K-1};
+
+    \draw[latex-latex] (4,2) -- (5,2);
+
+    \draw (5,-2) rectangle (9,5);
+    \node at (7,-2) [below] {RAM};
+
+    \draw (9,4.5) -- (5,4.5) node[above left] {0};
+    \draw (9,4) -- (5,4) node[above left] {1};
+    \draw (9,3.5) -- (5,3.5) node[above left] {2};
+    \draw (9,3) -- (5,3) node[above left] {3};
+    \draw (9,2.5) -- (5,2.5) node[above left] {4};
+
+    \draw (9,-1.5) -- (5,-1.5) node[below left] {4M-1};
+
+    \node at (7,3.5) [above] {Dato1};
+    \node at (2,3) [above] {Dato1};
+
+    \node at (9,5) [right, scale=0.6] {0};
+    \node at (9,4.5) [right, scale=0.6] {1023};
+
+  \end{tikzpicture}
+\end{figure}
+
+\noindent La CPU per cercare una parola di memoria deve cercare in cache, se la trova si avrà una
+cache hit e allora la
+ottiene molto in fretta, altrimenti si avrà una cache miss e si dovrà cercare in RAM.
+
+\noindent Quando avviene una cache miss la CPU deve controllare se il dato in cache che
+stava cercando è stato modificato prima di sovrascrivaerlo.
+
+\subsection{Indirizzamento della cache}
+Ci sono più modi per organizzare la cache e sono:
+\begin{itemize}
+  \item Diretto
+  \item Set-Associativo (tutte le cache reali sono set-associative)
+  \item Associativo
+\end{itemize}
+
+\subsubsection{Diretto}
+Nel caso di cache diretta si ha che ogni blocco di memoria è associato ad una sola
+cella di cache. Viene confrontato l'indirizzo della cache con una lista di etichette
+e se l'etichetta è uguale a quella in cui è stato salvato il dato si ha una cache hit.
+La lista di etichette contiene tutte le pagine in cache.
+
+\noindent La cache diretta equivale ad avere una cache set-associativa con 4K set.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw (-1,0) rectangle (5,1) node[below right, align=center] {Indirizzo\\RAM};
+    \node at (2,1) [above] {32};
+    \draw (3.5,1) -- (3.5,0);
+    \draw (1,1) -- (1,0);
+
+    \draw (1,-3) rectangle (5,-2) node[below right, align=center] {Indirizzo\\Cache};
+    \node at (2.5,-2) [above] {22};
+    \draw (3.5,-2) -- (3.5,-3);
+
+    \node at (4.2,0.5) {Parola};
+    \node at (4.2,0.5) [below, yshift=-15] (parola1) {10};
+    \node at (4.2,-2.5) {Parola};
+    \node at (4.2,-2.5) [below, yshift=-15] {10};
+
+    \node at (2.3,0.5) {Pagina};
+    \node at (2.3,0.5) [below, yshift=-15] {12};
+    \node at (2.3,-2.5) {Pagina};
+    \node at (2.3,-2.5) [below, yshift=-15] {12};
+
+    \node at (0,0.5) {Etichetta};
+    \node at (0,0.5) [below, yshift=-15] (etichetta) {10};
+
+    \node[draw, rectangle, minimum width=1cm, minimum height=1cm, align=center] (vetichetta) at (-2,-2.5) {Vettore di\\etichette};
+
+    \draw[-latex] (etichetta) -- (vetichetta.north);
+    \draw[-latex] (vetichetta.east) -- (1,-2.5);
+
+    \draw[-latex] (parola1) -- (4.2,-2);
+  \end{tikzpicture}
+\end{figure}
+
+\subsubsection{Set-Associativo}
+\[
+dim \text{ set}= 4
+\] 
+\[
+\# \text{ set cache} = \frac{\# \text{ pagine cache}}{\text{dim set}} = \frac{4K}{4} = 1K
+\] 
+In questo caso si ha che ogni blocco di memoria può essere associato ad una cella di
+cache appartenente ad un set di cache.
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw (0,0) rectangle (4,5);
+    \node at (2,0) [below] {Cache};
+
+    \draw (4,4.5) -- (0,4.5) node[above left] {0};
+    \draw (4,4) -- (0,4) node[above left] {1};
+    \draw (4,3.5) -- (0,3.5) node[above left] {2};
+    \draw (4,3) -- (0,3) node[above left] {3};
+    \draw (4,2.5) -- (0,2.5) node[above left] {4};
+
+    \draw (4,0.5) -- (0,0.5) node[below left] {4K-1};
+
+    \draw[latex-latex] (4,2) -- (5,2);
+
+    \draw (5,-2) rectangle (9,5);
+    \node at (7,-2) [below] {RAM};
+
+    \draw (9,4.5) -- (5,4.5) node[above left] {0};
+    \draw (9,4) -- (5,4) node[above left] {1};
+    \draw (9,3.5) -- (5,3.5) node[above left] {2};
+    \draw (9,3) -- (5,3) node[above left] {3};
+    \draw (9,2.5) -- (5,2.5) node[above left] {4};
+
+    \draw (9,-1.5) -- (5,-1.5) node[below left] {4M-1};
+
+    \node at (7,3.5) [above] {Dato1};
+    \node at (2,3) [above] {Dato1};
+
+    \node at (9,5) [right, scale=0.6] {0};
+    \node at (9,4.5) [right, scale=0.6] {1023};
+
+    \draw [decorate,decoration={brace,amplitude=10pt,raise=4pt},yshift=0pt]
+    (-0.2,3) -- (-0.2,5) node [black,midway,xshift=-1cm] {Set 0};
+    \draw [decorate,decoration={brace,amplitude=10pt,raise=4pt},yshift=0pt]
+    (-0.2,1) -- (-0.2,3) node [black,midway,xshift=-1cm] {Set 1};
+
+  \end{tikzpicture}
+\end{figure}
+
+\noindent Il campo set indica in che set di cache si trova il dato, poi viene
+confrontata l'etichetta con le 4 etichette contenute nel set. Se l'etichetta 
+è uguale a quella in cui è stato salvato il dato si ha una cache hit, altrimenti
+si ha una cache miss.
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw (-1,0) rectangle (5,1) node[below right, align=center] {Indirizzo\\RAM};
+    \node at (2,1) [above] {32};
+    \draw (3.5,1) -- (3.5,0);
+    \draw (2,1) -- (2,0);
+
+    \draw (1,-3) rectangle (5,-2) node[below right, align=center] {Indirizzo\\Cache};
+    \node at (2.5,-2) [above] {22};
+    \draw (3.5,-2) -- (3.5,-3);
+
+    \node at (4.2,0.5) {Parola};
+    \node at (4.2,0.5) [below, yshift=-15] (parola1) {10};
+    \node at (4.2,-2.5) {Parola};
+    \node at (4.2,-2.5) [below, yshift=-15] {10};
+
+    \node at (2.8,0.5) {Set};
+    \node at (2.8,0.5) [below, yshift=-15] (set) {10};
+    \node at (2.3,-2.5) {Pagina};
+    \node at (2.3,-2.5) [below, yshift=-15] {12};
+
+    \node at (0.5,0.5) {Etichetta};
+    \node at (0.5,0.5) [below, yshift=-15] (etichetta) {12};
+
+    \node[draw, rectangle, minimum width=1cm, minimum height=1cm, align=center] (vetichetta) at (-2,-2.5) {Vettore di\\etichette};
+
+    \draw[-latex] (etichetta) -- (vetichetta.north);
+    \draw[-latex] (set) -- (vetichetta.north);
+    \draw[-latex] (vetichetta.east) -- (1,-2.5);
+
+    \draw[-latex] (parola1) -- (4.2,-2);
+  \end{tikzpicture}
+\end{figure}
+
+\subsubsection{Associativo}
+Nel caso di cache associativa si ha che ogni blocco di memoria può essere associato
+ad una qualsiasi cella di cache. Il vettore di etichette è ordinato in modo che
+ogni cella di cache abbia un'etichetta associata.
+
+\noindent Una cache associativa equivale ad una cache set-associativa con un solo set. 
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw (-1,0) rectangle (5,1) node[below right, align=center] {Indirizzo\\RAM};
+    \node at (2,1) [above] {32};
+    \draw (3.5,1) -- (3.5,0);
+
+    \draw (1,-3) rectangle (5,-2) node[below right, align=center] {Indirizzo\\Cache};
+    \node at (2.5,-2) [above] {22};
+    \draw (3.5,-2) -- (3.5,-3);
+
+    \node at (4.2,0.5) {Parola};
+    \node at (4.2,0.5) [below, yshift=-15] (parola1) {10};
+    \node at (4.2,-2.5) {Parola};
+    \node at (4.2,-2.5) [below, yshift=-15] {10};
+
+    \node at (2.3,-2.5) {Pagina};
+    \node at (2.3,-2.5) [below, yshift=-15] {12};
+
+    \node at (1,0.5) {Etichetta};
+    \node at (1,0.5) [below, yshift=-15] (etichetta) {22};
+
+    \node[draw, rectangle, minimum width=1cm, minimum height=1cm, align=center] (vetichetta) at (-2,-2.5) {Vettore di\\etichette};
+
+    \draw[-latex] (etichetta) -- (vetichetta.north);
+    \draw[-latex] (vetichetta.east) -- (1,-2.5);
+
+    \draw[-latex] (parola1) -- (4.2,-2);
+  \end{tikzpicture}
+\end{figure}
+
+\subsection{Rimpiazzamento}
+Quando si ha una cache miss si deve rimpiazzare un blocco di memoria con un altro, ma
+bisogna prima controllare se il dato da rimpiazzare serve ancora o no.
+Le due tecniche di dimpiazzamento più comuni sono:
+\begin{itemize}
+  \item \textbf{LRU (Least Recently Used)}: Si rimpiazza il blocco più vecchio (tecnica più utilizzata)
+
+    \vspace{1em}
+    \noindent Non funziona nel caso in cui si ha un programma che ha il codice in una sola
+    pagina (1024). Questo programma fa un ciclo 1024 volte e accede ad un vettore di caratteri (1B)
+    che contiene 3098 caratteri. Considerando una cache con 4 pagine:
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \draw (0,0) rectangle (3,4);
+
+        \draw (3,3) -- (0,3) node[above left, yshift=5] {0};
+        \draw (3,2) -- (0,2) node[above left, yshift=5] {1};
+        \draw (3,1) -- (0,1) node[above left, yshift=5] {2};
+        \draw (3,0) -- (0,0) node[above left, yshift=5] {3};
+
+        \node at (1.5,3.5) {Codice};
+        \node at (1.5,2.5) {\( \cancel{Vet0} \) Vet3 };
+        \node at (1.5,1.5) {\( \cancel{Vet1} \) Vet0 };
+        \node at (1.5,0.5) {\( \cancel{Vet2} \) Vet1 };
+      \end{tikzpicture}
+    \end{figure}
+
+    \noindent Con LRU viene cancellato il vettore necessario ad ogni ciclo e quindi
+    si avranno \( 4 \cdot 1024 \). Con MRU si avranno soltanto \( 4 + 1023 \) 
+  \item \textbf{MRU (Most Recently Used)}: Si rimpiazza il blocco più recente
+\end{itemize}
+Per ogni pagina c'è un contatore che incrementa ogni volta che passa un ciclo di clock
+e viene azzerato quando si accede alla pagina.
 
 \end{document}
