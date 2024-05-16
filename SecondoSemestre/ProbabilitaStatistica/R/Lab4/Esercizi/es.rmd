@@ -1,5 +1,5 @@
 ---
-title: "Lab4"
+title: "Lab5"
 subtitle: "Exercises"
 author: "Irimie Fabio"
 output: 
@@ -11,257 +11,299 @@ output:
 # Exercise 1
 
 ## A
-Create the Lab3 project. Use the same structure used for Lab1 and Lab2:
-scripts, plots and data directories.
+Plot the Probability Mass Function for the Binomial distribution with 
+$n=18$ and $p=\frac{1}{3}$.
+Calculate:
+
+  1. $P(X=3)$
+```{r, collapse=TRUE}
+dbinom(3, 18, 1 / 3)
+```
+  2. $P(X \ge 3)$
+```{r, collapse=TRUE}
+1 - pbinom(2, 18, 1 / 3)
+# or
+pbinom(2, 18, 1 / 3, lower.tail = FALSE)
+```
+  3. $P(1 \le X < 5)$
+```{r, collapse=TRUE}
+pbinom(4, 18, 1 / 3) - pbinom(0, 18, 1 / 3)
+```
+  4. $P(X \ge 15)$
+```{r, collapse=TRUE}
+pbinom(14, 18, 1 / 3, lower.tail = FALSE)
+```
+
+```{r}
+library(ggplot2)
+df <- data.frame(x = 0:18, y = dbinom(0:18, 18, 1 / 3))
+
+ggplot(df, aes(x = x, y = y, fill = "PMF")) +
+  geom_col() +
+  scale_x_continuous(breaks = 0:18) +
+  scale_fill_manual(values = "red") +
+  labs(
+    title = "Binomial Distribution",
+    x = "x",
+    y = "P(X = x)"
+  )
+```
 
 ## B
-Write a function to calculate the sum of integer numbers from 1 to n
-```{r}
-sum_integer <- function(n) {
-  sum <- 0
-  for (i in 1:n) {
-    sum <- sum + i
-  }
-  return(sum)
-}
+Plot the Cumulative Distribution Function for the Poisson distribution 
+with $\lambda = 3$. Calculate:
 
-cat("The sum of the first 10 integers is: ", sum_integer(10), "\n")
+  1. $P(X=3)$
+```{r, collapse=TRUE}
+lambda <- 3
+dpois(3, lambda)
+```
+  2. $P(X \ge 3)$
+```{r, collapse=TRUE}
+ppois(2, lambda, lower.tail = FALSE)
+```
+  3. $P(1 \le X > 5)$
+```{r, collapse=TRUE}
+ppois(4, lambda) - ppois(0, lambda)
+```
+  4. $P(X \ge 15)$
+```{r, collapse=TRUE}
+ppois(14, lambda, lower.tail = FALSE)
 ```
 
-## C
-Write a function to calculate the product of integers from 1 to n, also
-known as n!
 ```{r}
-prod_integer <- function(n) {
-  val <- n
-  for (i in (n - 1):1) {
-    val <- val * i
-  }
-  return(val)
-}
+df <- data.frame(x = 0:18, y = ppois(0:18, lambda))
 
-cat("The factorial of 5 is: ", prod_integer(5), "\n")
-```
-
-## D
-Try C. but do it recursively (hint: call the function itself inside the
-loop, remember to return 1 when n is equal to 0)
-```{r}
-factorial <- function(n) {
-  if (n == 0) {
-    return(1)
-  } else {
-    val <- n * factorial(n - 1)
-  }
-
-  return(val)
-}
-
-cat("The factorial of 5 is: ", factorial(5), "\n")
+ggplot(df, aes(x = x, y = y, color = "CDF")) +
+  geom_step() +
+  scale_x_continuous(breaks = 0:18) +
+  scale_color_manual(values = "blue") +
+  labs(
+    title = "Poisson Distribution",
+    x = "x",
+    y = "P(X <= x)"
+  )
 ```
 
 # Exercise 2
+Demonstrate that a Poisson r.v. may be used as an approximation for a
+binomial r.v.
 
 ## A
-Simulate the tossing of a fair dice and verify through the definition
-that the event $E = \{ 2,3 \}$ has probability $\frac{1}{3}$.
-$S = \{ 1,2,3,4,5,6 \}$; $E = \{ 2,3 \}$; $P(E) = \frac{1}{3}$
-
-(hint: generate a sequence of integer random numbers between 1 and 6
-using the sample() function)
 ```{r}
-library(ggplot2)
+n <- c(20, 30, 40, 100)
+p <- c(1 / 4, 1 / 6, 1 / 8, 1 / 20)
 
-n <- 100000 # Number of experiments
-e <- c(2, 3) # Event of interest
+pmf <- matrix(NA, nrow = 21, ncol = 4)
 
-# Outcomes of interest
-set.seed(123)
-res <- sample(x = c(1:6), size = n, replace = TRUE)
+for (i in 1:4) {
+  pmf[, i] <- dbinom(0:20, n[i], p[i])
+}
 
-# Outcomes of E (1 when in E, 0 otherwise)
-ne <- ifelse(res %in% e, 1, 0)
+pmf <- as.data.frame(pmf)
+
+colnames(pmf) <- paste("Binomial", n, round(p, 2), sep = "_")
+
+pmf$Poisson <- dpois(0:20, n * p)
+
+pmf$X <- 0:20
 ```
 ## B
-Plot the first 40 outcomes of the experiment.
 ```{r}
-ggplot(
-  data = data.frame(x = 1:40, y = res[1:40]),
-  aes(
-    x = x,
-    y = y,
-    color = factor(res[1:40])
-  )
-) +
-  geom_point() +
-  scale_color_manual(values = rainbow(6)) +
-  labs(
-    title = "First 40 outcomes of the dice",
-    x = "Number of experiments", y = "Value"
-  )
-```
+library(reshape2)
 
-## C
-Plot the convergence of $P(E)$ at the value obtained from the classical
-definition $\frac{1}{3}$. (hint: the frequentist approach says that, 
-as the number of trials approaches infinity,
-the relative frequency will converge exactly to the true probability)
-```{r}
-# Probability of E
-pe <- sum(ne) / n
-cat("The probability of E is: ", pe, "\n")
+df_plot <- melt(pmf, id.vars = "X")
+df_plot
 
-cum_pe <- cumsum(ne) / 1:n
+library(ggplot2)
+library(RColorBrewer) # Color palettes
 
-df <- data.frame(x = 1:n, y = cum_pe)
-ggplot(data = df, aes(
-  x = x, y = y,
-)) +
+ggplot(df_plot, aes(x = X, y = value, color = variable)) +
   geom_line() +
-  geom_hline(yintercept = 1 / 3, col = "red") +
-  scale_x_continuous(trans = "log10") +
+  scale_color_manual(values = c(brewer.pal(4, "PRGn"), "red")) +
   labs(
-    title = "Cumulative probability of E",
-    x = "Number of experiments", y = "Cumulative probability"
+    title = "Binomial vs Poisson PMF",
+    x = "x",
+    y = "P(X = x)"
   )
 ```
 
 # Exercise 3
 
 ## A
-Simulate the tossing of a fair dice and consider the following events:
-$A=\{1,2\};\;B=\{2,3,6\};\;C=\{1,4,5\}$. (hint: compute $P(A),P(B),P(C)$).
-```{r, collapse=TRUE}
-n <- 100000 # Number of experiments
-
-a <- c(1, 2) # Event A
-b <- c(2, 3, 6) # Event B
-c <- c(1, 4, 5) # Event C
-
-res <- sample(x = c(1:6), size = n, replace = TRUE)
-
-pa <- sum(res %in% a) / n
-pa
-pb <- sum(res %in% b) / n
-pb
-pc <- sum(res %in% c) / n
-pc
-```
-
-## B
-Verify that $A$ and $B$ are independent and that $B$ and $C$ are 
-dependent.
+Generate N=1000 random numbers from a binomial distribution with n=9
+trials and p=0.8. Thus each of the 1000 random numbers will be an
+integer between 0 and 9.
 ```{r}
-# A and B
-pab <- sum(res %in% a & res %in% b) / n
-
-# B and C
-pbc <- sum(res %in% b & res %in% c) / n
-
-cat("A and B are independent: ", pab == pa * pb, "\n")
-cat("B and C are dependent: ", pbc != pb * pc, "\n")
-```
-
-# Exercise 4
-
-## A
-Generate a sequence of $N=10000$ random numbers that simulate the
-throwing of a dice.
-```{r}
-n <- 10000
 set.seed(123)
-res <- sample(x = c(1:6), size = n, replace = TRUE)
+n <- 9
+p <- 0.8
+t <- 1000
+
+valori <- rbinom(t, n, p)
 ```
 
 ## B
-Then simulate the throwing of a second dice.
+Plot the experimental probability using the geom_bar() function.
 ```{r}
-res2 <- sample(x = c(1:6), size = n, replace = TRUE)
+df <- data.frame(x = valori)
+
+ggplot(df, aes(x = valori)) +
+  geom_bar() +
+  scale_x_continuous(breaks = 0:9) +
+  labs(
+    title = "Experimental Probability",
+    x = "Successes",
+    y = "Frequency"
+  )
 ```
 
 ## C
-Plot the absolute and relative frequencies for A. and the relative
-frequency for the sum of the two dice for point B. using the geom_bar()
-or geom_col() functions.
+For each value of the x-axis obtained in the previous plot, compute the real
+probability mass function and add it in the plot as red dots using geom_point().
 ```{r}
-df1 <- data.frame(x = 1:6, y = table(res) / n)
-df2 <- data.frame(x = 2:12, y = table(res + res2) / n)
+p_teo <- data.frame(p = dbinom(0:9, n, p))
 
-ggplot(data = df1, aes(
-  x = factor(x),
-  y = y.Freq
-)) +
-  geom_col() +
-  labs(
-    title = "Absolute frequency of the dice",
-    x = "Value", y = "Absolute frequency"
+ggplot(df, aes(x = valori)) +
+  geom_bar(aes(y = after_stat(prop))) +
+  geom_point(
+    data = p_teo,
+    aes(
+      x = 0:9, y = p,
+      color = "red"
+    ),
   ) +
-  theme_minimal()
-```
-```{r}
-ggplot(data = df2, aes(
-  x = factor(x),
-  y = y.Freq
-)) +
-  geom_col() +
+  scale_x_continuous(breaks = 0:9) +
   labs(
-    title = "Relative frequency of the sum of the dice",
-    x = "Value", y = "Relative frequency"
+    title = "Experimental vs Real Probability",
+    x = "Successes",
+    y = "Frequency"
+  )
+```
+
+# Exercise 4
+Suppose the number of customers visiting a retail store follows a Poisson distribution with
+a mean of 5 customers per hour. (hint: $X \sim Poisson(\lambda=5)$)
+
+Find the probability that in a randomely chosen hour, there will be:
+
+## A
+No customers
+```{r}
+lambda <- 5
+dpois(0, lambda)
+```
+
+## B
+At least 3 customers
+```{r}
+ppois(2, lambda, lower.tail = FALSE)
+```
+
+## C
+Exactly 7 customers
+```{r}
+dpois(7, lambda)
+```
+
+## D
+Assuming that each customer buys something that costs a price from
+10€ to 50€. Which is the expected value of a customer expense?
+(hint: Y = customer expense ~ Uniform(10, 50))
+```{r}
+a <- 10
+b <- 50
+
+e_y <- (a + b) / 2
+e_y
+```
+
+## E
+How many customers are expected in 8 working hours?
+```{r}
+h <- 8
+
+e_x <- lambda * h
+e_x
+```
+
+## F
+Using rpois() and runif() functions, simulate the customers and their
+expenses in a normal day made of 8 working hours. Represent the data
+as similar as possible to the plot below (hints: prepare a data.frame 
+containing as many rows as the number of customers of the entire day.
+For each customer, store its ID number, the hour, and the money he/she
+spent. Use facet_grid with scales = "free_x". Search on google how to
+do the rest).
+```{r}
+t <- 5
+h <- 8
+
+set.seed(123)
+customers <- rpois(h * t, lambda)
+expenses <- runif(t, 10, 50)
+
+df <- data.frame(
+  customer = rep(1:t, each = h),
+  hour = rep(1:h, t),
+  expense = expenses
+)
+
+# Plot each hour in a separate facet
+ggplot(df, aes(x = customer, y = expense)) +
+  geom_col() +
+  facet_grid(~hour, scales = "free_x") +
+  labs(
+    title = "Customer Expenses",
+    x = "Customer ID",
+    y = "Expense"
   ) +
   theme_minimal()
 ```
 
 # Exercise 5
+In a survey of a sample of 500 university students, they were asked if they know how to
+program in R. The collected data showed that 240 students know how to program in R.
+Consider the discrete random variable X, which indicates the number of students in a
+random sample of 50 students who know how to program in R.
 
 ## A
-Four people are in a room. What is the probability that no two of them
-celebrate their birthday on the same day of the year?
+Compute the probability mass function of X and draw a plot.
 ```{r}
-people <- 4
-days <- 365
+students <- 500
+know_r <- 240
+sample_size <- 50
 
-n_bdays <- choose(days, people) * factorial(people)
-p_bdays <- n_bdays / days^people
-p_bdays
-```
+dhyper(0:50, students, students - know_r, sample_size)
 
-## B
-$n$ people are in a room. What is the probability that no two of them
-celebrate their birthday on the same day of the year? Try this with
-$n$ from 1 to 100 and plot the probability for each value of $n$.
-```{r}
-n <- 100
-p_bdays <- rep(NA, n)
+df <- data.frame(x = 20:44, y = dhyper(
+  20:44,
+  students,
+  students - know_r,
+  sample_size
+))
 
-for (i in 1:n) {
-  p_bdays[i] <- choose(days, i) * factorial(i) / days^i
-}
-
-df <- data.frame(x = 1:n, y = p_bdays)
-ggplot(data = df, aes(
-  x = x, y = y
-)) +
-  geom_line() +
+ggplot(df, aes(x = x, y = y)) +
+  geom_col() +
+  scale_x_continuous(breaks = 0:50) +
   labs(
-    title = "Probability of no two people having the same birthday",
-    x = "Number of people", y = "Probability"
+    title = "Hypergeometric Distribution",
+    x = "x",
+    y = "P(X = x)"
   ) +
   theme_minimal()
 ```
 
-# Exercise 6
-A laboratory blood test is 99% effective in detecting a certain 
-disease when it is, in fact, present. However, the test also yields 
-a “false positive” (FP – Type I error) result for 1% of the healthy 
-persons tested. If 0.5% of the population actually has the disease,
-what is the probability a person has the disease given that his test
-result is positive? (Hint: Use D as the event "the tested person has 
-the disease" and E as "The result of the test is positive").
-```{r}
-p_d <- 0.005
-p_e_d <- 0.99
-p_e_nd <- 0.01
+## B
+Calculate the probability that at least 30 students in the sample of 50 know how to
+program in R.
 
-p_d_e <- p_d * p_e_d / (p_d * p_e_d + (1 - p_d) * p_e_nd)
-p_d_e
+```{r}
+1 - phyper(29, students, students - know_r, sample_size)
+```
+
+## C
+Calculate the expected value of X.
+```{r}
+students * sample_size / students
 ```
