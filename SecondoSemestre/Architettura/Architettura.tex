@@ -802,7 +802,6 @@ meno che non si voglia conservarli per il debug (con l'opzione \texttt{--gstabs}
 condizionato. Se si vuole eseguire un ciclo per un certo numero di volte occorre utilizzare
 ECX come contatore.
 
-\subsection{Debugging}
 % Fine laboratorio
 
 \section{Architettura di Von Neumann}
@@ -3424,5 +3423,205 @@ Le due tecniche di dimpiazzamento più comuni sono:
 \end{itemize}
 Per ogni pagina c'è un contatore che incrementa ogni volta che passa un ciclo di clock
 e viene azzerato quando si accede alla pagina.
+
+\subsection{Gestione}
+\begin{itemize}
+  \item Rilocazione
+  \item Paginazione
+  \item Memoria virtuale
+\end{itemize}
+Queste funzioni fanno si che la memoria appaia come uno spazio infinito ad un processo:
+
+\subsubsection{Rilocazione}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw (0,0) rectangle (3,4);
+
+    \draw (3,3) -- (0,3);
+    \draw (3,2) -- (0,2);
+    \draw (3,1) -- (0,1);
+
+    \node at (1.5,3.5) {Codice};
+    \node[align=center] at (1.5,2.5) {Dati\\statici};
+    \node[align=center] at (1.5,1.5) {Dati\\dinamici};
+    \node at (1.5,0.5) {Stack};
+    \node at (1.5,-0.5) {Processo};
+
+    \node at (3.5,2) {\( \Rightarrow \) };
+
+
+
+    \draw (4,-2) rectangle (7,4);
+    \node at (5.5,-2.5) {RAM};
+    \node at (4,4) [left] {0};
+    \node at (4,-2) [left] {4G-1};
+
+    \draw (4,2) -- (7,2) node[right, scale=0.7] (idx) {10423} node[midway, above, scale=0.7] {Processo};
+    \node[draw, rectangle, minimum width=1cm, minimum height=1cm, scale=0.8] (base) at (8.5,2) {Base};
+
+    \draw (4,0) -- (7,0) node[right, scale=0.7] (idx2) {10423};
+    \node[draw, rectangle, minimum width=1cm, minimum height=1cm, scale=0.8] (limit) at (8.5,0) {Limit};
+
+    \draw[-latex] (idx) -- (base.west);
+    \draw[-latex] (idx2) -- (limit.west);
+  \end{tikzpicture}
+\end{figure}
+c'è bisogno di un meccanismo per trasformare un indirizzo logico (di un processo) in
+un indirizzo fisico (della RAM). Questo meccanismo è la rilocazione e si divide in 2
+tipi:
+\begin{itemize}
+  \item \textbf{Rilocazione statica}:
+    Il compilatore quando compila non può sapere in che zona della memoria viene
+    caricato il processo, quindi l'unica cosa che può dire è l'inizio di ogni sezione
+    del processo, ad esempio il codice inizia all'indirizzo 0, ecc...
+
+    \noindent Questa rilocazione prende l'indirizzo logico 0 e gli somma l'indirizzo
+    fisico in cui inizia il codice, ad esempio 10423. 
+
+  \item \textbf{Rilocazione dinamica}:
+    Prima di inserire l'indirizzo logico nel MAR si somma a quel valore ciò che si trova in un
+    registro chiamato \textbf{base} che contiene l'indirizzo fisico in cui inizia il processo.
+    È anche presente un registro chiamato \textbf{limit} che contiene la dimensione del processo
+    e questo viene usato per controllare che \textbf{base} non sia maggiore di \textbf{limit}.
+    Se questo controllo fallisce si ha un errore di segmentation fault. Se il processo
+    vuole accedere ad un indirizzo fisico preciso lo deve fare tramite una syscall.
+\end{itemize}
+
+\noindent Ci sono però dei problemi, ad esempio quando un processo finisce viene liberato lo spazio
+che occupava e quando bisogna mettere in esecuzione un altro processo nello stesso spazio
+di quello vecchio, si ha un problema perchè il nuovo processo potrebbe non essere della
+stessa dimensione di quello vecchio, per cui potrebbe sovrapporsi ad un altro processo.
+Bisogna anche considerare i dati dinamici, cioè ad ogni malloc viene ingrandito lo spazio
+in memoria ingrandendo così il \texttt{limit}. Per risolvere questi problemi si usa la
+paginazione.
+
+\subsubsection{Paginazione}
+La memoria RAM è un insieme di pagine e dei processi possono essere caricati in pagine
+diverse.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw (0,0) rectangle (3,6);
+    \node at (1.5,-0.5) {RAM};
+
+    \draw (0,5.5) -- (3,5.5) node[above right, scale=0.7, yshift=2] {0};
+    \draw (0,5) -- (3,5) node[above right, scale=0.7, yshift=2] {1};
+    \draw (0,4.5) -- (3,4.5) node[above right, scale=0.7, yshift=2] {2};
+    \draw (0,4) -- (3,4) node[above right, scale=0.7, yshift=2] {3};
+    \draw (0,3.5) -- (3,3.5) node[above right, scale=0.7, yshift=2] {4};
+    \draw (0,3) -- (3,3) node[above right, scale=0.7, yshift=2] {5};
+    \draw (0,2.5) -- (3,2.5) node[above right, scale=0.7, yshift=2] {6};
+    \draw (0,2) -- (3,2) node[above right, scale=0.7, yshift=2] {7};
+    \draw (0,0.5) -- (3,0.5) node[above right, scale=0.7, yshift=2] {4M-1};
+
+    \node at (0,5.75) [left, scale=0.9] {\( P_0 \) };
+    \node at (0,5.25) [left, scale=0.9] {\( P_2 \) };
+    \node at (0,4.75) [left, scale=0.9] {\( P_1 \) };
+    \node at (0,4.25) [left, scale=0.9] {\( P_0 \) };
+    \node at (0,3.75) [left, scale=0.9] {\( P_1 \) };
+    \node at (0,3.25) [left, scale=0.9] {\( P_2 \) };
+    \node at (0,2.75) [left, scale=0.9] {\( P_1 \) };
+    \node at (0,2.25) [left, scale=0.9] {\( P_1 \) };
+  \end{tikzpicture}
+\end{figure}
+Con un meccanismo di paginazione dopo aver sommato \texttt{base} e averlo controllato
+con \texttt{limit} si ha ancora un indirizzo logico che dovrà essere tradotto in un
+indirizzo fisico corrispondente alla pagina in cui si trova il processo. 
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw (-1,0) rectangle (5,1) node[below right, align=center] {Indirizzo\\Logico};
+    \node at (2,1) [above] {32};
+    \draw (3.5,1) -- (3.5,0);
+
+    \draw (-1,-3) rectangle (5,-2) node[below right, align=center] {Indirizzo\\Fisico};
+    \node at (2,-2) [above] {32};
+    \draw (3.5,-2) -- (3.5,-3);
+
+    \node at (4.2,0.5) {Parola};
+    \node at (4.2,0.5) [below, yshift=-15] (parola1) {10};
+    \node at (4.2,-2.5) {Parola};
+    \node at (4.2,-2.5) [below, yshift=-15] {10};
+
+    \node at (1.3,0.5) {Pagina Logica};
+    \node at (1.3,0.5) [below, yshift=-15] {22};
+    \node at (1.3,-2.5) {Pagina Fisica};
+    \node at (1.3,-2.5) [below, yshift=-15] {22};
+
+
+    \draw[-latex] (parola1) -- (4.2,-2);
+  \end{tikzpicture}
+\end{figure}
+\noindent La pagina logica (quella in cui si trova il processo) viene mappata in una pagina fisica
+(quella in cui si trova il processo in RAM) attraverso una \textbf{tabella delle pagine}.
+Questa tabella è una tabella con lunghezza il numero di pagine logiche e ogni cella
+contiene l'indirizzo fisico della pagina corrispondente.
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw (0,0) rectangle (3,4);
+
+    \node[above left, scale=0.8] at (0,4) {Pagina logica};
+    \node[above, scale=0.8] at (1.5,4) {Pagina fisica};
+
+    \draw (3,3.5) -- (0,3.5) node[above left, scale=0.7, yshift=3] {0};
+    \draw (3,3) -- (0,3) node[above left, scale=0.7, yshift=3] {1};
+    \draw (3,2.5) -- (0,2.5) node[above left, scale=0.7, yshift=3] {2};
+    \draw (3,2) -- (0,2) node[above left, scale=0.7, yshift=3] {3};
+    \draw (3,1.5) -- (0,1.5) node[above left, scale=0.7, yshift=3] {4};
+    \draw (3,1) -- (0,1) node[above left, scale=0.7, yshift=3] {5};
+    \draw (3,0.5) -- (0,0.5) node[above left, scale=0.7, yshift=3] {6};
+    \draw (3,0) -- (0,0) node[above left, scale=0.7, yshift=3] {\( \ldots \)};
+
+    \node at (1.5,3.75) {};
+    \node at (1.5,3.25) {1042};
+    \node at (1.5,2.75) {};
+    \node at (1.5,2.25) {57};
+    \node at (1.5,1.75) {6};
+    \node at (1.5,1.25) {};
+    \node at (1.5,0.75) {4};
+    \node at (1.5,0.25) {};
+  \end{tikzpicture}
+\end{figure}
+
+\noindent È utile avere tutta la tabella soltanto nel caso in cui venga usata tutta la
+memoria, che per il principio di località non è possibile. Per questo motivo questa
+tabella si trova interamente nella RAM siccome è grande 12MB e ne viene caricata
+soltanto una parte nella CPU. Se la CPU non trova la pagina che sta cercando all'
+interno della tabella caricata in CPU la va a cercare in cache (o in RAM).
+
+\subsubsection{Memoria virtuale}
+Ogni processo ha un numero minimo di pagine necessario per poter essere eseguito senza interruzione,
+questo numero è detto \textbf{working set}.
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw (0,0) -- (8,0) node[right] {\# Pagine};
+    \draw (0,0) -- (0,6) node[left] {t exec};
+    
+
+    \foreach \x in {1,2,3,4,5,6,7}
+      \draw (\x,0.1) -- (\x,-0.1) node[below] {\x};
+
+    \draw [red, smooth, ultra thick] plot coordinates
+      { (0.7,6) (1,5) (2,3) (3,2) (4,1.5) (5,1.3) (6,1.25) (7,1.25)};
+
+    \draw [blue, thin] (6,0) -- (6,5.5) node[above] {Working set};
+  \end{tikzpicture}
+\end{figure}
+\noindent Si avrà un numero di pagine di memoria per cui il tempo di esecuzione è minimo.
+Si dovrà quindi tenere in memoria soltanto il working set di ogni processo, il resto
+della memoria si troverà in un disco rigido in uno spazio riservato al sistema operativo
+chiamato \textbf{swap space} che consente di "salvare" le pagine di memoria che non
+sono nel working set per ripristinarle quando servono.
+
+\vspace{1em}
+\noindent Se la CPU richiede una pagina che non si trova in cache e neanche in RAM, allora
+viene presa dal disco e messa in una delle pagine libere della RAM. In questo modo
+al processo viene permesso di usare (quasi) tutto lo spazio di memoria che vuole.
 
 \end{document}
