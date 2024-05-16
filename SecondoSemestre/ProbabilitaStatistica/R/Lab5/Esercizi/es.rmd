@@ -187,7 +187,16 @@ seq
 Draw k random numbers from a $N(\mu, \sigma^2)$ distribution.
 ```{r}
 x <- rnorm(k, mu, sigma)
-x
+
+ggplot(data.frame(x = x), aes(x = x)) +
+  geom_line(aes(y = ..density..), stat = "density") +
+  labs(
+    title = "Histogram",
+    subtitle = "mean = 100, sd = 15",
+    x = "Values",
+    y = "Frequency"
+  ) +
+  theme_minimal()
 ```
 ## C
 Create a new figure with 3 panels: PDF, CDF, and histogram of 
