@@ -96,6 +96,9 @@ ntheorem]{exercise}{Esercizio}[section]
 \array{#1}}
 \makeatother
 
+% Scale math objects
+\newcommand\scalemath[2]{\scalebox{#1}{\mbox{\ensuremath{\displaystyle #2}}}}
+
 \begin{document}
 \input{title.tex}
 
@@ -2798,7 +2801,7 @@ Per 3.10, le matrici elementari sono invertibili. Dunque:
 \( \quad \square \) 
 
 \subsection{Calcolo della matrice inversa}
-\label{th:4.2}
+\label{4.2}
 Data una matrice invertibile \( A \in M_{m \times n}(\mathbb{C}) \). Usiamo le operazioni
 elementari per trasformare \( A \) nella matrice identità, e eseguiamo le stesse
 operazioni elementari su \( I_n \) per ottenere \( A^{-1} \):
@@ -5905,7 +5908,7 @@ e \( \alpha \in \mathbb{K} \), abbiamo
   \] 
   Siccome \( \mathcal{B} \) è una base, \( \alpha_1 \) e \( \alpha_2 \) sono univocamente
   determinati e quindi \( Ax = v \) ha soluzione per ogni \( v \in \mathbb{R}^2 \).
-  Per il teorema \ref{th:4.2}, \( A \) è invertibile e
+  Per il teorema \ref{4.2}, \( A \) è invertibile e
   \[
   \begin{pmatrix} 
     \alpha_1\\
@@ -6919,6 +6922,7 @@ Sia \( A \in  M_{m \times n}(\mathbb{K}) \). Allora
 \] 
 
 \subsection{Procedimento per determinare basi di C(A) e N(A)}
+\label{8.5}
 Sia \( A \in M_{m \times n}(\mathbb{K}) \) con \( r = rk(A) \) e \( d = n-r = n - rk(A) \) 
 \begin{enumerate}
   \item Per determinare una base di \( C(A) \):
@@ -8506,6 +8510,7 @@ Se \( A \in M_{n \times n}(\mathbb{K}) \) possiede \( n \) autovalori distinti, 
 \end{example}
 
 \subsection{Lemma}
+\label{10.5}
 Sia \( A \in M_{n \times n}(\mathbb{C}) \) con autovalori distinti \( \lambda_1, \ldots, \lambda_r \)
 con molteplicità algebriche \( m_1, \ldots, m_r \) e molteplicità geometriche \( d_1, \ldots, d_r \).
 \begin{enumerate}
@@ -8542,5 +8547,534 @@ molteplicità algebriche \( m_1, \ldots, m_r \) e molteplicità geometriche \( d
                                & (3) \arrow[ul, Rightarrow] & 
   \end{tikzcd}
 \]
+\begin{itemize}
+  \item[(1) \( \Rightarrow \) (2)] Supponiamo che \( A \) è diagonalizzabile. Per
+    \ref{10.2}, esiste una base \( \mathcal{B} \) di \( \mathbb{K}^n \) formata da
+    autovettori di \( A \).
+
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \draw[red] (0,2) rectangle (9,6);
+        \node[above, red] at (4.5,2) {\( \mathbb{K}^n \)};
+
+        \draw[yscale=2, green] (1,2) circle (0.8) node[below, yshift=-25, scale=0.7] {\( E_A(\lambda_1) \)};
+        \draw[yscale=2, green] (3,2) circle (0.8) node[below, yshift=-25, scale=0.7] {\( E_A(\lambda_2) \)};
+        \node[green] at (4.5,4) {\( \ldots \)};
+        \draw[yscale=2, green] (6,2) circle (0.8) node[below, yshift=-25, scale=0.7] {\( E_A(\lambda_{r-1}) \)};
+        \draw[yscale=2, green] (8,2) circle (0.8) node[below, yshift=-25, scale=0.7] {\( E_A(\lambda_r) \)};
+
+        \draw[yscale=2, blue] (1,2.3) circle (0.3) node[scale=1] {\( \mathcal{B} \)};
+        \draw[yscale=2, blue] (3,2.3) circle (0.3) node[scale=1] {\( \mathcal{B} \)};
+        \draw[yscale=2, blue] (6,2.3) circle (0.3) node[scale=1] {\( \mathcal{B} \)};
+        \draw[yscale=2, blue] (8,2.3) circle (0.3) node[scale=1] {\( \mathcal{B} \)};
+      \end{tikzpicture}
+      \caption{Autospazi come sottospazi di \( \mathbb{K}^n \)}
+    \end{figure}
+    \noindent \textbf{NB:} \[ E_A(\lambda_i) = N(A - \lambda_i I_n) = \{\text{autovettori 
+    di \( A \) rispetto a \( \lambda_i \)}\} \cup \{\mathbb{O}\} \subseteq \mathbb{K}^n \]
+
+    \noindent Sia \( t_i = \#(\mathcal{B} \cap E_A(\lambda_i)) = \text{ numero di elementi
+    di } \mathcal{B} \text{ contenuti in } E_A(\lambda_i) \) per ogni \( 1 \le i \le r \).
+    Allora:
+    \[
+      t_i \le d_i = dim_{\mathbb{C}}(E_A(\lambda_i))
+    \] 
+    perchè gli elementi di \( \mathcal{B} \) sono linearmente indipendenti. Inoltre:
+    \[
+    n = t_1 + \ldots + t_r \le d_1 + \ldots + d_r \le m_1 + \ldots + m_r = n
+    \] 
+    Dunque:
+    \[
+    n = d_1 + \ldots + d_r
+    \] 
+
+  \item[(2) \( \Rightarrow \) (3)] Supponiamo (2), cioè:
+    \[
+      d_1 + \ldots + d_r = n \underset{\ref{10.5}}{=} m_1 + \ldots + m_r
+    \] 
+    Siccome \( 1 \le d_i \le m_i \) per ogni \( 1 \le i \le r \), concludiamo che:
+    \[
+    d_i = m_i
+    \] 
+
+  \item[(3) \( \Rightarrow \) (1)] Supponiamo che \( m_i = d_i \) per ogni
+    \( 1 \le i \le r \), scegliamo una base \( \mathcal{B}_i = \{v_1, \ldots, v_{d_i}\} \)
+    di \( E_A(\lambda_i) \). 
+    Mostreremo che:
+    \[
+    \mathcal{B} = \mathcal{B}_1 \cup \ldots \cup \mathcal{B}_r \text{ è una base di } \mathbb{C}^n
+    \] 
+    perchè \( \mathcal{B} \) contiene esattamente
+    \[
+    d_1 + \ldots + d_r = m_1 + \ldots + m_r = n
+    \] 
+    elementi, basta verificare l'indipendenza lineare.
+
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \draw[red] (0,2) rectangle (9,6);
+        \node[above, red] at (4.5,2) {\( \mathbb{K}^n \)};
+
+        \draw[yscale=2, green] (1,2) circle (0.8) node[below, yshift=-25, scale=0.7] {\( E_A(\lambda_1) \)};
+        \draw[yscale=2, green] (3,2) circle (0.8) node[below, yshift=-25, scale=0.7] {\( E_A(\lambda_2) \)};
+        \node[green] at (4.5,4) {\( \ldots \)};
+        \draw[yscale=2, green] (6,2) circle (0.8) node[below, yshift=-25, scale=0.7] {\( E_A(\lambda_{r-1}) \)};
+        \draw[yscale=2, green] (8,2) circle (0.8) node[below, yshift=-25, scale=0.7] {\( E_A(\lambda_r) \)};
+
+        \draw[yscale=2, blue] (1,2.3) circle (0.3) node[scale=1] {\( \mathcal{B}_1 \)};
+        \draw[yscale=2, blue] (3,2.3) circle (0.3) node[scale=1] {\( \mathcal{B}_2 \)};
+        \draw[yscale=2, blue] (6,2.3) circle (0.3) node[scale=0.8] {\( \mathcal{B}_{r-1} \)};
+        \draw[yscale=2, blue] (8,2.3) circle (0.3) node[scale=1] {\( \mathcal{B}_r \)};
+      \end{tikzpicture}
+      \caption{Autospazi come sottospazi di \( \mathbb{K}^n \)}
+    \end{figure}
+    \noindent Siano \( \alpha_i, \ldots, \alpha_{id_i} \in \mathbb{C} \) per ogni
+    \( 1 \le i \le r \) tali che
+    \[
+      \mathbb{O} = \underbrace{\alpha_{11}v_{11} + \ldots + \alpha_{1d_1}v_{1d_1}}_{
+      w_1 \in E_A(\lambda_1)}
+      +
+      \ldots
+      +
+      \underbrace{\alpha_{r1}v_{r1} + \ldots + \alpha_{rd_r}v_{rd_r}}_{
+      w_r \in E_A(\lambda_r)}
+    \] 
+    Vogliamo dimostrare che \( \alpha_{ij} = 0 \) per ogni \( 1 \le i \le r \) e
+    \( 1 \le j \le d_i \).
+
+    \vspace{1em}
+    \noindent Definiamo \( w_i = \alpha_{i1}v_{i1} + \ldots + \alpha_{id_i}v_{id_i} \) per
+    ogni \( 1 \le i \le r \) e notiamo che \( w_i \in E_A(\lambda_i) \).
+    Quindi \( w_i \) è un autovettore di \( A \) rispetto a \( \lambda_i \) oppure
+    \( w_i = \mathbb{O} \). Quindi
+    \[
+    \mathbb{O} = w_1 + \ldots + w_r
+    \] 
+    è una combinazione lineare di autovettori rispetto ad autovalori distinti, oppure vettori
+    nulli. Per \ref{9.8}, autovettori rispetto ad autovalori distinti sono linearmente
+    indipendenti. Dunque:
+    \[
+    w_1 = w_2 = \ldots = w_r = \mathbb{O}
+    \] 
+    Allora, per ogni \( 1 \le i \le r \), abbiamo
+    \[
+    \mathbb{O} = w_i = \alpha_{i1}v_{i1} + \ldots + \alpha_{id_i}v_{id_i}
+    \] 
+    Poichè \( \mathcal{B}_i = \{v_{i1}, \ldots, v_{id_i}\}  \) è una base, concludiamo
+    che:
+    \[
+    \alpha_{i1} = \ldots = \alpha_{id_i} = 0
+    \] 
+    Dunque \( \mathcal{B} = \mathcal{B}_1 \cup \ldots \cup \mathcal{B}_r \) è linearmente
+    indipendente con \( n \) elementi e quindi è una base di \( \mathbb{C}^n \).
+    \( \quad \square \) 
+\end{itemize}
+
+\begin{example}
+  \[
+  A = \begin{pmatrix} 
+    0 & -1\\
+    1 & 0
+  \end{pmatrix} 
+  \in  M_{2 \times 2}(\mathbb{C})
+  \] 
+  Gli autovalori di \( A \) sono le radici del polinomio caratteristico
+  \[
+  P_A = det(A - \lambda I_2) =
+  \] 
+  \[
+  = det \left( 
+    \begin{pmatrix} 
+      0 & -1\\
+      1 & 0
+    \end{pmatrix} 
+    -
+    \begin{pmatrix} 
+      \lambda & 0\\
+      0 & \lambda
+    \end{pmatrix} 
+  \right) =
+  \] 
+  \[
+  = det \begin{pmatrix} 
+    -\lambda & -1\\
+    1 & -\lambda
+  \end{pmatrix}
+  =
+  \] 
+  \[
+  = (-\lambda)^2 - (-1) =
+  \] 
+  \[
+  = \lambda^2 + 1 = (\lambda-i)(\lambda+i)
+  \] 
+  \begin{itemize}
+    \item \textbf{Autovalori:}
+      \[
+      \lambda_1 = i,\; \lambda_2 = -i
+      \]
+    \item \textbf{Molteplicità algebrica:}
+      \[
+      m_1 = m_2 = 1
+      \]
+    \item \textbf{Molteplicità geometrica:}
+      \[
+        d_i = dim_{\mathbb{C}}(E_A(\lambda_i))
+      \] 
+      Per il lemma \ref{10.5}:
+      \[
+      1 \le d_1 \le m_1 = 1 \Rightarrow d_1 = 1
+      \] 
+      \[
+      1 \le d_2 \le m_2 = 1 \Rightarrow d_2 = 1
+      \]
+      Allora \( m_1 = d_1 \) e \( m_2 = d_2 \), quindi \( A \) è diagonalizzabile.
+
+      \vspace{1em}
+      \noindent Abbiamo:
+      \[
+      D = \begin{pmatrix} 
+        i & 0\\
+        0 & -i
+      \end{pmatrix}
+      \] 
+      la matrice diagonale formata dagli autovalori di \( A \) sulla diagonale.
+      Nella dimostrazione abbiamo visto che \( P = \begin{pmatrix} v_1 & v_2 \end{pmatrix}  \) 
+      dove \( \mathcal{B} = \{v_1, v_2\}  \) è una base di \( \mathbb{C}^2 \) formata da
+      autovettori e \( \mathcal{B} = \mathcal{B}_1 \cup \mathcal{B}_2 \) dove
+      \( \mathcal{B}_i \) è una base di \( E_A(\lambda_i) \).
+
+      \vspace{1em}
+      \noindent Calcoliamo \( \mathcal{B}_1 \) e \( \mathcal{B}_2 \):
+      \[
+      E_A(i) = N \left( 
+        \begin{pmatrix} 
+          0 - i & -1\\
+          1 & 0 - i
+        \end{pmatrix} 
+      \right) 
+      =
+      \] 
+      \[
+      = N \left( 
+        \begin{pmatrix} 
+          -i & -1\\
+          1 & -i
+        \end{pmatrix} 
+      \right) 
+      \] 
+      Risolviamo il sistema:
+      \[
+      \begin{pmatrix} 
+        -i & -1\\
+        1 & -i
+      \end{pmatrix} 
+      \begin{pmatrix} 
+        x_1\\
+        x_2
+      \end{pmatrix} 
+      =
+      \begin{pmatrix} 
+        0\\
+        0
+      \end{pmatrix} 
+      \] 
+
+      \[
+      \begin{pmatrix} 
+        -i & -1\\
+        1 & -i
+      \end{pmatrix} 
+      \stackrel{E_{12}}{\sim}
+      \begin{pmatrix} 
+        1 & -i\\
+        -i & -1
+      \end{pmatrix}
+      \stackrel{E_{21}(i)}{\sim}
+      \begin{pmatrix} 
+        1 & -i\\
+        0 & 0
+      \end{pmatrix} 
+      \] 
+      \[
+      \begin{cases}
+        x_1 - ix_2 = 0\\
+        x_2 = t
+      \end{cases}
+      \leadsto
+      \begin{cases}
+        x_1 = it\\
+        x_2 = t
+      \end{cases}
+      \] 
+      \[
+      \mathcal{B}_1 = \left\{ \begin{pmatrix} i\\1 \end{pmatrix}  \right\} 
+      \text{ è una base di } E_A(i)
+      \] 
+
+      \vspace{2em}
+      \[
+      E_A(-i) = N \left( 
+        \begin{pmatrix} 
+          0 + i & -1\\
+          1 & 0 + i
+        \end{pmatrix}
+      \right)
+      =
+      \] 
+      \[
+      = N \left( 
+        \begin{pmatrix} 
+          i & -1\\
+          1 & i
+        \end{pmatrix}
+      \right)
+      \] 
+      Risolviamo il sistema:
+      \[
+      \begin{pmatrix} 
+        i & -1\\
+        1 & i
+      \end{pmatrix}
+      \begin{pmatrix} 
+        x_1\\
+        x_2
+      \end{pmatrix}
+      =
+      \begin{pmatrix} 
+        0\\
+        0
+      \end{pmatrix}
+      \] 
+      
+      \[
+      \begin{pmatrix} 
+        i & -1\\
+        1 & i
+      \end{pmatrix}
+      \stackrel{E_{12}}{\sim}
+      \begin{pmatrix} 
+        1 & i\\
+        i & -1
+      \end{pmatrix}
+      \stackrel{E_{21}(-i)}{\sim}
+      \begin{pmatrix} 
+        1 & i\\
+        0 & 0
+      \end{pmatrix}
+      \] 
+      \[
+      \begin{cases}
+        x_1 + ix_2 = 0\\
+        x_2 = t
+      \end{cases}
+      \leadsto
+      \begin{cases}
+        x_1 = -it\\
+        x_2 = t
+      \end{cases}
+      \] 
+      \[
+      \mathcal{B}_2 = \left\{ \begin{pmatrix} -i\\1 \end{pmatrix}  \right\}
+      \] 
+
+      \vspace{1em}
+      \noindent Dunque:
+      \[
+      \mathcal{B} = \mathcal{B}_1 \cup \mathcal{B}_2 = \left\{ \begin{pmatrix} i\\1 \end{pmatrix}, \begin{pmatrix} -i\\1 \end{pmatrix}  \right\}
+      \] 
+      e
+      \[
+      D = \begin{pmatrix} 
+        i & 0\\
+        0 & -i
+      \end{pmatrix} 
+      ,\quad
+      P = \begin{pmatrix} 
+        i & -i\\
+        1 & 1
+      \end{pmatrix} 
+      \] 
+      \[
+      A = \begin{pmatrix} 
+        i & -i\\
+        1 & 1
+      \end{pmatrix} 
+      \begin{pmatrix} 
+        i & 0\\
+        0 & -i
+      \end{pmatrix} 
+      \begin{pmatrix} 
+        i & -i\\
+        1 & 1
+      \end{pmatrix}^{-1}
+      \] 
+      Calcoliamo \( \begin{pmatrix} 
+        i & -i\\
+        1 & 1
+      \end{pmatrix}^{-1}\):
+      \[
+        \begin{pmatrix}[cc|cc]
+          i & -i & 1 & 0\\
+          1 & 1 & 0 & 1
+      \end{pmatrix} 
+      \stackrel{E_{12}}{\sim}
+      \begin{pmatrix}[cc|cc]
+        1 & 1 & 0 & 1\\
+        i & -i & 1 & 0
+      \end{pmatrix} 
+      \stackrel{E_{21}(-i)}{\sim}
+      \begin{pmatrix}[cc|cc]
+        1 & 1 & 0 & 1\\
+        0 & -2i & 1 & -i
+      \end{pmatrix}
+      \] 
+      \[
+      \stackrel{E_2(\frac{1}{2i})}{\sim}
+      \begin{pmatrix}[cc|cc]
+        1 & 1 & 0 & 1\\
+        0 & 1 & \frac{1}{2}i & \frac{1}{2}
+      \end{pmatrix} 
+      \stackrel{E_{12}(-1)}{\sim}
+      \begin{pmatrix} 
+        1 & 0 & -\frac{1}{2}i & \frac{1}{2}\\
+        0 & 1 & \frac{1}{2}i & \frac{1}{2}
+      \end{pmatrix} 
+      \] 
+
+      \[
+      A =
+      \begin{pmatrix} 
+        i & -i\\
+        1 & 1
+      \end{pmatrix} 
+      \begin{pmatrix} 
+        i & 0\\
+        0 & -i
+      \end{pmatrix} 
+      \begin{pmatrix} 
+        -\frac{i}{2} & \frac{1}{2}\\
+        \frac{i}{2} & \frac{1}{2}
+      \end{pmatrix} 
+      \] 
+  \end{itemize}
+\end{example}
+
+\subsection{Algoritmo per la diagonalizzazione}
+Data una matrice quadrata \( A \in M_{n \times n}(\mathbb{C}) \):
+\begin{enumerate}
+  \item Calcoliamo il polinomio caratteristico \( P_A = det(A - \lambda I_n) \) e determiniamo
+    gli zeri distinti \( \lambda_1, \ldots, \lambda_r \in \mathbb{C} \) con molteplicità
+    algebriche \( m_1, \ldots, m_r \), ovvero:
+    \[
+    P_A = (-1)^n (\lambda - \lambda_1)^{m_1} \ldots (\lambda - \lambda_r)^{m_r}
+    \] 
+
+  \item Per ciascuno \( 1 \le i \le r \) calcoliamo la molteplicità geometrica:
+    \[
+      d_i = dim_{\mathbb{C}}\underbrace{(E_A(\lambda_i))}_{N(A - \lambda_i I_n)} =
+      n - rk(A - \lambda_i I_n)
+    \] 
+
+  \item Verifichiamo se \( m_i = d_i \) per ogni \( 1 \le i \le r \) (oppure se \( d_1 + \ldots + d_r = n \))
+
+  \item In caso positivo determiniamo una base di \( E_A(\lambda_i) = N(A-\lambda_i I_n) \) 
+  (usando \ref{8.5}) per ogni \( 1 \le i \le r \)
+
+  \item L'unione delle basi da luogo a una base \( \mathcal{B} = \{v_1, \ldots, v_n\}  \) di
+    \( \mathbb{C}^n \) composta da autovettori di \( A \) 
+
+  \item Ponendo \( P = \begin{pmatrix} v_1 & \ldots & v_n \end{pmatrix}  \) e \( D \) la
+    matrice diagonale:
+    \begin{figure}[H]
+      \[
+        \scalemath{0.8}{
+          \left(
+            \begin{array}{ccc}
+              \kern .4em
+              \underbrace{
+                \kern-.4em
+                \left.
+                  \begin{array}{cccc}
+                    \lambda_1 & 0 & \ldots & 0\\
+                    0 & \lambda_1 & \ldots & 0\\
+                    \vdots & \vdots & \ddots & \vdots\\
+                    0 & 0 & \ldots & \lambda_1
+                  \end{array}
+                \right\} m_1 
+                \kern -2.8em
+              }_{m_1}
+              \kern 4.5em
+      & 0
+      & 0 \\
+              0 &
+              \kern .4em
+              \underbrace{
+                \kern-.4em
+                \left.
+                  \begin{array}{cccc}
+                    \lambda_2 & 0 & \ldots & 0\\
+                    0 & \lambda_2 & \ldots & 0\\
+                    \vdots & \vdots & \ddots & \vdots\\
+                    0 & 0 & \ldots & \lambda_2
+                  \end{array}
+                \right\} m_2 
+                \kern -2.8em
+              }_{m_2}
+              \kern 4.5em
+                & 0 \\
+              0 & 0 &
+              \kern .4em
+              \underbrace{
+                \kern-.4em
+                \left.
+                  \begin{array}{cccc}
+                    \lambda_r & 0 & \ldots & 0\\
+                    0 & \lambda_r & \ldots & 0\\
+                    \vdots & \vdots & \ddots & \vdots\\
+                    0 & 0 & \ldots & \lambda_r
+                  \end{array}
+                \right\} m_r 
+                \kern -2.8em
+              }_{m_r}
+              \kern 4.5em
+            \end{array}
+          \right)
+        }
+      \] 
+    \end{figure}
+
+    \noindent sulla cui diagonale abbiamo gli autovalori \( \lambda_1, \ldots, \lambda_r \) 
+    con le loro molteplicità.
+
+  \item Calcoliamo \( P^{-1} \) usando \ref{4.2} oppure \ref{4.14}
+
+  \item Otteniamo
+    \[
+    D = P^{-1}AP \quad A = PDP^{-1}
+    \] 
+\end{enumerate}
+
+\subsection{Osservazione}
+Sia \( A \) una matrice su \( \mathbb{R} \). Se \( A \) è diagonalizzabile su \( \mathbb{C} \) 
+e gli autovalori sono tutti reali, allora \( A \) è diagonalizzabile di \( \mathbb{R} \).
+Infatti, in tal caso le matrici \( (A - \lambda_i I_n) \) sono tutte matrici su
+\( \mathbb{R} \) e possiamo risolvere i sistemi lineari \( (A - \lambda_i I_n)x = 0 \) su
+\( \mathbb{R} \), ottenendo una base di \( \mathbb{R}^n \) composta da autovettori di \( A \)
+e \( P,D \in M_{n \times n}(\mathbb{R}) \) 
+
+\subsection{Teorema spettrale}
+Sia \( A \in M_{n \times n}(\mathbb{R}) \) una matrice simmetrica, cioè \( A = A^T \),
+ad esempio
+\[
+A = \begin{pmatrix} 
+  a & c\\
+  c & b
+\end{pmatrix} 
+\] 
+Allora tutti gli autovalori di \( A \) sono reali e \( A \) è diagonalizzabile su
+\( \mathbb{R} \).
 
 \end{document}
