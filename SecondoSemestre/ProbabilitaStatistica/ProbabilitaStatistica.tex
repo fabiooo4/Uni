@@ -2184,4 +2184,33 @@ basiamo sui valori di \( \mathbb{E}(T) \) e \( Var(T) \).
 \noindent Lo scopo della statistica è quello di trovare tra gli stimatori corretti (o
 asintoticamente corretti) quelli che hanno errore quadratico medio minore.
 
+
+\subsection{Stima intervallare}
+Sia \( X_1, \ldots, X_n \) un campione casuale estratto da una popolazione della quale
+ci interessa stimare un parametro \( \theta \). Di solito non ci si può aspettare che la
+stima puntuale ottenuta valutando lo stimatore sui dati osservati sia il valore reale
+di \( \theta \), ma che ci sia vicino. Perciò, rispetto ad un valore puntuale, è
+preferibile produrre produrre un intervallo per il quale abbiamo una certa fiducia che il
+parametro ci appartenga.
+
+\begin{definition}
+  Sia \( X_1, \ldots, X_n \) un campione casuale estratto da una popolazione della quale
+  ci interessa stimare un parametro \( \theta \). Siano:
+  \[
+  L_1 = L_1(X_1, \ldots, X_2) \quad \text{e} \quad L_2 = L_2(X_1, \ldots, X_n)
+  \] 
+  due statistiche, che non dipendono da \( \theta \), tali che:
+  \[
+  \mathbb{P}(L_1 \le \theta \le L_2) = 1 - \alpha
+  \] 
+  dove \( \alpha \in (0,1) \). L'intervallo \( (L_1, L_2) \) si chiama \textbf{stimatore
+  intervallare} del parametro \( \theta \). Siano:
+  \[
+    \hat{l}_1 = L_1(x_1, \ldots, x_n) \quad \text{e} \quad \hat{l}_2 = L_2(x_1, \ldots, x_n)
+  \] 
+  i valori assunti dalle statistiche \( L_1 \) e \( L_2 \) sui dati osservati \( x_1, \ldots, x_n \).
+  Allora \( \hat{l}_1, \hat{l}_2 \) è l'\textbf{intervallo di confidenza} di livello \( 1- \alpha \) 
+  (oppure, al \( (1-\alpha)100\% \)) per il parametro \( \theta \).
+\end{definition}
+
 \end{document}
