@@ -9058,6 +9058,7 @@ Data una matrice quadrata \( A \in M_{n \times n}(\mathbb{C}) \):
 \end{enumerate}
 
 \subsection{Osservazione}
+\label{10.8}
 Sia \( A \) una matrice su \( \mathbb{R} \). Se \( A \) è diagonalizzabile su \( \mathbb{C} \) 
 e gli autovalori sono tutti reali, allora \( A \) è diagonalizzabile di \( \mathbb{R} \).
 Infatti, in tal caso le matrici \( (A - \lambda_i I_n) \) sono tutte matrici su
@@ -9076,5 +9077,160 @@ A = \begin{pmatrix}
 \] 
 Allora tutti gli autovalori di \( A \) sono reali e \( A \) è diagonalizzabile su
 \( \mathbb{R} \).
+
+\subsubsection{Dimostrazione (n = 2)}
+Sia \( A = \begin{pmatrix} a & c\\ c & b \end{pmatrix}  \) una matrice simmetrica su \( \mathbb{R} \).
+Se \( c = 0 \), allora \( A \) è diagonale.
+
+\noindent Supponiamo \( c \neq 0 \). Allora:
+\[
+P_A = det \begin{pmatrix} 
+  a - \lambda & c\\
+  c & b - \lambda
+\end{pmatrix} 
+= (a - \lambda)(b - \lambda) - c^2 = \lambda^2 - (a + b) \lambda + (ab - c^2)
+\] 
+Le radici di \( P_A \) sono:
+\[
+\lambda_1 = \frac{(a+b)+\sqrt{\Delta}}{2}
+\] 
+\[
+\lambda_2 = \frac{(a+b)-\sqrt{\Delta}}{2}
+\] 
+dove
+\[
+\Delta = (-(a+b))^2 - 4(ab-c^2) =
+\] 
+\[
+= a^2 + 2ab + b^2 - 4ab + 4c^2 =
+\] 
+\[
+= (a-b)^2 + 4c^2 \ge 0
+\] 
+Dunque \( \lambda_1, \lambda_2 \in \mathbb{R} \) e quindi \( A \) è diagonalizzabile
+su \( \mathbb{R} \) per \ref{10.8}. \( \quad \square \) 
+
+\section{Basi ortonormali}
+\begin{example}
+  \[
+  V = \mathbb{R}^2
+  \] 
+  Quando si ha lo spazio \( \mathbb{R}^2 \) si può considerare lo spazio sul piano 
+  cartesiano:
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \draw[->] (-2,0) -- (2,0) node[right] {\( x \)};
+      \draw[->] (0,-2) -- (0,2) node[left] {\( y \)};
+
+      \draw[dashed] (1,0) node[below] {\( v_1 \) }
+        -- (1,1) node[above right] {\( v = \begin{pmatrix} v_1\\v_2 \end{pmatrix}  \) };
+      \draw[dashed] (0,1) node[left] {\( v_2 \) } -- (1,1);
+
+      \draw[fill] (1,1) circle (0.05);
+
+    \end{tikzpicture}
+  \end{figure}
+
+  \noindent Ora consideriamo una base, quella più semplice è la base canonica:
+  \[
+    \mathcal{B}_{can} = \left\{ b_1 = \begin{pmatrix} 
+        1\\0
+    \end{pmatrix},
+    b_2 = 
+    \begin{pmatrix} 
+      0\\1
+    \end{pmatrix} 
+  \right\} 
+  \] 
+  La base canonica corrisponde ai versori del piano bidimensionale e ogni vettore
+  corrisponde a una coppia di numeri reali \( (v_1, v_2) \) che rappresentano i coefficienti
+  della combinazione lineare \( v = v_1b_1 + v_2b_2 \).
+
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \draw[->] (-3,0) -- (3,0) node[right] {\( x \)};
+      \draw[->] (0,-3) -- (0,3) node[left] {\( y \)};
+
+      \draw[step=1cm,gray,very thin] (-2.99,-2.99) grid (2.99,2.99);
+
+      \draw[->, thick, blue] (0,0) -- (1,0) node[below] {\( b_1 \)} node[above] {1};
+      \draw[->, thick, blue] (0,0) -- (0,1) node[left] {\( b_2 \)} node[right] {1};
+
+      \draw[fill] (2,1) circle (0.05) node[above] {\( 2 \cdot b_1 + 1 \cdot b_2 \) };
+
+      \draw[thin, blue] (0,0) rectangle (0.3,0.3);
+    \end{tikzpicture}
+  \end{figure}
+
+  \noindent La particolarità della base canonica è che i suoi elementi sono ortogonali,
+  cioè l'angolo tra i due vettori è di 90°.
+
+  \vspace{1em}
+  \noindent Un'altra base con questa proprietà è:
+  \[
+  \mathcal{B}_2 = \left\{ 
+    b_1 = \begin{pmatrix} 
+      5\\0
+    \end{pmatrix} ,
+    b_2 = \begin{pmatrix} 
+      0\\1
+    \end{pmatrix}
+  \right\} 
+  \] 
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \draw[->] (-3,0) -- (3,0) node[right] {\( x \)};
+      \draw[->] (0,-3) -- (0,3) node[left] {\( y \)};
+
+      \foreach \i in {-2,-1,0,1,2}
+        \draw[gray, very thin] (-2.99,\i) -- (2.99,\i);
+
+      \foreach \i in {-2,0,2}
+        \draw[gray, very thin] (\i,-2.99) -- (\i,2.99);
+
+      \draw[->, thick, blue] (0,0) -- (2,0) node[below] {\( b_1 \)} node[above] {5};
+      \draw[->, thick, blue] (0,0) -- (0,1) node[left] {\( b_2 \)} node[right] {1};
+
+      \draw[thin, blue] (0,0) rectangle (0.3,0.3);
+    \end{tikzpicture}
+  \end{figure}
+
+  \vspace{1em}
+  \noindent Un altro esempio è la base:
+  \[
+  \mathcal{B}_3 = \left\{ 
+    b_1 = \begin{pmatrix} 
+      \frac{3}{5}\\
+      \frac{4}{5}
+    \end{pmatrix} ,
+    b_2 = \begin{pmatrix} 
+      -\frac{4}{5}\\
+      \frac{3}{5}
+    \end{pmatrix} 
+  \right\} 
+  \] 
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \draw[->] (-3,0) -- (3,0) node[right] {\( x \)};
+      \draw[->] (0,-3) -- (0,3) node[left] {\( y \)};
+
+      \draw[->, thick, blue] (0,0) -- (0.6,0.8) node[above right] {\( b_1 \)};
+      \draw[->, thick, blue] (0,0) -- (-0.8,0.6) node[above left] {\( b_2 \)};
+
+      % draw grid rotated by 52 degrees around (0,0)
+      \draw[step=1cm,gray,very thin, rotate around={53:(0,0)}] (-2.5,-2.5) grid (2.5,2.5);
+
+
+      \draw[fill] (0,1) circle (0.03) node[left, scale=0.7] {1};
+      \draw[fill] (1,0) circle (0.03) node[below, scale=0.7] {1};
+
+      \draw[thin, blue, rotate around={53:(0,0)}] (0,0) rectangle (0.3,0.3);
+    \end{tikzpicture}
+  \end{figure}
+\end{example}
 
 \end{document}
