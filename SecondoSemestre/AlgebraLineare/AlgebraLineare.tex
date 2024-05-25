@@ -9221,7 +9221,6 @@ su \( \mathbb{R} \) per \ref{10.8}. \( \quad \square \)
       \draw[->, thick, blue] (0,0) -- (0.6,0.8) node[above right] {\( b_1 \)};
       \draw[->, thick, blue] (0,0) -- (-0.8,0.6) node[above left] {\( b_2 \)};
 
-      % draw grid rotated by 52 degrees around (0,0)
       \draw[step=1cm,gray,very thin, rotate around={53:(0,0)}] (-2.5,-2.5) grid (2.5,2.5);
 
 
@@ -9231,6 +9230,383 @@ su \( \mathbb{R} \) per \ref{10.8}. \( \quad \square \)
       \draw[thin, blue, rotate around={53:(0,0)}] (0,0) rectangle (0.3,0.3);
     \end{tikzpicture}
   \end{figure}
+  \noindent \textbf{NB}: Per ogni \( b_1 = \begin{pmatrix} x_1\\y_2 \end{pmatrix} \),
+  \( b_2 = \begin{pmatrix} x_2\\y_2 \end{pmatrix} \) abbiamo:
+  \[
+    x_1x_2 + y_1y_2 = 0
+  \] 
 \end{example}
+
+\subsection{Prodotto interno}
+Sia \( A \in M_{m \times n}(\mathbb{C}) \). La \textbf{matrice coniugata} \( \bar{A} \) di
+\( A = (a_{ij})_{i,j} \), è la matrice \( \bar{A} = (\bar{a}_{ij}) \).
+
+\noindent La matrice \( A^H = \bar{A}^T = \overline{A^T} \) è detta
+\textbf{H-trasposta} di \( A \).
+
+\begin{example}
+  \[
+  A = \begin{pmatrix} 
+    1 & i & 3\\
+    2+i & 0 & 1
+  \end{pmatrix} 
+  \quad
+  \bar{A} = \begin{pmatrix} 
+    1 & -i & 3\\
+    2-i & 0 & 1
+  \end{pmatrix}
+  \] 
+  \[
+    A^H = \bar{A}^T = \begin{pmatrix} 
+      1 & 2-i\\
+      -i & 0\\
+      3 & 1
+    \end{pmatrix} 
+  \] 
+\end{example}
+
+Siano \( v = \begin{pmatrix} 
+  v_1\\
+  \vdots\\
+  v_n
+\end{pmatrix},
+w = \begin{pmatrix} 
+  w_1\\
+  \vdots\\
+  w_n
+\end{pmatrix} \in \mathbb{K}^n
+\).
+Il prodotto
+\[
+  (v|w) = v^Hw = (\overline{v_1}, \ldots, \overline{v_n}) \begin{pmatrix} 
+    w_1\\
+    \vdots\\
+    w_n
+  \end{pmatrix}
+  =
+  \sum_{i=1}^{n} \overline{v_i}w_i
+\] 
+è detto \textbf{prodotto interno} (standard) in \( \mathbb{K}^n \) .
+\begin{example}
+  \[
+  v = \begin{pmatrix} 
+    v_1\\
+    v_2
+  \end{pmatrix} 
+  ,
+  w = \begin{pmatrix} 
+    w_1\\
+    w_2
+  \end{pmatrix} 
+  \in  \mathbb{R}^2
+  \] 
+  \[
+    (v|w) = \begin{pmatrix} \overline{v_1} & \overline{v_2} \end{pmatrix}  \begin{pmatrix} 
+      w_1\\
+      w_2
+    \end{pmatrix}
+    = \begin{pmatrix} v_1 & v_2 \end{pmatrix}  \begin{pmatrix} 
+      w_1\\
+      w_2
+    \end{pmatrix}
+    =
+    v_1w_1 + v_2w_2
+  \] 
+\end{example}
+
+\subsubsection{Proprietà}
+Valgono le seguenti proprietà per \( v,w,z = \begin{pmatrix} z_1\\\vdots\\z_n \end{pmatrix} \in \mathbb{K}^n \),
+\( \alpha,\beta \in \mathbb{K} \):
+\begin{enumerate}
+  \item \( (v|w) = \overline{(w|v)} \)
+
+    \noindent Infatti \[
+      (w|v) = \overline{w_1}v_1 + \ldots + \overline{w_n}v_n \quad \in \mathbb{K}
+    \]
+    \[
+      \overline{(w|v)} = \overline{(\overline{w_1}v_1 + \ldots + \overline{w_n}v_n)} =
+    \] 
+    \[
+      = \overline{\overline{w_1}v_1} + \ldots + \overline{\overline{w_n}v_n} =
+    \] 
+    \[
+      = w_1\overline{v_1} + \ldots + w_n\overline{v_n} =
+    \] 
+    \[
+     = \overline{v_1}w_1 + \ldots + \overline{v_n}w_n = (v|w)
+    \] 
+
+  \item \( (v|\alpha w + \beta z) = \alpha (v|w) + \beta (v|z) \) 
+
+    \noindent In particolare, possiamo definire:
+    \[
+    f_v: \mathbb{K}^n \to \mathbb{K}, \quad f_v(w) = (v|w)
+    \] 
+    \( f_v \) è un'applicazione lineare.
+
+  \item \( (\alpha v + \beta w|z) = \overline{\alpha}(v|z) + \overline{\beta}(w|z) \) 
+
+  \item Se \( v \neq 0 \), allora:
+    \[
+      (v|v) = v^Hv = \overline{v_1}v_1 + \ldots + \overline{v_n}v_n = |v_1|^2 + \ldots + |v_n|^2
+      \quad \in \mathbb{R}_{> 0}
+    \] 
+    \begin{example}
+      \[
+      v = \begin{pmatrix} 
+        i\\
+        1\\
+        2
+      \end{pmatrix} 
+      ,
+      w = \begin{pmatrix} 
+        1\\
+        2\\
+        3
+      \end{pmatrix} 
+      \in \mathbb{C}^3
+      \] 
+      \[
+        (v|w) = \overline{i} \cdot 1 + 1 \cdot 2 + 2 \cdot 3 = -i + 2 + 6 = 8 - i \in \mathbb{C}
+      \] 
+    \end{example}
+    \begin{example}
+      \[
+      v = \begin{pmatrix} 
+        2\\
+        0\\
+        -1
+      \end{pmatrix} ,
+      w = \begin{pmatrix} 
+        3\\
+        2\\
+        1
+      \end{pmatrix} 
+      \in \mathbb{R}^3
+      \] 
+      \vspace{1em}
+      \[
+        (v|w) = 2 \cdot 3 + 0 \cdot 2 + (-1) \cdot 1 = 6 - 1 = 5 \in \mathbb{R}
+      \] 
+    \end{example}
+    In generale, se \( v,w \in \mathbb{R}^n \), allora
+    \[
+      (v|w) = v_1w_1 + \ldots + v_nw_n \in \mathbb{R}
+    \] 
+\end{enumerate}
+
+\subsection{Norma euclidea}
+\label{11.2}
+\begin{example}
+  \[
+  v = \begin{pmatrix} v_1\\v_2 \end{pmatrix} \in \mathbb{R}^2
+  \] 
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \draw[->] (-0.5,0) -- (2,0) node[right] {\( x \)};
+      \draw[->] (0,-0.5) -- (0,2) node[left] {\( y \)};
+
+      \draw[->, thick, blue] (0,0) -- (1,1) node[above right, scale=0.7] {\( \begin{pmatrix} v_1\\v_2 \end{pmatrix}  \)};
+
+      \node[blue, scale=0.6] at (1,0.4) {\( \sqrt{v_1^2 + v_2^2} \)};
+
+      \draw[fill] (1,0) circle (0.02) node[below] {\( v_1 \)};
+      \draw[fill] (0,1) circle (0.02) node[left] {\( v_2 \)};
+    \end{tikzpicture}
+  \end{figure}
+  \[
+    (v|v) = v_1^2 + v_2^2
+  \] 
+  La lunghezza del vettore (modulo) è \( \sqrt{v_1^2 + v_2^2} \), quindi:
+  \[
+  \sqrt{(v|v)} = \sqrt{v_1^2 + v_2^2} = \text{ lunghezza di } v
+  \] 
+\end{example}
+
+\subsubsection{Definizione}
+Sia \( v \in \mathbb{K}^n \). Il numero reale:
+\[
+ \|v\| = \sqrt{(v|v)} \in \mathbb{R}_{\ge 0}
+\] 
+è detta \textbf{norma (euclidea)} di \( v \).
+
+\subsubsection{Proprietà}
+Valgono le seguenti proprietà per \( v,w \in \mathbb{K}^n \), \( \alpha \in \mathbb{K} \):
+\begin{enumerate}
+  \item \( \|\alpha v\| = \sqrt{(\alpha v| \alpha v)} = |\alpha| \cdot \|v\| \) 
+    \[
+      (\alpha v| \alpha v) = \alpha (\alpha v|v) = \alpha \overline{\alpha}(v|v) =
+      |\alpha|^2(v|v)
+    \] 
+
+  \item Se \( v \neq 0 \), allora \( \|v\| > 0 \) 
+
+  \item \( \|v+w\| \le \|v\| + \|w\| \) 
+
+    \noindent Questa proprietà è detta \textbf{disuguaglianza triangolare}.
+\end{enumerate}
+
+\begin{example}
+  \[
+  v = \begin{pmatrix} 
+    5+i \\
+    1 + 3i
+  \end{pmatrix} 
+  \in  \mathbb{C}^2
+  \] 
+  \[
+    \|v\| = \sqrt{(v|v)} = \sqrt{\overline{(5+i)}(5+i) + \overline{(1+3i)}(1+3i)} =
+  \] 
+  \[
+  = \sqrt{25 + 1 + 1 + 9} = \sqrt{36} = 6 \quad \in \mathbb{R}
+  \] 
+\end{example}
+
+\subsection{Interpretazione grafica del prodotto interno in \texorpdfstring{\( \mathbb{R}^2 \)}{R²}}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \draw[->] (-3,0) -- (3,0) node[right] {\( x \)};
+      \draw[->] (0,-3) -- (0,3) node[left] {\( y \)};
+
+      \draw[->, thick, blue] (0,0) -- (1.6,1.8) node[above right] {\( v \)};
+      \draw[->, thick, blue] (0,0) -- (-1.26,1.12) node[above left] {\( w \)};
+
+      \draw (0.48,0.54) arc (45:135:0.77) node[midway, above left] {\( \theta \)};
+    \end{tikzpicture}
+  \end{figure}
+
+  \noindent \( 0 \le \theta \le \pi \) è l'angolo tra \( v \) e \( w \).
+
+  \noindent Vale la formula
+  \[
+    (v|w) = \|v\| \cdot \|w\| \cdot \cos(\theta)
+  \] 
+  Si ottiene una formula per calcolare l'angolo \( \theta \):
+  \[
+  \cos(\theta) = \frac{(v|w)}{\|v\| \cdot \|w\|}
+  \] 
+  \textbf{NB}:
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \draw[->] (-0.5,0) -- (7,0) node[right] {\( x \)};
+      \draw[->] (0,-1.5) -- (0,1.5) node[left] {\( y \)};
+
+      \draw[domain=3.14:7, smooth, variable=\x, red] plot ({\x}, {cos(\x r)});
+      \draw[domain=0:3.14, smooth, variable=\x, orange, very thick] plot ({\x}, {cos(\x r)});
+
+      \draw[fill] (3.14,0) circle (0.02) node[below] {\( \pi \)};
+      \draw[fill] (6.28,0) circle (0.02) node[below] {\( 2\pi \)};
+
+      \draw[fill] (1.57,0) circle (0.05) node[below] {\( \frac{\pi }{2} \)};
+    \end{tikzpicture}
+  \end{figure}
+
+  \noindent Siccome consideriamo soltanto angoli \( 0 \le \theta \le \pi \) e non
+  tutta la funzione periodica, possiamo considerare solo il valore del coseno
+  dell'angolo quando \( \cos(\theta) = 0 \), ovvero \( \theta = \frac{\pi }{2} \)  .
+
+  \vspace{1em}
+  \noindent Dunque l'angolo tra \( v \) e \( w \) è \( \frac{\pi }{2} \) (angolo retto) se
+  e solo se \( (v|w) = 0 \).
+
+\subsection{Definizione}
+Due vettori \( v,w \in \mathbb{K}^n \) si dicono \textbf{ortogonali} se \( (v|w) = 0 \).
+Un insieme di vettori \( \{v_1, \ldots, v_r\} \) è detto \textbf{ortogonale} se
+\( (v_i|v_j) = 0 \) per ogni \( 1 \le i,j \le r \) con \( i \neq j \).
+
+\begin{example}
+  \[
+  \left\{ 
+    v =
+    \begin{pmatrix} 
+      6\\
+      -2
+    \end{pmatrix},
+    w =
+    \begin{pmatrix} 
+      -2\\
+      -6
+    \end{pmatrix} 
+  \right\} 
+  \] 
+  \[
+    (v|w) = 6 \cdot (-2) + (-2) \cdot (-6) = -12 + 12 = 0
+  \] 
+
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \draw[->] (-2,0) -- (2,0) node[right] {\( x \)};
+      \draw[->] (0,-2) -- (0,2) node[left] {\( y \)};
+
+      \draw[->, thick, blue] (0,0) -- (1.5,-0.5) node[above right] {\( v \)};
+      \draw[->, thick, blue] (0,0) -- (-0.5,-1.5) node[above left] {\( w \)};
+
+      \draw[thin, blue, rotate around={-108:(0,0)}] (0,0) rectangle (0.3,0.3);
+    \end{tikzpicture}
+  \end{figure}
+\end{example}
+
+\subsection{Proposizione}
+Sia \( \{v_1, \ldots, v_m\}  \) un insieme ortogonale di vettori non nulli di \( \mathbb{K}^n \).
+Allora \( \{v_1, \ldots, v_m\}  \) è linearmente indipendente.
+
+\subsubsection{Dimostrazione}
+Siano \( \alpha_1, \ldots, \alpha_m \in \mathbb{K}^n \) tali che:
+\[
+\alpha_1v_1 + \ldots + \alpha_mv_m = 0
+\] 
+Per ogni \( 1 \le k \le m \).
+\[
+  0 \stackrel{\ref{11.2}(2.)}{=} (v_k|\mathbb{O}) = (v_k|\alpha_1v_1 + \ldots + \alpha_mv_m) =
+\] 
+\[
+ = \alpha_1(v_k|v_1) + \ldots + \alpha_m(v_k|v_m) =
+\] 
+\[
+  = \alpha_k \underbrace{(v_k|v_k)}_{\neq 0}
+\] 
+Concludiamo che \( \alpha_k = 0 \) (dividendo per \( (v_k|v_k) \))
+
+\noindent Dunque \( \alpha_1 = \alpha_2 = \ldots = \alpha_m = 0 \) e
+\( \{v_1, \ldots, v_m\} \) è linearmente indipendente. \( \quad \square \)
+
+\begin{example}
+  \[
+  \left\{ 
+    \begin{pmatrix} 
+      1\\2\\-4
+    \end{pmatrix} ,
+    \begin{pmatrix} 
+      -4\\2\\0
+    \end{pmatrix} ,
+    \begin{pmatrix} 
+      \frac{4}{5}\\\frac{8}{5}\\1
+    \end{pmatrix} 
+  \right\} 
+  \] 
+  è ortogonale e quindi è linearmente indipendente. Siccome \( dim_{\mathbb{R}}(\mathbb{R}^3) = 3 \),
+  abbiamo una base ortogonale di \( \mathbb{R}^3 \).
+\end{example}
+
+\subsection{Osservazione}
+Sia \( \mathcal{B} = \{v_1, \ldots, v_n\}  \) una base ortogonale di \( \mathbb{K}^n \) e
+sia \( u \in \mathbb{K}^n \). Allora \( u = \alpha_1v_1 + \ldots + \alpha_nv_n \) e
+\[
+  (v_k|u) = (v_k|\alpha_1v_1 + \ldots + \alpha_nv_n) =
+\] 
+\[
+ = \alpha_1(v_k|v_1) + \ldots + \alpha_n(v_k|v_n) =
+\] 
+\[
+ = \alpha_k(v_k|v_k)
+\] 
+Quindi:
+\[
+\alpha_k = \frac{(v_k|u)}{(v_k|v_k)} \quad \forall\; 1 \le k \le n
+\] 
 
 \end{document}
