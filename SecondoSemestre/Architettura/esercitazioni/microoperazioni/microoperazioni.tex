@@ -1,0 +1,228 @@
+\documentclass[a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage[italian]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs,xltabular}
+\usepackage{amsfonts}
+\usepackage{cancel}
+\usepackage{mdframed}
+\usepackage{makecell}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows, automata, petri, decorations.pathreplacing, positioning, calc}
+\usepackage{circuitikz}
+\usepackage[label=corner]{karnaugh-map}
+\graphicspath{{./figures/}}
+
+\usepackage{ntheorem}
+\newtheorem{theorem}{Teorema}
+
+\usepackage{import}
+\usepackage{pdfpages}
+\usepackage{transparent}
+\usepackage{xcolor}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=false,
+}
+
+% Code blocks
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.95}
+
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\ttfamily\footnotesize,
+	breakatwhitespace=false,
+	breaklines=true,
+	captionpos=b,
+	keepspaces=true,
+	numbers=left,
+	numbersep=5pt,
+	showspaces=false,
+	showstringspaces=false,
+	showtabs=false,
+	tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={\small\ttfamily},
+	numbers=none,
+	numberstyle=\tiny\color{gray},
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve},
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=3
+}
+
+\usepackage{import}
+\usepackage{pdfpages}
+\usepackage{transparent}
+\usepackage{xcolor}
+
+
+
+% Useful definitions frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	innertopmargin=8pt,%
+	innerbottommargin=8pt,
+	ntheorem]{define}{Definizioni utili}[section]
+
+% Example frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	innertopmargin=8pt,%
+	innerbottommargin=8pt,
+	ntheorem]{example}{Esempio}[section]
+
+% Important definition frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	backgroundcolor=gray!40,%
+	innertopmargin=8pt,%
+	innerbottommargin=8pt,
+	ntheorem]{definition}{Definizione}[section]
+
+% Exercise frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	innertopmargin=8pt,%
+	innerbottommargin=8pt,
+	ntheorem]{exercise}{Esercizio}[section]
+
+% figure support
+\usepackage{import}
+\usepackage{xifthen}
+\pdfminorversion=7
+\usepackage{pdfpages}
+\usepackage{transparent}
+\newcommand{\incfig}[1]{%
+	\def\svgwidth{\columnwidth}
+	\import{./figures/}{#1.pdf_tex}
+}
+
+% FSM tikz
+\tikzset{
+    place/.style={
+        circle,
+        thick,
+        draw=black,
+        minimum size=6mm,
+    },
+        state/.style={
+        circle,
+        thick,
+        draw=blue!75,
+        fill=blue!20,
+        minimum size=6mm,
+    },
+}
+
+\pdfsuppresswarningpagegroup=1
+
+\begin{document}
+
+\tableofcontents
+\pagebreak
+
+\section{Microoperazioni}
+\subsection{Esercizio 1 (Fetch)}
+\begin{exercise}
+Scrivere le microistruzioni per effettuare il fetch di un'istruzione, commentando ogni 
+passo. (Architettura ad 1 bus)
+  \begin{center}
+    \texttt{Fetch}
+  \end{center}
+
+  \begin{enumerate}
+    \item [F]
+      \begin{enumerate}
+        \item[1.] \( PC_{out},\; MAR_{in},\; READ,\; SELECT_4,\; ADD,\; Y_{in} \) 
+
+          \noindent Estraggo dal program counter l'indirizzo dell'istruzione da eseguire e
+          lo metto nel MAR per ottenere l'istruzione. Successivamente metto imposto
+          \( SELECT_4 \) che seleziona la costante \( 4 \) dal multiplexer per sommarla
+          al program counter che si trova già nella ALU, questo equivale ad andare 
+          all'istruzione successiva, cioè PC + 1 word. Il risultato della somma
+          viene salvato nel registro \( Y \).
+
+        \item[2.] \( Y_{out},\; PC_{in},\; WMFC \) 
+
+          \noindent Estraggo l'indirizzo dell'istruzione successiva dall'registro \( Y \) 
+          e lo inserisco nel program counter mentre aspetto che la funzione di lettura
+          del \( MAR \) venga completata.
+
+        \item[3.] \( MDR_{out},\; IR_{in} \) 
+
+          \noindent Una volta che viene letto il dato all'indirizzo inserito nel \( MAR \)
+          il risultato viene messo in \( MDR \) e successivamente trasferito nell'\( IR \)
+          completando così il fetch dell'istruzione.
+      \end{enumerate}
+  \end{enumerate}
+\end{exercise}
+
+\subsection{Esercizio 2 (Inc)}
+\begin{exercise}
+  Descrivere le microistruzioni relative alla seguente istruzione: (Architettura ad 1 bus)
+  \begin{center}
+    \texttt{INC \%EAX}
+  \end{center}
+
+  \begin{enumerate}
+    \item [F]
+      \begin{enumerate}
+        \item [1.] \( PC_{out},\; MDR_{in},\; READ,\; SELECT_4,\; ADD,\; Y_{in} \) 
+        \item [2.] \( Y_{out},\; PC_{in},\; WMFC \) 
+        \item [3.] \( MDR_{out},\; IR_{in}, \) 
+      \end{enumerate}
+
+    \item [DE]
+      \begin{enumerate}
+        \item [4.] \( EAX_{out},\; SELECT_0,\; CB,\; ADD,\; Y_{in} \) 
+        \item [5.] \( Y_{out},\; EAS_{in},\; END \) 
+      \end{enumerate}
+  \end{enumerate}
+
+\end{exercise}
+
+\end{document}
