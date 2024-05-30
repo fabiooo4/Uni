@@ -161,15 +161,42 @@
 \pdfsuppresswarningpagegroup=1
 
 \begin{document}
+\begin{center}
+  \vspace*{1cm}
 
+  \Huge
+  \textbf{Architettura degli elaboratori}
+  \LARGE
+  \textbf{Esercitazione}
+
+  \vspace{0.5cm}
+  \LARGE
+  UniVR - Dipartimento di Informatica
+
+  \vspace{1.5cm}
+
+  \textbf{Fabio Irimie}
+
+  \vfill
+
+
+  \vspace{0.8cm}
+
+
+  2° Semestre 2023/2024
+
+\end{center}
+
+\pagebreak
 \tableofcontents
 \pagebreak
 
 \section{Microoperazioni}
+I seguenti esercizi fanno riferimento all'architettura con 1 bus.
 \subsection{Esercizio 1 (Fetch)}
 \begin{exercise}
-Scrivere le microistruzioni per effettuare il fetch di un'istruzione, commentando ogni 
-passo. (Architettura ad 1 bus)
+  Scrivere le microistruzioni per effettuare il fetch di un'istruzione, commentando ogni 
+  passo. 
   \begin{center}
     \texttt{Fetch}
   \end{center}
@@ -177,18 +204,18 @@ passo. (Architettura ad 1 bus)
   \begin{enumerate}
     \item [F]
       \begin{enumerate}
-        \item[1.] \( PC_{out},\; MAR_{in},\; READ,\; SELECT_4,\; ADD,\; Y_{in} \) 
+        \item[1.] \( PC_{out},\; MAR_{in},\; READ,\; SELECT_4,\; ADD,\; Z_{in} \) 
 
           \noindent Estraggo dal program counter l'indirizzo dell'istruzione da eseguire e
           lo metto nel MAR per ottenere l'istruzione. Successivamente metto imposto
           \( SELECT_4 \) che seleziona la costante \( 4 \) dal multiplexer per sommarla
           al program counter che si trova già nella ALU, questo equivale ad andare 
           all'istruzione successiva, cioè PC + 1 word. Il risultato della somma
-          viene salvato nel registro \( Y \).
+          viene salvato nel registro \( Z \).
 
-        \item[2.] \( Y_{out},\; PC_{in},\; WMFC \) 
+        \item[2.] \( Z_{out},\; PC_{in},\; WMFC \) 
 
-          \noindent Estraggo l'indirizzo dell'istruzione successiva dall'registro \( Y \) 
+          \noindent Estraggo l'indirizzo dell'istruzione successiva dall'registro \( Z \) 
           e lo inserisco nel program counter mentre aspetto che la funzione di lettura
           del \( MAR \) venga completata.
 
@@ -201,9 +228,9 @@ passo. (Architettura ad 1 bus)
   \end{enumerate}
 \end{exercise}
 
-\subsection{Esercizio 2 (Inc)}
+\subsection{Esercizio 2 (Inc \%reg)}
 \begin{exercise}
-  Descrivere le microistruzioni relative alla seguente istruzione: (Architettura ad 1 bus)
+  Descrivere le microistruzioni relative alla seguente istruzione: 
   \begin{center}
     \texttt{INC \%EAX}
   \end{center}
@@ -211,18 +238,327 @@ passo. (Architettura ad 1 bus)
   \begin{enumerate}
     \item [F]
       \begin{enumerate}
-        \item [1.] \( PC_{out},\; MDR_{in},\; READ,\; SELECT_4,\; ADD,\; Y_{in} \) 
-        \item [2.] \( Y_{out},\; PC_{in},\; WMFC \) 
+        \item [1.] \( PC_{out},\; MAR_{in},\; READ,\; SELECT_4,\; ADD,\; Z_{in} \) 
+        \item [2.] \( Z_{out},\; PC_{in},\; WMFC \) 
         \item [3.] \( MDR_{out},\; IR_{in}, \) 
       \end{enumerate}
 
     \item [DE]
       \begin{enumerate}
-        \item [4.] \( EAX_{out},\; SELECT_0,\; CB,\; ADD,\; Y_{in} \) 
-        \item [5.] \( Y_{out},\; EAS_{in},\; END \) 
+        \item [4.] \( EAX_{out},\; SELECT_0,\; CB,\; ADD,\; Z_{in} \) 
+        \item [5.] \( Z_{out},\; EAX_{in},\; END \) 
       \end{enumerate}
   \end{enumerate}
+\end{exercise}
 
+\subsection{Esercizio 3 (Inc var)}
+\vspace{2cm}
+\begin{exercise}
+  Descrivere le microistruzioni relative a questa istruzione:
+  \begin{center}
+    \texttt{INC variable}
+  \end{center}
+  Si assume che la variabile 'variable' sia costituita da un indirizzo immediato, direttamente codificato nell'istruzione ($IR\_imm\_field\__{out}$).
+
+  \begin{enumerate}
+    \item [F]
+      \begin{enumerate}
+        \item [1.] \( PC_{out},; MAR_{in},\; SELECT_4,\; ADD,\; Z_{in} \) 
+        \item [2.] \( Z_{out},\; PC_{in},\; WMFC \) 
+        \item [3.] \( MDR_{out},\; IR_{in} \) 
+      \end{enumerate}
+    \item [DE]
+      \begin{enumerate}
+        \item [4.] \( IR\_imm\_field_{out},\; MAR_{in},\; READ,\; WMFC \)
+        \item [5.] \( MDR_{out},\; SELECT_0,\; CB,\; ADD,\; Z_{in} \) 
+        \item [6.] \( Z_{out},\; MDR_{in},\; WRITE,\; WMFC,\; END \) 
+      \end{enumerate}
+  \end{enumerate}
+\end{exercise}
+
+\subsection{Esercizio 4 (CALL rel)}
+\begin{exercise}
+  Si descrivano le microistruzioni relative alla seguente istruzione:
+  \begin{center}
+    \texttt{CALL etichetta}
+  \end{center}
+  Assunzioni:
+  \begin{itemize}
+    \item 
+      La flag 'etichetta' è costituita da un indirizzo immediato, direttamente codificato 
+      nell'istruzione;
+    \item salto relativo, in quanto l'indirizzo di salto è specificato tramite 
+      etichetta simbolica.
+  \end{itemize}
+
+  \begin{enumerate}
+    \item [F]
+      \begin{enumerate}
+        \item [1.] \( PC_{out},\; MAR_{in},\; READ,\; SELECT_4,\; ADD,\; Z_{in} \) 
+        \item [2.] \( Z_{out},\; PC_{in},\; WMFC \) 
+        \item [3.] \( MDR_{out},\; IR_{in} \) 
+      \end{enumerate}
+    \item [DE]
+      \begin{enumerate}
+        \item [4.] \( ESP_{out},\; SELECT_4,\; SUB,\; Z_{in} \)
+        \item [5.] \( Z_{out},\; MAR_{in},\; ESP_{in}\) 
+        \item [6.] \( PC_{out},\; MDR_{in},\; WRITE,\; V_{in} \) 
+        \item [7.] \( IR\_imm\_field_{out},\; SELECT_V,\; ADD,\; Z_{in},\; WMFC \) 
+        \item [8.] \( Z_{out},\; PC_{in},\; END \) 
+      \end{enumerate}
+  \end{enumerate}
+\end{exercise}
+
+\subsection{Esercizio 5 (CALL abs)}
+\begin{exercise}
+  Descrivere le microistruzioni della seguente istruzione:
+  \begin{center}
+    \texttt{CALL (\%EAX, \%EBX)}
+  \end{center}
+
+  Assunzioni:
+  \begin{itemize}
+    \item 
+      L'indirizzo a cui saltare è \%eax + \%ebx (indirizzamento indiretto) 
+    \item 
+      Salto assoluto.
+  \end{itemize}
+
+  \begin{enumerate}
+    \item [F]
+      \begin{enumerate}
+        \item [1.] \( PC_{out},\; MAR_{in},\; READ,\; SELECT_4,\; ADD,\; Z_{in} \) 
+        \item [2.] \( Z_{out},\; PC_{in},\; WMFC \) 
+        \item [3.] \( MDR_{out},\; IR_{in} \) 
+      \end{enumerate}
+    \item [DE]
+      \begin{enumerate}
+        \item [4.] \( ESP_{out},\; SELECT_4,\; SUB,\; Z_{in} \)  
+        \item [5.] \( Z_{out},\; MAR_{in},\; ESP_{in} \) 
+        \item [6.] \( PC_{out},\; MDR_{in},\; WRITE \) 
+        \item [7.] \( EAX_{out},\; V_{in},\; WMFC \) 
+        \item [8.] \( EBX_{out},\; SELECT_V,\; ADD,\; Z_{in} \) 
+        \item [9.] \( Z_{out},\; PC_{in},\; END \) 
+      \end{enumerate}
+  \end{enumerate}
+\end{exercise}
+
+\subsection{Esercizio 6 (RET)}
+\begin{exercise}
+  Descrivere le microistruzioni della seguente istruzione:
+  \begin{center}
+    \texttt{RET}
+  \end{center}
+  (ritorno di una funzione).
+
+  \begin{enumerate}
+    \item [F]
+      \begin{enumerate}
+        \item [1.] \( PC_{out},\; MAR_{in},\; READ,\; SELECT_4,\; ADD,\; Z_{in} \) 
+        \item [2.] \( Z_{out},\; PC_{in},\; WMFC \) 
+        \item [3.] \( MDR_{out},\; IR_{in} \) 
+      \end{enumerate}
+    \item [DE]
+      \begin{enumerate}
+        \item [4.] \( ESP_{out},\; MAR_{in},\; READ,\; SELECT_4,\; ADD,\; Z_{in} \) 
+        \item [5.] \( Z_{out},\; ESP_{in},\; WMFC \) 
+        \item [6.] \( MDR_{out},\; PC_{in},\; END \) 
+      \end{enumerate}
+  \end{enumerate}
+\end{exercise}
+
+\subsection{Esercizio 7 (JMP)}
+\begin{exercise}
+  Descrivere le microistruzioni della seguente istruzione:
+  \begin{center}
+    \texttt{JMP (\%eax)}
+  \end{center}
+  (Assumo che il salto sia relativo al PC)
+  \begin{enumerate}
+    \item [F]
+      \begin{enumerate}
+        \item [1.] \( PC_{out},\; MAR_{in},\; READ,\; SELECT_4,\; ADD,\; Z_{in} \) 
+        \item [2.] \( Z_{out},\; PC_{in},\; WMFC \) 
+        \item [3.] \( MDR_{out},\; IR_{in} \) 
+      \end{enumerate}
+    \item [DE]
+      \begin{enumerate}
+        \item [4.] \( EAX_{out},\; MAR_{in},\; READ \) 
+        \item [5.] \( WMFC,\; PC_{out},\; V_{in} \) 
+        \item [6.] \( MDR_{out},\; SELECT_V,\; ADD,\; Z_{in} \) 
+        \item [7.] \( Z_{out},\; PC_{in},\; END \) 
+      \end{enumerate}
+  \end{enumerate}
+\end{exercise}
+
+\subsection{Esercizio 8 (JZ)}
+\begin{exercise}
+  Descrivere le microistruzioni della seguente istruzione:
+  \begin{center}
+    \texttt{JZ (\%eax)}
+  \end{center}
+  (Assumo che il salto sia relativo al PC)
+  \begin{enumerate}
+    \item [F]
+      \begin{enumerate}
+        \item [1.] \( PC_{out},\; MAR_{in},\; READ,\; SELECT_4,\; ADD,\; Z_{in} \) 
+        \item [2.] \( Z_{out},\; PC_{in},\; WMFC \) 
+        \item [3.] \( MDR_{out},\; IR_{in} \) 
+      \end{enumerate}
+    \item [DE]
+      \begin{enumerate}
+        \item [4.] \( if\,(!ZERO)\,END,\; EAX_{out},\; MAR_{in},\; READ \) 
+        \item [5.] \( WMFC,\; PC_{out},\; V_{in} \) 
+        \item [6.] \( MDR_{out},\; SELECT_V,\; ADD,\; Z_{in} \) 
+        \item [7.] \( Z_{out},\; PC_{in},\; END \) 
+      \end{enumerate}
+  \end{enumerate}
+\end{exercise}
+
+\subsection{Esercizio 9 (Call abs)}
+\begin{exercise}
+  Elencare e commentare le micro istruzioni relative alla completa esecuzione
+  (caricamento, decodifica, esecuzione) della seguente istruzione assembler: 
+  \begin{center}
+    \texttt{CALL (\%eax, \%ebx)}
+  \end{center}
+  dove:
+  \begin{itemize}
+    \item 
+      si assume che l'indirizzo a cui saltare sia memorizzato nella locazione di memoria
+      puntata dal valore \%eax+\%ebx (indirizzamento indiretto);
+    \item 
+      si assume salto assoluto (salvo diversamente specificato);
+    \item 
+      si assume l'utilizzo di architettura Intel dove lo stack cresce verso indirizzi
+      di memoria inferiori rispetto ed \%ESP punta alla cima occupata dallo stack.
+  \end{itemize}
+  
+  \begin{enumerate}
+    \item [F]
+      \begin{enumerate}
+        \item[1.] \( PC_{out},\; MAR_{in},\; READ,\; SELECT_4,\; ADD,\; Z_{in} \) 
+
+          \noindent Estraggo dal program counter l'indirizzo dell'istruzione da eseguire e
+          lo metto nel MAR per ottenere l'istruzione. Successivamente metto imposto
+          \( SELECT_4 \) che seleziona la costante \( 4 \) dal multiplexer per sommarla
+          al program counter che si trova già nella ALU, questo equivale ad andare 
+          all'istruzione successiva, cioè PC + 1 word. Il risultato della somma
+          viene salvato nel registro \( Z \).
+
+        \item[2.] \( Z_{out},\; PC_{in},\; WMFC \) 
+
+          \noindent Estraggo l'indirizzo dell'istruzione successiva dall'registro \( Z \) 
+          e lo inserisco nel program counter mentre aspetto che la funzione di lettura
+          del \( MAR \) venga completata.
+
+        \item[3.] \( MDR_{out},\; IR_{in} \) 
+
+          \noindent Una volta che viene letto il dato all'indirizzo inserito nel \( MAR \)
+          il risultato viene messo in \( MDR \) e successivamente trasferito nell'\( IR \)
+          completando così il fetch dell'istruzione.
+      \end{enumerate}
+    \item [DE]
+      \begin{enumerate}
+        \item [4.] \( ESP_{out},\; SELECT_4,\; SUB,\; Z_{in} \)  
+
+          \noindent Sottraggo 4 (1 word) dallo stack pointer in modo da creare spazio
+          nello stack per inserire il program counter dell'istruzione successiva da
+          eseguire.
+        \item [5.] \( Z_{out},\; MAR_{in},\; ESP_{in} \) 
+
+          \noindent Estraggo il risultato della somma e lo inserisco all'interno del
+          registro ESP e nel MAR in modo da poter scrivere il PC in quell'indirizzo.
+        \item [6.] \( PC_{out},\; MDR_{in},\; WRITE \) 
+
+          \noindent Ottengo il program counter e lo inserisco nel MDR per poter richiamare
+          la funzione WRITE che scrive il dato presente in MDR all'interno dell'indirizzo
+          presente nel registro MAR. Fino a questo punto è stata eseguita una push del
+          program counter nello stack.
+        \item [7.] \( EAX_{out},\; V_{in},\; WMFC \) 
+
+          \noindent Metto il valore del registro EAX nel registro V per poter sommare.
+          In questa istruzione richiamo la funzione WMFC per aspettare che la funzione
+          di memoria venga eseguita.
+        \item [8.] \( EBX_{out},\; SELECT_V,\; ADD,\; Z_{in} \) 
+
+          \noindent Inserisco EBX nel bus e seleziono il registro V per la somma mettendo
+          il risultato di EAX+EBX nel registro Z
+        \item [9.] \( Z_{out},\; PC_{in},\; END \) 
+
+          \noindent Estraggo il risultato dal registro Z, che sarebbe l'indirizzo a cui
+          effettuare il salto, e lo inserisco direttamente nel program counter visto che
+          questo è stato specificato come salto assoluto.
+      \end{enumerate}
+  \end{enumerate}
+\end{exercise}
+
+\subsection{Esercizio 10 (XCHG)}
+\begin{exercise}
+  Elencare e commentare le micro istruzioni relative alla completa esecuzione (caricamento, decodifica, esecuzione) della seguente istruzione assembler: 
+
+  \begin{center}
+    \texttt{XCHG variabile, \%eax}
+  \end{center}
+
+  \begin{itemize}
+    \item 
+      si assume che la variabile sia costituita da un indirizzo immediato direttamente
+      codificato dentro l'istruzione (con il segnale IR\_imm\_field disponibile).
+  \end{itemize}
+
+  \begin{enumerate}
+    \item [F]
+      \begin{enumerate}
+        \item[1.] \( PC_{out},\; MAR_{in},\; READ,\; SELECT_4,\; ADD,\; Z_{in} \) 
+
+          \noindent Estraggo dal program counter l'indirizzo dell'istruzione da eseguire e
+          lo metto nel MAR per ottenere l'istruzione. Successivamente metto imposto
+          \( SELECT_4 \) che seleziona la costante \( 4 \) dal multiplexer per sommarla
+          al program counter che si trova già nella ALU, questo equivale ad andare 
+          all'istruzione successiva, cioè PC + 1 word. Il risultato della somma
+          viene salvato nel registro \( Z \).
+
+        \item[2.] \( Z_{out},\; PC_{in},\; WMFC \) 
+
+          \noindent Estraggo l'indirizzo dell'istruzione successiva dall'registro \( Z \) 
+          e lo inserisco nel program counter mentre aspetto che la funzione di lettura
+          del \( MAR \) venga completata.
+
+        \item[3.] \( MDR_{out},\; IR_{in} \) 
+
+          \noindent Una volta che viene letto il dato all'indirizzo inserito nel \( MAR \)
+          il risultato viene messo in \( MDR \) e successivamente trasferito nell'\( IR \)
+          completando così il fetch dell'istruzione.
+      \end{enumerate}
+    \item [D]
+      \begin{enumerate}
+        \item [4.] \( IR\_imm\_field_{out},\; MAR_{in},\; READ \) 
+
+          \noindent Viene preso l'indirizzo della variabile e viene inserito nel MAR
+          per poter leggere il valore contenuto.
+        \item [5.] \( EAX_{out},\; SELECT_0,\; ADD,\; Z_{in},\; WMFC \)
+
+          \noindent Il valore di EAX viene sommato a 0 per poter salvare il valore
+          all'interno del registro Z della ALU, in modo da poter effettuare lo scambio.
+          Infine si aspetta che la funzione di lettura venga completata.
+      \end{enumerate}
+    \item [E]
+      \begin{enumerate}
+        \item [6.] \( MDR_{out},\; EAX_{in} \) 
+
+          \noindent Viene estratto il valore della variabile dal registro MDR e viene
+          inserito nel registro EAX.
+        \item [7.] \( Z_{out},\; MDR_{in},\; WRITE \) 
+
+          \noindent Viene preso il vecchio valore di EAX e viene messo in MDR per poterlo
+          scrivere all'indirizzo della variabile che si trova ancora nel MAR.
+        \item [8.] \( WMFC,\; END \) 
+
+          \noindent Si aspetta che la funzione di scrittura venga completata e viene
+          interrotta l'istruzione.
+      \end{enumerate}
+  \end{enumerate}
 \end{exercise}
 
 \end{document}
