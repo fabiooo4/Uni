@@ -3692,27 +3692,29 @@ arrivato il gas arriva in continuazione.
 \noindent Se applichiamo questo concetto alla CPU possiamo vedere le fasi della cpu
 in più stati:
 \begin{figure}[H]
-  \label{D1}
   \centering
   \begin{tikzpicture}[scale=0.8]
     % F-D-E-W Cycle
-    \draw (0,0) rectangle (1.5,1.5) node[midway] {Fetch};
-    \draw (3.5,0) rectangle (5,1.5) node[midway] {Decode};
-    \draw (7,0) rectangle (8.5,1.5) node[midway] {Execute};
-    \draw (10.5,0) rectangle (12,1.5) node[midway] {Write};
+    \draw (0,0) rectangle (1.5,1.5) node[midway, scale=0.8] {Fetch};
+    \draw (3.5,0) rectangle (5,1.5) node[midway, scale=0.8] {Decode};
+    \draw (7,0) rectangle (8.5,1.5) node[midway, scale=0.8] {Execute};
+    \draw (10.5,0) rectangle (12,1.5) node[midway, scale=0.8] {Write};
     
     % Tmp registers
     \draw (2,2) rectangle (3,-0.5);
     \draw (5.5,2) rectangle (6.5,-0.5);
     \draw (9,2) rectangle (10,-0.5);
 
-    \draw (2,1.375) -- (3,1.375) node[midway, above, scale=0.8] {IR}; 
-    \draw (2,0.75) -- (3,0.75) node[midway, above, scale=0.8] {PC}; 
+    \draw (2,1.375) -- (3,1.375) node[midway, above, scale=0.7] {IR}; 
+    \draw (2,0.75) -- (3,0.75) node[midway, above, scale=0.7] {PC}; 
 
-    \draw (5.5,1.375) -- (6.5,1.375) node[midway, above, scale=0.8] {OP1}; 
-    \draw (5.5,0.75) -- (6.5,0.75) node[midway, above, scale=0.8] {OP2}; 
-    \draw (5.5,0.125) -- (6.5,0.125) node[midway, above, scale=0.8] {OP3};
-    \node[midway, above, scale=0.8] at (5.5,-0.5) {PSW};
+    \draw (5.5,1.375) -- (6.5,1.375) node[midway, above, scale=0.7] {OP1}; 
+    \draw (5.5,0.75) -- (6.5,0.75) node[midway, above, scale=0.7] {OP2}; 
+    \draw (5.5,0.125) -- (6.5,0.125) node[midway, above, scale=0.7] {OP3};
+    \node at (6,-0.5) [above, scale=0.7] {PSW};
+
+    \draw (9,1.375) -- (10,1.375) node[midway, above, scale=0.7] {Ris};
+    \draw (9,0.75) -- (10,0.75) node[midway, above, scale=0.7] {PSW};
 
     % Arrows
     \draw[-latex] (1.5,0.75) -- ++(0.5,0);
@@ -3721,7 +3723,24 @@ in più stati:
     \draw[-latex] (6.5,0.75) -- ++(0.5,0);
     \draw[-latex] (8.5,0.75) -- ++(0.5,0);
     \draw[-latex] (10,0.75) -- ++(0.5,0);
-    \draw[-latex] (12,0.75) -- ++(0.5,0);
+
+    \draw[-latex] (11.25, 0) -- ++(0,-2) |- (5,-2.5);
+    \draw[latex-] (4.25, 0) -- ++(0,-2);
+    \draw[latex-] (0.75, 0) -- ++(0,-2);
+
+    % Main reg
+    \draw (0,-3) rectangle (5,-2) node[midway, scale=0.8] {REG};
+
+    % Other
+    \node[draw, rectangle, minimum width=1cm, minimum height=1cm, scale=0.8, align=center]
+      (cacheIst) at (0.75,3) {Cache\\istruzioni};
+    \draw[-latex] (cacheIst.south) -- (0.75,1.5);
+
+    \node[draw, rectangle, minimum width=1cm, minimum height=1cm, scale=0.8, align=center]
+      (cacheDat) at (4.25,3) {Cache\\dati};
+    \draw[-latex] (cacheDat.south) -- (4.25,1.5);
+
+    \draw[-latex] (11.25,1.5) -- ++(0,1) |- (cacheDat);
   \end{tikzpicture}
 \end{figure}
 \noindent Ogni stato della pipeline lavorerà sulla copia dei registri messi a disposizione
@@ -3740,9 +3759,9 @@ compare non ha finito di eseguire. In questo caso si ha uno stallo che crea una
 
 \subsection{Ottimizzazione}
 Per far tendere il CPI a 1 bisogna avere una pipeline efficiente.
-\label{D2}
 
-Le dipendenze possono essere di più tipi e si risolvono nel seguente modo:
+\vspace{1em}
+\noindent Le dipendenze possono essere di più tipi e si risolvono nel seguente modo:
 \begin{itemize}
   \item \textbf{Istruzioni}:
     Si possono "allontanare" le istruzioni dipendenti riordinandole
@@ -3764,4 +3783,47 @@ Le dipendenze possono essere di più tipi e si risolvono nel seguente modo:
     motivo si considera che un salto sia vero. Se invece il salto è falso si usa
     l'output precedentemente salvato per decidere se fare la fetch o meno.
 \end{itemize}
+
+\begin{table}[H]
+  \centering
+  \resizebox{\columnwidth}{!}{%
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+      \hline
+      Istruzione & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 \\
+      \hline
+      movl \%eax \%eax & F & D & E & W & & & & & F & D & E & W \\
+      \hline
+      addl \$4, \%ecx & & F & D & E & W & & & & & F & D & E \\
+      \hline 
+      subl \$1, \%ebx & & & F & D & D & E & W & & & & F & D \\
+      \hline
+      cmpl \%eax, \%ecx & & & & \footnotesize{NOP} & F & D & E & W & & & & \\
+      \hline
+      jz init & & & & & & F & D & D & D & E & W & \\
+      \hline
+    \end{tabular}%
+  }
+\end{table}
+
+\noindent Nell'istruzione subl al 4 ciclo di clock il registro \%ebx non è
+ancora pronto, quindi si aspetta 1 ciclo di clock finchè non è pronto. Per
+capire quanto un registro è pronto è presente un flag che segna se un certo
+registro è stabile o se è ancora in esecuzione.
+
+\[
+  CPI_{medio} = \frac{11}{5} \approx 2.2
+\] 
+\[
+\Downarrow
+\] 
+\[
+  CPI_{medio} = \frac{11 - \upperbrace{4}^{\text{ist. per riempire pipeline}}}{5} \approx 1.4
+\] 
+\[
+\Downarrow
+\] 
+\[
+  CPI_{medio} = \frac{12-4}{6} \approx 1.35
+\] 
+L'ultimo CPI calcolato è dopo aver fatto tutte le branch dei jmp.
 \end{document}
