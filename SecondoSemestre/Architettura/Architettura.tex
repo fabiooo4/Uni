@@ -3817,7 +3817,7 @@ registro è stabile o se è ancora in esecuzione.
 \Downarrow
 \] 
 \[
-  CPI_{medio} = \frac{11 - \upperbrace{4}^{\text{ist. per riempire pipeline}}}{5} \approx 1.4
+  CPI_{medio} = \frac{11 - \overbrace{4}^{\text{ist. per riempire pipeline}}}{5} \approx 1.4
 \] 
 \[
 \Downarrow
@@ -3826,4 +3826,91 @@ registro è stabile o se è ancora in esecuzione.
   CPI_{medio} = \frac{12-4}{6} \approx 1.35
 \] 
 L'ultimo CPI calcolato è dopo aver fatto tutte le branch dei jmp.
+
+\section{RISC (Reduced Instruction Set Computer)}
+Il tempo di esecuzione di un programma è dato da:
+\[
+  T_{cpu} = N_{istr} \cdot CPI_{m} \cdot \frac{1}{f_{clk}}
+\] 
+La cosa negativa è che i 3 fattori sono collegati, quindi non ci si può concentrare
+per minimizzarne uno alla volta.
+\begin{itemize}
+  \item \( f_{clk} \): 
+    \begin{itemize}
+      \item 
+        Non si può aumentare a piacere perchè nella CPU è presente
+        un datapath con un cammino critico che fissa il tempo di clock.
+      \item La pipeline permette di aumentare \( f_{clk} \) ma non
+        è possibile aumentare all'infinito il numero di stadi della pipeline.
+      \item L'ISA (Instruction Set Architecture) è un altro fattore che
+        influenza \( f_{clk} \) perchè se si ha un'ISA complessa si avrà
+        un \( f_{clk} \) più basso. Il legame tra il set di istruzioni
+        e frequenza di clock è estremamente stretto.
+    \end{itemize}
+  \item \( N_{istr} \):
+    \begin{itemize}
+      \item In base all'ISA si avrà un numero diverso di istruzioni per uno
+        stesso programma. Se si volesse ridurre il numero di istruzioni da
+        un programma compilato bisognerebbe creare un ISA con istruzioni più
+        complesse. Questo però portava il CPI a salire e le frequenze a scendere.
+      \item 2 Professori della Stanford University Hennessey e Patterson
+        hanno raccolto diversi programmi in svariati linguaggi e hanno notato
+        che il 90\% delle istruzioni avevano 2 o 3 operandi, quindi espressioni
+        semplici. I cicli erano singoli, quindi non c'erano cicli dentro cicli.
+        Gli if erano al massimo a 2 innestazioni. Nonostante tutta la complessità
+        il codice viene scritto in modo semplice e spesso quando le istruzioni
+        sono semplici il codice è scritto meglio. I professori si sono accorti
+        che indipendentemente dai compilatori e dagli ISA la maggior parte
+        dell'assembly aveva istruzioni semplici. Si aveva il 90\% di istruzioni
+        semplici e il 10\% complicate. Hanno inventato il RISC (Reduced Instruction Set Computer)
+        e si è iniziato a chiamare gli altri processori CISC (Complex Instruction Set Computer).
+
+        \noindent Siccome a Stanford c'era una fonderia di silicio i 2 professori
+        hanno creato il primo processore RISC chiamato DLX. Con questo microprocessore
+        mostrarono con i dati alla mano che la loro idea era giusta.
+
+        \noindent Successivamente il MIPS diventò il primo microprocessore RISC
+        commerciale
+    \end{itemize}
+\end{itemize}
+
+\subsection{Caratteristiche del RISC}
+\begin{itemize}
+  \item Istruzioni semplici
+  \item Pochi metodi di indirizzamento
+  \item Pipeline bilanciata dovuta alle istruzioni semplici
+    \begin{itemize}
+      \item Abbatte il CPI facendolo tendere a 1
+      \item Aumenta la frequenza di clock
+    \end{itemize}
+\end{itemize}
+
+\subsection{Alcuni processori RISC}
+\begin{itemize}
+  \item Intel
+    \begin{itemize}
+      \item 80386: 60-80 MHz
+      \item Pentiun: 90 MHz
+      \item P6: 200 MHz
+    \end{itemize}
+  \item MIPS: 100 MHz
+  \item Motorola IBM
+    \begin{itemize}
+      \item PowerPC: 200 MHz poi fino a 600 MHz
+    \end{itemize}
+  \item DEC
+    \begin{itemize}
+      \item Alpha: 600 MHz
+    \end{itemize}
+  \item SUN
+    \begin{itemize}
+      \item SPARC
+    \end{itemize}
+\end{itemize}
+
+Quando intel creò le istruzioni 80x86 per passarle al processore P6 si utilizza
+un \textbf{pre fetcher} che traduce le istruzioni 80x86 in istruzioni RISC.
+Questo sistema permetteva di avere un processore CISC ma con le prestazioni di
+un RISC. Dopo questa invenzione intel inventò il microprocessore Pentium.
+
 \end{document}
