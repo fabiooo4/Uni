@@ -1,0 +1,372 @@
+\documentclass[a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage[italian]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs,xltabular}
+\usepackage{amsfonts}
+\usepackage{cancel}
+\usepackage{mdframed}
+\usepackage{makecell}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows, automata, petri, decorations.pathreplacing, positioning, calc}
+\usepackage{circuitikz}
+\usepackage[label=corner]{karnaugh-map}
+\graphicspath{{./figures/}}
+
+\usepackage{ntheorem}
+\newtheorem{theorem}{Teorema}
+
+\usepackage{import}
+\usepackage{pdfpages}
+\usepackage{transparent}
+\usepackage{xcolor}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=false,
+}
+
+% Code blocks
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.95}
+
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\ttfamily\footnotesize,
+	breakatwhitespace=false,
+	breaklines=true,
+	captionpos=b,
+	keepspaces=true,
+	numbers=left,
+	numbersep=5pt,
+	showspaces=false,
+	showstringspaces=false,
+	showtabs=false,
+	tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={\small\ttfamily},
+	numbers=none,
+	numberstyle=\tiny\color{gray},
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve},
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=3
+}
+
+\usepackage{import}
+\usepackage{pdfpages}
+\usepackage{transparent}
+\usepackage{xcolor}
+
+
+
+% Useful definitions frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	innertopmargin=8pt,%
+	innerbottommargin=8pt,
+	ntheorem]{define}{Definizioni utili}[section]
+
+% Example frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	innertopmargin=8pt,%
+	innerbottommargin=8pt,
+	ntheorem]{example}{Esempio}[section]
+
+% Important definition frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	backgroundcolor=gray!40,%
+	innertopmargin=8pt,%
+	innerbottommargin=8pt,
+	ntheorem]{definition}{Definizione}[section]
+
+% Exercise frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+	linecolor=gray,leftmargin=0,%
+	rightmargin=0,
+	innertopmargin=8pt,%
+	innerbottommargin=8pt,
+	ntheorem]{exercise}{Esercizio}[section]
+
+% figure support
+\usepackage{import}
+\usepackage{xifthen}
+\pdfminorversion=7
+\usepackage{pdfpages}
+\usepackage{transparent}
+\newcommand{\incfig}[1]{%
+	\def\svgwidth{\columnwidth}
+	\import{./figures/}{#1.pdf_tex}
+}
+
+% FSM tikz
+\tikzset{
+    place/.style={
+        circle,
+        thick,
+        draw=black,
+        minimum size=6mm,
+    },
+        state/.style={
+        circle,
+        thick,
+        draw=blue!75,
+        fill=blue!20,
+        minimum size=6mm,
+    },
+}
+
+\pdfsuppresswarningpagegroup=1
+
+\begin{document}
+
+\input{title.tex}
+
+\tableofcontents
+\pagebreak
+
+% Laboratorio
+\section{Pipeline}
+\subsection{Esercizio 1}
+Si consideri una CPU con una pipeline a 5 stadi (F, D, E, M, S). Si riporti nel seguente 
+diagramma, per ogni istruzione, lo stadio della pipeline coinvolto in ogni istante di 
+clock. Si ipotizzi la pipeline vuota al tempo 1.
+
+\begin{table}[H]
+  \centering
+  \resizebox{\columnwidth}{!}{%
+    \begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|}
+      \hline
+      Istruzione & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 \\
+      \hline
+      addl \%eax, \%ebx & F & D & E & M & S & & & &  &  &   \\
+      \hline
+      movl \$4, \%ecx & & F & D & E & M & S & & & &  &  \\
+      \hline 
+      subl \%ebx, \%ecx & & & F & D & D & D & D & M & S & &  \\
+      \hline
+      movl \$4, \%edx & & & & F & F & F & F & D & E & M & S \\
+      \hline
+    \end{tabular}%
+  }
+\end{table}
+
+\subsection{Esercizio 2}
+Si consideri una CPU con una pipeline a 5 stadi (F, D, E, M, S). Si riporti nel seguente diagramma,
+per ogni istruzione, lo stadio della pipeline coinvolto in ogni istante di clock. Si ipotizzi la pipeline
+vuota al tempo 1.
+
+\begin{table}[H]
+  \centering
+  \resizebox{\columnwidth}{!}{%
+    \begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|}
+      \hline
+      Istruzione               & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11  \\
+      \hline
+      ciclo: addl \%eax, \%ebx & F & D & E & M & S &   & F & D & D & E  & M  \\
+      \hline
+      movl \$4, \%ecx          &   & F & D & E & M & S &   & F & F & D  & E  \\
+      \hline 
+      subl \%eax, \%edx        &   &   & F & D & E & M & S &   &   & F  & D  \\
+      \hline
+      movl \$6, \%ebx          &   &   &   & F & D & E & M & S &   &    & F  \\
+      \hline
+      jmp ciclo                &   &   &   &   & F & D & E & M & S &    &    \\
+      \hline
+    \end{tabular}%
+  }
+\end{table}
+
+\subsection{Esercizio 3}
+Si consideri una CPU con una pipeline a 5 stadi (F, D, E, M, S). Si riporti nel seguente diagramma,
+per ogni istruzione, lo stadio della pipeline coinvolto in ogni istante di clock. Si ipotizzi la pipeline
+vuota al tempo 1. Si ipotizzi che il salto avvenga. Si ignorino le tecniche del Delay Slot e della
+Branch Prediction. I commenti \#yes e \#no indicano se il salto avviene o meno.
+
+\begin{table}[H]
+  \centering
+  \resizebox{\columnwidth}{!}{%
+    \begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+      \hline
+      Istruzione         & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13  \\
+      \hline
+      inizio: inc \%ebx  & F & D & E & M & S &   &   &   & F & D  & E  & M  & S   \\
+      \hline
+      movl \%ecx, \%edx  &   & F & D & E & M & S &   &   &   & F  & D  & E  & M   \\
+      \hline 
+      cmpl \%eax, 0x86FF &   &   & F & D & E & M & S &   &   &    & F  & D  & E   \\
+      \hline
+      jne inizio \#yes   &   &   &   & F & D & D & D & D & E & M  & S  & F  & D   \\
+      \hline
+      movl \%ecx, \%edx  &   &   &   &   & F & F & F & F &   &    &    &    & F   \\
+      \hline
+    \end{tabular}%
+  }
+\end{table}
+
+\subsection{Esercizio 4}
+Si consideri una CPU con una pipeline a 5 stadi (F, D, E, M, S). Si riporti nel seguente diagramma,
+per ogni istruzione, lo stadio della pipeline coinvolto in ogni istante di clock. Si ipotizzi la pipeline
+vuota al tempo 1 e che il salto non avvenga.
+
+\begin{table}[H]
+  \centering
+  \resizebox{\columnwidth}{!}{%
+    \begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|}
+      \hline
+      Istruzione               & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 \\
+      \hline
+      START: subl \%eax, \%ebx & F & D & E & M & S &   &   &   &   &    &    \\
+      \hline
+      jz START \#no            &   & F & D & D & D & D & E & M & S &    &    \\
+      \hline 
+      subl \%ebx, \%ecx        &   &   & F & F & F & F & D & E & M & S  &    \\
+      \hline
+      movl \%edx, \%eax        &   &   &   &   &   &   & F & D & E & M  & S  \\
+      \hline
+    \end{tabular}%
+  }
+\end{table}
+
+\subsection{Esercizio 5}
+Si consideri una CPU con una pipeline a 5 stadi (F, D, E, M, S). Si riporti nel seguente diagramma,
+per ogni istruzione, lo stadio della pipeline coinvolto in ogni istante di clock. Si ipotizzi la pipeline
+vuota al tempo 1 e che il salto non avvenga.
+
+\begin{table}[H]
+  \centering
+  \resizebox{\columnwidth}{!}{%
+    \begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+      \hline
+      Istruzione               & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 \\
+      \hline
+      ciclo: addl \%eax, \%ebx & F & D & E & M & S &   &   &   &   &    &    &    &    &    &    \\
+      \hline
+      movl \%edx, \%ecx        &   & F & D & E & M & S &   &   &   &    &    &    &    &    &    \\
+      \hline 
+      subl \%ebx, \%ecx        &   &   & F & D & D & D & D & E & M & S  &    &    &    &    &    \\
+      \hline
+      jz ciclo \#no            &   &   &   & F & F & F & F & D & D & D  & D  & E  & M  & S  &    \\
+      \hline
+      movl \%ecx, \%edx        &   &   &   &   &   &   &   & F & F & F  & F  & D  & E  & M  & S  \\
+      \hline
+    \end{tabular}%
+  }
+\end{table}
+
+\subsection{Esercizio 6}
+Si consideri una CPU con una pipeline a 4 stadi (F, D, E, W). Si riporti nel seguente diagramma, per
+ogni istruzione, lo stadio della pipeline coinvolto in ogni istante di clock. Si ipotizzi che la pipeline
+sia vuota al tempo 1 e che jz faccia riferimento all’istruzione subl.
+
+\begin{table}[H]
+  \centering
+  \resizebox{\columnwidth}{!}{%
+    \begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+      \hline
+      Istruzione               & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 \\
+      \hline
+      ciclo: addl \%eax, \%ebx & F & D & E & W &   &   &   &   &   &    &    &    &    \\
+      \hline
+      movl \%ebx, \%ecx        &   & F & D & D & D & E & W &   &   &    &    &    &    \\
+      \hline 
+      subl \%eax, \%ecx        &   &   & F & F & F & D & D & D & E & W  &    &    &    \\
+      \hline
+      jz ciclo \#no            &   &   &   &   &   & F & F & F & D & D  & D  & E  & W  \\
+      \hline
+    \end{tabular}%
+  }
+\end{table}
+
+\subsection{Esercizio 7}
+Si consideri una CPU con una pipeline a 5 stadi (F, D, E, M, S). Si riporti nel seguente diagramma,
+per ogni istruzione, lo stadio della pipeline coinvolto in ogni istante di clock. Si ipotizzi la pipeline
+vuota al tempo 1 e si facciano le opportune ipotesi sul salto condizionale.
+
+\noindent Nel caso in cui il salto non viene effettuato il diagramma sarà il seguente:
+\begin{table}[H]
+  \centering
+  \resizebox{\columnwidth}{!}{%
+    \begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+      \hline
+      Istruzione              & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 \\
+      \hline
+      init: movl \%ecx, \%edx & F & D & E & M & S &   &   &   &   &    &    &    &    &    &    \\
+      \hline
+      addl \$4, \%ebx         &   & F & D & E & M & S &   &   &   &    &    &    &    &    &    \\
+      \hline 
+      cmpl 0x319FA, \%ebx     &   &   & F & D & D & D & D & E & M & S  &    &    &    &    &    \\
+      \hline
+      jnz init \#no           &   &   &   & F & F & F & F & D & D & D  & D  & E  & M  & S  &    \\
+      \hline
+      addl \%eax, \%ecx       &   &   &   &   &   &   &   & F & F & F  & F  & D  & E  & M  & S  \\
+      \hline
+    \end{tabular}%
+  }
+\end{table}
+
+\noindent Nel caso in cui il salto viene effettuato il diagramma sarà il seguente:
+\begin{table}[H]
+  \centering
+  \resizebox{\columnwidth}{!}{%
+    \begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+      \hline
+      Istruzione              & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 & 16 & 17 & 18 \\
+      \hline
+      init: movl \%ecx, \%edx & F & D & E & M & S &   &   &   &   &    &    & F  & D  & E  & M  & S  &    &    \\
+      \hline
+      addl \$4, \%ebx         &   & F & D & E & M & S &   &   &   &    &    &    & F  & D  & E  & M  & S  &    \\
+      \hline 
+      cmpl 0x319FA, \%ebx     &   &   & F & D & D & D & D & E & M & S  &    &    &    & F  & D  & D  & D  & D  \\
+      \hline
+      jnz init \#yes          &   &   &   & F & F & F & F & D & D & D  & D  & E  & M  & S  & F  & F  & F  & F  \\
+      \hline
+      addl \%eax, \%ecx       &   &   &   &   &   &   &   & F & F & F  & F  &    &    &    &    &    &    &    \\
+      \hline
+    \end{tabular}%
+  }
+\end{table}
+
+\end{document}
