@@ -3913,4 +3913,126 @@ un \textbf{pre fetcher} che traduce le istruzioni 80x86 in istruzioni RISC.
 Questo sistema permetteva di avere un processore CISC ma con le prestazioni di
 un RISC. Dopo questa invenzione intel inventò il microprocessore Pentium.
 
+\section{Evoluzione dei calcolatori}
+\begin{itemize}
+  \item Anni '90:
+
+    \noindent La rivoluzione RISC ha portato ad un aumento delle prestazioni
+    e ha raggiunto l'obiettivo di avere un CPI uguale a 1. Nonostante questo
+    si è continuato a cercare di aumentare le prestazioni.
+    \begin{itemize}
+      \item L'utente percepisce soltanto il tempo di elaborazione: \( T_{cpu} \),
+        quindi bisogna diminuire il tempo di esecuzione.
+
+      \item Il gestore del sistema (gestisce un pc per più utenti) percepisce
+        le prestazioni in un altro modo. Esiste un livello minimo del tempo
+        di esecuzione di un processo oltre il quale non cambia la percezione
+        delle prestazioni. Il gestore però vuole che il tempo di esecuzione
+        sia uguale per tutti gli utenti, quindi:
+        \[
+         \frac{\text{n° processi}}{\text{unità di tempo}}
+        \] 
+        il gestore vuole avere il maggior numero di processi per unità di tempo.
+
+    \end{itemize}
+    \vspace{1em}
+    \noindent Per aumentare le prestazioni sono nate le CPU \textbf{superscalari}
+    che hanno un \( CPI_{m} < 1 \). PowerPC è stato il primo a scendere sotto
+    l'1 dedicando una pipeline per l'esecuzione di interi e una per i float
+    riuscendo così ad eseguire 2 operazioni in 1 ciclo di clock e quindi
+    \( CPI_{m} = 0.5 \). Separando le pipeline si possono anche avere più segnali
+    di clock e quindi il cammino critico sarà quello della ALU intera.
+
+    \label{D1}
+    \vspace{1em}
+    \noindent Successivamente sono state aggiunte più pipeline all'unità di
+    prefetch, il problema però è che le dipendenze possono accadere tra più
+    pipeline diverse.
+    
+    \vspace{1em}
+    \noindent Successivamente nacque il \textbf{VLIW} (Very Long Instruction Word)
+    che permetteva di avere più istruzioni in un'unica istruzione. Questo è possibile
+    utilizzando un registro da 256 bit che contiene più istruzioni (8 istruzioni) tutte
+    svolte in parallelo. Aggiungere un registro troppo grande può creare problemi
+    con le dipendenze tra le istruzioni.
+
+    \vspace{1em}
+    \noindent Successivamente si tentò di implementare il parallelismo e sono
+    nati i calcolatori vettoriali che permettevano di eseguire operazioni in
+    parallelo grazie a più ALU. Il computer vettoriale più famoso era il
+    Thinking Machine che aveva più CPU che lavoravano in parallelo scrivendo
+    il risultato in un'unica memoria condivisa.
+    \label{D3}
+
+    Questo sistema però scomparve
+    per la legge di \textbf{Amdahl} che dice che la prestazione totale
+    è data da:
+    \[
+      P_{T_1} = U_1 \cdot  P_1 + U_2 \cdot  P_2 + \ldots + U_k \cdot  P_k
+    \]
+    Che sarebbe la somma delle moltiplicazioni del tempo di utilizzo del componente moltiplicato
+    per la sua prestazione. Se si aumentano le prestazioni del secondo componente
+    di 100 volote si ha:
+    \[
+      P_{T_2} = U_1 \cdot P_1 + 100 \cdot U_2 \cdot P_2 + \ldots + U_k \cdot P_k
+    \] 
+    e lo speedup è:
+    \[
+      S = \frac{P_{T_2}}{P_{T_1}}
+    \] 
+    Il miglioramento dipende dalla percentuale di utilizzo di quel componente, quiundi
+    se viene usato poco la prestazione non migliora molto. Quindi se la percentuale
+    di paralelizzazione dell'intero sistema è più bassa del 90\% non si ha un
+    miglioramento significativo perchè rimane una parte sequenziale.
+
+    \vspace{1em}
+    \noindent L'idea dei calcolatori vettoriali è fallita, quindi si è passati
+    a parallelizzare i processi (task) riducendo il tempo totale di esecuzione dei
+    processi. Sono nati quindi i \textbf{Multiprocessori}
+    \label{D4}
+    Siccome ogni CPU ha una cache diversa e la memoria è condivisa tra le CPU
+    allora le pagine della memoria possono trovarsi in cache diverse e questo
+    crea il problema della \textbf{coerenza della cache}. Si può risolvere
+    in diversi modi, ma l'algoritmo migliore è quello di \textbf{Snoopy} (ficcanaso) che
+    continua a monitorare il bus e tutte le volte che vede un indirizzo si salva
+    questa informazione. Si avrà quindi una tabella aggiuntiva che contiene
+    l'indirizzo e il processore che lo ha in cache. Se una CPU vuole una pagina
+    che si trova nella cache di un'altra CPU deve chiedere di inserirla in memoria
+    perchè potrebbe essere non aggiornata.
+
+    \vspace{1em}
+    \noindent Avere più CPU però non sempre migliora le prestazioni, questo perchè
+    si ha un solo bus e quindi si ha un collo di bottiglia. A 4 CPU si arriva
+    alle prestazioni massime.
+    \label{D5}
+
+    Si potrebbe aumentare il numero di bus, ma questo aumenterebbe i costi e la
+    complessità del sistema.
+    \label{D6}
+
+  \item Anni 2000:
+
+    \vspace{1em}
+    \noindent Nacquero i Network Chip (N.C) con più chip (multicore) in cui ogni chip aveva una cache
+    condivisa e ci si poteva accedere in parallelo.
+    \label{D7}
+
+    \vspace{1em}
+    \noindent Con l'arrivo di applicazioni multimediali e real-time nacque la
+    GPU (Graphics Processing Unit) che permetteva di fare calcoli molto semplici
+    in parallelo. La GPU è composta da migliaia di piccoli processori che eseguono
+    operazioni elementari e la memoria video viene salvata all'interno del chip
+    (in memory computation) per eliminare la necessità del bus.
+
+    \vspace{1em}
+    \noindent Per aumentare la complessità nacque la GPGPU (General Purpose GPU)
+    che permette di fare calcoli più complessi con la GPU. Questo permette di
+    scrivere un programma in cui la parte sequenziale viene eseguita dalla CPU
+    e la parte parallelizzabile viene eseguita in parallelo sulla GPU.
+
+    \vspace{1em}
+    \noindent Con l'avvento dell'intelligenza artificiale basata sui dati si
+    è passati ad usare la GPGPU per costruire le reti neurali.
+\end{itemize}
+
 \end{document}
