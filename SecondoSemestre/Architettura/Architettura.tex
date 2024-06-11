@@ -852,7 +852,7 @@ in modo da poter implementare i cicli e le strutture di controllo. Inoltre le is
 devono essere eseugite in sequenza (un'istruzione alla volta).
 
 \subsection{CPU}
-Ogni processore ha un'set di istruzioni diverso in base all'architettura,
+Ogni processore ha un set di istruzioni diverso in base all'architettura,
 questo set di istruzioni è chiamato \textbf{ISA} (Instruction Set Architecture).
 \textbf{Assembly} è un linguaggio di programmazione che permette di scrivere programmi
 in base all'ISA del processore e questo linguaggio viene tradotto in linguaggio binario
@@ -996,15 +996,11 @@ funziona un processore. L'LC-3 è composto da:
 
 \subsubsection{Memoria}
 \( 2^16 \times 16 \) celle di memoria. Per interfacciarsi con la memoria si usa la
-\texttt{LOAD} e la \texttt{STORE}. Questo viene fatto:
-\begin{itemize}
-	\item \textbf{LOAD}: per caricare una cella \( (A) \):
-	      \begin{enumerate}
-		      \item Scrive l'indirizzo della cella da leggere nel MAR
-		      \item
-		            TODO
-	      \end{enumerate}
-\end{itemize}
+\texttt{LOAD} e la \texttt{STORE}.
+
+\vspace{1em}
+\noindent I registri sono 8 e vanno da \( R0, \ldots, R7 \) ognuno da 16 bit. La dimensione
+della parola del processore è di 16 bit. Anche le istruzioni sono di 16 bit.
 
 \subsubsection{Processing Unit}
 Questa unità può eseguire 3 operazioni:
@@ -1013,10 +1009,6 @@ Questa unità può eseguire 3 operazioni:
 	\item \textbf{AND}
 	\item \textbf{NOT}
 \end{itemize}
-
-\vspace{1em}
-\noindent I registri sono 8 e vanno da \( R0, \ldots, R7 \) ognuno da 16 bit. La dimensione
-della parola del processore è di 16 bit. Anche le istruzioni sono di 16 bit.
 
 \subsubsection{Input e Output}
 Ci sono 2 tipi di periferiche:
@@ -1142,6 +1134,8 @@ Ogni istruzione è codificata nel seguente modo:
 
 	\end{tikzpicture}
 \end{figure}
+
+\noindent dove \textbf{MI} indica il metodo di indirizzamento.
 
 \subsection{Istruzioni}
 \subsubsection{Istruzioni di inizializzazione}
@@ -1347,13 +1341,13 @@ La memoria è composta da due parti principali:
 \end{figure}
 
 \subsection{Memoria dinamica}
-La memoria dinamica è composta da due parti principali:
+La parte dei dati è composta da due parti principali:
 \begin{itemize}
 	\item \textbf{Heap}: contiene le variabili allocate dinamicamente e ha una dimensione variabile
 	\item \textbf{Stack}: contiene le variabili locali e i parametri delle funzioni. Ha una dimensione fissa
 	      e limitata. Lo stack cresce con la modalità \textbf{LIFO} (Last In First Out), cioè l'ultimo
 	      elemento inserito è il primo ad essere estratto e nell'architettura x86 cresce verso l'alto.
-	      Lo stack è composta anche da 2 puntatori:
+	      Lo stack è composto da 2 puntatori:
 	      \begin{itemize}
 		      \item \textbf{ESP} (Extended Stack Pointer): punta all'ultimo elemento inserito nello stack
 		      \item \textbf{EBP} (Extended Base Pointer): punta alla base dello stack
@@ -1392,7 +1386,7 @@ La memoria dinamica è composta da due parti principali:
 \end{itemize}
 
 \subsection{Richiamare una funzione}
-Per richiamare uan funzione bisogna far saltare il Program Counter all'indirizzo della funzione
+Per richiamare una funzione bisogna far saltare il Program Counter all'indirizzo della funzione
 e poi salvare l'indirizzo successivo nello stack. Per fare ciò si utilizza l'istruzione \texttt{CALL}.
 \begin{itemize}
 	\item \textbf{\texttt{CALL <etichetta>}}: salva l'indirizzo successivo al Program Counter nello stack e salta all'istruzione con etichetta.
@@ -1569,7 +1563,7 @@ in modo da capire come vengono eseguite le istruzioni.
 		      Tri-State} che permette di disabilitare il segnale.
 	\item Per mandare 2 valori alla ALU si utilizza un registro collegato ad un multiplexer
 	      che permette di selezionare quale valore mandare alla ALU. Nel multiplexer sono
-	      cablate delle costanti utili da passare alla ALU.
+	      cablate anche delle costanti utili.
 	\item Ogni indirizzo di memoria è gestito in \textbf{byte} indipendentemente.
 	      Quindi per accedere a parole da 32 bit bisogna andare avanti di 4 byte, mentre
 	      per accedere a parole da 64 bit bisogna andare avanti di 8 byte.
@@ -1608,8 +1602,7 @@ un'istruzione.
 			            Counter in modo da accedere all'istruzione successiva.
 
 			      \item[2.] \( WMFC,\; Z_{out},\; PC_{in}\)  \\
-			            \textbf{WMFC}(Wait for Memory Function to Complete): è un segnale che blocca il clock
-			            successivo della CPU finchè il dato viene messo nel bus dati.
+			            \textbf{WMFC}(Wait for Memory Function to Complete): è un segnale che blocca la CPU finchè il dato viene messo nel bus dati.
 
 			            Siccome in questo ciclo di clock il bus non viene utilizzato viene sfruttato per
 			            mandare il segnale di incremento al Program Counter.
@@ -1796,8 +1789,8 @@ ma \textbf{CPU cablate} in questo modo non si realizzano più.
 			            Counter in modo da accedere all'istruzione successiva.
 
 			      \item[2.] \( Z_{out},\; PC_{in},\;WMFC \)  \\
-			            \textbf{WMFC}(Wait for Memory Function to Complete): è un segnale che blocca il clock
-			            successivo della CPU finchè il dato viene messo nel bus dati.
+			            \textbf{WMFC}(Wait for Memory Function to Complete): è un segnale che blocca
+			            la CPU finchè il dato viene messo nel bus dati.
 
 			            Siccome in questo ciclo di clock il bus non viene utilizzato viene sfruttato per
 			            mandare il segnale di incremento al Program Counter.
