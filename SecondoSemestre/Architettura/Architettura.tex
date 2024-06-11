@@ -1975,7 +1975,7 @@ input/output è composto da:
 	\caption{Struttura del microcontrollore input/output}
 \end{figure}
 
-\noindent La CPU accede ai valori dei registri di input/outpit tramite degli indirizzi
+\noindent La CPU accede ai valori dei registri di input/output tramite degli indirizzi
 che vengono riservati in un intervallo di memoria. Gli indirizzi di \texttt{Dato} e
 \texttt{Stato} sono:
 \begin{itemize}
@@ -2050,7 +2050,7 @@ flusso di esecuzione del programma solo quando il dispositivo è pronto. La CPU
 	\end{tikzpicture}
 \end{figure}
 
-\noindent Esiste un bit \( \overline{INTERRUPT} \) che è sempre a 1 (negato a 0) che
+\noindent Esiste un bit \( \overline{INTERRUPT} \) che
 vale 1 solo quando c'è una \textbf{interrupt request}. Ogni interrupt ha un valore
 che contiene un pezzo di codice chiamato \textbf{Interrupt Service Routine (ISR)}
 che viene passato alla CPU attraverso il \texttt{INTACK} (Interrupt Acknowledge).
@@ -2069,6 +2069,7 @@ Per trasferire grandi quantità di dati da un dispositivo di input/output alla m
 non conviene utilizzare degli interrupt perchè sarebbe uno spreco di risorse. Si utilizza
 il DMA che è un dispositivo che permette di trasferire dati dalla memoria al dispositivo
 di input/output senza passare per la CPU.
+
 
 \begin{figure}[H]
 	\centering
@@ -2332,8 +2333,6 @@ hardware, ma non software. Per modificare la priorità software si utilizza il c
 \begin{lstlisting}[language=bash]
 $ renice -n 10 -p 1234
 \end{lstlisting}
-\noindent Il comando \texttt{renice} permette di modificare la priorità di un processo
-software.
 
 \subsection{Realtime}
 Un processo può essere eseguito in tempo reale se il tempo di esecuzione è all'interno
@@ -3518,7 +3517,7 @@ diverse.
     \node at (0,2.25) [left, scale=0.9] {\( P_1 \) };
   \end{tikzpicture}
 \end{figure}
-Con un meccanismo di paginazione dopo aver sommato \texttt{base} e averlo controllato
+\noindent Con un meccanismo di paginazione dopo aver sommato \texttt{base} e averlo controllato
 con \texttt{limit} si ha ancora un indirizzo logico che dovrà essere tradotto in un
 indirizzo fisico corrispondente alla pagina in cui si trova il processo. 
 
@@ -3936,7 +3935,94 @@ un RISC. Dopo questa invenzione intel inventò il microprocessore Pentium.
     \( CPI_{m} = 0.5 \). Separando le pipeline si possono anche avere più segnali
     di clock e quindi il cammino critico sarà quello della ALU intera.
 
-    \label{D1}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}[scale=0.7]
+        % Pre fetch
+        \draw (-4, -0.4) rectangle (-2, 1.6) node[midway, align=center] (pref) {Pre\\fetch};
+
+        \draw[-latex] (-2,0.6) -- (0,2.1);
+        \draw[-latex] (-2,0.6) -- (0,-1.0);
+
+        \begin{scope}[shift={(0,1.5)}, scale=0.8]
+            % F-D-E-W Cycle
+            \draw (0,0) rectangle (1.5,1.5) node[midway, scale=0.8] (pipeline1) {};
+            \draw (3.5,0) rectangle (5,1.5) node[midway, scale=0.8] {};
+            \draw (7,0) rectangle (8.5,1.5) node[midway, scale=0.8] {};
+            \draw (10.5,0) rectangle (12,1.5) node[midway, scale=0.8] {};
+
+            % Tmp registers
+            \draw (2,2) rectangle (3,-0.5);
+            \draw (5.5,2) rectangle (6.5,-0.5);
+            \draw (9,2) rectangle (10,-0.5);
+
+            \draw[transparent] (2,1.375) -- (3,1.375) node[midway, above, scale=0.7] {}; 
+            \draw[transparent] (2,0.75) -- (3,0.75) node[midway, above, scale=0.7] {}; 
+
+            \draw[transparent] (5.5,1.375) -- (6.5,1.375) node[midway, above, scale=0.7] {}; 
+            \draw[transparent] (5.5,0.75) -- (6.5,0.75) node[midway, above, scale=0.7] {}; 
+            \draw[transparent] (5.5,0.125) -- (6.5,0.125) node[midway, above, scale=0.7] {};
+            \node at (6,-0.5) [above, scale=0.7] {};
+
+            \draw[transparent] (9,1.375) -- (10,1.375) node[midway, above, scale=0.7] {};
+            \draw[transparent] (9,0.75) -- (10,0.75) node[midway, above, scale=0.7] {};
+
+            % ALU
+            \begin{scope}[shift={(15,-3.75)}, scale=1.5, rotate=90]
+              \draw (2.7,0.5) -- (3.3,0.5) -- (3.5,1.5) -- (3.2,1.5) -- (3,1.2) -- (2.8,1.5) -- (2.5,1.5) -- cycle;
+              \node[above, scale=0.6] at (3,0.5) (alu) {};
+            \end{scope}
+            \node[right, align=center, scale=0.8, xshift=5, yshift=-2] at (alu) {Interi};
+
+            % Arrows
+            \draw[-latex] (1.5,0.75) -- ++(0.5,0);
+            \draw[-latex] (3,0.75) -- ++(0.5,0);
+            \draw[-latex] (5,0.75) -- ++(0.5,0);
+            \draw[-latex] (6.5,0.75) -- ++(0.5,0);
+            \draw[-latex] (8.5,0.75) -- ++(0.5,0);
+            \draw[-latex] (10,0.75) -- ++(0.5,0);
+        \end{scope}
+
+        \begin{scope}[shift={(0,-1.5)}, scale=0.8]
+            % F-D-E-W Cycle
+            \draw (0,0) rectangle (1.5,1.5) node[midway, scale=0.8] (pipeline2) {};
+            \draw (3.5,0) rectangle (5,1.5) node[midway, scale=0.8] {};
+            \draw (7,0) rectangle (8.5,1.5) node[midway, scale=0.8] {};
+            \draw (10.5,0) rectangle (12,1.5) node[midway, scale=0.8] {};
+
+            % Tmp registers
+            \draw (2,2) rectangle (3,-0.5);
+            \draw (5.5,2) rectangle (6.5,-0.5);
+            \draw (9,2) rectangle (10,-0.5);
+
+            \draw[transparent] (2,1.375) -- (3,1.375) node[midway, above, scale=0.7] {}; 
+            \draw[transparent] (2,0.75) -- (3,0.75) node[midway, above, scale=0.7] {}; 
+
+            \draw[transparent] (5.5,1.375) -- (6.5,1.375) node[midway, above, scale=0.7] {}; 
+            \draw[transparent] (5.5,0.75) -- (6.5,0.75) node[midway, above, scale=0.7] {}; 
+            \draw[transparent] (5.5,0.125) -- (6.5,0.125) node[midway, above, scale=0.7] {};
+            \node at (6,-0.5) [above, scale=0.7] {};
+
+            \draw[transparent] (9,1.375) -- (10,1.375) node[midway, above, scale=0.7] {};
+            \draw[transparent] (9,0.75) -- (10,0.75) node[midway, above, scale=0.7] {};
+
+            % ALU
+            \begin{scope}[shift={(15,-3.75)}, scale=1.5, rotate=90]
+              \draw (2.7,0.5) -- (3.3,0.5) -- (3.5,1.5) -- (3.2,1.5) -- (3,1.2) -- (2.8,1.5) -- (2.5,1.5) -- cycle;
+              \node[above, scale=0.6] at (3,0.5) (alu2) {};
+            \end{scope}
+            \node[right, align=center, scale=0.8, xshift=5, yshift=-2] at (alu2) {Virgola\\mobile};
+
+            % Arrows
+            \draw[-latex] (1.5,0.75) -- ++(0.5,0);
+            \draw[-latex] (3,0.75) -- ++(0.5,0);
+            \draw[-latex] (5,0.75) -- ++(0.5,0);
+            \draw[-latex] (6.5,0.75) -- ++(0.5,0);
+            \draw[-latex] (8.5,0.75) -- ++(0.5,0);
+            \draw[-latex] (10,0.75) -- ++(0.5,0);
+        \end{scope}
+      \end{tikzpicture}
+    \end{figure}
     \vspace{1em}
     \noindent Successivamente sono state aggiunte più pipeline all'unità di
     prefetch, il problema però è che le dipendenze possono accadere tra più
@@ -3948,6 +4034,55 @@ un RISC. Dopo questa invenzione intel inventò il microprocessore Pentium.
     utilizzando un registro da 256 bit che contiene più istruzioni (8 istruzioni) tutte
     svolte in parallelo. Aggiungere un registro troppo grande può creare problemi
     con le dipendenze tra le istruzioni.
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        % Pre fetch
+        \node[draw, rectangle, minimum width=1.5cm, minimum height=1.5cm, scale=1.0, align=center]
+          (pref) at (-1.5,0) (pref) {Pre\\fetch};
+
+        \draw[-latex] (pref.east) -- (0,0);
+
+        \begin{scope}[shift={(0,-0.6)}, scale=0.8]
+          % F-D-E-W Cycle
+          \draw (0,0) rectangle (1.5,1.5) node[midway, scale=0.8] (pipeline2) {};
+          \draw (3.5,0) rectangle (5,1.5) node[midway, scale=0.8] {};
+          \draw (7,0) rectangle (8.5,1.5) node[midway, scale=0.8] {};
+          \draw (10.5,0) rectangle (12,1.5) node[midway, scale=0.8] {};
+
+          % Tmp registers
+          \draw (2,2) rectangle (3,-0.5);
+          \draw (5.5,2) rectangle (6.5,-0.5);
+          \draw (9,2) rectangle (10,-0.5);
+
+          \draw (2,1.375) -- (3,1.375) node[midway, above right, scale=0.5] {64}; 
+          \draw (2,0.75) -- (3,0.75) node[midway, above right, scale=0.5] {64}; 
+          \draw (2,0.125) -- (3,0.125) node[midway, above right, scale=0.5] {64};
+          \node at (2.5,-0.5) [above right, scale=0.5] {64};
+          \node at (2.25,-0.5) [below right, scale=0.7] {256};
+
+          \draw (5.5,1.375) -- (6.5,1.375) node[midway, above right, scale=0.5] {64}; 
+          \draw (5.5,0.75) -- (6.5,0.75) node[midway, above right, scale=0.5] {64}; 
+          \draw (5.5,0.125) -- (6.5,0.125) node[midway, above right, scale=0.5] {64};
+          \node at (6,-0.5) [above right, scale=0.5] {64};
+          \node at (5.75,-0.5) [below right, scale=0.7] {256};
+
+          \draw (9,1.375) -- (10,1.375) node[midway, above right, scale=0.5] {64};
+          \draw (9,0.75) -- (10,0.75) node[midway, above right, scale=0.5] {64};
+          \draw (9,0.125) -- (10,0.125) node[midway, above right, scale=0.5] {64};
+          \node at (9.5,-0.5) [above right, scale=0.5] {64};
+          \node at (9.25,-0.5) [below right, scale=0.7] {256};
+
+          % Arrows
+          \draw[-latex] (1.5,0.75) -- ++(0.5,0);
+          \draw[-latex] (3,0.75) -- ++(0.5,0);
+          \draw[-latex] (5,0.75) -- ++(0.5,0);
+          \draw[-latex] (6.5,0.75) -- ++(0.5,0);
+          \draw[-latex] (8.5,0.75) -- ++(0.5,0);
+          \draw[-latex] (10,0.75) -- ++(0.5,0);
+        \end{scope}
+      \end{tikzpicture}
+    \end{figure}
 
     \vspace{1em}
     \noindent Successivamente si tentò di implementare il parallelismo e sono
@@ -3955,9 +4090,43 @@ un RISC. Dopo questa invenzione intel inventò il microprocessore Pentium.
     parallelo grazie a più ALU. Il computer vettoriale più famoso era il
     Thinking Machine che aveva più CPU che lavoravano in parallelo scrivendo
     il risultato in un'unica memoria condivisa.
-    \label{D3}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \node[draw, rectangle, minimum width=1.5cm, minimum height=1.5cm, scale=1.0, align=center]
+          (pref) at (0,-0.5) (pref) {Pre\\fetch};
 
-    Questo sistema però scomparve
+        \node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm, scale=1.0, align=center]
+          (pref) at (2,1) (cpu1) {};
+        \node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm, scale=1.0, align=center]
+          (pref) at (2,0) (cpu2) {};
+        \node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm, scale=1.0, align=center]
+          (pref) at (2,-1) (cpu3) {};
+        \node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm, scale=1.0, align=center]
+          (pref) at (2,-2) (cpu4) {};
+        
+        \node[below, scale=0.7] at (cpu4.south) {CPU};
+
+        \node[draw, rectangle, minimum width=1.5cm, minimum height=3.5cm, scale=1.0, align=center]
+          (pref) at (4,-0.5) (mem) {Memoria};
+
+        % Arrows
+        \draw[-latex] (pref.east) -- (cpu1.west);
+        \draw[-latex] (pref.east) -- (cpu2.west);
+        \draw[-latex] (pref.east) -- (cpu3.west);
+        \draw[-latex] (pref.east) -- (cpu4.west);
+
+        \draw[-latex] (cpu1.east) -- (mem.west);
+        \draw[-latex] (cpu2.east) -- (mem.west);
+        \draw[-latex] (cpu3.east) -- (mem.west);
+        \draw[-latex] (cpu4.east) -- (mem.west);
+
+        \draw (2.3, 1.5) -- ++(0,0.2) -- ++(0.8,0) node[midway, scale=0.7, above, align=center]
+          {Matrice di\\interconnessioni} -- ++(0,-0.2);
+      \end{tikzpicture}
+    \end{figure}
+
+    \noindent Questo sistema però scomparve
     per la legge di \textbf{Amdahl} che dice che la prestazione totale
     è data da:
     \[
