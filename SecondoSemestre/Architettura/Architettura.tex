@@ -4151,8 +4151,40 @@ un RISC. Dopo questa invenzione intel inventò il microprocessore Pentium.
     \noindent L'idea dei calcolatori vettoriali è fallita, quindi si è passati
     a parallelizzare i processi (task) riducendo il tempo totale di esecuzione dei
     processi. Sono nati quindi i \textbf{Multiprocessori}
-    \label{D4}
-    Siccome ogni CPU ha una cache diversa e la memoria è condivisa tra le CPU
+
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \draw (0,0) -- (7,0);
+
+        \draw (0.5,1) rectangle (1.5,2) node[midway, scale=0.8] {\( CPU_1 \) };
+        \draw (0.5,2) rectangle (1.5,2.5) node[midway, scale=0.8] {\( cache_1 \) };
+        \draw[latex-latex] (1,1) -- (1,0);
+
+        \draw (2,1) rectangle (3,2) node[midway, scale=0.8] {\( CPU_2 \) };
+        \draw (2,2) rectangle (3,2.5) node[midway, scale=0.8] {\( cache_2 \) };
+        \draw[latex-latex] (2.5,1) -- (2.5,0);
+
+        \draw (3.5,1) rectangle (4.5,2) node[midway, scale=0.8] {\( CPU_3 \) };
+        \draw (3.5,2) rectangle (4.5,2.5) node[midway, scale=0.8] {\( cache_3 \) };
+        \draw[latex-latex] (4,1) -- (4,0);
+
+        \draw (5.5,1) rectangle (6.5,2) node[midway, scale=0.8] {Mem};
+        \draw (5.5,2) rectangle (6.5,2.5) node[midway, scale=0.8] {pagine};
+        \draw[latex-latex] (6,1) -- (6,0);
+
+        \draw (1.4,-1) rectangle (2.0,-1.6) node[midway, scale=0.8] {I/O};
+        \draw[latex-latex] (1.7,0) -- (1.7,-1);
+
+        \draw (2.9,-1) rectangle (3.5,-1.6) node[midway, scale=0.8] {I/O};
+        \draw[latex-latex] (3.2,0) -- (3.2,-1);
+
+        \draw (4.4,-1) rectangle (5.0,-1.6) node[midway, scale=0.8] {I/O};
+        \draw[latex-latex] (4.7,0) -- (4.7,-1);
+      \end{tikzpicture}
+    \end{figure}
+
+    \noindent Siccome ogni CPU ha una cache diversa e la memoria è condivisa tra le CPU
     allora le pagine della memoria possono trovarsi in cache diverse e questo
     crea il problema della \textbf{coerenza della cache}. Si può risolvere
     in diversi modi, ma l'algoritmo migliore è quello di \textbf{Snoopy} (ficcanaso) che
@@ -4166,18 +4198,135 @@ un RISC. Dopo questa invenzione intel inventò il microprocessore Pentium.
     \noindent Avere più CPU però non sempre migliora le prestazioni, questo perchè
     si ha un solo bus e quindi si ha un collo di bottiglia. A 4 CPU si arriva
     alle prestazioni massime.
-    \label{D5}
 
-    Si potrebbe aumentare il numero di bus, ma questo aumenterebbe i costi e la
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \draw (0,0) -- (8,0) node[right] {\# CPU};
+        \draw (0,0) -- (0,6) node[left] {Prestazione};
+
+
+        \foreach \x in {1,2,3,4,5,6,7}
+        \draw (\x,0.1) -- (\x,-0.1) node[below] {\x};
+
+        \draw [red, smooth, ultra thick] plot coordinates
+          { (0,0) (1,0.7) (2,1.25) (3,1.6) (4,1.8) (5,1.85) (8,1.85) };
+
+        \draw (0,0) -- (6,6);
+
+        \draw [red, thin, dashed] (4,0) -- (4,1.8);
+        \draw [red, thin, dashed] (0,1.8) -- (4,1.8);
+      \end{tikzpicture}
+    \end{figure}
+
+    \noindent Si potrebbe aumentare il numero di bus, ma questo aumenterebbe i costi e la
     complessità del sistema.
-    \label{D6}
+
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \draw (0,0) -- (7,0);
+        \draw (0,-2.5) -- (7,-2.5);
+
+        \draw (0.5,1) rectangle (1.5,2) node[midway, scale=0.8] {\( CPU_1 \) };
+        \draw (0.5,2) rectangle (1.5,2.5) node[midway, scale=0.8] {\( cache_1 \) };
+        \draw[latex-latex, xshift=7] (1,1) -- (1,0);
+        \draw[-latex, xshift=-7] (1,1) -- (1,-2.5);
+
+        \draw (2,1) rectangle (3,2) node[midway, scale=0.8] {\( CPU_2 \) };
+        \draw (2,2) rectangle (3,2.5) node[midway, scale=0.8] {\( cache_2 \) };
+        \draw[latex-latex, xshift=7] (2.5,1) -- (2.5,0);
+        \draw[-latex, xshift=-7] (2.5,1) -- (2.5,-2.5);
+
+        \draw (3.5,1) rectangle (4.5,2) node[midway, scale=0.8] {\( CPU_3 \) };
+        \draw (3.5,2) rectangle (4.5,2.5) node[midway, scale=0.8] {\( cache_3 \) };
+        \draw[latex-latex, xshift=7] (4,1) -- (4,0);
+        \draw[-latex, xshift=-7] (4,1) -- (4,-2.5);
+
+        \draw (5.5,1) rectangle (6.5,2) node[midway, scale=0.8] {Mem};
+        \draw (5.5,2) rectangle (6.5,2.5) node[midway, scale=0.8] {pagine};
+        \draw[latex-latex] (6,1) -- (6,0);
+
+        \draw (1.4,-1) rectangle (2.0,-1.6) node[midway, scale=0.8] {I/O};
+        \draw[latex-latex] (1.7,0) -- (1.7,-1);
+        \draw[latex-latex] (1.7,-2.5) -- (1.7,-1.6);
+
+        \draw (2.9,-1) rectangle (3.5,-1.6) node[midway, scale=0.8] {I/O};
+        \draw[latex-latex] (3.2,0) -- (3.2,-1);
+        \draw[latex-latex] (3.2,-2.5) -- (3.2,-1.6);
+
+        \draw (4.4,-1) rectangle (5.0,-1.6) node[midway, scale=0.8] {I/O};
+        \draw[latex-latex] (4.7,0) -- (4.7,-1);
+        \draw[latex-latex] (4.7,-2.5) -- (4.7,-1.6);
+      \end{tikzpicture}
+    \end{figure}
 
   \item Anni 2000:
 
     \vspace{1em}
     \noindent Nacquero i Network Chip (N.C) con più chip (multicore) in cui ogni chip aveva una cache
     condivisa e ci si poteva accedere in parallelo.
-    \label{D7}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \draw (0,0) rectangle (8,8);
+
+        \draw (6,8) -- (6,0);
+        \node at (7,4) {Cache};
+
+        \draw (0.5,0.5) rectangle (1.5,1.5);
+        \node at (1.4,1) (core1) {};
+        \node at (6.1,1) (cache1) {};
+
+        \draw (0.5,2) rectangle (1.5,3);
+        \node at (1.4,2.5) (core2) {};
+        \node at (6.1,2.5) (cache2) {};
+
+        \draw (0.5,3.5) rectangle (1.5,4.5);
+        \node at (1.4,4) (core3) {};
+        \node at (6.1,4) (cache3) {};
+
+        \draw (0.5,5) rectangle (1.5,6);
+        \node at (1.4,5.5) (core4) {};
+        \node at (6.1,5.5) (cache4) {};
+
+        \draw (0.5,6.5) rectangle (1.5,7.5);
+        \node at (1.4,7) (core5) {};
+        \node at (6.1,7) (cache5) {};
+
+        \draw[-latex] (core1) -- (cache1);
+        \draw[-latex] (core1) -- (cache2);
+        \draw[-latex] (core1) -- (cache3);
+        \draw[-latex] (core1) -- (cache4);
+        \draw[-latex] (core1) -- (cache5);
+
+        \draw[-latex] (core2) -- (cache1);
+        \draw[-latex] (core2) -- (cache2);
+        \draw[-latex] (core2) -- (cache3);
+        \draw[-latex] (core2) -- (cache4);
+        \draw[-latex] (core2) -- (cache5);
+
+        \draw[-latex] (core3) -- (cache1);
+        \draw[-latex] (core3) -- (cache2);
+        \draw[-latex] (core3) -- (cache3);
+        \draw[-latex] (core3) -- (cache4);
+        \draw[-latex] (core3) -- (cache5);
+
+        \draw[-latex] (core4) -- (cache1);
+        \draw[-latex] (core4) -- (cache2);
+        \draw[-latex] (core4) -- (cache3);
+        \draw[-latex] (core4) -- (cache4);
+        \draw[-latex] (core4) -- (cache5);
+
+        \draw[-latex] (core5) -- (cache1);
+        \draw[-latex] (core5) -- (cache2);
+        \draw[-latex] (core5) -- (cache3);
+        \draw[-latex] (core5) -- (cache4);
+        \draw[-latex] (core5) -- (cache5);
+
+        \node[below, align=center] at (4,0) {CPU\\Multicore};
+      \end{tikzpicture}
+    \end{figure}
 
     \vspace{1em}
     \noindent Con l'arrivo di applicazioni multimediali e real-time nacque la
