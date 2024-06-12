@@ -168,7 +168,7 @@
 \pagebreak
 
 % Laboratorio
-\section{Pipeline}
+\section{Esercizi svolti}
 \subsection{Esercizio 1}
 Si consideri una CPU con una pipeline a 5 stadi (F, D, E, M, S). Si riporti nel seguente 
 diagramma, per ogni istruzione, lo stadio della pipeline coinvolto in ogni istante di 
@@ -368,5 +368,200 @@ vuota al tempo 1 e si facciano le opportune ipotesi sul salto condizionale.
     \end{tabular}%
   }
 \end{table}
+
+\section{Esercizi moodle}
+\subsection{Esercizio 1}
+Una CPU con una pipeline a 2 stadi viene sostituita con una CPU con una pipeline a 4 stadi.
+Se il tempo totale di esecuzione di una singola istruzione è rimasto invariato, qual è il minimo ed il massimo incremento delle prestazioni che si può attendere?
+
+\vspace{1em}
+\noindent Il massimo di incremento delle prestazioni è di 2 perchè raddoppiando il numero
+di stadi si raddoppiano le prestazioni. Il minimo di incremento delle prestazioni è di 1,
+quindi non si hanno miglioramenti.
+
+\subsection{Esercizio 2}
+
+Per il seguente esercizio che coinvolge 4 istruzioni successive eseguite da una CPU con pipeline a 4 stadi, individuare lo stadio in cui si trova ogni istruzione ad ogni ciclo macchina (dove qui consideriamo un massimo di 11 cicli coinvolti).
+Dopodichè ripetere gli esercizi introducendo le migliorie architetturali discusse a lezione al fine di ridurre gli stalli nella pipeline.
+Per migliorie architetturali parliamo di:
+
+\begin{itemize}
+  \item 
+    Inoltro di operandi (sia per operazioni logico-aritmetiche che di memoria)
+  \item 
+    Branch prediction (o delay slot)
+\end{itemize}
+
+
+\noindent L'inoltro può avvenire su istruzioni a distanza maggiore di 1, naturalmente. E' evidente che la dipendenza di dati si può avere, in questa pipeline a 4 stadi, tra istruzioni fino a distanza 4.
+Ognuno di questi casi va identificato (in software o hardware) e prevenuto/risolto onde evitare esecuzione scorretta.
+
+\begin{table}[H]
+  \centering
+  \resizebox{\columnwidth}{!}{%
+    \begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|}
+      \hline
+      Istruzione               & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 \\
+      \hline
+      loop: addl \%eax, \%ebx  & F & D & E & W &   &   &   &   &   &    &    \\
+      \hline
+      movl ind \%ecx           &   & F & D & E & W &   &   &   &   &    &    \\
+      \hline 
+      subl \%ebx, \%ecx        &   &   & F & D & D & D & E & W &   &    &    \\
+      \hline
+      jz loop                  &   &   &   & F & F & F & D & D & D & E  & W  \\
+      \hline
+    \end{tabular}%
+  }
+\end{table}
+
+\vspace{1em}
+\noindent Ottimizzando con la branch prediction si ha:
+\begin{table}[H]
+  \centering
+  \resizebox{\columnwidth}{!}{%
+    \begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|}
+      \hline
+      Istruzione               & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 \\
+      \hline
+      loop: addl \%eax, \%ebx  & F & D & E & W &   &   &   &   & F & D  & E  \\
+      \hline
+      movl ind \%ecx           &   & F & D & E & W &   &   &   &   & F  & D  \\
+      \hline 
+      subl \%ebx, \%ecx        &   &   & F & D & D & D & E & W &   &    & F  \\
+      \hline
+      jz loop                  &   &   &   & F & F & F & D & D & D & E  & W  \\
+      \hline
+    \end{tabular}%
+  }
+\end{table}
+
+\subsection{Esercizio 3}
+Per il seguente esercizio che coinvolge 4 istruzioni successive eseguite da una CPU con pipeline a 4 stadi, individuare lo stadio in cui si trova ogni istruzione ad ogni ciclo macchina (consideriamo un massimo di 11 cicli coinvolti).
+Dopodichè ripetere gli esercizi introducendo le migliorie architetturali discusse a lezione al fine di ridurre gli stalli nella pipeline.
+
+
+\vspace{1em}
+\noindent Nel caso in cui il ciclo non viene effettuato si ha:
+\begin{table}[H]
+  \centering
+  \resizebox{\columnwidth}{!}{%
+    \begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|}
+      \hline
+      Istruzione                & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 \\
+      \hline
+      inizio: mull \%eax, \%ebx & F & D & E & W &   &   &   &   &   &    & F  \\
+      \hline
+      movl \%ecx ind            &   & F & D & E & W &   &   &   &   &    &    \\
+      \hline 
+      cmpl \%ebx, 0h            &   &   & F & D & D & E & W &   &   &    &    \\
+      \hline
+      jnz inizio                &   &   &   & F & F & D & D & D & E & W  &    \\
+      \hline
+    \end{tabular}%
+  }
+\end{table}
+
+\vspace{1em}
+\noindent Ottimizzando con branch prediction si ha:
+\begin{table}[H]
+  \centering
+  \resizebox{\columnwidth}{!}{%
+    \begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|}
+      \hline
+      Istruzione                & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 \\
+      \hline
+      inizio: mull \%eax, \%ebx & F & D & E & W &   &   &   & F & D & E  & W  \\
+      \hline
+      movl \%ecx ind            &   & F & D & E & W &   &   &   & F & D  & E  \\
+      \hline 
+      cmpl \%ebx, 0h            &   &   & F & D & D & E & W &   &   & F  & D  \\
+      \hline
+      jnz inizio                &   &   &   & F & F & D & D & D & E & W  & F  \\
+      \hline
+    \end{tabular}%
+  }
+\end{table}
+
+
+\subsection{Esercizio 4}
+Per il seguente esercizio che coinvolge 5 istruzioni successive eseguite da una CPU con pipeline a 4 stadi, individuare lo stadio in cui si trova ogni istruzione ad ogni ciclo macchina.
+Dopodichè ripetere l'esercizio introducendo le migliorie a livello hardware o di compilatore discusse a lezione al fine di ridurre gli stalli nella pipeline.
+
+\begin{table}[H]
+  \centering
+  \resizebox{\columnwidth}{!}{%
+    \begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+      \hline
+      Istruzione        & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 \\
+      \hline
+      subl \$2, \%ebx   & F & D & E & W &   &   &   &   &   &    &    &    &    &   \\
+      \hline
+      movl ind, \%ecx   &   & F & D & E & W &   &   &   &   &    &    &    &    &   \\
+      \hline 
+      addl \%eax, \%ecx &   &   & F & D & D & D & E & W &   &    &    &    &    &   \\
+      \hline
+      movl ind, \%ebx   &   &   &   & F & F & F & D & E & W &    &    &    &    &   \\
+      \hline
+      movl \%ecx, ind   &   &   &   &   &   &   & F & D & D & E  & W  &    &    &   \\
+      \hline
+    \end{tabular}%
+  }
+\end{table}
+
+\subsection{Esercizio 5}
+Per il seguente esercizio che coinvolge 6 istruzioni eseguite da una CPU con pipeline a 4 stadi, individuare lo stadio in cui si trova ogni istruzione ad ogni ciclo macchina ipotizzando di predire che il salto non avvenga e che tale predizione sia confermata. Si assume che l'istruzione successiva al salto sia conosciuta al ciclo immediatamente successivo (perchè usiamo predizione statica oppure perchè l'istruzione di salto si trova nel buffer di predizione), nonchè che la predizione risulti corretta.
+Dopodichè ripetere l'esercizio introducendo le migliorie a livello hardware o di compilatore discusse a lezione al fine di ridurre gli stalli nella pipeline.
+
+\begin{table}[H]
+  \centering
+  \resizebox{\columnwidth}{!}{%
+    \begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+      \hline
+      Istruzione            & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 \\
+      \hline
+      j1: addl \%ebx, \%ecx & F & D & E & W &   &   &   &   &   &    &    &    &    &   \\
+      \hline
+      movl ind, \%ebx       &   & F & D & E & W &   &   &   &   &    &    &    &    &   \\
+      \hline 
+      cmpl \%ebx, \%ecx     &   &   & F & D & D & D & E & W &   &    &    &    &    &   \\
+      \hline
+      movl ind, \%eax       &   &   &   & F & F & F & D & E & W &    &    &    &    &   \\
+      \hline
+      jnz j1 \#no           &   &   &   &   &   &   & F & D & D & E  & W  &    &    &   \\
+      \hline
+      subl \%ebx, \%eax     &   &   &   &   &   &   &   & F & F & D  & E  & W  &    &   \\
+      \hline
+    \end{tabular}%
+  }
+\end{table}
+
+\vspace{1em}
+\noindent Ottimizzando con branch prediction si ha che viene effettuata la fetch
+dell'istruzione all'etichetta j1, ma poi viene scartata perchè il salto non viene
+effettuato. Si ha quindi:
+\begin{table}[H]
+  \centering
+  \resizebox{\columnwidth}{!}{%
+    \begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+      \hline
+      Istruzione            & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 \\
+      \hline
+      j1: addl \%ebx, \%ecx & F & D & E & W &   &   &   &   & F & F  & F  &    &    &   \\
+      \hline
+      movl ind, \%ebx       &   & F & D & E & W &   &   &   &   &    &    &    &    &   \\
+      \hline 
+      cmpl \%ebx, \%ecx     &   &   & F & D & D & D & E & W &   &    &    &    &    &   \\
+      \hline
+      movl ind, \%eax       &   &   &   & F & F & F & D & E & W &    &    &    &    &   \\
+      \hline
+      jnz j1 \#no           &   &   &   &   &   &   & F & D & D & E  & W  &    &    &   \\
+      \hline
+      subl \%ebx, \%eax     &   &   &   &   &   &   &   & F & F & D  & E  & W  &    &   \\
+      \hline
+    \end{tabular}%
+  }
+\end{table}
+
 
 \end{document}
