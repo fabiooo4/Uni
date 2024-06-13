@@ -852,7 +852,7 @@ in modo da poter implementare i cicli e le strutture di controllo. Inoltre le is
 devono essere eseugite in sequenza (un'istruzione alla volta).
 
 \subsection{CPU}
-Ogni processore ha un'set di istruzioni diverso in base all'architettura,
+Ogni processore ha un set di istruzioni diverso in base all'architettura,
 questo set di istruzioni è chiamato \textbf{ISA} (Instruction Set Architecture).
 \textbf{Assembly} è un linguaggio di programmazione che permette di scrivere programmi
 in base all'ISA del processore e questo linguaggio viene tradotto in linguaggio binario
@@ -996,15 +996,11 @@ funziona un processore. L'LC-3 è composto da:
 
 \subsubsection{Memoria}
 \( 2^16 \times 16 \) celle di memoria. Per interfacciarsi con la memoria si usa la
-\texttt{LOAD} e la \texttt{STORE}. Questo viene fatto:
-\begin{itemize}
-	\item \textbf{LOAD}: per caricare una cella \( (A) \):
-	      \begin{enumerate}
-		      \item Scrive l'indirizzo della cella da leggere nel MAR
-		      \item
-		            TODO
-	      \end{enumerate}
-\end{itemize}
+\texttt{LOAD} e la \texttt{STORE}.
+
+\vspace{1em}
+\noindent I registri sono 8 e vanno da \( R0, \ldots, R7 \) ognuno da 16 bit. La dimensione
+della parola del processore è di 16 bit. Anche le istruzioni sono di 16 bit.
 
 \subsubsection{Processing Unit}
 Questa unità può eseguire 3 operazioni:
@@ -1013,10 +1009,6 @@ Questa unità può eseguire 3 operazioni:
 	\item \textbf{AND}
 	\item \textbf{NOT}
 \end{itemize}
-
-\vspace{1em}
-\noindent I registri sono 8 e vanno da \( R0, \ldots, R7 \) ognuno da 16 bit. La dimensione
-della parola del processore è di 16 bit. Anche le istruzioni sono di 16 bit.
 
 \subsubsection{Input e Output}
 Ci sono 2 tipi di periferiche:
@@ -1142,6 +1134,8 @@ Ogni istruzione è codificata nel seguente modo:
 
 	\end{tikzpicture}
 \end{figure}
+
+\noindent dove \textbf{MI} indica il metodo di indirizzamento.
 
 \subsection{Istruzioni}
 \subsubsection{Istruzioni di inizializzazione}
@@ -1347,13 +1341,13 @@ La memoria è composta da due parti principali:
 \end{figure}
 
 \subsection{Memoria dinamica}
-La memoria dinamica è composta da due parti principali:
+La parte dei dati è composta da due parti principali:
 \begin{itemize}
 	\item \textbf{Heap}: contiene le variabili allocate dinamicamente e ha una dimensione variabile
 	\item \textbf{Stack}: contiene le variabili locali e i parametri delle funzioni. Ha una dimensione fissa
 	      e limitata. Lo stack cresce con la modalità \textbf{LIFO} (Last In First Out), cioè l'ultimo
 	      elemento inserito è il primo ad essere estratto e nell'architettura x86 cresce verso l'alto.
-	      Lo stack è composta anche da 2 puntatori:
+	      Lo stack è composto da 2 puntatori:
 	      \begin{itemize}
 		      \item \textbf{ESP} (Extended Stack Pointer): punta all'ultimo elemento inserito nello stack
 		      \item \textbf{EBP} (Extended Base Pointer): punta alla base dello stack
@@ -1392,7 +1386,7 @@ La memoria dinamica è composta da due parti principali:
 \end{itemize}
 
 \subsection{Richiamare una funzione}
-Per richiamare uan funzione bisogna far saltare il Program Counter all'indirizzo della funzione
+Per richiamare una funzione bisogna far saltare il Program Counter all'indirizzo della funzione
 e poi salvare l'indirizzo successivo nello stack. Per fare ciò si utilizza l'istruzione \texttt{CALL}.
 \begin{itemize}
 	\item \textbf{\texttt{CALL <etichetta>}}: salva l'indirizzo successivo al Program Counter nello stack e salta all'istruzione con etichetta.
@@ -1569,7 +1563,7 @@ in modo da capire come vengono eseguite le istruzioni.
 		      Tri-State} che permette di disabilitare il segnale.
 	\item Per mandare 2 valori alla ALU si utilizza un registro collegato ad un multiplexer
 	      che permette di selezionare quale valore mandare alla ALU. Nel multiplexer sono
-	      cablate delle costanti utili da passare alla ALU.
+	      cablate anche delle costanti utili.
 	\item Ogni indirizzo di memoria è gestito in \textbf{byte} indipendentemente.
 	      Quindi per accedere a parole da 32 bit bisogna andare avanti di 4 byte, mentre
 	      per accedere a parole da 64 bit bisogna andare avanti di 8 byte.
@@ -1608,8 +1602,7 @@ un'istruzione.
 			            Counter in modo da accedere all'istruzione successiva.
 
 			      \item[2.] \( WMFC,\; Z_{out},\; PC_{in}\)  \\
-			            \textbf{WMFC}(Wait for Memory Function to Complete): è un segnale che blocca il clock
-			            successivo della CPU finchè il dato viene messo nel bus dati.
+			            \textbf{WMFC}(Wait for Memory Function to Complete): è un segnale che blocca la CPU finchè il dato viene messo nel bus dati.
 
 			            Siccome in questo ciclo di clock il bus non viene utilizzato viene sfruttato per
 			            mandare il segnale di incremento al Program Counter.
@@ -1796,8 +1789,8 @@ ma \textbf{CPU cablate} in questo modo non si realizzano più.
 			            Counter in modo da accedere all'istruzione successiva.
 
 			      \item[2.] \( Z_{out},\; PC_{in},\;WMFC \)  \\
-			            \textbf{WMFC}(Wait for Memory Function to Complete): è un segnale che blocca il clock
-			            successivo della CPU finchè il dato viene messo nel bus dati.
+			            \textbf{WMFC}(Wait for Memory Function to Complete): è un segnale che blocca
+			            la CPU finchè il dato viene messo nel bus dati.
 
 			            Siccome in questo ciclo di clock il bus non viene utilizzato viene sfruttato per
 			            mandare il segnale di incremento al Program Counter.
@@ -1982,7 +1975,7 @@ input/output è composto da:
 	\caption{Struttura del microcontrollore input/output}
 \end{figure}
 
-\noindent La CPU accede ai valori dei registri di input/outpit tramite degli indirizzi
+\noindent La CPU accede ai valori dei registri di input/output tramite degli indirizzi
 che vengono riservati in un intervallo di memoria. Gli indirizzi di \texttt{Dato} e
 \texttt{Stato} sono:
 \begin{itemize}
@@ -2057,7 +2050,7 @@ flusso di esecuzione del programma solo quando il dispositivo è pronto. La CPU
 	\end{tikzpicture}
 \end{figure}
 
-\noindent Esiste un bit \( \overline{INTERRUPT} \) che è sempre a 1 (negato a 0) che
+\noindent Esiste un bit \( \overline{INTERRUPT} \) che
 vale 1 solo quando c'è una \textbf{interrupt request}. Ogni interrupt ha un valore
 che contiene un pezzo di codice chiamato \textbf{Interrupt Service Routine (ISR)}
 che viene passato alla CPU attraverso il \texttt{INTACK} (Interrupt Acknowledge).
@@ -2076,6 +2069,7 @@ Per trasferire grandi quantità di dati da un dispositivo di input/output alla m
 non conviene utilizzare degli interrupt perchè sarebbe uno spreco di risorse. Si utilizza
 il DMA che è un dispositivo che permette di trasferire dati dalla memoria al dispositivo
 di input/output senza passare per la CPU.
+
 
 \begin{figure}[H]
 	\centering
@@ -2339,8 +2333,6 @@ hardware, ma non software. Per modificare la priorità software si utilizza il c
 \begin{lstlisting}[language=bash]
 $ renice -n 10 -p 1234
 \end{lstlisting}
-\noindent Il comando \texttt{renice} permette di modificare la priorità di un processo
-software.
 
 \subsection{Realtime}
 Un processo può essere eseguito in tempo reale se il tempo di esecuzione è all'interno
@@ -3525,7 +3517,7 @@ diverse.
     \node at (0,2.25) [left, scale=0.9] {\( P_1 \) };
   \end{tikzpicture}
 \end{figure}
-Con un meccanismo di paginazione dopo aver sommato \texttt{base} e averlo controllato
+\noindent Con un meccanismo di paginazione dopo aver sommato \texttt{base} e averlo controllato
 con \texttt{limit} si ha ancora un indirizzo logico che dovrà essere tradotto in un
 indirizzo fisico corrispondente alla pagina in cui si trova il processo. 
 
@@ -3943,7 +3935,94 @@ un RISC. Dopo questa invenzione intel inventò il microprocessore Pentium.
     \( CPI_{m} = 0.5 \). Separando le pipeline si possono anche avere più segnali
     di clock e quindi il cammino critico sarà quello della ALU intera.
 
-    \label{D1}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}[scale=0.7]
+        % Pre fetch
+        \draw (-4, -0.4) rectangle (-2, 1.6) node[midway, align=center] (pref) {Pre\\fetch};
+
+        \draw[-latex] (-2,0.6) -- (0,2.1);
+        \draw[-latex] (-2,0.6) -- (0,-1.0);
+
+        \begin{scope}[shift={(0,1.5)}, scale=0.8]
+            % F-D-E-W Cycle
+            \draw (0,0) rectangle (1.5,1.5) node[midway, scale=0.8] (pipeline1) {};
+            \draw (3.5,0) rectangle (5,1.5) node[midway, scale=0.8] {};
+            \draw (7,0) rectangle (8.5,1.5) node[midway, scale=0.8] {};
+            \draw (10.5,0) rectangle (12,1.5) node[midway, scale=0.8] {};
+
+            % Tmp registers
+            \draw (2,2) rectangle (3,-0.5);
+            \draw (5.5,2) rectangle (6.5,-0.5);
+            \draw (9,2) rectangle (10,-0.5);
+
+            \draw[transparent] (2,1.375) -- (3,1.375) node[midway, above, scale=0.7] {}; 
+            \draw[transparent] (2,0.75) -- (3,0.75) node[midway, above, scale=0.7] {}; 
+
+            \draw[transparent] (5.5,1.375) -- (6.5,1.375) node[midway, above, scale=0.7] {}; 
+            \draw[transparent] (5.5,0.75) -- (6.5,0.75) node[midway, above, scale=0.7] {}; 
+            \draw[transparent] (5.5,0.125) -- (6.5,0.125) node[midway, above, scale=0.7] {};
+            \node at (6,-0.5) [above, scale=0.7] {};
+
+            \draw[transparent] (9,1.375) -- (10,1.375) node[midway, above, scale=0.7] {};
+            \draw[transparent] (9,0.75) -- (10,0.75) node[midway, above, scale=0.7] {};
+
+            % ALU
+            \begin{scope}[shift={(15,-3.75)}, scale=1.5, rotate=90]
+              \draw (2.7,0.5) -- (3.3,0.5) -- (3.5,1.5) -- (3.2,1.5) -- (3,1.2) -- (2.8,1.5) -- (2.5,1.5) -- cycle;
+              \node[above, scale=0.6] at (3,0.5) (alu) {};
+            \end{scope}
+            \node[right, align=center, scale=0.8, xshift=5, yshift=-2] at (alu) {Interi};
+
+            % Arrows
+            \draw[-latex] (1.5,0.75) -- ++(0.5,0);
+            \draw[-latex] (3,0.75) -- ++(0.5,0);
+            \draw[-latex] (5,0.75) -- ++(0.5,0);
+            \draw[-latex] (6.5,0.75) -- ++(0.5,0);
+            \draw[-latex] (8.5,0.75) -- ++(0.5,0);
+            \draw[-latex] (10,0.75) -- ++(0.5,0);
+        \end{scope}
+
+        \begin{scope}[shift={(0,-1.5)}, scale=0.8]
+            % F-D-E-W Cycle
+            \draw (0,0) rectangle (1.5,1.5) node[midway, scale=0.8] (pipeline2) {};
+            \draw (3.5,0) rectangle (5,1.5) node[midway, scale=0.8] {};
+            \draw (7,0) rectangle (8.5,1.5) node[midway, scale=0.8] {};
+            \draw (10.5,0) rectangle (12,1.5) node[midway, scale=0.8] {};
+
+            % Tmp registers
+            \draw (2,2) rectangle (3,-0.5);
+            \draw (5.5,2) rectangle (6.5,-0.5);
+            \draw (9,2) rectangle (10,-0.5);
+
+            \draw[transparent] (2,1.375) -- (3,1.375) node[midway, above, scale=0.7] {}; 
+            \draw[transparent] (2,0.75) -- (3,0.75) node[midway, above, scale=0.7] {}; 
+
+            \draw[transparent] (5.5,1.375) -- (6.5,1.375) node[midway, above, scale=0.7] {}; 
+            \draw[transparent] (5.5,0.75) -- (6.5,0.75) node[midway, above, scale=0.7] {}; 
+            \draw[transparent] (5.5,0.125) -- (6.5,0.125) node[midway, above, scale=0.7] {};
+            \node at (6,-0.5) [above, scale=0.7] {};
+
+            \draw[transparent] (9,1.375) -- (10,1.375) node[midway, above, scale=0.7] {};
+            \draw[transparent] (9,0.75) -- (10,0.75) node[midway, above, scale=0.7] {};
+
+            % ALU
+            \begin{scope}[shift={(15,-3.75)}, scale=1.5, rotate=90]
+              \draw (2.7,0.5) -- (3.3,0.5) -- (3.5,1.5) -- (3.2,1.5) -- (3,1.2) -- (2.8,1.5) -- (2.5,1.5) -- cycle;
+              \node[above, scale=0.6] at (3,0.5) (alu2) {};
+            \end{scope}
+            \node[right, align=center, scale=0.8, xshift=5, yshift=-2] at (alu2) {Virgola\\mobile};
+
+            % Arrows
+            \draw[-latex] (1.5,0.75) -- ++(0.5,0);
+            \draw[-latex] (3,0.75) -- ++(0.5,0);
+            \draw[-latex] (5,0.75) -- ++(0.5,0);
+            \draw[-latex] (6.5,0.75) -- ++(0.5,0);
+            \draw[-latex] (8.5,0.75) -- ++(0.5,0);
+            \draw[-latex] (10,0.75) -- ++(0.5,0);
+        \end{scope}
+      \end{tikzpicture}
+    \end{figure}
     \vspace{1em}
     \noindent Successivamente sono state aggiunte più pipeline all'unità di
     prefetch, il problema però è che le dipendenze possono accadere tra più
@@ -3955,6 +4034,55 @@ un RISC. Dopo questa invenzione intel inventò il microprocessore Pentium.
     utilizzando un registro da 256 bit che contiene più istruzioni (8 istruzioni) tutte
     svolte in parallelo. Aggiungere un registro troppo grande può creare problemi
     con le dipendenze tra le istruzioni.
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        % Pre fetch
+        \node[draw, rectangle, minimum width=1.5cm, minimum height=1.5cm, scale=1.0, align=center]
+          (pref) at (-1.5,0) (pref) {Pre\\fetch};
+
+        \draw[-latex] (pref.east) -- (0,0);
+
+        \begin{scope}[shift={(0,-0.6)}, scale=0.8]
+          % F-D-E-W Cycle
+          \draw (0,0) rectangle (1.5,1.5) node[midway, scale=0.8] (pipeline2) {};
+          \draw (3.5,0) rectangle (5,1.5) node[midway, scale=0.8] {};
+          \draw (7,0) rectangle (8.5,1.5) node[midway, scale=0.8] {};
+          \draw (10.5,0) rectangle (12,1.5) node[midway, scale=0.8] {};
+
+          % Tmp registers
+          \draw (2,2) rectangle (3,-0.5);
+          \draw (5.5,2) rectangle (6.5,-0.5);
+          \draw (9,2) rectangle (10,-0.5);
+
+          \draw (2,1.375) -- (3,1.375) node[midway, above right, scale=0.5] {64}; 
+          \draw (2,0.75) -- (3,0.75) node[midway, above right, scale=0.5] {64}; 
+          \draw (2,0.125) -- (3,0.125) node[midway, above right, scale=0.5] {64};
+          \node at (2.5,-0.5) [above right, scale=0.5] {64};
+          \node at (2.25,-0.5) [below right, scale=0.7] {256};
+
+          \draw (5.5,1.375) -- (6.5,1.375) node[midway, above right, scale=0.5] {64}; 
+          \draw (5.5,0.75) -- (6.5,0.75) node[midway, above right, scale=0.5] {64}; 
+          \draw (5.5,0.125) -- (6.5,0.125) node[midway, above right, scale=0.5] {64};
+          \node at (6,-0.5) [above right, scale=0.5] {64};
+          \node at (5.75,-0.5) [below right, scale=0.7] {256};
+
+          \draw (9,1.375) -- (10,1.375) node[midway, above right, scale=0.5] {64};
+          \draw (9,0.75) -- (10,0.75) node[midway, above right, scale=0.5] {64};
+          \draw (9,0.125) -- (10,0.125) node[midway, above right, scale=0.5] {64};
+          \node at (9.5,-0.5) [above right, scale=0.5] {64};
+          \node at (9.25,-0.5) [below right, scale=0.7] {256};
+
+          % Arrows
+          \draw[-latex] (1.5,0.75) -- ++(0.5,0);
+          \draw[-latex] (3,0.75) -- ++(0.5,0);
+          \draw[-latex] (5,0.75) -- ++(0.5,0);
+          \draw[-latex] (6.5,0.75) -- ++(0.5,0);
+          \draw[-latex] (8.5,0.75) -- ++(0.5,0);
+          \draw[-latex] (10,0.75) -- ++(0.5,0);
+        \end{scope}
+      \end{tikzpicture}
+    \end{figure}
 
     \vspace{1em}
     \noindent Successivamente si tentò di implementare il parallelismo e sono
@@ -3962,9 +4090,43 @@ un RISC. Dopo questa invenzione intel inventò il microprocessore Pentium.
     parallelo grazie a più ALU. Il computer vettoriale più famoso era il
     Thinking Machine che aveva più CPU che lavoravano in parallelo scrivendo
     il risultato in un'unica memoria condivisa.
-    \label{D3}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \node[draw, rectangle, minimum width=1.5cm, minimum height=1.5cm, scale=1.0, align=center]
+          (pref) at (0,-0.5) (pref) {Pre\\fetch};
 
-    Questo sistema però scomparve
+        \node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm, scale=1.0, align=center]
+          (pref) at (2,1) (cpu1) {};
+        \node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm, scale=1.0, align=center]
+          (pref) at (2,0) (cpu2) {};
+        \node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm, scale=1.0, align=center]
+          (pref) at (2,-1) (cpu3) {};
+        \node[draw, rectangle, minimum width=0.5cm, minimum height=0.5cm, scale=1.0, align=center]
+          (pref) at (2,-2) (cpu4) {};
+        
+        \node[below, scale=0.7] at (cpu4.south) {CPU};
+
+        \node[draw, rectangle, minimum width=1.5cm, minimum height=3.5cm, scale=1.0, align=center]
+          (pref) at (4,-0.5) (mem) {Memoria};
+
+        % Arrows
+        \draw[-latex] (pref.east) -- (cpu1.west);
+        \draw[-latex] (pref.east) -- (cpu2.west);
+        \draw[-latex] (pref.east) -- (cpu3.west);
+        \draw[-latex] (pref.east) -- (cpu4.west);
+
+        \draw[-latex] (cpu1.east) -- (mem.west);
+        \draw[-latex] (cpu2.east) -- (mem.west);
+        \draw[-latex] (cpu3.east) -- (mem.west);
+        \draw[-latex] (cpu4.east) -- (mem.west);
+
+        \draw (2.3, 1.5) -- ++(0,0.2) -- ++(0.8,0) node[midway, scale=0.7, above, align=center]
+          {Matrice di\\interconnessioni} -- ++(0,-0.2);
+      \end{tikzpicture}
+    \end{figure}
+
+    \noindent Questo sistema però scomparve
     per la legge di \textbf{Amdahl} che dice che la prestazione totale
     è data da:
     \[
@@ -3989,8 +4151,40 @@ un RISC. Dopo questa invenzione intel inventò il microprocessore Pentium.
     \noindent L'idea dei calcolatori vettoriali è fallita, quindi si è passati
     a parallelizzare i processi (task) riducendo il tempo totale di esecuzione dei
     processi. Sono nati quindi i \textbf{Multiprocessori}
-    \label{D4}
-    Siccome ogni CPU ha una cache diversa e la memoria è condivisa tra le CPU
+
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \draw (0,0) -- (7,0);
+
+        \draw (0.5,1) rectangle (1.5,2) node[midway, scale=0.8] {\( CPU_1 \) };
+        \draw (0.5,2) rectangle (1.5,2.5) node[midway, scale=0.8] {\( cache_1 \) };
+        \draw[latex-latex] (1,1) -- (1,0);
+
+        \draw (2,1) rectangle (3,2) node[midway, scale=0.8] {\( CPU_2 \) };
+        \draw (2,2) rectangle (3,2.5) node[midway, scale=0.8] {\( cache_2 \) };
+        \draw[latex-latex] (2.5,1) -- (2.5,0);
+
+        \draw (3.5,1) rectangle (4.5,2) node[midway, scale=0.8] {\( CPU_3 \) };
+        \draw (3.5,2) rectangle (4.5,2.5) node[midway, scale=0.8] {\( cache_3 \) };
+        \draw[latex-latex] (4,1) -- (4,0);
+
+        \draw (5.5,1) rectangle (6.5,2) node[midway, scale=0.8] {Mem};
+        \draw (5.5,2) rectangle (6.5,2.5) node[midway, scale=0.8] {pagine};
+        \draw[latex-latex] (6,1) -- (6,0);
+
+        \draw (1.4,-1) rectangle (2.0,-1.6) node[midway, scale=0.8] {I/O};
+        \draw[latex-latex] (1.7,0) -- (1.7,-1);
+
+        \draw (2.9,-1) rectangle (3.5,-1.6) node[midway, scale=0.8] {I/O};
+        \draw[latex-latex] (3.2,0) -- (3.2,-1);
+
+        \draw (4.4,-1) rectangle (5.0,-1.6) node[midway, scale=0.8] {I/O};
+        \draw[latex-latex] (4.7,0) -- (4.7,-1);
+      \end{tikzpicture}
+    \end{figure}
+
+    \noindent Siccome ogni CPU ha una cache diversa e la memoria è condivisa tra le CPU
     allora le pagine della memoria possono trovarsi in cache diverse e questo
     crea il problema della \textbf{coerenza della cache}. Si può risolvere
     in diversi modi, ma l'algoritmo migliore è quello di \textbf{Snoopy} (ficcanaso) che
@@ -4004,18 +4198,135 @@ un RISC. Dopo questa invenzione intel inventò il microprocessore Pentium.
     \noindent Avere più CPU però non sempre migliora le prestazioni, questo perchè
     si ha un solo bus e quindi si ha un collo di bottiglia. A 4 CPU si arriva
     alle prestazioni massime.
-    \label{D5}
 
-    Si potrebbe aumentare il numero di bus, ma questo aumenterebbe i costi e la
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \draw (0,0) -- (8,0) node[right] {\# CPU};
+        \draw (0,0) -- (0,6) node[left] {Prestazione};
+
+
+        \foreach \x in {1,2,3,4,5,6,7}
+        \draw (\x,0.1) -- (\x,-0.1) node[below] {\x};
+
+        \draw [red, smooth, ultra thick] plot coordinates
+          { (0,0) (1,0.7) (2,1.25) (3,1.6) (4,1.8) (5,1.85) (8,1.85) };
+
+        \draw (0,0) -- (6,6);
+
+        \draw [red, thin, dashed] (4,0) -- (4,1.8);
+        \draw [red, thin, dashed] (0,1.8) -- (4,1.8);
+      \end{tikzpicture}
+    \end{figure}
+
+    \noindent Si potrebbe aumentare il numero di bus, ma questo aumenterebbe i costi e la
     complessità del sistema.
-    \label{D6}
+
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \draw (0,0) -- (7,0);
+        \draw (0,-2.5) -- (7,-2.5);
+
+        \draw (0.5,1) rectangle (1.5,2) node[midway, scale=0.8] {\( CPU_1 \) };
+        \draw (0.5,2) rectangle (1.5,2.5) node[midway, scale=0.8] {\( cache_1 \) };
+        \draw[latex-latex, xshift=7] (1,1) -- (1,0);
+        \draw[-latex, xshift=-7] (1,1) -- (1,-2.5);
+
+        \draw (2,1) rectangle (3,2) node[midway, scale=0.8] {\( CPU_2 \) };
+        \draw (2,2) rectangle (3,2.5) node[midway, scale=0.8] {\( cache_2 \) };
+        \draw[latex-latex, xshift=7] (2.5,1) -- (2.5,0);
+        \draw[-latex, xshift=-7] (2.5,1) -- (2.5,-2.5);
+
+        \draw (3.5,1) rectangle (4.5,2) node[midway, scale=0.8] {\( CPU_3 \) };
+        \draw (3.5,2) rectangle (4.5,2.5) node[midway, scale=0.8] {\( cache_3 \) };
+        \draw[latex-latex, xshift=7] (4,1) -- (4,0);
+        \draw[-latex, xshift=-7] (4,1) -- (4,-2.5);
+
+        \draw (5.5,1) rectangle (6.5,2) node[midway, scale=0.8] {Mem};
+        \draw (5.5,2) rectangle (6.5,2.5) node[midway, scale=0.8] {pagine};
+        \draw[latex-latex] (6,1) -- (6,0);
+
+        \draw (1.4,-1) rectangle (2.0,-1.6) node[midway, scale=0.8] {I/O};
+        \draw[latex-latex] (1.7,0) -- (1.7,-1);
+        \draw[latex-latex] (1.7,-2.5) -- (1.7,-1.6);
+
+        \draw (2.9,-1) rectangle (3.5,-1.6) node[midway, scale=0.8] {I/O};
+        \draw[latex-latex] (3.2,0) -- (3.2,-1);
+        \draw[latex-latex] (3.2,-2.5) -- (3.2,-1.6);
+
+        \draw (4.4,-1) rectangle (5.0,-1.6) node[midway, scale=0.8] {I/O};
+        \draw[latex-latex] (4.7,0) -- (4.7,-1);
+        \draw[latex-latex] (4.7,-2.5) -- (4.7,-1.6);
+      \end{tikzpicture}
+    \end{figure}
 
   \item Anni 2000:
 
     \vspace{1em}
     \noindent Nacquero i Network Chip (N.C) con più chip (multicore) in cui ogni chip aveva una cache
     condivisa e ci si poteva accedere in parallelo.
-    \label{D7}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \draw (0,0) rectangle (8,8);
+
+        \draw (6,8) -- (6,0);
+        \node at (7,4) {Cache};
+
+        \draw (0.5,0.5) rectangle (1.5,1.5);
+        \node at (1.4,1) (core1) {};
+        \node at (6.1,1) (cache1) {};
+
+        \draw (0.5,2) rectangle (1.5,3);
+        \node at (1.4,2.5) (core2) {};
+        \node at (6.1,2.5) (cache2) {};
+
+        \draw (0.5,3.5) rectangle (1.5,4.5);
+        \node at (1.4,4) (core3) {};
+        \node at (6.1,4) (cache3) {};
+
+        \draw (0.5,5) rectangle (1.5,6);
+        \node at (1.4,5.5) (core4) {};
+        \node at (6.1,5.5) (cache4) {};
+
+        \draw (0.5,6.5) rectangle (1.5,7.5);
+        \node at (1.4,7) (core5) {};
+        \node at (6.1,7) (cache5) {};
+
+        \draw[-latex] (core1) -- (cache1);
+        \draw[-latex] (core1) -- (cache2);
+        \draw[-latex] (core1) -- (cache3);
+        \draw[-latex] (core1) -- (cache4);
+        \draw[-latex] (core1) -- (cache5);
+
+        \draw[-latex] (core2) -- (cache1);
+        \draw[-latex] (core2) -- (cache2);
+        \draw[-latex] (core2) -- (cache3);
+        \draw[-latex] (core2) -- (cache4);
+        \draw[-latex] (core2) -- (cache5);
+
+        \draw[-latex] (core3) -- (cache1);
+        \draw[-latex] (core3) -- (cache2);
+        \draw[-latex] (core3) -- (cache3);
+        \draw[-latex] (core3) -- (cache4);
+        \draw[-latex] (core3) -- (cache5);
+
+        \draw[-latex] (core4) -- (cache1);
+        \draw[-latex] (core4) -- (cache2);
+        \draw[-latex] (core4) -- (cache3);
+        \draw[-latex] (core4) -- (cache4);
+        \draw[-latex] (core4) -- (cache5);
+
+        \draw[-latex] (core5) -- (cache1);
+        \draw[-latex] (core5) -- (cache2);
+        \draw[-latex] (core5) -- (cache3);
+        \draw[-latex] (core5) -- (cache4);
+        \draw[-latex] (core5) -- (cache5);
+
+        \node[below, align=center] at (4,0) {CPU\\Multicore};
+      \end{tikzpicture}
+    \end{figure}
 
     \vspace{1em}
     \noindent Con l'arrivo di applicazioni multimediali e real-time nacque la
