@@ -995,7 +995,7 @@ funziona un processore. L'LC-3 è composto da:
 \end{itemize}
 
 \subsubsection{Memoria}
-\( 2^16 \times 16 \) celle di memoria. Per interfacciarsi con la memoria si usa la
+\( 2^{16} \times 16 \) celle di memoria. Per interfacciarsi con la memoria si usa la
 \texttt{LOAD} e la \texttt{STORE}.
 
 \vspace{1em}
@@ -1483,11 +1483,11 @@ in modo da capire come vengono eseguite le istruzioni.
 
 		% Register y
 		\begin{scope}[shift={(0.1,3.5)}]
-			\draw (0.25,-1) node[rectangle ,draw, minimum width=2cm, minimum height=0.7cm, scale=0.7] (y) {y};
+			\draw (0.25,-1) node[rectangle ,draw, minimum width=2cm, minimum height=0.7cm, scale=0.7] (y) {v};
 			\draw (y.west) -- ++(0,0.15) -- ++(0.15, -0.15) -- ++(-0.15,-0.15);
 		\end{scope}
 
-		\draw[-latex] (y.east) -- ++(0.7,0);
+		\draw[latex-latex] (y.east) -- ++(0.7,0);
 
 		% Mux to alu
 		\draw[latex-] (mux4-0) -- ++(0,0.4) node[above, scale=0.7] {0};
@@ -1892,7 +1892,7 @@ ma \textbf{CPU cablate} in questo modo non si realizzano più.
 		\item [DE]
 		      \begin{enumerate}
 			      \item[1.] \( ESP_{out} ,\; SELECT_4 ,\; ADD,\; Z_{in},\; MAR_{in},\; READ \)
-			      \item[3.] \( Z_{out},\; ESP_{in},\; EMFC \)
+			      \item[3.] \( Z_{out},\; ESP_{in},\; WMFC \)
 			      \item[3.] \( MDR_{out}, PC_{in} \)
 		      \end{enumerate}
 	\end{enumerate}
@@ -1954,8 +1954,8 @@ ma \textbf{CPU cablate} in questo modo non si realizzano più.
 
 \noindent Per poter ottenere un'interazione con l'utente è necessario avere dei dispositivi
 di input e output e a loro volta devono essere codificati per far corrispondere
-l'intenzione dell'utente con l'azione del computer. La strutture del microcontrollore
-input/output è composto da:
+l'intenzione dell'utente con l'azione del computer. La struttura del microcontrollore
+input/output è composta da:
 \begin{itemize}
 	\item \textbf{Dato}: contiene i dati da inviare o ricevere
 	\item \textbf{Stato}: contiene lo stato del dispositivo
@@ -2114,7 +2114,7 @@ di input/output senza passare per la CPU.
 
 
 \subsection{Bus}
-Il bus è una linea di comunicazione che collegana i vari componenti di un sistema
+Il bus è una linea di comunicazione che collega i vari componenti di un sistema
 informatico. Vengono gestiti direttamente dalla CPU che quando non lo usa lo assegna ad
 altri componenti.
 
@@ -2324,7 +2324,7 @@ della metà di un quanto di tempo, in tal caso lo sospende e passa ad un altro p
 altrimenti lo fa continuare. Lo scheduler quindi decide quale processo della lista dei
 processi pronti deve essere eseguito. Ogni processo ha una certa priorità e lo scheduler
 deve decidere quale processo eseguire in base alla priorità e al tempo di esecuzione (
-tempo reale). Per modificare la priorità dei processi si utilizza i seguenti comandi bash:
+tempo reale). Per modificare la priorità dei processi si utilizzano i seguenti comandi bash:
 \begin{lstlisting}[language=bash]
 $ nice -n 10 ./programma
 \end{lstlisting}
@@ -2360,7 +2360,7 @@ viene chiamata \textbf{Context Switch}.
 
 
 \section{Stack}
-Prendiamo in considderazione il seguente codice in C:
+Prendiamo in considerazione il seguente codice in C:
 \begin{lstlisting}[language=C]
   int main() {
     int A;
@@ -2385,7 +2385,7 @@ Questo codice in C chiede alla CPU di riservare 3 locazioni di memoria per le va
 che siano costanti o funzioni.
 
 \vspace{1em}
-Nel file binario è presente un \textbf{header} che indica come interpretare il file.
+\noindent Nel file binario è presente un \textbf{header} che indica come interpretare il file.
 Il file binario contiene un'immagine della memoria che verrà caricata in memoria
 prima di essere eseguito. Questo file binario contiene:
 \begin{itemize}
@@ -3135,7 +3135,7 @@ la probabilità di non trovarlo (\textbf{cache miss}) è del \( \approx 5\% \).
 viene chiamato \textbf{gerarchia di memoria} per il principio di località.
 
 \section{Cache}
-Nella maggior parte delle architettura la cache fa parte del microprocessore stesso.
+Nella maggior parte delle architetture la cache fa parte del microprocessore stesso.
 Avere una cache è fondamentale per portare il CPI (Clock Per Instruction) a 1.
 Consideriamo una dimensione della cache ragionevole di \( 4MB \) e una dimensione
 della ram di \( 4GB \). Definiamo ora la dimensione di una "pagina" di \( 1KB \), la
@@ -3759,7 +3759,7 @@ Per far tendere il CPI a 1 bisogna avere una pipeline efficiente.
     Si possono "allontanare" le istruzioni dipendenti riordinandole
     mantenendo però il senso del programma. I microprocessori moderni riordinano
     automaticamente le istruzioni per evitare stallo caricandole in blocco e
-    riordinandole in modo da evitare stallo.
+    riordinandole.
   \item \textbf{Salti condizionali}: Siccome non si sa quale ramo della condizione
     verrà eseguito si può fare \textbf{predizione di salto}. La predizione di salto
     viene fatta attraverso un circuito chiamato \textbf{crystal ball}. Finchè non si
@@ -3900,7 +3900,7 @@ per minimizzarne uno alla volta.
     \end{itemize}
 \end{itemize}
 
-Quando intel creò le istruzioni 80x86 per passarle al processore P6 si utilizza
+\noindent Quando intel creò le istruzioni 80x86 per passarle al processore P6 si utilizza
 un \textbf{pre fetcher} che traduce le istruzioni 80x86 in istruzioni RISC.
 Questo sistema permetteva di avere un processore CISC ma con le prestazioni di
 un RISC. Dopo questa invenzione intel inventò il microprocessore Pentium.
@@ -4142,7 +4142,7 @@ un RISC. Dopo questa invenzione intel inventò il microprocessore Pentium.
     \[
       S = \frac{P_{T_2}}{P_{T_1}}
     \] 
-    Il miglioramento dipende dalla percentuale di utilizzo di quel componente, quiundi
+    Il miglioramento dipende dalla percentuale di utilizzo di quel componente, quindi 
     se viene usato poco la prestazione non migliora molto. Quindi se la percentuale
     di paralelizzazione dell'intero sistema è più bassa del 90\% non si ha un
     miglioramento significativo perchè rimane una parte sequenziale.
