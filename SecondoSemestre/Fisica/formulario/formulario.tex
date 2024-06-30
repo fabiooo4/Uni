@@ -194,13 +194,24 @@ da forza centripeta.
 
 
 \section{Moto armonico}
-\[
-\begin{cases}
-  x(t) = A \cos(\omega t + \varphi)\\
-  v(t) = -A \omega \sin(\omega t + \varphi)\\
-  a(t) = -A \omega^2 \cos(\omega t + \varphi)
-\end{cases}
-\] 
+\begin{itemize}
+  \item Partenza dal punto di massima elongazione
+    \[
+      \begin{cases}
+        x(t) = A \cos(\omega t + \varphi)\\
+        v(t) = -A \omega \sin(\omega t + \varphi)\\
+        a(t) = -A \omega^2 \cos(\omega t + \varphi)
+      \end{cases}
+    \] 
+  \item Partenza dal punto di equilibrio
+    \[
+      \begin{cases}
+        x(t) = A \sin(\omega t + \varphi )\\
+        v(t) = A \omega \cos(\omega t + \varphi )\\
+        a(t) = -A \omega^2 \sin(\omega t + \varphi )
+      \end{cases}
+    \]
+\end{itemize}
 L'accelerazione è la tendenza a tornare al punto di equilibrio.
 \[
 \omega = \frac{2 \pi}{T} = 2 \pi \cdot f
@@ -309,6 +320,9 @@ P = F \cdot v
 \[
   U_{peso} = mgh
 \]
+\[
+  U_{elastica} = \frac{1}{2} k x^2
+\] 
 
 \subsubsection{Energia meccanica}
 \[
@@ -443,7 +457,6 @@ di rotazione ovunque io voglia, imponendo ogni volta che \( \sum \tau = 0 \).
 \[
   L_{tot} = \left( \sum_i m_i r_i^2 \right) \omega = I \omega \quad \sum \tau_{est} = I \alpha
 \] 
-
 \textbf{Principio di conservazione del momento angolare:}
 \noindent Se il momento dato dalle forze esterne al sistema è nullo, allora il momento angolare del sistema si
 conserva.
@@ -594,6 +607,9 @@ P = P_0 + \rho g h
 \[
 L = 0 \quad Q = n c_v \Delta T
 \] 
+\[
+  \frac{P_{iniziale}}{T_{iniziale}} = \frac{P_{finale}}{T_{finale}}
+\] 
 \begin{figure}[H]
   \begin{center}
     \includegraphics[width=0.4\textwidth]{isocora}
@@ -606,6 +622,9 @@ L = 0 \quad Q = n c_v \Delta T
 \[
 L = -P \Delta V \quad Q = n c_p \Delta T
 \] 
+\[
+  \frac{V_{iniziale}}{T_{iniziale}} = \frac{V_{finale}}{T_{finale}}
+\] 
 \begin{figure}[H]
   \begin{center}
     \includegraphics[width=0.4\textwidth]{isobara}
@@ -616,6 +635,9 @@ L = -P \Delta V \quad Q = n c_p \Delta T
 \subsubsection{Isoterma (\( \Delta T = 0 \))}
 \[
 L = -Q \quad Q = n R T \ln \left( \frac{V_f}{V_i} \right)
+\] 
+\[
+  P_{iniziale} V_{iniziale} = P_{finale} V_{finale}
 \] 
 \begin{figure}[H]
   \begin{center}
@@ -637,6 +659,9 @@ T V^{\gamma - 1} = \text{costante}
 dove \( \gamma = \frac{c_p}{c_v} \)
 \[
 L = \Delta U = \frac{1}{\gamma - 1} \left( P_f V_f - P_i V_i \right) 
+\] 
+\[
+  P_{iniziale} V_{iniziale}^\gamma = P_{finale} V_{finale}^\gamma
 \] 
 \begin{figure}[H]
   \begin{center}
@@ -689,15 +714,41 @@ dove \( \alpha \) è il coefficiente di dilatazione lineare.
 
 \section{Fluidi}
 \[
-  \text{Spinta di archimede: } B_{A} = \rho_L V g
+  \text{Spinta di archimede: } F_{A} = -F_p = \rho_L V g
 \] 
 dove \( \rho_L \) è la densità del liquido, \( V \) è il volume immerso e \( g \) è l'accelerazione di gravità.
+
+\subsection{Legge di Stevino}
 \[
-\text{Continuità: } A v = \text{costante}
+  P(h) = P_0 + \rho g h
+\]
+dove \( P \) è la pressione a profondità \( h \), \( P_0 \) è la pressione esterna alla
+superficie del liquido, \( \rho \) è la densità del liquido e \( g \) è l'accelerazione di gravità.
+\subsection{Tubi}
+\[
+\text{Portata: } Q = \frac{V}{t} = A v
+\] 
+\( V \) è il volume e \( t \) è il tempo, \( A \) è l'area della sezione e \( v \) è la velocità del fluido.
+\vspace{1em}
+\[
+  \text{Continuità: } A v = \text{costante}
 \] 
 dove \( A \) è l'area della sezione e \( v \) è la velocità del fluido.
 \[
-\text{Bernoulli: } P + \frac{1}{2} \rho v^2 + \rho g h = \text{costante}
+  \text{Bernoulli: } P + \frac{1}{2} \rho v^2 + \rho g h = \text{costante}
 \] 
 cioè la somma tra pressione, energia cinetica e potenziale è costante.
+Ad esempio:
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=0.6\textwidth]{bernoulli}
+  \end{center}
+  \caption{Legge di Bernoulli}
+\end{figure}
+
+\[
+P_1 + \frac{1}{2} \rho v_1^2 + \rho g h_1 = P_2 + \frac{1}{2} \rho v_2^2 + \rho g h_2
+\] 
+
+
 \end{document}
