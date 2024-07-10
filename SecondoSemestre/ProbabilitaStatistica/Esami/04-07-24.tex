@@ -1,0 +1,410 @@
+\documentclass[a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage[italian]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{amsfonts}
+\usepackage{mdframed}
+\usepackage{ntheorem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{graphicx}
+\graphicspath{{./figures/}}
+
+\usepackage{import}
+\usepackage{pdfpages}
+\usepackage{transparent}
+\usepackage{xcolor}
+
+% Useful definitions frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+linecolor=gray,leftmargin=0,%
+rightmargin=0,
+innertopmargin=8pt,%
+ntheorem]{define}{Definizioni utili}[section]
+
+% Example frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+linecolor=gray,leftmargin=0,%
+rightmargin=0,
+innertopmargin=8pt,%
+ntheorem]{example}{Esempio}[section]
+
+% Important definition frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+linecolor=gray,leftmargin=0,%
+rightmargin=0,
+backgroundcolor=gray!40,%
+innertopmargin=8pt,%
+ntheorem]{definition}{Definizione}[section]
+
+% Exercise frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+linecolor=gray,leftmargin=0,%
+rightmargin=0,
+innertopmargin=8pt,%
+ntheorem]{exercise}{Domanda}[section]
+
+
+% figure support
+\usepackage{import}
+\usepackage{xifthen}
+\pdfminorversion=7
+\usepackage{pdfpages}
+\usepackage{transparent}
+\newcommand{\incfig}[1]{%
+  \def\svgwidth{\columnwidth}
+  \import{./figures/}{#1.pdf_tex}
+}
+
+\pdfsuppresswarningpagegroup=1
+
+% Code blocks
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.95}
+
+\lstdefinestyle{mystyle}{
+	backgroundcolor=\color{backcolour},
+	commentstyle=\color{codegreen},
+	keywordstyle=\color{magenta},
+	numberstyle=\tiny\color{codegray},
+	stringstyle=\color{codepurple},
+	basicstyle=\ttfamily\footnotesize,
+	breakatwhitespace=false,
+	breaklines=true,
+	captionpos=b,
+	keepspaces=true,
+	numbers=left,
+	numbersep=5pt,
+	showspaces=false,
+	showstringspaces=false,
+	showtabs=false,
+	tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	columns=flexible,
+	basicstyle={\small\ttfamily},
+	numbers=none,
+	numberstyle=\tiny\color{gray},
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve},
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=3
+}
+
+\usepackage{import}
+\usepackage{pdfpages}
+\usepackage{transparent}
+\usepackage{xcolor}
+
+\begin{document}
+\title{Esame Probabilità e Statistica}
+\author{Università di Verona - Irimie Fabio VR501504}
+\date{4 Luglio 2024}
+\maketitle
+
+\tableofcontents
+\pagebreak
+
+\section{Domanda 1}
+Nei test effettuati sui bambini dagli 8 ai 10 anni (popolazione
+di riferimento) è risultato che la loro soglia di attenzione ha
+legge normale di media \( \mu = 40 \)  minuti e deviazione standard  
+\( \sigma = 8 \)  minuti.
+
+\subsection{Parte 1}
+Calcolare la probabilità che un bambino scelto a caso nella
+popolazione abbia una soglia di attenzione maggiore di 45 minuti
+(usare la seconda cifra decimale)
+
+\subsubsection{Soluzione senza R}
+Standardizzo la normale:
+\[
+  Z = \frac{\bar{X} - \mu}{\sigma} = \frac{45 - 40}{8} = 0.625
+\] 
+Vogliamo calcolare:
+\[
+P(Z > 0.625) = 1 - P(Z \le 0.625) = 1 - \phi(0.625) = 1 - 0.73237 \approx 0.27
+\] 
+
+\subsubsection{Soluzione con R}
+\begin{lstlisting}[language=R]
+  pnorm(45, mean = 40, sd = 8, lower.tail = FALSE)
+  # 0.2659855
+\end{lstlisting}
+
+\subsection{Parte 2}
+Scelti a caso \( n=500 \) bambini dalla popolazione, si consideri la
+media campionaria delle soglie di attenzione. Calcolare la 
+probabilità che la media  delle soglie di attenzione del 
+campione sia inferiore di 40 minuti (usa 1 cifra decimale).
+
+\subsubsection{Soluzione senza R}
+Essendo che la media della normale e la media campionaria coincidono,
+allora la probabilità che la media campionaria sia inferiore a 40
+è la stessa di \( P(Z < 0) \) che è 0.5.
+
+\subsubsection{Soluzione con R}
+\begin{lstlisting}[language=R]
+  pnorm(40, mean = 40, sd = 8)
+  # 0.5
+\end{lstlisting}
+
+\subsection{Parte 3}
+Scelti a caso \( n=10 \) dalla popolazione, calcolare la probabilità 
+che al massimo due di loro abbiano una soglia di attenzione 
+maggiore di 45 minuti (usa 2 cifre decimali).
+
+\subsubsection{Soluzione senza R}
+\[
+  p = 1 - P(Z \le 0.625) = 1 - 0.73237 = 0.26763
+\] 
+\[
+P(X \le 2) = P(X = 0) + P(X = 1) + P(X = 2) = \sum_{k=0}^{2}
+\binom{10}{k} p^k (1-p)^{10-k} =
+\] 
+\[
+  = \frac{10!}{0!10!} (0.73237)^{10} + \frac{10!}{1!9!} (0.26763)^1 (0.73237)^9 + \frac{10!}{2!8!} (0.26763)^2 (0.73237)^8=
+\] 
+\[
+ P(X \le 2) \approx 0.48
+\] 
+
+\subsubsection{Soluzione con R}
+\begin{lstlisting}[language=R]
+  pnorm(45, mean = 40, sd = 8, lower.tail = FALSE)
+  # 0.26598
+  pbinom(2, size = 10, prob = 0.26598)
+  # 0.478
+\end{lstlisting}
+
+\section{Domanda 2}
+In un sondaggio tra gli italiani su una certa questione il \( 56\% \)
+degli intervistati si è detto favorevole ed il restante \( 44\% \)
+contrario. Il \( 53\% \) degli intervistati erano maschi e di
+questi il \( 60\% \) era favorevole. Scelto a caso un 
+intervistato calcolare la probabilità che sia femmina sapendo 
+che è favorevole.
+
+\subsection{Soluzione}
+\begin{itemize}
+  \item \textbf{S} = "essere favorevole"
+  \item \textbf{N} = "essere contrario"
+  \item \textbf{M} = "essere maschio"
+  \item \textbf{F} = "essere femmina"
+\end{itemize}
+\[
+P(S) = 0.56 \quad P(N) = 0.44
+\] 
+\[
+P(M) = 0.53 \quad P(F) = 0.47
+\] 
+\[
+P(S|M) = 0.6
+\] 
+Vogliamo calcolare \( P(F|S) \):
+\[
+P(F|S) = 1 - P(M|S)
+\] 
+
+Usando la formula di Bayes otteniamo:
+\[
+P(M|S) = \frac{P(S|M) \cdot P(M)}{P(S)} = \frac{0.6 \cdot 0.53}{0.56} = 0.5678
+\] 
+\[
+P(F|S) = 1 - 0.5678 = 0.4322
+\] 
+
+\section{Domande 3-7}
+Vogliamo testare le luminosità di picco degli schermi di un
+certo modello di computer portatili. Testiamo la luminosità di 
+picco per \( n = 7 \)  portatili con lo stesso tipo di schermo.
+Le luminosità misurate, in candele-per-metro-quadro (nits), sono:
+\[
+770, \quad 800, \quad 760, \quad 780, \quad 790, \quad 800, \quad 760
+\] 
+Il produttore pubblica una luminosità media pari a \( \mu_0 = 800\,\text{nits} \) 
+
+\noindent con deviazione standard \( \sigma = 50\,\text{nits} \) 
+
+\vspace{1em}
+\noindent Si dia per buona la varianza fornita dal produttore.
+Vogliamo studiare la luminosità media.
+
+\subsection{Domanda 3}
+Si stimi la media del campione misurato.
+
+\subsubsection{Soluzione senza R}
+La media del campione è:
+\[
+  \bar{x} = \frac{770 + 800 + 760 + 780 + 790 + 800 + 760}{7} = 780
+\] 
+\subsubsection{Soluzione con R}
+\begin{lstlisting}[language=R]
+  x <- c(770, 800, 760, 780, 790, 800, 760)
+  mean(x)
+  # 780
+\end{lstlisting}
+
+\subsection{Domanda 4}
+Si trovi, per la luminosita' media degli schermi, l'intervallo 
+bilaterale di confidenza uguale a 0.98.
+
+\subsubsection{Soluzione con R}
+Per trovare l'intervallo di confidenza bilaterale bisogna usare
+la seguente formula:
+\[
+  \left( \bar{x} - z_{\frac{\alpha}{2}} \frac{\sigma}{\sqrt{n}} \,,\,
+    \bar{x} + z_{\frac{\alpha}{2}} \frac{\sigma}{\sqrt{n}}
+  \right) 
+\] 
+Dove \( z_{\frac{\alpha}{2}} \) è il quantile della normale standard
+corrispondente a \( \frac{\alpha}{2} \) e \( \alpha = 0.02 \).
+\begin{lstlisting}[language=R]
+  alpha <- 0.02
+  z <- qnorm(1 - alpha / 2)
+  sigma <- 50
+  n <- 7
+  x <- 780
+  upper <- round(x + z * sigma / sqrt(n))
+  lower <- round(x - z * sigma / sqrt(n))
+  cat("(", lower, ",", upper, ")\n")
+  # ( 736 , 824 )
+\end{lstlisting}
+
+\subsection{Domanda 5}
+Con riferimento alla domanda precedente, quanti schermi si dovrebbero
+testare per avere un intervallo con confidenza di 0.98 non più
+largo di 10 nits?
+
+\subsubsection{Soluzione con R}
+\begin{lstlisting}[language=R]
+  alpha <- 0.02
+  z <- qnorm(1 - alpha / 2)
+  sigma <- 50
+  n <- 542
+  x <- 780
+  upper <- x + z * sigma / sqrt(n)
+  lower <- x - z * sigma / sqrt(n)
+  cat("(", round(lower), ",", round(upper), ")\n")
+  # ( 775 , 785 )
+
+  diff <- upper - lower
+  cat("Differenza:" , diff , "\n")
+  # Differenza: 9.99252
+\end{lstlisting}
+La risposta è \( n \ge 156 \) 
+
+\subsection{Domanda 6}
+Calcolare la statistica-test per la media della popolazione.
+
+\subsubsection{Soluzione}
+La statistica-test a varianza nota è data da:
+\[
+  \frac{\bar{x} - \mu_0}{\frac{\sigma }{\sqrt{n} }} =
+\frac{780 - 800}{\frac{50}{\sqrt{7} }} \approx -1.058
+\] 
+
+\subsection{Domanda 7}
+Ora, si assuma di modificare l'ipotesi alternativa: \( H_1: \mu < 800\,\text{nits} \).
+Si calcoli l'intervallo critico sinistro \( C \) con livello di
+significatività pari ad \( \alpha = 0.05 \).
+
+\subsubsection{Soluzione}
+L'intervallo critico sinistro è dato da:
+\[
+  C = (-\infty, z_{\alpha})
+\]
+Dove \( z_{\alpha} \) è il quantile della normale standard corrispondente
+a \( \alpha = 0.05 \).
+\begin{lstlisting}[language=R]
+  alpha <- 0.05
+  z <- qnorm(alpha)
+  cat("(", -Inf, ",", z, ")\n")
+  # ( -Inf , -1.644854 )
+\end{lstlisting}
+
+\section{Domanda 12}
+Da una rilevazione statistica risulta che il numero di incidenti
+mensili nel tratto di autostrada A4 Venezia-Trieste segue una 
+distribuzione di Poisson con media 16. 
+
+\subsection{Parte 1}
+Calcolare la probabilità che in un mese ci siano più di 20 incidenti
+(usa 3 cifre decimali).
+
+\subsubsection{Soluzione}
+\[
+P(X > 20)
+\] 
+\begin{lstlisting}[language=R]
+  ppois(20,16, lower.tail = FALSE) 
+  # 0.132
+\end{lstlisting}
+
+\subsection{Parte 2}
+La probabilità che in un mese ci siano esattamente dai 10 ai
+15 incidenti (usa 3 cifre decimali).
+
+\subsubsection{Soluzione}
+\[
+P(10 < X < 15) = P(X \le 15) - P(X < 10)
+\] 
+\begin{lstlisting}[language=R]
+  ppois(15,16) - ppois(9,16)
+  # 0.423
+\end{lstlisting}
+
+\subsection{Parte 3}
+Durante un certo anno si sono verificati i seguenti incidenti:
+\[
+13, \quad 20, \quad 9, \quad 16, \quad 22, \quad 17, \quad 10, \quad 9, \quad 20, \quad 17, \quad 17, \quad 16
+\] 
+Calcola la media.
+
+\subsubsection{Soluzione}
+\[
+  \bar{x} = \frac{13 + 20 + 9 + 16 + 22 + 17 + 10 + 9 + 20 + 17 + 17 + 16}{12} = 15.5
+\] 
+
+\subsection{Parte 3}
+Durante un certo anno si sono verificati i seguenti incidenti:
+\[
+13, \quad 20, \quad 9, \quad 16, \quad 22, \quad 17, \quad 10, \quad 9, \quad 20, \quad 17, \quad 17, \quad 16
+\] 
+Calcola il 90° percentile.
+
+\subsubsection{Soluzione}
+\begin{lstlisting}[language=R]
+  data <- c(13, 20, 9, 16, 22, 17, 10, 9, 20, 17, 17, 16)
+  quantile(data, 0.9)
+  # 20
+\end{lstlisting}
+
+\end{document}
