@@ -1,0 +1,202 @@
+\documentclass[a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage[italian]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{amsfonts}
+\usepackage{mdframed}
+\usepackage{ntheorem}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{graphicx}
+\graphicspath{{./figures/}}
+
+\usepackage{import}
+\usepackage{pdfpages}
+\usepackage{transparent}
+\usepackage{xcolor}
+
+% Useful definitions frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+linecolor=gray,leftmargin=0,%
+rightmargin=0,
+innertopmargin=8pt,%
+ntheorem]{define}{Definizioni utili}[section]
+
+% Example frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+linecolor=gray,leftmargin=0,%
+rightmargin=0,
+innertopmargin=8pt,%
+ntheorem]{example}{Esempio}[section]
+
+% Important definition frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+linecolor=gray,leftmargin=0,%
+rightmargin=0,
+backgroundcolor=gray!40,%
+innertopmargin=8pt,%
+ntheorem]{definition}{Definizione}[section]
+
+% Exercise frame
+\theoremstyle{break}
+\theoremheaderfont{\bfseries}
+\newmdtheoremenv[%
+linecolor=gray,leftmargin=0,%
+rightmargin=0,
+innertopmargin=8pt,%
+ntheorem]{exercise}{Esercizio}[section]
+
+
+% figure support
+\usepackage{import}
+\usepackage{xifthen}
+\pdfminorversion=7
+\usepackage{pdfpages}
+\usepackage{transparent}
+\newcommand{\incfig}[1]{%
+  \def\svgwidth{\columnwidth}
+  \import{./figures/}{#1.pdf_tex}
+}
+
+\pdfsuppresswarningpagegroup=1
+
+\begin{document}
+\section{Parametri}
+\begin{itemize}
+  \item \textbf{Media}:
+    \[
+      \mu = \frac{1}{n} \sum_{i=1}^{n} x_{i}
+    \]
+  \item \textbf{Varianza}:
+    \[
+      \sigma^{2} = \frac{1}{n} \sum_{i=1}^{n} (x_{i} - \mu)^{2}
+    \]
+  \item \textbf{Deviazione standard}:
+    \[
+      \sigma = \sqrt{\sigma^{2}}
+    \]
+  \item \textbf{Covarianza}:
+    \[
+      \text{Cov}(X, Y) = \frac{1}{n} \sum_{i=1}^{n} (x_{i} - \mu_{x}) \cdot (y_{i} - \mu_{y})
+    \]
+  \item \textbf{Coefficiente di correlazione}:
+    \[
+      \rho = \frac{\text{Cov}(X, Y)}{\sigma_{x} \cdot \sigma_{y}}
+    \]
+  \item \textbf{Covarianza campionaria}:
+    \[
+      \text{Cov}(X, Y) = \frac{1}{n-1} \sum_{i=1}^{n} (x_{i} - \bar{x}) \cdot (y_{i} - \bar{y})
+    \]
+  \item \textbf{Coefficiente di correlazione campionario}:
+    \[
+      r = \frac{\text{Cov}(X, Y)}{s_{x} \cdot s_{y}}
+    \]
+  \item \textbf{Correlazione lineare}:
+    \[
+      Y = a + b \cdot X
+    \]
+    \[
+      b = \frac{\text{Cov}(X, Y)}{\sigma^{2}_{x}}
+    \]
+    \[
+      a = \mu_{y} - b \cdot \mu_{x}
+    \]
+\end{itemize}
+\section{Probabilità di eventi}
+\[
+P(A \cup B) = P(A) + P(B) - P(A \cap B)
+\] 
+\[
+P(A \cap B) = P(A) \cdot P(B)
+\] 
+
+\section{Variabili aleatorie}
+\subsection{Bernoulli}
+\[
+  X \sim \text{Bern}(p)
+\] 
+\[
+P(X = 1) = p \quad P(X = 0) = 1 - p
+\] 
+\begin{itemize}
+  \item \textbf{Legge}:
+    \[
+      P(X = x) = \binom{n}{x} \cdot p^{x} \cdot (1-p)^{n-x}
+    \] 
+  \item \textbf{Valore atteso}:
+    \[
+      E(X) = p
+    \]
+  \item \textbf{Varianza}:
+    \[
+      \text{Var}(X) = p \cdot (1-p)
+    \]
+\end{itemize}
+
+\subsubsection{Coefficiente binomiale}
+\[
+  \binom{n}{k} = \frac{n!}{k!(n-k)!}
+\] 
+
+\subsection{Normale}
+\[
+  X \sim \mathcal{N}(\mu, \sigma^{2})
+\]
+\subsubsection{Standardizzazione}
+\[
+  Z = \frac{X - \mu}{\sigma}
+\]
+
+\subsection{Poission}
+\[
+  Y \sim \text{Po}(\lambda)
+\] 
+\begin{itemize}
+  \item \textbf{Legge}:
+    \[
+      p_y(k) = \frac{\lambda^{k} \cdot e^{-\lambda}}{k!}
+    \] 
+    oppure
+    \[
+      P(X = x) = \frac{\lambda^{x} \cdot e^{-\lambda}}{x!}
+    \] 
+  \item \textbf{Valore atteso}:
+    \[
+      E(Y) = \lambda
+    \]
+  \item \textbf{Varianza}:
+    \[
+      \text{Var}(Y) = \lambda
+    \]
+\end{itemize}
+
+\section{Statistica inferenziale}
+\subsection{Correttezza di uno stimatore}
+Uno stimatore è corretto quando il bias è nullo. Un bias rappresenta la differenza tra il valore atteso dello stimatore e il valore del parametro da stimare. Quindi uno stimatore è corretto se:
+\[
+  b(\hat{\theta}) = E(\hat{\theta}) - \theta = 0
+\]
+dove $\hat{\theta}$ è lo stimatore e $\theta$ è il parametro da stimare.
+
+\subsection{Intervalli di confidenza}
+\begin{itemize}
+  \item \textbf{Intervallo superiore}:
+    \[
+      L_{sup} = \hat{\theta} + z_{\frac{\alpha}{2}} \cdot \frac{\sigma}{\sqrt{n}}
+    \]
+  \item \textbf{Intervallo inferiore}:
+    \[
+      L_{inf} = \hat{\theta} - z_{\frac{\alpha}{2}} \cdot \frac{\sigma}{\sqrt{n}}
+    \]
+\end{itemize}
+
+\end{document}
