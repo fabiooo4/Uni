@@ -167,4 +167,83 @@
 \tableofcontents
 \pagebreak
 
+% Info:
+% Esame: 4 esercizi. Si possono portare appunti, solo scritti a mano e non troppi.
+% Libro: Segnali e sistemi (Giuseppe Ricci & Maria Elena Valeher)
+% Libro2: Signals & systems second edition (Alan V. Oppenheim & Alan S. Willsky)
+\section{Concetti base}
+Un sistema è formato da \textbf{segnali trasmessi}, un'esempio di segnale
+è la voce che usiamo per comunicare tra di noi. Il sistema prende le informazioni
+ricevute dal segnale e le rielabora. 
+
+\noindent 
+Degli esempi di sistema sono:
+\begin{itemize}
+  \item Microfono-Casse
+  \item Freno della macchina
+\end{itemize}
+
+\subsection{Tipi di segnali}
+I segnali possono essere di due tipi:
+
+\begin{itemize}
+  \item \textbf{Segnali a tempo continuo}: Segnali che hanno infiniti punti per ogni
+    infinitesimo di tempo.
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \draw[->] (-1,0) -- (5,0) node[right] {$t$};
+        \draw[->] (0,-1.5) -- (0,1.5) node[above] {$x(t)$};
+        \draw[domain=0:4.5,smooth,variable=\x,blue] plot ({\x},{sin(\x*5 r)});
+      \end{tikzpicture}
+      \caption{Esempio di segnale a tempo continuo}
+    \end{figure}
+  \item \textbf{Segnali a tempo discreto}: Segnali che hanno un numero finito di punti
+    per ogni intervallo di tempo.
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \draw[->] (-1,0) -- (5,0) node[right] {$n$};
+        \draw[->] (0,-1.5) -- (0,1.5) node[above] {$x[n]$};
+        \draw[domain=0:4.5,smooth,variable=\x,white] plot ({\x},{sin(\x*5 r)});
+        \foreach \x in {0,0.2,...,4.5}
+        \draw[blue,thick] (\x,0) -- (\x,{sin(\x*5 r)});
+      \end{tikzpicture}
+      \caption{Esempio di segnale a tempo discreto}
+    \end{figure}
+
+\end{itemize}
+
+\noindent
+Per elaborare i dati attraverso un computer bisogna convertire un segnale continuo
+in uno discreto, questo processo è chiamato \textbf{campionamento}.
+Una volta campionato il segnale si deve \textbf{quantizzare}, ovvero approssimare
+il valore del segnale a un valore discreto. Infine si fa \textbf{encoding}, ovvero
+si codifica il segnale per poterlo adattare ad un altro tipo di segnale.
+
+\noindent
+I segnali possono essere di dimensioni diverse, ad esempio:
+\begin{itemize}
+  \item L'andamento di una borsa è un segnale a 1 dimensione.
+  \item Una foto in bianco e nero è un segnale a 2 dimensioni \( (x,y) \).
+  \item Una foto colorata è un segnale multidimensionale \( (x,y)^3 \) per
+    rappresentare ogni colore (R,G,B).
+\end{itemize}
+
+\subsection{Rappresentazione dei sistemi}
+Un sistema lo rappresentiamo con un blocco, dove all'ingresso mettiamo il segnale
+in ingresso e all'uscita il segnale in uscita.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw,minimum width=1cm,minimum height=1cm] (A) at (0,0) {\( \Sigma \) };
+    \draw[->] (-1,0) -- (A) node[midway,above left] {Ingresso};
+    \draw[->] (A) -- (1,0) node[midway,above right] {Uscita};
+  \end{tikzpicture}
+  \caption{Rappresentazione di un sistema}
+\end{figure}
+
+\noindent Per gestire un segnale si possono usare anche più sistemi che gestiscono
+input e output per ottenere un risultato finale.
+
 \end{document}
