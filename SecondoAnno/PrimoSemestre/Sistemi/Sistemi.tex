@@ -241,8 +241,8 @@ in ingresso e all'uscita il segnale in uscita.
   \centering
   \begin{tikzpicture}
     \node[draw,minimum width=1cm,minimum height=1cm] (A) at (0,0) {\( \Sigma \) };
-    \draw[->] (-1,0) -- (A) node[midway,above left] {Ingresso};
-    \draw[->] (A) -- (1,0) node[midway,above right] {Uscita};
+    \draw[->] (-1,0) -- (A) node[midway,above left] {$\stackrel{u(t)}{\text{Ingresso}}$};
+    \draw[->] (A) -- (1,0) node[midway,above right] {$\stackrel{v(t)}{\text{Uscita}}$};
   \end{tikzpicture}
   \caption{Rappresentazione di un sistema}
 \end{figure}
@@ -255,8 +255,8 @@ input in un altro sistema, ad esempio:
   \centering
   \begin{tikzpicture}
     \node[draw,minimum width=1cm,minimum height=1cm] (A) at (0,0) {\( \Sigma \) };
-    \draw[->] (-1,0) -- (A) node[midway,above left] {Ingresso};
-    \draw[->] (A) -- (1,0) node[midway,above right] {Uscita};
+    \draw[->] (-1,0) -- (A) node[midway,above left] {$\stackrel{u(t)}{\text{Ingresso}}$};
+    \draw[->] (A) -- (1,0) node[midway,above right] {$\stackrel{v(t)}{\text{Uscita}}$};
 
     \node[draw,minimum width=1cm,minimum height=1cm] (B) at (0,-1.5) {\( G \) };
     \draw[<-] (-0.75,0) |- (B) node[midway,above left] {};
@@ -264,5 +264,144 @@ input in un altro sistema, ad esempio:
   \end{tikzpicture}
   \caption{Rappresentazione di due sistemi in cascata}
 \end{figure}
+
+\section{Notazioni}
+Tutti i segnali sono indicati con la lettera minuscola, ad esempio:
+\[
+  \underbrace{f}_{segnale} \quad \underbrace{f(t)}_{\text{segnale a tempo continuo}}
+\] 
+Oppure si utilizzano delle notazioni standard:
+\begin{enumerate}
+  \item \( t,\;\tau,\;t_i \): tempo continuo
+  \item \( k \): tempo discreto
+\end{enumerate}
+
+\noindent
+In questo corso si considerano solo segnali continui o discreti monodimensionali
+non negativi e solo sistemi \textbf{LTI} (Lineari e Tempo Invarianti):
+\begin{enumerate}
+  \item \textbf{Lineare}: Vale la \textbf{sovrapposizione degli effetti}, cioè se \( v_1(t) \)
+    è l'uscita del sistema per \( u_1(t) \) e \( v_2(t) \) è l'uscita del sistema
+    per \( u_2(t) \) allora \( v_1(t) + v_2(t) \) è l'uscita del sistema per
+    \( u_1(t) + u_2(t) \).
+  \item \textbf{Tempo Invariante}: A prescindere dal punto di tempo in cui si
+    applica il segnale, l'uscita del sistema è sempre la stessa.
+    \label{04-10-D1}
+\end{enumerate}
+
+\noindent
+I sistemi vengono rappresentati con lettere maiuscole greche o non.
+
+\section{Sistemi}
+\subsection{Approccio classico}
+Questo approccio prevede di avere un \textbf{evento fisico} (circuito, molla, ecc...) e per
+questo evento bisogna definire un \textbf{modello} del sistema. Questo si può fare attraverso
+degli strumenti grafici o matematici. Come strumenti matematici si usano:
+\begin{enumerate}
+  \item \textbf{Continuo}: 
+    \begin{enumerate}
+      \item Equazioni differenziali
+      \item Trasformate di Laplace
+      \item Trasformate di Fourier
+    \end{enumerate}
+  \item \textbf{Discreto}: 
+    \begin{enumerate}
+      \item Equazioni alle differenze
+      \item Trasformate Z
+    \end{enumerate}
+\end{enumerate}
+
+\noindent Una volta modellato l'evento fisico si può fare un'analisi del sistema
+e ciò permette di descrivere la \textbf{stabilità} e le \textbf{proprietà} del sistema.
+
+\noindent
+L'ultima fase è quella di \textbf{sintesi}, cioè la fase di correzione del sistema
+per far si che risulti stabile.
+
+\subsection{Approccio moderno}
+L'approccio moderno ha solo un blocco per rappresentare gli stati:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw,minimum width=1cm,minimum height=1cm] (A) at (0,0) {Stati};
+    \draw[->] (-1,0) -- (A) node[midway,above left] {Ev. Fisico};
+  \end{tikzpicture}
+  \caption{Rappresentazione di un sistema con l'approccio moderno}
+\end{figure}
+
+\subsection{Obsolescenza}
+L'obsolescenza è il numero di anni che un sistema può durare. I sistemi che
+verranno studiati sono quelli che si trovano nella sezione di comportamento lineare,
+cioè i sistemi che non cambiano nel tempo.
+\label{04-10-D2}
+Un'esempio è una molla che si deforma in base alla forza applicata, quando essa
+si deforma assume un comportamento plastico e quindi non lineare,
+mentre quando non si deforma assume un comportamento elastico e quindi lineare.
+
+\subsection{Causalità}
+La causalità è l'input del sistema e l'effetto è l'output che produce, quindi
+la causa precede sempre l'effetto. Non esiste un sistema causale che abbia
+l'output prima dell'input.
+\label{04-10-D3}
+
+\subsection{Stabilità}
+Un sistema è stabile se, a seguito di un'oscillazione, ritorna al suo stato
+di equilibrio e il sistema si ferma. Un sistema è instabile se, a seguito di un'oscillazione,
+si allontana dal suo stato di equilibrio.
+\label{04-10-D4}
+
+\subsubsection{Stabilità BIBO (Bounded Input Bounded Output)}
+Se il segnale di ingresso è limitato in ampiezza allora il segnale di uscita
+è limitato in ampiezza.
+\[
+\exists M > 0,\; | u(t) | < M \; \forall t \in \mathbb{R}
+\] 
+\[
+\Downarrow
+\] 
+\[
+  \exists N > 0,\; | v(t) | < N \; \forall t \in \mathbb{R}
+\] 
+\[
+  \text{con} \; M,N \in \mathbb{R}\; \text{non per forza uguali}
+\] 
+
+\label{04-10-D5}
+
+\subsubsection{Stabilità Asintotica}
+Se il segnale di ingresso si annulla allora il segnale di uscita si annulla.
+\[
+\lim_{t \to \infty} v(t) = 0 \;\; \forall r \; \text{di} \; u(t),\; t \in \mathbb{R}
+\] 
+\label{04-10-D6}
+
+\noindent
+La stabilità asintotica implica la stabilità BIBO, ma non viceversa.
+
+\section{Modello di segnali}
+Un segnale si può scrivere nel seguente modo:
+\[
+\alpha \in \mathbb{C}
+\] 
+\[
+  l \in \mathbb{R}
+\] 
+
+\[
+  y(t) = \sum_{i} \sum_{j} c_{ij} \cdot \underbrace{l^{\alpha t}}_{\text{Parte esponenziale}}
+  \cdot \underbrace{\frac{t^l}{l!}}_{\text{Parte polinomiale}}
+\] 
+Ad esempio con \( l = 1 \):
+\[
+  y(t) = \sum_{i} \sum_{j} c_{ij} \cdot l^{\alpha t} \cdot \frac{t^1}{1!} =
+  \sum_{i} \sum_{j} c_{ij} \cdot l^{\alpha t} \cdot t
+\] 
+\label{04-10-D7}
+Con \( \alpha < 0 \) il sistema è stabile perchè l'esponenziale tende a 0
+Con \( l = 2 \):
+\[
+  y(t) = \sum_{i} \sum_{j} c_{ij} \cdot l^{\alpha t} \cdot \frac{t^2}{2!} =
+  \sum_{i} \sum_{j} c_{ij} \cdot l^{\alpha t} \cdot \frac{t^2}{2}
+\]
 
 \end{document}
