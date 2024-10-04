@@ -204,7 +204,7 @@ I segnali possono essere di due tipi:
       \centering
       \begin{tikzpicture}
         \draw[->] (-1,0) -- (5,0) node[right] {$n$};
-        \draw[->] (0,-1.5) -- (0,1.5) node[above] {$x[n]$};
+        \draw[->] (0,-1.5) -- (0,1.5) node[above] {$x(n)$};
         \draw[domain=0:4.5,smooth,variable=\x,white] plot ({\x},{sin(\x*5 r)});
         \foreach \x in {0,0.2,...,4.5}
         \draw[blue,thick] (\x,0) -- (\x,{sin(\x*5 r)});
@@ -216,10 +216,14 @@ I segnali possono essere di due tipi:
 
 \noindent
 Per elaborare i dati attraverso un computer bisogna convertire un segnale continuo
-in uno discreto, questo processo è chiamato \textbf{campionamento}.
+in uno discreto, questo processo è chiamato \textbf{campionamento} e non è
+\textbf{distruttivo}, cioè si può tornare indietro al segnale originale.
 Una volta campionato il segnale si deve \textbf{quantizzare}, ovvero approssimare
-il valore del segnale a un valore discreto. Infine si fa \textbf{encoding}, ovvero
-si codifica il segnale per poterlo adattare ad un altro tipo di segnale.
+il valore del segnale a un valore discreto, questa operazione è \textbf{parzialmente
+distruttiva}, cioè si può tornare indietro al segnale originale perdendo alcune
+informazioni. Infine si fa \textbf{encoding}, ovvero
+si codifica il segnale per poterlo adattare ad un altro tipo di segnale, questo
+processo è \textbf{completamente distruttivo}.
 
 \noindent
 I segnali possono essere di dimensioni diverse, ad esempio:
@@ -243,7 +247,22 @@ in ingresso e all'uscita il segnale in uscita.
   \caption{Rappresentazione di un sistema}
 \end{figure}
 
-\noindent Per gestire un segnale si possono usare anche più sistemi che gestiscono
-input e output per ottenere un risultato finale.
+\noindent
+L'output di un sistema può essere rielaborato per essere inserito nuovamente come
+input in un altro sistema, ad esempio:
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw,minimum width=1cm,minimum height=1cm] (A) at (0,0) {\( \Sigma \) };
+    \draw[->] (-1,0) -- (A) node[midway,above left] {Ingresso};
+    \draw[->] (A) -- (1,0) node[midway,above right] {Uscita};
+
+    \node[draw,minimum width=1cm,minimum height=1cm] (B) at (0,-1.5) {\( G \) };
+    \draw[<-] (-0.75,0) |- (B) node[midway,above left] {};
+    \draw[<-] (B) -| (0.75,0) node[midway,above right] {};
+  \end{tikzpicture}
+  \caption{Rappresentazione di due sistemi in cascata}
+\end{figure}
 
 \end{document}
