@@ -302,5 +302,24 @@ un \textbf{group owner} e per ogni file ci sono 3 tipi di permessi:
   \item \textbf{Execute}
 \end{enumerate}
 
+\section{Linux}
+\subsection{Filesystem}
+In linux qualsiasi cosa è un file, cioè un contenitore di dati. I principali
+tipi di file sono:
+\begin{enumerate}
+  \item \textbf{Regolare}: File classici utente
+  \item \textbf{Directory}: Informazioni relative ad altri file
+  \item \textbf{Pipe}: Comunicazioni tra processi
+  \item \textbf{Link}: Alias
+  \item \textbf{Socket}: Comunicazioni tra processi
+  \item \textbf{Speciale}: Dispositivi
+\end{enumerate}
+
+\noindent Tutti i file sono organizzati in un albero, chiamato \textbf{file system}.
+\begin{enumerate}
+  \item \textbf{root}: La radice del file system: /
+  \item \textbf{nodo}: File (se ha già figli è una directory)
+\end{enumerate}
+
 
 \end{document}

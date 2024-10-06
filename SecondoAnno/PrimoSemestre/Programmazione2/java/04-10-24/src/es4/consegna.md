@@ -1,0 +1,1 @@
+Si scriva un programma che stampa 26 volte la cornice 10 x 10, usando ogni volta un carattere alfabetico diverso al posto di '@', dalla 'a' alla 'z'.
