@@ -203,8 +203,8 @@ I segnali possono essere di due tipi:
     \begin{figure}[H]
       \centering
       \begin{tikzpicture}
-        \draw[->] (-1,0) -- (5,0) node[right] {$n$};
-        \draw[->] (0,-1.5) -- (0,1.5) node[above] {$x(n)$};
+        \draw[->] (-1,0) -- (5,0) node[right] {$k$};
+        \draw[->] (0,-1.5) -- (0,1.5) node[above] {$x(k)$};
         \draw[domain=0:4.5,smooth,variable=\x,white] plot ({\x},{sin(\x*5 r)});
         \foreach \x in {0,0.2,...,4.5}
         \draw[blue,thick] (\x,0) -- (\x,{sin(\x*5 r)});
@@ -218,13 +218,37 @@ I segnali possono essere di due tipi:
 Per elaborare i dati attraverso un computer bisogna convertire un segnale continuo
 in uno discreto, questo processo è chiamato \textbf{campionamento} e non è
 \textbf{distruttivo}, cioè si può tornare indietro al segnale originale.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw[->] (-1,0) -- (5,0) node[right] {$t$};
+    \draw[->] (0,-1.5) -- (0,1.5) node[above] {$x(t)$};
+    \draw[domain=0:4.5,smooth,variable=\x] plot ({\x},{sin(\x*5 r)});
+    \draw[domain=0:4.5,smooth,variable=\x,blue, thick] plot[ycomb, mark=*, mark size=1.5pt] ({\x},{sin(\x*5 r)});
+  \end{tikzpicture}
+  \caption{Esempio di campionamento}
+\end{figure}
+
+\noindent
 Una volta campionato il segnale si deve \textbf{quantizzare}, ovvero approssimare
 il valore del segnale a un valore discreto, questa operazione è \textbf{parzialmente
 distruttiva}, cioè si può tornare indietro al segnale originale perdendo alcune
-informazioni. Infine si fa \textbf{encoding}, ovvero
+informazioni.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw[->] (-1,0) -- (5,0) node[right] {$t$};
+    \draw[->] (0,-1.5) -- (0,1.5) node[above] {$x(t)$};
+    \draw[domain=0:4.5,smooth,variable=\x,blue] plot[const plot] ({\x},{sin(\x*5 r)});
+  \end{tikzpicture}
+  \caption{Esempio di quantizzazione}
+\end{figure}
+
+Infine si fa \textbf{encoding}, ovvero
 si codifica il segnale per poterlo adattare ad un altro tipo di segnale, questo
 processo è \textbf{completamente distruttivo}.
 
+\vspace{1em}
 \noindent
 I segnali possono essere di dimensioni diverse, ad esempio:
 \begin{itemize}
@@ -286,7 +310,49 @@ non negativi e solo sistemi \textbf{LTI} (Lineari e Tempo Invarianti):
     \( u_1(t) + u_2(t) \).
   \item \textbf{Tempo Invariante}: A prescindere dal punto di tempo in cui si
     applica il segnale, l'uscita del sistema è sempre la stessa.
-    \label{04-10-D1}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \draw[->] (-0.2,0) -- (6,0) node[right] {$t$};
+        \draw[->] (0,-0.2) -- (0,2.2) node[above] {$u(t)$};
+        \draw[blue, domain=0:6, smooth] plot ({\x},{sin((cos(\x r) * \x - 3)/2 r)+1});
+
+        \node[draw,minimum width=1cm,minimum height=1cm] (A) at (3,-2) {\( \Sigma \) };
+        \draw[<-] (A) -- ++(0,1) node[midway,above left] {};
+        \draw[->] (A) -- ++(0,-1) node[midway,above right] {};
+        \node[below left, blue] at (0,0) {$t_0$};
+
+        \draw[->] (-0.2,-5) -- (6,-5) node[right] {$t$};
+        \draw[->] (0,-5.2) -- (0,-3.2) node[above] {$v(t)$};
+        \draw[red, domain=0:6, samples=100, smooth, yshift=-5cm] plot ({\x},{sin((cos(2*\x r) * \x - 3)/2 r)+1});
+        \node[below left, red] at (0,-5) {$t_0$};
+      \end{tikzpicture}
+    \end{figure}
+    \[
+      t_1 = t_0 + t_n
+    \] 
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \draw[->] (-0.2,0) -- (6,0) node[right] {$t$};
+        \draw[->] (0,-0.2) -- (0,2.2) node[above] {$u(t)$};
+        \node[below left] at (0,0) {$t_0$};
+        \draw[blue, domain=0:5, smooth] plot ({\x + 1},{sin((cos(\x r) * \x - 3)/2 r)+1});
+        \node[below, blue] at (1,0) {$t_1$};
+
+        \node[draw,minimum width=1cm,minimum height=1cm] (A) at (3,-2) {\( \Sigma \) };
+        \draw[<-] (A) -- ++(0,1) node[midway,above left] {};
+        \draw[->] (A) -- ++(0,-1) node[midway,above right] {};
+        \draw[blue] (0.1,0.1) -- ++(0,0.2) -- ++(0.9,0) node[midway, above, blue] {$t_n$} -- ++(0,-0.2);
+
+        \draw[->] (-0.2,-5) -- (6,-5) node[right] {$t$};
+        \draw[->] (0,-5.2) -- (0,-3.2) node[above] {$v(t)$};
+        \draw[red, domain=0:5, samples=100, smooth, yshift=-5cm] plot ({\x + 1},{sin((cos(2*\x r) * \x - 3)/2 r)+1});
+        \node[below, red] at (1,-5) {$t_1$};
+        \draw[red] (0.1,-4.9) -- ++(0,0.2) -- ++(0.9,0) node[midway, above, red] {$t_n$} -- ++(0,-0.2);
+      \end{tikzpicture}
+      \caption{Esempio di invarianza nel tempo}
+    \end{figure}
 \end{enumerate}
 
 \noindent
@@ -333,7 +399,38 @@ L'approccio moderno ha solo un blocco per rappresentare gli stati:
 L'obsolescenza è il numero di anni che un sistema può durare. I sistemi che
 verranno studiati sono quelli che si trovano nella sezione di comportamento lineare,
 cioè i sistemi che non cambiano nel tempo.
-\label{04-10-D2}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    % Define constants
+    \def\A{1}
+    \def\C{1}
+    \def\xone{-2}
+    \def\xtwo{2}
+
+    % Left quadratic part: A(x - x1)^2
+    \draw[blue, thick, domain=-4:\xone, samples=100] 
+      plot (\x, {\A*(\x - \xone)^2 + \C});
+
+    % Middle constant part: C
+    \draw[blue, thick] 
+      plot[domain=\xone:\xtwo] (\x, {\C});
+
+    % Right quadratic part: A(x - x2)^2
+    \draw[blue, thick, domain=\xtwo:4, samples=100] 
+      plot (\x, {\A*(\x - \xtwo)^2 + \C});
+
+    % Axes
+    \draw[->] (-4.2,0) -- (4.5,0) node[right] {$x$};
+    \draw[->] (-4,-0.5) -- (-4,5) node[above] {$y$};
+
+    % Labels
+    \node[above] at (0, 1) {Comportamento lineare};
+  \end{tikzpicture}
+  \caption{Sezione di comportamento lineare}
+\end{figure}
+
+\noindent
 Un'esempio è una molla che si deforma in base alla forza applicata, quando essa
 si deforma assume un comportamento plastico e quindi non lineare,
 mentre quando non si deforma assume un comportamento elastico e quindi lineare.
@@ -342,13 +439,61 @@ mentre quando non si deforma assume un comportamento elastico e quindi lineare.
 La causalità è l'input del sistema e l'effetto è l'output che produce, quindi
 la causa precede sempre l'effetto. Non esiste un sistema causale che abbia
 l'output prima dell'input.
-\label{04-10-D3}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    % Define constants
+    \def\A{-0.4}      % Amplitude
+    \def\lambda{0.2}  % Damping factor
+    \def\omega{-1.1}     % Angular frequency
+    \def\phi{-6.9}       % Phase shift
+    \def\offset{-6.7}         % X Offset
+
+
+    \draw[->] (-0.5,0) -- (6,0) node[right] {$t$};
+    \draw[->] (0,-0.2) -- (0,1.5) node[above] {$u(t)$};
+
+    \draw[domain=0:5.9,smooth,tension=0.8,blue] plot ({\x}, {2.2*\x*exp(-0.8*\x)})
+      node[above right] {$u(t)$};
+
+    \draw[domain=1:5.9,smooth,tension=0.8,red] plot ({\x}, 
+      {\A*exp(-\lambda*(\x + \offset)) * cos((\omega * (\x + \offset) + \phi) r) + 1})
+      node[above] {$v(t)$};
+
+    \node[blue] at (0,0) [below left] {$t_0$};
+    \node[red] at (1,0) [below] {$t_1$};
+
+    \node at (3,-1) {$\color{blue} t_0 \color{black} < \color{red} t_1$};
+  \end{tikzpicture}
+  \caption{Esempio di causalità}
+\end{figure}
 
 \subsection{Stabilità}
 Un sistema è stabile se, a seguito di un'oscillazione, ritorna al suo stato
 di equilibrio e il sistema si ferma. Un sistema è instabile se, a seguito di un'oscillazione,
 si allontana dal suo stato di equilibrio.
-\label{04-10-D4}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    % Axis
+    \draw[->] (-0.2,0) -- (4,0) node[right] {$t$};
+    \draw[->] (0,-0.2) -- (0,3) node[above] {$y$};
+
+    \draw[red, domain=-2:1, samples=100, smooth] plot ({\x+2},{exp(\x)});
+  \end{tikzpicture}
+  \caption{Sistema instabile}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    % Axis
+    \draw[->] (-0.2,0) -- (4,0) node[right] {$t$};
+    \draw[->] (0,-0.7) -- (0,2) node[above] {$y$};
+
+    \draw[red, domain=0.001:3.9, samples=100, smooth] plot ({\x},{sin(5*\x r)/(3*\x)});
+  \end{tikzpicture}
+  \caption{Sistema stabile}
+\end{figure}
 
 \subsubsection{Stabilità BIBO (Bounded Input Bounded Output)}
 Se il segnale di ingresso è limitato in ampiezza allora il segnale di uscita
@@ -366,14 +511,58 @@ Se il segnale di ingresso è limitato in ampiezza allora il segnale di uscita
   \text{con} \; M,N \in \mathbb{R}\; \text{non per forza uguali}
 \] 
 
-\label{04-10-D5}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[]
+    % Input graph
+    \draw[->] (-0.2,0) -- (5,0) node[right] {$t$};
+    \draw[->] (0,-2) -- (0,2) node[above] {$u(t)$};
+    \draw[blue, domain=0.001:4.8, samples=100, smooth] plot ({\x},{sin(\x*\x r)/(0.5*\x)});
+    \draw[blue, dashed] (4.8,1.7) -- (0,1.7) node[left] {$M$};
+    \draw[blue, dashed] (4.8,-0.92) -- (0,-0.92) node[left] {$-M$};
+
+    % System
+    \node[draw,minimum width=1cm,minimum height=1cm] (A) at (2.5,-3) {\( \Sigma \) };
+    \draw[<-] (A) -- ++(0,1) node[midway,above left] {};
+    \draw[->] (A) -- ++(0,-1) node[midway,above right] {};
+
+    % Output graph
+    \draw[->] (0,-8) -- (0,-4) node[above] {$v(t)$};
+    \draw[->] (-0.2,-6) -- (5,-6) node[right] {$t$};
+    \draw[red, domain=0.001:4.8, samples=200, smooth] plot ({\x},{sin(\x*\x*\x*0.5 r)/(0.7*\x) - 6});
+    \draw[red, dashed] (4.8,-5) -- (0,-5) node[left] {$N$};
+    \draw[red, dashed] (4.8,-6.65) -- (0,-6.65) node[left] {$-N$};
+  \end{tikzpicture}
+  \caption{Esempio di sistema stabile BIBO}
+\end{figure}
 
 \subsubsection{Stabilità Asintotica}
 Se il segnale di ingresso si annulla allora il segnale di uscita si annulla.
 \[
 \lim_{t \to \infty} v(t) = 0 \;\; \forall r \; \text{di} \; u(t),\; t \in \mathbb{R}
 \] 
-\label{04-10-D6}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[]
+    % Input graph
+    \draw[->] (-0.2,0) -- (5,0) node[right] {$t$};
+    \draw[->] (0,-2) -- (0,2) node[above] {$u(t)$};
+    \draw[blue, domain=0.001:4.8, samples=100, smooth] plot ({\x},{(sin((\x*5)/2 r))/(1.3*\x)});
+    \node[above, blue, scale=0.8, yshift=0.2cm] at (5,0) {$\lim_{t \to \infty} = 0$};
+
+    % System
+    \node[draw,minimum width=1cm,minimum height=1cm] (A) at (2.5,-3) {\( \Sigma \) };
+    \draw[<-] (A) -- ++(0,1) node[midway,above left] {};
+    \draw[->] (A) -- ++(0,-1) node[midway,above right] {};
+
+    % Output graph
+    \draw[->] (0,-8) -- (0,-4) node[above] {$v(t)$};
+    \draw[->] (-0.2,-6) -- (5,-6) node[right] {$t$};
+    \draw[red, domain=0.001:4.8, smooth] plot ({\x},{sin(\x*5 r)/(2.5*\x) - 6});
+    \node[above, red, scale=0.8, yshift=0.2cm] at (5,-6) {$\lim_{t \to \infty} = 0$};
+  \end{tikzpicture}
+  \caption{Esempio di sistema stabile asintotico}
+\end{figure}
 
 \noindent
 La stabilità asintotica implica la stabilità BIBO, ma non viceversa.
@@ -388,20 +577,44 @@ Un segnale si può scrivere nel seguente modo:
 \] 
 
 \[
-  y(t) = \sum_{i} \sum_{j} c_{ij} \cdot \underbrace{l^{\alpha t}}_{\text{Parte esponenziale}}
-  \cdot \underbrace{\frac{t^l}{l!}}_{\text{Parte polinomiale}}
+  y(t) = \sum_{i} \sum_{j} c_{ij} \cdot \color{blue} \underbrace{l^{\alpha t}}_{\text{Parte esponenziale}}
+  \color{black} \cdot \color{green} \underbrace{\frac{t^l}{l!}}_{\text{Parte polinomiale}}
 \] 
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw[->] (-3,0) -- (3,0) node[right] {$t$};
+    \draw[->] (0,-0.2) -- (0,3) node[above] {$y(t)$};
+    \draw[domain=-3:1.1,smooth,variable=\x,blue] plot ({\x},{exp(\x)}) node[above right, scale=0.9] {$l^{\alpha t} \;\; (\alpha > 0)$};
+    \draw[domain=-1.1:3,smooth,variable=\x,cyan] plot ({\x},{exp(-\x)}) node[above right, scale=0.9] {$l^{\alpha t} \;\; (\alpha < 0)$};
+    \draw[domain=0:3,smooth,variable=\x,green] plot ({\x},{\x}) node[above right, scale=0.9] {$t$};
+
+    \draw[->] (0,-1) -- ++(0,-1) node[midway, right] {Risultato};
+
+    \draw[->,yshift=1cm] (-3.2,-6) -- (3,-6) node[right] {$t$};
+    \draw[->,yshift=1cm] (-3,-6.2) -- (-3,-4) node[above] {$y(t)$};
+    \draw[domain=0:5.9,smooth,tension=0.8,red,yshift=-5cm,xshift=-3cm] plot ({\x}, {2.2*\x*exp(-0.8*\x)});
+  \end{tikzpicture}
+  \caption{Esempo di segnale}
+\end{figure}
+
+\noindent
 Ad esempio con \( l = 1 \):
 \[
   y(t) = \sum_{i} \sum_{j} c_{ij} \cdot l^{\alpha t} \cdot \frac{t^1}{1!} =
   \sum_{i} \sum_{j} c_{ij} \cdot l^{\alpha t} \cdot t
 \] 
-\label{04-10-D7}
-Con \( \alpha < 0 \) il sistema è stabile perchè l'esponenziale tende a 0
+
+\noindent
+Con \( \alpha < 0 \) il sistema è stabile perchè l'esponenziale tende a 0.
+
+\vspace{1em}
+\noindent 
 Con \( l = 2 \):
 \[
   y(t) = \sum_{i} \sum_{j} c_{ij} \cdot l^{\alpha t} \cdot \frac{t^2}{2!} =
   \sum_{i} \sum_{j} c_{ij} \cdot l^{\alpha t} \cdot \frac{t^2}{2}
 \]
+ecc...
 
 \end{document}
