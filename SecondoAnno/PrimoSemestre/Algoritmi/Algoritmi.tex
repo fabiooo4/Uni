@@ -327,7 +327,20 @@ f \in O(g)
 \[
   \exists c > 0\; \exists \bar{n}\;\; \forall n \ge \bar{n}\;\; f(n) \le c g(n)
 \] 
-\label{07-10-D1}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    % axis
+    \draw[->] (-0.2,0) -- (6,0) node[right] {$t$};
+    \draw[->] (0,-0.2) -- (0,5) node[above] {$y$};
+
+    \draw[red, domain=0:5, samples=100, smooth] plot ({\x},{exp(\x/3)}) node[right] {$cg$};
+    \draw[blue, domain=0:5.3, samples=100, smooth] plot ({\x},{exp(\x/5) + sin(deg(5*\x))/2}) node[right] {f};
+
+    \draw[dashed] (1.72,1.77) -- (1.75,0) node[below] {$\bar{n}$};
+  \end{tikzpicture}
+  \caption{Esempio di funzione \(f \in O(g)\)}
+\end{figure}
 
 \[
 f \in \Omega(g)

@@ -194,7 +194,7 @@ I segnali possono essere di due tipi:
       \begin{tikzpicture}
         \draw[->] (-1,0) -- (5,0) node[right] {$t$};
         \draw[->] (0,-1.5) -- (0,1.5) node[above] {$x(t)$};
-        \draw[domain=0:4.5,smooth,variable=\x,blue] plot ({\x},{sin(\x*5 r)});
+        \draw[domain=0:4.5,smooth,samples=100,variable=\x,blue] plot ({\x},{sin(\x*5 r)});
       \end{tikzpicture}
       \caption{Esempio di segnale a tempo continuo}
     \end{figure}
@@ -207,7 +207,7 @@ I segnali possono essere di due tipi:
         \draw[->] (0,-1.5) -- (0,1.5) node[above] {$x(k)$};
         \draw[domain=0:4.5,smooth,variable=\x,white] plot ({\x},{sin(\x*5 r)});
         \foreach \x in {0,0.2,...,4.5}
-        \draw[blue,thick] (\x,0) -- (\x,{sin(\x*5 r)});
+       \draw[blue,thick] (\x,0) -- (\x,{sin(\x*5 r)});
       \end{tikzpicture}
       \caption{Esempio di segnale a tempo discreto}
     \end{figure}
