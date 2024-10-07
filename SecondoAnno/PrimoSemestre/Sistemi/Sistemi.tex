@@ -577,7 +577,7 @@ Un segnale si può scrivere nel seguente modo:
 \] 
 
 \[
-  y(t) = \sum_{i} \sum_{j} c_{ij} \cdot \color{blue} \underbrace{l^{\alpha t}}_{\text{Parte esponenziale}}
+  y(t) = \sum_{i} \sum_{j} c_{ij} \cdot \color{blue} \underbrace{e^{\alpha t}}_{\text{Parte esponenziale}}
   \color{black} \cdot \color{green} \underbrace{\frac{t^l}{l!}}_{\text{Parte polinomiale}}
 \] 
 \begin{figure}[H]
@@ -601,8 +601,8 @@ Un segnale si può scrivere nel seguente modo:
 \noindent
 Ad esempio con \( l = 1 \):
 \[
-  y(t) = \sum_{i} \sum_{j} c_{ij} \cdot l^{\alpha t} \cdot \frac{t^1}{1!} =
-  \sum_{i} \sum_{j} c_{ij} \cdot l^{\alpha t} \cdot t
+  y(t) = \sum_{i} \sum_{j} c_{ij} \cdot e^{\alpha t} \cdot \frac{t^1}{1!} =
+  \sum_{i} \sum_{j} c_{ij} \cdot e^{\alpha t} \cdot t
 \] 
 
 \noindent
@@ -612,9 +612,33 @@ Con \( \alpha < 0 \) il sistema è stabile perchè l'esponenziale tende a 0.
 \noindent 
 Con \( l = 2 \):
 \[
-  y(t) = \sum_{i} \sum_{j} c_{ij} \cdot l^{\alpha t} \cdot \frac{t^2}{2!} =
-  \sum_{i} \sum_{j} c_{ij} \cdot l^{\alpha t} \cdot \frac{t^2}{2}
+  y(t) = \sum_{i} \sum_{j} c_{ij} \cdot e^{\alpha t} \cdot \frac{t^2}{2!} =
+  \sum_{i} \sum_{j} c_{ij} \cdot e^{\alpha t} \cdot \frac{t^2}{2}
 \]
 ecc...
+
+\vspace{1em}
+\noindent
+Siccome \( \alpha \in \mathbb{C} \) si può riscrivere come:
+\[
+\alpha = \lambda + j \omega
+\] 
+\[
+  \lambda \text{ è la parte reale}
+\] 
+\[
+  j \omega \text{ è la parte immaginaria}
+\] 
+Quindi il segnale diventa:
+\[
+  y(t) = \sum_{i} \sum_{j} c_{ij} \cdot e^{\lambda t} \cdot e^{j \omega t} \cdot \frac{t^l}{l!}
+\] 
+Utilizzando la forma trigonometrica dei numeri complessi si ha che:
+\[
+  e^{j \omega} = \cos(\omega t) + j \sin(\omega t)
+\] 
+\[
+  e^{(\lambda + j \omega)} = e^{\alpha t} = \rho (cos(\omega t) + j \sin(\omega t))
+\] 
 
 \end{document}
