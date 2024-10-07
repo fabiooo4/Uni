@@ -573,7 +573,10 @@ Un segnale si può scrivere nel seguente modo:
 \alpha \in \mathbb{C}
 \] 
 \[
-  l \in \mathbb{R}
+  t \in \mathbb{R}
+\] 
+\[
+l \in \mathbb{Z}
 \] 
 
 \[
@@ -640,5 +643,98 @@ Utilizzando la forma trigonometrica dei numeri complessi si ha che:
 \[
   e^{(\lambda + j \omega)} = e^{\alpha t} = \rho (cos(\omega t) + j \sin(\omega t))
 \] 
+Per le formule di Eulero che dice:
+\[
+  cos\theta = \frac{e^{j \theta} + e^{-j \theta}}{2}
+\] 
+\[
+  sin\theta = \frac{e^{j \theta} - e^{-j \theta}}{2j}
+\]
+\begin{figure}[H]
+  \begin{definition}[Complesso cognugato]
+    A ogni numero complesso è associato un cognugato che ha la stessa parte reale,
+    ma parte immaginaria opposta.
+  \end{definition}
+\end{figure}
+\label{07-10-D1}
+\[
+  \color{blue} S = \rho (cos(\theta) + j \sin(\theta)) \color{black}
+\] 
+\[
+  \color{red} \bar{S} = \rho (cos(-\theta) + j \sin(-\theta)) \color{black}
+\]
+\section{Funzioni in C}
+\subsection{Funzione a variabili complesse}
+\begin{figure}[H]
+  \begin{definition}[Funzione a variabile complessa]
+    Una funzione a variabile complessa è una funzione che ha come dominio un insieme
+    di numeri complessi e come codominio un insieme di numeri complessi.
+  \end{definition}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{definition}[Punto interno]
+    Un punto \( S_0 \) apparteiene a un intorno \( D(f) \subseteq \mathbb{C} \) è
+    interno a \( D(f) \) se e solo se esiste un disco di raggio \( \rho \in \mathbb{R} \) 
+    centrato in \( S_0 \) che è contenuto in \( D(f) \).
+  \end{definition}
+  \label{07-10-D2}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{definition}[Insieme aperto]
+    È l'insieme di tutti i punti che sono definiti interni.
+
+    \vspace{1em}
+    \noindent
+    Ad esempio:
+    \begin{itemize}
+      \item insieme \( \mathbb{C} \) 
+      \item insieme \( \emptyset \) 
+      \item i dischi in un punto \( S_0 \), \( B_{\rho}(S_0) = \left\{ S \in \mathbb{C} \;|\; \|S_0 - S\| < \rho \right\} \) 
+      \item TODO
+      \item semipiani destri o sinistri, superiori o inferiori
+    \end{itemize}
+  \end{definition}
+\end{figure}
+
+\subsection{Funzioni complesse}
+\[
+f: D(f) \to \mathbb{C} \quad D(f) \subseteq \mathbb{C} \text{ e aperto}
+\] 
+Alcuni esempi sono:
+\begin{itemize}
+  \item \( S \to S \quad D(f) = \mathbb{C} \) 
+  \item \( S \to S^2 \quad D(f) = \mathbb{C} \) 
+  \item \( S \to \Re(S) + j \Im(S)^2 \quad D(f) = \mathbb{C} \) 
+  \item \( S \to \sum_{k=0}^{n} a_k^S \quad a_k \in \mathbb{C};\;K;\;n \in \mathbb{Z} \)
+  \item TODO
+\end{itemize}
+
+\subsection{Funzioni polinomiali}
+\[
+  P(s) = \sum_{k=0}^{n} a_k \underbrace{s^k}_{\text{Variabile complessa}}
+\] 
+Con \( n=2 \):
+\[
+a_0 s^0 + a_1 s^1 + a_2 s^2
+\] 
+Con \( n=3 \):
+\[
+a_0 s^0 + a_1 s^1 + a_2 s^2 + a_3 s^3
+\] 
+
+\begin{theorem}[Teorema fondamentale delle radici]
+  Ogni polinomio \( P(S) \) a coefficienti complessi di grado \( n > 0 \) ha
+  \( n \) \textbf{radici complesse} ed è decomponibile in un solo modo
+  \[
+    P(s) = a_n \prod_{k=1}^{r} (s - s_k)^{u_k}
+  \] 
+  \( s_k \) sono delle radici
+
+  \noindent \( u_k \) sono le molteplicità delle radici
+
+  \noindent \( a_n \) è il coefficiente del polinomio
+\end{theorem}
 
 \end{document}
