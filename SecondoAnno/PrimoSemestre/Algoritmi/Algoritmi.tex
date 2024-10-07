@@ -30,7 +30,7 @@
 
 \usepackage{hyperref}
 \hypersetup{
-    colorlinks=false,
+  colorlinks=false,
 }
 
 % Code blocks
@@ -40,22 +40,22 @@
 \definecolor{backcolour}{rgb}{0.95,0.95,0.95}
 
 \lstdefinestyle{mystyle}{
-	backgroundcolor=\color{backcolour},
-	commentstyle=\color{codegreen},
-	keywordstyle=\color{magenta},
-	numberstyle=\tiny\color{codegray},
-	stringstyle=\color{codepurple},
-	basicstyle=\ttfamily\footnotesize,
-	breakatwhitespace=false,
-	breaklines=true,
-	captionpos=b,
-	keepspaces=true,
-	numbers=left,
-	numbersep=5pt,
-	showspaces=false,
-	showstringspaces=false,
-	showtabs=false,
-	tabsize=2
+  backgroundcolor=\color{backcolour},
+  commentstyle=\color{codegreen},
+  keywordstyle=\color{magenta},
+  numberstyle=\tiny\color{codegray},
+  stringstyle=\color{codepurple},
+  basicstyle=\ttfamily\footnotesize,
+  breakatwhitespace=false,
+  breaklines=true,
+  captionpos=b,
+  keepspaces=true,
+  numbers=left,
+  numbersep=5pt,
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  tabsize=2
 }
 
 \lstset{style=mystyle}
@@ -66,21 +66,6 @@
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
 \definecolor{mauve}{rgb}{0.58,0,0.82}
 
-\lstset{frame=tb,
-	aboveskip=3mm,
-	belowskip=3mm,
-	showstringspaces=false,
-	columns=flexible,
-	basicstyle={\small\ttfamily},
-	numbers=none,
-	numberstyle=\tiny\color{gray},
-	keywordstyle=\color{blue},
-	commentstyle=\color{dkgreen},
-	stringstyle=\color{mauve},
-	breaklines=true,
-	breakatwhitespace=true,
-	tabsize=3
-}
 
 \usepackage{import}
 \usepackage{pdfpages}
@@ -93,42 +78,42 @@
 \theoremstyle{break}
 \theoremheaderfont{\bfseries}
 \newmdtheoremenv[%
-	linecolor=gray,leftmargin=0,%
-	rightmargin=0,
-	innertopmargin=8pt,%
-	innerbottommargin=8pt,
-	ntheorem]{define}{Definizioni utili}[section]
+linecolor=gray,leftmargin=0,%
+rightmargin=0,
+innertopmargin=8pt,%
+innerbottommargin=8pt,
+ntheorem]{define}{Definizioni utili}[section]
 
 % Example frame
 \theoremstyle{break}
 \theoremheaderfont{\bfseries}
 \newmdtheoremenv[%
-	linecolor=gray,leftmargin=0,%
-	rightmargin=0,
-	innertopmargin=8pt,%
-	innerbottommargin=8pt,
-	ntheorem]{example}{Esempio}[section]
+linecolor=gray,leftmargin=0,%
+rightmargin=0,
+innertopmargin=8pt,%
+innerbottommargin=8pt,
+ntheorem]{example}{Esempio}[section]
 
 % Important definition frame
 \theoremstyle{break}
 \theoremheaderfont{\bfseries}
 \newmdtheoremenv[%
-	linecolor=gray,leftmargin=0,%
-	rightmargin=0,
-	backgroundcolor=gray!40,%
-	innertopmargin=8pt,%
-	innerbottommargin=8pt,
-	ntheorem]{definition}{Definizione}[section]
+linecolor=gray,leftmargin=0,%
+rightmargin=0,
+backgroundcolor=gray!40,%
+innertopmargin=8pt,%
+innerbottommargin=8pt,
+ntheorem]{definition}{Definizione}[section]
 
 % Exercise frame
 \theoremstyle{break}
 \theoremheaderfont{\bfseries}
 \newmdtheoremenv[%
-	linecolor=gray,leftmargin=0,%
-	rightmargin=0,
-	innertopmargin=8pt,%
-	innerbottommargin=8pt,
-	ntheorem]{exercise}{Esercizio}[section]
+linecolor=gray,leftmargin=0,%
+rightmargin=0,
+innertopmargin=8pt,%
+innerbottommargin=8pt,
+ntheorem]{exercise}{Esercizio}[section]
 
 % figure support
 \usepackage{import}
@@ -137,25 +122,25 @@
 \usepackage{pdfpages}
 \usepackage{transparent}
 \newcommand{\incfig}[1]{%
-	\def\svgwidth{\columnwidth}
-	\import{./figures/}{#1.pdf_tex}
+  \def\svgwidth{\columnwidth}
+  \import{./figures/}{#1.pdf_tex}
 }
 
 % FSM tikz
 \tikzset{
-    place/.style={
-        circle,
-        thick,
-        draw=black,
-        minimum size=6mm,
-    },
-        state/.style={
-        circle,
-        thick,
-        draw=blue!75,
-        fill=blue!20,
-        minimum size=6mm,
-    },
+  place/.style={
+    circle,
+    thick,
+    draw=black,
+    minimum size=6mm,
+  },
+  state/.style={
+    circle,
+    thick,
+    draw=blue!75,
+    fill=blue!20,
+    minimum size=6mm,
+  },
 }
 
 \pdfsuppresswarningpagegroup=1
@@ -178,11 +163,174 @@ Ogni algoritmo può essere implementato in modi diversi, sta al programmatore
 capire qual'è l'opzione migliore e scegliere in base alle proprie necessità.
 
 \subsection{Confronto tra algoritmi}
-Ogni algoritmo si può confrontare con gli altri in base alla complessità, cioè
-quanto tempo ci impiega a risolvere un problema.
+Ogni algoritmo si può confrontare con gli altri in base a tanti fattori, come:
+\begin{itemize}
+  \item \textbf{Complessità}: quanto ci vuole ad eseguire l'algoritmo
+  \item \textbf{Memoria}: quanto spazio in memoria occupa l'algoritmo
+\end{itemize}
 
 \subsection{Rappresentazione dei dati}
 Per implementare un algoritmo bisogna riuscire a strutturare i dati in maniera tale
 da riuscire a manipolarli in modo efficiente.
 
+\section{Calcolo della complessità}
+La complessità di un algoritmo mette in relazione il numero di istruzioni da eseguire
+con la dimensione del problema, e quindi è una funzione che dipende dalla dimensione
+del problema.
+
+\vspace{1em}
+\noindent
+La \textbf{dimensione del problema} è un insieme di oggetti adeguato a dare un idea
+chiara di quanto è grande il problema da risolvere, ma sta a noi decidere come
+misurare il problema.
+
+\noindent
+Ad esempio una matrice è più comoda da misurare come il numero di righe e il numero
+di colonne, al posto di misurarla come il numero di elementi totali.
+
+\vspace{1em}
+\noindent
+La complessità di solito si calcola come il \textbf{caso peggiore}, cioè il
+limite superiore di esecuzione dell'algoritmo.
+
+\subsection{Linguaggi di programmazione}
+Ogni linguaggio di programmazione è formato da diversi blocchi:
+\begin{enumerate}
+  \item \textbf{Blocco iterativo}: un tipico blocco di codice eseguito sequenzialmente
+    e tipicamente finisce con un punto e virgola.
+  \item \textbf{Blocco condizionale}: un blocco di codice che viene eseguito solo
+    se una condizione è vera.
+  \item \textbf{Blocco iterativo}: un blocco di codice che viene eseguito
+    ripetutamente finché una condizione è vera.
+\end{enumerate}
+
+\noindent
+Questi sono i blocchi base della programmazione e se riusciamo a calcolare
+la complessità di ognuno di questi blocchi possiamo calcolare più facilmente
+la complessità di un intero algoritmo.
+
+\subsubsection{Blocchi iterativi}
+\[
+  I_1 \;\; c_1(n)
+\] 
+\[
+  I_2 \;\; c_2(n)
+\] 
+\[
+  \vdots \;\;\;\;\;\; \vdots
+\] 
+\[
+  I_l \;\; c_l(n)
+\]
+Se ogni blocco ha complessità \( c_1(n) \), allora la complessità totale è data
+da:
+\[
+\sum_{i=1}^{l} c_i(n)
+\] 
+
+\subsubsection{Blocchi condizionali}
+\[
+  \text{IF cond} \;\; c_{cond}(n)
+\] 
+\[
+  I_1 \quad \quad c_1(n)
+\] 
+\[
+  \hspace{-1.75cm} \text{ELSE}
+\] 
+\[
+  I_2 \quad \quad c_2(n)
+\] 
+La complessità totale è data da:
+\[
+  c(n) = c_{cond}(n) + \max(c_1(n), c_2(n))
+\] 
+A volte la condizione è un test sulla dimensione del problema e in quel caso si
+può scrivere una complessità più precisa.
+
+\subsubsection{Blocchi iterativi}
+\[
+  \text{WHILE cond} \;\; c_{cond}(n)
+\] 
+\[
+  I \hspace{1.6cm} c_0(n)
+\] 
+Si cerca di trovare un limite superiore \( m \) al limite di iterazioni.
+
+\vspace{1em}
+\noindent
+Di conseguenza la complessità totale è data da:
+\[
+  c_{cond}(n) + m(c_{cond}(n) + c_0(n))
+\]
+
+\subsection{Esempio}
+\begin{figure}[H]
+  \begin{example}
+    Calcoliamo la complessità della moltiplicazione tra 2 matrici:
+    \[
+      A_{n \times m} \cdot B_{m \times l} = C_{n \times l}
+    \] 
+    L'algoritmo è il seguente:
+    \begin{lstlisting}[language=Scala]
+
+  for i <- 1 to n // n ( 5 ml + 4l + 2) + n + 1
+    for j <- 1 to l // l (5m + 2 + 1) + 1 + l 
+      c[i][j] <- 0
+      for k <- 1 to m // (m + 1 + m(4))
+        // 3 (moltiplicazione, somma e assegnamento)
+        // 1 (incremento for) 
+        c[i][j] += a[i][k] * b[k][j]
+    \end{lstlisting}
+
+    \noindent
+    Partiamo calcolando la complessità del ciclo for più interno. Non ha
+    senso tenere in considerazione tutti i dati, ma solo quelli rilevanti. In
+    questo caso avremo:
+    \[
+      (m + 1 + m(4)) = 5m + 1
+    \] 
+    Questa complessità contiene informazioni poco rilevanti perchè possono far
+    riferimento alla velocità della cpu e un millisecondo in più o in meno non cambia
+    nulla se teniamo in considerazione solo l'incognita abbiamo:
+    \[
+      m
+    \]
+    Questo semplifica molto i calcoli, rendendo meno probabili gli errori. Siccome
+    la complessità si calcola su numeri molto grandi, le costanti piccole prima o poi
+    verranno tolte perchè poco influenti.
+
+    \vspace{1em}
+    \noindent
+    La complessità totale alla fine sarebbe stata:
+    \[
+      5nml+4ml+2n+n+1
+    \] 
+    Ma ciò che ci interessa veramente è:
+    \[
+      5\color{red}nml\color{black}+4ml+2n+n+1
+    \] 
+    Se non consideriamo le costanti inutili, la complessità finale è:
+    \[
+      nml
+    \]
+    Nella maggior perte dei casi ci si concentra soltanto sull'ordine di grandezza
+    della complessità, e non sulle costanti.
+  \end{example}
+\end{figure}
+
+\subsection{Ordine di grandezza}
+L'ordine di grandezza è una funzione che approssima la complessità di un algoritmo:
+\[
+f \in O(g)
+\] 
+\[
+  \exists c > 0\; \exists \bar{n}\;\; \forall n \ge \bar{n}\;\; f(n) \le c g(n)
+\] 
+\label{07-10-D1}
+
+\[
+f \in \Omega(g)
+\] 
+Da fare a casa
 \end{document}
