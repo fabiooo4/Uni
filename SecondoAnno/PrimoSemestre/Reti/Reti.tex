@@ -167,4 +167,43 @@
 \tableofcontents
 \pagebreak
 
+\section{Introduzione}
+Il problema principale che bisogna affrontare è la comunicazione tra 2 calcolatori,
+cioè lo scambio di informazioni. Per far comunicare 2 calcolatori c'è bisogno di
+alcuni requisiti:
+\begin{enumerate}
+  \item \textbf{Protocollo}: È un insieme di regole che sovraintende alla comunicazione,
+    in cui si definiscono:
+    \begin{itemize}
+      \item Il formato dei messaggi
+      \item Le azioni da intraprendere nel gestire i messaggi stessi
+    \end{itemize}
+    Questo perchè per comunicare tutti devono "parlare la stessa lingua".
+
+  \item \textbf{Architettura di rete}: Come, fisicamente, trasportare i messaggi
+\end{enumerate}
+
+\begin{figure}[H]
+  \begin{example}
+    Prendiamo ad esempio la scrittura e la spedizione delle lettere. Ci sono 2
+    entità che vogliono scambiare delle lettere. Per gestire il trasporto della
+    lettera essa viene messa all'interno di una busta, che contiene informazioni su
+    dove deve essere spedita. Una volta inbustata, va imbucata in una cassetta delle
+    lettere da cui poi verrà prelevata e mandata alla cassetta delle lettere del
+    secondo utente dalla rete di distribuzione degli uffici postali.
+    L'utente poi preleverà la lettera dalla cassetta delle lettere e dopo aver
+    controllato le informazioni sulla busta, la aprirà e leggerà il contenuto.
+    \label{08-10-D1}
+
+    \noindent 
+    Il \textbf{Protocollo} è il linguaggio utilizzato per comunicare tra i 2
+    utenti, mentre l'\textbf{Architettura di rete} è tutta quella infrastruttura
+    che trasporta il messaggio tra i 2 utenti.
+  \end{example}
+\end{figure}
+
+\noindent
+La rappresentazione dei sistemi di comunicazione di solito viene fatta nella modalità
+top-down, cioè si parte dal livello applicativo (quello più alto), fino a scendere
+nei livelli più bassi in cui si trova la vera e propria architettura della rete.
 \end{document}
