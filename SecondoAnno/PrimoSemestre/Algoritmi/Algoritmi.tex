@@ -345,5 +345,207 @@ f \in O(g)
 \[
 f \in \Omega(g)
 \] 
-Da fare a casa
+\[
+  \exists c > 0\; \exists \bar{n}\;\; \forall n \ge \bar{n}\;\; f(n) \ge cg(n)
+\] 
+
+\[
+f \in \Theta(g)
+\] 
+\[
+  f \in O(g) \land f \in \Omega(g)
+\]
+
+\vspace{1em}
+\noindent
+Per gli algoritmi:
+\begin{figure}[H]
+  \begin{definition}
+    \[
+      A \in O(f)
+    \] 
+    So che l'algoritmo \( A \) termina entro il tempo definito dalla funzione \( f \).
+    Di conseguenza se un algoritmo termina entro un tempo \( f \) allora sicuramente
+    termina entro un tempo \( g \) più grande. Ad esempio:
+    \[
+      A \in O(n) \Rightarrow A \in O(n^2)
+    \] 
+    Questa affermazione è \textbf{corretta}, ma \textbf{non accurata}.
+
+    \vspace{1em}
+    \[
+      A \in \Omega(f)
+    \] 
+    Significa che esiste uno schema di input tale che se \( g(n) \) è il numero di
+    passi necessari per risolvere l'istanza \( n \) allora:
+    \[
+      g \in \Omega(f)
+    \] 
+    Quindi l'algoritmo non termina in un tempo minore di \( f \).
+
+    \vspace{1em}
+    \noindent
+    Calcolando la complessità si troverà lo schema di input tale che:
+    \[
+      g \in O(f)
+    \]
+    cioè il limite superiore di esecuzione dell'algoritmo.
+
+    \noindent
+    Successivamente ci si chiede se esistono algoritmi migliori e si 
+    troverà lo schema di input tale che:
+    \[
+      g \in \Omega(f)
+    \]
+    cioè il limite inferiore di esecuzione dell'algoritmo.
+
+    \noindent
+    Se i due limiti coincidono allora:
+    \[
+      g \in \Theta(f)
+    \]
+    abbiamo trovato il tempo di esecuzione dell'algoritmo.
+  \end{definition}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{theorem}[Teorema di Skolem]
+    Se c'è una formula che vale coi quantificatori esistenziali, allora nel linguaggio
+    si possono aggiungere delle costanti al posto delle costanti quantificate e assumere
+    che la formula sia valida con quelle costanti.
+  \end{theorem}
+\end{figure}
+
+\subsubsection{Esempi di dimostrazioni}
+\begin{figure}[H]
+  \begin{example}
+    È vero che \( n \in O(2n) \)?
+
+    \noindent
+    Se prendiamo \( c = 1 \) e \( \bar{n} = 1 \) allora:
+    \[
+    n \le c2n
+    \] 
+    Quindi è vero
+  \end{example}
+
+\end{figure}
+\begin{figure}[H]
+\begin{example}
+  È vero che \( 2n \in O(n) \)?
+
+  \noindent
+  Se prendiamo \( c = 2 \) e \( \bar{n} = 1 \) allora:
+  \[
+    2n \le 2n
+  \] 
+  Quindi è vero
+\end{example}
+\end{figure}
+\begin{figure}[H]
+  \begin{example}
+    È vero che \( f \in O(g) \iff g \in \Omega(f) \)?
+
+    \noindent
+    Dimostro l'implicazione da entrambe le parti:
+    \begin{itemize}
+      \item \( \to \): Usando il teorema di Skolem:
+        \[
+          \forall n \ge \bar{n}\;\; f(n) \le cg(n)
+        \] 
+        Trasformo la disequazione:
+        \[
+          \forall n \ge \bar{n}\;\; \frac{f(n)}{c} \le g(n)
+        \] 
+        \[
+          \forall n \ge \bar{n}\;\; g(n) \ge \frac{f(n)}{c}
+        \] 
+        \[
+          \forall n \ge \bar{n}\;\; g(n) \ge \frac{1}{c} f(n) \quad \square
+        \] 
+        Se la definizione di \( \Omega(g) \) è:
+        \[
+          \exists c' > 0\; \exists \bar{n}'\;\; \forall n \ge \bar{n}'\;\; f(n) \ge c'g(n)
+        \]
+        sappiamo che:
+        \[
+          c' = \frac{1}{c}
+        \] 
+      \item \( \leftarrow \): Usando il teorema di Skolem:
+        \[
+          \forall n \ge \bar{n}'\;\; g(n) \ge c'f(n)
+        \] 
+        Trasformo la disequazione:
+        \[
+          \forall n \ge \bar{n}'\;\; \frac{g(n)}{c'}\ge f(n)
+        \] 
+        \[
+          \forall n \ge \bar{n}'\;\; f(n) \le \frac{1}{c'} g(n) \quad \square
+        \] 
+    \end{itemize}
+  \end{example}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{example}
+    \[
+    f_1 \in O(g) \; f_2 \in O(g) \Rightarrow f_1 + f_2 \in O(g)
+    \] 
+    Dimostrazione:
+
+    Ipotesi
+    \[
+      \bar{n}_1 c_1\; \forall n > n_1 \quad f_1(n) \le c_1 g(n)
+    \] 
+    \[
+      \bar{n}_1 c_2\; \forall n > n_2 \quad f_2(n) \le c_2 g(n)
+    \] 
+
+    \[
+    f_1(n) + f_2(n) \le (c_1 + c_2)g(n) \quad \square
+    \] 
+    Quindi:
+    \[
+    c = (c_1 + c_2)
+    \] 
+    \[
+      \bar{n} = \max(\bar{n}_1, \bar{n}_2)
+    \] 
+  \end{example}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{example}
+    Se
+    \[
+    f_1 \in O(g_1) \; f_2 \in O(g_2)
+    \] 
+    è vero che:
+    \[
+    f_1 \cdot f_2 \in O(g_1 \cdot g_2)
+    \] 
+    Dimostrazione:
+
+    Ipotesi
+    \[
+      \bar{n}_1 c_1\; \forall n > \bar{n}_1 \quad f_1(n) \le c_1 g_1(n)
+    \] 
+    \[
+      \bar{n}_2 c_2\; \forall n > \bar{n}_2 \quad f_2(n) \le c_2 g_2(n)
+    \]
+
+    \[
+      f_1(n) \cdot f_2(n) \le (c_1 \cdot c_2) (g_1(n) \cdot g_2(n)) \quad \square
+    \] 
+    Quindi:
+    \[
+      c = c_1 \cdot c_2
+    \]
+    \[
+      \bar{n} = \max(\bar{n}_1, \bar{n}_2)
+    \]
+  \end{example}
+\end{figure}
+
+
 \end{document}
