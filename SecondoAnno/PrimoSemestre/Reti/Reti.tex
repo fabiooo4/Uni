@@ -186,16 +186,23 @@ alcuni requisiti:
 \begin{figure}[H]
   \begin{example}
     Prendiamo ad esempio la scrittura e la spedizione delle lettere. Ci sono 2
-    entità che vogliono scambiare delle lettere. Per gestire il trasporto della
-    lettera essa viene messa all'interno di una busta, che contiene informazioni su
-    dove deve essere spedita. Una volta inbustata, va imbucata in una cassetta delle
-    lettere da cui poi verrà prelevata e mandata alla cassetta delle lettere del
-    secondo utente dalla rete di distribuzione degli uffici postali.
+    utenti che vogliono scambiare delle lettere.
+    
+    Per gestire il trasporto della
+    lettera essa viene messa all'interno di una \textbf{busta}, che contiene informazioni
+    su dove deve essere spedita. Una volta inbustata, va imbucata in una cassetta 
+    delle lettere da cui poi verrà prelevata e mandata alla cassetta delle lettere 
+    del secondo utente dalla \textbf{rete} di distribuzione degli uffici postali.
+
     L'utente poi preleverà la lettera dalla cassetta delle lettere e dopo aver
     controllato le informazioni sulla busta, la aprirà e leggerà il contenuto.
-    \label{08-10-D1}
+    \begin{figure}[H]
+      \begin{center}
+        \includegraphics[width=0.95\textwidth]{rete-postale}
+      \end{center}
+      \caption{Esempio di comunicazione tra 2 utenti}
+    \end{figure}
 
-    \noindent 
     Il \textbf{Protocollo} è il linguaggio utilizzato per comunicare tra i 2
     utenti, mentre l'\textbf{Architettura di rete} è tutta quella infrastruttura
     che trasporta il messaggio tra i 2 utenti.
@@ -204,6 +211,6 @@ alcuni requisiti:
 
 \noindent
 La rappresentazione dei sistemi di comunicazione di solito viene fatta nella modalità
-top-down, cioè si parte dal livello applicativo (quello più alto), fino a scendere
+\textbf{top-down}, cioè si parte dal livello applicativo, quello più alto, fino a scendere
 nei livelli più bassi in cui si trova la vera e propria architettura della rete.
 \end{document}
