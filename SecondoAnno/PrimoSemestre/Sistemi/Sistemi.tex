@@ -430,8 +430,8 @@ l \in \mathbb{Z}
   \begin{tikzpicture}
     \draw[->] (-3,0) -- (3,0) node[right] {$t$};
     \draw[->] (0,-0.2) -- (0,3) node[above] {$y(t)$};
-    \draw[domain=-3:1.1,smooth,variable=\x,blue] plot ({\x},{exp(\x)}) node[above right, scale=0.9] {$l^{\alpha t} \;\; (\alpha > 0)$};
-    \draw[domain=-1.1:3,smooth,variable=\x,cyan] plot ({\x},{exp(-\x)}) node[above right, scale=0.9] {$l^{\alpha t} \;\; (\alpha < 0)$};
+    \draw[domain=-3:1.1,smooth,variable=\x,blue] plot ({\x},{exp(\x)}) node[above right, scale=0.9] {$e^{\alpha t} \;\; (\alpha > 0)$};
+    \draw[domain=-1.1:3,smooth,variable=\x,cyan] plot ({\x},{exp(-\x)}) node[above right, scale=0.9] {$e^{\alpha t} \;\; (\alpha < 0)$};
     \draw[domain=0:3,smooth,variable=\x,green] plot ({\x},{\x}) node[above right, scale=0.9] {$t$};
 
     \draw[->] (0,-1) -- ++(0,-1) node[midway, right] {Risultato};
@@ -676,5 +676,270 @@ Che ha una sola soluzione, ma con molteplicità 2.
     \( \sum_{r=1}^{\infty} \mu_r = n \) 
   \end{theorem}
 \end{figure}
+
+\section{Segnali}
+Il segnale più presente è quello \textbf{sinusoidale}.
+\subsection{Segnali continui}
+\[
+t \in \mathbb{R}\;\; \mathbb{R} \to \mathbb{C};\;\; \mathbb{R} \to \mathbb{R}
+\] 
+
+\subsubsection{Sinusoidale}
+\[
+x(t) = A \cdot cos(\omega_0 t + \phi) 
+\] 
+Dove:
+\begin{itemize}
+  \item \( A \) è l'ampiezza
+  \item \( \omega \) è la frequenza \( f = \frac{1}{T} \) (\( T = \text{ periodo} \) )
+  \item \( \phi \) è la fase
+\end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw[->] (-3,0) -- (3,0) node[right] {$k$};
+    \draw[->] (0,-1.5) -- (0,1.5) node[above] {$x(k)$};
+    \draw[blue,domain=-3:3,samples=100] plot ({\x},{sin(\x*5 r)});
+  \end{tikzpicture}
+  \label{10-10-D1}
+\end{figure}
+
+\begin{itemize}
+  \item \textbf{Periodico}
+    \[
+      x(t) = x(t + T_0)
+    \] 
+    \[
+      A cos(\omega_0 t + \phi) = A cos(\omega_0 t + \omega_0 T_0 + \phi)
+    \] 
+    \[
+      T_0 = \frac{2 \pi m}{\omega_0} \to \text{ periodo } \frac{2\pi}{\omega_0} \quad m \in \mathbb{R} \text{ (indica il multiplo)}
+    \] 
+    Il sistema si comporta nello stesso modo per ogni periodo.
+
+  \item \textbf{Shift temporale} equivale ad un cambio di fase
+    \[
+      A cos[\omega_0 (t - t_0)] = A cos(\omega_0t + \underbrace{\omega_0t_0}_{\Delta \phi})
+    \] 
+    \[
+      A cos[\omega_0 (t+t_0) + \phi] = A cos(\omega_o t + \omega_0 t_0 + \phi)
+    \] 
+
+  \item Se \( \phi = 0 \) Il segnale assume la seguente forma:
+    \[
+    A = cos(\omega_0 t)
+    \] 
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \draw[->] (-3,0) -- (3,0) node[right] {$k$};
+        \draw[->] (0,-1.5) -- (0,1.5) node[above] {$x(k)$};
+        \draw[blue,domain=-3:3,samples=100] plot ({\x},{sin(\x*5 r)});
+      \end{tikzpicture}
+      \label{10-10-D2}
+    \end{figure}
+
+    e ha le seguenti proprietà:
+    \begin{itemize}
+      \item Periodico
+      \item Pari
+        \[
+          x(t) = x(-t)
+        \] 
+    \end{itemize}
+    Se \( \phi = -\frac{\pi}{2} \) Il segnale assume la seguente forma:
+    \[
+    x(t) = \begin{cases}
+      A cos(\omega_0 t - \frac{\pi}{2})\\
+      A sin(\omega_0 t)\\
+      A cos(\omega_0 (t + \frac{T_0}{4}))
+    \end{cases}
+    \] 
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \draw[->] (-3,0) -- (3,0) node[right] {$k$};
+        \draw[->] (0,-1.5) -- (0,1.5) node[above] {$x(k)$};
+        \draw[blue,domain=-3:3,samples=100] plot ({\x},{sin(\x*5 r)});
+      \end{tikzpicture}
+      \label{10-10-D3}
+    \end{figure}
+    e ha le seguenti proprietà:
+    \begin{itemize}
+      \item Periodico
+      \item Dispari
+        \[
+        x(t) = -x(-t)
+        \] 
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Esponenziali reali}
+\[
+  x(t) = C e^{\alpha t}
+\] 
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw[->] (-3,0) -- (3,0) node[right] {$t$};
+    \draw[->] (0,-0.2) -- (0,3) node[above] {$x(t)$};
+    \draw[domain=-3:1.1,smooth,variable=\x,blue] plot ({\x},{exp(\x)}) node[above right, scale=0.9] {$e^{\alpha t} \;\; (\alpha > 0)$};
+    \draw[fill] (0,1) circle (0.03) node[right] {C};
+  \end{tikzpicture}
+  \caption{Esempo di segnale}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw[->] (-3,0) -- (3,0) node[right] {$t$};
+    \draw[->] (0,-0.2) -- (0,3) node[above] {$x(t)$};
+    \draw[domain=-1.1:3,smooth,variable=\x,cyan] plot ({\x},{exp(-\x)}) node[above right, scale=0.9] {$e^{\alpha t} \;\; (\alpha < 0)$};
+    \draw[fill] (0,1) circle (0.03) node[right] {C};
+  \end{tikzpicture}
+  \caption{Esempo di segnale}
+\end{figure}
+
+\begin{itemize}
+  \item \textbf{Shift Temporale}
+    \[
+      C e^{\alpha(t+t_0)} = C e^{\alpha t} \cdot \underbrace{C e^{\alpha t_0}}_{\mathbb{R}}
+    \] 
+\end{itemize}
+
+\subsubsection{Esponenziali complessi}
+\[
+  x(t) = C e^{\alpha t}
+\] 
+\[
+  C = |c| e^{j \Theta} \text{ (polare)}
+\] 
+\[
+  \alpha = r + j \omega_o \text{ (cartesiana)}
+\] 
+\vspace{1em}
+\[
+  x(t) = |c| e^{j \Theta} \cdot e^{(r + j \omega_0)t} =
+\] 
+\[
+ = |c| e^{rt} \cdot e^{j(\omega_0 t + \Theta)} \text{ (Eulero)}
+\] 
+\begin{definition}[Eulero]
+  La formula di Eulero è la seguente:
+  \[
+    e^{j(\omega_0 t + \Theta)} = cos(\omega_0 t + \Theta) + j sin(\omega_0 t + \Theta)
+  \] 
+\end{definition}
+
+\[
+  x(t) = |c| e^{rt} \cdot (cos(\omega_0 t + \Theta) + j sin(\omega_0 t + \Theta))
+\] 
+\label{10-10-D7}
+\label{10-10-D8}
+
+
+\subsection{Segnali discreti}
+\[
+k \in \mathbb{Z}\;\; \mathbb{Z} \to \mathbb{Z};\;\; \mathbb{Z} \to \mathbb{R};\;\; \mathbb{Z} \to \mathbb{C}
+\] 
+\subsubsection{Sinusoidale}
+\[
+  x[n] = A cos(\Omega_0 n + \phi)
+\] 
+Dove:
+\begin{itemize}
+  \item \( A \) è l'ampiezza
+  \item \( \Omega_0 \) è la frequenza \( f = \frac{\Omega_0}{2\pi} \) 
+  \item \( \phi \) è la fase
+\end{itemize}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw[->] (-3,0) -- (3,0) node[right] {$k$};
+    \draw[->] (0,-1.5) -- (0,1.5) node[above] {$x(k)$};
+    \draw[domain=-3:3,smooth,variable=\x,green,thin,samples=100] plot ({\x},{sin(\x*5 r)}) node[above right, green] {Inviluppo};
+    \foreach \x in {-3,-2.8,...,3}
+    \draw[blue,thick] (\x,0) -- (\x,{sin(\x*5 r)});
+  \end{tikzpicture}
+  \caption{Esempio di segnale sinusoidale discreto}
+\end{figure}
+
+\begin{itemize}
+  \item \textbf{Shift temporale} equivale ad un cambio di fase
+    \[
+      A cos[\Omega_0 (n + n_0)] = A cos(\Omega_0 n + \underbrace{\Omega_0 n_0}_{\Delta \phi})
+    \] 
+
+  \item Se \( \phi = 0 \) Il segnale rimane coseno ed è pari
+    \[
+      x[n] = x[-n]
+    \] 
+    Se \( \phi = -\frac{\pi}{2} \) Il segnale diventa un seno ed è dispari:
+    \[
+      x[n] = -x[-n]
+    \] 
+\end{itemize}
+
+\begin{itemize}
+  \item Il cambio di fase equivale allo shift temporale?
+    \[
+      A cos[\Omega_0 (n + n_0)] \stackrel{?}{=} A cos[\Omega_0 n + \Omega_0 \omega_0 \phi]
+    \] 
+    dove \( \phi \) è il rapporto tra \( \phi \) e \( \Omega_0 \) è un numero intero:
+    \[
+    \phi = \Omega_0 \omega_0
+    \] 
+    \[
+    \frac{\phi}{\Omega_0} = n_0
+    \] 
+    \begin{figure}[H]
+      \begin{example}
+        \label{10-10-D4}
+        \[
+          \phi = \frac{2\pi}{12}
+        \] 
+        \[
+        \Omega_0 = ?
+        \] 
+        \[
+          \frac{2\pi}{\Omega_0} = \frac{2\pi}{12} = 12 = \Omega_0 \quad (m = 1)
+        \] 
+      \end{example}
+    \end{figure}
+
+    \begin{figure}[H]
+      \begin{example}
+        \[
+          \phi = \frac{1}{6} \to \frac{2\pi}{\Omega_0} = \frac{1}{6} = \Omega_0 = \frac{1}{3}\pi
+        \] 
+      \end{example}
+    \end{figure}
+\end{itemize}
+
+\subsubsection{Esponenziali Reali}
+\[
+  x[n] = C e^{\beta n} = C \alpha^n \quad \alpha = e^\beta;\;\; C,\;\alpha \in \mathbb{R}
+\] 
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw[->] (-3,0) -- (3,0) node[right] {$n$};
+    \draw[->] (0,-0.2) -- (0,3) node[above] {$A$};
+    \draw[domain=-3:1.1,smooth,variable=\x,blue] plot[ycomb] ({\x},{exp(\x)}) node[above right, scale=0.9,align=center] {$\alpha > 0$\\$|\alpha| > 1$};
+  \end{tikzpicture}
+\end{figure}
+\label{10-10-D5}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw[->] (-3,0) -- (3,0) node[right] {$n$};
+    \draw[->] (0,-0.2) -- (0,3) node[above] {$A$};
+    \draw[domain=-1.1:3,smooth,variable=\x,cyan] plot[ycomb] ({\x},{exp(-\x)}) node[above right, scale=0.9,align=center] {$\alpha > 0$\\$|\alpha| < 1$};  \end{tikzpicture}
+\end{figure}
+\label{10-10-D6}
+
+
 
 \end{document}
