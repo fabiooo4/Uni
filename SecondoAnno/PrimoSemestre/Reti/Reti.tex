@@ -202,7 +202,7 @@ però grazie all'header è possibile ricostruire il messaggio originale.
 
 \subsubsection{Svantaggi}
 \begin{itemize}
-  \item Potenziale perdita dei pacchetti: La memoria ha una capacità finita,
+  \item Potenziale perdita dei pacchetti: La memoria dei buffer ha una capacità finita,
     quindi se il tasso di ricezione dei pacchetti è superiore al tasso di
     smaltimento del buffer, esso inizia a riempirsi. Le perdite aumentano la
     complessità di gestione della rete.
@@ -215,5 +215,48 @@ però grazie all'header è possibile ricostruire il messaggio originale.
     più aumentano i router, più aumenta il ritardo di trasmissione.
     \label{09-10-D9}
 \end{itemize}
+
+\section{Ritardi di trasmissione}
+\label{10-10-D1}
+Su un singolo router le componenti principali del ritardo sono:
+\begin{itemize}
+  \item \textbf{Ritardo di elaborazione al nodo}: Tempo necessario per elaborare
+    il pacchetto.
+  \item \textbf{Ritardo di accodamento}: È il tempo speso nel buffer prima che
+    il pacchetto venga trasmesso ed è la componente principale tra tutti i
+    ritardi. (\( \frac{L}{B} \))
+  \item \textbf{Ritardo di trasmissione}: Tempo necessario per trasmettere il
+    pacchetto.
+  \item \textbf{Ritardo di propagazione}: Tempo necessario per trasmettere il
+    pacchetto da un nodo all'altro.
+\end{itemize}
+
+\subsection{Ordine di grandezza}
+Dipende dalla distanza e dalla velocità di trasmissione del collegamento. La
+distanza si distingue in:
+\begin{itemize}
+  \item \textbf{Locale}: \( < 10ms \) 
+  \item \textbf{Internazionale}: \( 20-40ms \) 
+  \item \textbf{Intercontinentale}: \( > 100ms \)
+\end{itemize}
+
+\subsection{Strumenti per calcolare il ritardo end-to-end}
+\subsubsection{Ping}
+Dati 2 utenti in 2 LAN diverse, il ping manda un pacchetto all'utente di destinazione
+e l'utente che lo ha mandato prima o poi riceverà un messaggio di risposta (\textbf{
+  echo reply}). Il tempo che passa tra l'invio del pacchetto e la ricezione del
+messaggio di risposta è il ritardo end-to-end.
+
+\vspace{1em}
+\noindent
+Non si può sapere se è asimmetrico o no, cioè se il ritardo di andata è uguale
+al ritardo di ritorno, ma si può soltanto calcolare il ritardo totale.
+\label{10-10-D2}
+
+\subsubsection{Traceroute}
+Vengono mandati 3 messaggi al primo router e si calcolano i tempi di risposta tra
+il primo utente e il primo router, poi viene fatta la stessa cosa con i seguenti
+router fino ad arrivare all'utente di destinazione.
+\label{10-10-D3}
 
 \end{document}
