@@ -516,29 +516,110 @@ Per le formule di Eulero che dice:
 
 \begin{figure}[H]
   \begin{definition}[Punto interno]
-    Un punto \( S_0 \) apparteiene a un intorno \( D(f) \subseteq \mathbb{C} \) è
-    interno a \( D(f) \) se e solo se esiste un disco di raggio \( \rho \in \mathbb{R} \) 
-    centrato in \( S_0 \) che è contenuto in \( D(f) \).
+    Un punto \( S_0 \) appartenente a un intorno \( D(f) \subseteq \mathbb{C} \) è
+    interno a \( D(f) \) se e solo se esiste un disco \( B_\rho(S_0) \)  di raggio \( \rho \in \mathbb{R}_+ \) 
+    centrato in \( S_0 \) tale che:
+    \[
+      B_\rho(S_0) \subset D(f)
+    \] 
+    Quindi \( D(f) \) è un dominio e \( B_\rho(S_0) \) è un sottoinsieme:
+    \[
+      B_\rho(S_0) = \left\{ S \in \mathbb{C} \;|\; \|S_0 - S\| < \rho \right\}
+    \] 
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \def\r{1}
+        \def\s{(2,2)}
+        \def\d{\r * 2.5}
+
+        \draw[->] (-2,0) -- (5,0) node[right] {$\mathbb{C}$};
+        \draw[->] (0,-2) -- (0,5) node[above] {};
+        \draw[green] \s circle (\r);
+        \draw[blue] \s ++(-0.5,-0.7) circle (\d);
+        \draw[fill=black] \s circle (0.05) node[above right] {$S_0$};
+        \draw[fill=black] \s ++(\r,0) circle (0.05) node[above right] {$S$};
+        \draw[<->] \s -- ++(\r,0) node[midway, below] {$\rho$};
+        \node[green] at (2,1) [below] {$B_\rho(S_0)$};
+        \node[blue] at (1.5,3.8) [above] {$D(f)$};
+      \end{tikzpicture}
+    \end{figure}
   \end{definition}
-  \label{07-10-D2}
 \end{figure}
 
-\begin{figure}[H]
-  \begin{definition}[Insieme aperto]
-    È l'insieme di tutti i punti che sono definiti interni.
+\begin{definition}[Insieme aperto]
+  È l'insieme di tutti i punti che sono definiti interni.
 
-    \vspace{1em}
-    \noindent
-    Ad esempio:
-    \begin{itemize}
-      \item insieme \( \mathbb{C} \) 
-      \item insieme \( \emptyset \) 
-      \item i dischi in un punto \( S_0 \), \( B_{\rho}(S_0) = \left\{ S \in \mathbb{C} \;|\; \|S_0 - S\| < \rho \right\} \) 
-      \item TODO
-      \item semipiani destri o sinistri, superiori o inferiori
-    \end{itemize}
-  \end{definition}
-\end{figure}
+  \vspace{1em}
+  \noindent
+  Ad esempio:
+  \begin{itemize}
+    \item insieme \( \mathbb{C} \) 
+    \item insieme \( \emptyset \) 
+    \item i dischi in un punto \( S_0 \), \( B_{\rho}(S_0) = \left\{ S \in \mathbb{C} \;|\; \|S_0 - S\| < \rho \right\} \) 
+    \item corone circolari centrate in un punto \( x \) ,
+      \[
+        \; \left\{ S \in \mathbb{C},\;
+          \rho_1, \rho_2 \in \mathbb{R} \;|\;
+        \rho_1 <  |S-x| < \rho_2\right\}
+      \]
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+          \def\r{1}
+          \def\s{(1,3)}
+          \def\d{1.5}
+          \def\x{(3.5,1.5)}
+
+          \draw[->] (-2,0) -- (5,0) node[right] {$\mathbb{C}$};
+          \draw[->] (0,-2) -- (0,5) node[above] {};
+          \draw[green] \s circle (\r);
+          \draw[blue] \x circle (\d);
+          \draw[blue] \x circle (\d/2);
+          \draw[fill=black] \s circle (0.05) node[above right] {$S_0$};
+          \draw[fill=black] \x circle (0.05) node[above right] {$x$};
+          \draw[<->] \x -- ++(\d/2,0) node[midway, below] {$\rho_1$};
+          \draw[<->] \x ++(\d/2,0) -- ++(\d/2,0) node[midway, below] {$\rho_2$};
+          \node[green] at (1,3.6 + \r) [below] {$B_\rho(S_0)$};
+        \end{tikzpicture}
+      \end{figure}
+    \item semipiani destri o sinistri, superiori o inferiori
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+          \def\pdx{1.5}
+          \def\psx{-1.5}
+
+          \def\psp{1.5}
+          \def\pif{-1.5}
+
+
+          \def\x{3}
+          \def\y{3}
+          \draw[->] (-\x,0) -- (\x,0) node[right] {$\Re$};
+          \draw[->] (0,-\y) -- (0,\y) node[above] {$\Im$};
+
+          \draw[red,dashed] (\psx,\y) -- (\psx,-\y);
+          \draw[red,fill,opacity=0.2] (-\x,\y) rectangle (\psx,-\y);
+
+          \draw[blue,dashed] (\pdx,\y) -- (\pdx,-\y);
+          \draw[blue,fill,opacity=0.2] (\pdx,\y) rectangle (\x,-\y);
+
+
+          \draw[green,dashed] (-\x,\psp) -- (\x,\psp);
+          \draw[green,fill,opacity=0.2] (-\x,\psp) rectangle (\x,\y);
+
+          \draw[cyan,dashed] (-\x,\pif) -- (\x,\pif);
+          \draw[cyan,fill,opacity=0.2] (-\x,-\y) rectangle (\x,\pif);
+
+          \node[red,left,align=right] at (-\x,0) {$\Pi_1$\\Semipiano\\Sinistro};
+          \node[blue,right,xshift=0.5cm,align=left] at (\x,0) {$\Pi_2$\\Semipiano\\Destro};
+          \node[green,above,yshift=0.5cm,align=center] at (0,\y) {Semipiano\\Superiore\\$\Pi_3$};
+          \node[cyan,below,align=center] at (0,-\y) {$\Pi_4$\\Semipiano\\Inferiore};
+        \end{tikzpicture}
+      \end{figure}
+  \end{itemize}
+\end{definition}
 
 \subsection{Funzioni complesse}
 \[
@@ -549,35 +630,50 @@ Alcuni esempi sono:
   \item \( S \to S \quad D(f) = \mathbb{C} \) 
   \item \( S \to S^2 \quad D(f) = \mathbb{C} \) 
   \item \( S \to \Re(S) + j \Im(S)^2 \quad D(f) = \mathbb{C} \) 
-  \item \( S \to \sum_{k=0}^{n} a_k^S \quad a_k \in \mathbb{C};\;K;\;n \in \mathbb{Z} \)
-  \item TODO
+  \item \( S \to \sum_{k=0}^{n} a_k^S \quad a_k \in \mathbb{C};\;\; k,\;n \in \mathbb{Z} \)
+    (Funzioni polinomiali)
+  \item \( \sum_{k=0}^{\infty} a_k (S - S_0)^k \quad a_k \in \mathbb{C};\;\; S,\;S_0 \in \mathbb{C};\;\; k \in \mathbb{Z}\) 
+    (Serie di potenze)
 \end{itemize}
 
 \subsection{Funzioni polinomiali}
 \[
-  P(s) = \sum_{k=0}^{n} a_k \underbrace{s^k}_{\text{Variabile complessa}}
+  P(s) = \sum_{k=0}^{n} a_k \cdot \underbrace{S^k}_{\text{Variabile complessa}}
 \] 
 Con \( n=2 \):
 \[
-a_0 s^0 + a_1 s^1 + a_2 s^2
+a_0 S^0 + a_1 S^1 + a_2 S^2
 \] 
 Con \( n=3 \):
 \[
-a_0 s^0 + a_1 s^1 + a_2 s^2 + a_3 s^3
+a_0 S^0 + a_1 S^1 + a_2 S^2 + a_3 S^3
 \] 
+\subsubsection{Risoluzione}
+Per risolvere una funzione polinomiale si usano le solite tecniche, ad esempio:
+\[
+S^2-2S+1 = (S-1)^2
+\] 
+Che ha una sola soluzione, ma con molteplicità 2.
 
 \begin{figure}[H]
   \begin{theorem}[Teorema fondamentale delle radici]
     Ogni polinomio \( P(S) \) a coefficienti complessi di grado \( n > 0 \) ha
     \( n \) \textbf{radici complesse} ed è decomponibile in un solo modo
     \[
-      P(s) = a_n \prod_{k=1}^{r} (s - s_k)^{u_k}
+      P(s) = a_n \prod_{r=1}^{r} (s - s_r)^{\mu_r}
     \] 
-    \( s_k \) sono delle radici
+    Dove:
 
-    \noindent \( u_k \) sono le molteplicità delle radici
+    \noindent
+    \( s_r \) sono delle radici
+
+    \noindent \( \mu_r \) sono le molteplicità delle radici
 
     \noindent \( a_n \) è il coefficiente del polinomio
+
+    \vspace{1em}
+    \noindent
+    \( \sum_{r=1}^{\infty} \mu_r = n \) 
   \end{theorem}
 \end{figure}
 
