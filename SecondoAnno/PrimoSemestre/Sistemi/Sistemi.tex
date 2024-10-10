@@ -2,6 +2,8 @@
 \usepackage{import}
 \input{../../../preamble.sty}
 
+\pgfplotsset{width=7cm}
+
 \begin{document}
 
 \input{title.tex}
@@ -700,9 +702,13 @@ Dove:
   \begin{tikzpicture}
     \draw[->] (-3,0) -- (3,0) node[right] {$k$};
     \draw[->] (0,-1.5) -- (0,1.5) node[above] {$x(k)$};
-    \draw[blue,domain=-3:3,samples=100] plot ({\x},{sin(\x*5 r)});
+    \draw[blue,domain=-3:3,samples=100] plot ({\x},{cos(\x*5 r)});
+
+    \draw (1.25,1) -- ++(0,0.2) -- ++(1.25,0) node[midway,above] {$T_0 = \frac{2\pi}{\omega_0}$} -- ++(0,-0.2);
+
+    \draw[fill] (-2.3,0.5) circle (1pt) node[above right, xshift=-2, scale=0.8] {$A cos\phi$};
   \end{tikzpicture}
-  \label{10-10-D1}
+  \caption{Funzione sinusoidale}
 \end{figure}
 
 \begin{itemize}
@@ -735,14 +741,20 @@ Dove:
       \begin{tikzpicture}
         \draw[->] (-3,0) -- (3,0) node[right] {$k$};
         \draw[->] (0,-1.5) -- (0,1.5) node[above] {$x(k)$};
-        \draw[blue,domain=-3:3,samples=100] plot ({\x},{sin(\x*5 r)});
+        \draw[blue,domain=-3:3,samples=100] plot ({\x},{cos(\x*3 r)});
+
+        \draw[blue,fill] (0,1) circle (1pt) node[above right, blue] {$A$};
+        \draw[blue,fill] (0,-1) circle (1pt) node[right, blue] {$-A$};
       \end{tikzpicture}
-      \label{10-10-D2}
+      \caption{Funzione coseno}
     \end{figure}
 
     e ha le seguenti proprietà:
     \begin{itemize}
       \item Periodico
+        \[
+        T_0 = \frac{2\pi}{\omega_o}
+        \] 
       \item Pari
         \[
           x(t) = x(-t)
@@ -761,13 +773,16 @@ Dove:
       \begin{tikzpicture}
         \draw[->] (-3,0) -- (3,0) node[right] {$k$};
         \draw[->] (0,-1.5) -- (0,1.5) node[above] {$x(k)$};
-        \draw[blue,domain=-3:3,samples=100] plot ({\x},{sin(\x*5 r)});
+        \draw[blue,domain=-3:3,samples=100] plot ({\x},{sin(\x*3 r)});
       \end{tikzpicture}
-      \label{10-10-D3}
+      \caption{Funzione seno}
     \end{figure}
     e ha le seguenti proprietà:
     \begin{itemize}
       \item Periodico
+        \[
+        T_0 = \frac{2\pi}{\omega_0}
+        \] 
       \item Dispari
         \[
         x(t) = -x(-t)
@@ -835,8 +850,38 @@ Dove:
 \[
   x(t) = |c| e^{rt} \cdot (cos(\omega_0 t + \Theta) + j sin(\omega_0 t + \Theta))
 \] 
-\label{10-10-D7}
-\label{10-10-D8}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \def\sigm{0.35}
+    \def\omeg{3.3}
+    \draw[->] (-4,0) -- (4,0) node[right] {$n$};
+    \draw[->] (0,-3.5) -- (0,4) node[above] {$A$};
+    \node at (-3,4) {$Ae^{\alpha n} \cdot cos(\omega_0 n + \phi)$};
+
+    \draw[domain=-4:4,smooth,variable=\x,red] plot ({\x},{exp(\sigm * \x)}) node[above right, scale=0.9,align=center] {Inviluppo};
+    \draw[domain=-4:4,smooth,variable=\x,red] plot ({\x},{-exp(\sigm * \x)}) node[above right, scale=0.9,align=center] {};
+    \draw[domain=-4:4,smooth,variable=\x,blue,samples=70] plot ({\x},{exp(\sigm*\x)*cos(\omeg*\x r)}) node[above right, scale=0.9,align=center] {$r>0$};
+  \end{tikzpicture}
+  \caption{Esponenziale sinusoidale continuo con \( r > 0 \)}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \def\sigm{-0.35}
+    \def\omeg{3.3}
+    \draw[->] (-4,0) -- (4,0) node[right] {$n$};
+    \draw[->] (0,-3.5) -- (0,4) node[above] {$A$};
+    \node at (-3,4) {$Ae^{\alpha n} \cdot cos(\omega_0 n + \phi)$};
+
+    \draw[domain=-4:4,smooth,variable=\x,red] plot ({\x},{exp(\sigm * \x)}) node[above right, scale=0.9,align=center] {Inviluppo};
+    \draw[domain=-4:4,smooth,variable=\x,red] plot ({\x},{-exp(\sigm * \x)}) node[above right, scale=0.9,align=center] {};
+    \draw[domain=-4:4,smooth,variable=\x,blue,samples=70] plot ({\x},{exp(\sigm*\x)*cos(\omeg*\x r)}) node[above right, scale=0.9,align=center] {$r>0$};
+  \end{tikzpicture}
+  \caption{Esponenziale sinusoidale continuo con \( r < 0 \)}
+\end{figure}
+
 
 
 \subsection{Segnali discreti}
@@ -858,7 +903,7 @@ Dove:
   \begin{tikzpicture}
     \draw[->] (-3,0) -- (3,0) node[right] {$k$};
     \draw[->] (0,-1.5) -- (0,1.5) node[above] {$x(k)$};
-    \draw[domain=-3:3,smooth,variable=\x,green,thin,samples=100] plot ({\x},{sin(\x*5 r)}) node[above right, green] {Inviluppo};
+    \draw[domain=-3:3,smooth,variable=\x,red,thin,samples=100] plot ({\x},{sin(\x*5 r)}) node[above right, red] {Inviluppo};
     \foreach \x in {-3,-2.8,...,3}
     \draw[blue,thick] (\x,0) -- (\x,{sin(\x*5 r)});
   \end{tikzpicture}
@@ -895,7 +940,16 @@ Dove:
     \] 
     \begin{figure}[H]
       \begin{example}
-        \label{10-10-D4}
+        \begin{figure}[H]
+          \centering
+          \begin{tikzpicture}
+            \draw[->] (-3,0) -- (3,0) node[right] {$k$};
+            \draw[->] (0,-1.5) -- (0,1.5) node[above] {$x(k)$};
+            \draw[blue,domain=-3:3,samples=100] plot ({\x},{sin(\x*3 r)});
+            \draw[blue,domain=-3:3] plot[ycomb] ({\x},{sin(\x*3 r)});
+          \end{tikzpicture}
+          \caption{Calcolo del cambio di fase}
+        \end{figure}
         \[
           \phi = \frac{2\pi}{12}
         \] 
@@ -924,22 +978,135 @@ Dove:
 \begin{figure}[H]
   \centering
   \begin{tikzpicture}
-    \draw[->] (-3,0) -- (3,0) node[right] {$n$};
-    \draw[->] (0,-0.2) -- (0,3) node[above] {$A$};
-    \draw[domain=-3:1.1,smooth,variable=\x,blue] plot[ycomb] ({\x},{exp(\x)}) node[above right, scale=0.9,align=center] {$\alpha > 0$\\$|\alpha| > 1$};
+    \def\sigm{0.35}
+    \def\omeg{3.3}
+    \draw[->] (-4,0) -- (4,0) node[right] {$n$};
+    \draw[->] (0,-0.2) -- (0,4) node[above] {$A$};
+
+    \draw[domain=-4:4,smooth,variable=\x,blue,samples=50] plot[ycomb] ({\x},{exp(\sigm * \x)}) node[below right,scale=0.9,align=center] {$\alpha > 0$\\$|\alpha| > 1$};
+    \draw[domain=-4:4,smooth,variable=\x,red] plot ({\x},{exp(\sigm * \x)}) node[above right, scale=0.9,align=center] {Inviluppo};
   \end{tikzpicture}
+  \caption{Esponenziale reale con \( \alpha > 0 \; |\alpha| > 1 \)}
 \end{figure}
-\label{10-10-D5}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \def\sigm{0.35}
+    \def\omeg{3.3}
+    \draw[->] (-4,0) -- (4,0) node[right] {$n$};
+    \draw[->] (0,-3.5) -- (0,4) node[above] {$A$};
+    \node at (-3,4) {$Ae^{\alpha n} \cdot cos(\omega_0 n + \phi)$};
+
+    \draw[domain=-4:4,smooth,variable=\x,red] plot ({\x},{exp(\sigm * \x)}) node[above right, scale=0.9,align=center] {Inviluppo};
+    \draw[domain=-4:4,smooth,variable=\x,red] plot ({\x},{-exp(\sigm * \x)}) node[above right, scale=0.9,align=center] {};
+    \draw[domain=-4:4,smooth,variable=\x,blue,samples=70] plot[ycomb] ({\x},{exp(\sigm*\x)*cos(\omeg*\x r)}) node[above right, scale=0.9,align=center] {$\alpha > 0$\\$|\alpha| < 1$};
+  \end{tikzpicture}
+  \caption{Esponenziale sinusoidale con \( \alpha > 0 \; |\alpha| < 1 \)}
+\end{figure}
 
 \begin{figure}[H]
   \centering
   \begin{tikzpicture}
-    \draw[->] (-3,0) -- (3,0) node[right] {$n$};
-    \draw[->] (0,-0.2) -- (0,3) node[above] {$A$};
-    \draw[domain=-1.1:3,smooth,variable=\x,cyan] plot[ycomb] ({\x},{exp(-\x)}) node[above right, scale=0.9,align=center] {$\alpha > 0$\\$|\alpha| < 1$};  \end{tikzpicture}
+    \def\sigm{-0.35}
+    \def\omeg{3.3}
+    \draw[->] (-4,0) -- (4,0) node[right] {$n$};
+    \draw[->] (0,-0.2) -- (0,4) node[above] {$A$};
+
+    \draw[domain=-4:4,smooth,variable=\x,blue,samples=50] plot[ycomb] ({\x},{exp(\sigm * \x)}) node[below right,scale=0.9,align=center,xshift=0.3cm] {$\alpha > 0$\\$|\alpha| > 1$};
+    \draw[domain=-4:4,smooth,variable=\x,red] plot ({\x},{exp(\sigm * \x)}) node[above right, scale=0.9,align=center] {Inviluppo};
+  \end{tikzpicture}
+  \caption{Esponenziale reale con \( \alpha > 0 \; |\alpha| < 1 \)}
 \end{figure}
-\label{10-10-D6}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \def\sigm{-0.35}
+    \def\omeg{3.3}
+    \draw[->] (-4,0) -- (4,0) node[right] {$n$};
+    \draw[->] (0,-3.5) -- (0,4) node[above] {$A$};
+    \node at (3,4) {$Ae^{\alpha n} \cdot cos(\omega_0 n + \phi)$};
+
+    \draw[domain=-4:4,smooth,variable=\x,red] plot ({\x},{exp(\sigm * \x)}) node[above right, scale=0.9,align=center] {};
+    \draw[domain=-4:4,smooth,variable=\x,red] plot ({\x},{-exp(\sigm * \x)}) node[below right, scale=0.9,align=center] {Inviluppo};
+    \draw[domain=-4:4,smooth,variable=\x,blue,samples=70] plot[ycomb] ({\x},{exp(\sigm*\x)*cos(\omeg*\x r)}) node[above right, scale=0.9,align=center] {$\alpha < 0$\\$|\alpha| < 1$};
+  \end{tikzpicture}
+  \caption{Esponenziale sinusoidale con \( \alpha < 0 \; |\alpha| < 1 \)}
+\end{figure}
+
+\subsection{Rappresentazione}
+I segnali che appartengono all'insieme dei complessi sono tridimensionali e sono
+rappresentati in 2 assi cartesiani diversi, che mostrano lo stesso segnale, ma
+da 2 punti di vista differenti. Il segnale viene generato da un punto che  
+che continua a girare periodicamente su una circonferenza proiettando su entrambi
+gli assi il suo valore.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw[->] (-3,0) -- (3,0) node[right] {$\Re$};
+    \draw[->] (0,-3) -- (0,3) node[above] {$\Im$};
+
+    \draw[cyan] (0,0) circle (2.5);
+    
+    \draw[->,red,rotate=30] (0,0) -- (2.5,0) node[midway, above] {};
+    \draw[red] (1.5,0) arc (0:30:1.5) node[midway, right] {$\Theta$};
+    \draw[->,red] (2,0) arc (0:360:2) node[midway, right] {};
+  \end{tikzpicture}
+  \caption{Circonferenza di proiezione}
+\end{figure}
+
+La proiezione sull'asse dei reali è la parte reale del segnale:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw[->] (-0.2,0) -- (5,0) node[right] {$t$};
+    \draw[->] (0,-1.5) -- (0,1.5) node[above] {$\Re$};
+
+    \draw[blue,domain=0:5,smooth,samples=100] plot ({\x},{cos(\x*3 r)});
+  \end{tikzpicture}
+  \caption{Proiezione su asse reale}
+\end{figure}
+
+La proiezione sull'asse degli immaginari è la parte immaginaria del segnale ed è
+traslata di \( \frac{\pi}{2} \) rispetto alla parte reale:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw[->] (-0.2,0) -- (5,0) node[right] {$t$};
+    \draw[->] (0,-1.5) -- (0,1.5) node[above] {$\Im$};
+
+    \draw[red,domain=0:5,smooth,samples=100] plot ({\x},{sin(\x*3 r)});
+  \end{tikzpicture}
+  \caption{Proiezione su asse immaginario}
+\end{figure}
+
+In 3 dimensioni diventa:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      axis lines = center,
+      xlabel = \( \Re \),
+      ylabel = \( t \),
+      zlabel = \( \Im \),
+      ymin = 0,
+      ymax = 15,
+      view={45}{30}
+      ]
 
 
+      \addplot3[
+        domain=0:25,
+        cyan,
+        samples=500,
+        samples y=1,
+        ] (
+        {cos(deg(x))},
+        {4*x/(2*pi)},
+        {sin(deg(x))}
+        );
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Circonferenza di proiezione in 3D}
+\end{figure}
 
 \end{document}
