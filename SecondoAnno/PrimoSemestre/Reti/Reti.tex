@@ -39,9 +39,8 @@ alcuni requisiti:
     L'utente poi preleverà la lettera dalla cassetta delle lettere e dopo aver
     controllato le informazioni sulla busta, la aprirà e leggerà il contenuto.
     \begin{figure}[H]
-      \begin{center}
-        \includegraphics[width=0.95\textwidth]{rete-postale}
-      \end{center}
+      \centering
+      \includegraphics[width=0.95\textwidth]{rete-postale}
       \caption{Esempio di comunicazione tra 2 utenti}
     \end{figure}
 
@@ -70,9 +69,8 @@ Le reti locali, o \textbf{LAN} (Local Area Network), sono caratterizzate da un
 \textbf{router di bordo} a cui sono collegati gli end host tramite \textbf{cavi fisici}
 o collegamenti wireless.
 \begin{figure}[H]
-  \begin{center}
-    \includegraphics[width=0.95\textwidth]{lan-backbone}
-  \end{center}
+  \centering
+  \includegraphics[width=0.95\textwidth]{lan-backbone}
   \caption{Rete locale}
 \end{figure}
 
@@ -82,7 +80,11 @@ Per collegare diverse LAN tra loro esiste la \textbf{backbone}, cioè è una ret
 di router collegati tra di loro con una topologia
 gestita dal gestore della rete. Questi router sono geograficamente distribuiti
 su tutto il territorio.
-\label{09-10-D2}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{internet}
+  \caption{Intercollegamento di LAN}
+\end{figure}
 
 \noindent
 Nella maggior parte delle volte le connessioni tra i router all'interno della
@@ -106,6 +108,11 @@ tra ISP di livello 1 diversi. Anche gli ISP di livello più basso permettono
 la comunicazione tra di loro o tra gli ISP di livello superiore, tutto questo
 grazie ad accordi commerciali tra le varie organizzazioni.
 \label{09-10-D3}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{livelli-di-isp}
+  \caption{Livelli di ISP}
+\end{figure}
 
 \noindent
 \textbf{Internet} è la \textbf{Rete delle reti}, cioè è la rete che collega
@@ -117,7 +124,6 @@ il collegamento a tutta la rete.
 Di conseguenza, per raggiungere un utente, in genere, si segue un percorso gerarchico.
 Un esempio è la rete stradale, dove per raggiungere una città si seguono le strade
 principali e poi si scende in quelle secondarie.
-\label{09-10-D4}
 
 \noindent
 La scelta del percorso segue criteri basati su distanza e tempo.
@@ -133,7 +139,11 @@ trasferisco l'informazione tra 2 utenti?
 In questa modalità le risorse (capacità del canale di trasmissione) vengono riservate \textbf{end-to-end}
 per la comunicazione, cioè viene letteralmente riservato un circuito che viene
 utilizzato dai 2 utenti.
-\label{09-10-D5}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{comm-circuito}
+  \caption{Commutazione di circuito}
+\end{figure}
 
 \noindent
 Ogni canale è completamente dedicato alla comunicazione tra i 2 utenti, quindi
@@ -146,6 +156,11 @@ se più utenti vogliono comunicare tra di loro, bisogna riservare altre risorse.
 
     \noindent
     \begin{itemize}
+      \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.95\textwidth]{ritardo}
+        \caption{Ritardo}
+      \end{figure}
       \item \textbf{Ritardo di trasmissione}: Tempo necessario per trasmettere il messaggio
       \item \textbf{Ritardo di propagazione}: Tempo necessario per trasmettere il messaggio
         da un nodo all'altro
@@ -163,7 +178,11 @@ se più utenti vogliono comunicare tra di loro, bisogna riservare altre risorse.
 Nel corso di utilizzo sporadico si ha uno spreco di risorse, perchè il circuito
 viene riservato per tutta la durata della comunicazione, anche se i 2 utenti
 non stanno comunicando.
-\label{09-10-D6}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.70\textwidth]{silenzio}
+  \caption{Spreco di risorse}
+\end{figure}
 
 \subsection{Reti a commutazione di pacchetto}
 È la modalità di commutazione più utilizzata al giorno d'oggi.
@@ -185,13 +204,42 @@ queste unità viene aggiunta un'intestazione che serve a rendere le unità indip
 per poterle trasmettere in modo indipendente. L'intestazione permette la consegna del
 pacchetto perchè contiene la destinazione del pacchetto e la ricostruzione del messaggio
 perchè contiene il numero di sequenza del pacchetto.
-\label{09-10-D7}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw, minimum width=5cm, minimum height=1cm] at (0.45,0) (m) {Messaggio};
+    \draw[->] (m.south) -- ++(0,-1);
+
+    \coordinate (a) at (-3,-3);
+    \draw (a) rectangle ++(1,1) node[midway] {$m_1$};
+    \draw[blue,fill, fill opacity=0.1] (a) ++(1,1) rectangle ++(0.5,-1);
+
+    \coordinate (b) at (-1.2,-3);
+    \draw (b) rectangle ++(1,1) node[midway] {$m_2$};
+    \draw[blue,fill, fill opacity=0.1] (b) ++(1,1) rectangle ++(0.5,-1);
+
+    \coordinate (c) at (0.6,-3);
+    \draw (c) rectangle ++(1,1) node[midway] {$m_3$};
+    \draw[blue,fill, fill opacity=0.1] (c) ++(1,1) rectangle ++(0.5,-1);
+
+    \coordinate (d) at (2.4,-3);
+    \draw (d) rectangle ++(1,1) node[midway] {$m_4$};
+    \draw[blue,fill, fill opacity=0.1] (d) ++(1,1) rectangle ++(0.5,-1);
+    \draw[<-,blue] (d) ++(1.25,1) -- ++(0,0.5) node[above,blue] {Header};
+
+  \end{tikzpicture}
+  \caption{Messaggio e pacchetti}
+\end{figure}
 
 \noindent I pacchetti vengono salvati all'interno di un \textbf{buffer}, cioè una
 memoria temporanea, in attesa di essere trasmessi. Man mano che i pacchetti
 vengono inviati vengono accumulati nel buffer dei router e questo avviene per
 qualsiasi collegamento.
-\label{09-10-D8}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\textwidth]{buffer}
+  \caption{Rappresentazione del buffer}
+\end{figure}
 
 \noindent
 I pacchetti possono arrivare in ordine diverso rispetto a quello di trasmissione,
@@ -218,7 +266,11 @@ però grazie all'header è possibile ricostruire il messaggio originale.
     I router prima di trasmettere i pacchetti, deve aspettare di ricevere tutti
     i pacchetti. Questo si chiama \textbf{store \& forward}. Di conseguenza
     più aumentano i router, più aumenta il ritardo di trasmissione.
-    \label{09-10-D9}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.95\textwidth]{ritardo-pacchetti}
+      \caption{Ritardo di trasmissione dei pacchetti}
+    \end{figure}
 \end{itemize}
 
 \section{Ritardi di trasmissione}
