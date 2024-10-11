@@ -1109,4 +1109,290 @@ In 3 dimensioni diventa:
   \caption{Circonferenza di proiezione in 3D}
 \end{figure}
 
+\section{Segnali generalizzati}
+Ci sono alcune grandezze che non si possono facilmente calcolare con i segnali
+tradizionali, quindi analiticamente, ma solo con strumenti appositi.
+\begin{figure}[H]
+  \begin{example}
+    La tensione della corrente elettrica
+    \label{11-10-D1}
+    Per misurare la tensione si usa il multimetro. Queste sono grandezze
+    definite all'interno di un'operazione integrale.
+    \[
+      \int_\infty^\infty \underbrace{\sigma(t)}_{\text{Grandezza}} \cdot
+      \underbrace{\phi(t)}_{\text{Strumento}} \; dt = \underbrace{N}_{\text{Misura}}
+    \] 
+  \end{example}
+\end{figure}
+
+\subsection{Segnali di impulso}
+\begin{itemize}
+  \item \textbf{Impulso di Dirac}
+    È una funzione con supporto \textbf{infinitesimo}, altezza \textbf{infinita} e area = 1
+    \label{11-10-D2}
+
+    \noindent 
+    È definita in \( [0^-,0^+] \) 
+    \[
+      \int_{-\infty}^{+\infty} \underbrace{\delta(t)}_{\text{Impulso}} \cdot \underbrace{1}_{\text{Strumento}} \; dt = \underbrace{1}_{\text{Valore}}
+    \] 
+    \[
+      \delta(t) = \begin{cases}
+        \infty \text{ in } 0\\
+        0 \text{ altrimenti}
+      \end{cases}
+    \] 
+
+  \item \textbf{Impulso unitario}
+
+    \noindent
+    Matematicamente non si usa l'impulso di Dirac, ma l'\textbf{impulso unitario}.
+    \label{11-10-D3}
+    \[
+    \delta(t) = \begin{cases}
+      1 \text{ in } 0\\
+      0 \text{ altrimenti}
+    \end{cases}
+    \] 
+\end{itemize}
+
+In natura, il segnale che si avvicina di più al segnale di impulso è il seguente:
+\label{11-10-D4}
+In ogni caso, non si avvicina mai all'impulso di Dirac, perchè ha sempre un
+fronte di salita e discesa, quindi non è istantaneo.
+
+\subsubsection{Finestra rettangolare unitaria}
+È una funzione che definisce un rettangolo di altezza \( A = 1 \)  e larghezza \( T \).
+\label{11-10-D5}
+È definita nel seguente modo:
+\[
+\Pi(t) := \begin{cases}
+  1 \text{ se } -\frac{T}{2} \le t \le \frac{T}{2}\\
+  0 \text{ altrimenti}
+\end{cases}
+\] 
+Se questo segnale è ripetuto nel tempo si chiama \textbf{onda quadra}.
+
+\vspace{1em}
+\noindent
+Alcune applicazioni possono essere:
+\begin{itemize}
+  \item Gestione di motori elettrici
+  \item Equalizzazione di audio
+\end{itemize}
+
+\subsubsection{Finestra triangolare unitaria o Impulso triangolare unitario}
+È una funzione che definisce un triangolo di altezza \( A = 1 \) e larghezza \( T \).
+\label{11-10-D6}
+È definita nel seguente modo:
+\[
+\Lambda(t) := \begin{cases}
+  1 - |t| \text{ se } -T \le t \le T\\
+  0 \text{ altrimenti}
+\end{cases}
+\]
+
+\vspace{1em}
+\noindent
+Le applicazioni sono le stesse del rettangolo, ma con una forma più armonica (smooth).
+Si possono anche generare segnali sinusoidali.
+
+\subsection{Come si realizza un impulso}
+\begin{itemize}
+  \item Rettangolo:
+
+    \noindent
+    L'impulso si definisce come una successione di funzioni per cui vengono cambiati
+    dei valori:
+    \label{11-10-D7}
+    L'obiettivo è raddoppiare l'altezza e dimezzare la larghezza, mantenendo l'area
+    uguale.
+
+    \noindent
+    Calcoliamo l'area di questa funzione:
+    \[
+      Area = \left(\frac{a}{2} + \frac{a}{2}\right) \cdot \frac{1}{a} = \frac{2a}{2} \cdot \frac{1}{a} = 1
+    \] 
+
+    Ora cambiamo la funzione:
+    \label{11-10-D8}
+    E calcoliamo di nuovo l'area
+    \[
+      Area = \left(\frac{a}{4} + \frac{a}{4}\right) \cdot \frac{2}{a} = \frac{2a}{4} \cdot \frac{2}{a} = 1
+    \] 
+
+    \[
+      \delta(t) = \lim_{n \to \infty} A_n = 1 
+    \] 
+
+  \item Triangolo:
+
+    \noindent
+    Facciamo la stessa cosa con il triangolo:
+    \label{11-10-D9}
+    \[
+    Area = \left( \frac{a}{2} + \frac{a}{2} \right) \cdot  \frac{2}{a} \cdot \frac{1}{2} = 1
+    \] 
+    Ora cambiamo la funzione:
+    \label{11-10-D10}
+    \[
+      Area = \left( \frac{a}{4} + \frac{a}{4} \right) \cdot \frac{2}{a} \cdot \frac{1}{2} = 1
+    \] 
+
+    \[
+      \delta(t) = \lim_{n \to \infty} A_n = 1
+    \] 
+\end{itemize}
+
+\subsection{Derivata dell'impulso}
+Considerando l'impulso come successione di triangoli abbiamo che all'infinito 
+ci sarà un fronte di salita e discesa, quindi la derivata saranno degli
+inpulsi positivi e negativi.
+\[
+  \frac{d \delta(t)}{dt} = \dot{\delta}(t) = \delta'(t)
+\] 
+\label{11-10-D11}
+
+\subsection{Integrale dell'impulso}
+I segnali polinomiali (o segnali canonici) sono definiti come l'integrale di un impulso. È definito
+come:
+\[
+  \delta_{-n}(t) = \begin{cases}
+    \frac{t^{n-1}}{(n-1)!} \text{ se } t \ge 0\\
+    0 \text{ altrimenti}
+  \end{cases}
+\] 
+
+\[
+  \int \delta_0(t) \; dt = \delta_{-1}(t)
+\] 
+
+\subsubsection{Funzione gradino}
+Si ottiene integrando una volta:
+\label{11-10-D12}
+\[
+  \delta_{-1}(t) = \begin{cases}
+    \frac{t^{1-1}}{(1-1)!} \text{ se } t \ge 0\\
+    0 \text{ altrimenti}
+  \end{cases}
+  =
+  \begin{cases}
+    1 \text{ se } t \ge 0\\
+    0 \text{ altrimenti}
+  \end{cases}
+\] 
+
+Moltiplicare un segnale per il gradino unitario permette di ottenere la parte
+positiva del segnale:
+\label{11-10-D13}
+\[
+  f(t) \cdot \delta_{-1}(t) = f_1(t) \text{ (che è causale)}
+\] 
+La funzione del gradino è anche nota come \textbf{funzione di Heaviside}.
+
+\subsubsection{Funzione rampa}
+Si ottiene integrando due volte:
+\label{11-10-D14}
+\[
+  \delta_{-2}(t) = \begin{cases}
+    \frac{t^{2-1}}{(2-1)!} \text{ se } t \ge 0\\
+    0 \text{ altrimenti}
+  \end{cases}
+  = \begin{cases}
+    t \text{ se } t \ge 0\\
+    0 \text{ altrimenti}
+  \end{cases}
+\] 
+
+\subsubsection{Funzione parabolica}
+Si ottiene integrando tre volte:
+\label{11-10-D15}
+\[
+  \delta_{-3}(t) = \begin{cases}
+    \frac{t^{3-1}}{(3-1)!} \text{ se } t \ge 0\\
+    0 \text{ altrimenti}
+  \end{cases}
+  = \begin{cases}
+    \frac{t^2}{2} \text{ se } t \ge 0\\
+    0 \text{ altrimenti}
+  \end{cases}
+\]
+
+\subsubsection{A cosa servono i segnali canonici}
+Non si sa cosa contengono i sistemi LTI che si analizzano, perchè si gestiscono
+solo gli input e gli output.
+
+\noindent
+Di solito si cerca di dare il segnale gradino al sistema e si guarda qual'è la risposta
+del sistema a questo segnale. Ad esempio:
+
+\begin{figure}[H]
+  \begin{example}
+    \label{11-10-D16}
+    Il sistema rosso cresce lentamente, ma ad un certo punto arriva a 1, mentre quello
+    arancione è un sistema più lento.
+
+    \noindent
+    Quello verde è più veloce, ma non arriva mai a regime perchè continua a oscillare
+    e quindi non è asintoticamente stabile, ma potrebbe essere BIBO stabile.
+    \begin{itemize}
+      \item Per una luce il sistema verde potrebbe andare bene se l'oscillazione non è troppa
+      \item Per un sistema frenante il sistema arancione potrebbe essere troppo lento
+    \end{itemize}
+  \end{example}
+\end{figure}
+
+\subsection{Proprietà degli impulsi}
+È un segnale ideale (canonico) centrato in 0 e definito in \( [0^-, 0^1] \) con
+altezza 1.
+\label{11-10-D3-2}
+
+\begin{itemize}
+  \item \textbf{Pari}:
+    \[
+    \delta(t) = \delta(-t) \quad \forall t \in \mathbb{R}
+    \] 
+
+  \item \textbf{Area unitaria}
+
+    \noindent
+    Se
+    \[
+       0 \in [a,b] \subset \mathbb{R}
+    \] 
+    Allora
+    \[
+    \int_a^b \delta(t) \; dt = 1
+    \] 
+    Altrimenti
+    \[
+    \int_a^b \delta(t) \; dt = 0
+  \]
+  Cioè se l'intervallo contiene lo 0, l'area è 1, altrimenti è 0.
+  \label{11-10-D17}
+
+  \item \textbf{Proprietà del campionamento o riproducibilità}
+
+    \noindent Se \( v: \mathbb{R}\to \mathbb{R} \) è una funzione continua in
+    \( t_0 \in \mathbb{R} \), allora:
+    \[
+    v(t) \delta(t-t_0) = v(t_0) \delta(t-t_0) \quad \text{ per } t \in \mathbb{R}
+    \] 
+    Se prendo un impulso traslato in \( t_0 \)  e lo moltiplico per una funzione
+    ottengo il valore della funzione in quel punto.
+    \label{11-10-D18}
+    \noindent
+    Per riuscire a passare dal continuo al discreto si continua a moltiplicare
+    la funzione per un impulso traslato in \( t_0 \) e si ottiene il valore
+    della funzione in quel punto.
+
+    \vspace{1em}
+    \noindent
+    Questa formula può essere riscritta come:
+    \[
+      v(t_0) = \int_{-\infty}^{+\infty} v(\tau) \delta(\tau-t_0) \; d\tau
+    \] 
+    Il valore di una funzione in \( t_0 \) l'integrale della funzione moltiplicata
+    per un impulso traslato in \( t_0 \).
+\end{itemize}
 \end{document}
