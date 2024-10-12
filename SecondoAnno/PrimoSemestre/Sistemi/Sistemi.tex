@@ -500,7 +500,26 @@ Per le formule di Eulero che dice:
     ma parte immaginaria opposta.
   \end{definition}
 \end{figure}
-\label{07-10-D1}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw[->] (-3,0) -- (3,0) node[right] {$\Re$};
+    \draw[->] (0,-3) -- (0,3) node[above] {$\Im$};
+
+    \draw (0,0) circle (2.5);
+    
+    \draw[-*,blue,dashed,rotate=45] (0,0) -- (2.6,0) node[midway,above left] {$\rho$} 
+      node[above right] {$S$} node (s) {};
+    \draw[blue] (1,0) arc (0:45:1) node[midway, right] {$\Theta$};
+
+    \draw[-*,red,dashed,rotate=-45] (0,0) -- (2.6,0) node[midway,below left] {$\rho$} 
+      node[below right] {$\bar{S}$} node (bars) {};
+    \draw[red] (1,0) arc (0:-45:1) node[midway, right] {$\Theta$};
+
+    \draw[dashed] (s) -- (bars);
+  \end{tikzpicture}
+  \caption{Circonferenza di proiezione}
+\end{figure}
 \[
   \color{blue} S = \rho (cos(\theta) + j \sin(\theta)) \color{black}
 \] 
@@ -1115,7 +1134,18 @@ tradizionali, quindi analiticamente, ma solo con strumenti appositi.
 \begin{figure}[H]
   \begin{example}
     La tensione della corrente elettrica
-    \label{11-10-D1}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \node[draw,ellipse,minimum size=1cm] (grandezza) at (0,0) {Grandezza};
+        \node[draw,minimum size=1cm] (strumento) at (3,0) {Strumento};
+        \node[draw,minimum size=1cm] (misura) at (5.5,0) {N};
+        \node[below] at (misura.south) {Misura};
+
+        \draw[->] (grandezza) -- (strumento);
+        \draw[->] (strumento) -- (misura);
+      \end{tikzpicture}
+    \end{figure}
     Per misurare la tensione si usa il multimetro. Queste sono grandezze
     definite all'interno di un'operazione integrale.
     \[
@@ -1129,7 +1159,20 @@ tradizionali, quindi analiticamente, ma solo con strumenti appositi.
 \begin{itemize}
   \item \textbf{Impulso di Dirac}
     È una funzione con supporto \textbf{infinitesimo}, altezza \textbf{infinita} e area = 1
-    \label{11-10-D2}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}[scale=1.5]
+        \draw[->] (-1.5,0) -- (1.5,0) node[right] {$t$};
+        \draw[->] (0,-0.1) -- (0,1.5) node[above] {$\delta(t)$};
+
+        \draw[->,blue,thick] (0,0) -- (0,1) node[right] {$\infty$};
+
+        \node[below, scale=0.8] at (0,-0.1) {$0$};
+        \node[above left, scale=0.8] at (0,0) {$0^-$};
+        \node[above right, scale=0.8] at (0,0) {$0^+$};
+      \end{tikzpicture}
+      \caption{Impulso di Dirac}
+    \end{figure}
 
     \noindent 
     È definita in \( [0^-,0^+] \) 
@@ -1147,7 +1190,20 @@ tradizionali, quindi analiticamente, ma solo con strumenti appositi.
 
     \noindent
     Matematicamente non si usa l'impulso di Dirac, ma l'\textbf{impulso unitario}.
-    \label{11-10-D3}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}[scale=1.5]
+        \draw[->] (-1.5,0) -- (1.5,0) node[right] {$t$};
+        \draw[->] (0,-0.1) -- (0,1.5) node[above] {$\delta(t)$};
+
+        \draw[->,blue,thick] (0,0) -- (0,1) node[right] {$1$};
+
+        \node[below, scale=0.8] at (0,-0.1) {$0$};
+        \node[above left, scale=0.8] at (0,0) {$0^-$};
+        \node[above right, scale=0.8] at (0,0) {$0^+$};
+      \end{tikzpicture}
+      \caption{Impulso unitario}
+    \end{figure}
     \[
     \delta(t) = \begin{cases}
       1 \text{ in } 0\\
@@ -1156,14 +1212,47 @@ tradizionali, quindi analiticamente, ma solo con strumenti appositi.
     \] 
 \end{itemize}
 
+\noindent
 In natura, il segnale che si avvicina di più al segnale di impulso è il seguente:
-\label{11-10-D4}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[scale=1.5]
+    \def\u{0.5}
+    \def\s{0.1}
+
+    \draw[->] (-1.5,0) -- (1.5,0) node[right] {$t$};
+    \draw[->] (0,-0.1) -- (0,1.5) node[above] {$\delta(t)$};
+
+    \draw (-0.05,1) -- ++(0.1,0) node[left,xshift=-0.05cm] {1};
+
+    \draw[blue,thick,smooth,domain=-1.4:1.4,samples=100] plot ({\x}, {exp(-(\x-\u)^2/(2*\s^2))});
+
+    \draw[red,fill] (\u,1) circle (1pt) node[above,scale=0.8] {Picco};
+    \draw[->, cyan] (0.1,0.2) -- ++(0.1,0.6) node[midway,left,align=center,scale=0.8,xshift=-0.2cm] {Fronte\\di salita};
+    \draw[->, cyan] (0.8,0.8) -- ++(0.1,-0.6) node[midway,right,align=center,scale=0.8,xshift=0.2cm] {Fronte\\di discesa};
+  \end{tikzpicture}
+  \caption{Segnale che si avvicina all'impulso}
+\end{figure}
+\noindent
 In ogni caso, non si avvicina mai all'impulso di Dirac, perchè ha sempre un
 fronte di salita e discesa, quindi non è istantaneo.
 
 \subsubsection{Finestra rettangolare unitaria}
 È una funzione che definisce un rettangolo di altezza \( A = 1 \)  e larghezza \( T \).
-\label{11-10-D5}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[scale=1.5]
+    \draw[->] (-1.5,0) -- (1.5,0) node[right] {$t$};
+    \draw[->] (0,-0.1) -- (0,1.5) node[above] {$\Pi(t)$};
+
+    \draw (-0.05,1) -- ++(0.1,0) node[above left,xshift=-0.05cm] {1};
+
+    \draw[blue,thick] (-1.4,0) -- (-0.5,0) node[below] {$-\frac{T}{2}$}
+      -- (-0.5,1) -- (0.5,1) node[above right] {$A=1$} -- (0.5,0) node[below] {$\frac{T}{2}$}
+      -- (1.4,0);
+  \end{tikzpicture}
+  \caption{Finestra rettangolare unitaria}
+\end{figure}
 È definita nel seguente modo:
 \[
 \Pi(t) := \begin{cases}
@@ -1183,7 +1272,21 @@ Alcune applicazioni possono essere:
 
 \subsubsection{Finestra triangolare unitaria o Impulso triangolare unitario}
 È una funzione che definisce un triangolo di altezza \( A = 1 \) e larghezza \( T \).
-\label{11-10-D6}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[scale=1.5]
+    \draw[->] (-1.5,0) -- (1.5,0) node[right] {$t$};
+    \draw[->] (0,-0.1) -- (0,1.5) node[above] {$\Lambda(t)$};
+
+    \draw (-0.05,1) -- ++(0.1,0) node[above left,xshift=-0.05cm] {1};
+
+    \draw[blue,thick] (-1.4,0) -- (-0.5,0) node[below] {$-T$}
+      -- (0,1) -- (0.5,0) node[below] {$T$}
+      -- (1.4,0);
+  \end{tikzpicture}
+  \caption{Finestra triangolare unitaria}
+\end{figure}
+\noindent
 È definita nel seguente modo:
 \[
 \Lambda(t) := \begin{cases}
@@ -1204,7 +1307,18 @@ Si possono anche generare segnali sinusoidali.
     \noindent
     L'impulso si definisce come una successione di funzioni per cui vengono cambiati
     dei valori:
-    \label{11-10-D7}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}[scale=1.5]
+        \def\a{1}
+        \draw[->] (-1.5,0) -- (1.5,0) node[right] {$t$};
+        \draw[->] (0,-0.1) -- (0,1.5) node[above] {$\delta(t)$};
+
+        \draw[blue,thick] (-\a/2,0) node[below] {$-\frac{a}{2}$}
+          -- (-\a/2,1/\a) -- (\a/2,1/\a) node[above right] {$\frac{1}{a}$} -- (\a/2,0) node[below] {$\frac{a}{2}$};
+      \end{tikzpicture}
+      \caption{Impulso rettangolare}
+    \end{figure}
     L'obiettivo è raddoppiare l'altezza e dimezzare la larghezza, mantenendo l'area
     uguale.
 
@@ -1215,7 +1329,24 @@ Si possono anche generare segnali sinusoidali.
     \] 
 
     Ora cambiamo la funzione:
-    \label{11-10-D8}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}[scale=1.5]
+        \def\a{1}
+        \def\b{0.5}
+        \draw[->] (-1.5,0) -- (1.5,0) node[right] {$t$};
+        \draw[->] (0,-0.1) -- (0,2.5) node[above] {$\delta(t)$};
+
+        \draw[blue,thick] (-\a/2,0) node[below left] {$-\frac{a}{2}$}
+          -- (-\a/2,1/\a) -- (\a/2,1/\a) node[above right] {$\frac{1}{a}$} --
+          (\a/2,0) node[below right] {$\frac{a}{2}$};
+
+        \draw[red,thick] (-\b/2,0) node[below] {$-\frac{a}{4}$}
+          -- (-\b/2,1/\b) -- (\b/2,1/\b) node[above right] {$\frac{2}{a}$} --
+          (\b/2,0) node[below] {$\frac{a}{4}$};
+      \end{tikzpicture}
+      \caption{Impulsi rettangolari}
+    \end{figure}
     E calcoliamo di nuovo l'area
     \[
       Area = \left(\frac{a}{4} + \frac{a}{4}\right) \cdot \frac{2}{a} = \frac{2a}{4} \cdot \frac{2}{a} = 1
@@ -1229,12 +1360,38 @@ Si possono anche generare segnali sinusoidali.
 
     \noindent
     Facciamo la stessa cosa con il triangolo:
-    \label{11-10-D9}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}[scale=1.5]
+        \def\a{1}
+        \draw[->] (-1.5,0) -- (1.5,0) node[right] {$t$};
+        \draw[->] (0,-0.1) -- (0,1.5) node[above] {$\delta(t)$};
+
+        \draw[blue,thick] (-\a,0) node[below] {$-\frac{a}{2}$}
+          -- (0,1/\a) node[above right] {$\frac{2}{a}$} -- (\a,0) node[below] {$\frac{a}{2}$};
+      \end{tikzpicture}
+      \caption{Impulso triangolare}
+    \end{figure}
     \[
     Area = \left( \frac{a}{2} + \frac{a}{2} \right) \cdot  \frac{2}{a} \cdot \frac{1}{2} = 1
     \] 
     Ora cambiamo la funzione:
-    \label{11-10-D10}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}[scale=1.5]
+        \def\a{1}
+        \def\b{0.5}
+        \draw[->] (-1.5,0) -- (1.5,0) node[right] {$t$};
+        \draw[->] (0,-0.1) -- (0,2.5) node[above] {$\delta(t)$};
+
+        \draw[blue,thick] (-\a,0) node[below] {$-\frac{a}{2}$}
+          -- (0,1/\a) node[above right,xshift=-0.1cm,yshift=-0.1cm] {$\frac{2}{a}$} -- (\a,0) node[below] {$\frac{a}{2}$};
+
+        \draw[red,thick] (-\b,0) node[below] {$-\frac{a}{4}$}
+          -- (0,1/\b) node[right] {$\frac{4}{a}$} -- (\b,0) node[below] {$\frac{a}{4}$};
+      \end{tikzpicture}
+      \caption{Impulsi triangolari}
+    \end{figure}
     \[
       Area = \left( \frac{a}{4} + \frac{a}{4} \right) \cdot \frac{2}{a} \cdot \frac{1}{2} = 1
     \] 
@@ -1251,7 +1408,29 @@ inpulsi positivi e negativi.
 \[
   \frac{d \delta(t)}{dt} = \dot{\delta}(t) = \delta'(t)
 \] 
-\label{11-10-D11}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \def\a{1}
+    \draw[->] (-1.5,0) -- (1.5,0) node[right] {$t$};
+    \draw[->] (0,-1.5) -- (0,1.5) node[above] {$\delta(t)$};
+    
+    \draw[blue,thick] (-\a,0) -- (0,1/\a) node[right,yshift=0.1cm] {$\delta(t) = \delta_0(t)$}
+      -- (\a,0);
+
+    \draw[->] (2.5,0) -- ++(1,0) node[midway,above] {Derivata};
+  \end{tikzpicture}
+  \begin{tikzpicture}
+    \def\a{1}
+    \draw[->] (-1.5,0) -- (1.5,0) node[right] {$t$};
+    \draw[->] (0,-1.5) -- (0,1.5) node[above] {$\delta_1(t)$};
+    
+    \draw[->,blue,thick] (0.25,0) -- (0.25,\a) node[right,yshift=0.1cm] {$\delta'(t) = \delta_1(t)$};
+    \draw[->,blue,thick] (0.5,0) -- (0.5,-\a);
+
+  \end{tikzpicture}
+  \caption{Derivata del segnale triangolare}
+\end{figure}
 
 \subsection{Integrale dell'impulso}
 I segnali polinomiali (o segnali canonici) sono definiti come l'integrale di un impulso. È definito
@@ -1269,7 +1448,27 @@ come:
 
 \subsubsection{Funzione gradino}
 Si ottiene integrando una volta:
-\label{11-10-D12}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \def\a{1}
+    \draw[->] (-1.5,0) -- (1.5,0) node[right] {$t$};
+    \draw[->] (0,-0.1) -- (0,1.5) node[above] {$\delta(t)$};
+    
+    \draw[->,blue,thick] (0,0) -- (0,\a);
+
+    \draw[->] (2.5,0.75) -- ++(1,0) node[midway,above] {Integrale};
+  \end{tikzpicture}
+  \begin{tikzpicture}
+    \def\a{1}
+    \draw[->] (-1.5,0) -- (1.5,0) node[right] {$t$};
+    \draw[->] (0,-0.1) -- (0,1.5) node[above] {$\delta_{-1}(t)$};
+    
+    \draw[blue,thick] (-1.4,0) -- (0,0) -- (0,\a) -- (1.4,\a);
+
+  \end{tikzpicture}
+  \caption{Funzione gradino}
+\end{figure}
 \[
   \delta_{-1}(t) = \begin{cases}
     \frac{t^{1-1}}{(1-1)!} \text{ se } t \ge 0\\
@@ -1282,9 +1481,39 @@ Si ottiene integrando una volta:
   \end{cases}
 \] 
 
+\noindent
 Moltiplicare un segnale per il gradino unitario permette di ottenere la parte
 positiva del segnale:
-\label{11-10-D13}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \def\a{1}
+    \draw[->] (-4,0) -- (4,0) node[right] {$t$};
+    \draw[->] (0,-1.5) -- (0,1.5) node[above] {$f(t)$};
+
+    \draw[blue,domain=-3.9:3.9,smooth,samples=100] plot ({\x},{sin(\x * 3 r)});
+    
+    \draw[red,thick] (-3.9,0) -- (1,0) node[below] {$t_0$} -- (1,\a) -- (3.9,\a);
+
+    \node[above,red] at (-2,1.1) {Sparisce};
+    \node[above,red,align=center] at (2,1.1) {Rimane\\invariato};
+  \end{tikzpicture}
+  \caption{Moltiplicazione per gradino unitario}
+\end{figure}
+Si ottiene:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \def\a{1}
+    \draw[->] (-4,0) -- (4,0) node[right] {$t$};
+    \draw[->] (0,-1.5) -- (0,1.5) node[above] {$f(t)$};
+
+    \draw[blue,thick,domain=1:3.9,smooth,samples=100] plot ({\x},{sin(\x * 3 r)});
+    \draw[blue,thick] (-3.9,0) -- (1,0);
+    \node[below] at (1,0) {$t_0$};
+  \end{tikzpicture}
+  \caption{Risultato della moltiplicazione}
+\end{figure}
 \[
   f(t) \cdot \delta_{-1}(t) = f_1(t) \text{ (che è causale)}
 \] 
@@ -1292,7 +1521,26 @@ La funzione del gradino è anche nota come \textbf{funzione di Heaviside}.
 
 \subsubsection{Funzione rampa}
 Si ottiene integrando due volte:
-\label{11-10-D14}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \def\a{1}
+    \draw[->] (-1.5,0) -- (1.5,0) node[right] {$t$};
+    \draw[->] (0,-0.1) -- (0,1.5) node[above] {$\delta_{-1}(t)$};
+
+    \draw[blue,thick] (-1.4,0) -- (0,0) -- (0,\a) -- (1.4,\a);
+
+    \draw[->] (2.5,0.75) -- ++(1,0) node[midway,above] {Integrale};
+  \end{tikzpicture}
+  \begin{tikzpicture}
+    \def\a{1}
+    \draw[->] (-1.5,0) -- (1.5,0) node[right] {$t$};
+    \draw[->] (0,-0.1) -- (0,1.5) node[above] {$\delta_{-2}(t)$};
+
+    \draw[blue,thick] (-1.4,0) -- (0,0) -- (1.4,\a);
+  \end{tikzpicture}
+  \caption{Funzione rampa}
+\end{figure}
 \[
   \delta_{-2}(t) = \begin{cases}
     \frac{t^{2-1}}{(2-1)!} \text{ se } t \ge 0\\
@@ -1306,7 +1554,27 @@ Si ottiene integrando due volte:
 
 \subsubsection{Funzione parabolica}
 Si ottiene integrando tre volte:
-\label{11-10-D15}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \def\a{1}
+    \draw[->] (-1.5,0) -- (1.5,0) node[right] {$t$};
+    \draw[->] (0,-0.1) -- (0,1.5) node[above] {$\delta_{-2}(t)$};
+
+    \draw[blue,thick] (-1.4,0) -- (0,0) -- (1.4,\a);
+
+    \draw[->] (2.5,0.75) -- ++(1,0) node[midway,above] {Integrale};
+  \end{tikzpicture}
+  \begin{tikzpicture}
+    \def\a{1}
+    \draw[->] (-1.5,0) -- (1.5,0) node[right] {$t$};
+    \draw[->] (0,-0.1) -- (0,1.5) node[above] {$\delta_{-3}(t)$};
+    
+    \draw[blue,thick] (-1.4,0) -- (0,0);
+    \draw[blue,thick,domain=0:1.2,smooth,samples=100] plot ({\x},{\x*\x});
+  \end{tikzpicture}
+  \caption{Funzione rampa}
+\end{figure}
 \[
   \delta_{-3}(t) = \begin{cases}
     \frac{t^{3-1}}{(3-1)!} \text{ se } t \ge 0\\
@@ -1328,11 +1596,24 @@ del sistema a questo segnale. Ad esempio:
 
 \begin{figure}[H]
   \begin{example}
-    \label{11-10-D16}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \draw[->] (-0.1,0) -- (6,0) node[right] {$t$};
+        \draw[->] (0,-0.1) -- (0,3) node[above] {$f(t)$};
+
+        \draw[blue,thick] (0,0) -- (0,1) -- (5.9,1);
+        \draw[green,thick,domain=0:5.9,smooth,samples=100] plot ({\x},{1 - exp(-0.1 * 6.2 * \x)* cos(-10 * \x r)});
+        \draw[red,thick,domain=0:5.9,smooth,samples=100] plot ({\x},{1 - exp(-\x)});
+        \draw[orange,thick,domain=0:5.9,smooth,samples=100] plot ({\x},{0.1 * exp(0.4 * \x)});
+
+        \node[align=center] at (7,1.5) {\color{green}Oscilla\\\color{red}Veloce\\\color{orange}Lento};
+      \end{tikzpicture}
+      \caption{Esempi di risposta di un sistema}
+    \end{figure}
     Il sistema rosso cresce lentamente, ma ad un certo punto arriva a 1, mentre quello
     arancione è un sistema più lento.
 
-    \noindent
     Quello verde è più veloce, ma non arriva mai a regime perchè continua a oscillare
     e quindi non è asintoticamente stabile, ma potrebbe essere BIBO stabile.
     \begin{itemize}
@@ -1345,7 +1626,20 @@ del sistema a questo segnale. Ad esempio:
 \subsection{Proprietà degli impulsi}
 È un segnale ideale (canonico) centrato in 0 e definito in \( [0^-, 0^1] \) con
 altezza 1.
-\label{11-10-D3-2}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[scale=1.5]
+    \draw[->] (-1.5,0) -- (1.5,0) node[right] {$t$};
+    \draw[->] (0,-0.1) -- (0,1.5) node[above] {$\delta(t)$};
+
+    \draw[->,blue,thick] (0,0) -- (0,1) node[right] {$1$};
+
+    \node[below, scale=0.8] at (0,-0.1) {$0$};
+    \node[above left, scale=0.8] at (0,0) {$0^-$};
+    \node[above right, scale=0.8] at (0,0) {$0^+$};
+  \end{tikzpicture}
+  \caption{Impulso unitario}
+\end{figure}
 
 \begin{itemize}
   \item \textbf{Pari}:
@@ -1369,7 +1663,23 @@ altezza 1.
     \int_a^b \delta(t) \; dt = 0
   \]
   Cioè se l'intervallo contiene lo 0, l'area è 1, altrimenti è 0.
-  \label{11-10-D17}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[scale=1.5]
+      \draw[->] (-1.5,0) -- (1.5,0) node[right] {$t$};
+      \draw[->] (0,-0.1) -- (0,1.5) node[above] {$\delta(t)$};
+
+      \draw[->,blue,thick] (0,0) -- (0,1) node[right] {$1$};
+
+      \draw[green,thick] (-0.2,-0.2) node[below] {a} -- ++(0.4,0) node[below,scale=0.8] {b}
+        node[midway,below,scale=0.8] {1};
+
+      \draw[red,thick] (1,-0.2) node[below] {a} -- ++(0.4,0) node[below,scale=0.8] {b}
+        node[midway,below,scale=0.8] {0};
+
+    \end{tikzpicture}
+    \caption{Area dell'impulso}
+  \end{figure}
 
   \item \textbf{Proprietà del campionamento o riproducibilità}
 
@@ -1380,7 +1690,17 @@ altezza 1.
     \] 
     Se prendo un impulso traslato in \( t_0 \)  e lo moltiplico per una funzione
     ottengo il valore della funzione in quel punto.
-    \label{11-10-D18}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}[scale=1.5]
+        \draw[->] (-0.1,0) -- (4,0) node[right] {$t$};
+        \draw[->] (0,-0.1) -- (0,2) node[above] {$v(t)$};
+
+        \draw[blue,domain=0:3.9,smooth,samples=100] plot ({\x},{sin(\x * 3 r)/2 + 1}) node[right] {$v(t)$};
+
+        \draw[red] (pi/2,0.5) node[above,yshift=0.3cm,scale=0.8] {$\delta(t-t_0)$} -- (pi/2,0) node[below] {\(t_0\)};
+      \end{tikzpicture}
+    \end{figure}
     \noindent
     Per riuscire a passare dal continuo al discreto si continua a moltiplicare
     la funzione per un impulso traslato in \( t_0 \) e si ottiene il valore
