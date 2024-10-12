@@ -274,7 +274,43 @@ però grazie all'header è possibile ricostruire il messaggio originale.
 \end{itemize}
 
 \section{Ritardi di trasmissione}
-\label{10-10-D1}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw (0,0) rectangle ++(3,3);
+    \node[above] at (1.5,3) {Router};
+
+    % Buffers
+    \draw (2.3,2.8) -- ++(0.5,0) -- ++(0,-0.4) -- ++(-0.5,0) node[above left, scale=0.8]
+      {Buffer};
+    \draw (2.3,2.2) -- ++(0.5,0) -- ++(0,-0.4) -- ++(-0.5,0);
+    \node at (2.6,1.6) {$\vdots$};
+    \draw (2.3,1.17) -- ++(0.5,0) -- ++(0,-0.4) -- ++(-0.5,0);
+    \draw (2.3,0.57) -- ++(0.5,0) -- ++(0,-0.4) -- ++(-0.5,0);
+
+    % Inputs
+    \draw (0,2.6) -- ++(-0.5,0);
+    \draw (0,2.0) -- ++(-0.5,0);
+    \node at (-0.25,1.6) {$\vdots$};
+    \draw (0,1.0) -- ++(-0.5,0);
+    \draw (0,0.4) -- ++(-0.5,0);
+
+    \draw (-0.8,2.8) -- ++(-0.3,0) -- ++(0,-2.6) node[midway,left,align=center]
+      {n° ingressi} -- ++(0.3,0);
+
+    % Outputs
+    \draw (3,2.6) -- ++(0.5,0);
+    \draw (3,2.0) -- ++(0.5,0);
+    \node at (3.25,1.6) {$\vdots$};
+    \draw (3,1.0) -- ++(0.5,0);
+    \draw (3,0.4) -- ++(0.5,0);
+
+    \draw (3.8,2.8) -- ++(0.3,0) -- ++(0,-2.6) node[midway,right,align=center]
+      {n° uscite} -- ++(-0.3,0);
+  \end{tikzpicture}
+  \caption{Struttura di un router}
+\end{figure}
+
 Su un singolo router le componenti principali del ritardo sono:
 \begin{itemize}
   \item \textbf{Ritardo di elaborazione al nodo}: Tempo necessario per elaborare
@@ -306,15 +342,57 @@ messaggio di risposta è il ritardo end-to-end.
 
 \vspace{1em}
 \noindent
-Non si può sapere se è asimmetrico o no, cioè se il ritardo di andata è uguale
+Non si può sapere se il ritardo è asimmetrico o no, cioè se il ritardo di andata è uguale
 al ritardo di ritorno, ma si può soltanto calcolare il ritardo totale.
-\label{10-10-D2}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.70\textwidth]{ping}
+  \caption{Ping}
+\end{figure}
+
+\noindent
+Se si esegue il comando \texttt{ping} da un terminale si riceve il seguente output:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{ping-cmd}
+  \caption{Output di ping}
+\end{figure}
+
+\begin{enumerate}
+  \item Viene rieseguito il ping facendo riferimento al \textbf{server fisico}
+  \item Tra parentesi viene rappresentato l'indirizzo che identifica il server, chiamato
+    \textbf{indirizzo IP}
+  \item Alla fine c'è il tempo di risposta del server
+\end{enumerate}
 
 \subsubsection{Traceroute}
 Vengono mandati 3 messaggi al primo router e si calcolano i tempi di risposta tra
 il primo utente e il primo router, poi viene fatta la stessa cosa con i seguenti
 router fino ad arrivare all'utente di destinazione.
-\label{10-10-D3}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.70\textwidth]{traceroute}
+  \caption{Traceroute}
+\end{figure}
+
+\noindent
+Se si esegue il comando \texttt{traceroute} da un terminale si riceve il seguente output:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{traceroute-cmd}
+  \caption{Output di traceroute}
+\end{figure}
+
+\begin{enumerate}
+  \item Indica il numero di router attraversati
+  \item Stampa i valori di ritardo dei 3 pacchetti trasmessi
+  \item È il nome logico del router che si sta attraversando, da questo nome si può
+    dedurre la posizione geografica del router e l'ISP a cui appartiene
+  \item Gli asterischi indicano che il router è stato configurato in modo da ignorare
+    i pacchetti e non mandare alcuna risposta, questo perchè serve soltanto a inoltrare
+    i pacchetti ad un altro router.
+\end{enumerate}
+
 
 \subsection{Quantità di dati trasferiti}
 La quantità di informazioni che si riesce a trasmettere si misura in \( \frac{bit}{s} \)
@@ -325,7 +403,11 @@ attraversati.
 Ogni canale avrà una dimensione diversa e si può determinare la banda totale a
 disposizione (\textbf{Throughput}) dal \textbf{collo di bottiglia}, cioè dalla minore
 capacità di trasmissione tra tutti i canali attraversati.
-\label{10-10-D4}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.70\textwidth]{throughput}
+  \caption{Throughput}
+\end{figure}
 
 
 \end{document}
