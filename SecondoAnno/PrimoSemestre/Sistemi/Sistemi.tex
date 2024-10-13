@@ -980,15 +980,8 @@ Dove:
         \] 
       \end{example}
     \end{figure}
-
-    \begin{figure}[H]
-      \begin{example}
-        \[
-          \phi = \frac{1}{6} \to \frac{2\pi}{\Omega_0} = \frac{1}{6} = \Omega_0 = \frac{1}{3}\pi
-        \] 
-      \end{example}
-    \end{figure}
 \end{itemize}
+
 
 \subsubsection{Esponenziali Reali}
 \[
@@ -1010,22 +1003,6 @@ Dove:
 \begin{figure}[H]
   \centering
   \begin{tikzpicture}
-    \def\sigm{0.35}
-    \def\omeg{3.3}
-    \draw[->] (-4,0) -- (4,0) node[right] {$n$};
-    \draw[->] (0,-3.5) -- (0,4) node[above] {$A$};
-    \node at (-3,4) {$Ae^{\alpha n} \cdot cos(\omega_0 n + \phi)$};
-
-    \draw[domain=-4:4,smooth,variable=\x,red] plot ({\x},{exp(\sigm * \x)}) node[above right, scale=0.9,align=center] {Inviluppo};
-    \draw[domain=-4:4,smooth,variable=\x,red] plot ({\x},{-exp(\sigm * \x)}) node[above right, scale=0.9,align=center] {};
-    \draw[domain=-4:4,smooth,variable=\x,blue,samples=70] plot[ycomb] ({\x},{exp(\sigm*\x)*cos(\omeg*\x r)}) node[above right, scale=0.9,align=center] {$\alpha > 0$\\$|\alpha| < 1$};
-  \end{tikzpicture}
-  \caption{Esponenziale sinusoidale con \( \alpha > 0 \; |\alpha| < 1 \)}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \begin{tikzpicture}
     \def\sigm{-0.35}
     \def\omeg{3.3}
     \draw[->] (-4,0) -- (4,0) node[right] {$n$};
@@ -1036,6 +1013,44 @@ Dove:
   \end{tikzpicture}
   \caption{Esponenziale reale con \( \alpha > 0 \; |\alpha| < 1 \)}
 \end{figure}
+
+\subsubsection{Esponenziali Complessi}
+\[
+  x[n] = C \alpha^n \quad C,\alpha \in \mathbb{C}
+\] 
+dove
+\[
+  \begin{aligned}
+    C = |C| e^{j \Theta}\\
+    \alpha = |\alpha| e^{j \omega_0}
+  \end{aligned}
+\] 
+\vspace{1em}
+\[
+  \begin{aligned}
+    x[n] = |C| e^{j \Theta} \cdot \left( |\alpha| e^{j \omega_0} \right) =\\
+    |C| \cdot |\alpha|^n \cdot e^{j(\omega_0 n + \Theta)}
+  \end{aligned}
+\] 
+Usando la formula di Eulero:
+\[
+  x[n] = |C| \cdot |\alpha|^n \cdot (cos(\omega_0 n + \Theta) + j 
+  sin(\omega_0 n + \Theta))
+\] 
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \def\sigm{0.35}
+    \def\omeg{3.3}
+    \draw[->] (-4,0) -- (4,0) node[right] {$n$};
+    \draw[->] (0,-3.5) -- (0,4) node[above] {$A$};
+
+    \draw[domain=-4:4,smooth,variable=\x,red] plot ({\x},{exp(\sigm * \x)}) node[above right, scale=0.9,align=center] {Inviluppo};
+    \draw[domain=-4:4,smooth,variable=\x,red] plot ({\x},{-exp(\sigm * \x)}) node[above right, scale=0.9,align=center] {};
+    \draw[domain=-4:4,smooth,variable=\x,blue,samples=70] plot[ycomb] ({\x},{exp(\sigm*\x)*cos(\omeg*\x r)}) node[above right, scale=0.9,align=center] {$|\alpha| > 1$};
+  \end{tikzpicture}
+  \caption{Esponenziale sinusoidale con \(|\alpha| > 1 \)}
+\end{figure}
 \begin{figure}[H]
   \centering
   \begin{tikzpicture}
@@ -1043,13 +1058,12 @@ Dove:
     \def\omeg{3.3}
     \draw[->] (-4,0) -- (4,0) node[right] {$n$};
     \draw[->] (0,-3.5) -- (0,4) node[above] {$A$};
-    \node at (3,4) {$Ae^{\alpha n} \cdot cos(\omega_0 n + \phi)$};
 
     \draw[domain=-4:4,smooth,variable=\x,red] plot ({\x},{exp(\sigm * \x)}) node[above right, scale=0.9,align=center] {};
     \draw[domain=-4:4,smooth,variable=\x,red] plot ({\x},{-exp(\sigm * \x)}) node[below right, scale=0.9,align=center] {Inviluppo};
-    \draw[domain=-4:4,smooth,variable=\x,blue,samples=70] plot[ycomb] ({\x},{exp(\sigm*\x)*cos(\omeg*\x r)}) node[above right, scale=0.9,align=center] {$\alpha < 0$\\$|\alpha| < 1$};
+    \draw[domain=-4:4,smooth,variable=\x,blue,samples=70] plot[ycomb] ({\x},{exp(\sigm*\x)*cos(\omeg*\x r)}) node[above right, scale=0.9,align=center] {$|\alpha| < 1$};
   \end{tikzpicture}
-  \caption{Esponenziale sinusoidale con \( \alpha < 0 \; |\alpha| < 1 \)}
+  \caption{Esponenziale sinusoidale con \( |\alpha| < 1 \)}
 \end{figure}
 
 \subsection{Rappresentazione}
@@ -1126,6 +1140,15 @@ In 3 dimensioni diventa:
     \end{axis}
   \end{tikzpicture}
   \caption{Circonferenza di proiezione in 3D}
+\end{figure}
+
+\subsection{Problema della periodicità}
+\begin{figure}[H]
+  \begin{example}
+    \[
+      \Omega_0 = \frac{2\pi}{12}
+    \] 
+  \end{example}
 \end{figure}
 
 \section{Segnali generalizzati}
@@ -1715,4 +1738,5 @@ altezza 1.
     Il valore di una funzione in \( t_0 \) l'integrale della funzione moltiplicata
     per un impulso traslato in \( t_0 \).
 \end{itemize}
+
 \end{document}
