@@ -1143,13 +1143,102 @@ In 3 dimensioni diventa:
 \end{figure}
 
 \subsection{Problema della periodicità}
-\begin{figure}[H]
-  \begin{example}
-    \[
-      \Omega_0 = \frac{2\pi}{12}
-    \] 
-  \end{example}
-\end{figure}
+Il problema della periodicità consiste nel fatto che alcuni segnali possono
+sembrare periodici anche se non lo sono. Ad esempio:
+\begin{example}
+  \[
+    \begin{aligned}
+      \Omega_0 = \frac{2\pi}{12}\\
+      \phi = 0
+    \end{aligned}
+  \] 
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \def\omega{(2*pi)/12}
+      \def\phi{0}
+
+      \draw[->] (-3,0) -- (3.2,0) node[right] {$n$};
+      \draw[->] (0,-1.5) -- (0,1.5) node[above] {$x(n)$};
+      \draw[red,domain=-3:3,samples=100] plot ({\x},{cos((\x*\omega*5 + \phi) r)});
+      \draw[blue,domain=-3:3,samples=40] plot[ycomb,mark=*,mark size=1.5pt] ({\x},{cos((\x*\omega*5 + \phi) r)});
+    \end{tikzpicture}
+  \end{figure}
+  Il periodo è:
+  \[
+    \begin{aligned}
+      T_0 = \frac{2\pi}{\Omega_0} m\\
+      T_0 = \frac{2\pi}{\frac{2\pi}{12}} m = 12m
+    \end{aligned}
+  \] 
+  Con \( m = 1 \):
+  \[
+    T_0 = 12 \cdot 1 = 12 \in \mathbb{Z}
+  \] 
+  Quindi il segnale è periodico.
+\end{example}
+
+\begin{example}
+  \[
+    \begin{aligned}
+      \Omega_0 = \frac{8\pi}{31}\\
+      \phi = 0
+    \end{aligned}
+  \] 
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \def\omega{(8*pi)/31}
+      \def\phi{0}
+
+      \draw[->] (-3,0) -- (3.2,0) node[right] {$n$};
+      \draw[->] (0,-1.5) -- (0,1.5) node[above] {$x(n)$};
+      \draw[red,domain=-3:3,samples=100] plot ({\x},{cos((\x*\omega*5 + \phi) r)});
+      \draw[blue,domain=-3:3,samples=40] plot[ycomb,mark=*,mark size=1.5pt] ({\x},{cos((\x*\omega*5 + \phi) r)});
+    \end{tikzpicture}
+  \end{figure}
+  Il periodo è:
+  \[
+  \begin{aligned}
+    T_0 = \frac{2\pi}{\Omega_0} m\\
+    T_0 = \frac{2\pi}{\frac{8\pi}{31}} m = \frac{31}{4} m
+  \end{aligned}
+  \] 
+  Con \( m = 4 \):
+  \[
+    T_0 = \frac{31}{4} \cdot 4 = 31 \in \mathbb{Z}
+  \] 
+\end{example}
+
+\begin{example}
+  \[
+    \begin{aligned}
+      \Omega_0 = \frac{1}{6}\\
+      \phi = 0
+    \end{aligned}
+  \] 
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \def\omega{1/6}
+      \def\phi{0}
+
+      \draw[->] (-3,0) -- (3.2,0) node[right] {$n$};
+      \draw[->] (0,-1.5) -- (0,1.5) node[above] {$x(n)$};
+      \draw[red,domain=-3:3,samples=100] plot ({\x},{cos((\x*\omega*5 + \phi) r)});
+      \draw[blue,domain=-3:3,samples=40] plot[ycomb,mark=*,mark size=1.5pt] ({\x},{cos((\x*\omega*5 + \phi) r)});
+    \end{tikzpicture}
+  \end{figure}
+  Il periodo è:
+  \[
+    \begin{aligned}
+      T_0 = \frac{2\pi}{\Omega_0} m\\
+      T_0 = \frac{2\pi}{\frac{1}{6}} m = 2\pi \cdot 6 m
+    \end{aligned}
+  \] 
+  Non esiste \( m \in \mathbb{Z} \) che mi tolga \( \pi \) dalla formula del periodo,
+  quindi il segnale non è periodico anche se lo sembra
+\end{example}
 
 \section{Segnali generalizzati}
 Ci sono alcune grandezze che non si possono facilmente calcolare con i segnali
