@@ -4,10 +4,11 @@ These are my university notes for my bachelor in Computer Science. I'm sharing t
 to someone else, even though they are written in Italian.
 
 ## Index of the courses
+
 <details>
-  <summary>First year</summary>
+    <summary>Section A</summary>
     <details>
-        <summary>First semester</summary>
+        <summary>Section A.B</summary>
         - [Calculus 1](./PrimoAnno/PrimoSemestre/Analisi/Analisi.pdf)
         - [Logic](./PrimoAnno/PrimoSemestre/Logica/Logica.pdf)
         - [Computer Architecture](./PrimoAnno/PrimoSemestre/Architettura/Architettura.pdf)
@@ -18,7 +19,7 @@ to someone else, even though they are written in Italian.
           - [C exercises](./PrimoAnno/PrimoSemestre/Programmazione/C)
     </details>
     <details>
-        <summary>Second semester</summary>
+        <summary>Section A.C</summary>
         - [Linear Algebra](./PrimoAnno/SecondoSemestre/AlgebraLineare/AlgebraLineare.pdf)
           - [Exam exercises](./PrimoAnno/SecondoSemestre/AlgebraLineare/Esami)
           - [Course exercises](./PrimoAnno/SecondoSemestre/AlgebraLineare/Schede)
@@ -38,6 +39,10 @@ to someone else, even though they are written in Italian.
           - [Course project](./PrimoAnno/SecondoSemestre/Architettura/ElaboratoASM/Relazione.pdf)
         - [Programming 1](./PrimoAnno/SecondoSemestre/Programmazione) (Only exercises)
           - [C exercises](./PrimoAnno/SecondoSemestre/Programmazione/C)
+        <details>
+            <summary>Section A.C.A</summary>
+            Done!
+        </details>
     </details>
 </details>
 
