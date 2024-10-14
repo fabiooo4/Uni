@@ -9,40 +9,36 @@ to someone else, even though they are written in Italian.
     <summary>Section A</summary>
     <details>
         <summary>Section A.B</summary>
-        - [Calculus 1](./PrimoAnno/PrimoSemestre/Analisi/Analisi.pdf)
-        - [Logic](./PrimoAnno/PrimoSemestre/Logica/Logica.pdf)
-        - [Computer Architecture](./PrimoAnno/PrimoSemestre/Architettura/Architettura.pdf)
-          - [SIS exercises](./PrimoAnno/PrimoSemestre/Architettura/Sis)
-          - [Verilog exercises](./PrimoAnno/PrimoSemestre/Architettura/Verilog)
-          - [Course project](./PrimoAnno/PrimoSemestre/Architettura/ElaboratoSIS/Relazione.pdf)
-        - [Programming 1](./PrimoAnno/PrimoSemestre/Programmazione/Programmazione1.pdf) (Incomplete)
-          - [C exercises](./PrimoAnno/PrimoSemestre/Programmazione/C)
+    - [Calculus 1](./PrimoAnno/PrimoSemestre/Analisi/Analisi.pdf)
+    - [Logic](./PrimoAnno/PrimoSemestre/Logica/Logica.pdf)
+    - [Computer Architecture](./PrimoAnno/PrimoSemestre/Architettura/Architettura.pdf)
+      - [SIS exercises](./PrimoAnno/PrimoSemestre/Architettura/Sis)
+      - [Verilog exercises](./PrimoAnno/PrimoSemestre/Architettura/Verilog)
+      - [Course project](./PrimoAnno/PrimoSemestre/Architettura/ElaboratoSIS/Relazione.pdf)
+    - [Programming 1](./PrimoAnno/PrimoSemestre/Programmazione/Programmazione1.pdf) (Incomplete)
+      - [C exercises](./PrimoAnno/PrimoSemestre/Programmazione/C)
     </details>
     <details>
         <summary>Section A.C</summary>
-        - [Linear Algebra](./PrimoAnno/SecondoSemestre/AlgebraLineare/AlgebraLineare.pdf)
-          - [Exam exercises](./PrimoAnno/SecondoSemestre/AlgebraLineare/Esami)
-          - [Course exercises](./PrimoAnno/SecondoSemestre/AlgebraLineare/Schede)
-        - [Physics 1](./PrimoAnno/SecondoSemestre/Fisica/Fisica.pdf) (Incomplete)
-          - [Exam exercises](./PrimoAnno/SecondoSemestre/Fisica/Esami)
-          - [Personal exercises](./PrimoAnno/SecondoSemestre/Fisica/Esercizi)
-          - [Formulary](./PrimoAnno/SecondoSemestre/Fisica/Formulario/formulario.pdf)
-        - [Probability and Statistics](./PrimoAnno/SecondoSemestre/ProbabilitaStatistica/ProbabilitaStatistica.pdf)
-          - [Exam exercises](./PrimoAnno/SecondoSemestre/ProbabilitaStatistica/Esami)
-          - [Course exercises](./PrimoAnno/SecondoSemestre/ProbabilitaStatistica/Esercizi)
-          - [Formulary](./PrimoAnno/SecondoSemestre/ProbabilitaStatistica/Formulario/formulario.pdf)
-          - [R exercises](./PrimoAnno/SecondoSemestre/ProbabilitaStatistica/R)
-        - [Computer Architecture](./PrimoAnno/SecondoSemestre/Architettura/Architettura.pdf)
-          - [Assembly exercises](./PrimoAnno/SecondoSemestre/Architettura/Assembly)
-          - [Exam exercises](./PrimoAnno/SecondoSemestre/Architettura/Esami)
-          - [Course exercises](./PrimoAnno/SecondoSemestre/Architettura/Esercitazioni)
-          - [Course project](./PrimoAnno/SecondoSemestre/Architettura/ElaboratoASM/Relazione.pdf)
-        - [Programming 1](./PrimoAnno/SecondoSemestre/Programmazione) (Only exercises)
-          - [C exercises](./PrimoAnno/SecondoSemestre/Programmazione/C)
-        <details>
-            <summary>Section A.C.A</summary>
-            Done!
-        </details>
+    - [Linear Algebra](./PrimoAnno/SecondoSemestre/AlgebraLineare/AlgebraLineare.pdf)
+      - [Exam exercises](./PrimoAnno/SecondoSemestre/AlgebraLineare/Esami)
+      - [Course exercises](./PrimoAnno/SecondoSemestre/AlgebraLineare/Schede)
+    - [Physics 1](./PrimoAnno/SecondoSemestre/Fisica/Fisica.pdf) (Incomplete)
+      - [Exam exercises](./PrimoAnno/SecondoSemestre/Fisica/Esami)
+      - [Personal exercises](./PrimoAnno/SecondoSemestre/Fisica/Esercizi)
+      - [Formulary](./PrimoAnno/SecondoSemestre/Fisica/Formulario/formulario.pdf)
+    - [Probability and Statistics](./PrimoAnno/SecondoSemestre/ProbabilitaStatistica/ProbabilitaStatistica.pdf)
+      - [Exam exercises](./PrimoAnno/SecondoSemestre/ProbabilitaStatistica/Esami)
+      - [Course exercises](./PrimoAnno/SecondoSemestre/ProbabilitaStatistica/Esercizi)
+      - [Formulary](./PrimoAnno/SecondoSemestre/ProbabilitaStatistica/Formulario/formulario.pdf)
+      - [R exercises](./PrimoAnno/SecondoSemestre/ProbabilitaStatistica/R)
+    - [Computer Architecture](./PrimoAnno/SecondoSemestre/Architettura/Architettura.pdf)
+      - [Assembly exercises](./PrimoAnno/SecondoSemestre/Architettura/Assembly)
+      - [Exam exercises](./PrimoAnno/SecondoSemestre/Architettura/Esami)
+      - [Course exercises](./PrimoAnno/SecondoSemestre/Architettura/Esercitazioni)
+      - [Course project](./PrimoAnno/SecondoSemestre/Architettura/ElaboratoASM/Relazione.pdf)
+    - [Programming 1](./PrimoAnno/SecondoSemestre/Programmazione) (Only exercises)
+      - [C exercises](./PrimoAnno/SecondoSemestre/Programmazione/C)
     </details>
 </details>
 
