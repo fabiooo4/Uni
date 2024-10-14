@@ -404,5 +404,96 @@ Per gli algoritmi:
   \end{example}
 \end{figure}
 
+\subsection{Studio degli algoritmi di ordinamento}
+Il problema dell'ordinamento si definisce stabilendo la relazione che deve esistere tra
+\textbf{input} e \textbf{output} del sistema.
+\begin{itemize}
+  \item \textbf{Input}: Sequenza \( (a_1,\ldots,a_n) \) di oggetti su cui è definita una
+    relazione di ordinamento, cioè l'unico modo per capire la differenza tra due oggetti
+    è confrontarli.
+
+  \item \textbf{Output}: Permutazione \( (a'_1,\ldots,a'_n) \) di \( (a_1,\ldots,a_n) \) 
+    tale che:
+    \[
+    \forall i < j \;\; a'_i \le a'_j
+    \] 
+\end{itemize}
+L'obiettivo è trovare un algoritmo che segua la relazione di ordinamento definita e risolva
+il problema nel minor tempo possibile.
+
+\subsubsection{Insertion sort}
+Divide la sequenza in due parti:
+\begin{itemize}
+  \item \textbf{Parte ordinata}: Sequenza di elementi ordinati
+  \item \textbf{Parte non ordinata}: Sequenza di elementi non ordinati
+\end{itemize}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw[fill, fill opacity=0.2] (0,0) rectangle (3,1) node[midway, black, opacity=1]
+      {Ordinato};
+    \draw (3,1) rectangle (8,0) node[midway] {Non ordinato};
+
+    \draw[<-] (3.5,0) -- ++(0,-0.5) node[below] {j};
+    \draw[<-] (3,0) -- ++(0,-0.5) node[below] {i};
+  \end{tikzpicture}
+  \caption{Parte ordinata e non ordinata}
+\end{figure}
+
+\noindent
+Pseudocodice:
+\begin{lstlisting}[language=Scala]
+insertion_sort(A)
+  for j <- 2 to length[A] // A sinistra di j e tutto ordinato-
+    key <- a[j]                //                            |
+    i <- j - 1                 //                            | O(n)
+    while i > 0 and a[i] > key // --                         |
+      a[i + 1] <- a[i]         //  | O(n)                    |
+      i--                      // --                     -----
+    a[i + 1] <- key            
+\end{lstlisting}
+
+\noindent
+La complessità di questo algoritmo è:
+\[
+  O(n^2)
+\] 
+Per capirlo è sufficiente guardare il numero di cicli nidificati e quante volte eseguono
+il codice all'interno.
+
+\vspace{1em}
+\noindent
+Se l'array è già ordinato la complessità è:
+\[
+\Omega(n)
+\] 
+Con l'input peggiore possibile la complessità è:
+\[
+\Omega(n^2)
+\]
+di conseguenza, visto che vale \( O(n^2) \) e \( \Omega(n^2) \) vale:
+\[
+\Theta(n^2)
+\] 
+
+Quanto spazio in memoria utilizza questo algoritmo?
+\begin{itemize}
+  \item Variabile j
+  \item Variabile i
+  \item Variabile key
+\end{itemize}
+A prescindere da quanto è grande l'array utilizzato, di conseguenza la memoria utilizzata
+è costante.
+
+\begin{itemize}
+  \item \textbf{Ordinamento in loco}: se la quantità di memoria extra che deve usare 
+    non dipende dalla dimensione del problema allora si dice che l'algoritmo è in loco.
+
+  \item \textbf{Ordinamento non in loco}: se la quantità di memoria extra che deve usare
+    dipende dalla dimensione del problema allora si dice che l'algoritmo è non in loco.
+
+  \item \textbf{Stabilità}: La posizione relativa di elementi uguali non viene modificata
+\end{itemize}
+L'insertion sort ordina in loco ed è stabile.
 
 \end{document}
