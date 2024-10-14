@@ -1,9 +1,0 @@
-.model mux2in4bit
-.inputs X0 A3 A2 A1 A0 B3 B2 B1 B0
-.outputs O3 O2 O1 O0
-.subckt mux2in1bit S0=X0 i1=A3 i0=B3 out=O3
-.subckt mux2in1bit S0=X0 i1=A2 i0=B2 out=O2
-.subckt mux2in1bit S0=X0 i1=A1 i0=B1 out=O1
-.subckt mux2in1bit S0=X0 i1=A0 i0=B0 out=O0
-.search mux2in1bit.blif
-.end
