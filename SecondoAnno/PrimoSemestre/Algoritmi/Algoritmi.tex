@@ -404,7 +404,7 @@ Per gli algoritmi:
   \end{example}
 \end{figure}
 
-\subsection{Studio degli algoritmi di ordinamento}
+\subsection{Studio degli algoritmi}
 Il problema dell'ordinamento si definisce stabilendo la relazione che deve esistere tra
 \textbf{input} e \textbf{output} del sistema.
 \begin{itemize}
@@ -495,5 +495,174 @@ A prescindere da quanto è grande l'array utilizzato, di conseguenza la memoria 
   \item \textbf{Stabilità}: La posizione relativa di elementi uguali non viene modificata
 \end{itemize}
 L'insertion sort ordina in loco ed è stabile.
+
+\subsubsection{Fattoriale}
+\begin{lstlisting}[language=Scala]
+Fatt(n)
+  if n = 0
+    ret 1
+  else 
+    ret n * Fatt(n - 1)
+\end{lstlisting}
+L'argomento della funzione ci fa capire la complessità dell'algoritmo:
+\[
+  T(n) = \begin{cases}
+    1 & \text{se } n = 0 \\
+    T(n - 1) + 1 & \text{se } n > 0
+  \end{cases}
+\] 
+Con problemi ricorsivi si avrà una complessità con funzioni definite ricorsivamente.
+Questo si risolve induttivamente:
+\[
+  \begin{aligned}
+    T(n) & = 1 + T(n-1)\\
+         & = 1 + 1 + T(n-2)\\
+         & = 1 + 1 + 1 + T(n-3)\\
+         & = \underbrace{1 + 1 + \ldots + 1}_{i} + T(n-i)\\
+  \end{aligned}
+\] 
+La condizione di uscita è: \( n-i = 0 \quad n = i \) 
+\[
+\begin{aligned}
+         & = \underbrace{1 + 1 + \ldots + 1}_{n} + T(n-n)\\
+         & = n + 1 = \Theta(n)
+\end{aligned}
+\] 
+Questo si chiama passaggio iterativo.
+
+\begin{example}
+  \[
+    T(n) = 2T\left(\floor*{\frac{n}{2}}\right) + n
+  \] 
+  Questa funzione si può riscrivere come:
+  \[
+  T(n) = \begin{cases}
+    \text{Costante} & \text{se } n < a \\
+    2T\left(\floor*{\frac{n}{2}}\right) + n & \text{se } n \ge a
+  \end{cases}
+  \] 
+
+  \vspace{1em}
+  \noindent
+  Se la complessità fosse già data bisognerebbe soltanto verificare se è corretta.
+  Usando il metodo di sostituzione:
+  \[
+    T(n) = cn \log n
+  \] 
+  sostituiamo nella funzione di partenza:
+  \[
+    \begin{aligned}
+      T(n)  & = 2T\left(\floor*{\frac{n}{2}}\right) + n\\
+            & \le 2c\left(\floor*{\frac{n}{2}}\right) \log \floor*{\frac{n}{2}} + n\\
+            & \le \cancel{2} c \frac{n}{\cancel{2}} \log \frac{n}{2} + n\\
+            & = cn \log n - cn \log 2 + n\\
+            & \stackrel{?}{\le} cn \log n \quad \text{se } n- cn \log 2 \le 0\\
+    \end{aligned}
+  \] 
+  \[
+    c \ge \frac{n}{n \log 2} = \frac{1}{\log 2}
+  \] 
+  Il metodo di sostituzione dice che quando si arriva ad avere una disequazione
+  corrispondente all'ipotesi, allora la soluzione è corretta se soddisfa una certa ipotesi.
+\end{example}
+
+\begin{example}
+  \[
+    T(n) = T\left(\floor*{\frac{n}{2}}\right) + T\left(\ceil*{\frac{n}{2}}\right) + 1 \quad \in O(n)
+  \] 
+  \[
+  T(n) \le cn
+  \] 
+  \[
+  \begin{aligned}
+    T(n) & = T\left(\floor*{\frac{n}{2}}\right) + T\left(\ceil*{\frac{n}{2}}\right) + 1\\
+         & \le c\left(\floor*{\frac{n}{2}}\right) + c\left(\ceil*{\frac{n}{2}}\right) + 1\\
+         & = c \left( \left\lfloor \frac{n}{2} \right\rfloor + \left\lceil \frac{n}{2} \right\rceil  \right) + 1\\
+         & = cn + 1 \stackrel{?}{\le} cn
+  \end{aligned}
+  \] 
+  Il metodo utilizzato non funziona perchè rimane l'1 e non si può togliere in alcun modo.
+  Per risolvere questo problema bisogna risolverne uno più forte:
+  \[
+  T(n) \le cn - b
+  \] 
+  \[
+  \begin{aligned}
+    T(n) & = T\left(\floor*{\frac{n}{2}}\right) + T\left(\ceil*{\frac{n}{2}}\right) + 1\\
+         & \le c\left(\floor*{\frac{n}{2}}\right) -b + c\left(\ceil*{\frac{n}{2}}\right) -b + 1\\
+         & = c \left( \left\lfloor \frac{n}{2} \right\rfloor + \left\lceil \frac{n}{2} \right\rceil  \right) - 2b + 1\\
+         & = cn - 2b + 1 \stackrel{?}{\le} cn - b\\
+         & = \underbrace{cn - b} + \underbrace{1 - b}_{\le 0} \le cn - b \quad \text{se } b \ge 1\\
+  \end{aligned}
+  \] 
+  Se la proprietà vale per questo problema allora vale anche per il problema iniziale
+  perchè è meno forte.
+\end{example}
+
+\begin{example}
+  \[
+    \begin{aligned}
+      T(n) & = 3T \left( \left\lfloor \frac{n}{4} \right\rfloor \right) + n\\
+           & = n + 3T \left( \left\lfloor \frac{n}{4} \right\rfloor \right)\\
+           & = n + 3 \left( \left\lfloor \frac{n}{4} \right\rfloor + 3T 
+           \left( \left\lfloor \frac{\left\lfloor \frac{n}{4} \right\rfloor}{4} \right\rfloor
+           \right)  \right)\\
+           & = n + 3 \left\lfloor \frac{n}{4} \right\rfloor + 3^2 T 
+           \left( \left\lfloor \frac{n}{4^2} \right\rfloor \right)\\
+           & \le n + 3 \left\lfloor \frac{n}{4} \right\rfloor + 3^2 
+           \left( \left\lfloor \frac{n}{4^2} \right\rfloor + 3T \left( 
+           \left\lfloor \frac{\left\lfloor \frac{n}{4^2} \right\rfloor}{4} \right\rfloor
+           \right)  \right) \\
+           & = n + 3 \left\lfloor \frac{n}{4} \right\rfloor + 3^2
+           \left\lfloor \frac{n}{4^2} \right\rfloor + 3^3 T
+           \left( \left\lfloor \frac{n}{4^3} \right\rfloor \right) \\
+           & = n + 3 \left\lfloor \frac{n}{4} \right\rfloor + \ldots + 3^{i-1}
+           \left\lfloor \frac{n}{4^{i-1}} \right\rfloor + 3^i T
+           \left( \left\lfloor \frac{n}{4^i} \right\rfloor \right) 
+    \end{aligned}
+  \] 
+  Per trovare il caso base poniamo l'argomento di T molto piccolo:
+  \[
+    \begin{aligned}
+      \frac{n}{4^i} & < 1\\
+      4^i & > n\\
+      i & > \log_4 n
+    \end{aligned}
+  \] 
+  L'equazione diventa:
+  \[
+    \begin{aligned}
+      & \le n + 3 \left\lfloor \frac{n}{4} \right\rfloor + \ldots + 3^{\log_4 n - 1}
+      \left\lfloor \frac{n}{4^{\log_4 n - 1}} \right\rfloor + 3^{\log_4 n} c\\
+    \end{aligned}
+  \] 
+  Si può togliere l'approssimazione per difetto per ottenere un maggiorante:
+  \[
+  \begin{aligned}
+    & \le n \left( 1 + \frac{3}{4} + \left( \frac{3}{4} \right)^2 + \ldots +
+    \left( \frac{3}{4} \right)^{\log_4 n-1} \right) + 3^{\log_4 n} c\\
+    & \le n \left( \sum_{i=0}^{\infty} \left( \frac{3}{4} \right)^i \right) + c 3^{\log_4 n}\\
+  \end{aligned}
+  \] 
+  Per capire l'ordine di grandezza di \( 3^{\log_4 n} \) si può scrivere come:
+  \[
+    3^{\log_4 n} = n^{\left( \log_n 3^{\log_4 n} \right) } = n^{\log_4 n \cdot \log_n 3}
+    = n^{\log_4 3}
+  \] 
+  Quindi la complessità è:
+  \[
+  \begin{aligned}
+    & = O(n) + O(n^{\log_4 3})\\
+  \end{aligned}
+  \] 
+  Si ha che una funzione è uguale al termine noto della funzione originale e l'altra
+  che è uguale al logaritmo dei termini noti. Se usassimo delle variabili uscirebbe:
+  \[
+    \begin{aligned}
+      T(n) & = a T \left( \left\lfloor \frac{n}{b} \right\rfloor \right) + f(n)\\
+           & = O(f(n)) + O(n^{\log_b a})
+    \end{aligned}
+  \] 
+\end{example}
 
 \end{document}
