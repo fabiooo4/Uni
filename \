@@ -209,22 +209,22 @@ perchè contiene il numero di sequenza del pacchetto.
     \node[draw, minimum width=5cm, minimum height=1cm] at (0.45,0) (m) {Messaggio};
     \draw[->] (m.south) -- ++(0,-1);
 
-    \coordinate (a) at (-2.7,-3);
+    \coordinate (a) at (-3,-3);
     \draw (a) rectangle ++(1,1) node[midway] {$m_1$};
-    \draw[blue,fill, fill opacity=0.1] (a) ++(0,1) rectangle ++(-0.5,-1);
+    \draw[blue,fill, fill opacity=0.1] (a) ++(1,1) rectangle ++(0.5,-1);
 
-    \coordinate (b) at (-0.8,-3);
+    \coordinate (b) at (-1.2,-3);
     \draw (b) rectangle ++(1,1) node[midway] {$m_2$};
-    \draw[blue,fill, fill opacity=0.1] (b) ++(0,1) rectangle ++(-0.5,-1);
+    \draw[blue,fill, fill opacity=0.1] (b) ++(1,1) rectangle ++(0.5,-1);
 
-    \coordinate (c) at (1.1,-3);
+    \coordinate (c) at (0.6,-3);
     \draw (c) rectangle ++(1,1) node[midway] {$m_3$};
-    \draw[blue,fill, fill opacity=0.1] (c) ++(0,1) rectangle ++(-0.5,-1);
+    \draw[blue,fill, fill opacity=0.1] (c) ++(1,1) rectangle ++(0.5,-1);
 
-    \coordinate (d) at (2.9,-3);
+    \coordinate (d) at (2.4,-3);
     \draw (d) rectangle ++(1,1) node[midway] {$m_4$};
-    \draw[blue,fill, fill opacity=0.1] (d) ++(0,1) rectangle ++(-0.5,-1);
-    \draw[<-,blue] (d) ++(-0.25,1) -- ++(0,0.5) node[above,blue] {Header};
+    \draw[blue,fill, fill opacity=0.1] (d) ++(1,1) rectangle ++(0.5,-1);
+    \draw[<-,blue] (d) ++(1.25,1) -- ++(0,0.5) node[above,blue] {Header};
 
   \end{tikzpicture}
   \caption{Messaggio e pacchetti}
@@ -433,20 +433,9 @@ Per scambiare informazioni le due entità devono comunicare. La comunicazione si
   \centering
   \begin{tikzpicture}
     \draw (0,0) rectangle ++(3,-1) node[midway,draw] {Messaggio};
-    \node[left,align=right,scale=0.7] at (0,-0.5)
-      {Livello/Strato};
-
     \draw (0,-1) rectangle ++(3,-1);
-    \node[blue,left,align=right,scale=0.7] at (0,-1.5)
-      {Header specifico al livello\\Es: n° di sequenza};
 
-    \draw (0,-2) rectangle ++(3,-1);
-    \node[red,left,align=right,scale=0.7] at (0,-2.5)
-      {Header specifico al livello\\Es: Indirizzo di destinazione};
-
-    \draw (0,-3) rectangle ++(3,-1) node[midway] {$1101010010101001$};
-
-    \coordinate (r1) at (0.4,-1.75);
+    \coordinate (r1) at (0.5,0);
     \draw[red] (r1) rectangle ++(0,0.5);
     \draw[blue] (r1) ++(0,0.5) rectangle ++(0.25,-0.5);
     \draw (r1) ++(0,0.5) ++(0.25,-0.5) rectangle ++(0.5,0.5) node[below right,yshift=-0.1cm] {$\ldots$};
@@ -454,57 +443,9 @@ Per scambiare informazioni le due entità devono comunicare. La comunicazione si
     \coordinate[right of=r1, xshift=0.4cm] (r2);
     \draw[red] (r2) rectangle ++(0,0.5);
     \draw[blue] (r2) ++(0,0.5) rectangle ++(0.25,-0.5);
-    \draw (r2) ++(0,0.5) ++(0.25,-0.5) rectangle ++(0.5,0.5);
+    \draw (r2) ++(0,0.5) ++(0.25,-0.5) rectangle ++(0.5,0.5) node[below right,yshift=-0.1cm] {$\ldots$};
 
-
-    \coordinate (r3) at (0.18,-2.75);
-    \draw[red] (r3) rectangle ++(0.25,0.5);
-    \draw[blue] (r3) ++(0.25,0.5) rectangle ++(0.25,-0.5);
-    \draw (r3) ++(0.25,0.5) ++(0.25,-0.5) rectangle ++(0.5,0.5) node[below right,yshift=-0.1cm] {$\ldots$};
-
-    \coordinate[right of=r3, xshift=0.65cm] (r4);
-    \draw[red] (r4) rectangle ++(0.25,0.5);
-    \draw[blue] (r4) ++(0.25,0.5) rectangle ++(0.25,-0.5);
-    \draw (r4) ++(0.25,0.5) ++(0.25,-0.5) rectangle ++(0.5,0.5);
-
-    \draw[->] (3.2,0) -- ++(0,-3);
-
-
-
-    \draw (5,0) rectangle ++(3,-1) node[midway,draw] {Messaggio};
-    \draw (5,-1) rectangle ++(3,-1);
-    \draw (5,-2) rectangle ++(3,-1);
-
-    \draw (5,-3) rectangle ++(3,-1) node[midway] {$1101010010101001$};
-
-    \coordinate (r1) at (5.4,-1.75);
-    \draw[red] (r1) rectangle ++(0,0.5);
-    \draw[blue] (r1) ++(0,0.5) rectangle ++(0.25,-0.5);
-    \draw (r1) ++(0,0.5) ++(0.25,-0.5) rectangle ++(0.5,0.5) 
-      node[below right,yshift=-0.1cm] {$\ldots$};
-
-    \coordinate[right of=r1, xshift=0.4cm] (r2);
-    \draw[red] (r2) rectangle ++(0,0.5);
-    \draw[blue] (r2) ++(0,0.5) rectangle ++(0.25,-0.5);
-    \draw (r2) ++(0,0.5) ++(0.25,-0.5) rectangle ++(0.5,0.5);
-
-
-    \coordinate (r3) at (5.18,-2.75);
-    \draw[red] (r3) rectangle ++(0.25,0.5);
-    \draw[blue] (r3) ++(0.25,0.5) rectangle ++(0.25,-0.5);
-    \draw (r3) ++(0.25,0.5) ++(0.25,-0.5) rectangle ++(0.5,0.5) 
-      node[below right,yshift=-0.1cm] {$\ldots$};
-
-    \coordinate[right of=r3, xshift=0.65cm] (r4);
-    \draw[red] (r4) rectangle ++(0.25,0.5);
-    \draw[blue] (r4) ++(0.25,0.5) rectangle ++(0.25,-0.5);
-    \draw (r4) ++(0.25,0.5) ++(0.25,-0.5) rectangle ++(0.5,0.5);
-
-    \draw[<-] (4.8,0) -- ++(0,-3);
-
-    \draw[->,dashed] (3,-3.5) -- ++(2,0) node[midway,below,align=center,scale=0.8] {Trasmissione\\fisica};
   \end{tikzpicture}
-  \caption{Comunicazione tra due entità}
 \end{figure}
 \noindent
 Ad ogni \textbf{livello} (o strato) viene elaborata parzialmente l'informazione e
@@ -521,65 +462,45 @@ Il modello \textbf{ISO/OSI} (International Standard Organization / Open System I
 definisce dei livelli a seconda del sistema:
 \begin{itemize}
   \item \textbf{End system}:
-    \begin{figure}[H]
-      \centering
-      \begin{tikzpicture}[scale=0.8]
-        \draw (0,6) rectangle ++(3,1) node[midway] {Applicazione};
-        \draw (0,5) rectangle ++(3,1) node[midway] {Presentazione};
-        \draw (0,4) rectangle ++(3,1) node[midway] {Sessione};
-        \draw (0,3) rectangle ++(3,1) node[midway] {Trasporto};
-        \draw (0,2) rectangle ++(3,1) node[midway] {Rete};
-        \draw (0,1) rectangle ++(3,1) node[midway,align=center] {Collegamento\\dati};
-        \draw (0,0) rectangle ++(3,1) node[midway] {Fisico};
-        \node[below] at (1.5,0) {End system};
-      \end{tikzpicture}
-      \caption{Stack ISO/OSI per l'end system}
-    \end{figure}
-  \item \textbf{Intermediate system}:
-    \begin{figure}[H]
-      \centering
-      \begin{tikzpicture}[scale=0.8]
-        \draw (0,2) rectangle ++(3,1) node[midway] {Rete};
-        \draw (0,1) rectangle ++(3,1) node[midway,align=center] {Collegamento\\dati};
-        \draw (0,0) rectangle ++(3,1) node[midway] {Fisico};
-        \node[below] at (1.5,0) {Intermediate system};
-      \end{tikzpicture}
-      \caption{Stack ISO/OSI per l'intermediate system}
-    \end{figure}
-\end{itemize}
-
-\subsection{Stack TCP/IP}
-Nella pratica (rete Internet) si utilizza lo stack protocollare \textbf{TCP/IP}:
-\begin{itemize}
-  \item \textbf{End system}:
-    \begin{figure}[H]
-      \centering
-      \begin{tikzpicture}[scale=0.8]
-        \draw (0,4) rectangle ++(3,1) node[midway] {Applicazione};
-        \draw (0,3) rectangle ++(3,1) node[midway] {Trasporto};
-        \draw (0,2) rectangle ++(3,1) node[midway] {Rete};
-        \draw (0,1) rectangle ++(3,1) node[midway,align=center] {Collegamento\\dati};
-        \draw (0,0) rectangle ++(3,1) node[midway] {Fisico};
-        \node[below] at (1.5,0) {End system};
-      \end{tikzpicture}
-      \caption{Stack TCP/IP per l'end system}
-    \end{figure}
+    \begin{enumerate}
+      \item Applicazione
+      \item Presentazione
+      \item Sessione
+      \item Trasporto
+      \item Rete
+      \item Collegamento dati
+      \item Fisico
+    \end{enumerate}
+    \label{15-10-D3}
   \item \textbf{Intermediate system}:
     \begin{enumerate}
       \item Rete
       \item Collegamento dati
       \item Fisico
     \end{enumerate}
-    \begin{figure}[H]
-      \centering
-      \begin{tikzpicture}[scale=0.8]
-        \draw (0,2) rectangle ++(3,1) node[midway] {Rete};
-        \draw (0,1) rectangle ++(3,1) node[midway,align=center] {Collegamento\\dati};
-        \draw (0,0) rectangle ++(3,1) node[midway] {Fisico};
-        \node[below] at (1.5,0) {Intermediate system};
-      \end{tikzpicture}
-      \caption{Stack TCP/IP per l'intermediate system}
-    \end{figure}
+    \label{15-10-D4}
+\end{itemize}
+\label{15-10-D5}
+
+\subsection{Stack TCP/IP}
+Nella pratica (rete Internet) si utilizza lo stack protocollare \textbf{TCP/IP}:
+\begin{itemize}
+  \item \textbf{End system}:
+    \begin{enumerate}
+      \item Applicazione
+      \item Trasporto
+      \item Rete
+      \item Collegamento dati
+      \item Fisico
+    \end{enumerate}
+    \label{15-10-D6}
+  \item \textbf{Intermediate system}:
+    \begin{enumerate}
+      \item Rete
+      \item Collegamento dati
+      \item Fisico
+    \end{enumerate}
+    \label{15-10-D7}
 \end{itemize}
 
 \noindent
@@ -612,11 +533,7 @@ Per identificare un processo servono 2 informazioni:
   \item \textbf{Porta}: Codice numerico che identifica il processo all'interno del 
     calcolatore
 \end{enumerate}
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.7\textwidth]{comunicazione-processi}
-  \caption{Comunicazione tra processi}
-\end{figure}
+\label{15-10-D8}
 Un flusso di comunicazione è identificato univocamente dalla tupla:
 \[
   (IP_A, IP_B, Porta_A, Porta_B)
@@ -625,107 +542,14 @@ La porta viene assegnata ad un processo soltanto quando esso inizia a comunicare
 
 \subsubsection{Ottenimento dell'IP e della porta}
 Queste informazioni sono contenute negli header aggiunti ad ogni livello.
-\begin{figure}[H]
-  \centering
-  \begin{tikzpicture}
-    \node[draw, minimum width=5cm, minimum height=1cm] at (0.45,0) (m) {Messaggio};
-    \draw[->] (m.south) -- ++(0,-1);
-
-    \coordinate (a) at (-2.7,-3);
-    \draw (a) rectangle ++(1,1) node[midway] {$m_1$};
-    \draw[blue,fill, fill opacity=0.1] (a) ++(0,1) rectangle ++(-0.5,-1);
-
-    \coordinate (b) at (-0.8,-3);
-    \draw (b) rectangle ++(1,1) node[midway] {$m_2$};
-    \draw[blue,fill, fill opacity=0.1] (b) ++(0,1) rectangle ++(-0.5,-1);
-
-    \coordinate (c) at (1.1,-3);
-    \draw (c) rectangle ++(1,1) node[midway] {$m_3$};
-    \draw[blue,fill, fill opacity=0.1] (c) ++(0,1) rectangle ++(-0.5,-1);
-
-    \coordinate (d) at (2.9,-3);
-    \draw (d) rectangle ++(1,1) node[midway] {$m_4$};
-    \draw[blue,fill, fill opacity=0.1] (d) ++(0,1) rectangle ++(-0.5,-1);
-    \draw[<-,blue] (d) ++(-0.25,1) -- ++(0,0.5) node[above,blue] {Porta};
-    \draw[blue] (d) ++(1.25,0.5) node[right,align=center] {Livello\\trasporto};
-
-    \draw[->] (m.south) ++(0,-3) -- ++(0,-1);
-
-    \coordinate (e) at (-3.7,-6);
-    \draw (e) rectangle ++(1,1) node[midway] {$m_1$};
-    \draw[blue,fill, fill opacity=0.1] (e) ++(0,1) rectangle ++(-0.5,-1);
-    \draw[red,fill, fill opacity=0.1] (e) ++(-0.5,1) rectangle ++(-0.5,-1);
-
-    \coordinate (f) at (-1.3,-6);
-    \draw (f) rectangle ++(1,1) node[midway] {$m_2$};
-    \draw[blue,fill, fill opacity=0.1] (f) ++(0,1) rectangle ++(-0.5,-1);
-    \draw[red,fill, fill opacity=0.1] (f) ++(-0.5,1) rectangle ++(-0.5,-1);
-
-    \coordinate (g) at (1.1,-6);
-    \draw (g) rectangle ++(1,1) node[midway] {$m_3$};
-    \draw[blue,fill, fill opacity=0.1] (g) ++(0,1) rectangle ++(-0.5,-1);
-    \draw[red,fill, fill opacity=0.1] (g) ++(-0.5,1) rectangle ++(-0.5,-1);
-
-    \coordinate (h) at (3.5,-6);
-    \draw (h) rectangle ++(1,1) node[midway] {$m_4$};
-    \draw[blue,fill, fill opacity=0.1] (h) ++(0,1) rectangle ++(-0.5,-1);
-    \draw[red,fill, fill opacity=0.1] (h) ++(-0.5,1) rectangle ++(-0.5,-1);
-    \draw[<-,red] (h) ++(-0.75,1) -- ++(0,0.5) node[above,red] {IP};
-    \draw[red] (h) ++(1.25,0.5) node[right,align=center] {Livello\\di rete};
-
-  \end{tikzpicture}
-  \caption{Porta e IP}
-\end{figure}
-
-\noindent
-Un pacchetto si può rappresentare nel seguente modo:
-\begin{figure}[H]
-  \centering
-  \begin{tikzpicture}
-    \draw[red] (0,0) rectangle ++(1,1);
-    \node[red,above,scale=0.8,align=center] at (0.5,1) {Header\\livello\\di rete};
-
-    \draw[dashed,blue] (0,0) ++(1.1,0.1) rectangle ++(0.8,0.8);
-    \draw (0,0) ++(1,0) rectangle ++(4,1);
-
-    \draw (0,0) ++(1,-0.2) -- ++(0,-0.2) -- ++(4,0) node[midway,below] {Payload}
-      -- ++(0,0.2);
-  \end{tikzpicture}
-  \caption{Rappresentazione di un pacchetto}
-\end{figure}
-oppure si può rappresentare anche:
-\begin{figure}[H]
-  \centering
-  \begin{tikzpicture}
-    \draw[red] (0,0) rectangle ++(3,2) node[midway,above,align=center,scale=0.85,yshift=-0.5cm] {
-        \texttt{01011100101101001}\\
-        \texttt{01010011101101001}\\
-        \texttt{10010110011010101}\\
-      };
-    \node[draw,red,scale=0.8,minimum width=3.5cm] at (1.5,0.3) {IP Destinazione};
-    \node[draw,red,scale=0.8,minimum width=3.5cm] at (1.5,0.75) {IP Sorgente};
-
-    \draw (0,0) rectangle ++(3,-3) node[midway,align=center,scale=0.9] 
-      {
-       \texttt{01011100101101001}\\
-       \texttt{01010011101101001}\\
-       \texttt{10010110011010101}\\
-       \texttt{10101010110111010}\\
-       \texttt{11101010100101000}\\
-       \texttt{01010001110010110}\\
-       \texttt{11101010110101100}
-     };
-
-   \draw[red] (3.1,0.1) -- ++(0.2,0) -- ++(0,0.85) node[midway,right,align=left] 
-     {Dati sempre\\presenti} -- ++(-0.2,0);
-  \end{tikzpicture}
-\end{figure}
+\label{15-10-D9}
 
 \section{Indirizzi IP}
 Sono identificativi \textbf{univoci} di un'interfaccia di un host della rete Internet.
 Un end system può avere soltanto un'interfaccia, ma un router deve avere minimo 2
 interfacce per poter permettere la comunicazione tra più entità.
 
+\label{15-10-D10}
 
 \begin{example}
   Un esempio di indirizzo IP è:
@@ -762,6 +586,7 @@ Allo stesso modo in un indirizzo IP si ha \textbf{prefisso} e \textbf{suffisso}
   \item \textbf{Prefisso}: Identifica una rete specifica
   \item \textbf{Suffisso}: Identifica un'interfaccia di un host di una specifica rete 
 \end{itemize}
+\label{15-10-D11}
 
 \subsubsection{Identificazione del prefisso e del suffisso}
 Nel caso dei numeri telefonici si inserisce una barra per separare il prefisso dal suffisso:
