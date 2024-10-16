@@ -774,5 +774,142 @@ rete ed è indicato da una barra seguita da un numero.
   157.27.19.123/16
 \] 
 Significa che i primi 16 bit dell'indirizzo IP sono dedicati al prefisso.
+\[
+  \underbrace{10011101 \;\; 00011011}_{n} \;\; \underbrace{0001 \; 0011 \;\; 0111 \; 1011}_{32 - n}
+\] 
+Quindi il numero di indirizzi si calcola come:
+\[
+  indirizzi = 2^{32-n}
+\] 
+\begin{example}
+  \[
+    n = 20 \to 2^{12} = 4096
+  \] 
+  \[
+    n = 24 \to 2^8 = 256
+  \] 
+\end{example}
+
+Per identificare il numero di bit del prefisso i calcolatori utilizzano una sequenza di
+32 bit in cui i bit associati al prefisso sono posti a \( 1 \) e gli altri a \( 0 \),
+ad esempio:
+\[
+/16 \to 1111 \; 1111 \; 1111 \; 1111 \; 0000 \; 0000 \; 0000 \; 0000
+\] 
+Questa sequqnza è chiamata \textbf{maschera} perchè è abbinata all'indirizzo IP.
+\begin{example}
+\[
+  \begin{aligned}
+    \text{IP: } & 10011101 \;\; 00011011 \;\; 0001 \; 0011 \;\; 0111 \; 1011\\
+    \text{Mask: }& \underbrace{11111111 \;\; 11111111}_{\text{Prefisso}} \;\; \underbrace{0000 \; 0000 \;\; 0000 \; 0000}_{\text{Suffisso}}
+  \end{aligned}
+\] 
+\end{example}
+Facendo l'end bit a bit tra l'IP e la maschera si ottiene l'indirizzo di rete a cui
+quell'indirizzo IP appartiene.
+
+\vspace{1em}
+\noindent
+La maschera può essere rappresentata anche in:
+\begin{itemize}
+  \item \textbf{Notazione decimale puntata}:
+    \[
+      /16 \to 255.255.0.0
+    \] 
+  \item \textbf{Notazione esadecimale}: si divide l'IP in gruppi da 4 bit e si convertono
+    in esadecimale:
+    \[
+      /16 \to \texttt{0xffff0000}
+    \] 
+    Per capire che un numero è esadecimale, esso è prefissato da \texttt{0x}.
+\end{itemize}
+
+\subsection{Indirizzi IP riservati}
+Non tutti gli indirizzi IP possono essere assegnati a degli host, infatti ce ne sono alcuni
+riservati per delle funzioni specifiche:
+\begin{enumerate}
+  \item \textbf{This host}: È l'indirizzo IP del calcolatore stesso
+    \[
+      0.0.0.0
+    \] 
+  \item \textbf{Local broadcast} (o limited broadcast): Indirizzo IP che permette di 
+    inviare un messaggio a tutti i calcolatori della rete locale
+    \[
+      255.255.255.255
+    \]
+  \item \textbf{Indirizzo di rete}: I primi \( n \) bit identificano una rete, gli altri
+    \( 32 - n \) sono tutti posti a 0. Questo IP identifica la rete e nessun host può
+    avere questo indirizzo
+    \[
+      \underbrace{1010100011}_{n} \underbrace{0000000000000000000000}_{32-n}
+    \] 
+  \item \textbf{Directed broadcast}: È un IP che permette di mandare un messaggio a tutti
+    gli utenti di una rete specifica, anche esterna alla rete locale
+    \[
+      \underbrace{1010100011}_{n} \underbrace{1111111111111111111111}_{32-n}
+    \] 
+\end{enumerate}
+
+\subsection{Conoscere il proprio indirizzo IP}
+L'indirizzo ip e la dimensione del prefisso dipendono dalla rete a cui si è collegati.
+Per conoscere il proprio indirizzo ip si usa il comando: \texttt{ifconfig}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{ifconfig}
+\end{figure}
+\begin{enumerate}
+  \item \textbf{Interfaccia di rete}: Rappresenta il collegamento tra il calcolatore e
+    la rete.
+  \item \textbf{Indirizzo ip}
+  \item \textbf{Indirizzo broadcast}
+  \item \textbf{Maschera}
+\end{enumerate}
+
+\vspace{1em}
+\noindent
+Altre informazioni sulla rete si possono ottenere con il comando: \texttt{whois}.
+Questo comando si connette ad un server che contiene informazioni sugli indirizzi IP.
+
+\noindent
+L'output di questo comando da varie informazioni sull'IP messo come argomento, ma si
+può notare che la maschera è diversa da quella che viene data in output dal comando
+\texttt{ifconfig}.
+
+\begin{itemize}
+  \item Per \texttt{ifconfig} il prefisso è da 20 bit, quindi \( 2^{12} = 4096 \) indirizzi
+  \item per \texttt{whois} il prefisso è da 16 bit, quindi \( 2^{16} = 65536 \) indirizzi
+\end{itemize}
+
+\noindent
+Questo è dovuto al \textbf{subnetting}, cioè la creazione di sottoreti per partizionare
+l'organizzazione distribuita sul territorio, quindi dei \( 65546 \) indirizzi, alcuni
+verranno assegnati ad una sottorete e altri ad un'altra.
+\label{16-10-D1}
+Questa suddivisione dall'esterno non viene vista e questo è il motivo per cui ipconfig
+mostra una maschera diversa da quella che si vede con il comando \texttt{whois}.
+
+\subsection{Esercizi}
+Conversione di IP decimale/binario
+\begin{exercise}
+  Dato il seguente IP:
+  \[
+    1110 \; 0111 \;\; 1101 \; 1011 \;\; 1000 \; 1011 \;\; 0110 \; 1111
+  \] 
+  la traduzione in decimale è la seguente:
+  \[
+    231.219.139.111
+  \] 
+\end{exercise}
+\begin{exercise}
+  Dato il seguente IP:
+  \[
+    221.34.255.82
+  \] 
+  la traduzione in binatio è la seguente:
+  \[
+    1101 \; 1101 \;\; 0010 \; 0010 \;\; 1111 \; 1111 \;\; 0101 \; 0010
+  \] 
+\end{exercise}
+
 
 \end{document}
