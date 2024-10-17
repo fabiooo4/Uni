@@ -916,5 +916,135 @@ Conversione di IP decimale/binario
   \] 
 \end{exercise}
 
+\subsection{Subnetting}
+È il processo che permette di suddividere una rete in sottoreti.
+
+\subsubsection{Creazione delle sottoreti partendo da un blocco di indirizzi assegnato}
+Un'organizzazione richiede un blocco di indirizzi in base alle proprie necessità.
+Prendendo come esempio l'Università di Verona, essa ha come indirizzo di rete il seguente:
+\[
+  157.27.0.0/16
+\] 
+si nota che i primi 16 bit sono dedicati al prefisso:
+\[
+  \underbrace{10011101 \;\; 00011011}_{\text{Prefisso}} \;\; \underbrace{00000000 \;\; 00000000}_{\text{Suffisso}}
+\] 
+Partendo da tale blocco si vogliono creare 2 sottoreti di pari dimensione. Per fare ciò
+si può prendere il primo bit del suffisso, separarlo dal suffisso e associarlo al prefisso.
+\[
+  \underbrace{10011101 \;\; 00011011}_{\text{Prefisso}} \;\;
+  \underbrace{0}_{\text{Sottorete}} \;\;
+  \underbrace{0000000 \;\; 00000000}_{\text{Suffisso}}
+\] 
+Il bit assegnato al prefisso può avere 2 valori, quindi si possono creare 2 sottoreti:
+\[
+  \begin{aligned}
+    \text{Sottorete 1: } &
+    \underbrace{10011101 \;\; 00011011 \;\;\; 0}_{\text{Prefisso}} \;\;
+    \underbrace{0000000 \;\; 00000000}_{\text{Suffisso}}\\
+    \text{Sottorete 2: } &
+    \underbrace{10011101 \;\; 00011011 \;\;\; 1}_{\text{Prefisso}} \;\;
+    \underbrace{0000000 \;\; 00000000}_{\text{Suffisso}}
+  \end{aligned}
+\]
+In notazione decimale puntata diventa:
+\[
+  \begin{aligned}
+    \text{Sottorete 1: } &
+    157.27.0.0/17\\
+    \text{Sottorete 2: } &
+    157.27.128.0/17
+  \end{aligned}
+\]
+Quello che cambia è che il prefisso è diventato di 17 bit.
+
+\vspace{1em}
+\noindent
+Da un blocco \( /16 \to 2^{32-16} = 65536 \) indirizzi si ottengono 2 blocchi
+\( /17 \to 2^{32-17} = 2^{15} = 32768 \) indirizzi ciascuno.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.70\textwidth]{esempio-subnetting}
+  \caption{Risultato del subnetting}
+\end{figure}
+
+\noindent
+I blocchi di indirizzi si chiamano \textbf{CIDR} (Classless Inter-Domain Routing).
+
+\begin{itemize}
+  \item \textbf{Nota storica}: In passato si usava la notazione \textbf{classful} in cui
+    il numero di bit dedicati al prefisso era predererminato e venivano usati i bit
+    iniziali per distinguere i diversi casi. Ad esempio:
+    \begin{itemize}
+      \item \textbf{Classe A}: 8 bit di prefisso se l'IP iniziava con 0:
+        \[
+          \underbrace{0 \;\;\; 1010010}_{\text{Prefisso}} \;\; \underbrace{00000000 \;\; 00000000 \;\; 00000000}_{\text{Suffisso}}
+        \] 
+      \item \textbf{Classe B}: 16 bit di prefisso se l'IP iniziava con 10:
+        \[
+          \underbrace{10 \;\;\; 010010 \;\; 10110100}_{\text{Prefisso}} \;\; \underbrace{00000000 \;\; 00000000}_{\text{Suffisso}}
+        \]
+      \item \textbf{Classe C}: 24 bit di prefisso se l'IP iniziava con 110:
+        \[
+          \underbrace{110 \;\;\; 010010 \;\; 10110100 \;\; 00000000}_{\text{Prefisso}} \;\; \underbrace{00000000}_{\text{Suffisso}}
+        \]
+    \end{itemize}
+    L'informazione del prefisso era codificata nell'indirizzo stesso e quindi non c'era
+    bisogno di aggiungere un'informazione all'IP come ad esempio la maschera.
+
+    Per l'alta richiesta di indirizzi, l'indirizzamento classful non era sufficiente:
+    \begin{table}[H]
+      \centering
+      \begin{tabular}{c|c|c}
+        Classe & N° reti              & N° host              \\
+        \hline
+             A & $2^{7} \approx 16K$  & $2^{24} \approx 16M$ \\
+             B & $2^{14} \approx 16K$ & $2^{16} \approx 65K$ \\
+             C & $2^{21} \approx 2M$  & $2^{8} \approx 256$  \\
+      \end{tabular}
+    \end{table}
+    \noindent
+    Si esaurirono presto le classi A e B, quindi si passò al CIDR.
+\end{itemize}
+
+\vspace{1em}
+\noindent
+A volte assegnare delle sottoreti di uguale dimensione è uno spreco perchè certe esigenze
+richiedono meno indirizzi e altre di più, quindi si dovrebbe suddividere la rete in sottoreti 
+di dimensione \textbf{diversa}.
+
+\section{Livello applicativo}
+Il livello applicativo è il livello più alto dello stack protocollare:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[scale=0.8]
+    \draw[fill,blue,fill opacity=0.2,text=black,text opacity=1] (0,4) rectangle ++(3,1) node[midway] {Applicazione};
+    \draw (0,3) rectangle ++(3,1) node[midway] {Trasporto};
+    \draw (0,2) rectangle ++(3,1) node[midway] {Rete};
+    \draw (0,1) rectangle ++(3,1) node[midway,align=center] {Collegamento\\dati};
+    \draw (0,0) rectangle ++(3,1) node[midway] {Fisico};
+  \end{tikzpicture}
+  \caption{Stack TCP/IP}
+\end{figure}
+
+\noindent
+Questo livello genera un messaggio che può essere di tipo diverso, ad esempio:
+\begin{itemize}
+  \item Richiesta HTTP
+  \item Risposta HTTP
+  \item Email
+  \item Il frame di un video
+\end{itemize}
+Quando un messaggio viene generato da un'applicazione si deve decidere quale protocollo
+utilizzare a livello di trasporto:
+\begin{itemize}
+  \item \textbf{TCP} (Transmission Control Protocol): È un protocollo orientato
+    alla connessione (\textbf{Connection oriented}) e affidabile. Questo protocollo da
+    la garanzia che il messaggio arrivi a destinazione.
+  \item \textbf{UDP} (User Datagram Protocol): È un protocollo non orientato alla
+    connessione (\textbf{Connectionless}) e non affidabile. Questo protocollo non da la
+    garanzia che il messaggio arrivi a destinazione e quindi non è detto che il messaggio
+    arrivi.
+\end{itemize}
 
 \end{document}
