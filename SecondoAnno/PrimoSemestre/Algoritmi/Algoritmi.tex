@@ -659,10 +659,209 @@ Questo si chiama passaggio iterativo.
   che è uguale al logaritmo dei termini noti. Se usassimo delle variabili uscirebbe:
   \[
     \begin{aligned}
-      T(n) & = a T \left( \left\lfloor \frac{n}{b} \right\rfloor \right) + f(n)\\
+      T(n) & = a T \left(  \frac{n}{b}  \right) + f(n)\\
            & = O(f(n)) + O(n^{\log_b a})
     \end{aligned}
   \] 
 \end{example}
+
+\subsection{Teorema dell'esperto}
+\begin{theorem}[Teorema dell'esperto o Master theorem]
+  Per un'equazione di ricorrenza del tipo:
+  \[
+    T(n) = a T \left(  \frac{n}{b}  \right) + f(n)\\
+  \] 
+  Si distinguono 3 casi:
+  \begin{itemize}
+    \item \( f(n) \in O(n^{\log_b a - \varepsilon}) \) allora \( T(n); \in \Theta(n^{\log_b a}) \)  
+    \item \( f(n) \in \Theta(n^{\log_b a}) \) allora \( T(n) \in \Theta(f(n) \log n) \) 
+    \item \( f(n) \in \Omega(n^{\log_b a + \varepsilon}) \) allora \( T(n) \in \Theta(f(n)) \) 
+  \end{itemize}
+\end{theorem}
+
+\begin{example}
+  \[
+  T(n) = 9 T\left(\frac{n}{3}\right) + n
+  \] 
+  Applico il teorema dell'esperto:
+  \[
+  \begin{aligned}
+    a & = 9\\
+    b & = 3\\
+    f(n) & = n\\
+  \end{aligned}
+  \] 
+  \[
+    n^{\log_b a} = n^{\log_3 9} = n^2
+  \] 
+  Verifico se esiste un \( \varepsilon \) tale che:
+  \[
+    n \in O(n^{2 - \varepsilon})
+  \]
+  prendo \( \varepsilon = -\frac{1}{2} \) e verifico:
+  \[
+    n \in O(n^2 \cdot n^{-\frac{1}{2}})
+  \] 
+  Quindi ho trovato il caso 1 del teorema dell'esperto.
+  \[
+    T(n) \in \Theta(n^2)
+  \] 
+\end{example}
+
+\begin{example}
+  \[
+  T(n) = T \left( \frac{2n}{3} \right) + 1
+  \] 
+  Applico il teorema dell'esperto:
+  \[
+    \begin{aligned}
+      a & = 1\\
+      b & = \frac{3}{2}\\
+      f(n) & = n^0\\
+    \end{aligned}
+  \]
+
+  \[
+    n^{\log_b a} = n^{\log_{\frac{3}{2}} 1} = n^0
+  \] 
+  Si nota che le due funzioni hanno lo stesso ordine di grandezza, quindi siamo nel secondo
+  caso del teorema dell'esperto.
+  \[
+    T(n) \in \Theta(\log n)
+  \] 
+\end{example}
+
+\begin{example}
+  \[
+    T(n) = 3T \left( \frac{n}{4} \right) + n \log n
+  \] 
+  Applico il teorema dell'esperto:
+  \[
+    \begin{aligned}
+      a & = 3\\
+      b & = 4\\
+      f(n) & = n \log n\\
+    \end{aligned}
+  \]
+  \[
+    n^{\log_b a} = n^{\log_4 3}
+  \]
+  \[
+    n \log n \in \Omega(n^{\log_4 3})
+  \]
+  Esiste un \( \varepsilon \) tale che:
+  \[
+    n \log n \in \Omega(n^{\log_4 3 + \varepsilon})
+  \]
+  perchè basta che sia compreso tra \( \log_4 3 \) e \( 1 \).
+  
+  \vspace{1em}
+  \noindent
+  Quindi siamo nel terzo caso del teorema dell'esperto.
+  \[
+    T(n) \in \Theta(n \log n)
+  \]
+\end{example}
+
+\begin{example}
+  \[
+  T(n) = 2T \left( \frac{n}{2} \right) + n \log n
+  \] 
+  Applico il teorema dell'esperto:
+  \[
+    \begin{aligned}
+      a & = 2\\
+      b & = 2\\
+      f(n) & = n \log n\\
+    \end{aligned}
+  \]
+  \[
+    n^{\log_b a} = n^{\log_2 2} = n
+  \]
+  \[
+    n \log n \in \Omega(n)
+  \]
+  Verifico se esiiste un \( \varepsilon \), quindi divido per \( n \):
+  \[
+    \log n \in \Omega(n^{\varepsilon})
+  \] 
+  Quindi si nota che questa proprietà non è verificata, quindi non si può applicare il
+  teorema dell'esperto.
+\end{example}
+
+\subsubsection{Merge sort}
+Questo algoritmo di ordinamento è basato sulla tecnica divide et impera:
+\begin{itemize}
+  \item \textbf{Divide}: Dividi il problema in sottoproblemi più piccoli
+  \item \textbf{Impera}: Risolvi i sottoproblemi in modo ricorsivo
+  \item \textbf{Combina}: Unisci le soluzioni dei sottoproblemi per risolvere il problema
+    originale
+\end{itemize}
+Questo algoritmo divide la sequenza in due parti uguali e le ordina separatamente, successivamente
+le unisce in modo ordinato. La complessità, comsiderando il merge con complessità lineare,
+risulta:
+\[
+  T(n) = 2T\left(\frac{n}{2}\right) + n
+\] 
+Applicando il teorema dell'esperto si ottiene:
+\[
+\begin{aligned}
+  a & = 2\\
+  b & = 2\\
+  f(n) & = n\\
+\end{aligned}
+\] 
+\[
+  n^{\log_b a} = n
+\] 
+\[
+  n \in \Theta(n)
+\] 
+Quindi siamo nel secondo caso del teorema dell'esperto:
+\[
+  T(n) \in \Theta(n \log n)
+\]
+
+\vspace{1em}
+\noindent
+Definizione del merge sort:
+\begin{lstlisting}[language=Scala]
+// A: Array da ordinare
+// P: Indice di partenza
+// r: Indice di arrivo
+merge_sort(A, p, r)         // --
+  if p < r                  //  |
+    q <- floor((p + r) / 2) //  | 
+    merge_sort(A, p, q)     //  | O(n log n)
+    merge_sort(A, q + 1, r) //  |
+    merge(A, p, q, r)       // --
+\end{lstlisting}
+\begin{lstlisting}[language=Scala]
+// A: Array da ordinare
+// P: Indice di partenza
+// q: Indice di mezzo
+// r: Indice di arrivo
+merge(A, p, q, r)
+  i <- 1
+  j <- p
+  k <- q + 1
+  // Ordina gli elementi di A in B
+  while(j <= q and k <= r)                // --
+    if j <= q and (k > r or A[j] <= A[k]) //  |
+      B[i] <- A[j]                        //  |
+      j++                                 //  |
+    else                                  //  | O(n)
+      B[i] <- A[k]                        //  |
+      k++                                 //  |
+    i++                                   // --
+
+  // Copia gli elementi di B in A
+  for i <- 1 to r - p + 1                 // -|
+    A[p + i - 1] <- B[i]                  // -| O(n)
+\end{lstlisting}
+
+\noindent
+L'algoritmo è stablie perchè non vengono scambiati elementi uguali e non è in loco perchè
+utilizza un array di appoggio.
 
 \end{document}
