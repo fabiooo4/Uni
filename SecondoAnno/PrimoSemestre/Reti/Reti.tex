@@ -246,8 +246,8 @@ però grazie all'header è possibile ricostruire il messaggio originale.
 
 \subsubsection{Vantaggi}
 \begin{itemize}
-  \item Utilizza le risprse solo quando ci sono pacchetti da trasmettere e questo
-    viene chiamato
+  \item Utilizza le risorse solo quando ci sono pacchetti da trasmettere e questo
+    viene chiamato \textbf{commutazione statistica}.
   \item \textbf{Multiplazione statistica}, cioè utilizzo lo stesso
     canale per trasmettere più pacchetti di utenti diversi.
 \end{itemize}
@@ -336,7 +336,7 @@ distanza si distingue in:
 \subsubsection{Ping}
 Dati 2 utenti in 2 LAN diverse, il ping manda un pacchetto all'utente di destinazione
 e l'utente che lo ha mandato prima o poi riceverà un messaggio di risposta (\textbf{
-  echo reply}). Il tempo che passa tra l'invio del pacchetto e la ricezione del
+echo reply}). Il tempo che passa tra l'invio del pacchetto e la ricezione del
 messaggio di risposta è il ritardo end-to-end.
 
 \vspace{1em}
@@ -415,6 +415,7 @@ Il modello a strati affronta la \textbf{comunicazione tra due entità} secondo l
   \centering
   \includegraphics[width=0.70\textwidth]{comunicazione}
 \end{figure}
+\noindent
 Per scambiare informazioni le due entità devono comunicare. La comunicazione si divide in:
 \begin{itemize}
   \item \textbf{Comunicazione logica}: Gestisce le problematiche relative all'informazione
@@ -565,11 +566,6 @@ Nella pratica (rete Internet) si utilizza lo stack protocollare \textbf{TCP/IP}:
       \caption{Stack TCP/IP per l'end system}
     \end{figure}
   \item \textbf{Intermediate system}:
-    \begin{enumerate}
-      \item Rete
-      \item Collegamento dati
-      \item Fisico
-    \end{enumerate}
     \begin{figure}[H]
       \centering
       \begin{tikzpicture}[scale=0.8]
@@ -596,7 +592,7 @@ attive contemporaneamente.
 
 \vspace{1em}
 \noindent
-Un applicazione può avere più istanzee di comunicazione, cioè più connessioni
+Un applicazione può avere più istanze di comunicazione, cioè più connessioni
 attive contemporaneamente.
 
 \vspace{1em}
@@ -693,7 +689,8 @@ Un pacchetto si può rappresentare nel seguente modo:
   \end{tikzpicture}
   \caption{Rappresentazione di un pacchetto}
 \end{figure}
-oppure si può rappresentare anche:
+\noindent
+oppure si può rappresentare anche come:
 \begin{figure}[H]
   \centering
   \begin{tikzpicture}
@@ -730,7 +727,7 @@ interfacce per poter permettere la comunicazione tra più entità.
 \begin{example}
   Un esempio di indirizzo IP è:
   \[
-    10011101 \;\; 00011011 \;\; 0001 \; 0011 \;\; 0111 \; 1011
+    1001 \; 1101 \;\; 0001 \; 1011 \;\; 0001 \; 0011 \;\; 0111 \; 1011
   \] 
   Per facilitare la lettura e la gestione degli indirizzi IP si usa la notazione
   \textbf{decimale puntata}. In questa notazione si considerano blocchi di 8 bit, di
@@ -775,11 +772,11 @@ rete ed è indicato da una barra seguita da un numero.
 \] 
 Significa che i primi 16 bit dell'indirizzo IP sono dedicati al prefisso.
 \[
-  \underbrace{10011101 \;\; 00011011}_{n} \;\; \underbrace{0001 \; 0011 \;\; 0111 \; 1011}_{32 - n}
+  \underbrace{10011101 \;\; 00011011}_{n} \;\; \underbrace{00010011 \;\; 01111011}_{32 - n}
 \] 
 Quindi il numero di indirizzi si calcola come:
 \[
-  indirizzi = 2^{32-n}
+  \text{indirizzi} = 2^{32-n}
 \] 
 \begin{example}
   \[
@@ -790,22 +787,23 @@ Quindi il numero di indirizzi si calcola come:
   \] 
 \end{example}
 
+\noindent
 Per identificare il numero di bit del prefisso i calcolatori utilizzano una sequenza di
 32 bit in cui i bit associati al prefisso sono posti a \( 1 \) e gli altri a \( 0 \),
 ad esempio:
 \[
-/16 \to 1111 \; 1111 \; 1111 \; 1111 \; 0000 \; 0000 \; 0000 \; 0000
+/16 \to 11111111 \;\; 11111111 \;\; 00000000 \;\; 00000000
 \] 
 Questa sequqnza è chiamata \textbf{maschera} perchè è abbinata all'indirizzo IP.
 \begin{example}
 \[
   \begin{aligned}
-    \text{IP: } & 10011101 \;\; 00011011 \;\; 0001 \; 0011 \;\; 0111 \; 1011\\
-    \text{Mask: }& \underbrace{11111111 \;\; 11111111}_{\text{Prefisso}} \;\; \underbrace{0000 \; 0000 \;\; 0000 \; 0000}_{\text{Suffisso}}
+    \text{IP: } & \,10011101 \;\; 00011011 \;\;\, 00010011 \;\; 01111011\\
+    \text{Mask: }& \underbrace{11111111 \;\; 11111111}_{\text{Prefisso}} \;\; \underbrace{00000000 \;\; 00000000}_{\text{Suffisso}}
   \end{aligned}
 \] 
 \end{example}
-Facendo l'end bit a bit tra l'IP e la maschera si ottiene l'indirizzo di rete a cui
+Facendo l'AND bit a bit tra l'IP e la maschera si ottiene l'indirizzo di rete a cui
 quell'indirizzo IP appartiene.
 
 \vspace{1em}
