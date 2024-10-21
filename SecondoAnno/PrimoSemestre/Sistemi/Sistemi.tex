@@ -425,7 +425,7 @@ l \in \mathbb{Z}
 
 \[
   y(t) = \sum_{i} \sum_{j} c_{ij} \cdot \color{blue} \underbrace{e^{\alpha t}}_{\text{Parte esponenziale}}
-  \color{black} \cdot \color{green} \underbrace{\frac{t^l}{l!}}_{\text{Parte polinomiale}}
+  \color{black} \cdot \color{green!50!black} \underbrace{\frac{t^l}{l!}}_{\text{Parte polinomiale}}
 \] 
 \begin{figure}[H]
   \centering
@@ -434,7 +434,7 @@ l \in \mathbb{Z}
     \draw[->] (0,-0.2) -- (0,3) node[above] {$y(t)$};
     \draw[domain=-3:1.1,smooth,variable=\x,blue] plot ({\x},{exp(\x)}) node[above right, scale=0.9] {$e^{\alpha t} \;\; (\alpha > 0)$};
     \draw[domain=-1.1:3,smooth,variable=\x,cyan] plot ({\x},{exp(-\x)}) node[above right, scale=0.9] {$e^{\alpha t} \;\; (\alpha < 0)$};
-    \draw[domain=0:3,smooth,variable=\x,green] plot ({\x},{\x}) node[above right, scale=0.9] {$t$};
+    \draw[domain=0:3,smooth,variable=\x,green!50!black] plot ({\x},{\x}) node[above right, scale=0.9] {$t$};
 
     \draw[->] (0,-1) -- ++(0,-1) node[midway, right] {Risultato};
 
@@ -526,7 +526,7 @@ Per le formule di Eulero che dice:
 \[
   \color{red} \bar{S} = \rho (cos(-\theta) + j \sin(-\theta)) \color{black}
 \]
-\section{Funzioni in C}
+\section{Funzioni in \texorpdfstring{\( \mathbb{C} \)}{C}}
 \subsection{Funzione a variabili complesse}
 \begin{figure}[H]
   \begin{definition}[Funzione a variabile complessa]
@@ -556,12 +556,12 @@ Per le formule di Eulero che dice:
 
         \draw[->] (-2,0) -- (5,0) node[right] {$\mathbb{C}$};
         \draw[->] (0,-2) -- (0,5) node[above] {};
-        \draw[green] \s circle (\r);
+        \draw[green!50!black] \s circle (\r);
         \draw[blue] \s ++(-0.5,-0.7) circle (\d);
         \draw[fill=black] \s circle (0.05) node[above right] {$S_0$};
         \draw[fill=black] \s ++(\r,0) circle (0.05) node[above right] {$S$};
         \draw[<->] \s -- ++(\r,0) node[midway, below] {$\rho$};
-        \node[green] at (2,1) [below] {$B_\rho(S_0)$};
+        \node[green!50!black] at (2,1) [below] {$B_\rho(S_0)$};
         \node[blue] at (1.5,3.8) [above] {$D(f)$};
       \end{tikzpicture}
     \end{figure}
@@ -594,14 +594,14 @@ Per le formule di Eulero che dice:
 
           \draw[->] (-2,0) -- (5,0) node[right] {$\mathbb{C}$};
           \draw[->] (0,-2) -- (0,5) node[above] {};
-          \draw[green] \s circle (\r);
+          \draw[green!50!black] \s circle (\r);
           \draw[blue] \x circle (\d);
           \draw[blue] \x circle (\d/2);
           \draw[fill=black] \s circle (0.05) node[above right] {$S_0$};
           \draw[fill=black] \x circle (0.05) node[above right] {$x$};
           \draw[<->] \x -- ++(\d/2,0) node[midway, below] {$\rho_1$};
           \draw[<->] \x ++(\d/2,0) -- ++(\d/2,0) node[midway, below] {$\rho_2$};
-          \node[green] at (1,3.6 + \r) [below] {$B_\rho(S_0)$};
+          \node[green!50!black] at (1,3.6 + \r) [below] {$B_\rho(S_0)$};
         \end{tikzpicture}
       \end{figure}
     \item semipiani destri o sinistri, superiori o inferiori
@@ -627,15 +627,15 @@ Per le formule di Eulero che dice:
           \draw[blue,fill,opacity=0.2] (\pdx,\y) rectangle (\x,-\y);
 
 
-          \draw[green,dashed] (-\x,\psp) -- (\x,\psp);
-          \draw[green,fill,opacity=0.2] (-\x,\psp) rectangle (\x,\y);
+          \draw[green!50!black,dashed] (-\x,\psp) -- (\x,\psp);
+          \draw[green!50!black,fill,opacity=0.2] (-\x,\psp) rectangle (\x,\y);
 
           \draw[cyan,dashed] (-\x,\pif) -- (\x,\pif);
           \draw[cyan,fill,opacity=0.2] (-\x,-\y) rectangle (\x,\pif);
 
           \node[red,left,align=right] at (-\x,0) {$\Pi_1$\\Semipiano\\Sinistro};
           \node[blue,right,xshift=0.5cm,align=left] at (\x,0) {$\Pi_2$\\Semipiano\\Destro};
-          \node[green,above,yshift=0.5cm,align=center] at (0,\y) {Semipiano\\Superiore\\$\Pi_3$};
+          \node[green!50!black,above,yshift=0.5cm,align=center] at (0,\y) {Semipiano\\Superiore\\$\Pi_3$};
           \node[cyan,below,align=center] at (0,-\y) {$\Pi_4$\\Semipiano\\Inferiore};
         \end{tikzpicture}
       \end{figure}
@@ -1715,11 +1715,11 @@ del sistema a questo segnale. Ad esempio:
         \draw[->] (0,-0.1) -- (0,3) node[above] {$f(t)$};
 
         \draw[blue,thick] (0,0) -- (0,1) -- (5.9,1);
-        \draw[green,thick,domain=0:5.9,smooth,samples=100] plot ({\x},{1 - exp(-0.1 * 6.2 * \x)* cos(-10 * \x r)});
+        \draw[green!50!black,thick,domain=0:5.9,smooth,samples=100] plot ({\x},{1 - exp(-0.1 * 6.2 * \x)* cos(-10 * \x r)});
         \draw[red,thick,domain=0:5.9,smooth,samples=100] plot ({\x},{1 - exp(-\x)});
         \draw[orange,thick,domain=0:5.9,smooth,samples=100] plot ({\x},{0.1 * exp(0.4 * \x)});
 
-        \node[align=center] at (7,1.5) {\color{green}Oscilla\\\color{red}Veloce\\\color{orange}Lento};
+        \node[align=center] at (7,1.5) {\color{green!50!black}Oscilla\\\color{red}Veloce\\\color{orange}Lento};
       \end{tikzpicture}
       \caption{Esempi di risposta di un sistema}
     \end{figure}
@@ -1783,7 +1783,7 @@ altezza 1.
 
       \draw[->,blue,thick] (0,0) -- (0,1) node[right] {$1$};
 
-      \draw[green,thick] (-0.2,-0.2) node[below] {a} -- ++(0.4,0) node[below,scale=0.8] {b}
+      \draw[green!50!black,thick] (-0.2,-0.2) node[below] {a} -- ++(0.4,0) node[below,scale=0.8] {b}
         node[midway,below,scale=0.8] {1};
 
       \draw[red,thick] (1,-0.2) node[below] {a} -- ++(0.4,0) node[below,scale=0.8] {b}
