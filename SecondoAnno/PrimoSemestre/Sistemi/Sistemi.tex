@@ -202,7 +202,7 @@ non negativi e solo sistemi \textbf{LTI} (Lineari e Tempo Invarianti):
 \noindent
 I sistemi vengono rappresentati con lettere maiuscole greche o non.
 
-\section{Sistemi}
+\section{Modello di sistemi}
 \subsection{Approccio classico}
 Questo approccio prevede di avere un \textbf{evento fisico} (circuito, molla, ecc...) e per
 questo evento bisogna definire un \textbf{modello} del sistema. Questo si può fare attraverso
@@ -1827,5 +1827,231 @@ altezza 1.
     Il valore di una funzione in \( t_0 \) l'integrale della funzione moltiplicata
     per un impulso traslato in \( t_0 \).
 \end{itemize}
+
+\section{Sistemi}
+Un sistema è un modello matematico o una formulizzazione di un processo o di un fenomeno
+fisico che permette di trasformare un input in un output. Ci sono più tipi di sistemi:
+\begin{itemize}
+  \item \textbf{Sistemi SISO} (Single Input Single Output): Sono sistemi che hanno un solo
+    input e un solo output.
+  \item \textbf{Sistemi dinamici}: Sono sistemi che "ricordano" l'input precedente,
+    quindi l'output dipende dall'input attuale e da quello precedente.
+\end{itemize}
+
+\begin{example}
+  Un esempio di sistema fisico stabile è il pendolo:
+  \label{21-10-D1}
+\end{example}
+
+\begin{example}
+  Un esempio di sistema fisico instabile è il seguente:
+  \label{21-10-D2}
+\end{example}
+
+\subsection{Proprietà dei sistemi LTI}
+\begin{definition}[Sistema LTI]
+  Un sistema a tempo continuo per cui valgono le proprietà di:
+  \begin{itemize}
+    \item Linearità
+    \item Tempo invarianza
+    \item Causalità
+  \end{itemize}
+  si definisce \textbf{Sistema Lineare Tempo Invariante} (LTI).
+\end{definition}
+
+\subsubsection{Linearità}
+Se ho un sistema con un primo input \( u_1(t) \) e un secondo input \( u_2(t) \) che
+insieme fanno un terzo input allora l'output del sistema sarà la combinazione lineare
+degli output dei due input.
+\[
+  \underbrace{\underbrace{au_1(t)}_{\text{Input 1}} + \underbrace{bu_2(t)}_{\text{Input 2}}}_{\text{Input 3}}
+  \to \text{Sistema} \to \underbrace{\underbrace{a \cdot y_1(t)}_{\text{Output 1}} + \underbrace{b \cdot y_2(t)}_{\text{Output 2}}}_{\text{Output 3}}
+\] 
+
+\subsubsection{Tempo invarianza}
+Un sistema a tempo continuo è tempo invariante se e solo se:
+\[
+  u(t) \to v(t) \implies u(t+\tau) \to  v(t+\tau) \quad \forall \tau \in \mathbb{R}
+\] 
+
+\subsubsection{Causalità}
+Un sistema si dice causale se e solo se l'uscita all'istante \( \tau \) dipende soltanto
+dall'ingresso per \( t \le \tau \) (\( v(\tau) \) dipende solo da \( u(t) \; t \le \tau \)
+e non dipende dai valori successivi). La causa non precede mai l'effetto.
+\label{21-10-D3}
+
+\noindent
+Per comodità si considerano solo i sistemi a riposo (\( \tau = 0 \)).
+
+\subsubsection{Proprietà di stabilità asintotica}
+\begin{definition}
+  Un sistema si dice \textbf{asintoticamente stabile} se:
+  \[
+  \exists \tau \in \mathbb{R} \; t.c \; u(t) = 0, \;\; \forall t \le \tau \Rightarrow
+  \lim_{t \to \infty} v(t) = 0
+  \] 
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[scale=0.8]
+      % Input graph
+      \draw[->] (-0.2,0) -- (5,0) node[right] {$t$};
+      \draw[->] (0,-2) -- (0,2) node[above] {$u(t)$};
+      \draw[blue, domain=0.001:4.8, samples=100, smooth] plot ({\x},{(sin((\x*5)/2 r))/(1.3*\x)});
+      \node[above, blue, scale=0.8, yshift=0.2cm] at (5,0) {$u(t) = 0$};
+
+      % System
+      \node[draw,minimum width=1cm,minimum height=1cm] (A) at (2.5,-3) {\( \Sigma \) };
+      \draw[<-] (A) -- ++(0,1) node[midway,above left] {};
+      \draw[->] (A) -- ++(0,-1) node[midway,above right] {};
+
+      % Output graph
+      \draw[->] (0,-8) -- (0,-4) node[above] {$v(t)$};
+      \draw[->] (-0.2,-6) -- (5,-6) node[right] {$t$};
+      \draw[red, domain=0.001:4.8, smooth] plot ({\x},{sin(\x*5 r)/(2.5*\x) - 6});
+      \node[above, red, scale=0.8, yshift=0.2cm] at (5,-6) {$\lim_{t \to \infty} v(t) = 0$};
+    \end{tikzpicture}
+    \caption{Esempio di sistema asintoticamente stabile}
+  \end{figure}
+\end{definition}
+
+\subsubsection{Proprietà di BIBO stabilità}
+\begin{definition}
+  Un sistema si dice \textbf{BIBO stabile} se:
+  \[
+    \exists  \tau \in \mathbb{R}, \; e \; U_u \in \mathbb{R} \; t.c \;
+    \text{se } |u(t)| \le U_u, \; \forall t \le \tau
+  \] 
+  \[
+    \Downarrow
+  \] 
+  \[
+    \exists U_v > 0 \; t.c \; |v(t)| \le U_v, \; \forall t \ge \tau
+  \] 
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[scale=0.8]
+      % Input graph
+      \draw[->] (-0.2,0) -- (5,0) node[right] {$t$};
+      \draw[->] (0,-2) -- (0,2) node[above] {$u(t)$};
+      \draw[blue, domain=0.001:4.8, samples=100, smooth] plot ({\x},{sin(\x*\x r)/(0.5*\x)});
+      \draw[blue, dashed] (4.8,0.7) -- (0,0.7) node[left] {$M_u$};
+      \draw[blue, dashed] (4.8,-0.7) -- (0,-0.7) node[left] {$-M_u$};
+
+      % System
+      \node[draw,minimum width=1cm,minimum height=1cm] (A) at (2.5,-3) {\( \Sigma \) };
+      \draw[<-] (A) -- ++(0,1) node[midway,above left] {};
+      \draw[->] (A) -- ++(0,-1) node[midway,above right] {};
+
+      % Output graph
+      \draw[->] (0,-8) -- (0,-4) node[above] {$v(t)$};
+      \draw[->] (-0.2,-6) -- (5,-6) node[right] {$t$};
+      \draw[red, domain=0.001:4.8, samples=200, smooth] plot ({\x},{sin(\x*\x*\x*0.5 r)/(0.7*\x) - 6});
+      \draw[red, dashed] (4.8,-5.3) -- (0,-5.3) node[left] {$M_v$};
+      \draw[red, dashed] (4.8,-6.7) -- (0,-6.7) node[left] {$-M_v$};
+    \end{tikzpicture}
+    \caption{Esempio di sistema stabile BIBO}
+  \end{figure}
+
+  \noindent
+  Ogni sistema asintoticamente stabile è anche BIBO stabile, ma non il contrario.
+\end{definition}
+
+\subsection{Sistemi descritti da equazioni differenziali}
+\begin{example}
+  Prendiamo come esempio un sistema massa molla smorzatore:
+  \label{21-10-D4}
+  \noindent
+  Andiamo a vedere le forze in gioco:
+  \[
+    \begin{aligned}
+      F & = m \cdot a
+      a & = \frac{d^2x}{dt^2}
+    \end{aligned}
+  \] 
+  \( x(t) \) è lo spostamento nel tempo
+  \[
+  M \cdot a(t) = u(t) - F_k - F_D
+  \] 
+  che equivale a
+  \[
+    M \cdot \frac{d^2x}{dt^2} = u(t) - k \cdot x(t) - D \cdot \frac{dx}{dt}
+  \] 
+  \[
+    \underbrace{M \cdot \frac{d^2x}{dt^2} + D \cdot \frac{dx}{dt} + k \cdot x(t)}_{
+      \text{Segnale di uscita}
+    } = \underbrace{u(t)}_{\text{Segnale di ingresso}}
+  \] 
+\end{example}
+\begin{example}
+  Un altro esempio è il sistema RL (Resistenza Induttanza):
+  \label{21-10-D5}
+  Possiamo descrivere l'imput del sistema come:
+  \[
+    u(t) = L \cdot \frac{di(t)}{dt} + \underbrace{R \cdot i(t)}_{v(t)}
+  \] 
+  Possiamo descrivere l'output come:
+  \[
+    v(t) = R \cdot i(t) \stackrel{\text{Legge di Ohm}}{\to} i(t) = \frac{1}{R} v(t)
+  \] 
+  (la legge di Ohm dice \( V = Ri \)).
+
+  \noindent
+  Quindi possiamo scrivere:
+  \[
+    \underbrace{\frac{L}{R} \cdot \frac{dv(t)}{dt} + v(t)}_{\text{Segnale d'uscita}} =
+    \underbrace{u(t)}_{\text{Segnale d'ingresso}}
+  \] 
+\end{example}
+
+Quindi in generale possiamo scrivere un sistema LTI come:
+\[
+  \begin{aligned}
+    a_n \frac{d^{(n)} v(t)}{dt} + a_{n-1} \frac{d^{(n-1)} v(t)}{dt} + \ldots + a_1 \frac{dv(t)}{dt} + a_0 v(t) & =\\
+    b_m \frac{d^{(m)} u(t)}{dt} + b_{m-1} \frac{d^{(m-1)} u(t)}{dt} + \ldots + b_1 \frac{du(t)}{dt} + b_0 u(t) &
+  \end{aligned}
+\] 
+Dove:
+\begin{itemize}
+  \item \( u(t) \) è il segnale di ingresso
+  \item \( v(t) \) è il segnale di uscita
+  \item \( a_n, b_m \neq 0 \;\; \in \mathbb{R} \) 
+\end{itemize}
+Tutto ciò si può riscrivere come:
+\[
+  \sum_{i=o}^{n} a_i \frac{d^{(i)} v(t)}{dt} = \sum_{j=0}^{m} b_j \frac{d^{(j)} u(t)}{dt}
+\] 
+\( n \) e \( m \) sono gli ordini delle equazioni differenziali con \( n \ge m \).
+\begin{itemize}
+  \item Se \( n > m \) il sistema è detto \textbf{strettamente proprio}
+  \item Se \( n \ge m \) il sistema è detto \textbf{proprio}
+\end{itemize}
+
+\noindent
+Ora possiamo inserire all'interno dei sistemi l'equazione differenziale:
+\label{21-10-D6}
+\begin{figure}[H]
+  \begin{example}
+    \[
+      \underbrace{M}_{a_2} x''(t) + \underbrace{D}_{a_1} x'(t) + \underbrace{K}_{a_0} x(t) =
+      \underbrace{1}_{b_0} u(t)
+    \] 
+  \end{example}
+\end{figure}
+
+\noindent
+Un sistema descritto da un'equazione differenziale non ha una sola soluzione, a meno che
+non vengano imposte \( n \) \textbf{condizioni iniziali}.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw (0,0) node[right] {$t=0^-$} -- (0,1) node[left] {$v(t)$};
+  \end{tikzpicture}
+  \begin{tikzpicture}
+    \draw (0,0) node[right] {$t=0^-$} -- (0,1) node[left] {$\frac{dv(t)}{dt}$};
+  \end{tikzpicture}
+  \begin{tikzpicture}
+    \draw (0,0) node[right] {$t=0^-$} -- (0,1) node[left] {$\frac{d^{(n-1)}v(t)}{dt}$};
+  \end{tikzpicture}
+\end{figure}
 
 \end{document}
