@@ -864,4 +864,76 @@ merge(A, p, q, r)
 L'algoritmo è stablie perchè non vengono scambiati elementi uguali e non è in loco perchè
 utilizza un array di appoggio.
 
+\subsection{Heap}
+È un albero semicompleto (ogni nodo ha 2 figli ad ogni livello tranne l'ultimo che è
+completo solo fino ad un certo punto) in cui i nodi contengono oggetti con relazioni di
+ordinamento.
+\begin{figure}[H]
+  \centering
+  \begin{forest}
+    for tree={
+    draw,
+    circle,
+    minimum size=2em,
+    inner sep=1pt,
+    s sep=1cm,
+  }
+    [1
+      [2
+        [4
+        [8]
+        [9]
+        ]
+        [5
+        [10]
+        ]
+      ]
+      [3
+        [6]
+        [7]
+      ]
+    ]
+  \end{forest}
+  \caption{Heap con l'indice di un array associato ai nodi}
+\end{figure}
+
+\subsubsection{Proprietà}
+\( \forall \) nodo il contenuto del nodo è \( \ge \) del contenuto dei figli.
+Per calcolare il numero di nodi di un albero binario si usa la formula:
+\[
+  N = 2^0 + 2^1 + 2^2 + \ldots + 2^{h-1} = \frac{1-2^h}{1-2} = 2^h - 1
+\] 
+dove \( h \) è l'altezza dell'albero.
+Il numero di foglie di un albero sono la metà dei nodi.
+
+\begin{lstlisting}[language=Scala]
+  extract_max(A)
+    H[1] <- H[H.heap_size]
+    H.heap_size <- H.heap_size - 1
+    heapify(H,1)
+\end{lstlisting}
+\begin{lstlisting}[language=Scala]
+  heapify(A, i) // O(n)
+    l <- left[i] // Indice del figlio sinistro (2i)
+    r <- right[i] // Indice del figlio destro (2i+1)
+    if l < H.heap_size and H[l] > H[i]
+      largest <- l
+    else
+      largest <- i
+
+    if r < H.heap_size and H[r] > H[largest]
+      largest <- r
+    if largest != i
+      swap(H[i], H[largest])
+      heapify(H, largest)
+\end{lstlisting}
+
+Ora si vuole definire una funzione che costruisce un heap da un array:
+\begin{lstlisting}[language=Scala]
+  build_heap(A) // O(n)
+    heapsize(a) <- length[A]
+    for i <- floor(length[A]/2) downto 1
+      heapify(A, i)
+\end{lstlisting}
+
 \end{document}
