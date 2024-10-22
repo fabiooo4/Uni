@@ -1,0 +1,70 @@
+\documentclass[a4paper]{article}
+\usepackage{import}
+\input{../../../../preamble.sty}
+
+\begin{document}
+
+\input{title.tex}
+
+\tableofcontents
+\pagebreak
+
+\section{Ricorrenza}
+\subsection{Esercizio 1}
+Usando il metodo di sostituzione, dimostrare che la ricorrenza:
+\[
+  L(n) = \begin{cases}
+    1 & \text{se } n < n_0\\
+    L\left(\frac{n}{3}\right) + L\left(\frac{2n}{3}\right) & \text{se } n \ge n_0
+  \end{cases}
+\] 
+ha un limite asintotico inferiore \( L(n) \in \Omega(n) \) e deducetene che 
+\( L(n) \in \Theta(n) \) 
+
+\subsubsection{Risoluzione}
+Sostituiamo \( L(n) = cn \) per verificare se \( \Omega(n) \) è il limite inferiore.
+\[
+  \begin{aligned}
+    L(n) &= L\left(\frac{n}{3}\right) + L\left(\frac{2n}{3}\right)\\
+         &\ge  c \frac{n}{3} + c \frac{2n}{3}\\
+         &= c \left( \frac{n}{3} + \frac{2n}{3} \right) \\
+         &= c \left( \frac{\cancel{3}n}{\cancel{3}} \right) \\
+         &= cn
+  \end{aligned}
+\] 
+Siccome \( cn \ge cn \) abbiamo verificato quindi che il limite asintotico inferiore è
+\( \Omega(n) \). Siccome le due parti sono uguali, abbiamo anche verificato che
+\( L(n) \in \Theta(n) \).
+
+\subsection{Esercizio 2}
+Usando il metodo di sostituzione, dimostrare che la ricorrenza:
+\[
+  T(n) = T\left(\frac{n}{3}\right) + T\left(\frac{2n}{3}\right) + \Theta(n)
+\] 
+ha soluzione \( T(n) = \Omega(n \lg n) \) e deducetene che \( T(n) = \Theta(n \lg n) \) 
+
+\subsubsection{Risoluzione}
+Sostituiamo \( T(n) = cn \lg n \) per verificare \( T(n) \) ha soluzione in 
+\( \Omega(n \lg n) \) 
+\[
+  \begin{aligned}
+    T(n) &= T\left(\frac{n}{3}\right) + T\left(\frac{2n}{3}\right) + \Theta(n)\\
+         &\ge c \frac{n}{3} \lg \frac{n}{3} + c \frac{2n}{3} \lg \frac{2n}{3} + cn \\
+         &= c \left( \frac{n}{3} \lg \frac{n}{3} +\frac{2n}{3} \lg \frac{2n}{3} + n \right) \\
+         &= c \left( \frac{n}{3} \left( \lg \frac{n}{3} + 2 \lg \frac{2n}{3} + 3 \right)  \right) \\
+         &= c \frac{n}{3} \left( \lg \frac{n}{3} + 2 \lg \frac{2n}{3} + 3 \right) \\
+         &= c \frac{n}{3} \left( \lg \frac{n}{3} + 2 \lg \frac{n}{3} + 2 \lg 2 + 3 \right) \\
+         &= c \frac{n}{3} \left( 3 \lg \frac{n}{3} + 3 + 2 \lg 2 \right) \\
+         &= c \frac{n}{3} \left( 3 + 2 \lg 2 \right) + c n \lg \frac{n}{3} \\
+         &= c \frac{n}{3} + c n \lg \frac{n}{3} \\
+         &= c \frac{n}{3} + c n \left( \lg n - \lg 3 \right) \\
+         &= c \frac{n}{3} + c n \lg n \\
+         &= cn + cn \lg n \stackrel{?}{\ge} cn \lg n \\
+         &= \frac{\cancel{cn} + \cancel{cn} \lg n}{\cancel{cn}} \stackrel{?}{\ge}
+         \frac{\cancel{cn} \lg n}{\cancel{cn}} \\
+         &= 1 + \lg n \stackrel{?}{\ge} n \lg n \quad \surd
+  \end{aligned}
+\] 
+Abbiamo quindi verificato che \( T(n) \in \Omega(n \lg n) \).
+
+\end{document}

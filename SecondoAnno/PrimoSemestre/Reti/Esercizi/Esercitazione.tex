@@ -1,0 +1,114 @@
+\documentclass[a4paper]{article}
+\usepackage{import}
+\input{../../../../preamble.sty}
+
+\begin{document}
+
+\input{title.tex}
+
+\tableofcontents
+\pagebreak
+
+\section{Indirizzamento}
+\subsection{Esercizio 1}
+Qual'è l'indirizzo di rete se ho il seguente indirizzo IP:
+\[
+  140.120.84.20/20
+\] 
+
+\subsubsection{Risoluzione}
+L'indirizzo di rete corrisponde ai primi 20 bit dell'indirizzo IP, quindi bisogna
+passare alla notazione binaria:
+\[
+  140.120.84.20 \to 10001100 \;\; 01111000 \;\; 01010100 \;\; 00010100
+\] 
+I primi 20 bit sono assegnati al prefisso:
+\[
+  \underbrace{10001100 \;\; 01111000 \;\; 0101}_{\text{Prefisso}} \;\;
+  \underbrace{0100 \;\; 00010100}_{\text{Suffisso}}
+\] 
+Per ottenere l'indirizzo di rete bisogna azzerare i bit del suffisso:
+\[
+  \underbrace{10001100 \;\; 01111000 \;\; 0101}_{\text{Prefisso}} \;\;
+  \underbrace{0000 \;\; 00000000}_{\text{Suffisso}}
+\] 
+che in notazione decimale puntata diventa:
+\[
+  140.120.80.0
+\] 
+La maschera di questo IP è:
+\[
+  \underbrace{11111111 \;\; 11111111 \;\; 1111}_{\text{Prefisso}} \;\;
+  \underbrace{0000 \;\; 00000000}_{\text{Suffisso}}
+\] 
+che in notazione decimale puntata diventa:
+\[
+  255.255.240.0
+\] 
+
+\subsection{Esercizio 2}
+Si hanno 3 LAN. All'insieme delle 3 LAN è stato assegnato il blocco:
+\[
+  165.5.1.0/24
+\] 
+Creare 3 sottoreti per le 3 LAN in modo che abbiano tutte lo stesso numero di host.
+
+\subsubsection{Risoluzione}
+Per prima cosa si trasforma l'indirizzo IP in notazione binaria:
+\[
+  \underbrace{1010 0101 \;\; 0000 0101 \;\; 0000 0001}_{\text{Prefisso}} \;\;
+  \underbrace{0000 0000}_{\text{Suffisso}}
+\] 
+Per poter ottenere 3 sottoreti di dimensione servono 2 bit che vengoo presi dal suffisso
+per identificare ciascuna delle 3 reti:
+\[
+  \underbrace{1010 0101 \;\; 0000 0101 \;\; 0000 0001}_{\text{Prefisso}} \;
+  \underbrace{00}_{\text{Sottorete}} \;
+  \underbrace{00 0000}_{\text{Suffisso}}
+\] 
+Le combinazioni possibili sono:
+\begin{itemize}
+  \item 
+    \(
+    \underbrace{1010 0101 \;\; 0000 0101 \;\; 0000 0001}_{\text{Prefisso}} \;
+    \underbrace{00}_{\text{Sottorete}} \;
+    \underbrace{00 0000}_{\text{Suffisso}}
+    \) 
+
+  \item 
+    \(
+    \underbrace{1010 0101 \;\; 0000 0101 \;\; 0000 0001}_{\text{Prefisso}} \;
+    \underbrace{01}_{\text{Sottorete}} \;
+    \underbrace{00 0000}_{\text{Suffisso}}
+    \) 
+
+  \item 
+    \(
+    \underbrace{1010 0101 \;\; 0000 0101 \;\; 0000 0001}_{\text{Prefisso}} \;
+    \underbrace{10}_{\text{Sottorete}} \;
+    \underbrace{00 0000}_{\text{Suffisso}}
+    \) 
+
+  \item 
+    \(
+    \underbrace{1010 0101 \;\; 0000 0101 \;\; 0000 0001}_{\text{Prefisso}} \;
+    \underbrace{11}_{\text{Sottorete}} \;
+    \underbrace{00 0000}_{\text{Suffisso}}
+    \) 
+\end{itemize}
+Ci troviamo con 4 sottoreti con lo stesso numero di indirizzi \( \left( 2^6 = 64 \right) \).
+Di queste 4 sottoreti ne utilizziamo 3 e l'ultima rimane libera per utilizzi futuri.
+
+\vspace{1em}
+\noindent
+Traducendo i blocchi in notazione decimale puntata si ha:
+\[
+  \begin{aligned}
+    165.5.1.0/26 \to \text{LAN 1}\\
+    165.5.1.64/26 \to \text{LAN 2}\\
+    165.5.1.128/26 \to \text{LAN 3}\\
+    165.5.1.192/26 \to \text{Libero}
+  \end{aligned}
+\] 
+
+\end{document}

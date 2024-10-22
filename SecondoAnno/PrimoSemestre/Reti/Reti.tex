@@ -1045,4 +1045,101 @@ utilizzare a livello di trasporto:
     arrivi.
 \end{itemize}
 
+\noindent
+Un servizio di trasporto \textbf{affidabile} garantisce che la consegna arrivi a destinazione.
+
+\subsection{Esempi di applicazioni e relativi protocolli di trasporto}
+\begin{itemize}
+  \item \textbf{Web}:
+  Un esempio di applicazione è il browser web che utilizza il protocollo \texttt{HTTP}
+  per trasferire dati attraverso la rete. Quando si consegnano testo e immagini
+  non si devono commettere errori, quindi in questi casi il protocollo \texttt{HTTP}
+  si appoggia a TCP.
+
+  \item \textbf{Posta elettronica}:
+  Un'altro esempio è la posta elettronica che utilizza il protocollo \texttt{SMTP}
+  per inviare la posta. Questo protocollo richiede un servizio affidabile, quindi
+  se un pacchetto viene perso, il protocollo TCP si preoccupa di recuperarlo.
+
+  \item \textbf{Audio/video}:
+  Per la trasmissione di audio e video di solito i protocolli sono proprietari, ma in
+  questo caso non è necessaria l'affidabilità, basta garantire la tolleranza alle
+  perdite, quindi ci si appoggia al protocollo UDP.
+
+  \item \textbf{DNS}:
+  Per navigare su internet si usa il protocollo \textbf{DNS} (Domain Name System)
+  che è il servizio che traduce i nomi logici nei corrispettivi indirizzi ip.
+\end{itemize}
+
+\subsection{Socket}
+Quando un'applicazione deve mandare un messaggio ad un'altra applicazione essa apre
+un \textbf{socket} verso la destinazione. Un socket è un'interfaccia di comunicazione 
+(astrazione software) che identifica un flusso informativo bidirezionale. Per aprire un
+socket bisogna specificare:
+\begin{itemize}
+  \item Protocollo di trasporto
+  \item Indirizzo IP di destinazione
+  \item Indirizzo IP sorgente
+  \item Porta di destinazione
+  \item Porta di sorgente
+\end{itemize}
+L'apertura di un socket è effettuata soltanto da uno dei due processi.
+\label{22-10-D1}
+
+\noindent
+Tra i due processi comunicanti si possono identificare due ruoli distinti:
+\begin{enumerate}
+  \item \textbf{Processo Client}: È il processo che è responsabile dell'inizio della
+    comunicazione. Il client ha un indirizzo IP dinamico, cioè cambia in base alla
+    rete a cui è collegato.
+
+  \item \textbf{Processo Server}: È il processo che sta su un host sempre raggiungibile
+    e sempre in ascolto. Il server ha un indirizzo IP statico.
+\end{enumerate}
+
+\subsection{Protocolli}
+\subsubsection{Protocollo HTTP}
+Il protocollo \textbf{HTTP} (HyperText Transfer Protocol) è un protocollo di livello
+applicativo usato per la trasmissione di documenti ipertestuali. Questo protocollo
+è di tipo \textbf{testuale} (i messaggi sono scritti in ASCII),
+determina il formato dei messaggi ed è basato sul modello \textbf{richiesta/risposta}:
+\begin{itemize}
+  \item \textbf{Richiesta}: Il client apre un socket, invia un messaggio di richiesta
+    al server e aspetta la risposta.
+  \item \textbf{Risposta}: Il server deve inviare un messaggio di risposta alla richiesta 
+    del client
+\end{itemize}
+Se la richiesta non fosse ben formata il server risponde con un messaggio di errore.
+Per cui il protocollo prevede sempre, ad ogni richiesta, che ci sia una risposta, positiva
+o negativa.
+
+Il server contiene delle pagine web, con eventualmente altri contenuti ad esempio immagini.
+Il file di testo principale (\texttt{index.html}).
+\label{22-10-D2}
+Un file \texttt{html} definisce sia la struttura che il contenuto di una pagina web.
+\label{22-10-D3}
+
+\vspace{1em}
+\noindent
+La struttura dei messaggi HTTP è la seguente:
+\begin{enumerate}
+  \item Riga di richiesta
+  \item Una o più righe di intestazione
+\end{enumerate}
+
+\begin{example}
+  Un'esempio di richiesta HTTP è:
+  \begin{lstlisting}[language=Scala, title=sas]
+    GET /index.html HTTP/1.1 // -- Riga di richiesta
+    Host: www.univr.it       // -+ Righe di
+    User-Agent: Mozilla/5.0  // -+ intestazione
+    Accept-language: en      // (facoltativo)
+  \end{lstlisting}
+  che corrisponde a una richiesta di una pagina web del seguente tipo:
+  \[
+    \underbrace{\texttt{www.univr.it}}_{\text{Server}} 
+      \underbrace{\texttt{/index.html}}_{\text{File richiesto}}
+  \]
+\end{example}
+
 \end{document}
