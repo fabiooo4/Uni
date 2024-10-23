@@ -1131,7 +1131,7 @@ Un file \texttt{html} definisce sia la struttura che il contenuto di una pagina 
 
 \vspace{1em}
 \noindent
-La struttura dei messaggi HTTP è la seguente:
+La struttura delle richieste HTTP è la seguente:
 \begin{enumerate}
   \item Riga di richiesta
   \item Una o più righe di intestazione
@@ -1139,17 +1139,103 @@ La struttura dei messaggi HTTP è la seguente:
 
 \begin{example}
   Un'esempio di richiesta HTTP è:
-  \begin{lstlisting}[language=Scala, title=sas]
+  \begin{lstlisting}[language=Scala]
     GET /index.html HTTP/1.1 // -- Riga di richiesta
-    Host: www.univr.it       // -+ Righe di
-    User-Agent: Mozilla/5.0  // -+ intestazione
-    Accept-language: en      // (facoltativo)
+    Host: www.univr.it       // -- Riga di intestazione
+    User-Agent: Mozilla/5.0  // (intestazione facoltativa)
+    Accept-language: en      // (intestazione facoltativo)
   \end{lstlisting}
   che corrisponde a una richiesta di una pagina web del seguente tipo:
   \[
     \underbrace{\texttt{www.univr.it}}_{\text{Server}} 
       \underbrace{\texttt{/index.html}}_{\text{File richiesto}}
   \]
+  \label{http-request}
 \end{example}
+
+\noindent
+Per fare una richiesta si utilizzano dei \textbf{metodi}:
+\begin{itemize}
+  \item \texttt{GET}: Richiede una rappresentazione di una risorsa specifica
+  \item \texttt{POST}: Invia informazioni al server
+  \item \texttt{HEAD}: Richiede una risposta identica a quella di una richiesta \texttt{GET}
+    ma senza il corpo del messaggio, quindi solo con le intestazioni
+  \item \texttt{PUT}: Carica una rappresentazione di una risorsa specifica
+  \item \texttt{DELETE}: Cancella la risorsa specificata
+\end{itemize}
+
+\vspace{1em}
+\noindent
+La struttura delle risposte HTTP è la seguente:
+\begin{enumerate}
+  \item Riga di stato:
+    \begin{itemize}
+      \item Versione del protocollo
+      \item Codice di stato
+      \item Messaggio di stato
+    \end{itemize}
+  \item Una o più righe di intestazione
+  \item Il corpo del messaggio
+\end{enumerate}
+
+\begin{example}
+  Un'esempio di risposta HTTP è:
+  \begin{lstlisting}[language=Scala]
+    HTTP/1.1 200 OK          // -- Riga di stato
+    Date: Mon, 23 May 2005   // -- 
+    Content-Type: text/html  //  | Righe di intestazione
+    Content-Length: 122      // -- 
+                             // Riga vuota obbligatoria~~~
+    <html>...</html>         // -- Corpo del messaggio
+  \end{lstlisting}
+\end{example}
+
+\noindent
+Per inviare e ricevere messaggi HTTP si può usare il comando \texttt{nc} o \texttt{netcat}
+e scrivere una richiesta HTTP come mostrato nell'esempio \ref{http-request}.
+
+\vspace{1em}
+\noindent
+Altri elementi del protocollo HTTP che possono estendere il funzionamento sono i \textbf{
+cookies}. I cookies sono un meccanismo utilizzato dai server web per capire se è già
+avvenuta un'interazione con un determinato client in passato. L'IP non basta perchè
+è dinamico.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{cookies}
+  \caption{Esempio di cookies}
+\end{figure}
+
+\vspace{1em}
+\noindent
+Per diminuire il ritardo di accesso alle risorse si usa un meccanismo di \textbf{caching}
+che offre diversi vantaggi:
+\begin{itemize}
+  \item Si riduce il ritardo di accesso
+  \item Viene diminuito il carico sui server
+\end{itemize}
+\label{23-10-D1}
+Senza cache il ritardo che sente il secondo client è uguale al ritardo che sente il primo client e il
+carico è doppio.
+\label{23-10-D2}
+Con la cache il ritardo che sente il secondo client è minore e il carico è dimezzato 
+perchè la cache contiene già i dati che il secondo client vuole siccome sono stati
+caricati dal primo client.
+
+\vspace{1em}
+\noindent
+Una buona cache lavora con un \( 70\%-80\% \) di \textbf{hit rate}. 
+
+Se il contenuto sul server di origine cambia, la cache potrebbe contenere dati obsoleti.
+Per risolvere questo problema, il protocollo HTTP prevede il metodo \textbf{GET condizionale}
+in cui una riga di intestazione della richiesta è:
+\begin{lstlisting}
+  ...
+  If-Modified-Since: <data>
+\end{lstlisting}
+\label{23-10-D3}
+\noindent
+Nella risposta del server (la prima con il contenuto, o le successive con "not modified")
+viene indicato anche il periodo di validità del contenuto:
 
 \end{document}

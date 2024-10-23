@@ -51,6 +51,7 @@ to someone else, even though they are written in Italian.
 - [Data Structures and Algorithms](./SecondoAnno/PrimoSemestre/Algoritmi/Algoritmi.pdf)
 - [System theory](./SecondoAnno/PrimoSemestre/Sistemi/Sistemi.pdf)
 - [Computer Networks](./SecondoAnno/PrimoSemestre/Reti/Reti.pdf)
+  - [Course exercises](./SecondoAnno/PrimoSemestre/Reti/Esercizi)
 - [Operating Systems](./SecondoAnno/PrimoSemestre/SistemiOperativi/SistemiOperativi.pdf) (Incomplete)
 - [Programming 2](./SecondoAnno/PrimoSemestre/Programmazione2/Programmazione2.pdf) (Incomplete)
   - [Java exercises](./SecondoAnno/PrimoSemestre/Programmazione2/Java)

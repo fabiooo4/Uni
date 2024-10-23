@@ -111,4 +111,50 @@ Traducendo i blocchi in notazione decimale puntata si ha:
   \end{aligned}
 \] 
 
+\subsection{Esercizio 3}
+Usando lo stesso blocco dell'esercizio 2 si modifichi la LAN 1 affinchè abbia il doppio
+degli indirizzi rispetto a quelli assegnati alle altre 2 LAN.
+
+\subsubsection{Risoluzione}
+Il blocco di partenza in notazione binaria è:
+\[
+  10100101 \;\; 00000101 \;\; 00000001 \;\; 00000000
+\] 
+Per ottenere il doppio degli indirizzi rispetto alle altre 2 LAN bisogna prendere un bit
+dal suffisso e assegnarlo al prefisso ottenendo così 2 reti /25.
+\[
+  \begin{aligned}
+    \underbrace{1010 0101 \;\; 0000 0101 \;\; 0000 0001}_{\text{Prefisso}} \;
+    \underbrace{0}_{\text{Sottorete}} \;
+    \underbrace{000 0000}_{\text{Suffisso}}\\
+    \underbrace{1010 0101 \;\; 0000 0101 \;\; 0000 0001}_{\text{Prefisso}} \;
+    \underbrace{1}_{\text{Sottorete}} \;
+    \underbrace{000 0000}_{\text{Suffisso}}
+  \end{aligned}
+\]
+Dalla rete si fa la stessa operazione separando un bit dal suffisso e ottenendo altri 
+2 blocchi da /26.
+\[
+\begin{aligned}
+    \underbrace{1010 0101 \;\; 0000 0101 \;\; 0000 0001}_{\text{Prefisso}} \;
+    \underbrace{0}_{\text{Lan 1}} \;
+    \underbrace{000 0000}_{\text{Suffisso}}\\
+    \underbrace{1010 0101 \;\; 0000 0101 \;\; 0000 0001}_{\text{Prefisso}} \;
+    \underbrace{10}_{\text{Lan 2}} \;
+    \underbrace{00 0000}_{\text{Suffisso}}\\
+    \underbrace{1010 0101 \;\; 0000 0101 \;\; 0000 0001}_{\text{Prefisso}} \;
+    \underbrace{11}_{\text{Lan 3}} \;
+    \underbrace{00 0000}_{\text{Suffisso}}
+\end{aligned}
+\] 
+Traducendo i blocchi in notazione decimale puntata si ha:
+\[
+  \begin{aligned}
+    \text{Lan 1: } & 165.5.1.0/25\\
+    \text{Lan 2: } & 165.5.1.128/26\\
+    \text{Lan 3: } & 165.5.1.192/26
+  \end{aligned}
+\] 
+
+
 \end{document}
