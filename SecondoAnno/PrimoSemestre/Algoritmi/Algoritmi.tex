@@ -445,12 +445,12 @@ Pseudocodice:
 \begin{lstlisting}[language=Scala]
 insertion_sort(A)
   for j <- 2 to length[A] // A sinistra di j e tutto ordinato-
-    key <- a[j]                //                            |
+    key <- A[j]                //                            |
     i <- j - 1                 //                            | O(n)
-    while i > 0 and a[i] > key // --                         |
-      a[i + 1] <- a[i]         //  | O(n)                    |
+    while i > 0 and A[i] > key // --                         |
+      A[i + 1] <- A[i]         //  | O(n)                    |
       i--                      // --                     -----
-    a[i + 1] <- key            
+    A[i + 1] <- key            
 \end{lstlisting}
 
 \noindent
