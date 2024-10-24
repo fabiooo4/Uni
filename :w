@@ -1,0 +1,43 @@
+mod sort;
+use text_io::read;
+
+use std::fmt::Display;
+
+enum Algorithms {
+    InsertionSort,
+}
+
+impl Display for Algorithms {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Algorithms::InsertionSort => write!(f, "Insertion Sort"),
+        }
+    }
+}
+
+fn main() {
+    let entries = [Algorithms::InsertionSort];
+
+    println!("Select an algorithm to run:");
+    entries
+        .iter()
+        .enumerate()
+        .for_each(|(i, e)| println!("{}. {e}", i + 1));
+
+    let selected: usize = read!();
+
+    match entries[selected] {
+        Algorithms::InsertionSort => {
+            let mut a = [6, 1, 3, 6, 7, 8, 32, 2, 1, 6, 767, 3, 2];
+            insertion_sort(&mut a);
+        }
+    }
+
+
+    let now = Instant::now();
+    insertion_sort(&mut a);
+    let elapsed = now.elapsed();
+
+    println!("{:?}", a);
+    println!("Elapsed: {:.2?}", elapsed);
+}
