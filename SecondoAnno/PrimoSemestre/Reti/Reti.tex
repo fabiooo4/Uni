@@ -1214,10 +1214,20 @@ che offre diversi vantaggi:
   \item Si riduce il ritardo di accesso
   \item Viene diminuito il carico sui server
 \end{itemize}
-\label{23-10-D1}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{traffico-client-server}
+  \caption{Traffico senza cache}
+\end{figure}
+\noindent
 Senza cache il ritardo che sente il secondo client è uguale al ritardo che sente il primo client e il
 carico è doppio.
-\label{23-10-D2}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{traffico-client-server-cache}
+  \caption{Traffico con la cache}
+\end{figure}
+\noindent
 Con la cache il ritardo che sente il secondo client è minore e il carico è dimezzato 
 perchè la cache contiene già i dati che il secondo client vuole siccome sono stati
 caricati dal primo client.
@@ -1233,7 +1243,11 @@ in cui una riga di intestazione della richiesta è:
   ...
   If-Modified-Since: <data>
 \end{lstlisting}
-\label{23-10-D3}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.75\textwidth]{comunicazione-cache}
+  \caption{Comunicazione con la cache}
+\end{figure}
 \noindent
 Nella risposta del server (la prima con il contenuto, o le successive con "not modified")
 viene indicato anche il periodo di validità del contenuto:
