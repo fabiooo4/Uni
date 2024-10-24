@@ -877,7 +877,6 @@ Dove:
     \def\omeg{3.3}
     \draw[->] (-4,0) -- (4,0) node[right] {$n$};
     \draw[->] (0,-3.5) -- (0,4) node[above] {$A$};
-    \node at (-3,4) {$Ae^{\alpha n} \cdot cos(\omega_0 n + \phi)$};
 
     \draw[domain=-4:4,smooth,variable=\x,red] plot ({\x},{exp(\sigm * \x)}) node[above right, scale=0.9,align=center] {Inviluppo};
     \draw[domain=-4:4,smooth,variable=\x,red] plot ({\x},{-exp(\sigm * \x)}) node[above right, scale=0.9,align=center] {};
@@ -892,7 +891,6 @@ Dove:
     \def\omeg{3.3}
     \draw[->] (-4,0) -- (4,0) node[right] {$n$};
     \draw[->] (0,-3.5) -- (0,4) node[above] {$A$};
-    \node at (-3,4) {$Ae^{\alpha n} \cdot cos(\omega_0 n + \phi)$};
 
     \draw[domain=-4:4,smooth,variable=\x,red] plot ({\x},{exp(\sigm * \x)}) node[above right, scale=0.9,align=center] {Inviluppo};
     \draw[domain=-4:4,smooth,variable=\x,red] plot ({\x},{-exp(\sigm * \x)}) node[above right, scale=0.9,align=center] {};
@@ -1840,12 +1838,110 @@ fisico che permette di trasformare un input in un output. Ci sono più tipi di s
 
 \begin{example}
   Un esempio di sistema fisico stabile è il pendolo:
-  \label{21-10-D1}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[scale=1.5]
+      \draw[->] (-1.5,0) -- (1.5,0) node[right] {$t$};
+      \draw[->] (0,-0.1) -- (0,1.5) node[above] {};
+
+      \draw[->,blue,thick] (0,0) -- (0,1) node[right] {$u(t)$};
+    \end{tikzpicture}
+    \caption{Input}
+  \end{figure}
+
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      % Top bar
+      \draw (0,0) -- ++(4,0);
+
+      % y axis
+      \draw[->] (0,-3) -- ++(2,0) -- ++(0,0.1) -- ++(0,-0.1) node[below] {$0$}
+        -- ++(2,0) node[right] {$y$};
+
+      % Pendulums
+      % \draw[fill=black] (2,-2) circle (0.4) node (c1) {};
+      \node[draw,fill=black,circle,inner sep=0.3cm] (c1) at (2,-2) {};
+      \node[draw,fill=black,circle,inner sep=0.3cm] (c2) at (0.5,-1.5) {};
+      \node[draw,fill=black,circle,inner sep=0.3cm] (c3) at (3.5,-1.5) {};
+
+      % Bars
+      \draw (2,0) -- (c1);
+      \draw (2,0) -- (c2);
+      \draw (2,0) -- (c3);
+
+      % Arc arrows between pendulums
+      \draw[->, blue] (c1.west) arc (-90:-120:1.4);
+      \draw[->, blue] (c1.east) arc (-90:-60:1.4);
+    \end{tikzpicture}
+    \caption{Sistema}
+  \end{figure}
+
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \def\sigm{-0.45}
+      \def\omeg{3.3}
+      \draw[->] (-0.2,0) -- (6,0) node[right] {$t$};
+      \draw[->] (0,-3.5) -- (0,4) node[left] {$y$};
+
+      \draw[domain=-2.4:3.5,smooth,variable=\x,green!50!black]
+        plot ({\x+2.4},{exp(\sigm * \x)})
+        node[above left, scale=0.9,align=center,yshift=0.5cm,xshift=0.2cm]
+        {Andamento con\\stabilità asintotica};
+
+      \draw[domain=-2.4:3.5,smooth,variable=\x,green!50!black]
+        plot ({\x+2.4},{-exp(\sigm * \x)})
+        node[above right, scale=0.9,align=center] {};
+
+      \draw[domain=-2.4:3.5,smooth,variable=\x,red,samples=70]
+        plot ({\x+2.4},{exp(\sigm*\x)*cos(\omeg*\x r)})
+        node[below right,scale=0.9,align=center,yshift=-0.3cm] {$v(t)$};
+    \end{tikzpicture}
+    \caption{Output}
+  \end{figure}
 \end{example}
 
 \begin{example}
   Un esempio di sistema fisico instabile è il seguente:
-  \label{21-10-D2}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[scale=1.5]
+      \draw[->] (-1.5,0) -- (1.5,0) node[right] {$t$};
+      \draw[->] (0,-0.1) -- (0,1.5) node[above] {};
+
+      \draw[->,blue,thick] (0,0) -- (0,1) node[right] {$u(t)$};
+    \end{tikzpicture}
+    \caption{Input}
+  \end{figure}
+
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[scale=1.5]
+      % Base
+      \draw[->] (0,0) -- ++(4,0) node[right] {$y$};
+
+      % Semicircle
+      \draw[fill,black] (1,0) arc (180:0:1);
+
+      % Top circle
+      \draw[fill,red] (2,1 + 0.2) circle (0.2) node[right] (c) {};
+      \draw[->,blue] (c) -- ++(0.5,0) node[right] {$u(t)$};
+    \end{tikzpicture}
+    \caption{Sistema}
+  \end{figure}
+
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \draw[->] (-0.2,0) -- (6,0) node[right] {$t$};
+      \draw[->] (0,-0.2) -- (0,4) node[left] {$y$};
+
+      \draw[domain=0:sqrt(2),smooth,variable=\x,red,samples=70] plot ({\x},{\x^2/2});
+      \draw[domain=sqrt(2):5.5,smooth,variable=\x,red,samples=70] plot ({\x},{\x/sqrt(2)});
+    \end{tikzpicture}
+    \caption{Output}
+  \end{figure}
 \end{example}
 
 \subsection{Proprietà dei sistemi LTI}
@@ -1878,7 +1974,66 @@ Un sistema a tempo continuo è tempo invariante se e solo se:
 Un sistema si dice causale se e solo se l'uscita all'istante \( \tau \) dipende soltanto
 dall'ingresso per \( t \le \tau \) (\( v(\tau) \) dipende solo da \( u(t) \; t \le \tau \)
 e non dipende dai valori successivi). La causa non precede mai l'effetto.
-\label{21-10-D3}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    % Input graph
+    \draw[->] (-0.5,0) -- (5,0) node[right] {$t$};
+    \draw[->] (0,-1) -- (0,1) node[above] {$u(t)$};
+    \draw[blue, domain=0:4.8, samples=100, smooth] plot ({\x},{sin(\x*5 r)/1.5});
+
+    \node[above left] (a) at (-0.5,0.5) {A riposo};
+    \draw[->] (a) -- (-0.1,0.1);
+    \node[below left] at (0,0) {$\tau = 0$};
+
+    % System
+    \node[draw,minimum width=1cm,minimum height=1cm] (A) at (2.5,-3) {\( \Sigma \) };
+    \draw[<-] (A) -- ++(0,1) node[midway,above left] {};
+    \draw[->] (A) -- ++(0,-1) node[midway,above right] {};
+
+    % Output graph
+    \draw[->] (0,-6.2) -- (0,-4) node[above] {$v(t)$};
+    \draw[->] (-0.2,-6) -- (5,-6) node[right] {$t$};
+    \draw[red, domain=0.001:4.8, smooth] plot ({\x},{ln(\x+1) - 6});
+
+    \node[above left] (b) at (-0.5,-5.5) {Causalità};
+    \draw[->] (b) -- (-0.1,-5.9);
+    \node[below left] at (0,-6) {$\tau = 0$};
+  \end{tikzpicture}
+  \caption{Sistema a riposo}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \def\t{1.2566370614}
+    % Input graph
+    \draw[->] (-0.5,0) -- (5,0) node[right] {$t$};
+    \draw[->] (0,-1) -- (0,1) node[above] {$u(t)$};
+    \draw[blue, domain=0:4.8, samples=100, smooth] plot ({\x},{sin(\x*5 r)/1.5});
+
+    \node[below right] at (\t,0) {$\tau$};
+    \draw[fill=black] (\t,0) circle (0.05);
+
+    % System
+    \node[draw,minimum width=1cm,minimum height=1cm] (A) at (2.5,-3) {\( \Sigma \) };
+    \draw[<-] (A) -- ++(0,1) node[midway,above left] {};
+    \draw[->] (A) -- ++(0,-1) node[midway,above right] {};
+
+    % Output graph
+    \draw[->] (0,-6.2) -- (0,-4) node[above] {$v(t)$};
+    \draw[->] (-0.2,-6) -- (5,-6) node[right] {$t$};
+    \draw[red, domain=\t:4.8, smooth] plot ({\x},{ln(\x+1-\t) - 6});
+    \draw[red, domain=0:\t, smooth] plot ({\x},{-6});
+
+    \node[above, xshift=-0.3cm] (b) at (\t,-5.5) {Causalità};
+    \draw[->] (b) -- (\t-0.1,-5.9);
+
+    \node[below right] at (\t,-6) {$\tau$};
+    \draw[fill=black] (\t,-6) circle (0.05);
+  \end{tikzpicture}
+  \caption{Sistema non a riposo}
+\end{figure}
 
 \noindent
 Per comodità si considerano solo i sistemi a riposo (\( \tau = 0 \)).
@@ -1959,7 +2114,34 @@ Per comodità si considerano solo i sistemi a riposo (\( \tau = 0 \)).
 \subsection{Sistemi descritti da equazioni differenziali}
 \begin{example}
   Prendiamo come esempio un sistema massa molla smorzatore:
-  \label{21-10-D4}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \def\offset{0.4}
+
+      \draw (-0.2,0) -- (4,0);
+      \draw[->] (0,-0.2) -- (0,3) node[right] {$x$};
+
+      % Spring
+      \draw[decoration={aspect=0.3, segment length=1.5mm, amplitude=2mm,coil},decorate]
+        (2-\offset,0) -- ++(0,1) node[midway,left,xshift=-0.2cm] (k) {$k$};
+      \draw[->,blue] (k) ++(-0.3,0.3) -- ++(0,-0.6) node[midway,left] {$F_k$};
+
+
+      % Damper
+      \draw (2+\offset,0) -- ++(0,0.4) (2+\offset-0.2,0.4+0.2) -- ++(0,-0.2) 
+        -- ++(0.4,0) -- ++(0,0.2) node[midway,right] (d) {$D$}
+        (2+\offset-0.1,0.4+0.1) -- ++(0.2,0)
+        (2+\offset,0.4+0.1) -- ++(0,0.5);
+      \draw[->,blue] (d) ++(0.3,0.3) -- ++(0,-0.6) node[midway,right] {$F_D$};
+
+      % Mass
+      \draw (2-\offset-0.3,1) rectangle ++(1.4,1) node[midway] {$M$};
+      \draw[->,blue] (2,2) -- ++(0,0.6) node[midway,right] {$u(t)$};
+    \end{tikzpicture}
+    \label{massa-molla-smorzatore}
+    \caption{Sistema massa molla smorzatore}
+  \end{figure}
   \noindent
   Andiamo a vedere le forze in gioco:
   \[
@@ -1973,32 +2155,71 @@ Per comodità si considerano solo i sistemi a riposo (\( \tau = 0 \)).
   M \cdot a(t) = u(t) - F_k - F_D
   \] 
   che equivale a
+  \renewcommand{\thempfootnote}{\fnsymbol{mpfootnote}}
   \[
-    M \cdot \frac{d^2x}{dt^2} = u(t) - k \cdot x(t) - D \cdot \frac{dx}{dt}
+    M \cdot \frac{\partial ^2x}{\partial t^2} =
+    u(t) - k \cdot x(t) - D \cdot \frac{\partial x}{\partial t}
+    \footnote{
+      Il simbolo \( \partial \) indica la derivata parziale. Una derivata parziale
+      è una derivata rispetto ad una funzione a più variabili.
+    }
   \] 
+  \renewcommand{\thempfootnote}{\arabic{mpfootnote}}
+  \setcounter{mpfootnote}{0}
   \[
-    \underbrace{M \cdot \frac{d^2x}{dt^2} + D \cdot \frac{dx}{dt} + k \cdot x(t)}_{
-      \text{Segnale di uscita}
-    } = \underbrace{u(t)}_{\text{Segnale di ingresso}}
+    \underbrace{M \cdot \frac{\partial ^2x}{\partial t^2} + D \cdot
+    \frac{\partial x}{\partial t} + k \cdot x(t)}_{\text{Segnale di uscita}}
+    = \underbrace{u(t)}_{\text{Segnale di ingresso}}
   \] 
 \end{example}
 \begin{example}
   Un altro esempio è il sistema RL (Resistenza Induttanza):
-  \label{21-10-D5}
+  \begin{figure}[H]
+    \centering
+    \begin{circuitikz}[american voltages]
+      % Input voltage source and ground
+      \draw
+        (0,0) node[ground] (ground) {} to[short] ++(0,1)
+        to[V=$u(t)$] (0,2)
+        to[short] ++(0,1)
+
+        % Inductor L
+        to[L, l=$L$] ++(3,0)
+
+        % Resistor R
+        to[R, l=$R$] ++(0,-3)
+
+        % Output voltage v(t)
+        (3,3) to[short, -*] (5,3)
+        to[open, v^>=$v(t)$] (5,0)
+
+        % Ground connection
+        (0,0) to[short, -*] (5,0)
+        ;
+
+    \node at (ground) [below,yshift=-0.6cm,align=center] {Messa a\\terra};
+    \node at (-1,1.2) [below,align=center] {Tensione\\di input};
+    \node at (6.2,1.9) [below,align=center] {Tensione\\di output};
+
+    \draw[<-] (2.2,2) arc (45:315:0.7) node[midway,right,xshift=0.3cm] {$i(t)$};
+    \end{circuitikz}
+    \caption{Sistema RL}
+  \end{figure}
+  \noindent
   Possiamo descrivere l'imput del sistema come:
   \[
-    u(t) = L \cdot \frac{di(t)}{dt} + \underbrace{R \cdot i(t)}_{v(t)}
+    u(t) = L \cdot \frac{\partial i(t)}{\partial t} + \underbrace{R \cdot i(t)}_{v(t)}
   \] 
   Possiamo descrivere l'output come:
   \[
     v(t) = R \cdot i(t) \stackrel{\text{Legge di Ohm}}{\to} i(t) = \frac{1}{R} v(t)
   \] 
-  (la legge di Ohm dice \( V = Ri \)).
 
   \noindent
-  Quindi possiamo scrivere:
+  Usando la legge di Ohm \( (V = Ri) \) possiamo scrivere:
   \[
-    \underbrace{\frac{L}{R} \cdot \frac{dv(t)}{dt} + v(t)}_{\text{Segnale d'uscita}} =
+    \underbrace{\frac{L}{R} \cdot \frac{\partial v(t)}{\partial t} + v(t)}
+    _{\text{Segnale d'uscita}} =
     \underbrace{u(t)}_{\text{Segnale d'ingresso}}
   \] 
 \end{example}
@@ -2006,8 +2227,8 @@ Per comodità si considerano solo i sistemi a riposo (\( \tau = 0 \)).
 Quindi in generale possiamo scrivere un sistema LTI come:
 \[
   \begin{aligned}
-    a_n \frac{d^{(n)} v(t)}{dt} + a_{n-1} \frac{d^{(n-1)} v(t)}{dt} + \ldots + a_1 \frac{dv(t)}{dt} + a_0 v(t) & =\\
-    b_m \frac{d^{(m)} u(t)}{dt} + b_{m-1} \frac{d^{(m-1)} u(t)}{dt} + \ldots + b_1 \frac{du(t)}{dt} + b_0 u(t) &
+    a_n \frac{\partial ^{n} v(t)}{\partial t} + a_{n-1} \frac{\partial ^{(n-1)} v(t)}{\partial t} + \ldots + a_1 \frac{\partial v(t)}{\partial t} + a_0 v(t) & =\\
+    b_m \frac{\partial ^{m} u(t)}{\partial t} + b_{m-1} \frac{\partial ^{(m-1)} u(t)}{\partial t} + \ldots + b_1 \frac{\partial u(t)}{\partial t} + b_0 u(t) &
   \end{aligned}
 \] 
 Dove:
@@ -2018,7 +2239,8 @@ Dove:
 \end{itemize}
 Tutto ciò si può riscrivere come:
 \begin{equation}
-  \sum_{i=o}^{n} a_i \frac{\partial^{(i)} v(t)}{\partial t} = \sum_{j=0}^{m} b_j \frac{\partial^{(j)} u(t)}{\partial t}
+  \sum_{i=o}^{n} a_i \frac{\partial^{i} v(t)}{\partial t} =
+  \sum_{j=0}^{m} b_j \frac{\partial^{j} u(t)}{\partial t}
   \label{equazione-del-sistema}
 \end{equation}
   
@@ -2031,9 +2253,29 @@ Tutto ciò si può riscrivere come:
 
 \noindent
 Ora possiamo inserire all'interno dei sistemi l'equazione differenziale:
-\label{21-10-D6}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw,minimum width=1cm,minimum height=2cm] (A) at (0,0)
+      {
+        \begin{tabular}{c}
+          \scalebox{2}{$\Sigma$}\\
+          \\
+          $\sum_{i=o}^{n} a_i \frac{\partial^{i} v(t)}{\partial t} =
+            \sum_{j=0}^{m} b_j \frac{\partial^{j} u(t)}{\partial t}$
+          \end{tabular}
+      };
+
+    \draw[->] (A.east) -- ++(1,0) node[right] {$u(t)$};
+    \draw[<-] (A.west) -- ++(-1,0) node[left] {$v(t)$};
+  \end{tikzpicture}
+  \caption{Contenuto del sistema}
+\end{figure}
+
 \begin{figure}[H]
   \begin{example}
+    Un esempio di sistema descritto da un'equazione differenziale è il seguente e
+    riprende il sistema massa molla smorzatore dell'esempio \ref{massa-molla-smorzatore}:
     \[
       \underbrace{M}_{a_2} x''(t) + \underbrace{D}_{a_1} x'(t) + \underbrace{K}_{a_0} x(t) =
       \underbrace{1}_{b_0} u(t)
@@ -2050,12 +2292,13 @@ non vengano imposte \( n \) \textbf{condizioni iniziali}.
     \draw (0,0) node[right] {$t=0^-$} -- (0,1) node[left] {$v(t)$};
   \end{tikzpicture}
   \begin{tikzpicture}
-    \draw (0,0) node[right] {$t=0^-$} -- (0,1) node[left] {$\frac{dv(t)}{dt}$}
+    \draw (0,0) node[right] {$t=0^-$} -- (0,1) node[left] {$\frac{\partial v(t)}{\partial t}$}
       node[midway, right, xshift=1cm] {$\ldots$};
   \end{tikzpicture}
   \begin{tikzpicture}
-    \draw (0.5,0) node[right] {$t=0^-$} -- (0.5,1) node[left] {$\frac{d^{(n-1)}v(t)}{dt}$};
+    \draw (0.5,0) node[right] {$t=0^-$} -- (0.5,1) node[left] {$\frac{\partial ^{(n-1)}v(t)}{\partial t}$};
   \end{tikzpicture}
+  \caption{Derivata di ordine \( n-1 \) di \( v(t) \) calcolata al tempo \( t = 0^- \)}
 \end{figure}
 
 \noindent
@@ -2130,7 +2373,7 @@ sono le soluzioni del polinomio caratteristico \( P(s) \) con relative molteplic
 I valori \( c_{i,l} \) vengono calcolati usando le condizioni iniziali.
 
 \begin{example}
-  Prendendo come esempio il sistema definito in \ref{21-10-D4} abbiamo l'equazione:
+  Prendendo come esempio il sistema definito in \ref{massa-molla-smorzatore} abbiamo l'equazione:
   \[
   Mx''(t) + Dx'(t) + Kx(t) = 0
   \] 
