@@ -1964,7 +1964,7 @@ Per comodità si considerano solo i sistemi a riposo (\( \tau = 0 \)).
   Andiamo a vedere le forze in gioco:
   \[
     \begin{aligned}
-      F & = m \cdot a
+      F & = m \cdot a\\
       a & = \frac{d^2x}{dt^2}
     \end{aligned}
   \] 
@@ -2017,13 +2017,16 @@ Dove:
   \item \( a_n, b_m \neq 0 \;\; \in \mathbb{R} \) 
 \end{itemize}
 Tutto ciò si può riscrivere come:
-\[
-  \sum_{i=o}^{n} a_i \frac{d^{(i)} v(t)}{dt} = \sum_{j=0}^{m} b_j \frac{d^{(j)} u(t)}{dt}
-\] 
+\begin{equation}
+  \sum_{i=o}^{n} a_i \frac{\partial^{(i)} v(t)}{\partial t} = \sum_{j=0}^{m} b_j \frac{\partial^{(j)} u(t)}{\partial t}
+  \label{equazione-del-sistema}
+\end{equation}
+  
 \( n \) e \( m \) sono gli ordini delle equazioni differenziali con \( n \ge m \).
 \begin{itemize}
   \item Se \( n > m \) il sistema è detto \textbf{strettamente proprio}
   \item Se \( n \ge m \) il sistema è detto \textbf{proprio}
+
 \end{itemize}
 
 \noindent
@@ -2038,7 +2041,7 @@ Ora possiamo inserire all'interno dei sistemi l'equazione differenziale:
   \end{example}
 \end{figure}
 
-\noindent
+\subsubsection{Risoluzione}
 Un sistema descritto da un'equazione differenziale non ha una sola soluzione, a meno che
 non vengano imposte \( n \) \textbf{condizioni iniziali}.
 \begin{figure}[H]
@@ -2054,5 +2057,189 @@ non vengano imposte \( n \) \textbf{condizioni iniziali}.
     \draw (0.5,0) node[right] {$t=0^-$} -- (0.5,1) node[left] {$\frac{d^{(n-1)}v(t)}{dt}$};
   \end{tikzpicture}
 \end{figure}
+
+\noindent
+La soluzione è l'uscita \( v \) del sistema (reale o complesa) che può essere scomposta
+in:
+\[
+  \underbrace{v_t}_{\text{risposta totale}} = \underbrace{v_l}_{\text{Risposta libera}} + \underbrace{v_f}_{\text{Risposta forzata}}
+\] 
+\begin{itemize}
+  \item \textbf{Risposta libera}: Dipende soltanto dalle condizioni iniziali, quindi
+    è il comportamento del sistema in assenza di input.
+    \[
+    \begin{aligned}
+      \text{C.I.} \neq 0\\
+      u(t) = 0
+    \end{aligned}
+    \] 
+
+  \item \textbf{Risposta forzata}: Dipende solo dall'input del sistema e la maggior parte
+    delle volte è diversa dalla risposta libera.
+    \[
+    \begin{aligned}
+      \text{C.I.} = 0\\
+      u(t) \neq 0
+    \end{aligned}
+    \] 
+\end{itemize}
+
+\subsubsection{Risposta libera (o evoluzione libera)}
+Per calcolare la risposta libera del sistema definito in \ref{equazione-del-sistema}
+bisogna risolvere l'equazione omogenea 
+($=0$) associata, quindi si prende la parte sinistra
+dell'equazione differenziale e si pone uguale a 0 la parte destra.
+\begin{equation}
+  \sum_{i=0}^{n} a_i \frac{\partial^{i} v(t)}{\partial t} = 0
+  \label{eq-risposta-libera}
+\end{equation}
+\[
+\] 
+Per farlo bisogna definire il \textbf{polinomio caratteristico}:
+\[
+P(s) = \sum_{i=0}^{n} a_i s^i
+\] 
+\begin{example}
+  Ad esempio:
+  \[
+  3 y''(t) + 2 y'(t) + y(t) = u(t)
+  \] 
+  Come prima cosa si toglie la parte destra
+  \[
+  3 y''(t) + 2 y'(t) + y(t) = 0
+  \] 
+  Successivamente si scrive il polinomio caratteristico sostituendo a \( y(t) \) la
+  variabile \( s \) e mettendo come potenza di \( s \)  l'ordine della derivata:
+  \[
+  3s^2 + 2s + 1 = 0
+  \] 
+\end{example}
+Ricordando il teorema fondamentale dell'algebra, cioè che la somma delle molteplicità
+delle radici è uguale all'ordine del polinomio, si può dire che:
+\[
+\lambda_1, \lambda_2, \ldots, \lambda_r
+\]
+sono le soluzioni del polinomio caratteristico \( P(s) \) con relative molteplicità
+\[ \mu_1, \mu_2, \ldots, \mu_r \] vale che \[ \sum_{i=0}^{r} \mu_i = r \]. Si ha quindi:
+\[
+  v_l(t) = \sum_{i=1}^{r} \sum_{l=0}^{\mu_i - 1} 
+  \underbrace{c_{i,l}}_{\in \mathbb{R}, \mathbb{C}}  \cdot 
+  \underbrace{e^{\lambda_i t}}_{\text{Esponenziale}} \cdot 
+  \underbrace{\frac{t^l}{l!}}_{\text{Polinomiale}}
+\] 
+I valori \( c_{i,l} \) vengono calcolati usando le condizioni iniziali.
+
+\begin{example}
+  Prendendo come esempio il sistema definito in \ref{21-10-D4} abbiamo l'equazione:
+  \[
+  Mx''(t) + Dx'(t) + Kx(t) = 0
+  \] 
+  Poniamo:
+  \[
+    M=1, \quad D=2, \quad K=1
+  \] 
+  \[
+  x''(t) + 2x'(t) + x(t) = 0
+  \] 
+  Il polinomio caratteristico è:
+  \[
+    \begin{aligned}
+      P(s) &= s^2 + 2s + 1 =\\
+           &= (s+1)^2 
+    \end{aligned}
+  \] 
+  Risolvendo l'equazione differenziale si ottiene:
+  \[
+  \lambda_1 = \lambda_2 = -1
+  \] 
+  con molteplicità algebrica è \( \mu_1 = 2 \). Quindi si hanno 2 soluzioni coincidenti
+  e una sola radice distinta: $r = 1$ La risposta libera quindi sarà:
+  \[
+    \begin{aligned}
+      v_l(t) &= \sum_{i=1}^{r} \sum_{l=0}^{\mu_i-1} c_{i,l} \cdot  e^{\lambda_i t} \cdot \frac{t^l}{l!} \\
+             &= \sum_{i=1}^{1} \sum_{l=0}^{1} c_{i,l} \cdot  e^{\lambda_i t} \cdot \frac{t^l}{l!} \\
+             &= c_{1,0} e^{-1t} \cdot \frac{t^0}{0!} + c_{1,1} \cdot e^{-1t} \cdot \frac{t^1}{1!} \\
+             &= c_{1,0} \cdot e^{-t} \cdot 1 + c_{1,1} \cdot e^{-t} \cdot t
+    \end{aligned}
+  \] 
+\end{example}
+\begin{example}
+  Prendiamo ad esempio il sistema:
+  \[
+    v'''(t) + 3v''(t) + 3v'(t) + 1 = 0
+  \] 
+  Calcoliamo il polinomio caratteristico:
+  \[
+    \begin{aligned}
+      P(s) &= s^3 + 3s^2 + 3s + 1 = 0 \\
+           &= (s + 1)^3
+    \end{aligned}
+  \] 
+  Le soluzioni sono:
+  \[
+  \lambda_1 = \lambda_2 = \lambda_3 = -1
+  \] 
+  Il numero di soluzioni è \( r = 1 \) con molteplicità \( \mu = 3 \).
+
+  \vspace{1em}
+  \noindent
+  La risposta libera è:
+  \[
+    \begin{aligned}
+      v_l(t) &= \sum_{i=1}^{r} \sum_{l=0}^{\mu_i-1} c_{i,l} \cdot e^{\lambda_i t} \cdot \frac{t^l}{l!} \\
+             &\;\;\vdots\\
+             &= c_{1,0} \cdot e^{-t} + c_{1,1} \cdot e^{-t} \cdot t + c_{1,2} \cdot e^{-t} \cdot \frac{t^2}{2}
+    \end{aligned}
+  \] 
+  Ora troviamo i coefficenti \( c_{i,l} \) per trovare la risposta libera specifica
+  al nostro caso, considerando i seguenti valori iniziali: 
+  \[
+  \begin{cases}
+    v(0) = 0\\
+    v'(0) = 1\\
+    v''(0) = 0
+  \end{cases}
+  \] 
+  Sostituendo \( t \) con \( 0 \) troviamo il valore di \( c_{1,0} \):
+  \[
+  \begin{aligned}
+    v_l(0) &= c_{1,0} \cdot e^0 + c_{1,1} \cdot e^0 \cdot 0 + c_{1,2} \cdot e^0 \cdot \frac{0}{2}\\
+           &= c_{1,0} = 0
+  \end{aligned}
+  \] 
+  Troviamo il valore di \( c_{1,1} \) derivando la risposta libera:
+  \[
+    v'_l(t) = -1 c_{1,0} \cdot e^{-t} + c_{1,1} \cdot e^{-t} \cdot t - c_{1,1} \cdot e^{-t} 
+    - c_{1,2} \cdot e^{-t} \cdot \frac{t^2}{2} + c_{1,2} \cdot e^{-t} \cdot t
+  \] 
+  una volta calcolata la derivata, poniamo \( t = 0 \) 
+  \[
+  \begin{aligned}
+    v'_l(0) &= -c_{1,0} + c_{1,1} - c_{1,1} + c_{1,2} \cdot 0 + c_{1,2} \cdot 0\\
+            &= -c_{1,0} + c_{1,1} \\
+            &= 0 + 1 = 1
+  \end{aligned}
+  \] 
+  Troviamo il valore di \( c_{1,2} \) facendo la derivata seconda:
+  \[
+    v''(t) = 0 + 1 \cdot e^{-t} \cdot t - e^{-t} \cdot t + c_{1,2} \cdot e^{-t} \cdot \frac{t^2}{2} -
+    c_{1,2} \cdot e^{-t} \cdot t + c_{1,2} \cdot e^{-t}
+  \] 
+  poniamo \( t = 0 \):
+  \[
+    \begin{aligned}
+      v''_l(0) &= 0 + 1 \cdot 0 - 0 + c_{1,2} \cdot 0 - c_{1,2} \cdot 0 + c_{1,2} = 0\\
+               &= c_{1,2} = 0
+    \end{aligned}
+  \] 
+  Quindi alla fine la risposta libera specifica risulta:
+  \[
+    \begin{aligned}
+      v_l(t) &= c_{1,0} \cdot e^{-t} + c_{1,1} \cdot e^{-t} \cdot t + c_{1,2} \cdot e^{-t} \cdot \frac{t^2}{2} \\
+             &= e^{-t} \cdot t
+    \end{aligned}
+  \] 
+\end{example}
+
 
 \end{document}
