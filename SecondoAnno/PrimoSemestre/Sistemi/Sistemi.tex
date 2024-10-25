@@ -2484,5 +2484,410 @@ I valori \( c_{i,l} \) vengono calcolati usando le condizioni iniziali.
   \] 
 \end{example}
 
+\begin{example}
+  Prendiamo ad esempio un sistema descritto nel seguente modo:
+  \[
+    v''(t) + 3v'(t) + -4v(t) = 5u'(t) - u(t)
+  \] 
+  Vogliamo calcolare la risposta libera del sistema. Per farlo bisogna imporre le
+  condizioni iniziali:
+  \[
+    \begin{cases}
+      v(0) = 0\\
+      v'(0) = 1
+    \end{cases}
+  \] 
+  Il primo passo è calcolare il polinomio caratteristico dell'equazione omogenea:
+  \[
+    \begin{aligned}
+      P(s) &= s^2 + 3s - 4 = 0\\
+           &= (s-1) (s+4)
+    \end{aligned}
+  \] 
+  Il secondo passo è trovare le radici e le molteplicità:
+  \[
+    \begin{aligned}
+      \lambda_1 &= 1, \quad \mu_1 = 1\\
+      \lambda_2 &= -4, \quad \mu_2 = 1
+    \end{aligned}
+  \]
+  La risposta libera generica si calcola come:
+  \[
+    v_l(t) = \sum_{i=1}^{r} \sum_{l=0}^{\mu_i -1} c_{i,l} \cdot e^{\lambda_i t} \cdot
+    \frac{t^l}{l!}
+  \] 
+  e nel nostro caso è:
+  \[
+    \begin{aligned}
+      v_l(t) &= c_{1,0} \cdot e^{t} + c_{2,0} \cdot e^{-4t}\\
+             &= c_1 \cdot e^{t} + c_2 \cdot e^{-4t}
+    \end{aligned}
+  \] 
+
+  \vspace{1em}
+  \noindent
+  Per trovare la risposta libera specifica bisogna calcolare i coefficenti \( c_1 \) e \( c_2 \)
+  derivando e valutande nelle condizioni iniziali:
+  \[
+    \begin{aligned}
+      v(t)  &= c_1 \cdot e^{t} + c_2 \cdot e^{-4t}\\
+      v'(t) &= c_1 \cdot e^{t} - 4c_2 \cdot e^{-4t}
+  \end{aligned}
+  \] 
+  Mettiamo a sistema, valutando in \( t = 0 \):
+  \[
+    \begin{aligned}
+      &\begin{cases}
+        v(0) = c_1 \cdot e^0 + c_2 \cdot e^0\\
+        v'(0) = c_1 \cdot e^0 - 4c_2 \cdot e^0
+      \end{cases}
+      =\\
+      &\begin{cases}
+        c_1 + c_2 = 0\\
+        c_1 - 4c_2 = 1
+      \end{cases}
+      =\\
+      &\begin{cases}
+        c_1 = -c_2\\
+        -c_2 - 4c_2 = 1
+      \end{cases}
+      =\\
+      &\begin{cases}
+        c_1 = -c_2\\
+        -5c_2 = 1
+      \end{cases}
+      =\\
+      &\begin{cases}
+        c_1 = \frac{1}{5}\\
+        c_2 = -\frac{1}{5}
+      \end{cases}
+    \end{aligned}
+  \] 
+  La risposta libera specifica è quindi:
+  \[
+    v_l(t) = \frac{1}{5} \cdot e^t - \frac{1}{5} \cdot e^{-4t}
+  \] 
+\end{example}
+
+\begin{definition}
+  Le formule più importanti sono:
+  \begin{itemize}
+    \item \textbf{Modello di un sistema}:
+      \[
+        \sum_{i=o}^{n} a_i \frac{\partial^{i} v(t)}{\partial t} =
+        \sum_{j=0}^{m} b_j \frac{\partial^{j} u(t)}{\partial t}
+      \] 
+
+    \item \textbf{Risposta libera}:
+      \[
+        v_l(t) = \sum_{i=1}^{r} \sum_{l=0}^{\mu_i -1} c_{i,l} \cdot \underbrace{
+        e^{\lambda_i t} \cdot \frac{t^l}{l!}}_{\text{Modo elementare}}
+      \] 
+  \end{itemize}
+  Dove:
+  \[
+  \begin{aligned}
+    r &= \text{numero di radici distinte}\\
+    \mu_i &= \text{molteplicità della radice } \lambda_i\\
+    c_{i,l} &= \text{coefficienti da calcolare}
+  \end{aligned}
+  \] 
+\end{definition}
+
+\subsubsection{Convergenza dei modi elementari}
+È una funzione che si comporta come un esponenziale, quindi la convergenza dipende dal
+valore di \( \lambda \).
+\[
+  m(t) = e^{\lambda t} \cdot \frac{t^l}{l!}
+\] 
+Vale che:
+\begin{enumerate}
+  \item \( \lim_{t \to 0} m(t) = 0 \) se e solo se \( \Re(\lambda) < 0 \).
+    \textbf{Stabilità asintotica}
+    
+  \item \( m(t) \) è limitato, cioè puo prendere solo valori limitati, su \( [0,\infty) \) 
+    se e solo se \( \Re(\lambda) \le 0 \). Se \( \Re(\lambda) = 0 \), allora perchè
+    questo valga \( l \) deve essere uguale a 0 \( l=0 \).
+    \textbf{Stabilità semplice}.
+
+  \item \( \lim_{t \to \infty} m(t) = \infty \) in tutti gli altri casi. Quindi:
+    \[
+      \Re(\lambda) > 0
+    \] 
+    oppure
+    \[
+      \Re(\lambda) = 0,\; l \neq 0
+    \] 
+    \textbf{Instabilità}.
+\end{enumerate}
+
+\subsubsection{Dimostrazioni}
+\begin{enumerate}
+  \item \( \Re(\lambda) < 0 \):
+
+    \vspace{1em}
+    \noindent
+    Riscriviamo \( \lambda \) come:
+    \[
+    \lambda = a+bi = \sigma +j\omega
+    \] 
+    e riscriviamo \( m(t) \) come:
+    \[
+      \begin{aligned}
+        m &= e^{\lambda t} \cdot \frac{t^l}{l!} = \left( e^{\sigma t} \cdot 
+        e^{j \omega t} \right) \cdot \frac{t^l}{l!}\\
+          &= \underbrace{\frac{t^l}{l!}}_{\text{Polinomiale}} \cdot
+          \underbrace{\overbrace{e^{\sigma t}}^{\Re} \cdot \overbrace{e^{j \omega t}}^{\Im}}_{\text{Esponenziale}}
+      \end{aligned}
+    \] 
+    con \( a = -\sigma \) diventa:
+    \[
+    \begin{aligned}
+      m &= \frac{t^l}{l!} \cdot \frac{1}{e^{at}} \cdot e^{j \omega t}\\
+        &= \underbrace{\frac{t^l}{l!} \cdot \frac{1}{e^{-\sigma t}}}_{=0} 
+        \cdot \underbrace{e^{j \omega t}}_{\text{Limitato}}
+    \end{aligned}
+    \] 
+    Il blocco \( e^{j \omega t} \) è un punto che gira su un cerchio di raggio 1, quindi
+    è limitato. Il blocco \( \frac{t^l}{l!} \cdot \frac{1}{e^{-\sigma t}} \) è limitato
+    per \( t = 0 \) e quindi \( m(t) \) tende a 0.
+
+  \item \( \Re(\lambda) = 0 \;\; l=0 \):
+
+    \vspace{1em}
+    \noindent
+    \[
+      \begin{aligned}
+        m(t) &= e^{\lambda t} \cdot \frac{t^l}{l!}\\
+             &= \frac{t^l}{l!} \cdot e^{\sigma t} 
+             \cdot e^{j \omega t}\\
+             &= \frac{t^0}{0!} \cdot e^0 \cdot e^{j \omega t}\\
+             &= e^{j \omega t}
+      \end{aligned}
+    \] 
+    che è per definizione limitato in modulo.
+
+  \item \( \Re(\lambda) > 0 \) 
+
+    \vspace{1em}
+    \noindent
+    \[
+    \begin{aligned}
+      m(t) = \frac{t^l}{l!} \cdot e^{\sigma t} \cdot e^{j \omega t}
+    \end{aligned}
+    \] 
+
+
+    \( \Re(\lambda) = 0 \; l \neq 0\) 
+    \vspace{1em}
+    \noindent
+    \[
+      m(t) = \frac{t^l}{l!} \cdot \stackrel{1}{\cancel{e^{\sigma t}}} \cdot e^{j \omega t}
+    \] 
+    Siccome \( \sigma = \Re(\lambda) = 0 \) 
+    \[
+    \lim_{t \to \infty} m(t) = \infty
+    \] 
+\end{enumerate}
+
+\begin{definition}
+  Un sistema LTI descritto dell'equazione:
+  \[
+    \sum_{i=0}^{n} a_i \frac{\partial^{i} v(t)}{\partial t} =
+    \sum_{j=0}^{m} b_j \frac{\partial^{j} u(t)}{\partial t}
+  \]
+  è detto \textbf{asintoticamente stabile} (la risposta è asintoticamente stabile)
+  se e solo se ogni suo modo elementare converge a 0, cioè:
+  \[
+    \forall i \;\; \lim_{t \to \infty} m_i(t) = 0 \quad m_i = e^{\lambda_i t} \cdot \frac{t^l}{l!}
+  \] 
+
+  \vspace{1em}
+  \noindent
+  \textbf{Osservazione}
+
+  \noindent
+  È detto \textbf{asintoticamente stabile} se e solo se tutte le radici del polinomio
+  caratteristico, \( P(s) \), hanno parte reale negativa.
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \draw[->] (-2.5,0) -- (2.5,0) node[right] {$\Re$};
+      \draw[->] (0,-0.2) -- (0,2) node[above] {$\Im$};
+
+      \draw[fill=blue,blue] (-2,1.5) circle (0.05) node[above] (l_1) {$\lambda_1$};
+      \draw[fill=blue,blue] (-1.5,1.2) circle (0.05) node[above] (l_2) {$\lambda_2$};
+      \draw[fill=blue,blue] (-1,0.7) circle (0.05) node[above] (l_3) {$\lambda_3$};
+      \draw[fill=blue,blue] (-0.5,1.8) circle (0.05) node[above] (l_4) {$\lambda_4$};
+
+      \draw[dashed] (l_1) -- (l_1 |- 52,0);
+      \draw[dashed] (l_2) -- (l_2 |- 52,0);
+      \draw[dashed] (l_3) -- (l_3 |- 52,0);
+      \draw[dashed] (l_4) -- (l_4 |- 52,0);
+    \end{tikzpicture}
+    \caption{Asintoticamente stabile}
+  \end{figure}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \draw[->] (-2.5,0) -- (2.5,0) node[right] {$\Re$};
+      \draw[->] (0,-0.2) -- (0,2) node[above] {$\Im$};
+
+      \draw[fill=blue,blue] (-2,1.5) circle (0.05) node[above] (l_1) {$\lambda_1$};
+      \draw[fill=blue,blue] (1.5,1.2) circle (0.05) node[above] (l_4) {$\lambda_2$};
+      \draw[fill=blue,blue] (-1,0.7) circle (0.05) node[above] (l_2) {$\lambda_3$};
+      \draw[fill=blue,blue] (-0.5,1.8) circle (0.05) node[above] (l_3) {$\lambda_4$};
+
+      \draw[dashed] (l_1) -- (l_1 |- 52,0);
+      \draw[dashed] (l_2) -- (l_2 |- 52,0);
+      \draw[dashed] (l_3) -- (l_3 |- 52,0);
+      \draw[dashed] (l_4) -- (l_4 |- 52,0);
+    \end{tikzpicture}
+    \caption{Non asintoticamente stabile}
+  \end{figure}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \draw[->] (-2.5,0) -- (2.5,0) node[right] {$\Re$};
+      \draw[->] (0,-0.2) -- (0,2) node[above] {$\Im$};
+
+      \draw[fill=blue,blue] (-2,1.5) circle (0.05) node[above] (l_1) {$\lambda_1$};
+      \draw[fill=blue,blue] (-1.5,1.2) circle (0.05) node[above] (l_2) {$\lambda_2$};
+      \draw[fill=blue,blue] (-1,0.7) circle (0.05) node[above] (l_3) {$\lambda_3$};
+      \draw[fill=blue,blue] (-0.5,1.8) circle (0.05) node[above] (l_4) {$\lambda_4$};
+      \draw[fill=blue,blue] (0,1) circle (0.05) node[above right] (l_5) {$\lambda_5$};
+
+      \draw[dashed] (l_1) -- (l_1 |- 52,0);
+      \draw[dashed] (l_2) -- (l_2 |- 52,0);
+      \draw[dashed] (l_3) -- (l_3 |- 52,0);
+      \draw[dashed] (l_4) -- (l_4 |- 52,0);
+      \draw[dashed] (l_5) -- (l_5 |- 52,0);
+    \end{tikzpicture}
+    \caption{Semplicemente stabile}
+  \end{figure}
+\end{definition}
+
+\subsubsection{Prodotto di convoluzione}
+Il concetto di correlazione indica quanto due segnali siano simili tra loro e si calcola
+con il prodotto di convoluzione.
+
+Il concetto di convoluzione è un'operazione tra due segnali che restituisce un terzo
+segnale.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw[->] (-2,0) -- (2,0) node[right] {$t$};
+    \draw[->] (0,-0.2) -- (0,2) node[above] {$u(t)$};
+
+    \draw[blue] (0.5,0) -- ++(1,1) node[above right,align=center] {Segnale\\fisso} -- ++(0,-1);
+  \end{tikzpicture}
+  \begin{tikzpicture}
+    \draw[->] (-2,0) -- (2,0) node[right] {$t$};
+    \draw[->] (0,-0.2) -- (0,2) node[above] {$v(t)$};
+
+    \draw[red] (0.5,0) -- ++(0,1) -- ++(1,0) node[above right,align=center] {Kernel} -- ++(0,-1);
+  \end{tikzpicture}
+  \caption{Segnale fisso e kernel}
+\end{figure}
+
+\noindent
+Il \textbf{kernel} è un segnale che viene riflesso rispetto all'asse \( y \) e traslato
+nel tempo \( t \) e moltiplicato per il segnale fisso. Il risultato è un segnale che
+rappresenta l'area sottesa dal prodotto dei due segnali.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw[->] (-2,0) -- (2,0) node[right] {$t$};
+    \draw[->] (0,-0.2) -- (0,2.5) node[above] {};
+
+    \draw[blue] (0.5,0) -- ++(1,1) node[above right,align=center] {} -- ++(0,-1);
+    \draw[red] (-1.5,0) -- ++(0,2) -- ++(1,0) node[above right,align=center] {} -- ++(0,-2);
+    \draw[->,red] (-1,2.5) -- ++(0.5,0) node[midway,above] {$t$};
+  \end{tikzpicture}
+  \begin{tikzpicture}
+    \draw[->] (-2,0) -- (2,0) node[right] {$t$};
+    \draw[->] (0,-0.2) -- (0,2.5) node[above] {};
+
+    \draw[blue] (0.5,0) -- ++(1,1) node[above right,align=center] {} -- ++(0,-1);
+    \draw[red] (0.25,0) -- ++(0,2) -- ++(1,0) node[above right,align=center] {} -- ++(0,-2);
+    \draw[fill=green!50!black,green!50!black, fill opacity=0.5] (0.5,0) --
+      ++(0.75,0.75*2) node[above right,scale=0.8,align=center] {Area della\\convoluzione} -- ++(0,-0.75*2) -- cycle;
+  \end{tikzpicture}
+  \caption{Convoluzione}
+\end{figure}
+
+\noindent
+Il grafico della convoluzione risultante è un segnale che rappresenta il cambiamento
+nel tempo del prodotto dei due segnali.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw[->] (-0.2,0) -- (4,0) node[right] {$t$};
+    \draw[->] (0,-0.2) -- (0,2.5) node[above] {$u(t) \ast v(t)$};
+
+    \draw[domain=0:2,smooth,samples=100,variable=\x,green] plot ({\x},{\x^2/2});
+    \draw[domain=2:3.297,smooth,samples=100,variable=\x,green] plot ({\x},{ln(-\x/1.5 + 2.33333) + 2});
+    \draw[domain=3.297:4,smooth,samples=100,variable=\x,green] plot ({\x},{0});
+  \end{tikzpicture}
+  \caption{Grafico della convoluzione}
+\end{figure}
+
+\begin{definition}
+  L'operatore di convoluzione tra due segnali \( u(t) \) e \( v(t) \) è definito come:
+  \[
+    \begin{aligned}
+      (u \ast v)(t) &= \int_{-\infty}^{+\infty} u(\tau) \cdot v(t-\tau) \, d\tau = \\
+      (v \ast u)(t) &= \int_{-\infty}^{+\infty} v(\tau) \cdot 
+      u(\underbrace{t}_{\text{Varia nel tempo}}\underbrace{-\tau}_{\text{Riflessione su y}}) \, d\tau
+    \end{aligned}
+  \]
+  Il segnale riflesso viene moltiplicato per il segnale \( u(t) \).
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \draw[->] (-2,0) -- (2,0) node[right] {$t$};
+      \draw[->] (0,-0.2) -- (0,2.5) node[above] {};
+
+      \draw[domain=-2:2,smooth,samples=1000,variable=\x,blue] plot 
+        ({\x},{cos((\x*10) r)/5 + 2})
+        node[right] {$u(t)$};
+
+      \draw[red] (0.5,0) -- ++(1,1) node[right] {$v(t)$} -- ++(0,-1);
+      \draw[red] (-0.5,0) -- ++(-1,1) -- ++(0,-1);
+      \draw[->] (-1.25,-0.2) -- ++(0.5,0)
+        node[midway,below,scale=0.8,align=center] {Traslazione\\nel tempo};
+
+      \draw[fill] (-0.5,0) circle (0.05) node[above right] {$t$};
+    \end{tikzpicture}
+    \caption{Convoluzione}
+  \end{figure}
+\end{definition}
+Se la convoluzione viene effettuata con un impulso, il segnale viene campionato.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw[->] (-2,0) -- (2,0) node[right] {$t$};
+    \draw[->] (0,-0.2) -- (0,2) node[above] {$u(t)$};
+
+    \draw[blue] (0.5,0) -- ++(1,1) node[above right,align=center] {Segnale\\fisso} -- ++(0,-1);
+  \end{tikzpicture}
+  \begin{tikzpicture}
+    \draw[->] (-2,0) -- (2,0) node[right] {$t$};
+    \draw[->] (0,-0.2) -- (0,2) node[above] {$v(t)$};
+
+    \draw[->,red] (1,0) -- ++(0,1) node[above right,align=center] {Kernel};
+  \end{tikzpicture}
+  \caption{Segnale fisso e kernel}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw[->] (-0.2,0) -- (2,0) node[right] {$t$};
+    \draw[->] (0,-0.2) -- (0,2.5) node[above] {$u(t) \ast v(t)$};
+
+    \draw[green!50!black] (0.5,0) -- ++(1,1) -- ++(0,-1);
+  \end{tikzpicture}
+  \caption{Grafico della convoluzione}
+\end{figure}
 
 \end{document}
