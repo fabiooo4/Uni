@@ -1,8 +1,7 @@
 mod sort;
-use sort::insertion_sort;
-use text_io::read;
+use sort::run_insertion_sort;
 
-use std::{fmt::Display, time::Instant};
+use std::fmt::Display;
 
 enum Algorithms {
     InsertionSort,
@@ -27,27 +26,30 @@ fn main() {
 
     let selected: Result<usize, text_io::Error> = text_io::try_read!();
 
-    let mut a = [6, 1, 3, 6, 7, 8, 32, 2, 1, 6, 767, 3, 2];
-
     match selected {
         Ok(idx) => {
-            match entries.get(idx) {
+            match entries.get(idx.wrapping_sub(1)) {
                 Some(algorithm) => {
-                    // Start measuring the execution time
-                    let now = Instant::now();
                     match algorithm {
                         // Execute the algorithm
-                        Algorithms::InsertionSort => insertion_sort(&mut a),
-                    }
-                    let elapsed = now.elapsed();
+                        Algorithms::InsertionSort => {
+                            // Choose the size of the input
+                            print!("\nSet the input size: ");
+                            let n: Result<u64, text_io::Error> = text_io::try_read!();
+                            println!();
 
-                    // Print output and elapsed time
-                    println!("{:?}", a);
-                    println!("Elapsed: {:.2?}", elapsed);
+                            match n {
+                                Ok(n) => {
+                                    run_insertion_sort(n);
+                                }
+                                Err(e) => println!("Invalid input: {e}"),
+                            }
+                        }
+                    }
                 }
-                None => println!("Invalid input"),
+                None => println!("There is no algorithm with that number"),
             }
         }
-        Err(_) => println!("Invalid input"),
+        Err(e) => println!("Invalid input: {e}"),
     }
 }
