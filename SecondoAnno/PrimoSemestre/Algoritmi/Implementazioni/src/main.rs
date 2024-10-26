@@ -2,7 +2,6 @@ mod algorithms;
 mod tests;
 
 use algorithms::{factorial::run_factorial, sorts::run_insertion_sort, Algorithms};
-use num_bigint::BigInt;
 
 fn main() {
     let entries = [Algorithms::InsertionSort, Algorithms::Factorial];

@@ -1,7 +1,6 @@
 #[cfg(test)]
-use num_bigint::BigInt;
-
 use crate::algorithms::factorial::factorial;
+use num_bigint::BigInt;
 
 #[test]
 fn base_case() {
@@ -20,5 +19,5 @@ fn negative_base_case() {
 
 #[test]
 fn big_input() {
-    assert_eq!(factorial(10), BigInt::from(3628800));
+    assert_eq!(factorial(14), BigInt::from(87178291200_i64));
 }

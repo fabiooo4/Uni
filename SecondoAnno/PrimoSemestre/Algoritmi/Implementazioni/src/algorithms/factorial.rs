@@ -2,13 +2,14 @@ use cpu_time::ProcessTime;
 use num_bigint::BigInt;
 
 pub fn factorial(num: i64) -> BigInt {
-    todo!();
     let mut answer = BigInt::from(1);
-    for i in num..3 {
-        answer *= i
+    if num >= 0 {
+        (1..=num).rev().for_each(|i| answer *= i);
+        answer
+    } else {
+        (1..=(-num)).rev().for_each(|i| answer *= i);
+        -answer
     }
-
-    answer
 }
 
 pub fn run_factorial(num: i64) {
