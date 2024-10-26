@@ -1,19 +1,7 @@
-mod sort;
-use sort::run_insertion_sort;
+mod algorithms;
+mod tests;
 
-use std::fmt::Display;
-
-enum Algorithms {
-    InsertionSort,
-}
-
-impl Display for Algorithms {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Algorithms::InsertionSort => write!(f, "Insertion Sort"),
-        }
-    }
-}
+use algorithms::{factorial::run_factorial, sorts::run_insertion_sort, Algorithms};
 
 fn main() {
     let entries = [Algorithms::InsertionSort];
@@ -41,6 +29,20 @@ fn main() {
                             match n {
                                 Ok(n) => {
                                     run_insertion_sort(n);
+                                }
+                                Err(e) => println!("Invalid input: {e}"),
+                            }
+                        }
+
+                        Algorithms::Factorial => {
+                            // Choose the factorial to calculate
+                            print!("\nChoose the factorial to calculate: ");
+                            let n: Result<i64, text_io::Error> = text_io::try_read!();
+                            println!();
+
+                            match n {
+                                Ok(n) => {
+                                    run_factorial(n);
                                 }
                                 Err(e) => println!("Invalid input: {e}"),
                             }
