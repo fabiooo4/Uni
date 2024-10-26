@@ -2,9 +2,10 @@ mod algorithms;
 mod tests;
 
 use algorithms::{factorial::run_factorial, sorts::run_insertion_sort, Algorithms};
+use num_bigint::BigInt;
 
 fn main() {
-    let entries = [Algorithms::InsertionSort];
+    let entries = [Algorithms::InsertionSort, Algorithms::Factorial];
 
     println!("Select an algorithm to run:");
     entries
@@ -23,7 +24,7 @@ fn main() {
                         Algorithms::InsertionSort => {
                             // Choose the size of the input
                             print!("\nSet the input size: ");
-                            let n: Result<u64, text_io::Error> = text_io::try_read!();
+                            let n: Result<usize, text_io::Error> = text_io::try_read!();
                             println!();
 
                             match n {

@@ -12,8 +12,8 @@ pub enum Algorithms {
 impl Display for Algorithms {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Algorithms::InsertionSort => write!(f, "Insertion Sort"),
-            Algorithms::Factorial => write!(f, "Factorial"),
+            Algorithms::InsertionSort => write!(f, "Insertion Sort O(n²)"),
+            Algorithms::Factorial => write!(f, "Factorial O(n)"),
         }
     }
 }

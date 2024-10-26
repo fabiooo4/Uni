@@ -1,5 +1,5 @@
 #[cfg(test)]
-use crate::sorts::insertion_sort;
+use crate::algorithms::sorts::insertion_sort;
 
 #[test]
 fn insertion_empty() {

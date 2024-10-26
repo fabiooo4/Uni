@@ -11,7 +11,7 @@ pub fn insertion_sort<T: PartialOrd>(list: &mut [T]) {
     }
 }
 
-pub fn run_insertion_sort(input_size: u64) {
+pub fn run_insertion_sort(input_size: usize) {
     // Generate an array with the input size
     let mut rng = rand::thread_rng();
     let range = Uniform::new(i64::MIN, i64::MAX);
@@ -29,5 +29,16 @@ pub fn run_insertion_sort(input_size: u64) {
     let cpu_time = cpu_now.elapsed();
 
     // Print execution time
-    println!("Algorithm execution time: {:.2?}", cpu_time);
+    println!("Execution time: {:.2?}", cpu_time);
+
+    // Print output prompt
+    print!("\nDo you want to print the output? [y/N]");
+    let choice: Result<String, text_io::Error> = text_io::try_read!();
+
+    if let Ok(choice) = choice {
+        if choice == "y" || choice == "Y" {
+            // Print output
+            println!("Output:\n{:#?}", input);
+        }
+    }
 }
