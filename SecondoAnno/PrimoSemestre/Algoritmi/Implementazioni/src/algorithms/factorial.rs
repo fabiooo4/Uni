@@ -1,13 +1,27 @@
 use cpu_time::ProcessTime;
+use indicatif::{ProgressBar, ProgressStyle};
 use num_bigint::BigInt;
 
 pub fn factorial(num: i64) -> BigInt {
+    // Progress bar
+    let pb = ProgressBar::new(num.unsigned_abs());
+    pb.set_style(
+        ProgressStyle::with_template(
+            "[{elapsed_precise}] [{wide_bar:.green/red}] {percent_precise}%  Remaining: {eta}",
+        )
+        .unwrap()
+        .progress_chars("---"),
+    );
+
     let mut answer = BigInt::from(1);
+    (1..=num.unsigned_abs()).rev().for_each(|i| {
+        answer *= i;
+        pb.set_position(num.unsigned_abs() - i);
+    });
+
     if num >= 0 {
-        (1..=num).rev().for_each(|i| answer *= i);
         answer
     } else {
-        (1..=(-num)).rev().for_each(|i| answer *= i);
         -answer
     }
 }
@@ -31,4 +45,25 @@ pub fn run_factorial(num: i64) {
             println!("Output:\n{}", output);
         }
     }
+}
+
+#[cfg(test)]
+#[test]
+fn base_case() {
+    assert_eq!(factorial(0), BigInt::from(1));
+}
+
+#[test]
+fn negative() {
+    assert_eq!(factorial(-3), BigInt::from(-6));
+}
+
+#[test]
+fn negative_base_case() {
+    assert_eq!(factorial(-0), BigInt::from(1));
+}
+
+#[test]
+fn big_input() {
+    assert_eq!(factorial(14), BigInt::from(87178291200_i64));
 }
