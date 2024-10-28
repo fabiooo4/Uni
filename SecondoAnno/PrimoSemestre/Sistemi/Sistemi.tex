@@ -2889,5 +2889,277 @@ Se la convoluzione viene effettuata con un impulso, il segnale viene campionato.
   \end{tikzpicture}
   \caption{Grafico della convoluzione}
 \end{figure}
+\begin{example}
+  Ad esempio il segnale triangolo è formato dalla convoluzione di due segnali rettangolari.
+  \[
+  u(t) = v(t) = \Pi(t)
+  \] 
+  (\( \Pi(t) \) è la funzione rettangolo)
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \draw[->] (-1.5,0) -- (1.5,0) node[right] {$t$};
+      \draw[->] (0,-0.2) -- (0,2) node[above] {$v(t)$};
+
+      \draw[red] (-0.5,0) node[below] {$-\frac{1}{2}$} -- ++(0,1) -- ++(1,0) node[above right,align=center] {$u(t)$} -- ++(0,-1) node[below] {$\frac{1}{2}$};
+    \end{tikzpicture}
+    \begin{tikzpicture}
+      \draw[->] (-1.5,0) -- (1.5,0) node[right] {$t$};
+      \draw[->] (0,-0.2) -- (0,2) node[above] {$v(t)$};
+
+      \draw[blue] (-0.5,0) node[below] {$-\frac{1}{2}$} -- ++(0,1) -- ++(1,0) node[above right,align=center] {$v(t)$} -- ++(0,-1) node[below] {$\frac{1}{2}$};
+    \end{tikzpicture}
+  \end{figure}
+  \begin{enumerate}
+    \item Scegliere il segnale più semplice
+    \item Specchiare l'altro segnale rispetto a $y$ (\( f(t) \mapsto f(-t) \))
+    \item Traslare il segnale mobile (quello specchiato) nel tempo
+    \item Spostare \( \forall t \) e calcolare l'integrale (aree sottese)
+  \end{enumerate}
+  Il risultato della convoluzione sarà:
+  \[
+    \begin{aligned}
+      u(-2) \ast v(-2) &= 1 \cdot 0 = 0\\
+      u(-1) \ast v(-1) &= 1 \cdot 0 = 0\\
+      u(0) \ast v(0) &= 1 \cdot 1 = 1\\
+                       &\;\;\vdots\\
+    \end{aligned}
+  \] 
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \draw[->] (-2,0) -- (2,0) node[right] {$t$};
+      \draw[->] (0,-0.2) -- (0,2.5) node[above] {$u(t) \ast v(t)$};
+
+      \draw[green!50!black] (-1,0) node[below] {$-1$} -- ++(1,1) node[above right] {$1$}
+        -- ++(1,-1) node[below] {$1$};
+    \end{tikzpicture}
+    \caption{Grafico della convoluzione}
+  \end{figure}
+\end{example}
+
+\subsubsection{Risposta inpulsiva}
+\begin{definition}
+  Dato un sistema a tempo continuo inizialmente a riposo (causale) definiamo la 
+  \textbf{risposta inpulsiva} come l'uscita del sistema in corrispondenza di un ingresso
+  uguale all'impulso unitario
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \node[draw,minimum width=1cm,minimum height=1cm] (A) at (0,0) {\( \Sigma \) };
+      \draw[->] (-1,0) -- (A) node[midway,above left] {$\delta(t)$} node[midway,below left,scale=0.7] {Impulso};
+      \draw[->] (A) -- (1,0) node[midway,above right] {$h(t)$} node[midway,below right,align=center,scale=0.7] {Risposta\\impulsiva};
+    \end{tikzpicture}
+    \caption{Risposta impulsiva}
+  \end{figure}
+\end{definition}
+
+\begin{theorem}
+  L'uscita \( v(t) \) di un sistema LTI, inizialmente a riposo, in corrispondenza di un
+  ingresso \( u(t) \) è dato dal seguente prodotto di convoluzione:
+  \[
+    \begin{aligned}
+      v(t) = (u \ast h)(t) &= \int_{-\infty}^{+\infty} h(\tau) \cdot u(t-\tau) \, d\tau\\
+                           &= \int_{-\infty}^{+\infty} u(\tau) \cdot h(t-\tau) \, d\tau
+    \end{aligned}
+  \] 
+\end{theorem}
+
+\noindent
+\textbf{Proprietà dell'integrale di convoluzione:}
+\begin{itemize}
+  \item \textbf{Commutativa}: \( (u \ast v)(t) = (v \ast u)(t) \) 
+  \item \textbf{Associativa}: \( (u \ast v)(t) \ast w(t) = u(t) \ast (v \ast w)(t) \)
+  \item \textbf{Distributiva} (rispetto alla somma): \( u(t) \ast (v(t) + w(t)) = (u \ast v)(t) + (u \ast w)(t) \)
+\end{itemize}
+
+\noindent
+\textbf{Osservazione}: Un sistema LTI causale inizialmente a riposo, siccome \( h(t) = 0
+, t < 0\) (perchè \( \delta(t) = 0, t < 0 \)):
+\[
+  \begin{aligned}
+    v(t) = (u \ast h)(t) &= \int_{0^-}^{+\infty} h(\tau) \cdot u(t-\tau) \, d\tau\\
+                         &= \int_{-\infty}^{t^+} u(\tau) \cdot u(t-\tau) \, d\tau\\
+  \end{aligned}
+\] 
+
+\vspace{1em}
+\noindent
+Per calcolare la risposta impulsiva: 
+\[
+  h(t) = d_0 \cdot \delta(t) + \left[\sum_{i=1}^{r} \sum_{l=0}^{\mu_i-1} d_{i,l} \cdot \frac{t^l}{l!}
+  \cdot e^{\lambda_i t}\right] \cdot \delta_{-1}(t)
+\] 
+dove:
+\begin{itemize}
+  \item \( d_0 \) è il termine costante:
+    \begin{itemize}
+      \item \( d_0 \neq 0 \) se e solo se il sistema è proprio (\( n=m \))
+    \end{itemize}
+
+  \item \( \delta(t) \) è l'impulso unitario
+
+  \item \( d_{i,l} \) sono i coefficienti della risposta impulsiva 
+    (diversi da \( c_{i,l} \) della risposta libera)
+
+  \item \( \frac{t^l}{l!} \cdot e^{\lambda_i t} \) sono i modi elementari e sono
+    gli stessi della risposta libera
+
+  \item \( \delta_{-1}(t) \) è il gradino e serve a moltiplicare per 0 la parte
+    non causale della risposta impulsiva e serve quindi per la causalità
+\end{itemize}
+
+\begin{example}
+  Prendiamo ad esempio il sistema:
+  \[
+  v'(t) + 2v(t) = u'(t) + u(t)
+  \] 
+  Questo sistema ha \( n=m \) perchè è un sistema proprio, quindi: \( d_0 \neq 0 \) 
+  \begin{enumerate}
+    \item Il primo passo è quello di trovare l'equazione omogenea:
+      \[
+      v'(t) + 2v(t) = 0
+      \] 
+
+    \item Poi bisogna calcolare il polinomio caratteristico:
+      \[
+      P(s) = s + 2 = 0
+      \] 
+
+    \item Bisogna poi trovare le radici e i modi elementari:
+      \[
+      \lambda_1 = -2 \quad r = 1 \quad \mu = 1
+      \] 
+      \( \left( l = 0 \ldots \mu_i -1 \right)  \) 
+      i modi elementari sono:
+      \[
+        m(t) = e^{-2t}
+      \] 
+
+    \item Scriviamo la risposta impulsiva:
+      \[
+        \begin{aligned}
+          h(t) &= d_0 \cdot \delta(t) + \sum_{i=1}^{r} \sum_{l=0}^{\mu_i - 1} d_{i,l} \cdot
+          \frac{t^l}{l!} \cdot e^{\lambda_i t} \cdot \delta_{-1}(t)\\
+               &= d_0 \cdot \delta(t) + d_{1,0} \cdot e^{-2t} \cdot \delta_{-1}(t)
+        \end{aligned}
+      \] 
+
+    \item Riscrivo l'equazione iniziale ponendo:
+      \[
+      v(t) = h(t) \quad u(t) = \delta(t)
+      \] 
+      L'eqauzione diventa:
+      \[
+      v'(t) + 2v(t) = u'(t) + u(t)
+      \] 
+      \[
+      \Downarrow
+      \] 
+      \[
+      h'(t) + 2h(t) = \delta'(t) + \delta(t)
+      \] 
+      \begin{itemize}
+        \item Calcolo tutte le derivate di \( h(t) \):
+          \[
+            h'(t) = \delta_0 \cdot \delta'(t) - 2d_{1,0} \cdot e^{-2t} \cdot \delta_{-1}(t)
+            + d_{1,0} \cdot e^{-2t} \cdot \delta(t)
+          \] 
+      \end{itemize}
+
+    \item Sostituisco \( v(t) \mapsto h(t) \) e \( u(t) \mapsto \delta(t) \) 
+      \[
+      v'(t) + 2v(t) = u'(t) + u(t)
+      \] 
+      \[
+      \Downarrow
+      \] 
+      \[
+        \color{green}h'(t) \color{black}+ \color{purple}2h(t) \color{black}= 
+        \color{yellow}\delta'(t) + \color{red}\delta(t)
+      \] 
+      \[
+        \begin{aligned}
+          &\color{green}d_0 \cdot \delta'(t) - 2d_{1,0} \cdot e^{-2t} \cdot \delta_{-1}(t) + d_{1,0}
+          \cdot e^{-2t} \cdot \delta(t) \\
+          &\color{purple}+ 2 \left( d_0 \cdot \delta(t) + d_{1,0} \cdot
+          e^{-2t} \cdot \delta_{-1}(t) \right)\\
+          &= \color{yellow}\delta'(t) + \color{red}\delta(t)
+        \end{aligned}
+      \] 
+      \[
+      \begin{aligned}
+        d_0 \cdot \delta'(t) - 2d_0 \cdot  \delta(t) + d_{1,0} \cdot e^{-2t} \cdot
+        \delta(t) = \delta'(t) + \delta(t)\\
+      \end{aligned}
+      \] 
+      Valutiamo le funzioni in \( t=0 \) 
+      \[
+        d_0 \cdot \delta'(0) - 2d_0 \cdot  \delta(0) + d_{1,0} \cdot \cancel{e^{-2 \cdot 0}}
+        \cdot \delta(0) = \delta'(0) + \delta(0)
+      \] 
+      Sposto tutto a sinistra:
+      \[
+        d_0 \cdot \delta'(0) - 2d_0 \cdot \delta(0) + d_{1,0} \cdot \delta(0) - \delta'(0) -
+        \delta(0) = 0
+      \] 
+      Raccolgo per \( \delta(0), \delta'(0)\ldots \delta^n(t) \) che sono linearmente
+      indipendenti:
+      \[
+        \left( d_0 - 1 \right) \cdot \delta'(0) + \left( d_{1,0} - 2d_0 - 1 \right) \cdot
+        \delta(0) = 0
+      \] 
+
+    \item Risolvo il sistema
+      \[
+      \begin{cases}
+        \left( d_0 - 1 \right) \cdot \delta'(0) = 0\\
+        \left( d_{1,0} - 2d_0 - 1 \right) \cdot \delta(0) = 0
+      \end{cases}
+      \to 
+      \begin{cases}
+        d_0 = 1\\
+        d_1 = -1
+      \end{cases}
+      \] 
+
+    \item Sostituisco i coefficienti appena trovati
+      \[
+        \begin{aligned}
+          h(t) &= \underbrace{d_0}_{1} \cdot \delta(t) + \underbrace{d_{1,0}}_{-1}
+          \cdot e^{-2t} \cdot \delta_{-1}(t)\\
+               &= \delta(t) - e^{-2t} \cdot \delta_{-1}(t)
+        \end{aligned}
+      \] 
+      E questa è la risposta impulsiva del sistema
+
+    \item Bisogna calcolare la risposta forzata...
+  \end{enumerate}
+  \label{ex:risposta_impulsiva}
+\end{example}
+
+\subsubsection{Risposta forzata}
+\begin{definition}
+  La risposta forzata vuol dire che l'uscita del sistema dipende solo dall'input di un
+  sistema LTI, causale per un ingresso \( u(t) \) (\( u(t) = 0, t < 0 \)) e si definisce
+  come:
+  \[
+    \begin{aligned}
+      v_f(t) = (u \ast h)(t) &= \int_{0^-}^{t^+} u(\tau) \cdot h(t-\tau) \, d\tau\\
+                             &= \int_{0^-}^{t^+} u(t-\tau) \cdot h(\tau) \, d\tau
+    \end{aligned}
+  \] 
+\end{definition}
+
+\begin{example}
+  Riprendendo l'ultimo punto dell'esempio \ref{ex:risposta_impulsiva}, la risposta
+  forzata è:
+  \[
+    \begin{aligned}
+      v_f(t) = (u \ast h)(t) &= \int_{+\infty}^{-\infty} u(\tau) \cdot h(t-\tau) \, d\tau\\
+                             &= \int_{t^+}^{0} u(t) \cdot h(t-\tau) \, d\tau
+    \end{aligned}
+  \] 
+\end{example}
 
 \end{document}
