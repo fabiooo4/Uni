@@ -42,8 +42,320 @@ i programmi e la memoria virtuale.
 Un altro compito del sistema operativo è quello di controllare l'esecuzione dei programmi
 e del corretto utilizzo del sistema.
 
-\subsection{Storia dei sistemi operativi}
+\subsection{Interrupt}
+Un \textbf{interrupt} è un segnale hardware che interrompe il normale flusso di esecuzione
+di un programma. Gli interrupt possono essere generati da:
+\begin{itemize}
+  \item \textbf{Hardware}: Per esempio quando un dispositivo ha finito un'operazione
+  \item \textbf{Software}: Per esempio quando un programma chiama una system call
+\end{itemize}
+Questo serve per permettere alla CPU di lavorare per più tempo.
 
+\subsubsection{Operazioni input/output}
+Per gestire gli input/output
+ad esempio si usano i \textbf{device driver} che sono programmi che permettono di
+programmare la periferica per comunicare con il sistema operativo. Finchè il dispositivo
+non ha finito l'operazione, la CPU esegue altri processi e quando riceve l'interrupt
+dal dispositivo che segnala la fine dell'operazione, la CPU interrompe il processo
+corrente e inizia a gestire l'interrupt.
+
+\begin{itemize}
+  \item \textbf{Buffering}: Sovrapposizione di CPU e I/O dello \textbf{stesso} processo
+  \item \textbf{Spooling}: Sovrapposizione di CPU e I/O di \textbf{diversi} processi
+\end{itemize}
+Lo spooling serve quando l'elaborazione dei dati letti da un processo è più veloce
+della lettura stessa, quindi si avrebbero dei tempi morti rimossi con lo spooling che
+permette di elaborare i dati, già pronti, letti da un altro processo.
+
+\subsection{Multiprogrammazione}
+È la possibilità di tenere caricati in memoria più programmi e di eseguirli in modo
+alternato. Questo permette di sfruttare al meglio la CPU e di ridurre i tempi morti
+dovuti all'I/O.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[above left] at (0,0) {CPU};
+    \node[below left] at (0,0) {I/O};
+    \node[right] at (6.7,0) {Sequenziale};
+
+    \draw (0,0) rectangle ++(1,0.5) node[midway] {$P_1$};
+    \draw (1,0) rectangle ++(1.5,-0.5) node[midway] {$P_1$};
+    \draw (2.5,0) rectangle ++(0.5,0.5) node[midway] {$P_1$};
+
+    \draw (3,0) rectangle ++(1.3,0.5) node[midway] {$P_2$};
+    \draw (4.3,0) rectangle ++(1.5,-0.5) node[midway] {$P_2$};
+    \draw (5.7,0) rectangle ++(0.5,0.5) node[midway] {$P_2$};
+  \end{tikzpicture}
+  \caption{Senza multiprogrammazione}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[above left] at (0,0) {CPU};
+    \node[below left] at (0,0) {I/O};
+    \node[right] at (5.5,0) {Multiprogrammato};
+
+    \draw (0,0) rectangle ++(1,0.5) node[midway] {$P_1$};
+    \draw (1,0) rectangle ++(1.5,-0.5) node[midway] {$P_1$};
+    \draw (2.5,0) rectangle ++(0.5,0.5) node[midway] {$P_1$};
+
+    \draw (1,0) rectangle ++(1.3,0.5) node[midway] {$P_2$};
+    \draw (2.5,0) rectangle ++(1.5,-0.5) node[midway] {$P_2$};
+    \draw (4,0) rectangle ++(0.5,0.5) node[midway] {$P_2$};
+  \end{tikzpicture}
+  \caption{Con multiprogrammazione}
+\end{figure}
+\noindent
+Per eseguire più programmi alla volta, non soltanto quando un programma è in attesa
+di I/O, si utilizza il concetto di \textbf{time sharing} che permette di eseguire
+più programmi in modo alternato ad intervalli di tempo molto brevi chiamati \textbf{
+quanto di tempo} creando l'impressione che i programmi vengano eseguiti in parallelo.
+
+\vspace{1em}
+\noindent
+Quando si hanno tanti processi che concorrono per l'utilizzo della CPU bisogna implementare
+delle regole per decidere quale processo eseguire. Queste regole sono definite dal
+sistema operativo, nello specifico dallo \textbf{scheduler}.
+
+\subsection{Protezione}
+La possibilità di eseguire più processi contemporaneamente crea dei problemi, come ad
+esempio la possibilità che un processo possa accedere ad un'altra area di memoria di
+un altro processo. Per evitare questo si usano delle tecniche di \textbf{protezione}:
+\begin{itemize}
+  \item \textbf{Protezione I/O}: Programmi diversi non devono usare I/O contemporaneamente
+  \item \textbf{Protezione della memoria}: Un processo non può leggere o scrivere in un'area di
+    memoria che non gli appartiene
+  \item \textbf{Protezione della CPU}: Un processo non può usare la CPU per più tempo di quello
+    che gli è stato assegnato
+\end{itemize}
+In generale la protezione è realizzata tramite il meccanismo della \textbf{modalità duale}
+di esecuzione:
+\begin{itemize}
+  \item \textbf{Modalità utente}: Il programma viene eseguito in modo normale, senza accesso
+    alle risorse hardware
+  \item \textbf{Modalità kernel}: Il programma viene eseguito con privilegi speciali
+    che permettono di accedere all'hardware
+\end{itemize}
+
+\subsubsection{Protezione I/O}
+Quando un processo vuole usare un dispositivo I/O, deve passare per il \textbf{device
+driver} che esegue le operazioni di I/O in modalità \textbf{supervisor} (o kernel mode).
+Questo viene fatto attraverso una \textbf{system call}, cioè un interrupt software
+che permette di passare dalla modalità utente alla modalità kernel per
+esequire operazioni privilegiate. Al termine della system call si ritorna in modalità
+utente.
+
+\subsubsection{Protezione della memoria}
+Per proteggere la memoria si devono imporre dei limiti di accesso alla memoria ai processi.
+Il sistema operativo tiene traccia di questi limiti e li controlla ad ogni accesso alla 
+memoria. 
+
+\subsubsection{Protezione della CPU}
+Per proteggere la CPU bisogna garantire che il sistema operativo abbia sempre il controllo
+su di essa per poter interrompere qualsiasi processo che non restituisca il controllo
+della CPU. Per fare ciò si usano i \textbf{timer} che interrompono il processo se
+viene eseguito per troppo tempo.
+
+\subsection{Tipi di sistema operativo}
+Esistono diversi tipi di sistemi operativi che si differenziano e si classificano sulla
+base di determinate architetture di calcolo e determinati scopi. I principali tipi sono:
+\begin{itemize}
+  \item \textbf{S.O. per PC e workstation}: Uso personale dell'elaboratore
+  \item \textbf{S.O. di rete}: Separazione logica delle risorse remote e locali
+  \item \textbf{S.O. distribuiti}: Non c'è la separazione logica tra risorse remote e
+    locali, quindi l'accesso alle risorse remote viene effettuato nello stesso modo
+    di quello alle risorse locali
+  \item \textbf{S.O. real-time}: Vincoli sui tempi di risposta del sistema
+  \item \textbf{S.O. embedded}: Per dispositivi con risorse limitate
+\end{itemize}
+
+\section{Componenti di un sistema operativo}
+Le componenti principali di un sistema operativo sono:
+\begin{itemize}
+  \item \textbf{Gestione dei processi}
+  \item \textbf{Gestione della memoria primaria} (RAM): Spazio dei processi
+  \item \textbf{Gestione della memoria secondaria} (Memoria di massa): Spazio dei
+    programmi e dei dati
+  \item \textbf{Gestione dell'I/O}
+  \item \textbf{Gestione dei file}
+  \item \textbf{Protezione}
+  \item \textbf{Rete}
+  \item \textbf{Interprete dei comandi}
+\end{itemize}
+
+\subsection{Gestione dei processi}
+Un processo è l'istanza di un programma in esecuzione. Ogni processo ha bisogno di
+risorse per poter essere eseguito, come ad esempio la CPU, la memoria, i file e i
+dispositivi I/O. Il sistema operativo deve gestire i processi e assegnare le risorse per
+garantire che i processi vengano eseguiti in modo corretto e senza conflitti e deve
+gestire anche se stesso perchè anche il sistema operativo è un'insieme di processi in
+modalità kernel.
+
+\vspace{1em}
+\noindent
+Il sistema operativo è responsabile della:
+\begin{itemize}
+  \item \textbf{Creazione e distruzione di processi}: Creare un processo significa
+    allocare le risorse necessarie e inizializzare le strutture dati del processo;
+    distruggere un processo significa rilasciare le risorse e liberare la memoria
+
+  \item \textbf{Sospensione e riesumazione di processi}: Un processo viene sospeso
+    quando deve aspettare un evento, come ad esempio un I/O
+
+  \item \textbf{Sincronizzazione e comunicazione tra processi}: I processi devono
+    poter comunicare tra di loro e sincronizzarsi per evitare conflitti
+\end{itemize}
+
+\subsection{Gestione della memoria primaria}
+Un programma deve essere caricato in memoria per essere eseguito e nella RAM sono anche
+presenti dati condivisi tra CPU e dispositivi I/O.
+
+\vspace{1em}
+\noindent
+Il sistema operativo è responsabile di:
+\begin{itemize}
+  \item \textbf{Gestire lo spazio di memoria}: Decide quali parti della memoria allocare
+    e a quali processi assegnarla
+
+  \item \textbf{Decidere quale processo caricare in memoria quando esiste spazio disponibile}
+
+  \item \textbf{Gestire l'allocazione e il rilascio dello spazio di memoria}
+\end{itemize}
+
+\subsection{Gestione della memoria secondaria}
+La memoria secondaria è usata per memorizzare programmi e dati che non possono stare
+nella memoria primaria e per mantenere grandi quantità di dati in modo permanente. Il
+sistema operativo deve gestire l'ottimizzazione dell'uso della memoria secondaria.
+
+\vspace{1em}
+\noindent
+Il sistema operativo è responsabile di:
+\begin{itemize}
+  \item \textbf{Gestire lo spazio sulla memoria di massa}
+
+  \item \textbf{Allocare spazio su memoria di massa}
+
+  \item \textbf{Ordinare gli accessi ai dispositivi}
+\end{itemize}
+
+\subsection{Gestione dell'I/O}
+Il sistema operativo deve creare un livello software che permetta all'utente di usare
+le periferiche senza doverne capire le caratteristiche fisiche.
+
+\vspace{1em}
+\noindent
+Il sistema di I/O consiste di:
+\begin{itemize}
+  \item \textbf{Sistema per accumulare gli accessi ai dispositivi}: Buffering, cioè
+    l'accumulo di dati in memoria prima di essere scritti o letti dal dispositivo
+
+  \item \textbf{Generica interfaccia verso i device driver}
+
+  \item \textbf{Device driver specifici per alcuni dispositivi}
+\end{itemize}
+
+\subsection{Gestione dei file}
+I file servono per memorizzare informazioni su supporti fisici diversi controllati da
+driver con caratteristiche diverse. Un file è l'\textbf{astrazione logica} per rendere
+conveniente l'uso della memoria non volatile e permette di raccogliere informazioni
+correlate, come ad esempio dati o programmi.
+
+\vspace{1em}
+\noindent
+Il sistema operativo è responsabile di:
+\begin{itemize}
+  \item \textbf{Creare e cancellare file e directory}
+
+  \item \textbf{Fornire primitive per la gestione di file e directory}: Ad esempio
+    aprire, leggere, scrivere, chiudere, rinominare, cancellare ecc...
+
+  \item \textbf{Gestire la corrispondnza tra file e spazio fisico su memoria di massa}:
+    Bisogna tenere traccia di dove sono memorizzati i file
+
+  \item \textbf{Salvare informazioni a scopo di backup}
+\end{itemize}
+
+\subsection{Protezione}
+È il meccanismo per controllare l'accesso alle risorse da parte di utenti e processi.
+
+\vspace{1em}
+\noindent
+Il sistema operativo è responsabile di:
+\begin{itemize}
+  \item \textbf{Definire accessi autorizzati e non}
+
+  \item \textbf{Definire controlli per gli accessi}
+
+  \item \textbf{Fornire strumenti per verificare le politiche di accesso}
+\end{itemize}
+
+\subsection{Rete}
+Il sistema operativo deve gestire tutte le risorse di calcolo connesse tramite una rete.
+
+\vspace{1em}
+\noindent
+Il sistema operativo è responsabile della gestione di:
+\begin{itemize}
+  \item \textbf{Processi distribuiti}
+  \item \textbf{Memoria distribuita}
+  \item \textbf{File system distribuito}
+\end{itemize}
+
+\subsection{Interprete dei comandi}
+L'interprete dei comandi è un programma che permette all'utente di comunicare con il
+sistema operativo. L'interprete dei comandi permette di:
+\begin{itemize}
+  \item \textbf{Creare e gestire processi}
+  \item \textbf{Gestire l'I/O}
+  \item \textbf{Gestire il disco, la memoria, il file system}
+  \item \textbf{Gestire le protezioni}
+  \item \textbf{Gestire la rete}
+\end{itemize}
+Un interprete dei comandi è la \textbf{shell}, che è un programma che legge e interpreta i comandi.
+
+\subsection{System call}
+Sono un'interfaccia tra processi e sistema operativo e permettono ai processi di
+comunicare con il sistema operativo. Le system call sono chiamate tramite un'istruzione
+software e permettono di eseguire operazioni privilegiate. Le possibili opzioni per
+comunicare tra sistema operativo e processo sono:
+\begin{enumerate}
+  \item Passare i parametri della system call tramite registri
+  \item Passare i parametri tramite lo stack del programma
+    \begin{lstlisting}[language=C]
+    // Programma utente
+    void main() {
+      ...
+      A(x);
+      ...
+    }
+
+    A(int x) {
+      ...
+      push x;
+      _A(); // Vera e propria system call
+      ...
+    }
+
+    _A() {
+      scrivi 13
+      TRAP // Interruzione software
+      ...
+    }
+    \end{lstlisting}
+    \begin{lstlisting}[language=C]
+    // Sistema operativo
+    Leggi 13
+    Salta al gestore 13
+
+    handler_13() {
+      ...
+    }
+    \end{lstlisting}
+  \item Memorizzare i parametri in una tabella in memoria
+    \begin{itemize}
+      \item L'indirizzo della tabella è passato in un registro o nello stack
+    \end{itemize}
+\end{enumerate}
 
 % Il sistema operativo fornisce dei servizi per comunicare con l'hardware e questi
 % servizi possono essere usati tramite delle \textbf{system calls}, ad esempio:
