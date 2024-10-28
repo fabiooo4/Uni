@@ -936,4 +936,103 @@ Ora si vuole definire una funzione che costruisce un heap da un array:
       heapify(A, i)
 \end{lstlisting}
 
+\subsubsection{Heap sort}
+Heap sort è un algoritmo di ordinamento basato su heap.
+\begin{lstlisting}[language=Scala]
+  heap_sort(A) // O(n log n)
+    build_heap(A) // n
+    for i <- length[A] downto 2
+      scambia(A[1], A[i])
+      heapsize(A)--
+      heapify(A, 1) // log i
+\end{lstlisting}
+
+La complessità dell'algoritmo è \( O(n \log n) \), ma più precisamente:
+\[
+\sum_{i=1}^{n} \log i = \log \prod_{i=1}^{n} i = \log n! = \Theta(\log n^n) = \Theta(n \log n)
+\] 
+Per la formula di Stirling \( n! \) ha ordine di grandezza \( n^n \). Questo algoritmo
+è in loco e stabile.
+
+\vspace{1em}
+\noindent
+Il caso pessimo è un array ordinato al contrario.
+
+\subsection{Quick sort}
+Il concetto di questo algoritmo è quello di mettere prima in disordine l'algoritmo e poi
+ordinarlo. L'algoritmo divide l'array in 2 parti e ordina ricorsivamente le due parti; a
+quel punto l'array è ordinato.
+
+\begin{lstlisting}[language=Scala]
+  // A: Array da ordinare 
+  // p: Indice di partenza
+  // r: Indice di arrivo
+  quick_sort(A, p, r)
+    if p < r // Ordina solo se l'array ha piu' di un elemento
+      q <- partition(A, p, r) // Dividi l'array in due parti
+      quick_sort(A, p, q) // Ordina sinistra
+      quick_sort(A, q + 1, r) // Ordina destra
+\end{lstlisting}
+\begin{lstlisting}[language=Scala]
+  partition(A, p, r)
+    x <- A[p] // Elemento perno (o pivot)
+    i <- p - 1
+    j <- r + 1
+    while true
+      repeat // Ripete finche' la condizione non e' soddisfatta
+        j--  // n/2
+      until A[j] <= x // Trova un elemento che non puo' stare a destra
+      repeat
+        i++  // n/2
+      until A[i] >= x // Trova un elemento che non puo' stare a sinistra
+      if i < j
+        swap(A[i], A[j]) // n/2
+      else
+        return j // alla fine j puntera' all'ultimo elemento di sinistra
+\end{lstlisting}
+
+\noindent
+Questo algoritmo è in loco e non è stabile. La sua complessità nel caso peggiore è:
+\[
+  \begin{aligned}
+    T(n) &= T(\text{partition}) + T(q) + T(n-q)\\
+         &= n + T(q) + T(n-q)\\
+         &= n + \cancel{T(1)} + T(n-1)\\
+         &= n + T(n-1)\\
+         &= \Theta(n^2)
+  \end{aligned}
+\] 
+Il caso peggiore è un array già ordinato.
+
+\vspace{1em}
+\noindent
+Mediamente ci si aspetta che l'array venga diviso in 2 parti molto simili, quindi
+la complessità è \( O(n \log n) \) perchè:
+\[
+0 < c < 1
+\] 
+\[
+  T(n) = n + T(cn) + T((1-c)n)
+\] 
+
+\begin{lstlisting}[language=Scala]
+  rand_partition(A, p, r)
+    i <- random(p, r)
+    swap(A[i], A[p])
+    return partition(A, p, r)
+\end{lstlisting}
+La complessità è la media di tutte le complessità con probabilità \( \frac{1}{n} \) 
+\[
+  \begin{aligned}
+    T(n) = n + \frac{1}{n}\left( T(1) + T(n-1) \right) + \frac{n-1}{n}\left( T(2) + T(n-2) \right)\\
+    + \ldots + \frac{1}{n}\left( T(n-1) + T(1) \right)
+  \end{aligned}
+\] 
+\[
+  \begin{aligned}
+    T(n) &= n + \frac{1}{n} \sum_{i} \left( T(i) + T(n-i) \right) \\
+         &= n + \frac{2}{n} \sum_{i} T(i)\\
+  \end{aligned}
+\] 
+
 \end{document}
