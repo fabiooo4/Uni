@@ -4,10 +4,10 @@ use num_bigint::BigInt;
 
 pub fn factorial(num: i64) -> BigInt {
     // Progress bar
-    let pb = ProgressBar::new(num.unsigned_abs());
+    let pb = ProgressBar::new(num.unsigned_abs()).with_message("Calculating...");
     pb.set_style(
         ProgressStyle::with_template(
-            "[{elapsed_precise}] [{wide_bar:.green/red}] {percent_precise}%  Remaining: {eta}",
+            "{msg}\n[{elapsed_precise}] [{wide_bar:.green/red}] {percent_precise}%  Remaining: {eta}",
         )
         .unwrap()
         .progress_chars("---"),

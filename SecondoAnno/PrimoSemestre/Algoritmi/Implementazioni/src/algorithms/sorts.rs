@@ -1,5 +1,5 @@
 use cpu_time::ProcessTime;
-use indicatif::{ProgressBar, ProgressStyle};
+use indicatif::{ProgressBar, ProgressIterator, ProgressStyle};
 use rand::{distributions::Uniform, prelude::*};
 
 pub fn insertion_sort<T: PartialOrd>(list: &mut [T], pb: &ProgressBar) {
@@ -68,16 +68,27 @@ pub fn run_sort(input_size: usize, sort_function: fn(&mut [i64], &ProgressBar)) 
 
     // Benchmark input generation
     let cpu_now = ProcessTime::now();
-    let mut input: Vec<i64> = (0..input_size).map(|_| rng.sample(range)).collect();
+    let mut input: Vec<i64> = (0..input_size)
+        .progress()
+        .with_message("Generating input...")
+        .with_style(
+            ProgressStyle::with_template(
+                "{msg}\n[{elapsed_precise}] [{wide_bar:.green/red}] {pos}/{len}",
+            )
+            .unwrap()
+            .progress_chars("---"),
+        )
+        .map(|_| rng.sample(range))
+        .collect();
     let cpu_time = cpu_now.elapsed();
 
     println!("Input generation time: {:.2?}", cpu_time);
 
     // Create progress bar
-    let pb = ProgressBar::new(input.len() as u64);
+    let pb = ProgressBar::new(input.len() as u64).with_message("Sorting...");
     pb.set_style(
         ProgressStyle::with_template(
-            "[{elapsed_precise}] [{wide_bar:.green/red}] {percent_precise}%  Remaining: {eta}",
+            "{msg}\n[{elapsed_precise}] [{wide_bar:.green/red}] {percent_precise}%  Remaining: {eta}",
         )
         .unwrap()
         .progress_chars("---"),
@@ -89,6 +100,7 @@ pub fn run_sort(input_size: usize, sort_function: fn(&mut [i64], &ProgressBar)) 
     let cpu_time = cpu_now.elapsed();
 
     pb.set_position(input.len() as u64);
+    pb.finish_and_clear();
 
     // Print execution time
     println!("Execution time: {:.2?}", cpu_time);
