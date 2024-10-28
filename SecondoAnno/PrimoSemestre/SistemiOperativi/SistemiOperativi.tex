@@ -355,7 +355,49 @@ comunicare tra sistema operativo e processo sono:
     \begin{itemize}
       \item L'indirizzo della tabella è passato in un registro o nello stack
     \end{itemize}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \draw (0,0) rectangle ++(2,3);
+        \node[below] at (1,0) {Prog. utente};
+        \node at (1,2) {\texttt{syscall(x)}};
+        \node[align=center,scale=0.7] (sys) at (1,1) {Carica indirizzo \texttt{x}\\System call \#13};
+
+        \node[draw,minimum width=1.5cm] (x) at (4,3) {$x$};
+        \node[above,align=center,scale=0.8] at (x.north) {Indirizzo della tabella\\in memoria};
+        \node[below,align=center,scale=0.8] at (x.south) {Registro};
+
+        \draw (6,0) rectangle ++(2,3);
+        \draw (6,0.8) rectangle ++(2,1.4);
+
+        \draw (8.2,2.2) -- ++(0.2,0) -- ++(0,-1.4) node[midway,right,align=center,scale=0.8]
+          {Codice per\\system call\\\#13} -- ++(-0.2,0);
+
+        \node[align=center,scale=0.8] (call) at (7,1.5) {Usa parametri\\contenuti nella\\tabella con\\indirizzo $x$};
+        \node[below] at (7,0) {S.O.};
+
+        \draw[->] (sys.east) -- (x.west);
+        \draw[->] (x.east) -- (call.west);
+      \end{tikzpicture}
+      \caption{Passaggio dei parametri tramite tabella in memoria}
+    \end{figure}
 \end{enumerate}
+
+\subsection{Programmi di sistema}
+I programmi di sistema sono un'interfaccia comoda che ha l'utente delle operazioni che il
+sistema operativo può fare tramite le sue system call, ad esempio:
+\begin{itemize}
+  \item \textbf{Gestione/manipolazione dei file}: Crea, copia, cancella...
+  \item \textbf{Informazioni sullo stato del sistema}: Uso della CPU, data, spazio su 
+    disco...
+  \item \textbf{Strumenti di supporto alla programmazione}: Compilatori, assemblatori,
+    editor...
+  \item \textbf{Programmi di gestione della rete}: Login remoto, trasferimento file...
+  \item \textbf{Formattazione documenti}
+  \item \textbf{Mail}
+  \item \textbf{Interprete dei comandi}
+  \item \textbf{Utility varie}
+\end{itemize}
 
 % Il sistema operativo fornisce dei servizi per comunicare con l'hardware e questi
 % servizi possono essere usati tramite delle \textbf{system calls}, ad esempio:
