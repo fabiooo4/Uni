@@ -1035,4 +1035,65 @@ La complessità è la media di tutte le complessità con probabilità \( \frac{1
   \end{aligned}
 \] 
 
+\subsection{Algoritmi di ordinamento non per confronti} 
+Si possono avere algoritmi di ordinamento con complessità \( < n \log n \)?
+
+\vspace{1em}
+\noindent
+Qualsiasi algoritmo che ordina per confronti deve fare almeno \( n \log n \) confronti
+nel caso pessimo
+\begin{figure}[H]
+  \centering
+  \begin{forest}
+    for tree={
+    minimum size=2em,
+    inner sep=1pt,
+    s sep=1cm,
+  }
+    [\( x \to n! \) 
+      [\( x_1 \) 
+        [\( x_{1,1} \)]
+        [\( x_{1,2} \) ]
+      ]
+      [\( x_2 \) 
+        [\( x_{2,1} \) ]
+        [\( x_{2,2} \) ]
+      ]
+    ]
+  \end{forest}
+  \caption{Heap con l'indice di un array associato ai nodi}
+\end{figure}
+\noindent
+Le foglie rappresentano ogni singola combinazione possibile. Il numero di foglie è
+\( n! \) e l'altezza sarà sempre
+\[
+h \ge \log_2 n! = n \log n
+\] 
+
+\subsubsection{Counting sort}
+Si vogliono ordinare \( n \) numeri con valori da \( 1 \) a \( k \). L'idea di questo
+algoritmo è quella di creare un'array che contiene il numero di occorrenze di un
+certo valore (rappresentato dall'indice).
+
+\begin{lstlisting}[language=Scala]
+counting_sort(A, k) 
+  for i <- 1 to k // k
+    C[i] <- 0 // Inizializzazione di un array a 0
+
+  for j <- 1 to length[A] // n
+    C[A[j]]++ // Conteggio delle occorrenze
+
+  // k
+  for i <- 2 to k         // In ogni indice metto il numero di
+    C[i] <- C[i] + C[i-1] // elementi minori o uguali
+                          // al numero dell'indice
+  // Alla fine l'array C conterra' l'ultima posizione di occorrenza per ogni elemento
+
+  for j <- length[A] downto 1 // n
+    B[C[A[j]]] <- A[j] // Inserimento dell'elemento in posizione
+    C[A[j]]--          // Decremento della posizione di occorrenza
+\end{lstlisting}
+La complessità di questo algoritmo è \( O(n + k) \) e siccome sappiamo che \( k \) è
+una costante fissata a priori la complessità è \( O(n) \). Non è in loco, ma è stabile
+
 \end{document}
