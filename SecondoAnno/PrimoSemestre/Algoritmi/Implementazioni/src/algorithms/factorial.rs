@@ -2,17 +2,7 @@ use cpu_time::ProcessTime;
 use indicatif::{ProgressBar, ProgressStyle};
 use num_bigint::BigInt;
 
-pub fn factorial(num: i64) -> BigInt {
-    // Progress bar
-    let pb = ProgressBar::new(num.unsigned_abs()).with_message("Calculating...");
-    pb.set_style(
-        ProgressStyle::with_template(
-            "{msg}\n[{elapsed_precise}] [{wide_bar:.green/red}] {percent_precise}%  Remaining: {eta}",
-        )
-        .unwrap()
-        .progress_chars("---"),
-    );
-
+pub fn factorial(num: i64, pb: ProgressBar) -> BigInt {
     let mut answer = BigInt::from(1);
     (1..=num.unsigned_abs()).rev().for_each(|i| {
         answer *= i;
@@ -27,9 +17,19 @@ pub fn factorial(num: i64) -> BigInt {
 }
 
 pub fn run_factorial(num: i64) {
+    // Progress bar
+    let pb = ProgressBar::new(num.unsigned_abs()).with_message("Calculating...");
+    pb.set_style(
+        ProgressStyle::with_template(
+            "{msg}\n[{elapsed_precise}] [{wide_bar:.green/red}] {percent_precise}%  Remaining: {eta}",
+        )
+        .unwrap()
+        .progress_chars("---"),
+    );
+
     // Execute and benchmark
     let cpu_now = ProcessTime::now();
-    let output = factorial(num);
+    let output = factorial(num, pb);
     let cpu_time = cpu_now.elapsed();
 
     // Print execution time
@@ -50,20 +50,20 @@ pub fn run_factorial(num: i64) {
 #[cfg(test)]
 #[test]
 fn base_case() {
-    assert_eq!(factorial(0), BigInt::from(1));
+    assert_eq!(factorial(0, ProgressBar::new(0)), BigInt::from(1));
 }
 
 #[test]
 fn negative() {
-    assert_eq!(factorial(-3), BigInt::from(-6));
+    assert_eq!(factorial(-3,ProgressBar::new(0)), BigInt::from(-6));
 }
 
 #[test]
 fn negative_base_case() {
-    assert_eq!(factorial(-0), BigInt::from(1));
+    assert_eq!(factorial(-0,ProgressBar::new(0)), BigInt::from(1));
 }
 
 #[test]
 fn big_input() {
-    assert_eq!(factorial(14), BigInt::from(87178291200_i64));
+    assert_eq!(factorial(14,ProgressBar::new(0)), BigInt::from(87178291200_i64));
 }
