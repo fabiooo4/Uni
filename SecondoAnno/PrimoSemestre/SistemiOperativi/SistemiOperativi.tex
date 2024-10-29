@@ -9,8 +9,6 @@
 \tableofcontents
 \pagebreak
 
-\section{Introduzione}
-
 \section{Sistema Operativo}
 Il \textbf{sistema operativo} è il livello del software che si pone tra l'hardware
 e gli utenti. E quindi il sistema operativo incapsula la macchina fisica.
@@ -398,6 +396,395 @@ sistema operativo può fare tramite le sue system call, ad esempio:
   \item \textbf{Interprete dei comandi}
   \item \textbf{Utility varie}
 \end{itemize}
+
+\section{Architettura di un sistema operativo}
+\subsection{Tipi di architetture}
+\subsubsection{Sistemi monolitici}
+I primi tipi di sistema operativo erano \textbf{monolitici}, cioè un unico programma
+che gestiva tutte le funzioni del sistema operativo e aveva tutti i componenti allo
+stesso livello, di conseguenza non c'era alcuna gerarchia e le funzioni potevano
+richiamarsi a vicenda.
+
+\vspace{1em}
+\noindent
+\textbf{Svantaggi}:
+\begin{itemize}
+  \item Codice dipendente dall'architettura hardware era distribuito su tutto il sistema
+    operativo
+
+  \item Difficile da testare, debuggare ed espandere
+\end{itemize}
+
+\noindent
+\textbf{Svantaggi}:
+\begin{itemize}
+  \item Facile da implementare
+\end{itemize}
+
+\subsubsection{Sistemi a struttura semplice}
+Si è cominciato a dividere il sistema operativo in livelli, implementando così una 
+minima struttura gerarchica. Genericamente i livelli erano pochi e in alcuni casi
+anche bypassabili. Alcuni esempi di questi sistemi sono:
+\begin{itemize}
+  \item UNIX
+  \item MS-DOS
+\end{itemize}
+
+\subsubsection{Sistemi a livelli}
+È un sistema operativo con più livelli che ha al livello più alto l'interfaccia utente
+e al livello più basso l'hardware. Tra l'utente e l'hardware ci sono diversi livelli
+\textbf{strettamente gerarchici} dove ogni livello svolge una funzionalità fornendo
+servizi al livello superiore e acquisendo servizi dal livello inferiore.
+
+\vspace{1em}
+\noindent
+\textbf{Vantaggi}:
+\begin{itemize}
+  \item Modularità, cioè facilità di sviluppo, test e debug senza impattare gli altri
+    livelli
+\end{itemize}
+
+\noindent
+\textbf{Svantaggi}:
+\begin{itemize}
+  \item Difficile definire appropriatamente i livelli
+  \item Minor efficienza perchè ogni strato aggiunge \textbf{overhead} alle system call,
+    cioè tempo di esecuzione aggiuntivo
+  \item Minore portabilità, perchè funzionalità dipendenti dall'architettura sono sparse
+    su vari livelli
+\end{itemize}
+
+\noindent
+Questa architettura a livelli crea l'idea di \textbf{macchina virtuale}, cioè
+un'astrazione dell'hardware tale da rendere trasparente la presenza di un hadrware 
+all'utente.
+
+La macchina virtuale permette di effettuare un \textbf{multiplexing} (moltiplicazione) 
+dell'hardware per permettere a più processi di accedere all'hardware contemporaneamente.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw (0,0) rectangle ++(1.5,0.6) node[midway] {HW};
+    \draw (0,0.6) rectangle ++(1.5,0.6) node[midway] {Kernel};
+    \draw (0,1.2) rectangle ++(1.5,2) node[midway] {Processi};
+    \node[below,align=center,scale=0.8] at (0.75,0) {Non-Virtual\\Machine};
+
+    \draw (2.5,0) rectangle ++(4.5,0.6) node[midway] {HW};
+    \draw (2.5,0.6) rectangle ++(4.5,0.6) node[midway] {Virtual Machine};
+
+    \draw (2.5,1.2) rectangle ++(1.5,0.6) node[midway] {Kernel};
+    \draw (4,1.2) rectangle ++(1.5,0.6) node[midway] {Kernel};
+    \draw (5.5,1.2) rectangle ++(1.5,0.6) node[midway] {Kernel};
+
+    \draw (2.5,1.8) rectangle ++(1.5,1.4) node[midway] {Processi};
+    \draw (4,1.8) rectangle ++(1.5,1.4) node[midway] {Processi};
+    \draw (5.5,1.8) rectangle ++(1.5,1.4) node[midway] {Processi};
+    \node[below,align=center,scale=0.8] at (4.75,0) {Virtual\\Machine};
+  \end{tikzpicture}
+  \caption{Differeza tra macchina virtuale e non virtuale}
+\end{figure}
+
+\noindent
+\textbf{Vantaggi}:
+\begin{itemize}
+  \item Protezione completa del sistema: ogni VM è isolata dalle altre
+  \item Più di un sistema operativo può essere eseguito sulla stessa macchina
+  \item Ottimizzazione delle risorse: la stessa macchina può ospitare quello che senza
+    VM doveva essere eseguito su macchine separate
+  \item Ottime per lo sviluppo di sistemi operativi
+  \item Buona portabilità
+\end{itemize}
+
+\noindent
+\textbf{Svantaggi}:
+\begin{itemize}
+  \item Problemi di prestazioni
+  \item Necessità di gestire dual mode virtuale: il sistema di gestione delle VM esegue
+    in kernel mode, ma la VM esegue in user mode
+  \item Ogni VM è isolata alle altre, quindi non c'è condivisione di risorse. Una 
+    possibile soluzione sarebbe condividere un volume del file system o definire una rete
+    virtuale tra VM via software.
+\end{itemize}
+
+\subsubsection{Sistemi client-server}
+I livelli non sono più gerarchici, ma sono paralleli e comunicano tra di loro tramite
+il kernel. Questo permette di avere un sistema operativo più flessibile e modulare.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw (0,0) rectangle ++(4,1) node[midway] {Kernel};
+
+    \draw (0,1) rectangle ++(0.3,2);
+    \draw (0.5,1) rectangle ++(0.3,2) node[above,scale=0.8,xshift=-0.2cm] {Server};
+    \draw (1,1) rectangle ++(0.3,2);
+
+
+    \draw (4,1) rectangle ++(-0.3,2);
+    \draw (3.5,1) rectangle ++(-0.3,2) node[above,scale=0.8,xshift=0.2cm] {Client utente};
+    \draw (3,1) rectangle ++(-0.3,2);
+
+    \draw[->,red] (3.35,2.8) -- ++(0,-2.3) -- ++(-0.3,0);
+    \draw[<-,red] (0.65,2.8) -- ++(0,-2.3) -- ++(0.3,0);
+  \end{tikzpicture}
+  \caption{Sistema client-server}
+\end{figure}
+
+\subsection{Gestione dei processi}
+Un processo è un'\textbf{istanza di un programma in esecuzione} perchè da un programma
+si possono creare più processi. Il processo è dinamico perchè è in esecuzione, mentre
+invece il programma è statico perchè è solo un insieme di istruzioni.
+
+\noindent
+I processi evolvono \textbf{un'istruzione alla volta}, ma in un sistema multiprogrammato
+essi evolvono in modo \textbf{concorrente} perchè hanno risorse fisiche e logiche limitate.
+
+\noindent
+Un processo è un'\textbf{immagine in memoria} che consiste di:
+\begin{itemize}
+  \item \textbf{Istruzioni} (Sezione di codice o testo)
+    \begin{itemize}
+      \item Parte statica del codice
+    \end{itemize}
+
+  \item \textbf{Dati} (sezione dati)
+    \begin{itemize}
+      \item Variabili globali
+    \end{itemize}
+
+  \item \textbf{Stack}
+    \begin{itemize}
+      \item Variabili locali
+      \item Chiamate a procedure e parametri
+    \end{itemize}
+
+  \item \textbf{Heap}
+    \begin{itemize}
+      \item Memoria allocata dinamicamente
+    \end{itemize}
+
+  \item \textbf{Attributi} rappresentat dal PCB (Process Control Block):
+    \begin{itemize}
+      \item PID
+      \item Stato del processo
+      \item Program counter
+      \item Valori dei registri
+      \item Informazioni sulla memoria (registri limite, tabella pagine)
+      \item Informazioni sullo stato dell'I/O (richieste pendenti, file)
+      \item Informazioni sull'utilizzo del sistema (CPU)
+      \item Informazioni di scheduling (priorità)
+    \end{itemize}
+\end{itemize}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    % Process
+    \draw (0,0) rectangle ++(1.5,0.6) node[midway] {Attributi};
+    \draw (0,0.6) rectangle ++(1.5,0.6) node[midway] {Codice};
+    \draw (0,0.6*2) rectangle ++(1.5,0.6) node[midway] {Heap};
+    \draw (0,0.6*3) rectangle ++(1.5,0.6*2);
+    \draw (0,0.6*5) rectangle ++(1.5,0.6) node[midway] {Stack};
+    \draw (0,0.6*6) rectangle ++(1.5,0.6) node[midway] {Dati};
+
+    \draw[->] (0.75,0.6*5) -- ++(0,-0.3);
+    \draw[->] (0.75,0.6*3) -- ++(0,0.3);
+
+    \draw (-0.2,0) -- ++(-0.2,0) -- ++(0,0.6*7)
+      node[midway,left] {Immagine} -- ++(0.2,0);
+
+    % Attributes
+    \draw (3,0) rectangle ++(3,0.6) node[midway,yshift=0.1cm] {$\vdots$};
+    \draw (3,0.6) rectangle ++(3,0.6) node[midway] {List of open files};
+    \draw (3,0.6*2) rectangle ++(3,0.6) node[midway] {Memory limits};
+    \draw (3,0.6*3) rectangle ++(3,0.6*2) node[midway] {Registers};
+    \draw (3,0.6*5) rectangle ++(3,0.6) node[midway] {Program counter};
+    \draw (3,0.6*6) rectangle ++(3,0.6) node[midway] {Process number};
+    \draw (3,0.6*7) rectangle ++(1.5,0.6*2) node[midway] {Pointer};
+    \draw (3+1.5,0.6*7) rectangle ++(1.5,0.6*2) node[midway,align=center] {Process\\state};
+
+    \draw (1.5,0.6) -- (3,0.6*9);
+    \draw (1.5,0) -- (3,0);
+
+    \draw (6.2,0) -- ++(0.2,0) -- ++(0,0.6*9)
+      node[midway,right] {PCB} -- ++(-0.2,0);
+  \end{tikzpicture}
+  \caption{Immagine di un processo in memoria}
+\end{figure}
+
+\subsubsection{Stati di un processo}
+Un processo durante la sua esecuzione può evolvere attraverso diversi stati:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[node distance=3cm and 2cm,>=stealth',auto, every place/.style={draw}]
+    \node [place] (nuovo) [scale=1] {Nuovo};
+    \node [place] (pronto) [right of=nuovo, scale=1, align=center] {Pronto};
+    \node [place] (attesa) [below right of=pronto, scale=0.8, align=center,xshift=-0.85cm]
+      {In attesa};
+    \node [place] (exec) [right of=pronto, scale=0.7, align=center] {In\\esecuzione};
+    \node [place] (finito) [right of=exec, scale=1, align=center] {Finito};
+
+    \path[->] (nuovo) edge node[scale=0.8,align=center]
+      {Ammissione\\nel sistema} (pronto);
+
+    \path[->] (pronto) edge[bend left=20] node[scale=0.8,align=center]
+      {Dispatch} (exec);
+    \path[<-] (pronto) edge[bend right=20] node[below,scale=0.8,align=center]
+      {Time-out} (exec);
+
+    \path[->] (exec) edge node[scale=0.8,align=center]
+      {Terminazione} (finito);
+
+    \path[->] (attesa) edge node[scale=0.8,align=center]
+      {Completameno\\I/O o evento} (pronto);
+    \path[<-] (attesa) edge node[below right,scale=0.8,align=center]
+      {Attesa di\\I/O o evento} (exec);
+
+    \path[->,dashed] (pronto) edge[bend left=60] node[scale=0.8,align=center]
+      {Terminazione\\forzata} (finito);
+  \end{tikzpicture}
+  \caption{Stati di un processo}
+\end{figure}
+
+\noindent
+Il sistema operativo gestisce il passaggio tra gli stati del processo tramite:
+\begin{itemize}
+  \item \textbf{Scheduler}: Decide quale processo eseguire
+  \item \textbf{Dispatcher}: Cambia lo stato del processo che si chiama
+    \textbf{context switch}, cioè il salvataggio dello stato del processo corrente
+    in memoria (PCB) e il caricamento dello stato del nuovo processo. Il cambio di
+    contesto è puro sovraccarico perchè la CPU non fa nulla mentre sta succedendo.
+\end{itemize}
+
+\subsubsection{Scheduling}
+Lo \textbf{Scheduler} sceglie il processo da eseguire nella CPU al fine di
+garantire:
+\begin{itemize}
+  \item Multiprogrammazione: con l'obiettovo di massimizzare l'uso della CPU
+    caricando più di un processo in memoria
+  \item Time-sharing: con l'obiettivo di commutare frequentemente la CPU tra
+    processi in modo che ognuno creda di avere la CPU tutta per sè
+\end{itemize}
+Ogni processo è inserito in una serie di \textbf{code di scheduling}:
+\begin{itemize}
+  \item \textbf{Ready queue}: Coda dei processi pronti ad essere eseguiti
+  \item \textbf{Coda di un dispositivo}: Coda dei processi in attesa che il dispositivo
+    si liberi
+\end{itemize}
+Ogni coda ha la propria \textbf{politica di scheduling}.
+
+\vspace{1em}
+\noindent
+Gli stati di un processo possono anche essere rappresentati come un diagramma di
+accodamento:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+
+    \node[draw,minimum width=3.5cm,minimum height=0.6cm,align=center] (codaproc)
+      at (-5.5,1.5) {Coda dei processi pronti};
+
+    \node[draw,circle,minimum width=0.6cm,minimum height=0.6cm,align=center] (cpu) at
+      (1.2,1.5) {CPU};
+
+    \node[draw,minimum width=3.5cm,minimum height=0.6cm,align=center] (richio) at (0,0) 
+      {Richiesta di I/O};
+    \node[draw,minimum width=2cm,minimum height=0.6cm,align=center] (codaio) at (-4,0) 
+      {Coda di I/O};
+    \node[draw,circle,minimum width=0.6cm,minimum height=0.6cm,align=center] (io) at
+      (-7,0) {I/O};
+
+
+    \node[draw,minimum width=3.5cm,minimum height=0.6cm,align=center] (tempo) at (0,-1) 
+      {Quanto di tempo\\esaurito};
+
+    \node[draw,minimum width=3.5cm,minimum height=0.6cm,align=center] (figlio) at (0,-2.2) 
+      {Generazione di un\\processo figlio};
+    \node[draw,ellipse,minimum width=0.6cm,minimum height=0.6cm,align=center,scale=0.8]
+      (procfiglio) at (-4.5,-2.2) {Processo figlio\\in esecuzione};
+
+
+    \node[draw,minimum width=3.5cm,minimum height=0.6cm,align=center] (interrupt)
+      at (0,-3.4) {Attesa di un\\interrupt};
+    \node[draw,ellipse,minimum width=0.6cm,minimum height=0.6cm,align=center,scale=0.8]
+      (occint) at (-4.5,-3.4) {Occorrenza\\dell'interruzione};
+
+
+    \draw[<-] (codaproc.west) ++(0,0.2) -- ++(-1,0);
+    \draw[<-] (codaproc.west) ++(0,-0.2) -- ++(-0.8,0) -- ++(0,-4.7);
+
+    \draw[->] (codaproc) -- (cpu);
+
+    \draw[->] (cpu.east) ++(0,0.2) -- ++(1,0);
+    \draw (cpu.east) ++(0,-0.2) -- ++(0.5,0) -- ++(0,-4.7);
+
+    \draw[<-] (richio.east) -- ++(0.5,0);
+    \draw[<-] (tempo.east) -- ++(0.5,0);
+    \draw[<-] (figlio.east) -- ++(0.5,0);
+    \draw[<-] (interrupt.east) -- ++(0.5,0);
+
+    \draw[->] (richio) -- (codaio) -- (io);
+    \draw (io.west) -- ++(-0.8,0);
+
+    \draw (tempo) -- ++(-8.3,0);
+
+    \draw[->] (figlio) -- (procfiglio);
+    \draw (procfiglio.west) -- ++(-2.4,0);
+
+    \draw[->] (interrupt) -- (occint);
+    \draw (occint.west) -- ++(-2.25,0);
+  \end{tikzpicture}
+  \caption{Diagramma di accodamento}
+\end{figure}
+
+\subsubsection{Creazione di un processo}
+La creazione di un processo avviene per creazione da parte di un altro processo. Quando
+un computer viene acceso il primo processo creato è il \textbf{processo init} che è il
+padre di tutti i processi. La creazione di un processo avviene tramite la system call
+\texttt{fork()} che crea un processo figlio ed esso ottiene
+risorse dal sistema operativo o direttamente dal padre per:
+\begin{itemize}
+  \item \textbf{Spartizione}: Il padre divide le risorse con il figlio
+  \item \textbf{Condivisione}: Il padre e il figlio condividono le risorse
+\end{itemize}
+Un processo può essere eseguito in 2 modalità:
+\begin{itemize}
+  \item \textbf{Sincrona}: Il padre aspetta che i figlii terminino
+  \item \textbf{Asincrona}: Avviene un'evoluzione \textbf{parallela} di padre e figli
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Le system call principali per la creazione di un processo sono:
+\begin{itemize}
+  \item \texttt{fork()}: Crea un processo figlio che è un duplicato esatto del padre
+  \item \texttt{exec()}: Carica sul figlio un programma diverso da quello del padre
+  \item \texttt{wait()}: Il padre aspetta che il figlio termini
+\end{itemize}
+
+\begin{example}
+  Un esempio in C della creazione di un processo figlio è il seguente:
+  \begin{lstlisting}[language=C]
+#include <stdio.h>
+void main(int argc, char *argv[]) {
+  int pid;
+  pid = fork(); // Genera un nuovo processo
+
+  if (pid < 0) {
+    printf("Errore di creazione\n");
+    exit(-1);
+  } else if (pid == 0) {
+    // Codice del processo figlio
+    execlp("/bin/ls", "ls", NULL); // Esegue il comando ls
+  } else {
+    // Codice del processo padre
+    wait(NULL); // Aspetta che il figlio termini
+    printf("Il figlio ha terminato\n");
+    exit(0);
+  }
+}
+  \end{lstlisting}
+  Il padre riceve come \texttt{pid} il process id del figlio e il figlio riceve 0.
+\end{example}
+
 
 % Il sistema operativo fornisce dei servizi per comunicare con l'hardware e questi
 % servizi possono essere usati tramite delle \textbf{system calls}, ad esempio:

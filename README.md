@@ -49,6 +49,8 @@ to someone else, even though they are written in Italian.
 <summary>&emsp;First Semester</summary>
     
 - [Data Structures and Algorithms](./SecondoAnno/PrimoSemestre/Algoritmi/Algoritmi.pdf)
+    - [Course exercises](./SecondoAnno/PrimoSemestre/Algoritmi/Esercizi/)
+    - [Algorithms implementations](./SecondoAnno/PrimoSemestre/Algoritmi/Implementazioni/)
 - [System theory](./SecondoAnno/PrimoSemestre/Sistemi/Sistemi.pdf)
 - [Computer Networks](./SecondoAnno/PrimoSemestre/Reti/Reti.pdf)
   - [Course exercises](./SecondoAnno/PrimoSemestre/Reti/Esercizi)
