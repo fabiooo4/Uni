@@ -1100,7 +1100,7 @@ Tra i due processi comunicanti si possono identificare due ruoli distinti:
     e sempre in ascolto. Il server ha un indirizzo IP statico.
 \end{enumerate}
 
-\subsection{Protocolli}
+\subsection{Protocolli web}
 \subsubsection{Protocollo HTTP}
 Il protocollo \textbf{HTTP} (HyperText Transfer Protocol) è un protocollo di livello
 applicativo usato per la trasmissione di documenti ipertestuali. Questo protocollo
@@ -1251,5 +1251,80 @@ in cui una riga di intestazione della richiesta è:
 \noindent
 Nella risposta del server (la prima con il contenuto, o le successive con "not modified")
 viene indicato anche il periodo di validità del contenuto:
+
+\subsubsection{DNS (Domain name system)}
+Lo scopo principale del DNS è la traduzione dei nomi logici (ad esempio\\
+\texttt{www.univr.it}) nei corrispondenti indirizzi IP (ad esempio \texttt{157.27.0.1}).
+Questo viene fatto tramite una tabella di traduzione che si trova in un server DNS.
+\label{29-10-D1}
+Il server DNS ha un indirizzo IP statico:
+\begin{itemize}
+  \item Può essere inserito esplicitamente dall'utente dalle impostazioni di rete
+  \item Viene fornito dalla rete stessa quando viene assegnato l'indirizzo IP (DHCP)
+\end{itemize}
+Per conoscere l'associazione tra i nomi logici e gli indirizzi IP, il server DNS
+utilizza un database \textbf{distribuito} e \textbf{gerarchico}:
+\begin{itemize}
+  \item \textbf{Server DNS radice} (sono circa 7-10): Contengono i puntatori a una serie di server
+    chiamati \textbf{server top level domain} (TLD)
+
+  \item \textbf{Server Top Level Domain} (TLD): Gestiscono le informazioni relative
+    ai domini di primo livello (ad esempio \texttt{.com}, \texttt{.it}, \texttt{.org}).
+    Ciascun TLD punta a una serie di server chiamati \textbf{Server DNS Locali}.
+
+  \item \textbf{Server DNS Locali}: Gestiscono il dominio di una organizzazione specifica
+\end{itemize}
+\label{29-10-D2}
+Un indirizzo (URL) è composto da più parti separate da un punto:
+\[
+  \underbrace{\texttt{www}}_{\text{Server specifico}}.
+  \underbrace{\texttt{univr}}_{\text{DNS Locali}}.
+  \underbrace{\texttt{it}}_{\text{TLD}}
+\]
+Il client interagisce solamente con il server DNS locale:
+\label{29-10-D3}
+\begin{enumerate}
+  \item Il client invia una richiesta al server DNS locale chiedendo l'indirizzo IP
+    di un determinato nome logico
+  \item Il server DNS locale manda una richiesta ad uno dei server radice salvati
+    nella sua configurazione per ottenere l'indirizzo IP del server TLD
+  \item Il server radice manda una risposta con l'indirizzo IP del server TLD
+  \item Il server DNS locale manda una richiesta al server TLD per ottenere l'indirizzo
+    IP del server DNS locale del sito richiesto
+  \item Il server TLD manda una risposta con l'indirizzo IP del server DNS locale
+  \item Il server DNS locale è in grado di contattare il server DNS locale del sito
+    richiesto e chiede l'indirizzo IP del sito \texttt{www.site.org}
+  \item Il server DNS locale manda una risposta con l'indirizzo IP del sito al DNS locale
+  \item Una volta ricevuto l'IP, può essere inviato al client e venire utilizzato per
+    contattare il server stesso
+\end{enumerate}
+Il server DNS locale memorizza le risposte, e quindi gli indirizzi IP dei server DNS TLD
+e server DNS locali, con cui ha interagito recentemente.
+
+\vspace{1em}
+\noindent
+Il rapporto tra il server DNS e la network cache è il seguente:
+\label{29-10-D4}
+
+\subsection{Protocolli di posta elettronica}
+Ci sono diversi protocolli di posta elettronica che variano in base all'invio e alla 
+ricezione:
+\begin{itemize}
+  \item \textbf{Invio}: SMTP (Simple Mail Transfer Protocol)
+  \item \textbf{Ricezione}:
+    \begin{itemize}
+      \item POP (Post Office Protocol), non viene più utilizzato, perchè non sicuro
+      \item IMAP (Internet Message Access Protocol)
+      \item HTTP (Webmail)
+    \end{itemize}
+\end{itemize}
+Tutti i protocolli si appoggiano su TCP. Dal punto di vista dell'architettura, ogni
+dominio di posta elettronica (la porzione che segue la @) ha un server SMTP che gestisce 
+caselle degli utenti appartenenti a quel dominio.
+\label{29-10-D5}
+Quando il server \texttt{univr.it} riceve un messaggio, controlla il dominio. Se il
+dominio è \texttt{univr.it}, allora mette il messaggio nella casella di posta.
+Se il dominio è diverso, il server SMTP contatta il server SMTP di destinazione per
+la consegna del messaggio attraverso il protocollo SMTP.
 
 \end{document}
