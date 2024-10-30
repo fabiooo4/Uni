@@ -1256,7 +1256,11 @@ viene indicato anche il periodo di validità del contenuto:
 Lo scopo principale del DNS è la traduzione dei nomi logici (ad esempio\\
 \texttt{www.univr.it}) nei corrispondenti indirizzi IP (ad esempio \texttt{157.27.0.1}).
 Questo viene fatto tramite una tabella di traduzione che si trova in un server DNS.
-\label{29-10-D1}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.75\textwidth]{comunicazione-dns}
+  \caption{Comunicazione con il server DNS}
+\end{figure}
 Il server DNS ha un indirizzo IP statico:
 \begin{itemize}
   \item Può essere inserito esplicitamente dall'utente dalle impostazioni di rete
@@ -1274,7 +1278,11 @@ utilizza un database \textbf{distribuito} e \textbf{gerarchico}:
 
   \item \textbf{Server DNS Locali}: Gestiscono il dominio di una organizzazione specifica
 \end{itemize}
-\label{29-10-D2}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{albero-dns}
+  \caption{Albero dei server DNS}
+\end{figure}
 Un indirizzo (URL) è composto da più parti separate da un punto:
 \[
   \underbrace{\texttt{www}}_{\text{Server specifico}}.
@@ -1282,7 +1290,11 @@ Un indirizzo (URL) è composto da più parti separate da un punto:
   \underbrace{\texttt{it}}_{\text{TLD}}
 \]
 Il client interagisce solamente con il server DNS locale:
-\label{29-10-D3}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{client-dns-server}
+  \caption{Comunicazione tra client e server tramite DNS}
+\end{figure}
 \begin{enumerate}
   \item Il client invia una richiesta al server DNS locale chiedendo l'indirizzo IP
     di un determinato nome logico
@@ -1304,7 +1316,11 @@ e server DNS locali, con cui ha interagito recentemente.
 \vspace{1em}
 \noindent
 Il rapporto tra il server DNS e la network cache è il seguente:
-\label{29-10-D4}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.75\textwidth]{dns-cache}
+  \caption{Comunicazione tra client e server tramite DNS}
+\end{figure}
 
 \subsection{Protocolli di posta elettronica}
 Ci sono diversi protocolli di posta elettronica che variano in base all'invio e alla 
@@ -1321,7 +1337,12 @@ ricezione:
 Tutti i protocolli si appoggiano su TCP. Dal punto di vista dell'architettura, ogni
 dominio di posta elettronica (la porzione che segue la @) ha un server SMTP che gestisce 
 caselle degli utenti appartenenti a quel dominio.
-\label{29-10-D5}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{smtp-imap}
+  \caption{Invio e ricezione di posta elettronica}
+\end{figure}
+\noindent
 Quando il server \texttt{univr.it} riceve un messaggio, controlla il dominio. Se il
 dominio è \texttt{univr.it}, allora mette il messaggio nella casella di posta.
 Se il dominio è diverso, il server SMTP contatta il server SMTP di destinazione per
