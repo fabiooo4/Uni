@@ -906,12 +906,9 @@ Per calcolare il numero di nodi di un albero binario si usa la formula:
 dove \( h \) è l'altezza dell'albero.
 Il numero di foglie di un albero sono la metà dei nodi.
 
-\begin{lstlisting}[language=Scala]
-  extract_max(A)
-    H[1] <- H[H.heap_size]
-    H.heap_size <- H.heap_size - 1
-    heapify(H,1)
-\end{lstlisting}
+\vspace{1em}
+\noindent
+Definiamo una funzione che "aggiusta" i figli di un nodo per mantenere la proprietà di heap:
 \begin{lstlisting}[language=Scala]
   heapify(A, i) // O(n)
     l <- left[i] // Indice del figlio sinistro (2i)
@@ -927,7 +924,6 @@ Il numero di foglie di un albero sono la metà dei nodi.
       swap(H[i], H[largest])
       heapify(H, largest)
 \end{lstlisting}
-
 Ora si vuole definire una funzione che costruisce un heap da un array:
 \begin{lstlisting}[language=Scala]
   build_heap(A) // O(n)
@@ -935,7 +931,14 @@ Ora si vuole definire una funzione che costruisce un heap da un array:
     for i <- floor(length[A]/2) downto 1
       heapify(A, i)
 \end{lstlisting}
-
+Una volta definito un heap si possono fare diverse operazioni, come ad esempio estrarre
+il nodo massimo:
+\begin{lstlisting}[language=Scala]
+  extract_max(A)
+    H[1] <- H[H.heap_size]
+    H.heap_size <- H.heap_size - 1
+    heapify(H,1)
+\end{lstlisting}
 \subsubsection{Heap sort}
 Heap sort è un algoritmo di ordinamento basato su heap.
 \begin{lstlisting}[language=Scala]
@@ -946,6 +949,7 @@ Heap sort è un algoritmo di ordinamento basato su heap.
       heapsize(A)--
       heapify(A, 1) // log i
 \end{lstlisting}
+
 
 La complessità dell'algoritmo è \( O(n \log n) \), ma più precisamente:
 \[
