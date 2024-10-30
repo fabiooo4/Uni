@@ -1,3 +1,5 @@
+use std::ops::Index;
+
 use cpu_time::ProcessTime;
 use indicatif::{ProgressBar, ProgressIterator, ProgressStyle};
 use rand::{distributions::Uniform, prelude::*};
@@ -173,12 +175,12 @@ pub fn partition<T: PartialOrd + Copy>(list: &mut [T]) -> usize {
     }
 }
 
-pub fn counting_sort<T: PartialOrd + Copy >(list: &mut [T], min: isize, max: isize, pb: &ProgressBar) {
+pub fn counting_sort<T: PartialOrd + Copy + std::convert::Into<usize>>(list: &mut [T], min: isize, max: isize, pb: &ProgressBar) {
     if min > max {
         panic!("Min is greater than max");
     }
 
-    let k = (min + max).unsigned_abs();
+    let k = (min - max).unsigned_abs() + 1;
     let mut tmp: Vec<usize> = vec![0; k];
     let mut result: Vec<T> = Vec::with_capacity(list.len());
 
@@ -187,7 +189,7 @@ pub fn counting_sort<T: PartialOrd + Copy >(list: &mut [T], min: isize, max: isi
     (1..k).for_each(|i| tmp[i] += tmp[i-1]);
 
     (0..list.len()).rev().for_each(|i| {
-        // result[tmp[usize::from(list[i])]] = list[i];
+        result[tmp[list[i].into()]] = list[i];
         todo!()
     });
 }
@@ -512,54 +514,54 @@ fn quick_size_one() {
 #[test]
 fn counting_empty() {
     let mut input: [i32; 0] = [];
-    counting_sort(&mut input, &ProgressBar::hidden());
+    counting_sort(&mut input, isize::MIN, isize::MAX, &ProgressBar::hidden());
     assert_eq!(input, []);
 
     let mut input: Vec<i32> = vec![];
-    counting_sort(&mut input, &ProgressBar::hidden());
+    counting_sort(&mut input, isize::MIN, isize::MAX, &ProgressBar::hidden());
     assert_eq!(input, []);
 }
 
 #[test]
 fn counting_regular() {
     let mut input = [5, 4, 2, 1, 3];
-    counting_sort(&mut input, &ProgressBar::hidden());
+    counting_sort(&mut input, isize::MIN, isize::MAX, &ProgressBar::hidden());
     assert_eq!(input, [1, 2, 3, 4, 5]);
 
     let mut input: Vec<i32> = vec![9, 5, 4, 3, 2, 6, 1, 8, 0, 7];
-    counting_sort(&mut input, &ProgressBar::hidden());
+    counting_sort(&mut input, isize::MIN, isize::MAX, &ProgressBar::hidden());
     assert_eq!(input, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
 }
 
 #[test]
 fn counting_sorted() {
     let mut input = [1, 2, 3, 4, 5];
-    counting_sort(&mut input, &ProgressBar::hidden());
+    counting_sort(&mut input, isize::MIN, isize::MAX, &ProgressBar::hidden());
     assert_eq!(input, [1, 2, 3, 4, 5]);
 
     let mut input: Vec<i32> = vec![1, 2, 3, 4, 5];
-    counting_sort(&mut input, &ProgressBar::hidden());
+    counting_sort(&mut input, isize::MIN, isize::MAX, &ProgressBar::hidden());
     assert_eq!(input, [1, 2, 3, 4, 5]);
 }
 
 #[test]
 fn counting_same_numbers() {
     let mut input = [1, 1, 1, 1, 1];
-    counting_sort(&mut input, &ProgressBar::hidden());
+    counting_sort(&mut input, isize::MIN, isize::MAX, &ProgressBar::hidden());
     assert_eq!(input, [1, 1, 1, 1, 1]);
 
     let mut input: Vec<i32> = vec![1, 1, 1, 1, 1];
-    counting_sort(&mut input, &ProgressBar::hidden());
+    counting_sort(&mut input, isize::MIN, isize::MAX, &ProgressBar::hidden());
     assert_eq!(input, [1, 1, 1, 1, 1]);
 }
 
 #[test]
 fn counting_size_one() {
     let mut input = [1];
-    counting_sort(&mut input, &ProgressBar::hidden());
+    counting_sort(&mut input, isize::MIN, isize::MAX, &ProgressBar::hidden());
     assert_eq!(input, [1]);
 
     let mut input: Vec<i32> = vec![1];
-    counting_sort(&mut input, &ProgressBar::hidden());
+    counting_sort(&mut input, isize::MIN, isize::MAX, &ProgressBar::hidden());
     assert_eq!(input, [1]);
 }

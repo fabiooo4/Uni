@@ -1348,4 +1348,70 @@ dominio è \texttt{univr.it}, allora mette il messaggio nella casella di posta.
 Se il dominio è diverso, il server SMTP contatta il server SMTP di destinazione per
 la consegna del messaggio attraverso il protocollo SMTP.
 
+\section{Livello di trasporto}
+\label{30-10-D1}
+A livello di trasporto esistono 2 protocolli principali:
+\begin{itemize}
+  \item \textbf{TCP}
+  \item \textbf{UDP}
+\end{itemize}
+
+\subsection{Protocollo TCP (Transmission Control Protocol)}
+\subsubsection{Formato del pacchetto}
+La grandezza dell'header TCP è di \( 20 byte \) tutti scritti in 5 righe da 4 byte. I
+campi dell'header sono i seguenti:
+\label{30-10-D2}
+\begin{itemize}
+  \item \textbf{Porta sorgente/destinazione} (bit 0-16): Identificatori dei processi 
+    sorgente e destinazione coinvolti nella comunicazione. Ci sono 2 tipi di porte:
+    \begin{itemize}
+      \item \textbf{Porte statiche}: Vanno dalla 0 alla 1023 e sono identificativi
+        associati a protocolli definiti dallo standard (HTTP,SMTP,...) utilizzati
+        \textbf{lato server}, quindi un client non può utilizzarle.
+
+      \item \textbf{Porte dinamiche}: Vanno dalla 1024 alla 65535 e sono identificativi
+        assegnati dal sistema operativo lato client quando viene aperto un socket.
+    \end{itemize}
+
+  \item \textbf{Sequence number}: 
+    \begin{itemize}
+      \item A livello applicativo vengono generati messaggi di
+        dimensione arbitraria.
+      \item A livello "collegamento dati" alla scheda di rete è associato un parametro
+        chiamato \textbf{MTU} (Maximum Transmission Unit) che indica la dimensione
+        massima di un pacchetto che può essere inviato. Il MSS (Maximum Segment Size)
+        indica la dimensione massima di un segmento che può essere inviato.
+    \end{itemize}
+    Il sequence number identifica l'ordine dei segmenti rispetto al messaggio originale.
+    Viene anche chiamato \textbf{offset rispetto al byte iniziale del segmento} e ad
+    ogni sequence number viene sommata una costante uguale per ogni segmento chiamata
+    \textbf{Initial Sequence Number} (ISN).
+    \label{30-10-D3}
+
+  \item \textbf{Acknowledgment number}: Il TCP è un protocollo affidabile, cioè garantisce
+    la consegna di tutti i segmenti, quindi c'è bisogno di un meccanismo di conferma
+    della ricezione. Questo meccanismo è chiamato \textbf{Positive acknowledgment with
+    retransmission} e quindi per ogni segmento ricevuto il destinatario manda un
+    acknowledgment con il sequence number del prossimo segmento che si aspetta, ad
+    esempio:
+    \begin{example}
+      \label{30-10-D4}
+    \end{example}
+
+    \vspace{1em}
+    \noindent
+    Un acknowledgment è un segmento TCP senza dati, quindi ha solamente l'header.
+
+  \item \textbf{Checksum}: Serve per controllare la presenza di errori nel segmento.
+    La checksum è il risultato di una funzione che prende in input il segmento e restituisce
+    un valore a dimensione fissa univoco per quel segmento. Se il segmento viene modificato
+    durante la trasmissione, la checksum cambia e il destinatario fa un controllo
+    mettendo in input ciò che ha ricevuto e se il confronto:
+    \begin{itemize}
+      \item Va a buon fine: con \textbf{alta probabilità} non ci sono stati errori
+      \item Non va a buon fine: ci sono \textbf{sicuramente} errori e il segmento
+        viene scartato
+    \end{itemize}
+    \label{30-10-D5}
+\end{itemize}
 \end{document}
