@@ -36,7 +36,7 @@ pub fn run_factorial(num: i64) {
     println!("Execution time: {:.2?}", cpu_time);
 
     // Print output prompt
-    print!("\nDo you want to print the output? [y/N]");
+    print!("\nDo you want to print the output? [y/n]");
     let choice: Result<String, text_io::Error> = text_io::try_read!();
 
     if let Ok(choice) = choice {
