@@ -175,7 +175,7 @@ pub fn partition<T: PartialOrd + Copy>(list: &mut [T]) -> usize {
     }
 }
 
-pub fn counting_sort<T: PartialOrd + Copy + std::convert::Into<usize>>(list: &mut [T], min: isize, max: isize, pb: &ProgressBar) {
+pub fn counting_sort<T: PartialOrd + Copy + Into<i64>>(list: &mut [T], min: isize, max: isize, pb: &ProgressBar) {
     if min > max {
         panic!("Min is greater than max");
     }
@@ -189,8 +189,7 @@ pub fn counting_sort<T: PartialOrd + Copy + std::convert::Into<usize>>(list: &mu
     (1..k).for_each(|i| tmp[i] += tmp[i-1]);
 
     (0..list.len()).rev().for_each(|i| {
-        result[tmp[list[i].into()]] = list[i];
-        todo!()
+        result[tmp[(list[i].into() + min.unsigned_abs() as i64) as usize]] = list[i];
     });
 }
 
