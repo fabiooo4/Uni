@@ -1402,6 +1402,11 @@ campi dell'header sono i seguenti:
     \noindent
     Un acknowledgment è un segmento TCP senza dati, quindi ha solamente l'header.
 
+  \item \textbf{Offset}: Questo campo serve per indicare la grandezza dell'header e
+    serve a sapere se ci sono delle opzioni aggiuntive.
+
+  \item \textbf{Reserved}: Questo campo è riservato per usi futuri o per le opzioni.
+
   \item \textbf{Checksum}: Serve per controllare la presenza di errori nel segmento.
     La checksum è il risultato di una funzione che prende in input il segmento e restituisce
     un valore a dimensione fissa univoco per quel segmento. Se il segmento viene modificato
@@ -1414,4 +1419,63 @@ campi dell'header sono i seguenti:
     \end{itemize}
     \label{30-10-D5}
 \end{itemize}
+
+\subsubsection{Gestione delle connessioni}
+TCP è un protocollo \textbf{connection oriented}, cioè prima di scambiare dati, client
+e server devono stabilire che vogliono comunicare e questo avviene tramite l'invio di
+messaggi di servizio (senza dati), questa fase è chiamata \textbf{instaurazione della 
+connessione}.
+
+\vspace{1em}
+\noindent
+\textbf{N.B.}:
+Instaurare una connessione non ha niente a che fare con la creazione di un circuito
+o riservare delle risorse di rete
+
+\vspace{1em}
+\noindent
+Quindi avviene uno scambio di segmenti TCM (header senza payload) chiamata
+\textbf{Three-way handshake}:
+\label{31-10-D1}
+\begin{itemize}
+  \item \textbf{Syn}: Il client invia un segmento con il flag \texttt{SYN} a 1.
+    Questo segmento contiene l'initial sequence number del client (ISN), cioè un numero 
+    scelto casualmente da cui il client inizia a numerare i byte inviati. Questo numero
+    serve anche come ulteriore sicurezza per la cifratura.
+
+  \item \textbf{Syn-Ack}: Il server risponde con un segmento con i flag \texttt{SYN} e
+    \texttt{ACK} a 1. Questo segmento contiene l'initial sequence number del server e
+    l'acknowledgment number uguale all'ISN del client + 1.
+
+  \item \textbf{Ack}: Il client risponde con un segmento con il flag \texttt{ACK} a 1 e
+    l'acknowledgment number uguale all'ISN del server + 1.
+
+  \item \textbf{Altri parametri}:
+    \begin{itemize}
+      \item \textbf{MSS} (Maximum Segment Size): Indica la dimensione massima di un
+        segmento che il client e il server possono ricevere. Client e server utilizzeranno
+        il valore minimo tra le 2 MSS comunicate. La MSS è contenuta nelle opzioni
+        dell'header TCP, che sono utilizzate solo se necessario.
+    \end{itemize}
+\end{itemize}
+Dopo aver instaurato la connessione gli host si possono scambiare i messaggi:
+\label{31-10-D2}
+\noindent
+Quando lo scambio dei messaggi è terminato, la connessione viene chiusa attraverso uno
+scambio di header. Siccome il canale è biirezionale, la chiusura deve avvenire
+indipendentemente nelle due direzioni. I 2 messaggi sono:
+\begin{itemize}
+  \item \textbf{FIN}: Sarà un messaggio con il flag \texttt{FIN} a 1
+  \item \textbf{ACK}: Sarà un messaggio con il flag \texttt{ACK} a 1
+\end{itemize}
+\label{31-10-D3}
+
+\vspace{1em}
+\noindent
+TCP è un protocollo \textbf{affidabile}, cioè quando un host invia un segmento si aspetta
+di ricevere il riscontro entro un tempo massimo (RTO, Retransmission TimeOut).
+\label{31-10-D4}
+L'RTO dovrà tenere in conto l'RTT (Round Trip Time), cioè il tempo che impiega un
+segmento a viaggiare da un host all'altro e tornare indietro.
+
 \end{document}
