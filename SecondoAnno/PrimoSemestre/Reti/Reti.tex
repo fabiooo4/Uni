@@ -1515,13 +1515,27 @@ indipendentemente nelle due direzioni. I 2 messaggi sono:
   \item \textbf{FIN}: Sarà un messaggio con il flag \texttt{FIN} a 1
   \item \textbf{ACK}: Sarà un messaggio con il flag \texttt{ACK} a 1
 \end{itemize}
-\label{31-10-D3}
+\begin{figure}[H]
+  \includegraphics[width=0.45\textwidth]{fin1}
+  \includegraphics[width=0.45\textwidth]{fin2}
+  \caption{Chiusura non simultanea}
+\end{figure}
+\begin{figure}[H]
+  \includegraphics[width=0.45\textwidth]{fin3}
+  \includegraphics[width=0.45\textwidth]{fin4}
+  \caption{Chiusura simultanea}
+\end{figure}
 
 \vspace{1em}
 \noindent
 TCP è un protocollo \textbf{affidabile}, cioè quando un host invia un segmento si aspetta
 di ricevere il riscontro entro un tempo massimo (RTO, Retransmission TimeOut).
-\label{31-10-D4}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{rto2}
+  \caption{Affidabilità}
+\end{figure}
+\noindent
 L'RTO dovrà tenere in conto l'RTT (Round Trip Time), cioè il tempo che impiega un
 segmento a viaggiare da un host all'altro e tornare indietro.
 
