@@ -1452,7 +1452,11 @@ campi dell'header sono i seguenti:
       \item Non va a buon fine: ci sono \textbf{sicuramente} errori e il segmento
         viene scartato
     \end{itemize}
-    \label{30-10-D5}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{checksum}
+      \caption{Checksum}
+    \end{figure}
 \end{itemize}
 
 \subsubsection{Gestione delle connessioni}
@@ -1471,7 +1475,11 @@ o riservare delle risorse di rete
 \noindent
 Quindi avviene uno scambio di segmenti TCM (header senza payload) chiamata
 \textbf{Three-way handshake}:
-\label{31-10-D1}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{three-way-handshake}
+  \caption{Three-way handshake}
+\end{figure}
 \begin{itemize}
   \item \textbf{Syn}: Il client invia un segmento con il flag \texttt{SYN} a 1.
     Questo segmento contiene l'initial sequence number del client (ISN), cioè un numero 
@@ -1494,7 +1502,11 @@ Quindi avviene uno scambio di segmenti TCM (header senza payload) chiamata
     \end{itemize}
 \end{itemize}
 Dopo aver instaurato la connessione gli host si possono scambiare i messaggi:
-\label{31-10-D2}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{connessione}
+  \caption{Connessione TCP}
+\end{figure}
 \noindent
 Quando lo scambio dei messaggi è terminato, la connessione viene chiusa attraverso uno
 scambio di header. Siccome il canale è biirezionale, la chiusura deve avvenire
