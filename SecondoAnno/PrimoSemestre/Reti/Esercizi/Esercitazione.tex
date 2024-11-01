@@ -317,5 +317,73 @@ L'indirizzo di broadcast della LAN 3 è:
   \item Partendo da tale blocco suddividerlo in sottoreti da assegnare alle 3 LAN
 \end{enumerate}
 
+\subsubsection{Risoluzione}
+\begin{enumerate}
+  \item 
+    Per trovare il blocco CIDR totale bisogna trovare il blocco che riesce a contenere
+    il numero di host totale delle 3 LAN:
+    \[
+      300 + 40 + 90 = 430
+    \] 
+    Il blocco CIDR che riesce a contenere 430 host è:
+    \[
+      2^9 = 512
+    \] 
+    Bisogna però raddoppiarlo perchè la rete si vuole dividere in sottoreti, quindi
+    bisogna riservare un bit per indicare la sottorete:
+    \[
+      2^{10} = 1024
+    \] 
+    Di conseguenza il blocco CIDR totale dovrà avere 10 bit di suffisso e l'indirizzo di
+    rete si ottiene convertendo l'indirizzo di broadcast in notazione binaria e azzerando
+    i bit del suffisso:
+    \[
+      \underbrace{1001 0100 \;\; 0000 1100 \;\; 0100 11}_{\text{Prefisso}}
+      \;\; \underbrace{00 \;\; 00000000}_{\text{Suffisso}}
+    \] 
+    che in decimale risulta:
+    \[
+      148.12.76.0/22
+    \] 
+
+  \item 
+    Per suddividere il blocco CIDR in 3 sottoreti bisogna trovare il numero di bit di
+    suffisso necessari per contenere il numero di host di ciascuna LAN:
+    \begin{itemize}
+      \item LAN 1: 300 host, \( 2^9 = 512 \) quindi 9 bit di suffisso
+      \item LAN 2: 40 host, \( 2^6 = 64 \) quindi 6 bit di suffisso
+      \item LAN 3: 90 host, \( 2^7 = 128 \) quindi 7 bit di suffisso
+    \end{itemize}
+    Quindi il blocco CIDR totale:
+    \[
+      \underbrace{1001 0100 \;\; 0000 1100 \;\; 0100 11}_{\text{Prefisso}}
+      \;\; \underbrace{00 \;\; 00000000}_{\text{Suffisso}}
+    \] 
+    verrà suddiviso in:
+    \[
+      \begin{aligned}
+        \text{LAN 1: } &
+        \underbrace{1001 0100 \;\; 0000 1100 \;\; 0100 11}_{\text{Prefisso}}
+        \;\; \underbrace{0}_{\text{Lan 1}}
+        \;\; \underbrace{0\;\;00000000}_{\text{Suffisso}}\\
+        \text{LAN 2: } &
+        \underbrace{1001 0100 \;\; 0000 1100 \;\; 0100 11}_{\text{Prefisso}}
+        \;\; \underbrace{00\;\;00}_{\text{Lan 2}}
+        \;\; \underbrace{000000}_{\text{Suffisso}}\\
+        \text{LAN 3: } &
+        \underbrace{1001 0100 \;\; 0000 1100 \;\; 0100 11}_{\text{Prefisso}}
+        \;\; \underbrace{00\;\;0}_{\text{Lan 3}}
+        \;\; \underbrace{0000000}_{\text{Suffisso}}\\
+      \end{aligned}
+    \]
+    che in notazione puntata risultano:
+    \[
+    \begin{aligned}
+      \text{LAN 1: } & 148.12.76.0/23\\
+      \text{LAN 2: } & 148.12.76.0/26\\
+      \text{LAN 3: } & 148.12.76.0/25
+    \end{aligned}
+    \] 
+\end{enumerate}
 
 \end{document}
