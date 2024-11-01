@@ -9,6 +9,7 @@ pub enum Algorithms {
     QuickSort,
     MergeSort,
     HeapSort,
+    CountingSort,
     Factorial,
 }
 
@@ -19,6 +20,7 @@ impl Display for Algorithms {
             Algorithms::QuickSort => write!(f, "Quick Sort O(n²)"),
             Algorithms::MergeSort => write!(f, "Merge Sort O(n log n)"),
             Algorithms::HeapSort => write!(f, "Heap Sort O(n log n)"),
+            Algorithms::CountingSort => write!(f, "Counting Sort O(n)"),
             Algorithms::Factorial => write!(f, "Factorial O(n)"),
         }
     }

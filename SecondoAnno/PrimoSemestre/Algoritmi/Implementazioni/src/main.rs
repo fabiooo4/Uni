@@ -2,7 +2,7 @@ mod algorithms;
 
 use algorithms::{
     factorial::run_factorial,
-    sorts::{heap_sort, insertion_sort, merge_sort, quick_sort, run_sort},
+    sorts::{heap_sort, insertion_sort, merge_sort, quick_sort, run_counting_sort, run_sort},
     Algorithms,
 };
 
@@ -12,6 +12,7 @@ fn main() {
         Algorithms::QuickSort,
         Algorithms::MergeSort,
         Algorithms::HeapSort,
+        Algorithms::CountingSort,
         Algorithms::Factorial,
     ];
 
@@ -80,6 +81,20 @@ fn main() {
                             match n {
                                 Ok(n) => {
                                     run_sort(n, heap_sort);
+                                }
+                                Err(e) => println!("Invalid input: {e}"),
+                            }
+                        }
+
+                        Algorithms::CountingSort => {
+                            // Choose the size of the input
+                            print!("\nSet the input size: ");
+                            let n: Result<usize, text_io::Error> = text_io::try_read!();
+                            println!();
+
+                            match n {
+                                Ok(n) => {
+                                    run_counting_sort(n);
                                 }
                                 Err(e) => println!("Invalid input: {e}"),
                             }
