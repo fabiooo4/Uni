@@ -1,6 +1,6 @@
 # University notes
 
-These are my university notes for my bachelor in Computer Science. I'm sharing them in case they can be useful
+These are my university notes for my bachelor in Computer Science. I'm sharing them because they can be useful
 to someone else, even though they are written in Italian.
 
 ## Index of the courses
@@ -55,7 +55,7 @@ to someone else, even though they are written in Italian.
 - [Computer Networks](./SecondoAnno/PrimoSemestre/Reti/Reti.pdf)
   - [Course exercises](./SecondoAnno/PrimoSemestre/Reti/Esercizi)
 - [Operating Systems](./SecondoAnno/PrimoSemestre/SistemiOperativi/SistemiOperativi.pdf) (Incomplete)
-- [Programming 2](./SecondoAnno/PrimoSemestre/Programmazione2/Programmazione2.pdf) (Incomplete)
+- [Programming 2](./SecondoAnno/PrimoSemestre/Programmazione2/Programmazione2.pdf) (Only exercises)
   - [Java exercises](./SecondoAnno/PrimoSemestre/Programmazione2/Java)
 </details>
 <details>
