@@ -1,10 +1,34 @@
-mod algorithms;
+mod factorial;
+mod sorts;
 
-use algorithms::{
-    factorial::run_factorial,
-    sorts::{heap_sort, insertion_sort, merge_sort, quick_sort, run_counting_sort, run_sort},
-    Algorithms,
+use factorial::run_factorial;
+use sorts::{
+    counting_sort::run_counting_sort, heap_sort::heap_sort, insertion_sort::insertion_sort,
+    merge_sort::merge_sort, quick_sort::quick_sort, run_sort,
 };
+use std::fmt::Display;
+
+pub enum Algorithms {
+    InsertionSort,
+    QuickSort,
+    MergeSort,
+    HeapSort,
+    CountingSort,
+    Factorial,
+}
+
+impl Display for Algorithms {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Algorithms::InsertionSort => write!(f, "Insertion Sort O(n²)"),
+            Algorithms::QuickSort => write!(f, "Quick Sort O(n²)"),
+            Algorithms::MergeSort => write!(f, "Merge Sort O(n log n)"),
+            Algorithms::HeapSort => write!(f, "Heap Sort O(n log n)"),
+            Algorithms::CountingSort => write!(f, "Counting Sort O(n)"),
+            Algorithms::Factorial => write!(f, "Factorial O(n)"),
+        }
+    }
+}
 
 fn main() {
     let entries = [
