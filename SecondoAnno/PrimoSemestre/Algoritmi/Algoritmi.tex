@@ -1100,4 +1100,104 @@ counting_sort(A, k)
 La complessità di questo algoritmo è \( O(n + k) \) e siccome sappiamo che \( k \) è
 una costante fissata a priori la complessità è \( O(n) \). Non è in loco, ma è stabile
 
+\subsubsection{Radix sort}
+Il radix sort è un ordinamento lessico grafico, cioè si ordinano le cifre partendo da
+quella meno significativa e se sono uguali si passa a quella più significativa.
+
+La complessità dell'algoritmo è:
+\[
+ \Theta(l(n + k))
+\] 
+dove:
+\[
+\begin{aligned}
+  l & = \text{numero di cifre} = \log_k n\\
+  n & = \text{numero di elementi}\\
+  k & = \text{numero di valori possibili}
+\end{aligned}
+\] 
+Se rappresentiamo i numeri in base \( n \), allora si avrà la seguente rappresentazione:
+\[
+   \ldots \;\; n^2 \;\; n^1 \;\; n^0
+\] 
+e ad esempio per rappresentare \( n^2 - 1 \) valori possibili serviranno \( 2 \) cifre.
+cifre.
+
+\subsubsection{Bucket sort}
+Dato un array di numeri con \textbf{supporto infinito} e \textbf{distribuzione nota}, si può dividere
+l'array in \( k \) parti (bucket) uguali (equiprobabili) e ordinare ricorsivamente. Ogni coppia
+di gruppi deve essere totalmente ordinata, cioè ogni elemento del primo gruppo deve essere
+minore di ogni elemento del secondo gruppo. Una volta ordinati i gruppi (con un algoritmo
+di ordinamento a scelta) si concatenano in modo ordinato.
+
+\vspace{1em}
+\noindent
+Il caso peggiore è quello in cui tutti gli elementi finiscono in un singolo bucket,
+la probabilità che questo accada è molto bassa:
+\[
+  \underbrace{\frac{1}{n} \cdot \frac{1}{n} \cdot \dots \cdot \frac{1}{n}}_{n-1}
+  = \frac{1}{n^{n-1}}
+\] 
+e la sua complessità diventa:
+\[
+  O(n^2)
+\] 
+
+\vspace{1em}
+\noindent
+Nel caso medio si ha che per creare i bucket si ha una complessità \( O(n) \) e per
+assegnare gli elementi ai bucket si ha una complessità \( O(n) \). Per ogni bucket
+ci si aspetta che il numero di elementi al suo interno sia una \textbf{costante},
+quindi \textbf{indipendente dal valore di \( n \)}. Per ordinare un bucket si ha una
+complessità \( O(1) \) siccome il numero di elementi è costante. La complessità totale
+è quindi:
+\[
+  \Theta(n)
+\]
+
+\vspace{1em}
+\noindent
+Formalizzando si ha:
+
+\noindent
+Sia \( X_{ij} \) la variabile casuale che vale: 
+$\begin{cases}
+  1 & \text{se l'elemento } i \text{ va nel bucket } j\\
+  0 & \text{altrimenti}
+\end{cases}$
+
+\noindent
+Per esprimere il numero di elementi nel bucket \( j \) si può scrivere:
+\[
+  N_j = \sum_{i} X_{ij}
+\] 
+La complessità di questo algoritmo sarà quindi:
+\[
+  C = \sum_{j} (N_j)^2
+\] 
+Per ottenere il valore medio della complessità:
+\[
+  \begin{aligned}
+    E[C] &= E\left[\sum_{j} (N_j)^2\right] \\
+         &= \sum_{j} E[(N_j)^2] \\
+         &= \sum_{j} \left( Var[N_j] + E[N_j]^2 \right) \\
+  \end{aligned}
+\] 
+sappiamo che \( N_j = \sum_{i} X_{ij} \), quindi la media è:
+\[
+  E[N_j] = \sum_{j}^{n} E[X_{ij}] = \sum_{j}^{n} \frac{1}{n} = 1
+\] 
+e la varianza è:
+\[
+  Var[N_j] = \sum_{j}^{n} Var[X_{ij}] = \sum_{j}^{n} \frac{1}{n} \left( 1 - \frac{1}{n} \right) = 1 - \frac{1}{n}
+\] 
+La complessità diventa:
+\[
+  \begin{aligned}
+    E[C] &= \sum_{j} \left( \left( 1 - \frac{1}{n} \right) - 1 \right) \\
+         &= \sum_{j} 2 - \frac{1}{n} \\
+         &= 2n - 1
+  \end{aligned}
+\] 
+
 \end{document}
