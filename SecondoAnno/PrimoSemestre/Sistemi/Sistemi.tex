@@ -339,6 +339,16 @@ si allontana dal suo stato di equilibrio.
   \caption{Sistema stabile}
 \end{figure}
 
+\noindent
+Ci sono 2 tipi di stabilità:
+\begin{itemize}
+  \item \textbf{Stabilità asintotica} \( \to  \forall\;i \;\; \Re{\lambda_i} < 0\) 
+  \item \textbf{Stabilità BIBO} verificare che \( h(t) \) sia integrabile:
+    \[
+      \int_{-\infty}^{+\infty} h(t) \, dt < +\infty
+    \] 
+\end{itemize}
+
 \subsubsection{Stabilità BIBO (Bounded Input Bounded Output)}
 Se il segnale di ingresso è limitato in ampiezza allora il segnale di uscita
 è limitato in ampiezza.
@@ -2112,6 +2122,8 @@ Per comodità si considerano solo i sistemi a riposo (\( \tau = 0 \)).
 \end{definition}
 
 \subsection{Sistemi descritti da equazioni differenziali}
+I sistemi che si analizzano in questo corso sono solo un sottoinsieme:
+\label{04-11-D3}
 \begin{example}
   Prendiamo come esempio un sistema massa molla smorzatore:
   \begin{figure}[H]
@@ -3138,6 +3150,94 @@ dove:
   \label{ex:risposta_impulsiva}
 \end{example}
 
+\begin{exercise}
+  Si vuole calcolare la risposta impulsiva del sistema:
+  \[
+    2v'(t) - v(t) = u'(t) + 3u(t)
+  \] 
+  Siccome abbiamo la derivata prima sia a sinistra a destra il sistema è proprio
+  \( (n = m) \to d_0 \neq 0 \).
+  \[
+    h(t) = d_0 \cdot \delta(t) + \sum_{i=1}^{r} \sum_{l=0}^{\mu_i - 1} d_{i,l} \cdot
+    \frac{t^l}{l!} \cdot e^{\lambda_i t} \cdot \delta_{-1}(t)
+  \] 
+  \begin{enumerate}
+    \item Calcolo le radici usando l'equazione omogenea del polinomio caratteristico:
+      \[
+        \begin{aligned}
+          2s - 1 &= 0\\
+          2s &= 1\\
+          s = \frac{1}{2}
+        \end{aligned}
+      \] 
+      \[
+        \lambda_1 = \frac{1}{2} \quad r = 1 \quad \mu = 1
+      \] 
+
+    \item Calcolo la risposta impulsiva:
+      \[
+        h(t) = d_0 \cdot \delta_0(t) + d_1 \cdot e^{\frac{1}{2}t} \cdot \delta_{-1}(t)
+      \] 
+
+    \item Riscrivo l'equazione iniziale con \( v(t) = h(t),\; u(t) = \delta_0(t) \):
+      \[
+        2h'(t) - h(t) = \delta_0'(t) + 3\delta_0(t)
+      \] 
+
+    \item Calcolo le derivate di \( h(t) \):
+      \[
+      \begin{aligned}
+        h'(t) = d_0 \cdot \delta_0'(t) + \frac{1}{2} \cdot d_1 \cdot e^{\frac{1}{2}t}
+        \cdot \delta_{-1}(t) + d_1 \cdot e^{\frac{1}{2}t} \cdot \delta_0(t)
+      \end{aligned}
+      \] 
+
+    \item Sostituisco:
+      \[
+        \begin{aligned}
+          2 \left[ d_0 \delta_0'(t) + \frac{1}{2} \cdot d_1 \cdot e^{\frac{1}{2}t} \cdot
+          \delta_{-1}(t) + d_1 \cdot e^{\frac{1}{2}t} \cdot \delta_0(t) \right] -\\
+          \left[ d_0 \cdot \delta_0(t) + d_1 \cdot e^{\frac{1}{2}t} \cdot \delta_{-1}(t) \right]\\
+          = \delta_0'(t) + 3\delta_0(t)
+        \end{aligned}
+      \] 
+      Togliere tutti i termini \( \delta_{-1}(0^-) = 0 \) 
+
+    \item Raccolgo le funzioni indipendenti \( \delta_0(t), \delta_0'(t), \delta_0''(t) \):
+      \[
+      \begin{cases}
+        2d_0 \cdot \delta_0'(t) = \delta_0'(t)\\
+        2d_1 \cdot e^{\frac{1}{2}t} \cdot \delta_0(t) = 3\delta_0(t)
+      \end{cases}
+      \] 
+      Imponiamo \( t = 0^- \) 
+      \[
+      \begin{cases}
+        2d_0 \cdot \cancel{\delta_0'(0)} = \cancel{\delta_0'(0)}\\
+        \left( 2d_1 \cdot \underset{=1}{\cancel{e^{\frac{1}{2} \cdot 0}}} \right) \cdot \delta_0(0) = 3\delta_0(0)
+      \end{cases}
+      \] 
+      \[
+      \begin{cases}
+        2d_0 = 1\\
+        2d_1 - d_0 = 3
+      \end{cases}
+      \to 
+      \begin{cases}
+        d_0 = \frac{1}{2}\\
+        d_1 = \frac{7}{4}
+      \end{cases}
+      \] 
+
+    \item Scrivo la risposta impulsiva:
+      \[
+        h(t) = \frac{1}{2} \cdot \delta_0(t) + \frac{7}{4} \cdot e^{\frac{1}{2}t} \cdot \delta_{-1}(t)
+      \]
+    \item Calcolo la risposta forzata nell'esercizio \ref{ex:risposta_forzata}
+  \end{enumerate}
+  \label{ex:risposta_impulsiva_2}
+\end{exercise}
+
 \subsubsection{Risposta forzata}
 \begin{definition}
   La risposta forzata vuol dire che l'uscita del sistema dipende solo dall'input di un
@@ -3148,6 +3248,13 @@ dove:
       v_f(t) = (u \ast h)(t) &= \int_{0^-}^{t^+} u(\tau) \cdot h(t-\tau) \, d\tau\\
                              &= \int_{0^-}^{t^+} u(t-\tau) \cdot h(\tau) \, d\tau
     \end{aligned}
+  \] 
+  dove:
+  \[
+  \begin{aligned}
+    u &= \text{Input}\\
+    h &= \text{Risposta impulsiva}\\
+  \end{aligned}
   \] 
 \end{definition}
 
@@ -3161,5 +3268,68 @@ dove:
     \end{aligned}
   \] 
 \end{example}
+
+\begin{exercise}
+  \label{ex:risposta_forzata}
+  Data la risposta impulsiva dell'esercizio \ref{ex:risposta_impulsiva_2} calcoliamo la
+  risposta forzata con un input \( u(t) = 3\delta_{-1}(t) \) (gradino alto 3):
+  \[
+  \begin{aligned}
+    v_f &= (h \ast u)(t) \\
+        &= (h \ast 3\delta_{-1})(t)\\
+        &= \int_{-\infty}^{+\infty} h(\tau) \cdot 3\delta_{-1}(t-\tau) \, d\tau\\
+        &= \int_{-\infty}^{+\infty} \left[ \frac{1}{2} \cdot \delta_0(\tau) + \frac{7}{4}
+        \cdot e^{\frac{1}{2}\tau} \cdot \delta_{-1}(\tau) \right] \cdot 3\delta_{-1}(t-\tau) \, d\tau\\
+        &= \int_{-\infty}^{+\infty} \frac{1}{2} \delta_0(\tau) \cdot
+        3\delta_{-1}(t-\tau) \, d\tau + \int_{-\infty}^{+\infty} \frac{7}{4} e^{\frac{1}{2}\tau}
+        \cdot \delta_{-1}(\tau) \cdot 3\delta_{-1}(t-\tau) \, d\tau\\
+        &= \frac{3}{2} \int_{\cancel{\stackrel{\color{green!50!black}0^-\color{black}}{-\infty}}}^{\cancel{\stackrel{\color{blue}0^+\color{black}}{+\infty}}} 
+        \stackrel{=1}{
+        \cancel{
+        \underbrace{\delta_0(\tau)}_{[0^-,0^+]} \cdot
+        \underbrace{\delta_{-1}(t-\tau)}_{[-\infty,t]}
+        }}
+        \, d\tau + \frac{21}{4} 
+        \int_{\cancel{\stackrel{\color{blue}0\color{black}}{-\infty}}}^{\cancel{\stackrel{\color{red}t\color{black}}{+\infty}}}
+        e^{\frac{1}{2}\tau} \cdot \delta_{-1}(\tau) \cdot \delta_{-1}(t-\tau) \, d\tau\\
+        &= \frac{3}{2} \cdot 1 + \frac{21}{4} \cdot \int_{0}^{t} e^{\frac{1}{2}\tau} \, d\tau\\
+        &\to \frac{3}{2} + \frac{21}{4} \cdot \left[ \frac{1}{2} \cdot e^{\frac{1}{2}\tau} \right]_0^t\\
+        &= \frac{3}{2} + \frac{21}{4} \cdot \left( \frac{1}{2} \cdot e^{\frac{1}{2}t} - \frac{1}{2} \right)\\
+        &= \frac{3}{2} + \frac{21}{8} \cdot e^{\frac{1}{2}t} - \frac{21}{8} \cdot \frac{1}{2}\\
+        &= v_f(t)
+  \end{aligned}
+  \] 
+  Teniamo fissa la risposta impulsiva \( h(t) \) e trasliamo il gradino \( u(t) \)
+  \label{04-11-D1}
+  \( +\infty \) e \( -\infty \) diventano \( 0 \) e \( t \) perchè:
+  \label{04-11-D2}
+\end{exercise}
+
+\subsubsection{Risposta totale}
+Data un'equazione che descrive un sistema LTI:
+\[
+  \sum_{i=0}^{n} a_i \frac{\partial^{i} v(t)}{\partial t} = \sum_{j=0}^{m} b_j \frac{\partial^{j} u(t)}{\partial t}
+\] 
+la risposta totale si calcola come la somma della risposta libera e forzata:
+\[
+  v_t(t) = v_l(t) + v_f(t)
+\] 
+La risposta libera è data da:
+\[
+  v_l(t) = \sum_{i=1}^{r} \sum_{l=0}^{\mu_i - 1} c_{i,l} \cdot \frac{t^l}{l!} \cdot e^{\lambda_i t}
+\] 
+La risposta forzata è data da:
+\[
+  \begin{aligned}
+    v_f(t) &= (\underbrace{u}_{\text{Input}} \ast \underbrace{h}_{\text{Risposta impulsiva}})(t)\\
+           &= \int_{0^-}^{t^+} u(\tau) \cdot h(t-\tau) \, d\tau\\
+           &= \int_{0^-}^{t^+} u(t-\tau) \cdot h(\tau) \, d\tau
+  \end{aligned}
+\]
+e la risposta impulsiva è data da:
+\[
+  h(t) = d_0 \cdot \delta(t) + \sum_{i=1}^{r} \sum_{l=0}^{\mu_i - 1} d_{i,l} \cdot \frac{t^l}{l!} \cdot e^{\lambda_i t} \cdot \delta_{-1}(t)
+\]
+
 
 \end{document}
