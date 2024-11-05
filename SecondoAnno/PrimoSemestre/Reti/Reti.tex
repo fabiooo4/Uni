@@ -1555,7 +1555,11 @@ l'RTT istantaneo e usa tale valore per aggiornare una variabile chiamata \texttt
   RTT_{\text{istantaneo}}
 \] 
 dove \( 0 < \alpha < 1\) che di solito vale \( \frac{7}{8} \).
-\label{05-11-D2}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{srtt}
+  \caption{SRTT}
+\end{figure}
 \noindent
 Quindi l'SRTT è una \textbf{stima del valore medio} del RTT calcolata tramite 
 l'Exponential Weighted Moving Average (EWMA). Questo metodo di calcolo è efficiente
