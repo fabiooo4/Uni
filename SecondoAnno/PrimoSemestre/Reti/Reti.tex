@@ -1574,10 +1574,17 @@ Dato l'SRTT, l'RTO è pari a:
 dove solitamente \( \beta = 2 \). L'RTO si \textbf{adatta dinamicamente} alla variazione
 del RTT. In caso di perdite, il RTO per il segmento ritrasmesso viene temporaneamente
 raddoppiato.
-\begin{example}
-  \label{05-11-D3}
-\end{example}
-Se si inviasse un segmento ad ogni RTT, la velocità di trasmissione sarebbe: \( \frac{1segm}{RTT} \).
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{rto-doppio}
+  \caption{Esempio del raddoppio dell'RTO}
+\end{figure}
+
+\noindent 
+Se si inviasse un segmento ad ogni RTT, la velocità di trasmissione sarebbe:
+\[
+  \frac{1segm}{RTT}
+\]
 Quindi se un segmento è di \( 1500byte \) e un RTT è di \( 10ms \), allora la velocità
 di trasmissione sarebbe:
 \[
@@ -1587,7 +1594,13 @@ di trasmissione sarebbe:
 \subsubsection{Velocità di trasmissione}
 Invece di trasmettere un singolo segmento ad ogni RTT, se ne trasmettono di più
 contemporaneamente.
-\label{05-11-D4}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{doppio-pacchetto}
+  \caption{Invio di più segmenti contemporaneamente}
+\end{figure}
+
+\noindent
 Consideriamo la congestione come la perdita di un segmento, cioè un riscontro non
 ricevuto.
 \begin{itemize}
@@ -1609,7 +1622,12 @@ ricevuto.
 \subsubsection{Controllo di flusso}
 Il controllo di flusso è un meccanismo che invia più segmenti contemporaneamente con un
 meccanismo a \textbf{finestra scorrevole} (sliding window):
-\label{05-11-D5}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{sliding-window}
+  \caption{Esempio di finestra scorrevole}
+\end{figure}
+\noindent
 Questo meccanismo prevede che si salvino i segmenti inviati e si aspettino i riscontri
 per poter inviare i segmenti successivi. Se \( w \) è il numero di segmenti da inviare,
 allora ad ogni RTT si invieranno:
