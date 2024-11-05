@@ -321,16 +321,11 @@ L'indirizzo di broadcast della LAN 3 è:
 \begin{enumerate}
   \item 
     Per trovare il blocco CIDR totale bisogna trovare il blocco che riesce a contenere
-    il numero di host totale delle 3 LAN:
+    il numero di host totale (in base 2) delle 3 LAN:
     \[
-      300 + 40 + 90 = 430
+      512 + 64 + 128 = 704
     \] 
-    Il blocco CIDR che riesce a contenere 430 host è:
-    \[
-      2^9 = 512
-    \] 
-    Bisogna però raddoppiarlo perchè la rete si vuole dividere in sottoreti, quindi
-    bisogna riservare un bit per indicare la sottorete:
+    Il blocco CIDR che riesce a contenere 704 host è:
     \[
       2^{10} = 1024
     \] 

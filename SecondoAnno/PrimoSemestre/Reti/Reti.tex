@@ -1526,8 +1526,7 @@ indipendentemente nelle due direzioni. I 2 messaggi sono:
   \caption{Chiusura simultanea}
 \end{figure}
 
-\vspace{1em}
-\noindent
+\subsubsection{Affidabilità}
 TCP è un protocollo \textbf{affidabile}, cioè quando un host invia un segmento si aspetta
 di ricevere il riscontro entro un tempo massimo (RTO, Retransmission TimeOut).
 \begin{figure}[H]
@@ -1536,7 +1535,71 @@ di ricevere il riscontro entro un tempo massimo (RTO, Retransmission TimeOut).
   \caption{Affidabilità}
 \end{figure}
 \noindent
-L'RTO dovrà tenere in conto l'RTT (Round Trip Time), cioè il tempo che impiega un
-segmento a viaggiare da un host all'altro e tornare indietro.
+L'RTO dovrà tenere in conto l'RTT (Round Trip Time), cioè il tempo che intercorre tra
+l'invio di un segmento e la ricezione del corrispondente \texttt{ACK}.
+All'apertura della connessione si misura il RTT durante il Three-way handshake.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{rtt-istantaneo}
+  \caption{RTT istantaneo}
+\end{figure}
+
+\noindent
+Per l'invio del primo messaggio \texttt{SYN} il RTO è impostato a \( 500ms \) (caso
+peggiore).
+Per aggiornare i valori di RTT e RTO ogni host, per ogni segmento inviato, misura 
+l'RTT istantaneo e usa tale valore per aggiornare una variabile chiamata \texttt{SRTT}
+(Smoothed Round Trip Time).
+\[
+  SRTT_{\text{attuale}} = \alpha \cdot SRTT_{\text{precedente}} + (1 - \alpha) \cdot
+  RTT_{\text{istantaneo}}
+\] 
+dove \( 0 < \alpha < 1\) che di solito vale \( \frac{7}{8} \).
+\label{05-11-D2}
+\noindent
+Quindi l'SRTT è una \textbf{stima del valore medio} del RTT calcolata tramite 
+l'Exponential Weighted Moving Average (EWMA). Questo metodo di calcolo è efficiente
+perchè non deve tenere in memoria tutta la sequenza, ma solo l'ultimo valore.
+
+\vspace{1em}
+\noindent
+Dato l'SRTT, l'RTO è pari a:
+\[
+  RTO = \beta \cdot SRTT_{\text{attuale}}
+\] 
+dove solitamente \( \beta = 2 \). L'RTO si \textbf{adatta dinamicamente} alla variazione
+del RTT. In caso di perdite, il RTO per il segmento ritrasmesso viene temporaneamente
+raddoppiato.
+\begin{example}
+  \label{05-11-D3}
+\end{example}
+Se si inviasse un segmento ad ogni RTT, la velocità di trasmissione sarebbe: \( \frac{1segm}{RTT} \).
+Quindi se un segmento è di \( 1500byte \) e un RTT è di \( 10ms \), allora la velocità
+di trasmissione sarebbe:
+\[
+  \frac{1500byte}{10ms}
+\]
+
+\subsubsection{Velocità di trasmissione}
+Invece di trasmettere un singolo segmento ad ogni RTT, se ne trasmettono di più
+contemporaneamente.
+\label{05-11-D4}
+Consideriamo la congestione come la perdita di un segmento, cioè un riscontro non
+ricevuto.
+\begin{itemize}
+  \item \textbf{Controllo di flusso}: È un'azione preventiva per limitare la congestione
+    \begin{itemize}
+      \item 
+        Quanti segmenti contemporaneamente? 
+      \item 
+        Come gestisco i riscontri? 
+    \end{itemize}
+
+  \item \textbf{Controllo di congestione}: È una reazione in caso di congestione
+    \begin{itemize}
+      \item 
+        Cosa succede se uno dei segmenti viene perso (e gli altri no)? 
+    \end{itemize}
+\end{itemize}
 
 \end{document}
