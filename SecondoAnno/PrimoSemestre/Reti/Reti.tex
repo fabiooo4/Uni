@@ -1602,4 +1602,15 @@ ricevuto.
     \end{itemize}
 \end{itemize}
 
+\subsubsection{Controllo di flusso}
+Il controllo di flusso è un meccanismo che invia più segmenti contemporaneamente con un
+meccanismo a \textbf{finestra scorrevole} (sliding window):
+\label{05-11-D5}
+Questo meccanismo prevede che si salvino i segmenti inviati e si aspettino i riscontri
+per poter inviare i segmenti successivi. Se \( w \) è il numero di segmenti da inviare,
+allora ad ogni RTT si invieranno:
+\[
+\frac{w\,segmenti}{RTT}
+\] 
+
 \end{document}
