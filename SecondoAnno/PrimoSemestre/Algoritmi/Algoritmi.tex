@@ -951,16 +951,20 @@ Heap sort è un algoritmo di ordinamento basato su heap.
 \end{lstlisting}
 
 
-La complessità dell'algoritmo è \( O(n \log n) \), ma più precisamente:
+La complessità dell'algoritmo è precisamente:
 \[
 \sum_{i=1}^{n} \log i = \log \prod_{i=1}^{n} i = \log n! = \Theta(\log n^n) = \Theta(n \log n)
 \] 
 Per la formula di Stirling \( n! \) ha ordine di grandezza \( n^n \). Questo algoritmo
-è in loco e stabile.
+è in loco e instabile.
 
 \vspace{1em}
 \noindent
-Il caso pessimo è un array ordinato al contrario.
+Il caso pessimo è un array ordinato al contrario (\( O(n \log n)\)) e il caso migliore
+è un array già ordinato (\( \Omega(n \log n)\)), quindi la complessità è:
+\[
+\Theta(n \log n)
+\]
 
 \subsection{Quick sort}
 Il concetto di questo algoritmo è quello di mettere prima in disordine l'algoritmo e poi
@@ -1199,5 +1203,305 @@ La complessità diventa:
          &= 2n - 1
   \end{aligned}
 \] 
+
+\section{Algoritmi di selezione}
+Dato in input un array \( A \) di oggetti su cui è definita una relazione di ordinamento
+e un indice \( i \) compreso tra \( 1 \) e \( n \) (\( n \) è il numero di oggetti
+nell'array), l'output dell'algoritmo è l'oggetto che si trova in posizione \( i \)
+nell'array ordinato.
+\begin{lstlisting}[language=Scala]
+selezione(A, i)
+  ordina(A) // O(n log n)
+  return A[i]
+\end{lstlisting}
+Quindi la complessità di questo algoritmo nel caso peggiore è \( O(n \log n) \)
+(limite superiore). È possibile selezionare un elemento in tempo lineare? Analizziamo
+un caso particolare dell'algoritmo di selezione, ovvero la ricerca del minimo (o del massimo).
+
+
+\subsection{Ricerca del minimo o del massimo}
+\vspace{1em}
+\noindent
+In tempo lineare si può trovare il minimo e il massimo
+di un array:
+\begin{lstlisting}[language=Scala]
+minimo(A)
+  min <- A[1]
+  for i <- 2 to length[A]
+    if A[i] < min
+      min <- A[i]
+  return min
+\end{lstlisting}
+trovare il minimo equivale a trovare \texttt{selezione(A, 1)} e trovare il massimo
+equivale a trovare \texttt{selezione(A, n)}. Si può però andare sotto la complessità
+lineare?
+
+\vspace{1em}
+\noindent
+Per trovare il massimo (o il minimo) elemento \( n \) di un array bisogna fare
+\textbf{almeno} \( n-1 \) confronti perchè bisogna confrontare ogni elemento con
+l'elemento massimo (o minimo) trovato per poter dire se è il massimo (o minimo).
+Di conseguenza, non è possibile avere un algoritmo per la ricerca del massimo (o minimo)
+in cui c'è un elemento che non "perde" mai ai confronti (cioè risulta sempre il più 
+grande) e non viene dichiarato essere il più grande (o più piccolo).
+
+\vspace{1em}
+\noindent
+\textbf{Dimostrazione}:
+Per dimostrarlo si può prendere un array in cui l'elemento \( a \) non perde mai ai
+confronti, ma l'algoritmo dichiara che il massimo è l'elemento \( b \). Allora si rilancia
+l'algoritmo sostituendo l'elemento \( a \) con \( a = \text{\texttt{max(b+1,a)}} \) e si
+ripete l'algoritmo con questo secondo array in cui \( a \) è l'elemento più grande. Si ha
+quindi che i confronti in cui \( a \) non è coinvolto rimangono gli stessi e i confronti
+in cui \( a \) è coinvolto non cambiano perchè anche prima \( a \) non perdeva mai ai
+confronti, di conseguenza l'algoritmo dichiarerà che il massimo è \( b \) e quindi
+l'algoritmo non è corretto, dimostrando che non esiste un algoritmo che trova il massimo
+in meno di \( n-1 \) confronti.
+
+\vspace{1em}
+\noindent
+Abbiamo quindi trovato che la complessità del massimo (o minimo) nel caso migliore è 
+\( \Omega(n) \) (limite inferiore) e nel caso peggiore è \( O(n) \) (limite superiore).
+Di conseguenza la complessità è \( \Theta(n) \).
+
+\subsubsection{Ricerca del minimo e del massimo contemporaneamente}
+Si potrebbe implementare unendo i 2 algoritmi precedenti:
+\begin{lstlisting}[language=Scala]
+min_max(A)
+  min <- A[1]
+  max <- A[1]
+  for i <- 2 to length[A]
+    if A[i] < min
+      min <- A[i]
+    if A[i] > max
+      max <- A[i]
+  return (min, max)
+\end{lstlisting}
+Questo algoritmo esegue \( n-1 + n-1 = 2n-2 \) confronti.
+
+\begin{itemize}
+  \item \textbf{Limite inferiore}: Potenzialmente ogni oggetto potrebbe essere il minimo
+    o il massimo. Sia \( m \) il numero di oggetti potenzialmente minimi e \( M \) il
+    numero di oggetti potenzialmente massimi. Sia \( n \) il numero di oggetti nell'array.
+    \begin{itemize}
+      \item All'inizio \( m+M = 2n \) perchè ogni oggetto può essere sia minimo che 
+        massimo.
+      \item Alla fine \( m+m = 2 \) perchè alla fine ci sarà un solo minimo e un solo 
+        massimo.
+    \end{itemize}
+    Quando viene fatto un confronto \( m+M \) può diminuire.
+    \begin{itemize}
+      \item Se si confrontano due oggetti che sono potenzialmente sia minimi che massimi,
+        allora \( m+M \) diminuisce di \( 2 \) perchè:
+        \[
+          a < b
+        \] 
+        \( b \) non può essere il minimo e \( a \) non può essere il massimo e si perdono
+        2 potenzialità.
+
+      \item Se si confrontano due potenziali minimi (o massimi), allora \( m+M \) 
+        diminuisce di \( 1 \) perchè:
+        \[
+          a < b
+        \]
+        \( b \) non può essere il minimo e si perde 1 potenzialità.
+    \end{itemize}
+    Un buon algoritmo dovrebbe scegliere di confrontare sempre 2 oggetti che sono
+    entrambi potenziali minimi o potenziali massimi.
+
+    \vspace{1em}
+    \noindent
+    Due oggetti che sono potenzialmente sia minimi che massimi esistono
+    se \( m+M > n+1 \) perchè se bisogna distribuire n potenzialità ne avanzano
+    due che devono essere assegnate a due oggetti che hanno già una potenzialità.
+    Quindi fino a quando \( m+M \) continua ad essere almeno \( n+2 \) si riesce a
+    far diminuire \( m+M \) di 2 ad ogni confronto.
+
+    Questa diminuzione si può fare \( \left\lfloor \frac{n}{2} \right\rfloor \) volte,
+    successivamente \( m+M \) potrà calare solo di 1 ad ogni confronto.
+    
+    \vspace{1em}
+    \noindent
+    Successivamente il numero di oggetti rimane:
+    \[
+      \begin{cases}
+        n+1 & \text{se } n \text{ è dispari}\\
+        n & \text{se } n \text{ è pari}
+      \end{cases}
+    \] 
+    \begin{itemize}
+      \item \( n \) dispari:
+        \[
+          \begin{aligned}
+            &n+1 - 2 + \left\lfloor \frac{n}{2} \right\rfloor\\
+            &= n-1 + \left\lfloor \frac{n}{2} \right\rfloor\\
+            &= \left\lfloor \frac{3}{2}n \right\rfloor - 1\\
+            &= \left\lceil \frac{3}{2}n \right\rceil - 2\\
+          \end{aligned}
+        \] 
+
+      \item \( n \) pari:
+        \[
+          \begin{aligned}
+            &n - 2 + \left\lfloor \frac{n}{2} \right\rfloor \\
+            &= n-2 + \frac{n}{2}\\
+            &= \frac{3}{2}n - 2\\
+            &= \left\lceil \frac{3}{2}n \right\rceil -2
+          \end{aligned}
+        \]
+    \end{itemize}
+    Quindi la complessità è \( \Omega(\left\lceil \frac{3}{2}n \right\rceil -2) = \Omega(n)
+    \) (limite inferiore). Meglio di così non si può fare, ma non è detto che esista
+    un algoritmo che raggiunga questo limite inferiore.
+\end{itemize}
+Un algoritmo che raggiunge il limite inferiore è il seguente:
+\begin{enumerate}
+  \item Dividi gli oggetti in 2 gruppi:
+    \[
+      \underbrace{
+        \underbrace{
+          \begin{aligned}
+          &a_1\\
+          &a_2\\
+          &\vdots\\
+          &a_{\left\lfloor \frac{n}{2} \right\rfloor}
+          \end{aligned}
+        }_{\text{Potenziali minimi}}
+        \quad
+        \underbrace{
+          \begin{aligned}
+        &b_1\\
+        &b_2\\
+        &\vdots\\
+        &b_{\left\lceil \frac{n}{2} \right\rceil}
+          \end{aligned}
+        }_{\text{Potenziali massimi}}
+      }_{\text{Potenziali sia minimi che massimi}}
+    \] 
+
+  \item Confronta \( a_i \) con \( b_i \), supponendo \( a_i < b_i \) (mette a sinistra
+    i più piccoli e a destra i più grandi)
+
+  \item Cerca il minimo degli \( a_i \) e cerca il massimo dei \( b_i \):
+
+  \item Sistema l'eventuale elemento in più
+\end{enumerate}
+
+\subsection{Randomized select}
+Si può implementare un algoritmo che divide l'array in 2 parti allo stesso modo
+in cui viene effettuata la \texttt{partition} di quick sort:
+\begin{lstlisting}[language=Scala]
+// A: Array
+// p: Indice di partenza
+// r: Indice di arrivo
+// i: Indice che stiamo cercando (compreso tra 1 e r-p+1)
+randomized_select(A, p, r, i)
+  if p = r
+    return A[p]
+  q <- randomized_partition(A, p, r)
+  k <- q - p + 1 // Numero di elementi a sinistra 
+  // Controlla se l'elemento cercato e' a sinistra o a destra
+  if i <= k
+    return randomized_select(A, p, q, i) // Cerca a sinistra
+  else
+    return randomized_select(A, q+1, r, i-k) // Cerca a destra
+\end{lstlisting}
+\begin{itemize}
+  \item 
+    Se dividessimo sempre a metà si avrebbe:
+    \[
+      T(n) = n + T\left(\frac{n}{2}\right) = \Theta(n) \text{ (terzo caso del teorema dell'esperto)}
+    \] 
+
+  \item Mediamente:
+    \[
+      \begin{aligned}
+        T(n) &= n + \frac{1}{n} T \left( max(1,n-1) \right) + \frac{1}{n} T \left( max(2,n-2) \right)
+        + \dots\\
+             &= n + \frac{2}{n} \sum_{i=\frac{n}{2}}^{n-1} T \left( i \right)\\
+      \end{aligned}
+    \] 
+    La complessita media è lineare.
+
+    Si esegue un solo ramo, che nel caso pessimo è quello con più elementi. La risoluzione
+    è la stessa del quick sort.
+\end{itemize}
+Esiste un algoritmo che esegue la ricerca in tempo lineare anche nel caso peggiore?
+
+Si potrebbe cercare un elemento perno più ottimale, cioè che divida l'array in
+\textbf{parti proporzionali}:
+\begin{enumerate}
+  \item Dividi gli oggetti in \( \left\lfloor \frac{n}{5} \right\rfloor \) gruppi di
+    5 elementi più un eventuale gruppo con meno di 5 elementi.
+
+  \item Calcola il mediano di ogni gruppo di 5 elementi (si ordina e si prende l'elemento
+    centrale). \( \Theta(n) \)
+
+  \item Calcola ricorsivamente il mediano \( x \) dei mediani
+    \[
+      T\left(\left\lceil \frac{n}{5} \right\rceil\right)
+    \] 
+
+  \item Partiziona con perno \( x \) e calcola \( k \) (numero di elementi a sinistra).
+    \( \Theta (n) \) 
+
+  \item Se \( i<k \) cerca a sinistra l'elemento \( i \), altrimenti cerca a destra
+    l'elemento \( i-k \). La chiamata ricorsiva va fatta su un numero di elementi
+    sufficientemente piccolo, e deve risultare un proporzione di \( n \), quindi
+    ad esempio dividere in gruppi da 3 elementi non funzionerebbe.
+    \[
+    T(?)
+    \] 
+    \[
+      \begin{aligned}
+        m_1 \;\;&\to\;\; m_2 \;\;&\to\;\; m_3 \;\;&\to\;\; \color{red}\underset{x}{m_4} \;\;&\to\;\; \color{green!50!black}m_5
+        \;\;&\to\;\; \color{green!50!black}m_6 \;\;&\to\;\; \color{blue}m_7\\
+             &&&& \downarrow \quad&\qquad \downarrow &\downarrow \;\;\\
+             &&&& \color{green!50!black}m_{5,4} &\qquad \color{green!50!black}m_{6,4} & \color{blue}m_{7,4} \\
+             &&&& \downarrow \quad&\qquad \downarrow &\\
+             &&&& \color{green!50!black}m_{5,5} &\qquad \color{green!50!black}m_{6,5} & \\
+      \end{aligned}
+    \] 
+    Gli elementi verdi sono maggiori dell'elemento \( x \) e ogni elemento verde avrà
+    2 elementi maggiori di esso (tranne nel caso del gruppo con meno di 5 elementi
+    rappresentato in blu).
+    \[
+      3 \cdot  \left(\underbrace{\left\lceil \frac{1}{2} \left\lceil \frac{n}{5} \right\rceil  \right\rceil}_{\text{
+          verdi + blu + rosso
+      }} - \underbrace{2}_{\text{rosso + blu}} \right) 
+      \ge \frac{3}{10} n - 6
+    \] 
+    Da ogni parte si hanno almeno \( \frac{3}{10} n - 6 \) elementi, quindi
+    al massimo si hanno \( n - \left( \frac{3}{10} n - 6 \right) = \frac{7}{10} n + 6 \)
+    elementi.
+
+    \vspace{1em}
+    \noindent
+    Quindi abbiamo trovato \( T(?) \):
+    \[
+      T(n) = \Theta (n) + T\left(\left\lceil \frac{n}{5} \right\rceil\right) + T\left(\frac{7}{10} n + 6\right)
+    \] 
+    Supponiamo \( T(n) \le cn \):
+    \[
+      \begin{aligned}
+        T(n) &\le c'n + c \left\lceil \frac{n}{5} \right\rceil + c \left( \frac{7}{10}
+        n + 6\right) \\
+             & \le c'n + c \frac{n}{5} + c + c \left( \frac{7}{10} n + 6 \right) \\
+             &= c \frac{7}{10}n + \frac{c}{5}n + 7c + c'n \\
+             &= cn - \left( \frac{3}{10}cn - \frac{c}{5}n - 7c - c'n \right) \\
+             & \stackrel{?}{\le} cn 
+      \end{aligned}
+    \] 
+    \[
+      \begin{aligned}
+        \frac{3}{10}cn - \frac{1}{5}cn - 7c - c'n &\ge 0\\
+        \frac{1}{10}cn - c'n - 7c &\ge 0\\
+        \frac{1}{10}c &> c'\\
+        c &> 10c'
+      \end{aligned}
+    \] 
+    Quindi \( T(n) \le cn \) e quindi \( T(n) = O(n) \). Il problema è che le
+    costanti sono così alte che nella pratica è meglio il \texttt{randomized\_select}.
+\end{enumerate}
 
 \end{document}
