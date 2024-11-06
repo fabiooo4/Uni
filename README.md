@@ -52,6 +52,7 @@ to someone else, even though they are written in Italian.
     - [Course exercises](./SecondoAnno/PrimoSemestre/Algoritmi/Esercizi/)
     - [Algorithms implementations](./SecondoAnno/PrimoSemestre/Algoritmi/Implementazioni/)
 - [System theory](./SecondoAnno/PrimoSemestre/Sistemi/Sistemi.pdf)
+    - [Course exercises](./SecondoAnno/PrimoSemestre/Sistemi/Esercizi/)
 - [Computer Networks](./SecondoAnno/PrimoSemestre/Reti/Reti.pdf)
   - [Course exercises](./SecondoAnno/PrimoSemestre/Reti/Esercizi)
 - [Operating Systems](./SecondoAnno/PrimoSemestre/SistemiOperativi/SistemiOperativi.pdf) (Incomplete)
