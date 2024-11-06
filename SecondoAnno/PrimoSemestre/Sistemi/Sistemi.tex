@@ -2052,7 +2052,7 @@ Per comodità si considerano solo i sistemi a riposo (\( \tau = 0 \)).
 \begin{definition}
   Un sistema si dice \textbf{asintoticamente stabile} se:
   \[
-  \exists \tau \in \mathbb{R} \; t.c \; u(t) = 0, \;\; \forall t \le \tau \Rightarrow
+  \exists \tau \in \mathbb{R} \; t.c \; u(\tau) = 0, \;\; \forall t \le \tau \Rightarrow
   \lim_{t \to \infty} v(t) = 0
   \] 
   \begin{figure}[H]
@@ -2078,6 +2078,13 @@ Per comodità si considerano solo i sistemi a riposo (\( \tau = 0 \)).
     \caption{Esempio di sistema asintoticamente stabile}
   \end{figure}
 \end{definition}
+
+\noindent
+Per capire se un sistema è asintoticamente stabile bisogna verificare se ogni soluzione 
+del sistema è minore di 0:
+\[
+\forall i \;\; \Re(\lambda_i) < 0
+\] 
 
 \subsubsection{Proprietà di BIBO stabilità}
 \begin{definition}
@@ -2120,6 +2127,13 @@ Per comodità si considerano solo i sistemi a riposo (\( \tau = 0 \)).
   \noindent
   Ogni sistema asintoticamente stabile è anche BIBO stabile, ma non il contrario.
 \end{definition}
+
+\noindent
+Per capire se un sistema è BIBO stabile si deve verificare che \( h(t) \) (risposta 
+all'impulso) sia assolutamente integrabile e che abbia un valore finito:
+\[
+  \int_{-\infty}^{+\infty} |h(t)| \; dt < \infty
+\] 
 
 \subsection{Sistemi descritti da equazioni differenziali}
 I sistemi che si analizzano in questo corso sono solo un sottoinsieme:
@@ -2950,10 +2964,10 @@ Se la convoluzione viene effettuata con un impulso, il segnale viene campionato.
   \end{figure}
 \end{example}
 
-\subsubsection{Risposta inpulsiva}
+\subsubsection{Risposta impulsiva}
 \begin{definition}
   Dato un sistema a tempo continuo inizialmente a riposo (causale) definiamo la 
-  \textbf{risposta inpulsiva} come l'uscita del sistema in corrispondenza di un ingresso
+  \textbf{risposta impulsiva} come l'uscita del sistema in corrispondenza di un ingresso
   uguale all'impulso unitario
   \begin{figure}[H]
     \centering
