@@ -1642,10 +1642,22 @@ il segmento perso. Nel frattempo l'host che non ha ricevuto il segmento manda pi
 in cui chiede di ritrasmettere il segmento perso (\textbf{ACK duplicati}). L'invio del singolo segmento chè
 è stato perso è chiamato \textbf{Selective Repeat}. Le informazioni dei pacchetti non
 ricevuti sono contenute nell'header TCP nel campo delle opzioni.
-\label{06-11-D1}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{selective-repeat}
+  \caption{Selective Repeat}
+\end{figure}
+
+\noindent
 Lo scorrimento della finestra viene impedito anche se la ricezione dei segmenti avviene
 in ordine diverso da quello di invio.
-\label{06-11-D2}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{selective-repeat-disordinato}
+  \caption{Selective Repeat con segmenti disordinati}
+\end{figure}
+
+\noindent
 Se un router riceve tanti pacchetti di fila che non entrano nel buffer, adotta una
 politica secondo cui scarta dei pacchetti a caso dal buffer per fare spazio ai nuovi 
 pacchetti.
@@ -1654,23 +1666,84 @@ pacchetti.
 L'unico segnale per determinare la dimensione della finestra è il riscontro, quindi
 si utilizzano i riscontri (o la loro assenza) per variare in maniera dinamica la
 grandezza della finestra. 
-\label{06-11-D3}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{finestra-dinamica}
+  \caption{Dimensione dinamica della finestra}
+\end{figure}
 \begin{itemize}
   \item \textbf{Riscontri positivi regolari}: Si può aumentare la dimensione della
     finestra. Ci sono 2 possibilità di aumento della finestre:
     \begin{enumerate}
       \item \textbf{Slow start}: Per ogni riscontro ricevuto, si fa scorrere la finestra
         verso destra di un segmento e si aumenta la sua dimensione di un segmento
-        \label{06-11-D4}
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width=0.8\textwidth]{slow-start}
+          \caption{Esempio Slow start}
+        \end{figure}
+
+        \noindent
         Il grafico della crescita della finestra è esponenziale:
-        \label{06-11-D5}
+        \begin{figure}[H]
+          \centering
+          \begin{tikzpicture}
+            \draw[->] (0,-0.2) -- (0,4.5) node[left] {\( w \)};
+            \draw[->] (-0.2,0) -- (4.5,0) node[below] {\( t \)};
+
+            \fill[red] (1,0.5) circle (0.05);
+            \fill[red] (2,1) circle (0.05);
+            \fill[red] (3,2) circle (0.05);
+            \fill[red] (4,4) circle (0.05);
+
+            \draw[red,domain=1:4] plot (\x,{2^(\x-2)});
+
+            \foreach \x in {1,2,3,4}
+              \draw (\x,-0.1) -- (\x,0.1);
+
+            \foreach \y in {1,2,4,8}
+              \draw (-0.1,\y/2) -- (0.1,\y/2) node[left=0.2] {\y};
+
+            \draw[green!50!black] (0.05,-0.2) -- ++(0,-0.2) -- ++(0.95,0)
+              node[midway,below] {RTT} -- ++(0,0.2);
+          \end{tikzpicture}
+          \caption{Grafico Slow start}
+        \end{figure}
 
       \item \textbf{Congestion avoidance}: Per ogni riscontro ricevuto, si aumenta
         la finestra di \( \frac{1}{w} \) dove \( w \) è la dimensione della finestra
         precedente.
-        \label{06-11-D6}
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width=0.8\textwidth]{congestion-avoidance}
+          \caption{Esempio Congestion avoidance}
+        \end{figure}
+
+        \noindent
         Il grafico della crescita della finestra è lineare:
-        \label{06-11-D7}
+        \begin{figure}[H]
+          \centering
+          \begin{tikzpicture}
+            \draw[->] (0,-0.2) -- (0,4.5) node[left] {\( w \)};
+            \draw[->] (-0.2,0) -- (4.5,0) node[below] {\( t \)};
+
+            \fill[red] (1,1) circle (0.05);
+            \fill[red] (2,2) circle (0.05);
+            \fill[red] (3,3) circle (0.05);
+            \fill[red] (4,4) circle (0.05);
+
+            \draw[red] (1,1) -- (4,4);
+
+            \foreach \x in {1,2,3,4}
+              \draw (\x,-0.1) -- (\x,0.1);
+
+            \foreach \y in {2,3,4,5}
+              \draw (-0.1,\y-1) -- (0.1,\y-1) node[left=0.2] {\y};
+
+            \draw[green!50!black] (0.05,-0.2) -- ++(0,-0.2) -- ++(0.95,0)
+              node[midway,below] {RTT} -- ++(0,0.2);
+          \end{tikzpicture}
+        \end{figure}
     \end{enumerate}
   \item \textbf{In caso di perdite}: Il RTO scade, si ritrasmette il segmento perso
     e si riduce la dimensione della finestra. Ci sono 2 possibilità di riduzione della
@@ -1683,7 +1756,11 @@ grandezza della finestra.
         di seguito, si pone la finestra a \( \frac{w}{2} \) e si ritrasmette il segmento
         indicato negli ACK duplicati (se ci sono delle opzioni nell'header che indicano
         altri segmenti mancanti si ritrasmettono anche quelli).
-        \label{06-11-D8}
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width=1\textwidth]{fast-retrasmit-fast-recovery}
+          \caption{Esempio Fast retrasmit/Fast recovery}
+        \end{figure}
     \end{enumerate}
 \end{itemize}
 
