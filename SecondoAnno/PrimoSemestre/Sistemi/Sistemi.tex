@@ -2137,7 +2137,29 @@ all'impulso) sia assolutamente integrabile e che abbia un valore finito:
 
 \subsection{Sistemi descritti da equazioni differenziali}
 I sistemi che si analizzano in questo corso sono solo un sottoinsieme:
-\label{04-11-D3}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw (0,0) circle (4cm) node[above=3cm,align=center,scale=0.9]
+      {Sistemi a\\tempo continuo};
+    \draw (0,0) circle (3cm);
+    \draw (0,0) circle (2cm) node[above=2.2cm] {LTI};
+    \draw (0,0) circle (1cm) node[above=1cm,align=center,scale=0.8]
+      {Risposta\\impulsiva \( h(t) \)};
+
+    \node[scale=0.7,align=center] at (0,0) {Modellabili con\\eq. diff};
+
+    \begin{scope}
+      \clip (0,0) circle (1cm);
+      \fill[blue, fill opacity=0.3] (1.9,0) ellipse (1.8cm and 3cm);
+    \end{scope}
+    \draw (1.9,0) ellipse (1.8cm and 3cm);
+    \node at (1.9,-2.5) {Causali};
+
+    \draw[->,blue] (1,-0.5) -- (3.5,-3) node[below right] {Sistemi studiati nel corso};
+  \end{tikzpicture}
+  \caption{Sistemi LTI}
+\end{figure}
 \begin{example}
   Prendiamo come esempio un sistema massa molla smorzatore:
   \begin{figure}[H]
@@ -3297,7 +3319,7 @@ dove:
         &= \int_{-\infty}^{+\infty} \frac{1}{2} \delta_0(\tau) \cdot
         3\delta_{-1}(t-\tau) \, d\tau + \int_{-\infty}^{+\infty} \frac{7}{4} e^{\frac{1}{2}\tau}
         \cdot \delta_{-1}(\tau) \cdot 3\delta_{-1}(t-\tau) \, d\tau\\
-        &= \frac{3}{2} \int_{\cancel{\stackrel{\color{green!50!black}0^-\color{black}}{-\infty}}}^{\cancel{\stackrel{\color{blue}0^+\color{black}}{+\infty}}} 
+        &= \frac{3}{2} \int_{\cancel{\stackrel{\color{green!50!black}0^-\color{black}}{-\infty}}}^{\cancel{\stackrel{\color{orange}0^+\color{black}}{+\infty}}} 
         \stackrel{=1}{
         \cancel{
         \underbrace{\delta_0(\tau)}_{[0^-,0^+]} \cdot
@@ -3314,9 +3336,40 @@ dove:
   \end{aligned}
   \] 
   Teniamo fissa la risposta impulsiva \( h(t) \) e trasliamo il gradino \( u(t) \)
-  \label{04-11-D1}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \def\a{1}
+      \draw[->] (-4,0) -- (4,0) node[right] {$t$};
+      \draw[->] (0,-1.5) -- (0,1.5) node[above] {$f(t)$};
+
+      \node[below left,scale=0.6,green!50!black] at (0,0) {\( 0^- \)};
+      \node[below right,scale=0.6,orange] at (0,0) {\( 0^+ \)};
+
+      \draw[orange,thick] (-3.9,0)  -- (0,0) -- (0,\a) -- (3.9,\a) 
+        node[above] {\( 3 \delta_{-1}(t) \)};
+      \draw[green!50!black,thick] (-3.9,\a) node[above] {\( 3 \delta_{-1}(t - \tau) \)} -- 
+        (0,\a) -- (0,0) -- (3.9,0);
+    \end{tikzpicture}
+    \caption{\( 3 \delta_{-1}(t - \tau) \) viene traslato}
+  \end{figure}
   \( +\infty \) e \( -\infty \) diventano \( 0 \) e \( t \) perchè:
-  \label{04-11-D2}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \def\a{1}
+      \draw[->] (-4,0) -- (4,0) node[right] {$t$};
+      \draw[->] (0,-1.5) -- (0,1.5) node[above] {$f(t)$};
+
+      \node[below right,scale=0.6,blue] at (0,0) {\( 0 \)};
+
+      \draw[blue,thick] (-3.9,0)  -- (0,0) -- (0,\a) -- (3.9,\a) 
+        node[above] {\( 3 \delta_{-1}(t) \)};
+      \draw[red,thick] (-3.9,\a) node[above] {\( 3 \delta_{-1}(t - \tau) \)} -- 
+        (2,\a) -- (2,0) node[below] {\( t \)} -- (3.9,0);
+    \end{tikzpicture}
+    \caption{\( 3 \delta_{-1}(t - \tau) \) viene traslato}
+  \end{figure}
 \end{exercise}
 
 \subsubsection{Risposta totale}
