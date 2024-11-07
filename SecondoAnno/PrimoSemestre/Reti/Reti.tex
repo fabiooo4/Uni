@@ -1687,4 +1687,61 @@ grandezza della finestra.
     \end{enumerate}
 \end{itemize}
 
+\noindent
+L'algoritmo di controllo della congestione è il seguente:
+\begin{itemize}
+  \item \textbf{Variabili}:
+    \begin{enumerate}
+      \item \texttt{cwnd}: Congestion Window, è la dimensione della finestra di
+        trasmissione attuale
+      \item \texttt{rto}: Calcolato dinamicamente in base all'RTT istantaneo e SRTT
+      \item \texttt{rcvwnd}: Recieve Window, è la finestra massima di ricezione
+      \item \texttt{ssthresh}: Slow Start Threshold, è una soglia usata per distinguere
+        l'uso dell'algoritmo slow start o congestion avoidance
+    \end{enumerate}
+
+  \item \textbf{Inizializzazione}: All'inizio della connessione non si sanno tante
+    informazioni, quindi si pongono le variabili nel modo più "conservativo" possibile:
+    \begin{enumerate}
+      \item \texttt{cwnd} = 1
+      \item \texttt{rto} = in base al valore dell'RTT misurato nel 3-way handshake
+      \item \texttt{rcvwnd} = viene comunicato dalla destinazione in ogni riscontro
+        nel campo \textbf{window}
+      \item \texttt{ssthresh} = \texttt{rcvwnd} (in alcune implementazioni è 
+        \( \frac{rcvwnd}{2} \))
+    \end{enumerate}
+
+  \item \textbf{Algoritmo}:
+    \begin{enumerate}
+      \item Invia un numero di segmenti pari alla \texttt{cwnd}
+      \item Quando arrivano i riscontri:
+        \begin{lstlisting}[language=Scala]
+if cwnd < ssthresh // Uso lo slow start
+  cwnd = min(cwnd + numAck, rcvwnd, ssthresh)
+else // Uso il congestion avoidance
+  cwnd = min(cwnd + numAck / cwnd, rcvwnd)
+
+// Torno al punto 1
+        \end{lstlisting}
+
+      \item Se non arrivano i riscontri (quando scade il RTO):
+        \begin{enumerate}
+          \item 
+            Pongo la \texttt{ssthresh} = \( \frac{\texttt{cwnd}}{2} \) (\texttt{cwnd} al momento della
+            perdita)
+          \item Pongo la \texttt{cwnd} = 1 (Vanilla tcp)
+          \item Per i segmenti ritrasmessi pongo la \texttt{rto} = 2 \texttt{rto} 
+          \item Torno al punto 1.
+        \end{enumerate}
+    \end{enumerate}
+\end{itemize}
+
+\begin{example}
+  Un esempio (semplificato in cui RTT è stabile) di evoluzione della trasmissione con TCP
+  è il seguente:
+  \label{07-11-D1}
+  Nel lungo termine, con numeri più grandi, il comportamento della finestra sarà:
+  \label{07-11-D2}
+\end{example}
+
 \end{document}
