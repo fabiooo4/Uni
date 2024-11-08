@@ -1816,9 +1816,94 @@ else // Uso il congestion avoidance
 \begin{example}
   Un esempio (semplificato in cui RTT è stabile) di evoluzione della trasmissione con TCP
   è il seguente:
-  \label{07-11-D1}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{cwnd}
+    \caption{Evoluzione della finestra di trasmissione}
+  \end{figure}
+  \noindent 
+  Il grafico del cambio della dimensione della finestra è il seguente:
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \draw[->] (0,-0.2) -- (0,4.5) node[left] {\( w \)};
+      \draw[->] (-0.2,0) -- (9.5,0) node[below] {\( t \)};
+
+      % rcvwnd & ssthresh
+      \draw[red] (0,8/2) node[above right] {\texttt{rcvwnd = 8}} -- (9.5,8/2);
+      \draw[orange] (0,4/2) node[above right] {\texttt{ssthresh = 4}} -- (6,4/2)
+        -- (6,3/2) -- (9.5,3/2);
+
+      \fill[blue] (0,1/2) circle (0.05);
+      \fill[blue] (1,2/2) circle (0.05);
+      \fill[blue] (2,4/2) circle (0.05);
+      \fill[blue] (3,5/2) circle (0.05);
+      \fill[blue] (4,6/2) circle (0.05) node[right,red] {\( \times \)};
+
+      % Loss
+      \draw[purple,dashed] (4.5,6/2) -- (6,6/2) -- (6,1/2);
+
+      \fill[blue] (6,1/2) circle (0.05);
+      \fill[blue] (7,2/2) circle (0.05);
+      \fill[blue] (8,3/2) circle (0.05);
+      \fill[blue] (9,4/2) circle (0.05);
+
+      % Functions
+      \draw[blue,domain=0:2] plot (\x,{2^(\x-1)});
+      \draw[blue] (2,4/2) -- (4,6/2);
+
+      \draw[blue,domain=6:7] plot (\x,{2^(\x-7)});
+      \draw[blue] (7,2/2) -- (9,4/2);
+
+      % Ticks
+      \foreach \x in {1,2,3,4,5,6,7,8,9}
+      \draw (\x,-0.1) -- (\x,0.1);
+
+      \foreach \y in {1,2,4,8}
+      \draw (-0.1,\y/2) -- (0.1,\y/2) node[left=0.2] {\y};
+
+      \draw[green!50!black] (0.05,-0.2) -- ++(0,-0.2) -- ++(0.95,0)
+        node[midway,below] {RTT} -- ++(0,0.2);
+    \end{tikzpicture}
+    \caption{Grafico Slow start}
+  \end{figure}
+
+  \noindent
   Nel lungo termine, con numeri più grandi, il comportamento della finestra sarà:
-  \label{07-11-D2}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \draw[->] (0,-0.2) -- (0,4.5) node[left] {\( w \)};
+      \draw[->] (-0.2,0) -- (9.5,0) node[below] {\( t \)};
+
+      \draw[blue,domain=0:4,scale=0.5] plot (\x,{2^(\x-2)});
+      \draw[blue,domain=4:8,scale=0.5] plot (\x,{\x});
+      \draw[scale=0.5,purple,dashed] (8,8) -- (9,8) -- (9,1/4);
+
+      \draw[blue,domain=9:13,scale=0.5] plot (\x,{2^(\x-2-9)});
+      \draw[blue,domain=13:16,scale=0.5] plot (\x,{\x-9});
+      \draw[scale=0.5,purple,dashed] (16,7) -- (17,7) -- (17,1/4);
+    \end{tikzpicture}
+    \caption{Andamento Vanilla}
+  \end{figure}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \draw[->] (0,-0.2) -- (0,4.5) node[left] {\( w \)};
+      \draw[->] (-0.2,0) -- (9.5,0) node[below] {\( t \)};
+
+      \draw[blue,domain=0:4,scale=0.5] plot (\x,{2^(\x-2)});
+      \draw[blue,domain=4:8,scale=0.5] plot (\x,{\x});
+      \draw[scale=0.5,purple,dashed] (8,8) -- (9,8) -- (9,4);
+
+      \draw[blue,domain=9:12,scale=0.5] plot (\x,{\x-5});
+      \draw[scale=0.5,purple,dashed] (12,7) -- (13,7) -- (13,3);
+
+      \draw[blue,domain=13:18,scale=0.5] plot (\x,{\x-10});
+      \draw[scale=0.5,purple,dashed] (18,8) -- (19,8) -- (19,4);
+    \end{tikzpicture}
+    \caption{Andamento Fast retrasmit/Fast recovery}
+  \end{figure}
 \end{example}
 
 \end{document}
