@@ -3398,5 +3398,56 @@ e la risposta impulsiva è data da:
   h(t) = d_0 \cdot \delta(t) + \sum_{i=1}^{r} \sum_{l=0}^{\mu_i - 1} d_{i,l} \cdot \frac{t^l}{l!} \cdot e^{\lambda_i t} \cdot \delta_{-1}(t)
 \]
 
+\subsection{Stabilità in base alle radici}
+Considerando 3 radici si ha:
+\begin{itemize}
+  \item \textbf{Stabilità asintotica}: Tutte le radici devono avere parte reale minore
+    di 0:
+    \[
+    \forall i \;\; \Re(\lambda_i) < 0
+    \] 
+    ad esempio:
+    \[
+      \underbrace{-1}_{\Re(\lambda_1) < 0} + i \quad
+      \underbrace{-2}_{\Re(\lambda_2) < 0} - i \quad
+      \underbrace{-3}_{\Re(\lambda_3) < 0}
+    \] 
+
+  \item \textbf{Semplicemente stabile}: Solo una radice ha parte reale uguale a 0: 
+    \[
+    \exists i \;\; \Re(\lambda_i) = 0
+    \] 
+    ad esempio:
+    \[
+      \underbrace{0}_{\Re(\lambda_1) = 0} + i \quad
+      -2 > 0 - i \quad
+      -3 > 0
+    \]
+
+  \item \textbf{Asintoticamente instabile}: Tutte le radici hanno parte reale minore di
+    0 tranne un sottoinsieme che hanno parte reale uguale a 0:
+    \[
+    \forall i \;\; \Re(\lambda_i) \le 0
+    \] 
+    ad esempio:
+    \[
+      \underbrace{0}_{\Re(\lambda_i = 0)} + i \quad
+      \underbrace{0}_{\Re(\lambda_i = 0)} - i \quad
+      -3 + i
+    \]
+
+  \item \textbf{Totalmente instabile}: Almeno una radice ha la parte reale maggiore di 0:
+    \[
+    \exists i \;\; \Re(\lambda_i) > 0
+    \] 
+    ad esempio:
+    \[
+      \underbrace{1}_{\Re(\lambda_1) > 0} + i \quad
+      0 - i \quad
+      -3 + i
+    \]
+
+\end{itemize}
+
 
 \end{document}
