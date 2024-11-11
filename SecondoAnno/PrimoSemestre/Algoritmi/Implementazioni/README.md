@@ -32,3 +32,4 @@ cargo run --release
 - [x] Factorial
 - [ ] Radix sort
 - [ ] Bucket sort
+- [ ] Randomized search
