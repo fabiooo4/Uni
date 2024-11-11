@@ -999,6 +999,30 @@ I problemi principali sono:
     \end{itemize}
 \end{itemize}
 
+\section{Scheduling}
+Lo scheduling dei processi è il processo di selezione del processo da eseguire
+sulla CPU nel tempo. Serve perchè con l'utilizzo della multiprogrammazione bisogna
+implementare una strategia per regolamentare:
+\begin{itemize}
+  \item Ammissione dei processi nel sistema (memoria)
+  \item Ammissione dei processi all'esecuzione (CPU)
+\end{itemize}
+
+\subsection{Tipi di scheduling}
+Lo scheduling gestisce in che modo viene ordinato l'accesso ad ogni coda di processi.
+Gli scheduler sono di due tipi:
+\begin{itemize}
+  \item \textbf{Scheduler a lungo termine (job scheduler)}: Seleziona quali processi 
+    devono essere portati dalla memoria alla redy queue. Questo scheduler è invocato
+    molto spesso.
+  \item \textbf{Scheduler a medio termine (swapper)}: Seleziona quali processi
+    devono essere spostati dalla memoria al disco e viceversa. Questo scheduler è
+    invocato meno frequentemente.
+  \item \textbf{Scheduler a breve termine (CPU scheduler)}: Seleziona quale processo
+    deve essere eseguito sulla CPU. Questo scheduler è invocato più raramente.
+\end{itemize}
+
+
 
 % Il sistema operativo fornisce dei servizi per comunicare con l'hardware e questi
 % servizi possono essere usati tramite delle \textbf{system calls}, ad esempio:
