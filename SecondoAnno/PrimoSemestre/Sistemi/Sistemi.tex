@@ -1093,6 +1093,7 @@ gli assi il suo valore.
     \draw[->,red] (2,0) arc (0:360:2) node[midway, right] {};
   \end{tikzpicture}
   \caption{Circonferenza di proiezione}
+  \label{fig:fasore}
 \end{figure}
 
 La proiezione sull'asse dei reali è la parte reale del segnale:
@@ -3446,8 +3447,284 @@ Considerando 3 radici si ha:
       0 - i \quad
       -3 + i
     \]
-
 \end{itemize}
 
+\subsection{Risposta in frequenza}
+La risposta in frequenza è la risposta di un sistema LTI a un segnale sinusoidale.
+Abbiamo visto che gli esponenziali complessi si rappresentano come:
+\[
+  Ae^{j \left( \omega_0 t + \phi \right)} = A e^{j \phi} \cdot e^{j \omega_0 t}
+\] 
+Questi esponenziali si chiamano \textbf{Fasori} perchè vengono rappresentati come
+vettori rotanti in un piano complesso, come mostrato in figura \ref{fig:fasore}.
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw,minimum width=1cm,minimum height=1cm] (A) at (0,0) {\( \Sigma \) };
+    \draw[->] (-1,0) -- (A) node[midway,above left] {\( u(t) = A e^{j \phi} \cdot e^{j \omega_0 t} \)};
+    \draw[->] (A) -- (1,0) node[midway,above right] {\( v(t) \)};
+  \end{tikzpicture}
+  \caption{Fasore}
+\end{figure}
+La risposta in frequenza si calcola come la convoluzione tra l'ingresso e la risposta
+impulsiva \( h(t),\; t \in \mathbb{R} \):
+\[
+  \begin{aligned}
+    v(t) &= \int_{-\infty}^{+\infty} h(\tau) \cdot u(t-\tau) \, d\tau\\
+         &= \int_{-\infty}^{+\infty} h(\tau) \cdot A e^{j \left( \omega_0 \left( t - 
+         \tau \right) + \phi \right) } \, d\tau\\
+         &= 
+         \underbrace{A e^{j \left( \omega_0 t + \phi \right) }}_{\text{Costante}}
+         \cdot 
+         \underbrace{\int_{-\infty}^{+\infty} h(\tau) \cdot e^{-j \omega_0 \tau} \, d\tau}_
+         { \left| \int \right| < \infty }\\
+  \end{aligned}
+\] 
+\[
+  \left| \int_{-\infty}^{+\infty} h(\tau) \cdot e^{-j \omega_0 \tau} \, d\tau \right| <
+  \int_{-\infty}^{+\infty} \left| h(\tau) \cdot e^{-j \omega_0 \tau} \right| \, d\tau\\
+\] 
+\[
+  \begin{aligned}
+    &= \int_{-\infty}^{+\infty} \left| h(\tau) \right| \cdot \left| e^{-j \omega_0 \tau} \right| \, d\tau\\
+    &= \int_{-\infty}^{+\infty} \left| h(\tau) \right| \cdot 1 \, d\tau < \infty
+  \end{aligned}
+\] 
+La risposta in frequenza è quindi:
+\[
+  H(j \omega_0) = \int_{-\infty}^{+\infty} h(\tau) \cdot e^{-j \omega_0 \tau} \, d\tau
+\] 
+Da questa formula si ha che l'uscita \( v(t) \) è uguale a:
+\[
+  v(t) = H(j \omega_0) \cdot A e^{j \left( \omega_0 t + \phi \right) }, \quad t \in \mathbb{R}
+\] 
+La risposta in frequenza è la trasformata di Fourier della risposta impulsiva del sistema e
+anche la trasformata di Laplace della risposta impulsiva ristretta al solo asse immaginario:
+\begin{theorem}
+  \[
+    H(j \omega) = \mathcal{F}[h(t)](s) = \mathcal{L}[h(t)](s), \; s = j \omega
+  \] 
+  Dove:
+  \[
+    \begin{aligned}
+      \mathcal{F} &= \text{Trasformata di Fourier}\\
+      \mathcal{L} &= \text{Trasformata di Laplace}
+    \end{aligned}
+  \] 
+\end{theorem}
+\begin{example}
+  Se prendiamo in considerazione un sistema dinamico, come ad esempio il sistema
+  massa-molla-smorzatore dell'esempio \ref{massa-molla-smorzatore}, 
+  descritto dall'equazione:
+  \[
+     \sum_{i=0}^{n} a_i \frac{\partial^{i} v(t)}{\partial t} = \sum_{j=0}^{m} b_j \frac{\partial^{j} u(t)}{\partial t}
+  \] 
+  Per calcolare la soluzione nel dominio del tempo si può fare il passaggio solito fatto fin'ora,
+  oppure si può prendere una scorciatoia e calcolare la trasformata di Laplace delle equazioni
+  algebriche per trovare poi la soluzione in \( \mathbb{C} \) rendendo più semplice il calcolo.
+\end{example}
+
+\section{Trasformata unilatera di Laplace (TDL)}
+\begin{definition}[Trasformata unilatera di Laplace]
+  Sia \( v(t) \) una funzione generica (non l'uscita di un sistema) con
+  \( t \in \mathbb{R} \) ottenuta da somme di funzioni a variabili reali con valori 
+  reali o complessi (ad esempio somma di fasori).
+  \begin{itemize}
+    \item Localmente sommabile in \( [0,\infty) \) :
+      \[
+        \int_a^b \left| v(t) \right| \, dt < \infty, \quad \forall a,b \in [0,\infty)
+      \] 
+
+    \item Formata da un insieme finito di segnali polinomiali
+  \end{itemize}
+  Definiamo la trasformata unilatera di Laplace come:
+  \[
+    \begin{aligned}
+      V(s) &= \int_{0^-}^{+\infty} v(t) \cdot e^{-st} \, dt
+           &= \mathcal{L}[v(t)](s)
+    \end{aligned}
+  \] 
+  \textbf{N.B.}: Data \( v(t) \) localmente sommabile, non significa che \( V(s) \) sia 
+  localmente sommabile
+\end{definition}
+Bisogna ora definire la \textbf{Regione di convergenza}:
+\begin{definition}
+  La regione di convergenza è un semipiano positivo definito come:
+  \[
+    \text{RDC} = \left\{ s \in \mathbb{C},\; \alpha \in \mathbb{R} \; | \; \Re(s) > \alpha \right\}
+  \] 
+  Dove \( \alpha \) è l'ascissa di convergenza:
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \draw[->] (-1,0) -- (4,0) node[right] {\( \Re(s) \)};
+      \draw[->] (0,-1) -- (0,4) node[above] {\( \Im(s) \)};
+      \draw[dashed, blue] (2,0) node[below] {\( \alpha \)} -- (2,4);
+      \draw[fill=black] (2,0) circle (0.05);
+      \fill[blue, fill opacity=0.2] (2,0) rectangle (4,4);
+    \end{tikzpicture}
+  \end{figure}
+\end{definition}
+\textbf{Dimostrazione}:
+Sia \( v(t) \) una combinazione lineare di esponenziali:
+\[
+  v(t) = \sum_{i=0}^{n} c_i \cdot e^{\lambda_i t}
+\] 
+\[
+\lambda_i = \sigma_i + j \omega_i \in \mathbb{C}
+\] 
+Vogliamo dimostrare che la regione di convergenza della trasformata di Laplace è un
+semipiano a destra di \( \alpha \):
+\[
+  \text{RDC} \mathcal{L}[v(t)](s) = \left\{ s \in \mathbb{C},\; \alpha \in \mathbb{R} \; | \; \Re(s) > \alpha \right\}
+\] 
+Dimostro:
+\[
+  \begin{aligned}
+    \mathcal{L}[v(t)](s) &= \int_{0^-}^{+\infty} v(t) \cdot e^{-st} \, dt \\
+                         &= \int_{0^-}^{+\infty} \sum_{i=0}^{n} c_i \cdot e^{\lambda_i t} \cdot e^{-st} \, dt\\
+                         &= \sum_{i=0}^{n} c_i \int_{0^-}^{+\infty} e^{\lambda_i t} \cdot e^{-st} \, dt\\
+  \end{aligned}
+\] 
+Prendiamo un preciso \( i \to \lambda_i = \sigma_i + j \omega_i \quad s = \sigma + j \omega\) 
+\[
+  \int_{0^-}^{+\infty} e^{\sigma_i t} \cdot e^{j \omega_i t} \cdot e^{-\sigma t} \cdot e^{-j \omega t} \, dt =
+  \int_{0^-}^{+\infty} e^{(\sigma_i - \sigma + j \omega_i - j \omega) t} \, dt
+\] 
+\[
+  = \lim_{t \to \infty} \left( \frac{e^{(\sigma_i - \sigma) t} \cdot e^{j (\omega_i - \omega) t}}
+  {\sigma_i - \sigma + j \omega_i - j \omega} \right)
+  = \frac{1}{\sigma - \sigma_i + j \omega_i - j\omega)}
+\] 
+L'integrale converge se \( \sigma_i - \sigma < 0 \to \sigma > \sigma_i \) e quindi:
+\[
+\sigma  = \Re(s) \quad \sigma_i = \Re(\lambda_i)
+\] 
+\[
+\forall s \in \mathbb{C} \; \Re(s) > \Re(\lambda_i) \quad i = 0,1,\ldots,n
+\] 
+\[
+\alpha \ge max(\Re(\lambda_i))
+\] 
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[scale=1.3]
+    \draw[->] (-2.5,0) -- (2.5,0) node[right] {$\Re$};
+    \draw[->] (0,-0.2) -- (0,2) node[above] {$\Im$};
+
+    \draw[fill=blue,blue] (-2,1.5) circle (0.05) node[above] (l_1) {$\lambda_1$};
+    \draw[fill=blue,blue] (-1.5,1.2) circle (0.05) node[above] (l_2) {$\lambda_2$};
+    \draw[fill=blue,blue] (-1,0.7) circle (0.05) node[above] (l_3) {$\lambda_3$};
+    \draw[fill=blue,blue] (-0.5,1.8) circle (0.05) node[above] (l_4) {$\lambda_4$};
+    \node[below,blue] at (-0.5,0) {\( \alpha \)};
+
+    \draw[dashed] (l_1) -- (l_1 |- 52,0);
+    \draw[dashed] (l_2) -- (l_2 |- 52,0);
+    \draw[dashed] (l_3) -- (l_3 |- 52,0);
+    \draw[dashed] (l_4) -- (l_4 |- 52,0);
+
+    \fill[blue,fill opacity=0.2] (-0.5,0) rectangle (2.5,1.8);
+  \end{tikzpicture}
+  \caption{Asintoticamente stabile}
+\end{figure}
+Per un sistema LTI stabile RDC contiene sempre l'asse immaginatio
+
+\subsection{Proprietà della trasformata di Laplace}
+\begin{enumerate}
+  \item \textbf{Linearità}:
+    Siano \( v_1 \) e \( v_2 \)  funzioni che ammettono la trasformata di Laplace e 
+    rispettivamente \( V_1 \) e \( V_2 \) le loro trasformate di Laplace:
+    \[
+      \begin{aligned}
+        v_1 &\to V_1(s)\\
+        v_2 &\to V_2(s)
+      \end{aligned}
+    \] 
+    allora: $a v_1(t) + b v_2(t)$ ammette la trasformata di Laplace ed è definita come:
+    \[
+      \mathcal{L}[a v_1(t) + b v_2(t)](s) = a V_1(s) + b V_2(s)
+    \] 
+    Ha come ascissa di convergenza:
+    \[
+    \alpha \ge max \left\{ \alpha_1,\alpha_2 \right\} 
+    \] 
+
+  \item \textbf{Traslazione nel tempo}:
+    Sia \( v(t) \) una funzione che ammette la trasformata di Laplace \( V(s) \), allora
+    la trasformata di Laplace di \( v(t - \tau) \), con \( \tau > 0 \) è:
+    \[
+      \mathcal{L}[v(t - \tau)](s) = e^{-s \tau} \cdot \mathcal{L}[v(t)](s)
+    \] 
+    L'ascissa di convergenza rimane immutata
+
+    \vspace{1em}
+    \noindent
+    \textbf{Dimostrazione}:
+    \[
+    \begin{aligned}
+      \mathcal{L}[v(t-\tau)](s) &= \int_{0^-}^{+\infty} v(t-\tau) \cdot e^{-st} \, dt\\
+                                &= \int_{\tau^-}^{+\infty} v(t-\tau) \cdot e^{-st)} \, d\tau\\
+        x = t - \tau\\
+        t = x + \tau\\
+        dt = dx\\
+                                &= \int_{0^-}^{+\infty} v(x) \cdot e^{-s(x+\tau)} \, dx\\
+                                &= e^{-s \tau} \int_{0^-}^{+\infty} v(x) \cdot e^{-sx} \, dx\\
+                                &= e^{-s \tau} \cdot \mathcal{L}[v(t)](s)
+    \end{aligned}
+    \] 
+
+  \item \textbf{Traslazione nel dominio dei complessi} (moltiplicazione per una funzione
+    esponenziale):
+    Sia \( v(t) \) una funzione che ammette la trasformata di Laplace \( V(s) \), allora
+    la trasformata di Laplace di \( e^{\lambda t} \cdot v(t) \) è:
+    \[
+      \mathcal{L}[e^{\lambda t} \cdot v(t)](s) = V(s - \lambda)
+    \] 
+    L'ascissa di convergenza rimane spostata:
+    \[
+    \alpha = \alpha_0 + \Re(\lambda)
+    \] 
+
+    \vspace{1em}
+    \noindent
+    \textbf{Dimostrazione}:
+    \[
+      \begin{aligned}
+        \mathcal{L}[e^{\lambda t} \cdot v(t)](s) &= \int_{0^-}^{+\infty} e^{\lambda t} \cdot v(t) \cdot e^{-st} \, dt\\
+                                                 &= \int_{0^-}^{+\infty} v(t) \cdot e^{(\lambda - s)t} \, dt\\
+                                                 &= \int_{0^-}^{+\infty} v(t) \cdot e^{-\overbrace{(s - \lambda)}^{r}t} \, dt\\
+                                                 &= \mathcal{L}[v(t)](r)
+                                                 &= \mathcal{L}[v(t)](s - \lambda)
+      \end{aligned}
+    \] 
+
+  \item \textbf{Cambio di scala}:
+    Sia \( v(t) \) una funzione che ammette la trasformata di Laplace \( V(s) \), allora
+    la trasformata di Laplace di \( v(r t) \) è:
+    \[
+      \mathcal{L}[v(r t)](s) = \frac{1}{r} \cdot V\left( \frac{s}{r} \right)
+    \] 
+    L'ascissa di convergenza viene scalata:
+    \[
+    \alpha = r \cdot \alpha_0
+    \] 
+
+    \vspace{1em}
+    \noindent
+    \textbf{Dimostrazione}:
+    \[
+      \begin{aligned}
+        \mathcal{L}[v(r t)](s) &= \int_{0^-}^{+\infty} v(r t) \cdot e^{-st} \, dt\\
+        x = rt\\
+        t = \frac{x}{r}\\
+        dt = \frac{dx}{r}\\
+                               &= \int_{0^-}^{+\infty} v(x) \cdot e^{-s \frac{x}{r}} \, dx\\
+                               &= \frac{1}{r} \int_{0^-}^{+\infty} v(x) \cdot e^{-\frac{s}{r} x} \, dx\\
+                               &= \frac{\mathcal{L}[v(t)](\frac{s}{r})}{r}
+      \end{aligned}
+    \]
+
+\end{enumerate}
 
 \end{document}
