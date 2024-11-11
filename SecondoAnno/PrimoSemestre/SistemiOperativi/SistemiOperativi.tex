@@ -529,6 +529,14 @@ il kernel. Questo permette di avere un sistema operativo più flessibile e modul
   \caption{Sistema client-server}
 \end{figure}
 
+\section{Programma e processo}
+\begin{itemize}
+  \item \textbf{Programma}: Un programma è un insieme di istruzioni e di dati contenuti
+    in un file. È un'entità statica.
+  \item \textbf{Processo}: Un processo è un'istanza di un programma in esecuzione.
+    È un'entità dinamica.
+\end{itemize}
+
 \subsection{Gestione dei processi}
 Un processo è un'\textbf{istanza di un programma in esecuzione} perchè da un programma
 si possono creare più processi. Il processo è dinamico perchè è in esecuzione, mentre
@@ -784,6 +792,212 @@ void main(int argc, char *argv[]) {
   \end{lstlisting}
   Il padre riceve come \texttt{pid} il process id del figlio e il figlio riceve 0.
 \end{example}
+
+\subsection{Terminazione di un processo}
+Un processo può terminare in diversi modi:
+\begin{itemize}
+  \item \textbf{Terminazione volontaria}: Il processo termina volontariamente
+    perchè ha finito la sua esecuzione
+
+  \item \textbf{Terminazione forzata dal padre}: Il padre decide di terminare il
+    processo figlio per più motivi:
+    \begin{itemize}
+      \item Eccesso nell'uso delle risorse
+      \item Il compito richiesto al figlio non è più necessario
+      \item Il padre termina e il sistema operaivo termina tutti i processi figli
+    \end{itemize}
+
+  \item \textbf{Terminazione forzata dal S.O.}: Il sistema operativo termina il
+    processo quando:
+    \begin{itemize}
+      \item L'utente chiude l'applicazione
+      \item Ci sono errori durante l'esecuzione (aritmetici, di protezione, di memoria...)
+    \end{itemize}
+\end{itemize}
+
+\subsection{Relazione tra processi}
+I processi possono essere di due tipi:
+\begin{itemize}
+  \item \textbf{Processi indipendenti}: Sono processi che dipendono soltanto dal proprio
+    input e quindi non influenzano altri processi. L'esecuzione di un processo indipendente
+    è deterministica e riproducibile.
+
+  \item \textbf{Processi cooperanti}: Sono processi che influenzano e sono influenzati da
+    altri processi. Possono condividere dati e informazioni e possono comunicare tra di
+    loro. L'esecuzione di un processo cooperante è non deterministica e non riproducibile.
+\end{itemize}
+
+\subsection{Thread}
+Un \textbf{thread} è un flusso di esecuzione di un processo. Un processo può avere più
+thread e ogni thread lavora in modo indipendente sulle risorse del processo e ad essi
+è associato un Thread Control Block (TCB) che serve a memorizzare lo stato del thread.
+\begin{itemize}
+  \item Ad un processo sono associati:
+    \begin{itemize}
+      \item Spazio di indirizzamento
+      \item Risorse del sistema
+    \end{itemize}
+
+  \item Ad ogni singolo thread sono associati:
+    \begin{itemize}
+      \item Stato di esecuzione
+      \item Program counter
+      \item Insieme di registri della CPU
+      \item Stack
+    \end{itemize}
+\end{itemize}
+I thread condividono le risorse e lo stato del processo e lo spazio di indirizzamento.
+Il \textbf{Multithreading} è l'abilità di un sistema operativo di supportare più thread
+all'interno di un processo.
+
+\subsubsection{Vantaggi}
+I vantaggi del multithreading sono:
+\begin{itemize}
+  \item \textbf{Riduzione del tempo di risposta}: Un thread può continuare a lavorare
+    mentre un altro thread è bloccato
+  \item \textbf{Condivisione delle risorse}: I thread condividono le risorse del processo
+    senza dover introdurre tecniche esplicite di condivisione come avviene per i processi.
+  \item \textbf{Economia}: I thread sono più economici dei processi perchè la loro creazione
+    e distruzione e il loro context switch sono più veloci
+  \item \textbf{Scalabilità}: Aumenta il parallelismo se l'esecuzione avviene su un
+    multiprocessore 
+\end{itemize}
+
+\subsubsection{Stati di un thread}
+Anche i thread hanno uno stato di esecuzione, come i processi:
+\begin{itemize}
+  \item \textbf{Pronto}: Il thread è pronto ad essere eseguito
+  \item \textbf{In esecuzione}: Il thread è in esecuzione sulla CPU
+  \item \textbf{Bloccato}: Il thread è bloccato in attesa di un evento
+\end{itemize}
+Lo stato di un thread può non coincidere con lo stato del processo.
+
+\subsubsection{Implementazione}
+I thread possono essere implementati come:
+\begin{itemize}
+  \item \textbf{User-level thread}: Sono implementati dal programmatore e la gestione
+    è affidata all'applicazione, di conseguenza il kernel ignora l'esistenza dei thread.
+    I vantaggi sono:
+    \begin{itemize}
+      \item Non serve passare alla modalità kernel per la gestione dei thread
+      \item Lo scheduling può variare da applicazione ad applicazione
+      \item Sono portabili, cioè possono essere implementati su qualsiasi sistema
+        operativo senza modificare il kernel
+    \end{itemize}
+    Gli svantaggi sono:
+    \begin{itemize}
+      \item Il blocco di un thread blocca l'intero processo
+      \item Non è possibile sfruttare i processori multi-core
+    \end{itemize}
+
+  \item \textbf{Kernel-level thread}: La gestione è affidata al kernel e le applicazioni
+    usano i thread tramite system call.
+    I vantaggi sono:
+    \begin{itemize}
+      \item Scheduling a livello di thread, cioè il blocco di un thread non blocca
+        l'intero processo
+      \item Più thread possono essere eseguiti in parallelo su processori diversi
+      \item Le funzioni del sistema operativo possono essere multithreaded
+    \end{itemize}
+    Gli svantaggi sono:
+    \begin{itemize}
+      \item Scarsa efficienza perchè il passaggio da un thread all'altro richiede
+        il passaggio attraverso il kernel
+    \end{itemize}
+\end{itemize}
+
+\subsection{Gestione dei processi del sistema operativo}
+Il sistema operativo è un programma come tutti gli altri e quindi può generare più
+processi. Il sistema operativo può essere eseguito in diversi modi:
+\begin{itemize}
+  \item \textbf{Kernel separato}: Il kernel viene eseguito al di fuori da ogni processo:
+    \begin{itemize}
+      \item Il sistema operativo possiede uno spazio di memoria riservato
+      \item Il sistema operativo prende il controllo del sistema
+      \item Il sistema operativo è sempre in esecuzione in modo privilegiato
+    \end{itemize}
+    È un processo che viene applicato soltanto ai processi utente:
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \draw (0,0) rectangle ++(4,1) node[midway] {Kernel};
+
+        \draw (0.25,1) rectangle ++(0.5,0.5) node[midway] {\( p_1 \)};
+        \draw (1.25,1) rectangle ++(0.5,0.5) node[midway] {\( p_2 \)};
+        \node at (2.45,1.25) {\(\dots\)};
+        \draw (3.25,1) rectangle ++(0.5,0.5) node[midway] {\( p_n \)};
+      \end{tikzpicture}
+      \caption{Kernel separato}
+    \end{figure}
+
+  \item \textbf{Kernel in processi utente}: Il kernel è eseguito come un processo
+    utente fornendo delle procedure richiamabili da programmi utente in modalità kernel.
+    L'immagine dei processi (PCB) deve contenere anche:
+    \begin{itemize}
+      \item Kernel stack per gestire il funzionamento del processo in modalità protetta
+        (chiamate a funzione)
+      \item Codice/dati del S.O. condiviso tra processi utente
+    \end{itemize}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \draw (-0.25,0) rectangle ++(4.5,1) node[midway] {Process Switching Functions};
+
+        \draw (0,1) rectangle ++(1,0.8) node[midway,align=center] {OS\\func.};
+        \draw (0,1 + 0.8) rectangle ++(1,0.5) node[midway] {\( p_1 \)};
+
+        \draw (1.2,1) rectangle ++(1,0.8) node[midway,align=center] {OS\\func.};
+        \draw (1.2,1 + 0.8) rectangle ++(1,0.5) node[midway] {\( p_2 \)};
+
+        \node at (2.57,1.25) {\(\dots\)};
+
+        \draw (3,1) rectangle ++(1,0.8) node[midway,align=center] {OS\\func.};
+        \draw (3,1 + 0.8) rectangle ++(1,0.5) node[midway] {\( p_n \)};
+      \end{tikzpicture}
+      \caption{Kernel in processi utente}
+    \end{figure}
+    Il vantaggio è che 
+    basta cambiare la modalità di esecuzione per passare da utente a kernel
+    che è più leggero di un context switch e dopo che il sistema operativo ha
+    completato il suo lavoro può decidere se riattivare lo stesso processo
+    utente (mode switch) o un altro (context switch)
+
+  \item \textbf{Kernel come processo}: I servizi del sistema operativo sono processi
+    individuali che si comportano come qualsiasi altro processo, solo che sono
+    eseguiti in modalità kernel e non in modalità utente. Una minima parte del
+    sistema operativo deve comunque eseguire al di fuori di tutti i processi (scheduler).
+    È vantaggioso per i sistemi multiprocessore perchè i processi possono essere
+    eseguiti in parallelo.
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \draw (0,0) rectangle ++(9,1) node[midway] {Kernel};
+
+        \draw (0.25,1) rectangle ++(0.5,0.5) node[midway] {\( p_1 \)};
+        \draw (1.25,1) rectangle ++(0.5,0.5) node[midway] {\( p_2 \)};
+        \node at (2.45,1.25) {\(\dots\)};
+        \draw (3.25,1) rectangle ++(0.5,0.5) node[midway] {\( p_n \)};
+
+        \draw (5,1) rectangle ++(0.5,0.5) node[midway,align=center,scale=0.9] {\( os_1 \)};
+        \draw (6,1) rectangle ++(0.5,0.5) node[midway,align=center,scale=0.9] {\( os_2 \)};
+        \node at (7.25,1.25) {\(\dots\)};
+        \draw (8,1) rectangle ++(0.5,0.5) node[midway,align=center,scale=0.9] {\( os_n \)};
+      \end{tikzpicture}
+      \caption{Kernel separato}
+    \end{figure}
+\end{itemize}
+
+\subsubsection{Problematiche}
+I problemi principali sono:
+\begin{itemize}
+  \item Allocazione delle risorse (CPU, memoria, spazio su disco) ai
+    processi e ai thread.
+  \item Coordinamento tra processi e thread (concorrenti):
+    \begin{itemize}
+      \item Sincronizzazione
+      \item Comunicazione
+    \end{itemize}
+\end{itemize}
 
 
 % Il sistema operativo fornisce dei servizi per comunicare con l'hardware e questi
