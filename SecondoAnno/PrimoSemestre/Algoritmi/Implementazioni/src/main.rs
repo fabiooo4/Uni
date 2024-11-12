@@ -1,11 +1,10 @@
 mod factorial;
 mod sorts;
-mod stack;
+// mod stack;
 
 use factorial::run_factorial;
 use sorts::{
-    bucket_sort::run_bucket_sort, counting_sort::run_counting_sort, insertion_sort::insertion_sort,
-    run_sort,
+    bucket_sort::run_bucket_sort, counting_sort::run_counting_sort, insertion_sort::insertion_sort, radix_sort::{radix_sort, run_radix_sort}, run_sort
 };
 use std::fmt::Display;
 
@@ -16,6 +15,7 @@ pub enum Algorithms {
     MergeSort,
     HeapSort,
     CountingSort,
+    RadixSort,
     Factorial,
 }
 
@@ -28,6 +28,7 @@ impl Display for Algorithms {
             Algorithms::MergeSort => write!(f, "Merge Sort O(n log n)"),
             Algorithms::HeapSort => write!(f, "Heap Sort O(n log n)"),
             Algorithms::CountingSort => write!(f, "Counting Sort O(n)"),
+            Algorithms::RadixSort=> write!(f, "Radix Sort O(n)"),
             Algorithms::Factorial => write!(f, "Factorial O(n)"),
         }
     }
@@ -42,6 +43,7 @@ impl Algorithms {
             Algorithms::MergeSort => run_sort(n, insertion_sort),
             Algorithms::HeapSort => run_sort(n, insertion_sort),
             Algorithms::CountingSort => run_counting_sort(n),
+            Algorithms::RadixSort => run_radix_sort(n),
             Algorithms::Factorial => run_factorial(n as i64),
         }
     }
@@ -55,6 +57,7 @@ fn main() {
         Algorithms::MergeSort,
         Algorithms::HeapSort,
         Algorithms::CountingSort,
+        Algorithms::RadixSort,
         Algorithms::Factorial,
     ];
 
