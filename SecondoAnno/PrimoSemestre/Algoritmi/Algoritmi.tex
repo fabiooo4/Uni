@@ -1554,4 +1554,153 @@ ad esempio uno stack è definito come una sequenza di push:
   \text{\texttt{push(push(push(empty(),1),2),3)}}
 \] 
 
+\subsection{Queue}
+Una coda è una struttura dati in cui si possono inserire elementi in fondo e
+rimuoverli dall'inizio. Le operazioni possibili sono:
+\begin{itemize}
+  \item \texttt{new()}: Crea una coda vuota
+  \item \texttt{enqueue(Q,x)}: Inserisce un elemento \( x \) in fondo alla coda \( Q \) 
+  \item \texttt{dequeue(Q)}: Rimuove l'elemento in cima alla coda \( Q \) 
+  \item \texttt{front(Q)}: Restituisce l'elemento in cima alla coda \( Q \) 
+  \item \texttt{is\_empty()}: Restituisce vero se la coda è vuota
+\end{itemize}
+
+\subsection{Albero binario}
+Un albero binario è una struttura dati in cui ogni nodo ha al massimo 2 figli.
+\begin{figure}[H]
+  \centering
+  \begin{forest}
+    for tree={
+    circle,
+    draw,
+    minimum size=2em,
+    inner sep=1pt,
+    s sep=1cm,
+  }
+    [\( x \)
+      [\( y \)
+        [\( z \)]
+      ]
+      [\( v \)
+        [\( u \)]
+        [\( t \)]
+      ]
+    ]
+  \end{forest}
+  \caption{Albero binario}
+\end{figure}
+\noindent
+Le operazioni possibili su un albero binario sono:
+\begin{itemize}
+  \item \texttt{new()}: Crea un albero vuoto
+  \item \texttt{insert(T, x)}: Crea un nuovo nodo con valore \( x \) e lo aggiunge
+    all'albero \( T \)
+  \item \texttt{extract(T, x)}: Rimuove il nodo con valore \( x \) dall'albero \( T \)
+  \item \texttt{is\_empty()}: Restituisce vero se l'albero è vuoto
+  \item \texttt{left(T)}: Restituisce il figlio sinistro dell'albero \( T \) 
+  \item \texttt{right(T)}: Restituisce il figlio destro dell'albero \( T \) 
+  \item \texttt{value(T)}: Restituisce il valore del nodo dell'albero \( T \)
+\end{itemize}
+Un albero è \textbf{bilanciato} quando la differenza tra l'altezza del sottoalbero sinistro
+e di quello destro è al massimo 1. Un albero è \textbf{completo} quando tutti i livelli
+sono completi, cioè tutti i nodi sono presenti, tranne l'ultimo, che può essere incompleto.
+
+\vspace{1em}
+\noindent
+La profondità di un albero di \( n \) nodi è:
+\[
+P(n) = 1 + P\left( \left\lceil \frac{n-1}{2} \right\rceil \right) = \Theta(\log n)
+\] 
+
+\subsubsection{Albero binario di ricerca}
+Un albero binario di ricerca è un albero binario in cui per ogni nodo \( x \) valgono
+le seguenti proprietà:
+\begin{itemize}
+  \item Tutti i nodi nel sottoalbero sinistro di \( x \) hanno valore minore di \( x \) 
+  \item Tutti i nodi nel sottoalbero destro di \( x \) hanno valore maggiore di \( x \)
+\end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \begin{forest}
+    for tree={
+    circle,
+    draw,
+    minimum size=2em,
+    inner sep=1pt,
+    s sep=1cm,
+  }
+    [\( 25 \)
+      [\( 17 \)
+        [\( 2 \)]
+        [\( 20 \)]
+      ]
+      [\( 30 \)
+        [\( 27 \)]
+        [\( 40 \)]
+      ]
+    ]
+  \end{forest}
+  \caption{Albero binario di ricerca}
+\end{figure}
+
+\noindent
+Le operazioni possibili su un albero binario di ricerca sono:
+\begin{itemize}
+  \item \texttt{insert(T, x)}: Inserisce un nodo con valore \( x \) nell'albero \( T \)
+  \item \texttt{extract(T, x)}: Rimuove il nodo con valore \( x \) dall'albero \( T \)
+  \item \texttt{search(T, x)}: Restituisce vero se il valore \( x \) è 
+    presente nell'albero \( T \)
+  \item \texttt{min(T)}: Restituisce il valore minimo dell'albero \( T \)
+  \item \texttt{max(T)}: Restituisce il valore massimo dell'albero \( T \)
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Non è possibile inserire un nodo in un albero binario di ricerca in tempo logaritmico
+perchè potrebbe dover essere inserito in modo da sbilanciare l'albero, quindi per
+riottenere un albero bilanciato non rimane che spostare tutti gli elementi in una
+posizione diversa.
+
+Per ottenere la complessità logaritmica, bisogna utilizzare un albero che si può
+sbilanciare, ma non troppo.
+
+\begin{itemize}
+  \item \textbf{Inserimento}
+    Per inserire un nodo in un albero binario di ricerca si può procedere nel seguente modo:
+    \begin{enumerate}
+      \item Si parte dalla radice e si scende fino a trovare il nodo in cui inserire il
+        nuovo nodo rispettando le proprietà dell'albero binario di ricerca
+      \item Si inserisce il nodo in quel punto
+    \end{enumerate}
+
+  \item \textbf{Rimozione}
+    Per rimuovere un elemento da un albero binario di ricerca si possono avere 3 casi:
+    \begin{enumerate}
+      \item Il nodo da rimuovere è una foglia: si può rimuovere direttamente
+      \item Il nodo da rimuovere ha un solo figlio: si può sostituire il nodo con il figlio
+      \item Il nodo da rimuovere ha due figli: si può sostituire il nodo con il minimo
+        del sottoalbero destro o con il massimo del sottoalbero sinistro
+    \end{enumerate}
+    
+\end{itemize}
+Una volta che un nodo viene aggiunto o rimosso non si può più essere certi che 
+l'albero sia ancora bilanciato, quindi bisogna fare in modo che l'albero venga
+bilanciato ogni volta che viene modificato e la complessità non sarà più logaritmica.
+
+\subsection{Lista doppiamente puntata}
+Una lista doppiamente puntata è una struttura dati in cui ogni nodo ha un puntatore
+al nodo precedente e al nodo successivo.
+
+\vspace{1em}
+\noindent
+Per rimuovere un elemento \( x \) dalla lista bisogna:
+\begin{enumerate}
+  \item Trovare il nodo \( x \)
+  \item Collegare il nodo precedente a \( x \) con il nodo successivo a \( x \)
+\end{enumerate}
+Il problema di questa soluzione è che bisogna anche gestire i casi degli estremi
+separatamente. Per evitare di gestire i casi specifici si possono aggiungere dei
+nodi sentinella all'inizio e alla fine della lista.
+
 \end{document}
