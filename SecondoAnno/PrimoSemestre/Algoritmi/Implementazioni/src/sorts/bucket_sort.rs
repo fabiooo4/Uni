@@ -1,3 +1,9 @@
+use crate::Algorithms;
+
+use crate::sorts::{
+    heap_sort::heap_sort, insertion_sort::insertion_sort, merge_sort::merge_sort,
+    quick_sort::quick_sort,
+};
 use cpu_time::ProcessTime;
 use indicatif::{ProgressBar, ProgressIterator, ProgressStyle};
 use rand::{distributions::Uniform, Rng};
@@ -11,6 +17,9 @@ pub fn bucket_sort<T: PartialOrd + Ord + Copy + Into<u32>>(
     if list.is_empty() {
         return;
     };
+
+    pb.set_length(list.len() as u64 * 2);
+
     let mut buckets: Vec<Vec<T>> = vec![Vec::new(); k as usize];
 
     let max = match list.iter().max() {
@@ -21,19 +30,77 @@ pub fn bucket_sort<T: PartialOrd + Ord + Copy + Into<u32>>(
     let m: u32 = max.into() + 1;
 
     // For each element in the list insert it into the appropriate bucket
-    (0..list.len()).for_each(|i| buckets[(k as u32 * list[i].into() / m) as usize].push(list[i]));
+    (0..list.len()).for_each(|i| {
+        pb.inc(1);
+        buckets[(k as u32 * list[i].into() / m) as usize].push(list[i])
+    });
 
     // Sort each bucket with the preferred sorting algorithm
-    buckets.iter_mut().for_each(|bucket| sort(bucket, pb));
+    let mut idx = 0;
+    for bucket in buckets.iter_mut() {
+        if bucket.is_empty() {
+            continue;
+        }
 
-    // Copy the concatenated buckets into the list to sort it
-    list.copy_from_slice(&buckets.concat());
+        sort(bucket, &ProgressBar::hidden());
+
+        // Append the sorted buckets to the list
+        list[idx..bucket.len()+idx].copy_from_slice(bucket);
+        idx += bucket.len();
+
+        pb.inc(bucket.len() as u64);
+    }
+
+    // list.copy_from_slice(&buckets.concat());
 }
 
-pub fn run_bucket_sort(
-    input_size: usize,
-    sort: fn(&mut [u16], &ProgressBar),
-) {
+pub fn run_bucket_sort(input_size: usize) {
+    let allowed_algorithms = [
+        Algorithms::InsertionSort,
+        Algorithms::QuickSort,
+        Algorithms::MergeSort,
+        Algorithms::HeapSort,
+    ];
+
+    let mut sort: Option<fn(&mut [u16], &ProgressBar)>;
+
+    loop {
+        print!("\nChoose the algorithm to use to sort each bucket:\n");
+        allowed_algorithms
+            .iter()
+            .enumerate()
+            .for_each(|(i, e)| println!("{}. {e}", i + 1));
+
+        let a: Result<usize, text_io::Error> = text_io::try_read!();
+        println!();
+
+        sort = match a {
+            Ok(a) => match allowed_algorithms.get(a.wrapping_sub(1)) {
+                Some(algorithm) => match algorithm {
+                    Algorithms::InsertionSort => Some(insertion_sort),
+                    Algorithms::QuickSort => Some(quick_sort),
+                    Algorithms::MergeSort => Some(merge_sort),
+                    Algorithms::HeapSort => Some(heap_sort),
+                    _ => None,
+                },
+                None => {
+                    println!("There is no algorithm with that number\n");
+                    None
+                }
+            },
+            Err(e) => {
+                println!("Invalid input: {e}\n");
+                None
+            }
+        };
+
+        if sort.is_some() {
+            break;
+        }
+    }
+
+    let sort = sort.unwrap();
+
     // Generate an array with the input size
     let mut rng = rand::thread_rng();
     let range = Uniform::new(0, u16::MAX);
@@ -90,7 +157,6 @@ pub fn run_bucket_sort(
 }
 
 #[cfg(test)]
-use crate::sorts::insertion_sort::insertion_sort;
 #[test]
 fn bucket_empty() {
     let mut input: [u16; 0] = [];
