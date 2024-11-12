@@ -1906,4 +1906,99 @@ else // Uso il congestion avoidance
   \end{figure}
 \end{example}
 
+\subsection{Protocollo UDP (User Datagram Protocol)}
+Il protocollo UDP è un protocollo \textbf{connectionless}, cioè non c'è uno scambio
+preliminare prima di inviare i dati, ed è anche \textbf{non affidabile}, cioè
+se i segmenti vengono persi non vengono ritrasmessi.
+
+\subsubsection{Formato del pacchetto}
+La grandezza dell'header UDP è di \( 8 byte \) tutti scritti in 2 righe da 4 byte. I
+campi dell'header sono i seguenti:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \def\len{7}
+    \def\hei{0.8}
+
+    \draw (0,0) rectangle ++(\len/2,-\hei) node[midway] {Porta sorgente};
+    \draw (\len/2,0) rectangle ++(\len/2,-\hei) node[midway] {Porta destinazione};
+
+    \draw (0,-\hei) rectangle ++(\len/2,-\hei) node[midway] {Lunghezza};
+    \draw (\len/2,-\hei) rectangle ++(\len/2,-\hei) node[midway] {Checksum};
+
+    \draw[fill,fill opacity=0.1,text opacity=1] (0,-\hei*2) rectangle ++(\len,-\hei*2) node[midway] {Dati};
+
+    \node[above,scale=0.7] at (0,0) {0};
+    \node[above,scale=0.7] at (\len/2,0) {15};
+    \node[above,scale=0.7] at (\len,0) {31};
+  \end{tikzpicture}
+  \caption{Formato del pacchetto UDP}
+\end{figure}
+
+\begin{itemize}
+  \item \textbf{Porta sorgente/destinazione}: Sono gli stessi campi presenti anche nel
+    pacchetto TCP.
+
+  \item \textbf{Lunghezza}: Indica la lunghezza del segmento UDP, cioè la somma della
+    lunghezza dell'header e dei dati.
+
+  \item \textbf{Checksum}: Serve per controllare la presenza di errori nel segmento.
+    Bisogna avere un modo per capire se ci sono stati degli errori nella trasmissione dei
+    dati per poter scartare il pacchetto.
+\end{itemize}
+Siccome UDP non ha il sequence number, sta all'applicazione che utilizza UDP gestire
+come ordinare i pacchetti.
+
+
+\section{Livello di rete}
+\subsection{Protocollo IP (Internet Protocol)}
+\subsubsection{Formato del pacchetto}
+Il formato del pacchetto IP è il seguente:
+\label{12-11-D1}
+
+\begin{itemize}
+  \item \textbf{Versione} (4 bit): Indica la versione del protocollo IP utilizzato. Attualmente
+    si utilizza la versione 4 (IPv4), la versione 6 (IPv6) è già implementata ma non
+    ancora diffusa. Questo campo è stato pensato per poter supportare più versioni,
+    siccome non si sapeva se il protocollo sarebbe stato utilizzato per molto tempo.
+
+  \item \textbf{Lunghezza dell'header} (4 bit): Indica la lunghezza dell'header,
+    che di solito è di 20 bit, ma può essere più lungo se ci sono delle opzioni.
+
+  \item \textbf{Service type} (8 bit): È un codice che identifica una classe di servizio,
+    cioè, come vengono gestiti i pacchetti nei buffer:
+    \label{12-11-D2}
+
+  \item \textbf{Lunghezza totale} (16 bit): Indica la lunghezza totale del pacchetto,
+    cioè la somma della lunghezza dell'header e dei dati.
+
+  \item \textbf{Identificativo} (16 bit): È un numero che identifica il pacchetto.
+    Questo campo è utilizzato per il riassemblaggio dei pacchetti.
+
+  \item \textbf{Flags} (3 bit): Sono dei bit che indicano se il pacchetto è frammentato
+    o meno.
+
+  \item \textbf{Fragment Offset} (13 bit): Indica l'offset del frammento rispetto al
+    pacchetto
+
+  \item \textbf{TTL (Time To Live)} (8 bit): È un contatore inizializzato dalla sorgente,
+    che di solito vale 64 o 128, che indica il numero massimo di router che
+    il pacchetto può attraversare, quindi ogni router che elabora tale pacchetto decrementa
+    tale valore di 1, e se il valore diventa 0, il router scarta il pacchetto e manda un
+    messaggio di errore alla sorgente.
+
+    \vspace{1em}
+    \noindent
+    In caso di problemi, la rete deve ricalcolare i percorsi e nel frattempo si possono
+    creare dei \textbf{routing-loop} (momentanei). Il TTL permette di non caricare la rete
+    in caso di routing-loop.
+
+  \item \textbf{Type} (8 bit): È un codice che identifica il protocollo usato nei
+    dati trasportati nel payload.
+    \label{12-11-D3}
+
+  \item \textbf{Header Checksum} (16 bit): Serve per controllare la presenza di errori
+    nell'header del pacchetto.
+\end{itemize}
+
 \end{document}

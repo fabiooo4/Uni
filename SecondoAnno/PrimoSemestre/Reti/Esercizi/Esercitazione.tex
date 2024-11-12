@@ -381,4 +381,49 @@ L'indirizzo di broadcast della LAN 3 è:
     \] 
 \end{enumerate}
 
+\section{TCP}
+L'obiettivo di questi esercizi è quello di vedere come si comporta l'algoritmo in situazioni 
+particolari.
+\subsection{Esercizio 1}
+Un'applicazione \( A \) deve trasferire verso un'applicazione \( B \) \( 96000 byte \).
+Si suppone che la connessione sia già stata instaurata. I dati sono i seguenti:
+\begin{itemize}
+  \item \texttt{mss} = 1000 byte
+  \item \texttt{rcvwnd} = 32000 byte, costante per l'intero trasferimento dei dati
+  \item \texttt{ssthresh} = \( \frac{\texttt{rcvwnd}_{\text{iniziale}}}{2} \) 
+  \item \texttt{rtt} = costante, pari a \( 0.5 \) secondi
+  \item \texttt{rto} = \( 2 \cdot \texttt{rtt} \), raddoppia in caso di perdite sequenziali
+  \item Down di rete (rete fuori uso, in cui tutti i segmenti vengono persi) = 
+    \[
+    \begin{aligned}
+      t_1 = 3 &\to t_2 = 3,5\\
+      t_3 = 7 &\to t_4 = 7,5
+    \end{aligned}
+    \] 
+\end{itemize}
+Lo scopo è quello di valutare l'evoluzione temporale della \texttt{cwnd} fino a fine
+trasmissione.
+
+\subsubsection{Risoluzione}
+Il numero di segmenti da trasmettere sono:
+\[
+  \frac{\text{byte da trasmettere}}{\text{\texttt{mss}}} = \frac{96000 byte}{1000 byte}
+  = 96 \text{ segmenti}
+\] 
+La \texttt{rcvwnd} iniziale vale:
+\[
+  \text{\texttt{rcvwnd}}_{\text{iniziale}} = \frac{32000 byte}{1000 byte} = 32 \text{ segmenti}
+\] 
+La \texttt{ssthresh} vale:
+\[
+  \text{\texttt{ssthresh}}_{\text{iniziale}} = \frac{32}{2} = 16 \text{ segmenti}
+\]
+La \texttt{cwnd} iniziale vale 1:
+\[
+  \text{\texttt{cwnd}}_{\text{iniziale}} = 1
+\] 
+\label{12-11-D4}
+
+
+
 \end{document}
