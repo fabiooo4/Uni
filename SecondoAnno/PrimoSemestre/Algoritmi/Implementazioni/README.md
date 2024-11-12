@@ -31,5 +31,5 @@ cargo run --release
 - [x] Counting sort
 - [x] Factorial
 - [x] Bucket sort
-- [ ] Radix sort
+- [x] Radix sort
 - [ ] Randomized search
