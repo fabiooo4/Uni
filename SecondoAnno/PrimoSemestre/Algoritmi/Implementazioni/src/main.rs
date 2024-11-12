@@ -1,5 +1,6 @@
 mod factorial;
 mod sorts;
+mod stack;
 
 use factorial::run_factorial;
 use sorts::{
@@ -87,3 +88,4 @@ fn main() {
         Err(e) => println!("Invalid input: {e}"),
     }
 }
+
