@@ -3,14 +3,15 @@ mod sorts;
 
 use factorial::run_factorial;
 use sorts::{
-    counting_sort::run_counting_sort, heap_sort::heap_sort, insertion_sort::insertion_sort,
-    merge_sort::merge_sort, quick_sort::quick_sort, run_sort,
+    bucket_sort::run_bucket_sort, counting_sort::run_counting_sort, heap_sort::heap_sort,
+    insertion_sort::insertion_sort, merge_sort::merge_sort, quick_sort::quick_sort, run_sort,
 };
 use std::fmt::Display;
 
 pub enum Algorithms {
     InsertionSort,
     QuickSort,
+    BucketSort,
     MergeSort,
     HeapSort,
     CountingSort,
@@ -22,6 +23,7 @@ impl Display for Algorithms {
         match self {
             Algorithms::InsertionSort => write!(f, "Insertion Sort O(n²)"),
             Algorithms::QuickSort => write!(f, "Quick Sort O(n²)"),
+            Algorithms::BucketSort => write!(f, "Bucket sort O(n²)"),
             Algorithms::MergeSort => write!(f, "Merge Sort O(n log n)"),
             Algorithms::HeapSort => write!(f, "Heap Sort O(n log n)"),
             Algorithms::CountingSort => write!(f, "Counting Sort O(n)"),
@@ -34,6 +36,7 @@ fn main() {
     let entries = [
         Algorithms::InsertionSort,
         Algorithms::QuickSort,
+        Algorithms::BucketSort,
         Algorithms::MergeSort,
         Algorithms::HeapSort,
         Algorithms::CountingSort,
@@ -119,6 +122,19 @@ fn main() {
                             match n {
                                 Ok(n) => {
                                     run_counting_sort(n);
+                                }
+                                Err(e) => println!("Invalid input: {e}"),
+                            }
+                        }
+
+                        Algorithms::BucketSort => {
+                            // Choose the size of the input
+                            print!("\nSet the input size: ");
+                            let n: Result<usize, text_io::Error> = text_io::try_read!();
+
+                            match n {
+                                Ok(n) => {
+                                    run_bucket_sort(n, insertion_sort);
                                 }
                                 Err(e) => println!("Invalid input: {e}"),
                             }
