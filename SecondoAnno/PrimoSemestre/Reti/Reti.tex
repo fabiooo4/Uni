@@ -2056,12 +2056,45 @@ Il formato del pacchetto IP è il seguente:
 (Da non confondersi con la segmentazione del livello trasporto).
 Data una tecnologia di trasmissione (scheda di rete, a livello data link) c'è una 
 dimensione massima di trasmissione chiamata \textbf{MTU} (Maximum Transmission Unit).
-\label{13-11-D1}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{mtu}
+  \caption{Maximum Transmission Unit}
+\end{figure}
+\noindent
 Se un pacchetto, durante il percorso, incontra un router che ha una MTU
 minore di quella del pacchetto, il router \textbf{frammenta} il pacchetto in pacchetti
 più piccoli con MTU compatibile con la linea di uscita.
 Questo processo è chiamato \textbf{frammentazione}.
-\label{13-11-D2}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw[red] (0,0) rectangle ++(1,1) node[midway] {IP};
+    \draw (0,0) ++(1,0) rectangle ++(4,1);
+
+    \draw (0,1) ++(0,0.2) -- ++(0,0.2) -- ++(5,0) node[midway,above] {\( 1500byte \)}
+      -- ++(0,-0.2);
+
+    \draw[->] (2.5,0) -- ++(0,-1) node[midway,right,align=center] {Router con il link\\con \( MTU=1000byte \) }
+      node[below] (f) {Frammentazione};
+
+    \draw[->] (f) -- ++(-1,-1);
+    \draw[red] (-2,-3.5) rectangle ++(1,1) node[midway] {IP};
+    \draw (-2,-3.5) ++(1,0) rectangle ++(3,1);
+    \draw (-2,-3.5) ++(0,-0.2) -- ++(0,-0.2) -- ++(4,0) node[midway,below] {\( 1000byte \)}
+      -- ++(0,0.2);
+
+
+    \draw[->] (f) -- ++(1,-1);
+    \draw[red] (3,-3.5) rectangle ++(1,1) node[midway] {IP};
+    \draw (3,-3.5) ++(1,0) rectangle ++(2,1);
+    \draw (3,-3.5) ++(0,-0.2) -- ++(0,-0.2) -- ++(3,0) node[midway,below] {\( < 1000byte \)}
+      -- ++(0,0.2);
+  \end{tikzpicture}
+  \caption{Esempio di frammentazione}
+\end{figure}
+
+\noindent
 Solo l'host di destinazione (non il router della lan a cui appartiene l'host,
 nè i router intermedi) è responsabile del riassemblaggio dei pacchetti.
 
@@ -2088,10 +2121,160 @@ I campi dell'header IP coinvolti nella frammentazione sono:
 \begin{example}
   Prendiamo ad esempio un pacchetto che ha come \( MTU = 5000 byte \) e genera un
   pacchetto di \( 4000 byte + 20 byte \) di header IP.
-  \label{13-11-D3}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \def\len{0.95*\linewidth}
+      \def\hei{0.6}
+
+      \draw (0,0) rectangle ++(\len/8,-\hei) node[midway] {};
+      \draw (\len/8,0) rectangle ++(\len/8,-\hei) node[midway,scale=0.7] {};
+      \draw (\len/4,0) rectangle ++(\len/4,-\hei) node[midway] {};
+      \draw (\len/2,0) rectangle ++(\len/2,-\hei) node[midway] {};
+
+      \draw (0,-\hei) rectangle ++(\len/2,-\hei) node[midway] {Identification = 476};
+      \draw (\len/2,-\hei) rectangle ++(\len/10,-\hei) node[midway,scale=0.9] {M = 0};
+      \draw (\len/10+\len/2,-\hei) rectangle ++(\len/2.5,-\hei) node[midway] {Offset = 0};
+
+      \draw (0,-\hei*2) rectangle ++(\len/4,-\hei) node[midway] {};
+      \draw (\len/4,-\hei*2) rectangle ++(\len/4,-\hei) node[midway] {};
+      \draw (\len/2,-\hei*2) rectangle ++(\len/2,-\hei) node[midway] {};
+
+      \draw (0,-\hei*3) rectangle ++(\len,-\hei) node[midway,scale=0.9] {Indirizzo IP sorgente};
+
+      \draw (0,-\hei*4) rectangle ++(\len,-\hei) node[midway,scale=0.9] {Indirizzo IP destinazione};
+
+      \draw (0,-\hei*5) rectangle ++(\len,-\hei) node[midway,scale=0.9] {};
+
+      \draw[fill,fill opacity=0.1,text opacity=1] (0,-\hei*6) rectangle ++(\len,-\hei*2) node[midway] {Dati};
+
+      \node[above,scale=0.7] at (0,0) {0};
+      \node[above,scale=0.7] at (\len/2,0) {15};
+      \node[above,scale=0.7] at (\len,0) {31};
+    \end{tikzpicture}
+    \caption{Pacchetto non frammentato}
+  \end{figure}
+  \noindent
   Durante il percorso il pacchetto passa attraverso un router con link di uscita con 
   \( MTU = 1420 byte\) (\( 1400 \) per il payload e \( 20 \) per l'header) 
-  \label{13-11-D4}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \def\len{0.25*\linewidth}
+      \def\hei{0.6}
+
+      \draw (0,0) rectangle ++(\len/8,-\hei) node[midway] {};
+      \draw (\len/8,0) rectangle ++(\len/8,-\hei) node[midway,scale=0.7] {};
+      \draw (\len/4,0) rectangle ++(\len/4,-\hei) node[midway] {};
+      \draw (\len/2,0) rectangle ++(\len/2,-\hei) node[midway] {};
+
+      \draw (0,-\hei) rectangle ++(\len/2,-\hei) node[midway] {476};
+      \draw (\len/2,-\hei) rectangle ++(\len/10,-\hei) node[midway,scale=0.9] {1};
+      \draw (\len/10+\len/2,-\hei) rectangle ++(\len/2.5,-\hei) node[midway] {0};
+
+      \draw (0,-\hei*2) rectangle ++(\len/4,-\hei) node[midway] {};
+      \draw (\len/4,-\hei*2) rectangle ++(\len/4,-\hei) node[midway] {};
+      \draw (\len/2,-\hei*2) rectangle ++(\len/2,-\hei) node[midway] {};
+
+      \draw (0,-\hei*3) rectangle ++(\len,-\hei) node[midway,scale=0.8] {IP sorgente};
+
+      \draw (0,-\hei*4) rectangle ++(\len,-\hei) node[midway,scale=0.8] {IP destinazione};
+
+      \draw (0,-\hei*5) rectangle ++(\len,-\hei) node[midway,scale=0.9] {};
+
+      \draw[fill,fill opacity=0.1,text opacity=1] (0,-\hei*6) rectangle ++(\len,-\hei*2) node[midway] {Dati};
+
+      \node[above,scale=0.7] at (0,0) {0};
+      \node[above,scale=0.7] at (\len/2,0) {15};
+      \node[above,scale=0.7] at (\len,0) {31};
+
+      \draw (-0.1,-\hei*8) -- ++(-0.1,0) -- ++(0,\hei*2) node[midway,above,rotate=90,scale=0.8]
+        {\( 1400\,byte \) } -- ++(0.1,0);
+    \end{tikzpicture}
+    \begin{tikzpicture}
+      \def\len{0.25*\linewidth}
+      \def\hei{0.6}
+
+      \draw (0,0) rectangle ++(\len/8,-\hei) node[midway] {};
+      \draw (\len/8,0) rectangle ++(\len/8,-\hei) node[midway,scale=0.7] {};
+      \draw (\len/4,0) rectangle ++(\len/4,-\hei) node[midway] {};
+      \draw (\len/2,0) rectangle ++(\len/2,-\hei) node[midway] {};
+
+      \draw (0,-\hei) rectangle ++(\len/2,-\hei) node[midway] {476};
+      \draw (\len/2,-\hei) rectangle ++(\len/10,-\hei) node[midway,scale=0.9] {1};
+      \draw (\len/10+\len/2,-\hei) rectangle ++(\len/2.5,-\hei) node[midway] {175};
+
+      \draw (0,-\hei*2) rectangle ++(\len/4,-\hei) node[midway] {};
+      \draw (\len/4,-\hei*2) rectangle ++(\len/4,-\hei) node[midway] {};
+      \draw (\len/2,-\hei*2) rectangle ++(\len/2,-\hei) node[midway] {};
+
+      \draw (0,-\hei*3) rectangle ++(\len,-\hei) node[midway,scale=0.8] {IP sorgente};
+
+      \draw (0,-\hei*4) rectangle ++(\len,-\hei) node[midway,scale=0.8] {IP destinazione};
+
+      \draw (0,-\hei*5) rectangle ++(\len,-\hei) node[midway,scale=0.9] {};
+
+      \draw[fill,fill opacity=0.1,text opacity=1] (0,-\hei*6) rectangle ++(\len,-\hei*2) node[midway] {Dati};
+
+      \node[above,scale=0.7] at (0,0) {0};
+      \node[above,scale=0.7] at (\len/2,0) {15};
+      \node[above,scale=0.7] at (\len,0) {31};
+
+      \draw (-0.1,-\hei*8) -- ++(-0.1,0) -- ++(0,\hei*2) node[midway,above,rotate=90,scale=0.8]
+        {\( 1400\,byte \) } -- ++(0.1,0);
+    \end{tikzpicture}
+    \begin{tikzpicture}
+      \def\len{0.25*\linewidth}
+      \def\hei{0.6}
+
+      \draw (0,0) rectangle ++(\len/8,-\hei) node[midway] {};
+      \draw (\len/8,0) rectangle ++(\len/8,-\hei) node[midway,scale=0.7] {};
+      \draw (\len/4,0) rectangle ++(\len/4,-\hei) node[midway] {};
+      \draw (\len/2,0) rectangle ++(\len/2,-\hei) node[midway] {};
+
+      \draw (0,-\hei) rectangle ++(\len/2,-\hei) node[midway] {476};
+      \draw (\len/2,-\hei) rectangle ++(\len/10,-\hei) node[midway,scale=0.9] {0};
+      \draw (\len/10+\len/2,-\hei) rectangle ++(\len/2.5,-\hei) node[midway] {350};
+
+      \draw (0,-\hei*2) rectangle ++(\len/4,-\hei) node[midway] {};
+      \draw (\len/4,-\hei*2) rectangle ++(\len/4,-\hei) node[midway] {};
+      \draw (\len/2,-\hei*2) rectangle ++(\len/2,-\hei) node[midway] {};
+
+      \draw (0,-\hei*3) rectangle ++(\len,-\hei) node[midway,scale=0.8] {IP sorgente};
+
+      \draw (0,-\hei*4) rectangle ++(\len,-\hei) node[midway,scale=0.8] {IP destinazione};
+
+      \draw (0,-\hei*5) rectangle ++(\len,-\hei) node[midway,scale=0.9] {};
+
+      \draw[fill,fill opacity=0.1,text opacity=1] (0,-\hei*6) rectangle ++(\len,-\hei*2) node[midway] {Dati};
+
+      \node[above,scale=0.7] at (0,0) {0};
+      \node[above,scale=0.7] at (\len/2,0) {15};
+      \node[above,scale=0.7] at (\len,0) {31};
+
+      \draw (-0.1,-\hei*8) -- ++(-0.1,0) -- ++(0,\hei*2) node[midway,above,rotate=90,scale=0.8]
+        {\( 1200\,byte \) } -- ++(0.1,0);
+    \end{tikzpicture}
+
+    \vspace{2em}
+    \noindent
+    \begin{tikzpicture}
+      \draw[red] (0,0) rectangle ++(1,1) node[midway] {IP};
+      \draw (0,0) ++(1,0) rectangle ++(8,1);
+
+      \draw (0,1) ++(1,0.2) -- ++(0,0.2) -- ++(3,0) node[midway,above] {\( 1400byte \)}
+        -- ++(0,-0.2);
+
+      \draw (0,1) ++(4,0.2) -- ++(0,0.2) -- ++(3,0) node[midway,above] {\( 1400byte \)}
+        -- ++(0,-0.2);
+
+      \draw (0,1) ++(7,0.2) -- ++(0,0.2) -- ++(2,0) node[midway,above] {\( 1200byte \)}
+        -- ++(0,-0.2);
+    \end{tikzpicture}
+    \caption{Pacchetto frammentato}
+  \end{figure}
+
+  \noindent
   Gli offset sono:
   \begin{itemize}
     \item Primo frammento: \( \frac{0}{8} = 0 \) 
@@ -2099,7 +2282,5 @@ I campi dell'header IP coinvolti nella frammentazione sono:
     \item Terzo frammento: \( \frac{2800}{8} = 350 \)
   \end{itemize}
 \end{example}
-
-
 
 \end{document}
