@@ -2004,14 +2004,16 @@ Il formato del pacchetto IP è il seguente:
   \item \textbf{Lunghezza totale} (16 bit): Indica la lunghezza totale del pacchetto,
     cioè la somma della lunghezza dell'header e dei dati.
 
-  \item \textbf{Identificativo} (16 bit): È un numero che identifica il pacchetto.
+  \item \textbf{Identification} (16 bit): È un numero progressivo dato dalla sorgente
+    (livello di rete) ad ogni pacchetto (non ha nessuna relazione con il numero di
+    sequenza del TCP).
     Questo campo è utilizzato per il riassemblaggio dei pacchetti.
 
   \item \textbf{Flags} (3 bit): Sono dei bit che indicano se il pacchetto è frammentato
     o meno.
 
   \item \textbf{Fragment Offset} (13 bit): Indica l'offset del frammento rispetto al
-    pacchetto
+    pacchetto originale (diviso per 8).
 
   \item \textbf{TTL (Time To Live)} (8 bit): È un contatore inizializzato dalla sorgente,
     che di solito vale 64 o 128, che indica il numero massimo di router che
@@ -2050,5 +2052,55 @@ Il formato del pacchetto IP è il seguente:
   \item \textbf{Header Checksum} (16 bit): Serve per controllare la presenza di errori
     nell'header del pacchetto.
 \end{itemize}
+
+\subsubsection{Frammentazione}
+(Da non confondersi con la segmentazione del livello trasporto).
+Data una tecnologia di trasmissione (scheda di rete, a livello data link) c'è una 
+dimensione massima di trasmissione chiamata \textbf{MTU} (Maximum Transmission Unit).
+\label{13-11-D1}
+Se un pacchetto, durante il percorso, incontra un router che ha una MTU
+minore di quella del pacchetto, il router \textbf{frammenta} il pacchetto in pacchetti
+più piccoli con MTU compatibile con la linea di uscita.
+Questo processo è chiamato \textbf{frammentazione}.
+\label{13-11-D2}
+Solo l'host di destinazione (non il router della lan a cui appartiene l'host,
+nè i router intermedi) è responsabile del riassemblaggio dei pacchetti.
+
+Quando la destinazione riceve un frammento fa partire un timer (\( 250ms-500ms \)),
+se non riceve tutti i frammenti entro la scadenza del timer, scarta tutti i frammenti,
+altrimenti ricompone il pacchetto e lo consegna a livello di trasporto.
+
+\vspace{1em}
+\noindent
+I campi dell'header IP coinvolti nella frammentazione sono:
+\begin{itemize}
+  \item \textbf{Identification}
+  \item \textbf{Flags}
+    \begin{itemize}
+      \item Flag \( M \):
+        \begin{itemize}
+          \item 0: Se il pacchetto non è stato frammentato, oppure se è l'ultimo
+            frammento
+          \item 1: Se il pacchetto è un frammento, tranne l'ultimo
+        \end{itemize}
+    \end{itemize}
+  \item \textbf{Fragment Offset}
+\end{itemize}
+\begin{example}
+  Prendiamo ad esempio un pacchetto che ha come \( MTU = 5000 byte \) e genera un
+  pacchetto di \( 4000 byte + 20 byte \) di header IP.
+  \label{13-11-D3}
+  Durante il percorso il pacchetto passa attraverso un router con link di uscita con 
+  \( MTU = 1420 byte\) (\( 1400 \) per il payload e \( 20 \) per l'header) 
+  \label{13-11-D4}
+  Gli offset sono:
+  \begin{itemize}
+    \item Primo frammento: \( \frac{0}{8} = 0 \) 
+    \item Secondo frammento: \( \frac{1400}{8} = 175 \) 
+    \item Terzo frammento: \( \frac{2800}{8} = 350 \)
+  \end{itemize}
+\end{example}
+
+
 
 \end{document}
