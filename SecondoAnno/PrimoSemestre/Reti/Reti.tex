@@ -1954,7 +1954,39 @@ come ordinare i pacchetti.
 \subsection{Protocollo IP (Internet Protocol)}
 \subsubsection{Formato del pacchetto}
 Il formato del pacchetto IP è il seguente:
-\label{12-11-D1}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \def\len{0.95*\linewidth}
+    \def\hei{0.8}
+
+    \draw (0,0) rectangle ++(\len/8,-\hei) node[midway] {Versione};
+    \draw (\len/8,0) rectangle ++(\len/8,-\hei) node[midway,scale=0.7] {Header len.};
+    \draw (\len/4,0) rectangle ++(\len/4,-\hei) node[midway] {Service type};
+    \draw (\len/2,0) rectangle ++(\len/2,-\hei) node[midway] {Total length};
+
+    \draw (0,-\hei) rectangle ++(\len/2,-\hei) node[midway] {Identification};
+    \draw (\len/2,-\hei) rectangle ++(\len/10,-\hei) node[midway] {Flags};
+    \draw (\len/10+\len/2,-\hei) rectangle ++(\len/2.5,-\hei) node[midway] {Fragment offset};
+
+    \draw (0,-\hei*2) rectangle ++(\len/4,-\hei) node[midway] {TTL};
+    \draw (\len/4,-\hei*2) rectangle ++(\len/4,-\hei) node[midway] {Type};
+    \draw (\len/2,-\hei*2) rectangle ++(\len/2,-\hei) node[midway] {Header checksum};
+
+    \draw (0,-\hei*3) rectangle ++(\len,-\hei) node[midway,scale=0.9] {Indirizzo IP sorgente};
+
+    \draw (0,-\hei*4) rectangle ++(\len,-\hei) node[midway,scale=0.9] {Indirizzo IP destinazione};
+
+    \draw (0,-\hei*5) rectangle ++(\len,-\hei) node[midway,scale=0.9] {Opzioni};
+
+    \draw[fill,fill opacity=0.1,text opacity=1] (0,-\hei*6) rectangle ++(\len,-\hei*2) node[midway] {Dati};
+
+    \node[above,scale=0.7] at (0,0) {0};
+    \node[above,scale=0.7] at (\len/2,0) {15};
+    \node[above,scale=0.7] at (\len,0) {31};
+  \end{tikzpicture}
+  \caption{Formato del pacchetto IP}
+\end{figure}
 
 \begin{itemize}
   \item \textbf{Versione} (4 bit): Indica la versione del protocollo IP utilizzato. Attualmente
@@ -1966,8 +1998,8 @@ Il formato del pacchetto IP è il seguente:
     che di solito è di 20 bit, ma può essere più lungo se ci sono delle opzioni.
 
   \item \textbf{Service type} (8 bit): È un codice che identifica una classe di servizio,
-    cioè, come vengono gestiti i pacchetti nei buffer:
-    \label{12-11-D2}
+    cioè, come vengono gestiti i pacchetti nei buffer, ad esempio possono esserci
+    delle priorità diverse per ogni buffer.
 
   \item \textbf{Lunghezza totale} (16 bit): Indica la lunghezza totale del pacchetto,
     cioè la somma della lunghezza dell'header e dei dati.
@@ -1995,7 +2027,25 @@ Il formato del pacchetto IP è il seguente:
 
   \item \textbf{Type} (8 bit): È un codice che identifica il protocollo usato nei
     dati trasportati nel payload.
-    \label{12-11-D3}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \draw[red] (0,0) rectangle ++(1,1);
+        \draw[purple] (0.1,0.1) rectangle ++(0.3,0.3);
+
+
+        \node[red,below,scale=0.8,align=center] at (0.5,0) {Header\\IP};
+        \node[blue,above,scale=0.8,align=center] at (1.5,1) {Header\\trasporto};
+        \node[purple,above,scale=0.5,align=center] at (0.25,0.4) {TCP};
+
+        \draw[dashed,blue] (0,0) ++(1.1,0.1) rectangle ++(0.8,0.8);
+        \draw (0,0) ++(1,0) rectangle ++(4,1);
+
+        \draw (0,0) ++(1,-0.2) -- ++(0,-0.2) -- ++(4,0) node[midway,below] {Payload}
+          -- ++(0,0.2);
+      \end{tikzpicture}
+      \caption{Type contiene il codice del protocollo di trasporto}
+    \end{figure}
 
   \item \textbf{Header Checksum} (16 bit): Serve per controllare la presenza di errori
     nell'header del pacchetto.
