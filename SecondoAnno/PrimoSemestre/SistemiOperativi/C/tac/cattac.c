@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
   // If no args are provided
   if (argc <= 1) {
     // Print help of the command
-    printf("Usage:\n\ncat [FILE]...\n");
+    printf("Usage:\n\ncattac [FILE]...\n");
     return EXIT_SUCCESS;
   }
 
