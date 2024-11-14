@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
   // If no args are provided
   if (argc <= 1) {
     // Print help of the command
-    printf("Usage:\n\ntac [FILE]...\n");
+    printf("Usage:\n\ncat [FILE]...\n");
     return EXIT_SUCCESS;
   }
 
@@ -49,27 +49,34 @@ int main(int argc, char *argv[]) {
 
     // Buffer
     char buf[1];
+    char lines[1000][1000];
 
     // Print the contents of the file
-    int lseek_res = lseek(fd, 0, SEEK_END); // Set cursor to the end of the file
-    int read_res = 1;
+    int result = 1;
+    int line = 0;
+    int ch = 0;
+    while (result) {
+      result = read(fd, buf, 1);
 
-    while (read_res && lseek_res > 0) {
-      // Decrement the cursor by 2 because read increments it by 1
-      lseek_res = lseek(fd, -2, SEEK_CUR);
+      if (result) {
+        lines[line][ch] = buf[0];
 
-      read_res = read(fd, buf, 1);
-
-      if (read_res) {
-        printf("%s", buf);
+        if (buf[0] == '\n') {
+          line++;
+          ch = 0;
+        } else {
+          ch++;
+        }
       }
     }
 
-    if (read_res == -1 || lseek_res == -1) {
+    if (result == -1) {
       print_error();
     }
 
-    printf("\n");
+    for (int k = line; k >= 0; k--) {
+        printf("%s", lines[k]);
+    }
   }
 
   return EXIT_SUCCESS;
