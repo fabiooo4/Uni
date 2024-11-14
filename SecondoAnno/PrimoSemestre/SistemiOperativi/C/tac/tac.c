@@ -17,14 +17,16 @@ void print_error() {
   exit(EXIT_ERROR);
 }
 
-// Utilizzando solamente le system call open e read, e la funzione printf,
-// realizzare un programma che simuli il comportamento del comando cat.
-// Utilizzo: my_cat <file1> … <filen>.
+// Utilizzando solamente le system call open, read, lseek, e write, realizzare
+// un programma che simuli il  comportamento del comando tac. Al contrario di
+// cat, il comando tac stampa il contenuto di un file al  contrario (dall’ultimo
+// carattere al primo)
+// Utilizzo:    my_tac <file1> … <filen>
 int main(int argc, char *argv[]) {
   // If no args are provided
   if (argc <= 1) {
     // Print help of the command
-    printf("Usage:\n\ncat [FILE]...\n");
+    printf("Usage:\n\ntac [FILE]...\n");
     return EXIT_SUCCESS;
   }
 
@@ -49,15 +51,21 @@ int main(int argc, char *argv[]) {
     char buf[1];
 
     // Print the contents of the file
-    int result = 1;
-    while (result) {
-      result = read(fd, buf, 1);
-      if (result) {
+    int lseek_res = lseek(fd, 0, SEEK_END); // Set cursor to the end of the file
+    int read_res = 1;
+
+    while (read_res && lseek_res > 0) {
+      // Decrement the cursor by 2 because read increments it by 1
+      lseek_res = lseek(fd, -2, SEEK_CUR);
+
+      read_res = read(fd, buf, 1);
+
+      if (read_res) {
         printf("%s", buf);
       }
     }
 
-    if (result == -1) {
+    if (read_res == -1 || lseek_res == -1) {
       print_error();
     }
   }
