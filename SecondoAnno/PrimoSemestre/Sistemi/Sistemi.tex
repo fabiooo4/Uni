@@ -3631,100 +3631,243 @@ L'integrale converge se \( \sigma_i - \sigma < 0 \to \sigma > \sigma_i \) e quin
 Per un sistema LTI stabile RDC contiene sempre l'asse immaginatio
 
 \subsection{Proprietà della trasformata di Laplace}
-\begin{enumerate}
-  \item \textbf{Linearità}:
-    Siano \( v_1 \) e \( v_2 \)  funzioni che ammettono la trasformata di Laplace e 
-    rispettivamente \( V_1 \) e \( V_2 \) le loro trasformate di Laplace:
-    \[
-      \begin{aligned}
-        v_1 &\to V_1(s)\\
-        v_2 &\to V_2(s)
-      \end{aligned}
-    \] 
-    allora: $a v_1(t) + b v_2(t)$ ammette la trasformata di Laplace ed è definita come:
-    \[
-      \mathcal{L}[a v_1(t) + b v_2(t)](s) = a V_1(s) + b V_2(s)
-    \] 
-    Ha come ascissa di convergenza:
-    \[
+\subsubsection{Linearità}
+  Siano \( v_1 \) e \( v_2 \)  funzioni che ammettono la trasformata di Laplace e 
+  rispettivamente \( V_1 \) e \( V_2 \) le loro trasformate di Laplace:
+  \[
+    \begin{aligned}
+      v_1 &\to V_1(s)\\
+      v_2 &\to V_2(s)
+    \end{aligned}
+  \] 
+  allora: $a v_1(t) + b v_2(t)$ ammette la trasformata di Laplace ed è definita come:
+  \[
+    \mathcal{L}[a v_1(t) + b v_2(t)](s) = a V_1(s) + b V_2(s)
+  \] 
+  Ha come ascissa di convergenza:
+  \[
     \alpha \ge max \left\{ \alpha_1,\alpha_2 \right\} 
-    \] 
+  \] 
 
-  \item \textbf{Traslazione nel tempo}:
-    Sia \( v(t) \) una funzione che ammette la trasformata di Laplace \( V(s) \), allora
-    la trasformata di Laplace di \( v(t - \tau) \), con \( \tau > 0 \) è:
-    \[
-      \mathcal{L}[v(t - \tau)](s) = e^{-s \tau} \cdot \mathcal{L}[v(t)](s)
-    \] 
-    L'ascissa di convergenza rimane immutata
+\subsubsection{Traslazione nel tempo}
+  Sia \( v(t) \) una funzione che ammette la trasformata di Laplace \( V(s) \), allora
+  la trasformata di Laplace di \( v(t - \tau) \), con \( \tau > 0 \) è:
+  \[
+    \mathcal{L}[v(t - \tau)](s) = e^{-s \tau} \cdot \mathcal{L}[v(t)](s)
+  \] 
+  L'ascissa di convergenza rimane immutata
 
-    \vspace{1em}
-    \noindent
-    \textbf{Dimostrazione}:
-    \[
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione}:
+  \[
     \begin{aligned}
       \mathcal{L}[v(t-\tau)](s) &= \int_{0^-}^{+\infty} v(t-\tau) \cdot e^{-st} \, dt\\
                                 &= \int_{\tau^-}^{+\infty} v(t-\tau) \cdot e^{-st)} \, d\tau\\
-        x = t - \tau\\
-        t = x + \tau\\
-        dt = dx\\
+                                x = t - \tau\\
+                                t = x + \tau\\
+                                dt = dx\\
                                 &= \int_{0^-}^{+\infty} v(x) \cdot e^{-s(x+\tau)} \, dx\\
                                 &= e^{-s \tau} \int_{0^-}^{+\infty} v(x) \cdot e^{-sx} \, dx\\
                                 &= e^{-s \tau} \cdot \mathcal{L}[v(t)](s)
     \end{aligned}
-    \] 
+  \] 
 
-  \item \textbf{Traslazione nel dominio dei complessi} (moltiplicazione per una funzione
-    esponenziale):
-    Sia \( v(t) \) una funzione che ammette la trasformata di Laplace \( V(s) \), allora
-    la trasformata di Laplace di \( e^{\lambda t} \cdot v(t) \) è:
-    \[
-      \mathcal{L}[e^{\lambda t} \cdot v(t)](s) = V(s - \lambda)
-    \] 
-    L'ascissa di convergenza rimane spostata:
-    \[
+\subsubsection{Traslazione nel dominio dei complessi (moltiplicazione per una funzione
+  esponenziale)}
+
+  Sia \( v(t) \) una funzione che ammette la trasformata di Laplace \( V(s) \), allora
+  la trasformata di Laplace di \( e^{\lambda t} \cdot v(t) \) è:
+  \[
+    \mathcal{L}[e^{\lambda t} \cdot v(t)](s) = V(s - \lambda)
+  \] 
+  L'ascissa di convergenza rimane spostata:
+  \[
     \alpha = \alpha_0 + \Re(\lambda)
-    \] 
+  \] 
 
-    \vspace{1em}
-    \noindent
-    \textbf{Dimostrazione}:
-    \[
-      \begin{aligned}
-        \mathcal{L}[e^{\lambda t} \cdot v(t)](s) &= \int_{0^-}^{+\infty} e^{\lambda t} \cdot v(t) \cdot e^{-st} \, dt\\
-                                                 &= \int_{0^-}^{+\infty} v(t) \cdot e^{(\lambda - s)t} \, dt\\
-                                                 &= \int_{0^-}^{+\infty} v(t) \cdot e^{-\overbrace{(s - \lambda)}^{r}t} \, dt\\
-                                                 &= \mathcal{L}[v(t)](r)
-                                                 &= \mathcal{L}[v(t)](s - \lambda)
-      \end{aligned}
-    \] 
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione}:
+  \[
+    \begin{aligned}
+      \mathcal{L}[e^{\lambda t} \cdot v(t)](s) &= \int_{0^-}^{+\infty} e^{\lambda t} \cdot v(t) \cdot e^{-st} \, dt\\
+                                               &= \int_{0^-}^{+\infty} v(t) \cdot e^{(\lambda - s)t} \, dt\\
+                                               &= \int_{0^-}^{+\infty} v(t) \cdot e^{-\overbrace{(s - \lambda)}^{r}t} \, dt\\
+                                               &= \mathcal{L}[v(t)](r)
+                                               &= \mathcal{L}[v(t)](s - \lambda)
+    \end{aligned}
+  \] 
 
-  \item \textbf{Cambio di scala}:
-    Sia \( v(t) \) una funzione che ammette la trasformata di Laplace \( V(s) \), allora
-    la trasformata di Laplace di \( v(r t) \) è:
-    \[
-      \mathcal{L}[v(r t)](s) = \frac{1}{r} \cdot V\left( \frac{s}{r} \right)
-    \] 
-    L'ascissa di convergenza viene scalata:
-    \[
+  \subsubsection{Cambio di scala}
+  Sia \( v(t) \) una funzione che ammette la trasformata di Laplace \( V(s) \), allora
+  la trasformata di Laplace di \( v(r t) \) è:
+  \[
+    \mathcal{L}[v(r t)](s) = \frac{1}{r} \cdot V\left( \frac{s}{r} \right)
+  \] 
+  L'ascissa di convergenza viene scalata:
+  \[
     \alpha = r \cdot \alpha_0
-    \] 
+  \] 
 
-    \vspace{1em}
-    \noindent
-    \textbf{Dimostrazione}:
-    \[
-      \begin{aligned}
-        \mathcal{L}[v(r t)](s) &= \int_{0^-}^{+\infty} v(r t) \cdot e^{-st} \, dt\\
-        x = rt\\
-        t = \frac{x}{r}\\
-        dt = \frac{dx}{r}\\
-                               &= \int_{0^-}^{+\infty} v(x) \cdot e^{-s \frac{x}{r}} \, dx\\
-                               &= \frac{1}{r} \int_{0^-}^{+\infty} v(x) \cdot e^{-\frac{s}{r} x} \, dx\\
-                               &= \frac{\mathcal{L}[v(t)](\frac{s}{r})}{r}
-      \end{aligned}
-    \]
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione}:
+  \[
+    \begin{aligned}
+      \mathcal{L}[v(r t)](s) &= \int_{0^-}^{+\infty} v(r t) \cdot e^{-st} \, dt\\
+      x = rt\\
+      t = \frac{x}{r}\\
+      dt = \frac{dx}{r}\\
+                             &= \int_{0^-}^{+\infty} v(x) \cdot e^{-s \frac{x}{r}} \, dx\\
+                             &= \frac{1}{r} \int_{0^-}^{+\infty} v(x) \cdot e^{-\frac{s}{r} x} \, dx\\
+                             &= \frac{\mathcal{L}[v(t)](\frac{s}{r})}{r}
+    \end{aligned}
+  \]
 
-\end{enumerate}
+\subsubsection{Proprietà della derivata}
+\label{subsubsec:derivata}
+Sia \( v(t) \) una funzinoe che ammette la trasformata di Laplace \( V(s) \) ed
+esiste ed è finito il limite: \( v(0^-)= \lim_{t \to o^-} v(t) \), allora anche la
+sua derivata i-esima ammette la trasformata di Laplace e vale:
+\[
+  \mathcal{L}\left[ \frac{d^{i} v(t)}{dt^{i}} \right](s) = s^{i} \cdot V(s) -
+  \sum_{k=0}^{i-1} \frac{d^k v(t)}{dt^k} \cdot s^{i-k-1}, \quad t = 0^-
+\] 
+L'ascissa di convergenza è minore dell'ascissa di convergenza originale
+\[
+  \alpha \le \alpha_0
+\] 
+
+\vspace{1em}
+\noindent
+\textbf{Dimostrazione}:
+\[
+  \begin{aligned}
+    \mathcal{L}[\frac{d v(t)}{dt}](s) &= \int_{0^-}^{+\infty} \overbrace{\frac{d v(t)}{dt}}^{
+    f'(t)} \cdot \overbrace{e^{-st}}^{g(t)} \, dt\\
+    &= v(t) \cdot e^{-st} \Big|_{0^-}^{+\infty} - \left( 
+    -s \underbrace{\int_{0^-}^{+\infty} v(t) \cdot e^{-st} \, dt}_{\text{TdL}} \right)\\
+    &= \stackrel{0}{\cancel{\lim_{\varepsilon \to \infty} v(\varepsilon )
+    \cdot e^{-s \varepsilon }}} - \lim_{\varepsilon \to 0^-}
+    v(\varepsilon ) \cdot e^{-s \varepsilon } + s \cdot V(s)\\
+    &= s \cdot V(s) - v(0^-)
+  \end{aligned}
+\] 
+
+\vspace{1em}
+\noindent
+\textbf{Dimostrazione per la derivata seconda}:
+\[
+\begin{aligned}
+  \mathcal{L}\left[ \frac{d^{2} v(t)}{dt^{2}} \right](s) &= \mathcal{L}\left[ \frac{d}{dt}
+  \left( \frac{d v(t)}{dt} \right) \right](s)\\
+    &= s \cdot \mathcal{L}\left[
+    \frac{d v(t)}{dt} \right](s) - 
+    \frac{d v(t)}{dt} \Big|_{0^-}\\
+    &= s \cdot \left( s \cdot \mathcal{L}[v(t)](s) - v(0^-) \right) -
+    \frac{d v(t)}{dt} \Big|_{0^-}\\
+    &= s^{2} \cdot V(s) - s \cdot v(0^-) - \frac{d v(t)}{dt} \Big|_{0^-}
+\end{aligned}
+\] 
+
+\subsubsection{Moltiplicazione per una funzione polinomiale}
+Sia \( v(t) \) una funzione che ammette la trasformata di Laplace \( V(s) \), allora
+la trasformata di Laplace di \( t^{i} \cdot v(t) \) è:
+\[
+  \mathcal{L}[t^{i} \cdot v(t)](s) = (-1)^{i} \cdot \frac{d^{i} V(s)}{ds^{i}}
+\] 
+
+\vspace{1em}
+\noindent
+\textbf{Dimostrazione} (\( i = 1 \)):
+\[
+  \begin{aligned}
+    \mathcal{L}[t \cdot v(t)](s) &= \int_{0^-}^{+\infty} t \cdot v(t) \cdot e^{-st} \, dt\\
+                                 &= - \int_{0^-}^{+\infty} v(t) \cdot \left( -t \cdot e^{-st} \right) \, dt\\
+                                 &= - \int_{0^-}^{+\infty} v(t) \cdot \frac{d}{ds} \left( e^{-st} \right) \, dt\\
+                                 &= - \frac{d}{ds} \underbrace{\int_{0^-}^{+\infty} v(t) \cdot e^{-st} \, dt}_{\text{TdL \( v(t) \) }}\\
+                                 &= - \frac{d}{ds} V(s)
+  \end{aligned}
+\] 
+
+\subsubsection{Integrazione nel tempo}
+Sia \( v(t) \) una funzione che ammette la trasformata di Laplace \( V(s) \), allora
+la trasformata di Laplace di \( \psi(t) = \int_{0^-}^{t} v(t) \, dt \) è:
+\[
+  \mathcal{L}[\int_{0^-}^{t} v(\tau) \, d\tau](s) = \frac{V(s)}{s}
+\] 
+E l'ascissa di convergenza è:
+\[
+\alpha = max(\alpha_0,0)
+\] 
+
+\vspace{1em}
+\noindent
+\textbf{Dimostrazione}:
+\[
+  v_i(t) = \int_{0^-}^{t} v(\tau) \, d\tau \to v'_1(t) = v(t) \text{ e }
+  v(0^-) = \int_{0^-}^{0^-} v(\tau) \, d\tau = 0
+\] 
+Quindi
+\[
+  \begin{aligned}
+    \mathcal{L}[v(t)](s) &\stackrel{ \ref{subsubsec:derivata} }{\to} \mathcal{L}[v'_1(t)](s)\\ 
+                         &= s \cdot \mathcal{L}[v_1(t)](s) - v_1(0^-)\\
+                         &= s \mathcal{L}[\int_{0^-}^{t} v(\tau) \, d\tau](s)\\
+  \end{aligned}
+\] 
+Quindi:
+\[
+  \mathcal{L}[\int_{0^-}^{t} v(\tau) \, d\tau](s) = \frac{V(s)}{s}
+\] 
+
+\subsubsection{Integrale nel dominio dei complessi}
+Sia \( v(t) \) una funzione che ammette la trasformata di Laplace \( V(s) \), se
+esiste \( \lim_{t \to 0^-} \frac{v(t)}{t} \), allora la trasformata di Laplace è:
+\[
+  \mathcal{L}\left[ \frac{v(t)}{t} \right](s) = \int_{s}^{+\infty} \mathcal{L}[v(t)](\zeta) \, d\zeta
+\] 
+
+\subsubsection{Teorema del valore iniziale}
+Sia \( v(t) \) una funzione che ammette la trasformata di Laplace \( V(s) \), ed esiste
+ed è finito il limite \( \lim_{t \to 0^-} v(t) \), allora:
+\[
+  \lim_{t \to o^-} v(t) = \lim_{s \to +\infty} s \cdot \mathcal{L}[v(t)](s)
+\] 
+
+\subsubsection{Teorema del valore finale}
+Sia \( v(t) \) una funzione che ammette la trasformata di Laplace \( V(s) \), ed esiste
+ed è finito il limite \( \lim_{t \to +\infty} v(t) \), allora:
+\[
+  \lim_{t \to +\infty} v(t) = \lim_{s \to 0^+} s \cdot \mathcal{L}[v(t)](s)
+\]
+
+\subsubsection{Convoluzione nel dominio del tempo}
+Siano \( u(t) \) e \( v(t) \) due funzioni causali (nulle per \( t < 0 \)) che ammettono
+la trasformata di Laplace \( U(s) \) e \( V(s) \), allora \( (u \ast v)(t) \) ammette
+la trasformata di Laplace e vale:
+\[
+  \mathcal{L}[(u \ast v)(t)](s) = \mathcal{L}[u(t)](s) \cdot \mathcal{L}[v(t)](s)
+\] 
+
+\vspace{1em}
+\noindent
+\textbf{Dimostrazione}:
+\[
+  \begin{aligned}
+    \mathcal{L}[(u \ast v)(t)](s) &= \int_{0^-}^{+\infty} \left( 
+    \int_{-\infty}^{+\infty} u(\tau) \cdot v(t-\tau) \, d\tau \right) \cdot e^{-st} \, dt\\
+    \left\{ u(t) = 0, \;\; t < 0 \right\} \quad &= \int_{0^-}^{+\infty} \int_{-\infty}^{+\infty} u(\tau) \cdot v(t-\tau) \cdot e^{-st} \, d\tau \, dt\\
+                               &= \int_{0^-}^{+\infty} u(\tau) \cdot \left( 
+                                 \int_{0^-}^{+\infty} v(t-\tau) \cdot e^{-st} \, dt \right) \, d\tau\\
+    \text{Sostituisco: } & x = t-\tau, \quad t = x + \tau, \quad dt = dx\\
+    \mathcal{L}[(u \ast v)(t)](s) &= \int_{0^-}^{+\infty} u(\tau) \cdot \left(
+      \int_{0^-}^{+\infty} v(x) \cdot e^{-s(x+\tau)} \, dx \right) \, d\tau\\
+                                  &= \int_{0^-}^{+\infty} u(\tau) \cdot e^{-s \tau} \, d\tau \cdot
+                                  \int_{0^-}^{+\infty} v(x) \cdot e^{-sx} \, dx\\
+                                  &= \mathcal{L}[u(t)](s) \cdot \mathcal{L}[v(t)](s)
+  \end{aligned}
+\]
 
 \end{document}
