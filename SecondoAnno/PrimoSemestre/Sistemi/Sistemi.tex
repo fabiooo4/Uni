@@ -904,7 +904,7 @@ Dove:
 
     \draw[domain=-4:4,smooth,variable=\x,red] plot ({\x},{exp(\sigm * \x)}) node[above right, scale=0.9,align=center] {Inviluppo};
     \draw[domain=-4:4,smooth,variable=\x,red] plot ({\x},{-exp(\sigm * \x)}) node[above right, scale=0.9,align=center] {};
-    \draw[domain=-4:4,smooth,variable=\x,blue,samples=70] plot ({\x},{exp(\sigm*\x)*cos(\omeg*\x r)}) node[above right, scale=0.9,align=center] {$r>0$};
+    \draw[domain=-4:4,smooth,variable=\x,blue,samples=70] plot ({\x},{exp(\sigm*\x)*cos(\omeg*\x r)}) node[below right,xshift=0.3cm, scale=0.9,align=center] {$r>0$};
   \end{tikzpicture}
   \caption{Esponenziale sinusoidale continuo con \( r < 0 \)}
 \end{figure}
