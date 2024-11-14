@@ -2283,4 +2283,99 @@ I campi dell'header IP coinvolti nella frammentazione sono:
   \end{itemize}
 \end{example}
 
+\subsection{Routing/instradamento}
+Un pacchetto potrebbe essere ovunque nella rete, quindi data la destinazione, il livello
+di rete deve \textbf{fare il possibile} (servizio \textbf{best effort}) per consegnare il
+pacchetto a tale destinazione.
+
+Il \textbf{routing} è diviso in:
+\begin{itemize}
+  \item \textbf{Consegna diretta}: La consegna di un pacchetto dall'host \( A \) all'host
+    \( B \) è diretta e non passa per nessun router:
+    \label{14-11-D1}
+
+  \item \textbf{Consegna indiretta}: La consegna di un pacchetto dall'host \( A \) all'host
+    \( C \) è indiretta e passa per uno o più router:
+    \label{14-11-D2}
+\end{itemize}
+Un host conosce, oltre al proprio indirizzo IP, la maschera della rete a cui appartiene
+e conosce l'indirizzo IP del router di bordo della rete a cui appartiene:
+\label{14-11-D3}
+
+\noindent
+Data una destinazione \( \left( IP_D \right)  \) l'host confronta:
+\[
+  IP \;\& \;\text{Maschera} = IP_{\text{Rete}_1}
+\] 
+con
+\[
+  IP_D \;\& \;\text{Maschera} = IP_{\text{Rete}_2}
+\] 
+\begin{itemize}
+  \item 
+    Se i due valori sono uguali, allora la destinazione appartiene alla stessa rete dell'host,
+    di conseguenza si può fare la consegna diretta.
+
+  \item 
+    Se non lo sono, la destinazione appartiene ad un altra rete, quindi si deve fare la
+    consegna indiretta delegando la consegna al router.
+\end{itemize}
+
+\begin{definition}
+  Il routing è il processo di scoperta del cammino "migliore" da una sorgente a tutte
+  le possibili destinazioni.
+\end{definition}
+
+\noindent
+Un router tiene memorizzata una \textbf{tabella do routing} che contiene
+\begin{itemize}
+  \item \textbf{Indirizzo di destinazione}
+  \item \textbf{Interfaccia di uscita}
+  \item \textbf{Costo}
+\end{itemize}
+\begin{table}[H]
+  \centering
+  \begin{tabular}{c|c|c}
+    \textbf{Dst} & \textbf{Out} & \textbf{Costo} \\
+    \hline
+    \( IP_1 \) & \( I_1 \) & \vdots \\
+    \( IP_2 \) & \( I_2 \) & \vdots \\
+    \( IP_3 \) & \( I_3 \) & \vdots \\
+    \( \vdots \) & \( \vdots \) & \( \vdots \) \\
+    \( IP_n \) & \( I_n \) & \( \vdots \)
+  \end{tabular}
+\end{table}
+\label{14-11-D4}
+
+\noindent
+Il cammino migliore dipende dai criteri adottati da chi gestisce la rete (ISP).
+Alcuni esempi di criteri sono:
+\begin{itemize}
+  \item 
+    \textbf{Distanza} (cammino più corto) in termini di
+    numero di \textbf{hop} (router attraversati)
+
+  \item \textbf{Numero di chilometri}
+
+  \item \textbf{Velocità di trasmissione}
+    \label{14-11-D5}
+
+  \item \textbf{Livello di congestione}
+\end{itemize}
+Questo processo viene astratto con l'utilizzo dei \textbf{grafi}:
+\label{14-11-D6}
+\noindent
+I router sono i \textbf{nodi} e i collegamenti sono gli \textbf{archi} del grafo:
+\label{14-11-D7}
+\noindent
+Agli archi viene associato un numero detto \textbf{costo (o peso)} che caratterizza
+l'arco stesso in base al criterio utilizzato.
+
+\begin{definition}
+  Il costo di un cammino tra un nodo \( i \) e un nodo \( j \) è la somma dei pesi degli
+  archi che appartengono al cammino. Di conseguenza il routing è il calcolo del cammino
+  a \textbf{costo minimo}.
+\end{definition}
+
+
 \end{document}
