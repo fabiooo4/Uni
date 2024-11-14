@@ -2292,15 +2292,27 @@ Il \textbf{routing} è diviso in:
 \begin{itemize}
   \item \textbf{Consegna diretta}: La consegna di un pacchetto dall'host \( A \) all'host
     \( B \) è diretta e non passa per nessun router:
-    \label{14-11-D1}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{consegna-diretta}
+      \caption{Consegna diretta}
+    \end{figure}
 
   \item \textbf{Consegna indiretta}: La consegna di un pacchetto dall'host \( A \) all'host
     \( C \) è indiretta e passa per uno o più router:
-    \label{14-11-D2}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{consegna-indiretta}
+      \caption{Consegna indiretta}
+    \end{figure}
 \end{itemize}
 Un host conosce, oltre al proprio indirizzo IP, la maschera della rete a cui appartiene
 e conosce l'indirizzo IP del router di bordo della rete a cui appartiene:
-\label{14-11-D3}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{indirizzo-interfaccia}
+  \caption{Indirizzo delle interfacce di un router}
+\end{figure}
 
 \noindent
 Data una destinazione \( \left( IP_D \right)  \) l'host confronta:
@@ -2333,19 +2345,20 @@ Un router tiene memorizzata una \textbf{tabella do routing} che contiene
   \item \textbf{Interfaccia di uscita}
   \item \textbf{Costo}
 \end{itemize}
-\begin{table}[H]
+\begin{figure}[H]
   \centering
+  \includegraphics[width=0.8\textwidth]{tabella-routing}
   \begin{tabular}{c|c|c}
     \textbf{Dst} & \textbf{Out} & \textbf{Costo} \\
     \hline
-    \( IP_1 \) & \( I_1 \) & \vdots \\
-    \( IP_2 \) & \( I_2 \) & \vdots \\
-    \( IP_3 \) & \( I_3 \) & \vdots \\
+    \( IP_1 \) & \( A \) & \vdots \\
+    \( IP_2 \) & \( B \) & \vdots \\
+    \( IP_3 \) & \( C \) & \vdots \\
     \( \vdots \) & \( \vdots \) & \( \vdots \) \\
     \( IP_n \) & \( I_n \) & \( \vdots \)
   \end{tabular}
-\end{table}
-\label{14-11-D4}
+  \caption{Tabella di routing}
+\end{figure}
 
 \noindent
 Il cammino migliore dipende dai criteri adottati da chi gestisce la rete (ISP).
@@ -2358,15 +2371,30 @@ Alcuni esempi di criteri sono:
   \item \textbf{Numero di chilometri}
 
   \item \textbf{Velocità di trasmissione}
-    \label{14-11-D5}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.5\textwidth]{velocita-trasmissione}
+      \[
+        T = \frac{B\,bit}{v}
+      \]
+      \caption{Critero di velocità di trasmissione}
+    \end{figure}
 
   \item \textbf{Livello di congestione}
 \end{itemize}
 Questo processo viene astratto con l'utilizzo dei \textbf{grafi}:
-\label{14-11-D6}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{grafo1}
+  \caption{Diagramma di rete}
+\end{figure}
 \noindent
 I router sono i \textbf{nodi} e i collegamenti sono gli \textbf{archi} del grafo:
-\label{14-11-D7}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{grafo2}
+  \caption{Grafo di rete}
+\end{figure}
 \noindent
 Agli archi viene associato un numero detto \textbf{costo (o peso)} che caratterizza
 l'arco stesso in base al criterio utilizzato.
@@ -2376,6 +2404,5 @@ l'arco stesso in base al criterio utilizzato.
   archi che appartengono al cammino. Di conseguenza il routing è il calcolo del cammino
   a \textbf{costo minimo}.
 \end{definition}
-
 
 \end{document}
