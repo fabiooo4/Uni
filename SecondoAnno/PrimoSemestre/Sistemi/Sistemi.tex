@@ -3649,7 +3649,7 @@ Per un sistema LTI stabile RDC contiene sempre l'asse immaginatio
     \alpha \ge max \left\{ \alpha_1,\alpha_2 \right\} 
   \] 
 
-\subsubsection{Traslazione nel tempo}
+\subsubsection{Traslazione nel tempo (ritardo temporale)}
   Sia \( v(t) \) una funzione che ammette la trasformata di Laplace \( V(s) \), allora
   la trasformata di Laplace di \( v(t - \tau) \), con \( \tau > 0 \) è:
   \[
@@ -3673,8 +3673,7 @@ Per un sistema LTI stabile RDC contiene sempre l'asse immaginatio
     \end{aligned}
   \] 
 
-\subsubsection{Traslazione nel dominio dei complessi (moltiplicazione per una funzione
-  esponenziale)}
+\subsubsection{Traslazione nel dominio dei complessi (spostamento in frequenza)}
 
   Sia \( v(t) \) una funzione che ammette la trasformata di Laplace \( V(s) \), allora
   la trasformata di Laplace di \( e^{\lambda t} \cdot v(t) \) è:
@@ -3694,7 +3693,7 @@ Per un sistema LTI stabile RDC contiene sempre l'asse immaginatio
       \mathcal{L}[e^{\lambda t} \cdot v(t)](s) &= \int_{0^-}^{+\infty} e^{\lambda t} \cdot v(t) \cdot e^{-st} \, dt\\
                                                &= \int_{0^-}^{+\infty} v(t) \cdot e^{(\lambda - s)t} \, dt\\
                                                &= \int_{0^-}^{+\infty} v(t) \cdot e^{-\overbrace{(s - \lambda)}^{r}t} \, dt\\
-                                               &= \mathcal{L}[v(t)](r)
+                                               &= \mathcal{L}[v(t)](r)\\
                                                &= \mathcal{L}[v(t)](s - \lambda)
     \end{aligned}
   \] 
@@ -3732,7 +3731,7 @@ esiste ed è finito il limite: \( v(0^-)= \lim_{t \to o^-} v(t) \), allora anche
 sua derivata i-esima ammette la trasformata di Laplace e vale:
 \[
   \mathcal{L}\left[ \frac{d^{i} v(t)}{dt^{i}} \right](s) = s^{i} \cdot V(s) -
-  \sum_{k=0}^{i-1} \frac{d^k v(t)}{dt^k} \cdot s^{i-k-1}, \quad t = 0^-
+  \sum_{k=0}^{i-1} \frac{d^k v(t)}{dt^k} \Big|_{t=0^-} \cdot s^{i-k-1}
 \] 
 L'ascissa di convergenza è minore dell'ascissa di convergenza originale
 \[
@@ -3826,7 +3825,7 @@ Quindi:
 Sia \( v(t) \) una funzione che ammette la trasformata di Laplace \( V(s) \), se
 esiste \( \lim_{t \to 0^-} \frac{v(t)}{t} \), allora la trasformata di Laplace è:
 \[
-  \mathcal{L}\left[ \frac{v(t)}{t} \right](s) = \int_{s}^{+\infty} \mathcal{L}[v(t)](\zeta) \, d\zeta
+  \mathcal{L}\left[ \frac{v(t)}{t} \right](s) = \int_{s}^{+\infty} \mathcal{L}[v(t)](s) \, ds
 \] 
 
 \subsubsection{Teorema del valore iniziale}
@@ -3869,5 +3868,354 @@ la trasformata di Laplace e vale:
                                   &= \mathcal{L}[u(t)](s) \cdot \mathcal{L}[v(t)](s)
   \end{aligned}
 \]
+
+\subsection{Trasformate notevoli}
+\subsubsection{Impulso}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[scale=1.5]
+    \draw[->] (-1.5,0) -- (1.5,0) node[right] {$t$};
+    \draw[->] (0,-0.1) -- (0,1.5) node[above] {$\delta(t)$};
+
+    \draw[->,blue,thick] (0,0) -- (0,1) node[right] {$1$};
+
+    \node[below, scale=0.8] at (0,-0.1) {$0$};
+    \node[above left, scale=0.8] at (0,0) {$0^-$};
+    \node[above right, scale=0.8] at (0,0) {$0^+$};
+  \end{tikzpicture}
+  \caption{Impulso}
+\end{figure}
+\begin{itemize}
+  \item 
+    La trasformata di Laplace dell'impulso \( \delta_0(t) \) è:
+    \[
+      \begin{aligned}
+        \mathcal{L}[\delta_0(t)](s) &= \int_{0^-}^{+\infty} \stackrel{\text{Proprietà impulso}}{\cancel{\delta_0(t)}^1} \cdot e^{-st} \, dt\\
+                                    &= e^{-st} \Big|_{t=0} = 1
+      \end{aligned}
+    \] 
+
+  \item 
+    La trasformata di Laplace di un impulso di altezza \( A \) è:
+    \[
+      \begin{aligned}
+        \mathcal{L}[A \cdot \delta_0(t)](s) &= A \cdot \mathcal{L}[\delta_0(t)](s)\\
+                                            &= A
+      \end{aligned}
+    \] 
+  \item 
+    La trasformata di laplace dell'impulso ritardato è:
+    \[
+      \begin{aligned}
+        \mathcal{L}[\delta_{t - \tau}(t)](s) &= \int_{0^-}^{+\infty} \delta_{\tau}(t) \cdot e^{-st} \, dt\\
+                                             &= e^{-s \tau}
+      \end{aligned}
+    \] 
+\end{itemize}
+
+
+
+\subsubsection{Gradino}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \def\a{1}
+    \draw[->] (-1.5,0) -- (1.5,0) node[right] {$t$};
+    \draw[->] (0,-0.1) -- (0,1.5) node[above] {$\delta_{-1}(t)$};
+
+    \draw[blue,thick] (-1.4,0) -- (0,0) -- (0,\a) -- (1.4,\a);
+
+  \end{tikzpicture}
+\end{figure}
+\begin{itemize}
+  \item 
+    La trasformata di Laplace del gradino \( \delta_{-1}(t) \) è:
+    \[
+      \begin{aligned}
+        \mathcal{L}[\delta_{-1}(t)](s) &= \int_{0^-}^{+\infty} \stackrel{1}{\cancel{\delta_{-1}(t)}} \cdot e^{-st} \, dt\\
+                                       &= \int_{0^-}^{+\infty} e^{-st} \, dt\\
+                                       &= \lim_{\varepsilon \to \infty;\; \mu \to 0^-} \left( - \frac{e^{-st}}{s} \right) \Big|^{\varepsilon}_{t=\mu}\\
+                                       &= \lim_{\mu \to 0^-}  \frac{e^{-st}}{s} - \lim_{\varepsilon \to \infty} \frac{e^{-st}}{s}\\
+                                       &= \frac{1}{s}
+      \end{aligned}
+    \] 
+
+  \item 
+    La trasformata di Laplace del gradino di altezza \( A \) è:
+    \[
+      \begin{aligned}
+        \mathcal{L}[A \cdot \delta_{-1}(t)](s) &= A \cdot \mathcal{L}[\delta_{-1}(t)](s)\\
+                                               &= \frac{A}{s}
+      \end{aligned}
+    \]
+  \item 
+    La trasformata di Laplace del gradino ritardato è:
+    \[
+      \begin{aligned}
+        \mathcal{L}[\delta_{-1}(t - \tau)](s) &= e^{-s \tau} \cdot \frac{1}{s}
+      \end{aligned}
+    \]
+\end{itemize}
+
+\subsubsection{Esponenziale complesso causale}
+\label{15-11-D1}
+\begin{itemize}
+  \item La trasformata di Laplace dell'esponenziale complesso causale
+    \( v(t) = e^{\lambda t} \cdot \delta_{-1}(t) \) è:
+    \[
+      \begin{aligned}
+        \mathcal{L}[e^{\lambda t} \cdot \delta_{-1}(t)](s) &= \mathcal{L}[\delta_{-1}(t)](s-\lambda)
+                                                           &= \frac{1}{s-\lambda}
+      \end{aligned}
+    \] 
+  \item La trasformata di Laplace dell'esponenziale con una costante \( A \) è:
+    \[
+      \begin{aligned}
+        \mathcal{L}\left[A \cdot e^{\lambda t} \cdot \delta_{-1}(t)\right](s) &= A \cdot \mathcal{L}[e^{\lambda t} \cdot \delta_{-1}(t)](s)\\
+                                                                 &= \frac{A}{s-\lambda}
+      \end{aligned}
+    \]
+  \item La trasformata di Laplace dell'esponenziale complesso ritardato è:
+    \[
+      \begin{aligned}
+        \mathcal{L}\left[e^{\lambda (t - \tau)} \cdot \delta_{-1}(t)\right](s) &= \frac{e^{-(s -\lambda) \tau}}{s-\lambda}
+      \end{aligned}
+    \]
+\end{itemize}
+
+\subsubsection{Esponenziale complesso causale moltiplicato per una funzione polinomiale}
+\label{15-11-D2}
+La trasformata di Laplace di \( v(t) = \frac{t^l}{l!} \cdot e^{\lambda t} \cdot \delta_{-1}(t) \) è:
+\[
+  \begin{aligned}
+    \mathcal{L}\left[\frac{t^l}{l!} \cdot e^{\lambda t} \cdot \delta_{-1}(t)\right](s) &= 
+    \frac{1}{l!} \cdot \mathcal{L}[t^l \cdot e^{\lambda t} \cdot \delta_{-1}(t)](s)\\
+                                                                                       &= \frac{(-1)^l}{l!} \cdot \frac{d^{l}}{ds^{l}} \mathcal{L}\left[e^{\lambda t} \cdot \delta_{-1}(t)\right](s)\\
+                                                                                       &= \frac{(-1)^l}{l!} \cdot \frac{d^{l}}{ds^{l}} \left( \frac{1}{s-\lambda} \right) \\
+                                                                                       &= \frac{(-1)^l}{l!} \cdot \frac{l! (-1)^e}{(s-\lambda)^{l+1}}\\
+                                                                                       &= \frac{1}{(s-\lambda)^{l+1}}
+  \end{aligned}
+\] 
+\begin{example}
+  Ad esempio se:
+  \begin{itemize}
+    \item 
+      \( l = 1\), la trasformata di Laplace è:
+      \[
+        \begin{aligned}
+          \mathcal{L}\left[t \cdot e^{\lambda t} \cdot \delta_{-1}(t)\right](s) &= \frac{1}{(s-\lambda)^{2}}
+        \end{aligned}
+      \] 
+    \item \( l = 2 \) 
+      \[
+        \begin{aligned}
+          \mathcal{L}\left[\frac{t^2}{2} \cdot e^{\lambda t} \cdot \delta_{-1}(t)\right](s) &= \frac{1}{(s-\lambda)^{3}}
+        \end{aligned}
+      \]
+  \end{itemize}
+\end{example}
+\begin{example}
+  Alcuni casi speciali sono:
+  \begin{itemize}
+    \item \[
+        \mathcal{L}\left[ \frac{t}{l!} \cdot \delta_{-1}(t) \right](s) = \frac{1}{s^{l+1}}
+    \] 
+
+    \item
+      \[
+        \mathcal{L}\left[ t \cdot \delta_{-1}(t) \right](s) = \frac{l!}{s^{l+1}}
+      \] 
+      
+    \item
+      \[
+        \mathcal{L}\left[ e^{-\lambda t} \cdot \delta_{-1}(t) \right](s) = \frac{1}{s+\lambda}
+      \] 
+  \end{itemize}
+\end{example}
+
+\subsubsection{Funzione coseno}
+\label{15-11-D3}
+
+La trasformata di Laplace di \( cos(\omega t) \) è:
+\[
+\begin{aligned}
+  \mathcal{L}\left[ \cos(\omega t) \right](s) &\stackrel{\text{Eulero}}{=} \mathcal{L}\left[ \frac{e^{j \omega t} + e^{-j \omega t}}{2} \right](s)\\
+                                              &= \frac{1}{2} \mathcal{L}\left[ e^{j \omega t} + e^{-j \omega t} \right](s)\\
+                                              &= \frac{1}{2} \left( \mathcal{L}\left[ e^{j \omega t} \right](s) + \mathcal{L}\left[ e^{-j \omega t} \right](s) \right)\\
+                                              &= \frac{1}{2} \left( \frac{1}{s-j \omega} + \frac{1}{s+j \omega} \right)\\
+                                              &= \frac{1}{2} \left( \frac{s+\cancel{j \omega} + s-\cancel{j \omega}}{s^{2} + \omega^{2}} \right)\\
+                                              &= \frac{s}{s^{2} + \omega^{2}}
+\end{aligned}
+\] 
+
+\subsubsection{Funzione seno}
+\label{15-11-D4}
+
+La trasformata di Laplace di \( \sin(\omega t) \) è:
+\[
+\begin{aligned}
+  \mathcal{L}\left[ \sin(\omega t) \right](s) &\stackrel{\text{Eulero}}{=} \mathcal{L}\left[ \frac{e^{j \omega t} - e^{-j \omega t}}{2j} \right](s)\\
+                                              &= \frac{1}{2j} \mathcal{L}\left[ e^{j \omega t} - e^{-j \omega t} \right](s)\\
+                                              &= \frac{1}{2j} \left( \mathcal{L}\left[ e^{j \omega t} \right](s) - \mathcal{L}\left[ e^{-j \omega t} \right](s) \right)\\
+                                              &= \frac{1}{2j} \left( \frac{1}{s-j \omega} - \frac{1}{s+j \omega} \right)\\
+                                              &= \frac{1}{2j} \left( \frac{\cancel{s}+j \omega - \cancel{s}+j \omega}{s^{2} + \omega^{2}} \right)\\
+                                              &= \frac{\omega}{s^{2} + \omega^{2}}
+\end{aligned}
+\]
+
+\subsection{Risoluzione di sistemi LTI causali}
+\label{15-11-D5}
+Per un sistema LTI causale:
+\[
+  \sum_{i=0}^{n} a_i \frac{d^{i} y(t)}{dt^{i}} = \sum_{j=0}^{m} b_j \frac{d^{j} x(t)}{dt^{j}}
+\] 
+Se \( n \ge m \) e \( u(t) = u(t) \cdot \delta_{-1}(t) \), (cioè \( u(t) = 0,\; t < 0 \)) 
+e consideriamo le \( n-1 \) condizioni iniziali:
+\[
+  v(0^-); \; \frac{dv(0^-)}{dt}; \; \ldots; \; \frac{d^{n-1}v(0^-)}{dt^{n-1}}
+\] 
+Se \( u(t) \) ammette la trasformata di Laplace \( U(s) \) e \( v(t) \) ammette la trasformata
+di Laplace \( V(s) \), con \( t \ge 0 \) allora si ha che:
+\[
+  \begin{aligned}
+    \mathcal{L}\left[ \sum_{i=0}^{n} a_i \frac{d^{i} v(t)}{dt^{i}} \right](s) &= \mathcal{L}\left[ \sum_{j=0}^{m} b_j \frac{d^{j} u(t)}{dt^{j}} \right](s)\\
+    \sum_{i=0}^{n} a_i \cdot \mathcal{L}\left[ \frac{d^{i} v(t)}{dt^{i}} \right](s) &= \sum_{j=0}^{m} b_j \cdot \mathcal{L}\left[ \frac{d^{j} u(t)}{dt^{j}} \right](s)\\
+  \end{aligned}
+\] 
+Applicando \( n+m \) vale la regola della derivata:
+\[
+  \begin{aligned}
+    a_n \left[ s^n V(s) - \sum_{k=0}^{n-1} \frac{d^{k} v(t)}{dt^{k}} \Big|_{t=0^-} \cdot s^{n-k-1} \right] &+\\
+    a_{n-1} \left[ s^{n-1} V(s) - \sum_{k=0}^{n-2} \frac{d^{k} v(t)}{dt^{k}} \Big|_{t=0^-} \cdot s^{n-k-2} \right] &+ \ldots + a_0 V(S)\\
+  \end{aligned}
+\] 
+Imponiamo le condizioni iniziali \( u(t) \Big|_{t=0^-} = 0 \), quindi si ha che le
+derivate in 0 sono nulle:
+\[
+  \begin{aligned}
+    = b_m s^{m} U(s) + b_{m-1} s^{m-1} U(s) + \ldots + b_0 U(s)
+  \end{aligned}
+\] 
+Espandendo le sommatorie e raccogliendo si ha:
+\[
+\begin{aligned}
+  \color{blue}\underbrace{\left( a_n s^n + a_{n-1} s^{n-1} + \ldots + a_0 \right)}_{d(s)}\color{black} V(s) \\
+  - \color{green!50!black}\overbrace{a_n \cdot  v(0^-) \cdot  s^{n-1} - \left( a_{n-1} \cdot  v(0^-) + a_n \cdot  \frac{dv(0^-)}{dt} \Big|_{t=0^-} \right) s^{n-2} - \ldots}^{p(s)}\\
+  \color{green!50!black}\ldots - \left( \sum_{k=0}^{n-1} a_{k+1} \cdot  \frac{d^{k} v(t)}{dt^{k}} \Big|_{t=0^-} \right) \color{black}=\\
+  = \color{red}\underbrace{\left( b_m s^{m} + b_{m-1} s^{m-1} + \ldots + b_0 \right)}_{n(s)}\color{black} U(s)
+\end{aligned}
+\] 
+Sostituendo diventa:
+\[
+d(s) \cdot V(s) - p(s) = n(s) \cdot U(s)
+\] 
+quindi:
+\[
+  V(s) = \frac{n(s)}{d(s)} \cdot U(s) + \frac{p(s)}{d(s)}
+\] 
+
+\vspace{1em}
+\noindent
+\begin{itemize}
+  \item 
+    \( n(s) \) è un polinomio di grado \( m \) che dipende solo dai coefficienti delle derivate
+    associate all'ingresso. È il \textbf{polinomio caratteristico} di \( u(t) \)
+
+  \item
+    \( d(s) \) è un polinomio di grado \( n \) che dipende solo dai coefficienti delle derivate
+    associate all'uscita. È il \textbf{polinomio caratteristico} di \( v(t) \)
+
+  \item \( p(s) \) è un polinomio di grado \( n-1 \) che dipende dalle condizioni iniziali
+    \[
+      p(s) = \sum_{k=0}^{n-1} s^k \left( \sum_{j=k+1}^{n} a_{j+1} \cdot \frac{d^{n-j} v(t)}{dt^{n-j}} \Big|_{t=0^-} \right)
+    \] 
+
+  \item \( \frac{p(s)}{d(s)} \) è una funzione razionale che dipende solo dalle condizioni iniziali
+    del sistema e dai coefficienti del polinomio caratteristico dell'uscita \( v(t) \).
+    È la \textbf{trasformata di Laplace della risposta libera}:
+    \[
+      V_l(s) = \frac{p(s)}{d(s)}
+    \] 
+
+  \item \( \frac{n(s)}{d(s)} \) è una funzione razionale che dipende dai coefficienti del
+    polinomio caratteristico dell'ingresso \( u(t) \) e dai coefficienti
+    del polinomio caratteristico dell'uscita \( v(t) \) moltiplicati per la trasformata di 
+    Laplace di \( u(t) \). È la \textbf{trasformata di Laplace della
+    risposta forzata} siccome una convoluzione diventa un prodotto di trasformate:
+    \[
+      V_f(s) = \frac{n(s)}{d(s)} \cdot U(s)
+    \]
+
+  \item \( \frac{n(s)}{d(s)} \) si chiama \textbf{Funzione di trasferimento} \( H(s) \) ed
+    è definita come:
+    \[
+      H(s) = \frac{\sum_{j=0}^{m} b_j s^{j}}{\sum_{i=0}^{n} a_i s^{i}}
+    \] 
+    è il rapporto tra i polinomi caratteristici dell'ingresso \( u(t) \) e dell'uscita \( v(t) \).
+    \( H(s) \) è definita come la \textbf{trasformata di Laplace della risposta impulsiva}
+    \( h(t) \)
+    \[
+      \begin{aligned}
+        h(t) &= d_0 \cdot \delta_0(t) + \left( \sum_{i=1}^{r} \sum_{l=0}^{\mu_i-1} d_{i,l} \cdot  \frac{t^l}{l!} \cdot e^{\lambda_i t} \right) \cdot \delta_{-1}(t) \\
+        \downarrow \mathcal{L}\\
+             &= d_0 + \sum_{i=1}^{r} \sum_{l=0}^{\mu_i-1} \frac{d_{i,l}}{(s- \lambda_i)^{l+1}}
+      \end{aligned}
+    \] 
+\end{itemize}
+
+\begin{example}
+  Dato un sistema LTI:
+  \[
+    \frac{d^3 v(t)}{dt^3} + \frac{d^2 v(t)}{dt^2} = \frac{d u(t)}{dt}
+  \] 
+  Si può trasformare usando la trasformata di Laplace:
+  \[
+    \color{green!50!black}\mathcal{L}\left[ \frac{d^3 v(t)}{dt^3} \right](s)\color{black}
+    + \color{blue}\mathcal{L}\left[ \frac{d^2 v(t)}{dt^2} \right](s) \color{black} =
+    \color{purple}\mathcal{L}\left[ \frac{d u(t)}{dt} \right](s)
+  \] 
+  Applicationo la regola della derivata:
+  \[
+    \begin{aligned}
+      \color{green}s^3 V(s) - s^2 v(0^-) - \frac{dv(0^-)}{dt} \cdot s - \frac{d^2v(0^-)}{dt^2} \cdot s^0 \color{black}+\\
+      +\, \color{blue}s^2 V(s) - s \cdot v(0^-) - \frac{dv(0^-)}{dt} \cdot s^0\color{black} = \color{purple}s \cdot U(s)
+    \end{aligned}
+  \] 
+  Raccogliendo si ha:
+  \[
+    \begin{aligned}
+      \underbrace{\left( s^3 + s^2 \right)}_{d(s)} V(s) - \underbrace{\left[ s^2 v(0^-) + \frac{dv(0^-)}{dt}s + \frac{d^2v(0^-)}{dt^2} +
+      sv(0^-) + \frac{dv(0^-)}{dt} \right]}_{p(s)}\\ = \underbrace{s}_{n(s)} \cdot U(s)
+    \end{aligned}
+  \] 
+  Quindi:
+  \[
+    \begin{aligned}
+      V(s) &= \frac{n(s)}{d(s)} \cdot U(s) + \frac{p(s)}{d(s)}\\
+           &= \frac{s}{(s^3+s^2)} \cdot U(s) + \frac{s^2 v(0^-) + \frac{dv(0^-)}{dt}s + \frac{d^2v(0^-)}{dt^2} +
+           sv(0^-) + \frac{dv(0^-)}{dt}}{s^3+s}\\
+    \end{aligned}
+  \] 
+  Considerando le seguenti condizioni iniziali
+  \[
+    v(0^-) = 0; \quad \frac{dv(0^-)}{dt} = \frac{d^2v(0^-)}{dt^2} = 0
+  \] 
+  allora si ha:
+  \[
+    V(s) = \frac{s}{s^3 + s^2} \cdot U(s)
+  \] 
+
+  \vspace{1em}
+  \noindent
+  Considerando le seguenti condizioni iniziali
+  \[
+    v(0^-) = 1; \quad \frac{dv(0^-)}{dt} = \frac{d^2v(0^-)}{dt^2} = 0
+  \] 
+  allora si ha:
+  \[
+    V(s) = \frac{s}{s^3 + s} \cdot U(s) + \frac{s^2 + s}{s^3 + s^2}
+  \] 
+\end{example}
 
 \end{document}
