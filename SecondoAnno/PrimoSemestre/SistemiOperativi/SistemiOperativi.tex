@@ -9,6 +9,567 @@
 \tableofcontents
 \pagebreak
 
+\section{Laboratorio}
+\subsection{Shell}
+La shell è un interprete dei comandi che permette di comunicare con il sistema operativo.
+La shell principale di Linux è la \textbf{bash} (Bourne Again SHell) che è una shell
+che permette di eseguire comandi, script e programmi. Il funzionamento principale è il
+seguente:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw] (shell) at (0,0) {\texttt{/bin/bash}};
+    \node[draw, right=of shell] (fork) {\texttt{/bin/bash}};
+    \node[draw, below=of fork] (programma) {\texttt{/bin/ls}};
+
+    \draw[->] (shell) -- (fork) node[midway,above] {fork};
+    \draw[->] (fork) -- (programma) node[midway,right] {exec};
+    \draw[->] (programma) -| (shell) node[midway,above right] {exit};
+  \end{tikzpicture}
+  \caption{Funzionamento della bash}
+\end{figure}
+\noindent
+Le system call coinvolte sono:
+\begin{itemize}
+  \item \texttt{fork}: Processo padre Bash crea un nuovo processo figlio
+  \item \texttt{exec}: Processo figlio carica il codice del comando richiesto
+  \item \texttt{exit}: Processo figlio termina
+  \item \texttt{wait}: Processo padre Bash aspetta la terminazione del figlio
+\end{itemize}
+
+\subsubsection{Comandi}
+La sintassi generale di un comando linux è:
+\begin{lstlisting}[language=bash]
+comando [-opzioni] [argomenti]
+\end{lstlisting}
+Più comandi possono essere concatenati con il carattere \texttt{;}. Ad esempio:
+\begin{lstlisting}[language=bash]
+comando1; comando2; ...; comandoN
+\end{lstlisting}
+Ogni comando linux ha un  manuale che può essere consultato con il comando:
+\begin{lstlisting}[language=bash]
+man <comando>
+\end{lstlisting}
+
+\subsubsection{File system}
+Il file system è la struttura che permette di organizzare i file e le directory in un
+sistema operativo. Il file system di Linux è basato su una struttura ad albero con
+una radice "\texttt{/}" e permette di accedere ai file e alle directory tramite un
+\textbf{percorso} (path). Il path può essere di 2 tipi:
+\begin{itemize}
+  \item \textbf{Path assoluto}: Parte dalla radice "/" del file system, ad esempio
+    \texttt{/dir1/dir2}
+
+  \item \textbf{Path relativo}: Parte dalla directory corrente, ad esempio
+
+    \texttt{dir1/dir2}
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Un path può anche contenere dei caratteri speciali, chiamati \textbf{wildcard}:
+\begin{itemize}
+  \item \texttt{*} Qualsiasi stringa di caratteri
+  \item \texttt{?} Qualsiasi singolo carattere
+  \item \texttt{[ ]} Qualsiasi carattere tra le parentesi
+\end{itemize}
+
+\vspace{1em}
+\noindent
+In linux ogni cosa è un file e i file sono di diversi tipi:
+\begin{itemize}
+  \item \textbf{Directory}: Contiene altri file e sotto-directory
+  \item \textbf{Special file}: È un entry point per un dispositivo di I/O, ad esempio
+    \texttt{/dev/sda}
+  \item \textbf{Link}: Puntatore ad un altro file. Si divide in:
+    \begin{itemize}
+      \item \textbf{Hard link}: Puntatore diretto al file
+      \item \textbf{Symbolic link} (o soft link): Puntatore indiretto al file, quindi
+        solo al percorso del file. Se la destinazione del link viene spostata, il link
+        non funziona più
+    \end{itemize}
+  \item \textbf{File ordinatio}: Contiene dati
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Ogni file ha associati dei \textbf{permessi} che definiscono chi può leggere (r, read),
+scrivere (w, write) e/o eseguire (x, execute) il file.
+I permessi sono divisi in 3 categorie:
+\begin{itemize}
+  \item \textbf{User} (u): Il proprietario del file
+  \item \textbf{Group} (g): Il gruppo del file
+  \item \textbf{Others} (o): Tutti gli altri
+\end{itemize}
+
+\subsubsection{Comandi base}
+\begin{itemize}
+\item
+\begin{lstlisting}
+ls [-options] <path>
+\end{lstlisting}
+Mostra i file e le directory presenti nel \textbf{path} specificato.
+
+\item
+\begin{lstlisting}
+cat <file>
+\end{lstlisting}
+Stampa il contenuto del file specificato su standard output.
+
+\item
+\begin{lstlisting}
+head [-n] <file>
+\end{lstlisting}
+Visualizza le prime \textbf{n} righe del file.
+
+\item
+\begin{lstlisting}
+tail [-n] <file>
+\end{lstlisting}
+Visualizza le ultime \textbf{n} righe del file.
+
+\item
+\begin{lstlisting}
+cp <file> <dest>
+\end{lstlisting}
+Copia il file nella destinazione \texttt{dest}.
+
+\item
+\begin{lstlisting}
+mv <file> <dest>
+\end{lstlisting}
+Sposta il file nella destinazione \texttt{dest}. Se la destinazione è la stessa del file
+allora il file viene rinominato.
+
+\item
+\begin{lstlisting}
+rm [-rf] <path>
+\end{lstlisting}
+Rimuove il file o la directory specificata. L'opzione \texttt{-r} permette di rimuovere
+una directory in modo ricorsivo, cioè anche il contenuto della directory. L'opzione
+\texttt{-f} permette di rimuovere senza chiedere conferma.
+
+\item
+\begin{lstlisting}
+cd <path>
+\end{lstlisting}
+Cambia la directory corrente con quella specificata.
+
+\item
+\begin{lstlisting}
+pwd
+\end{lstlisting}
+Stampa il percorso della directory corrente.
+
+\item
+\begin{lstlisting}
+mkdir <dir>
+\end{lstlisting}
+Crea una directory con il nome specificato.
+
+\item
+\begin{lstlisting}
+rmdir <dir>
+\end{lstlisting}
+Rimuove la directory specificata se è vuota.
+
+\item
+\begin{lstlisting}
+chgrp [-R] <group> <file>
+\end{lstlisting}
+Cambia il gruppo del file specificato. L'opzione \texttt{-R} permette di cambiare il
+gruppo ricorsivamente.
+
+\item
+\begin{lstlisting}
+chown [-R] <user:group> <file>
+\end{lstlisting}
+Cambia il proprietario (e il gruppo) del file specificato.
+
+\item
+\begin{lstlisting}
+chmod [-R] <permessi> <path>
+\end{lstlisting}
+Cambia i permessi del file o della directory specificata. I permessi possono essere
+specificati in 3 modi:
+\begin{itemize}
+  \item \textbf{Notazione numerica} (ottale): Ad esempio \texttt{777} che corrisponde ai
+    permessi \texttt{rwxrwxrwx}.
+    La prima cifra corrisponde ai permessi dell'utente, la seconda
+    ai permessi del gruppo e la terza agli altri. I permessi sono:
+    \begin{itemize}
+      \item \texttt{r} (read): 4
+      \item \texttt{w} (write): 2
+      \item \texttt{x} (execute): 1
+    \end{itemize}
+    e la somma di ogni singolo permesso corrisponde ai permessi totali, ad esempio:
+    \[
+      7 = 4 + 2 + 1 = \texttt{rwx}
+    \] 
+  \item \textbf{Notazione simbolica}: Ad esempio \texttt{ugo+r} che aggiunge il permesso
+    di lettura a user, group e others
+  \item \textbf{Notazione mista}: Ad esempio \texttt{u=rwx,g=rx,o=r} che assegna i permessi
+    \texttt{rwx} all'utente, \texttt{rx} al gruppo e \texttt{r} agli altri
+\end{itemize}
+
+\item
+\begin{lstlisting}
+find <path> [-name <pattern>]
+\end{lstlisting}
+Cerca i file e le directory nel \texttt{path} specificato e ritorna i file che rendono
+vera l'espressione specificata in \texttt{pattern}. Ad esempio:
+\begin{lstlisting}[language=bash]
+find / -name "*.txt"
+\end{lstlisting}
+cerca tutti i file con estensione \texttt{.txt} partendo dalla radice.
+
+\item
+\begin{lstlisting}
+diff [-options] <file1> <file2>
+\end{lstlisting}
+Mostra le differenze tra i due file.
+\end{itemize}
+
+\subsubsection{Processi}
+Un processo è un'istanza di un programma in esecuzione (un file binario). Per vedere
+la lista dei processi in esecuzione si può usare il comando:
+\begin{lstlisting}
+ps
+
+  PID TTY          TIME CMD
+11877 pts/1    00:00:00 bash
+12110 pts/1    00:00:00 ps
+\end{lstlisting}
+Dove:
+\begin{itemize}
+  \item \texttt{PID}: Process ID, l'identificativo del processo
+  \item \texttt{TTY}: Il terminale associato al processo
+  \item \texttt{TIME}: Il tempo di CPU usato dal processo
+  \item \texttt{CMD}: Il comando che ha generato il processo
+\end{itemize}
+
+\vspace{1em}
+\noindent
+I processi possono essere eseguiti in due modi:
+\begin{itemize}
+  \item \textbf{Foreground}: Il processo viene eseguito in primo piano e il terminale
+    rimane bloccato finchè il processo non termina. In questa modalità il processo
+    ha accesso a tre canali standard connessi al terminale:
+    \begin{itemize}
+      \item \texttt{stdin}: Standard input
+      \item \texttt{stdout}: Standard output
+      \item \texttt{stderr}: Standard error
+    \end{itemize}
+    Un processo in foreground può essere sospeso con la combinazione di tasti \texttt{Ctrl + Z}
+    (\texttt{\textasciicircum Z}) e può essere ripreso con il comando \texttt{fg}.
+
+    Un processo può essere interrotto con la combinazione di tasti \texttt{Ctrl + C} (\texttt{\textasciicircum C}).
+  \item \textbf{Background}: Il processo viene eseguito in secondo piano e il terminale
+    rimane libero. Inquesta modalità il processo non ha accesso ai canali standard.
+    Per eseguire un processo in background si può usare il carattere \texttt{\&} alla
+    fine del comando, ad esempio:
+\begin{lstlisting}[language=bash]
+ls &
+\end{lstlisting}
+\end{itemize}
+
+\vspace{1em}
+\noindent
+I comandi principali per gestire i processi sono:
+\begin{itemize}
+\item 
+\begin{lstlisting}
+jobs [-l]
+\end{lstlisting}
+Elenca i processi in background o sospesi.
+
+\item 
+\begin{lstlisting}
+bg [%<job>]
+\end{lstlisting}
+Riattiva un processo sospeso in background.
+
+\item 
+\begin{lstlisting}
+fg [%<job>]
+\end{lstlisting}
+Riattiva un processo sospeso in foreground.
+
+\item 
+\begin{lstlisting}
+kill [-signal] <PID>
+\end{lstlisting}
+Manda un segnale al processo indicato. I più comuni sono:
+\begin{itemize}
+  \item \texttt{SIGKILL} (9): Termina il processo
+  \item \texttt{SIGTERM} (15): Termina il processo in modo pulito
+\end{itemize}
+\end{itemize}
+
+\subsubsection{Redirezione dell'I/O}
+La redirezione dell'I/O permette di ridirezionare i canali standard di un processo su
+un file o su un altro canale.
+
+\vspace{1em}
+\noindent
+Per redirezionare l'I/O si possono usare i seguenti operatori:
+\begin{itemize}
+  \item \texttt{<}: Redireziona lo standard input, ad esempio:
+\begin{lstlisting}
+cat < file.txt
+\end{lstlisting}
+
+  \item \texttt{>}: Redireziona lo standard output, ad esempio:
+\begin{lstlisting}
+ls > file.txt
+\end{lstlisting}
+
+  \item \texttt{>>}: Redireziona lo standard output in append mode (aggiunge il contenuto
+    al file senza sovrascriverlo), ad esempio:
+\begin{lstlisting}
+ls >> file.txt
+\end{lstlisting}
+
+\item \texttt{[n]>}: Redireziona il canale \texttt{n}, dove \texttt{n} è un numero
+  che rappresenta:
+  \begin{itemize}
+    \item \texttt{0}: Standard input
+    \item \texttt{1}: Standard output
+    \item \texttt{2}: Standard error
+  \end{itemize}
+  Ad esempio:
+\begin{lstlisting}
+ls 1> file.out 2> file.err
+\end{lstlisting}
+
+  \item \texttt{2>\&1}: Redireziona lo standard error su standard output
+
+  \item \texttt{|} (Pipe): Permette di concatenare più comandi in modo che l'output di
+    un comando venga usato come input per il comando successivo, ad esempio:
+\begin{lstlisting}
+ls | cat
+\end{lstlisting}
+\end{itemize}
+
+\subsubsection{Variabili d'ambiente}
+La shell ha un insieme di variabili d'ambiente, cioè delle variabili globali che
+contengono informazioni sul sistema.
+Ogni variabile rispetta la sintassi:
+\begin{lstlisting}
+nome=valore
+\end{lstlisting}
+Le variabili d'ambiente principali sono:
+\begin{itemize}
+  \item \texttt{PWD}: Path corrente del file system
+  \item \texttt{SHELL}: Il percorso della shell corrente (ad esempio \texttt{/bin/bash})
+  \item \texttt{USER}: Il nome dell'utente
+  \item \texttt{HOME}: La directory home dell'utente
+  \item \texttt{PATH}: La lista delle directory in cui cercare i comandi (binari)
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Per leggere le variabili d'ambiente si possono usare i seguenti comandi:
+\begin{itemize}
+\item 
+\begin{lstlisting}
+printenv <var>
+\end{lstlisting}
+Stampa il valore della variabile d'ambiente specificata.
+
+\item 
+\begin{lstlisting}
+env
+\end{lstlisting}
+Stampa tutte le variabili d'ambiente.
+
+\item 
+\begin{lstlisting}
+echo $<var>
+\end{lstlisting}
+Stampa il valore della variabile d'ambiente specificata.
+\end{itemize}
+
+\subsubsection{Script}
+Uno script è una lista di comandi di sistema eseguiti sequenzialmente dalla shell.
+Gli script sono salvati in file di testo con estensione \texttt{.sh} e devono avere
+come prima riga:
+\begin{lstlisting}[language=bash]
+#!/bin/bash
+\end{lstlisting}
+che indica il percorso dell'interprete da usare per eseguire lo script, in questo caso
+la bash.
+
+\vspace{1em}
+\noindent
+Per eseguire uno script:
+\begin{itemize}
+  \item Si può usare il comando:
+\begin{lstlisting}
+bash <script> [args]
+\end{lstlisting}
+        che esegue lo script con la bash
+  \item Si può rendere lo script eseguibile con il comando:
+\begin{lstlisting}
+chmod +x <script>
+\end{lstlisting}
+        e poi eseguirlo direttamente con:
+\begin{lstlisting}
+./<script> [args]
+\end{lstlisting}
+\end{itemize}
+
+\vspace{1em}
+\noindent
+La bash memorizza gli argomenti della linea di comando dentro una serie di variabili
+speciali:
+\begin{itemize}
+  \item \texttt{\$0}: Il nome dello script
+  \item \texttt{\$1}, \texttt{\$2}, ...: Gli argomenti passati allo script
+  \item \texttt{\$*}: Tutti gli argomenti passati allo script
+  \item \texttt{\$@}: Tutti gli argomenti passati allo script
+  \item \texttt{\$?}: Indica se il comando precedente è stato eseguito correttamente:
+    \begin{itemize}
+      \item 0: Comando eseguito correttamente
+      \item 1: Comando non eseguito correttamente
+    \end{itemize}
+  \item \texttt{\$\#}: Il numero di argomenti passati allo script
+\end{itemize}
+
+\vspace{1em}
+\noindent
+\textbf{Variabili:}
+
+\noindent
+Le variabili in uno script si dichiarano come: \texttt{nome=valore}, ma per accedere
+al valore della variabile si deve usare il simbolo di dollaro prima del nome. Ad esempio:
+\begin{lstlisting}[language=bash]
+#!/bin/bash
+nome="Fabio"
+echo $nome
+
+# Output:
+# Fabio
+\end{lstlisting}
+
+\vspace{1em}
+\noindent
+Per acquisire input dallo standard input si può usare il comando \texttt{read}:
+\begin{lstlisting}
+read <var>
+\end{lstlisting}
+ad esempio:
+\begin{lstlisting}[language=bash]
+read x
+< Fabio
+echo $x
+> Fabio
+\end{lstlisting}
+
+\vspace{1em}
+\noindent
+Tutte le variabili in bash sono stringhe, quindi per fare operazioni aritmetiche si
+deve specificare di volerlo fare con l'operatore \texttt{\$(( ))} che permette di 
+valutare un'espressione, ad esempio:
+\begin{lstlisting}[language=bash]
+x = 0
+echo $x+1
+> 0+1
+echo $((x+1))
+> 1
+\end{lstlisting}
+
+
+\vspace{1em}
+\noindent
+È possibile utilizzare l'output di un comando come valore di inizializzazione di una
+variabile, per fare ciò si usa l'operatore \texttt{\$()}:
+\begin{lstlisting}[language=bash]
+lista_file=$(ls)
+# Ora la variabile lista_file contiene l'output del comando ls
+\end{lstlisting}
+Un altro modo per fare la stessa cosa è usare le backticks:
+\begin{lstlisting}[language=bash]
+lista_file=`ls`
+# Ora la variabile lista_file contiene l'output del comando ls
+\end{lstlisting}
+
+\vspace{1em}
+\noindent
+\textbf{Condizionali:}
+
+\noindent
+Per fare un'istruzione condizionale si usa la seguente sintassi:
+\begin{lstlisting}[language=bash]
+if [ <condizione> ]; then
+  <comandi>
+fi
+\end{lstlisting}
+Oppure:
+\begin{lstlisting}[language=bash]
+if [ <condizione> ]; then
+  <comandi>
+elif [ <condizione> ]; then
+  <comandi>
+else
+  <comandi>
+fi
+\end{lstlisting}
+
+\vspace{1em}
+\noindent
+\textbf{Cicli:}
+
+\noindent
+Per fare un ciclo for si usa la seguente sintassi:
+\begin{lstlisting}[language=bash]
+for var in <lista>; do
+  <comandi>
+done
+\end{lstlisting}
+Per fare un while si usa la seguente sintassi:
+\begin{lstlisting}[language=bash]
+while [ <condizione> ]; do
+  <comandi>
+done
+\end{lstlisting}
+
+\vspace{1em}
+\noindent
+\textbf{Funzioni:}
+
+\noindent
+Per definire una funzione si usa la seguente sintassi:
+\begin{lstlisting}[language=bash]
+function nome_funzione {
+  <comandi>
+}
+\end{lstlisting}
+Oppure:
+\begin{lstlisting}[language=bash]
+nome_funzione() {
+  <comandi>
+}
+\end{lstlisting}
+Per chiamare una funzione si usa il nome della funzione:
+\begin{lstlisting}[language=bash]
+nome_funzione
+\end{lstlisting}
+
+\subsubsection{Programmi filtri}
+Sono programmi che ricevono dati di ingresso da stdin e generano risultati su stdout.
+Alcuni comandi più usati sono:
+\begin{itemize}
+  \item \texttt{grep, fgrep, egrep}: Filtra le righe di testo che contengono una stringa specificata
+  \item \texttt{sort}: Ordina le righe di testo
+  \item \texttt{uniq}: Rimuove le righe duplicate
+  \item \texttt{wc}: Conta le righe, le parole e i caratteri
+  \item \texttt{sed}: Sostituisce stringhe di testo
+  \item \texttt{awk}: Filtra e trasforma il testo
+  \item \texttt{cut}: Estrae colonne di testo
+  \item \texttt{more, less}: Visualizza il testo a schermo
+\end{itemize}
+
 \section{Sistema Operativo}
 Il \textbf{sistema operativo} è il livello del software che si pone tra l'hardware
 e gli utenti. E quindi il sistema operativo incapsula la macchina fisica.

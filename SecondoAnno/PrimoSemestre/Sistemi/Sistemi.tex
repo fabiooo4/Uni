@@ -3678,7 +3678,7 @@ Per un sistema LTI stabile RDC contiene sempre l'asse immaginatio
   Sia \( v(t) \) una funzione che ammette la trasformata di Laplace \( V(s) \), allora
   la trasformata di Laplace di \( e^{\lambda t} \cdot v(t) \) è:
   \[
-    \mathcal{L}[e^{\lambda t} \cdot v(t)](s) = V(s - \lambda)
+    \mathcal{L}\left[e^{\lambda t} \cdot v(t)\right](s) = V(s - \lambda)
   \] 
   L'ascissa di convergenza rimane spostata:
   \[
@@ -3690,7 +3690,7 @@ Per un sistema LTI stabile RDC contiene sempre l'asse immaginatio
   \textbf{Dimostrazione}:
   \[
     \begin{aligned}
-      \mathcal{L}[e^{\lambda t} \cdot v(t)](s) &= \int_{0^-}^{+\infty} e^{\lambda t} \cdot v(t) \cdot e^{-st} \, dt\\
+      \mathcal{L}\left[e^{\lambda t} \cdot v(t)\right](s) &= \int_{0^-}^{+\infty} e^{\lambda t} \cdot v(t) \cdot e^{-st} \, dt\\
                                                &= \int_{0^-}^{+\infty} v(t) \cdot e^{(\lambda - s)t} \, dt\\
                                                &= \int_{0^-}^{+\infty} v(t) \cdot e^{-\overbrace{(s - \lambda)}^{r}t} \, dt\\
                                                &= \mathcal{L}[v(t)](r)\\
@@ -3743,7 +3743,7 @@ L'ascissa di convergenza è minore dell'ascissa di convergenza originale
 \textbf{Dimostrazione}:
 \[
   \begin{aligned}
-    \mathcal{L}[\frac{d v(t)}{dt}](s) &= \int_{0^-}^{+\infty} \overbrace{\frac{d v(t)}{dt}}^{
+    \mathcal{L}\left[\frac{d v(t)}{dt}\right](s) &= \int_{0^-}^{+\infty} \overbrace{\frac{d v(t)}{dt}}^{
     f'(t)} \cdot \overbrace{e^{-st}}^{g(t)} \, dt\\
     &= v(t) \cdot e^{-st} \Big|_{0^-}^{+\infty} - \left( 
     -s \underbrace{\int_{0^-}^{+\infty} v(t) \cdot e^{-st} \, dt}_{\text{TdL}} \right)\\
@@ -3794,7 +3794,7 @@ la trasformata di Laplace di \( t^{i} \cdot v(t) \) è:
 Sia \( v(t) \) una funzione che ammette la trasformata di Laplace \( V(s) \), allora
 la trasformata di Laplace di \( \psi(t) = \int_{0^-}^{t} v(t) \, dt \) è:
 \[
-  \mathcal{L}[\int_{0^-}^{t} v(\tau) \, d\tau](s) = \frac{V(s)}{s}
+  \mathcal{L}\left[\int_{0^-}^{t} v(\tau) \, d\tau\right](s) = \frac{V(s)}{s}
 \] 
 E l'ascissa di convergenza è:
 \[
@@ -3823,7 +3823,7 @@ Quindi:
 
 \subsubsection{Integrale nel dominio dei complessi}
 Sia \( v(t) \) una funzione che ammette la trasformata di Laplace \( V(s) \), se
-esiste \( \lim_{t \to 0^-} \frac{v(t)}{t} \), allora la trasformata di Laplace è:
+esiste il \( \lim_{t \to 0^-} \frac{v(t)}{t} \), allora la trasformata di Laplace è:
 \[
   \mathcal{L}\left[ \frac{v(t)}{t} \right](s) = \int_{s}^{+\infty} \mathcal{L}[v(t)](s) \, ds
 \] 
