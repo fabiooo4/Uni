@@ -3919,7 +3919,7 @@ la trasformata di Laplace e vale:
 
 \begin{figure}[H]
   \centering
-  \begin{tikzpicture}
+  \begin{tikzpicture}[scale=1.5]
     \def\a{1}
     \draw[->] (-1.5,0) -- (1.5,0) node[right] {$t$};
     \draw[->] (0,-0.1) -- (0,1.5) node[above] {$\delta_{-1}(t)$};
@@ -3959,7 +3959,19 @@ la trasformata di Laplace e vale:
 \end{itemize}
 
 \subsubsection{Esponenziale complesso causale}
-\label{15-11-D1}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[scale=1.5]
+    \def\a{1/2}
+    \draw[->] (-1.5,0) -- (1.5,0) node[right] {$t$};
+    \draw[->] (0,-0.1) -- (0,1.5) node[above] {$v(t)$};
+
+    \draw[blue,thick,domain=0:0.99, samples=100] plot (\x,{\a * exp(\x)})
+      node[above right] {\( \lambda > 0 \) };
+    \draw[blue,thick,domain=0:1.4, samples=100] plot (\x,{\a * exp(-\x)})
+      node[above right] {\( \lambda < 0 \) };
+  \end{tikzpicture}
+\end{figure}
 \begin{itemize}
   \item La trasformata di Laplace dell'esponenziale complesso causale
     \( v(t) = e^{\lambda t} \cdot \delta_{-1}(t) \) è:
@@ -3985,7 +3997,20 @@ la trasformata di Laplace e vale:
 \end{itemize}
 
 \subsubsection{Esponenziale complesso causale moltiplicato per una funzione polinomiale}
-\label{15-11-D2}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[scale=1.5]
+    \def\a{1/2}
+    \draw[->] (-1.5,0) -- (3.5,0) node[right] {$t$};
+    \draw[->] (0,-0.1) -- (0,2.5) node[above] {$v(t)$};
+
+    \draw[blue,thick,domain=0:3.4, samples=100] plot (\x,{exp(-2*\x)+2*exp(-2*\x)*\x})
+      node[above right] {\( \lambda < 0 \) };
+
+    \draw[blue,thick,domain=0:1.5, samples=100] plot (\x,{exp(1/2*\x)+2*exp(-4*\x)*\x})
+      node[above right] {\( \lambda > 0 \) };
+  \end{tikzpicture}
+\end{figure}
 La trasformata di Laplace di \( v(t) = \frac{t^l}{l!} \cdot e^{\lambda t} \cdot \delta_{-1}(t) \) è:
 \[
   \begin{aligned}
@@ -4035,7 +4060,16 @@ La trasformata di Laplace di \( v(t) = \frac{t^l}{l!} \cdot e^{\lambda t} \cdot 
 \end{example}
 
 \subsubsection{Funzione coseno}
-\label{15-11-D3}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[scale=1.5]
+    \def\a{1/2}
+    \draw[->] (-1.5,0) -- (1.5,0) node[right] {$t$};
+    \draw[->] (0,-0.1) -- (0,1.5) node[above] {$v(t)$};
+
+    \draw[blue,thick,domain=-1.4:1.4, samples=100] plot (\x,{cos(5*\x r)/2 + 1/2});
+  \end{tikzpicture}
+\end{figure}
 
 La trasformata di Laplace di \( cos(\omega t) \) è:
 \[
@@ -4050,7 +4084,16 @@ La trasformata di Laplace di \( cos(\omega t) \) è:
 \] 
 
 \subsubsection{Funzione seno}
-\label{15-11-D4}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[scale=1.5]
+    \def\a{1/2}
+    \draw[->] (-1.5,0) -- (1.5,0) node[right] {$t$};
+    \draw[->] (0,-0.1) -- (0,1.5) node[above] {$v(t)$};
+
+    \draw[blue,thick,domain=-1.4:1.4, samples=100] plot (\x,{sin(5*\x r)/2 + 1/2});
+  \end{tikzpicture}
+\end{figure}
 
 La trasformata di Laplace di \( \sin(\omega t) \) è:
 \[
@@ -4065,7 +4108,23 @@ La trasformata di Laplace di \( \sin(\omega t) \) è:
 \]
 
 \subsection{Risoluzione di sistemi LTI causali}
-\label{15-11-D5}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw,align=center] (sistema) at (0,0) {Sistema a\\tempo continuo};
+    \node[draw,align=center,right=of sistema] (eqr) {Equazioni\\differenziali};
+    \node[draw,align=center,right=of eqr] (sol) {Soluzione in \( \mathbb{R} \)\\nel tempo};
+    \node[draw,align=center,below=of eqr] (eqc) {Equazioni\\algebriche\\in \( \mathbb{C} \)};
+    \node[draw,align=center,right=of eqc] (solc) {Soluzione in \( \mathbb{C} \)};
+
+    \draw[->] (sistema) -- (eqr);
+    \draw[->] (eqr) -- (sol);
+    \draw[->] (eqr) -- (eqc) node[midway,right] {\( \mathcal{L} \)};
+    \draw[->] (eqc) -- (solc);
+    \draw[->] (solc) -- (sol) node[midway,right] {\( \mathcal{L}^{-1} \)};
+  \end{tikzpicture}
+  \caption{Risoluzione di sistemi LTI causali tramite trasformata di Laplace}
+\end{figure}
 Per un sistema LTI causale:
 \[
   \sum_{i=0}^{n} a_i \frac{d^{i} y(t)}{dt^{i}} = \sum_{j=0}^{m} b_j \frac{d^{j} x(t)}{dt^{j}}
