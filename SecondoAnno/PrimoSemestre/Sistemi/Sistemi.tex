@@ -3907,7 +3907,7 @@ la trasformata di Laplace e vale:
     La trasformata di laplace dell'impulso ritardato è:
     \[
       \begin{aligned}
-        \mathcal{L}[\delta_{t - \tau}(t)](s) &= \int_{0^-}^{+\infty} \delta_{\tau}(t) \cdot e^{-st} \, dt\\
+        \mathcal{L}[\delta_0(t - \tau)](s) &= \int_{0^-}^{+\infty} \delta_{\tau}(t) \cdot e^{-st} \, dt\\
                                              &= e^{-s \tau}
       \end{aligned}
     \] 
@@ -4160,14 +4160,14 @@ Espandendo le sommatorie e raccogliendo si ha:
 \[
 \begin{aligned}
   \color{blue}\underbrace{\left( a_n s^n + a_{n-1} s^{n-1} + \ldots + a_0 \right)}_{d(s)}\color{black} V(s) \\
-  - \color{green!50!black}\overbrace{a_n \cdot  v(0^-) \cdot  s^{n-1} - \left( a_{n-1} \cdot  v(0^-) + a_n \cdot  \frac{dv(0^-)}{dt} \Big|_{t=0^-} \right) s^{n-2} - \ldots}^{p(s)}\\
+  - \color{green!50!black}\overbrace{a_n \cdot  v(0^-) \cdot  s^{n-1} - \left( a_{n-1} \cdot  v(0^-) + a_n \cdot  \frac{dv(t)}{dt} \Big|_{t=0^-} \right) s^{n-2} - \ldots}^{p(s)}\\
   \color{green!50!black}\ldots - \left( \sum_{k=0}^{n-1} a_{k+1} \cdot  \frac{d^{k} v(t)}{dt^{k}} \Big|_{t=0^-} \right) \color{black}=\\
   = \color{red}\underbrace{\left( b_m s^{m} + b_{m-1} s^{m-1} + \ldots + b_0 \right)}_{n(s)}\color{black} U(s)
 \end{aligned}
 \] 
 Sostituendo diventa:
 \[
-d(s) \cdot V(s) - p(s) = n(s) \cdot U(s)
+  \color{blue}d(s)\color{black} \cdot V(s) - \color{green!50!black}p(s)\color{black} = \color{red}n(s)\color{black} \cdot U(s)
 \] 
 quindi:
 \[
@@ -4212,13 +4212,15 @@ quindi:
       H(s) = \frac{\sum_{j=0}^{m} b_j s^{j}}{\sum_{i=0}^{n} a_i s^{i}}
     \] 
     è il rapporto tra i polinomi caratteristici dell'ingresso \( u(t) \) e dell'uscita \( v(t) \).
+    \vspace{1em}
+    \noindent
     \( H(s) \) è definita come la \textbf{trasformata di Laplace della risposta impulsiva}
     \( h(t) \)
     \[
       \begin{aligned}
         h(t) &= d_0 \cdot \delta_0(t) + \left( \sum_{i=1}^{r} \sum_{l=0}^{\mu_i-1} d_{i,l} \cdot  \frac{t^l}{l!} \cdot e^{\lambda_i t} \right) \cdot \delta_{-1}(t) \\
         \downarrow \mathcal{L}\\
-             &= d_0 + \sum_{i=1}^{r} \sum_{l=0}^{\mu_i-1} \frac{d_{i,l}}{(s- \lambda_i)^{l+1}}
+        H(s) &= d_0 + \sum_{i=1}^{r} \sum_{l=0}^{\mu_i-1} \frac{d_{i,l}}{(s- \lambda_i)^{l+1}}
       \end{aligned}
     \] 
 \end{itemize}
@@ -4237,7 +4239,7 @@ quindi:
   Applicationo la regola della derivata:
   \[
     \begin{aligned}
-      \color{green}s^3 V(s) - s^2 v(0^-) - \frac{dv(0^-)}{dt} \cdot s - \frac{d^2v(0^-)}{dt^2} \cdot s^0 \color{black}+\\
+      \color{green!50!black}s^3 V(s) - s^2 v(0^-) - \frac{dv(0^-)}{dt} \cdot s - \frac{d^2v(0^-)}{dt^2} \cdot s^0 \color{black}+\\
       +\, \color{blue}s^2 V(s) - s \cdot v(0^-) - \frac{dv(0^-)}{dt} \cdot s^0\color{black} = \color{purple}s \cdot U(s)
     \end{aligned}
   \] 
@@ -4276,5 +4278,360 @@ quindi:
     V(s) = \frac{s}{s^3 + s} \cdot U(s) + \frac{s^2 + s}{s^3 + s^2}
   \] 
 \end{example}
+
+
+\subsubsection{Stabilità di sistemi LTI causali}
+Considerando la funzione di trasferimento \( H(s) \), cioè il rapporto tra i polinomi
+caratteristici dell'ingresso e dell'uscita, si ha che
+il grado del numeratore è generalmente minore o uguale a quello del denominatore.
+\[
+  H(s) = \frac{\sum_{j=0}^{m} b_j s^{j}}{\sum_{i=0}^{n} a_i s^{i}}
+\] 
+Fattorizzando si ottiene:
+\[
+  \begin{aligned}
+    H(s) = \frac{b_m \overbrace{\left( s - \beta_1 \right)^{\xi_1}}^{\text{Radici del numeratore}} \cdot \left( s - \beta_2 \right)^{\xi_2} \cdot \ldots \cdot \left( s - \beta_q \right)^{\xi_q}}
+    {a_n \underbrace{\left( s - \alpha_1 \right)^{ \mu_1 }}_{\text{Radici del denominatore}} \cdot \left( s - \alpha_2 \right)^{ \mu_2 } \cdot \ldots \cdot \left( s - \alpha_r \right)^{ \mu_r }}
+  \end{aligned}
+\] 
+Dove:
+\[
+  \begin{aligned}
+    \xi_i &= \text{molteplicità delle soluzioni del numeratore}\\
+    \mu_i &= \text{molteplicità delle soluzioni del denominatore}
+  \end{aligned}
+\] 
+\[
+  q \le m; \quad \sum \xi_i = m; \qquad r \le n; \quad \sum \mu_i = n
+\] 
+\[
+  H(s) = k \frac{\left( s - z_1\right) \cdot \left( s - z_2 \right) \cdot \ldots \cdot \left( s - z_m \right)}
+  {\left( s - p_1 \right) \cdot \left( s - p_2 \right) \cdot \ldots \cdot \left( s - p_n \right)}
+\] 
+Dove:
+\[
+  \begin{aligned}
+    (s-z_i) &= \text{Zeri della funzione razionale (radici numeratore)}\\
+    (s-p_i) &= \text{Poli della funzione razionale (radici denominatore)}
+  \end{aligned}
+\]
+Definiamo uno \textbf{zero} di una funzione razionale \( H(s) \) un qualsiasi
+numero \( \beta \in \mathbb{C} \) tale che \( H(\beta) = 0\).
+
+Definiamo un \textbf{polo} di una funzione razionale \( H(s) \) un qualsiasi
+numero \( \alpha \in \mathbb{C} \) tale che \( H(\alpha) = \infty \).
+
+\vspace{1em}
+\noindent
+\begin{definition}
+  Dato \( H(s) \) in forma ridotta (senza radici comuni), siano \( \lambda_i, \ldots,
+  \lambda_r\) con \( r \le n \) i suoi poli dopo la semplificazione. Se:
+  \[
+    \Re(\lambda_i) < 0 \quad \forall i = 1, \ldots, r
+  \] 
+  allora il sistema è \textbf{BIBO stabile}.
+
+  \vspace{1em}
+  \noindent
+  Il sistema è BIBO stabile se tutti i suoi poli stanno nel semipiano complesso negativo.
+\end{definition}
+
+\noindent
+Per BIBO stabilizzare un sistema bisogna togliere gli zeri \( \lambda_i \) con 
+\( \Re(\lambda_i) > 0 \), semplificandoli dividendo per lo stesso valore.
+
+\begin{example}
+  Studiamo la stabilità del seguente sistema:
+  \[
+  v'(t) - 3 v(t) = u''(t) - 5u'(t) + 4u(t)
+  \] 
+  In questo caso abbiamo che \( n < m \). Calcoliamo il polinomio caratteristico:
+  \[
+  s - 3 = s^2 - 5s + 4
+  \] 
+  Abbiamo che:
+  \[
+    \begin{aligned}
+      H(s) &= \frac{n(s)}{d(s)}
+            = \frac{\text{{Polinomio caratteristico dell'ingresso}}}
+                   {\text{{Polinomio caratteristico dell'uscita}}}\\
+           &= \frac{s^2 - 5s + 4}{s-3}\\
+           &= \frac{(s-1)(s-4)}{s-3}
+    \end{aligned}
+  \] 
+  La soluzione è \( \lambda_1 = 3 \), quindi il sistema non è asintoticamente stabile,
+  di conseguenza è instabile.
+
+  \vspace{1em}
+  \noindent
+  Per verificare se il sistema è BIBO stabile bisogna vedere se si possono semplificare
+  gli zeri. In questo caso tutte le radici del denominatore (i poli) hanno parte reale
+  maggiore di 0, quindi il sistema non è BIBO stabile.
+\end{example}
+
+\begin{example}
+  Studiamo la stabilità del seguente sistema:
+  \[
+  v''(t) + 3v'(t) + 2v(t) = u''(t) - 4u'(t) + 3u(t)
+  \] 
+  Calcoliamo la funzione di trasferimento \( H(s) \):
+  \[
+    \begin{aligned}
+      H(S) &= \frac{s^2 -4s +3}{s^2 +3s + 2}\\
+           &= \frac{(s-3)(s-1)}{(s+2)(s+1)}
+    \end{aligned}
+  \] 
+  Le soluzioni sono:
+  \[
+  \begin{aligned}
+    \lambda_1 &= -2\\
+    \lambda_2 &= -1
+  \end{aligned}
+  \] 
+  \( \Re(\lambda_i) < 0 \) quindi il sistema è asintoticamente stabile, di conseguenza
+  anche BIBO stabile.
+\end{example}
+
+\begin{example}
+  Studiamo la stabilità del seguente sistema:
+  \[
+    v'''(t) + 7v''(t) - 2v'(t) + 6v(t) = u''(t) + 3u'(t) - 4u(t)
+  \] 
+  Calcoliamo la funzione di trasferimento \( H(s) \):
+  \[
+  \begin{aligned}
+    H(s) &= \frac{s^2 + 3s - 4}{s^3 + 7s^2 - 2s + 6}\\
+         &= \frac{(s-4)(s-1)}{(s+3)(s+2)(s-1)}
+  \end{aligned}
+  \] 
+  Le soluzioni sono:
+  \[
+  \begin{aligned}
+    \lambda_1 &= -3\\
+    \lambda_2 &= -2\\
+    \lambda_3 &= 1
+  \end{aligned}
+  \]
+  Siccome \( \Re(\lambda_3) > 0 \) il sistema non è asintoticamente stabile.
+
+  \vspace{1em}
+  \noindent
+  Controlliamo se il sistema è BIBO stabile:
+  \[
+    \frac{(s-4)\cancel{(s-1)}}{(s+3)(s+2)\cancel{(s-1)}}
+  \] 
+  Il polo con parte reale minore di 0 si semplifica, quindi il sistema è BIBO stabile,
+  perchè tutti i poli hanno parte reale minore di 0.
+\end{example}
+
+\subsection{Antitrasformata di Laplace unilatera}
+Prendendo in considerazione la trasformata di Laplace del sistema:
+\[
+  V(s) = \frac{n(s)}{d(s)} \cdot V(s) + \frac{p(s)}{d(s)}
+\] 
+si vuole trovare l'antitrasformata, quindi si applicano le seguenti regole considerando
+soltanto ciò di cui si vuole trovare l'antitrasformata:
+\begin{itemize}
+  \item Risposta forzata:
+    \[
+    \frac{n(s)}{d(s)} \cdot U(s)
+    \] 
+
+  \item Risposta libera:
+    \[
+    \frac{p(s)}{d(s)}
+    \]
+
+  \item Risposta impulsiva:
+    \[
+    \frac{n(s)}{d(s)}
+    \]
+
+  \item Risposta totale:
+    \[
+    \frac{n(s)}{d(s)} \cdot U(s) + \frac{p(s)}{d(s)}
+    \]
+\end{itemize}
+Di conseguenza consideriamo:
+\[
+V(s) = \frac{n(s)}{d(s)}
+\] 
+\begin{itemize}
+  \item Se \( deg\left[ n(s) \right] \ge deg\left[ d(s) \right] \) (sistema proprio)
+    bisogna fare la divisione polinomiale e arrivare alla divisione in fratti semplici
+    e infine applicare l'antitrasformata di Laplace.
+    \begin{itemize}
+      \item \textbf{Divisione polinomiale}:
+
+        \vspace{1em}
+        \noindent
+        \[
+          V(s) = \frac{r(s)}{d(s)} + k \quad \text{con} \quad deg\left[ r(s) \right] < deg\left[ d(s) \right]
+        \] 
+        Si ha che \( k \) è la trasformata di Laplace dell'impulso:
+        \[
+          \mathcal{L}\left[ k \cdot \delta_0(t) \right](s) = k
+        \] 
+        e quindi la sua anti-trasformata è:
+        \[
+          \mathcal{L}\left[ k \cdot \delta_0(t) \right](s) = k \to \mathcal{L}^{-1}
+          \to k \cdot \delta_0(t)
+        \] 
+
+        \begin{example}
+          Considerando la seguente risposta:
+          \[
+            V(s) = \frac{2s^2 + 4s - 3}{s^2 -s -1}
+          \] 
+          si ha che \( m = 2 \) e \( n = 2 \), quindi siamo nel caso:
+          \[
+            deg\left[ n(s) \right] \ge  deg\left[ d(s) \right]
+          \] 
+          quindi bisogna fare la divisione polinomiale:
+          \[
+            \begin{aligned}
+              V(s) &= \frac{2s^2 + 4s - 3}{s^2 -s -1}\\
+                   &= \frac{6s-1}{s^2-s-1} + 2
+            \end{aligned}
+          \]
+          Ora bisogna trasformare in fratti semplici.
+        \end{example}
+    \end{itemize}
+
+  \item Se \( deg\left[ n(s) \right] < deg\left[ d(s) \right] \) (sistema strattamente proprio)
+    si può saltare la divisione polinomiale e applicare direttamente l'antitrasformata.
+\end{itemize}
+
+\noindent
+\textbf{Decomposizione in fratti semplici}:
+\[
+  \frac{r(s)}{d(s)} = \sum_{i=1}^{m} \sum_{l=0}^{\mu_i-1} \frac{c_{i,l}}{(s-\alpha_i)^{l+1}}
+\] 
+Per trovare i valori di \( c_{i,l} \) si usa la formula:
+\[
+\begin{aligned}
+  c_{i,l} = \lim_{s \to \alpha_i} \frac{d^{\mu_i-l-1} \left( \left( s-\alpha_i \right)^{\mu_i} \frac{r(s)}{d(s)} \right)}
+  {d  s^{\mu_i-l-1}}
+\end{aligned}
+\] 
+
+\begin{example}
+  Si vuole scomporre in fratti semplici:
+  \[
+  V(s) = \frac{3s^2-1}{(s+1)^2(s-2)(s+5)}
+  \] 
+  Quindi si ha che:
+  \[
+    V(s) = \frac{A}{(s-2)} + \frac{B}{(s+1)} + \frac{C}{(s+1)^2} + \frac{D}{(s+5)}
+  \] 
+  dove \( A, B, C, D \) sono le costanti \( c_{i,l} \) e i denominatori sono le radici
+  \( (s-\alpha_i) \) del polinomio \( d(s) \). Poi si calcolano i valori di \( A, B, C, D \)
+  e si ottiene la decomposizione in fratti semplici.
+\end{example}
+
+\begin{example}
+  Si vuole scomporre in fratti semplici:
+  \[
+  V(s) = \frac{s-20}{(s+4)(s-2)}
+  \] 
+  Abbiamo che:
+  \[
+  \begin{aligned}
+    \alpha_1 &= -4 \quad \mu_1 = 1\\
+    \alpha_2 &= 2 \quad \mu_2 = 1
+  \end{aligned}
+  \] 
+  Quindi si ha che:
+  \[
+    V(s) = \frac{c_{1,0}}{s+4} + \frac{c_{2,0}}{s-2} = \frac{A}{s+4} + \frac{B}{s-2}
+  \] 
+  Per trovare \( A \) e \( B \) si può fare in due modi:
+  \begin{enumerate}
+    \item Fare il denominatore comune e sommare i numeratori
+      \[
+      \begin{aligned}
+        \frac{A}{s+4} + \frac{B}{s-2} &= \frac{A(s-2)+B(s+4)}{(s+4)(s-2)}\\
+                                      &= \frac{As-2A+Bs+4B}{(s+4)(s-2)}\\
+      \end{aligned}
+      \] 
+      \[
+      \begin{cases}
+        (A+B)s = 1s\\
+        -2A+4B = -20
+      \end{cases}
+      \to 
+      \begin{cases}
+        A+B = 1\\
+        4B-2A = -20
+      \end{cases}
+      \to 
+      \begin{cases}
+        A = 4\\
+        B = -3
+      \end{cases}
+      \] 
+      Quindi:
+      \[
+        \frac{s-20}{(s+4)(s-2)} = \frac{4}{s+4} - \frac{3}{s-2}
+      \] 
+
+    \item Si può usare la formula:
+      \[
+        c_{i,l} = \lim_{s \to \alpha_i} \frac{d^{\mu_i-l-1} \left( \left( s-\alpha_i \right)^{\mu_i} \frac{r(s)}{d(s)} \right)}
+        {d  s^{\mu_i-l-1}}
+      \] 
+      Abbiamo che:
+      \[
+      \begin{aligned}
+        \mu_1 &= 1\\
+        \alpha_1 &= -4
+      \end{aligned}
+      \] 
+      \[
+        \begin{aligned}
+          c_{1,0} = A &= \lim_{s \to -4} \frac{d^{1-0-1} \left( \cancel{(s+4)} \frac{s-20}{\cancel{(s+4)}(s-2)} \right)}
+          {d s^{1-0-1}}
+                      &= \frac{-24}{-6} = 4\\
+        \end{aligned}
+      \] 
+      e
+      \[
+      \begin{aligned}
+        \mu_2 &= 1\\
+        \alpha_2 &= 2
+      \end{aligned}
+      \] 
+      \[
+        \begin{aligned}
+          c_{2,0} = B &= \lim_{s \to 2} \frac{d^{1-0-1} \left( \cancel{(s-2)} \frac{s-20}{(s+4)\cancel{(s-2)}} \right)}
+          {d s^{1-0-1}}
+                      &= \frac{-18}{6} = -3\\
+        \end{aligned}
+      \]
+      Alla fine si ottiene:
+      \[
+        \frac{s-20}{(s+4)(s-2)} = \frac{4}{s+4} - \frac{3}{s-2}
+      \] 
+  \end{enumerate}
+\end{example}
+
+\vspace{1em}
+\noindent
+\textbf{Antitrasformata di Laplace}:
+
+\noindent
+Dopo aver applicato tutti i passaggi precedenti si arriva ad avere:
+\[
+  V(s) = k + \sum_{i=1}^{r} \sum_{l=0}^{\mu_i-1} \frac{c_{i,l}}{(s-\lambda)^{l+1}}
+\] 
+da questa forma si può antitrasformare:
+\[
+  \begin{aligned}
+    v(t) &= \mathcal{L}^{-1}[k](t) + \left[\sum_{i=1}^{r} \sum_{l=0}^{\mu_i-1} c_{i,l} \cdot
+              \mathcal{L}^{-1}\left[ \frac{1}{(s-\lambda_i)^{l+1}} \right](t)\right]\\
+         &= k \cdot \delta_0(t) + \left[\sum_{i=1}^{r} \sum_{l=0}^{\mu_i-1} c_{i,l} \cdot \frac{t^l}{l!} \cdot e^{\lambda t} \cdot \delta_{-1}(t)\right]
+  \end{aligned}
+\] 
+
 
 \end{document}
