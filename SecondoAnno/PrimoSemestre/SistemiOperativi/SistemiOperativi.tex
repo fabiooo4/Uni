@@ -751,12 +751,12 @@ Le principali system call per gestire i file sono:
 \begin{itemize}
 \item Apre un file esistente o ne crea uno nuovo se viene specificato il flag adeguato.
   Se va a buon fine ritorna il file descriptor del file aperto, altrimenti ritorna -1
-  \begin{lstlisting}[language=C]
+\begin{lstlisting}[language=C]
 #include <sys/stat.h>
 #include <fcntl.h>
 
 int open(const char *pathname, int flags, .../*mode_t mode*/);
-  \end{lstlisting}
+\end{lstlisting}
   \begin{itemize}
     \item \texttt{pathname}: Il percorso del file da aprire
     \item \texttt{flags}: I flag per aprire il file, ad esempio:
@@ -778,11 +778,11 @@ int open(const char *pathname, int flags, .../*mode_t mode*/);
 
 \item Legge da un file aperto e scrive i dati letti in un buffer. Ritorna il numero
   di byte letti, 0 se è arrivato alla fine del file, -1 se c'è stato un errore
-  \begin{lstlisting}[language=C]
+\begin{lstlisting}[language=C]
 #include <unistd.h>
 
 ssize_t read(int fd, void *buf, size_t count);
-  \end{lstlisting}
+\end{lstlisting}
   \begin{itemize}
     \item \texttt{fd}: Il file descriptor del file da leggere
     \item \texttt{buf}: L'indirizzo di memoria in cui scrivere i dati letti
@@ -791,11 +791,11 @@ ssize_t read(int fd, void *buf, size_t count);
 
 \item Scrive su un file aperto i dati contenuti in un buffer. Ritorna il numero di
   byte scritti, -1 se c'è stato un errore
-  \begin{lstlisting}[language=C]
+\begin{lstlisting}[language=C]
 #include <unistd.h>
 
 ssize_t write(int fd, const void *buf, size_t count);
-  \end{lstlisting}
+\end{lstlisting}
   \begin{itemize}
     \item \texttt{fd}: Il file descriptor del file su cui scrivere
     \item \texttt{buf}: L'indirizzo di memoria da cui leggere i dati da scrivere
@@ -804,11 +804,11 @@ ssize_t write(int fd, const void *buf, size_t count);
 
 \item Sposta il cursore di lettura/scrittura del file al byte specificato. Ritorna
   la nuova posizione del cursore, -1 se c'è stato un errore
-  \begin{lstlisting}[language=C]
+\begin{lstlisting}[language=C]
 #include <unistd.h>
 
 off\_t lseek(int fd, off\_t offset, int whence);
-  \end{lstlisting}
+\end{lstlisting}
   \begin{itemize}
     \item \texttt{fd}: Il file descriptor del file su cui spostare il cursore
     \item \texttt{offset}: Il numero di byte da spostare il cursore
@@ -822,28 +822,92 @@ off\_t lseek(int fd, off\_t offset, int whence);
 
 \item Chiude il file descriptor specificato. Ritorna 0 se va a buon fine, -1 se c'è
   stato un errore
-  \begin{lstlisting}[language=C]
+\begin{lstlisting}[language=C]
 #include <unistd.h>
 
 int close(int fd);
-  \end{lstlisting}
+\end{lstlisting}
   \begin{itemize}
     \item \texttt{fd}: Il file descriptor del file da chiudere
   \end{itemize}
 
 \item Rimuove un "link" dal file specificato, se è l'ultimo link al file, il file
   viene rimosso. Ritorna 0 se va a buon fine, -1 se c'è stato un errore
-  \begin{lstlisting}[language=C]
+\begin{lstlisting}[language=C]
 #include <unistd.h>
 
 int unlink(const char *pathname);
-  \end{lstlisting}
+\end{lstlisting}
   \begin{itemize}
     \item \texttt{pathname}: Il percorso del file da rimuovere
   \end{itemize}
   (non può rimuovere le directory)
 
 \end{itemize}
+
+\subsubsection{Directory}
+Le principali system call per gestire le directory sono:
+\begin{itemize}
+\item Apre una directory specificata. Ritorna un puntatore alla directory aperta,
+  NULL se c'è stato un errore
+\begin{lstlisting}[language=C]
+#include <sys/types.h>
+#include <dirent.h>
+
+DIR *opendir(const char *name);
+\end{lstlisting}
+  \begin{itemize}
+    \item \texttt{name}: Il percorso della directory da aprire
+  \end{itemize}
+
+\item Legge la directory aperta. Ritorna un puntatore alla struttura \texttt{dirent}
+  che contiene le informazioni del file letto, NULL se è arrivato alla fine della
+  directory o c'è stato un errore
+\begin{lstlisting}[language=C]
+#include <dirent.h>
+
+struct dirent *readdir(DIR *dirp);
+\end{lstlisting}
+  \begin{itemize}
+    \item \texttt{dirp}: Il puntatore alla directory aperta
+  \end{itemize}
+
+\item Chiude la directory aperta. Ritorna 0 se va a buon fine, -1 se c'è stato un errore
+\begin{lstlisting}[language=C]
+#include <dirent.h>
+
+int closedir(DIR *dirp);
+\end{lstlisting}
+  \begin{itemize}
+    \item \texttt{dirp}: Il puntatore alla directory da chiudere
+  \end{itemize}
+
+\item Crea una directory con i permessi specificati. Ritorna 0 se va a buon fine,
+  -1 se c'è stato un errore
+\begin{lstlisting}[language=C]
+#include <sys/stat.h>
+
+int mkdir(const char *pathname, mode_t mode);
+\end{lstlisting}
+  \begin{itemize}
+    \item \texttt{pathname}: Il percorso della directory da creare
+    \item \texttt{mode}: I permessi della directory creata
+  \end{itemize}
+
+\item Rimuove la directory specificata. Ritorna 0 se va a buon fine, -1 se c'è stato
+  un errore
+\begin{lstlisting}[language=C]
+#include <unistd.h>
+
+int rmdir(const char *pathname);
+\end{lstlisting}
+  \begin{itemize}
+    \item \texttt{pathname}: Il percorso della directory da rimuovere
+  \end{itemize}
+  (non può rimuovere le directory non vuote)
+
+\end{itemize}
+
 
 \section{Sistema Operativo}
 Il \textbf{sistema operativo} è il livello del software che si pone tra l'hardware
