@@ -570,6 +570,281 @@ Alcuni comandi più usati sono:
   \item \texttt{more, less}: Visualizza il testo a schermo
 \end{itemize}
 
+\subsection{Processi e programmi}
+Un \textbf{processo} è un'istanza di un programma in esecuzione, mentre un \textbf{programma}
+è un file binario che contiene un set di informazioni che descrive come costruire un
+processo in runtime (cioè quando il programma viene eseguito).
+
+\vspace{1em}
+\noindent
+Dal punto di vista del kernel un processo è composto da:
+\begin{itemize}
+  \item Memoria user-space che contiene il codice del programma
+  \item Le variabili utilizzate dal codice
+  \item Un insieme di strutture dati del kernel che mantengono informazioni riguardo
+    allo stato del processo, ad esempio:
+    \begin{itemize}
+      \item Tabella di file aperti
+      \item Tabelle di pagine
+      \item Segnali da inviare
+      \item Limiti e utilizzo delle risorse del processo
+    \end{itemize}
+\end{itemize}
+Alla creazione di un processo, esso viene caricato in memoria contenendo i seguenti
+campi:
+\begin{itemize}
+  \item \textbf{Codice del programma}: Una sezione di sola lettura che contiene sottoforma
+    di testo le istruzioni del programma (text)
+  \item \textbf{Dati inizializzati}: Una sezione che contiene le variabili globali
+    e statiche inizializzate (data)
+  \item \textbf{Dati non inizializzati}: Una sezione che contiene le variabili globali
+    e statiche non inizializzate (bss)
+  \item \textbf{Heap}: Una sezione che contiene le variabili allocate dinamicamente.
+    Nell'architettura x86 il heap cresce verso indirizzi di memoria più alti
+  \item \textbf{Stack}: Una sezione che contiene le variabili locali e i parametri
+    delle funzioni. Nell'architettura x86 lo stack cresce verso indirizzi di memoria
+    più bassi
+\end{itemize}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \def\w{3.5}
+    \def\h{1.5}
+    % Process
+    \draw (0,0) node[left,scale=0.8] {\texttt{0x08048000}}
+      rectangle ++(\w,\h*1.2) node[midway,align=center] {Codice del\\programma\\(text)}
+      rectangle ++(-\w,\h) node[midway,align=center] {Dati inizializzati\\(data)}
+      rectangle ++(\w,\h) node[midway,align=center] {Dati non inizializzati\\(bss)}
+      rectangle ++(-\w,\h) node[midway,align=center] {Heap\\(cresce verso l'alto)};
+
+    \draw[<-] (-0.1,\h*1.2+\h*3) -- ++(-1,0) node[above,scale=0.8] {Program break};
+    \draw[fill,fill opacity=0.1,text opacity=1]
+      (0,\h*1.2+\h*3) rectangle ++(\w,\h*1.5) node[midway,align=center]
+      {(memoria non\\allocata)};
+    \draw[<-] (-0.1,\h*1.2+\h*3+\h*1.5) -- ++(-1,0) node[above,scale=0.8] {Cima dello stack};
+
+    \draw (0,\h*1.2+\h*3+\h*1.5) rectangle ++(\w,\h) node[midway,align=center] {Stack\\(cresce verso il basso)}
+      rectangle ++(-\w,\h/3) node[midway,align=center] {argv, environ}
+      node[left,scale=0.8] {\texttt{0xC0000000}};
+  \end{tikzpicture}
+  \caption{Struttura di un processo}
+\end{figure}
+\noindent
+\begin{example}
+  Il seguente programma mostra dove vengono allocate le varie sezioni di un processo:
+\begin{lstlisting}[language=c]
+#include <stlib.h>
+// Variabili dichiarate globalmente
+char buffer[10];                    // (bss)
+int primes[] = {2, 3, 5, 7};        // (data)
+
+// Implementazioni delle funzioni
+void method(int *a) {               // (stack)
+  int i;                            // (stack)
+  for (i = 0; i < 10; i++) {
+    a[i] = i;
+  }
+}
+
+// Entry point del programma
+int main (int argc, char *argv[]) { // (stack)
+  static int key = 123;             // (data)
+  int *p;                           // (stack)
+  p = malloc(10 * sizeof(int));     // (heap)
+
+  method(p);
+  free(p);
+
+  return 0;
+}
+\end{lstlisting}
+\end{example}
+Per vedere la grandezza delle varie sezioni si può usare il comando \texttt{size}:
+\begin{lstlisting}
+gcc -o program program.c
+size program
+   text    data     bss     dec     hex     filename
+   1017     260      12    1289     509     program
+\end{lstlisting}
+
+\vspace{1em}
+\noindent
+Per ogni processo il kernel salva una \textbf{file descriptor table}, che è una tabella
+che contiene i file aperti dal processo. Ogni riga della tabella contiene un
+\textbf{file descriptor}, cioè un intero positivo che rappresenta una risorsa di 
+input/output aperta dal processo, ad esempio files, pipes, sockets, ecc.
+
+Per convenzione ci sono sempre 3 file descriptor in un nuovo processo:
+\begin{table}[H]
+  \centering
+  \begin{tabular}{c|c|c}
+    \textbf{File descriptor} & \textbf{Descrizione} & \textbf{Nome POSIX} \\
+    \hline
+    0 & Standard input (stdin) & STDIN\_FILENO \\
+    1 & Standard output (stdout) & STDOUT\_FILENO \\
+    2 & Standard error (stderr) & STDERR\_FILENO \\
+  \end{tabular}
+  \caption{File descriptor standard}
+\end{table}
+
+\subsection{System call}
+Le system call sono delle funzioni che permettono ai processi di interagire con il
+kernel permettendo di accedere ai servizi offerti dal kernel, come ad esempio:
+\begin{itemize}
+  \item Creare un nuovo processo
+  \item Leggere e scrivere file
+  \item Creare un socket
+  \item ecc...
+\end{itemize}
+Richiamare una system call è simile ad una chiamata di funzione, però ciò che viene
+richiamato è solo un wrapper che passa i parametri alla system call effettiva che
+viene eseguita in kernel mode dopo aver ricevuto un interrupt software. Una volta
+che la system call è terminata, il controllo ritorna al processo chiamante in modalità
+utente.
+
+\subsubsection{Gestione degli errori}
+Le system call ritornano un valore intero che rappresenta il risultato dell'operazione.
+Quando una system call fallisce ritorna -1, oppure un NULL pointer. Successivamente
+il valore di errore viene salvato all'interno di
+una variabile globale chiamata \texttt{errno} che contiene un intero positivo che
+rappresenta l'errore che si è verificato.
+(Bisogna includere la libreria \texttt{<errno.h>} che fornisce una dichiarazione
+della variabile \texttt{errno} e delle funzioni per gestire gli errori).
+
+\begin{example}
+  Un esempio di come gestire gli errori in una system call è il seguente:
+\begin{lstlisting}[language=c]
+// System call per aprire un file
+fd = open(pathname, flags, mode);
+
+// Gestione degli errori
+if (fd == -1) { // La system call ha fallito
+  if (errno == EACCES) { // Errore di accesso al file
+    // Gestione dell'errore di accesso
+  } else {
+    // Altro tipo di errore
+  }
+}
+\end{lstlisting}
+\end{example}
+Per vedere il significato dell'errore si
+può usare la funzione \texttt{perror} che stampa su \texttt{stderr} un messaggio passato
+come parametro, seguito da un messaggio che descrive l'ultimo errore riscontrato da una 
+system call
+
+\vspace{1em}
+\noindent
+Per vedere il significato dell'errore si può usare la funzione \texttt{strerror} che
+ritorna una stringa che descrive l'errore passato come parametro. Esiste una tabella
+degli errori che associa un codice di errore ad una stringa che lo descrive.
+
+\vspace{1em}
+\noindent
+Per vedere quali system call sono state chiamate da un processo si può usare il comando
+\texttt{strace}:
+\begin{lstlisting}
+strace <program> [args]
+\end{lstlisting}
+
+\subsubsection{File}
+Le principali system call per gestire i file sono:
+\begin{itemize}
+\item Apre un file esistente o ne crea uno nuovo se viene specificato il flag adeguato.
+  Se va a buon fine ritorna il file descriptor del file aperto, altrimenti ritorna -1
+  \begin{lstlisting}[language=C]
+#include <sys/stat.h>
+#include <fcntl.h>
+
+int open(const char *pathname, int flags, .../*mode_t mode*/);
+  \end{lstlisting}
+  \begin{itemize}
+    \item \texttt{pathname}: Il percorso del file da aprire
+    \item \texttt{flags}: I flag per aprire il file, ad esempio:
+      \begin{itemize}
+        \item \texttt{O\_RDONLY}: Apre il file in sola lettura
+        \item \texttt{O\_WRONLY}: Apre il file in sola scrittura
+        \item \texttt{O\_RDWR}: Apre il file in lettura/scrittura
+        \item \texttt{O\_CREAT}: Crea il file se non esiste
+        \item \texttt{O\_APPEND}: Scrive alla fine del file
+        \item \texttt{O\_TRUNC}: Se il file esiste, lo svuota
+      \end{itemize}
+    \item \texttt{mode}: I permessi del file se viene creato, ad esempio:
+      \begin{itemize}
+        \item \texttt{S\_IRUSR}: Permesso di lettura per l'utente
+        \item \texttt{S\_IWGRP}: Permesso di scrittura per il gruppo
+        \item \texttt{S\_IXOTH}: Permesso di esecuzione per gli altri
+      \end{itemize}
+  \end{itemize}
+
+\item Legge da un file aperto e scrive i dati letti in un buffer. Ritorna il numero
+  di byte letti, 0 se è arrivato alla fine del file, -1 se c'è stato un errore
+  \begin{lstlisting}[language=C]
+#include <unistd.h>
+
+ssize_t read(int fd, void *buf, size_t count);
+  \end{lstlisting}
+  \begin{itemize}
+    \item \texttt{fd}: Il file descriptor del file da leggere
+    \item \texttt{buf}: L'indirizzo di memoria in cui scrivere i dati letti
+    \item \texttt{count}: Il numero di byte da leggere
+  \end{itemize}
+
+\item Scrive su un file aperto i dati contenuti in un buffer. Ritorna il numero di
+  byte scritti, -1 se c'è stato un errore
+  \begin{lstlisting}[language=C]
+#include <unistd.h>
+
+ssize_t write(int fd, const void *buf, size_t count);
+  \end{lstlisting}
+  \begin{itemize}
+    \item \texttt{fd}: Il file descriptor del file su cui scrivere
+    \item \texttt{buf}: L'indirizzo di memoria da cui leggere i dati da scrivere
+    \item \texttt{count}: Il numero di byte da scrivere
+  \end{itemize}
+
+\item Sposta il cursore di lettura/scrittura del file al byte specificato. Ritorna
+  la nuova posizione del cursore, -1 se c'è stato un errore
+  \begin{lstlisting}[language=C]
+#include <unistd.h>
+
+off\_t lseek(int fd, off\_t offset, int whence);
+  \end{lstlisting}
+  \begin{itemize}
+    \item \texttt{fd}: Il file descriptor del file su cui spostare il cursore
+    \item \texttt{offset}: Il numero di byte da spostare il cursore
+    \item \texttt{whence}: Da dove iniziare a spostare il cursore, ad esempio:
+      \begin{itemize}
+        \item \texttt{SEEK\_SET}: Inizia dall'inizio del file
+        \item \texttt{SEEK\_CUR}: Inizia dalla posizione corrente
+        \item \texttt{SEEK\_END}: Inizia dalla fine del file
+      \end{itemize}
+  \end{itemize}
+
+\item Chiude il file descriptor specificato. Ritorna 0 se va a buon fine, -1 se c'è
+  stato un errore
+  \begin{lstlisting}[language=C]
+#include <unistd.h>
+
+int close(int fd);
+  \end{lstlisting}
+  \begin{itemize}
+    \item \texttt{fd}: Il file descriptor del file da chiudere
+  \end{itemize}
+
+\item Rimuove un "link" dal file specificato, se è l'ultimo link al file, il file
+  viene rimosso. Ritorna 0 se va a buon fine, -1 se c'è stato un errore
+  \begin{lstlisting}[language=C]
+#include <unistd.h>
+
+int unlink(const char *pathname);
+  \end{lstlisting}
+  \begin{itemize}
+    \item \texttt{pathname}: Il percorso del file da rimuovere
+  \end{itemize}
+  (non può rimuovere le directory)
+
+\end{itemize}
+
 \section{Sistema Operativo}
 Il \textbf{sistema operativo} è il livello del software che si pone tra l'hardware
 e gli utenti. E quindi il sistema operativo incapsula la macchina fisica.
