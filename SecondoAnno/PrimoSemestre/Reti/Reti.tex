@@ -2310,7 +2310,7 @@ Un host conosce, oltre al proprio indirizzo IP, la maschera della rete a cui app
 e conosce l'indirizzo IP del router di bordo della rete a cui appartiene:
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.5\textwidth]{indirizzo-interfaccia}
+  \includegraphics[width=0.3\textwidth]{indirizzo-interfaccia}
   \caption{Indirizzo delle interfacce di un router}
 \end{figure}
 
@@ -2366,19 +2366,20 @@ Alcuni esempi di criteri sono:
 \begin{itemize}
   \item 
     \textbf{Distanza} (cammino più corto) in termini di
-    numero di \textbf{hop} (router attraversati)
+    numero di \textbf{hop} (router attraversati), (tutti gli archi hanno peso = 1)
 
   \item \textbf{Numero di chilometri}
 
-  \item \textbf{Velocità di trasmissione}
+  \item \textbf{Velocità di trasmissione} (velocità nominale del link)
     \begin{figure}[H]
       \centering
       \includegraphics[width=0.5\textwidth]{velocita-trasmissione}
       \[
         T = \frac{B\,bit}{v}
       \]
-      \caption{Critero di velocità di trasmissione}
+      \caption{Velocità nominale del link}
     \end{figure}
+    I pesi sono proporzionali all'inverso della banda.
 
   \item \textbf{Livello di congestione}
 \end{itemize}
@@ -2405,4 +2406,44 @@ l'arco stesso in base al criterio utilizzato.
   a \textbf{costo minimo}.
 \end{definition}
 
+\subsubsection{Algoritmi per il calcolo dei cammini minimi}
+Ad ogni algoritmo corrisponde un protocollo (diverso dal protocollo IP) che viene
+trasportato dal protocollo IP. Periodicamente, ogni router, invia ai propri vicini
+diretti un messaggio di aggiornamento (che cambia in base al tipo di algoritmo) che si 
+distingue dagli altri messaggi, perchè nell'header IP c'è il campo \textbf{type}. Una
+volta che un router riceve un messaggio di aggiornamento, aggiorna la propria tabella
+di routing e inoltra il messaggio ai propri vicini, aggiornando così tutti i compomenti
+della topologia della rete in caso di cambiamento.
+
+\vspace{1em}
+\noindent
+Gli algoritmi per il calcolo del cammino minimo in un grafo sono di due tipi:
+\begin{itemize}
+  \item \textbf{Stato dei collegamenti} (Link state): È un algoritmo centralizzato.
+
+    \vspace{1em}
+    \noindent
+    Ogni nodo della rete ha a disposizione l'intera topologia della rete (il grafo
+    con nodi e archi e i pesi degli archi). Ogni nodo calcola autonomamente i cammini
+    minimi (centralizzato). Una volta che tutti i router hanno calcolato il cammino
+    minimo, essi sanno quale sarà il prossimo hop per ogni destinazione.
+
+    Uno degli algoritmi più utilizzati è l'algoritmo di \textbf{Dijkstra}.
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{cammini-minimi}
+      \caption{Calcolo dei cammini minimi}
+    \end{figure}
+
+    \vspace{1em}
+    \noindent
+    I nodi si scambiano messaggi periodici per controllare se sono ancora raggiungibili
+    (\textbf{keep alive}) o messaggi in caso di guasti o cambio di topologia.
+
+    \vspace{1em}
+    \noindent
+    Il principale protocollo basato su link state è \textbf{OSPF} (Open Shortest Path First).
+
+  \item \textbf{Vettori distanza} (Distance vector): È un algoritmo distribuito
+\end{itemize}
 \end{document}
