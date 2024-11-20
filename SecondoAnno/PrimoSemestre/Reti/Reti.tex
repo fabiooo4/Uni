@@ -2445,5 +2445,213 @@ Gli algoritmi per il calcolo del cammino minimo in un grafo sono di due tipi:
     Il principale protocollo basato su link state è \textbf{OSPF} (Open Shortest Path First).
 
   \item \textbf{Vettori distanza} (Distance vector): È un algoritmo distribuito
+
+    \vspace{1em}
+    \noindent
+    Considerando una topologia in cui è presente un nodo \( i \) con un nodo vicino diretto
+    (adiacenti con collegamento diretto) \( j \) e un nodo \( k \) non adiacente ad \( i \), 
+    definiamo il \textbf{costo dell'arco} da \( i \) a \( j \) come \( c(i,j) \).
+
+    Il costo di un cammino dal nodo \( i \) al nodo \( k \) viene rappresentato come:
+    \[
+      D(i,k) = \sum_{l,n \in \text{cammino}} c(l,n)
+    \] 
+
+    \vspace{1em}
+    \noindent
+    \textbf{Osservazione:}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.5\textwidth]{distanza}
+      \caption{Distanza tra due nodi}
+    \end{figure}
+    \noindent
+    Consideriamo un nodo \( i \) e una destinazione qualsiasi \( k \). Assumiamo che il
+    nodo \( i \) abbia un insieme finito di vicini diretti per cui \( i \) conosce il 
+    costo del collegamento diretto. Supponendo che ogni vicino di \( i \) conosca il 
+    cammino minimo alla destinazione \( D \) e questa informazione sia esposta a \( i \),
+    allora il costo del cammino minimo da \( i \) a \( k \) è:
+    \[
+      D(i,k) = \min \left( 
+        \begin{cases}
+          c(i,l) + D(l,k)\\
+          c(i,m) + D(m,k)\\
+          c(i,j) + D(j,k)\\
+        \end{cases}
+      \right) 
+    \] 
+    In generale:
+    \[
+      D(i,k) = \min_{v \in \text{vicini diretti di }i}\left( c(i,v) + D(v,k) \right) 
+    \] 
+    Il next hop sarà il nodo \( v \) che permette di minimizzare la distanza tra il nodo
+    \( i \) e la destinazione \( k \).
+
+    Questo funziona per ogni nodo \( i \) e per ogni destinazione \( k \) e permette
+    di non dover conoscere l'intera topologia della rete, ma soltanto i vicini diretti.
+
+    \vspace{1em}
+    \noindent
+    L'algoritmo distance vector è l'algoritmo di \textbf{Bellman-Ford}:
+\begin{lstlisting}[language=Scala]
+i <- nodo corrente
+
+// Fase di inizializzazione
+for d in destinazioni
+  if d = vicino_diretto
+    D(i,d) <- c(i,d)
+  else
+    D(i,d) <- infinito
+
+// Fase di scambio di informazioni periodiche
+// Ogni 3 min (dipende dall'implementazione)
+// Il nodo invia ai propri vicini il distance vector.
+// Il distance vector e' l'unione delle colonne 
+// "destinazione" e "costo" della tabella di routing del nodo.
+for v in vicini_diretti
+  for d in destinazioni
+    send(D(i,d), j)
+
+// Con i distance vector ricevuti dai vicini, il nodo aggiorna
+// la tabella di routing per ogni destinazione con la formula:
+// D(i,k) = min(c(i,v) + D(v,d))
+for d in destinazioni
+  for v in vicini_diretti
+    D(i,d) = min(D(i,d), c(i,v) + D(v,d))
+\end{lstlisting}
+
+  \vspace{1em}
+  \noindent
+  Si può dimostrare che:
+  \begin{itemize}
+    \item Se il grafo è completamente connesso (ciascun nodo può raggiungere un qualsiasi
+      altro nodo con un cammino che sta all'interno del grafo) e
+    \item Se i pesi degli archi sono tutti positivi
+  \end{itemize}
+  allora l'algoritmo di Bellman-Ford \textbf{converge alla soluzione ottima} (quella in cui
+  i nodi hanno nelle tabelle di routing i cammini minimi effettivi per ogni destinazione).
+
+  Converge perchè più il grafo è grande più ha bisogno di tempo per propagare i messaggi
+  di aggiornamento, di conseguenza all'inizio i valori nelle tabelle di routing sono
+  diversi da quelli ottimi, ma con il tempo convergono alla soluzione ottima.
+  Il \textbf{numero di iterazioni} è proporzionale al \textbf{diametro} del grafo (il
+  numero di hop massimo tra due nodi all'interno del grafo).
+  
+  \begin{example}
+    Consideriamo il seguente grafo focalizzandoci sul nodo \( A \) e la sua tabella di
+    routing verso qualsiasi destinazione:
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.6\textwidth]{es-bellmanford1}
+      \caption{Grafo di rete}
+    \end{figure}
+
+    \noindent
+    Al momento dell'inizializzazione il nodo \( A \) vede soltanto i vicini diretti.
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.5\textwidth]{es-bellmanford2}
+      \caption{Tabelle di routing all'inizio}
+    \end{figure}
+
+    \noindent
+    Dal punto di vista del nodo \( A \), alla prima iterazione, vengono ricevuti
+    i distance vector di \( B \) e di \( E \) che sono:
+    \begin{table}[H]
+      \centering
+      B =
+      \begin{tabular}{c|c}
+        \textbf{Dst} & \textbf{Cst} \\
+        \hline
+        \( A \) & 7 \\
+        \( B \) & 0 \\
+        \( C \) & 1 \\
+        \( D \) & 5 \\
+      \end{tabular}
+      \quad
+      E =
+      \begin{tabular}{c|c}
+        \textbf{Dst} & \textbf{Cst} \\
+        \hline
+        \( A \) & 1 \\
+        \( B \) & 5 \\
+        \( D \) & 2 \\
+        \( E \) & 0 \\
+      \end{tabular}
+    \end{table}
+
+    \noindent
+    Per la destinazione \( B \) il nodo \( A \) calcola:
+    \[
+      D(A,B) = min \left( 
+      \begin{cases}
+        c(A,B) + D(B,B) = 7 + 0 = 7\\
+        c(A,E) + D(E,B) = 1 + 5 = 6
+      \end{cases}
+    \right) 
+    \] 
+    Siccome nella tabella di \( A \) si aveva un costo da \( A \to B \) di \( 7 \),
+    avendo trovato un costo minimo attraverso \( E \), il nodo \( A \) aggiorna la tabella
+    per la destinazione \( B \) con un costo di \( 6 \) e next hop \( E \).
+
+    La nuova tabella di routing del nodo \( A \) diventa:
+    \begin{table}[H]
+      \centering
+      \begin{tabular}{c|c|c}
+        \textbf{Dst} & \textbf{Next hop} & \textbf{Cst} \\
+        \hline
+        \( A \) & - & 0 \\
+        \( B \) & B & 7 \\
+        \( E \) & E & 1 \\
+      \end{tabular}
+      \( \to \) 
+      \begin{tabular}{c|c|c}
+        \textbf{Dst} & \textbf{Next hop} & \textbf{Cst} \\
+        \hline
+        \( A \) & - & 0 \\
+        \( B \) & E & 6 \\
+        \( \vdots \) & \( \vdots \)  & \( \vdots \)
+      \end{tabular}
+    \end{table}
+
+    \noindent
+    L'aggiornamento avviene per ogni destinazione contenuta nei distance vector ricevuti.
+    Ad esempio, per la destinazione \( D \) ha un unica riga che dice:
+    \[
+      D(A,D) = c(A,E) + D(E,D) = 1 + 2 = 3
+    \] 
+    Il nodo \( A \) aggiorna la tabella di routing per la destinazione \( D \) con un costo
+    di \( 3 \) e next hop \( E \).
+    \begin{table}[H]
+      \centering
+      \begin{tabular}{c|c|c}
+        \textbf{Dst} & \textbf{Next hop} & \textbf{Cst} \\
+        \hline
+        \( A \) & - & 0 \\
+        \( B \) & E & 6 \\
+        \( \vdots \) & \( \vdots \)  & \( \vdots \)
+      \end{tabular}
+      \( \to \) 
+      \begin{tabular}{c|c|c}
+        \textbf{Dst} & \textbf{Next hop} & \textbf{Cst} \\
+        \hline
+        \( A \) & - & 0 \\
+        \( B \) & E & 6 \\
+        \( D \) & E & 3 \\
+        \( \vdots \) & \( \vdots \)  & \( \vdots \) 
+      \end{tabular}
+    \end{table}
+    \noindent
+    Il processo continua per ogni destinazione e per ogni nodo.
+  \end{example}
+
+  \noindent
+  Finchè le tabelle vengono sincronizzate, si avranno tabelle sbagliate che possono
+  portare a \textbf{loop} nella rete (per evitarli c'è il TTL). 
+
+  \item \textbf{Software Defined Network} (SDA): C'è un entità centrale che sovraintende
+    l'intera rete e decide i cammini minimi.
 \end{itemize}
+
+
 \end{document}

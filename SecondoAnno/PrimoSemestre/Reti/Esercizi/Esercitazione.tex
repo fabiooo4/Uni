@@ -656,11 +656,11 @@ L'evoluzione della finestra di congestione è la seguente:
 \begin{figure}[H]
   \centering
   \begin{tikzpicture}
-    \def\xscale{1/3.12}
+    \def\xscale{1/2.8}
     \def\yscale{1/2}
 
     \def\yaxis{20}
-    \def\xaxis{31}
+    \def\xaxis{30}
     \draw[->] (0,-0.2) -- (0,\yaxis*\yscale+1*\yscale) node[left] {\( w \)};
     \draw[->] (-0.2,0) -- (\xaxis*\xscale+1*\xscale,0) node[below] {\( t \)};
 
@@ -716,7 +716,7 @@ L'evoluzione della finestra di congestione è la seguente:
     \draw[blue] (16) -- (17);
 
     % End
-    \draw[dashed] (28*\xscale,1*\yscale) -- (28*\xscale,0) node[below,align=center,scale=0.8] {Fine\\trasmissione};
+    \draw[dashed] (28*\xscale,2*\yscale) -- (28*\xscale,0) node[below,align=center,scale=0.8] {Fine\\trasmissione};
 
     % Ticks
     \foreach \x in {1,2,...,\xaxis}
@@ -774,5 +774,114 @@ A partire dall'istante \( t_b > 9\,sec \) la destinazione annuncia una
 \noindent
 Bisogna tenere in considerazione il ritardo di ricezione dell'annuncio della nuova
 \( RCVWND \) 
+
+\subsubsection{Risoluzione}
+Il numero di segmenti da trasmettere sono:
+\[
+  \frac{104400}{1200} = 87 \text{ segmenti}
+\]
+\[
+  RCVWND_{\text{iniziale}} = \frac{9600}{1200} = 8 \text{ segmenti}
+\]
+\[
+  \begin{aligned}
+    SSTHRESH &= 8 \text{ segmenti}\\
+    \quad t^{dst}_a > 4 &= 12 \text{ segmenti}\\
+    \quad t^{dst}_b > 9 &= 6 \text{ segmenti}
+  \end{aligned}
+\] 
+L'evoluzione della finestra di congestione è la seguente:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \def\xscale{1/1.7}
+    \def\yscale{1/1.7}
+
+    \def\yaxis{12}
+    \def\xaxis{17}
+    \draw[->] (0,-0.2) -- (0,\yaxis*\yscale+1*\yscale) node[left] {\( w \)};
+    \draw[->] (-0.2,0) -- (\xaxis*\xscale+1*\xscale,0) node[below] {\( t \)};
+
+    % rcvwnd & ssthresh
+    \draw[red] (0,8*\yscale) node[above right] {\texttt{rcvwnd}}
+      -- (5*\xscale,8*\yscale) -- (5*\xscale,12*\yscale)
+      -- (10*\xscale,12*\yscale) -- (10*\xscale,6*\yscale)
+      -- (\xaxis*\xscale+1*\xscale,6*\yscale);
+    \draw[orange] (0,8*\yscale) node[below right] {\texttt{ssthresh}} -- (5*\xscale,8*\yscale)
+      -- (13*\xscale,8*\yscale) -- (13*\xscale,3*\yscale)
+      -- (\xaxis*\xscale+1*\xscale,3*\yscale);
+
+    % Down
+    \fill[red,opacity=0.2] (11.5*\xscale,0) rectangle (12.5*\xscale,6*\yscale);
+
+    \fill[blue] (0,1*\yscale) circle (0.05) node[scale=0.1] (1) {};
+    \fill[blue] (1*\xscale,2*\yscale) circle (0.05) node[scale=0.1] (2) {};
+    \fill[blue] (2*\xscale,4*\yscale) circle (0.05) node[scale=0.1] (3) {};
+    \fill[blue] (3*\xscale,8*\yscale) circle (0.05) node[scale=0.1] (4) {};
+    \fill[blue] (4*\xscale,8*\yscale) circle (0.05) node[scale=0.1] (5) {};
+    \fill[blue] (5*\xscale,9*\yscale) circle (0.05) node[scale=0.1] (6) {};
+    \fill[blue] (6*\xscale,10*\yscale) circle (0.05) node[scale=0.1] (7) {};
+    \fill[blue] (7*\xscale,11*\yscale) circle (0.05) node[scale=0.1] (8) {};
+    \fill[blue] (8*\xscale,12*\yscale) circle (0.05) node[scale=0.1] (9) {};
+    \fill[blue] (9*\xscale,12*\yscale) circle (0.05) node[scale=0.1] (10) {};
+    \fill[blue] (10*\xscale,6*\yscale) circle (0.05) node[scale=0.1] (11) {};
+    \fill[blue] (11*\xscale,6*\yscale) circle (0.05) node[right,red] {\( \times \)} node[scale=0.1] (12) {};
+    \draw[blue] (1) -- (2) -- (3) -- (4) -- (5) -- (6) -- (7) -- (8) -- (9) -- (10) -- (11) -- (12);
+
+    % Loss
+    \draw[purple,dashed] (11*\xscale,6*\yscale) -- (13*\xscale,6*\yscale) node[above] {\texttt{RTO}} -- (13*\xscale,1*\yscale);
+
+    \fill[blue] (13*\xscale,1*\yscale) circle (0.05) node[scale=0.1] (13) {};
+    \fill[blue] (14*\xscale,2*\yscale) circle (0.05) node[scale=0.1] (14) {};
+    \fill[blue] (15*\xscale,3*\yscale) circle (0.05) node[scale=0.1] (15) {};
+    \fill[blue] (16*\xscale,3*\yscale + 1/3*\yscale) circle (0.05) node[scale=0.1] (16) {}
+      node[above,scale=0.8] {\( 3 + \frac{1}{3} \)};
+    \draw[blue] (13) -- (14) -- (15) -- (16);
+
+    % End
+    \draw[dashed] (16*\xscale,3*\yscale + 1/3*\yscale) -- (16*\xscale,0) node[below,align=center,scale=0.8] {Fine\\trasmissione};
+
+    % Ticks
+    \foreach \x in {1,2,...,\xaxis}
+    \draw (\x*\xscale,-0.1) -- (\x*\xscale,0.1);
+
+    \foreach \y in {1,2,...,\yaxis}
+    \draw (0,\y*\yscale) -- (0.1,\y*\yscale);
+
+    \foreach \y in {1,2,4,8,...,\yaxis}
+    \draw (-0.1,\y*\yscale) -- (0.1,\y*\yscale) node[left=0.2] {\y};
+
+    \node[below right,scale=0.6] at (1*\xscale,-0.1) {1};
+    \node[below,scale=0.6] at (2*\xscale,-0.1) {2};
+    \node[below,scale=0.6] at (11.5*\xscale,-0.1) {11.5};
+    \node[below,scale=0.6] at (12.5*\xscale,-0.1) {12.5};
+
+    \draw[green!50!black] (0,-0.2) -- ++(0,-0.2) -- ++(1*\xscale,0)
+      node[midway,below] {RTT} -- ++(0,0.2);
+  \end{tikzpicture}
+  \caption{Andamento di \texttt{cwnd} in funzione del tempo}
+\end{figure}
+\noindent
+Il numero di segmenti trasmessi è:
+\[
+  \#seg = 1+2+4+8+8+9+10+11+12+12+6+\cancel{4}+1+2+\stackrel{1}{\cancel{3}} = 87
+\]
+Un'altra possibile rappresentazione è la seguente:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{../figures/es-tcp4}
+\end{figure}
+
+\vspace{1em}
+\noindent
+Se al posto di perdere il pacchetto si fosse perso il riscontro, avremmo avuto la seguente
+rappresentazione:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{../figures/es-tcp4.1}
+\end{figure}
+\noindent
+Anche questa rappresentazione è corretta, in quanto il numero di segmenti trasmessi è
+sempre 87.
 
 \end{document}
