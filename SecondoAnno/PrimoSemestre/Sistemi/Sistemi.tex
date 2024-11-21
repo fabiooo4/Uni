@@ -4633,5 +4633,325 @@ da questa forma si può antitrasformare:
   \end{aligned}
 \] 
 
+\begin{example}
+  Consideriamo il seguente sistema:
+  \[
+  v''(t) - v'(t) -2v(t) = u''(t) + 2u'(t) + u(t)
+  \] 
+  con condizioni iniziali:
+  \[
+  \begin{cases}
+    v(0^-) = 0\\
+    v'(0^-) = -1
+  \end{cases}
+  \] 
+  \[
+    u(t) = e^{-3t} \cdot \delta_{-1}(t)
+  \] 
+  Si vuole calcolare:
+  \begin{enumerate}
+    \item Stabilità
+    \item Risposta libera
+      \begin{enumerate}
+        \item Nel tempo
+        \item Nelle frequenze
+      \end{enumerate}
+    \item Risposta impulsiva
+    \item Risposta forzata
+    \item Risposta totale
+  \end{enumerate}
+
+  \vspace{1em}
+  \noindent
+  \begin{enumerate}
+    \item Stabilità:
+
+      \vspace{1em}
+      \noindent
+      Scriviamo l'equazione caratteristica:
+      \[
+      s^2-s-2 = 0
+      \] 
+      Troviamo le soluzioni:
+      \[
+        \lambda_{1,2} = \frac{-b \pm \sqrt{b^2-4ac}}{2a} = \frac{1 \pm \sqrt{1+8}}{2} = \frac{1 \pm 3}{2}
+      \] 
+      \[
+      \begin{aligned}
+        \lambda_1 = -1 \quad \mu_1 = 1\\
+        \lambda_2 = 2 \quad \mu_2 = 1
+      \end{aligned}
+      \] 
+      Il sistema non è asintoticamente stabile perchè \( \lambda_1 > 0 \).
+      Per calcolare la BIBO stabilità bisogna calcolare la funzione di trasferimento e
+      vedere se i suoi poli hanno tutti parte reale minore di 0:
+      \[
+        V(s) = \underbrace{\frac{p(s)}{d(s)}}_{V_l(s)} + 
+        \underbrace{\underbrace{\frac{h(s)}{d(s)}}_{H(s)} \cdot U(s)}_{V_f(s)}
+      \] 
+      \[
+        \begin{aligned}
+          H(s) &= \frac{s^2+2s+1}{s^2-s-2} = \frac{(s+1)^{\cancel{2}}}{(s-2)\cancel{(s+1)}}\\
+               &= \frac{s+1}{s-2}
+        \end{aligned}
+      \] 
+      Non è BIBO stabile perchè \( \lambda_1 = 2 \).
+
+    \item Risposta libera:
+      \begin{enumerate}
+        \item Nel tempo:
+          \[
+          s^2-s-2 = 0 \to (s-2)(s+1) = 0
+          \] 
+          \[
+            \begin{aligned}
+              r &= 2\\
+              \lambda_1 = 2 \quad \mu_1 = 1\\
+              \lambda_2 = -1 \quad \mu_2 = 1
+            \end{aligned}
+          \] 
+          Utilizziamo l'equazione per la risposta libera nel tempo:
+          \[
+            \begin{aligned}
+              v_l(t) &= \sum_{i=1}^{r} \sum_{l=0}^{\mu_i-1} c_{i,l} \cdot \frac{t^l}{l!} \cdot e^{\lambda_i t}
+                     &= c_1 \cdot e^{2t} + c_2 \cdot e^{-t}
+            \end{aligned}
+          \] 
+          Calcoliamo le derivate:
+          \[
+          \begin{aligned}
+            v_l(t) &= c_1 \cdot e^{2t} + c_2 \cdot e^{-t}\\
+            v'_l(t) &= 2c_1 \cdot e^{2t} - c_2 \cdot e^{-t}\\
+          \end{aligned}
+          \] 
+          li mettiamo a sistema con le condizioni iniziali:
+          \[
+            \begin{cases}
+              v_l(0) &= c_1 \cdot \cancel{e^{2t}} + c_2 \cdot \cancel{e^{-t}}\\
+              v'_l(0) &= 2c_1 \cdot \cancel{e^{2t}} - c_2 \cdot \cancel{e^{-t}}\\
+            \end{cases}
+          \] 
+          \[
+            \begin{cases}
+              c_1 = 0\\
+              c_2 = 1
+            \end{cases}
+          \]
+          Quindi:
+          \[
+            v_l(t) = e^{-t}
+          \]
+
+        \item Nelle frequenze:
+          
+          \vspace{1em}
+          \noindent
+          Calcoliamo la trasformata di Laplace dell'ingresso e dell'uscita:
+          \[
+            \begin{aligned}
+              \mathcal{L}\left[ v''(t) - v'(t) -2v(t) \right](s) &= \mathcal{L}\left[ u''(t) + 2u'(t) + u(t) \right](s)\\
+            \end{aligned}
+          \]
+          \[
+          \begin{aligned}
+            \mathcal{L}\left[ v''(t) \right](s) &= s^2 V(s) - s \cdot \stackrel{1}{\cancel{v(0^-)}}
+            - \stackrel{1}{\cancel{s^0}} \stackrel{-1}{\cancel{\frac{dv(0^-)}{dt}}}\\
+                                                &= s^2 V(s) - s + 1
+          \end{aligned}
+          \] 
+          \[
+          \begin{aligned}
+            \mathcal{L}\left[ v'(t) \right](s) &= s V(s) - \stackrel{1}{s^0} \stackrel{1}{\cancel{v(0^-)}}\\
+                                                &= s V(s) - 1
+          \end{aligned}
+          \] 
+          \[
+          \begin{aligned}
+            \mathcal{L}\left[ v(t) \right](s) &= V(s)\\
+          \end{aligned}
+          \] 
+          Quindi l'uscita sarà:
+          \[
+            s^2 V(s) - s + 1 - s V(s) + 1 - 2V(s)
+          \] 
+
+          \vspace{1em}
+          \noindent
+          L'entrata diventa:
+          \[
+            \begin{aligned}
+              \mathcal{L}\left[ u''(t) \right](s) &= s^2 U(s) - \stackrel{0}{\cancel{s^1 u(0^-)}}
+              - \stackrel{0}{\cancel{s^0 \frac{du(0^-)}{dt}}}
+            \end{aligned}
+          \] 
+          \[
+            \begin{aligned}
+              \mathcal{L}\left[ u'(t) \right](s) &= s U(s) - \stackrel{0}{s^0 \cancel{u(0^-)}}
+            \end{aligned}
+          \] 
+          \[
+            \begin{aligned}
+              \mathcal{L}\left[ u(t) \right](s) &= U(s)
+            \end{aligned}
+          \]
+          Quindi l'ingresso sarà:
+          \[
+            s^2 U(s) + 2s U(s) + U(s)
+          \]
+
+          \vspace{1em}
+          \noindent
+          Tutto il sistema diventa:
+          \[
+          s^2 V(s) - s + 1 - s V(s) + 1 - 2V(s) = s^2 U(s) + 2s U(s) + U(s)
+          \] 
+
+          Raccogliamo per \( V(s) \) e \( U(s) \):
+          \[
+            \underbrace{\left( s^2 - s - 2 \right)}_{\text{Pol. Car. uscita}} V(s) - s + 2 
+            = \underbrace{\left( s^2+2s+1 \right)}_{\text{Pol. Car. ingresso}} U(s)
+          \] 
+          \[
+            V(s) = \frac{\cancel{s-2}}{\cancel{(s-2)}(s+1)} + \frac{(s+1)^{\cancel{2}}}{(s-2)\cancel{(s+1)}} \cdot U(s)
+          \] 
+          La trasformata di Laplace di \( u(t) \) è:
+          \[
+            u(t) = e^{-3t} \cdot \delta_{-1}(t)
+          \] 
+          \[
+          \downarrow \mathcal{L}
+          \] 
+          \[
+            \mathcal{L}^{-1}\left[ A \cdot e^{\lambda t} \cdot \delta_{-1}(t) \right](t) = \frac{A}{(s-\lambda)}
+          \] 
+          \[
+            U(s) = \frac{1}{s+3}
+          \] 
+          Quindi si ha:
+          \[
+            \underbrace{V(s)}_{V_t(s)} = \underbrace{\frac{1}{s+1}}_{V_l(s)} +
+            \underbrace{\underbrace{\frac{s+1}{s-2}}_{H(S)} \cdot \frac{1}{s+3}}_{V_f(s)}
+          \] 
+
+          \vspace{1em}
+          \noindent
+          La risposta libera in frequenza è:
+          \[
+            V_l(s) = \frac{1}{s+1}
+          \]
+          Il numeratore ha grado minore del denominatore, quindi si può antitrasformare
+          passando subito a fare la decomposizione in fratti semplici. Siccome abbiamo
+          una sola radice al denominatore si ha già la forma minima.
+
+          Passiamo a fare l'antitrasformata di Laplace:
+          \[
+            \mathcal{L}^{-1}\left[ \frac{A}{s-\lambda} \right](t) = A \cdot e^{\lambda t} \cdot \delta_{-1}(t)
+          \] 
+          \[
+            V_l(s) = \frac{1}{s+1} \stackrel{\mathcal{L}^{-1}}{\to} e^{-t} \cdot \delta_{-1}(t)
+          \] 
+      \end{enumerate}
+
+    \item Risposta impulsiva:
+      \[
+      H(s) = \frac{s+1}{s-2}
+      \] 
+      Facciamo divisione polinomiale:
+      \[
+      \begin{aligned}
+        H(s) &= \frac{s+1}{s-2}\\
+             &= 1 + \frac{3}{s-2}
+      \end{aligned}
+      \] 
+      Possiamo calcolare l'antitrasformata di laplace di ogni singolo termine, ottenendo
+      così la risposta impulsiva nel tempo:
+      \[
+        H(s) = 1 + \frac{3}{s-2}
+      \] 
+      \[
+        \downarrow \mathcal{L}^{-1}
+      \] 
+      \[
+        h(t) = \delta_0(t) + 3 \cdot e^{2t} \cdot \delta_{-1}(t)
+      \]
+
+
+    \item Risposta forzata:
+      \[
+        V_f(s) = \frac{s+1}{(s-2)(s+3)}
+      \] 
+      Scomponiamo in fratti semplici:
+      \[
+        V_f(s) = \frac{A}{s-2} + \frac{B}{s+3}
+      \]
+      \begin{enumerate}
+        \item Il primo metodo è quello di fare il denominatore comune:
+          \[
+            \begin{aligned}
+              \frac{A}{s-2} + \frac{B}{s+3} &= \frac{As+3A+Bs-2B}{(s-2)(s+3)}\\
+                                            &= \frac{(A+B)s + (3A-2B)}{(s-2)(s+3)}
+            \end{aligned}
+          \] 
+          Mettiamo a sistema:
+          \[
+          \begin{cases}
+            (A+B)s = 1s\\
+            3A-2B = 1
+          \end{cases}
+          \to 
+          \begin{cases}
+            A+B = 1\\
+            3A-2B = 1
+          \end{cases}
+          \to
+          \begin{cases}
+            A = 1-B\\
+            3-3B-2B = 1
+          \end{cases}
+          \]\[
+          \to
+          \begin{cases}
+            A = 1-B\\
+            -5B = -2
+          \end{cases}
+          \to 
+          \begin{cases}
+            A = \frac{3}{5}\\
+            B = \frac{2}{5}
+          \end{cases}
+          \] 
+          Si ha quindi:
+          \[
+            \frac{3}{5} \cdot \frac{1}{s-2} + \frac{2}{5} \cdot \frac{1}{s+3}
+          \] 
+          \[
+            \downarrow \mathcal{L}^{-1} \quad \mathcal{L}\left[ \frac{A}{s-\lambda} \right](t) = A \cdot e^{\lambda t} \cdot \delta_{-1}(t)
+          \] 
+          \[
+            \left( \frac{3}{5} \cdot e^{2t} + \frac{2}{5} \cdot e^{-3t} \right) \cdot \delta_{-1}(t)
+          \] 
+
+        \item Il secondo metodo è quello di usare la formula:
+          \[
+            c_i = \lim_{s \to \lambda_i} \left( \frac{d^{\mu_i-l-1} \cdot \frac{r(s)}{d(s)}}{d s^{\mu_i-l-1}} \cdot (s-\lambda) \right)  
+          \] 
+          \[
+            A = \lim_{s \to 2} \frac{d^{1-0-1}}{ds^{1-0-1}} \cdot \frac{s+1}{(s-2)(s+3)} \cdot (s-2) = \frac{3}{5}
+          \] 
+          \[
+            B = \lim_{s \to -3} \frac{d^{1-0-1}}{ds^{1-0-1}} \cdot \frac{s+1}{(s-2)(s+3)} \cdot (s+3) = \frac{2}{5}
+          \] 
+      \end{enumerate}
+
+    \item Risposta totale:
+      \[
+        \begin{aligned}
+          v_t &= \mathcal{L}^{-1}\left[V_l(s)\right](t) + \mathcal{L}^{-1}\left[V_f(s)\right](t)\\
+              &= e^{-t} \cdot \delta_{-1}(t) + \left( \frac{3}{5} \cdot e^{2t} + \frac{2}{5} \cdot e^{-3t} \right) \cdot \delta_{-1}(t)\\
+              &= \left( e^{-t} + \frac{3}{5} \cdot e^{2t} + \frac{2}{5} \cdot e^{-3t} \right) \delta_{-1}(t) 
+        \end{aligned}
+      \] 
+  \end{enumerate}
+\end{example}
 
 \end{document}
