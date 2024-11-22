@@ -55,7 +55,8 @@ to someone else, even though they are written in Italian.
     - [Course exercises](./SecondoAnno/PrimoSemestre/Sistemi/Esercizi/)
 - [Computer Networks](./SecondoAnno/PrimoSemestre/Reti/Reti.pdf)
   - [Course exercises](./SecondoAnno/PrimoSemestre/Reti/Esercizi)
-- [Operating Systems](./SecondoAnno/PrimoSemestre/SistemiOperativi/SistemiOperativi.pdf) (Incomplete)
+- [Operating Systems](./SecondoAnno/PrimoSemestre/SistemiOperativi/SistemiOperativi.pdf)
+  - [Syscall exercises](./SecondoAnno/PrimoSemestre/SistemiOperativi/C)
 - [Programming 2](./SecondoAnno/PrimoSemestre/Programmazione2/Programmazione2.pdf) (Only exercises)
   - [Java exercises](./SecondoAnno/PrimoSemestre/Programmazione2/Java)
 </details>
