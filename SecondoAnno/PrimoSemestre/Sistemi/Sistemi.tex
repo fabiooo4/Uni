@@ -4510,16 +4510,20 @@ V(s) = \frac{n(s)}{d(s)}
 Per trovare i valori di \( c_{i,l} \) si usa la formula:
 \[
 \begin{aligned}
-  c_{i,l} = \lim_{s \to \alpha_i} \frac{d^{\mu_i-l-1} \left( \left( s-\alpha_i \right)^{\mu_i} \frac{r(s)}{d(s)} \right)}
-  {d  s^{\mu_i-l-1}}
+  c_{i,l} = \lim_{s \to \alpha_i} \frac{d^{\mu_i-l-1}}
+  {d  s^{\mu_i-l-1}} \cdot 
+\left( \left( s-\alpha_i \right)^{\mu_i} \frac{r(s)}{d(s)} \right)
 \end{aligned}
 \] 
 
 \begin{example}
-  Si vuole scomporre in fratti semplici:
+  Si vuole scomporre la seguente trasformata di Laplace in fratti semplici:
   \[
   V(s) = \frac{3s^2-1}{(s+1)^2(s-2)(s+5)}
   \] 
+
+  \vspace{1em}
+  \noindent
   Quindi si ha che:
   \[
     V(s) = \frac{A}{(s-2)} + \frac{B}{(s+1)} + \frac{C}{(s+1)^2} + \frac{D}{(s+5)}
