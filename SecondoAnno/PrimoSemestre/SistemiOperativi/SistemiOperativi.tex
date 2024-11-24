@@ -1900,7 +1900,7 @@ I problemi principali sono:
 \end{itemize}
 
 \section{Scheduling}
-Lo scheduling dei processi è il processo di selezione del processo da eseguire
+Lo scheduling dei processi è il meccanismo di selezione del processo da eseguire
 sulla CPU nel tempo. Serve perchè con l'utilizzo della multiprogrammazione bisogna
 implementare una strategia per regolamentare:
 \begin{itemize}
@@ -1922,6 +1922,1094 @@ Gli scheduler sono di due tipi:
     deve essere eseguito sulla CPU. Questo scheduler è invocato più raramente.
 \end{itemize}
 
+\subsection{Scheduling della CPU}
+È un modulo del sistema operativo che seleziona un processo tra quelli in memoria pronti
+per l'esecuzione e gli alloca la CPU. È una parte critica del sistema operativo, data
+la frequenza di invocazione, e necessita algoritmi di scheduling.
+
+\subsubsection{Dispatcher}
+Il dispatcher è il modulo che effettua il cambio di contesto, cioè passa il controllo
+della CPU al processo scelto dallo scheduler. Il dispatcher deve:
+\begin{itemize}
+  \item Fare context switch
+  \item Passare alla modalità user
+  \item Saltare all'istruzione giusta per riprendere l'esecuzione del processo
+\end{itemize}
+Il dispatcher ha una \textbf{latenza}, cioè il tempo necessario per fermare un processo
+e farne ripertire un altro. Questa latenza deve essere la \textbf{più bassa possibile}.
+
+
+\subsection{Algoritmi di scheduling}
+\subsubsection{Modello a cicli di burst CPU-I/O}
+Per esaminare gli algoritmi di scheduling si farà riferimento ad un modello astratto del
+sistema, cioè il modello a \textbf{cicli di burst CPU-I/O}:
+\begin{itemize}
+  \item Alternanza CPU e I/O burst (sequenza)
+  \item L'esecuzione di un processo consiste nell'alternanza ciclica di un burst di
+    CPU e di uno di I/O
+\end{itemize}
+L'algoritmo di scheduling della CPU agisce soltanto quando ci si trova nelle fasi di
+CPU burst, quindi si possono escludere le fasi di I/O burst.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \fill[orange] (1,0) rectangle ++(0.3,-1.5)
+      node[midway,left=1cm,black,align=left]
+      {load store\\add store\\read from file}
+      node[midway,right=0.2cm,black] {CPU burst};
+
+    \fill[green!50!black] (1,-1.5) rectangle ++(0.3,-1.3)
+      node[draw,midway,left=1.3cm,black,align=left]
+      {wait for I/O}
+      node[midway,right=0.2cm,black] {I/O burst};
+
+    \fill[orange] (1,-2.8) rectangle ++(0.3,-0.8)
+      node[midway,left=0.7cm,black,align=left]
+      {store increment\\index\\write to file}
+      node[midway,right=0.2cm,black] {CPU burst};
+
+    \fill[green!50!black] (1,-3.6) rectangle ++(0.3,-1.2)
+      node[draw,midway,below left=-0.2cm and 1.3cm,black,align=left]
+      {wait for I/O}
+      node[midway,right=0.2cm,black] {I/O burst};
+
+    \fill[orange] (1,-4.8) rectangle ++(0.3,-1.8)
+      node[midway,left=1cm,black,align=left]
+      {load store\\add store\\read from file}
+      node[midway,right=0.2cm,black] {CPU burst};
+
+    \fill[green!50!black] (1,-6.6) rectangle ++(0.3,-1.2)
+      node[draw,midway,below left=-0.2cm and 1.3cm,black,align=left]
+      {wait for I/O}
+      node[midway,right=0.2cm,black] {I/O burst};
+
+    \node[scale=1.5] at (-1.2,0.5) {$\vdots$};
+    \node[scale=1.5] at (-1.2,-8) {$\vdots$};
+
+    \draw[<-] (-3,-8.5) -- (-3,0.8) node[above] {Time};
+  \end{tikzpicture}
+  \caption{Modello a cicli di burst CPU-I/O}
+\end{figure}
+
+\noindent
+Il numero di CPU burst è alto per burst brevi e basso per burst lunghi.
+
+\subsubsection{Preemption (prelazione)}
+La \textbf{preemption} è la capacità di interrompere forzatamente un processo in 
+esecuzione. In uno scheduling senza preemption, il processo che detiene la CPU non
+la rilascia fino al termine del burst. In uno scheduling con preemption, il processo
+può essere forzato a rilasciare la CPU prima del termine del burst.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw] (readyq) at (0,0) {Ready queue};
+    \node[draw,right=of readyq,minimum width=0.3cm,minimum height=1cm] (buf1) {};
+    \node[draw,circle,right=of buf1] (cpu) {CPU};
+    \node[draw,below=of buf1] (ioq) {I/O queues};
+    \node[draw,circle,left=of ioq] (io) {I/O};
+
+    \draw[->] (readyq) -- (buf1) -- (cpu);
+    \draw[->] (cpu) -- ++(1,0);
+    \draw[->] (cpu) |- (ioq) -- (io);
+    \draw (io) -| (-1.5,52 |- readyq);
+    \draw[<-] (readyq) -- ++(-2,0);
+  \end{tikzpicture}
+  \caption{Non-Preemptive}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw] (readyq) at (0,0) {Ready queue};
+    \node[draw,right=of readyq,minimum width=0.3cm,minimum height=1cm] (buf1) {};
+    \node[draw,above=0.5cm of buf1,minimum width=0.3cm,minimum height=1cm] (buf2) {};
+    \node[draw,circle,right=of buf1] (cpu) {CPU};
+    \node[draw,below=of buf1] (ioq) {I/O queues};
+    \node[draw,circle,left=of ioq] (io) {I/O};
+
+    \draw[->] (readyq) -- (buf1) -- (cpu);
+    \draw[->] (cpu) -- ++(1,0);
+    \draw[->] (cpu) |- (ioq) -- (io);
+    \draw (io) -| (-1.5,52 |- readyq);
+    \draw[<-] (readyq) -- ++(-2,0);
+
+    \draw (cpu) |- (buf2) -| (-1.5,52 |- readyq);
+  \end{tikzpicture}
+  \caption{Preemptive}
+\end{figure}
+
+\noindent Lo schema complessivo degli stati di un processo quindi diventa il seguente:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[node distance=3cm and 2cm,>=stealth',auto, every place/.style={draw}]
+    \node [place] (nuovo) [scale=1] {Nuovo};
+    \node [place] (pronto) [right of=nuovo, scale=1, align=center] {Pronto};
+    \node [place] (attesa) [below right of=pronto, scale=0.8, align=center,xshift=-0.85cm]
+      {In attesa};
+    \node [place] (swap) [above right of=pronto, scale=0.8, align=center,xshift=-0.85cm]
+      {Swapped};
+    \node [place] (exec) [right of=pronto, scale=0.7, align=center] {In\\esecuzione};
+    \node [place] (finito) [right of=exec, scale=1, align=center] {Finito};
+
+    \path[->] (nuovo) edge node[scale=0.8,align=center]
+      {Ammissione\\nel sistema} (pronto);
+
+    \path[->] (pronto) edge[bend left=20] node[scale=0.8,align=center]
+      {Dispatch} (exec);
+    \path[<-] (pronto) edge[bend right=20] node[below,scale=0.8,align=center]
+      {Preempt} (exec);
+
+    \path[->] (exec) edge node[scale=0.8,align=center]
+      {Terminazione} (finito);
+
+    \path[->] (attesa) edge node[scale=0.8,align=center]
+      {Completameno\\I/O o evento} (pronto);
+    \path[<-] (attesa) edge node[below right,scale=0.8,align=center]
+      {Attesa di\\I/O o evento} (exec);
+
+    \path[->] (swap) edge node[above left,scale=0.8,align=center]
+      {Swap in} (pronto);
+    \path[<-] (swap) edge node[above right,scale=0.8,align=center]
+      {Swap out} (exec);
+
+  \end{tikzpicture}
+  \caption{Stati di un processo (schema complessivo)}
+\end{figure}
+
+\noindent
+Ci sono più tipi di preemption:
+\begin{itemize}
+  \item \textbf{Preemption per priorità}: Un processo con priorità più alta può
+    interrompere un processo con priorità più bassa
+  \item \textbf{Preemption per time-out}: Un processo può essere interrotto
+    dopo un certo periodo di tempo.
+\end{itemize}
+
+\subsubsection{Metriche di scheduling}
+Per studiare gli algoritmi di scheduling c'è bisogno di metriche per valutarli:
+\begin{itemize}
+  \item \textbf{Utilizzo della CPU}: Percentuale di tempo in cui la CPU è occupata,
+    l'obiettivo è tenere la CPU occupata il più possibile
+  \item \textbf{Throughput}: Numero di processi completati in un'unità di tempo.
+    L'obiettivo è massimizzarlo
+  \item \textbf{Tempo di attesa} (Waiting time \( T_w \)): Quantità totale di tempo 
+    spesa da un processo nella coda di attesa (è influenzato dall'algoritmo di 
+    scheduling). L'obiettivo è minimizzarlo
+  \item \textbf{Tempo di completamento} (Turnaround \( T_t \)): Tempo necessario ad
+    eseguire un particolare processo dal momento della sottomissione (entrata nel sistema)
+    al momento del completamento. L'obiettivo è minimizzarlo
+  \item \textbf{Tempo di risposta} (Response time \( T_r \)): Tempo trascorso da quando
+    una richiesta è stata sottoposta al sistema fino alla \textbf{prima} risposta del 
+    sistema stesso. L'obiettivo è minimizzarlo
+\end{itemize}
+
+\subsubsection{Scheduling a priorità}
+Gli algoritmi di \textbf{scheduling a priorità}, associano ad ogni processo
+una priorità e la CPU viene assegnata al processo con la priorità 
+più alta. Questo tipo di algoritmo può essere:
+\begin{itemize}
+  \item \textbf{Preemptive}: Se arriva un processo con priorità più alta di quello in
+    esecuzione, il processo in esecuzione viene interrotto
+  \item \textbf{Non preemptive}: Il processo in esecuzione non viene interrotto
+\end{itemize}
+(Su linux si può utilizzare il comando \texttt{nice} per cambiare la priorità di un
+processo)
+
+\vspace{1em}
+\noindent
+Le politiche di assegnamento della priorità possono essere:
+\begin{itemize}
+  \item \textbf{Interne al sistema operativo}:
+    \begin{itemize}
+      \item Limiti di tempo
+      \item Requisiti di memoria
+      \item Numero di file aperti
+      \item ecc...
+    \end{itemize}
+
+  \item \textbf{Esterne al sistema operativo}:
+    \begin{itemize}
+      \item Importanza del processo
+      \item Soldi pagati per l'utilizzo del computer
+      \item Motivi politici
+      \item ecc...
+    \end{itemize}
+\end{itemize}
+
+\begin{example}
+  Gli algoritmi di scheduling a priorità hanno una colonna in più nella tabella
+  dei processi, cioè la priorità:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c|c}
+      Processo & Tempo di arrivo & Priorità & CPU burst \\
+      \hline
+      \( P_1 \) & 1 & 3 & 10 \\
+      \( P_2 \) & 0 & 1 & 1 \\
+      \( P_3 \) & 2 & 3 & 2 \\
+      \( P_4 \) & 0 & 4 & 1 \\
+      \( P_5 \) & 1 & 2 & 5 \\
+    \end{tabular}
+  \end{table}
+
+  \noindent
+  Questa colonna viene calcolata in base all'algoritmo utilizzato. I processi
+  verranno messi in esecuzione in base alla priorità (\textbf{se sono arrivati nella coda}),
+  se due processi hanno la stessa priorità si una priorità secondaria, ad esempio
+  l'ordine di arrivo.
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \def\xscale{0.5}
+      \def\yscale{0.5}
+      \def\endtime{19}
+
+      \draw[black!50] (0*\xscale,0*\yscale) -- (0*\xscale,-5*\yscale);
+      \draw[black!50] (\endtime*\xscale,0*\yscale) -- (\endtime*\xscale,-5*\yscale);
+
+      % Time
+      \node[left,scale=0.8] at (0*\xscale,0.5*\yscale) {Tempo};
+      \draw[->] (0*\xscale,0.5*\yscale) -- (\endtime*\xscale+1*\xscale,0.5*\yscale);
+      \draw[black!50] (0*\xscale,0*\yscale) -- (\endtime*\xscale,0*\yscale);
+      \foreach \x in {0,1,...,\endtime} {
+        \draw (\x*\xscale,0.5*\yscale) node[above,scale=0.6] {\( \x \)}
+          -- ++(0,-0.5*\yscale);
+      }
+
+      % P1
+      \node[left,scale=0.8] at (0*\xscale,-0.5*\yscale) {\( P_1 \)};
+      \draw[black!50] (0*\xscale,-1*\yscale) -- (\endtime*\xscale,-1*\yscale);
+      \foreach \x[count=\xi] in {6,...,15} {
+        \draw[fill,black!50] (\x*\xscale,-1*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+      \draw[black!50] (16*\xscale,0*\yscale) -- (16*\xscale,-5*\yscale);
+
+      % P2
+      \node[left,scale=0.8] at (0*\xscale,-1.5*\yscale) {\( P_2 \)};
+      \draw[black!50] (0*\xscale,-3*\yscale) -- (\endtime*\xscale,-3*\yscale);
+      \foreach \x in {0} {
+        \draw[fill,black!50] (\x*\xscale,-2*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+      \draw[black!50] (1*\xscale,0*\yscale) -- (1*\xscale,-5*\yscale);
+
+      % P3
+      \node[left,scale=0.8] at (0*\xscale,-2.5*\yscale) {\( P_3 \)};
+      \draw[black!50] (0*\xscale,-2*\yscale) -- (\endtime*\xscale,-2*\yscale);
+      \foreach \x in {16,17} {
+        \draw[fill,black!50] (\x*\xscale,-3*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+      \draw[black!50] (18*\xscale,0*\yscale) -- (18*\xscale,-5*\yscale);
+
+      % P4
+      \node[left,scale=0.8] at (0*\xscale,-3.5*\yscale) {\( P_4 \)};
+      \draw[black!50] (0*\xscale,-4*\yscale) -- (\endtime*\xscale,-4*\yscale);
+      \foreach \x in {18} {
+        \draw[fill,black!50] (\x*\xscale,-4*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+
+      % P5
+      \node[left,scale=0.8] at (0*\xscale,-4.5*\yscale) {\( P_5 \)};
+      \draw[black!50] (0*\xscale,-5*\yscale) -- (\endtime*\xscale,-5*\yscale);
+      \foreach \x in {1,...,5} {
+        \draw[fill,black!50] (\x*\xscale,-5*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+      \draw[black!50] (6*\xscale,0*\yscale) -- (6*\xscale,-5*\yscale);
+
+    \end{tikzpicture}
+    \caption{Scheduling a priorità (senza preemption)}
+  \end{figure}
+
+  \noindent
+  La tabella delle metriche di tempo sarà:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c|c}
+      Processo & \( T_r \) & \( T_w \) & \( T_t \) \\
+      \hline
+      \( P_1 \) & 5 & 5 & 15 \\
+      \( P_2 \) & 0 & 0 & 1 \\
+      \( P_3 \) & 14 & 14 & 16 \\
+      \( P_4 \) & 18 & 18 & 19 \\
+      \( P_5 \) & 0 & 0 & 5 \\
+    \end{tabular}
+  \end{table}
+\end{example}
+
+\noindent
+Il principale problema degli scheduling a priorità è: 
+\begin{itemize}
+  \item \textbf{Starvation}: I processi a bassa priorità possono non essere mai eseguiti
+    \begin{itemize}
+      \item \textbf{Soluzione}: \textbf{Aging}, cioè aumentare la priorità dei processi
+        col passare del tempo
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Algoritmo FCFS (First-Come, First-Served)}
+L'algoritmo FCFS è il più semplice e consiste nel servire i processi in ordine di
+arrivo (FIFO). Questo algoritmo minimizza i tempi di attesa ma non è ottimale per
+il tempo di completamento e il tempo di risposta.
+\begin{example}
+  \label{ex:fcfs}
+  Prendiamo ad esempio la seguente tabella dei processi:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c}
+      Processo & Tempo di arrivo & CPU Burst \\
+      \hline
+      \( P_1 \) & 0 & 24 \\
+      \( P_2 \) & 2 & 3 \\
+      \( P_3 \) & 4 & 3 \\
+    \end{tabular}
+  \end{table}
+  \noindent
+  Dove:
+  \begin{itemize}
+    \item \textbf{Tempo di arrivo}: Tempo in cui il processo arriva nella ready queue
+    \item \textbf{CPU Burst}: Tempo necessario per completare il CPU burst del processo
+  \end{itemize}
+  La tabella dell'esecuzione dei processi sarà:
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \def\xscale{1/3}
+      \def\yscale{1/3}
+
+      \draw[black!50] (0*\xscale,0*\yscale) -- (0*\xscale,-3*\yscale);
+
+      % Time
+      \node[left,scale=0.8] at (0*\xscale,0.5*\yscale) {Tempo};
+      \draw[->] (0*\xscale,0.5*\yscale) -- (31*\xscale,0.5*\yscale);
+      \draw[black!50] (0*\xscale,0*\yscale) -- (30*\xscale,0*\yscale);
+      \foreach \x in {0,1,...,30} {
+        \draw (\x*\xscale,0.5*\yscale) node[above,scale=0.6] {\( \x \)}
+          -- ++(0,-0.5*\yscale);
+      }
+
+      % P1
+      \node[left,scale=0.8] at (0*\xscale,-0.5*\yscale) {\( P_1 \)};
+      \foreach \x in {0,1,...,23} {
+        \draw[fill,black!50] (\x*\xscale,-1*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+      \draw[black!50] (0*\xscale,-1*\yscale) -- (30*\xscale,-1*\yscale);
+
+      % P2
+      \node[left,scale=0.8] at (0*\xscale,-1.5*\yscale) {\( P_2 \)};
+      \foreach \x in {24,...,26} {
+        \draw[fill,black!50] (\x*\xscale,-2*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+      \draw[black!50] (27*\xscale,0*\yscale) -- (27*\xscale,-3*\yscale);
+      \draw[black!50] (0*\xscale,-2*\yscale) -- (30*\xscale,-2*\yscale);
+
+      % P3
+      \node[left,scale=0.8] at (0*\xscale,-2.5*\yscale) {\( P_3 \)};
+      \foreach \x in {27,...,29} {
+        \draw[fill,black!50] (\x*\xscale,-3*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+      \draw[black!50] (30*\xscale,0*\yscale) -- (30*\xscale,-3*\yscale);
+      \draw[black!50] (0*\xscale,-3*\yscale) -- (30*\xscale,-3*\yscale);
+    \end{tikzpicture}
+    \caption{Esecuzione dei processi con FCFS}
+  \end{figure}
+
+  \noindent
+  La tabella delle metriche di tempo sarà:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c|c}
+      Processo & \( T_r \) & \( T_w \) & \( T_t \) \\
+      \hline
+      \( P_1 \) & 0 & 0 & 24 \\
+      \( P_2 \) & 22 & 22 & 25 \\
+      \( P_3 \) & 23 & 23 & 26 \\
+    \end{tabular}
+  \end{table}
+
+  \noindent
+  \begin{itemize}
+    \item Il tempo di risposta si calcola come 
+      \[
+        T_r = \text{Tempo di arrivo} - \text{Tempo di partenza}
+      \]
+    \item Siccome in questo algoritmo non c'è prelazione, il tempo di attesa è uguale
+      al tempo di risposta:
+      \[
+      T_w = T_r
+      \] 
+    \item Il tempo di turnaround è la somma del tempo speso in attesa e il tempo di 
+      esecuzione:
+      \[
+        T_t = T_w + \text{CPU Burst}
+      \]
+  \end{itemize}
+  Il parametro più "interessante" per capire l'efficienza dell'algoritmo è il tempo
+  di attesa medio:
+  \[
+    T_{w_{\text{medio}}} = \frac{0 + 22 + 23}{3} = 15
+  \] 
+  Questo parametro però è sbilanciato, perchè si ha un processo che ha tempo di attesa
+  0 e due processi che hanno un tempo di attesa molto alto. Se invece l'ordine di arrivo
+  dei processi fosse diverso, si avrebbe:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c}
+      Processo & Tempo di arrivo & CPU Burst \\
+      \hline
+      \( P_1 \) & 4 & 24 \\
+      \( P_2 \) & 0 & 3 \\
+      \( P_3 \) & 2 & 3 \\
+    \end{tabular}
+  \end{table}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \def\xscale{1/3}
+      \def\yscale{1/3}
+
+      \draw[black!50] (0*\xscale,0*\yscale) -- (0*\xscale,-3*\yscale);
+      \draw[black!50] (30*\xscale,0*\yscale) -- (30*\xscale,-3*\yscale);
+
+      % Time
+      \node[left,scale=0.8] at (0*\xscale,0.5*\yscale) {Tempo};
+      \draw[->] (0*\xscale,0.5*\yscale) -- (31*\xscale,0.5*\yscale);
+      \draw[black!50] (0*\xscale,0*\yscale) -- (30*\xscale,0*\yscale);
+      \foreach \x in {0,1,...,30} {
+        \draw (\x*\xscale,0.5*\yscale) node[above,scale=0.6] {\( \x \)}
+          -- ++(0,-0.5*\yscale);
+      }
+
+      % P1
+      \node[left,scale=0.8] at (0*\xscale,-0.5*\yscale) {\( P_1 \)};
+      \foreach \x in {6,...,29} {
+        \draw[fill,black!50] (\x*\xscale,-1*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+      \draw[black!50] (0*\xscale,-1*\yscale) -- (30*\xscale,-1*\yscale);
+
+      % P2
+      \node[left,scale=0.8] at (0*\xscale,-1.5*\yscale) {\( P_2 \)};
+      \foreach \x in {0,...,2} {
+        \draw[fill,black!50] (\x*\xscale,-2*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+      \draw[black!50] (3*\xscale,0*\yscale) -- (3*\xscale,-3*\yscale);
+      \draw[black!50] (0*\xscale,-2*\yscale) -- (30*\xscale,-2*\yscale);
+
+      % P3
+      \node[left,scale=0.8] at (0*\xscale,-2.5*\yscale) {\( P_3 \)};
+      \foreach \x in {3,...,5} {
+        \draw[fill,black!50] (\x*\xscale,-3*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+      \draw[black!50] (6*\xscale,0*\yscale) -- (6*\xscale,-3*\yscale);
+      \draw[black!50] (0*\xscale,-3*\yscale) -- (30*\xscale,-3*\yscale);
+    \end{tikzpicture}
+    \caption{Esecuzione dei processi con FCFS (diverso ordine di arrivo)}
+  \end{figure}
+
+  \noindent
+  La tabella delle metriche di tempo sarà:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c|c}
+      Processo & \( T_r \) & \( T_w \) & \( T_t \) \\
+      \hline
+      \( P_1 \) & 2 & 2 & 26 \\
+      \( P_2 \) & 0 & 0 & 3 \\
+      \( P_3 \) & 1 & 1 & 4 \\
+    \end{tabular}
+  \end{table}
+
+  \noindent
+  Si può notare che i tempi sono più bassi rispetto all'esempio precedente e questo si
+  riflette anche nel tempo di attesa medio:
+  \[
+    T_{w_{\text{medio}}} = \frac{2 + 0 + 1}{3} = 1
+  \]
+\end{example}
+
+\noindent
+Dall'esempio \ref{ex:fcfs} si può notare che l'algoritmo FCFS soffre di un problema
+chiamato \textbf{effetto convoglio} (convoy effect), cioè se un processo con un lungo
+CPU burst è in esecuzione, i processi con CPU burst più corti devono aspettare molto
+tempo.
+
+\subsubsection{Algoritmo SJF (Shortest-Job-First)}
+L'algoritmo SJF associa ad ogni processo la lunghezza del prossimo burst di CPU e
+seleziona il processo con il CPU burst più corto. Se si favoriscono i processi brevi
+essi saranno completati più velocemente e si ridurranno i tempi di attesa, mentre
+i processi lunghi non avranno svantaggi significativi. Questo algoritmo è ottimo
+per minimizzare il tempo di attesa medio.
+
+\vspace{1em}
+\noindent
+In questo algoritmo sono presenti due tipi di schemi:
+\begin{itemize}
+  \item \textbf{Non preemptive}
+  \item \textbf{Preemptive}
+    \begin{itemize}
+      \item Se arriva un nuovo processo con un burst di CPU più breve del tempo che
+        rimane da eseguire al processo in esecuzione, quest'ultimo viene rimosso
+        dalla CPU per fare spazio a quello appena arrivato
+      \item In questo caso l'algoritmo si chiama \textbf{SRTF (Shortest Remaining Time First)}
+    \end{itemize}
+\end{itemize}
+
+\begin{example}
+  Un'esempio di SJF non preemptive è il seguente:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c}
+      Processo & Tempo di arrivo & CPU Burst \\
+      \hline
+      \( P_1 \) & 0 & 7 \\
+      \( P_2 \) & 2 & 4 \\
+      \( P_3 \) & 4 & 1 \\
+      \( P_4 \) & 5 & 4 \\
+    \end{tabular}
+  \end{table}
+
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \def\xscale{0.6}
+      \def\yscale{0.6}
+      \def\endtime{16}
+
+      \draw[black!50] (0*\xscale,0*\yscale) -- (0*\xscale,-4*\yscale);
+      \draw[black!50] (\endtime*\xscale,0*\yscale) -- (\endtime*\xscale,-4*\yscale);
+
+      % Time
+      \node[left,scale=0.8] at (0*\xscale,0.5*\yscale) {Tempo};
+      \draw[->] (0*\xscale,0.5*\yscale) -- (\endtime*\xscale+1*\xscale,0.5*\yscale);
+      \draw[black!50] (0*\xscale,0*\yscale) -- (\endtime*\xscale,0*\yscale);
+      \foreach \x in {0,1,...,\endtime} {
+        \draw (\x*\xscale,0.5*\yscale) node[above,scale=0.6] {\( \x \)}
+          -- ++(0,-0.5*\yscale);
+      }
+
+      % P1
+      \node[left,scale=0.8] at (0*\xscale,-0.5*\yscale) {\( P_1 \)};
+      \foreach \x[count=\xi] in {0,...,6} {
+        \draw[fill,black!50] (\x*\xscale,-1*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+      \draw[black!50] (7*\xscale,0*\yscale) -- (7*\xscale,-4*\yscale);
+      \draw[black!50] (0*\xscale,-1*\yscale) -- (\endtime*\xscale,-1*\yscale);
+
+      % P2
+      \node[left,scale=0.8] at (0*\xscale,-1.5*\yscale) {\( P_2 \)};
+      \foreach \x in {8,...,11} {
+        \draw[fill,black!50] (\x*\xscale,-2*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+      \draw[black!50] (12*\xscale,0*\yscale) -- (12*\xscale,-4*\yscale);
+      \draw[black!50] (0*\xscale,-2*\yscale) -- (\endtime*\xscale,-2*\yscale);
+
+      % P3
+      \node[left,scale=0.8] at (0*\xscale,-2.5*\yscale) {\( P_3 \)};
+      \foreach \x in {7} {
+        \draw[fill,black!50] (\x*\xscale,-3*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+      \draw[black!50] (8*\xscale,0*\yscale) -- (8*\xscale,-4*\yscale);
+      \draw[black!50] (0*\xscale,-3*\yscale) -- (\endtime*\xscale,-3*\yscale);
+
+
+      % P4
+      \node[left,scale=0.8] at (0*\xscale,-3.5*\yscale) {\( P_4 \)};
+      \foreach \x in {12,...,15} {
+        \draw[fill,black!50] (\x*\xscale,-4*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+      \draw[black!50] (16*\xscale,0*\yscale) -- (16*\xscale,-4*\yscale);
+      \draw[black!50] (0*\xscale,-4*\yscale) -- (\endtime*\xscale,-4*\yscale);
+    \end{tikzpicture}
+    \caption{Esecuzione dei processi con SJF (non preemptive)}
+  \end{figure}
+
+  \noindent
+  Viene eseguito per prima cosa il processo \( P_1 \) perchè è il primo arrivato,
+  quando finisce si calcola il processo con il burst più corto tra tutti i processi
+  che sono arrivati nel mentre che \( P_1 \) era in esecuzione.
+
+  \vspace{1em}
+  \noindent
+  La tabella delle metriche di tempo sarà:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c|c}
+      Processo & \( T_r \) & \( T_w \) & \( T_t \) \\
+      \hline
+      \( P_1 \) & 0 & 0 & 7 \\
+      \( P_2 \) & 6 & 6 & 10 \\
+      \( P_3 \) & 3 & 3 & 4 \\
+      \( P_4 \) & 7 & 7 & 11 \\
+    \end{tabular}
+  \end{table}
+
+  \vspace{1em}
+  \noindent
+  Mantenendo gli stessi processi supponiamo che l'algoritmo sia preemptive:
+
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \def\xscale{0.6}
+      \def\yscale{0.6}
+      \def\endtime{16}
+
+      \draw[black!50] (0*\xscale,0*\yscale) -- (0*\xscale,-4*\yscale);
+      \draw[black!50] (\endtime*\xscale,0*\yscale) -- (\endtime*\xscale,-4*\yscale);
+
+      % Time
+      \node[left,scale=0.8] at (0*\xscale,0.5*\yscale) {Tempo};
+      \draw[->] (0*\xscale,0.5*\yscale) -- (\endtime*\xscale+1*\xscale,0.5*\yscale);
+      \draw[black!50] (0*\xscale,0*\yscale) -- (\endtime*\xscale,0*\yscale);
+      \foreach \x in {0,1,...,\endtime} {
+        \draw (\x*\xscale,0.5*\yscale) node[above,scale=0.6] {\( \x \)}
+          -- ++(0,-0.5*\yscale);
+      }
+
+      % P1
+      \node[left,scale=0.8] at (0*\xscale,-0.5*\yscale) {\( P_1 \)};
+      \draw[black!50] (0*\xscale,-1*\yscale) -- (\endtime*\xscale,-1*\yscale);
+      \foreach \x[count=\xi] in {0,...,1} {
+        \draw[fill,black!50] (\x*\xscale,-1*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+      \draw[black!50] (2*\xscale,0*\yscale) -- (2*\xscale,-4*\yscale);
+
+      \foreach \x[count=\xi] in {11,...,15} {
+        \draw[fill,black!50] (\x*\xscale,-1*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+
+      % P2
+      \node[left,scale=0.8] at (0*\xscale,-1.5*\yscale) {\( P_2 \)};
+      \draw[black!50] (0*\xscale,-3*\yscale) -- (\endtime*\xscale,-3*\yscale);
+      \foreach \x in {2,3} {
+        \draw[fill,black!50] (\x*\xscale,-2*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+      \draw[black!50] (5*\xscale,0*\yscale) -- (5*\xscale,-4*\yscale);
+
+      \draw[black!50] (0*\xscale,-3*\yscale) -- (\endtime*\xscale,-3*\yscale);
+      \foreach \x in {5,6} {
+        \draw[fill,black!50] (\x*\xscale,-2*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+      \draw[black!50] (7*\xscale,0*\yscale) -- (7*\xscale,-4*\yscale);
+
+      % P3
+      \node[left,scale=0.8] at (0*\xscale,-2.5*\yscale) {\( P_3 \)};
+      \draw[black!50] (0*\xscale,-2*\yscale) -- (\endtime*\xscale,-2*\yscale);
+      \foreach \x in {4} {
+        \draw[fill,black!50] (\x*\xscale,-3*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+      \draw[black!50] (4*\xscale,0*\yscale) -- (4*\xscale,-4*\yscale);
+
+      % P4
+      \node[left,scale=0.8] at (0*\xscale,-3.5*\yscale) {\( P_4 \)};
+      \draw[black!50] (0*\xscale,-4*\yscale) -- (\endtime*\xscale,-4*\yscale);
+      \foreach \x in {7,...,10} {
+        \draw[fill,black!50] (\x*\xscale,-4*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+      \draw[black!50] (11*\xscale,0*\yscale) -- (11*\xscale,-4*\yscale);
+    \end{tikzpicture}
+    \caption{Esecuzione dei processi con SJF (preemptive)}
+  \end{figure}
+
+  \noindent
+  All'istante 2 il processo \( P_1 \) viene interrotto perchè arriva il processo
+  \( P_2 \) con un burst di CPU più corto. Questo processo viene interrotto a sua
+  volta all'istante 4 perchè arriva il processo \( P_3 \) con un burst di CPU ancora
+  più corto.
+
+  \vspace{1em}
+  \noindent
+  La tabella delle metriche di tempo sarà:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c|c}
+      Processo & \( T_r \) & \( T_w \) & \( T_t \) \\
+      \hline
+      \( P_1 \) & 0 & 9 & 16 \\
+      \( P_2 \) & 0 & 1 & 5 \\
+      \( P_3 \) & 0 & 0 & 1 \\
+      \( P_4 \) & 2 & 2 & 6 \\
+    \end{tabular}
+  \end{table}
+\end{example}
+
+\noindent
+Il problema dell'algoritmo SJF è che non è possibile sapere a priori quanto durerà
+il prossimo burst di CPU di un processo. Inoltre un processo con un burst di CPU
+molto lungo potrebbe non essere mai eseguito, perchè viene sempre superato da processi
+con burst di CPU più corti, questo fenomeno si chiama \textbf{starvation}.
+
+\vspace{1em}
+\noindent
+\textbf{Calcolo del prossimo burst di CPU}:
+
+\noindent
+Siccome il burst di CPU non è noto a priori, si può calcolare una stima del prossimo
+burst di CPU in due modi:
+\begin{itemize}
+  \item Utilizzando le lunghezze dei burst precedenti come proiezione di quelli futuri
+  \item Utilizzando la media esponenziale dei burst precedenti:
+    \[
+      \tau_{n+1} = \alpha \cdot t_n + (1 - \alpha) \cdot \tau_n
+    \]
+    Dove:
+    \begin{itemize}
+      \item \( \tau_{n+1} \): Stima del prossimo burst di CPU
+      \item \( t_n \): Stima del burst CPU precedente
+      \item \( t_n \): Lunghezza reale del burst di CPU appena completato
+      \item \( \alpha \): Fattore di previsione (tipicamente \( 0 \leq \alpha \leq 1 \))
+    \end{itemize}
+\end{itemize}
+Un esempio del calcolo del prossimo burst di CPU è il seguente:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \def\xscale{1}
+    \def\yscale{0.5}
+
+    % Axis
+    \draw[->] (0,0) -- (8*\xscale,0) node[right] {Tempo};
+    \draw[->] (0,0) -- (0,11*\yscale) node[above] {Burst di CPU};
+
+    % Points t
+    \coordinate (t0) at (0*\xscale,3*\yscale);
+    \coordinate (t1) at (1*\xscale,1*\yscale);
+    \coordinate (t2) at (2*\xscale,3*\yscale);
+    \coordinate (t3) at (3*\xscale,1*\yscale);
+    \coordinate (t4) at (4*\xscale,10*\yscale);
+    \coordinate (t5) at (5*\xscale,10*\yscale);
+    \coordinate (t6) at (6*\xscale,10*\yscale);
+
+    % Points tau
+    \coordinate (tau0) at (0*\xscale,7*\yscale);
+    \coordinate (tau1) at (1*\xscale,5*\yscale);
+    \coordinate (tau2) at (2*\xscale,3*\yscale);
+    \coordinate (tau3) at (3*\xscale,3*\yscale);
+    \coordinate (tau4) at (4*\xscale,2*\yscale);
+    \coordinate (tau5) at (5*\xscale,6*\yscale);
+    \coordinate (tau6) at (6*\xscale,8*\yscale);
+    \coordinate (tau7) at (7*\xscale,9*\yscale);
+
+    % t plot
+    \draw[blue,thick] (t0) -- ++(1*\xscale,0)
+      -- (t1) -- ++(1*\xscale,0)
+      -- (t2) -- ++(1*\xscale,0)
+      -- (t3) -- ++(1*\xscale,0)
+      -- (t4) -- ++(1*\xscale,0)
+      -- (t5) -- ++(1*\xscale,0)
+      -- (t6) -- ++(1*\xscale,0)
+      node[right] {\( t_n \)};
+
+    % tau plot smooth
+    \draw[red,thick] plot[smooth] coordinates {
+        (tau0) (tau1) (tau2) (tau3) (tau4) (tau5) (tau6) (tau7)
+      } node[right] {\( \tau_n \)};
+
+    % Ticks
+    \foreach \y in {0,2,...,10} {
+      \draw (0,\y*\yscale) node[left] {\y} -- ++(0.1,0);
+    }
+
+    \foreach \x in {0,1,...,7} {
+      \draw (\x*\xscale,0) node[below] {\x} -- ++(0,0.1);
+    }
+  \end{tikzpicture}
+  \caption{Esempio del calcolo del prossimo burst di CPU}
+\end{figure}
+
+
+\subsubsection{Algoritmo HRRN (Highest Response Ratio Next)}
+Per implementare l'aging si può utilizzare l'algoritmo HRRN, che calcola la priorità
+come:
+\[
+  R = \frac{\left( t_{\text{attesa}} + t_{\text{burst}} \right)}
+  {t_{\text{burst}}}
+  = 1 + \frac{t_{\text{attesa}}}{t_{\text{burst}}}
+\] 
+La priorità è maggiore per valori di \( R \) più alti. Dipende anche dal tempo
+di attesa, quindi è dinamica, e viene ricalcolata in 2 possibili casi:
+\begin{itemize}
+  \item Al termine del processo se nel frattempo ne sono arrivati altri
+  \item Al termine del processo
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Vengono favoriti i processi che completano in poco tempo e che hanno aspettato molto
+tempo.
+
+\begin{example}
+  Un esempio di HRRN senza preemption è il seguente:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c}
+      Processo & Tempo di arrivo & CPU burst \\
+      \hline
+      \( P_1 \) & 1 & 10 \\
+      \( P_2 \) & 0 & 2 \\
+      \( P_3 \) & 2 & 2 \\
+      \( P_4 \) & 2 & 1 \\
+      \( P_5 \) & 1 & 5 \\
+    \end{tabular}
+  \end{table}
+  L'algoritmo calcola le seguenti priorità ogni volta che un processo termina:
+
+  \begin{table}[H]
+    \centering
+    \bgroup
+    \def\arraystretch{1.5}
+    \begin{tabular}{c|c|c|c|c}
+      Processo & \( t=0 \) & \( t=2 \) & \( t=7 \) & \( t=8 \) \\
+      \hline
+      \( P_1 \) & - & \( 1+\frac{1}{10} \) & \( 1+\frac{6}{10} \) & \( 1+\frac{7}{10} \)  \\
+      \( P_2 \) & \color{blue} 1 & - & - & - \\
+      \( P_3 \) & - & \( 1+\frac{0}{2} \) & \( 1+\frac{5}{2} \) & \color{blue} \( 1+\frac{6}{2} \) \\
+      \( P_4 \) & - & \( 1+\frac{0}{1} \) & \color{blue} \( 1+\frac{5}{1} \) & - \\
+      \( P_5 \) & - & \color{blue} \( 1+\frac{1}{5} \) & - & - \\
+    \end{tabular}
+    \egroup
+  \end{table}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \def\xscale{0.45}
+      \def\yscale{0.45}
+      \def\endtime{20}
+
+      \draw[black!50] (0*\xscale,0*\yscale) -- (0*\xscale,-5*\yscale);
+      \draw[black!50] (\endtime*\xscale,0*\yscale) -- (\endtime*\xscale,-5*\yscale);
+
+      % Time
+      \node[left,scale=0.8] at (0*\xscale,0.5*\yscale) {Tempo};
+      \draw[->] (0*\xscale,0.5*\yscale) -- (\endtime*\xscale+1*\xscale,0.5*\yscale);
+      \draw[black!50] (0*\xscale,0*\yscale) -- (\endtime*\xscale,0*\yscale);
+      \foreach \x in {0,1,...,\endtime} {
+        \draw (\x*\xscale,0.5*\yscale) node[above,scale=0.6] {\( \x \)}
+          -- ++(0,-0.5*\yscale);
+      }
+
+      % P1
+      \node[left,scale=0.8] at (0*\xscale,-0.5*\yscale) {\( P_1 \)};
+      \draw[black!50] (0*\xscale,-1*\yscale) -- (\endtime*\xscale,-1*\yscale);
+      \foreach \x[count=\xi] in {10,...,19} {
+        \draw[fill,black!50] (\x*\xscale,-1*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+      \draw[black!50] (20*\xscale,0*\yscale) -- (20*\xscale,-5*\yscale);
+
+      % P2
+      \node[left,scale=0.8] at (0*\xscale,-1.5*\yscale) {\( P_2 \)};
+      \draw[black!50] (0*\xscale,-3*\yscale) -- (\endtime*\xscale,-3*\yscale);
+      \foreach \x in {0,1} {
+        \draw[fill,black!50] (\x*\xscale,-2*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+      \draw[black!50] (2*\xscale,0*\yscale) -- (2*\xscale,-5*\yscale);
+
+      % P3
+      \node[left,scale=0.8] at (0*\xscale,-2.5*\yscale) {\( P_3 \)};
+      \draw[black!50] (0*\xscale,-2*\yscale) -- (\endtime*\xscale,-2*\yscale);
+      \foreach \x in {8,9} {
+        \draw[fill,black!50] (\x*\xscale,-3*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+      \draw[black!50] (10*\xscale,0*\yscale) -- (10*\xscale,-5*\yscale);
+
+      % P4
+      \node[left,scale=0.8] at (0*\xscale,-3.5*\yscale) {\( P_4 \)};
+      \draw[black!50] (0*\xscale,-4*\yscale) -- (\endtime*\xscale,-4*\yscale);
+      \foreach \x in {7} {
+        \draw[fill,black!50] (\x*\xscale,-4*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+      \draw[black!50] (8*\xscale,0*\yscale) -- (8*\xscale,-5*\yscale);
+
+      % P5
+      \node[left,scale=0.8] at (0*\xscale,-4.5*\yscale) {\( P_5 \)};
+      \draw[black!50] (0*\xscale,-5*\yscale) -- (\endtime*\xscale,-5*\yscale);
+      \foreach \x in {2,...,6} {
+        \draw[fill,black!50] (\x*\xscale,-5*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+      \draw[black!50] (7*\xscale,0*\yscale) -- (7*\xscale,-5*\yscale);
+
+    \end{tikzpicture}
+    \caption{Scheduling a priorità con HRRN (senza preemption)}
+  \end{figure}
+
+  \noindent
+  La tabella delle metriche di tempo sarà:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c|c}
+      Processo & \( T_r \) & \( T_w \) & \( T_t \) \\
+      \hline
+      \( P_1 \) & 9 & 9 & 19 \\
+      \( P_2 \) & 0 & 0 & 2 \\
+      \( P_3 \) & 6 & 6 & 8 \\
+      \( P_4 \) & 5 & 5 & 6 \\
+      \( P_5 \) & 1 & 1 & 6 \\
+    \end{tabular}
+  \end{table}
+\end{example}
+
+\subsubsection{Scheduling a time-out}
+Gli \textbf{scheduling a time-out} assegnano ad ogni processo una piccola parte (quanto)
+del tempo di CPU (circa 10-100 ms). Alla fine del quanto di tempo il processo viene
+interrotto.
+
+\vspace{1em}
+\noindent
+Con \( n \) processi nella coda e quanto di tempo \( q \) si ha che:
+\begin{itemize}
+  \item Ogni processo ottiene \( \frac{1}{n} \) del del tempo di CPU in blocchi di
+    \( q \) unità di tempo alla volta
+  \item Nessun processo attende più di \( (n-1)q \) unità di tempo
+\end{itemize}
+
+\subsubsection{Algoritmo Round Robin}
+L'algoritmo \textbf{Round Robin} è un algoritmo di scheduling a time-out che interrompe
+un processo dopo un quanto di tempo inserendolo all'interno della ready queue. La ready
+queue è una \textbf{coda circolare}. Questo algoritmo migliora i tempi di risposta ed
+è quello che implementa meglio il concetto di time-sharing.
+
+\vspace{1em}
+\noindent
+L'algoritmo Round Robin è intrinsecamente preemptive ed è un FCFS con preemption. La
+scelta del quanto di tempo \( q \) è importante:
+\begin{itemize}
+  \item Se \( q \) è grande, l'algoritmo si comporta come un FCFS
+  \item Se \( q \) è piccolo, bisogna prestare attenzione al context switch:
+    \begin{itemize}
+      \item Se \( q \) è troppo piccolo, l'overhead per il context switch è troppo,
+        quindi è meglio avere un \( q \) molto più grande del tempo di context switch
+    \end{itemize}
+\end{itemize}
+Un valore ragionevole di \( q \) è quello che fa in modo che l'80\% dei burst sia
+minore di \( q \).
+
+\vspace{1em}
+\noindent
+Le prestazioni di questo algoritmo sono:
+\begin{itemize}
+  \item Tempo di turnaround \( \ge  \) di quello di SJF
+  \item Tempo di risposte \( \le  \) di quello di SJF
+\end{itemize}
+
+\begin{example}
+  Un esempio di Round Robin, con \( q=2 \), è il seguente:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c}
+      Processo & Tempo di arrivo & CPU burst \\
+      \hline
+      \( P_1 \) & 0 & 5 \\
+      \( P_2 \) & 0 & 1 \\
+      \( P_3 \) & 0 & 7 \\
+      \( P_4 \) & 0 & 2 \\
+    \end{tabular}
+  \end{table}
+
+  \noindent
+  I processi in esecuzione e in ready queue saranno:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c|c|c|c|c|c|c|c}
+      Tempo & 0 & 2 & 3 & 5 & 7 & 9 & 11 & 12 & 14 \\
+      \hline
+      In esecuzione & $P_1$ & $P_2$ & $P_3$ & $P_4$ & $P_1$ & $P_3$ & $P_1$ & $P_3$ & $P_3$ \\
+      \hline
+      Ready queue & $P_2$ & $P_3$ & $P_4$ & $P_1$ & $P_3$ & $P_1$ & $P_3$ & & \\
+                  & $P_3$ & $P_4$ & $P_1$ & $P_4$ & & & & \\
+                  & $P_4$ & $P_1$ & & & & & & \\
+    \end{tabular}
+  \end{table}
+
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \def\xscale{0.6}
+      \def\yscale{0.6}
+      \def\endtime{15}
+
+      \draw[black!50] (0*\xscale,0*\yscale) -- (0*\xscale,-4*\yscale);
+      \draw[black!50] (\endtime*\xscale,0*\yscale) -- (\endtime*\xscale,-4*\yscale);
+
+      % Time
+      \node[left,scale=0.8] at (0*\xscale,0.5*\yscale) {Tempo};
+      \draw[->] (0*\xscale,0.5*\yscale) -- (\endtime*\xscale+1*\xscale,0.5*\yscale);
+      \draw[black!50] (0*\xscale,0*\yscale) -- (\endtime*\xscale,0*\yscale);
+      \foreach \x in {0,1,...,\endtime} {
+        \draw (\x*\xscale,0.5*\yscale) node[above,scale=0.6] {\( \x \)}
+          -- ++(0,-0.5*\yscale);
+      }
+
+      % P1
+      \node[left,scale=0.8] at (0*\xscale,-0.5*\yscale) {\( P_1 \)};
+      \draw[black!50] (0*\xscale,-1*\yscale) -- (\endtime*\xscale,-1*\yscale);
+      \foreach \x[count=\xi] in {0,1} {
+        \draw[fill,black!50] (\x*\xscale,-1*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+      \draw[black!50] (2*\xscale,0*\yscale) -- (2*\xscale,-4*\yscale);
+
+      \foreach \x[count=\xi] in {7,8} {
+        \draw[fill,black!50] (\x*\xscale,-1*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+      \draw[black!50] (9*\xscale,0*\yscale) -- (9*\xscale,-4*\yscale);
+
+      \foreach \x[count=\xi] in {11} {
+        \draw[fill,black!50] (\x*\xscale,-1*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+      \draw[black!50] (12*\xscale,0*\yscale) -- (12*\xscale,-4*\yscale);
+
+      % P2
+      \node[left,scale=0.8] at (0*\xscale,-1.5*\yscale) {\( P_2 \)};
+      \draw[black!50] (0*\xscale,-3*\yscale) -- (\endtime*\xscale,-3*\yscale);
+      \foreach \x in {2} {
+        \draw[fill,black!50] (\x*\xscale,-2*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+      \draw[black!50] (3*\xscale,0*\yscale) -- (3*\xscale,-4*\yscale);
+
+      % P3
+      \node[left,scale=0.8] at (0*\xscale,-2.5*\yscale) {\( P_3 \)};
+      \draw[black!50] (0*\xscale,-2*\yscale) -- (\endtime*\xscale,-2*\yscale);
+      \foreach \x in {3,4} {
+        \draw[fill,black!50] (\x*\xscale,-3*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+      \draw[black!50] (5*\xscale,0*\yscale) -- (5*\xscale,-4*\yscale);
+
+      \foreach \x in {9,10} {
+        \draw[fill,black!50] (\x*\xscale,-3*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+      \draw[black!50] (11*\xscale,0*\yscale) -- (11*\xscale,-4*\yscale);
+
+      \foreach \x in {12,13} {
+        \draw[fill,black!50] (\x*\xscale,-3*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+      \draw[black!50] (14*\xscale,0*\yscale) -- (14*\xscale,-4*\yscale);
+
+      \foreach \x in {14} {
+        \draw[fill,black!50] (\x*\xscale,-3*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+
+      % P4
+      \node[left,scale=0.8] at (0*\xscale,-3.5*\yscale) {\( P_4 \)};
+      \draw[black!50] (0*\xscale,-4*\yscale) -- (\endtime*\xscale,-4*\yscale);
+      \foreach \x in {5,6} {
+        \draw[fill,black!50] (\x*\xscale,-4*\yscale) rectangle ++(1*\xscale,1*\yscale);
+      }
+      \draw[black!50] (7*\xscale,0*\yscale) -- (7*\xscale,-4*\yscale);
+
+    \end{tikzpicture}
+    \caption{Scheduling Round Robin con \( q=2 \)}
+  \end{figure}
+
+  \noindent
+  La tabella delle metriche di tempo sarà:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c|c}
+      Processo & \( T_r \) & \( T_w \) & \( T_t \) \\
+      \hline
+      \( P_1 \) & 0 & 7 & 12 \\
+      \( P_2 \) & 2 & 2 & 3 \\
+      \( P_3 \) & 3 & 8 & 15 \\
+      \( P_4 \) & 5 & 5 & 7 \\
+    \end{tabular}
+  \end{table}
+\end{example}
 
 
 % Il sistema operativo fornisce dei servizi per comunicare con l'hardware e questi
@@ -2032,6 +3120,6 @@ Gli scheduler sono di due tipi:
 %   \item \textbf{root}: La radice del file system: /
 %   \item \textbf{nodo}: File (se ha già figli è una directory)
 % \end{enumerate}
-%
-%
+
+
 \end{document}
