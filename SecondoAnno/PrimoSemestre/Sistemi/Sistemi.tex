@@ -4958,4 +4958,255 @@ da questa forma si può antitrasformare:
   \end{enumerate}
 \end{example}
 
+\section{Sistemi a blocchi}
+Un sistema è rappresentato da un blocco con un input e un output:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw,minimum width=1cm,minimum height=1cm] (A) at (0,0) {\( \Sigma \) };
+    \draw[->] (-1,0) -- (A) node[midway,above left] {$\stackrel{u(t)}{\text{Ingresso}}$};
+    \draw[->] (A) -- (1,0) node[midway,above right] {$\stackrel{v(t)}{\text{Uscita}}$};
+  \end{tikzpicture}
+  \caption{Rappresentazione di un sistema}
+\end{figure}
+
+\noindent
+I sistemi hanno sempre un input e un output perchè consideriamo solo sistemi SISO
+(Single Input Single Output).
+
+\subsection{Tipi di sistemi}
+I sistemi possono essere messi insieme e questo viene fatto in più modi:
+\subsubsection{Sistema in serie}
+In un sistema in serie si mettono i sistemi uno dietro l'altro:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw,minimum width=1cm,minimum height=1cm] (A) at (0,0) {\( \Sigma_1 \) };
+    \node[draw,minimum width=1cm,minimum height=1cm, right= of A] (B) {\( \Sigma_2 \) };
+    \draw[->] (-1,0) -- (A) node[midway,above left] {\( x_1 \) };
+    \draw[->] (A) -- (B)node[midway, above left] {\( y_1 \) } node[midway, above right] {\( x_2 \) };
+    \draw[->] (B) -- (3,0) node[midway,above right] {\( y_2 \) };
+  \end{tikzpicture}
+  \caption{Sistema in serie}
+\end{figure}
+\[
+  y_1 = x_2
+\] 
+
+\subsubsection{Sistema in parallelo}
+In un sistema in parallelo si mettono i sistemi uno accanto all'altro:
+\label{25-11-D1}
+\[
+  x = x_1 = x_2
+\]
+\[
+  y = y_1 + y_2
+\] 
+
+\subsubsection{Sistema di retroazione}
+In un sistema di retroazione l'output di un sistema è l'input di un altro:
+\label{25-11-D2}
+\[
+  x_1 = x + y_2
+\] 
+\[
+  y = y_1 = x_2
+\] 
+
+\subsubsection{Nodi sommatori}
+I nodi sommatori hanno un numero indefinito di ingressi e una sola uscita:
+\label{25-11-D3}
+\noindent
+(solitamente viene rappresentato con una X in un cerchio, ma quel simbolo lo useremo
+per rappresentare il prodotto).
+
+\subsection{Controlli}
+Un controllo è un sistema a tempo continuo con un ingresso e un'uscita e può essere di 
+due tipi:
+\begin{itemize}
+  \item \textbf{Controllo ad anello aperto}: l'uscita non torna nell'ingresso
+    \label{25-11-D4}
+
+  \item \textbf{Controllo ad anello chiuso}: l'uscita torna nell'ingresso
+    \label{25-11-D5}
+    \noindent
+    (un esempio è il termostato)
+\end{itemize}
+
+\begin{example}
+  Prendiamo ad esempio la seguente equazione:
+  \[
+    \frac{dy(t)}{dt} + ay(t) = bx(t)
+  \] 
+  \[
+    y(t) = -\frac{1}{a} \frac{dy(t)}{dt} + \frac{b}{a} x(t)
+  \] 
+  Il diagramma a blocchi è:
+  \label{25-11-D6}
+\end{example}
+
+\subsubsection{Nomenclatura}
+\label{25-11-D7}
+
+Il segnale di attuazione viene chiamato:
+\begin{itemize}
+  \item \textbf{Feedback negativo}: Quando:
+    \[
+    e = r-b
+    \] 
+  \item \textbf{Feedback positivo}: Quando:
+    \[
+    e = r+b
+    \] 
+\end{itemize}
+
+\subsection{Controllori}
+I controllori sono di 3 tipi e vanno a definire le regole di controllo:
+\begin{itemize}
+  \item \textbf{Proporzionale} (P): L'output è proporzionale all'errore
+    \[
+      u(t) = K_P \cdot e
+    \]
+
+  \item \textbf{Derivativo} (D): L'output è proporzionale alla derivata dell'errore
+    \[
+      u(t) = K_D \cdot \frac{de}{dt}
+    \]
+
+  \item \textbf{Integrativo} (I): L'output è proporzionale all'integrale dell'errore
+    \[
+      u(t) = K_I \cdot \int e \, dt
+    \]
+\end{itemize}
+I tre controllori possono essere combinati e si rappresentano con la concatenazione
+delle lettere:
+\begin{itemize}
+  \item \textbf{PD}: Proporzionale-Derivativo
+  \item \textbf{PI}: Proporzionale-Integrativo
+  \item \textbf{DI}: Derivativo-Integrativo
+  \item \textbf{PID}: Proporzionale-Integrativo-Derivativo
+    \[
+      u_{\text{PID}} = K_P \cdot e + K_D \cdot \frac{de}{dt} + K_I \cdot \int e \, dt
+    \] 
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Un sistema può essere tradotto dal tempo continuo al tempo discreto, attraverso un
+campionatore:
+\label{25-11-D8}
+
+\noindent
+Oltre al campionatore si utilizza anche un componente chiamato \textbf{zero holder},
+che è un componente che mantiene il valore del segnale invariato fino all'istante
+successivo.
+\label{25-11-D9}
+
+\begin{example}
+  Prendiamo ad esempio il seguente sistema iniziale:
+  \label{25-11-D10}
+  \noindent
+  Vogliamo ottenere un sistema in forma canonica, ad esempio:
+  \label{25-11-D11}
+  
+\end{example}
+
+\subsubsection{Nomenclatura della forma canonica}
+\label{25-11-D12}
+\begin{itemize}
+  \item \( G \): Funzione di trasferimento discreta
+  \item \( H \): Funzione di trasferimento di feedback
+  \item \( GH \): Funzione di trasferimento dell'anello (loop)
+  \item \( \frac{C}{R} \): Funzione di trasferimento dell'anello chiuso ed è definita come:
+    \[
+    \frac{C}{R} = \frac{G}{1 \pm GH} = \frac{\text{Equazione caratteristica dell'ingresso}}
+    {\text{Equazione caratteristica dell'uscita}}
+    \] 
+
+  \item \( \frac{E}{R} \): Rapporto del segnale di attuazione (errore) ed è definito come:
+    \[
+    \frac{E}{R} = \frac{1}{1 \pm GH}
+    \]
+
+  \item \( \frac{B}{R} \): Rapporto di feedback ed è definito come:
+    \[
+    \frac{B}{R} = \frac{GH}{1 \pm GH}
+    \]
+\end{itemize}
+L'obiettivo è quello di semplificare il sistema finchè non si ottiene una forma canonica.
+
+\begin{example}
+  Se prendiamo ad esempio il sistema massa-molla-smorzatore:
+  \label{25-11-D13}
+  \noindent
+  L'equazione sarà:
+  \[
+    \begin{aligned}
+      M \cdot a &= \sum F\\
+                &= F_{\text{ext}} - Kx - bx'\\
+      \underbrace{F_{\text{ext}}}_{\text{Ingresso}} &= \underbrace{kx + bx'+Mx''}_
+                {\text{Uscita}}\\
+      \downarrow \mathcal{L} & X(s) = \mathcal{L}\left[ x(t) \right](s) \\
+                             &= k X(s) +bs X(s)+ M s^2 X(s)\\
+    \end{aligned}
+  \] 
+  \[
+    X(s) = \frac{F_{\text{ext}}}{\underbrace{\left( k + bs + Ms^2 \right)}_{A}}
+  \] 
+  \label{25-11-D14}
+\end{example}
+
+\section{Calcolo della forma canonica}
+Si applicano le seguenti regole di trasformazione:
+\begin{enumerate}
+  \item \textbf{Combinazione di blocchi in serie}: Dati due blocchi \( A \) e \( B \) si
+    ottiene un nuovo blocco il cui contenuto è il prodotto dei due blocchi:
+    \label{25-11-D15}
+    \noindent
+    Questo perchè due sistemi in serie vuol dire fare una convoluzione, di conseguenza
+    un prodotto di sistemi.
+
+  \item \textbf{Combinazione di blocchi in parallelo}: Dati due blocchi \( A \) e \( B \) si
+    ottiene un nuovo blocco il cui contenuto è la somma dei due blocchi:
+    \label{25-11-D16}
+    \begin{enumerate}
+      \item \textbf{Rimozione di un blocco parallelo}: Dato un blocco \( A \) in parallelo
+        con un blocco \( B \) si può rimuovere la connessione parallela sostituendola con
+        il rapporto tra i 2 blocchi
+        \label{25-11-D17}
+    \end{enumerate}
+
+
+  \item \textbf{Rimozione di un anello feedback}: Dato un blocco \( A \) in feedback con
+    un blocco \( B \) si può rimuovere la connessione di feedback sostituendola con:
+    \[
+    \frac{A}{1 \pm AB}
+    \] 
+    \label{25-11-D18}
+
+    \begin{enumerate}
+      \item \textbf{Rimozione dal loop}: 
+        \label{25-11-D19}
+    \end{enumerate}
+
+  \item \textbf{Riorganizzazione degli input nel nodo sommatore}:
+    \label{25-11-D20}
+    \begin{enumerate}
+      \item \textbf{Riorganizzazione dei nodi sommatori}:
+        \label{25-11-D21}
+    \end{enumerate}
+
+  \item \textbf{Spostamento dei nodi somma prima del blocco}:
+    \label{25-11-D22}
+
+  \item \textbf{Spostamento dei nodi somma dopo il blocco}:
+    \label{25-11-D23}
+
+  \item \textbf{Spostamento di un nodo prima di un blocco}:
+    \label{25-11-D24}
+
+  \item \textbf{Spostamento di un nodo dopo un blocco}:
+    \label{25-11-D25}
+\end{enumerate}
+
 \end{document}
