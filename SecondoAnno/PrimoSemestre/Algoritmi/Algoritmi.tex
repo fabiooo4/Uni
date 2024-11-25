@@ -1688,6 +1688,447 @@ Una volta che un nodo viene aggiunto o rimosso non si può più essere certi che
 l'albero sia ancora bilanciato, quindi bisogna fare in modo che l'albero venga
 bilanciato ogni volta che viene modificato e la complessità non sarà più logaritmica.
 
+\subsubsection{RB-Tree (Red-Black Tree)}
+Gli alberi rosso-neri sono alberi binari di ricerca in cui ogni nodo può essere
+rosso o nero.
+\begin{itemize}
+  \item \textbf{Nero}: Il nodo nero indica che il nodo è a posto
+  \item \textbf{Rosso}: Il nodo rosso è un nodo ausiliario
+\end{itemize}
+Questo tipo di albero ha le seguenti proprietà:
+\begin{enumerate}
+  \item Ogni nodo è rosso o nero
+  \item Ogni foglia è nera
+  \item I figli di un nodo rosso sono neri
+  \item Ogni cammino dalla radice ad una foglia contiene lo stesso numero di nodi neri
+\end{enumerate}
+\begin{example}
+  Abbiamo un albero con \( l \) nodi neri nel sotto albero destro, quindi per la proprietà
+  4, il sotto albero sinistro deve avere \( l \) nodi neri:
+  \begin{figure}[H]
+    \centering
+    \begin{forest}
+      for tree={
+      circle,
+      draw,
+      minimum size=2em,
+      inner sep=1pt,
+      s sep=1cm,
+    }
+    [\color{black}b
+      [\color{red}r
+        [\color{black}b
+        [\color{red}r
+        [\color{black}b]
+        ]
+        ]
+      ]
+      [\color{black}b
+        [\color{black}b ]
+      ]
+    ]
+    \end{forest}
+    \caption{Albero rosso-nero}
+  \end{figure}
+
+  \noindent Il sotto albero sinistro avrà \( 2l \) nodi totali.
+\end{example}
+
+\begin{example}
+  \label{ex:rb-tree}
+  Prendiamo ad esempio il seguente albero RB:
+  \begin{figure}[H]
+    \centering
+    \begin{forest}
+      for tree={
+      circle,
+      draw,
+      minimum size=2em,
+      inner sep=1pt,
+      s sep=0.2cm,
+      scale=0.8
+    }
+    [26
+      [\color{red}17
+        [14
+          [\color{red}10
+            [7
+              [\color{red}3
+                [nil]
+                [nil]
+              ]
+            ]
+            [12
+              [nil]
+              [nil]
+            ]
+          ]
+          [16
+            [\color{red}15
+              [nil]
+              [nil]
+            ]
+          ]
+        ]
+        [21
+          [19
+            [\color{red}20
+              [nil]
+              [nil]
+            ]
+          ]
+          [23
+            [nil]
+            [nil]
+          ]
+        ]
+      ]
+      [41
+        [\color{red}30
+          [28
+            [nil]
+            [nil]
+          ]
+          [38
+            [\color{red}33
+              [nil]
+              [nil]
+            ]
+            [\color{red}39
+              [nil]
+              [nil]
+            ]
+          ]
+        ]
+        [47
+          [nil]
+          [nil]
+        ]
+      ]
+    ]
+    \end{forest}
+    \caption{Albero rosso-nero}
+  \end{figure}
+
+  \noindent
+  Tutte le proprietà sono verificate, però tutte le foglie sono dei \texttt{nil} (nero)
+  e questo è uno spreco di memoria, perchè metà dei nodi di un albero sono foglie e quindi
+  metà dei nodi sono utilizzati per la sentinella.
+  
+  Questo si può risolvere facendo puntare tutte le sentinelle allo stesso valore \texttt{nil},
+  però facendo così non si riesce più a risalire all'elemento padre di una foglia.
+\end{example}
+
+\noindent
+Il concetto principale di questo tipo di alberi è quello della \textbf{black height},
+cioè il numero di nodi neri che si incontrano lungo un cammino dalla radice ad una foglia.
+Prendendo in considerazione l'esempio \ref{ex:rb-tree} i nodi:
+\begin{itemize}
+  \item \textbf{nil}: Hanno black height 0
+  \item \textbf{3}: Ha black height 1
+  \item \textbf{19}: Ha black height 1
+  \item \textbf{14}: Ha black height 2
+  \item \textbf{26}: Ha black height 3
+  \item ecc...
+\end{itemize}
+
+\vspace{1em}
+\noindent
+\textbf{Lemma:}
+
+\noindent
+Per ogni nodo \( x \) dell'albero, il sottoalbero radicato in \( x \) contiene almeno
+\( 2^{bh(x)} - 1 \) nodi interni (nodi che non sono una foglia).
+
+\vspace{1em}
+\noindent
+\textbf{Dimostrazione:}
+
+\noindent
+Dimostriamo per induzione su \( bh(x) \):
+\begin{itemize}
+  \item \textbf{Caso base}: Se \( x \) è una foglia, allora \( bh(x) = 0 \) e il sottoalbero
+    radicato in \( x \) contiene 0 nodi interni.
+    \[
+      2^{bh(x)} - 1 = 2^0 - 1 = 0
+    \] 
+
+  \item Se \( x \) è un nodo con un figlio destro \( b \) e un figlio sinistro
+    \( a \) allora:
+    \begin{figure}[H]
+      \centering
+      \begin{forest}
+        for tree={
+        circle,
+        draw,
+        minimum size=2em,
+        inner sep=1pt,
+        s sep=1cm,
+      }
+        [x
+          [a]
+          [b]
+        ]
+      \end{forest}
+    \end{figure}
+    \[
+      bh(a) \ge bh(x) -1 \quad \text{e} \quad bh(b) \ge bh(x) -1
+    \]
+    \[
+      \#nodi(x) \ge \#nodi(a) + \#nodi(b) + 1
+    \] 
+    \[
+    \Downarrow
+    \] 
+    \[
+      \begin{aligned}
+        \#nodi(x) &\ge 2^{bh(a)} - 1 + 2^{bh(b)} - 1 + 1\\
+                  &\ge 2^{bh(x) - 1} - 1 + 2^{bh(x) - 1} \cancel{- 1} \cancel{+ 1}\\
+                  &= 2 \cdot 2^{bh(x) - 1} - 1\\
+                  &= 2^{bh(x)} - 1
+      \end{aligned}
+    \] 
+    Quindi
+    \[
+      \#nodi(x) \ge 2^{bh(x)} - 1
+    \] 
+\end{itemize}
+
+\vspace{1em}
+\noindent
+\textbf{Complessità}:
+Consideriamo un albero RB di altezza \( h \) (distanza tra la radice e la foglia più
+lontana, escludendo la radice) e radice \( x \), si ha che \( bh(x) \) vale:
+\[
+  bh(x) \ge \frac{h}{2}
+\] 
+Il numero di nodi \( n \) (per il lemma) vale \( 2^{\frac{h}{2}} \), si ha quindi che
+l'altezza di un RB albero è \textbf{almeno} il doppio dell'altezza di un albero binario:
+\[
+  \begin{aligned}
+    n &\ge 2^{\frac{h}{2}-1}\\
+    2^{\frac{h}{2}} &\le n+1\\
+    \frac{h}{2} &\le \log_2(n+1)\\
+    h &\le 2 \log_2(n+1)
+  \end{aligned}
+\] 
+
+\begin{itemize}
+  \item \textbf{Inserimento}: L'inserimento di un nodo in un albero RB si fa allo stesso
+    modo di un albero binario di ricerca. Per non violare la proprietà 4, si fa
+    di colore rosso e si salva un puntatore al nuovo oggetto, questo perchè il nuovo albero
+    è un RB albero, \textbf{tranne} per l'oggetto puntato dal puntatore perchè potrebbe
+    avere un padre rosso. Si propaga l'anomalia verso la radice dell'albero per poter
+    cambiare il colore della radice mantenendo tutte le proprietà. Per risolvere il problema
+    si può fare una \textbf{rotazione} a destra o a sinistra.
+
+    \vspace{1em}
+    \noindent
+    Prendiamo in considerazione il seguente albero:
+    \begin{figure}[H]
+      \centering
+      \begin{forest}
+        for tree={
+        circle,
+        draw,
+        minimum size=2em,
+        inner sep=1pt,
+        s sep=1cm,
+      }
+      [y
+        [x
+          [\( \alpha \)]
+          [\( \beta \)]
+        ]
+        [\( \gamma  \)]
+      ]
+      \end{forest}
+    \end{figure}
+
+    \noindent
+    La rotazione a destra di \( y \) è:
+    \begin{figure}[H]
+      \centering
+      \begin{forest}
+        for tree={
+        circle,
+        draw,
+        minimum size=2em,
+        inner sep=1pt,
+        s sep=1cm,
+      }
+      [x
+        [\( \alpha \)]
+        [y
+          [\( \beta \)]
+          [\( \gamma \)]
+        ]
+      ]
+      \end{forest}
+    \end{figure}
+    Questa operazione mantiene tutte le proprietà dell'albero binario di ricerca.
+    L'operazione opposta è la rotazione a sinistra. Il tempo di esecuzione di una
+    rotazione è costante.
+
+    \vspace{1em}
+    \noindent
+    Lo pseudocodice dell'algoritmo per risistemare l'albero è il seguente:
+\begin{lstlisting}[language=Scala]
+// Albero con radice sicuramente nera
+// x: Nodo da cui si propaga l'anomalia
+
+while x != root and color(parent(x)) == red
+  // Se il padre e' figlio sinistro del nonno
+  if parent(x) == left(parent(parent(x)))
+    y <- right(parent(parent(x))
+    if color(y) == red
+      color(parent(parent(x))) <- red
+      color(parent(x)) <- black
+      color(y) <- black
+      x <- parent(parent(x))
+    else
+      if x == right(parent(x))
+        x <- parent(x)
+        left_rotate(x)
+
+      color(parent(x)) <- black
+      color(parent(parent(x))) <- red
+      right_rotate(parent(parent(x)))
+      x <- root
+
+  // Se il padre e' figlio sinistro del nonno
+  // Si fanno le stesso operazioni con le direzioni invertite
+  if parent(x) == right(parent(parent(x)))
+    y <- left(parent(parent(x))
+    if color(y) == red
+      color(parent(parent(x))) <- red
+      color(parent(x)) <- black
+      color(y) <- black
+      x <- parent(parent(x))
+    else
+      if x == left(parent(x))
+        x <- parent(x)
+        right_rotate(x)
+
+      color(parent(x)) <- black
+      color(parent(parent(x))) <- red
+      left_rotate(parent(parent(x)))
+      x <- root
+\end{lstlisting}
+
+\begin{example}
+  Un esempio del predcedente algoritmo è il seguente:
+  \begin{figure}[H]
+    \centering
+    \begin{forest}
+      for tree={
+        circle,
+        draw,
+        minimum size=2em,
+        inner sep=1pt,
+        s sep=1cm,
+      }
+      [11
+        [\color{red}2
+          [1]
+          [7
+            [\color{red}5
+            [\color{red}4 \color{black}\( (x) \)]
+            ]
+            [\color{red}8 \color{black}\( (y) \)]
+          ]
+        ]
+        [14]
+      ]
+    \end{forest}
+  \end{figure}
+  \noindent
+  Si cambiano i colori dei nodi \( parent(x) \) e \( y \) e si sposta l'anomalia verso
+  l'alto
+  \begin{figure}[H]
+    \centering
+    \begin{forest}
+      for tree={
+        circle,
+        draw,
+        minimum size=2em,
+        inner sep=1pt,
+        s sep=1cm,
+      }
+      [11
+        [\color{red}2
+          [1]
+          [\color{red}7 \color{black}\( (x) \)
+            [5
+            [\color{red}4]
+            ]
+            [8 ]
+          ]
+        ]
+        [14 \( (y) \) ]
+      ]
+    \end{forest}
+  \end{figure}
+
+  \noindent
+  Prendiamo la coppia 2 e 7 e ruotiamo a sinistra
+  \begin{figure}[H]
+    \centering
+    \begin{forest}
+      for tree={
+        circle,
+        draw,
+        minimum size=2em,
+        inner sep=1pt,
+        s sep=1cm,
+      }
+      [11
+        [\color{red}7
+        [\color{red}2 \color{black}\( (x) \)
+          [1]
+          [5
+            [\color{red}4]
+          ]
+        ]
+          [8
+          ]
+        ]
+        [14 \( (y) \) ]
+      ]
+    \end{forest}
+  \end{figure}
+  \noindent
+  Si cambiano i colori e si effettua una rotazione a destra
+  \begin{figure}[H]
+    \centering
+    \begin{forest}
+      for tree={
+        circle,
+        draw,
+        minimum size=2em,
+        inner sep=1pt,
+        s sep=1cm,
+      }
+      [7
+        [\color{red}2
+          [1]
+          [5
+            [\color{red}4]
+          ]
+        ]
+        [\color{red}11
+          [8]
+          [14]
+        ]
+      ]
+    \end{forest}
+  \end{figure}
+  \noindent
+  L'albero ora non ha più l'anomalia.
+\end{example}
+\end{itemize}
+
+
 \subsection{Lista doppiamente puntata}
 Una lista doppiamente puntata è una struttura dati in cui ogni nodo ha un puntatore
 al nodo precedente e al nodo successivo.
@@ -1702,5 +2143,6 @@ Per rimuovere un elemento \( x \) dalla lista bisogna:
 Il problema di questa soluzione è che bisogna anche gestire i casi degli estremi
 separatamente. Per evitare di gestire i casi specifici si possono aggiungere dei
 nodi sentinella all'inizio e alla fine della lista.
+
 
 \end{document}
