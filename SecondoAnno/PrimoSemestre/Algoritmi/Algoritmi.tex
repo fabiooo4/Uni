@@ -1565,6 +1565,21 @@ rimuoverli dall'inizio. Le operazioni possibili sono:
   \item \texttt{is\_empty()}: Restituisce vero se la coda è vuota
 \end{itemize}
 
+\subsection{Lista doppiamente puntata}
+Una lista doppiamente puntata è una struttura dati in cui ogni nodo ha un puntatore
+al nodo precedente e al nodo successivo.
+
+\vspace{1em}
+\noindent
+Per rimuovere un elemento \( x \) dalla lista bisogna:
+\begin{enumerate}
+  \item Trovare il nodo \( x \)
+  \item Collegare il nodo precedente a \( x \) con il nodo successivo a \( x \)
+\end{enumerate}
+Il problema di questa soluzione è che bisogna anche gestire i casi degli estremi
+separatamente. Per evitare di gestire i casi specifici si possono aggiungere dei
+nodi sentinella all'inizio e alla fine della lista.
+
 \subsection{Albero binario}
 Un albero binario è una struttura dati in cui ogni nodo ha al massimo 2 figli.
 \begin{figure}[H]
@@ -1579,6 +1594,7 @@ Un albero binario è una struttura dati in cui ogni nodo ha al massimo 2 figli.
   }
     [\( x \)
       [\( y \)
+        [,no edge, draw=none]
         [\( z \)]
       ]
       [\( v \)
@@ -1715,16 +1731,20 @@ Questo tipo di albero ha le seguenti proprietà:
       inner sep=1pt,
       s sep=1cm,
     }
-    [\color{black}b
-      [\color{red}r
-        [\color{black}b
-        [\color{red}r
-        [\color{black}b]
+    [
+      [,red
+        [
+        [,red
+        []
+        [,no edge, draw=none]
         ]
+        [,no edge, draw=none]
         ]
+        [,no edge, draw=none]
       ]
-      [\color{black}b
-        [\color{black}b ]
+      [
+        [,no edge, opacity=0]
+        []
       ]
     ]
     \end{forest}
@@ -1749,11 +1769,11 @@ Questo tipo di albero ha le seguenti proprietà:
       scale=0.8
     }
     [26
-      [\color{red}17
+      [17,red
         [14
-          [\color{red}10
+          [10,red
             [7
-              [\color{red}3
+              [3,red
                 [nil]
                 [nil]
               ]
@@ -1764,7 +1784,7 @@ Questo tipo di albero ha le seguenti proprietà:
             ]
           ]
           [16
-            [\color{red}15
+            [15,red
               [nil]
               [nil]
             ]
@@ -1772,7 +1792,7 @@ Questo tipo di albero ha le seguenti proprietà:
         ]
         [21
           [19
-            [\color{red}20
+            [20,red
               [nil]
               [nil]
             ]
@@ -1784,17 +1804,17 @@ Questo tipo di albero ha le seguenti proprietà:
         ]
       ]
       [41
-        [\color{red}30
+        [30,red
           [28
             [nil]
             [nil]
           ]
           [38
-            [\color{red}33
+            [33,red
               [nil]
               [nil]
             ]
-            [\color{red}39
+            [39,red
               [nil]
               [nil]
             ]
@@ -1920,7 +1940,7 @@ l'altezza di un RB albero è \textbf{almeno} il doppio dell'altezza di un albero
     è un RB albero, \textbf{tranne} per l'oggetto puntato dal puntatore perchè potrebbe
     avere un padre rosso. Si propaga l'anomalia verso la radice dell'albero per poter
     cambiare il colore della radice mantenendo tutte le proprietà. Per risolvere il problema
-    si può fare una \textbf{rotazione} a destra o a sinistra.
+    si può fare una serie di \textbf{rotazioni} a destra o a sinistra.
 
     \vspace{1em}
     \noindent
@@ -1946,7 +1966,7 @@ l'altezza di un RB albero è \textbf{almeno} il doppio dell'altezza di un albero
     \end{figure}
 
     \noindent
-    La rotazione a destra di \( y \) è:
+    La rotazione a destra della coppia \( x \) e \( y \) è la seguente:
     \begin{figure}[H]
       \centering
       \begin{forest}
@@ -2016,6 +2036,12 @@ while x != root and color(parent(x)) == red
       x <- root
 \end{lstlisting}
 
+\vspace{1em}
+\noindent
+La complessità di questo algoritmo è \( O(\log n) \) perchè è un inserimento in un albero
+binario di ricerca con delle rotazioni per sistemare l'anomalia, ma il numero di rotazioni
+è costante.
+
 \begin{example}
   Un esempio del predcedente algoritmo è il seguente:
   \begin{figure}[H]
@@ -2029,13 +2055,14 @@ while x != root and color(parent(x)) == red
         s sep=1cm,
       }
       [11
-        [\color{red}2
+        [2,red
           [1]
           [7
-            [\color{red}5
-            [\color{red}4 \color{black}\( (x) \)]
+            [5,red
+            [\( \underset{x}{4} \),red]
+              [,no edge, draw=none]
             ]
-            [\color{red}8 \color{black}\( (y) \)]
+            [\( \underset{y}{8} \),red]
           ]
         ]
         [14]
@@ -2056,16 +2083,17 @@ while x != root and color(parent(x)) == red
         s sep=1cm,
       }
       [11
-        [\color{red}2
+        [2,red
           [1]
-          [\color{red}7 \color{black}\( (x) \)
-            [5
-            [\color{red}4]
+          [\( \underset{x}{7} \),red
+          [5
+              [4,red]
+              [,no edge, draw=none]
             ]
             [8 ]
           ]
         ]
-        [14 \( (y) \) ]
+        [\( \underset{y}{14} \)]
       ]
     \end{forest}
   \end{figure}
@@ -2083,17 +2111,18 @@ while x != root and color(parent(x)) == red
         s sep=1cm,
       }
       [11
-        [\color{red}7
-        [\color{red}2 \color{black}\( (x) \)
+        [7,red
+        [\( \underset{x}{2} \),red
           [1]
           [5
-            [\color{red}4]
+            [4,red]
+            [,no edge, draw=none]
           ]
         ]
           [8
           ]
         ]
-        [14 \( (y) \) ]
+        [\( \underset{y}{14} \)]
       ]
     \end{forest}
   \end{figure}
@@ -2110,13 +2139,14 @@ while x != root and color(parent(x)) == red
         s sep=1cm,
       }
       [7
-        [\color{red}2
+        [2,red
           [1]
           [5
-            [\color{red}4]
+            [4,red]
+            [,no edge, draw=none]
           ]
         ]
-        [\color{red}11
+        [11,red
           [8]
           [14]
         ]
@@ -2127,22 +2157,5 @@ while x != root and color(parent(x)) == red
   L'albero ora non ha più l'anomalia.
 \end{example}
 \end{itemize}
-
-
-\subsection{Lista doppiamente puntata}
-Una lista doppiamente puntata è una struttura dati in cui ogni nodo ha un puntatore
-al nodo precedente e al nodo successivo.
-
-\vspace{1em}
-\noindent
-Per rimuovere un elemento \( x \) dalla lista bisogna:
-\begin{enumerate}
-  \item Trovare il nodo \( x \)
-  \item Collegare il nodo precedente a \( x \) con il nodo successivo a \( x \)
-\end{enumerate}
-Il problema di questa soluzione è che bisogna anche gestire i casi degli estremi
-separatamente. Per evitare di gestire i casi specifici si possono aggiungere dei
-nodi sentinella all'inizio e alla fine della lista.
-
 
 \end{document}
