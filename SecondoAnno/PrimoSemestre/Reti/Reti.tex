@@ -2653,5 +2653,117 @@ for d in destinazioni
     l'intera rete e decide i cammini minimi.
 \end{itemize}
 
+\subsection{Routing intra e inter Autonomus System}
+Internet è un'insieme di reti collegate tra di loro dai router di bordo, cioè un insieme
+di \textbf{domini amministrativi autonomi} (AS, Autonomous System) (ISP e AS sono
+equivalenti).
+
+\vspace{1em}
+\noindent
+Gli algoritmi e i protocolli Distance Vector o Link State vengono utilizzate per calcolare
+il cammino minimo all'\textbf{interno} di un AS, ma non tra AS differenti. Questi 
+algoritmi si chiamano \textbf{Intra Autonomous System}.
+
+Per le destinazioni che appartengono ad altri autonomous systems è stato definito un
+protocollo standard che \textbf{tutti devono usare}, chiamato \textbf{BGP} (Border Gateway
+Protocol). BGP è un protocollo di routing \textbf{Inter Autonomous System}.
+
+\vspace{1em}
+\noindent
+Considerando un router di un autonomous system, la tabella di routing conterrà delle righe
+(destinazione/blocco indirizzzi) che sono state configurate dal protocollo intra-AS e
+righe che sono state configurate dal protocollo inter-AS.
+\begin{table}[H]
+  \centering
+  \begin{tabular}{c|c|c}
+    Destinazione & Next hop & Costo \\
+    \hline
+    \color{red} \( n_1 \) &\color{red} \( r_x \) &\color{red} \( c_1 \) \\
+    \color{red} \( n_2 \) &\color{red} \( r_y \) &\color{red} \( c_2 \) \\
+    \color{red} \( \vdots \) &\color{red} \( \vdots \) &\color{red} \( \vdots \) \\
+    \color{red} \( n_m \) &\color{red} \( r_z \) &\color{red} \( c_m \) \\
+    \color{blue} \( n^e_1 \) &\color{blue} \( r_x \) &\color{blue} \( c'_1 \) \\
+    \color{blue} \( n^e_2 \) &\color{blue} \( r_w \) &\color{blue} \( c'_2 \) \\
+    \color{blue} \( \vdots \) &\color{blue} \( \vdots \) &\color{blue} \( \vdots \) \\
+    \color{blue} \( n^e_k \) &\color{blue} \( r_k \) &\color{blue} \( c'_k \) \\
+  \end{tabular}
+\end{table}
+\begin{itemize}
+  \item Le destinazioni \( \color{red}n \) sono tutte destinazioni interne all'AS configurate dal
+    protocollo intra-AS.
+  \item Le destinazioni \( \color{blue}n^e \) sono tutte destinazioni esterne all'AS configurate dal
+    protocollo inter-AS BGP.
+\end{itemize}
+Il next hop di una destinazione esterna è il next hop del cammino minimo per raggiungere
+il router di bordo che porta a tale destinazione esterna
+
+Il costo è pari al costo del cammino minimo per raggiungere il router di bordo che porta
+alla destinazione esterna.
+
+\vspace{1em}
+\noindent
+Una destinazione \textbf{esterna} potrebbe essere raggiunta attraverso più AS, quindi ci
+sono più possibilità di scelta per raggiungere una sola destinazione. Ogni router però non
+ha nessuna informazione riguardo alla topologia delle reti esterne, quindi non può sapere
+quale sia il cammino minimo per raggiungere una destinazione esterna, di conseguenza 
+\textbf{viene scelto il gateway con costo minimo} (hot potato routing). Questo metodo
+non è il più efficiente, ma è l'unico possibile.
+
+\subsection{Protocolli di supporto}
+\subsubsection{DHCP (Dynamic Host Configuration Protocol)}
+Ad ogni LAN è associato un blocco di indirizzi IP gestito dal router di bordo. Gli
+indirizzi IP degli host associati alla rete appartengono al blocco della rete stessa
+e sono assegnati dal \textbf{server DHCP} (è un server che viene eseguito all'interno di
+un router, spesso in quello di bordo, ha un indirizzo che non coincide con l'interfaccia
+della lan).
+
+\vspace{1em}
+\noindent
+Questa assegnazione degli indirizzi IP avviene attraverso uno scambio di messaggi
+chiamati \textbf{DHCP Discover}. I campi più importanti sono:
+\begin{itemize}
+  \item \textbf{Message Type}: Indica il tipo di messaggio inviato
+  \item \textbf{Transaction ID}: Identifica l'id della sessione
+\end{itemize}
+Una volta che il server riceve il DHCP Discover, risponde con un DHCP Offer contenente
+l'indirizzo IP che il server vuole assegnare all'host. Visto che questi messaggi vengono
+inviati in broadcast, l'host che ha fatto la richiesta è l'unico che rimane in ascolto
+per ricevere la risposta. Una volta che un host riceve un DHCP Offer, riconosce che
+è la risposta che stava aspettando perchè il campo Transaction ID coincide con quello
+del messaggio inviato.
+
+\vspace{1em}
+\noindent
+Per sicurezza (un utente potrebbe impersonare il server DHCP) il client invia un terzo
+messaggio dopo aver ricevuto la offer, questo terzo messaggio è di tipo DHCP Request
+con IP sorgente \( 0.0.0.0 \) e IP destinazione broadcast, stesso Transaction ID,
+l'IP del server DHCP e l'indirizzo IP che il server ha offerto. Il server risponde con
+un DHCP Acknowledgement contenente l'indirizzo IP che il server ha offerto. Da questo
+momento il client può utilizzare l'indirizzo IP assegnato.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{dhcp}
+  \caption{Scambio di messaggi DHCP}
+\end{figure}
+
+\noindent
+L'indirizzo IP assegnato ha un tempo di validità (tempo di \textbf{lease}), impostato 
+dal server DHCP. Se l'host rimane per più tempo, dovrà richiedere l'estensione del
+tempo di lease.
+
+\vspace{1em}
+\noindent
+Il DHCP server fornisce anche una serie di informazioni aggiuntive:
+\begin{itemize}
+  \item \textbf{Subnet mask}: in modo che il client sappia quali sono gli indirizzi
+    della rete locale
+  \item \textbf{Gateway}: l'indirizzo ip del router di default a cui mandare i pacchetti
+    destinati a reti esterne
+  \item \textbf{DNS server}: l'indirizzo IP del server DNS per tradurre gli indirizzi
+    logici in indirizzi IP
+\end{itemize}
+
+\subsubsection{ICMP (Internet Control Message Protocol)}
 
 \end{document}
