@@ -2017,23 +2017,7 @@ while x != root and color(parent(x)) == red
       x <- root
 
   // Se il padre e' figlio sinistro del nonno
-  // Si fanno le stesso operazioni con le direzioni invertite
-  if parent(x) == right(parent(parent(x)))
-    y <- left(parent(parent(x))
-    if color(y) == red
-      color(parent(parent(x))) <- red
-      color(parent(x)) <- black
-      color(y) <- black
-      x <- parent(parent(x))
-    else
-      if x == left(parent(x))
-        x <- parent(x)
-        right_rotate(x)
-
-      color(parent(x)) <- black
-      color(parent(parent(x))) <- red
-      left_rotate(parent(parent(x)))
-      x <- root
+  // Si fanno le stesse operazioni con le direzioni invertite
 \end{lstlisting}
 
 \vspace{1em}
@@ -2156,6 +2140,438 @@ binario di ricerca con delle rotazioni per sistemare l'anomalia, ma il numero di
   \noindent
   L'albero ora non ha più l'anomalia.
 \end{example}
+
+\item \textbf{Rimozione}: La rimozione di un nodo da un albero RB si fa allo stesso modo
+  di un albero binario di ricerca. Bisogna quindi distinguere i 3 casi:
+  \begin{enumerate}
+    \item \textbf{Il nodo da rimuovere è una foglia}: si può rimuovere direttamente e
+      salviamo in un puntatore il nodo sentinella che sostituirà il nodo rimosso
+    \item \textbf{Il nodo da rimuovere ha un solo figlio}: si può sostituire il nodo con
+      il figlio e si salva in un puntatore il figlio
+    \item \textbf{Il nodo da rimuovere ha due figli}: si può sostituire il nodo con il 
+      minimo del sottoalbero destro o con il massimo del sottoalbero sinistro
+  \end{enumerate}
+  L'anomalia sarà un nodo rosso che dovrà essere
+  nero per mantenere la proprietà 4, oppure un nodo nero che dovrà valere come due neri
+  per mantenere la proprietà 4. Questa è un anomalia locale che si può risolvere 
+  propagandola verso la radice dell'albero lavorando su un sottoinsieme di nodi.
+
+  \vspace{1em}
+  \noindent
+  Visto che ci sono i nodi sentinella i primi due casi sono risolti dallo stesso codice.
+  L'algoritmo è il seguente:
+
+  \vspace{1em}
+  \begin{figure}[H]
+    \centering
+    \begin{forest}
+      for tree={
+        circle,
+        draw,
+        minimum size=2em,
+        inner sep=1pt,
+        s sep=1cm,
+      }
+      [B
+        [\( \underset{x}{A} \),double
+          % [...,draw=none]
+          % [...,draw=none]
+        ]
+        [\( \underset{w}{D} \) 
+          [C]
+          [E]
+        ]
+      ]
+    \end{forest}
+  \end{figure}
+  \noindent
+  Consideriamo un nodo \( x \) non radice e \textbf{doppiamente nero} (anomalia), prendiamo il 
+  fratello \( w \) di \( x \) e distinguiamo i seguenti casi:
+  \begin{itemize}
+    \item \textbf{Se \( w \) è rosso}:
+      \begin{figure}[H]
+        \centering
+        \begin{forest}
+          for tree={
+            circle,
+            draw,
+            minimum size=2em,
+            inner sep=1pt,
+            s sep=1cm,
+          }
+          [B
+            [\( \underset{x}{A} \),double
+            % [...,draw=none]
+            % [...,draw=none]
+            ]
+            [\( \underset{w}{D} \),red
+              [C]
+              [E]
+            ]
+          ]
+        \end{forest}
+      \end{figure}
+      \noindent
+      Per forza il padre di \( x \) deve essere nero (per mantenere la proprietà 3), di
+      conseguenza lo sono anche i figli di \( w \). Si scambia il colore tra
+      il padre di \( x \) e \( w \) e si fa una rotazione a sinistra sul padre di \( x \).
+      \begin{figure}[H]
+        \centering
+        \begin{forest}
+          for tree={
+            circle,
+            draw,
+            minimum size=2em,
+            inner sep=1pt,
+            s sep=1cm,
+          }
+          [D
+            [B, red
+              [\( \underset{x}{A} \),double]
+              [C]
+            ]
+            [E]
+          ]
+        \end{forest}
+      \end{figure}
+      \noindent
+      Questa trasformazione non viola nessuna proprietà dell'RB-albero, tranne per 
+      l'anomalia di \( x \).
+
+      Non siamo più nel caso in cui il fratello di \( x \) è rosso.
+
+    \item \textbf{Se \( w \) è nero}:
+      \begin{figure}[H]
+        \centering
+        \begin{forest}
+          for tree={
+            circle,
+            draw,
+            minimum size=2em,
+            inner sep=1pt,
+            s sep=1cm,
+          }
+          [\( \stackrel{?B}{B} \),green!50!black
+            [\( \underset{x}{A} \),double
+            % [...,draw=none]
+            % [...,draw=none]
+            ]
+            [\( \underset{w}{D} \)
+              [C]
+              [E]
+            ]
+          ]
+        \end{forest}
+      \end{figure}
+      \noindent
+      Se \( w \) è nero non si può dire nulla sul colore del padre di \( x \). Anche
+      adesso si distinguono due casi:
+      \begin{itemize}
+        \item \textbf{Se i figli di \( w \) sono neri}: Si toglie 1 nero dal livello di
+          \( x \) e \( w \) e si aggiunge 1 nero al padre di \( x \). Si propaga l'anomalia
+          verso l'alto:
+          \begin{figure}[H]
+            \centering
+            \begin{forest}
+              for tree={
+                circle,
+                draw,
+                minimum size=2em,
+                inner sep=1pt,
+                s sep=1cm,
+              }
+              [\( \underset{x}{\stackrel{?B}{B}} \),green!50!black,double
+                [A
+                % [...,draw=none]
+                % [...,draw=none]
+                ]
+                [D,red
+                  [C]
+                  [E]
+                ]
+              ]
+            \end{forest}
+          \end{figure}
+          \noindent
+          Se il nuovo \( x \) è rosso l'anomalia è risolta, altrimenti si applica
+          la stessa procedura al nuovo \( x \).
+
+          Questa trasformazione non viola nessuna
+          proprietà dell'RB-albero; anche se \( x \) non ha un colore
+          specifico (e se fosse rosso avrebbe un figlio rosso, di conseguenza violerebbe
+          una proprietà dell'RB-albero), l'anomalia si è spostata sul nuovo \( x \),
+          di conseguenza se fosse rosso diventerebbe nero (anomalia risolta)
+          e se fosse nero diventerebbe doppiamente nero.
+
+        \item \textbf{Se i figli di \( w \) non sono entrambi neri}:
+          \begin{itemize}
+            \item \textbf{Se il figlio destro di \( w \) è nero}: Visto che entrambi i
+              figli di \( w \) non sono neri e il destro è nero, allora il sinistro
+              è per forza rosso.
+              (le lettere greche sono i sottoalberi delle foglie che non vengono considerati)
+            \begin{figure}[H]
+              \centering
+              \begin{forest}
+                for tree={
+                  circle,
+                  draw,
+                  minimum size=2em,
+                  inner sep=1pt,
+                  s sep=1cm,
+                }
+                [\( \stackrel{?B}{B} \),green!50!black
+                  [\( \underset{x}{A} \),double
+                    [\( \alpha \),draw=none]
+                    [\( \beta \),draw=none]
+                  ]
+                  [\( \underset{w}{D} \)
+                    [C,red
+                      [\( \gamma \),draw=none]
+                      [\( \delta \),draw=none]
+                    ]
+                    [E
+                      [\( \varepsilon \),draw=none]
+                      [\( \zeta \),draw=none]
+                    ]
+                  ]
+                ]
+              \end{forest}
+            \end{figure}
+            \noindent
+            Si scambia il colore tra \( w \) e il figlio sinistro di \( w \) e si fa una
+            rotazione a destra su \( w \):
+            \begin{figure}[H]
+              \centering
+              \begin{forest}
+                for tree={
+                  circle,
+                  draw,
+                  minimum size=2em,
+                  inner sep=1pt,
+                  s sep=1cm,
+                }
+                [\( \stackrel{?B}{B} \),green!50!black
+                  [\( \underset{x}{A} \),double
+                    [\( \alpha \),draw=none]
+                    [\( \beta \),draw=none]
+                  ]
+                  [C
+                    [\( \gamma  \),draw=none]
+                    [D,red
+                      [\( \delta \),draw=none]
+                      [E
+                        [\( \varepsilon \),draw=none]
+                        [\( \zeta \),draw=none]
+                      ]
+                    ]
+                  ]
+                ]
+              \end{forest}
+            \end{figure}
+            \noindent
+            Questa trasformazione preserva l'RB-albero. Ora il figlio destro del
+            fratello di \( x \) è rosso e si applica il caso successivo.
+
+          \item \textbf{Se il figlio destro di \( w \) è rosso}: Visto che entrambi i
+            figli di \( w \) non sono neri e il destro è rosso, allora il sinistro
+            potrebbe essere sia rosso che nero.
+            \begin{figure}[H]
+              \centering
+              \begin{forest}
+                for tree={
+                  circle,
+                  draw,
+                  minimum size=2em,
+                  inner sep=1pt,
+                  s sep=1cm,
+                }
+                [\( \stackrel{?B}{B} \),green!50!black
+                  [\( \underset{x}{A} \),double]
+                  [\( \underset{w}{D} \)
+                  [\( \stackrel{?C}{C} \),green!50!black]
+                    [E,red]
+                  ]
+                ]
+              \end{forest}
+            \end{figure}
+            \noindent
+            Si assegna a \( w \) il colore del padre di \( x \), al padre di \( x \) 
+            e al figlio destro di \( w \) il colore nero. Infine si fa una rotazione
+            a sinistra sul padre di \( x \) e si porta l'anomalia alla radice.
+            \begin{figure}[H]
+              \centering
+              \begin{forest}
+                for tree={
+                  circle,
+                  draw,
+                  minimum size=2em,
+                  inner sep=1pt,
+                  s sep=1cm,
+                }
+                [\( \stackrel{?B}{D} \),green!50!black
+                  [B
+                    [A]
+                    [\( \stackrel{?C}{C} \),green!50!black]
+                  ]
+                  [E]
+                ]
+              \end{forest}
+            \end{figure}
+            \noindent
+            Questa trasformazione preserva l'RB-albero. 
+
+            L'anomalia punta alla radice dell'albero, in questo caso non punta a niente
+            perchè non sappiamo se il nodo più in alto è la radice, quindi l'anomalia
+            è risolta.
+          \end{itemize}
+      \end{itemize}
+  \end{itemize}
+  L'algoritmo è finito quando l'anomalia punta alla radice dell'albero. Lo pseudocodice
+  dell'algoritmo è il seguente:
+\begin{lstlisting}[language=Scala]
+// x: Nodo da cui si propaga l'anomalia
+while x != root and color(x) == black
+  w <- right(parent(x))
+  // Se x e' figlio sinistro del padre
+  if x == left(parent(x))
+    // Se w e' rosso (caso 1)
+    if color(w) == red
+      color(w) <- black
+      color(parent(x)) <- red
+      left_rotate(parent(x))
+    else // Se w e' nero
+      // Se i figli del w sono neri (caso 2, propaga x in alto)
+      if color(left(w)) == black and color(right(w)) == black
+        color(w) <- red
+        x <- parent(x)
+      else
+        // Se il figlio destro di w e' nero (caso 3, termina)
+        if color(right(w)) == black
+          color(left(w)) <- black
+          color(w) <- red
+          right_rotate(w))
+
+        // Se il figlio destro di w e' rosso (caso 4, termina)
+        color(w) <- color(parent(x))
+        color(parent(x)) <- black
+        color(right(w)) <- black
+        left_rotate(parent(x))
+        x <- root
+  // Se x e' figlio destro del padre
+  // Si fanno le stesse operazioni con le direzioni invertite
+\end{lstlisting}
+
+\noindent
+La complessità di questo algoritmo è \( \Theta(\log n) \) si fa un massimo di 3 rotazioni.
 \end{itemize}
+
+\vspace{1em}
+\noindent
+Se si volessero inserire tutti gli elementi di un RB-albero in un array ordinato, si
+potrebbe usare un algoritmo di visita in-order dell'albero. Lo pseudocodice dell'algoritmo
+è il seguente:
+\begin{lstlisting}[language=Scala]
+// x: Nodo da cui si parte la visita
+// A: Array in cui inserire x
+// i: Indice dell'array in cui inserire x (passato per riferimento)
+in_visit(x,A,i)
+  if x != nil
+    in_visit(left(x),A,i)
+    visit(x,A,i) // Inserisce x nell'array
+    in_visit(right(x),A,i)
+
+
+// x: Nodo da inserire nell'array
+// A: Array in cui inserire x
+// i: Indice dell'array in cui inserire x (passato per riferimento)
+visit(x,A,i)
+  A[i] <- value(x)
+  i++
+\end{lstlisting}
+\noindent
+Questo algoritmo ha complessità \( \Theta(n) \) perchè visita tutti i nodi dell'albero.
+
+\vspace{2em}
+\noindent
+Se si volesse creare un RB-albero partendo da un array (non necessariamente ordinato)
+si potrebbero fare \( n \) inserimenti in un RB-albero vuoto. La complessità di questo
+algoritmo è \( \Theta(n \log n) \).
+
+\vspace{1em}
+\noindent
+Oppure si potrebbe prima ordinare l'array e poi
+usare l'algoritmo di visita in-order per inserire tutti gli elementi in un RB-albero,
+per fare ciò però bisogna creare un "impalcatura", cioè un RB-albero con tutti i nodi
+nil, e poi inserire i nodi ordinati. Si fanno tutte le foglie rosse e tutti gli altri
+nodi neri. In pseudocodice l'algoritmo è il seguente:
+\begin{lstlisting}[language=Scala]
+// Crea un albero bilanciato con n nodi nil
+build_empty_tree(n)
+  if n == 0
+    return nil
+  else
+    x <- new_node(nil)
+    left(x) <- build_empty_tree(floor((n-1)/2))
+    right(x) <- build_empty_tree(ceil((n-1)/2))
+    return x
+\end{lstlisting}
+\noindent
+Questo algoritmo non si può fare con complessità minore di \( n \log n \).
+
+\vspace{1em}
+\noindent
+\textbf{Dimostrazione}:
+
+\noindent
+Supponiamo che \texttt{array\_to\_rb} abbia complessità \( f < n \log n \) e consideriamo:
+\begin{lstlisting}[language=Scala]
+sort(A)
+  T <- array_to_rb(A)
+  A <- rb_to_array(T)
+\end{lstlisting}
+\noindent
+La complessità di questo algoritmo sarebbe:
+\[
+f+n < n \log n
+\] 
+e ciò vorrebbe dire che è stato creato un algoritmo di ordinamento più veloce di \( n \log n \),
+cosa impossibile, quindi l'algoritmo \texttt{array\_to\_rb} non può avere complessità
+\( f < n \log n \).
+
+\vspace{2em}
+\noindent
+È possibile implementare un algoritmo che unisce 2 RB-alberi in un unico RB-albero
+in tempo \( \log n \)?
+\begin{lstlisting}[language=Scala]
+A1 <- array_to_rb(T1)
+A2 <- array_to_rb(T2)
+A <- merge(A1,A2)
+T <- array_to_rb(A)
+\end{lstlisting}
+\noindent
+Questo ha complessità \( O(n) \) perchè è l'unione di più algoritmi con complessità
+lineare.
+
+Questo problema è simile al concetto del merge sort, cioè prendere 2 metà, risolverle
+ed unire il risultato.
+\begin{lstlisting}[language=Scala]
+array_to_rb(A,p,q)
+  if p > q
+    return nil
+  else
+    r <- (p+q)/2
+    T1 <- array_to_rb(A,p,r)
+    T2 <- array_to_rb(A,r+1,q)
+    return union(T1,T2)
+\end{lstlisting}
+\noindent
+Questo algoritmo ha complessità:
+\[
+  T(n) = 2T(n/2) + C(\texttt{union})
+\] 
+Supponiamo che \( C(\texttt{union}) = \log n \), quindi \( T(n) = \Theta(n) \), ma
+sappiamo che in tempo minore di \( n \log n \) non si può costruire un RB-albero,
+di conseguenza non è possibile che la union abbia complessità \( \log n \).
+
 
 \end{document}
