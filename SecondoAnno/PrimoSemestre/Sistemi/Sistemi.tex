@@ -4995,7 +4995,32 @@ In un sistema in serie si mettono i sistemi uno dietro l'altro:
 
 \subsubsection{Sistema in parallelo}
 In un sistema in parallelo si mettono i sistemi uno accanto all'altro:
-\label{25-11-D1}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node (x) at (0,0) {\( x \)};
+    \node[draw,minimum size=1cm,above right=0.1cm and 1.5cm of x] (A) {\( \Sigma_1 \) };
+    \node[draw,minimum size=1cm,below right=0.1cm and 1.5cm of x] (B) {\( \Sigma_2 \) };
+
+    \draw[->] (x) -- ++(0.5,0) |- (A.west) node[above left] {\( x_1 \)};
+    \draw[->] (x) -- ++(0.5,0) |- (B.west) node[above left] {\( x_2 \)};
+
+    \node[draw,circle,minimum size=0.7cm,below right=-0.05cm and 1.0cm of A]
+      (C) {+};
+    \node[right=of C] (y) {\( y \)};
+
+    \node[above right=0.2cm and 0.2cm of C] (sum) {Nodo sommatore};
+
+    \draw[<-] (C) -- (sum);
+      
+
+    \draw[->] (A.east) node[above right] {\( y_1 \) } -| (C.north);
+    \draw[->] (B.east) node[above right] {\( y_2 \) } -| (C.south);
+
+    \draw[->] (C.east) -- (y);
+  \end{tikzpicture}
+  \caption{Sistema in parallelo}
+\end{figure}
 \[
   x = x_1 = x_2
 \]
@@ -5005,7 +5030,27 @@ In un sistema in parallelo si mettono i sistemi uno accanto all'altro:
 
 \subsubsection{Sistema di retroazione}
 In un sistema di retroazione l'output di un sistema è l'input di un altro:
-\label{25-11-D2}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node (x) at (0,0) {\( x \)};
+
+    \node[draw,circle,minimum size=0.7cm,right=1cm of x] (sum) {+};
+    \node[draw,minimum size=1cm,right=1.5cm of sum] (A) {\( \Sigma_1 \) };
+    \node[draw,minimum size=1cm,below=of A] (B) {\( \Sigma_2 \) };
+
+    \coordinate[right=1cm of A] (n);
+    \fill (n) circle (0.05cm) node[above,scale=0.8] {Nodo};
+
+    \draw[->] (x) -- (sum);
+    \draw[->] (sum) -- (A.west) node[above left] {\( x_1 \)};
+    \draw[<-] (sum) |- (B.west) node[above left] {\( y_2 \)};
+
+    \draw[->] (A.east) node[above right] {\( x_2 \) } -- (n) |- (B.east) node[above right] {\( y_1 \)};
+    \draw[->] (n) -- ++(0.5,0) node[above] {\( y \) };
+  \end{tikzpicture}
+  \caption{Sistema di retroazione}
+\end{figure}
 \[
   x_1 = x + y_2
 \] 
@@ -5015,7 +5060,24 @@ In un sistema di retroazione l'output di un sistema è l'input di un altro:
 
 \subsubsection{Nodi sommatori}
 I nodi sommatori hanno un numero indefinito di ingressi e una sola uscita:
-\label{25-11-D3}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw,circle,minimum size=0.7cm] (sum) {};
+
+    \draw[<-] (sum.west) node[above left,scale=0.8] {+} -- ++(-1,0) node[above] {\( x \)};
+    \draw[<-] (sum.south) node[below right,scale=0.8] {+} -- ++(0,-1) node[right] {\( y \)};
+    \draw[->] (sum.east) -- ++(1,0) node[above right] {\( z=+x+y \)};
+  \end{tikzpicture}
+  \begin{tikzpicture}
+    \node[draw,circle,minimum size=0.7cm] (sum) {};
+
+    \draw[<-] (sum.west) node[above left,scale=0.8] {+} -- ++(-1,0) node[above] {\( x \)};
+    \draw[<-] (sum.south) node[below right,scale=0.8] {$-$} -- ++(0,-1) node[right] {\( y \)};
+    \draw[->] (sum.east) -- ++(1,0) node[above right] {\( z=+x-y \)};
+  \end{tikzpicture}
+  \caption{Nodi sommatori con segno diverso}
+\end{figure}
 \noindent
 (solitamente viene rappresentato con una X in un cerchio, ma quel simbolo lo useremo
 per rappresentare il prodotto).
@@ -5025,10 +5087,41 @@ Un controllo è un sistema a tempo continuo con un ingresso e un'uscita e può e
 due tipi:
 \begin{itemize}
   \item \textbf{Controllo ad anello aperto}: l'uscita non torna nell'ingresso
-    \label{25-11-D4}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \node[draw,minimum size=1cm] (A) at (0,0) {\( \Sigma \) };
+
+        \draw[<-] (A) -- ++(-1.5,0) node[above] {\( x \)};
+        \draw[->] (A) -- ++(1.5,0) node[above] {\( y \)};
+      \end{tikzpicture}
+      \caption{Controllo ad anello aperto}
+    \end{figure}
 
   \item \textbf{Controllo ad anello chiuso}: l'uscita torna nell'ingresso
-    \label{25-11-D5}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \node (x) at (0,0) {\( x \)};
+
+        \node[draw,circle,minimum size=0.7cm,right=1cm of x] (sum) {+};
+        \node[draw,minimum size=1cm,right=1.5cm of sum] (A) {\( \Sigma_1 \) };
+        \node[draw,minimum size=1cm,below=of A] (B) {\( \Sigma_2 \) };
+
+        \coordinate[right=1cm of A] (n);
+        \fill (n) circle (0.05cm);
+
+        \draw[->] (x) -- (sum);
+        \draw[->] (sum) -- (A.west) node[above left] {\( x_1 \)};
+        \draw[<-] (sum) |- (B.west) node[above left] {\( y_2 \)};
+
+        \draw[->] (A.east) node[above right] {\( x_2 \) } -- (n) |- (B.east) node[above right] {\( y_1 \)};
+        \draw[->] (n) -- ++(0.5,0) node[above] {\( y \) };
+
+        \node[below=0cm of B,align=center] (h) {Funzioni di\\trasferimento dei\\sistemi};
+      \end{tikzpicture}
+      \caption{Controllo ad anello chiuso}
+    \end{figure}
     \noindent
     (un esempio è il termostato)
 \end{itemize}
@@ -5042,7 +5135,27 @@ due tipi:
     y(t) = -\frac{1}{a} \frac{dy(t)}{dt} + \frac{b}{a} x(t)
   \] 
   Il diagramma a blocchi è:
-  \label{25-11-D6}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \node[draw,minimum size=1cm] (A) at (0,0) {\( \frac{b}{a} \) };
+      \node[draw,circle,minimum size=0.7cm,right=1cm of A] (sum) {+};
+      \coordinate[right=1cm of sum] (n1);
+      \coordinate[right=2cm of n1] (n2);
+      \coordinate[right=1cm of n2] (n3);
+
+      \fill (n3) circle (0.05cm);
+
+      \node[draw,minimum size=1cm,below=of n1] (B) {\( -\frac{1}{a} \) };
+      \node[draw,minimum size=1cm,below=of n2] (C) {\( \frac{d}{dt} \) };
+
+      \draw[<-] (A.west) -- ++(-1.5,0) node[above] {\( x(t) \)};
+      \draw[->] (A.east) -- (sum) -- (n3) -- ++(1,0) node[above] {\( y(t) \)};
+      \draw[<-] (sum.south) |- (B.west);
+      \draw (B) -- (C);
+      \draw[->] (n3) |- (C);
+    \end{tikzpicture}
+  \end{figure}
 \end{example}
 
 \subsubsection{Nomenclatura}
