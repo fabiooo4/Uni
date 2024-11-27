@@ -2765,5 +2765,133 @@ Il DHCP server fornisce anche una serie di informazioni aggiuntive:
 \end{itemize}
 
 \subsubsection{ICMP (Internet Control Message Protocol)}
+Lo scopo di questo protocollo è quello di inviare messaggi di \textbf{informazione} o di
+\textbf{errore} relativi al livello di rete. I messaggi ICMP sono incapsulati in header
+IP:
+\label{27-11-D1}
+
+\begin{example}
+  Ad esempio quando il TTL di un pacchetto raggiunge il valore 0, il router scarta il
+  pacchetto e invia un messaggio di errore ICMP al mittente di tipo \textbf{TTL Exceeded}.
+  \label{27-11-D2}
+
+  \noindent
+  Il programma \texttt{traceroute} sfruttava questa funzionalità per inviare i pacchetti
+  ad un router alla volta, ad esempio per mandare i messaggi al primo router si mandava
+  un pacchetto con TTL = 1, per il secondo TTL = 2 e così via. In questo modo si poteva
+  capire il percorso che un pacchetto faceva per raggiungere la destinazione.
+\end{example}
+
+\subsection{Soluzione alla carenza di indirizzi IP}
+L'indirizzo IP è formato da 32 bit, cioè \( 2^{32} \sim 4 \text{ Miliardi} \) di indirizzi
+possibili (nel caso migliore e includendo quelli riservati). Questi indirizzi non sono
+sufficienti per coprire tutti i dispositivi connessi ad internet attualmente.
+Ci sono due possibili soluzioni:
+\begin{enumerate}
+  \item Aumentare il numero di bit degli indirizzi IP. Questo vorrebbe dire cambiare
+    il protocollo e di conseguenza tutti gli apparati che lo devono implementare.
+    Il protocollo è già stato implementato e si chiama IPv6, che ha
+    indirizzi di 128 bit.
+
+  \item Usare un sistema di indirizzamento che permetta di avere più host, cioè una classe
+    di indirizzi \textbf{privati}, dietro lo stesso indirizzo IP \textbf{pubblico}.
+\end{enumerate}
+
+\subsubsection{NAT (Network Address Translation)}
+I blocchi di indirizzi IP privati sono:
+\begin{itemize}
+  \item \textbf{10.0.0.0/8} (il secondo più utilizzato)
+  \item \textbf{172.16.0.0/12}
+  \item \textbf{192.168.0.0/16} (il più utilizzato)
+  \item \textbf{169.254.0.0/16}
+\end{itemize}
+Questi indirizzi possono essere usati in una rete privata e non possono essere esposti
+verso la rete pubblica.
+\label{27-11-D3}
+\noindent
+Più LAN private possono utilizzare lo stesso blocco di indirizzi IP privati e la rete
+funziona finchè le reti sono separate e non collegate alla rete pubblica. Per potersi
+collegare alla rete pubblica, è necessario utilizzare un router con una funzionalità
+aggiuntiva chiamata \textbf{NAT} (Network Address Translation), cioè un meccanismo
+capace di indirizzare correttamente le richieste e le risposte tra la rete privata e
+la rete pubblica.
+
+\begin{example}
+  Gli utenti di una rete privata vogliono comunicare con un server presente su una rete
+  pubblica esterna alla propria. L'idea di base parte dal fatto che il router è un
+  oggetto che ha almeno 2 interfacce, (una verso la rete interna e una verso la rete esterna)
+  quindi ha anche 2 indirizzi IP. L'interfaccia verso l'interno appartiene alla rete
+  privata e avrà un indirizzo IP privato, mentre l'interfaccia verso l'esterno avrà un
+  indirizzo IP pubblico appartenente alla rete esterna.
+
+  \vspace{1em}
+  \noindent
+  Si utilizza quindi l'indirizzo IP pubblico dell'interfaccia del router verso l'ISP
+  per rappresentare l'intera rete privata
+  \label{27-11-D4}
+
+  \noindent
+  Un host genera un pacchetto con indirizzo IP sorgente privato e indirizzo IP destinazione
+  pubblico. Il router riceve il pacchetto e sostituisce l'indirizzo IP sorgente con l'IP
+  pubblico dell'interfaccia verso l'ISP. Quando il server crea la risposta invia il
+  pacchetto al router di bordo della rete privata, il router riceve il pacchetto e
+  sostituisce l'indirizzo IP destinazione con l'indirizzo IP privato del destinatario.
+  \label{27-11-D5}
+  \noindent
+  Dal punto di vista del client questa operazione è del tutto trasparente.
+\end{example}
+
+\noindent
+Il router riconosce l'associazione tra il pacchetto in ingresso e l'host che aveva
+inviato la richiesta grazie ad una tabella di traduzione (\textbf{tabella NAT}), creata 
+dal router, con le informazioni legate allo scambio di pacchetti. Gli host vengono
+distinti in base all'indirizzo IP sorgente e all'indirizzo IP destinazione.
+
+\vspace{1em}
+\noindent
+Il problema
+nasce quando 2 utenti vogliono comunicare con lo stesso server, il router deve essere
+capace di distinguere i due utenti che avranno la stessa destinazione.
+Le informazioni presenti nell'header IP non bastano per risolvere il problema, quindi
+la tabella NAT, oltre a contenere gli indirizzi IP contiene anche le porte del livello
+di trasporto. Il router quindi deve accedere al payload e salire di un livello per
+poter distinguere l'ambiguità. Due host sono indipendenti, quindi potrebbero avere
+la stessa porta sorgente, quindi per evitare collisioni il router sovrascrive anche
+la porta sorgente con quella selezionata.
+\begin{table}[H]
+  \centering
+  \begin{tabular}{c|c|c|c|c}
+    IP src& IP dst & Porta src & Porta dst & Nuova Porta src\\
+    \hline
+    192.168.0.3 & 80.70.60.2 & 7312 & 80 & 20001 \\
+    192.168.0.4 & 44.12.16.8 & 1251 & 80 & 3000 \\
+    192.168.0.4 & 80.70.60.2 & 10412 & 80 & 20002 \\
+  \end{tabular}
+  \caption{Tabella NAPT (Network Address \& Port Translation)}
+\end{table}
+\noindent
+Spesso ci si riferisce a NAT per indicare il NAPT.
+
+\vspace{1em}
+\noindent
+Ad ogni riga viene associato un timer, se non ci sono messaggi che coinvolgono quella riga
+e il timer scade, la riga viene eliminata.
+
+\subsubsection{Vantaggi e svantaggi del NAT}
+I vantaggi del NAT sono:
+\begin{itemize}
+  \item \textbf{Limita l'utilizzo degli indirizzi IP pubblici}: Si ha un solo IP pubblico
+    per un'intera rete privata
+
+  \item \textbf{Introduce un cambiamento solo nei router di bordo}: È trasparente rispetto agli
+    utenti
+\end{itemize}
+
+\noindent
+Gli svantaggi del NAT sono:
+\begin{itemize}
+  \item Qualsiasi connessione (o canale di comunicazione) può iniziare solo se instaurata
+    dall'interno della rete privata, non è possibile ricevere connessioni dall'esterno.
+\end{itemize}
 
 \end{document}
