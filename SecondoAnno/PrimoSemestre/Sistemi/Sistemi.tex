@@ -5269,8 +5269,8 @@ L'obiettivo è quello di semplificare il sistema finchè non si ottiene una form
   \label{25-11-D14}
 \end{example}
 
-\section{Calcolo della forma canonica}
-Si applicano le seguenti regole di trasformazione:
+\section{Operazioni sui blocchi}
+I blocchi possono essere combinati tra loro in diversi modi:
 \begin{enumerate}
   \item \textbf{Combinazione di blocchi in serie}: Dati due blocchi \( A \) e \( B \) si
     ottiene un nuovo blocco il cui contenuto è il prodotto dei due blocchi:
@@ -5321,5 +5321,66 @@ Si applicano le seguenti regole di trasformazione:
   \item \textbf{Spostamento di un nodo dopo un blocco}:
     \label{25-11-D25}
 \end{enumerate}
+
+\begin{example}
+  Prendiamo ad esempio il seguente sistema:
+  \label{28-11-D1}
+  \noindent
+  L'obiettivo è quello di trasformare tutto questo sistema in un unico blocco
+  per poter poi fare la trasformata di Laplace.
+  \begin{enumerate}
+    \item Applicare la trasformazione delle serie per ogni blocco in serie:
+      \label{28-11-D2}
+
+    \item Applicare la trasformazione dei blocchi in parallelo per ogni blocco in parallelo:
+      \label{28-11-D3}
+
+    \item Applicare la trasformazione di retroazione per ogni blocco in retroazione:
+      \label{28-11-D4}
+
+    \item Applicare la trasformazione dello spostamento dei nodi/nodi sommatori:
+
+      \noindent
+      In questo caso non serve
+
+    \item Ripetere i passaggi fino ad ottenere un unico blocco:
+      \label{28-11-D5}
+      \label{28-11-D6}
+  \end{enumerate}
+\end{example}
+
+\begin{example}
+  Consideriamo il seguente sistema:
+  \label{28-11-D7}
+  \noindent
+  dove:
+  \[
+  \begin{aligned}
+    A &= \frac{1}{s}\\
+    B &= s^2\\
+    C &= \frac{(s-2)(s+1)}{s^2}\\
+    D &= s+2\\
+    E &= \frac{1}{s^2}
+  \end{aligned}
+  \] 
+  \noindent
+  I passaggi sono i seguenti:
+  \begin{enumerate}
+    \item \label{28-11-D8}
+    \item \label{28-11-D9}
+    \item \label{28-11-D10}
+    \item \label{28-11-D11}
+    \item \label{28-11-D12}
+  \end{enumerate}
+  Alla fine la funzione di trasferimento del sistema sarà:
+  \[
+  \begin{aligned}
+    \frac{A \cdot (B-D)}{1+B(C-E)} &= \frac{\frac{1}{s} \cdot \left( s^2 - (s+2) \right) }
+    {1+\left( \cancel{s^2} \cdot \left( \frac{(s-2)(s+1)}{\cancel{s^2}} -
+    \frac{1}{\cancel{s^2}} \right) \right)}\\
+    &= \frac{\frac{1}{s} \cdot \left( s^2 - s + 2 \right)}{1 + (s-2)(s+1)-1}
+  \end{aligned}
+  \] 
+\end{example}
 
 \end{document}
