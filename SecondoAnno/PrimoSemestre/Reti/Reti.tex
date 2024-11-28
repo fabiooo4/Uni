@@ -2894,4 +2894,85 @@ Gli svantaggi del NAT sono:
     dall'interno della rete privata, non è possibile ricevere connessioni dall'esterno.
 \end{itemize}
 
+\noindent
+Una possibile soluzione per contattare un utente all'interno di una rete privata è
+l'utilizzo di un server \textbf{relay} (questa soluzione dipende dall'applicazione).
+Ogni utente per una specifica applicazione ha un identificativo univoco (ad esempio
+nel caso di Zoom l'identificativo è l'indirizzo email). Esiste un server chiamato
+"\textbf{directory}" che mantiene lo stato (online/offline più l'IP attuale) degli utenti.
+
+\noindent
+Ogni volta che un utente accede all'applicazione, informa il server directory del suo
+stato e con il proprio indirizzo IP. Quando un utente vuole contattare un altro utente
+(sulla stessa applicazione), chiede al server directory l'IP dell'utente destinatario:
+\begin{itemize}
+  \item \textbf{Se l'IP è pubblico}: Lo contatta direttamente
+  \item \textbf{Se l'IP è privato}: Si appoggia al server relay
+\end{itemize}
+\label{28-11-D1}
+\noindent
+Se uno dei due ha un IP pubblico ci si appoggia al server directory per inviare dei
+messaggi per stabilire la connessione diretta tra i due utenti sfruttando l'IP pubblico.
+
+\label{28-11-D2}
+\noindent
+Se i due IP sono privati, entrambi gli utenti aprono una connessione con il server relay
+e i pacchetti passeranno attraverso il server relay per permettere la comunicazione tra
+i due utenti.
+
+\subsubsection{Protocollo IPv6}
+Il protocollo IPv6 permette di avere indirizzi IP da 128 bit, cioè \( 2^{128} \) indirizzi
+possibili. (Il numero di indirizzi per \( m^2 \) considerando la superficie della terra,
+oceani inclusi, è di \( N_A = 6 \cdot 10^{23} \) indirizzi per \( m^2 \))
+L'header del protocollo IPv6 ha di base 40 byte (doppio del IPv4) e contiene:
+\label{28-11-D3}
+\begin{itemize}
+  \item \textbf{Versione} (4 bit): Indica la versione del protocollo, in questo caso 6
+  \item \textbf{Traffic Class} (12 bit): Serve a gestire le priorità dei pacchetti
+  \item \textbf{Flow Label} (16 bit): È un numero univoco assegnato ad un flusso 
+    (\( IP_s \), \(IP_d\), \(Port_s\), \(Port_d \)). Visto che non si può accedere alla porta che si
+    trova al livello di trasporto, il flow label permette di identificare univocamente
+    un flusso di comunicazione senza accedere ad altri livelli.
+  \item \textbf{Lunghezza payload} (16 bit): È la lunghezza del payload
+  \item \textbf{Next Header} (8 bit): È un codice con un doppio significato (o ruolo):
+    \begin{itemize}
+      \item Se non ci sono estensioni, identifica il protocollo trasportato nel payload
+        (TPC,UDP,DHCP,ecc...)
+      \item Se c'è un header aggiuntivo, chiamato \textbf{extension header}, rappresenta
+        il tipo di extension header.
+
+        \noindent
+        L'extension header è composto nel seguente modo:
+        \label{28-11-D4}
+        \begin{itemize}
+          \item \textbf{Next Header} (8 bit): Indica il tipo di extension header
+          \item \textbf{Lunghezza} (8 bit): Indica la lunghezza dell'extension header
+        \end{itemize}
+    \end{itemize}
+  \item \textbf{Hop Limit} (8 bit): È equivalente al TTL di IPv4
+\end{itemize}
+\begin{example}
+  Un esempio di pacchetto con extension header è il seguente:
+  \label{28-11-D5}
+\end{example}
+\begin{example}
+  Alcuni esempi di tipi di extensione header sono i seguenti:
+  \begin{itemize}
+    \item \textbf{Frammentazione}: Permette di frammentare un pacchetto in più pacchetti
+      più piccoli aggiungendo all'header base un extension header di tipo frammentazione.
+      Se un pacchetto non è frammentato questi dati non sono presenti.
+      \label{28-11-D6}
+    \item \textbf{Routing}: Viene indicato un percorso (IP router) da preferire per
+      raggiungere la destinazione.
+  \end{itemize}
+\end{example}
+
+\noindent
+In generale gli extension header sono presenti \textbf{solo se necessari}. Le informazioni
+di base sono contenute nell'header base, tutte le altre non sono strettamente necessarie.
+
+Se un router non è aggiornato, e di conseguenza non è in grado di riconoscere l'extension
+header, lo ignora. Questo rende il protocollo estensibile, quindi nuove funzionalità
+vengono implementate con nuovi extensione header.
+
 \end{document}
