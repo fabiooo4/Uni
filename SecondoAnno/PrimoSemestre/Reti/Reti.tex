@@ -2768,12 +2768,20 @@ Il DHCP server fornisce anche una serie di informazioni aggiuntive:
 Lo scopo di questo protocollo è quello di inviare messaggi di \textbf{informazione} o di
 \textbf{errore} relativi al livello di rete. I messaggi ICMP sono incapsulati in header
 IP:
-\label{27-11-D1}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.4\textwidth]{icmp}
+  \caption{Messaggio ICMP}
+\end{figure}
 
 \begin{example}
   Ad esempio quando il TTL di un pacchetto raggiunge il valore 0, il router scarta il
   pacchetto e invia un messaggio di errore ICMP al mittente di tipo \textbf{TTL Exceeded}.
-  \label{27-11-D2}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{ttl-exceeded}
+    \caption{Messaggio ICMP TTL Exceeded}
+  \end{figure}
 
   \noindent
   Il programma \texttt{traceroute} sfruttava questa funzionalità per inviare i pacchetti
@@ -2807,7 +2815,11 @@ I blocchi di indirizzi IP privati sono:
 \end{itemize}
 Questi indirizzi possono essere usati in una rete privata e non possono essere esposti
 verso la rete pubblica.
-\label{27-11-D3}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{reti-nat}
+  \caption{Esempio di reti private}
+\end{figure}
 \noindent
 Più LAN private possono utilizzare lo stesso blocco di indirizzi IP privati e la rete
 funziona finchè le reti sono separate e non collegate alla rete pubblica. Per potersi
@@ -2828,7 +2840,11 @@ la rete pubblica.
   \noindent
   Si utilizza quindi l'indirizzo IP pubblico dell'interfaccia del router verso l'ISP
   per rappresentare l'intera rete privata
-  \label{27-11-D4}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{interfaccia-pubblica}
+    \caption{Esempio di router con interfaccia pubblica}
+  \end{figure}
 
   \noindent
   Un host genera un pacchetto con indirizzo IP sorgente privato e indirizzo IP destinazione
@@ -2836,7 +2852,11 @@ la rete pubblica.
   pubblico dell'interfaccia verso l'ISP. Quando il server crea la risposta invia il
   pacchetto al router di bordo della rete privata, il router riceve il pacchetto e
   sostituisce l'indirizzo IP destinazione con l'indirizzo IP privato del destinatario.
-  \label{27-11-D5}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{nat-trasparente}
+    \caption{Esempio di un pacchetto inviato da una rete privata}
+  \end{figure}
   \noindent
   Dal punto di vista del client questa operazione è del tutto trasparente.
 \end{example}
@@ -2909,12 +2929,20 @@ stato e con il proprio indirizzo IP. Quando un utente vuole contattare un altro 
   \item \textbf{Se l'IP è pubblico}: Lo contatta direttamente
   \item \textbf{Se l'IP è privato}: Si appoggia al server relay
 \end{itemize}
-\label{28-11-D1}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{server-directory}
+  \caption{Comunicazione tra privato e pubblico}
+\end{figure}
 \noindent
 Se uno dei due ha un IP pubblico ci si appoggia al server directory per inviare dei
 messaggi per stabilire la connessione diretta tra i due utenti sfruttando l'IP pubblico.
 
-\label{28-11-D2}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{server-relay}
+  \caption{Comunicazione tra privati}
+\end{figure}
 \noindent
 Se i due IP sono privati, entrambi gli utenti aprono una connessione con il server relay
 e i pacchetti passeranno attraverso il server relay per permettere la comunicazione tra
@@ -2925,7 +2953,33 @@ Il protocollo IPv6 permette di avere indirizzi IP da 128 bit, cioè \( 2^{128} \
 possibili. (Il numero di indirizzi per \( m^2 \) considerando la superficie della terra,
 oceani inclusi, è di \( N_A = 6 \cdot 10^{23} \) indirizzi per \( m^2 \))
 L'header del protocollo IPv6 ha di base 40 byte (doppio del IPv4) e contiene:
-\label{28-11-D3}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \def\len{0.95*\linewidth}
+    \def\hei{0.8}
+
+    \draw (0,0) rectangle ++(\len/8,-\hei) node[midway] {Versione};
+    \draw (\len/8,0) rectangle ++(\len/2.6666666,-\hei) node[midway] {Traffic class};
+    \draw (\len/8+\len/2.6666666,0) rectangle ++(\len/2,-\hei) node[midway] {Flow label};
+
+    \draw (0,-\hei) rectangle ++(\len/2,-\hei) node[midway] {Lunghezza payload};
+    \draw (\len/2,-\hei) rectangle ++(\len/4,-\hei) node[midway] {Next Header};
+    \draw (\len/2+\len/4,-\hei) rectangle ++(\len/4,-\hei) node[midway] {Hop Limit};
+
+    \draw (0,-\hei*2) rectangle ++(\len,-\hei) node[midway,scale=0.9] {Indirizzo IP sorgente};
+
+    \draw (0,-\hei*3) rectangle ++(\len,-\hei) node[midway,scale=0.9] {Indirizzo IP destinazione};
+
+
+    \draw[fill,fill opacity=0.1,text opacity=1] (0,-\hei*4) rectangle ++(\len,-\hei*2) node[midway] {Dati};
+
+    \node[above,scale=0.7] at (0,0) {0};
+    \node[above,scale=0.7] at (\len/2,0) {15};
+    \node[above,scale=0.7] at (\len,0) {31};
+  \end{tikzpicture}
+  \caption{Formato dell'header IPv6}
+\end{figure}
 \begin{itemize}
   \item \textbf{Versione} (4 bit): Indica la versione del protocollo, in questo caso 6
   \item \textbf{Traffic Class} (12 bit): Serve a gestire le priorità dei pacchetti
@@ -2943,7 +2997,21 @@ L'header del protocollo IPv6 ha di base 40 byte (doppio del IPv4) e contiene:
 
         \noindent
         L'extension header è composto nel seguente modo:
-        \label{28-11-D4}
+        \begin{figure}[H]
+          \centering
+          \begin{tikzpicture}
+            \def\len{0.95*\linewidth}
+            \def\hei{0.8}
+
+            \draw (0,0) rectangle ++(\len/4,-\hei) node[midway] {Next Header};
+            \draw (\len/4,0) rectangle ++(\len/4,-\hei) node[midway] {Lunghezza};
+
+            \node[above,scale=0.7] at (0,0) {0};
+            \node[above,scale=0.7] at (\len/4,0) {7};
+            \node[above,scale=0.7] at (\len/2,0) {15};
+          \end{tikzpicture}
+          \caption{Formato dell'extension header}
+        \end{figure}
         \begin{itemize}
           \item \textbf{Next Header} (8 bit): Indica il tipo di extension header
           \item \textbf{Lunghezza} (8 bit): Indica la lunghezza dell'extension header
@@ -2953,7 +3021,11 @@ L'header del protocollo IPv6 ha di base 40 byte (doppio del IPv4) e contiene:
 \end{itemize}
 \begin{example}
   Un esempio di pacchetto con extension header è il seguente:
-  \label{28-11-D5}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{extension-headers}
+    \caption{Pacchetto IPv6 con extension headers}
+  \end{figure}
 \end{example}
 \begin{example}
   Alcuni esempi di tipi di extensione header sono i seguenti:
@@ -2961,7 +3033,30 @@ L'header del protocollo IPv6 ha di base 40 byte (doppio del IPv4) e contiene:
     \item \textbf{Frammentazione}: Permette di frammentare un pacchetto in più pacchetti
       più piccoli aggiungendo all'header base un extension header di tipo frammentazione.
       Se un pacchetto non è frammentato questi dati non sono presenti.
-      \label{28-11-D6}
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+          \draw[red] (0,0) rectangle ++(1,1) node[midway,align=center] {IPv6\\Base};
+          \draw (0,0) ++(1,0) rectangle ++(4,1) node[midway,align=center] {Payload};
+
+          \draw[->] (2.5,0) -- ++(0,-1) node[midway,right,align=center] {}
+            node[below] (f) {Frammentazione};
+
+          \draw[->] (f) -- ++(-1,-1);
+          \draw[red] (-2,-3.5) rectangle ++(1,1) node[midway] {};
+          \draw[orange,thick] (-2,-3.5) ++(1,0) rectangle ++(1,1) node[midway,align=center]
+            {Ext.\\Head.};
+          \draw (-2,-3.5) ++(2,0) rectangle ++(2,1);
+
+
+          \draw[->] (f) -- ++(1,-1);
+          \draw[red] (3,-3.5) rectangle ++(1,1) node[midway] {};
+          \draw[orange,thick] (3,-3.5) ++(1,0) rectangle ++(1,1) node[midway,align=center]
+            {Ext.\\Head.};
+          \draw (3,-3.5) ++(2,0) rectangle ++(2,1);
+        \end{tikzpicture}
+        \caption{Frammentazione di un pacchetto IPv6}
+      \end{figure}
     \item \textbf{Routing}: Viene indicato un percorso (IP router) da preferire per
       raggiungere la destinazione.
   \end{itemize}
