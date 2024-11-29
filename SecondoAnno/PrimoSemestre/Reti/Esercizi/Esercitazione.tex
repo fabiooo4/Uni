@@ -397,6 +397,119 @@ La LAN 1 contiene l'indirizzo 46.144.141.41.
   \item Quali sono gli indirizzi di rete delle 4 LAN?
 \end{enumerate}
 
+\subsubsection{Risoluzione}
+\begin{enumerate}
+  \item 
+    Per trovare il blocco CIDR totale bisogna trovare il blocco di indirizzi che
+    contiene tutti gli indirizzi delle LAN (in base 2):
+    \[
+      \begin{aligned}
+        \text{LAN 1: } & 130 \to 256 = 2^8\\
+        \text{LAN 2: } & 270 \to 512 = 2^9\\
+        \text{LAN 3: } & 65 \to 128 = 2^7\\
+        \text{LAN 4: } & 35 \to 64 = 2^6
+      \end{aligned}
+    \] 
+    il blocco totale sarà:
+    \[
+      256 + 512 + 128 + 64 = 960 \to 1024 = 2^{10}
+    \] 
+    Avremo bisogno di 10 bit per il suffisso per poter indirizzare \( 1024 \) host.
+
+    \vspace{1em}
+    \noindent
+    Convertiamo l'indirizzo contenuto dalla LAN 1 in binario per poter ricavare l'indirizzo
+    di rete:
+    \[
+      46.144.141.41
+    \] 
+    \[
+      \downarrow
+    \] 
+    \[
+      00101110 \;\; 10010000 \;\; 10001101 \;\; 00101001
+    \] 
+    Sappiamo che 10 bit vanno dedicati al suffisso, di conseguenza 22 saranno dedicati al
+    prefisso, quindi l'indirizzo di rete è: 
+    \[
+      \underbrace{00101110 \;\; 10010000 \;\; 100011}_{\text{Prefisso}}
+      \underbrace{00 \;\; 00000000}_{\text{Suffisso}}
+    \] 
+    che in notazione decimale diventa:
+    \[
+      46.144.140.0/22
+    \] 
+
+  \item Per trovare gli indirizzi di ognuna delle LAN dobbiamo vedere quanti bit bisogna
+    assegnare ad ognuna di esse per indirizzare tutti gli host richiesti. Abbiamo visto
+    nella domanda precedente che gli indirizzi richiesti per ogni lan sono i seguenti:
+    \[
+      \begin{aligned}
+        \text{LAN 1: } & 130 \to 256 = 2^8\\
+        \text{LAN 2: } & 270 \to 512 = 2^9\\
+        \text{LAN 3: } & 65 \to 128 = 2^7\\
+        \text{LAN 4: } & 35 \to 64 = 2^6
+      \end{aligned}
+    \] 
+    \begin{itemize}
+      \item La LAN 1 richiede 8 bit di suffisso e sappiamo che contiene il seguente
+        indirizzo:
+        \[
+          \underbrace{00101110 \;\; 10010000 \;\; 100011}_{\text{Prefisso}}
+          \underbrace{01}_{\text{LAN 1}}
+          \underbrace{00101001}_{\text{Suffisso}}
+        \] 
+        di conseguenza l'indirizzo di rete della LAN 1 è:
+        \[
+          \underbrace{00101110 \;\; 10010000 \;\; 100011}_{\text{Prefisso}}
+          \underbrace{01}_{\text{LAN 1}}
+          \underbrace{00000000}_{\text{Suffisso}}
+        \] 
+        \[
+          \downarrow
+        \] 
+        \[
+          46.144.141.0/24
+        \] 
+      \item La LAN 2 richiede 9 bit di suffisso:
+        \[
+          \underbrace{00101110 \;\; 10010000 \;\; 100011}_{\text{Prefisso}}
+          \underbrace{1}_{\text{LAN 2}}
+          \underbrace{0 \;\; 00000000}_{\text{Suffisso}}
+        \] 
+        \[
+          \downarrow
+        \] 
+        \[
+          46.144.142.0/23
+        \] 
+      \item La LAN 3 richiede 7 bit di suffisso:
+        \[
+          \underbrace{00101110 \;\; 10010000 \;\; 100011}_{\text{Prefisso}}
+          \underbrace{00 \;\; 1}_{\text{LAN 3}}
+          \underbrace{0000000}_{\text{Suffisso}}
+        \] 
+        \[
+          \downarrow
+        \] 
+        \[
+          46.144.140.128/25
+        \] 
+      \item La LAN 4 richiede 6 bit di suffisso:
+        \[
+          \underbrace{00101110 \;\; 10010000 \;\; 100011}_{\text{Prefisso}}
+          \underbrace{00 \;\; 01}_{\text{LAN 4}}
+          \underbrace{000000}_{\text{Suffisso}}
+        \] 
+        \[
+          \downarrow
+        \] 
+        \[
+          46.144.140.64/26
+        \] 
+    \end{itemize}
+\end{enumerate}
+
 \section{TCP}
 L'obiettivo di questi esercizi è quello di vedere come si comporta l'algoritmo in situazioni 
 particolari.
