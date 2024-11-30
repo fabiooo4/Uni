@@ -5159,7 +5159,36 @@ due tipi:
 \end{example}
 
 \subsubsection{Nomenclatura}
-\label{25-11-D7}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw,circle,minimum size=0.7cm] (sum) {};
+    \node[draw,minimum size=1cm,align=center,right=1.5cm of sum] (ff) {Segnale\\feed forward};
+    \node[draw,minimum size=1cm,align=center,right=1.5cm of ff] (proc) {Processo};
+    \node[draw,minimum size=1cm,align=center,below right=1cm and 0cm of ff] (feedback) {Elemento\\
+      di feedback};
+    \coordinate[right=of proc] (n) {};
+
+    \fill (n) circle (0.05cm);
+
+    \draw[<-] (sum.west) node[above left,scale=0.8] {+} -- ++(-1,0) node[above] {\( r \)}
+      node[below,align=center,scale=0.8] {Segnale di\\riferimento};
+    \draw[->] (sum.east) -- (ff.west) node[midway,above] {\( e \)}
+      node[midway,below,align=center,scale=0.8] {\( e=r\pm b \)\\Segnale di\\attenuazione};
+    \draw[->] (ff.east) -- (proc.west) node[midway,above] {\( u \)}
+      node[midway,below,align=center,scale=0.8] {Segnale di\\controllo};
+    \draw[<-] (proc.north) -- ++(0,1) node[left] {\( h \)}
+      node[right,align=center,scale=0.8] {Disturbo};
+    \draw (proc) -- (n);
+    \draw[->] (n) |- (feedback.east);
+    \draw[->] (feedback.west) node[above left] {\( b \) }
+      node[below left,align=center,scale=0.8] {Segnale di\\feedback}
+      -| (sum.south) node[below right,scale=0.8] {\( \pm \) };
+    \draw[->] (n) -- ++(1,0) node[above] {\( c \)}
+      node[below,align=center,scale=0.8] {Output\\controllo};
+  \end{tikzpicture}
+  \caption{Nomenclatura di un sistema di controllo}
+\end{figure}
 
 Il segnale di attuazione viene chiamato:
 \begin{itemize}
@@ -5207,25 +5236,150 @@ delle lettere:
 \noindent
 Un sistema può essere tradotto dal tempo continuo al tempo discreto, attraverso un
 campionatore:
-\label{25-11-D8}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw,minimum size=1cm] (r) {LTI};
+    \node[above=0cm of r] {\( t \in \mathbb{R} \)};
+
+    \node[draw,minimum size=1cm,right=2.5cm of r] (z) {LTI};
+    \node[above=0cm of z] {\( k \in \mathbb{Z} \)};
+
+    \draw (r) -- ++(1.5,0) -- ++(0.5,0.5);
+    \draw[->] (r) ++(2,0) node[below left,scale=0.8,xshift=0.6cm] {Campionatore} -- (z);
+  \end{tikzpicture}
+  \caption{Campionamento di un sistema}
+\end{figure}
 
 \noindent
 Oltre al campionatore si utilizza anche un componente chiamato \textbf{zero holder},
 che è un componente che mantiene il valore del segnale invariato fino all'istante
 successivo.
-\label{25-11-D9}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw,minimum size=1cm,align=center] at (3.5,0) (z) {Zero\\holder};
+
+    \draw (0,0) -- ++(1,0) -- ++(0.5,0.5);
+    \draw[->] (1.5,0) -- (z);
+  \end{tikzpicture}
+  \[
+  \downarrow
+  \] 
+  \begin{tikzpicture}[scale=0.8]
+    \draw[->] (-0.2,0) -- (8,0) node[right] {t};
+    \draw[->] (0,-0.2) -- (0,4.5) node[above] {v(t)};
+
+    \draw[domain=0:8,samples=100] plot(\x,{cos(\x r)*exp(\x/8)+2});
+    \draw[blue,domain=0:8,samples=20] plot[ycomb](\x,{cos(\x r)*exp(\x/8)+2});
+  \end{tikzpicture}
+  \[
+  \downarrow
+  \] 
+  \begin{tikzpicture}[scale=0.8]
+    \draw[->] (-0.2,0) -- (8,0) node[right] {k};
+    \draw[->] (0,-0.2) -- (0,4.5) node[above] {v(k)};
+
+    \draw[red,domain=0:8,samples=20] plot[const plot](\x,{cos(\x r)*exp(\x/8)+2});
+  \end{tikzpicture}
+\end{figure}
 
 \begin{example}
   Prendiamo ad esempio il seguente sistema iniziale:
-  \label{25-11-D10}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      [
+      every node/.style={node distance=0.6cm},
+      ]
+      \def\ns{0.8cm}
+      \def\ss{0.7cm}
+      \node[draw,circle,minimum size=\ss] (sum1) {};
+      \node[draw,circle,minimum size=\ss,right=of sum1] (sum2) {};
+      \node[draw,minimum size=\ns,right=of sum2] (g1) {\( G_1 \)};
+      \node[draw,minimum size=\ns,right=of g1] (g4) {\( G_4 \)};
+      \node[draw,minimum size=\ns,below=of g4] (h1) {\( H_1 \)};
+      \node[draw,minimum size=\ns,below=of h1] (h2) {\( H_2 \)};
+      \coordinate[right=of g4] (n1);
+      \fill (n1) circle (0.05cm);
+      \node[draw,minimum size=\ns,right=of n1] (g2) {\( G_2 \)};
+      \node[draw,minimum size=\ns,above=of g2] (g3) {\( G_3 \)};
+      \node[draw,circle,minimum size=\ss,right=of g2] (sum3) {};
+      \coordinate[right=of sum3] (n2);
+      \fill (n2) circle (0.05cm);
+
+      \draw[<-] (sum1.west) node[above left,scale=0.8] {\( + \) } 
+        -- ++(-1,0) node[above] {\( r \)};
+      \draw[->] (sum1.east) -- (sum2.west) node[above left,scale=0.8] {\( + \)};
+      \draw[->] (sum2) -- (g1);
+      \draw[->] (g1) -- (g4);
+      \draw[->] (g4) -- (n1) -- (g2);
+      \draw[->] (g2) -- (sum3.west) node[above left,scale=0.8] {\( + \)};
+      \draw[->] (sum3) -- (n2) -- ++(1,0) node[above] {\( c \)};
+      \draw[->] (n1) |- (g3);
+      \draw[->] (g3) -| (sum3.north) node[above right,scale=0.8] {\( + \)};
+      \draw[->] (n1) |- (h1);
+      \draw[->] (h1) -| (sum2.south) node[below right,scale=0.8] {\( + \)};
+      \draw[->] (n2) |- (h2);
+      \draw[->] (h2) -| (sum1.south) node[below right,scale=0.8] {\( - \)};
+    \end{tikzpicture}
+  \end{figure}
   \noindent
-  Vogliamo ottenere un sistema in forma canonica, ad esempio:
-  \label{25-11-D11}
-  
+  Vogliamo ottenere un sistema in forma canonica, cioè un sistema con un solo nodo,
+  ad esempio:
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \node (x) at (0,0) {\( R \)};
+
+      \node[draw,circle,minimum size=0.7cm,right=1cm of x] (sum) {+};
+      \node[draw,minimum size=1cm,right=1.5cm of sum] (A) {\( A \) };
+      \node[draw,minimum size=1cm,below=of A] (B) {\( B \) };
+
+      \coordinate[right=1cm of A] (n);
+      \fill (n) circle (0.05cm);
+
+      \draw[->] (x) -- (sum);
+      \draw[->] (sum) -- (A.west);
+      \draw[<-] (sum) |- (B.west);
+
+      \draw[->] (A.east) -- (n) |- (B.east);
+      \draw[->] (n) -- ++(0.5,0) node[above] {\( C \) };
+    \end{tikzpicture}
+    \[
+    \downarrow
+    \] 
+    \begin{tikzpicture}
+      \node[draw,minimum size=1cm] (D) {\( D \) };
+      \draw[<-] (D) -- ++(-1.5,0) node[above] {\( R \)};
+      \draw[->] (D) -- ++(1.5,0) node[above] {\( C \)};
+    \end{tikzpicture}
+    \caption{Sistema in forma canonica}
+  \end{figure}
 \end{example}
 
 \subsubsection{Nomenclatura della forma canonica}
-\label{25-11-D12}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node (x) at (0,0) {\( R \)};
+
+    \node[draw,circle,minimum size=0.7cm,right=1cm of x] (sum) {+};
+    \node[draw,minimum size=1cm,right=1.5cm of sum] (A) {\( G \) };
+    \node[draw,minimum size=1cm,below=of A] (B) {\( H \) };
+
+    \coordinate[right=1cm of A] (n);
+    \fill (n) circle (0.05cm);
+
+    \draw[->] (x) -- (sum);
+    \draw[->] (sum) -- (A.west) node[midway,above] {\( E \)};
+    \draw[<-] (sum) |- (B.west) node[midway,above right] {\( B \) };
+
+    \draw[->] (A.east) -- (n) |- (B.east);
+    \draw[->] (n) -- ++(0.5,0) node[above] {\( C \) };
+  \end{tikzpicture}
+  \caption{Nomenclatura della forma canonica}
+\end{figure}
 \begin{itemize}
   \item \( G \): Funzione di trasferimento discreta
   \item \( H \): Funzione di trasferimento di feedback
@@ -5249,10 +5403,7 @@ successivo.
 L'obiettivo è quello di semplificare il sistema finchè non si ottiene una forma canonica.
 
 \begin{example}
-  Se prendiamo ad esempio il sistema massa-molla-smorzatore:
-  \label{25-11-D13}
-  \noindent
-  L'equazione sarà:
+  Se prendiamo ad esempio il sistema massa-molla-smorzatore l'equazione sarà:
   \[
     \begin{aligned}
       M \cdot a &= \sum F\\
@@ -5266,7 +5417,20 @@ L'obiettivo è quello di semplificare il sistema finchè non si ottiene una form
   \[
     X(s) = \frac{F_{\text{ext}}}{\underbrace{\left( k + bs + Ms^2 \right)}_{A}}
   \] 
-  \label{25-11-D14}
+  \noindent
+  Il sistema di questo esempio è il seguente:
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \node[draw,minimum size=1cm] (fext) {\( F_{\text{ext}} \) };
+      \node[draw,minimum size=1cm,right=of fext] (eq) {\( \frac{1}{K+bs+M s^2} \) };
+
+      \draw[<-] (fext) -- ++(-1.5,0) node[above] {\( s \)};
+      \draw[->] (fext) -- (eq);
+      \draw[->] (eq) -- ++(2,0) node[above] {\( X(s) \)};
+    \end{tikzpicture}
+    \caption{Sistema massa-molla-smorzatore}
+  \end{figure}
 \end{example}
 
 \section{Operazioni sui blocchi}
@@ -5274,19 +5438,107 @@ I blocchi possono essere combinati tra loro in diversi modi:
 \begin{enumerate}
   \item \textbf{Combinazione di blocchi in serie}: Dati due blocchi \( A \) e \( B \) si
     ottiene un nuovo blocco il cui contenuto è il prodotto dei due blocchi:
-    \label{25-11-D15}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+      [
+      every node/.style={node distance=0.6cm},
+      ]
+        \node[draw,minimum size=1cm] (A) {\( A \) };
+        \node[draw,minimum size=1cm,right=of fext] (B) {\(B\) };
+
+        \draw[<-] (A) -- ++(-1.5,0) node[above] {\(x\)};
+        \draw[->] (A) -- (B);
+        \draw[->] (B) -- ++(1.5,0) node[above] {\(y\)};
+      \end{tikzpicture}
+      \[
+      \downarrow
+      \] 
+      \begin{tikzpicture}
+        \node[draw,minimum size=1cm] (C) {\(A \cdot B\) };
+
+        \draw[<-] (C) -- ++(-1.5,0) node[above] {\(x\)};
+        \draw[->] (C) -- ++(1.5,0) node[above] {\(y\)};
+      \end{tikzpicture}
+    \end{figure}
     \noindent
-    Questo perchè due sistemi in serie vuol dire fare una convoluzione, di conseguenza
+    Questo perchè avere due sistemi in serie equivale a fare una convoluzione, di conseguenza
     un prodotto di sistemi.
 
   \item \textbf{Combinazione di blocchi in parallelo}: Dati due blocchi \( A \) e \( B \) si
     ottiene un nuovo blocco il cui contenuto è la somma dei due blocchi:
-    \label{25-11-D16}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+      [
+      every node/.style={node distance=0.6cm},
+      ]
+        \node[draw,minimum size=1cm] (A) {\( A \) };
+        \coordinate[left=of A] (n);
+        \fill (n) circle (0.05cm);
+        \node[draw,minimum size=1cm,below=of A] (B) {\(B\) };
+        \node[draw,circle,minimum size=0.7cm,right=of A] (sum) {};
+
+        \draw (n) -- ++(-1,0) node[above] {\(x\)};
+        \draw[->] (n) -- (A);
+        \draw[->] (A) -- (sum.west) node[above left,scale=0.8] {\( + \)};
+        \draw[->] (sum.east) -- ++(1,0) node[above] {\(y\)};
+        \draw[->] (B.east) -| (sum.south) node[below right,scale=0.8] {\( \pm \)};
+        \draw (B) -| (n);
+      \end{tikzpicture}
+      \[
+      \downarrow
+      \] 
+      \begin{tikzpicture}
+        \node[draw,minimum size=1cm] (C) {\(A \pm B\) };
+
+        \draw[<-] (C) -- ++(-1.5,0) node[above] {\(x\)};
+        \draw[->] (C) -- ++(1.5,0) node[above] {\(y\)};
+      \end{tikzpicture}
+    \end{figure}
     \begin{enumerate}
       \item \textbf{Rimozione di un blocco parallelo}: Dato un blocco \( A \) in parallelo
         con un blocco \( B \) si può rimuovere la connessione parallela sostituendola con
         il rapporto tra i 2 blocchi
-        \label{25-11-D17}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+      [
+      every node/.style={node distance=0.6cm},
+      ]
+        \node[draw,minimum size=1cm] (A) {\( A \) };
+        \coordinate[left=of A] (n);
+        \fill (n) circle (0.05cm);
+        \node[draw,minimum size=1cm,below=of A] (B) {\(B\) };
+        \node[draw,circle,minimum size=0.7cm,right=of A] (sum) {};
+
+        \draw (n) -- ++(-1,0) node[above] {\(x\)};
+        \draw[->] (n) -- (A);
+        \draw[->] (A) -- (sum.west) node[above left,scale=0.8] {\( + \)};
+        \draw[->] (sum.east) -- ++(1,0) node[above] {\(y\)};
+        \draw[->] (B.east) -| (sum.south) node[below right,scale=0.8] {\( \pm \)};
+        \draw (B) -| (n);
+      \end{tikzpicture}
+      \[
+      \downarrow
+      \] 
+      \begin{tikzpicture}
+      [
+      every node/.style={node distance=0.6cm},
+      ]
+        \node[draw,minimum size=1cm] (B) {\(B\) };
+        \coordinate[right=of B] (n);
+        \fill (n) circle (0.05cm);
+        \node[draw,minimum size=1cm,right=of n] (A/B) {\(\frac{A}{B}\) };
+        \node[draw,circle,minimum size=0.7cm,right=of A/B] (sum) {};
+
+        \draw[<-] (B) -- ++(-1.5,0) node[above] {\(x\)};
+        \draw[->] (B) -- (A/B);
+        \draw[->] (A/B) -- (sum.west) node[above left,scale=0.8] {\( + \)};
+        \draw[->] (sum) -- ++(1.5,0) node[above] {\(y\)};
+        \draw[->] (n) -- ++(0,-1) -| (sum.south) node[below right,scale=0.8] {\( \pm \)};
+      \end{tikzpicture}
+    \end{figure}
     \end{enumerate}
 
 
@@ -5295,31 +5547,317 @@ I blocchi possono essere combinati tra loro in diversi modi:
     \[
     \frac{A}{1 \pm AB}
     \] 
-    \label{25-11-D18}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+      [
+      every node/.style={node distance=0.6cm},
+      ]
+        \node[draw,minimum size=1cm] (A) {\( A \) };
+        \coordinate[right=of A] (n);
+        \fill (n) circle (0.05cm);
+        \node[draw,minimum size=1cm,below=of A] (B) {\(B\) };
+        \node[draw,circle,minimum size=0.7cm,left=of A] (sum) {};
+
+        \draw[->] (n) -- ++(1,0) node[above] {\(y\)};
+        \draw (A) -- (n);
+        \draw[->] (sum.east) -- (A);
+        \draw[<-] (sum.west) node[above left,scale=0.8] {\( + \)}
+          -- ++(-1,0) node[above] {\(x\)};
+        \draw[->] (B.west) -| (sum.south) node[below right,scale=0.8] {\( \mp \)};
+        \draw (B) -| (n);
+      \end{tikzpicture}
+      \[
+      \downarrow
+      \] 
+      \begin{tikzpicture}
+        \node[draw,minimum size=1cm,scale=1.2] (C) {\(\frac{A}{1 \pm AB}\) };
+
+        \draw[<-] (C) -- ++(-1.5,0) node[above] {\(x\)};
+        \draw[->] (C) -- ++(1.5,0) node[above] {\(y\)};
+      \end{tikzpicture}
+    \end{figure}
 
     \begin{enumerate}
       \item \textbf{Rimozione dal loop}: 
-        \label{25-11-D19}
+        \begin{figure}[H]
+          \centering
+          \begin{tikzpicture}
+            [
+            every node/.style={node distance=0.6cm},
+            ]
+            \node[draw,minimum size=1cm] (A) {\( A \) };
+            \coordinate[right=of A] (n);
+            \fill (n) circle (0.05cm);
+            \node[draw,minimum size=1cm,below=of A] (B) {\(B\) };
+            \node[draw,circle,minimum size=0.7cm,left=of A] (sum) {};
+
+            \draw[->] (n) -- ++(1,0) node[above] {\(y\)};
+            \draw (A) -- (n);
+            \draw[->] (sum.east) -- (A);
+            \draw[<-] (sum.west) node[above left,scale=0.8] {\( + \)}
+              -- ++(-1,0) node[above] {\(x\)};
+            \draw[->] (B.west) -| (sum.south) node[below right,scale=0.8] {\( \mp \)};
+            \draw (B) -| (n);
+          \end{tikzpicture}
+          \[
+            \downarrow
+          \] 
+          \begin{tikzpicture}
+            [
+            every node/.style={node distance=0.6cm},
+            ]
+            \node[draw,minimum size=1cm] (B) {\(\frac{1}{B}\) };
+            \node[draw,circle,minimum size=0.7cm,right=of B] (sum) {};
+            \node[draw,minimum size=1cm,right=of sum] (A/B) {\(\frac{1}{AB}\) };
+            \coordinate[right=of A/B] (n);
+            \fill (n) circle (0.05cm);
+
+            \draw[<-] (B) -- ++(-1.5,0) node[above] {\(x\)};
+            \draw[->] (B) -- (sum.west) node[above left,scale=0.8] {\( + \)};
+            \draw[->] (sum.east) -- (A/B);
+            \draw (A/B) -- (n);
+            \draw[->] (n) -- ++(1.5,0) node[above] {\(y\)};
+            \draw[<-] (sum.south) node[below right,scale=0.8] {\( \mp \)} -- ++(0,-1) -| (n);
+          \end{tikzpicture}
+        \end{figure}
     \end{enumerate}
 
   \item \textbf{Riorganizzazione degli input nel nodo sommatore}:
-    \label{25-11-D20}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \node (w) {\( w \) };
+        \node[below=0.3cm of w] (x) {\( x \) };
+        \node[below=0.3cm of x] (y) {\( y \) };
+        \node[draw,circle,minimum size=0.7cm,right=of w] (sum1) {};
+        \node[draw,circle,minimum size=0.7cm,right=of sum1] (sum2) {};
+        \node[right=of sum2] (z) {\( z \) };
+
+        \draw[->] (w) -- (sum1.west) node[above left,scale=0.8] {\( + \)};
+        \draw[->] (sum1) -- (sum2.west) node[above left,scale=0.8] {\( + \)};
+        \draw[->] (sum2) -- (z);
+
+        \draw[->] (x) -| (sum1.south) node[below right,scale=0.8] {\( \pm \)};
+        \draw[->] (y) -| (sum2.south) node[below right,scale=0.8] {\( \pm \)};
+      \end{tikzpicture}
+      \[
+      \downarrow
+      \] 
+      \begin{tikzpicture}
+        \node (w) {\( w \) };
+        \node[below=0.3cm of w] (x) {\( y \) };
+        \node[below=0.3cm of x] (y) {\( x \) };
+        \node[draw,circle,minimum size=0.7cm,right=of w] (sum1) {};
+        \node[draw,circle,minimum size=0.7cm,right=of sum1] (sum2) {};
+        \node[right=of sum2] (z) {\( z \) };
+
+        \draw[->] (w) -- (sum1.west) node[above left,scale=0.8] {\( + \)};
+        \draw[->] (sum1) -- (sum2.west) node[above left,scale=0.8] {\( + \)};
+        \draw[->] (sum2) -- (z);
+
+        \draw[->] (x) -| (sum1.south) node[below right,scale=0.8] {\( \pm \)};
+        \draw[->] (y) -| (sum2.south) node[below right,scale=0.8] {\( \pm \)};
+      \end{tikzpicture}
+    \end{figure}
     \begin{enumerate}
       \item \textbf{Riorganizzazione dei nodi sommatori}:
-        \label{25-11-D21}
+        \begin{figure}[H]
+          \centering
+          \begin{tikzpicture}
+            \node (w) {\( w \) };
+            \node[below=0.3cm of w] (x) {\( x \) };
+            \node[below=0.3cm of x] (y) {\( y \) };
+            \node[draw,circle,minimum size=0.7cm,right=of w] (sum1) {};
+            \node[draw,circle,minimum size=0.7cm,right=of sum1] (sum2) {};
+            \node[right=of sum2] (z) {\( z \) };
+
+            \draw[->] (w) -- (sum1.west) node[above left,scale=0.8] {\( + \)};
+            \draw[->] (sum1) -- (sum2.west) node[above left,scale=0.8] {\( + \)};
+            \draw[->] (sum2) -- (z);
+
+            \draw[->] (x) -| (sum1.south) node[below right,scale=0.8] {\( \pm \)};
+            \draw[->] (y) -| (sum2.south) node[below right,scale=0.8] {\( \pm \)};
+          \end{tikzpicture}
+          \[
+          \downarrow
+          \] 
+          \begin{tikzpicture}
+            \node (w) {\( w \) };
+            \node[below=0.8cm of w] (x) {\( x \) };
+            \node[below=0.8cm of x] (y) {\( y \) };
+            \node[draw,circle,minimum size=0.7cm,right=of w] (sum1) {};
+            \node[draw,circle,minimum size=0.7cm,below=0.5cm of sum1] (sum2) {};
+            \node[right=of sum1] (z) {\( z \) };
+
+            \draw[->] (w) -- (sum1.west) node[above left,scale=0.8] {\( + \)};
+            \draw[->] (sum1) -- (z);
+            \draw[->] (sum2) -- (sum1.south) node[below right,scale=0.8] {\( + \)};
+            \draw[->] (x) -- (sum2.west) node[above left,scale=0.8] {\( \pm \)};
+            \draw[->] (y) -| (sum2.south) node[below right,scale=0.8] {\( \pm \)};
+          \end{tikzpicture}
+        \end{figure}
     \end{enumerate}
 
   \item \textbf{Spostamento dei nodi somma prima del blocco}:
-    \label{25-11-D22}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        [
+        every node/.style={node distance=0.6cm},
+        ]
+        \node (x) {\( x \) };
+        \node[draw,minimum size=1cm,right=of x] (A) {\( A \) };
+        \node[draw,circle,minimum size=0.7cm,right=of A] (sum) {};
+        \node[right=of sum] (z) {\( z \) };
+        \node[below=of z] (y) {\( y \) };
+
+        \draw[->] (x) -- (A);
+        \draw[->] (A) -- (sum.west) node[above left,scale=0.8] {\( + \)};
+        \draw[->] (sum) -- (z);
+        \draw[->] (y) -| (sum.south) node[below right,scale=0.8] {\( \pm \)};
+      \end{tikzpicture}
+      \[
+      \downarrow
+      \] 
+      \begin{tikzpicture}
+        [
+        every node/.style={node distance=0.6cm},
+        ]
+        \node (x) {\( x \) };
+        \node[draw,circle,minimum size=0.7cm,right=of x] (sum) {};
+        \node[draw,minimum size=1cm,right=of sum] (A) {\( A \) };
+        \node[draw,minimum size=1cm,below=of A] (1/A) {\( \frac{1}{A} \) };
+        \node[right=of A] (z) {\( z \) };
+        \node[right=of 1/A] (y) {\( y \) };
+
+        \draw[->] (x) -- (sum.west) node[above left,scale=0.8] {\( + \)};
+        \draw[->] (sum) -- (A);
+        \draw[->] (A) -- (z);
+        \draw[->] (y) -- (1/A);
+        \draw[->] (1/A) -| (sum.south) node[below right,scale=0.8] {\( \pm \)};
+      \end{tikzpicture}
+    \end{figure}
 
   \item \textbf{Spostamento dei nodi somma dopo il blocco}:
-    \label{25-11-D23}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        [
+        every node/.style={node distance=0.6cm},
+        ]
+        \node (x) {\( x \) };
+        \node[below=of x] (y) {\( y \) };
+        \node[draw,circle,minimum size=0.7cm,right=of x] (sum) {};
+        \node[draw,minimum size=1cm,right=of sum] (A) {\( A \) };
+        \node[right=of A] (z) {\( z \) };
+
+        \draw[->] (x) -- (sum.west) node[above left,scale=0.8] {\( + \)};
+        \draw[->] (sum) -- (A);
+        \draw[->] (A) -- (z);
+        \draw[->] (y) -| (sum.south) node[below right,scale=0.8] {\( \pm \)};
+      \end{tikzpicture}
+      \[
+      \downarrow
+      \] 
+      \begin{tikzpicture}
+        [
+        every node/.style={node distance=0.6cm},
+        ]
+        \node (x) {\( x \) };
+        \node[draw,minimum size=1cm,right=of x] (A1) {\( A \) };
+        \node[draw,minimum size=1cm,below=of A1] (A2) {\( A \) };
+        \node[draw,circle,minimum size=0.7cm,right=of A1] (sum) {};
+        \node[left=of A2] (y) {\( y \) };
+        \node[right=of sum] (z) {\( z \) };
+
+        \draw[->] (x) -- (A1);
+        \draw[->] (A1) -- (sum.west) node[above left,scale=0.8] {\( + \)};
+        \draw[->] (sum) -- (z);
+        \draw[->] (A2) -| (sum.south) node[below right,scale=0.8] {\( \pm \)};
+        \draw[->] (y) -- (A2);
+      \end{tikzpicture}
+    \end{figure}
 
   \item \textbf{Spostamento di un nodo prima di un blocco}:
-    \label{25-11-D24}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        [
+        every node/.style={node distance=0.6cm},
+        ]
+        \node (x) {\( x \) };
+        \node[draw,minimum size=1cm,right=of x] (A) {\( A \) };
+        \coordinate[right=of A] (n);
+        \fill (n) circle (0.05cm);
+        \node[below=of x] (y1) {\( y \) };
+        \node[right=of n] (y2) {\( y \) };
+
+        \draw[->] (x) -- (A);
+        \draw[->] (A) -- (y2);
+        \draw[->] (n) |- (y1);
+      \end{tikzpicture}
+      \[
+      \downarrow
+      \] 
+      \begin{tikzpicture}
+        [
+        every node/.style={node distance=0.6cm},
+        ]
+        \node (x) {\( x \) };
+        \coordinate[right=1cm of x] (n);
+        \fill (n) circle (0.05cm);
+        \node[draw,minimum size=1cm,right=of n] (A1) {\( A \) };
+        \node[right=of A1] (y2) {\( y \) };
+        \node[draw,minimum size=1cm,below=1cm of n] (A2) {\(A\) };
+        \node[left=of A2] (y1) {\( y \) };
+
+        \draw[->] (x) -- (A1);
+        \draw[->] (A1) -- (y2);
+        \draw[->] (n) -- (A2);
+        \draw[->] (A2) -- (y1);
+      \end{tikzpicture}
+    \end{figure}
 
   \item \textbf{Spostamento di un nodo dopo un blocco}:
-    \label{25-11-D25}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        [
+        every node/.style={node distance=0.6cm},
+        ]
+        \node (x1) {\( x \) };
+        \node[below=of x1] (x2) {\( x \) };
+        \coordinate[right=of x1] (n);
+        \fill (n) circle (0.05cm);
+        \node[draw,minimum size=1cm,right=of n] (A) {\( A \) };
+        \node[right=of A] (y) {\( y \) };
+
+        \draw[->] (x1) -- (A);
+        \draw[->] (n) |- (x2);
+        \draw[->] (A) -- (y);
+      \end{tikzpicture}
+      \[
+      \downarrow
+      \] 
+      \begin{tikzpicture}
+        [
+        every node/.style={node distance=0.6cm},
+        ]
+        \node (x1) {\( x \) };
+        \node[draw,minimum size=1cm,right=of x1] (A) {\( A \) };
+        \node[draw,minimum size=1cm,below=of A] (1/A) {\( \frac{1}{A} \) };
+        \node[left=of 1/A] (x2) {\( x \) };
+        \coordinate[right=of A] (n);
+        \fill (n) circle (0.05cm);
+        \node[right=of n] (y) {\( y \) };
+        
+        \draw[->] (x1) -- (A);
+        \draw[->] (A) -- (y);
+        \draw[->] (n) |- (1/A);
+        \draw[->] (1/A) -- (x2);
+      \end{tikzpicture}
+    \end{figure}
 \end{enumerate}
 
 \begin{example}
@@ -5375,7 +5913,7 @@ I blocchi possono essere combinati tra loro in diversi modi:
   Alla fine la funzione di trasferimento del sistema sarà:
   \[
   \begin{aligned}
-    \frac{A \cdot (B-D)}{1+B(C-E)} &= \frac{\frac{1}{s} \cdot \left( s^2 - (s+2) \right) }
+    \frac{A \cdot (B - D)}{1+B(C-E)} &= \frac{\frac{1}{s} \cdot \left( s^2 - (s+2) \right) }
     {1+\left( \cancel{s^2} \cdot \left( \frac{(s-2)(s+1)}{\cancel{s^2}} -
     \frac{1}{\cancel{s^2}} \right) \right)}\\
     &= \frac{\frac{1}{s} \cdot \left( s^2 - s + 2 \right)}{1 + (s-2)(s+1)-1}
