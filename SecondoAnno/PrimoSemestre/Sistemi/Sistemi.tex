@@ -5862,19 +5862,144 @@ I blocchi possono essere combinati tra loro in diversi modi:
 
 \begin{example}
   Prendiamo ad esempio il seguente sistema:
-  \label{28-11-D1}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      [
+      every node/.style={node distance=0.6cm},
+      ]
+      \def\ns{0.8cm}
+      \def\ss{0.7cm}
+      \node[draw,circle,minimum size=\ss] (sum1) {};
+      \node[draw,circle,minimum size=\ss,right=of sum1] (sum2) {};
+      \node[draw,minimum size=\ns,right=of sum2] (g1) {\( G_1 \)};
+      \node[draw,minimum size=\ns,right=of g1] (g4) {\( G_4 \)};
+      \node[draw,minimum size=\ns,below=of g4] (h1) {\( H_1 \)};
+      \node[draw,minimum size=\ns,below=of h1] (h2) {\( H_2 \)};
+      \coordinate[right=of g4] (n1);
+      \fill (n1) circle (0.05cm);
+      \node[draw,minimum size=\ns,right=of n1] (g2) {\( G_2 \)};
+      \node[draw,minimum size=\ns,above=of g2] (g3) {\( G_3 \)};
+      \node[draw,circle,minimum size=\ss,right=of g2] (sum3) {};
+      \coordinate[right=of sum3] (n2);
+      \fill (n2) circle (0.05cm);
+
+      \draw[<-] (sum1.west) node[above left,scale=0.8] {\( + \) } 
+        -- ++(-1,0) node[above] {\( R \)};
+      \draw[->] (sum1.east) -- (sum2.west) node[above left,scale=0.8] {\( + \)};
+      \draw[->] (sum2) -- (g1);
+      \draw[->] (g1) -- (g4);
+      \draw[->] (g4) -- (n1) -- (g2);
+      \draw[->] (g2) -- (sum3.west) node[above left,scale=0.8] {\( + \)};
+      \draw[->] (sum3) -- (n2) -- ++(1,0) node[above] {\( C \)};
+      \draw[->] (n1) |- (g3);
+      \draw[->] (g3) -| (sum3.north) node[above right,scale=0.8] {\( + \)};
+      \draw[->] (n1) |- (h1);
+      \draw[->] (h1) -| (sum2.south) node[below right,scale=0.8] {\( + \)};
+      \draw[->] (n2) |- (h2);
+      \draw[->] (h2) -| (sum1.south) node[below right,scale=0.8] {\( - \)};
+    \end{tikzpicture}
+  \end{figure}
   \noindent
   L'obiettivo è quello di trasformare tutto questo sistema in un unico blocco
   per poter poi fare la trasformata di Laplace.
   \begin{enumerate}
     \item Applicare la trasformazione delle serie per ogni blocco in serie:
-      \label{28-11-D2}
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+          [
+          every node/.style={node distance=0.6cm},
+          ]
+          \def\ns{0.8cm}
+          \def\ss{0.7cm}
+          \node[draw,circle,minimum size=\ss] (sum1) {};
+          \node[draw,circle,minimum size=\ss,right=of sum1] (sum2) {};
+          \node[draw,blue,minimum size=\ns,right=of sum2] (g1g4) {\( G_1 \cdot G_4 \)};
+          \node[draw,minimum size=\ns,below=of g1g4] (h1) {\( H_1 \)};
+          \node[draw,minimum size=\ns,below=of h1] (h2) {\( H_2 \)};
+          \coordinate[right=of g1g4] (n1);
+          \fill (n1) circle (0.05cm);
+          \node[draw,minimum size=\ns,right=of n1] (g2) {\( G_2 \)};
+          \node[draw,minimum size=\ns,above=of g2] (g3) {\( G_3 \)};
+          \node[draw,circle,minimum size=\ss,right=of g2] (sum3) {};
+          \coordinate[right=of sum3] (n2);
+          \fill (n2) circle (0.05cm);
+
+          \draw[<-] (sum1.west) node[above left,scale=0.8] {\( + \) } 
+            -- ++(-1,0) node[above] {\( R \)};
+          \draw[->] (sum1.east) -- (sum2.west) node[above left,scale=0.8] {\( + \)};
+          \draw[->] (sum2) -- (g1g4);
+          \draw[->] (g1g4) -- (n1) -- (g2);
+          \draw[->] (g2) -- (sum3.west) node[above left,scale=0.8] {\( + \)};
+          \draw[->] (sum3) -- (n2) -- ++(1,0) node[above] {\( C \)};
+          \draw[->] (n1) |- (g3);
+          \draw[->] (g3) -| (sum3.north) node[above right,scale=0.8] {\( + \)};
+          \draw[->] (n1) |- (h1);
+          \draw[->] (h1) -| (sum2.south) node[below right,scale=0.8] {\( + \)};
+          \draw[->] (n2) |- (h2);
+          \draw[->] (h2) -| (sum1.south) node[below right,scale=0.8] {\( - \)};
+        \end{tikzpicture}
+      \end{figure}
 
     \item Applicare la trasformazione dei blocchi in parallelo per ogni blocco in parallelo:
-      \label{28-11-D3}
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+          [
+          every node/.style={node distance=0.6cm},
+          ]
+          \def\ns{0.8cm}
+          \def\ss{0.7cm}
+          \node[draw,circle,minimum size=\ss] (sum1) {};
+          \node[draw,circle,minimum size=\ss,right=of sum1] (sum2) {};
+          \node[draw,minimum size=\ns,right=of sum2] (g1g4) {\( G_1 \cdot G_4 \)};
+          \node[draw,minimum size=\ns,below=of g1g4] (h1) {\( H_1 \)};
+          \node[draw,minimum size=\ns,below=of h1] (h2) {\( H_2 \)};
+          \coordinate[right=of g1g4] (n1);
+          \fill (n1) circle (0.05cm);
+          \node[draw,blue,minimum size=\ns,right=of n1] (g2g3) {\( G_2 + G_3 \)};
+          \coordinate[right=of g2g3] (n2);
+          \fill (n2) circle (0.05cm);
+
+          \draw[<-] (sum1.west) node[above left,scale=0.8] {\( + \) } 
+            -- ++(-1,0) node[above] {\( R \)};
+          \draw[->] (sum1.east) -- (sum2.west) node[above left,scale=0.8] {\( + \)};
+          \draw[->] (sum2) -- (g1g4);
+          \draw[->] (g1g4) -- (n1) -- (g2g3);
+          \draw[->] (g2g3) -- (n2) -- ++(1,0) node[above] {\( C \)};
+          \draw[->] (n1) |- (h1);
+          \draw[->] (h1) -| (sum2.south) node[below right,scale=0.8] {\( + \)};
+          \draw[->] (n2) |- (h2);
+          \draw[->] (h2) -| (sum1.south) node[below right,scale=0.8] {\( - \)};
+        \end{tikzpicture}
+      \end{figure}
 
     \item Applicare la trasformazione di retroazione per ogni blocco in retroazione:
-      \label{28-11-D4}
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+          [
+          every node/.style={node distance=0.6cm},
+          ]
+          \def\ns{0.8cm}
+          \def\ss{0.7cm}
+          \node[draw,circle,minimum size=\ss] (sum1) {};
+          \node[draw,blue,minimum size=\ns,right=of sum1,scale=1.4] (g1) {\(\frac{G_1 \cdot G_4}{1 - G_1 \cdot G_4 \cdot H_1}\)};
+          \node[draw,minimum size=\ns,below=of g1] (h2) {\( H_2 \)};
+          \node[draw,minimum size=\ns,right=of g1] (g2) {\( G_2 + G_3 \)};
+          \coordinate[right=of g2] (n2);
+          \fill (n2) circle (0.05cm);
+
+          \draw[<-] (sum1.west) node[above left,scale=0.8] {\( + \) } 
+            -- ++(-1,0) node[above] {\( R \)};
+          \draw[->] (sum1) -- (g1);
+          \draw[->] (g1) -- (g2);
+          \draw[->] (g2) -- (n2) -- ++(1,0) node[above] {\( C \)};
+          \draw[->] (n2) |- (h2);
+          \draw[->] (h2) -| (sum1.south) node[below right,scale=0.8] {\( - \)};
+        \end{tikzpicture}
+      \end{figure}
 
     \item Applicare la trasformazione dello spostamento dei nodi/nodi sommatori:
 
@@ -5882,8 +6007,100 @@ I blocchi possono essere combinati tra loro in diversi modi:
       In questo caso non serve
 
     \item Ripetere i passaggi fino ad ottenere un unico blocco:
-      \label{28-11-D5}
-      \label{28-11-D6}
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+          [
+          every node/.style={node distance=0.6cm},
+          ]
+          \def\ns{0.8cm}
+          \def\ss{0.7cm}
+          \node[draw,circle,minimum size=\ss] (sum1) {};
+          \node[draw,blue,minimum size=\ns,right=of sum1,scale=1.4] (g1)
+            {\(\frac{
+                G_1 \cdot G_4 \cdot \left( G_2 + G_3 \right) 
+              }{
+              1 - G_1 \cdot G_4 \cdot H_1}\)
+            };
+          \node[draw,minimum size=\ns,below=of g1] (h2) {\( H_2 \)};
+          \coordinate[right=of g1] (n2);
+          \fill (n2) circle (0.05cm);
+
+          \draw[<-] (sum1.west) node[above left,scale=0.8] {\( + \) } 
+            -- ++(-1,0) node[above] {\( R \)};
+          \draw[->] (sum1) -- (g1);
+          \draw[->] (g1) -- (n2) -- ++(1,0) node[above] {\( C \)};
+          \draw[->] (n2) |- (h2);
+          \draw[->] (h2) -| (sum1.south) node[below right,scale=0.8] {\( - \)};
+        \end{tikzpicture}
+      \end{figure}
+      \noindent
+      Il sistema finale è dato da:
+      \[
+        \frac{
+          G_1 \cdot G_4 \left( G_2 + G_3 \right)
+        }{
+          1 - G_1 \cdot G_4 \cdot H_1
+        }
+        \cdot 
+        \frac{
+          1
+        }{
+          1 + \frac{
+            G_1 \cdot G_4 \left( G_2 + G_3 \right)
+          }{
+            1 - G_1 \cdot G_4 \cdot H_1
+          }
+          \cdot
+          H_2
+        }
+        =
+      \] 
+      \[
+        =\frac{
+          G_1 \cdot G_4 \left( G_2 + G_3 \right)
+        }{
+          1 - \cancel{G_1 \cdot G_4} \cdot H_1
+        }
+        \cdot 
+        \frac{
+          1 - \cancel{G_1 \cdot G_4} \cdot H_1
+        }{
+          \left[ 1 - G_1 \cdot G_4 \cdot H_1 - G_1 \cdot G_4 \left( G_2 + G_3 \right)  \right] \cdot H_2
+        }
+        =
+      \] 
+      \[
+        =\frac{
+          G_1 \cdot G_4 \left( G_2 + G_3 \right) 
+        }{
+          H_2 - G_1 \cdot G_4 \cdot H_1 \cdot H_2 - G_1 \cdot G_4 \left( G_2 + G_3 \right) \cdot H_2
+        }
+        =
+      \] 
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+          [
+          every node/.style={node distance=0.6cm},
+          ]
+          \def\ns{0.8cm}
+          \def\ss{0.7cm}
+          \node[draw,blue,minimum size=\ns,right=of sum1,scale=1.4] (g1)
+            {\(\frac{
+                G_1 \cdot G_4 \left( G_2 + G_3 \right) 
+              }{
+                H_2 - G_1 \cdot G_4 \cdot H_1 \cdot H_2 - G_1 \cdot G_4 \left( G_2 + G_3 \right) \cdot H_2
+              }
+              \)
+            };
+
+          \draw[<-] (g1.west) -- ++(-1,0) node[above] {\( R \)};
+          \draw[->] (g1.east) -- ++(1,0) node[above] {\( C \)};
+        \end{tikzpicture}
+      \end{figure}
+      \noindent
+      Questo è il sistema finale in forma canonica.
   \end{enumerate}
 \end{example}
 
