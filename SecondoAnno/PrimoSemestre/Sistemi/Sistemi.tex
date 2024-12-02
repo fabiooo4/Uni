@@ -6106,7 +6106,41 @@ I blocchi possono essere combinati tra loro in diversi modi:
 
 \begin{example}
   Consideriamo il seguente sistema:
-  \label{28-11-D7}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      [
+      every node/.style={node distance=0.6cm},
+      ]
+      \node (x) {\( x \) };
+      \node[draw,minimum size=1cm,right=of x] (A) {\( A \) };
+      \coordinate[right=of A] (n1);
+      \fill (n1) circle (0.05cm);
+      \node[draw,circle,minimum size=0.7cm,right=of n1] (sum1) {1};
+      \node[draw,minimum size=1cm,right=of sum1] (B) {\( B \) };
+      \node[draw,circle,minimum size=0.7cm,right=of B] (sum2) {2};
+      \coordinate[right=of sum2] (n2);
+      \fill (n2) circle (0.05cm);
+      \node[right=of n2] (y) {\( y \)};
+      \node[draw,minimum size=1cm,below=of sum1] (D) {\( D \) };
+      \node[draw,minimum size=1cm,above=of B] (C) {\( C \) };
+      \node[draw,minimum size=1cm,above=of C] (E) {\( E \) };
+      \node[draw,circle,minimum size=0.7cm,left=of C] (sum3) {};
+
+      \draw[->] (x) -- (A);
+      \draw[->] (A) -- (sum1.west) node[above left,scale=0.8] {\( + \) };
+      \draw[->] (sum1) -- (B);
+      \draw[->] (B) -- (sum2);
+      \draw[->] (sum2) -- (y);
+      \draw[->] (n1) |- (D);
+      \draw[->] (D) -| (sum2);
+      \draw[->] (n2) |- (C);
+      \draw[->] (n2) |- (E);
+      \draw[->] (E) -| (sum3.north) node[above left,scale=0.8] {\( - \)};
+      \draw[->] (C) -- (sum3.east) node[above right,scale=0.8] {\( + \)};
+      \draw[->] (sum3) -- (sum1.north) node[above right,scale=0.8] {\( - \)};
+      \end{tikzpicture}
+  \end{figure}
   \noindent
   dove:
   \[
@@ -6121,11 +6155,143 @@ I blocchi possono essere combinati tra loro in diversi modi:
   \noindent
   I passaggi sono i seguenti:
   \begin{enumerate}
-    \item \label{28-11-D8}
-    \item \label{28-11-D9}
-    \item \label{28-11-D10}
-    \item \label{28-11-D11}
-    \item \label{28-11-D12}
+    \item 
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+          [
+          every node/.style={node distance=0.6cm},
+          ]
+          \node (x) {\( x \) };
+          \node[draw,minimum size=1cm,right=of x] (A) {\( A \) };
+          \coordinate[right=of A] (n1);
+          \fill (n1) circle (0.05cm);
+          \node[draw,circle,minimum size=0.7cm,right=of n1] (sum1) {1};
+          \node[draw,minimum size=1cm,right=of sum1] (B) {\( B \) };
+          \node[draw,circle,minimum size=0.7cm,right=of B] (sum2) {2};
+          \coordinate[right=of sum2] (n2);
+          \fill (n2) circle (0.05cm);
+          \node[right=of n2] (y) {\( y \)};
+          \node[draw,minimum size=1cm,below=of sum1] (D) {\( D \) };
+          \node[draw,blue,minimum size=1cm,above=of B] (C) {\( C - E \) };
+
+          \draw[->] (x) -- (A);
+          \draw[->] (A) -- (sum1.west) node[above left,scale=0.8] {\( + \) };
+          \draw[->] (sum1) -- (B);
+          \draw[->] (B) -- (sum2);
+          \draw[->] (sum2) -- (y);
+          \draw[->] (n1) |- (D);
+          \draw[->] (D) -| (sum2);
+          \draw[->] (n2) |- (C);
+          \draw[->] (C) -| (sum1.north) node[above right,scale=0.8] {\( - \)};
+        \end{tikzpicture}
+      \end{figure}
+    \item 
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+          [
+          every node/.style={node distance=0.6cm},
+          ]
+          \node (x) {\( x \) };
+          \node[draw,minimum size=1cm,right=of x] (A) {\( A \) };
+          \coordinate[right=of A] (n1);
+          \fill (n1) circle (0.05cm);
+          \coordinate[right=1.5cm of n1] (n2);
+          \node[draw,circle,minimum size=0.7cm,right=1cm of n2] (sum2) {2};
+          \node[draw,circle,minimum size=0.7cm,right=of sum2] (sum1) {1};
+          \node[draw,minimum size=1cm,right=of sum1] (B) {\( B \) };
+          \coordinate[right=of B] (n3);
+          \fill (n3) circle (0.05cm);
+          \node[right=of n3] (y) {\( y \)};
+          \node[draw,blue,minimum size=1cm,below=of n2] (D) {\( \frac{D}{B} \) };
+          \node[draw,minimum size=1cm,above=of B] (C) {\( C-E \) };
+
+          \draw[->] (x) -- (A);
+          \draw[->] (A) -- (sum2.west) node[above left,scale=0.8] {\( + \) }
+            node[midway,above,blue] {1};
+          \draw[->] (sum2) -- (sum1.west) node[above left,scale=0.8] {\( + \) };
+          \draw[->] (sum1) -- (B);
+          \draw[->] (B) -- (y);
+          \draw[->] (n3) |- (C);
+          \draw[->] (C) -| (sum1.north) node[above right,scale=0.8] {\( - \)};
+          \draw[->] (n1) |- (D);
+          \draw[->] (D) -| (sum2.south) node[below right,scale=0.8] {\( - \)};
+        \end{tikzpicture}
+      \end{figure}
+    \item 
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+          [
+          every node/.style={node distance=0.6cm},
+          ]
+          \node (x) {\( x \) };
+          \node[draw,minimum size=1cm,right=of x] (A) {\( A \) };
+          \node[draw,blue,minimum size=1cm,right=of A] (D) {\( 1 - \frac{D}{B} \) };
+          \node[draw,circle,minimum size=0.7cm,right=of D] (sum1) {1};
+          \node[draw,minimum size=1cm,right=of sum1] (B) {\( B \) };
+          \coordinate[right=of B] (n3);
+          \fill (n3) circle (0.05cm);
+          \node[right=of n3] (y) {\( y \)};
+          \node[draw,minimum size=1cm,above=of B] (C) {\( C-E \) };
+
+          \draw[->] (x) -- (A);
+          \draw[->] (A) -- (D);
+          \draw[->] (D) -- (sum1.west) node[above left,scale=0.8] {\( + \) };
+          \draw[->] (sum1) -- (B);
+          \draw[->] (B) -- (y);
+          \draw[->] (n3) |- (C);
+          \draw[->] (C) -| (sum1.north) node[above right,scale=0.8] {\( - \)};
+        \end{tikzpicture}
+      \end{figure}
+    \item 
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+          [
+          every node/.style={node distance=0.6cm},
+          ]
+          \node (x) {\( x \) };
+          \node[draw,minimum size=1cm,right=of x] (A) {\( A \) };
+          \node[draw,minimum size=1cm,right=of A] (D) {\( \frac{B-D}{B} \) };
+          \node[draw,blue,minimum size=1cm,right=of D] (B) {\( \frac{B}{1 + B \left( C-E \right) } \) };
+          \node[right=of B] (y) {\( y \)};
+
+          \draw[->] (x) -- (A);
+          \draw[->] (A) -- (D);
+          \draw[->] (D) -- (B);
+          \draw[->] (B) -- (y);
+        \end{tikzpicture}
+      \end{figure}
+    \item Il sistema finale è dato da:
+      \[
+      A \cdot \frac{
+        B - D
+      }{
+        \cancel{B}
+      }
+      \cdot 
+      \frac{
+        \cancel{B}
+      }{
+        1 + B \left( C - E \right) 
+      }
+      \] 
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+          [
+          every node/.style={node distance=0.6cm},
+          ]
+          \node (x) {\( x \) };
+          \node[draw,blue,minimum size=1cm,right=of x] (A) {\( \frac{A \cdot \left( B - D \right) }{1 + B \left( C - E \right) } \) };
+          \node[right=of A] (y) {\( y \)};
+
+          \draw[->] (x) -- (A);
+          \draw[->] (A) -- (y);
+        \end{tikzpicture}
+      \end{figure}
   \end{enumerate}
   Alla fine la funzione di trasferimento del sistema sarà:
   \[
