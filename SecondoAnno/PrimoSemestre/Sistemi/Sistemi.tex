@@ -6285,7 +6285,7 @@ I blocchi possono essere combinati tra loro in diversi modi:
           every node/.style={node distance=0.6cm},
           ]
           \node (x) {\( x \) };
-          \node[draw,blue,minimum size=1cm,right=of x] (A) {\( \frac{A \cdot \left( B - D \right) }{1 + B \left( C - E \right) } \) };
+          \node[draw,blue,minimum size=1cm,right=of x,scale=1.4] (A) {\( \frac{A \cdot \left( B - D \right) }{1 + B \left( C - E \right) } \) };
           \node[right=of A] (y) {\( y \)};
 
           \draw[->] (x) -- (A);
@@ -6303,5 +6303,304 @@ I blocchi possono essere combinati tra loro in diversi modi:
   \end{aligned}
   \] 
 \end{example}
+
+\section{Diagrammi di flusso}
+\subsection{Nomenclatura}
+\label{02-12-D1}
+
+Prendiamo ad esempio il seguente diagramma:
+\label{02-12-D5}
+definiamo:
+\begin{itemize}
+  \item \textbf{Percorso in avanti}: Un cammino che unisce un nodo di ingresso ad un nodo 
+    di uscita
+    \label{02-12-D6}
+
+  \item \textbf{Percorso ad anello}: Un cammino che inizia e finisce nello stesso nodo
+    senza passare più volte per nodi intermedi. Si dice \textbf{self loop} quando
+    passa più volte per lo stesso nodo.
+    \label{02-12-D7}
+
+  \item \textbf{Guadagno}: Prodotto di tutti i pesi degli archi lungo un percorso
+\end{itemize}
+
+\subsection{Regole di trasformazione}
+\subsubsection{Regola dell'addizione}
+\[
+\sum x_1 \cdot A_i = y
+\] 
+\label{02-12-D2}
+
+\subsubsection{Regola della trasmissione}
+\[
+y_i = x \cdot A_i
+\] 
+\label{02-12-D3}
+
+\subsubsection{Regola della moltiplicazione}
+\[
+y = x \cdot A \cdot x_2 \cdot B \ldots
+\] 
+\label{02-12-D4}
+
+\subsection{Passaggio dallo schema a blocchi al diagramma di flusso}
+Prendiamo uno schema a blocchi base:
+\label{02-12-D8}
+Per convertire questo schema in un diagramma di flusso dobbiamo seguire le seguenti regole:
+\begin{enumerate}
+  \item Individuare i nodi di ingresso e di uscita
+    \label{02-12-D9}
+  \item Per ogni nodo somma si aggiunge un nodo
+    \label{02-12-D10}
+  \item Per ogni nodo dello schema a blocchi si aggiunge un nodo al diagramma di flusso
+    \label{02-12-D11}
+  \item Unisco i nodi con archi il cui peso è la funzione dentro al blocco. Se tra i due
+    nodi non c'è un blocco, l'arco avrà peso 1
+    \label{02-12-D12}
+\end{enumerate}
+L'obiettivo anche in questo caso è quello di ridurre il diagramma di flusso ad un unico
+arco per ottenere la funzione di trasferimento:
+\[
+\frac{C}{R} = \frac{G}{1 \pm H \cdot G}
+\] 
+
+\begin{definition}[Formula di Mason]
+  La funzione di trasferimento è data da:
+  \[
+  T = \frac{\sum_i p_i \Delta_i}{\Delta}
+  \] 
+  dove:
+  \begin{itemize}
+    \item \( p_i \): È il guadagno dell'\( i \)-esimo percorso in avanti.
+    \item \( \Delta \): È il discriminante del sistema ed è definito come:
+      \[
+        \begin{aligned}
+          \Delta &= 1 - (-1)^{k+1} \sum_k \sum_j p_{j,k}\\
+                 &= 1 - \sum_j p_{j,1} + \sum_j p_{j,2} - \sum_j p_{j,3} + \ldots\\
+                 &= 1 - \left( \parbox{3cm}{somma dei guadagni\\di tutti gli archi} \right) +
+                 \left( \parbox{4cm}{somma dei guadagni\\dei prodotti degli anelli che\\
+                 non si toccano due a due} \right) +\\
+                 &\left( \parbox{4cm}{Somma dei guadagni\\dei prodotti degli anelli che\\non
+                 si toccano tre a tre} \right) + \ldots
+        \end{aligned}
+      \]
+      Dove \( p_{j,k} \) è il \( j \)-esimo prodotto dei percorsi di ordine \( k \) che
+      non si toccano.
+    \item \( \Delta_i \): Sono i discriminanti in cui i pesi degli archi che toccano
+      il percorso vengono messi a \( 0 \).
+  \end{itemize}
+\end{definition}
+
+\begin{example}
+  Prendiamo ad esempio il seguente diagramma di flusso:
+  \label{02-12-D13}
+  Il percorso 1 è:
+  \[
+  P_1 = \left( x_1,x_2,x_3,x_4 \right) = 1 \cdot G \cdot 1 = G
+  \] 
+  Il percorso 1,1 è:
+  \[
+    P_{1,1} = P_1^1 = A_{1,1} = A_1^1 = \left( x_2, x_3 \right) = -GH
+  \]
+  Ci sarebbero anche gli anelli che hanno guadagno 1, ma non vengono considerati.
+  \[
+    \color{blue}P_{2,1} = P_2^1 = A_{2,1} = A_2^1 = \left( x_1, x_2 \right) = 1 \cdot 1 = 1
+  \] 
+  Ora si può calcolare il discriminante:
+  \[
+    \Delta = 1 - \left( P_{1,1} \right) + \left( 0 \right) = 1 + GH
+  \] 
+  Annullo tutti gli archi che toccano il percorso 1:
+  \[
+    \Delta_1 = 1 - \cancel{P_{1,1}}^0 = 1 - 0 = 1
+  \]
+  Ora si può calcolare la funzione di trasferimento:
+  \[
+    T = \frac{\sum_1 P_i \Delta_i}{\Delta} = \frac{P_1 \cdot \Delta_1}{\Delta} = \frac{G \cdot 1}{1 + GH} = \frac{G}{1 + GH}
+  \] 
+\end{example}
+\begin{example}
+  Prendiamo ad esempio il seguente schema a blocchi:
+  \label{02-12-D14}
+  Deriviamo i nodi del diagramma di flusso:
+  \label{02-12-D15}
+  Rappresentiamo il diagramma di flusso:
+  \label{02-12-D16}
+  Le due rappresentazioni sono equivalenti.
+
+  \vspace{1em}
+  \noindent
+  Utilizziamo la formula di Mason per calcolare la funzione di trasferimento:
+  \begin{enumerate}
+    \item Troviamo tutti i percorsi:
+      \begin{enumerate}
+        \item 
+          \label{02-12-D17}
+          \[
+            P_1 = AC
+          \] 
+          I nodi coinvolti sono: \( \left( x_1,x_2,x_3,x_4,x_5,x_6,x_7,x_8,x_9,x_{10} \right) \) 
+
+        \item 
+          \label{02-12-D18}
+          \[
+            P_2 = FC
+          \] 
+          I nodi coinvolti sono: \( \left( x_1,x_2,x_5,x_6,x_7,x_8,x_9,x_{10} \right) \)
+
+        \item
+          \label{02-12-D19}
+          \[
+            P_3 = AG
+          \]
+          I nodi coinvolti sono: \( \left( x_1,x_2,x_3,x_4,x_5,x_6,x_8,x_9,x_{10} \right)  \) 
+
+        \item
+          \label{02-12-D20}
+          \[
+            P_3 = FG
+          \]
+          I nodi coinvolti sono: \( \left( x_1,x_2,x_5,x_6,x_8,x_9,x_{10} \right)  \) 
+      \end{enumerate}
+
+    \item Troviamo tutti gli anelli:
+      
+      \begin{itemize}
+        \item Anelli di ordine 1
+          \begin{enumerate}
+            \item 
+              \label{02-12-D21}
+              \[
+                A_1^1 = -AB \quad \left( x_3,x_4 \right) 
+              \]
+
+            \item
+              \label{02-12-D22}
+              \[
+                A_2^1 = -CD \quad \left( x_7,x_8,x_9 \right) 
+              \]
+
+            \item
+              \label{02-12-D23}
+              \[
+                A_3^1 = FCE \quad \left( x_1,x_2,x_5,x_6,x_7,x_8,x_9 \right) 
+              \]
+
+            \item
+              \label{02-12-D24}
+              \[
+                A_4^1 = FGE \quad \left( x_1,x_2,x_3,x_6,x_8,x_9,x_{10} \right) 
+              \]
+
+            \item
+              \label{02-12-D25}
+              \[
+                A_5^1 = ACE \quad \left( x_1,x_2,x_3,x_4,x_5,x_6,x_7,x_8,x_9,x_{10} \right) 
+              \]
+
+            \item
+              \label{02-12-D26}
+              \[
+                A_6^1 = AGE \quad \left( x_1,x_2,x_3,x_4,x_5,x_6,x_8,x_9,x_{10} \right) 
+              \]
+          \end{enumerate}
+
+        \item Anelli di ordine 2:
+          \begin{table}[H]
+            \centering
+            \bgroup
+            \def\arraystretch{1.5}
+            \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+              \hline
+              & Anelli & \( x_1 \) & \( x_2 \) & \( x_3 \) & \( x_4 \) & \( x_5 \) & \( x_6 \) & \( x_7 \) & \( x_8 \) & \( x_9 \) & \( x_{10} \) \\
+              \hline
+              \( A_1^1 \) & -AB & & &$\times$&$\times$& & & & & & \\ 
+              \hline
+              \( A_2^1 \) & -CD & & & & & & &$\times$&$\times$&$\times$& \\
+              \hline
+              \( A_3^1 \) & FCE &$\times$&$\times$& & &$\times$&$\times$&$\times$&$\times$&$\times$& \\
+              \hline
+              \( A_4^1 \) & FGE &$\times$&$\times$& & &$\times$&$\times$& &$\times$&$\times$&$\times$\\
+              \hline
+              \( A_5^1 \) & ACE &$\times$&$\times$&$\times$&$\times$&$\times$&$\times$&$\times$&$\times$&$\times$&$\times$\\
+              \hline
+              \( A_6^1 \) & AGE &$\times$&$\times$&$\times$&$\times$&$\times$&$\times$& &$\times$&$\times$&$\times$\\
+              \hline
+            \end{tabular}
+            \egroup
+          \end{table}
+          Si controlla ogni arco con ogni altro arco (a 2 a 2) e si controlla se hanno
+          nodi in comune. Se non hanno nodi in comune si moltiplicano i guadagni
+          degli archi.
+          \[
+          A_1^2 = (-AB) \cdot (-CD) = ABCD
+          \] 
+          \[
+          A_2^2 = (-AB) \cdot FCE = -ABCEF
+          \] 
+          \[
+          A_3^2 = (-AB) \cdot FGE = -ABEFG
+          \] 
+          Ora si controlla a 3 a 3:
+
+          Non esistono nodi di ordine 3, quindi non esistono triplette di archi che
+          non si toccano.
+      \end{itemize}
+
+    \item Calcoliamo il discriminante:
+      \[
+        \begin{aligned}
+          \Delta &= 1 - \left( A_1^1 + A_2^1 + A_3^1 + A_4^1 + A_5^1 + A_6^1 \right) +
+                 \left( A_1^2 + A_2^2 + A_3^2 \right)\\
+                 &= 1 - \left( -AB - CD + FCE + FGE + ACE + AGE \right) +\\
+                 &\left( ABCD - ABCEF - ABEFG \right)\\
+                 &= 1 + AB + CD - FCE - FGE - ACE - AGE + \\
+                 &ABCD - ABCEF - ABEFG
+        \end{aligned}
+      \]
+    \item Calcoliamo i discriminanti di tutti i percorsi:
+      \[
+        \begin{aligned}
+          P_1 &= AC\\
+          \Delta_1 &= 1 + \cancel{AB} + \cancel{CD} - \cancel{FCE} - \cancel{FGE} - \cancel{ACE} - \cancel{AGE} +\\
+                  &\cancel{ABCD} - \cancel{ABCEF} - \cancel{ABEFG} = 1
+        \end{aligned}
+      \] 
+      \[
+        \begin{aligned}
+          P_2 &= FC\\
+          \Delta_2 &= 1 + AB + \cancel{CD} - \cancel{FCE} - \cancel{FGE} - \cancel{ACE} - \cancel{AGE} +\\
+                  &\cancel{ABCD} - \cancel{ABCEF} - \cancel{ABEFG} = 1 + AB
+        \end{aligned}
+      \] 
+      \[
+        \begin{aligned}
+          P_3 &= AG\\
+          \Delta_3 &= 1 + \cancel{AB} + \cancel{CD} - \cancel{FCE} - \cancel{FGE} - \cancel{ACE} - \cancel{AGE} +\\
+                  &\cancel{ABCD} - \cancel{ABCEF} - \cancel{ABEFG} = 1
+        \end{aligned}
+      \]
+      \[
+        \begin{aligned}
+          P_4 &= FG\\
+          \Delta_4 &= 1 + AB + \cancel{CD} - \cancel{FCE} - \cancel{FGE} - \cancel{ACE} - \cancel{AGE} +\\
+                  &\cancel{ABCD} - \cancel{ABCEF} - \cancel{ABEFG} = 1 + AB
+        \end{aligned}
+      \]
+
+    \item Calcoliamo la funzione di trasferimento:
+      \[\scalebox{0.8}{
+          $
+            \begin{aligned}
+              T &= \frac{\sum_i P_i \Delta_i}{\Delta}\\
+                &= \frac{AC \cdot 1 + FC \cdot (1 + AB) + AG \cdot 1 + FG \cdot (1 + AB)}{1 + AB + CD - FCE - FGE - ACE - AGE + ABCD - ABCEF - ABEFG}\\
+                &= \frac{AC + FC + FCAB + AG + FG + FGAB}{1 + AB + CD - FCE - FGE - ACE - AGE + ABCD - ABCEF - ABEFG}\\
+            \end{aligned}
+            $
+      }
+      \]
+  \end{enumerate}
+\end{example}
+
 
 \end{document}
