@@ -2463,6 +2463,85 @@ while x != root and color(x) == black
 
 \noindent
 La complessità di questo algoritmo è \( \Theta(\log n) \) si fa un massimo di 3 rotazioni.
+
+\item \textbf{Selezione}: La selezione di un nodo in un albero RB si fa allo stesso modo
+  di un albero binario di ricerca. Si parte dalla radice e si scende fino a trovare il
+  nodo desiderato. La complessità di questo algoritmo è \( O(\log n) \). Se riesco
+  a trovare un modo per decidere se andare a sinistra o a destra in tempo costante
+  allora è sufficiente a far diventare la complessità logaritmica.
+
+  \begin{itemize}
+    \item \textbf{Dato l'indice da trovare}:
+      \vspace{1em}
+      \noindent
+      Per sapere la posizione dell'elemento della radice si può salvare la grandezza del
+      sottoalbero radicato nel nodo \( x \) e usare la seguente formula:
+      \[
+        size(left(x)) + 1
+      \] 
+      Usando questa formula si può decidere se andare a sinistra o a destra in tempo costante
+      e lo pseudocodice dell'algoritmo è il seguente:
+\begin{lstlisting}[language=Scala]
+// x: Nodo da cui si parte la selezione
+// i: Indice dell'elemento da selezionare
+select(x,i)
+  r <- size(left(x)) + 1
+  if i == r
+    return x
+  else if i < r
+    return select(left(x),i)
+  else
+    return select(right(x),i-r)
+    \end{lstlisting}
+    La complessità di questo algoritmo è \( O(\log n) \) perchè la decisione di andare
+    a sinistra o a destra è in tempo costante.
+
+    \vspace{1em}
+    \noindent
+    Questo crea il problema di dover aggiornare la grandezza del sottoalbero ad ogni
+    inserimento e rimozione di un nodo.
+    \begin{itemize}
+      \item In un inserimento, il valore size del nodo aggiunto vlae 1, mentre il campo size
+        di tutti i nodi del percorso seguito per inserire il nodo aumenta di 1.
+      \item In un estrazione, il campo size di tutti i nodi del percorso seguito per rimuovere
+        il nodo diminuisce di 1.
+      \item Nella sistemazione dell'albero, i campi del colore non hanno alcuna influenza
+        sul campo size, mentre se si fa una rotazione il valore di size deve cambiare:
+\begin{lstlisting}[language=Scala]
+size(x) <- size(left(x)) + size(right(x)) + 1
+      \end{lstlisting}
+      Questo funziona perchè il campo size è la somma dei campi size dei figli più 1,
+      cioè viene ricalcolato da capo utilizzando il valore salvato nei figli.
+
+      In ogni caso dopo una rotazione gli unici nodi che cambiano il campo size sono
+      i nodi alla radice che si scambiano il valore.
+  \end{itemize}
+  Abbiamo dimostrato che si può mantenere il campo size mantenendo la complessità
+  logaritmica.
+
+  \item \textbf{Dato un nodo da trovare}:
+    \vspace{1em}
+    \noindent
+    Lo pseudocodice dell'algoritmo è il seguente:
+\begin{lstlisting}[language=Scala]
+// x: Nodo da cui si parte la selezione
+// y: Nodo da trovare
+rank(x)
+  count <- size(left(x)) + 1
+  while x != root
+    // Se x e' figlio destro del padre
+    if x == right(parent(x))
+      // Si aggiunge la grandezza del sottoalbero sinistro del padre
+      count <- count + size(left(parent(x)) + 1
+
+    x <- parent(x)
+
+  return count
+\end{lstlisting}
+    La complessità di questo algoritmo è \( O(\log n) \) perchè la decisione di andare
+    a sinistra o a destra è in tempo costante.
+  \end{itemize}
+
 \end{itemize}
 
 \vspace{1em}
@@ -2490,6 +2569,26 @@ visit(x,A,i)
 \end{lstlisting}
 \noindent
 Questo algoritmo ha complessità \( \Theta(n) \) perchè visita tutti i nodi dell'albero.
+\[
+  T(n) = T(n_{\text{left}}) + 1 + T(n_{\text{right}}) = n_{\text{left}} + 1 + n_{\text{right}} = n
+\] 
+
+\vspace{1em}
+\noindent
+Ci sono anche le seguenti alternative:
+\begin{lstlisting}[language=Scala]
+pre_visit(x,A,i)
+  if x != nil
+    visit(x,A,i) // Inserisce x nell'array
+    pre_visit(left(x),A,i)
+    pre_visit(right(x),A,i)
+
+post_visit(x,A,i)
+  if x != nil
+    post_visit(left(x),A,i)
+    post_visit(right(x),A,i)
+    visit(x,A,i) // Inserisce x nell'array
+\end{lstlisting}
 
 \vspace{2em}
 \noindent
@@ -2572,6 +2671,26 @@ Questo algoritmo ha complessità:
 Supponiamo che \( C(\texttt{union}) = \log n \), quindi \( T(n) = \Theta(n) \), ma
 sappiamo che in tempo minore di \( n \log n \) non si può costruire un RB-albero,
 di conseguenza non è possibile che la union abbia complessità \( \log n \).
+
+\subsection{Campi aggiuntivi}
+Si possono aggiungere dei campi aggiuntivi alle strutture dati per velocizzare
+alcuni algoritmi, ma bisogna stare attenti a mantenere la complessità delle operazioni
+inalterata.
+
+\vspace{1em}
+\noindent
+\begin{theorem}
+  Sia \( F \) un campo aggiuntivo, se
+  \[
+  \exists f . \forall x F(x) = f(key(x), F(left(x)), F(right(x)), key(left(x)), key(right(x)))
+  \] 
+  allora \( F \) è mantenibile in \( \log n \).
+
+  \vspace{1em}
+  \noindent
+  Cioè se il campo aggiuntivo è calcolabile utilizzando le operazioni definite 
+  in \( f \) allora la complessità di \( F \) è mantenibile.
+\end{theorem}
 
 
 \end{document}
