@@ -1013,4 +1013,25 @@ rappresentazione:
 Anche questa rappresentazione è corretta, in quanto il numero di segmenti trasmessi è
 sempre 87.
 
+\subsubsection{Esercizio 5}
+Un applicazione \( A \) trasferisce \( 77500 \,byte\) verso un'applicazione \( B \).
+\[
+\begin{aligned}
+  MSS &= 1250 \,byte\\
+  RCVWND_{\text{iniziale}} &= 10000 \,byte\\
+  SSTHRESH &= RCVWND_{\text{iniziale}}\\
+  RTT &= 1 \,second0 \to \text{costante}\\
+  RTO &= 2 \cdot RTT \to \text{raddoppia in caso di perdite consecutive}\\
+  \text{Down di rete} &= [8 \to 10],[13.5 \to 14.5]
+\end{aligned}
+\]
+A partire dall'istante \( t_a > 4\,sec \) la destinazione annuncia una
+\[
+  RCVWND = 17500\,byte
+\]
+A partire dall'istante \( t_b > 8\,sec \) la destinazione annuncia una
+\[
+  RCVWND = 12500\,byte
+\] 
+
 \end{document}

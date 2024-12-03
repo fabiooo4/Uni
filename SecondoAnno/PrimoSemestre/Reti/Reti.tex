@@ -3070,4 +3070,103 @@ Se un router non è aggiornato, e di conseguenza non è in grado di riconoscere 
 header, lo ignora. Questo rende il protocollo estensibile, quindi nuove funzionalità
 vengono implementate con nuovi extensione header.
 
+\section{Livello Data Link}
+Ogni tecnologia ha uno specifico protocollo di livello data link:
+\label{03-12-D1}
+L'obiettivo del livello data link è quello di gestire le problematiche legate alla
+trasmissione su un \textbf{singolo hop}.
+
+Ogni singolo header del livello data link dipende dalla tecnologia utilizzata (ad esempio
+wifi (IEEE 802.11), ethernet (IEEE 802.3), Fibra ottica (SDH) ecc...).
+
+\subsection{Problematiche}
+Le principali problematiche legate alla trasmissione su un singolo hop sono:
+\begin{itemize}
+  \item \textbf{Gestione del mezzo condiviso}
+  \item \textbf{Delimitazione delle trame}
+\end{itemize}
+Bisogna regolare l'accesso al mezzo condiviso, in modo da:
+\begin{itemize}
+  \item \textbf{Minimizzare le collisioni}: Più utenti trasmettono contemporaneamente e 
+    l'informazione va persa
+  \item \textbf{Massimizzare l'utilizzo del mezzo}
+\end{itemize}
+
+\subsection{Classificazione delle metodologie per l'allocazione del canale}
+Ci sono due tipi di allocazione:
+\begin{itemize}
+  \item \textbf{Allocazione statica}: La risorsa viene divisa staticamente tra i diversi
+    partecipanti all'interno della rete. TDM (Time Division Multiplexing) è un esempio
+    di allocazione statica che divide il tempo in slot temporali e assegna uno slot ad
+    ognuno degli utenti. Quando gli slot finiscono si cicla la lista e si riparte da
+    capo.
+
+    Le risorse non vengono massimizzate perchè se un utente non utilizza la risorsa
+    assegnatagli, la risorsa rimane inutilizzata.
+
+    \vspace{1em}
+    \noindent
+    Un altro esempio è FDM (Frequency Division Multiplexing) che divide la banda in
+    sottobande e assegna una sottobanda ad ogni utente (come la radio).
+
+    \vspace{1em}
+    \noindent
+    Tutti questi metodi non sono adatti per la trasmissione su Internet perchè non
+    permettono di massimizzare l'utilizzo delle risorse.
+
+  \item \textbf{Allocazione dimanica}:
+    \begin{itemize}
+      \item \textbf{Dinamica a turno}: Un esempio è il protocollo \textbf{Token Ring} in cui
+        un token viene passato tra i vari utenti che lo mantengono per un certo tempo
+        massimo. Chi ha il token può trasmettere e quando finisce lo passa ad altri utenti,
+        chi non ha il token deve aspettare di riceverlo per trasmettere. Questo metodo 
+        permette di massimizzare l'utilizzo delle risorse perchè un utente che non ha
+        nulla da trasmettere passa subito il token ad un altro utente senza sprecare
+        risorse.
+
+        Questo protocollo annulla le collisioni perchè un solo utente trasmette alla
+        volta.
+
+        \vspace{1em}
+        \noindent
+        Il problema è che bisogna definire un ordine e gestire la priorità degli utenti
+        e i casi in cui un utente lascia o si unisce alla rete.
+      \item \textbf{Dinamica a contesa}: Alcuni protocolli importanti sono:
+        \begin{itemize}
+          \item Aloha
+          \item Slotte Aloha
+          \item CSMA (Carrier Sense Multiple Access) (base e varianti)
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Aloah}
+Ogni stazione è indipendente ed esegue la seguente procedura:
+\begin{enumerate}
+  \item Se la stazione ha dati da trasmettere:
+    \begin{itemize}
+      \item Li trasmette
+    \end{itemize}
+
+  \item Mentrela stazione trasmette, ascolta il canale. 
+    Se c'è collisione (potenza rilevata > potenza trasmessa)
+    \begin{itemize}
+      \item La stazione estrae un tempo casuale, aspetta tale tempo e torna
+        al punto 1.
+    \end{itemize}
+\end{enumerate}
+
+\begin{example}
+  Un esempio del protocollo tra 2 stazioni \( A \) e \( B \) è il seguente:
+  \label{03-12-D2}
+  \noindent
+  La scelta di un tempo casuale per la ritrasmissione serve per \textbf{desincronizzare}
+  le stazioni.
+
+\end{example}
+Il protocollo definisce una costante \( M \gg T \) dove \( T \) è il tempo di trama,
+cioè il tempo che si impiega a trasmettere la trama. Il tempo casuale è scelto 
+uniformemente tra 0 e \( M \). In caso di collisioni consecutive, \( M \) viene
+temporaneamente raddoppiato.
+
 \end{document}
