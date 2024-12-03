@@ -2637,13 +2637,78 @@ e ciò vorrebbe dire che è stato creato un algoritmo di ordinamento più veloce
 cosa impossibile, quindi l'algoritmo \texttt{array\_to\_rb} non può avere complessità
 \( f < n \log n \).
 
+\vspace{1em}
+\noindent
+Se visitiamo un albero con gli algoritmi in-visit e pre-visit ottieniamo una stringa di
+nodi, è possibile ricostruire l'albero originale partendo dalla radice?
+\begin{itemize}
+  \item \textbf{Pre}: 
+    $\overbrace{\color{green!50!black}A}^{\text{Radice}}
+      \quad \overbrace{\color{red}B \quad D \quad E \quad F}^{\text{Sinistra}
+      } \quad \overbrace{\color{blue}C \quad G \quad H \quad I}^{\text{Destra}}$
+    \item \textbf{In}: \hspace{0.3cm} 
+    $
+    \underbrace{\color{red}E\quad D \quad B \quad F}_{\text{Sinistra}}
+    \quad \underbrace{\color{green!50!black}A}_{\text{Radice}} \quad
+    \underbrace{\color{blue}G \quad C \quad H \quad I}_{\text{Destra}}$
+\end{itemize}
+Dalle stringhe si possono individuare quali sono i sottoalberi sinistro e destro
+e qual'è la radice. L'algoritmo per ricostruire l'albero è il seguente:
+\begin{lstlisting}[language=Scala]
+// P: Stringa di visita pre-ordine
+// I: Stringa di visita in-ordine
+// Supponiamo che le stringhe abbiano la stessa lunghezza
+str_to_tree(P,I)
+  if length(I) == 0
+    return nil
+  else
+    x <- new_node(P[1])
+    i <- find(I,P[1])
+    left(x) <- str_to_tree(P[2..i],I[1..i-1])
+    right(x) <- str_to_tree(P[i+1..length(P)],I[i+1..length(I)])
+    return x
+\end{lstlisting}
+
+\vspace{1em}
+\noindent
+L'albero sarà quindi:
+\begin{figure}[H]
+  \centering
+  \begin{forest}
+    for tree={
+      circle,
+      draw,
+      minimum size=2em,
+      inner sep=1pt,
+      s sep=1cm,
+    }
+    [A,green
+      [B,red
+        [D,red
+          [E,red]
+          [,no edge, draw=none]
+        ]
+        [F,red]
+      ]
+      [C,blue
+      [G,blue]
+        [H,blue
+          [,no edge, draw=none]
+          [I,blue]
+        ]
+      ]
+    ]
+  \end{forest}
+  \caption{Albero ricostruito}
+\end{figure}
+
 \vspace{2em}
 \noindent
 È possibile implementare un algoritmo che unisce 2 RB-alberi in un unico RB-albero
 in tempo \( \log n \)?
 \begin{lstlisting}[language=Scala]
-A1 <- array_to_rb(T1)
-A2 <- array_to_rb(T2)
+A1 <- rb_to_array(T1)
+A2 <- rb_to_array(T2)
 A <- merge(A1,A2)
 T <- array_to_rb(A)
 \end{lstlisting}
