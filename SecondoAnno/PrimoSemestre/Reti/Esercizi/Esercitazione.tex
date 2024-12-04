@@ -1013,7 +1013,7 @@ rappresentazione:
 Anche questa rappresentazione è corretta, in quanto il numero di segmenti trasmessi è
 sempre 87.
 
-\subsubsection{Esercizio 5}
+\subsection{Esercizio 5}
 Un applicazione \( A \) trasferisce \( 77500 \,byte\) verso un'applicazione \( B \).
 \[
 \begin{aligned}
@@ -1033,5 +1033,108 @@ A partire dall'istante \( t_b > 8\,sec \) la destinazione annuncia una
 \[
   RCVWND = 12500\,byte
 \] 
+
+\subsubsection{Risoluzione}
+Il numero di segmenti da trasmettere sono:
+\[
+  \frac{77500}{1250} = 62 \text{ segmenti}
+\]
+\[
+  RCVWND_{\text{iniziale}} = \frac{10000}{1250} = 8 \text{ segmenti}
+\]
+\[
+  \begin{aligned}
+    SSTHRESH &= 8 \text{ segmenti}\\
+    \quad t^{dst}_a > 4 \quad RCVWND &= 14 \text{ segmenti}\\
+    \quad t^{dst}_b > 8 \quad RCVWND &= 10 \text{ segmenti}
+  \end{aligned}
+\]
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \def\xscale{1/1.7}
+    \def\yscale{1/1.7}
+
+    \def\yaxis{14}
+    \def\xaxis{17}
+    \draw[->] (0,-0.2) -- (0,\yaxis*\yscale+1*\yscale) node[left] {\( w \)};
+    \draw[->] (-0.2,0) -- (\xaxis*\xscale+1*\xscale,0) node[below] {\( t \)};
+
+    % rcvwnd & ssthresh
+    \draw[red] (0,8*\yscale) node[above right] {\texttt{rcvwnd}}
+      -- (5*\xscale,8*\yscale) -- (5*\xscale,14*\yscale)
+      -- (9*\xscale,14*\yscale) -- (9*\xscale,10*\yscale)
+      -- (\xaxis*\xscale+1*\xscale,10*\yscale);
+    \draw[orange] (0,8*\yscale) node[below right] {\texttt{ssthresh}}
+      -- (10*\xscale,8*\yscale) -- (10*\xscale,6*\yscale)
+      -- (15*\xscale,6*\yscale) -- (15*\xscale,3*\yscale)
+      -- (\xaxis*\xscale+1*\xscale,3*\yscale);
+
+    % Down
+    \fill[red,opacity=0.2] (8*\xscale,0) rectangle (10*\xscale,\yaxis*\yscale);
+    \fill[red,opacity=0.2] (13.5*\xscale,0) rectangle (14.5*\xscale,\yaxis*\yscale);
+
+    \fill[blue] (0,1*\yscale) circle (0.05) node[scale=0.1] (1) {};
+    \fill[blue] (1*\xscale,2*\yscale) circle (0.05) node[scale=0.1] (2) {};
+    \fill[blue] (2*\xscale,4*\yscale) circle (0.05) node[scale=0.1] (3) {};
+    \fill[blue] (3*\xscale,8*\yscale) circle (0.05) node[scale=0.1] (4) {};
+    \fill[blue] (4*\xscale,8*\yscale) circle (0.05) node[scale=0.1] (5) {};
+    \fill[blue] (5*\xscale,9*\yscale) circle (0.05) node[scale=0.1] (6) {};
+    \fill[blue] (6*\xscale,10*\yscale) circle (0.05) node[scale=0.1] (7) {};
+    \fill[blue] (7*\xscale,11*\yscale) circle (0.05) node[scale=0.1] (8) {};
+    \fill[blue] (8*\xscale,12*\yscale) circle (0.05) node[scale=0.1] (9) {} node[right,red] {\( \times \)};
+    \draw[blue] (1) -- (2) -- (3) -- (4) -- (5) -- (6) -- (7) -- (8) -- (9);
+
+    % Loss
+    \draw[purple,dashed] (8*\xscale,12*\yscale) -- (10*\xscale,12*\yscale) node[above]
+      {\texttt{RTO}} -- (10*\xscale,1*\yscale);
+
+
+    \fill[blue] (10*\xscale,1*\yscale) circle (0.05) node[scale=0.1] (10) {};
+    \fill[blue] (11*\xscale,2*\yscale) circle (0.05) node[scale=0.1] (11) {};
+    \fill[blue] (12*\xscale,4*\yscale) circle (0.05) node[scale=0.1] (12) {};
+    \fill[blue] (13*\xscale,6*\yscale) circle (0.05) node[scale=0.1] (13) {} node[right,red] {\( \times \)};
+    \draw[blue] (10) -- (11) -- (12) -- (13);
+
+    % Loss
+    \draw[purple,dashed] (13*\xscale,6*\yscale) -- (15*\xscale,6*\yscale) -- (15*\xscale,1*\yscale);
+
+
+    \fill[blue] (15*\xscale,1*\yscale) circle (0.05) node[scale=0.1] (14) {};
+    \fill[blue] (16*\xscale,2*\yscale) circle (0.05) node[scale=0.1] (15) {};
+    \fill[blue] (17*\xscale,2*\yscale+1/2*\yscale) circle (0.05) node[scale=0.1] (16) {}
+      node[above,scale=0.8] {\( 2 + \frac{1}{2} \)};
+    \draw[blue] (14) -- (15) -- (16);
+
+    % End
+    \draw[dashed] (17*\xscale,2*\yscale+1/2*\yscale) -- (17*\xscale,0) node[below,align=center,scale=0.8] {Fine\\trasmissione};
+
+    % Ticks
+    \foreach \x in {1,2,...,\xaxis}
+    \draw (\x*\xscale,-0.1) -- (\x*\xscale,0.1);
+
+    \foreach \y in {1,2,...,\yaxis}
+    \draw (0,\y*\yscale) -- (0.1,\y*\yscale);
+
+    \foreach \y in {1,2,4,8,...,\yaxis}
+    \draw (-0.1,\y*\yscale) -- (0.1,\y*\yscale) node[left=0.2] {\y};
+
+    \node[below right,scale=0.6] at (1*\xscale,-0.1) {1};
+    \node[below,scale=0.6] at (2*\xscale,-0.1) {2};
+    \node[below,scale=0.6] at (8*\xscale,-0.1) {8};
+    \node[below,scale=0.6] at (10*\xscale,-0.1) {10};
+    \node[below,scale=0.6] at (13.5*\xscale,-0.1) {13.5};
+    \node[below,scale=0.6] at (14.5*\xscale,-0.1) {14.5};
+
+    \draw[green!50!black] (0,-0.2) -- ++(0,-0.2) -- ++(1*\xscale,0)
+      node[midway,below] {RTT} -- ++(0,0.2);
+  \end{tikzpicture}
+  \caption{Andamento di \texttt{cwnd} in funzione del tempo}
+\end{figure}
+\noindent
+Il numero di segmenti trasmessi è:
+\[
+  \#seg = 1+2+4+8+8+9+10+11+\cancel{12}+1+2+4+\cancel{6}+1+\stackrel{1}{\cancel{2}} = 62
+\]
 
 \end{document}
