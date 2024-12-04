@@ -3092,6 +3092,11 @@ Bisogna regolare l'accesso al mezzo condiviso, in modo da:
   \item \textbf{Massimizzare l'utilizzo del mezzo}
 \end{itemize}
 
+\vspace{1em}
+\noindent
+Il \textbf{periodo di vulnerabilità} è l'intervallo di tempo in cui una trama può subire
+collisioni e dipende dall'algoritmo
+
 \subsection{Classificazione delle metodologie per l'allocazione del canale}
 Ci sono due tipi di allocazione:
 \begin{itemize}
@@ -3134,13 +3139,13 @@ Ci sono due tipi di allocazione:
       \item \textbf{Dinamica a contesa}: Alcuni protocolli importanti sono:
         \begin{itemize}
           \item Aloha
-          \item Slotte Aloha
+          \item Slotted Aloha
           \item CSMA (Carrier Sense Multiple Access) (base e varianti)
         \end{itemize}
     \end{itemize}
 \end{itemize}
 
-\subsubsection{Aloah}
+\subsubsection{Aloha}
 Ogni stazione è indipendente ed esegue la seguente procedura:
 \begin{enumerate}
   \item Se la stazione ha dati da trasmettere:
@@ -3168,5 +3173,171 @@ Il protocollo definisce una costante \( M \gg T \) dove \( T \) è il tempo di t
 cioè il tempo che si impiega a trasmettere la trama. Il tempo casuale è scelto 
 uniformemente tra 0 e \( M \). In caso di collisioni consecutive, \( M \) viene
 temporaneamente raddoppiato.
+
+\vspace{1em}
+\noindent
+Assumiamo che il tempo di trama sia fisso e uguale a \( T \) dove \( T = \frac{B}{v} \)
+cioè il tempo che si impiega a trasmettere una trama di lunghezza massima \( B \) a velocità
+\( v \).
+Prendiamo ad esempio due stazioni:
+\label{04-12-D1}
+Se la stazione \( B \) trasmette nell'intervallo \( [t_1 - T,t_1 + T] \) 
+le trame avranno una collisione e quindi il \textbf{periodo di vulnerabilità} è \( 2T \).
+
+\vspace{1em}
+\noindent
+L'efficienza di Aloha è la seguente:
+\label{04-12-D2}
+
+\subsubsection{Slotted Aloha}
+Questo algoritmo espande Aloha aggiungendo un meccanismo di sincronizzazione. Il
+tempo è diviso in intervalli di durata \( T \) (tempo di trama) e le stazioni
+possono trasmettere solo all'inizio di un intervallo. La procedura che segue è la
+seguente:
+\begin{enumerate}
+  \item Quando una stazione genera una trama
+    \begin{itemize}
+      \item Aspetta l'inizio dello slot successivo per inviarla
+    \end{itemize}
+  \item Uguale ad Aloha
+\end{enumerate}
+
+\vspace{1em}
+\noindent
+\label{04-12-D3}
+Tutte le trame generate all'interno dello stesso slot andranno a collidere, quindi
+il \textbf{periodo di vulnerabilità} è \( T \) e quindi è dimezzato rispetto ad Aloha.
+
+\vspace{1em}
+\noindent
+L'efficienza di Slotted Aloha è la seguente:
+\label{04-12-D4}
+
+\subsubsection{CSMA (Carrier Sense Multiple Access)}
+Il protocollo CSMA è basato sul concetto di \textbf{ascolto del canale}. La stazione
+prima di trasmettere ascolta il canale e se non c'è nessuna trasmissione in corso
+trasmette, altrimenti aspetta. Questo metodo permette di ridurre le collisioni.
+La procedura è la seguente:
+\begin{enumerate}
+  \item Se una stazione ha una trama da trasmettere:
+    \begin{enumerate}
+      \item Ascolta il canale
+        \begin{itemize}
+          \item Se il canale è libero:
+            \begin{itemize}
+              \item Allora la stazione trasmette la trama
+            \end{itemize}
+
+          \item Se il canale è occupato:
+            \begin{itemize}
+              \item Ascolta finchè il canale si libera e poi trasmette
+            \end{itemize}
+        \end{itemize}
+
+      \item Se c'è collisione:
+        \begin{itemize}
+          \item La stazione estrae un tempo casuale e aspetta tale tempo, poi torna
+            al punto 1.
+        \end{itemize}
+    \end{enumerate}
+\end{enumerate}
+
+\begin{example}
+  Prendiamo in considerazione il seguente esempio:
+  \label{04-12-D5}
+\end{example}
+Questo algoritmo si chiama \textbf{CSMA Persistent} perchè se il canale è occupato
+continua ad ascoltare finchè non si libera.
+
+La variante \textbf{CSMA Non Persistent} invece cambia il punto 1.a dell'algoritmo:
+\begin{enumerate}
+  \item Se una stazione ha una trama da trasmettere:
+  \begin{enumerate}
+    \item Ascolta il canale:
+      \begin{itemize}
+        \item Se il canale è libero:
+          \begin{itemize}
+            \item La stazione trasmette la trama
+          \end{itemize}
+
+        \item Altrimenti:
+          \begin{itemize}
+            \item La stazione aspetta un tempo casuale e poi torna al punto 1.
+          \end{itemize}
+      \end{itemize}
+  \end{enumerate}
+\end{enumerate}
+
+\begin{example}
+  Un esempio è il seguente:
+  \label{04-12-D6}
+\end{example}
+Questa variante diminuisce il numero di collisioni ma aumenta la latenza.
+
+\vspace{1em}
+\noindent
+La variante \textbf{CSMA p-persistent} segue la seguente procedura:
+\begin{enumerate}
+  \item ...
+    
+    \begin{enumerate}
+      \item ...
+        \begin{itemize}
+          \item Se il canale è libero
+            \begin{itemize}
+              \item Trasmette
+            \end{itemize}
+
+          \item Altrimenti
+            \begin{itemize}
+              \item Aspetta che si liberi il canale
+              \item Con probabilità \( p \) trasmette
+              \item Con probabililtà \( 1 - p \) rimanda il tentativo di un micro slot \( t_m \ll T \) 
+            \end{itemize}
+        \end{itemize}
+    \end{enumerate}
+\end{enumerate}
+\begin{example}
+  Un esempio è il seguente:
+  \label{04-12-D7}
+\end{example}
+
+\vspace{1em}
+\noindent
+La variante \textbf{CSMA-CD} (Collision Detection) è utilizzata nelle reti ethernet.
+Si può combinare con le varianti viste in precedenza (persistent, non persistent, p-persistent)
+e va a modificare soltanto il punto 1.b
+\begin{enumerate}
+  \item ...
+    \begin{enumerate}
+      \item ...
+      \item Se c'è collisione:
+        \begin{itemize}
+          \item Interrompe la trasmissione
+          \item Estrae un tempo casuale e torna al punto 1.
+        \end{itemize}
+    \end{enumerate}
+\end{enumerate}
+
+\begin{example}
+  Un esempio è il seguente:
+  \label{04-12-D8}
+\end{example}
+
+\vspace{1em}
+\noindent
+L'efficienza di CSMA è la seguente:
+\label{04-12-D9}
+
+\vspace{1em}
+\noindent
+Il \textbf{ritardo di propagazione} è il tempo che impiega un segnale a propagarsi
+da un punto all'altro. Consideriamo due stazioni \( A \) e \( C \), se la stazione
+\( A \) genera una trama il segnale ci impiega un tempo \( t_1 + \tau \) per arrivare
+alla stazione \( C \) e finirà di trasmettere a \( t_1 + T + \tau \):
+\label{04-12-D10}
+Se \( A \) genera una trama tra \( [t_1+T,t_1+T+2\tau] \) c'è un tempo di 
+vulnerabilità di \( 2\tau \).
+
 
 \end{document}
