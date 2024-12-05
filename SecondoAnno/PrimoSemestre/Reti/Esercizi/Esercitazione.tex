@@ -510,6 +510,33 @@ La LAN 1 contiene l'indirizzo 46.144.141.41.
     \end{itemize}
 \end{enumerate}
 
+\subsection{Esercizio 7}
+Si hanno 3 lan con i seguenti host:
+\[
+\begin{aligned}
+  \text{LAN 1: } & 400 \, host\\
+  \text{LAN 2: } & 300 \, host\\
+  \text{LAN 3: } & 1200 \, host
+\end{aligned}
+\] 
+La LAN 1 contiene un host con indirizzo:
+\[
+178.242.85.168
+\] 
+Si consideri la topologia con un router di bordo \( X \)  tra la rete internet e la LAN1, un secondo
+router di bordo \( A \)  tra la LAN1 e la LAN2, un terzo router di bordo \( B \)  tra la LAN2 e la LAN3
+e un ultimo router di bordo \( D \) collegato alla LAN3 e al router di bordo della rete internet.
+
+Ogni host è collegato tramite un cavo coassiale a tutti gli altri host e anche al router
+e quindi li raggiunte entrambi con 1 hop.
+\begin{enumerate}
+  \item Calcolare il blocco CIDR totale.
+  \item Calcolare gli indirizzi di rete delle 3 LAN.
+  \item Trovare la tabella di routing del router \( A \) considerando come metrica
+    il numero di hop e assumendo che il router \( X \) abbia annunciato di ragginugere
+    tutti gli host su Internet con 5 hop.
+\end{enumerate}
+
 \section{TCP}
 L'obiettivo di questi esercizi è quello di vedere come si comporta l'algoritmo in situazioni 
 particolari.
@@ -1102,8 +1129,7 @@ Il numero di segmenti da trasmettere sono:
 
     \fill[blue] (15*\xscale,1*\yscale) circle (0.05) node[scale=0.1] (14) {};
     \fill[blue] (16*\xscale,2*\yscale) circle (0.05) node[scale=0.1] (15) {};
-    \fill[blue] (17*\xscale,2*\yscale+1/2*\yscale) circle (0.05) node[scale=0.1] (16) {}
-      node[above,scale=0.8] {\( 2 + \frac{1}{2} \)};
+    \fill[blue] (17*\xscale,3*\yscale) circle (0.05) node[scale=0.1] (16) {};
     \draw[blue] (14) -- (15) -- (16);
 
     % End
