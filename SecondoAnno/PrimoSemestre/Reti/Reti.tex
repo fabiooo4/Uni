@@ -3336,8 +3336,48 @@ da un punto all'altro. Consideriamo due stazioni \( A \) e \( C \), se la stazio
 \( A \) genera una trama il segnale ci impiega un tempo \( t_1 + \tau \) per arrivare
 alla stazione \( C \) e finirà di trasmettere a \( t_1 + T + \tau \):
 \label{04-12-D10}
-Se \( A \) genera una trama tra \( [t_1+T,t_1+T+2\tau] \) c'è un tempo di 
+Se \( A \) genera una trama tra \( [t_1+T,t_1+T+2\tau] \) ascolta il canale e percepisce
+il canale libero, quindi porta ad una collisione, di conseguenza c'è un tempo di 
 vulnerabilità di \( 2\tau \).
+
+\subsection{Ethernet}
+Ethernet è un nome proprietario (cioè appartiene a una società) ed è definito dallo
+standard IEEE 802.3. Ci sono più tipi di ethernet:
+\begin{itemize}
+  \item \textbf{Base}: 10 \( \frac{Mbit}{s} \) 
+  \item \textbf{Fast}: 100 \( \frac{Mbit}{s} \)
+  \item \textbf{Gigabit}: 1000 \( \frac{Mbit}{s} \)
+\end{itemize}
+Questi tipi sono implementati sia nei calcolatori (end host) che negli apparati
+di rete (router). Mentre invece ci sono anche tipi di ethernet che sono implementati
+solo sui router che fanno \( 10-40 \frac{Gbit}{s} \) 
+
+\subsubsection{Formato del pacchetto}
+\label{05-12-D1}
+\begin{itemize}
+  \item \textbf{Preambolo} (7 byte): Serve per sincronizzare il ricevitore con il trasmettitore
+    ed è formato da una sequenza di bit 10101010
+  \item \textbf{Flag} (1 byte) 
+  \item \textbf{Indirizzo hardware destinazione} (6 byte)
+  \item \textbf{Indirizzo hardware sorgente} (6 byte)
+  \item \textbf{Lunghezza payload} (2 byte): Indica la lunghezza del payload
+  \item \textbf{Payload}
+  \item \textbf{Checksum} (4 byte): Viene aggiunto dopo il payload e questa modalità
+    è chiamata \textbf{trailer} o \textbf{tailer}.
+\end{itemize}
+
+\begin{definition}[Indirizzi hardware]
+  Gli \textbf{indirizzi hardware} sono gli indirizzi della scheda di rete di livello 2 
+  cioè il componente hardware al livello data link sono anche detti indirizzi
+  \textbf{MAC}.
+
+  Gli indirizzi hardware sono univoci e sono assegnati dal produttore della scheda
+  di rete e non possono cambiare mai.
+\end{definition}
+
+\vspace{1em}
+\noindent
+Perchè c'è bisogno degli indirizzi hardware se ci sono già gli indirizzi IP?
 
 
 \end{document}
