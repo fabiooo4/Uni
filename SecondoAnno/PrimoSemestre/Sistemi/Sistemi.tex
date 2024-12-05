@@ -6254,7 +6254,7 @@ I blocchi possono essere combinati tra loro in diversi modi:
           ]
           \node (x) {\( x \) };
           \node[draw,minimum size=1cm,right=of x] (A) {\( A \) };
-          \node[draw,minimum size=1cm,right=of A] (D) {\( \frac{B-D}{B} \) };
+          \node[draw,minimum size=1cm,right=of A] (D) {\( \frac{B- D}{B} \) };
           \node[draw,blue,minimum size=1cm,right=of D] (B) {\( \frac{B}{1 + B \left( C-E \right) } \) };
           \node[right=of B] (y) {\( y \)};
 
@@ -6306,20 +6306,184 @@ I blocchi possono essere combinati tra loro in diversi modi:
 
 \section{Diagrammi di flusso}
 \subsection{Nomenclatura}
-\label{02-12-D1}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \coordinate (x1) node[below] at (x1) {\( x_1 \)};
+    \fill (x1) circle (0.05cm);
+
+    \coordinate[right=of x1] (A) node[above] at (A) {\( A \)};
+
+    \coordinate[right=of A] (x2) node[below] at (x2) {\( x_2 \)};
+    \fill (x2) circle (0.05cm);
+
+    \node[above left=0.5cm and 0.5cm of x1] (nodi) {Nodo};
+    \draw[-latex] (nodi) -- (x1);
+
+    \node[below=0.5cm of A] (arco) {Arco};
+    \draw[-latex] (arco) -- (A);
+
+    \draw[->] (x1) -- (A);
+    \draw (A) -- (x2);
+  \end{tikzpicture}
+  \caption{Nomenclatura base}
+\end{figure}
 
 Prendiamo ad esempio il seguente diagramma:
-\label{02-12-D5}
-definiamo:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+      every node/.style={node distance=2.5cm},
+      decoration={
+        markings,
+        mark=at position 0.5 with {\arrow{>}}
+      }
+    ] 
+    
+    \coordinate (x1) node[below,align=center] at (x1) 
+      {\( x_1 \)\\Nodo di input\\(Solo nodi in uscita)};
+    \fill (x1) circle (0.05cm);
+
+    \coordinate[right=of x1] (x2) node[below] at (x2) {\( x_2 \)};
+    \fill (x2) circle (0.05cm);
+
+    \coordinate[right=of x2] (x3) node[below] at (x3) {\( x_3 \)};
+    \fill (x3) circle (0.05cm);
+
+    \coordinate[right=of x3] (x4) node[below,align=center] at (x4) 
+      {\( x_4 \)\\Nodo di output\\(Solo nodi in entrata)};
+    \fill (x4) circle (0.05cm);
+    
+    \draw[postaction={decorate}] (x1) -- (x2) node[midway,above,align=center]
+      {Peso di un arco\\\( A_{21} \)};
+    \draw[postaction={decorate}] (x2) -- (x3) node[midway,above,align=center]
+      {\( A_{22} \) };
+    \draw[postaction={decorate}] (x3) -- (x4) node[midway,above,align=center]
+      {\( A_{23} \) };
+
+    \path (x3) edge [loop above,min distance=1cm,in=135,out=45,postaction={decorate}]
+      node {\( A_{33} \) } (x3);
+
+    \path (x3) edge [bend left=1.5cm,postaction={decorate}] node[below] {\( A_{32} \) } (x2);
+    \path (x2) edge [bend left=3cm,postaction={decorate}] node[above] {\( A_{42} \) } (x4);
+  \end{tikzpicture}
+\end{figure}
+Definiamo:
 \begin{itemize}
   \item \textbf{Percorso in avanti}: Un cammino che unisce un nodo di ingresso ad un nodo 
     di uscita
-    \label{02-12-D6}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}[
+        every node/.style={node distance=2.5cm},
+        decoration={
+          markings,
+          mark=at position 0.5 with {\arrow{>}}
+        }
+        ] 
+        \coordinate (x1) node[below,align=center] at (x1) 
+          {\( x_1 \)};
+        \fill (x1) circle (0.05cm);
+
+        \coordinate[right=of x1] (x2) node[below] at (x2) {\( x_2 \)};
+        \fill (x2) circle (0.05cm);
+
+        \coordinate[right=of x2] (x3) node[below] at (x3) {\( x_3 \)};
+        \fill (x3) circle (0.05cm);
+
+        \coordinate[right=of x3] (x4) node[below,align=center] at (x4) 
+          {\( x_4 \)};
+        \fill (x4) circle (0.05cm);
+
+        \draw[red,thick,postaction={decorate}] (x1) -- (x2) node[midway,above,align=center]
+          {\( A_{21} \)};
+        \draw[postaction={decorate}] (x2) -- (x3) node[midway,above,align=center]
+          {\( A_{22} \) };
+        \draw[postaction={decorate}] (x3) -- (x4) node[midway,above,align=center]
+          {\( A_{23} \) };
+
+        \path (x3) edge [loop above,min distance=1cm,in=135,out=45,postaction={decorate}]
+          node {\( A_{33} \) } (x3);
+
+        \path (x3) edge [bend left=1.5cm,postaction={decorate}] node[below] {\( A_{32} \) } (x2);
+        \path[red,thick] (x2) edge [bend left=3cm,postaction={decorate}] node[above] {\( A_{42} \) } (x4);
+      \end{tikzpicture}
+      \begin{tikzpicture}[
+        every node/.style={node distance=2.5cm},
+        decoration={
+          markings,
+          mark=at position 0.5 with {\arrow{>}}
+        }
+        ] 
+        \coordinate (x1) node[below,align=center] at (x1) 
+          {\( x_1 \)};
+        \fill (x1) circle (0.05cm);
+
+        \coordinate[right=of x1] (x2) node[below] at (x2) {\( x_2 \)};
+        \fill (x2) circle (0.05cm);
+
+        \coordinate[right=of x2] (x3) node[below] at (x3) {\( x_3 \)};
+        \fill (x3) circle (0.05cm);
+
+        \coordinate[right=of x3] (x4) node[below,align=center] at (x4) 
+          {\( x_4 \)};
+        \fill (x4) circle (0.05cm);
+
+        \draw[red,thick,postaction={decorate}] (x1) -- (x2) node[midway,above,align=center]
+          {\( A_{21} \)};
+        \draw[red,thick,postaction={decorate}] (x2) -- (x3) node[midway,above,align=center]
+          {\( A_{22} \) };
+        \draw[red,thick,postaction={decorate}] (x3) -- (x4) node[midway,above,align=center]
+          {\( A_{23} \) };
+
+        \path (x3) edge [loop above,min distance=1cm,in=135,out=45,postaction={decorate}]
+          node {\( A_{33} \) } (x3);
+
+        \path (x3) edge [bend left=1.5cm,postaction={decorate}] node[below] {\( A_{32} \) } (x2);
+        \path (x2) edge [bend left=3cm,postaction={decorate}] node[above] {\( A_{42} \) } (x4);
+      \end{tikzpicture}
+    \end{figure}
 
   \item \textbf{Percorso ad anello}: Un cammino che inizia e finisce nello stesso nodo
     senza passare più volte per nodi intermedi. Si dice \textbf{self loop} quando
     passa più volte per lo stesso nodo.
-    \label{02-12-D7}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}[
+        every node/.style={node distance=2.5cm},
+        decoration={
+          markings,
+          mark=at position 0.5 with {\arrow{>}}
+        }
+        ] 
+        \coordinate (x1) node[below,align=center] at (x1) 
+          {\( x_1 \)};
+        \fill (x1) circle (0.05cm);
+
+        \coordinate[right=of x1] (x2) node[below] at (x2) {\( x_2 \)};
+        \fill (x2) circle (0.05cm);
+
+        \coordinate[right=of x2] (x3) node[below] at (x3) {\( x_3 \)};
+        \fill (x3) circle (0.05cm);
+
+        \coordinate[right=of x3] (x4) node[below,align=center] at (x4) 
+          {\( x_4 \)};
+        \fill (x4) circle (0.05cm);
+
+        \draw[postaction={decorate}] (x1) -- (x2) node[midway,above,align=center]
+          {\( A_{21} \)};
+        \draw[red,thick,postaction={decorate}] (x2) -- (x3) node[midway,above,align=center]
+          {\( A_{22} \) };
+        \draw[postaction={decorate}] (x3) -- (x4) node[midway,above,align=center]
+          {\( A_{23} \) };
+
+        \path (x3) edge [loop above,min distance=1cm,in=135,out=45,postaction={decorate}]
+          node {\( A_{33} \) } (x3);
+
+        \path[red,thick] (x3) edge [bend left=1.5cm,postaction={decorate}] node[below] {\( A_{32} \) } (x2);
+        \path (x2) edge [bend left=3cm,postaction={decorate}] node[above] {\( A_{42} \) } (x4);
+      \end{tikzpicture}
+    \end{figure}
 
   \item \textbf{Guadagno}: Prodotto di tutti i pesi degli archi lungo un percorso
 \end{itemize}
@@ -6329,34 +6493,260 @@ definiamo:
 \[
 \sum x_1 \cdot A_i = y
 \] 
-\label{02-12-D2}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+    every node/.style={node distance=0.5cm},
+    decoration={
+      markings,
+      mark=at position 0.5 with {\arrow{>}}
+    }
+    ] 
+    \coordinate (x1) node[left,align=center] at (x1) 
+      {\( x_1 \)};
+    \fill (x1) circle (0.05cm);
+
+    \coordinate[below=of x1] (x2) node[left,align=center] at (x2) 
+      {\( x_2 \)};
+    \fill (x2) circle (0.05cm);
+
+    \coordinate[below=of x2] (x3) node[left,align=center] at (x3) 
+      {\( x_3 \)};
+    \fill (x3) circle (0.05cm);
+
+    \coordinate[below=of x3] (x4) node[left,align=center] at (x4) 
+      {\( x_4 \)};
+    \fill (x4) circle (0.05cm);
+
+    \coordinate[below=of x4] (xn) node[left,align=center] at (xn) 
+      {\( x_n \)};
+    \fill (xn) circle (0.05cm);
+
+    \coordinate[right=2cm of x3] (y) node[right,align=center] at (y) 
+      {\( y \)};
+    \fill (y) circle (0.05cm);
+
+    \draw[postaction={decorate}] (x1) -- (y) node[midway,above] {\( A_1 \)};
+    \draw[postaction={decorate}] (x2) -- (y);
+    \draw[postaction={decorate}] (x3) -- (y);
+    \draw[postaction={decorate}] (x4) -- (y);
+    \draw[postaction={decorate}] (xn) -- (y) node[midway,below] {\( A_n \)};
+  \end{tikzpicture}
+  \caption{Regola dell'addizione}
+\end{figure}
 
 \subsubsection{Regola della trasmissione}
 \[
 y_i = x \cdot A_i
 \] 
-\label{02-12-D3}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+    every node/.style={node distance=0.5cm},
+    decoration={
+      markings,
+      mark=at position 0.5 with {\arrow{>}}
+    }
+    ] 
+    \coordinate (y1) node[right,align=center] at (y1) 
+      {\( y_1 \)};
+    \fill (y1) circle (0.05cm);
+
+    \coordinate[below=of y1] (y2) node[right,align=center] at (y2) 
+      {\( y_2 \)};
+    \fill (y2) circle (0.05cm);
+
+    \coordinate[below=of y2] (y3) node[right,align=center] at (y3) 
+      {\( y_3 \)};
+    \fill (y3) circle (0.05cm);
+
+    \coordinate[below=of y3] (y4) node[right,align=center] at (y4) 
+      {\( y_4 \)};
+    \fill (y4) circle (0.05cm);
+
+    \coordinate[below=of y4] (yn) node[right,align=center] at (yn) 
+      {\( y_n \)};
+    \fill (yn) circle (0.05cm);
+
+    \coordinate[left=2cm of y3] (x) node[left,align=center] at (x) 
+      {\( x \)};
+    \fill (x) circle (0.05cm);
+
+    \draw[postaction={decorate}] (y1) -- (x) node[midway,above] {\( A_1 \)};
+    \draw[postaction={decorate}] (y2) -- (x);
+    \draw[postaction={decorate}] (y3) -- (x);
+    \draw[postaction={decorate}] (y4) -- (x);
+    \draw[postaction={decorate}] (yn) -- (x) node[midway,below] {\( A_n \)};
+  \end{tikzpicture}
+  \caption{Regola della trasmissione}
+\end{figure}
 
 \subsubsection{Regola della moltiplicazione}
 \[
-y = x \cdot A \cdot x_2 \cdot B \ldots
+y = x_1 \cdot A \cdot x_2 \cdot B \ldots
 \] 
-\label{02-12-D4}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+    every node/.style={node distance=2.5cm},
+    decoration={
+      markings,
+      mark=at position 0.5 with {\arrow{>}}
+    }
+    ] 
+    \coordinate (x1) node[below,align=center] at (x1) 
+      {\( x_1 \)};
+    \fill (x1) circle (0.05cm);
+
+    \coordinate[right=of x1] (x2) node[below,align=center] at (x2) 
+      {\( x_2 \)};
+    \fill (x2) circle (0.05cm);
+
+    \coordinate[right=of x2] (y) node[below,align=center] at (y) 
+      {\( y \)};
+    \fill (y) circle (0.05cm);
+
+    \draw[postaction={decorate}] (x1) -- (x2) node[midway,above] {\( A \)};
+    \draw[postaction={decorate}] (x2) -- (y) node[midway,above] {\( B \)};
+  \end{tikzpicture}
+  \caption{Regola della moltiplicazione}
+\end{figure}
 
 \subsection{Passaggio dallo schema a blocchi al diagramma di flusso}
 Prendiamo uno schema a blocchi base:
-\label{02-12-D8}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    [
+    every node/.style={node distance=0.6cm},
+    ]
+    \node (R) {\( R \) };
+    \node[draw,circle,minimum size=0.7cm,right=of R] (sum) {};
+    \node[draw,minimum size=1cm,right=of sum] (G) {\( G \) };
+    \node[draw,minimum size=1cm,below=of G] (H) {\( H \) };
+    \coordinate[right=of G] (n);
+    \fill (n) circle (0.05cm);
+    \node[right=of n] (C) {\( C \)};
+
+    \draw[->] (R) -- (sum.west) node[above left,scale=0.8] {\( + \)};
+    \draw[->] (sum) -- (G);
+    \draw[->] (G) -- (C);
+    \draw[->] (n) |- (H);
+    \draw[->] (H) -| (sum.south) node[below right,scale=0.8] {\( - \)};
+  \end{tikzpicture}
+\end{figure}
+\noindent
 Per convertire questo schema in un diagramma di flusso dobbiamo seguire le seguenti regole:
 \begin{enumerate}
   \item Individuare i nodi di ingresso e di uscita
-    \label{02-12-D9}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        [
+        every node/.style={node distance=0.6cm},
+        ]
+        \coordinate (R) node[above] at (R) {\( R \) };
+        \fill[red,thick] (R) circle (0.05cm) node[below] {\( x_1 \) };
+        \node[draw,circle,minimum size=0.7cm,right=of R] (sum) {};
+        \node[draw,minimum size=1cm,right=of sum] (G) {\( G \) };
+        \node[draw,minimum size=1cm,below=of G] (H) {\( H \) };
+        \coordinate[right=of G] (n);
+        \fill (n) circle (0.05cm);
+        \coordinate[right=of n] (C) node[above] at (C) {\( C \)};
+        \fill[red,thick] (C) circle (0.05cm) node[below] {\( x_2 \) };
+
+        \draw[->] (R) -- (sum.west) node[above left,scale=0.8] {\( + \)};
+        \draw[->] (sum) -- (G);
+        \draw[->] (G) -- (C);
+        \draw[->] (n) |- (H);
+        \draw[->] (H) -| (sum.south) node[below right,scale=0.8] {\( - \)};
+      \end{tikzpicture}
+    \end{figure}
   \item Per ogni nodo somma si aggiunge un nodo
-    \label{02-12-D10}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        [
+        every node/.style={node distance=0.6cm},
+        ]
+        \coordinate (R) node[above] at (R) {\( R \) };
+        \fill[red,thick] (R) circle (0.05cm) node[below] {\( x_1 \) };
+        \node[draw,circle,minimum size=0.9cm,right=of R] (sum) {};
+        \fill[red,thick] (sum) circle (0.05cm) node[below] {\( x_2 \) };
+        \node[draw,minimum size=1cm,right=of sum] (G) {\( G \) };
+        \node[draw,minimum size=1cm,below=of G] (H) {\( H \) };
+        \coordinate[right=of G] (n);
+        \fill (n) circle (0.05cm);
+        \coordinate[right=of n] (C) node[above] at (C) {\( C \)};
+        \fill[red,thick] (C) circle (0.05cm) node[below] {\( x_3 \) };
+
+        \draw[->] (R) -- (sum.west) node[above left,scale=0.8] {\( + \)};
+        \draw[->] (sum) -- (G);
+        \draw[->] (G) -- (C);
+        \draw[->] (n) |- (H);
+        \draw[->] (H) -| (sum.south) node[below right,scale=0.8] {\( - \)};
+      \end{tikzpicture}
+    \end{figure}
   \item Per ogni nodo dello schema a blocchi si aggiunge un nodo al diagramma di flusso
-    \label{02-12-D11}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        [
+        every node/.style={node distance=0.6cm},
+        ]
+        \coordinate (R) node[above] at (R) {\( R \) };
+        \fill[red,thick] (R) circle (0.05cm) node[below] {\( x_1 \) };
+        \node[draw,circle,minimum size=0.9cm,right=of R] (sum) {};
+        \fill[red,thick] (sum) circle (0.05cm) node[below] {\( x_2 \) };
+        \node[draw,minimum size=1cm,right=of sum] (G) {\( G \) };
+        \node[draw,minimum size=1cm,below=of G] (H) {\( H \) };
+        \coordinate[right=of G] (n);
+        \fill[red,thick] (n) circle (0.05cm) node[above] {\( x_3 \) };
+        \coordinate[right=of n] (C) node[above] at (C) {\( C \)};
+        \fill[red,thick] (C) circle (0.05cm) node[below] {\( x_4 \) };
+
+        \draw[->] (R) -- (sum.west) node[above left,scale=0.8] {\( + \)};
+        \draw[->] (sum) -- (G);
+        \draw[->] (G) -- (C);
+        \draw[->] (n) |- (H);
+        \draw[->] (H) -| (sum.south) node[below right,scale=0.8] {\( - \)};
+      \end{tikzpicture}
+    \end{figure}
   \item Unisco i nodi con archi il cui peso è la funzione dentro al blocco. Se tra i due
     nodi non c'è un blocco, l'arco avrà peso 1
-    \label{02-12-D12}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}[
+        every node/.style={node distance=2.5cm},
+        decoration={
+          markings,
+          mark=at position 0.5 with {\arrow{>}}
+        }
+        ] 
+        \coordinate (x1) node[below,align=center] at (x1) 
+          {\( x_1 \)};
+        \fill (x1) circle (0.05cm);
+
+        \coordinate[right=of x1] (x2) node[below,align=center] at (x2) 
+          {\( x_2 \)};
+        \fill (x2) circle (0.05cm);
+
+        \coordinate[right=of x2] (x3) node[below,align=center] at (x3) 
+          {\( x_3 \)};
+        \fill (x3) circle (0.05cm);
+
+        \coordinate[right=of x3] (x4) node[below,align=center] at (x4) 
+          {\( x_4 \)};
+        \fill (x4) circle (0.05cm);
+
+        \draw[postaction={decorate}] (x1) -- (x2) node[midway,above] {\( 1 \)};
+        \draw[postaction={decorate}] (x2) -- (x3) node[midway,above] {\( G \)};
+        \draw[postaction={decorate}] (x3) -- (x4) node[midway,above] {\( 1 \)};
+        \path (x3) edge [postaction={decorate},bend right=3cm,min distance=1.5cm]
+          node[above] {\( -H \) } (x2);
+      \end{tikzpicture}
+      \caption{Diagramma di flusso}
+    \end{figure}
 \end{enumerate}
 L'obiettivo anche in questo caso è quello di ridurre il diagramma di flusso ad un unico
 arco per ottenere la funzione di trasferimento:
@@ -6393,7 +6783,44 @@ arco per ottenere la funzione di trasferimento:
 
 \begin{example}
   Prendiamo ad esempio il seguente diagramma di flusso:
-  \label{02-12-D13}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+      every node/.style={node distance=2.5cm},
+      decoration={
+        markings,
+        mark=at position 0.5 with {\arrow{>}}
+      }
+      ] 
+      \coordinate (x1) node[below,align=center] at (x1) 
+        {\( x_1 \)};
+      \fill (x1) circle (0.05cm);
+
+      \coordinate[right=of x1] (x2) node[below,align=center] at (x2) 
+        {\( x_2 \)};
+      \fill (x2) circle (0.05cm);
+
+      \coordinate[right=of x2] (x3) node[below,align=center] at (x3) 
+        {\( x_3 \)};
+      \fill (x3) circle (0.05cm);
+
+      \coordinate[right=of x3] (x4) node[below,align=center] at (x4) 
+        {\( x_4 \)};
+      \fill (x4) circle (0.05cm);
+
+      \draw[postaction={decorate}] (x1) -- (x2) node[midway,above] {\( 1 \)};
+      \draw[postaction={decorate}] (x2) -- (x3) node[midway,above] {\( G \)};
+      \draw[postaction={decorate}] (x3) -- (x4) node[midway,above] {\( 1 \)};
+      \path (x3) edge [postaction={decorate},bend right=3cm,min distance=1.5cm]
+        node[above] {\( -H \) } (x2);
+
+      \path[blue] (x2) edge [postaction={decorate},bend right=3cm,min distance=1.5cm]
+        node[above] {\( 1 \) } (x1);
+      \path[blue] (x4) edge [postaction={decorate},bend right=3cm,min distance=1.5cm]
+        node[above] {\( 1 \) } (x3);
+    \end{tikzpicture}
+  \end{figure}
+  \noindent
   Il percorso 1 è:
   \[
   P_1 = \left( x_1,x_2,x_3,x_4 \right) = 1 \cdot G \cdot 1 = G
@@ -6421,11 +6848,215 @@ arco per ottenere la funzione di trasferimento:
 \end{example}
 \begin{example}
   Prendiamo ad esempio il seguente schema a blocchi:
-  \label{02-12-D14}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      [
+      every node/.style={node distance=0.4cm},
+      ]
+      \def\blocksize{0.7cm}
+      \def\sumsize{0.7cm}
+      \coordinate (x) node[above] at (x) {\( x \) };
+      \node[draw,circle,minimum size=\sumsize,right=of x] (sum1) {};
+      \coordinate[right=of sum1] (n1);
+      \fill (n1) circle (0.05cm);
+      \node[draw,circle,minimum size=\sumsize,right=of n1] (sum2) {};
+      \node[draw,minimum size=\blocksize,right=of sum2] (A) {\( A \) };
+      \node[draw,minimum size=\blocksize,below=of A] (B) {\( B \) };
+      \node[draw,minimum size=\blocksize,above=of A] (F) {\( F \) };
+      \coordinate[right=of A] (n2);
+      \fill (n2) circle (0.05cm);
+      \node[draw,circle,minimum size=\sumsize,right=of n2] (sum3) {};
+      \coordinate[right=of sum3] (n3);
+      \fill (n3) circle (0.05cm);
+      \node[draw,circle,minimum size=\sumsize,right=of n3] (sum4) {};
+      \node[draw,minimum size=\blocksize,right=of sum4] (C) {\( C \) };
+      \node[draw,minimum size=\blocksize,below=of C] (D) {\( D \) };
+      \node[draw,minimum size=\blocksize,above=of C] (G) {\( G \) };
+      \node[draw,circle,minimum size=\sumsize,right=of C] (sum5) {};
+      \node[draw,minimum size=\blocksize,below=2cm of n3] (E) {\( E \) };
+      \coordinate[right=of sum5] (n4);
+      \fill (n4) circle (0.05cm);
+      \coordinate[right=of n4] (n5);
+      \fill (n5) circle (0.05cm);
+      \coordinate[right=of n5] (y) node[above] at (y) {\( y \)};
+
+      \draw[->] (x) -- (sum1.west) node[above left,scale=0.8] {\( + \)};
+      \draw[->] (sum1) -- (sum2.west) node[above left,scale=0.8] {\( + \)};
+      \draw[->] (sum2) -- (A);
+      \draw[->] (A) -- (sum3.west) node[above left,scale=0.8] {\( + \)};
+      \draw[->] (sum3) -- (sum4.west) node[above left,scale=0.8] {\( + \)};
+      \draw[->] (sum4) -- (C);
+      \draw[->] (C) -- (sum5.west) node[above left,scale=0.8] {\( + \)};
+      \draw[->] (sum5) -- (y);
+
+      \draw[->] (n1) |- (F);
+      \draw[->] (F) -| (sum3.north) node[above right,scale=0.8] {\( + \)};
+
+      \draw[->] (n2) |- (B);
+      \draw[->] (B) -| (sum2.south) node[below right,scale=0.8] {\( - \)};
+
+      \draw[->] (n3) |- (G);
+      \draw[->] (G) -| (sum5.north) node[above right,scale=0.8] {\( + \)};
+
+      \draw[->] (n4) |- (D);
+      \draw[->] (D) -| (sum4.south) node[below right,scale=0.8] {\( - \)};
+
+      \draw[->] (n5) |- (E);
+      \draw[->] (E) -| (sum1.south) node[below right,scale=0.8] {\( + \)};
+    \end{tikzpicture}
+  \end{figure}
   Deriviamo i nodi del diagramma di flusso:
-  \label{02-12-D15}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      [
+      every node/.style={node distance=0.4cm},
+      ]
+      \def\blocksize{0.7cm}
+      \def\sumsize{0.7cm}
+      \coordinate (x) node[above] at (x) {\( x \) };
+      \fill[red,thick] (x) circle (0.05cm) node[below] {\( x \) };
+      \node[draw,circle,minimum size=\sumsize,right=of x] (sum1) {};
+      \fill[red,thick] (sum1) circle (0.05cm) node[below,scale=0.8] {\( x_1 \) };
+      \coordinate[right=of sum1] (n1);
+      \fill[red,thick] (n1) circle (0.05cm) node[below] {\( x_2 \) };
+      \node[draw,circle,minimum size=\sumsize,right=of n1] (sum2) {};
+      \fill[red,thick] (sum2) circle (0.05cm) node[below,scale=0.8] {\( x_3 \) };
+      \node[draw,minimum size=\blocksize,right=of sum2] (A) {\( A \) };
+      \node[draw,minimum size=\blocksize,below=of A] (B) {\( B \) };
+      \node[draw,minimum size=\blocksize,above=of A] (F) {\( F \) };
+      \coordinate[right=of A] (n2);
+      \fill[red,thick] (n2) circle (0.05cm) node[above] {\( x_4 \) };
+      \node[draw,circle,minimum size=\sumsize,right=of n2] (sum3) {};
+      \fill[red,thick] (sum3) circle (0.05cm) node[below,scale=0.8] {\( x_5 \) };
+      \coordinate[right=of sum3] (n3);
+      \fill[red,thick] (n3) circle (0.05cm) node[below] {\( x_6 \) };
+      \node[draw,circle,minimum size=\sumsize,right=of n3] (sum4) {};
+      \fill[red,thick] (sum4) circle (0.05cm) node[below,scale=0.8] {\( x_7 \) };
+      \node[draw,minimum size=\blocksize,right=of sum4] (C) {\( C \) };
+      \node[draw,minimum size=\blocksize,below=of C] (D) {\( D \) };
+      \node[draw,minimum size=\blocksize,above=of C] (G) {\( G \) };
+      \node[draw,circle,minimum size=\sumsize,right=of C] (sum5) {};
+      \fill[red,thick] (sum5) circle (0.05cm) node[below,scale=0.8] {\( x_8 \) };
+      \node[draw,minimum size=\blocksize,below=2cm of n3] (E) {\( E \) };
+      \coordinate[right=of sum5] (n4);
+      \fill[red,thick] (n4) circle (0.05cm) node[above] {\( x_9 \) };
+      \coordinate[right=of n4] (n5);
+      \fill[red,thick] (n5) circle (0.05cm) node[above] {\( x_{10} \) };
+      \coordinate[right=of n5] (y) node[above] at (y) {\( y \)};
+      \fill[red,thick] (y) circle (0.05cm) node[below] {\( y \) };
+
+      \draw[->] (x) -- (sum1.west) node[above left,scale=0.8] {\( + \)};
+      \draw[->] (sum1) -- (sum2.west) node[above left,scale=0.8] {\( + \)};
+      \draw[->] (sum2) -- (A);
+      \draw[->] (A) -- (sum3.west) node[above left,scale=0.8,xshift=0.1cm] {\( + \)};
+      \draw[->] (sum3) -- (sum4.west) node[above left,scale=0.8] {\( + \)};
+      \draw[->] (sum4) -- (C);
+      \draw[->] (C) -- (sum5.west) node[above left,scale=0.8] {\( + \)};
+      \draw[->] (sum5) -- (y);
+
+      \draw[->] (n1) |- (F);
+      \draw[->] (F) -| (sum3.north) node[above right,scale=0.8] {\( + \)};
+
+      \draw[->] (n2) |- (B);
+      \draw[->] (B) -| (sum2.south) node[below right,scale=0.8] {\( - \)};
+
+      \draw[->] (n3) |- (G);
+      \draw[->] (G) -| (sum5.north) node[above right,scale=0.8] {\( + \)};
+
+      \draw[->] (n4) |- (D);
+      \draw[->] (D) -| (sum4.south) node[below right,scale=0.8] {\( - \)};
+
+      \draw[->] (n5) |- (E);
+      \draw[->] (E) -| (sum1.south) node[below right,scale=0.8] {\( + \)};
+    \end{tikzpicture}
+  \end{figure}
+  \noindent
   Rappresentiamo il diagramma di flusso:
-  \label{02-12-D16}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+      every node/.style={node distance=0.9cm},
+      decoration={
+        markings,
+        mark=at position 0.5 with {\arrow{>}}
+      }
+      ] 
+      \coordinate (x) node[below,align=center] at (x) 
+        {\( x \)};
+      \fill (x) circle (0.05cm);
+
+      \coordinate[right=of x] (x1) node[below,align=center] at (x1) 
+        {\( x_1 \)};
+      \fill (x1) circle (0.05cm);
+
+      \coordinate[right=of x1] (x2) node[below,align=center] at (x2) 
+        {\( x_2 \)};
+      \fill (x2) circle (0.05cm);
+
+      \coordinate[right=of x2] (x3) node[above,align=center] at (x3) 
+        {\( x_3 \)};
+      \fill (x3) circle (0.05cm);
+
+      \coordinate[right=of x3] (x4) node[above,align=center] at (x4) 
+        {\( x_4 \)};
+      \fill (x4) circle (0.05cm);
+
+      \coordinate[right=of x4] (x5) node[below,align=center] at (x5) 
+        {\( x_5 \)};
+      \fill (x5) circle (0.05cm);
+
+      \coordinate[right=of x5] (x6) node[below,align=center] at (x6)
+        {\( x_6 \)};
+      \fill (x6) circle (0.05cm);
+
+      \coordinate[right=of x6] (x7) node[above,align=center] at (x7)
+        {\( x_7 \)};
+      \fill (x7) circle (0.05cm);
+
+      \coordinate[right=of x7] (x8) node[below,align=center] at (x8)
+        {\( x_8 \)};
+      \fill (x8) circle (0.05cm);
+
+      \coordinate[right=of x8] (x9) node[above,align=center] at (x9)
+        {\( x_9 \)};
+      \fill (x9) circle (0.05cm);
+
+      \coordinate[right=of x9] (x10) node[below,align=center] at (x10)
+        {\( x_{10} \)};
+      \fill (x10) circle (0.05cm);
+
+      \coordinate[right=of x10] (y) node[below,align=center] at (y)
+        {\( y \)};
+      \fill (y) circle (0.05cm);
+
+      \draw[postaction={decorate}] (x) -- (x1) node[midway,above,scale=0.7] {\( 1 \)};
+      \draw[postaction={decorate}] (x1) -- (x2) node[midway,above,scale=0.7] {\( 1 \)};
+      \draw[postaction={decorate}] (x2) -- (x3) node[midway,above,scale=0.7] {\( 1 \)};
+      \draw[postaction={decorate}] (x3) -- (x4) node[midway,above] {\( A \)};
+      \draw[postaction={decorate}] (x4) -- (x5) node[midway,above,scale=0.7] {\( 1 \)};
+      \draw[postaction={decorate}] (x5) -- (x6) node[midway,above,scale=0.7] {\( 1 \)};
+      \draw[postaction={decorate}] (x6) -- (x7) node[midway,above,scale=0.7] {\( 1 \)};
+      \draw[postaction={decorate}] (x7) -- (x8) node[midway,above] {\( C \)};
+      \draw[postaction={decorate}] (x8) -- (x9) node[midway,above,scale=0.7] {\( 1 \)};
+      \draw[postaction={decorate}] (x9) -- (x10) node[midway,above,scale=0.7] {\( 1 \)};
+      \draw[postaction={decorate}] (x10) -- (y) node[midway,above,scale=0.7] {\( 1 \)};
+
+      \path (x4) edge [postaction={decorate},bend left=3cm,min distance=1cm]
+        node[below] {\( -B \) } (x3);
+      \path (x9) edge [postaction={decorate},bend left=3cm,min distance=1cm]
+        node[below] {\( -D \) } (x7);
+
+      \path (x2) edge [postaction={decorate},bend left=3cm,min distance=1.5cm]
+        node[above] {\( F \) } (x5);
+      \path (x6) edge [postaction={decorate},bend left=3cm,min distance=1.5cm]
+        node[above] {\( G \) } (x8);
+
+      \path (x10) edge [postaction={decorate},bend right=3cm,min distance=3cm]
+        node[above] {\( E \) } (x1);
+    \end{tikzpicture}
+  \end{figure}
   Le due rappresentazioni sono equivalenti.
 
   \vspace{1em}
@@ -6435,32 +7066,360 @@ arco per ottenere la funzione di trasferimento:
     \item Troviamo tutti i percorsi:
       \begin{enumerate}
         \item 
-          \label{02-12-D17}
           \[
             P_1 = AC
           \] 
           I nodi coinvolti sono: \( \left( x_1,x_2,x_3,x_4,x_5,x_6,x_7,x_8,x_9,x_{10} \right) \) 
+          \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[
+              every node/.style={node distance=0.9cm},
+              decoration={
+                markings,
+                mark=at position 0.5 with {\arrow{>}}
+              }
+              ] 
+              \coordinate (x) node[below,align=center] at (x) 
+                {\( x \)};
+              \fill (x) circle (0.05cm);
+
+              \coordinate[right=of x] (x1) node[below,align=center] at (x1) 
+                {\( x_1 \)};
+              \fill (x1) circle (0.05cm);
+
+              \coordinate[right=of x1] (x2) node[below,align=center] at (x2) 
+                {\( x_2 \)};
+              \fill (x2) circle (0.05cm);
+
+              \coordinate[right=of x2] (x3) node[above,align=center] at (x3) 
+                {\( x_3 \)};
+              \fill (x3) circle (0.05cm);
+
+              \coordinate[right=of x3] (x4) node[above,align=center] at (x4) 
+                {\( x_4 \)};
+              \fill (x4) circle (0.05cm);
+
+              \coordinate[right=of x4] (x5) node[below,align=center] at (x5) 
+                {\( x_5 \)};
+              \fill (x5) circle (0.05cm);
+
+              \coordinate[right=of x5] (x6) node[below,align=center] at (x6)
+                {\( x_6 \)};
+              \fill (x6) circle (0.05cm);
+
+              \coordinate[right=of x6] (x7) node[above,align=center] at (x7)
+                {\( x_7 \)};
+              \fill (x7) circle (0.05cm);
+
+              \coordinate[right=of x7] (x8) node[below,align=center] at (x8)
+                {\( x_8 \)};
+              \fill (x8) circle (0.05cm);
+
+              \coordinate[right=of x8] (x9) node[above,align=center] at (x9)
+                {\( x_9 \)};
+              \fill (x9) circle (0.05cm);
+
+              \coordinate[right=of x9] (x10) node[below,align=center] at (x10)
+                {\( x_{10} \)};
+              \fill (x10) circle (0.05cm);
+
+              \coordinate[right=of x10] (y) node[below,align=center] at (y)
+                {\( y \)};
+              \fill (y) circle (0.05cm);
+
+              \draw[red,thick,postaction={decorate}] (x) -- (x1) node[midway,above,scale=0.7] {\( 1 \)};
+              \draw[red,thick,postaction={decorate}] (x1) -- (x2) node[midway,above,scale=0.7] {\( 1 \)};
+              \draw[red,thick,postaction={decorate}] (x2) -- (x3) node[midway,above,scale=0.7] {\( 1 \)};
+              \draw[red,thick,postaction={decorate}] (x3) -- (x4) node[midway,above] {\( A \)};
+              \draw[red,thick,postaction={decorate}] (x4) -- (x5) node[midway,above,scale=0.7] {\( 1 \)};
+              \draw[red,thick,postaction={decorate}] (x5) -- (x6) node[midway,above,scale=0.7] {\( 1 \)};
+              \draw[red,thick,postaction={decorate}] (x6) -- (x7) node[midway,above,scale=0.7] {\( 1 \)};
+              \draw[red,thick,postaction={decorate}] (x7) -- (x8) node[midway,above] {\( C \)};
+              \draw[red,thick,postaction={decorate}] (x8) -- (x9) node[midway,above,scale=0.7] {\( 1 \)};
+              \draw[red,thick,postaction={decorate}] (x9) -- (x10) node[midway,above,scale=0.7] {\( 1 \)};
+              \draw[red,thick,postaction={decorate}] (x10) -- (y) node[midway,above,scale=0.7] {\( 1 \)};
+
+              \path (x4) edge [postaction={decorate},bend left=3cm,min distance=1cm]
+                node[below] {\( -B \) } (x3);
+              \path (x9) edge [postaction={decorate},bend left=3cm,min distance=1cm]
+                node[below] {\( -D \) } (x7);
+
+              \path (x2) edge [postaction={decorate},bend left=3cm,min distance=1.5cm]
+                node[above] {\( F \) } (x5);
+              \path (x6) edge [postaction={decorate},bend left=3cm,min distance=1.5cm]
+                node[above] {\( G \) } (x8);
+
+              \path (x10) edge [postaction={decorate},bend right=3cm,min distance=3cm]
+                node[above] {\( E \) } (x1);
+            \end{tikzpicture}
+          \end{figure}
 
         \item 
-          \label{02-12-D18}
           \[
             P_2 = FC
           \] 
           I nodi coinvolti sono: \( \left( x_1,x_2,x_5,x_6,x_7,x_8,x_9,x_{10} \right) \)
+          \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[
+              every node/.style={node distance=0.9cm},
+              decoration={
+                markings,
+                mark=at position 0.5 with {\arrow{>}}
+              }
+              ] 
+              \coordinate (x) node[below,align=center] at (x) 
+                {\( x \)};
+              \fill (x) circle (0.05cm);
+
+              \coordinate[right=of x] (x1) node[below,align=center] at (x1) 
+                {\( x_1 \)};
+              \fill (x1) circle (0.05cm);
+
+              \coordinate[right=of x1] (x2) node[below,align=center] at (x2) 
+                {\( x_2 \)};
+              \fill (x2) circle (0.05cm);
+
+              \coordinate[right=of x2] (x3) node[above,align=center] at (x3) 
+                {\( x_3 \)};
+              \fill (x3) circle (0.05cm);
+
+              \coordinate[right=of x3] (x4) node[above,align=center] at (x4) 
+                {\( x_4 \)};
+              \fill (x4) circle (0.05cm);
+
+              \coordinate[right=of x4] (x5) node[below,align=center] at (x5) 
+                {\( x_5 \)};
+              \fill (x5) circle (0.05cm);
+
+              \coordinate[right=of x5] (x6) node[below,align=center] at (x6)
+                {\( x_6 \)};
+              \fill (x6) circle (0.05cm);
+
+              \coordinate[right=of x6] (x7) node[above,align=center] at (x7)
+                {\( x_7 \)};
+              \fill (x7) circle (0.05cm);
+
+              \coordinate[right=of x7] (x8) node[below,align=center] at (x8)
+                {\( x_8 \)};
+              \fill (x8) circle (0.05cm);
+
+              \coordinate[right=of x8] (x9) node[above,align=center] at (x9)
+                {\( x_9 \)};
+              \fill (x9) circle (0.05cm);
+
+              \coordinate[right=of x9] (x10) node[below,align=center] at (x10)
+                {\( x_{10} \)};
+              \fill (x10) circle (0.05cm);
+
+              \coordinate[right=of x10] (y) node[below,align=center] at (y)
+                {\( y \)};
+              \fill (y) circle (0.05cm);
+
+              \draw[blue,thick,postaction={decorate}] (x) -- (x1) node[midway,above,scale=0.7] {\( 1 \)};
+              \draw[blue,thick,postaction={decorate}] (x1) -- (x2) node[midway,above,scale=0.7] {\( 1 \)};
+              \draw[postaction={decorate}] (x2) -- (x3) node[midway,above,scale=0.7] {\( 1 \)};
+              \draw[postaction={decorate}] (x3) -- (x4) node[midway,above] {\( A \)};
+              \draw[postaction={decorate}] (x4) -- (x5) node[midway,above,scale=0.7] {\( 1 \)};
+              \draw[blue,thick,postaction={decorate}] (x5) -- (x6) node[midway,above,scale=0.7] {\( 1 \)};
+              \draw[blue,thick,postaction={decorate}] (x6) -- (x7) node[midway,above,scale=0.7] {\( 1 \)};
+              \draw[blue,thick,postaction={decorate}] (x7) -- (x8) node[midway,above] {\( C \)};
+              \draw[blue,thick,postaction={decorate}] (x8) -- (x9) node[midway,above,scale=0.7] {\( 1 \)};
+              \draw[blue,thick,postaction={decorate}] (x9) -- (x10) node[midway,above,scale=0.7] {\( 1 \)};
+              \draw[blue,thick,postaction={decorate}] (x10) -- (y) node[midway,above,scale=0.7] {\( 1 \)};
+
+              \path (x4) edge [postaction={decorate},bend left=3cm,min distance=1cm]
+                node[below] {\( -B \) } (x3);
+              \path (x9) edge [postaction={decorate},bend left=3cm,min distance=1cm]
+                node[below] {\( -D \) } (x7);
+
+              \path[blue,thick] (x2) edge [postaction={decorate},bend left=3cm,min distance=1.5cm]
+                node[above] {\( F \) } (x5);
+              \path (x6) edge [postaction={decorate},bend left=3cm,min distance=1.5cm]
+                node[above] {\( G \) } (x8);
+
+              \path (x10) edge [postaction={decorate},bend right=3cm,min distance=3cm]
+                node[above] {\( E \) } (x1);
+            \end{tikzpicture}
+          \end{figure}
 
         \item
-          \label{02-12-D19}
           \[
             P_3 = AG
           \]
           I nodi coinvolti sono: \( \left( x_1,x_2,x_3,x_4,x_5,x_6,x_8,x_9,x_{10} \right)  \) 
+          \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[
+              every node/.style={node distance=0.9cm},
+              decoration={
+                markings,
+                mark=at position 0.5 with {\arrow{>}}
+              }
+              ] 
+              \coordinate (x) node[below,align=center] at (x) 
+                {\( x \)};
+              \fill (x) circle (0.05cm);
+
+              \coordinate[right=of x] (x1) node[below,align=center] at (x1) 
+                {\( x_1 \)};
+              \fill (x1) circle (0.05cm);
+
+              \coordinate[right=of x1] (x2) node[below,align=center] at (x2) 
+                {\( x_2 \)};
+              \fill (x2) circle (0.05cm);
+
+              \coordinate[right=of x2] (x3) node[above,align=center] at (x3) 
+                {\( x_3 \)};
+              \fill (x3) circle (0.05cm);
+
+              \coordinate[right=of x3] (x4) node[above,align=center] at (x4) 
+                {\( x_4 \)};
+              \fill (x4) circle (0.05cm);
+
+              \coordinate[right=of x4] (x5) node[below,align=center] at (x5) 
+                {\( x_5 \)};
+              \fill (x5) circle (0.05cm);
+
+              \coordinate[right=of x5] (x6) node[below,align=center] at (x6)
+                {\( x_6 \)};
+              \fill (x6) circle (0.05cm);
+
+              \coordinate[right=of x6] (x7) node[above,align=center] at (x7)
+                {\( x_7 \)};
+              \fill (x7) circle (0.05cm);
+
+              \coordinate[right=of x7] (x8) node[below,align=center] at (x8)
+                {\( x_8 \)};
+              \fill (x8) circle (0.05cm);
+
+              \coordinate[right=of x8] (x9) node[above,align=center] at (x9)
+                {\( x_9 \)};
+              \fill (x9) circle (0.05cm);
+
+              \coordinate[right=of x9] (x10) node[below,align=center] at (x10)
+                {\( x_{10} \)};
+              \fill (x10) circle (0.05cm);
+
+              \coordinate[right=of x10] (y) node[below,align=center] at (y)
+                {\( y \)};
+              \fill (y) circle (0.05cm);
+
+              \draw[green!50!black,thick,postaction={decorate}] (x) -- (x1) node[midway,above,scale=0.7] {\( 1 \)};
+              \draw[green!50!black,thick,postaction={decorate}] (x1) -- (x2) node[midway,above,scale=0.7] {\( 1 \)};
+              \draw[green!50!black,thick,postaction={decorate}] (x2) -- (x3) node[midway,above,scale=0.7] {\( 1 \)};
+              \draw[green!50!black,thick,postaction={decorate}] (x3) -- (x4) node[midway,above] {\( A \)};
+              \draw[green!50!black,thick,postaction={decorate}] (x4) -- (x5) node[midway,above,scale=0.7] {\( 1 \)};
+              \draw[green!50!black,thick,postaction={decorate}] (x5) -- (x6) node[midway,above,scale=0.7] {\( 1 \)};
+              \draw[postaction={decorate}] (x6) -- (x7) node[midway,above,scale=0.7] {\( 1 \)};
+              \draw[postaction={decorate}] (x7) -- (x8) node[midway,above] {\( C \)};
+              \draw[green!50!black,thick,postaction={decorate}] (x8) -- (x9) node[midway,above,scale=0.7] {\( 1 \)};
+              \draw[green!50!black,thick,postaction={decorate}] (x9) -- (x10) node[midway,above,scale=0.7] {\( 1 \)};
+              \draw[green!50!black,thick,postaction={decorate}] (x10) -- (y) node[midway,above,scale=0.7] {\( 1 \)};
+
+              \path (x4) edge [postaction={decorate},bend left=3cm,min distance=1cm]
+                node[below] {\( -B \) } (x3);
+              \path (x9) edge [postaction={decorate},bend left=3cm,min distance=1cm]
+                node[below] {\( -D \) } (x7);
+
+              \path (x2) edge [postaction={decorate},bend left=3cm,min distance=1.5cm]
+                node[above] {\( F \) } (x5);
+              \path[green!50!black,thick] (x6) edge [postaction={decorate},bend left=3cm,min distance=1.5cm]
+                node[above] {\( G \) } (x8);
+
+              \path (x10) edge [postaction={decorate},bend right=3cm,min distance=3cm]
+                node[above] {\( E \) } (x1);
+            \end{tikzpicture}
+          \end{figure}
 
         \item
-          \label{02-12-D20}
           \[
             P_3 = FG
           \]
           I nodi coinvolti sono: \( \left( x_1,x_2,x_5,x_6,x_8,x_9,x_{10} \right)  \) 
+          \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[
+              every node/.style={node distance=0.9cm},
+              decoration={
+                markings,
+                mark=at position 0.5 with {\arrow{>}}
+              }
+              ] 
+              \coordinate (x) node[below,align=center] at (x) 
+                {\( x \)};
+              \fill (x) circle (0.05cm);
+
+              \coordinate[right=of x] (x1) node[below,align=center] at (x1) 
+                {\( x_1 \)};
+              \fill (x1) circle (0.05cm);
+
+              \coordinate[right=of x1] (x2) node[below,align=center] at (x2) 
+                {\( x_2 \)};
+              \fill (x2) circle (0.05cm);
+
+              \coordinate[right=of x2] (x3) node[above,align=center] at (x3) 
+                {\( x_3 \)};
+              \fill (x3) circle (0.05cm);
+
+              \coordinate[right=of x3] (x4) node[above,align=center] at (x4) 
+                {\( x_4 \)};
+              \fill (x4) circle (0.05cm);
+
+              \coordinate[right=of x4] (x5) node[below,align=center] at (x5) 
+                {\( x_5 \)};
+              \fill (x5) circle (0.05cm);
+
+              \coordinate[right=of x5] (x6) node[below,align=center] at (x6)
+                {\( x_6 \)};
+              \fill (x6) circle (0.05cm);
+
+              \coordinate[right=of x6] (x7) node[above,align=center] at (x7)
+                {\( x_7 \)};
+              \fill (x7) circle (0.05cm);
+
+              \coordinate[right=of x7] (x8) node[below,align=center] at (x8)
+                {\( x_8 \)};
+              \fill (x8) circle (0.05cm);
+
+              \coordinate[right=of x8] (x9) node[above,align=center] at (x9)
+                {\( x_9 \)};
+              \fill (x9) circle (0.05cm);
+
+              \coordinate[right=of x9] (x10) node[below,align=center] at (x10)
+                {\( x_{10} \)};
+              \fill (x10) circle (0.05cm);
+
+              \coordinate[right=of x10] (y) node[below,align=center] at (y)
+                {\( y \)};
+              \fill (y) circle (0.05cm);
+
+              \draw[purple,thick,postaction={decorate}] (x) -- (x1) node[midway,above,scale=0.7] {\( 1 \)};
+              \draw[purple,thick,postaction={decorate}] (x1) -- (x2) node[midway,above,scale=0.7] {\( 1 \)};
+              \draw[postaction={decorate}] (x2) -- (x3) node[midway,above,scale=0.7] {\( 1 \)};
+              \draw[postaction={decorate}] (x3) -- (x4) node[midway,above] {\( A \)};
+              \draw[postaction={decorate}] (x4) -- (x5) node[midway,above,scale=0.7] {\( 1 \)};
+              \draw[purple,thick,postaction={decorate}] (x5) -- (x6) node[midway,above,scale=0.7] {\( 1 \)};
+              \draw[postaction={decorate}] (x6) -- (x7) node[midway,above,scale=0.7] {\( 1 \)};
+              \draw[postaction={decorate}] (x7) -- (x8) node[midway,above] {\( C \)};
+              \draw[purple,thick,postaction={decorate}] (x8) -- (x9) node[midway,above,scale=0.7] {\( 1 \)};
+              \draw[purple,thick,postaction={decorate}] (x9) -- (x10) node[midway,above,scale=0.7] {\( 1 \)};
+              \draw[purple,thick,postaction={decorate}] (x10) -- (y) node[midway,above,scale=0.7] {\( 1 \)};
+
+              \path (x4) edge [postaction={decorate},bend left=3cm,min distance=1cm]
+                node[below] {\( -B \) } (x3);
+              \path (x9) edge [postaction={decorate},bend left=3cm,min distance=1cm]
+                node[below] {\( -D \) } (x7);
+
+              \path[purple,thick] (x2) edge [postaction={decorate},bend left=3cm,min distance=1.5cm]
+                node[above] {\( F \) } (x5);
+              \path[purple,thick] (x6) edge [postaction={decorate},bend left=3cm,min distance=1.5cm]
+                node[above] {\( G \) } (x8);
+
+              \path (x10) edge [postaction={decorate},bend right=3cm,min distance=3cm]
+                node[above] {\( E \) } (x1);
+            \end{tikzpicture}
+          \end{figure}
       \end{enumerate}
 
     \item Troviamo tutti gli anelli:
@@ -6469,40 +7428,532 @@ arco per ottenere la funzione di trasferimento:
         \item Anelli di ordine 1
           \begin{enumerate}
             \item 
-              \label{02-12-D21}
               \[
                 A_1^1 = -AB \quad \left( x_3,x_4 \right) 
               \]
+              \begin{figure}[H]
+                \centering
+                \begin{tikzpicture}[
+                  every node/.style={node distance=0.9cm},
+                  decoration={
+                    markings,
+                    mark=at position 0.5 with {\arrow{>}}
+                  }
+                  ] 
+                  \coordinate (x) node[below,align=center] at (x) 
+                    {\( x \)};
+                  \fill (x) circle (0.05cm);
+
+                  \coordinate[right=of x] (x1) node[below,align=center] at (x1) 
+                    {\( x_1 \)};
+                  \fill (x1) circle (0.05cm);
+
+                  \coordinate[right=of x1] (x2) node[below,align=center] at (x2) 
+                    {\( x_2 \)};
+                  \fill (x2) circle (0.05cm);
+
+                  \coordinate[right=of x2] (x3) node[above,align=center] at (x3) 
+                    {\( x_3 \)};
+                  \fill (x3) circle (0.05cm);
+
+                  \coordinate[right=of x3] (x4) node[above,align=center] at (x4) 
+                    {\( x_4 \)};
+                  \fill (x4) circle (0.05cm);
+
+                  \coordinate[right=of x4] (x5) node[below,align=center] at (x5) 
+                    {\( x_5 \)};
+                  \fill (x5) circle (0.05cm);
+
+                  \coordinate[right=of x5] (x6) node[below,align=center] at (x6)
+                    {\( x_6 \)};
+                  \fill (x6) circle (0.05cm);
+
+                  \coordinate[right=of x6] (x7) node[above,align=center] at (x7)
+                    {\( x_7 \)};
+                  \fill (x7) circle (0.05cm);
+
+                  \coordinate[right=of x7] (x8) node[below,align=center] at (x8)
+                    {\( x_8 \)};
+                  \fill (x8) circle (0.05cm);
+
+                  \coordinate[right=of x8] (x9) node[above,align=center] at (x9)
+                    {\( x_9 \)};
+                  \fill (x9) circle (0.05cm);
+
+                  \coordinate[right=of x9] (x10) node[below,align=center] at (x10)
+                    {\( x_{10} \)};
+                  \fill (x10) circle (0.05cm);
+
+                  \coordinate[right=of x10] (y) node[below,align=center] at (y)
+                    {\( y \)};
+                  \fill (y) circle (0.05cm);
+
+                  \draw[postaction={decorate}] (x) -- (x1) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[postaction={decorate}] (x1) -- (x2) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[postaction={decorate}] (x2) -- (x3) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[red,thick,postaction={decorate}] (x3) -- (x4) node[midway,above] {\( A \)};
+                  \draw[postaction={decorate}] (x4) -- (x5) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[postaction={decorate}] (x5) -- (x6) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[postaction={decorate}] (x6) -- (x7) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[postaction={decorate}] (x7) -- (x8) node[midway,above] {\( C \)};
+                  \draw[postaction={decorate}] (x8) -- (x9) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[postaction={decorate}] (x9) -- (x10) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[postaction={decorate}] (x10) -- (y) node[midway,above,scale=0.7] {\( 1 \)};
+
+                  \path[red,thick] (x4) edge [postaction={decorate},bend left=3cm,min distance=1cm]
+                    node[below] {\( -B \) } (x3);
+                  \path (x9) edge [postaction={decorate},bend left=3cm,min distance=1cm]
+                    node[below] {\( -D \) } (x7);
+
+                  \path (x2) edge [postaction={decorate},bend left=3cm,min distance=1.5cm]
+                    node[above] {\( F \) } (x5);
+                  \path (x6) edge [postaction={decorate},bend left=3cm,min distance=1.5cm]
+                    node[above] {\( G \) } (x8);
+
+                  \path (x10) edge [postaction={decorate},bend right=3cm,min distance=3cm]
+                    node[above] {\( E \) } (x1);
+                \end{tikzpicture}
+              \end{figure}
 
             \item
-              \label{02-12-D22}
               \[
                 A_2^1 = -CD \quad \left( x_7,x_8,x_9 \right) 
               \]
+              \begin{figure}[H]
+                \centering
+                \begin{tikzpicture}[
+                  every node/.style={node distance=0.9cm},
+                  decoration={
+                    markings,
+                    mark=at position 0.5 with {\arrow{>}}
+                  }
+                  ] 
+                  \coordinate (x) node[below,align=center] at (x) 
+                    {\( x \)};
+                  \fill (x) circle (0.05cm);
+
+                  \coordinate[right=of x] (x1) node[below,align=center] at (x1) 
+                    {\( x_1 \)};
+                  \fill (x1) circle (0.05cm);
+
+                  \coordinate[right=of x1] (x2) node[below,align=center] at (x2) 
+                    {\( x_2 \)};
+                  \fill (x2) circle (0.05cm);
+
+                  \coordinate[right=of x2] (x3) node[above,align=center] at (x3) 
+                    {\( x_3 \)};
+                  \fill (x3) circle (0.05cm);
+
+                  \coordinate[right=of x3] (x4) node[above,align=center] at (x4) 
+                    {\( x_4 \)};
+                  \fill (x4) circle (0.05cm);
+
+                  \coordinate[right=of x4] (x5) node[below,align=center] at (x5) 
+                    {\( x_5 \)};
+                  \fill (x5) circle (0.05cm);
+
+                  \coordinate[right=of x5] (x6) node[below,align=center] at (x6)
+                    {\( x_6 \)};
+                  \fill (x6) circle (0.05cm);
+
+                  \coordinate[right=of x6] (x7) node[above,align=center] at (x7)
+                    {\( x_7 \)};
+                  \fill (x7) circle (0.05cm);
+
+                  \coordinate[right=of x7] (x8) node[below,align=center] at (x8)
+                    {\( x_8 \)};
+                  \fill (x8) circle (0.05cm);
+
+                  \coordinate[right=of x8] (x9) node[above,align=center] at (x9)
+                    {\( x_9 \)};
+                  \fill (x9) circle (0.05cm);
+
+                  \coordinate[right=of x9] (x10) node[below,align=center] at (x10)
+                    {\( x_{10} \)};
+                  \fill (x10) circle (0.05cm);
+
+                  \coordinate[right=of x10] (y) node[below,align=center] at (y)
+                    {\( y \)};
+                  \fill (y) circle (0.05cm);
+
+                  \draw[postaction={decorate}] (x) -- (x1) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[postaction={decorate}] (x1) -- (x2) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[postaction={decorate}] (x2) -- (x3) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[postaction={decorate}] (x3) -- (x4) node[midway,above] {\( A \)};
+                  \draw[postaction={decorate}] (x4) -- (x5) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[postaction={decorate}] (x5) -- (x6) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[postaction={decorate}] (x6) -- (x7) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[blue,thick,postaction={decorate}] (x7) -- (x8) node[midway,above] {\( C \)};
+                  \draw[blue,thick,postaction={decorate}] (x8) -- (x9) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[postaction={decorate}] (x9) -- (x10) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[postaction={decorate}] (x10) -- (y) node[midway,above,scale=0.7] {\( 1 \)};
+
+                  \path (x4) edge [postaction={decorate},bend left=3cm,min distance=1cm]
+                    node[below] {\( -B \) } (x3);
+                  \path[blue,thick] (x9) edge [postaction={decorate},bend left=3cm,min distance=1cm]
+                    node[below] {\( -D \) } (x7);
+
+                  \path (x2) edge [postaction={decorate},bend left=3cm,min distance=1.5cm]
+                    node[above] {\( F \) } (x5);
+                  \path (x6) edge [postaction={decorate},bend left=3cm,min distance=1.5cm]
+                    node[above] {\( G \) } (x8);
+
+                  \path (x10) edge [postaction={decorate},bend right=3cm,min distance=3cm]
+                    node[above] {\( E \) } (x1);
+                \end{tikzpicture}
+              \end{figure}
 
             \item
-              \label{02-12-D23}
               \[
                 A_3^1 = FCE \quad \left( x_1,x_2,x_5,x_6,x_7,x_8,x_9 \right) 
               \]
+              \begin{figure}[H]
+                \centering
+                \begin{tikzpicture}[
+                  every node/.style={node distance=0.9cm},
+                  decoration={
+                    markings,
+                    mark=at position 0.5 with {\arrow{>}}
+                  }
+                  ] 
+                  \coordinate (x) node[below,align=center] at (x) 
+                    {\( x \)};
+                  \fill (x) circle (0.05cm);
+
+                  \coordinate[right=of x] (x1) node[below,align=center] at (x1) 
+                    {\( x_1 \)};
+                  \fill (x1) circle (0.05cm);
+
+                  \coordinate[right=of x1] (x2) node[below,align=center] at (x2) 
+                    {\( x_2 \)};
+                  \fill (x2) circle (0.05cm);
+
+                  \coordinate[right=of x2] (x3) node[above,align=center] at (x3) 
+                    {\( x_3 \)};
+                  \fill (x3) circle (0.05cm);
+
+                  \coordinate[right=of x3] (x4) node[above,align=center] at (x4) 
+                    {\( x_4 \)};
+                  \fill (x4) circle (0.05cm);
+
+                  \coordinate[right=of x4] (x5) node[below,align=center] at (x5) 
+                    {\( x_5 \)};
+                  \fill (x5) circle (0.05cm);
+
+                  \coordinate[right=of x5] (x6) node[below,align=center] at (x6)
+                    {\( x_6 \)};
+                  \fill (x6) circle (0.05cm);
+
+                  \coordinate[right=of x6] (x7) node[above,align=center] at (x7)
+                    {\( x_7 \)};
+                  \fill (x7) circle (0.05cm);
+
+                  \coordinate[right=of x7] (x8) node[below,align=center] at (x8)
+                    {\( x_8 \)};
+                  \fill (x8) circle (0.05cm);
+
+                  \coordinate[right=of x8] (x9) node[above,align=center] at (x9)
+                    {\( x_9 \)};
+                  \fill (x9) circle (0.05cm);
+
+                  \coordinate[right=of x9] (x10) node[below,align=center] at (x10)
+                    {\( x_{10} \)};
+                  \fill (x10) circle (0.05cm);
+
+                  \coordinate[right=of x10] (y) node[below,align=center] at (y)
+                    {\( y \)};
+                  \fill (y) circle (0.05cm);
+
+                  \draw[postaction={decorate}] (x) -- (x1) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[green!50!black,thick,postaction={decorate}] (x1) -- (x2) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[postaction={decorate}] (x2) -- (x3) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[postaction={decorate}] (x3) -- (x4) node[midway,above] {\( A \)};
+                  \draw[postaction={decorate}] (x4) -- (x5) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[green!50!black,thick,postaction={decorate}] (x5) -- (x6) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[green!50!black,thick,postaction={decorate}] (x6) -- (x7) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[green!50!black,thick,postaction={decorate}] (x7) -- (x8) node[midway,above] {\( C \)};
+                  \draw[green!50!black,thick,postaction={decorate}] (x8) -- (x9) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[green!50!black,thick,postaction={decorate}] (x9) -- (x10) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[postaction={decorate}] (x10) -- (y) node[midway,above,scale=0.7] {\( 1 \)};
+
+                  \path (x4) edge [postaction={decorate},bend left=3cm,min distance=1cm]
+                    node[below] {\( -B \) } (x3);
+                  \path (x9) edge [postaction={decorate},bend left=3cm,min distance=1cm]
+                    node[below] {\( -D \) } (x7);
+
+                  \path[green!50!black,thick] (x2) edge [postaction={decorate},bend left=3cm,min distance=1.5cm]
+                    node[above] {\( F \) } (x5);
+                  \path (x6) edge [postaction={decorate},bend left=3cm,min distance=1.5cm]
+                    node[above] {\( G \) } (x8);
+
+                  \path[green!50!black,thick] (x10) edge [postaction={decorate},bend right=3cm,min distance=3cm]
+                    node[above] {\( E \) } (x1);
+                \end{tikzpicture}
+              \end{figure}
 
             \item
-              \label{02-12-D24}
               \[
                 A_4^1 = FGE \quad \left( x_1,x_2,x_3,x_6,x_8,x_9,x_{10} \right) 
               \]
+              \begin{figure}[H]
+                \centering
+                \begin{tikzpicture}[
+                  every node/.style={node distance=0.9cm},
+                  decoration={
+                    markings,
+                    mark=at position 0.5 with {\arrow{>}}
+                  }
+                  ] 
+                  \coordinate (x) node[below,align=center] at (x) 
+                    {\( x \)};
+                  \fill (x) circle (0.05cm);
+
+                  \coordinate[right=of x] (x1) node[below,align=center] at (x1) 
+                    {\( x_1 \)};
+                  \fill (x1) circle (0.05cm);
+
+                  \coordinate[right=of x1] (x2) node[below,align=center] at (x2) 
+                    {\( x_2 \)};
+                  \fill (x2) circle (0.05cm);
+
+                  \coordinate[right=of x2] (x3) node[above,align=center] at (x3) 
+                    {\( x_3 \)};
+                  \fill (x3) circle (0.05cm);
+
+                  \coordinate[right=of x3] (x4) node[above,align=center] at (x4) 
+                    {\( x_4 \)};
+                  \fill (x4) circle (0.05cm);
+
+                  \coordinate[right=of x4] (x5) node[below,align=center] at (x5) 
+                    {\( x_5 \)};
+                  \fill (x5) circle (0.05cm);
+
+                  \coordinate[right=of x5] (x6) node[below,align=center] at (x6)
+                    {\( x_6 \)};
+                  \fill (x6) circle (0.05cm);
+
+                  \coordinate[right=of x6] (x7) node[above,align=center] at (x7)
+                    {\( x_7 \)};
+                  \fill (x7) circle (0.05cm);
+
+                  \coordinate[right=of x7] (x8) node[below,align=center] at (x8)
+                    {\( x_8 \)};
+                  \fill (x8) circle (0.05cm);
+
+                  \coordinate[right=of x8] (x9) node[above,align=center] at (x9)
+                    {\( x_9 \)};
+                  \fill (x9) circle (0.05cm);
+
+                  \coordinate[right=of x9] (x10) node[below,align=center] at (x10)
+                    {\( x_{10} \)};
+                  \fill (x10) circle (0.05cm);
+
+                  \coordinate[right=of x10] (y) node[below,align=center] at (y)
+                    {\( y \)};
+                  \fill (y) circle (0.05cm);
+
+                  \draw[postaction={decorate}] (x) -- (x1) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[purple,thick,postaction={decorate}] (x1) -- (x2) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[purple,thick,postaction={decorate}] (x2) -- (x3) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[purple,thick,postaction={decorate}] (x3) -- (x4) node[midway,above] {\( A \)};
+                  \draw[purple,thick,postaction={decorate}] (x4) -- (x5) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[purple,thick,postaction={decorate}] (x5) -- (x6) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[postaction={decorate}] (x6) -- (x7) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[postaction={decorate}] (x7) -- (x8) node[midway,above] {\( C \)};
+                  \draw[purple,thick,postaction={decorate}] (x8) -- (x9) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[purple,thick,postaction={decorate}] (x9) -- (x10) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[postaction={decorate}] (x10) -- (y) node[midway,above,scale=0.7] {\( 1 \)};
+
+                  \path (x4) edge [postaction={decorate},bend left=3cm,min distance=1cm]
+                    node[below] {\( -B \) } (x3);
+                  \path (x9) edge [postaction={decorate},bend left=3cm,min distance=1cm]
+                    node[below] {\( -D \) } (x7);
+
+                  \path (x2) edge [postaction={decorate},bend left=3cm,min distance=1.5cm]
+                    node[above] {\( F \) } (x5);
+                  \path[purple,thick] (x6) edge [postaction={decorate},bend left=3cm,min distance=1.5cm]
+                    node[above] {\( G \) } (x8);
+
+                  \path[purple,thick] (x10) edge [postaction={decorate},bend right=3cm,min distance=3cm]
+                    node[above] {\( E \) } (x1);
+                \end{tikzpicture}
+              \end{figure}
 
             \item
-              \label{02-12-D25}
               \[
                 A_5^1 = ACE \quad \left( x_1,x_2,x_3,x_4,x_5,x_6,x_7,x_8,x_9,x_{10} \right) 
               \]
+              \begin{figure}[H]
+                \centering
+                \begin{tikzpicture}[
+                  every node/.style={node distance=0.9cm},
+                  decoration={
+                    markings,
+                    mark=at position 0.5 with {\arrow{>}}
+                  }
+                  ] 
+                  \coordinate (x) node[below,align=center] at (x) 
+                    {\( x \)};
+                  \fill (x) circle (0.05cm);
+
+                  \coordinate[right=of x] (x1) node[below,align=center] at (x1) 
+                    {\( x_1 \)};
+                  \fill (x1) circle (0.05cm);
+
+                  \coordinate[right=of x1] (x2) node[below,align=center] at (x2) 
+                    {\( x_2 \)};
+                  \fill (x2) circle (0.05cm);
+
+                  \coordinate[right=of x2] (x3) node[above,align=center] at (x3) 
+                    {\( x_3 \)};
+                  \fill (x3) circle (0.05cm);
+
+                  \coordinate[right=of x3] (x4) node[above,align=center] at (x4) 
+                    {\( x_4 \)};
+                  \fill (x4) circle (0.05cm);
+
+                  \coordinate[right=of x4] (x5) node[below,align=center] at (x5) 
+                    {\( x_5 \)};
+                  \fill (x5) circle (0.05cm);
+
+                  \coordinate[right=of x5] (x6) node[below,align=center] at (x6)
+                    {\( x_6 \)};
+                  \fill (x6) circle (0.05cm);
+
+                  \coordinate[right=of x6] (x7) node[above,align=center] at (x7)
+                    {\( x_7 \)};
+                  \fill (x7) circle (0.05cm);
+
+                  \coordinate[right=of x7] (x8) node[below,align=center] at (x8)
+                    {\( x_8 \)};
+                  \fill (x8) circle (0.05cm);
+
+                  \coordinate[right=of x8] (x9) node[above,align=center] at (x9)
+                    {\( x_9 \)};
+                  \fill (x9) circle (0.05cm);
+
+                  \coordinate[right=of x9] (x10) node[below,align=center] at (x10)
+                    {\( x_{10} \)};
+                  \fill (x10) circle (0.05cm);
+
+                  \coordinate[right=of x10] (y) node[below,align=center] at (y)
+                    {\( y \)};
+                  \fill (y) circle (0.05cm);
+
+                  \draw[postaction={decorate}] (x) -- (x1) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[orange,thick,postaction={decorate}] (x1) -- (x2) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[orange,thick,postaction={decorate}] (x2) -- (x3) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[orange,thick,postaction={decorate}] (x3) -- (x4) node[midway,above] {\( A \)};
+                  \draw[orange,thick,postaction={decorate}] (x4) -- (x5) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[orange,thick,postaction={decorate}] (x5) -- (x6) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[orange,thick,postaction={decorate}] (x6) -- (x7) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[orange,thick,postaction={decorate}] (x7) -- (x8) node[midway,above] {\( C \)};
+                  \draw[orange,thick,postaction={decorate}] (x8) -- (x9) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[orange,thick,postaction={decorate}] (x9) -- (x10) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[postaction={decorate}] (x10) -- (y) node[midway,above,scale=0.7] {\( 1 \)};
+
+                  \path (x4) edge [postaction={decorate},bend left=3cm,min distance=1cm]
+                    node[below] {\( -B \) } (x3);
+                  \path (x9) edge [postaction={decorate},bend left=3cm,min distance=1cm]
+                    node[below] {\( -D \) } (x7);
+
+                  \path (x2) edge [postaction={decorate},bend left=3cm,min distance=1.5cm]
+                    node[above] {\( F \) } (x5);
+                  \path (x6) edge [postaction={decorate},bend left=3cm,min distance=1.5cm]
+                    node[above] {\( G \) } (x8);
+
+                  \path[orange,thick,] (x10) edge [postaction={decorate},bend right=3cm,min distance=3cm]
+                    node[above] {\( E \) } (x1);
+                \end{tikzpicture}
+              \end{figure}
 
             \item
-              \label{02-12-D26}
               \[
                 A_6^1 = AGE \quad \left( x_1,x_2,x_3,x_4,x_5,x_6,x_8,x_9,x_{10} \right) 
               \]
+              \begin{figure}[H]
+                \centering
+                \begin{tikzpicture}[
+                  every node/.style={node distance=0.9cm},
+                  decoration={
+                    markings,
+                    mark=at position 0.5 with {\arrow{>}}
+                  }
+                  ] 
+                  \coordinate (x) node[below,align=center] at (x) 
+                    {\( x \)};
+                  \fill (x) circle (0.05cm);
+
+                  \coordinate[right=of x] (x1) node[below,align=center] at (x1) 
+                    {\( x_1 \)};
+                  \fill (x1) circle (0.05cm);
+
+                  \coordinate[right=of x1] (x2) node[below,align=center] at (x2) 
+                    {\( x_2 \)};
+                  \fill (x2) circle (0.05cm);
+
+                  \coordinate[right=of x2] (x3) node[above,align=center] at (x3) 
+                    {\( x_3 \)};
+                  \fill (x3) circle (0.05cm);
+
+                  \coordinate[right=of x3] (x4) node[above,align=center] at (x4) 
+                    {\( x_4 \)};
+                  \fill (x4) circle (0.05cm);
+
+                  \coordinate[right=of x4] (x5) node[below,align=center] at (x5) 
+                    {\( x_5 \)};
+                  \fill (x5) circle (0.05cm);
+
+                  \coordinate[right=of x5] (x6) node[below,align=center] at (x6)
+                    {\( x_6 \)};
+                  \fill (x6) circle (0.05cm);
+
+                  \coordinate[right=of x6] (x7) node[above,align=center] at (x7)
+                    {\( x_7 \)};
+                  \fill (x7) circle (0.05cm);
+
+                  \coordinate[right=of x7] (x8) node[below,align=center] at (x8)
+                    {\( x_8 \)};
+                  \fill (x8) circle (0.05cm);
+
+                  \coordinate[right=of x8] (x9) node[above,align=center] at (x9)
+                    {\( x_9 \)};
+                  \fill (x9) circle (0.05cm);
+
+                  \coordinate[right=of x9] (x10) node[below,align=center] at (x10)
+                    {\( x_{10} \)};
+                  \fill (x10) circle (0.05cm);
+
+                  \coordinate[right=of x10] (y) node[below,align=center] at (y)
+                    {\( y \)};
+                  \fill (y) circle (0.05cm);
+
+                  \draw[postaction={decorate}] (x) -- (x1) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[red!10!purple,thick,postaction={decorate}] (x1) -- (x2) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[postaction={decorate}] (x2) -- (x3) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[postaction={decorate}] (x3) -- (x4) node[midway,above] {\( A \)};
+                  \draw[postaction={decorate}] (x4) -- (x5) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[red!10!purple,thick,postaction={decorate}] (x5) -- (x6) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[postaction={decorate}] (x6) -- (x7) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[postaction={decorate}] (x7) -- (x8) node[midway,above] {\( C \)};
+                  \draw[red!10!purple,thick,postaction={decorate}] (x8) -- (x9) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[red!10!purple,thick,postaction={decorate}] (x9) -- (x10) node[midway,above,scale=0.7] {\( 1 \)};
+                  \draw[postaction={decorate}] (x10) -- (y) node[midway,above,scale=0.7] {\( 1 \)};
+
+                  \path (x4) edge [postaction={decorate},bend left=3cm,min distance=1cm]
+                    node[below] {\( -B \) } (x3);
+                  \path (x9) edge [postaction={decorate},bend left=3cm,min distance=1cm]
+                    node[below] {\( -D \) } (x7);
+
+                  \path[red!10!purple,thick] (x2) edge [postaction={decorate},bend left=3cm,min distance=1.5cm]
+                    node[above] {\( F \) } (x5);
+                  \path[red!10!purple,thick] (x6) edge [postaction={decorate},bend left=3cm,min distance=1.5cm]
+                    node[above] {\( G \) } (x8);
+
+                  \path[red!10!purple,thick] (x10) edge [postaction={decorate},bend right=3cm,min distance=3cm]
+                    node[above] {\( E \) } (x1);
+                \end{tikzpicture}
+              \end{figure}
           \end{enumerate}
 
         \item Anelli di ordine 2:
@@ -6602,5 +8053,139 @@ arco per ottenere la funzione di trasferimento:
   \end{enumerate}
 \end{example}
 
+\section{Diagrammi di Bode}
+Questo diagramma ci aiuta a capire come si comporta un sistema descritto da segnali
+\textbf{sinusoidali}. 
+\subsection{Motivo delle sinusoidi}
+I sistemi descritti da segnali sinusoidali sono utili perchè
+vedremo che qualsiasi segnale può essere rappresentato come una somma di sinusoidi.
+
+\vspace{1em}
+\noindent
+Un sistema LTI causale permette le seguenti operazioni:
+\begin{itemize}
+  \item \( u(t) \cdot a \) 
+  \item \( \frac{d u(t)}{t} \) 
+  \item \( \int u(t) \,dt \) 
+  \item \( u_1(t) + u_2(t) \) 
+\end{itemize}
+
+L'output del sistema è un onda scalata rispetto all'ampiezza o ritardata rispetto al
+tempo:
+\label{05-12-D1}
+
+\begin{example}
+  \label{ex:lti-sin}
+  Prendiamo ad esempio il seguente sistema:
+  \label{05-12-D2}
+  \[
+  \begin{aligned}
+    u(t) &= \sin(\frac{1}{2}t)\\
+    \omega &= \frac{1}{2} \frac{rad}{s} \alpha Hz
+  \end{aligned}
+  \] 
+  Calcoliamo l'ingresso:
+  \[
+  \begin{aligned}
+    v(t) &= 2 \cdot u(t) + \int u(t) \,dt\\
+         &= 2 \sin(\frac{1}{2}t) + \int \sin(\frac{1}{2}t) \,dt\\
+         &= 2 \sin(\frac{1}{2}t) - 2 \cos(\frac{1}{2}t)
+  \end{aligned}
+  \] 
+  Utilizziamo un'\textbf{identità trigonometrica}, cioè:
+  \[
+    \begin{aligned}
+      \color{red}a \color{black} sin(x) + \color{red} b \color{black} cos(x) =\\
+      = \sqrt{a^2 + b^2} \cdot \sin(x + \rho )
+    \end{aligned}
+  \] 
+  dove: \( \rho = atan\left(\frac{b}{a}\right) \quad a \ge 0 \) 
+  \[
+  \begin{aligned}
+    v(t) &= \overbrace{2}^{a} \sin(\overbrace{\frac{1}{2}t}^{x}) \overbrace{- 2}^{b} \cos(\frac{1}{2}t)\\
+         &= \sqrt{2^2 + (-2)^2} \cdot  \sin\left(\frac{1}{2}t + atan\left(\frac{-2}{2}\right)\right)\\
+         &= \sqrt{8} \cdot  \sin\left(\frac{1}{2}t + atan(-1)\right)\\
+         &= 2.83 \cdot \sin\left(\frac{1}{2}t - 0.785\right)\\
+         &= A \cdot \sin(\omega + \phi)
+  \end{aligned}
+  \] 
+\end{example}
+
+\subsection{Rappresentazione del diagramma di Bode}
+Il diagramma di bode permette di rappresentare il comportamento di un sistema LTI formato 
+da sinusoidi, di seguito guardiamo un diagramma semi-logaritmico 
+(cioè con un asse lineare e uno logaritmico) che rappresenta l'ampiezza e la fase di un
+sistema LTI:
+\label{05-12-D3}
+
+\vspace{1em}
+\noindent
+\textbf{Osservazione}:
+
+\noindent
+  Il decibel \( dB \) è un unità di misura inventata nel 1920 per misurare quanto si
+  disperde il segnale acustico su una transmission unit (\( 1TU = 10 \log_{10} \Delta_{\text{Potenza}} \)).
+  Quindi un decibel è il minimo di potenza che un orecchio umano può percepire.
+  \[
+    \text{Potenza} = \text{Ampiezza}^2
+  \] 
+  \[
+    1 bel = 1 TU = 10\log_{10} A^2 = 20 \log_{10} A
+  \] 
+  \[
+    1 dB = \frac{1}{10} bel
+  \] 
+
+  \begin{example}
+    Riprendiamo l'esempio \ref{ex:lti-sin}:
+    \label{05-12-D2-2}
+
+    \[
+      \begin{aligned}
+        u(t) &= \sin(\frac{1}{2}t) \quad \omega = \frac{1}{2}\\
+        v(t) &= 2.83 \cdot \sin\left(\frac{1}{2}t - 0.785\right)\\
+      \end{aligned}
+    \] 
+    Studiamo il sistema in frequenza:
+    \label{05-12-D4}
+    \[
+      \begin{aligned}
+        V(s) &= \left( 2 + \frac{1}{s} \right) U(s)\\
+        \frac{V(s)}{U(s)} &= 2 + \frac{1}{s} = \frac{2s + 1}{s} \quad \text{Funzione di trasferimento del sistema}\\
+      \end{aligned}
+    \] 
+    \( s \) è un numero complesso:
+    \[
+      s = \sigma + j \omega
+    \] 
+    Con la risposta in frequenza la \( s \) diventa solo \( s = j \omega \), quindi
+    otteniamo:
+    \[
+      \begin{aligned}
+        \frac{V(s)}{U(s)} &= \frac{2j\omega + 1}{j\omega}\\
+                          &= \frac{2 \cancel{j \omega}}{\cancel{j \omega}} + \frac{1}{j \omega} \cdot \frac{j}{j}\\
+                          &= 2 - \frac{1}{\omega} \cdot j\\
+      \end{aligned}
+    \] 
+    La rispsota del sistema nel piano dei complessi è:
+    \label{05-12-D5}
+    dove:
+    \[
+      \begin{aligned}
+        \text{Ampiezza} &= l = \sqrt{\Re^2 + \Im^2}\\ 
+        \text{Fase} &= \theta = atan2\left( \Im, \Re \right)
+      \end{aligned}
+    \]
+    \[
+      atan2(\sigma ,j \omega) =
+      \begin{cases}
+        atan \left( \frac{\omega}{\sigma } \right) & \text{se } \sigma > 0,\;\; \omega \in \mathbb{R}\\
+        segno(\omega) \cdot \frac{\pi}{2} & \text{se } \sigma = 0,\;\; \omega \neq 0\\
+        atan \left( \frac{\omega}{\sigma } \right) + \pi \cdot segno(\omega) & \text{se } \sigma < 0,\;\; \text{ o } \sigma =0\;\; \omega \ge  0
+      \end{cases}
+    \] 
+    Il diagramma di Bode sarà:
+    \label{05-12-D6}
+  \end{example}
 
 \end{document}
