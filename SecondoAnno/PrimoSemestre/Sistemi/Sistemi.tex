@@ -8054,8 +8054,11 @@ arco per ottenere la funzione di trasferimento:
 \end{example}
 
 \section{Diagrammi di Bode}
-Questo diagramma ci aiuta a capire come si comporta un sistema descritto da segnali
+Questo diagramma ci aiuta a capire il comportamento del sistema al variare della
+frequenza del segnale di ingresso. In particolare ci permette di capire
+come si comporta un sistema descritto da segnali
 \textbf{sinusoidali}. 
+
 \subsection{Motivo delle sinusoidi}
 I sistemi descritti da segnali sinusoidali sono utili perchè
 vedremo che qualsiasi segnale può essere rappresentato come una somma di sinusoidi.
@@ -8080,7 +8083,7 @@ tempo:
   \label{05-12-D2}
   \[
   \begin{aligned}
-    u(t) &= \sin(\frac{1}{2}t)\\
+    u(t) &= \sin\left(\frac{1}{2}t\right)\\
     \omega &= \frac{1}{2} \frac{rad}{s} \alpha Hz
   \end{aligned}
   \] 
@@ -8088,8 +8091,8 @@ tempo:
   \[
   \begin{aligned}
     v(t) &= 2 \cdot u(t) + \int u(t) \,dt\\
-         &= 2 \sin(\frac{1}{2}t) + \int \sin(\frac{1}{2}t) \,dt\\
-         &= 2 \sin(\frac{1}{2}t) - 2 \cos(\frac{1}{2}t)
+         &= 2 \sin\left(\frac{1}{2}t\right) + \int \sin\left(\frac{1}{2}t\right) \,dt\\
+         &= 2 \sin\left(\frac{1}{2}t\right) - 2 \cos\left(\frac{1}{2}t\right)
   \end{aligned}
   \] 
   Utilizziamo un'\textbf{identità trigonometrica}, cioè:
@@ -8102,7 +8105,7 @@ tempo:
   dove: \( \rho = atan\left(\frac{b}{a}\right) \quad a \ge 0 \) 
   \[
   \begin{aligned}
-    v(t) &= \overbrace{2}^{a} \sin(\overbrace{\frac{1}{2}t}^{x}) \overbrace{- 2}^{b} \cos(\frac{1}{2}t)\\
+    v(t) &= \overbrace{2}^{a} \sin\left(\overbrace{\frac{1}{2}t}^{x}\right) \overbrace{- 2}^{b} \cos(\frac{1}{2}t)\\
          &= \sqrt{2^2 + (-2)^2} \cdot  \sin\left(\frac{1}{2}t + atan\left(\frac{-2}{2}\right)\right)\\
          &= \sqrt{8} \cdot  \sin\left(\frac{1}{2}t + atan(-1)\right)\\
          &= 2.83 \cdot \sin\left(\frac{1}{2}t - 0.785\right)\\
@@ -8187,5 +8190,523 @@ sistema LTI:
     Il diagramma di Bode sarà:
     \label{05-12-D6}
   \end{example}
+  
+\subsubsection{Risposta in frequenza}
+Si parte dal sistema con un input preciso:
+\[
+  \begin{aligned}
+    u(t) = A e^{j \left( \omega_0 t + \phi \right) } = A e^{j \omega_0 t} e^{j \phi}
+  \end{aligned}
+\] 
+dove:
+\[
+\begin{aligned}
+  A \in \mathbb{R}_+\\
+  \phi,\omega_0 \in \mathbb{R}
+\end{aligned}
+\] 
+Questo input viene messo in un sistema BIBO stabile e riceviamo un output \( v(t) \).
+Poi calcoliamo:
+\[
+\begin{aligned}
+  H(j \omega) &= \int_{- \infty}^{+ \infty} h(\tau) e^{-j \omega \tau} \,d\tau\\
+  \downarrow & s = j \omega_0\\
+             &= \mathcal{L}\left[ h(t) \right](s) \Bigg|_{s = j \omega_0}
+\end{aligned}
+\] 
+Se in input avessimo degli esponenziali o delle sinusoidali, l'output cambia solo
+per un fattore di scala o di fase:
+\begin{example}
+  Se consideriamo un \textbf{fasore}:
+  \[
+    u(t) = A e^{j \phi} \cdot  e^{j \omega t}
+  \] 
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \node (u) {\( u(t) \) };
+      \node[draw,minimum size=1cm,right=of u] (s) {\( h(t) \) };
+      \node[right=of s] (v) {\( v(t) \) };
+
+      \draw[->] (u) -- (s);
+      \draw[->] (s) -- (v);
+    \end{tikzpicture}
+  \end{figure}
+  \[
+    \begin{aligned}
+      v(t) &= \int_{- \infty}^{+ \infty} h(\tau) \cdot u(t - \tau) \,d\tau\\
+           &= \int_{- \infty}^{+ \infty} h(\tau) \cdot A e^{j \phi} \cdot e^{j \omega (t - \tau)} \,d\tau\\
+           &= A \cdot e^{j \phi} \cdot e^{j \omega t} \int_{- \infty}^{+ \infty} h(\tau) \cdot e^{-j \omega \tau} \,d\tau\\
+           &= A \cdot e^{j \phi} \cdot e^{j \omega t} \cdot H(j \omega)\\
+           &= A \cdot e^{j \phi} \cdot e^{j \omega t} \cdot A(\omega) e^{j \varphi (\omega)}\\
+           &= A \cdot A(\omega) \cdot  e^{j \left( \phi + \varphi(\omega) \right) } \cdot e^{j \omega t}
+    \end{aligned}
+  \] 
+  dove:
+  \[
+    \begin{aligned}
+      A &= \text{Ampiezza di \( u(t) \)}\\
+      A(\omega) &= \text{Ampiezza della risposta in frequenza}\\
+      \phi &= \text{Fase di \( u(t) \)}\\
+      \varphi(\omega) &= \text{Fase della risposta in frequenza}
+    \end{aligned}
+  \] 
+  Notiamo che la frequenza di \( u(t) \), cioè \( \omega \), rimane invariata.
+\end{example}
+
+\subsection{Esempi}
+\begin{example}
+  Consideriamo l'esempio \ref{ex:lti-sin} nel dominio del tempo:
+  \label{05-12-D2-3}
+  \[
+  \begin{aligned}
+    u(t) &= \sin\left(\frac{1}{2}t\right)\\
+    v(t) &= 2 \sin \left( \frac{1}{2}t \right) + \int \sin \left( \frac{1}{2}t \right) \,dt\\
+         &= 2.83 \cdot \sin\left(\frac{1}{2}t - 0.785 rad\right)\\
+  \end{aligned}
+  \] 
+  Possiamo andare a trasformare il sistema nel dominio delle frequenze:
+  \label{05-12-D4-2}
+  \[
+  \begin{aligned}
+    u(t) &= \sin \left( \frac{1}{2}t \right) \\
+    s &= \cancel{\sigma } + j \omega = j \omega\\
+    w &= \frac{1}{2} \frac{rad}{s} = \frac{1}{2} Hz
+    \frac{V(t)}{U(t)} &= \frac{2s + 1}{s}\\
+                      &= \frac{2 j \omega + 1}{j \omega}\\
+                      &= 2 - \frac{1}{\omega} j
+  \end{aligned}
+  \] 
+  Il grafico sul piano complesso sarà:
+  \label{06-12-D1}
+  Sappiamo che:
+  \begin{itemize}
+    \item L'ampiezza \( l \) vale:
+      \[
+        l =  \left| \sigma + j \omega \right| = \left| \sigma  \right| = \sqrt{\Re^2 + \Im^2} 
+      \] 
+    \item La fase \( \theta \) vale:
+      \[
+        \theta = arg(\sigma + j \omega) = atan2(\Im, \Re)
+      \]
+      \[
+      arg(\sigma + j \omega) =
+      \begin{cases}
+        arctan\left( \frac{\omega}{\sigma } \right) & \sigma > 0\\
+        \frac{\pi }{2} & \sigma  = 0,\;\; \omega > 0\\
+        -\frac{\pi }{2} & \sigma  = 0,\;\; \omega < 0\\
+        arctan\left( \frac{\omega}{\sigma } \right) + \pi & \sigma < 0,\;\; \omega \ge 0\\
+        arctan\left( \frac{\omega}{\sigma } \right) - \pi & \sigma < 0,\;\; \omega < 0
+      \end{cases}
+      \] 
+      \[
+        segno(\alpha) = \frac{\alpha}{|\alpha|} = \begin{cases}
+          1 & \text{ se } \alpha > 0\\
+          0 & \text{ altrimenti}
+        \end{cases}
+      \] 
+      \[
+      arg(\sigma + j \omega) =
+      \begin{cases}
+        arctan\left( \frac{\omega}{\sigma } \right) & \sigma > 0\\
+        segno(\omega) \cdot \frac{\pi}{2} & \sigma = 0,\;\; \omega \neq 0\\
+        arctan\left( \frac{\omega}{\sigma } \right) + \pi \cdot segno(\omega) & \sigma < 0\\
+      \end{cases}
+      \] 
+  \end{itemize}
+  Se volessimo disegnare il grafico del punto trovato sul grafico dei complessi
+  esso diventa:
+  \label{06-12-D2}
+  Se il nostro punto andasse più in basso, cioè \( w \) diventa più piccolo, allora
+  la fase diventa più piccola fino a \( -90 \) gradi. Se invece il punto va più in alto, cioè \( w \) diventa
+  più grande, allora la fase diventa più grande fino a \( 0 \) gradi.
+
+  \vspace{1em}
+  \noindent
+  Per ogni frequenza \( w \) abbiamo un'ampiezza e una fase diversa e si vuole
+  rappresentare questo grafico in un diagramma di Bode:
+  \label{06-12-D3}
+\end{example}
+
+\subsubsection{Operazioni tra numeri complessi}
+Siano \( a,b \in \mathbb{C} \) 
+\begin{enumerate}
+  \item \( \left| a \cdot b \right| = |a| \cdot |b| \) 
+    \[
+    arg(a \cdot b) = arg(a) + arg(b)
+    \] 
+  \item \( \left| \frac{a}{b} \right| = \frac{|a|}{|b|} \) 
+    \[
+    arg\left( \frac{a}{b} \right) = arg(a) - arg(b)
+    \]
+  \item \( \left| a^{\mu} \right| = |a|^{\mu} \) 
+    \[
+    arg(a^{\mu}) = \mu \cdot arg(a)
+    \]
+\end{enumerate}
+
+\subsubsection{Logaritmo di un numero complesso}
+Il logaritmo di un numero complesso \( s \) è quel numero \( x \in \mathbb{C} \) 
+tale che:
+\[
+  \ln(s) = x \iff s = e^x
+\] 
+Se scriviamo \( s \) come:
+\[
+  s = \rho e^{j \theta}
+\] 
+e \( x \) in forma polare:
+\[
+x = \sigma + j \omega
+\] 
+Abbiamo che:
+\[
+  \begin{aligned}
+    s = e^x \to \rho e^{j \theta} &= e^{\sigma + j \omega}\\
+    e^{\ln(\rho)} \cdot e^{j \theta} &= e^{\sigma} \cdot e^{j \omega}\\
+  \end{aligned}
+\] 
+Da questo otteniamo:
+\[
+\begin{aligned}
+  \ln(\rho) &= \sigma\\
+  \theta &= \omega
+\end{aligned}
+\] 
+Quindi:
+\[
+\begin{aligned}
+  \ln(s) &= x\\
+         &= \ln(\rho) + j \theta\\
+         &= \ln \left| s \right| + j \cdot arg(s)
+\end{aligned}
+\] 
+
+\subsection{Forma di Bode}
+Sappiamo che la funzione di trasferimento è calcolata come il rapporto tra
+il polinomio caratteristico dell'ingresso e il polinomio caratteristico dell'uscita:
+\[
+  \begin{aligned}
+    H(s) &= \frac{\sum_j b_j s^j}{\sum_i a_i s^i} \cdot U(s)\\
+         &= k \cdot \frac{
+           \left( s - z_1 \right)^{\mu_1} \cdot \left( s - z_2 \right)^{\mu_2} \cdot \ldots \cdot \left( s - z_l \right)^{\mu_l}
+         }{
+           \left( s - p_1 \right)^{\nu_1} \cdot \left( s - p_2 \right)^{\nu_2} \cdot \ldots \cdot \left( s - p_r \right)^{\nu_r}
+         }\\
+         &= \text{Costante} \cdot \frac{
+           \text{Zeri di \( H(s) \), radici del numeratore}
+         }{
+           \text{Poli di \( H(s) \), radici del denominatore}
+         }
+  \end{aligned}
+\] 
+dove:
+\[
+\begin{aligned}
+  \mu_i = \text{molteplicità degli zeri}\\
+  \nu_i = \text{molteplicità dei poli}\\
+  l \le m, \quad \mu_1 + \mu_2 + \ldots + \mu_l = m\\
+  r \le n, \quad \nu_1 + \nu_2 + \ldots + \nu_r = n\\
+\end{aligned}
+\] 
+Da questa funzione di trasferimento vogliamo trovare la \textbf{forma di Bode}.
+Riscriviamo la funzione di trasferimento come:
+\[
+  \resizebox{1\hsize}{!}{
+    $
+\begin{aligned}
+  H(s) &= k_b \cdot \frac{
+    \prod_i \left( 1 + s \tau'_i \right)^{\mu'_i} \cdot \prod_k \left( 1 + 2 \zeta'_k
+    \frac{s}{\omega'_{n,k}} + \frac{s^2}{\left( \omega'_{n,k} \right) ^2} \right)^{\mu'_k}
+  }{
+    \left( s^{\nu_i} \right) \prod_i \left( 1 + s \tau_i \right)^{\mu_i} \cdot
+    \prod_k \left( 1 + 2 \zeta_k \frac{s}{\omega_{n,k}} + \frac{s^2}{\left( \omega_{n,k} \right)^2} \right)^{\mu_k}
+  }
+\end{aligned}
+$
+}
+\] 
+Questa è detta \textbf{forma di Bode}, dove:
+\begin{itemize}
+  \item \( k_b \): È il termine costante chiamato \textbf{Guadagno di Bode}
+  \item \( s^{\nu} \): Raggruppa tutte le radici nulle:
+    \[
+      \frac{s^s}{s^n} = \frac{1}{s^{-1}}
+    \] 
+  \item \( \left( 1 + s\tau_i \right)^{\mu_i} \): Raggruppa la singola radice reale:
+    \[
+    \left( s + 1 \right) 
+    \] 
+  \item \( \left( 1 + 2 \zeta_k \frac{s}{\omega_{n,k}} + \frac{s^2}{\left( \omega_{n,k} \right)^2} \right)^{\mu_k} \):
+    Raggruppa la singola radice complessa coniugata
+  \item \( \tau \): Costante di tempo
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Per arrivare alla forma di Bode bisogna raccogliere tutte le "costanti":
+\begin{enumerate}
+  \item Poli e zeri nulli:
+    \[
+      \begin{aligned}
+        H(s) &= 4 \frac{
+          s^3 + s^2 - 2s
+        }{
+          s^3 + s^4
+        }\\
+        &= 4 \frac{
+          \color{blue}s\color{black} \left( s^2 + s - 2 \right) 
+        }{
+          \color{blue}s^2\color{black} \left( s + 1 \right) 
+        } \quad \color{blue} \text{nulli}\\
+        &= 4 \color{red}\underbrace{\frac{1}{s}}_{\text{Forma di Bode}}\color{black} \cdot \frac{
+          s^2 + s - 2
+        }{
+          s+1
+        }
+      \end{aligned}
+    \] 
+    La \color{red} forma di Bode \color{black} è:
+    \[
+      \frac{1}{s^{\nu}}
+    \]
+  \item Poli e zeri reali
+    \[
+    \begin{aligned}
+      H(s) &= 4 \cdot \frac{1}{s} \cdot \frac{
+        s^2+s-2
+      }{s+1}
+    \end{aligned}
+    \] 
+    \[
+    \Delta = b^2 - 4ac = 1 - 4 \cdot 1 \cdot -2 = 9 > 0 \;\; \surd
+    \] 
+    \[
+      \begin{aligned}
+        H(s) &= 4 \cdot \frac{1}{s} \cdot \frac{
+          s^2+s-2
+        }{s+1}\\
+             &= 4 \cdot \frac{1}{s} \cdot \frac{
+               (s-1)(s+2)
+             }{
+               s+1
+             }\\
+           &= 4 \cdot \frac{1}{s} \cdot \frac{
+             (-1)(1-s) \cdot (+2)(1+\frac{s}{2})
+           }{
+             (1)(1+s)
+           } \\
+           &= \frac{
+             4 \cdot (-1) \cdot (2)
+           }{(1)}
+           \cdot \frac{1}{s}
+           \cdot \frac{
+             (1-s)(1+\frac{s}{2})
+           }{
+             (1+s)
+           }\\
+           &= -8 \cdot \frac{1}{s} \cdot \frac{
+             (1-s)(1+\frac{s}{2})
+           }{(1+s)}
+         \end{aligned}
+    \] 
+    Siamo arrivati ad una forma di Bode:
+    \[
+      k_b \cdot \frac{1}{s^{\nu}} \cdot \frac{
+        \left( 1 + s \tau'_1 \right)^{\mu'_1} \left( 1 + s \tau'_2 \right)^{\mu'_2}
+      }{
+        \left( 1 + s\tau_1 \right)^{\mu_1}
+      }
+    \] 
+    dove:
+    \[
+    \begin{aligned}
+      k_b = -8\\
+      \frac{1}{s^{\nu}} = \text{Zero nullo}\\
+      \tau'_1 = -1\\
+      \tau'_2 = \frac{1}{2}\\
+      \tau_1 = 1
+    \end{aligned}
+    \] 
+
+  \item Poli e zeri complessi coniugati
+    \[
+      \begin{aligned}
+        z = \sigma + j \omega\\
+        \bar{z} = \sigma - j \omega
+      \end{aligned}
+    \] 
+    Abbiamo che:
+    \[
+      \begin{aligned}
+    &\left( s - \left( \sigma  + j \omega \right)^{\mu} \right) \cdot \left( s - \left( \sigma - j \omega \right) \right)\\
+    &= \left( s^2 - s \sigma  + s j \omega - s \sigma - s j \omega + |z|^2 \right)^{\mu}\\
+    &= \left( s^2 - 2 s \sigma + |z|^2 \right)^{\mu}\\
+    &= |z|^{2 \mu} \left( 1 - 2 \frac{\sigma }{|z|^2}s + \frac{s^2}{|z|^2} \right)^{\mu}\\
+    &= |z|^{2 \mu} \left( 1 - 2 \zeta \frac{s}{\omega_n} + \frac{s^2}{\omega_n^2} \right)^{\mu}
+      \end{aligned}
+    \] 
+    Dove:
+    \[
+      \begin{aligned}
+        \zeta -\frac{\sigma }{|z|} &= \frac{-\Re(z)}{|z|} = \text{Coefficiente di smorzamento}\\
+        \omega_n &= |z| = \text{Pulsazione naturale}
+      \end{aligned}
+    \] 
+    \begin{example}
+      Prendiamo ad esempio il sistema:
+      \[
+      \left( s - \left( 2 + j \right)\right)^2 \left( s - \left( 2 - j \right) \right)^2
+      \] 
+      Calcoliamo la forma di Bode:
+      \[
+      \begin{aligned}
+      &\left( s - \left( 2 + j \right)\right)^2 \left( s - \left( 2 - j \right) \right)^2\\
+      &= \left( s^2 - 2s + s j - 2 s - s j + |2+j|^2 \right)^2\\
+      &= \left( s^2 - 4s + 5 \right)^2\\
+      &= 5 \left( 1 - \frac{4}{5}s + \frac{s^2}{5} \right) \cdot 5 \left( 1 - \frac{4}{5}s + \frac{s^2}{5} \right)\\
+      &= (5)^2 \left( 1 - \frac{4}{5}s + \frac{s^2}{5} \right)^2\\
+      \end{aligned}
+      \] 
+      Dobbiamo trovare \( \omega_n \):
+      \[
+      \begin{aligned}
+        \omega_n &= \sqrt{\omega_n^2} = \sqrt{5}\\
+      \end{aligned}
+      \] 
+      La formula diventa:
+      \[
+        5^2 \left( 1 - \frac{4}{\sqrt{5}}s + \frac{s^2}{\left( \sqrt{5}  \right)^2} \right)^2
+      \] 
+      Dobbiamo trovare \( \zeta \):
+      \[
+      \begin{aligned}
+        \frac{2 \zeta}{\omega_n} &= -\frac{4}{\sqrt{5}}\\
+        \frac{2 \zeta}{\cancel{\sqrt{5}}} &= -\frac{4}{\cancel{\sqrt{5}}}\\
+        \zeta &= -\frac{\stackrel{2}{\cancel{4}}}{\sqrt{5} } \cdot \frac{1}{\cancel{2}} =
+        -\frac{2}{\sqrt{5} }
+      \end{aligned}
+    \]
+    La formula diventa:
+    \[
+      5^2 \left( 1 + 2 \underbrace{\left( -\frac{2}{\sqrt{5} } \right)}_{\zeta} \frac{s}{\underbrace{\sqrt{5}}_{\omega_n} } + \frac{s^2}{\underbrace{\left( \sqrt{5}  \right)^2}_{\omega_n^2}}  \right) 
+    \] 
+    \end{example}
+    \begin{example}
+      Prendiamo in considerazione un trinomio:
+      \[
+      5 \left( 1 - \frac{2}{5}s + \frac{3}{5}s^2 \right) 
+      \] 
+      Troviamo \( \omega_n \) e \( \zeta \):
+      \[
+      \begin{aligned}
+        \omega_n &= \sqrt{\frac{5}{3}}\\
+        \frac{2 \zeta}{\omega_n} &= -\frac{2}{5}\\
+        \zeta &= - \frac{1}{5 \omega_n} = -\frac{1}{\sqrt{15} }
+      \end{aligned}
+      \] 
+      La formula diventa:
+      \[
+        5 \left( 1 + 2 \left( -\frac{1}{\sqrt{15} } \right) \frac{s}{\sqrt{\frac{5}{3}}} + \frac{s^2}{\left( \sqrt{\frac{5}{3}} \right)^2} \right)
+      \] 
+
+      \textbf{Attenzione:}
+
+      \noindent
+      \textbf{Non tutti i trinomi sono complessi coniugati}
+    \end{example}
+\end{enumerate}
+
+\vspace{1em}
+\noindent
+Quello che si vuole fare una volta trovata la forma di bode è quella di 
+trasformare tutto in frequenza:
+\[
+H(s) \to H(j \omega)
+\] 
+Quindi la forma di Bode in frequenza diventa:
+\[
+  \resizebox{1\hsize}{!}{
+    $
+  H(jw) = k_b \frac{
+    \prod_i \left( 1 + j \omega \tau'_i \right)^{\mu'_i} \cdot \prod_k \left( 1 + j2 \zeta'_k
+    \frac{\omega}{\omega'_{n,k}} \color{red}-\color{black} \frac{\omega^2}{\left( \omega'_{n,k} \right) ^2} \right)^{\mu'_k}
+  }{
+    \left( j \omega \right)^{\nu} \prod_i \left( 1 + j \omega \tau_i \right)^{\mu_i} \cdot
+    \prod_k \left( 1 + j2 \zeta_k \frac{\omega}{\omega_{n,k}} \color{red}-\color{black} \frac{\omega^2}{\left( \omega_{n,k} \right)^2} \right)^{\mu_k}
+  }
+$}
+\] 
+\begin{example}
+  Vogliamo portare in forma di bode la seguente funzione di trasferimento:
+  \[
+    \begin{aligned}
+      H(s) &= \frac{
+        s^3 - 2s^2 - 8s
+      }{
+        s^4 - 2s^3 + 2s^2
+      }\\
+      &= \frac{
+        \cancel{s} \left( s^2 - 2s - 8 \right)
+      }{
+        s^{\cancel{2}} \left( s^2 - 2s + 2 \right)
+      }\\
+      &= \frac{
+        s^2 - 2s - 8
+      }{
+        s \left( s^2 - 2s + 2 \right)
+      }
+    \end{aligned}
+  \] 
+  Il delta del numeratore è:
+  \[
+  \Delta = b^2 - 4ac = 4 - 4 \cdot 1 \cdot -8 = 36 > 0
+  \] 
+  È maggiore di 0, quindi si può semplificare.
+
+  Il delta del denominatore è:
+  \[
+  \Delta = b^2 - 4ac = 4 - 4 \cdot 1 \cdot 2 = -4 < 0
+  \]
+  È minore di 0, quindi non si può semplificare.
+
+  \[
+  \begin{aligned}
+      &= \frac{
+        s^2 - 2s - 8
+      }{
+        s \left( s^2 - 2s + 2 \right)
+      }\\
+      &= \frac{
+        \left( s-4 \right) \left( s+2 \right)
+      }{
+        s \left( s^2 - 2s + 2 \right)
+      }\\
+      &= \frac{
+        (-4) \left( 1 - \frac{s}{4} \right) \cdot (2) \left( 1 + \frac{s}{2} \right)
+      }{
+        s \cdot (2) \left( 1 - s + \frac{s^2}{2} \right) 
+      }\\
+      &= -4 \cdot \frac{1}{s} \cdot \frac{
+        \left( 1 - \frac{s}{4} \right) \left( 1 + \frac{s}{2} \right)
+      }{
+        \left( 1 - s + \frac{s^2}{2} \right)
+      }
+  \end{aligned}
+  \] 
+  Questa è la forma di Bode.
+
+  \vspace{1em}
+  \noindent
+  Ora vogliamo trovare tutte le costanti:
+  \[
+    \begin{aligned}
+      \left( 1 - \frac{s}{4} \right) &\to \tau_1 = -\frac{1}{4}\\
+      \left( 1 + \frac{s}{2} \right) &\to \tau_2 = \frac{1}{2}\\
+      \left( 1 - s + \frac{s^2}{2} \right) &\to \omega_n^2 = 2 \to \omega_n = \sqrt{2}\\
+      \frac{2 \zeta}{\omega_n} = -1 \to \frac{2 \zeta}{\sqrt{2} }= -1 &\to \zeta = \frac{-1 \cdot \sqrt{2} }{2} = - \frac{\sqrt{2} }{2}
+    \end{aligned}
+  \] 
+\end{example}
 
 \end{document}
