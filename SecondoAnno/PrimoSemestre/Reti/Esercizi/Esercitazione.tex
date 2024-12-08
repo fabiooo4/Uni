@@ -523,10 +523,12 @@ La LAN 1 contiene un host con indirizzo:
 \[
 178.242.85.168
 \] 
-Si consideri la topologia con un router di bordo \( X \)  tra la rete internet e la LAN1, un secondo
-router di bordo \( A \)  tra la LAN1 e la LAN2, un terzo router di bordo \( B \)  tra la LAN2 e la LAN3
-e un ultimo router di bordo \( D \) collegato alla LAN3 e al router di bordo della rete internet.
-
+Si consideri la seguente topologia:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{../figures/esercitazione-es7-tcp}
+\end{figure}
+\noindent
 Ogni host è collegato tramite un cavo coassiale a tutti gli altri host e anche al router
 e quindi li raggiunte entrambi con 1 hop.
 \begin{enumerate}
@@ -535,6 +537,121 @@ e quindi li raggiunte entrambi con 1 hop.
   \item Trovare la tabella di routing del router \( A \) considerando come metrica
     il numero di hop e assumendo che il router \( X \) abbia annunciato di ragginugere
     tutti gli host su Internet con 5 hop.
+\end{enumerate}
+
+\subsubsection{Risoluzione}
+\begin{enumerate}
+  \item 
+    Per trovare il blocco CIDR totale bisogna trovare il blocco di indirizzi che
+    contiene tutti gli indirizzi delle LAN (in base 2):
+    \[
+      \begin{aligned}
+        \text{LAN 1: } & 400 \to 512 = 2^9\\
+        \text{LAN 2: } & 300 \to 512 = 2^9\\
+        \text{LAN 3: } & 1200 \to 2048 = 2^{11}
+      \end{aligned}
+    \] 
+    il blocco totale sarà:
+    \[
+      512 + 512 + 2048 = 3072 \to 4096 = 2^{12}
+    \] 
+    Avremo bisogno di 12 bit per il suffisso per poter indirizzare \( 4096 \) host.
+
+    \vspace{1em}
+    \noindent
+    Convertiamo l'indirizzo contenuto dalla LAN 1 in binario per poter ricavare l'indirizzo
+    di rete:
+    \[
+        178.242.85.168
+    \]
+    \[
+    \downarrow
+    \] 
+    \[
+       10110010 \;\; 11110010 \;\; 01010101 \;\; 10101000
+    \] 
+    Il blocco CIDR totale sarà:
+    \[
+      \underbrace{10110010 \;\; 11110010 \;\; 0101}_{\text{Prefisso}}
+      \underbrace{0000 \;\; 00000000}_{\text{Suffisso}}
+    \]
+
+  \item \begin{itemize}
+    \item La LAN 1 richiede 9 bit di suffisso e visto che sappiamo uno degli indirizzi
+      contenuti all'interno della lan possiamo derivare l'indirizzo di rete:
+      \[
+        \underbrace{10110010 \;\; 11110010 \;\; 0101}_{\text{Prefisso}}
+        \underbrace{0101 \;\; 10101000}_{\text{Suffisso}}
+      \]
+      \[
+      \downarrow
+      \] 
+      \[
+        \underbrace{10110010 \;\; 11110010 \;\; 0101}_{\text{Prefisso}}
+        \underbrace{010}_{\text{LAN 1}}
+        \underbrace{0 \;\; 00000000}_{\text{Suffisso}}
+      \]
+      In notazione decimale puntata:
+      \[
+      178.242.84.0/23
+      \] 
+
+    \item La LAN 2 richiede 9 bit di suffisso:
+      \[
+        \underbrace{10110010 \;\; 11110010 \;\; 0101}_{\text{Prefisso}}
+        \underbrace{011}_{\text{LAN 2}}
+        \underbrace{0 \;\; 00000000}_{\text{Suffisso}}
+      \]
+      In notazione decimale puntata:
+      \[
+      178.242.86.0/23
+      \] 
+
+    \item La LAN 3 richiede 11 bit di suffisso:
+      \[
+        \underbrace{10110010 \;\; 11110010 \;\; 0101}_{\text{Prefisso}}
+        \underbrace{1}_{\text{LAN 3}}
+        \underbrace{000 \;\; 00000000}_{\text{Suffisso}}
+      \]
+      In notazione decimale puntata:
+      \[
+      178.242.88.0/21
+      \] 
+  \end{itemize}
+
+\item 
+  La topologia in forma di grafo sarà la seguente:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{../figures/esercitazione-es7-2-tcp}
+  \end{figure}
+  \noindent
+  Il router \( X \) comunica ai router vicini i suoi distance vector:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{c|c}
+      \textbf{Dst} & \textbf{Cst}\\
+      \hline
+      Internet & 5\\
+      \( A \) & 1\\
+      \( D \) & 1\\
+    \end{tabular}
+  \end{table}
+  \noindent
+  Il router \( A \) aggiornerà la sua tabella di routing con i distance vector ricevuti
+  da \( X \) e conoscerà la distanza per raggiungere Internet:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{c|c|c}
+      \textbf{Dst} & \textbf{Next Hop} & \textbf{Cst}\\
+      \hline
+      \( X \) & \( X \) & 1\\
+      \( B \) & \( B \) & 1\\
+      \( D \) & \( X \) & 2\\
+      Internet & \( X \) & 6\\
+    \end{tabular}
+  \end{table}
+
 \end{enumerate}
 
 \section{TCP}
