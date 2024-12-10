@@ -1280,4 +1280,86 @@ Il numero di segmenti trasmessi è:
   \#seg = 1+2+4+8+8+9+10+11+\cancel{12}+1+2+4+\cancel{6}+1+\stackrel{1}{\cancel{2}} = 62
 \]
 
+\section{Livello 2}
+Sono esercizi su algoritmi di accesso al mezzo condiviso, cioè Aoha e CSMA, in ui lo scopo
+è quello di determinare l'evoluzione della trasmissione date una serie di trame generate
+dalle stazioni. Per questi esercizi al posto di estrarre un numero pseudocasuale 
+bisogna usare una versione semplificata che non garantisce le proprietà statistiche di
+uniformità del campione, quindi il numero deve essere \textbf{deterministico}.
+
+\vspace{1em}
+\noindent
+Per calcolare il numero casuale 
+\begin{enumerate}
+  \item Si usano le cifre che compongono l'istante di inizio trasmissione
+  \item Si sommano
+  \item Si moltiplicano per il numero di collisioni consecutive
+  \item Si aggiunge il tempo di trama
+\end{enumerate}
+\begin{example}
+  Consideriamo una trama trasmessa a \( t = 512ms \) che ha già subito \( 1 \) collisione
+  (questo è il secondo tentativo di trasmissione) e il tempo di trama è \( 10ms \) 
+  \[
+  z = (5+1+1) \cdot 2 + 10 = 26
+  \] 
+\end{example}
+
+\subsection{Esercizio 1 (Aloha)}
+Ci sono 3 stazioni collegate da un mezzo condiviso, con ritardo di propagazione nullo
+\( \tau = 0 \), che generano le seguenti trame:
+\[
+\begin{aligned}
+  A &\to t_A = 410ms\\
+  B &\to t_B = 418ms\\
+  C &\to t_C = 454ms
+\end{aligned}
+\] 
+La velocità di trasmissione \( v = 2.5 \frac{Mbit}{s} \) e la lunghezza delle trame
+\( L = 3750byte \).
+
+\vspace{1em}
+\noindent
+Determinare l'evoluzione della trasmissione.
+
+\subsubsection{Risoluzione}
+Il tempo di trama è:
+\[
+  T = \frac{L}{v} = \frac{3750 \cdot 8bit}{2.5 \cdot 10^6 \frac{bit}{s}} = 12ms
+\]
+\label{10-12-esD1}
+Alla prima collisione:
+\[
+  \begin{aligned}
+    z_A &= (4+1+0) \cdot 1 + 12 = 17ms \to 422 + 17 = 439ms\\
+    z_B &= (4+1+8) \cdot 1 + 12 = 25ms \to 430 + 25 = 455ms\\
+  \end{aligned}
+\] 
+Il tentativo di ritrasmissione parte dalla fine della trasmissione.
+
+Alla seconda collisione:
+\[
+\begin{aligned}
+  z_B &= (4+5+5) \cdot 2 + 12 = 40ms \to 467 + 40 = 507ms\\
+  z_C &= (4+5+4) \cdot 1 + 12 = 25ms \to 466 + 25 = 491ms
+\end{aligned}
+\] 
+
+\subsection{Esercizio 2 (CSMA persistent)}
+Ci sono 2 stazioni collegate da un mezzo condiviso, con ritardo di propagazione
+\( \tau = 2ms \). La velocità di trasmissione è \( v = 2.5 \frac{Mbit}{s} \) e la lunghezza
+delle trame è \( L = 3750byte \). Il tempo di trama quindi è \( T = 12ms \). Le
+trame generate sono:
+\[
+\begin{aligned}
+  A \to 2 \text{ trame} &\to
+  \begin{cases}
+    A &\to t_{A_1} = 225ms\\
+    A &\to t_{A_2} = 240ms\\
+  \end{cases}\\
+  B \to 1 \text{ trama} &\to t_B = 228ms
+\end{aligned}
+\]
+\label{10-12-esD2}
+
+
 \end{document}

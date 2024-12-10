@@ -3153,7 +3153,7 @@ Ogni stazione è indipendente ed esegue la seguente procedura:
       \item Li trasmette
     \end{itemize}
 
-  \item Mentrela stazione trasmette, ascolta il canale. 
+  \item Mentre la stazione trasmette, ascolta il canale. 
     Se c'è collisione (potenza rilevata > potenza trasmessa)
     \begin{itemize}
       \item La stazione estrae un tempo casuale, aspetta tale tempo e torna
@@ -3366,6 +3366,7 @@ solo sui router che fanno \( 10-40 \frac{Gbit}{s} \)
     è chiamata \textbf{trailer} o \textbf{tailer}.
 \end{itemize}
 
+\subsection{Indirizzi MAC}
 \begin{definition}[Indirizzi hardware]
   Gli \textbf{indirizzi hardware} sono gli indirizzi della scheda di rete di livello 2 
   cioè il componente hardware al livello data link sono anche detti indirizzi
@@ -3379,5 +3380,81 @@ solo sui router che fanno \( 10-40 \frac{Gbit}{s} \)
 \noindent
 Perchè c'è bisogno degli indirizzi hardware se ci sono già gli indirizzi IP?
 
+Se il pacchetto deve essere inviato ad una rete esterna, bisogna specificare che
+il pacchetto deve essere elaborato dal router e per fare ciò si usa l'header di
+livello 2:
+\label{05-12-D2}
+
+\subsubsection{ARP (Address Resolution Protocol)}
+Come fa un host a conoscere gli indirizzi MAC degli altri host (della propria rete)
+o del router?
+
+Si utilizza il protocollo ARP, che è un protocollo domanda-risposta, e il suo scopo
+è quello di ottenere l'indirizzo MAC di un host partendo dall'indirizzo IP.
+\begin{enumerate}
+  \item L'host manda in broadcast (di livello 2) una richiesta ARP contenente
+    il codice che identifica il tipo di messaggio ARP, in questo caso è una richiesta,
+    e poi un campo che contiene l'indirizzo IP dell'host di cui si vuole conoscere
+    l'indirizzo MAC.
+    \label{10-12-D1}
+
+  \item Solo chi possiede l'indirizzo IP indicato nella richiesta risponde direttamente
+    a chi ha fatto richiesta
+    \label{10-12-D2}
+\end{enumerate}
+Le risposte ARP ottenute vengono memorizzate in una tabella, chiamata \textbf{tabella ARP},
+in cui ogni entry ha un tempo di validità dopo il quale viene eliminata:
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|c|c|c|}
+    \hline
+    IP & MAC & Time \\
+    \hline
+    \( IP_1 \) & \( MAC_1 \) & \( t_1 \) \\
+    \( \vdots \) & \( \vdots \) & \( \vdots \) \\
+    \( IP_n \) & \( MAC_n \) & \( t_n \) \\
+    \hline
+  \end{tabular}
+  \caption{Tabella ARP}
+\end{table}
+
+\subsection{LAN estese}
+Per lan estese si intendono gli apparati di rete di livello 2 che sostituiscono il cavo
+coassiale nelle LAN:
+\label{10-12-D3}
+\noindent
+È stato introdotto lo \textbf{switch} che è un dispositivo che collega più host
+all'interno di una rete locale:
+\label{10-12-D4}
+\noindent
+Gli switch possono essere visti come i router del livello 2 e si limitano a
+collegare solo gli host di una rete locale.
+
+Lo switch memorizza una tabella di switch che contiene le associazioni tra indirizzi
+MAC e porte di uscita:
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|c|c|}
+    \hline
+    MAC & Porta \\
+    \hline
+    \( MAC_A \) & 1 \\
+    \( \vdots \) & \( \vdots \) \\
+    \( MAC_n \) & n \\
+    \hline
+  \end{tabular}
+  \caption{Tabella di switch}
+\end{table}
+\noindent
+Il pacchetto \textbf{non viene modificato} dallo switch perchè implementa soltanto
+i primi due livelli dello stack protocollare, quindi quando riceve un pacchetto
+legge soltanto l'indirizzo MAC di destinazione e lo confronta con la tabella di switch
+per capire a quale porta inoltrare il pacchetto.
+
+\vspace{1em}
+\noindent
+Si possono anche avere configurazioni più complesse in cui più switch sono collegati
+tra di loro, ad esempio:
+\label{10-12-D5}
 
 \end{document}
