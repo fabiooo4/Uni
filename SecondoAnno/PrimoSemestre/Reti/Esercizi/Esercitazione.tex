@@ -1361,5 +1361,97 @@ trame generate sono:
 \]
 \label{10-12-esD2}
 
+\subsubsection{Risoluzione}
+Alla prima collisione:
+\[
+  \begin{aligned}
+    z_A &= (2+4+0) \cdot 1 + 12 = 18ms \to 252 + 18 = 270ms\\
+    z_B &= (2+3+9) \cdot 1 + 12 = 26ms \to 251 + 26 = 277ms
+  \end{aligned}
+\]
+
+\section{Esercizi con Bridge (switch a 2 porte)}
+In questo tipo di esercizi viene sempre riportato il comportamento del bridge che
+può essere:
+\begin{itemize}
+  \item \textbf{Store and forward}: prima memorizza completamente la trama nella sua memoria
+    interna, poi trasfeerisce la trama sull'altra interfaccia e gestisce la trasmissione
+    come se la trama fosse stata generata dal bridge in quel momento. Se la destinazione
+    di una trama non si trova sul lato opposto del bridge, la trama viene memorizzata
+    e poi scartata.
+  \item \textbf{Il comportamento nei due segmenti è indipendente}: Ci possono essere
+    trasmissioni contemporanee nei due segmenti perchè il bridge li isola.
+\end{itemize}
+
+\subsection{Esercizio 1 (Aloha)}
+Il tempo di propagazione è \( \tau_1 = \tau_2 = 0ms \) e la velocità di trasmissione è
+\[
+  v_1 = v_2 = 1.6 \frac{Mbit}{s}
+\] 
+La lunghezza delle trame è \( L = 800\) e le trame generate da 3 stazioni sono:
+\[
+\begin{aligned}
+  A &\to 
+  \begin{cases}
+    t_{A_1} = 216ms\\
+    t_{A_2} = 256ms
+  \end{cases} \quad \text{entrambe dirette a }B\\
+  B &\to t_B = 233ms \quad \text{diretta ad }A\\
+  C &\to t_C = 219ms \quad \text{diretta ad }A
+\end{aligned}
+\]
+
+\subsubsection{Risoluzione}
+Il tempo di trama è:
+\[
+  T = \frac{L}{v} = \frac{800 \cdot 8bit}{1.6 \cdot 10^6 \frac{bits}{s}} = 4ms
+\]
+\label{11-12-edD1}
+\noindent
+Alla prima collisione:
+\[
+  \begin{aligned}
+    z_{br} &= (2+2+0) \cdot 1 + 4 = 8ms \to 224 + 8 = 232ms\\
+    z_C &= (2+1+9) \cdot 1 + 4 = 16ms \to 223 + 16 = 239ms
+  \end{aligned}
+\] 
+Alla seconda collisione:
+\[
+\begin{aligned}
+  z_{br} &= (2+3+2) \cdot 2 + 4 = 18ms \to 236 + 18 = 254ms\\
+  z_B &= (2+3+3) \cdot 1 + 4 = 12ms \to 237 + 12 = 249ms
+\end{aligned}
+\] 
+Alla terza collisione:
+\[
+\begin{aligned}
+  z_{br} &= (2+5+3) \cdot 1 + 4 = 14ms \to 257 + 14 = 271ms\\
+  z_A &= (2+5+6) \cdot 1 + 4 = 17ms \to 260 + 17 = 277ms
+\end{aligned}
+\] 
+
+\subsection{Esercizio 2 (CSMA Persistent)}
+Ci sono 2 segmenti di rete con una stazione per ogni segmento di rete. Il protocollo
+utilizzato è CSMA Persistent con tempi di propagazione:
+\[
+\begin{aligned}
+  \tau_{br-A} &= 1ms \\
+  \tau_{br-B} &= 2ms
+\end{aligned}
+\] 
+La lunghezza delle trame è \( L = 1500 byte\) e la velocità di trasmissione è
+\( v = 1.5 \frac{Mbit}{s} \) su entrambi i segmenti. Le trame generate sono:
+\[
+\begin{aligned}
+  A: & \begin{cases}
+    t_{A_1} = 713ms \quad \text{diretta a }B\\
+    t_{A_2} = 715ms \quad \text{diretta a }B
+  \end{cases}\\
+    B: & \begin{cases}
+      t_{B_1} = 719ms \quad \text{diretta a }A\\
+      t_{B_2} = 730ms \quad \text{diretta a }A
+    \end{cases}
+\end{aligned}
+\] 
 
 \end{document}

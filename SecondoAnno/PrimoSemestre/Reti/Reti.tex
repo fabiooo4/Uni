@@ -3161,7 +3161,7 @@ Ogni stazione è indipendente ed esegue la seguente procedura:
   \item Mentre la stazione trasmette, ascolta il canale. 
     Se c'è collisione (potenza rilevata > potenza trasmessa)
     \begin{itemize}
-      \item La stazione estrae un tempo casuale, aspetta tale tempo e torna
+      \item La stazione estrae un tempo casuale, aspetta e torna
         al punto 1.
     \end{itemize}
 \end{enumerate}
@@ -3189,14 +3189,28 @@ Assumiamo che il tempo di trama sia fisso e uguale a \( T \) dove \( T = \frac{B
 cioè il tempo che si impiega a trasmettere una trama di lunghezza massima \( B \) a velocità
 \( v \).
 Prendiamo ad esempio due stazioni:
-\label{04-12-D1}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{collisioni}
+\end{figure}
+\noindent
 Se la stazione \( B \) trasmette nell'intervallo \( [t_1 - T,t_1 + T] \) 
 le trame avranno una collisione e quindi il \textbf{periodo di vulnerabilità} è \( 2T \).
 
 \vspace{1em}
 \noindent
 L'efficienza di Aloha è la seguente:
-\label{04-12-D2}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw[->] (0,0) -- (8,0) node[below] {\# Trasmissioni};
+    \draw[->] (0,0) -- (0,5) node[above] {\# Trasmissioni con successo};
+
+    \draw[domain=0:8,smooth,red] plot ({\x},{2*exp(-0.5*(\x-1.602))-exp(-(\x-1.602))+0.5})
+      node[right] {Aloha};
+    \draw[domain=0:5,smooth,dashed] plot ({\x},{\x}) node[above right] {Ideale};
+  \end{tikzpicture}
+\end{figure}
 
 \subsubsection{Slotted Aloha}
 Questo algoritmo espande Aloha aggiungendo un meccanismo di sincronizzazione. Il
@@ -3362,10 +3376,25 @@ di rete (router). Mentre invece ci sono anche tipi di ethernet che sono implemen
 solo sui router che fanno \( 10-40 \frac{Gbit}{s} \) 
 
 \subsubsection{Formato del pacchetto}
-\label{05-12-D1}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    [
+      every node/.style={draw,minimum size=1cm,node distance=0cm},
+    ]
+    \node (p) {Preambolo} node[above,scale=0.8,draw=none] at (p.north) {7 byte};
+    \node[right=of p] (f) {Flag} node[above,scale=0.8,draw=none] at (f.north) {1 byte};
+    \node[right=of f] (dst) {HW Dest} node[above,scale=0.8,draw=none] at (dst.north) {6 byte};
+    \node[right=of dst] (src) {HW Sorg} node[above,scale=0.8,draw=none] at (src.north) {6 byte};
+    \node[right=of src] (len) {Payload len} node[above,scale=0.8,draw=none] at (len.north) {2 byte};
+    \node[right=of len,text=black,text opacity=1,fill,fill opacity=0.2] (dat) {Payload};
+    \node[right=of dat] (check) {Checksum} node[above,scale=0.8,draw=none] at (check.north) {4 byte};
+  \end{tikzpicture}
+  \caption{Formato del pacchetto ethernet}
+\end{figure}
 \begin{itemize}
   \item \textbf{Preambolo} (7 byte): Serve per sincronizzare il ricevitore con il trasmettitore
-    ed è formato da una sequenza di bit 10101010
+    ed è formato da una sequenza di byte 10101010
   \item \textbf{Flag} (1 byte) 
   \item \textbf{Indirizzo hardware destinazione} (6 byte)
   \item \textbf{Indirizzo hardware sorgente} (6 byte)
@@ -3465,5 +3494,74 @@ per capire a quale porta inoltrare il pacchetto.
 Si possono anche avere configurazioni più complesse in cui più switch sono collegati
 tra di loro, ad esempio:
 \label{10-12-D5}
+
+\subsection{Reti wireless}
+È identificato dallo standard IEEE 802.11 e descrive il protocollo CSMA-CA (Collision
+Avoidance). In una rete wireless è presente un \textbf{Access Point} (AP) che è
+uno switch wireless che permette di collegare più host alla rete.
+\label{11-12-D1}
+
+\subsubsection{Time slot}
+Il \textbf{time slot} è definito come il tempo di propagazione \textbf{minimo} tra
+l'access point e le stazioni associate. Dipende dalla frequenza utilizzata e
+il ritardo di propagazione è molto minore del tempo di trama \( \tau \ll T \) 
+\begin{example}
+  Consideriamo l'802.11b:
+  \[
+  T = 11 \frac{Mbit}{s} \to \tau = 10 \mu s
+  \] 
+\end{example}
+Definiamo 2 intervalli di tempo:
+\begin{itemize}
+  \item \textbf{SIFS} (Short Interframe Space) = \( \tau \) 
+  \item \textbf{DIFS} (Distributed Interframe Space) = \( 3\tau \)
+\end{itemize}
+Il tempo viene slottizzato e viene detetrminato dall'access point
+
+\subsubsection{CSMA-CA}
+\begin{enumerate}
+  \item \label{csma-ca1} Quando una stazione ha una trama da trasmettere ascolta il canale:
+    \begin{enumerate}
+      \item Se il canale è libero:
+        \begin{itemize}
+          \item Continua ad ascoltare il canale per un tempo pari a DIFS,
+            se il canale continua ad essere libero, allora trasmette la trama
+        \end{itemize}
+
+      \item \label{csma-ca2} Se il canale è occupato (fin da subito, o durante il DIFS):
+        \begin{itemize}
+          \item Ascolta il canale finchè non si libera
+          \item Quando il canale si è liberato, la stazione ascolta per
+            un ulteriore intervallo DIFS. Se il canale torna occupato,
+            torna al punto \ref{csma-ca2}
+          \item \label{csma-ca4} Se il canale rimane libero per un intervallo DIFS
+            \begin{itemize}
+              \item 
+                la stazione
+                estrae un numero casuale \( s \) uniformemente distribuito tra \( (0,cw-1) \),
+                dove \( cw \) è la \textbf{contention window}.
+
+                \( s \) è il numero di slot (STFS) che devo attendere prima di poter
+                ritrasmettere
+
+              \item Fintanto che il canale rimane libero la stazione decrementa
+                \( s \) ad ogni slot
+
+              \item Se \( s \) arriva a 0 la stazione trasmette la trama
+              \item Se il canale torna occupato prima che \( s \) arrivi a 0,
+                il countdown si ferma e si torna al punto \ref{csma-ca2},
+                ma al punto \ref{csma-ca4} si riprende il countdown da dove si era
+                fermato l'ultima volta
+            \end{itemize}
+        \end{itemize}
+    \end{enumerate}
+
+  \item Se c'è collisione:
+    \begin{itemize}
+      \item Interrompe la trasmissione
+      \item Estrae un numero casuale e torna al punto \ref{csma-ca1} raddoppiando
+        la contention window
+    \end{itemize}
+\end{enumerate}
 
 \end{document}
