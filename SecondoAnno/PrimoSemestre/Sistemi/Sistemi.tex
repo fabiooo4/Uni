@@ -8754,28 +8754,30 @@ Ci sono 4 possibili diagrammi di Bode:
 \subsubsection{Termine costante}
 \label{09-12-D1}
 \noindent
-Si calcola l'ampiezza:
-\[
-A = \left| H(j \omega) \right| = \left| k_b \right| = k_b
-\] 
-\[
-  A(\omega) = 20 \log_{10} \left( |k_b| \right)
-\] 
-E la fase:
-\[
-\phi = atan2\left( \sigma + j \omega \right) = 
-\begin{cases}
-  0\degree & \text{se } k_b > 0\\
-  -180\degree & \text{se } k_b < 0
-\end{cases}
-\] 
-\[
-  \phi(\omega) = 
-  \begin{cases}
-    0\degree & \text{se } k_b > 0\\
-    -180\degree & \text{se } k_b < 0
-  \end{cases}
-\] 
+\begin{definition}
+  Si calcola l'ampiezza:
+  \[
+    A = \left| H(j \omega) \right| = \left| k_b \right| = k_b
+  \] 
+  \[
+    A(\omega) = 20 \log_{10} \left( |k_b| \right)
+  \] 
+  E la fase:
+  \[
+    \phi = atan2\left( \sigma + j \omega \right) = 
+    \begin{cases}
+      0\degree & \text{se } k_b > 0\\
+      -180\degree & \text{se } k_b < 0
+    \end{cases}
+  \] 
+  \[
+    \phi(\omega) = 
+    \begin{cases}
+      0\degree & \text{se } k_b > 0\\
+      -180\degree & \text{se } k_b < 0
+    \end{cases}
+  \] 
+\end{definition}
 
 \vspace{1em}
 \noindent
@@ -8806,25 +8808,27 @@ dove:
 \] 
 \label{09-12-D3}
 \noindent
-Consideriamo l'ampiezza:
-\[
-  \left| H(j \omega) \right| = \left| \left( j \omega \right)^{\mu} \right| = \left| \omega \right|^{\mu} = \omega^{\mu}
-\] 
-\[
-  \begin{aligned}
-    A(\omega) &= \left| H(j \omega) \right|_{dB}\\
-              &= 20 \log_{10} \left( \omega^{\mu} \right)\\
-              &= 20 \mu \log_{10} \left( \omega \right)
-  \end{aligned}
-\] 
-È una retta che cresce di \( 20 \mu \) dB/decade.
+\begin{definition}
+  \[
+    \left| H(j \omega) \right| = \left| \left( j \omega \right)^{\mu} \right| = \left| \omega \right|^{\mu} = \omega^{\mu}
+  \] 
+  \[
+    \begin{aligned}
+      A(\omega) &= \left| H(j \omega) \right|_{dB}\\
+                &= 20 \log_{10} \left( \omega^{\mu} \right)\\
+                &= 20 \mu \log_{10} \left( \omega \right)
+    \end{aligned}
+  \] 
+  È una retta che passa per \( \left( 10^0,0 \right) \) e cresce (o decresce) di
+  \( 20 \mu \) dB/decade.
 
-\noindent
-La fase:
-\[
-  \phi(\omega) = atan2\left( j \omega \right)^{\mu} = \mu \cdot atan2\left( j \omega \right) = \mu \cdot 90\degree
-\] 
-È una retta costante che passa per \( \mu \cdot 90\degree \) 
+  \noindent
+  La fase:
+  \[
+    \phi(\omega) = atan2\left( j \omega \right)^{\mu} = \mu \cdot atan2\left( j \omega \right) = \mu \cdot 90\degree
+  \] 
+  È una retta costante.
+\end{definition}
 
 
 \vspace{1em}
@@ -8872,24 +8876,24 @@ La parte reale e immaginaria sono rispettivamente:
 \end{aligned}
 \] 
 
-\vspace{1em}
-\noindent
-L'ampiezza e la fase sono:
-\[
-\begin{aligned}
-  A(\omega) &= 20 \log_{10} \left( \sqrt{\Re^2 + \Im^2} \right)\\
-  \phi(\omega) &= atan2\left( \Re, \Im \right)
-\end{aligned}
-\] 
-\[
-\downarrow
-\] 
-\[
-\begin{aligned}
-  A(\omega) &= -20 \log_{10} \left( \sqrt{1 + \frac{\omega^2}{\omega_0}} \right)\\
-  \phi(\omega) &= atan2\left( -\frac{\omega}{\omega_0} \right)
-\end{aligned}
-\] 
+\begin{definition}
+  L'ampiezza e la fase sono:
+  \[
+    \begin{aligned}
+      A(\omega) &= 20 \log_{10} \left( \sqrt{\Re^2 + \Im^2} \right)\\
+      \phi(\omega) &= atan2\left( \Re, \Im \right)
+    \end{aligned}
+  \] 
+  \[
+    \downarrow
+  \] 
+  \[
+    \begin{aligned}
+      A(\omega) &= -20 \log_{10} \left( \sqrt{1 + \frac{\omega^2}{\omega_0}} \right)\\
+      \phi(\omega) &= atan2\left( -\frac{\omega}{\omega_0} \right)
+    \end{aligned}
+  \] 
+\end{definition}
 
 \vspace{1em}
 \noindent
@@ -8971,6 +8975,26 @@ La formula generale per calcolare l'ampiezza e la fase è:
       \end{aligned}
     \] 
 \end{itemize}
+
+\begin{definition}
+  \[
+    \begin{aligned}
+      A(\omega) &= \begin{cases}
+        0\degree & \omega \le \omega_n\\
+        20 \cdot \mu \cdot \log_{10} \left( \omega \left| \tau \right|  \right) =
+        20 \cdot \mu \left( \log_{10}(\omega) + \log_{10}(|\tau|) \right)  & \omega > \omega_n
+      \end{cases}\\
+        \phi(\omega) &= \begin{cases}
+          0\degree & \omega \le \omega_n\\
+          \mu \cdot segno(\tau) \cdot 90\degree & \omega > \omega_n
+        \end{cases}
+        \end{aligned}
+      \] 
+      La fase non cambia drasticamente.
+
+      Si prende \( \left( \frac{\omega_n}{10}, 0\degree \right)  \) e \( \left( 10 \omega_n \right), 
+      \mu \cdot segno(\tau) \cdot 90\degree\) e si traccia una retta tra i due punti.
+\end{definition}
 
 \subsubsection{Polo o zero complesso coniugato}
 \[
@@ -9128,5 +9152,184 @@ Le formule generali per calcolare l'ampiezza e la fase sono:
         Passa sotto il grafico asintotico
     \end{itemize}
 \end{itemize}
+
+\begin{definition}
+  \[
+    \begin{aligned}
+      A(\omega) &= \begin{cases}
+        0\degree & \omega \le \omega_n\\
+        40 \cdot \mu \cdot \log_{10} \left( \frac{\omega}{\omega_n} \right) = 40 \cdot \mu \left[
+      \log_{10}(\omega) - \log_{10}(\omega_n) \right] & \omega > \omega_n
+    \end{cases}\\
+        \phi(\omega) &= \begin{cases}
+          0\degree & \omega \le \omega_n\\
+          \mu \cdot segno(\zeta) \cdot 180\degree & \omega > \omega_n
+        \end{cases}
+        \end{aligned}
+      \] 
+
+      Per la transizione di fasi bisogna calcolare:
+      \[
+        \left( \frac{1}{5^{|\zeta|}} \cdot \omega_n, 0\degree \right);
+        \left( 5^{|\zeta|} \cdot \omega_n, \mu \cdot segno(\zeta) \cdot 180\degree \right) 
+      \] 
+      oppure
+
+      \[
+        \left( \frac{\omega_n}{10}, 0\degree \right);
+        \left(10 \cdot \omega_n, \mu \cdot segno(\zeta) \cdot 180\degree \right) 
+      \] 
+      e si traccia la retta che li collega.
+
+      \vspace{1em}
+      \noindent
+      Se \( 0 < \zeta \le \frac{1}{2} \) c'è un picco di risonanza,
+      \[
+        \left( \omega_r, \mu_r \right) 
+      \] 
+      \[
+        \begin{aligned}
+          \omega_r &= \omega_r \sqrt{1 - 2 \zeta^2}\\ 
+          M_r &= 20 \cdot \mu \cdot \log_{10} \left( 2 \zeta \cdot \sqrt{1 - \zeta^2} \right)
+        \end{aligned}
+      \] 
+\end{definition}
+
+\subsubsection{Esempio}
+\begin{example}
+  Prendiamo in considerazione la seguente funzione di trasferimento:
+  \[
+  H(s) = \frac{s ^2 \left( s+1 \right) \left( s ^2 + 3s + 16 \right) }{2s - 1}
+  \] 
+  \begin{enumerate}
+    \item Portare in forma di bode:
+      \[
+      \Delta = b^2 - 4ac = 9 - 64 = -55 < 0
+      \] 
+      \[
+        \begin{aligned}
+          H(s) &= \frac{
+            s ^2 (1) \left( 1 + \frac{s}{1} \right)^1
+            (16) \left( \frac{16}{16} + \frac{3}{16}s + \frac{s ^2}{16} \right)^1
+          }{
+            (-1) \left( +1 - \frac{2}{1}s \right)^1
+          }
+          \\
+          &= -16 \frac{
+            s ^2 \left( 1+s \right) \left( 1 + \frac{3}{16}s + \frac{s ^2}{16} \right) 
+          }{
+            \left( 1 - 2s \right) 
+          }
+        \end{aligned}
+      \] 
+  \end{enumerate}
+  Disegnamo \( \color{blue}k_b \) 
+  \[
+    \begin{aligned}
+      A &= 20 \cdot \log_{10} \left( \left| -16 \right|  \right) = 24\\
+      \phi &= \begin{cases}
+        0\degree & \text{se } -16 > 0\\
+        -180\degree & \text{se } -16 < 0
+      \end{cases} = -180\degree
+      \end{aligned}
+    \] 
+    \label{12-12-D1}
+
+    \vspace{1em}
+    \noindent
+    Disegnamo \( \color{red} (1+s) \)
+    \[
+    \begin{aligned}
+      \mu &= 1\\
+      \tau &= 1\\
+      \omega &= \frac{1}{|\tau|} = 1 \
+    \end{aligned}
+    \] 
+    \[
+    \begin{aligned}
+      A &= \begin{cases}
+        0\degree & \omega \le \omega_n\\
+        20 \cdot \mu \log_{10} \left( \omega \left| \tau \right|  \right) = 20 \frac{dB}{dec} & \omega > \omega_n
+      \end{cases}\\
+      \phi &= \begin{cases}
+        0\degree & \omega \le \omega_n\\
+        \mu \cdot segno(\tau) \cdot 90\degree
+      \end{cases}
+    \end{aligned}
+    \] 
+    \label{12-12-D2}
+
+    \vspace{1em}
+    \noindent
+    Disegnamo \( \color{green!50!black} s^2 \)
+    \[
+    \begin{aligned}
+      \mu = 2
+    \end{aligned}
+    \] 
+    \[
+    \begin{aligned}
+      A &= 20 \cdot \mu \log_{10} \left( \omega  \right) = 40 \frac{dB}{dec}\\
+      \phi &= \mu \cdot 90\degree = 180\degree
+    \end{aligned}
+    \] 
+    \label{12-12-D3}
+
+    \vspace{1em}
+    \noindent
+    Disegnamo \( \color{purple} \left( 1 + \frac{3}{16}s + \frac{s ^2}{16} \right)  \) 
+    \[
+    \begin{aligned}
+      \mu &= 1\\
+      \omega_n &= \sqrt{16} = 4\\
+      \frac{2 \zeta}{\omega_n} = \frac{3}{16} \to \zeta = \frac{3}{16} \cdot \frac{\omega_n}{2} = \frac{3}{8}
+    \end{aligned}
+    \] 
+    \[
+    \begin{aligned}
+      A &= \begin{cases}
+        0\degree & \omega \le \omega_n\\
+        40 \cdot \mu \cdot \log_{10} \left( \frac{\omega}{\omega_n} \right) & \omega > \omega_n
+      \end{cases}\\
+    \end{aligned}
+    \] 
+    \[
+      \begin{aligned}
+        \omega_r = \omega_n \cdot \sqrt{1 - 2 \zeta^2} = 3.5\\
+        M_r = 20 \cdot \mu \log_{10} \left( 2 \zeta \cdot \sqrt{1 - \zeta^2} \right) = 8.14
+      \end{aligned}
+    \] 
+    \[
+    \phi = \begin{cases}
+      0\degree & \omega \le \omega_n\\
+      180\degree \cdot \mu \cdot segno(\zeta) = 180\degree & \omega > \omega_n
+    \end{cases}
+    \] 
+    \label{12-12-D4}
+
+    \vspace{1em}
+    \noindent
+    Disegnamo \( \color{orange} \left( 1 - 2s \right)  \)
+    \[
+    \begin{aligned}
+      \mu &= 1\\
+      \tau &= -2\\
+      \omega_n &= \frac{1}{|\tau|} = \frac{1}{2}
+    \end{aligned}
+    \] 
+    \[
+    \begin{aligned}
+      A &= \begin{cases}
+        0\degree & \omega \le \omega_n\\
+        20 \cdot \mu \log_{10} \left( \omega \left| \tau \right|  \right) = 20 \frac{dB}{dec} & \omega > \omega_n
+      \end{cases}\\
+        \phi &= \begin{cases}
+          0\degree & \omega \le \omega_n\\
+          \mu \cdot segno(\tau) \cdot 90\degree = -90\degree & \omega > \omega_n
+        \end{cases}
+    \end{aligned}
+    \] 
+    \label{12-12-D5}
+\end{example}
 
 \end{document}
