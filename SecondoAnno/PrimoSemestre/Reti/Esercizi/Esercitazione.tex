@@ -575,6 +575,12 @@ e quindi li raggiunte entrambi con 1 hop.
       \underbrace{10110010 \;\; 11110010 \;\; 0101}_{\text{Prefisso}}
       \underbrace{0000 \;\; 00000000}_{\text{Suffisso}}
     \]
+    \[
+    \downarrow
+    \] 
+    \[
+      178.242.80.0/20
+    \] 
 
   \item \begin{itemize}
     \item La LAN 1 richiede 9 bit di suffisso e visto che sappiamo uno degli indirizzi
@@ -648,6 +654,9 @@ e quindi li raggiunte entrambi con 1 hop.
       \( X \) & \( X \) & 1\\
       \( B \) & \( B \) & 1\\
       \( D \) & \( X \) & 2\\
+      \( LAN1 \) & \( dir \) & 1\\
+      \( LAN2 \) & \( dir \) & 1\\ 
+      \( LAN3 \) & \( B \) & 2\\
       Internet & \( X \) & 6\\
     \end{tabular}
   \end{table}
@@ -1459,23 +1468,16 @@ Il tempo di trama è:
 \[
 T = \frac{L}{v} = \frac{1500 \cdot  8bit}{1.5 \cdot  10^6 \frac{bit}{s}} = 8ms
 \] 
-Alla prima collisione tra \( A_1 \) e \( B_1 \):
+Alla prima collisione tra \( A_1 \) e \( B_2 \):
 \[
 \begin{aligned}
-  z_{A_1} &= (7+2+2) \cdot 1 + 8 = 19ms \to 730 + 19 = 749ms \\
-  z_{B_1} &= (7+1+9) \cdot 1 + 8 = 25ms \to 727 + 25 = 752ms \
-\end{aligned}
-\] 
-Alla prima collisione tra \( A_2 \) e \( B_2 \):
-\[
-\begin{aligned}
-  z_{A_2} &= (7+3+0) \cdot 1 + 8 = 18ms \to 738 + 18 = 756ms \\
-  z_{B_2} &= (7+3+0) \cdot 1 + 8 = 18ms \to 738 + 18  = 756ms \
+  z_{A_1} &= (7+2+9) \cdot 1 + 8 = 26ms \to 737 + 26 = 763ms\\
+  z_{B_2} &= (7+3+0) \cdot 1 + 8 = 18ms \to 738 + 18 = 756ms
 \end{aligned}
 \] 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=1\textwidth]{../figures/es-csma1}
+  \includegraphics[width=1\textwidth]{../figures/esercitazione-bridge2}
 \end{figure}
 
 \end{document}
