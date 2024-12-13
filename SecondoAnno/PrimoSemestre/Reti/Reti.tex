@@ -3204,12 +3204,15 @@ L'efficienza di Aloha è la seguente:
   \centering
   \begin{tikzpicture}
     \draw[->] (0,0) -- (8,0) node[below] {\# Trasmissioni};
-    \draw[->] (0,0) -- (0,5) node[above] {\# Trasmissioni con successo};
+    \draw[->] (0,0) -- (0,5) node[above,align=center] {\# Trasmissioni\\con successo};
 
-    \draw[domain=0:8,smooth,red] plot ({\x},{2*exp(-0.5*(\x-1.602))-exp(-(\x-1.602))+0.5})
+    \draw[domain=0.2635372:8,smooth,red,thick] plot ({\x},{1.7*exp(-0.5*(\x-1.602))-exp(-(\x-1.602))+0.5})
       node[right] {Aloha};
+    \draw[dashed,red,thick] (1.93004,1.2225) -- (0,1.2225) node[left] {19\%};
+
     \draw[domain=0:5,smooth,dashed] plot ({\x},{\x}) node[above right] {Ideale};
   \end{tikzpicture}
+  \caption{Efficienza di Aloha}
 \end{figure}
 
 \subsubsection{Slotted Aloha}
@@ -3227,14 +3230,41 @@ seguente:
 
 \vspace{1em}
 \noindent
-\label{04-12-D3}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{slotted-aloha}
+  \caption{Esempio di protocollo Slotted Aloha}
+\end{figure}
 Tutte le trame generate all'interno dello stesso slot andranno a collidere, quindi
 il \textbf{periodo di vulnerabilità} è \( T \) e quindi è dimezzato rispetto ad Aloha.
 
 \vspace{1em}
 \noindent
 L'efficienza di Slotted Aloha è la seguente:
-\label{04-12-D4}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw[->] (0,0) -- (8,0) node[below] {\# Trasmissioni};
+    \draw[->] (0,0) -- (0,5) node[above,align=center] {\# Trasmissioni\\con successo};
+
+    \def\a{1.7}
+    \def\b{0.5}
+    \def\c{1.602}
+    \draw[domain=0.2635372:8,smooth,red] plot ({\x},{\a*exp(-\b*(\x-\c))-exp(-(\x-\c))+0.5})
+      node[right] {Aloha};
+    \draw[dashed,red] (1.93004,1.2225) -- (0,1.2225) node[left] {19\%};
+
+    \def\a{2.7}
+    \def\b{0.3}
+    \def\c{2.5}
+    \draw[domain=0.924984:8,smooth,blue,thick] plot ({\x},{\a*exp(-\b*(\x-\c))-exp(-(\x-\c))+0.5})
+      node[right] {Slotted-Aloha};
+    \draw[dashed,blue,thick] (2.80103,2.226796) -- (0,2.226796) node[left] {38\%};
+
+    \draw[domain=0:5,smooth,dashed] plot ({\x},{\x}) node[above right] {Ideale};
+  \end{tikzpicture}
+  \caption{Efficienza di Slotted-Aloha}
+\end{figure}
 
 \subsubsection{CSMA (Carrier Sense Multiple Access)}
 Il protocollo CSMA è basato sul concetto di \textbf{ascolto del canale}. La stazione
@@ -3244,7 +3274,7 @@ La procedura è la seguente:
 \begin{enumerate}
   \item Se una stazione ha una trama da trasmettere:
     \begin{enumerate}
-      \item Ascolta il canale
+      \item \label{csma-1a}Ascolta il canale
         \begin{itemize}
           \item Se il canale è libero:
             \begin{itemize}
@@ -3257,7 +3287,7 @@ La procedura è la seguente:
             \end{itemize}
         \end{itemize}
 
-      \item Se c'è collisione:
+      \item \label{csma-1b}Se c'è collisione:
         \begin{itemize}
           \item La stazione estrae un tempo casuale e aspetta tale tempo, poi torna
             al punto 1.
@@ -3266,13 +3296,19 @@ La procedura è la seguente:
 \end{enumerate}
 
 \begin{example}
-  Prendiamo in considerazione il seguente esempio:
-  \label{04-12-D5}
+  Un esempio di CSMA è il seguente:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{csma}
+    \caption{Esempio di protocollo CSMA}
+  \end{figure}
 \end{example}
 Questo algoritmo si chiama \textbf{CSMA Persistent} perchè se il canale è occupato
 continua ad ascoltare finchè non si libera.
 
-La variante \textbf{CSMA Non Persistent} invece cambia il punto 1.a dell'algoritmo:
+\vspace{1em}
+\noindent
+La variante \textbf{CSMA Non Persistent} invece cambia il punto \ref{csma-1a} dell'algoritmo:
 \begin{enumerate}
   \item Se una stazione ha una trama da trasmettere:
   \begin{enumerate}
@@ -3293,13 +3329,17 @@ La variante \textbf{CSMA Non Persistent} invece cambia il punto 1.a dell'algorit
 
 \begin{example}
   Un esempio è il seguente:
-  \label{04-12-D6}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{csma-non-persistent}
+    \caption{Esempio di protocollo CSMA Non Persistent}
+  \end{figure}
 \end{example}
 Questa variante diminuisce il numero di collisioni ma aumenta la latenza.
 
 \vspace{1em}
 \noindent
-La variante \textbf{CSMA p-persistent} segue la seguente procedura:
+La variante \textbf{CSMA P-Persistent} segue la seguente procedura:
 \begin{enumerate}
   \item ...
     
@@ -3322,14 +3362,18 @@ La variante \textbf{CSMA p-persistent} segue la seguente procedura:
 \end{enumerate}
 \begin{example}
   Un esempio è il seguente:
-  \label{04-12-D7}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{csma-p-persistent}
+    \caption{Esempio di protocollo CSMA P-Persistent}
+  \end{figure}
 \end{example}
 
 \vspace{1em}
 \noindent
 La variante \textbf{CSMA-CD} (Collision Detection) è utilizzata nelle reti ethernet.
 Si può combinare con le varianti viste in precedenza (persistent, non persistent, p-persistent)
-e va a modificare soltanto il punto 1.b
+e va a modificare soltanto il punto \ref{csma-1b}:
 \begin{enumerate}
   \item ...
     \begin{enumerate}
@@ -3344,13 +3388,54 @@ e va a modificare soltanto il punto 1.b
 
 \begin{example}
   Un esempio è il seguente:
-  \label{04-12-D8}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{csma-cd}
+    \caption{Esempio di protocollo CSMA-CD}
+  \end{figure}
 \end{example}
 
 \vspace{1em}
 \noindent
 L'efficienza di CSMA è la seguente:
-\label{04-12-D9}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw[->] (0,0) -- (8,0) node[below] {\# Trasmissioni};
+    \draw[->] (0,0) -- (0,5.5) node[above,align=center] {\# Trasmissioni\\con successo};
+
+    \def\a{1.7}
+    \def\b{0.5}
+    \def\c{1.602}
+    \draw[domain=0.2635372:8,smooth,red] plot ({\x},{\a*exp(-\b*(\x-\c))-exp(-(\x-\c))+0.5})
+      node[right] {Aloha};
+    \draw[dashed,red] (1.93004,1.2225) -- (0,1.2225) node[left] {19\%};
+
+    \def\a{2.7}
+    \def\b{0.3}
+    \def\c{2.5}
+    \draw[domain=0.924984:8,smooth,blue] plot ({\x},{\a*exp(-\b*(\x-\c))-exp(-(\x-\c))+0.5})
+      node[right] {Slotted-Aloha};
+    \draw[dashed,blue] (2.80103,2.226796) -- (0,2.226796) node[left] {38\%};
+
+    \def\a{3.4}
+    \def\b{0.1}
+    \def\c{3}
+    \draw[domain=1.50773:8,smooth,green!50!black,thick] plot ({\x},{\a*exp(-\b*(\x-\c))-exp(-(\x-\c))+0.5})
+      node[right,align=center] {CSMA\\Persistent};
+    \draw[dashed,green!50!black,thick] (4.19868,3.21434) -- (0,3.21434) node[left] {58\%};
+
+    \def\a{4.5}
+    \def\b{0}
+    \def\c{4.1}
+    \draw[domain=2.490562:8,smooth,purple,thick] plot ({\x},{\a*exp(-\b*(\x-\c))-exp(-(\x-\c))+0.5})
+      node[right,align=center] {CSMA\\P-Persistent\\\( (P = 0.01) \) };
+    \draw[dashed,purple,thick] (8,5) -- (0,5) node[left] {90\%};
+
+    \draw[domain=0:5,smooth,dashed] plot ({\x},{\x}) node[above right] {Ideale};
+  \end{tikzpicture}
+  \caption{Efficienza di CSMA}
+\end{figure}
 
 \vspace{1em}
 \noindent
@@ -3358,7 +3443,13 @@ Il \textbf{ritardo di propagazione} è il tempo che impiega un segnale a propaga
 da un punto all'altro. Consideriamo due stazioni \( A \) e \( C \), se la stazione
 \( A \) genera una trama il segnale ci impiega un tempo \( t_1 + \tau \) per arrivare
 alla stazione \( C \) e finirà di trasmettere a \( t_1 + T + \tau \):
-\label{04-12-D10}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{ritardo-di-propagazione}
+  \includegraphics[width=0.7\textwidth]{vulnerabilita}
+  \caption{Ritardo di propagazione}
+\end{figure}
+\noindent
 Se \( A \) genera una trama tra \( [t_1+T,t_1+T+2\tau] \) ascolta il canale e percepisce
 il canale libero, quindi porta ad una collisione, di conseguenza c'è un tempo di 
 vulnerabilità di \( 2\tau \).
@@ -3421,7 +3512,11 @@ Perchè c'è bisogno degli indirizzi hardware se ci sono già gli indirizzi IP?
 Se il pacchetto deve essere inviato ad una rete esterna, bisogna specificare che
 il pacchetto deve essere elaborato dal router e per fare ciò si usa l'header di
 livello 2:
-\label{05-12-D2}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{indirizzi-mac}
+  \caption{Esempio di indirizzi MAC}
+\end{figure}
 
 \subsubsection{ARP (Address Resolution Protocol)}
 Come fa un host a conoscere gli indirizzi MAC degli altri host (della propria rete)
@@ -3434,11 +3529,19 @@ Si utilizza il protocollo ARP, che è un protocollo domanda-risposta, e il suo s
     il codice che identifica il tipo di messaggio ARP, in questo caso è una richiesta,
     e poi un campo che contiene l'indirizzo IP dell'host di cui si vuole conoscere
     l'indirizzo MAC.
-    \label{10-12-D1}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.6\textwidth]{arp-request}
+      \caption{Richiesta ARP}
+    \end{figure}
 
   \item Solo chi possiede l'indirizzo IP indicato nella richiesta risponde direttamente
     a chi ha fatto richiesta
-    \label{10-12-D2}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.6\textwidth]{arp-response}
+      \caption{Risposta ARP}
+    \end{figure}
 \end{enumerate}
 Le risposte ARP ottenute vengono memorizzate in una tabella, chiamata \textbf{tabella ARP},
 in cui ogni entry ha un tempo di validità dopo il quale viene eliminata:
@@ -3459,11 +3562,19 @@ in cui ogni entry ha un tempo di validità dopo il quale viene eliminata:
 \subsection{LAN estese}
 Per lan estese si intendono gli apparati di rete di livello 2 che sostituiscono il cavo
 coassiale nelle LAN:
-\label{10-12-D3}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{lan-estesa}
+  \caption{LAN estesa}
+\end{figure}
 \noindent
 È stato introdotto lo \textbf{switch} che è un dispositivo che collega più host
 all'interno di una rete locale:
-\label{10-12-D4}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{switch}
+  \caption{Struttura di uno switch}
+\end{figure}
 \noindent
 Gli switch possono essere visti come i router del livello 2 e si limitano a
 collegare solo gli host di una rete locale.
@@ -3493,13 +3604,21 @@ per capire a quale porta inoltrare il pacchetto.
 \noindent
 Si possono anche avere configurazioni più complesse in cui più switch sono collegati
 tra di loro, ad esempio:
-\label{10-12-D5}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.4\textwidth]{edificio}
+  \caption{Esempio di configurazione di switch}
+\end{figure}
 
 \subsection{Reti wireless}
 È identificato dallo standard IEEE 802.11 e descrive il protocollo CSMA-CA (Collision
 Avoidance). In una rete wireless è presente un \textbf{Access Point} (AP) che è
 uno switch wireless che permette di collegare più host alla rete.
-\label{11-12-D1}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.4\textwidth]{access-point}
+  \caption{Access Point}
+\end{figure}
 
 \subsubsection{Time slot}
 Il \textbf{time slot} è definito come il tempo di propagazione \textbf{minimo} tra
