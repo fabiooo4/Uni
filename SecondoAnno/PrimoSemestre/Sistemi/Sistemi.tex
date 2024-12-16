@@ -9021,7 +9021,7 @@ Se prendiamo \( \color{red} k_b = -10 \) avremo:
 \begin{figure}[H]
   \centering
   % Magnitude
-  \begin{BodeMagPlot}[scale=1.5,ytick distance=20,ymin=-40,ymax=40] {0.01} {100}
+  \begin{BodeMagPlot}[scale=1.5,ytick distance=20,ymin=-40,ymax=40,ylabel={Ampiezza (dB)}] {0.01} {100}
     \node[above right,blue] at (axis cs: 0.01,20) {\( k_b = 10 \) };
     \node[below right,red] at (axis cs: 0.01,20) {\( k_b = -10 \) };
     % kb = 10
@@ -9046,7 +9046,7 @@ Se prendiamo \( \color{red} k_b = -10 \) avremo:
   \end{BodeMagPlot}
 
   % Phase
-  \begin{BodePhPlot}[scale=1.5,ytick distance=90] {0.01} {100}
+  \begin{BodePhPlot}[scale=1.5,ytick distance=90,ylabel={Fase (deg)},xlabel={Frequenza (rad/s)}] {0.01} {100}
     % kb = 10
     \addBodeZPKPlots[%
     true/{blue,thick},
@@ -9133,7 +9133,7 @@ Consideriamo i seguenti zeri (\( s^1 \) ) e poli (\( s^{-1} \) ) di \( H(s) \)
 \begin{figure}[H]
   \centering
   % Magnitude
-  \begin{BodeMagPlot}[scale=1.5,ytick distance=40] {0.01} {100}
+  \begin{BodeMagPlot}[scale=1.5,ytick distance=40,ylabel={Ampiezza (dB)}] {0.01} {100}
     % s^1
     \node[below right,blue,scale=0.8] at (axis cs: 0.01,-40) {\( 20 \frac{dB}{dec}\) };
     \addBodeZPKPlots[%
@@ -9170,7 +9170,7 @@ Consideriamo i seguenti zeri (\( s^1 \) ) e poli (\( s^{-1} \) ) di \( H(s) \)
   \end{BodeMagPlot}
 
   % Phase
-  \begin{BodePhPlot}[scale=1.5,ytick distance=90] {0.01} {100}
+  \begin{BodePhPlot}[scale=1.5,ytick distance=90,ylabel={Fase (deg)},xlabel={Frequenza (rad/s)}] {0.01} {100}
     % s^0
     \addBodeZPKPlots[%
     true/{blue,thick},
@@ -9302,16 +9302,91 @@ Calcoliamo \( \omega_0 \):
 \] 
 Prima di \( \omega_0 \) la funzione è nulla e successivamente cresce o decresce di
 20 dB/decade.
-\label{09-12-D6}
+\begin{figure}[H]
+  \centering
+  % Magnitude
+  \begin{BodeMagPlot}[scale=1.5,ytick distance=20,ylabel={Ampiezza (dB)}] {0.01} {10000}
+    \addBodeZPKPlots[%
+    true/{green!50!black,thick},
+    linear/{blue,thick},
+    asymptotic/{transparent}]
+    {magnitude}
+    {
+      p/-10
+    }
 
+    \node[green!50!black,scale=0.8,align=center] at (axis cs: 9,-40)
+    {Comportamento\\reale};
+    \node[above=0.5cm,blue,scale=0.8,align=center] at (axis cs: 1000,-60)
+    {Comportamento\\asintotico};
+
+    \draw[purple,dashed] (axis cs: 10,0) -- (axis cs: 10,-85) node[above right] {\( \omega_0 \)};
+  \end{BodeMagPlot}
+
+  % Phase
+  \begin{BodePhPlot}[scale=1.5,ytick distance=45,ylabel={Fase (deg)},xlabel={Frequenza (rad/s)}] {0.01} {10000}
+    \addBodeZPKPlots[%
+    true/{green!50!black},
+    linear/{blue,thick},
+    asymptotic/{transparent}]
+    {phase}
+    {
+      p/-10
+    }
+
+    \draw[purple,dashed] (axis cs: 10,10) -- (axis cs: 10,-100);
+
+    \node[below,align=center,scale=0.8] at (axis cs: 100,0) (p) {Una decade prima\\\( \frac{\omega_0}{10} \)};
+    \node[above,align=center,scale=0.8] at (axis cs: 1,-90) (d) {Una decade dopo\\\(\omega_0 \cdot 10\)};
+
+    \draw[->] (p) |- (axis cs: 1,0);
+    \draw[->] (d) |- (axis cs: 100,-90);
+
+    \coordinate (c) at (axis cs: 10,-45) node[right,scale=0.8] at (c) {\( -45\degree \)};
+    \fill (c) circle (0.05cm);
+  \end{BodePhPlot}
+  \caption{Diagramma di Bode di un polo reale: \( \color{blue} \left( 1 + \frac{s}{10} \right)^{-1} \) }
+\end{figure}
+
+\noindent
 Consideriamo uno zero di \( H(s) \) 
 \[
-  \color{red} \left( 1 + \frac{s}{10} \right)^{-1}
+  \color{red} \left( 1 + \frac{s}{10} \right)^{1}
 \] 
 \[
 \omega_0 = 10
 \] 
-\label{09-12-D7}
+\begin{figure}[H]
+  \centering
+  % Magnitude
+  \begin{BodeMagPlot}[scale=1.5,ytick distance=20,ylabel={Ampiezza (dB)}] {0.01} {10000}
+    \addBodeZPKPlots[%
+    true/{green!50!black,thick},
+    linear/{red,thick},
+    asymptotic/{transparent}]
+    {magnitude}
+    {
+      z/-10
+    }
+
+    \draw[purple,dashed] (axis cs: 10,0) -- (axis cs: 10,-85) node[above right] {\( \omega_0 \)};
+  \end{BodeMagPlot}
+
+  % Phase
+  \begin{BodePhPlot}[scale=1.5,ytick distance=45,ylabel={Fase (deg)},xlabel={Frequenza (rad/s)}] {0.01} {10000}
+    \addBodeZPKPlots[%
+    true/{green!50!black},
+    linear/{red,thick},
+    asymptotic/{transparent}]
+    {phase}
+    {
+      z/-10
+    }
+
+    \draw[purple,dashed] (axis cs: 10,10) -- (axis cs: 10,-100);
+  \end{BodePhPlot}
+  \caption{Diagramma di Bode di uno zero reale: \( \color{red} \left( 1 + \frac{s}{10} \right)^{1} \) }
+\end{figure}
 
 \vspace{1em}
 \noindent
@@ -9366,7 +9441,23 @@ La formula generale per calcolare l'ampiezza e la fase è:
 \[
   H(s) \to \left( 1 + 2 \zeta \frac{s}{\omega_n} + \frac{s^2}{\omega_n^2} \right)^{\mu}
 \]
-\label{09-12-D8}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw[->] (-2,0) -- (2,0) node[right] {\( \Re \)};
+    \draw[->] (0,-2) -- (0,2) node[above] {\( \Im \)};
+
+    \fill[blue] (-1,1) circle (0.05cm);
+    \fill[blue] (-1,-1) circle (0.05cm);
+
+    \fill[red] (1,1) circle (0.05cm);
+    \fill[red] (1,-1) circle (0.05cm);
+
+    \draw[dashed,blue] (-1,1) -- (-1,-1);
+    \draw[dashed,red] (1,1) -- (1,-1);
+  \end{tikzpicture}
+\end{figure}
+\noindent
 I valori sono a coppie. Bisogna considerare sia la pulsazione naturale \( \omega_n \)
 che il coefficiente di smorzamento \( \zeta \).
 
@@ -9470,7 +9561,27 @@ La massima ampiezza si calcola come:
 \[
   M_r = 20 \cdot \mu \cdot \log_{10} \left( 2 \zeta \cdot \sqrt{1 - \zeta^2} \right) = 8.14
 \] 
-\label{09-12-D9}
+\begin{figure}[H]
+  \centering
+  \begin{BodeMagPlot}[scale=1.5,ytick distance=20,ylabel={Ampiezza (dB)}]{0.01}{100}
+    \addBodeComponentPlot[green!50!black]{\MagCSPoles{0.2}{1}}
+    \addBodeComponentPlot[blue,thick]{\MagCSPolesLin{0.2}{1}}
+
+    \draw[purple,dashed] (axis cs: 2,20) -- (axis cs: 2,-85) node[above right] {\( \omega_0 \)};
+
+    \node[align=center,scale=0.9] at (axis cs: 10,-10) (r) {Picco di\\risonanza};
+    \draw[->] (r) -- (axis cs: 1.92,-2);
+  \end{BodeMagPlot}
+
+  % Phase
+  \begin{BodePhPlot}[scale=1.5,ytick distance=90,ylabel={Fase (deg)},xlabel={Frequenza (rad/s)}] {0.01} {100}
+    \addBodeComponentPlot[green!50!black]{\PhCSPoles{0.2}{1}}
+    \addBodeComponentPlot[blue,thick]{\PhCSPolesLin{0.2}{1}}
+
+    \draw[purple,dashed] (axis cs: 2,10) -- (axis cs: 2,-190);
+  \end{BodePhPlot}
+  \caption{Diagramma di Bode di un polo complesso coniugato}
+\end{figure}
 
 \vspace{1em}
 \noindent
@@ -9563,6 +9674,7 @@ Le formule generali per calcolare l'ampiezza e la fase sono:
 
 \subsubsection{Esempio}
 \begin{example}
+  \label{es:bode}
   Prendiamo in considerazione la seguente funzione di trasferimento:
   \[
   H(s) = \frac{s ^2 \left( s+1 \right) \left( s ^2 + 3s + 16 \right) }{2s - 1}
@@ -9696,6 +9808,93 @@ Le formule generali per calcolare l'ampiezza e la fase sono:
     \end{aligned}
     \] 
     \label{12-12-D5}
+\end{example}
+
+\subsection{Comportamento totale di Bode}
+Una volta disegnati i singoli grafici si sommano assieme:
+\begin{example}
+  Riprendiamo l'esempio \ref{es:bode}
+  \begin{enumerate}
+    \item 
+      \[
+        \begin{aligned}
+          10^0 & \leftarrow \text{Zero reale e zero nullo}\\
+          4 & \leftarrow \text{Zero complesso coniugato}\\
+          -0.5 & \leftarrow \text{Polo reale}
+        \end{aligned}
+      \] 
+      Scriviamo una tabella con le decadi più vicine per vedere meglio l'andamento:
+      \begin{table}[H]
+        \centering
+        \begin{tabular}{c|c|c|c|c}
+          $\stackrel{(0.1)}{10^{-1}}$ & $0.5$ & $\stackrel{(1)}{10^{0}}$ & $4$ & $\stackrel{(10)}{10^{1}}$\\
+        \end{tabular}
+      \end{table}
+
+    \item Andiamo a calcolare il valore di ciascun termine dei valori trovati e sommiamo i contributi per ogni blocco
+      \label{16-12-D1}
+      \noindent
+      Andamento in tabella:
+      \begin{table}[H]
+        \centering
+        \begin{tabular}{c|c|c|c|c|c}
+          $\omega$ & $10^{-1}$ & $0.5$ & $10^{0}$ & $4$ & $10^{1}$\\
+          \hline
+          \color{blue} \( k_b \frac{dB}{dec} \) & \color{blue}0 & \color{blue}0 & \color{blue}0 & \color{blue}0 & \color{blue}0 \\
+          \color{red} \( \text{zero-}\mathbb{R}_1 \frac{dB}{dec}\) & \color{red}0 & \color{red}0 & \color{red}0 & \color{red}20 & \color{red}20 \\ 
+          \color{green!50!black} \( \text{zero-nullo}_1 \frac{dB}{dec}\) & \color{green!50!black}40 & \color{green!50!black}40 & \color{green!50!black}40 & \color{green!50!black}40 & \color{green!50!black}40 \\ 
+          \color{purple} \( \text{zero-cc}_1 \frac{dB}{dec}\) & \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}40 \\ 
+          \color{orange} \( \text{Polo-}\mathbb{R}_1 \frac{dB}{dec}\) & \color{orange}0 & \color{orange}0 & \color{orange}-20 & \color{orange}-20 & \color{orange}-20 \\ 
+          \hline
+          Totale & 40 & 40 & 20 & 40 & 80
+        \end{tabular}
+      \end{table}
+
+    \item Si fa il grafico delle ampiezze considerando gli omega che abbiamo calcolato:
+      \begin{table}[H]
+        \centering
+        \begin{tabular}{c|c|c|c|c|c}
+          $\omega$ & $10^{-1}$ & $0.5$ & $10^{0}$ & $4$ & $10^{1}$\\
+          \hline
+          \color{blue} \( k_b (dB) \) & \color{blue}24 & \color{blue}24 & \color{blue}24 & \color{blue}24 & \color{blue}24 \\
+          \color{red} \( \text{zero-}\mathbb{R}_1 \; \left(20 \cdot \log(\omega \cdot |\tau|),\; \tau = 1\right) \)
+                                    & \color{red}0 & \color{red}0 & \color{red}0 & \color{red}12 & \color{red}20 \\ 
+          \color{green!50!black} \( \text{zero-nullo}_1 \; \left(40 \cdot \log(\omega)\right) \)
+                                    & \color{green!50!black}-40 & \color{green!50!black}-12& \color{green!50!black}0 & \color{green!50!black}24 & \color{green!50!black}40 \\ 
+          \color{purple} \( \text{zero-cc}_1 \; \left(40 \cdot \log(\frac{\omega}{\omega_n}), \; \zeta = \frac{3}{8}, \omega_n = 4\right) \)
+                                    & \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}16 \\ 
+          \color{orange} \( \text{Polo-}\mathbb{R}_1 \; \left(-20 \cdot \log(\omega \cdot |\tau|), \; \tau = -2\right)\) 
+                                    & \color{orange}0 & \color{orange}0 & \color{orange}-6 & \color{orange}-18 & \color{orange}-26 \\ 
+          \hline
+          Totale (dB) & -16 & 12 & 18 & 42 & 74
+        \end{tabular}
+      \end{table}
+      \label{16-12-D2}
+
+    \item Si fa il grafico delle fasi facendo lo stesso ragionamento fatto per le ampiezze,
+      ma considerando solo il valore asintotico:
+      \begin{table}[H]
+        \centering
+        \begin{tabular}{c|c|c|c|c|c}
+          $\omega$ & $10^{-1}$ & $0.5$ & $10^{0}$ & $4$ & $10^{1}$\\
+          \hline
+          \color{blue} \( k_b  \) & \color{blue}-180 & \color{blue}-180 & \color{blue}-180 & \color{blue}-180 & \color{blue}-180 \\
+          \color{red} \( \text{zero-}\mathbb{R}_1 \)
+                                    & \color{red}0 & \color{red}0 & \color{red}0 & \color{red}90 & \color{red}90 \\ 
+          \color{green!50!black} \( \text{zero-nullo}_1 \)
+                                    & \color{green!50!black}180 & \color{green!50!black}180 & \color{green!50!black}180 & \color{green!50!black}180 & \color{green!50!black}180 \\ 
+          \color{purple} \( \text{zero-cc}_1 \)
+                                    & \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}180 \\ 
+          \color{orange} \( \text{Polo-}\mathbb{R}_1 \) 
+                                    & \color{orange}0 & \color{orange}0 & \color{orange}90 & \color{orange}90 & \color{orange}90 \\ 
+          \hline
+          Totale  & $0\degree$ & $0\degree$ & $90\degree$ & $180\degree$ & $360\degree$
+        \end{tabular}
+      \end{table}
+      \label{16-12-D3}
+      
+  \end{enumerate}
+
 \end{example}
 
 \end{document}
