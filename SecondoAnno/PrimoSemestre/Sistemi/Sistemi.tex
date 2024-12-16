@@ -9209,7 +9209,16 @@ Consideriamo i seguenti zeri (\( s^1 \) ) e poli (\( s^{-1} \) ) di \( H(s) \)
 \[
   H(s) \to \left( 1 + \tau s \right)^{\mu}
 \]
-\label{09-12-D5}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw[->] (-2,0) -- (2,0) node[right] {\( \Re \)};
+    \draw[->] (0,-2) -- (0,2) node[above] {\( \Im \)};
+
+    \fill[blue] (-1,0) circle (0.05cm) node[below] {s};
+    \fill[red] (1,0) circle (0.05cm) node[below] {s};
+  \end{tikzpicture}
+\end{figure}
 Abbiamo che un polo si può scrivere come:
 \[
 \frac{1}{1 + \frac{s}{\omega_0}} = \frac{1}{1 + \tau s}

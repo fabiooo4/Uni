@@ -3346,224 +3346,460 @@ Per dividere un heap binomiale mantenendo la differenza di nodi tra le due parti
 uno bisogna mantenere da parte il nodo di dimensione 0 e dividere il resto. Il nodo
 da parte verrà poi riaggiunto ad una delle due lista utilizzando la union.
 
-\section{Tecniche di programmazione}
-Fin'ora abbiamo utilizzato la tecnica del \textbf{divide et impera}, cioè dividere
-il problema in parti più piccole e risolverle con lo stesso algoritmo per poi unirle
-per ottenere il risultato. Questa non è l'unica tecnica di programmazione esistente,
-ce ne sono molte altre, ad esempio la \textbf{programmazione greedy}, cioè prendere
-le decisioni il prima possibile e sperare che siano le migliori, oppure la
-\textbf{programmazione dinamica}, cioè creare un'infrastruttura prima di poter 
-prendere una decisione.
+\subsection{?}
+Farebbe comodo avere una struttura dati che permetta di partizionare una collezione
+di oggetti in complessità costante. Si vogliono implementare i seguenti algoritmi:
+\begin{itemize}
+  \item \texttt{make\_set(x)} crea un insieme
+    di un solo elemento
 
-\subsection{Programmazione dinamica}
-Prendiamo ad esempio il problema della \textbf{moltiplicazione di matrici}.
-Sappiamo che se abbiamo due matrici \( A \) di dimensione \( n \times m \) e \( B \)
-di dimensione \( m \times l \), il prodotto tra le due matrici avrà complessità
-\( \Theta(nml) \).
+  \item \texttt{union(x,y)} unisce due insiemi a cui appertengono due oggetti
 
-Se volessimo moltiplicare 3 matrici: \( A_1 \cdot A_2 \cdot A_3 \) di dimensione:
+  \item \texttt{find\_set(x)} restituisce il \textbf{rappresentante} dell'insieme a cui 
+    appartiene \( x \).
+\end{itemize}
+Sappiamo soltanto quello che vogliamo fare, non sappiamo come implementarlo.
+
+\subsubsection{Implementazione}
+Un modo per rappresentare un insieme è utilizzare una lista concatenata.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    [
+    every node/.style={draw,minimum size=0.7cm,node distance = 0cm},
+    ]
+    \node (a) {a};
+    \node[above=of a] (at) {};
+    \node[below=of a] (ab) {};
+
+    \node[right=1cm of a] (b) {b};
+    \node[above=of b] (bt) {};
+    \node[below=of b] (bb) {/};
+    
+    \draw[->] (at.center) -- (a.north);
+    \draw[->] (ab.east) -- ++(0.5,0) |- (b.west);
+    \draw[->] (bt) -- ++(0,0.8) -| (at);
+  \end{tikzpicture}
+  \caption{Esempio di una lista concatenata}
+\end{figure}
+\noindent
+Si potrebbe dire che il rappresentante dell'insieme è il primo elemento della lista.
+Con queste informazioni possiamo dire che le complessità degli algoritmi saranno:
+\begin{itemize}
+  \item \texttt{make\_set(x)}: \( O(1) \) perchè basta creare un nodo che punta a se stesso
+    perchè è il rappresentante e non ha altri elementi
+  \item \texttt{find\_set(x)}: \( O(1) \) perchè basta restituire il valore del puntatore
+    che punta al rappresentante
+  \item \texttt{union(x,y)}: \( O(n) \) perchè bisogna aggiornare tutti i rappresentanti
+    degli insiemi. Se viene aggiunto un puntatore all'elemento in fondo alla lista,
+    la complessità diventa \( O(1) \).
+\end{itemize}
+Se vengono effettuate \( m \) operazioni di cui \( n \) sono \texttt{make\_set} (
+cioè il numero di oggetti, di conseguenza il numero di union possibili),
+la complessità nel caso pessimo è \( O(m*n) \). Di tutte queste operazioni, le
+\texttt{union} saranno al massimo \( n-1 \) perchè non si possono unire più di
+\( n \) insiemi. Tutte le rimanenti saranno operazioni di tempo costante, di
+conseguenza un altro limite superiore corretto sarebbe \( O(m+n^2) \). Un limite
+superiore migliore si può ottenere calcolando la complessità media di tutte le operazioni
+e quindi la complessità finale diventa: \( O(\frac{m+n^2}{m}) = O(1 + \frac{n^2}{m}) \).
+
+\vspace{1em}
+\noindent
+Per capire se questa complessità è accurata bisogna trovare un insieme di operazioni
+da fare che portino ad avere quella complessità.
+
+\begin{enumerate}
+  \item Si fanno \( n \) \texttt{make\_set} creando \( n \) insiemi
+  \item Si uniscono le coppie di insiemi. Per la prima coppia il costo è \( 1 \),
+    per la seconda \( 2 \) e così via. Il costo totale è:
+    \[
+      1 + 2 + 3 + \ldots + n = \frac{n(n+1)}{2} = \Theta(n^2)
+    \] 
+\end{enumerate}
+Per fare meglio di \( \Theta (n ^2) \) bisogna ottimizzare la union, cioè l'aggiornamento
+di tutti i puntatori. Si potrebbe unire l'insieme più piccolo a quello più grande,
+al posto di unire quello più grande a quello più piccolo e a questo punto bisogna cambiare
+soltanto un puntatore, nel caso in cui l'elemento più piccolo abbia un elemento.
+Questo metodo è chiamato \textbf{unione per rango}.
+Il numero massimo di volte che si può modificare il puntatore al rappresentante dopo
+questa tecnica diventa \( \log_2 n \) perchè:
+\begin{enumerate}
+  \item Se ad un insieme di un elemento viene cambiato il puntatore al rappresentante
+    allora sappiamo che l'insieme risultante avrà minimo 2 elementi:
+    \[
+    \ge 2
+    \] 
+  \item Se ad un insieme di due elementi viene cambiato il puntatore al rappresentante
+    allora sappiamo che l'insieme risultante avrà al minimo 4 elementi (perchè sappiamo
+    che bisogna unire l'insieme più piccolo ad un altro insieme, di conseguenza se
+    sappiamo che l'insieme di due elementi è il più piccolo, l'altro insieme avrà
+    al massimo 2 elementi):
+    \[
+    \ge 4 = 2^2
+    \] 
+
+  \item ...
+
+  \item Se ad un insieme di \( i \) elementi viene cambiato il puntatore al rappresentante
+    allora sappiamo che l'insieme risultante avrà al minimo \( 2^i \) elementi:
+    \[
+    \ge 2^i
+    \]
+\end{enumerate}
+Questa costruzione si chiama \textbf{iterative squaring}.
+\noindent
+La complessità con l'unione per rango diventa:
 \[
-\begin{aligned}
-  A_1 & : 10 \times 100\\
-  A_2 & : 100 \times 5\\
-  A_3 & : 5 \times 50
-\end{aligned}
-\] 
-possiamo sfruttare la proprietà associativa:
-\[
-  (A_1 \cdot A_2) \cdot A_3 = A_1 \cdot (A_2 \cdot A_3)
-\] 
-Solo che il numero di operazioni nei due casi è diverso, quindi per rendere minimo
-il numero di operazioni è più conveniente fare: \( (A_1 \cdot A_2) A_3 \) perchè:
-\[
-\begin{aligned}
-  (A_1 \cdot A_2) A_3 &\quad 10 \times 100 \times 5 + 10 \times 5 \times 50 = 5000 + 2500 = 7500\\
-  A_1 (A_2 \cdot A_3) &\quad 100 \times 5 \times 50 + 10 \times 100 \times 50 = 25000 + 50000 = 75000
-\end{aligned}
+\frac{m + n \log n}{m} = 1 + \frac{n \log n}{m} \le  1 + \log n
 \] 
 
 \vspace{1em}
 \noindent
-Supponiamo di avere un insieme di matrici \( A_1, A_2, \ldots, A_n \), vogliamo trovare
-la \textbf{parentesizzazione} ottimale per minimizzare il numero di operazioni.
-
-\vspace{1em}
-\noindent
-Un modo per affrontare il problema è quello di provare tutte le combinazioni
-di parentesi e vedere quale è la migliore.
-
-C'è per forza una moltiplicazione che dovrà essere eseguita per ultima, quindi
-distinguiamo \( k \) come il punto in cui verrà fatta l'ultima moltiplicazione.
-\[
-  (A_1 \cdots A_k) \cdot (A_{k+1} \cdots A_n)
-\] 
-Il numero modi per moltiplicare le matrici è dato dal numero di modi per moltiplicare
-le matrici \( A_1 \dots A_k \) e le matrici \( A_{k+1} \dots A_n \).
-\[
-  C(n) = \sum_{k=1}^{n-1} C(k) + C(n-k) \quad \in \Omega \left( \frac{4^n}{n^{\frac{3}{2}}} \right) 
-\] 
-
-\vspace{1em}
-\noindent
-Supponiamo che qualcuno ci dica il valore ottimo di \( k \), allora è sicuro che
-il modo in cui vengono moltiplicate le matrici \( (A_1 \cdots A_k) \) e 
-\( (A_{k+1} \cdots A_n) \) è ottimale:
-\[
-  \underbrace{\left( A_1 \cdots A_k \right)}_{\text{Ottimo}} \cdot 
-  \underbrace{\left( A_{k+1} \cdots A_n \right)}_{\text{Ottimo}}
-\] 
-Il numero di moltiplicazioni effettuate è dato da:
-\[
-  N\left( A_1 \cdots A_n \right) =
-\] 
-\[
-  \begin{aligned}
-         &= N\left( A_1 \cdots A_k \right) +
-         N\left( A_{k+1} \cdots A_n \right) +
-         \text{Costo ultima moltiplcazione}
-         \\
-         &= N\left( A_1 \cdots A_k \right) +
-         N\left( A_{k+1} \cdots A_n \right) +
-         rows(A_1) \cdot cols(A_k) \cdot cols(A_n)
-  \end{aligned}
-\] 
-Se \( k \) è ottimo, allora \( N\left( A_1 \cdots A_k \right) \) e
-\( N\left( A_{k+1} \cdots A_n \right) \) sono ottimi perchè il risultato
-viene sommato e se non fossero ottimi il risultato finale non sarebbe ottimo.
-Il problema è che non sappiamo quale sia il valore di \( k \) ottimo.
-
-\vspace{1em}
-\noindent
-Un possibile algoritmo per trovare \( k \) è il seguente:
-\begin{lstlisting}[language=Scala]
-// P e' un vettore che descrive le matrici
-// P[0] = rows(A1)
-// P[i] = cols(Ai)
-// Quindi Ai ha dimensione P[i-1] x P[i]
-// i e' l'indice di partenza
-// j e' l'indice di fine
-matrix_chain_order(P,i,j)
-  if i == j
-    return 0
-  else
-    m <- +inf
-    for k <- i to j-1
-      m <- min(m,
-        matrix_chain_order(P,i,k) +
-        matrix_chain_order(P,k+1,j) +
-        P[i-1]*P[k]*P[j])
-    return m
-\end{lstlisting}
-Questo algoritmo ha una complessità esponenziale.
-
-\vspace{1em}
-\noindent
-Cerchiamo di migliorare l'algoritmo, implementando l'\textbf{albero di ricorrenza}, cioè
-un alberi i cui nodi rappresentano le chiamate ricorsive dell'algoritmo, identificate
-dai parametri \( i \) e \( j \).
+Per fare meglio si può rappresentare in un modo alternativo gli insiemi, quindi con
+degli alberi.
 \begin{figure}[H]
   \centering
   \begin{forest}
     for tree={
+      circle,
+      draw,
+      minimum size=2em,
       inner sep=1pt,
-      s sep=0.5cm,
+      s sep=1cm,
     }
-    [{(1,n)}
-      [{(1,1)(2,n)}
-        [{(1,1)(1,1)}]
-        [{(2,2)\color{red}(3,n)}
-          [{(2,2)(2,2)}]
-          [{(3,3)\color{blue}(4,n)}]
-        ]
-      ]
-      [{(1,2)\color{red}(3,n)}
-        [{(1,1)(2,2)}]
-        [{(3,3)\color{blue}(4,n)}]
-      ]
-      [{(1,3)\color{blue}(4,n)}]
-      [{...}]
-      [{(1,n-1)(n,n)}]
+    [a
+     [b
+       [d]
+       [,draw=none,no edge]
+     ]
+     [c
+       [,draw=none,no edge]
+       [e]
+     ]
     ]
   \end{forest}
-  \caption{Albero di ricorrenza}
+  \hspace{1cm}
+  \begin{forest}
+    for tree={
+      circle,
+      draw,
+      minimum size=2em,
+      inner sep=1pt,
+      s sep=1cm,
+    }
+    [f
+     [g
+      [h]
+     ]
+    ]
+  \end{forest}
+  \caption{Esempio di alberi rappresentanti gli insiemi}
+\end{figure}
+\begin{itemize}
+  \item \texttt{make\_set(x)}: si crea un albero con un solo nodo
+    \[
+      O(1)
+    \] 
+
+  \item \texttt{find\_set(x)}: si risale l'albero fino alla radice
+    \[
+      O(n)
+    \]
+
+  \item \texttt{union(x,y)}: si fa diventare la radice di un albero il figlio dell'altra
+    \[
+      O(n)
+    \]
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Come prima si può usare l'unione per rango per migliorare la complessità. Ogni volta
+che un nodo aumenta di profondità (grazie all'unione ad un altro albero), il numero
+di nodi raddoppia. Facendo l'unione per rango sappiamo che la complessità della ricerca
+del rappresentante è \( O(\log n) \) e la complessità dell'unione è \( O(\log n) \).
+
+\vspace{1em}
+\noindent
+Siccome la \texttt{find\_set} è \( O(\log n) \) siamo comunque peggio di prima, quindi
+si può far puntare ogni nodo direttamente al rappresentante, ma questo viene fatto
+soltanto quando viene richiamata la \texttt{find\_set}, im modo da non farlo più alle
+chiamate successive. L'algoritmo è il seguente:
+\begin{lstlisting}[language=Scala]
+find_set(x):
+  if parent(x) == x
+    return x
+  else
+    parent(x) = find_set(parent(x))
+    return parent(x)
+\end{lstlisting}
+oppure più compatto:
+\begin{lstlisting}[language=Scala]
+find_set(x):
+  if parent(x) != x
+    x <- find_set(parent(x))
+  return parent(x)
+\end{lstlisting}
+Man mano che vengono eseguite le \texttt{find\_set} la struttura si comprime 
+(\textbf{tecnica di compressione dei cammini}):
+\begin{figure}[H]
+  \centering
+  \begin{forest}
+    for tree={
+      circle,
+      draw,
+      minimum size=2em,
+      inner sep=1pt,
+      s sep=1cm,
+    }
+    [f
+      [a]
+      [b]
+      [c]
+      [...]
+      [g]
+      [h]
+    ]
+  \end{forest}
 \end{figure}
 \noindent
-Notiamo che ci sono molte chiamate ricorsive ripetute, ad esempio \( \color{blue}(4,n) \),
-e questo aumenta la complessità dell'algoritmo inserendo istanze del problema che abbiamo
-già affrontato. Al massimo ci saranno \( n^2 \) istanze di un problema.
-
-Anzichè risolvere il problema ogni volta che lo incontriamo, possiamo risolvere ogni
-singolo problema una sola volta:
-\begin{lstlisting}[language=Scala]
-matrix_chain_order(P)
-  n <- length(p) - 1
-  for i <- 1 to n // n
-    // La moltiplicazione di una sola matrice costa 0 perche' non c'e' nulla da moltiplicare
-    M[i,i] <- 0 // Matrice che salva tutte le soluzioni (i,j)
-  
-  for l <- 2 to n //           n --*
-    for i <- 1 to n - l + 1 // n --*
-      j <- i + l - 1 //            | n^3
-      M[i,j] <- +inf //            |
-      for k <- i to j - 1 //   n --*
-        M[i,j] <- min(M[i,j],
-          M[i,k] + M[k+1,j] + P[i-1]*P[k]*P[j])
-
-  return m[1,n]
-\end{lstlisting}
-Questo ci dice quante moltiplicazioni sono necessarie per moltiplicare tutte le matrici,
-però per sapere la posizione dell'ultima moltiplicazione da fare invece si può
-riscrivere l'algoritmo precedente come:
-\begin{lstlisting}[language=Scala]
-matrix_chain_order(P)
-  ...
-      for k <- i to j - 1
-        m <- M[i,k] + M[k+1,j] + P[i-1]*P[k]*P[j]
-        if m < M[i,j]
-          m[i,j] <- m // Numero moltiplicazioni
-          s[i,j] <- k // Indice dell'ultima moltiplicazione
-  ...
-\end{lstlisting}
-La complessità di questo algoritmo è \( O(n^3) \).
+Di conseguenza la complessità della \texttt{find\_set} diventa costante.
 
 \vspace{1em}
 \noindent
-L'algoritmo precedente scritto in modo iterativo si potrebbe anche scrivere ricorsivamente
-e l'idea è che prima di calcolare il risultato si controlla se è già stato calcolato
-e si utilizza quello, altrimenti si calcola e si salva il risultato.
-\begin{lstlisting}[language=Scala]
-matrix_chain_order(P)
-  for i <- 1 to n
-    for j <- 1 to n
-      M[i,j] <- +inf
+La nuova complessità sapendo di avere \( m \) operazioni di cui \( n \) \texttt{make\_set}
+diventa:
+\[
+O(m \alpha(m,n))
+\] 
+dove \( \alpha \) è l'inversa della funzione di Ackermann:
+\[
+  \alpha(m,n) = m,n \left\{ i \ge 1 , \left| A \left( i, \left\lfloor \frac{m}{n} \right\rfloor > \log n \right)  \right.  \right\}
+\] 
+\[
+  A(i,1) = 2^{2^{2^{2^{{\vdots i}^{2}}}}}
+\] 
+Siccome la funzione di Ackermann cresce molto velocemente, la sua inversa
+cresce molto lentamente. Di conseguenza la complessità diventa costante.
 
-  matrix_chain_order_aux(P,1,n)
-
-
-matrix_chain_order(P,i,j)
-  if M[i,j] != +inf
-    return M[i,j]
-  else
-    if i == j
-      M[i,j] <- 0
-    else
-      m <- +inf
-      for k <- i to j-1
-        m <- min(m,
-          matrix_chain_order(P,i,k) +
-          matrix_chain_order(P,k+1,j) +
-          P[i-1]*P[k]*P[j])
-      M[i,j] <- m
-
-    return M[i,j]
-\end{lstlisting}
-Per ogni istanza del problema si calcola una sola volta il risultato, quindi la complessità
-è \( O(n^3) \).
-
-\vspace{1em}
-\noindent
-\begin{definition}
-  La tecnica di memorizzare i risultati già calcolati si chiama \textbf{memoizzazione}.
-\end{definition}
+% \section{Tecniche di programmazione}
+% Fin'ora abbiamo utilizzato la tecnica del \textbf{divide et impera}, cioè dividere
+% il problema in parti più piccole e risolverle con lo stesso algoritmo per poi unirle
+% per ottenere il risultato. Questa non è l'unica tecnica di programmazione esistente,
+% ce ne sono molte altre, ad esempio la \textbf{programmazione greedy}, cioè prendere
+% le decisioni il prima possibile e sperare che siano le migliori, oppure la
+% \textbf{programmazione dinamica}, cioè creare un'infrastruttura prima di poter 
+% prendere una decisione.
+%
+% \subsection{Programmazione dinamica}
+% Prendiamo ad esempio il problema della \textbf{moltiplicazione di matrici}.
+% Sappiamo che se abbiamo due matrici \( A \) di dimensione \( n \times m \) e \( B \)
+% di dimensione \( m \times l \), il prodotto tra le due matrici avrà complessità
+% \( \Theta(nml) \).
+%
+% Se volessimo moltiplicare 3 matrici: \( A_1 \cdot A_2 \cdot A_3 \) di dimensione:
+% \[
+% \begin{aligned}
+%   A_1 & : 10 \times 100\\
+%   A_2 & : 100 \times 5\\
+%   A_3 & : 5 \times 50
+% \end{aligned}
+% \] 
+% possiamo sfruttare la proprietà associativa:
+% \[
+%   (A_1 \cdot A_2) \cdot A_3 = A_1 \cdot (A_2 \cdot A_3)
+% \] 
+% Solo che il numero di operazioni nei due casi è diverso, quindi per rendere minimo
+% il numero di operazioni è più conveniente fare: \( (A_1 \cdot A_2) A_3 \) perchè:
+% \[
+% \begin{aligned}
+%   (A_1 \cdot A_2) A_3 &\quad 10 \times 100 \times 5 + 10 \times 5 \times 50 = 5000 + 2500 = 7500\\
+%   A_1 (A_2 \cdot A_3) &\quad 100 \times 5 \times 50 + 10 \times 100 \times 50 = 25000 + 50000 = 75000
+% \end{aligned}
+% \] 
+%
+% \vspace{1em}
+% \noindent
+% Supponiamo di avere un insieme di matrici \( A_1, A_2, \ldots, A_n \), vogliamo trovare
+% la \textbf{parentesizzazione} ottimale per minimizzare il numero di operazioni.
+%
+% \vspace{1em}
+% \noindent
+% Un modo per affrontare il problema è quello di provare tutte le combinazioni
+% di parentesi e vedere quale è la migliore.
+%
+% C'è per forza una moltiplicazione che dovrà essere eseguita per ultima, quindi
+% distinguiamo \( k \) come il punto in cui verrà fatta l'ultima moltiplicazione.
+% \[
+%   (A_1 \cdots A_k) \cdot (A_{k+1} \cdots A_n)
+% \] 
+% Il numero modi per moltiplicare le matrici è dato dal numero di modi per moltiplicare
+% le matrici \( A_1 \dots A_k \) e le matrici \( A_{k+1} \dots A_n \).
+% \[
+%   C(n) = \sum_{k=1}^{n-1} C(k) + C(n-k) \quad \in \Omega \left( \frac{4^n}{n^{\frac{3}{2}}} \right) 
+% \] 
+%
+% \vspace{1em}
+% \noindent
+% Supponiamo che qualcuno ci dica il valore ottimo di \( k \), allora è sicuro che
+% il modo in cui vengono moltiplicate le matrici \( (A_1 \cdots A_k) \) e 
+% \( (A_{k+1} \cdots A_n) \) è ottimale:
+% \[
+%   \underbrace{\left( A_1 \cdots A_k \right)}_{\text{Ottimo}} \cdot 
+%   \underbrace{\left( A_{k+1} \cdots A_n \right)}_{\text{Ottimo}}
+% \] 
+% Il numero di moltiplicazioni effettuate è dato da:
+% \[
+%   N\left( A_1 \cdots A_n \right) =
+% \] 
+% \[
+%   \begin{aligned}
+%          &= N\left( A_1 \cdots A_k \right) +
+%          N\left( A_{k+1} \cdots A_n \right) +
+%          \text{Costo ultima moltiplcazione}
+%          \\
+%          &= N\left( A_1 \cdots A_k \right) +
+%          N\left( A_{k+1} \cdots A_n \right) +
+%          rows(A_1) \cdot cols(A_k) \cdot cols(A_n)
+%   \end{aligned}
+% \] 
+% Se \( k \) è ottimo, allora \( N\left( A_1 \cdots A_k \right) \) e
+% \( N\left( A_{k+1} \cdots A_n \right) \) sono ottimi perchè il risultato
+% viene sommato e se non fossero ottimi il risultato finale non sarebbe ottimo.
+% Il problema è che non sappiamo quale sia il valore di \( k \) ottimo.
+%
+% \vspace{1em}
+% \noindent
+% Un possibile algoritmo per trovare \( k \) è il seguente:
+% \begin{lstlisting}[language=Scala]
+% // P e' un vettore che descrive le matrici
+% // P[0] = rows(A1)
+% // P[i] = cols(Ai)
+% // Quindi Ai ha dimensione P[i-1] x P[i]
+% // i e' l'indice di partenza
+% // j e' l'indice di fine
+% matrix_chain_order(P,i,j)
+%   if i == j
+%     return 0
+%   else
+%     m <- +inf
+%     for k <- i to j-1
+%       m <- min(m,
+%         matrix_chain_order(P,i,k) +
+%         matrix_chain_order(P,k+1,j) +
+%         P[i-1]*P[k]*P[j])
+%     return m
+% \end{lstlisting}
+% Questo algoritmo ha una complessità esponenziale.
+%
+% \vspace{1em}
+% \noindent
+% Cerchiamo di migliorare l'algoritmo, implementando l'\textbf{albero di ricorrenza}, cioè
+% un alberi i cui nodi rappresentano le chiamate ricorsive dell'algoritmo, identificate
+% dai parametri \( i \) e \( j \).
+% \begin{figure}[H]
+%   \centering
+%   \begin{forest}
+%     for tree={
+%       inner sep=1pt,
+%       s sep=0.5cm,
+%     }
+%     [{(1,n)}
+%       [{(1,1)(2,n)}
+%         [{(1,1)(1,1)}]
+%         [{(2,2)\color{red}(3,n)}
+%           [{(2,2)(2,2)}]
+%           [{(3,3)\color{blue}(4,n)}]
+%         ]
+%       ]
+%       [{(1,2)\color{red}(3,n)}
+%         [{(1,1)(2,2)}]
+%         [{(3,3)\color{blue}(4,n)}]
+%       ]
+%       [{(1,3)\color{blue}(4,n)}]
+%       [{...}]
+%       [{(1,n-1)(n,n)}]
+%     ]
+%   \end{forest}
+%   \caption{Albero di ricorrenza}
+% \end{figure}
+% \noindent
+% Notiamo che ci sono molte chiamate ricorsive ripetute, ad esempio \( \color{blue}(4,n) \),
+% e questo aumenta la complessità dell'algoritmo inserendo istanze del problema che abbiamo
+% già affrontato. Al massimo ci saranno \( n^2 \) istanze di un problema.
+%
+% Anzichè risolvere il problema ogni volta che lo incontriamo, possiamo risolvere ogni
+% singolo problema una sola volta:
+% \begin{lstlisting}[language=Scala]
+% matrix_chain_order(P)
+%   n <- length(p) - 1
+%   for i <- 1 to n // n
+%     // La moltiplicazione di una sola matrice costa 0 perche' non c'e' nulla da moltiplicare
+%     M[i,i] <- 0 // Matrice che salva tutte le soluzioni (i,j)
+%   
+%   for l <- 2 to n //           n --*
+%     for i <- 1 to n - l + 1 // n --*
+%       j <- i + l - 1 //            | n^3
+%       M[i,j] <- +inf //            |
+%       for k <- i to j - 1 //   n --*
+%         M[i,j] <- min(M[i,j],
+%           M[i,k] + M[k+1,j] + P[i-1]*P[k]*P[j])
+%
+%   return m[1,n]
+% \end{lstlisting}
+% Questo ci dice quante moltiplicazioni sono necessarie per moltiplicare tutte le matrici,
+% però per sapere la posizione dell'ultima moltiplicazione da fare invece si può
+% riscrivere l'algoritmo precedente come:
+% \begin{lstlisting}[language=Scala]
+% matrix_chain_order(P)
+%   ...
+%       for k <- i to j - 1
+%         m <- M[i,k] + M[k+1,j] + P[i-1]*P[k]*P[j]
+%         if m < M[i,j]
+%           m[i,j] <- m // Numero moltiplicazioni
+%           s[i,j] <- k // Indice dell'ultima moltiplicazione
+%   ...
+% \end{lstlisting}
+% La complessità di questo algoritmo è \( O(n^3) \).
+%
+% \vspace{1em}
+% \noindent
+% L'algoritmo precedente scritto in modo iterativo si potrebbe anche scrivere ricorsivamente
+% e l'idea è che prima di calcolare il risultato si controlla se è già stato calcolato
+% e si utilizza quello, altrimenti si calcola e si salva il risultato.
+% \begin{lstlisting}[language=Scala]
+% matrix_chain_order(P)
+%   for i <- 1 to n
+%     for j <- 1 to n
+%       M[i,j] <- +inf
+%
+%   matrix_chain_order_aux(P,1,n)
+%
+%
+% matrix_chain_order(P,i,j)
+%   if M[i,j] != +inf
+%     return M[i,j]
+%   else
+%     if i == j
+%       M[i,j] <- 0
+%     else
+%       m <- +inf
+%       for k <- i to j-1
+%         m <- min(m,
+%           matrix_chain_order(P,i,k) +
+%           matrix_chain_order(P,k+1,j) +
+%           P[i-1]*P[k]*P[j])
+%       M[i,j] <- m
+%
+%     return M[i,j]
+% \end{lstlisting}
+% Per ogni istanza del problema si calcola una sola volta il risultato, quindi la complessità
+% è \( O(n^3) \).
+%
+% \vspace{1em}
+% \noindent
+% \begin{definition}
+%   La tecnica di memorizzare i risultati già calcolati si chiama \textbf{memoizzazione}.
+% \end{definition}
 
 \end{document}
