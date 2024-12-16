@@ -9711,7 +9711,38 @@ Le formule generali per calcolare l'ampiezza e la fase sono:
       \end{cases} = -180\degree
       \end{aligned}
     \] 
-    \label{12-12-D1}
+    \begin{figure}[H]
+      \centering
+      % Magnitude
+      \begin{BodeMagPlot}[scale=1.5,ytick distance=20,ylabel={Ampiezza (dB)},ymin=0,ymax=60] {0.01} {100}
+        \addBodeZPKPlots[%
+        true/{blue,thick},
+        linear/{transparent},
+        asymptotic/{transparent}]
+        {magnitude}
+        {
+          k/-16
+        }
+
+        \node[blue,above right,scale=0.8] at (axis cs:0.01,24) {24dB};
+      \end{BodeMagPlot}
+
+      % Phase
+      \begin{BodePhPlot}[
+        scale=1.5,ytick distance=90,ylabel={Fase (deg)},xlabel={Frequenza (rad/s)},
+        ymin=-270,ymax=0
+        ] {0.01} {100}
+        \addBodeZPKPlots[%
+        true/{blue,thick},
+        linear/{transparent},
+        asymptotic/{transparent}]
+        {phase}
+        {
+          k/-16
+        }
+      \end{BodePhPlot}
+      \caption{Diagramma di Bode di \( \color{blue}k_b \)}
+    \end{figure}
 
     \vspace{1em}
     \noindent
@@ -9735,7 +9766,40 @@ Le formule generali per calcolare l'ampiezza e la fase sono:
       \end{cases}
     \end{aligned}
     \] 
-    \label{12-12-D2}
+    \begin{figure}[H]
+      \centering
+      % Magnitude
+      \begin{BodeMagPlot}[scale=1.5,ytick distance=20,ylabel={Ampiezza (dB)}] {0.01} {100}
+        \addBodeZPKPlots[%
+        true/{transparent},
+        linear/{red,thick},
+        asymptotic/{transparent}]
+        {magnitude}
+        {
+          z/-1
+        }
+
+        \draw[red,dashed] (axis cs:1,50) -- (axis cs:1,-5) node[above right] {\( \omega \) };
+        \draw[thin,dashed] (axis cs:1,0) -| (axis cs:10,20) 
+        node[midway,above left,scale=0.8] {\( 20 \frac{dB}{dec} \) };
+      \end{BodeMagPlot}
+
+      % Phase
+      \begin{BodePhPlot}[
+        scale=1.5,ytick distance=90,ylabel={Fase (deg)},xlabel={Frequenza (rad/s)},
+        ] {0.01} {100}
+        \addBodeZPKPlots[%
+        true/{transparent},
+        linear/{red,thick},
+        asymptotic/{transparent}]
+        {phase}
+        {
+          z/-1
+        }
+        \draw[red,dashed] (axis cs:1,100) -- (axis cs:1,-5) node[above right] {\( \omega \) };
+      \end{BodePhPlot}
+      \caption{Diagramma di Bode di \( \color{red}(1+s) \)}
+    \end{figure}
 
     \vspace{1em}
     \noindent
@@ -9751,7 +9815,38 @@ Le formule generali per calcolare l'ampiezza e la fase sono:
       \phi &= \mu \cdot 90\degree = 180\degree
     \end{aligned}
     \] 
-    \label{12-12-D3}
+    \begin{figure}[H]
+      \centering
+      % Magnitude
+      \begin{BodeMagPlot}[scale=1.5,ytick distance=20,ylabel={Ampiezza (dB)}] {0.01} {100}
+        \addBodeZPKPlots[%
+        true/{transparent},
+        linear/{green!50!black,thick},
+        asymptotic/{transparent}]
+        {magnitude}
+        {
+          z/0,
+          z/0
+        }
+      \end{BodeMagPlot}
+
+      % Phase
+      \begin{BodePhPlot}[
+        scale=1.5,ytick distance=90,ylabel={Fase (deg)},xlabel={Frequenza (rad/s)},
+        ymin=0,ymax=360
+        ] {0.01} {100}
+        \addBodeZPKPlots[%
+        true/{transparent},
+        linear/{green!50!black,thick},
+        asymptotic/{transparent}]
+        {phase}
+        {
+          z/0,
+          z/0
+        }
+      \end{BodePhPlot}
+      \caption{Diagramma di Bode di \( \color{green!50!black}s^2 \)}
+    \end{figure}
 
     \vspace{1em}
     \noindent
@@ -9783,7 +9878,28 @@ Le formule generali per calcolare l'ampiezza e la fase sono:
       180\degree \cdot \mu \cdot segno(\zeta) = 180\degree & \omega > \omega_n
     \end{cases}
     \] 
-    \label{12-12-D4}
+    \begin{figure}[H]
+      \centering
+      \begin{BodeMagPlot}[scale=1.5,ytick distance=20,ylabel={Ampiezza (dB)}]{0.01}{100}
+        \addBodeComponentPlot[transparent]{\MagSOZeros{3}{16}}
+        \addBodeComponentPlot[purple,thick]{\MagSOZerosLin{3}{16}}
+
+        \draw[purple,dashed] (axis cs: 4,90) -- (axis cs: 4,15) node[above right,scale=0.8] {\( \omega_n = 4 \)};
+
+        \draw[thin,dashed] (axis cs:4,24) -| (axis cs:40,64) 
+        node[midway,above left,scale=0.8] {\( 40 \frac{dB}{dec} \) };
+      \end{BodeMagPlot}
+
+      % Phase
+      \begin{BodePhPlot}[scale=1.5,ytick distance=90,ylabel={Fase (deg)},xlabel={Frequenza (rad/s)}] {0.01} {100}
+        \addBodeComponentPlot[transparent]{\PhSOZeros{3}{16}}
+        \addBodeComponentPlot[purple,thick]{\PhSOZerosLin{3}{16}}
+
+        \draw[purple,dashed] (axis cs: 4,190) -- (axis cs: 4,-15) node[above right,scale=0.8] {\( \omega_n = 4 \)};
+      \end{BodePhPlot}
+      \caption{Diagramma di Bode di 
+      \( \color{purple} \left( 1 + \frac{3}{16}s + \frac{s ^2}{16} \right)  \)}
+    \end{figure}
 
     \vspace{1em}
     \noindent
@@ -9807,7 +9923,40 @@ Le formule generali per calcolare l'ampiezza e la fase sono:
         \end{cases}
     \end{aligned}
     \] 
-    \label{12-12-D5}
+    \begin{figure}[H]
+      \centering
+      % Magnitude
+      \begin{BodeMagPlot}[scale=1.5,ytick distance=20,ylabel={Ampiezza (dB)}] {0.01} {100}
+        \addBodeZPKPlots[%
+        true/{transparent},
+        linear/{orange,thick},
+        asymptotic/{transparent}]
+        {magnitude}
+        {
+          z/0.5
+        }
+
+        \draw[orange,dashed] (axis cs:0.5,50) -- (axis cs:0.5,-5) node[above right] {\( \omega_n = 0.5 \) };
+        \draw[thin,dashed] (axis cs:1,0) -| (axis cs:10,20) 
+        node[midway,above left,scale=0.8] {\( 20 \frac{dB}{dec} \) };
+      \end{BodeMagPlot}
+
+      % Phase
+      \begin{BodePhPlot}[
+        scale=1.5,ytick distance=90,ylabel={Fase (deg)},xlabel={Frequenza (rad/s)},
+        ] {0.01} {100}
+        \addBodeZPKPlots[%
+        true/{transparent},
+        linear/{orange,thick},
+        asymptotic/{transparent}]
+        {phase}
+        {
+          z/0.5
+        }
+        \draw[orange,dashed] (axis cs:0.5,100) -- (axis cs:0.5,-5) node[above right] {\( \omega_n = 0.5 \) };
+      \end{BodePhPlot}
+      \caption{Diagramma di Bode di \( \color{orange} \left( 1 - 2s \right)  \)}
+    \end{figure}
 \end{example}
 
 \subsection{Comportamento totale di Bode}
