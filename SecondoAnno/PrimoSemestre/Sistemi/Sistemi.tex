@@ -8072,15 +8072,33 @@ Un sistema LTI causale permette le seguenti operazioni:
   \item \( \int u(t) \,dt \) 
   \item \( u_1(t) + u_2(t) \) 
 \end{itemize}
-
 L'output del sistema è un onda scalata rispetto all'ampiezza o ritardata rispetto al
-tempo:
-\label{05-12-D1}
-
+tempo.
 \begin{example}
   \label{ex:lti-sin}
   Prendiamo ad esempio il seguente sistema:
-  \label{05-12-D2}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      [
+        every node/.style={node distance=0.5}
+      ]
+      \node (u) {\( u(t) \)};
+      \coordinate[right=of u] (n1);
+      \node[draw,minimum size=1cm,above right=of n1] (2) {2};
+      \node[draw,minimum size=1cm,below right=of n1] (d) {\( \int dt \) };
+      \node[draw,circle,minimum size=0.7cm,right=1.5cm of n1] (sum) {};
+      \node[right=of sum] (v) {\( v(t) \)};
+
+      \draw (u) -- (n1);
+      \draw (n1) |- (2);
+      \draw (n1) |- (d);
+      \draw (d) -| (sum.south) node[below right,scale=0.8] {\( + \) };
+      \draw (2) -| (sum.north) node[above right,scale=0.8] {\( + \) };
+      \draw (sum) -- (v);
+    \end{tikzpicture}
+    \caption{Esempio di sistema}
+  \end{figure}
   \[
   \begin{aligned}
     u(t) &= \sin\left(\frac{1}{2}t\right)\\
@@ -8117,10 +8135,30 @@ tempo:
 \subsection{Rappresentazione del diagramma di Bode}
 Il diagramma di bode permette di rappresentare il comportamento di un sistema LTI formato 
 da sinusoidi, di seguito guardiamo un diagramma semi-logaritmico 
-(cioè con un asse lineare e uno logaritmico) che rappresenta l'ampiezza e la fase di un
-sistema LTI:
-\label{05-12-D3}
-
+(cioè con un asse lineare e uno logaritmico) che rappresenta l'ampiezza (grafico in alto)
+e la fase (grafico in basso) di un sistema LTI:
+\begin{figure}[H]
+  \centering
+  \BodeZPK[%
+  group/scale=1.5,
+  plot/mag/{transparent},
+  plot/ph/{transparent},
+  axes/mag/{ytick distance=40,ylabel={Ampiezza (dB)}},
+  axes/ph/{ytick distance=90,ylabel={Fase (deg)},xlabel={Frequenza (rad/s)}},
+  approx/asymptotic,
+  commands/mag/{%
+    \draw[red,thick] (axis cs:1,80) -- (axis cs:1,60) -- (axis cs:10,60)
+    node[midway, below] {Decade} -- (axis cs:10,80);
+  },
+  ]{%
+    z/{0,{-0.1,-0.5},{-0.1,0.5}},
+    p/{{-0.5,-10},{-0.5,10}},
+    k/10,%
+  }
+  {0.01}
+  {100}
+  \caption{Diagramma di Bode}
+\end{figure}
 \vspace{1em}
 \noindent
 \textbf{Osservazione}:
@@ -8141,7 +8179,28 @@ sistema LTI:
 
   \begin{example}
     Riprendiamo l'esempio \ref{ex:lti-sin}:
-    \label{05-12-D2-2}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      [
+        every node/.style={node distance=0.5}
+      ]
+      \node (u) {\( u(t) \)};
+      \coordinate[right=of u] (n1);
+      \node[draw,minimum size=1cm,above right=of n1] (2) {2};
+      \node[draw,minimum size=1cm,below right=of n1] (d) {\( \int dt \) };
+      \node[draw,circle,minimum size=0.7cm,right=1.5cm of n1] (sum) {};
+      \node[right=of sum] (v) {\( v(t) \)};
+
+      \draw (u) -- (n1);
+      \draw (n1) |- (2);
+      \draw (n1) |- (d);
+      \draw (d) -| (sum.south) node[below right,scale=0.8] {\( + \) };
+      \draw (2) -| (sum.north) node[above right,scale=0.8] {\( + \) };
+      \draw (sum) -- (v);
+    \end{tikzpicture}
+    \caption{Esempio di sistema}
+  \end{figure}
 
     \[
       \begin{aligned}
@@ -8150,7 +8209,27 @@ sistema LTI:
       \end{aligned}
     \] 
     Studiamo il sistema in frequenza:
-    \label{05-12-D4}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        [
+        every node/.style={node distance=0.5}
+        ]
+        \node (u) {\( U(t) \)};
+        \coordinate[right=of u] (n1);
+        \node[draw,minimum size=1cm,above right=of n1] (2) {2};
+        \node[draw,minimum size=1cm,below right=of n1] (d) {\( \frac{1}{s} \) };
+        \node[draw,circle,minimum size=0.7cm,right=1.5cm of n1] (sum) {};
+        \node[right=of sum] (v) {\( V(t) \)};
+
+        \draw (u) -- (n1);
+        \draw (n1) |- (2);
+        \draw (n1) |- (d);
+        \draw (d) -| (sum.south) node[below right,scale=0.8] {\( + \) };
+        \draw (2) -| (sum.north) node[above right,scale=0.8] {\( + \) };
+        \draw (sum) -- (v);
+      \end{tikzpicture}
+    \end{figure}
     \[
       \begin{aligned}
         V(s) &= \left( 2 + \frac{1}{s} \right) U(s)\\
@@ -8161,17 +8240,33 @@ sistema LTI:
     \[
       s = \sigma + j \omega
     \] 
-    Con la risposta in frequenza la \( s \) diventa solo \( s = j \omega \), quindi
+    Con la risposta in frequenza la \( s \) diventa \( s = j \omega \), quindi
     otteniamo:
     \[
       \begin{aligned}
         \frac{V(s)}{U(s)} &= \frac{2j\omega + 1}{j\omega}\\
                           &= \frac{2 \cancel{j \omega}}{\cancel{j \omega}} + \frac{1}{j \omega} \cdot \frac{j}{j}\\
                           &= 2 - \frac{1}{\omega} \cdot j\\
+                          & \omega = \frac{1}{2}
       \end{aligned}
     \] 
     La rispsota del sistema nel piano dei complessi è:
-    \label{05-12-D5}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \draw[->] (-1,0) -- (3,0) node[right] {\( \Re \)};
+        \draw[->] (0,-3) -- (0,1) node[above] {\( \Im \)};
+
+        \coordinate (o) at (2,-2) node[right] at (o) {\( \omega \) };
+        \fill (o) circle (0.05cm);
+
+        \draw[dashed] (o) -- (2,0) node[above] {2};
+        \draw[dashed] (o) -- (0,-2) node[left] {-2};
+
+        \draw[->,red,thick] (0,0) -- (o) node[midway,below] {l};
+        \draw[green!50!black,thick] (1,0) arc (0:-45:1) node[midway,right] {\( \theta \)};
+      \end{tikzpicture}
+    \end{figure}
     dove:
     \[
       \begin{aligned}
@@ -8188,7 +8283,23 @@ sistema LTI:
       \end{cases}
     \] 
     Il diagramma di Bode sarà:
-    \label{05-12-D6}
+    \begin{figure}[H]
+      \centering
+      \BodeZPK[%
+      group/scale=1.5,
+      plot/mag/{blue,thick},
+      plot/ph/{red,thick},
+      axes/mag/{ytick distance=20,ylabel={Ampiezza (dB)}},
+      axes/ph/{ytick distance=20,ylabel={Fase (deg)},xlabel={Frequenza (rad/s)}},
+      ]{%
+        z/{{-0.5}},
+        p/{0},
+        k/2,%
+      }
+      {0.001}
+      {10}
+      \caption{Diagramma di Bode}
+    \end{figure}
   \end{example}
   
 \subsubsection{Risposta in frequenza}
@@ -8257,7 +8368,28 @@ per un fattore di scala o di fase:
 \subsection{Esempi}
 \begin{example}
   Consideriamo l'esempio \ref{ex:lti-sin} nel dominio del tempo:
-  \label{05-12-D2-3}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      [
+        every node/.style={node distance=0.5}
+      ]
+      \node (u) {\( u(t) \)};
+      \coordinate[right=of u] (n1);
+      \node[draw,minimum size=1cm,above right=of n1] (2) {2};
+      \node[draw,minimum size=1cm,below right=of n1] (d) {\( \int dt \) };
+      \node[draw,circle,minimum size=0.7cm,right=1.5cm of n1] (sum) {};
+      \node[right=of sum] (v) {\( v(t) \)};
+
+      \draw (u) -- (n1);
+      \draw (n1) |- (2);
+      \draw (n1) |- (d);
+      \draw (d) -| (sum.south) node[below right,scale=0.8] {\( + \) };
+      \draw (2) -| (sum.north) node[above right,scale=0.8] {\( + \) };
+      \draw (sum) -- (v);
+    \end{tikzpicture}
+    \caption{Esempio di sistema}
+  \end{figure}
   \[
   \begin{aligned}
     u(t) &= \sin\left(\frac{1}{2}t\right)\\
@@ -8266,7 +8398,27 @@ per un fattore di scala o di fase:
   \end{aligned}
   \] 
   Possiamo andare a trasformare il sistema nel dominio delle frequenze:
-  \label{05-12-D4-2}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      [
+      every node/.style={node distance=0.5}
+      ]
+      \node (u) {\( U(t) \)};
+      \coordinate[right=of u] (n1);
+      \node[draw,minimum size=1cm,above right=of n1] (2) {2};
+      \node[draw,minimum size=1cm,below right=of n1] (d) {\( \frac{1}{s} \) };
+      \node[draw,circle,minimum size=0.7cm,right=1.5cm of n1] (sum) {};
+      \node[right=of sum] (v) {\( V(t) \)};
+
+      \draw (u) -- (n1);
+      \draw (n1) |- (2);
+      \draw (n1) |- (d);
+      \draw (d) -| (sum.south) node[below right,scale=0.8] {\( + \) };
+      \draw (2) -| (sum.north) node[above right,scale=0.8] {\( + \) };
+      \draw (sum) -- (v);
+    \end{tikzpicture}
+  \end{figure}
   \[
   \begin{aligned}
     u(t) &= \sin \left( \frac{1}{2}t \right) \\
@@ -8274,11 +8426,28 @@ per un fattore di scala o di fase:
     w &= \frac{1}{2} \frac{rad}{s} = \frac{1}{2} Hz
     \frac{V(t)}{U(t)} &= \frac{2s + 1}{s}\\
                       &= \frac{2 j \omega + 1}{j \omega}\\
-                      &= 2 - \frac{1}{\omega} j
+                      &= \color{blue}2 \color{orange}- \frac{1}{\omega} j\\
+                      &\omega = \frac{1}{2}
   \end{aligned}
   \] 
   Il grafico sul piano complesso sarà:
-  \label{06-12-D1}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \draw[->] (-1,0) -- (3,0) node[right] {\( \Re \)};
+      \draw[->] (0,-3) -- (0,1) node[above] {\( \Im \)};
+
+      \coordinate (o) at (2,-2) node[right,orange] at (o) {\( \omega \) };
+      \fill[orange] (o) circle (0.05cm);
+
+      \draw[dashed,blue] (2,1) -- (2,-3);
+      \node[blue,below right] at (2,0) {2};
+      \node[left] at (0,-2) {-2};
+
+      \draw[->,red,thick] (0,0) -- (o) node[midway,below] {l};
+      \draw[green!50!black,thick] (1,0) arc (0:-45:1) node[midway,right] {\( \theta \)};
+    \end{tikzpicture}
+  \end{figure}
   Sappiamo che:
   \begin{itemize}
     \item L'ampiezza \( l \) vale:
@@ -8316,7 +8485,28 @@ per un fattore di scala o di fase:
   \end{itemize}
   Se volessimo disegnare il grafico del punto trovato sul grafico dei complessi
   esso diventa:
-  \label{06-12-D2}
+  \begin{figure}[H]
+    \centering
+    \BodeZPK[%
+    group/scale=1.5,
+    plot/mag/{transparent},
+    plot/ph/{transparent},
+    axes/mag/{ytick distance=20,ylabel={Ampiezza (dB)}},
+    axes/ph/{ytick distance=45,ylabel={Fase (deg)},xlabel={Frequenza (rad/s)}},
+    commands/mag/{\node at (axis cs: 0.5,8.828427125) [circle,fill,blue,inner sep=0.05cm,
+    label=above:{$\omega = \frac{1}{2}, A = 2$}]{};},
+    commands/ph/{\node at (axis cs: 0.5,-45) [circle,fill,red,inner sep=0.05cm,
+    label=above:{$\omega = \frac{1}{2}, \phi = -45$}]{};}
+    ]{%
+      z/{{-0.5}},
+      p/{0},
+      k/2,%
+    }
+    {0.001}
+    {10}
+    \caption{Singolo punto nel diagramma di Bode}
+  \end{figure}
+  \noindent
   Se il nostro punto andasse più in basso, cioè \( w \) diventa più piccolo, allora
   la fase diventa più piccola fino a \( -90 \) gradi. Se invece il punto va più in alto, cioè \( w \) diventa
   più grande, allora la fase diventa più grande fino a \( 0 \) gradi.
@@ -8325,7 +8515,25 @@ per un fattore di scala o di fase:
   \noindent
   Per ogni frequenza \( w \) abbiamo un'ampiezza e una fase diversa e si vuole
   rappresentare questo grafico in un diagramma di Bode:
-  \label{06-12-D3}
+  \begin{figure}[H]
+    \centering
+    \BodeZPK[%
+    group/scale=1.5,
+    plot/mag/{blue,thick},
+    plot/ph/{red,thick},
+    axes/mag/{ytick distance=20,ylabel={Ampiezza (dB)}},
+    axes/ph/{ytick distance=45,ylabel={Fase (deg)},xlabel={Frequenza (rad/s)}},
+    commands/mag/{\node at (axis cs: 0.5,8.828427125) [circle,fill,blue,inner sep=0.05cm]{};},
+    commands/ph/{\node at (axis cs: 0.5,-45) [circle,fill,red,inner sep=0.05cm]{};}
+    ]{%
+      z/{{-0.5}},
+      p/{0},
+      k/2,%
+    }
+    {0.001}
+    {10}
+    \caption{Diagramma di Bode}
+  \end{figure}
 \end{example}
 
 \subsubsection{Operazioni tra numeri complessi}
@@ -8752,7 +8960,20 @@ Ci sono 4 possibili diagrammi di Bode:
 \end{enumerate}
 
 \subsubsection{Termine costante}
-\label{09-12-D1}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw[->] (-2,0) -- (2,0) node[right] {\( \Re \)};
+    \draw[->] (0,-0.5) -- (0,1.5) node[above] {\( \Im \)};
+
+    \fill[blue] (1,0) circle (0.05cm) node[below] {\( k_b \) };
+    \fill[red] (-1,0) circle (0.05cm) node[below] {\( -k_b \) };
+
+    \draw[->,green!50!black] (1,0) arc (0:180:1);
+    \node[above right,green!50!black,scale=0.8] at (1,0) {\( 0\degree \)};
+    \node[above left,green!50!black,scale=0.8] at (-1,0) {\( 180\degree \)};
+  \end{tikzpicture}
+\end{figure}
 \noindent
 \begin{definition}
   Si calcola l'ampiezza:
@@ -8789,6 +9010,7 @@ Se prendiamo \(\color{blue} k_b = 10 \) avremo:
 \end{aligned}
 \] 
 
+\noindent
 Se prendiamo \( \color{red} k_b = -10 \) avremo:
 \[
 \begin{aligned}
@@ -8796,7 +9018,57 @@ Se prendiamo \( \color{red} k_b = -10 \) avremo:
   \phi(\omega) &= -180\degree\\
 \end{aligned}
 \] 
-\label{09-12-D2}
+\begin{figure}[H]
+  \centering
+  % Magnitude
+  \begin{BodeMagPlot}[scale=1.5,ytick distance=20,ymin=-40,ymax=40] {0.01} {100}
+    \node[above right,blue] at (axis cs: 0.01,20) {\( k_b = 10 \) };
+    \node[below right,red] at (axis cs: 0.01,20) {\( k_b = -10 \) };
+    % kb = 10
+    \addBodeZPKPlots[%
+    true/{blue,thick},
+    linear/{transparent},
+    asymptotic/{transparent}]
+    {magnitude}
+    {
+      k/10
+    }
+
+    % kb = -10
+    \addBodeZPKPlots[%
+    true/{red,thick},
+    linear/{transparent},
+    asymptotic/{transparent}]
+    {magnitude}
+    {
+      k/-10
+    }
+  \end{BodeMagPlot}
+
+  % Phase
+  \begin{BodePhPlot}[scale=1.5,ytick distance=90] {0.01} {100}
+    % kb = 10
+    \addBodeZPKPlots[%
+    true/{blue,thick},
+    linear/{transparent},
+    asymptotic/{transparent}]
+    {phase}
+    {
+      k/10
+    }
+
+    % kb = -10
+    \addBodeZPKPlots[%
+    true/{red,thick},
+    linear/{transparent},
+    asymptotic/{transparent}]
+    {phase}
+    {
+      k/-10
+    }
+  \end{BodePhPlot}
+  \caption{Diagramma con \( \color{blue}k_b = 10 \) e \( \color{red}k_b = -10 \) }
+\end{figure}
 
 \subsubsection{Zero o polo nullo}
 \[
@@ -8804,9 +9076,21 @@ Se prendiamo \( \color{red} k_b = -10 \) avremo:
 \] 
 dove:
 \[
-  \mu \in \mathbb{Z}, \;\; \mu > 0 \text{per gli zeri},\;\; \mu < 0 \text{per i poli} 
+  \mu \in \mathbb{Z}, \;\; \mu > 0 \text{ per gli zeri},\;\; \mu < 0 \text{ per i poli} 
 \] 
-\label{09-12-D3}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw[->] (-2,0) -- (2,0) node[right] {\( \Re \)};
+    \draw[->] (0,-2) -- (0,2) node[above] {\( \Im \)};
+
+    \fill[blue] (0,1) circle (0.05cm);
+    \fill[red] (0,-1) circle (0.05cm);
+
+    \draw[<-,green!50!black] (0,-1) arc (270:90:1);
+    \draw[<-,green!50!black] (0,1) arc (90:-90:1);
+  \end{tikzpicture}
+\end{figure}
 \noindent
 \begin{definition}
   \[
@@ -8846,7 +9130,80 @@ Consideriamo i seguenti zeri (\( s^1 \) ) e poli (\( s^{-1} \) ) di \( H(s) \)
     \( 10^2 \) & 40 & -40 & -80\\
   \end{tabular}
 \end{table}
-\label{09-12-D4}
+\begin{figure}[H]
+  \centering
+  % Magnitude
+  \begin{BodeMagPlot}[scale=1.5,ytick distance=40] {0.01} {100}
+    % s^1
+    \node[below right,blue,scale=0.8] at (axis cs: 0.01,-40) {\( 20 \frac{dB}{dec}\) };
+    \addBodeZPKPlots[%
+    true/{blue,thick},
+    linear/{transparent},
+    asymptotic/{transparent}]
+    {magnitude}
+    {
+      z/0
+    }
+
+    % s^{-1}
+    \node[below right=0.2cm,red,scale=0.8] at (axis cs: 0.01,40) {\( 20 \frac{dB}{dec}\) };
+    \addBodeZPKPlots[%
+    true/{red,thick},
+    linear/{transparent},
+    asymptotic/{transparent}]
+    {magnitude}
+    {
+      p/0
+    }
+
+    % s^{-2}
+    \node[right=0.3cm,green!50!black,scale=0.8] at (axis cs: 0.01,80) {\( 40 \frac{dB}{dec}\) };
+    \addBodeZPKPlots[%
+    true/{green!50!black,thick},
+    linear/{transparent},
+    asymptotic/{transparent}]
+    {magnitude}
+    {
+      p/0,
+      p/0
+    }
+  \end{BodeMagPlot}
+
+  % Phase
+  \begin{BodePhPlot}[scale=1.5,ytick distance=90] {0.01} {100}
+    % s^0
+    \addBodeZPKPlots[%
+    true/{blue,thick},
+    linear/{transparent},
+    asymptotic/{transparent}]
+    {phase}
+    {
+      z/0
+    }
+
+    % s^{-1}
+    \addBodeZPKPlots[%
+    true/{red,thick},
+    linear/{transparent},
+    asymptotic/{transparent}]
+    {phase}
+    {
+      p/0
+    }
+
+    % s^{-2}
+    \addBodeZPKPlots[%
+    true/{green!50!black,thick},
+    linear/{transparent},
+    asymptotic/{transparent}]
+    {phase}
+    {
+      p/0,
+      p/0
+    }
+  \end{BodePhPlot}
+  \caption{Diagramma di Bode con \( \color{blue}s^1 \), \( \color{red}s^{-1} \) e \( \color{green!50!black}s^{-2} \) }
+\end{figure}
 
 \subsubsection{Zero o polo reale}
 \[
