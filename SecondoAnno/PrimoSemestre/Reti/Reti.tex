@@ -9,6 +9,22 @@
 \tableofcontents
 \pagebreak
 
+% Info esame:
+% Possibilità di orale obbligatorio in caso di quasi sufficienza
+% L'orale può essere chiesto dallo studente come integrazione allo scritto
+% solo se lo scritto è sufficiente
+%
+% BISOGNA RISPONDERE OBBLIGATORIAMENTE A TUTTE LE DOMANDE TEORICHE, (anche in modo
+% incompleto) ALTRIMENTI L'ESAME VIENE ANNULLATO
+%
+% Il preappello è un'alternativa, non un'aggiunta, se lo si fa si ha un tentativo in
+% meno ad uno degli appelli ufficiali
+%
+% Per partecipare al preappello bisogna iscriversi all'appello del 3 febbraio 2025 su
+% esse3 che apre il 3 gennaio
+%
+% L'unica fonta ufficiale per gli appunti è il libro di testo, (si possono saltare
+% gli argomenti non trattati in questi appunti)
 \section{Introduzione}
 Il problema principale che bisogna affrontare è la comunicazione tra 2 calcolatori,
 cioè lo scambio di informazioni. Per far comunicare 2 calcolatori c'è bisogno di
@@ -3682,5 +3698,150 @@ Il tempo viene slottizzato e viene detetrminato dall'access point
         la contention window
     \end{itemize}
 \end{enumerate}
+
+\vspace{1em}
+\noindent
+Si deve aspettare sempre un ulteriore DIFS perchè nelle wireless LAN (wifi) c'è la
+possibilità di attivare il \textbf{riscontro di livello 2} che deve essere mandato
+dopo un SIFS.
+\label{17-12-D1}
+
+\subsubsection{Problema del terminale nascosto}
+Questo problema è specifico delle reti wireless. Nelle reti wireless la trasmissione
+è omnidirezionale, quindi la potenza trasmessa si distribuisce sulla superficie
+della sfera:
+\label{17-12-D2}
+\noindent
+La potenza del segnale diminuisce con la distanza:
+\label{17-12-D3}
+\noindent
+Esiste un limite oltre il quale il segnale non è più ricostruibile, chiamato
+\textbf{range di trasmissione}.
+
+Consideriamo la seguente configurazione:
+\label{17-12-D4}
+\noindent
+Cosa succede con il CSMA-CA se mentre la stazione \( A \) trasmette, la stazione
+\( B \) genera una trama?
+
+\vspace{1em}
+\noindent
+\( A \) ha iniziato a trasmettere, quindi quando il canale \( B \) genera la trama
+inizia ad ascoltare il canale e non percepisce la trasmissione di \( A \) perchè
+è troppo lontano. Quindi \( B \) continua ad ascoltare per un DIFS continuando a 
+percepirlo libero e quindi trasmette la trama. I due segnali si sovrappongono
+all'access point. Ci sono 2 problemi:
+\begin{enumerate}
+  \item L'access point percepisce 2 trasmissioni, c'è una collisione e quindi non riesce
+    a demodulare i segnali
+  \item Nessuna delle due stazioni \( A \) e \( B \) si accorge che c'è stata collisione
+    (per accorgersi della collisione bisogna percepire una potenza maggiore rispetto
+    a quella trasmessa, ma in questo caso le stazioni sono troppo lontane e non
+    percepiscono alcun segnale)
+\end{enumerate}
+
+\vspace{1em}
+\noindent
+Ci sono 3 possibili soluzioni:
+\begin{enumerate}
+  \item Si può introdurre un ack al livello 2
+  \item Limitare lo spazio di responsabilità dell'access point
+    \label{17-12-D5}
+  \item Una soluzione protocollare introduce lo scambio di 2 messaggi:
+    \begin{itemize}
+      \item \textbf{RTS} (Request To Send): La stazione che vuole trasmettere
+        manda un messaggio RTS all'access point
+      \item \textbf{CTS} (Clear To Send): L'access point manda in \textbf{broadcast} 
+        un messaggio CTS che contiene delle informazioni sulla trasmissione. Alle
+        stazioni che ricevono un CTS senza aver inviato un RTS viene interrotta la 
+        ricezione per un tempo indicato all'interno del CTS.
+    \end{itemize}
+    \label{17-12-D6}
+\end{enumerate}
+L'uso di RTS/CDS permette di risparmiare energia perchè viene spento il circuito di
+ricezione dopo aver ricevuto un CTS (il costo principale di qualsiasi dispositivo
+wireless è consumato nel circuito di ricezione perchè deve essere sempre acceso).
+
+\vspace{1em}
+\noindent
+Un'alternativa si può fare guardando le trame ricevute. Ogni volta che c'è una trama si
+può guardare il MAC address di destinazione e il campo con la lunghezza della trama:
+\begin{itemize}
+  \item Se il ricevente non è la destinazione, spegne il canale di ricezione per
+    il tempo necessario per la trasmissione della trama
+\end{itemize}
+Questo meccanismo viene chiamato \textbf{NAV} (Network Allocation Vector).
+
+\subsection{Delimitazione delle trame}
+Il livello fisico si preoccupa di trasformare i bit in segnali elettromagnetici,
+quindi il concetto di trama non esiste a livello fisico, ma solo al livello data link.
+\label{17-12-D7}
+\noindent
+Il livello 2 deve preoccuparsi di separare le trame partendo da una sequenza di bit
+non delimitata
+\begin{example}
+  Un esempio con una frase in inglese è la seguente:
+  \begin{center}
+    \texttt{PREPAREANICECREAM}
+  \end{center}
+  Le possibili opzioni sono:
+  \begin{itemize}
+    \item \texttt{PREPARE AN ICE CREAM}
+    \item \texttt{PREPARE A NICE CREAM}
+  \end{itemize}
+\end{example}
+
+\vspace{1em}
+\noindent
+La delimitazione delle trame è un insieme di tecniche per assegnare i bit ad una
+trama piuttosto che ad un'altra
+
+\subsubsection{Possibili soluzioni}
+\begin{itemize}
+  \item Introdurre intervalli temporali tra le trame
+    \label{17-12-D8}
+    \begin{itemize}
+      \item \textbf{Vantaggio}: Semplice e intuitiva
+      \item \textbf{Svantaggi}: 
+        \begin{itemize}
+          \item Spreca il canale (momenti di silenzio)
+          \item La distorsione del segnale potrebbe espandere l'onda annullando
+            i silenzi impedendo la distinzione
+        \end{itemize}
+    \end{itemize}
+
+  \item \textbf{Character count}: Introdurre nell'header di livello 2 un campo con il
+    numero di byte della trama
+    \begin{itemize}
+      \item \textbf{Svantaggio}: In caso di errore nel campo che indica la dimensione
+        si avrà un \textbf{disallineamento} che si propaga a cascata
+    \end{itemize}
+
+  \item \textbf{Byte di flag + bit stuffing}: Al posto di mettere un silenzio tra le
+    trame si mette una sequenza specifica di bit, quidi ad ogni trama viene
+    aggiunta \textbf{all'inizio e alla fine} un byte con una sequenza specifica
+    di bit, ad esempio 01111110.
+
+    Se il byte di flag non viene trovato si aspetta finchè non se ne trova un altro
+    e si scarta tutto quello che c'è tra i due byte di flag.
+    \begin{itemize}
+      \item \textbf{Vantaggio}: Viene limitata la propagazione degli errori
+      \item \textbf{Svantaggio}: All'interno della trama si può trovare una sequenza
+        di bit uguale a quella usata dal byte di flag.
+    \end{itemize}
+
+    \vspace{1em}
+    \noindent
+    La soluzione al ritrovamento di una sequenza di bit uguale a quella del byte di
+    flag è il \textbf{bit stuffing}:
+    \begin{itemize}
+      \item \textbf{In trasmissione}: Ogni volta che si trova la sequenza 011111
+        viene aggiunto uno zero e quidi diventa: 011111010
+
+      \item \textbf{In ricezione}: Ogni volta che si trova la sequenza 0111110
+        si scarta lo zero e si continua con la trama
+    \end{itemize}
+\end{itemize}
+Spesso questi meccanismi sono implementati assieme
 
 \end{document}
