@@ -9021,7 +9021,7 @@ Se prendiamo \( \color{red} k_b = -10 \) avremo:
 \begin{figure}[H]
   \centering
   % Magnitude
-  \begin{BodeMagPlot}[scale=1.5,ytick distance=20,ymin=-40,ymax=40,ylabel={Ampiezza (dB)}] {0.01} {100}
+  \begin{BodeMagPlot}[scale=1.5,ytick distance=20,ymin=-40,ymax=40,ylabel={Ampiezza (dB)},xlabel={}] {0.01} {100}
     \node[above right,blue] at (axis cs: 0.01,20) {\( k_b = 10 \) };
     \node[below right,red] at (axis cs: 0.01,20) {\( k_b = -10 \) };
     % kb = 10
@@ -9133,7 +9133,7 @@ Consideriamo i seguenti zeri (\( s^1 \) ) e poli (\( s^{-1} \) ) di \( H(s) \)
 \begin{figure}[H]
   \centering
   % Magnitude
-  \begin{BodeMagPlot}[scale=1.5,ytick distance=40,ylabel={Ampiezza (dB)}] {0.01} {100}
+  \begin{BodeMagPlot}[scale=1.5,ytick distance=40,ylabel={Ampiezza (dB)},xlabel={}] {0.01} {100}
     % s^1
     \node[below right,blue,scale=0.8] at (axis cs: 0.01,-40) {\( 20 \frac{dB}{dec}\) };
     \addBodeZPKPlots[%
@@ -9305,7 +9305,7 @@ Prima di \( \omega_0 \) la funzione è nulla e successivamente cresce o decresce
 \begin{figure}[H]
   \centering
   % Magnitude
-  \begin{BodeMagPlot}[scale=1.5,ytick distance=20,ylabel={Ampiezza (dB)}] {0.01} {10000}
+  \begin{BodeMagPlot}[scale=1.5,ytick distance=20,ylabel={Ampiezza (dB)},xlabel={}] {0.01} {10000}
     \addBodeZPKPlots[%
     true/{green!50!black,thick},
     linear/{blue,thick},
@@ -9359,7 +9359,7 @@ Consideriamo uno zero di \( H(s) \)
 \begin{figure}[H]
   \centering
   % Magnitude
-  \begin{BodeMagPlot}[scale=1.5,ytick distance=20,ylabel={Ampiezza (dB)}] {0.01} {10000}
+  \begin{BodeMagPlot}[scale=1.5,ytick distance=20,ylabel={Ampiezza (dB)},xlabel={}] {0.01} {10000}
     \addBodeZPKPlots[%
     true/{green!50!black,thick},
     linear/{red,thick},
@@ -9563,7 +9563,7 @@ La massima ampiezza si calcola come:
 \] 
 \begin{figure}[H]
   \centering
-  \begin{BodeMagPlot}[scale=1.5,ytick distance=20,ylabel={Ampiezza (dB)}]{0.01}{100}
+  \begin{BodeMagPlot}[scale=1.5,ytick distance=20,ylabel={Ampiezza (dB)},xlabel={}]{0.01}{100}
     \addBodeComponentPlot[green!50!black]{\MagCSPoles{0.2}{1}}
     \addBodeComponentPlot[blue,thick]{\MagCSPolesLin{0.2}{1}}
 
@@ -9714,7 +9714,7 @@ Le formule generali per calcolare l'ampiezza e la fase sono:
     \begin{figure}[H]
       \centering
       % Magnitude
-      \begin{BodeMagPlot}[scale=1.5,ytick distance=20,ylabel={Ampiezza (dB)},ymin=0,ymax=60] {0.01} {100}
+      \begin{BodeMagPlot}[scale=1.5,ytick distance=20,ylabel={Ampiezza (dB)},xlabel={},ymin=0,ymax=60] {0.01} {100}
         \addBodeZPKPlots[%
         true/{blue,thick},
         linear/{transparent},
@@ -9769,7 +9769,7 @@ Le formule generali per calcolare l'ampiezza e la fase sono:
     \begin{figure}[H]
       \centering
       % Magnitude
-      \begin{BodeMagPlot}[scale=1.5,ytick distance=20,ylabel={Ampiezza (dB)}] {0.01} {100}
+      \begin{BodeMagPlot}[scale=1.5,ytick distance=20,ylabel={Ampiezza (dB)},xlabel={}] {0.01} {100}
         \addBodeZPKPlots[%
         true/{transparent},
         linear/{red,thick},
@@ -9818,7 +9818,7 @@ Le formule generali per calcolare l'ampiezza e la fase sono:
     \begin{figure}[H]
       \centering
       % Magnitude
-      \begin{BodeMagPlot}[scale=1.5,ytick distance=20,ylabel={Ampiezza (dB)}] {0.01} {100}
+      \begin{BodeMagPlot}[scale=1.5,ytick distance=20,ylabel={Ampiezza (dB)},xlabel={}] {0.01} {100}
         \addBodeZPKPlots[%
         true/{transparent},
         linear/{green!50!black,thick},
@@ -9880,21 +9880,36 @@ Le formule generali per calcolare l'ampiezza e la fase sono:
     \] 
     \begin{figure}[H]
       \centering
-      \begin{BodeMagPlot}[scale=1.5,ytick distance=20,ylabel={Ampiezza (dB)}]{0.01}{100}
-        \addBodeComponentPlot[transparent]{\MagSOZeros{3}{16}}
-        \addBodeComponentPlot[purple,thick]{\MagSOZerosLin{3}{16}}
+      % Magnitude
+      \begin{BodeMagPlot}[scale=1.5,ytick distance=20,ylabel={Ampiezza (dB)},xlabel={}] {0.01} {100}
+        \addBodeZPKPlots[%
+        true/{transparent},
+        linear/{purple,thick},
+        asymptotic/{purple}]
+        {magnitude}
+        {
+          z/{{-1.5,-3.708099244}, {-1.5,3.708099244}},
+          k/0.06
+        }
 
-        \draw[purple,dashed] (axis cs: 4,90) -- (axis cs: 4,15) node[above right,scale=0.8] {\( \omega_n = 4 \)};
+        \draw[purple,dashed] (axis cs: 4,70) -- (axis cs: 4,-10) node[above right,scale=0.8] {\( \omega_n = 4 \)};
 
-        \draw[thin,dashed] (axis cs:4,24) -| (axis cs:40,64) 
+        \draw[thin,dashed] (axis cs:4,0) -| (axis cs:40,40) 
         node[midway,above left,scale=0.8] {\( 40 \frac{dB}{dec} \) };
       \end{BodeMagPlot}
 
       % Phase
-      \begin{BodePhPlot}[scale=1.5,ytick distance=90,ylabel={Fase (deg)},xlabel={Frequenza (rad/s)}] {0.01} {100}
-        \addBodeComponentPlot[transparent]{\PhSOZeros{3}{16}}
-        \addBodeComponentPlot[purple,thick]{\PhSOZerosLin{3}{16}}
-
+      \begin{BodePhPlot}[
+        scale=1.5,ytick distance=90,ylabel={Fase (deg)},xlabel={Frequenza (rad/s)},
+        ] {0.01} {100}
+        \addBodeZPKPlots[%
+        true/{transparent},
+        linear/{purple,thick},
+        asymptotic/{transparent}]
+        {phase}
+        {
+          z/{{-1.5,-3.708099244}, {-1.5,3.708099244}},
+        }
         \draw[purple,dashed] (axis cs: 4,190) -- (axis cs: 4,-15) node[above right,scale=0.8] {\( \omega_n = 4 \)};
       \end{BodePhPlot}
       \caption{Diagramma di Bode di 
@@ -9926,19 +9941,20 @@ Le formule generali per calcolare l'ampiezza e la fase sono:
     \begin{figure}[H]
       \centering
       % Magnitude
-      \begin{BodeMagPlot}[scale=1.5,ytick distance=20,ylabel={Ampiezza (dB)}] {0.01} {100}
+      \begin{BodeMagPlot}[scale=1.5,ytick distance=20,ylabel={Ampiezza (dB)},xlabel={}] {0.01} {100}
         \addBodeZPKPlots[%
         true/{transparent},
         linear/{orange,thick},
         asymptotic/{transparent}]
         {magnitude}
         {
-          z/0.5
+          p/{0.5},
+          k/0.5
         }
 
-        \draw[orange,dashed] (axis cs:0.5,50) -- (axis cs:0.5,-5) node[above right] {\( \omega_n = 0.5 \) };
-        \draw[thin,dashed] (axis cs:1,0) -| (axis cs:10,20) 
-        node[midway,above left,scale=0.8] {\( 20 \frac{dB}{dec} \) };
+        \draw[orange,dashed] (axis cs:0.5,10) -- (axis cs:0.5,-50) node[above right,scale=0.8] {\( \omega_n = 0.5 \) };
+        \draw[thin,dashed] (axis cs:5,-20) -| (axis cs:0.5,0) 
+        node[midway,above right,scale=0.8] {\( -20 \frac{dB}{dec} \) };
       \end{BodeMagPlot}
 
       % Phase
@@ -9951,9 +9967,9 @@ Le formule generali per calcolare l'ampiezza e la fase sono:
         asymptotic/{transparent}]
         {phase}
         {
-          z/0.5
+          p/{0.5},
         }
-        \draw[orange,dashed] (axis cs:0.5,100) -- (axis cs:0.5,-5) node[above right] {\( \omega_n = 0.5 \) };
+        \draw[orange,dashed] (axis cs:0.5,-80) -- (axis cs:0.5,-190) node[above right,scale=0.8] {\( \omega_n = 0.5 \) };
       \end{BodePhPlot}
       \caption{Diagramma di Bode di \( \color{orange} \left( 1 - 2s \right)  \)}
     \end{figure}
@@ -9981,7 +9997,78 @@ Una volta disegnati i singoli grafici si sommano assieme:
       \end{table}
 
     \item Andiamo a calcolare il valore di ciascun termine dei valori trovati e sommiamo i contributi per ogni blocco
-      \label{16-12-D1}
+    \begin{figure}[H]
+      \centering
+      % Magnitude
+      \begin{BodeMagPlot}[scale=1.9,ytick distance=20,ylabel={Ampiezza (dB)},xlabel={Frequenza (rad/s)}] {0.01} {100}
+        % Kb
+        \addBodeZPKPlots[%
+        true/{blue,thick},
+        linear/{transparent},
+        asymptotic/{transparent}]
+        {magnitude}
+        {
+          k/-16
+        }
+
+        % (1 + s)
+        \addBodeZPKPlots[%
+        true/{transparent},
+        linear/{red,thick},
+        asymptotic/{transparent}]
+        {magnitude}
+        {
+          z/-1
+        }
+
+        % s^2
+        \addBodeZPKPlots[%
+        true/{transparent},
+        linear/{green!50!black,thick},
+        asymptotic/{transparent}]
+        {magnitude}
+        {
+          z/0,
+          z/0
+        }
+
+        % (1 + (3/16)s + (1/16)s^2)
+        \addBodeZPKPlots[%
+        true/{transparent},
+        linear/{purple,thick},
+        asymptotic/{purple}]
+        {magnitude}
+        {
+          z/{{-1.5,-3.708099244}, {-1.5,3.708099244}},
+          k/0.06
+        }
+
+        % (1 - 2s)
+        \addBodeZPKPlots[%
+        true/{transparent},
+        linear/{orange,thick},
+        asymptotic/{transparent}]
+        {magnitude}
+        {
+          p/{0.5},
+          k/0.5
+        }
+
+        % Omega_n
+        \draw[orange,dashed] (axis cs:0.5,95) -- (axis cs:0.5,-95) node[above left,scale=0.6] {\( \omega_1 = 0.5 \) };
+        \draw[red,dashed] (axis cs:1,95) -- (axis cs:1,-95) node[above right,scale=0.6] {\( \omega_2 \) };
+        \draw[purple,dashed] (axis cs: 4,95) -- (axis cs: 4,-95) node[above right,scale=0.6] {\( \omega_3 = 4 \)};
+        \draw[dashed] (axis cs: 0.1,95) -- (axis cs: 0.1,-95);
+        \draw[dashed] (axis cs: 10,95) -- (axis cs: 10,-95);
+
+        \node[blue,above right,scale=0.6] at (axis cs:0.01,24) {24dB};
+        \node[green!50!black,align=center,scale=0.6] at (axis cs: 30,80) {\( 40 \frac{dB}{dec} \) };
+        \node[purple,align=center,scale=0.6] at (axis cs: 30,45) {\( 40 \frac{dB}{dec} \) };
+        \node[red,align=center,scale=0.6] at (axis cs: 30,15) {\( 20 \frac{dB}{dec} \) };
+        \node[orange,align=center,scale=0.6] at (axis cs: 30,-50) {\( -20 \frac{dB}{dec} \) };
+      \end{BodeMagPlot}
+      \caption{Unione di tutti i diagrammi}
+    \end{figure}
       \noindent
       Andamento in tabella:
       \begin{table}[H]
@@ -9989,11 +10076,11 @@ Una volta disegnati i singoli grafici si sommano assieme:
         \begin{tabular}{c|c|c|c|c|c}
           $\omega$ & $10^{-1}$ & $0.5$ & $10^{0}$ & $4$ & $10^{1}$\\
           \hline
-          \color{blue} \( k_b \frac{dB}{dec} \) & \color{blue}0 & \color{blue}0 & \color{blue}0 & \color{blue}0 & \color{blue}0 \\
-          \color{red} \( \text{zero-}\mathbb{R}_1 \frac{dB}{dec}\) & \color{red}0 & \color{red}0 & \color{red}0 & \color{red}20 & \color{red}20 \\ 
-          \color{green!50!black} \( \text{zero-nullo}_1 \frac{dB}{dec}\) & \color{green!50!black}40 & \color{green!50!black}40 & \color{green!50!black}40 & \color{green!50!black}40 & \color{green!50!black}40 \\ 
-          \color{purple} \( \text{zero-cc}_1 \frac{dB}{dec}\) & \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}40 \\ 
-          \color{orange} \( \text{Polo-}\mathbb{R}_1 \frac{dB}{dec}\) & \color{orange}0 & \color{orange}0 & \color{orange}-20 & \color{orange}-20 & \color{orange}-20 \\ 
+          \color{blue} \( k_b \;db/dec \) & \color{blue}0 & \color{blue}0 & \color{blue}0 & \color{blue}0 & \color{blue}0 \\
+          \color{red} \( \text{zero-}\mathbb{R}_1 \;db/dec\) & \color{red}0 & \color{red}0 & \color{red}0 & \color{red}20 & \color{red}20 \\ 
+          \color{green!50!black} \( \text{zero-nullo}_1 \;db/dec\) & \color{green!50!black}40 & \color{green!50!black}40 & \color{green!50!black}40 & \color{green!50!black}40 & \color{green!50!black}40 \\ 
+          \color{purple} \( \text{zero-cc}_1 \;db/dec\) & \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}40 \\ 
+          \color{orange} \( \text{Polo-}\mathbb{R}_1 \;db/dec\) & \color{orange}0 & \color{orange}0 & \color{orange}-20 & \color{orange}-20 & \color{orange}-20 \\ 
           \hline
           Totale & 40 & 40 & 20 & 40 & 80
         \end{tabular}
@@ -10018,7 +10105,38 @@ Una volta disegnati i singoli grafici si sommano assieme:
           Totale (dB) & -16 & 12 & 18 & 42 & 74
         \end{tabular}
       \end{table}
-      \label{16-12-D2}
+    \begin{figure}[H]
+      \centering
+      % Magnitude
+      \begin{BodeMagPlot}[scale=1.9,ytick distance=40,ylabel={Ampiezza (dB)},xlabel={Frequenza (rad/s)}] {0.01} {100}
+        % Transfer function magnitude
+        \addBodeZPKPlots[%
+        true/{teal,thin},
+        linear/{violet,thick},
+        asymptotic/{transparent}]
+        {magnitude}
+        {
+          z/{0,0,-1,{-1.5,-3.708099244}, {-1.5,3.708099244}},
+          p/0.5,
+          k/0.5,
+        }
+
+        % Omega_n
+        \draw[orange,dashed] (axis cs:0.5,170) -- (axis cs:0.5,-77) node[above left,scale=0.6] {\( \omega_1 = 0.5 \) };
+        \draw[red,dashed] (axis cs:1,170) -- (axis cs:1,-77) node[above right,scale=0.6] {\( \omega_2 \) };
+        \draw[purple,dashed] (axis cs: 4,170) -- (axis cs: 4,-77) node[above right,scale=0.6] {\( \omega_3 = 4 \)};
+        \draw[dashed] (axis cs: 0.1,170) -- (axis cs: 0.1,-77);
+        \draw[dashed] (axis cs: 10,170) -- (axis cs: 10,-77);
+
+        % Points
+        \fill[violet] (axis cs:0.1,-16) circle (1.5pt) node[below right,scale=0.6] {-16dB};
+        \fill[violet] (axis cs:0.5,12) circle (1.5pt) node[below right,scale=0.6] {12dB};
+        \fill[violet] (axis cs:1,18) circle (1.5pt) node[below right,scale=0.6] {18dB};
+        \fill[violet] (axis cs:4,42) circle (1.5pt) node[below right,scale=0.6] {42dB};
+        \fill[violet] (axis cs:10,74) circle (1.5pt) node[below right,scale=0.6] {74dB};
+      \end{BodeMagPlot}
+      \caption{Ampiezza totale}
+    \end{figure}
 
     \item Si fa il grafico delle fasi facendo lo stesso ragionamento fatto per le ampiezze,
       ma considerando solo il valore asintotico:
@@ -10040,8 +10158,30 @@ Una volta disegnati i singoli grafici si sommano assieme:
           Totale  & $0\degree$ & $0\degree$ & $90\degree$ & $180\degree$ & $360\degree$
         \end{tabular}
       \end{table}
-      \label{16-12-D3}
-      
+      \begin{figure}[H]
+        \centering
+        % Magnitude
+        \begin{BodePhPlot}[scale=1.9,ytick distance=40,ylabel={Fase (deg)},xlabel={Frequenza (rad/s)}] {0.01} {100}
+          % Transfer function phase
+          \addBodeZPKPlots[%
+          true/{teal,thin},
+          linear/{transparent},
+          asymptotic/{violet,thick}]
+          {phase}
+          {
+            z/{0,0,-1,{-1.5,-3.708099244}, {-1.5,3.708099244}},
+            p/0.5,
+          }
+
+          % Omega_n
+          \draw[orange,dashed] (axis cs:0.5,380) -- (axis cs:0.5,-37) node[above left,scale=0.6] {\( \omega_1 = 0.5 \) };
+          \draw[red,dashed] (axis cs:1,380) -- (axis cs:1,-37) node[above right,scale=0.6] {\( \omega_2 \) };
+          \draw[purple,dashed] (axis cs: 4,380) -- (axis cs: 4,-37) node[above right,scale=0.6] {\( \omega_3 = 4 \)};
+          \draw[dashed] (axis cs: 0.1,380) -- (axis cs: 0.1,-37);
+          \draw[dashed] (axis cs: 10,380) -- (axis cs: 10,-37);
+        \end{BodePhPlot}
+        \caption{Fase totale}
+      \end{figure}
   \end{enumerate}
 
 \end{example}
