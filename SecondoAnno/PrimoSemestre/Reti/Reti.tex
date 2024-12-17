@@ -3704,20 +3704,47 @@ Il tempo viene slottizzato e viene detetrminato dall'access point
 Si deve aspettare sempre un ulteriore DIFS perchè nelle wireless LAN (wifi) c'è la
 possibilità di attivare il \textbf{riscontro di livello 2} che deve essere mandato
 dopo un SIFS.
-\label{17-12-D1}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{csma-ca}
+  \caption{Esempio di protocollo CSMA-CA}
+\end{figure}
 
 \subsubsection{Problema del terminale nascosto}
 Questo problema è specifico delle reti wireless. Nelle reti wireless la trasmissione
 è omnidirezionale, quindi la potenza trasmessa si distribuisce sulla superficie
 della sfera:
-\label{17-12-D2}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{range}
+  \caption{Potenza trasmessa}
+\end{figure}
 \noindent
 La potenza del segnale diminuisce con la distanza:
-\label{17-12-D3}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw[->] (0,0) -- (8,0) node[below] {Spazio};
+    \draw[->] (0,0) -- (0,3) node[above,align=center] {Potenza al\\ricevitore};
+
+    \draw[domain=0:8,smooth,blue,samples=300] plot ({\x},{-sqrt(abs((\x - 4)/2)) + 2});
+
+    \draw[red,dashed] (0,0.8) -- (8,0.8) node[right,align=center] {Segnale non\\ricostruibile};
+    \fill (4,2) circle (0.1) node[above] {AP};
+
+    \draw[green!50!black,dashed] (1.12,0.8) -- (1.12,0);
+    \draw[green!50!black,dashed] (6.88,0.8) -- (6.88,0);
+    \draw[green!50!black] (1.12,0) -- ++(0,-0.2) -- (6.88,-0.2)
+      node[midway,below] {Range di trasmissione} -- ++(0,0.2);
+  \end{tikzpicture}
+  \caption{Potenza del segnale}
+\end{figure}
 \noindent
 Esiste un limite oltre il quale il segnale non è più ricostruibile, chiamato
 \textbf{range di trasmissione}.
 
+\vspace{1em}
+\noindent
 Consideriamo la seguente configurazione:
 \label{17-12-D4}
 \noindent
