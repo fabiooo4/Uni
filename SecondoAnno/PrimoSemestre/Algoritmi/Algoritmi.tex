@@ -3346,7 +3346,7 @@ Per dividere un heap binomiale mantenendo la differenza di nodi tra le due parti
 uno bisogna mantenere da parte il nodo di dimensione 0 e dividere il resto. Il nodo
 da parte verrà poi riaggiunto ad una delle due lista utilizzando la union.
 
-\subsection{?}
+\subsection{Struttura dati facilmente partizionabile}
 Farebbe comodo avere una struttura dati che permetta di partizionare una collezione
 di oggetti in complessità costante. Si vogliono implementare i seguenti algoritmi:
 \begin{itemize}
@@ -3360,7 +3360,7 @@ di oggetti in complessità costante. Si vogliono implementare i seguenti algorit
 \end{itemize}
 Sappiamo soltanto quello che vogliamo fare, non sappiamo come implementarlo.
 
-\subsubsection{Implementazione}
+\subsubsection{Complessità}
 Un modo per rappresentare un insieme è utilizzare una lista concatenata.
 \begin{figure}[H]
   \centering
@@ -3493,7 +3493,7 @@ degli alberi.
      ]
     ]
   \end{forest}
-  \caption{Esempio di alberi rappresentanti gli insiemi}
+  \caption{Esempio di alberi come insiemi}
 \end{figure}
 \begin{itemize}
   \item \texttt{make\_set(x)}: si crea un albero con un solo nodo
