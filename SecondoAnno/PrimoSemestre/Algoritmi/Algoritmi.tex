@@ -3580,7 +3580,56 @@ dove \( \alpha \) è l'inversa della funzione di Ackermann:
   A(i,1) = 2^{2^{2^{2^{{\vdots i}^{2}}}}}
 \] 
 Siccome la funzione di Ackermann cresce molto velocemente, la sua inversa
-cresce molto lentamente. Di conseguenza la complessità diventa costante.
+cresce molto lentamente. Di conseguenza non si riuscirà mai a superare una certa
+costante, quindi la complessità diventa costante.
+
+\begin{exercise}
+  Si vuole gestire un'agenda che contiene appuntamenti con un orario di inizio e un orario
+  di fine, si vuole:
+  \begin{itemize}
+    \item Inserire un appuntamento (un intervallo di tempo \( \left[ min_t, max_t \right] \))
+    \item Rimuovere un appuntamento
+    \item Dato un intervallo di tempo trovare tutti gli appuntamenti in conflitto con
+      questo intervallo di tempo 
+  \end{itemize}
+  Questo può essere rappresentato come un RB-albero in cui i nodi rappresentano gli
+  appuntamenti.
+
+  \vspace{1em}
+  \noindent
+  Il tempo di fine è un dato importante per capire se è presente un'intersezione,
+  se ordinassimo per il tempo di inizio, ciò che ci dice se c'è stata un intersezione
+  con la radice è se il tempo di fine dei nodi a sinistra è maggiore del tempo di 
+  inizio della radice.
+
+  \vspace{1em}
+  \noindent
+  Si può aggiungere un campo aggiuntivo che memorizza il massimo tempo di fine del
+  sottoalbero di un nodo
+  e questo si può mantenere in tempo logaritmico perchè dipende solo dal nodo stesso
+  e dai propri figli
+
+  \vspace{1em}
+  \noindent
+  L'algoritmo che cerca l'eventuale intersezione è il seguente
+\begin{lstlisting}[language=Scala]
+// x e' il nodo radice
+// I e' l'intervallo di tempo
+search(x,I)
+  if x == nil && I.intersects(x.interval)
+    return x
+  if left(x) != nil && left(x).max_end > I.start
+    return search(left(x),I)
+  else
+    return search(right(x),I)
+\end{lstlisting}
+  Quando sappiamo che non ci sono intervalli che intersecano a sinistra sappiamo
+  anche che non ce ne sono a destra perchè se l'intervallo da controllare fosse
+  all'interno dell'intervallo alla radice, allora sarebbe stato a sinistra.
+  Ciò vuol dire che questo intervallo si trova almeno alla fine dell'intervallo alla
+  radice e di conseguenza tutti gli altri intervalli si troveranno a destra della fine
+  della radice e quidi non ci sono intersezioni.
+\end{exercise}
 
 % \section{Tecniche di programmazione}
 % Fin'ora abbiamo utilizzato la tecnica del \textbf{divide et impera}, cioè dividere
