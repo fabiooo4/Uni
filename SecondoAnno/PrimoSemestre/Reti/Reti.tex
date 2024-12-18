@@ -3746,7 +3746,11 @@ Esiste un limite oltre il quale il segnale non è più ricostruibile, chiamato
 \vspace{1em}
 \noindent
 Consideriamo la seguente configurazione:
-\label{17-12-D4}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{terminale-nascosto}
+  \caption{Terminale nascosto}
+\end{figure}
 \noindent
 Cosa succede con il CSMA-CA se mentre la stazione \( A \) trasmette, la stazione
 \( B \) genera una trama?
@@ -3773,7 +3777,11 @@ Ci sono 3 possibili soluzioni:
 \begin{enumerate}
   \item Si può introdurre un ack al livello 2
   \item Limitare lo spazio di responsabilità dell'access point
-    \label{17-12-D5}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.9\textwidth]{limite-ap}
+      \caption{Limite dell'access point}
+    \end{figure}
   \item Una soluzione protocollare introduce lo scambio di 2 messaggi:
     \begin{itemize}
       \item \textbf{RTS} (Request To Send): La stazione che vuole trasmettere
@@ -3783,7 +3791,11 @@ Ci sono 3 possibili soluzioni:
         stazioni che ricevono un CTS senza aver inviato un RTS viene interrotta la 
         ricezione per un tempo indicato all'interno del CTS.
     \end{itemize}
-    \label{17-12-D6}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.9\textwidth]{rts-cts}
+      \caption{Esempio RTS/CTS}
+    \end{figure}
 \end{enumerate}
 L'uso di RTS/CDS permette di risparmiare energia perchè viene spento il circuito di
 ricezione dopo aver ricevuto un CTS (il costo principale di qualsiasi dispositivo
@@ -3802,7 +3814,11 @@ Questo meccanismo viene chiamato \textbf{NAV} (Network Allocation Vector).
 \subsection{Delimitazione delle trame}
 Il livello fisico si preoccupa di trasformare i bit in segnali elettromagnetici,
 quindi il concetto di trama non esiste a livello fisico, ma solo al livello data link.
-\label{17-12-D7}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{fisico}
+  \caption{Passaggio da segnale a bit}
+\end{figure}
 \noindent
 Il livello 2 deve preoccuparsi di separare le trame partendo da una sequenza di bit
 non delimitata
@@ -3826,7 +3842,11 @@ trama piuttosto che ad un'altra
 \subsubsection{Possibili soluzioni}
 \begin{itemize}
   \item Introdurre intervalli temporali tra le trame
-    \label{17-12-D8}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{separazione-trame-silenzio}
+      \caption{Intervalli temporali}
+    \end{figure}
     \begin{itemize}
       \item \textbf{Vantaggio}: Semplice e intuitiva
       \item \textbf{Svantaggi}: 
