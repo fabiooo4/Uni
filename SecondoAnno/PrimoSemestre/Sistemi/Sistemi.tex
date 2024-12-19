@@ -10183,7 +10183,73 @@ Una volta disegnati i singoli grafici si sommano assieme:
         \caption{Fase totale}
       \end{figure}
   \end{enumerate}
-
 \end{example}
+
+\section{Trasformata di Fourier}
+Fourier ha dimostrato che qualsiasi segnale periodico o aperiodico può essere scomposto
+in una \textbf{somma di sinusoidi}, nello specifico somme di integrali di sinusoidi.
+\begin{example}
+  L'esempio più classico è l'elaborazione dei suoni, se abbiamo un MI più un DO
+  si ottiene una somma di due sinusoidi che rappresenta le due note:
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \draw[->] (0,0) -- (5.5,0) node[right] {t};
+      \draw[->] (0,-1) -- (0,1) node[above] {A};
+      \draw[domain=0:5,smooth,variable=\x,red,samples=300] plot ({\x},{sin(4*\x r)}) node[above right] {DO};
+      \draw[domain=0:5,smooth,variable=\x,blue,samples=300] plot ({\x},{sin(6.59*\x r)}) node[below right] {MI};
+    \end{tikzpicture}
+  \end{figure}
+  \[
+  \downarrow
+  \] 
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \draw[->] (0,0) -- (5.5,0) node[right] {t};
+      \draw[->] (0,-2) -- (0,2) node[above] {A};
+      \draw[domain=0:5,smooth,variable=\x,green!50!black,samples=300] plot ({\x},{sin(4*\x r)+sin(6.59*\x r)});
+    \end{tikzpicture}
+    \caption{Somma di due sinusoidi}
+  \end{figure}
+\end{example}
+\noindent
+Per generare lo stesso segnale con la stessa frequenza servono più sinusoidi e
+quando la somma di sinusoidi è infinita si ottiene il segnale originale.
+
+\subsection{Sinusoidi come vettori}
+Ogni sinusoide può essere rappresentata come un vettore che ruota in senso antiorario
+su una cirfonferenza con velocità angolare \( \omega \) e ampiezza \( A \):
+\[
+  e^{i \omega t}
+\] 
+Da questo si può prendere una funzione e generare il grafico dell'avvolgimento
+della funzione sul piano bidimensionale (grafico del winding):
+\[
+  g(t) \cdot e^{-2\pi \cdot i  f_0 \cdot \omega t}
+\] 
+Per calcolare il grafico di winding si deve calcolare il centro di massa come la media
+dei punti sul grafico:
+\[
+    cdm = \frac{1}{N} \cdot \sum_{k=1}^N g(t_k) \cdot e^{-2\pi \cdot i f_0 \cdot \omega t_k}
+\] 
+\[
+\downarrow
+\] 
+\[
+  \lim_{N \to \infty} \frac{1}{N} \cdot \sum_{k=1}^N g(t_k) \cdot e^{-2\pi \cdot i f_0 \cdot \omega t_k} = \frac{1}{t_2-t_1} \int_{t_1}^{t_2} -g(t_k) \cdot e^{-2\pi \cdot if_0 \cdot \omega t} \, dt
+\] 
+Questa è la quasi trasformata di Fourier, per ottenere la trasformata di Fourier
+bisogna togliere il peso iniziale:
+\[
+ TD_{\text{Fourier}} = \int_{-\infty}^{+\infty} -g(t) \cdot e^{-2\pi \cdot i f_0 \cdot \omega t} \, dt
+\] 
+Dal grafico della trasformata di Fourier si rilevano dei picchi che rappresentano
+tutte le frequenze che compongono il segnale totale.
+
+\vspace{1em}
+\noindent
+Anche in questo caso il risultato ottenuto nel dominio delle frequenze è uguale
+a quello ottenuto nel dominio del tempo.
 
 \end{document}
