@@ -1820,7 +1820,7 @@ else // Uso il congestion avoidance
       \item Se non arrivano i riscontri (quando scade il RTO):
         \begin{enumerate}
           \item 
-            Pongo la \texttt{ssthresh} = \( \frac{\texttt{cwnd}}{2} \) (\texttt{cwnd} al momento della
+            Pongo la \texttt{ssthresh} = \( min\left(2,\frac{\texttt{cwnd}}{2}\right) \) (\texttt{cwnd} al momento della
             perdita)
           \item Pongo la \texttt{cwnd} = 1 (Vanilla tcp)
           \item Per i segmenti ritrasmessi pongo la \texttt{rto} = 2 \texttt{rto} 
