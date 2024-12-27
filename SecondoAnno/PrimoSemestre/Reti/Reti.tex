@@ -3789,27 +3789,20 @@ Ci sono 3 possibili soluzioni:
       \item \textbf{CTS} (Clear To Send): L'access point manda in \textbf{broadcast} 
         un messaggio CTS che contiene delle informazioni sulla trasmissione. Alle
         stazioni che ricevono un CTS senza aver inviato un RTS viene interrotta la 
-        ricezione per un tempo indicato all'interno del CTS.
+        ricezione impostando un campo chiamato NAV (Network Allocation Vector) 
+        con la lunghezza della trama ricevuta dal messaggio CTS. Il NAV può essere
+        visto come un contatore che decrementa in modo lineare e quando diventa 0
+        la stazione riapre il canale di ricezione.
     \end{itemize}
     \begin{figure}[H]
       \centering
       \includegraphics[width=0.9\textwidth]{rts-cts}
       \caption{Esempio RTS/CTS}
     \end{figure}
+    L'uso di RTS/CDS permette di risparmiare energia perchè viene spento il circuito di
+    ricezione dopo aver ricevuto un CTS (il costo principale di qualsiasi dispositivo
+    wireless è consumato nel circuito di ricezione perchè deve essere sempre acceso).
 \end{enumerate}
-L'uso di RTS/CDS permette di risparmiare energia perchè viene spento il circuito di
-ricezione dopo aver ricevuto un CTS (il costo principale di qualsiasi dispositivo
-wireless è consumato nel circuito di ricezione perchè deve essere sempre acceso).
-
-\vspace{1em}
-\noindent
-Un'alternativa si può fare guardando le trame ricevute. Ogni volta che c'è una trama si
-può guardare il MAC address di destinazione e il campo con la lunghezza della trama:
-\begin{itemize}
-  \item Se il ricevente non è la destinazione, spegne il canale di ricezione per
-    il tempo necessario per la trasmissione della trama
-\end{itemize}
-Questo meccanismo viene chiamato \textbf{NAV} (Network Allocation Vector).
 
 \subsection{Delimitazione delle trame}
 Il livello fisico si preoccupa di trasformare i bit in segnali elettromagnetici,
