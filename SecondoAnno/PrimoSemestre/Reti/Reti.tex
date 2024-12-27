@@ -842,7 +842,7 @@ La maschera può essere rappresentata anche in:
 Non tutti gli indirizzi IP possono essere assegnati a degli host, infatti ce ne sono alcuni
 riservati per delle funzioni specifiche:
 \begin{enumerate}
-  \item \textbf{This host}: È l'indirizzo IP del calcolatore stesso
+  \item Questo indirizzo viene assegnato agli host che non hanno ancora un indirizzo IP
     \[
       0.0.0.0
     \] 
@@ -875,8 +875,8 @@ Per conoscere il proprio indirizzo ip si usa il comando: \texttt{ifconfig}
   \item \textbf{Interfaccia di rete}: Rappresenta il collegamento tra il calcolatore e
     la rete.
   \item \textbf{Indirizzo ip}
-  \item \textbf{Indirizzo broadcast}
   \item \textbf{Maschera}
+  \item \textbf{Indirizzo broadcast}
 \end{enumerate}
 
 \vspace{1em}
@@ -2526,7 +2526,7 @@ for d in destinazioni
 // "destinazione" e "costo" della tabella di routing del nodo.
 for v in vicini_diretti
   for d in destinazioni
-    send(D(i,d), j)
+    send(D(i,d), v)
 
 // Con i distance vector ricevuti dai vicini, il nodo aggiorna
 // la tabella di routing per ogni destinazione con la formula:
@@ -3676,7 +3676,7 @@ Il tempo viene slottizzato e viene detetrminato dall'access point
                 estrae un numero casuale \( s \) uniformemente distribuito tra \( (0,cw-1) \),
                 dove \( cw \) è la \textbf{contention window}.
 
-                \( s \) è il numero di slot (STFS) che devo attendere prima di poter
+                \( s \) è il numero di slot (SIFS) che devo attendere prima di poter
                 ritrasmettere
 
               \item Fintanto che il canale rimane libero la stazione decrementa
