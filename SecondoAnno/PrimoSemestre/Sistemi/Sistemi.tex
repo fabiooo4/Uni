@@ -10252,4 +10252,128 @@ tutte le frequenze che compongono il segnale totale.
 Anche in questo caso il risultato ottenuto nel dominio delle frequenze è uguale
 a quello ottenuto nel dominio del tempo.
 
+
+\subsubsection{Segnali periodici}
+Un segnale periodico è rappresentabile tramite la \textbf{serie di Fourier}, cioè una
+somma infinita di segnali sinusoidali.
+
+\subsubsection{Segnali non periodici}
+Un segnale non periodico è rappresentabile tramite la \textbf{trasformata di Fourier},
+cioè una somma di sinusoidi con frequenze continue.
+Un segnale non periodico può essere trasformato in un segnale periodico replicandolo
+un multiplo di volte.
+
+\subsection{Serie di Fourier}
+Consideriamo un segnale periodico \( x(t) \) con periodo \( T_0 \):
+\[
+x(t) = x(t + T_0)
+\] 
+con \textbf{frequenza fondamentale}
+\[
+  w_0 = \frac{2\pi}{T_0} = 2\pi f_0
+\] 
+
+\vspace{1em}
+\noindent
+Se si passa alla rappresentazione tramite esponenziali complessi si può riscrivere:
+\[
+  e^{j \omega_0 t} \to  T_0 = \frac{2\pi}{\omega_0}
+\] 
+si può moltiplicare per una costante \( k \) per ottenere dei multipli della frequenza
+fondamentale:
+\[
+  e^{j k \omega_0 t} \to T_0 = \frac{2\pi}{k \omega_0}
+\] 
+
+\vspace{1em}
+\noindent
+\begin{definition}
+  Questo segnale si può riscrivere come una combinazione lineare di \( e^{j k \omega_0 t} \):
+  \[
+    x(t) = \sum_{k=-\infty}^{+\infty} a_k \cdot e^{j k \omega_0 t}
+  \] 
+  con periodo \( T_0 \) e frequenza fondamentale \( \omega_0 = \frac{2 \pi}{T_0} = 2 \pi f_0 \).
+
+  Questa rappresentazione si chiama \textbf{serie di Fourier}.
+\end{definition}
+
+\vspace{1em}
+\noindent
+\( a_k \in \mathbb{C} \), quindi si può riscrivere in forma polare o cartesiana:
+\[
+\begin{aligned}
+  a_k &= \color{blue}A_k e^{j \theta_k} \\
+      &= \color{red}B_x + j C_k
+\end{aligned}
+\] 
+Una serie di fourier può essere scritta come serie di funzioni trigonometriche:
+\[
+  e^{j k \omega_0 t} = \cos(k \omega_0 t) + j \sin(k \omega_0 t)
+\] 
+Da cui si può scrivere la serie di Fourier come somma di seni e coseni:
+\[
+  \begin{aligned}
+    x(t) &= \color{blue}a_0 + 2 \sum_{k=1}^{+\infty} A_k \cos(k \omega_0 t + \theta_k)\\
+         &= \color{red}a_0 + 2 \sum_{k=1}^{+\infty} \left[ B_k \cos(k \omega_0 t) - i C_k \sin(k \omega_0 t) \right]
+  \end{aligned}
+\] 
+
+\vspace{1em}
+\noindent
+Per calcolare i coefficienti \( a_k \) si può fare un integrale su un periodo \( T_0 \):
+\[
+  \int_{t_0}^{t_0 + T_0} = \int_{t_0} e^{j k \omega_0 t} \, dt = \begin{cases}
+    0 & k \neq 0\\
+    t_0 & k = 0
+  \end{cases}
+\] 
+Usando la rappresentazione con seno e coseno:
+\[
+  \int_{t_0} \cos(k \omega_0 t) \, dt + j \int_{t_0} \sin(k \omega_0 t) \, dt = \begin{cases}
+    0 & k \neq 0\\
+    t_0 & k = 0
+  \end{cases}
+\] 
+
+\vspace{1em}
+\noindent
+Si fa quindi l'integrale sul periodo di \( x(t) \):
+\[
+  \int_{t_0} x(t) e^{-j N \omega_0 t} \,dt = \int_{t_0} e^{-j N \omega_0 t} \sum_{k=-\infty}^{+\infty} a_k e^{j k \omega_0 t} \, dt
+\] 
+si porta fuori dall'integrale la sommatoria:
+\[
+  \int_{t_0} e^{-j N \omega_0 t} \sum_{k=-\infty}^{+\infty} a_k e^{j k \omega_0 t} \, dt =
+  \underbrace{\sum_{k=-\infty}^{+\infty} a_k \int_{t_0} e^{-j (k-N) \omega_0 t} \, dt}_{
+    \begin{cases}
+      0 & k \neq N\\
+      t_0 & k = N
+    \end{cases}
+  }
+\] 
+e si può riscrivere tutto come:
+\[
+  \int_{t_0} x(t) e^{-j N \omega_0 t} \, dt = a_n \cdot t_0
+\] 
+\[
+  a_n = \frac{1}{t_0} \int_{t_0} x(t) e^{-j N \omega_0 t} \, dt
+\] 
+generalizzando diventa:
+\begin{definition}
+  \[
+    a_k = \frac{1}{t_0} \int_{t_0} x(t) e^{-j k \omega_0 t} \, dt
+  \] 
+  Questa è la \textbf{equazione di analisi} e ci permette di calcolare i singoli coefficienti
+  della serie di Fourier.
+\end{definition}
+\begin{definition}
+  \[
+    x(t) = \sum_{k=-\infty}^{+\infty} a_k \cdot e^{j k \omega_0 t}
+  \] 
+  Questa è l'\textbf{equazione di sintesi} e ci
+  permette di rappresentare qualsiasi segnale periodico come somma infinita di funzioni
+  armonicamente correlate tra di loro, quindi che hanno una frequenza multipla della
+  frequenza fondamentale.
+\end{definition}
+
 \end{document}
