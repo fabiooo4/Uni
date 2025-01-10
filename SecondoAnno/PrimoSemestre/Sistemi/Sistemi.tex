@@ -10376,4 +10376,359 @@ generalizzando diventa:
   frequenza fondamentale.
 \end{definition}
 
+\begin{theorem}
+  Sia \( v(t) \) una funzione di valori reali o complessi, con \( t \in \mathbb{R} \),
+  periodica di periodo \( T_0 \) e con frequenza \( f_0 \) (\( \omega_0 = \frac{2 \pi }
+  {T_0} = 2 \pi f_0 \))
+  \begin{itemize}
+    \item \( v(t) \) è generalmente continua, cioè continua in un insieme finito di punti
+    \item \( v(t) \) è generalmente derivabile e la sua derivata prima è generalmente
+      continua e anche generalmente limitata su un intervallo specifico \( [t_0, t_0 + T_0] \),
+      allora la funzione si dice \textbf{quadrato sommabile}, cioè:
+      \[
+        \begin{aligned}
+          \int_{-\infty}^{+\infty} |v(t)|^2 \, dt < +\infty &=\\
+          \int_{T_0} |v(t)|^2 \, dt < +\infty&
+        \end{aligned}
+      \] 
+      È sviluppabile in serie di Fourier, quindi \( \forall t \) in cui è continua vale che:
+      \[
+        \text{Equazione di Sintesi:} \quad
+        v(t) = \sum_{k=-\infty}^{+\infty} a_k \cdot e^{j k \omega_0 t}
+      \] 
+      \[
+        \text{Equazione di analisi:} \quad
+        a_k = \frac{1}{T_0} \int_{T_0} v(t) e^{-j k \omega_0 t} \, dt
+      \] 
+      Nei punti in cui non è continua vale che:
+      \[
+        \frac{v(t^-) + v(t^+)}{2} = \sum_{k=-\infty}^{+\infty} a_k \cdot e^{j k \omega_0 t}
+      \] 
+  \end{itemize}
+  Il primo coefficiente della serie di Fourier corrisponde al picco che si vede nel
+  grafico della trasformata e corrisponde al valore medio della funzione:
+  \[
+    a_0 = \frac{1}{T_0} \int_{T_0} v(t) \, dt
+  \] 
+
+  \vspace{1em}
+  \noindent
+  La funzione di sintesi può essere scritta in diversi modi:
+  \begin{itemize}
+    \item Serie di Fourier in forma sinusoidale:
+      \[
+        \begin{aligned}
+          v(t) &= a_0 + \sum_{k=1}^{+\infty} 2 \left| a_k \right|  \cos(k \omega_0 t + arg(a_k))\\
+               &= a_0 + \sum_{k=1}^{+\infty} \left[ A_k \cos(k \omega_0 t) + B_k \sin(k \omega_0 t) \right]
+        \end{aligned}
+      \] 
+      \[
+      A_k = 2 \Re(a_k) \quad B_k = -2 \Im(a_k)
+      \] 
+  \end{itemize}
+  La sommatoria va da \( -\infty \) a \( +\infty \), ma non ci sono frequenze negative
+  questo perchè serve solo a gestire i valori complessi.
+\end{theorem}
+
+\subsubsection{Segnali simmetrici e asimmetrici}
+\begin{itemize}
+  \item \textbf{Segnale periodico non-simmetrico}
+    \label{10-01-D1}
+    \[
+      a_k = \frac{1}{T_0} \int_{\frac{-T_0}{2}}^{0} \stackrel{v(t)}{(-1)} \cdot e^{-j k \omega_0 t} \, dt +
+      \frac{1}{T_0} \int_{0}^{\frac{T_0}{2}} \stackrel{v(t)}{1} \cdot e^{-j k \omega_0 t} \, dt
+    \] 
+    \[
+      \stackrel{\vdots}{\downarrow}
+    \] 
+    \[
+      a_k = \frac{1}{j \pi k} \left[ 1 - (-1)^k \right] \quad k \neq 0
+    \] 
+
+    \vspace{1em}
+    \noindent
+    Il grafico dei coefficienti è il seguente:
+    \label{10-01-D2}
+
+    \begin{itemize}
+      \item Armoniche dispari
+      \item \( a_k \) immaginari
+      \item \( a_k = -a_{-k}\) antisimmetrico
+    \end{itemize}
+    Siccome tutti i coefficienti sono immaginari si ha una serie di seni e si può
+    riscrivere come:
+    \[
+      v(t) = a_0 + \sum_{k=1}^{+\infty} \underbrace{2j}_{\text{Per avere termini reali}} \cdot a_k \sim(k \omega_0 t)
+    \] 
+
+  \item \textbf{Segnale periodico simmetrico}
+    \label{10-01-D3}
+    \[
+    a_k = \begin{cases}
+      \frac{1}{2} & k = 0\\
+      \frac{\sin\left( \frac{\pi k}{2} \right)}{\pi k} & k \neq 0
+    \end{cases}
+    \] 
+
+    \vspace{1em}
+    \noindent
+    Il grafico dei coefficienti è il seguente:
+    \label{10-01-D4}
+
+    \begin{itemize}
+      \item Armoniche dispari
+      \item \( a_k \) è reale
+      \item \( a_k = a_{-k} \) simmetrico
+    \end{itemize}
+    Siccome tutti i coefficienti sono reali si ha una serie di coseni e si può riscrivere
+    come:
+    \[
+      v(t) = a_0 + \sum_{k=1}^{+\infty} 2 \cdot a_k \cos(k \omega_0 t)
+    \] 
+\end{itemize}
+
+\subsubsection{Serie di Fourier troncata}
+Serve per limitare la sommatoria a \( N \) termini.
+
+\vspace{1em}
+\noindent
+Sia \( N \in \mathbb{Z} \) 
+\[
+  \underbrace{v_N(t)}_{\text{\( v(t) \) rappresentato con \( N \) componenti}} =
+  \sum_{k=-N}^{N} \tilde{a}_k \cdot e^{j k \omega_0 t} \quad a_k \in \mathbb{C}, \quad \omega_0,t \in \mathbb{R},
+  \quad k \in \mathbb{Z}
+\] 
+Calcoliamo l'errore quadratico medio (MSE, Mean Square Error) che è la misura
+dell'errore di approssimazione
+\[
+  MSE\left(v(t),v_N(t)\right) := \frac{1}{T_0} \int_{T_0} |v(t) - v_N(t)|^2 \, dt
+\] 
+misura l'energia della differenza di due segnali.
+\[
+  \tilde{a}_k = a_k = \lim_{N \to \infty} MSE\left(v(t),v_N(t)\right) = 0
+\] 
+\begin{define}
+  \textbf{Fenomeno di Gibs}: Aumentando il numero di armoniche si ha un aumento
+  di armoniche ad alta frequenza nei punti di discontinuità.
+  \label{10-01-D5}
+  \[
+  T = 2 \pi \quad \text{Non simmetrico}
+  \] 
+  \[
+  t = k \pi 
+  \]
+  \[
+    \begin{aligned}
+      v(t) &= a_0 + \sum_{k=-\infty}^{+\infty} B_k \sin(k \omega_0 t)\\
+      a_k  &= \frac{1}{2 \pi } \int_{0}^{2 \pi} v(t) e^{-j k \omega_0 t} \, dt \\
+           &= \frac{-i}{2 \pi k} \left( 2 - 2 e^{-j \pi t} \right) 
+    \end{aligned}
+  \] 
+  \[
+  a_k = \begin{cases}
+    \frac{-2 j}{k \pi } & k \text{ è dispari}\\
+    0 & \text{altrimenti}
+  \end{cases}
+  \] 
+  \label{10-01-D6}
+\end{define}
+
+\subsection{Dalla serie di Fourier alla trasformata di Fourier}
+Se si ha un segnale non periodico che va da \( \left[ -T_1, T_1 \right] \):
+\label{10-01-D7}
+\[
+  \underbrace{\tilde{v}(t)}_{\text{Periodico}} = \underbrace{v(t)}_{\text{Non periodico}}
+\] 
+\[
+|t| < \frac{T_0}{2}
+\] 
+Se \( T_0 \to \infty \) si ha che \( \tilde{v}(t) \to v(t) \). Cioè si prende un segnale
+periodico e si fa tendere il periodo a infinito facendolo sembrare non periodico.
+Questo passaggio si può fare anche al contrario, cioè prendere un segnale non periodico
+e farlo diventare periodico.
+\begin{itemize}
+  \item Usiamo la serie di Fourier per rappresentare \( \tilde{v}(t) \) 
+  \item Facciamo tendere \( T_0 \) a infinito \( T_0 \to \infty \) per rappresentare \( v(t) \)
+\end{itemize}
+
+\begin{example}
+  Partiamo da un segnale non periodico e lo replichiamo nel tempo con periodo \( T_0 \) 
+  \label{10-01-D8}
+  \[
+    \tilde{v}(t) = v(t) \quad |t| < \frac{T_0}{2}
+  \] 
+  Applichiamo la serie di Fourier su \( \tilde{v}(t) \):
+  \[
+    \tilde{v}(t) = \sum_{k=-\infty}^{+\infty} \tilde{a}_k \cdot e^{j k \omega_0 t}
+  \] 
+  \[
+    \omega_0 = \frac{2 \pi}{T_0} = 2 \pi f_0
+  \] 
+  \[
+    \begin{aligned}
+      a_k &= \frac{1}{T_0} \int_{-\frac{T_0}{2}}^{\frac{T_0}{2}} \tilde{v}(t) e^{-j k \omega_0 t} \, dt\\
+          &= \frac{1}{T_0} \int_{-\infty}^{+\infty} v(t) e^{-j k \omega_0 t} \, dt
+    \end{aligned}
+  \] 
+  Rappresentiamo \( k \omega_0 \) con una funzione \( V(\omega) \) 
+  \[
+    V(\omega) := \int_{-\infty}^{+\infty} v(t) e^{-j \omega t} \, dt \quad \to \quad
+    T_0 a_k = V(\omega) \Big|_{\omega = k \omega_0}
+  \] 
+  \( V(\omega) \) è l'\textbf{inviluppo} di \( T_0 a_k \):
+  \label{10-01-D9}
+
+  \vspace{1em}
+  \noindent
+  \[
+    \begin{aligned}
+      \tilde{v}(t) &= \sum_{k=-\infty}^{+\infty} a_k \cdot e^{j k \omega_0 t}\\
+                   &= \sum_{k=-\infty}^{+\infty} \frac{1}{T_0} V(k \omega_0) \cdot e^{j k \omega_0 t}\\
+    \end{aligned}
+  \] 
+  \[
+  \downarrow
+  \] 
+  \[
+    \tilde{v}(t) = \frac{1}{2 \pi } \sum_{k=-\infty}^{+\infty} V(k \omega_0) \cdot e^{j k \omega_0 t} \omega_0
+  \] 
+  Se \( T_0 \to \infty \) otteniamo che:
+  \begin{itemize}
+    \item \( \omega_0 \to 0 \) 
+    \item \( \tilde{v}(t) \to v(t) \) 
+    \item \( \omega_0 \to d \omega \) 
+    \item \( \sum \to \int \) 
+  \end{itemize}
+  Con queste premesse possiamo riscrivere la funzione come:
+  \[
+    \tilde{v}(t) = \frac{1}{2 \pi } \sum_{-\infty}^{+\infty} V(k \omega_0) \cdot e^{j k \omega_0 t} \omega_0
+  \] 
+  \[
+  \downarrow
+  \] 
+  \[
+    v(t) = \frac{1}{2 \pi } \int_{-\infty}^{+\infty} V(\omega) \cdot e^{j \omega t} \, d\omega
+  \] 
+  È la trasformata di Fourier inversa.
+
+  \vspace{1em}
+  \noindent
+  \[
+    V(\omega) = \int_{-\infty}^{+\infty} v(t) \cdot e^{-j \omega t} \, dt
+  \] 
+  È la trasformata di Fourier.
+\end{example}
+
+\begin{definition}
+  \[
+    v(t) = \frac{1}{2 \pi } \int_{-\infty}^{+\infty} V(\omega) \cdot e^{j \omega t} \, d\omega
+  \] 
+  È l'\textbf{equazione di sintesi per un segnale non periodico} che equivale alla
+  trasformata \textbf{inversa} di Fourier.
+
+  \vspace{1em}
+  \noindent
+  \[
+    V(\omega) = \int_{-\infty}^{+\infty} v(t) \cdot e^{-j \omega t} \, dt
+  \] 
+  È l'\textbf{equazione di analisi per un segnale non periodico} che equivale alla
+  \textbf{trasformata di Fourier}.
+\end{definition}
+
+\begin{example}
+  Prendiamo ad esempio un segnale non periodico:
+  \[
+    v(t) = e^{-at}
+  \] 
+  Calcoliamo la trasformata di Fourier:
+  \[
+    \begin{aligned}
+      V(\omega) &= \int_{-\infty}^{+\infty} v(t) \cdot e^{-j \omega t} \, dt\\
+                &= \int_{-\infty}^{+\infty} e^{-t (a+j \omega)} \, dt\\
+                &= \frac{-1}{a + j \omega} \cdot e^{-(a+j \omega)t} \Big|_{\infty}^{0}\\
+                &= \frac{1}{a + j \omega}
+    \end{aligned}
+  \] 
+
+  \vspace{1em}
+  \noindent
+  Con Laplace sarebbe stato:
+  \[
+    e^{\lambda t} = \frac{1}{s - \lambda}
+  \] 
+  \[
+  \downarrow
+  \] 
+  \[
+    e^{-at} = \frac{1}{s + a} = \frac{1}{a + j \omega}
+  \] 
+\end{example}
+
+\subsubsection{Sviluppo dei coefficienti di Fourier}
+Prendiamo in considerazione il segnale rettangolare:
+\label{10-01-D10}
+Replichiamo il segnale in un periodo \( T_0 \)
+\label{10-01-D11}
+\[
+T_0 = 4 T_1
+\] 
+\label{10-01-D12}
+\[
+T_0 = 8 T_1
+\] 
+\[
+\ldots
+\] 
+\label{10-01-D13}
+\[
+T_0 \to \infty
+\] 
+
+\subsubsection{Trasformata di Fourier di un segnale periodico}
+\[
+  \begin{aligned}
+    \tilde{v}(t) \leftrightarrow a_k \quad \text{Coefficienti delle serie di fourier}\\
+    \tilde{v}(t) \stackrel{\mathcal{F}}{\leftrightarrow} \tilde{V}(\omega) \quad \text{Trasformata di Fourier}\\
+    \tilde{v}(t) := \sum_{k=-\infty}^{+\infty} 2 \pi a_k \cdot \delta(\omega - k \omega_0) \text{ Treno di impulsi}\\
+  \end{aligned}
+\] 
+\[
+  \begin{aligned}
+    \tilde{v}(t) &= \frac{1}{2 \pi } \int_{-\infty}^{+\infty} \tilde{V}(\omega) \cdot e^{j \omega t} \, d\omega\\
+                 &= \frac{1}{2 \pi } \sum_{k=-\infty}^{+\infty} 2 \pi a_k \cdot
+                 \underbrace{\int_{-\infty}^{+\infty} \delta(\omega - k \omega_0) \cdot e^{-j \omega t} \, d\omega}_{e^{-j k \omega_0 t}}
+  \end{aligned}
+\] 
+
+\subsubsection{Come usare la trasformata di Fourier}
+\begin{enumerate}
+  \item \( v(t) \) non periodico
+    \begin{itemize}
+      \item Costruisco un segnale periodico \( \tilde{v}(T) \) in cui il singolo periodo
+        è definito da \( v(t) \)
+      \item \( \tilde{v}(t) \) ha serie di fourier
+      \item All'aumentare del periodo $\tilde{v}(t) \to v(t)$ e la serie di Fourier di
+        \( \tilde{v}(t) \to TdF \) di \( v(t) \) 
+    \end{itemize}
+
+  \item \( \tilde{v}(t) \) è periodico, \( v(t) \) rappresenta il singolo periodo
+    \begin{itemize}
+      \item Coefficienti della serie di Fourier \( = \frac{1}{T_0} \cdot \text{campioni delle
+        TdF di } v(t) \)
+    \end{itemize}
+
+  \item \( \tilde{v}(t) \) è periodico
+    \begin{itemize}
+      \item La trasformata di Fourier di \( \tilde{v}(t) \) è definita come \textbf{treno
+        di impulsi}
+        \[
+          \tilde{V}(\omega) = \sum_{k=-\infty}^{+\infty} 2 \pi a_k \cdot \delta(\omega - k \omega_0)
+        \] 
+        \label{10-01-D14}
+        Se \( T_0 \to \infty\) allora il treno di impulsi diventa sempre più fitto fino
+        ad una retta costante.
+    \end{itemize}
+\end{enumerate}
+
 \end{document}
+
