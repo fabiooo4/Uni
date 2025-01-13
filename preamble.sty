@@ -149,7 +149,11 @@
     },
 }
 
+\pdfsuppresswarningpagegroup=1
+
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
 
-\pdfsuppresswarningpagegroup=1
+% Save plots as pdf and reuse them without compiling every time
+\usetikzlibrary{external}
+\tikzexternalize[prefix=figures/tikz/, optimize=false]
