@@ -10433,15 +10433,38 @@ generalizzando diventa:
 \subsubsection{Segnali simmetrici e asimmetrici}
 \begin{itemize}
   \item \textbf{Segnale periodico non-simmetrico}
-    % \begin{figure}[H]
-    %   \centering
-    %   \begin{tikzpicture}
-    %     \begin{axis}[xmax=9,ymax=9, samples=50]
-    %       \addplot[blue,ultra thick] (x,x*x);
-    %       \addplot[red,ultra thick] (x*x,x);
-    %     \end{axis}
-    %   \end{tikzpicture}
-    % \end{figure}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \begin{axis}[
+          scale=1.5,
+          width=8cm,
+          height=5cm,
+          ylabel = \( v(t) \),
+          xlabel = \( t \),
+          ymin=-2, ymax=2,
+          xmin=-5, xmax=5,
+          xtick = {-1,1},
+          xticklabels = {$-\frac{T_0}{2}$, $\frac{T_0}{2}$},
+          yticklabel style = {anchor=south west, scale=0.8},
+          xticklabel style = {anchor=south west, scale=0.8},
+          axis lines = center
+          ]
+          \addplot[blue, thick] coordinates {
+            (-4,-1) (-4,1)
+            (-3,1) (-3,-1)
+            (-2,-1) (-2,1)
+            (-1,1) (-1,-1)
+            (0,-1) (0,1)
+            (1,1) (1,-1)
+            (2,-1) (2,1)
+            (3,1) (3,-1)
+            (4,-1) (4,1)
+          };
+        \end{axis}
+      \end{tikzpicture}
+      \caption{Segnale periodico non-simmetrico}
+    \end{figure}
     \[
       a_k = \frac{1}{T_0} \int_{\frac{-T_0}{2}}^{0} \stackrel{v(t)}{(-1)} \cdot e^{-j k \omega_0 t} \, dt +
       \frac{1}{T_0} \int_{0}^{\frac{T_0}{2}} \stackrel{v(t)}{1} \cdot e^{-j k \omega_0 t} \, dt
@@ -10456,7 +10479,36 @@ generalizzando diventa:
     \vspace{1em}
     \noindent
     Il grafico dei coefficienti è il seguente:
-    \label{10-01-D2}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \begin{axis}[
+          scale=1.2,
+          width=8cm,
+          height=5cm,
+          ylabel = \( j \pi ak \),
+          xlabel = \( t \),
+          ymin=-3, ymax=3,
+          xmin=-6, xmax=6,
+          yticklabels=\empty,
+          xticklabel style = {anchor = south, scale=0.8},
+          axis lines = center
+          ]
+          \addplot[blue, mark=*, mark size=1.5pt] coordinates {
+              (-5,-2/5) (-4,0) (-3,-2/3) (-2,0) (-1,-2) (0,0)
+              (1,2) (2,0) (3,2/3) (4,0) (5,2/5)
+          };
+          
+          \node[below, scale=0.8] at (axis cs:-5,-2/5) {\( -\frac{2}{5} \)};
+          \node[below, scale=0.8] at (axis cs:-3,-2/3) {\( -\frac{2}{3} \)};
+          \node[below, scale=0.8] at (axis cs:-1,-2) {\( -2 \)};
+          \node[above, scale=0.8] at (axis cs:1,2) {\( 2 \)};
+          \node[above, scale=0.8] at (axis cs:3,2/3) {\( \frac{2}{3} \)};
+          \node[above, scale=0.8] at (axis cs:5,2/5) {\( \frac{2}{5} \)};
+        \end{axis}
+      \end{tikzpicture}
+      \caption{Coefficienti \( a_k \) per segnale non-simmetrico}
+    \end{figure}
 
     \begin{itemize}
       \item Armoniche dispari
@@ -10470,7 +10522,39 @@ generalizzando diventa:
     \] 
 
   \item \textbf{Segnale periodico simmetrico}
-    \label{10-01-D3}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \begin{axis}[
+          scale=1.5,
+          width=8cm,
+          height=3.5cm,
+          ylabel = \( v(t) \),
+          xlabel = \( t \),
+          ymin=0, ymax=1.5,
+          xmin=-5, xmax=5,
+          xtick = {-2.5,-1.5,1.5,2.5},
+          ytick = {1},
+          xticklabels = {$-T_0$, $-\frac{T_0}{2}$, $\frac{T_0}{2}$, $T_0$},
+          yticklabel style = {anchor=south west, scale=0.8},
+          xticklabel style = {anchor=north, scale=0.8},
+          axis lines = center
+          ]
+          \addplot[blue, thick] coordinates {
+            (-4,0) (-4,1)
+            (-3,1) (-3,0)
+            (-2,0) (-2,1)
+            (-1,1) (-1,0)
+            (0,0) (0,1)
+            (1,1) (1,0)
+            (2,0) (2,1)
+            (3,1) (3,0)
+            (4,0) (4,1)
+          };
+        \end{axis}
+      \end{tikzpicture}
+      \caption{Segnale periodico simmetrico}
+    \end{figure}
     \[
     a_k = \begin{cases}
       \frac{1}{2} & k = 0\\
@@ -10481,7 +10565,35 @@ generalizzando diventa:
     \vspace{1em}
     \noindent
     Il grafico dei coefficienti è il seguente:
-    \label{10-01-D4}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \begin{axis}[
+          clip=false,
+          scale=1.2,
+          width=8cm,
+          height=5cm,
+          ylabel = \( j \pi ak \),
+          xlabel = \( t \),
+          ymin=-1/2, ymax=2,
+          xmin=-5.5, xmax=5.5,
+          yticklabels=\empty,
+          xticklabel style = {anchor = south, scale=0.8},
+          axis lines = center
+          ]
+          \addplot[blue, mark=*, mark size=1.5pt] coordinates {
+              (-5,1/5) (-4,0) (-3,-1/3) (-2,0) (-1,1) (0,1/2)
+              (1,1) (2,0) (3,-1/3) (4,0) (5,1/5)
+          };
+          
+          \node[above right, scale=0.8] at (axis cs:0,1/2) {\( \frac{1}{2} \)};
+          \node[above, scale=0.8] at (axis cs:1,1) {\( 1 \)};
+          \node[below, scale=0.8] at (axis cs:3,-1/3) {\( -\frac{1}{3} \)};
+          \node[above, scale=0.8] at (axis cs:5,1/5) {\( \frac{1}{5} \)};
+        \end{axis}
+      \end{tikzpicture}
+      \caption{Coefficienti \( a_k \) per segnale simmetrico}
+    \end{figure}
 
     \begin{itemize}
       \item Armoniche dispari
@@ -10518,7 +10630,40 @@ misura l'energia della differenza di due segnali.
 \begin{define}
   \textbf{Fenomeno di Gibs}: Aumentando il numero di armoniche si ha un aumento
   di armoniche ad alta frequenza nei punti di discontinuità.
-  \label{10-01-D5}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        scale=1.5,
+        width=8cm,
+        height=5cm,
+        ylabel = \( v(t) \),
+        xlabel = \( t \),
+        ymin=-2, ymax=2,
+        xmin=-5, xmax=5,
+        xtick = {-1,1},
+        xticklabels = {$-\frac{T_0}{2}$, $\frac{T_0}{2}$},
+        yticklabel style = {anchor=south west, scale=0.8},
+        xticklabel style = {anchor=south west, scale=0.8},
+        axis lines = center
+        ]
+        \addplot[blue, thick] coordinates {
+            (-4,-1) (-4,1)
+            (-3,1) (-3,-1)
+            (-2,-1) (-2,1)
+            (-1,1) (-1,-1)
+            (0,-1) (0,1)
+            (1,1) (1,-1)
+            (2,-1) (2,1)
+            (3,1) (3,-1)
+            (4,-1) (4,1)
+          };
+
+        \node[font=\tiny, pin=280:{Discontinuità}] at (axis cs:1,-1) {};
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Discontinuità}
+  \end{figure}
   \[
   T = 2 \pi \quad \text{Non simmetrico}
   \] 
@@ -10538,7 +10683,31 @@ misura l'energia della differenza di due segnali.
     0 & \text{altrimenti}
   \end{cases}
   \] 
-  \label{10-01-D6}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        xlabel = $t$,
+        xtick = {-.25,.25},
+        xticklabels = {$-\frac{T_0}{2}$, $\frac{T_0}{2}$},
+        ytick = \empty,
+        domain = -.75:.75,
+        samples = 200,
+        legend style = {%
+          at = {(0.5,1.02)},
+        anchor = south},
+        axis lines = center
+        ]
+        \addplot[thin, mark = none] gnuplot {(x - floor(x +.5)) < 0 ? -1 : 1};
+        \addplot+[blue, thick, mark = none] gnuplot[raw gnuplot] {%
+            set samples 200;
+          fourier(k, x) = 4/((2*k+1)*pi) * cos(2*(2*k+1)*pi*x - pi/2);
+        plot[-.75:.75] sum [k=0:8] fourier(k,x)
+        };
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Fenomeno di Gibbs}
+  \end{figure}
 \end{define}
 
 \subsection{Dalla serie di Fourier alla trasformata di Fourier}
