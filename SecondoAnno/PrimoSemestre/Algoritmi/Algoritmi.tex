@@ -3631,224 +3631,246 @@ search(x,I)
   della radice e quidi non ci sono intersezioni.
 \end{exercise}
 
-% \section{Tecniche di programmazione}
-% Fin'ora abbiamo utilizzato la tecnica del \textbf{divide et impera}, cioè dividere
-% il problema in parti più piccole e risolverle con lo stesso algoritmo per poi unirle
-% per ottenere il risultato. Questa non è l'unica tecnica di programmazione esistente,
-% ce ne sono molte altre, ad esempio la \textbf{programmazione greedy}, cioè prendere
-% le decisioni il prima possibile e sperare che siano le migliori, oppure la
-% \textbf{programmazione dinamica}, cioè creare un'infrastruttura prima di poter 
-% prendere una decisione.
-%
-% \subsection{Programmazione dinamica}
-% Prendiamo ad esempio il problema della \textbf{moltiplicazione di matrici}.
-% Sappiamo che se abbiamo due matrici \( A \) di dimensione \( n \times m \) e \( B \)
-% di dimensione \( m \times l \), il prodotto tra le due matrici avrà complessità
-% \( \Theta(nml) \).
-%
-% Se volessimo moltiplicare 3 matrici: \( A_1 \cdot A_2 \cdot A_3 \) di dimensione:
-% \[
-% \begin{aligned}
-%   A_1 & : 10 \times 100\\
-%   A_2 & : 100 \times 5\\
-%   A_3 & : 5 \times 50
-% \end{aligned}
-% \] 
-% possiamo sfruttare la proprietà associativa:
-% \[
-%   (A_1 \cdot A_2) \cdot A_3 = A_1 \cdot (A_2 \cdot A_3)
-% \] 
-% Solo che il numero di operazioni nei due casi è diverso, quindi per rendere minimo
-% il numero di operazioni è più conveniente fare: \( (A_1 \cdot A_2) A_3 \) perchè:
-% \[
-% \begin{aligned}
-%   (A_1 \cdot A_2) A_3 &\quad 10 \times 100 \times 5 + 10 \times 5 \times 50 = 5000 + 2500 = 7500\\
-%   A_1 (A_2 \cdot A_3) &\quad 100 \times 5 \times 50 + 10 \times 100 \times 50 = 25000 + 50000 = 75000
-% \end{aligned}
-% \] 
-%
-% \vspace{1em}
-% \noindent
-% Supponiamo di avere un insieme di matrici \( A_1, A_2, \ldots, A_n \), vogliamo trovare
-% la \textbf{parentesizzazione} ottimale per minimizzare il numero di operazioni.
-%
-% \vspace{1em}
-% \noindent
-% Un modo per affrontare il problema è quello di provare tutte le combinazioni
-% di parentesi e vedere quale è la migliore.
-%
-% C'è per forza una moltiplicazione che dovrà essere eseguita per ultima, quindi
-% distinguiamo \( k \) come il punto in cui verrà fatta l'ultima moltiplicazione.
-% \[
-%   (A_1 \cdots A_k) \cdot (A_{k+1} \cdots A_n)
-% \] 
-% Il numero modi per moltiplicare le matrici è dato dal numero di modi per moltiplicare
-% le matrici \( A_1 \dots A_k \) e le matrici \( A_{k+1} \dots A_n \).
-% \[
-%   C(n) = \sum_{k=1}^{n-1} C(k) + C(n-k) \quad \in \Omega \left( \frac{4^n}{n^{\frac{3}{2}}} \right) 
-% \] 
-%
-% \vspace{1em}
-% \noindent
-% Supponiamo che qualcuno ci dica il valore ottimo di \( k \), allora è sicuro che
-% il modo in cui vengono moltiplicate le matrici \( (A_1 \cdots A_k) \) e 
-% \( (A_{k+1} \cdots A_n) \) è ottimale:
-% \[
-%   \underbrace{\left( A_1 \cdots A_k \right)}_{\text{Ottimo}} \cdot 
-%   \underbrace{\left( A_{k+1} \cdots A_n \right)}_{\text{Ottimo}}
-% \] 
-% Il numero di moltiplicazioni effettuate è dato da:
-% \[
-%   N\left( A_1 \cdots A_n \right) =
-% \] 
-% \[
-%   \begin{aligned}
-%          &= N\left( A_1 \cdots A_k \right) +
-%          N\left( A_{k+1} \cdots A_n \right) +
-%          \text{Costo ultima moltiplcazione}
-%          \\
-%          &= N\left( A_1 \cdots A_k \right) +
-%          N\left( A_{k+1} \cdots A_n \right) +
-%          rows(A_1) \cdot cols(A_k) \cdot cols(A_n)
-%   \end{aligned}
-% \] 
-% Se \( k \) è ottimo, allora \( N\left( A_1 \cdots A_k \right) \) e
-% \( N\left( A_{k+1} \cdots A_n \right) \) sono ottimi perchè il risultato
-% viene sommato e se non fossero ottimi il risultato finale non sarebbe ottimo.
-% Il problema è che non sappiamo quale sia il valore di \( k \) ottimo.
-%
-% \vspace{1em}
-% \noindent
-% Un possibile algoritmo per trovare \( k \) è il seguente:
-% \begin{lstlisting}[language=Scala]
-% // P e' un vettore che descrive le matrici
-% // P[0] = rows(A1)
-% // P[i] = cols(Ai)
-% // Quindi Ai ha dimensione P[i-1] x P[i]
-% // i e' l'indice di partenza
-% // j e' l'indice di fine
-% matrix_chain_order(P,i,j)
-%   if i == j
-%     return 0
-%   else
-%     m <- +inf
-%     for k <- i to j-1
-%       m <- min(m,
-%         matrix_chain_order(P,i,k) +
-%         matrix_chain_order(P,k+1,j) +
-%         P[i-1]*P[k]*P[j])
-%     return m
-% \end{lstlisting}
-% Questo algoritmo ha una complessità esponenziale.
-%
-% \vspace{1em}
-% \noindent
-% Cerchiamo di migliorare l'algoritmo, implementando l'\textbf{albero di ricorrenza}, cioè
-% un alberi i cui nodi rappresentano le chiamate ricorsive dell'algoritmo, identificate
-% dai parametri \( i \) e \( j \).
-% \begin{figure}[H]
-%   \centering
-%   \begin{forest}
-%     for tree={
-%       inner sep=1pt,
-%       s sep=0.5cm,
-%     }
-%     [{(1,n)}
-%       [{(1,1)(2,n)}
-%         [{(1,1)(1,1)}]
-%         [{(2,2)\color{red}(3,n)}
-%           [{(2,2)(2,2)}]
-%           [{(3,3)\color{blue}(4,n)}]
-%         ]
-%       ]
-%       [{(1,2)\color{red}(3,n)}
-%         [{(1,1)(2,2)}]
-%         [{(3,3)\color{blue}(4,n)}]
-%       ]
-%       [{(1,3)\color{blue}(4,n)}]
-%       [{...}]
-%       [{(1,n-1)(n,n)}]
-%     ]
-%   \end{forest}
-%   \caption{Albero di ricorrenza}
-% \end{figure}
-% \noindent
-% Notiamo che ci sono molte chiamate ricorsive ripetute, ad esempio \( \color{blue}(4,n) \),
-% e questo aumenta la complessità dell'algoritmo inserendo istanze del problema che abbiamo
-% già affrontato. Al massimo ci saranno \( n^2 \) istanze di un problema.
-%
-% Anzichè risolvere il problema ogni volta che lo incontriamo, possiamo risolvere ogni
-% singolo problema una sola volta:
-% \begin{lstlisting}[language=Scala]
-% matrix_chain_order(P)
-%   n <- length(p) - 1
-%   for i <- 1 to n // n
-%     // La moltiplicazione di una sola matrice costa 0 perche' non c'e' nulla da moltiplicare
-%     M[i,i] <- 0 // Matrice che salva tutte le soluzioni (i,j)
-%   
-%   for l <- 2 to n //           n --*
-%     for i <- 1 to n - l + 1 // n --*
-%       j <- i + l - 1 //            | n^3
-%       M[i,j] <- +inf //            |
-%       for k <- i to j - 1 //   n --*
-%         M[i,j] <- min(M[i,j],
-%           M[i,k] + M[k+1,j] + P[i-1]*P[k]*P[j])
-%
-%   return m[1,n]
-% \end{lstlisting}
-% Questo ci dice quante moltiplicazioni sono necessarie per moltiplicare tutte le matrici,
-% però per sapere la posizione dell'ultima moltiplicazione da fare invece si può
-% riscrivere l'algoritmo precedente come:
-% \begin{lstlisting}[language=Scala]
-% matrix_chain_order(P)
-%   ...
-%       for k <- i to j - 1
-%         m <- M[i,k] + M[k+1,j] + P[i-1]*P[k]*P[j]
-%         if m < M[i,j]
-%           m[i,j] <- m // Numero moltiplicazioni
-%           s[i,j] <- k // Indice dell'ultima moltiplicazione
-%   ...
-% \end{lstlisting}
-% La complessità di questo algoritmo è \( O(n^3) \).
-%
-% \vspace{1em}
-% \noindent
-% L'algoritmo precedente scritto in modo iterativo si potrebbe anche scrivere ricorsivamente
-% e l'idea è che prima di calcolare il risultato si controlla se è già stato calcolato
-% e si utilizza quello, altrimenti si calcola e si salva il risultato.
-% \begin{lstlisting}[language=Scala]
-% matrix_chain_order(P)
-%   for i <- 1 to n
-%     for j <- 1 to n
-%       M[i,j] <- +inf
-%
-%   matrix_chain_order_aux(P,1,n)
-%
-%
-% matrix_chain_order(P,i,j)
-%   if M[i,j] != +inf
-%     return M[i,j]
-%   else
-%     if i == j
-%       M[i,j] <- 0
-%     else
-%       m <- +inf
-%       for k <- i to j-1
-%         m <- min(m,
-%           matrix_chain_order(P,i,k) +
-%           matrix_chain_order(P,k+1,j) +
-%           P[i-1]*P[k]*P[j])
-%       M[i,j] <- m
-%
-%     return M[i,j]
-% \end{lstlisting}
-% Per ogni istanza del problema si calcola una sola volta il risultato, quindi la complessità
-% è \( O(n^3) \).
-%
-% \vspace{1em}
-% \noindent
-% \begin{definition}
-%   La tecnica di memorizzare i risultati già calcolati si chiama \textbf{memoizzazione}.
-% \end{definition}
+\section{Tecniche di programmazione}
+Fin'ora abbiamo utilizzato la tecnica del \textbf{divide et impera}, cioè dividere
+il problema in parti più piccole e risolverle con lo stesso algoritmo per poi unirle
+per ottenere il risultato. Questa non è l'unica tecnica di programmazione esistente,
+ce ne sono molte altre, ad esempio la \textbf{programmazione greedy}, cioè prendere
+le decisioni il prima possibile e sperare che siano le migliori, oppure la
+\textbf{programmazione dinamica}, cioè creare un'infrastruttura prima di poter 
+prendere una decisione.
+
+\subsection{Programmazione dinamica}
+Prendiamo ad esempio il problema della \textbf{moltiplicazione di matrici}.
+Sappiamo che se abbiamo due matrici \( A \) di dimensione \( n \times m \) e \( B \)
+di dimensione \( m \times l \), il prodotto tra le due matrici avrà complessità
+\( \Theta(nml) \).
+
+Se volessimo moltiplicare 3 matrici: \( A_1 \cdot A_2 \cdot A_3 \) di dimensione:
+\[
+\begin{aligned}
+  A_1 & : 10 \times 100\\
+  A_2 & : 100 \times 5\\
+  A_3 & : 5 \times 50
+\end{aligned}
+\] 
+possiamo sfruttare la proprietà associativa:
+\[
+  (A_1 \cdot A_2) \cdot A_3 = A_1 \cdot (A_2 \cdot A_3)
+\] 
+Solo che il numero di operazioni nei due casi è diverso, quindi per rendere minimo
+il numero di operazioni è più conveniente fare: \( (A_1 \cdot A_2) \cdot A_3 \) perchè:
+\[
+\begin{aligned}
+  (A_1 \cdot A_2) \cdot A_3 &\quad 10 \times 100 \times 5 + 10 \times 5 \times 50 = 5000 + 2500 = 7500\\
+  A_1 \cdot (A_2 \cdot A_3) &\quad 100 \times 5 \times 50 + 10 \times 100 \times 50 = 25000 + 50000 = 75000
+\end{aligned}
+\] 
+
+\vspace{1em}
+\noindent
+Supponiamo di avere un insieme di matrici \( A_1, A_2, \ldots, A_n \), vogliamo trovare
+la \textbf{parentesizzazione} ottimale per minimizzare il numero di operazioni.
+
+\vspace{1em}
+\noindent
+Un modo per affrontare il problema è quello di provare tutte le combinazioni
+di parentesi e vedere quale è la migliore.
+
+C'è per forza una moltiplicazione che dovrà essere eseguita per ultima, quindi
+distinguiamo \( k \) come il punto in cui verrà fatta l'ultima moltiplicazione.
+\[
+  (A_1 \cdots A_k) \cdot (A_{k+1} \cdots A_n)
+\] 
+Il numero modi per moltiplicare le matrici è dato dal numero di modi per moltiplicare
+le matrici \( A_1 \dots A_k \) e le matrici \( A_{k+1} \dots A_n \).
+\[
+  P(n) = \sum_{k=1}^{n-1} P(k) + P(n-k) \quad \in \Omega \left( \frac{4^n}{n^{\frac{3}{2}}} \right) 
+\] 
+La complessità è troppo alta, quindi provare tutte le combinazioni possibili non è
+efficace.
+
+\vspace{1em}
+\noindent
+Supponiamo che qualcuno ci dica il valore ottimo di \( k \), allora è sicuro che
+il modo in cui vengono moltiplicate le matrici \( (A_1 \cdots A_k) \) e 
+\( (A_{k+1} \cdots A_n) \) è ottimale:
+\[
+  \underbrace{\left( A_1 \cdots A_k \right)}_{\text{Ottimo}} \cdot 
+  \underbrace{\left( A_{k+1} \cdots A_n \right)}_{\text{Ottimo}}
+\] 
+Questa tecnica si chiama \textbf{Sottostruttura ottimale}, un problema si può dividere in
+problemi della stessa natura, ma più piccoli.
+
+\vspace{1em}
+\noindent
+Il numero di moltiplicazioni effettuate è dato da:
+\[
+  N\left( A_1 \cdots A_n \right) =
+\] 
+\[
+  \begin{aligned}
+         &= N\left( A_1 \cdots A_k \right) +
+         N\left( A_{k+1} \cdots A_n \right) +
+         \text{Costo ultima moltiplcazione}
+         \\
+         &= N\left( A_1 \cdots A_k \right) +
+         N\left( A_{k+1} \cdots A_n \right) +
+         rows(A_1) \cdot cols(A_k) \cdot cols(A_n)
+  \end{aligned}
+\] 
+Se \( k \) è ottimo, allora \( N\left( A_1 \cdots A_k \right) \) e
+\( N\left( A_{k+1} \cdots A_n \right) \) sono ottimi perchè il risultato
+viene sommato e se non fossero ottimi il risultato finale non sarebbe ottimo.
+Il problema è che non sappiamo quale sia il valore di \( k \) ottimo.
+
+\vspace{1em}
+\noindent
+Un possibile algoritmo per trovare \( k \) è il seguente:
+\begin{lstlisting}[language=Scala]
+// P e' un vettore che descrive le matrici come:
+//   - P[0] = rows(A1)
+//   - P[i] = cols(Ai)
+// Quindi Ai ha dimensione P[i-1] x P[i]
+// i e' l'indice di partenza
+// j e' l'indice di fine
+matrix_chain_order(P,i,j)
+  if i == j
+    return 0
+
+  m <- +inf
+  for k <- i to j-1
+    m <- min(m,
+      matrix_chain_order(P,i,k) +
+      matrix_chain_order(P,k+1,j) +
+      P[i-1]*P[k]*P[j])
+  return m
+\end{lstlisting}
+Questo algoritmo ha una complessità esponenziale.
+
+\vspace{1em}
+\noindent
+Cerchiamo di migliorare l'algoritmo, implementando l'\textbf{albero di ricorrenza}, cioè
+un alberi i cui nodi rappresentano le chiamate ricorsive dell'algoritmo, identificate
+dai parametri \( i \) e \( j \).
+\begin{figure}[H]
+  \centering
+  \begin{forest}
+    for tree={
+      inner sep=1pt,
+      s sep=0.5cm,
+    }
+    [{(1,n)}
+      [{(1,1)(2,n)}
+        [{(1,1)(1,1)}]
+        [{(2,2)\color{red}(3,n)}
+          [{(2,2)(2,2)}]
+          [{(3,3)\color{blue}(4,n)}]
+        ]
+      ]
+      [{(1,2)\color{red}(3,n)}
+        [{(1,1)(2,2)}]
+        [{(3,3)\color{blue}(4,n)}]
+      ]
+      [{(1,3)\color{blue}(4,n)}]
+      [{...}]
+      [{(1,n-1)(n,n)}]
+    ]
+  \end{forest}
+  \caption{Albero di ricorrenza}
+\end{figure}
+\noindent
+Notiamo che ci sono molte chiamate ricorsive ripetute, ad esempio \( \color{blue}(4,n) \),
+e questo aumenta la complessità dell'algoritmo inserendo istanze del problema che abbiamo
+già affrontato. Al massimo ci saranno \( n^2 \) istanze di un problema.
+
+Anzichè risolvere il problema ogni volta che lo incontriamo, possiamo risolvere ogni
+singolo problema una sola volta e salvare il risultato:
+\begin{lstlisting}[language=Scala]
+matrix_chain_order(P)
+  n <- length(p) - 1
+  for i <- 1 to n // n
+    // La moltiplicazione di una sola matrice costa 0 perche' non c'e' nulla da moltiplicare
+    M[i,i] <- 0 // Matrice che salva tutte le soluzioni (i,j)
+  
+  for l <- 2 to n //           n --* Problemi composti da n matrici
+    for i <- 1 to n - l + 1 // n --*
+      j <- i + l - 1 //            | n^3
+      M[i,j] <- +inf //            |
+      for k <- i to j - 1 //   n --*
+        M[i,j] <- min(M[i,j],
+          M[i,k] + M[k+1,j] + P[i-1]*P[k]*P[j])
+
+  return m[1,n]
+\end{lstlisting}
+Questo ci dice quante moltiplicazioni sono necessarie per moltiplicare tutte le matrici,
+però per sapere la posizione dell'ultima moltiplicazione da fare invece si può
+riscrivere l'algoritmo precedente come:
+\begin{lstlisting}[language=Scala]
+matrix_chain_order(P)
+  ...
+      for k <- i to j - 1
+        m <- M[i,k] + M[k+1,j] + P[i-1]*P[k]*P[j]
+        if m < M[i,j]
+          M[i,j] <- m // Numero moltiplicazioni
+          S[i,j] <- k // Indice dell'ultima moltiplicazione
+  ...
+\end{lstlisting}
+La complessità di questo algoritmo è \( O(n^3) \).
+
+\vspace{1em}
+\noindent
+L'algoritmo precedente scritto in modo iterativo si potrebbe anche scrivere ricorsivamente
+e l'idea è che prima di calcolare il risultato si controlla se è già stato calcolato
+e si utilizza quello, altrimenti si calcola e si salva il risultato.
+\begin{lstlisting}[language=Scala]
+matrix_chain_order(P)
+  for i <- 1 to n
+    for j <- 1 to n
+      M[i,j] <- +inf
+
+  matrix_chain_order_aux(P,1,n)
+
+
+matrix_chain_order(P,i,j)
+  if M[i,j] != +inf
+    return M[i,j]
+  else
+    if i == j
+      M[i,j] <- 0
+    else
+      m <- +inf
+      for k <- i to j-1
+        m <- min(m,
+          matrix_chain_order(P,i,k) +
+          matrix_chain_order(P,k+1,j) +
+          P[i-1]*P[k]*P[j])
+      M[i,j] <- m
+
+    return M[i,j]
+\end{lstlisting}
+Per ogni istanza del problema si calcola una sola volta il risultato, quindi la complessità
+è \( O(n^3) \).
+
+\vspace{1em}
+\noindent
+\begin{definition}
+  La tecnica di memorizzare i risultati già calcolati si chiama \textbf{memoizzazione}.
+\end{definition}
+
+\vspace{1em}
+\noindent
+L'algoritmo che data la matrice S, che contiene gli indici delle parentesizzazioni
+ottimal e la matrice A, che contiene le matrici da moltiplicare, restituisce la
+moltiplicazione ottimale è il seguente:
+\begin{lstlisting}[language=Scala]
+optimal_multiply(S, A, i, j)
+  if i == j
+    return A[i]
+
+  return optimal_multiply(S, A, i, S[i,j]) *
+         optimal_multiply(S, A, S[i,j] + 1, j)
+\end{lstlisting}
+
 
 \end{document}
