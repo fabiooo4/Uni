@@ -10907,5 +10907,292 @@ T_0 \to \infty
     \end{itemize}
 \end{enumerate}
 
+% -----------------
+\subsection{Condizioni di esistenza della trasformata di Fourier}
+\begin{definition}[Equazione di sintesi]
+  Sia \( v(t), \; t \in \mathbb{R} \) un segnale a valori reali o complessi, si definisce
+  la trasformata di Fourier del segnale come:
+  \[
+    \mathcal{F} \left[ v(t) \right](f) := \int_{-\infty}^{+\infty} v(t) \cdot
+    e^{-j \omega_0 t} \, dt = V(f)
+  \] 
+  Dove \( V \) è una funzione che va da \( \mathbb{R} \to \mathbb{C} \), con \( f \in \mathbb{R} \).
+  Questa viene chiamata \textbf{equazione di sintesi}.
+\end{definition}
+\begin{definition}[Equazione di analisi]
+  Data una funzione \( V: \mathbb{R} \to \mathbb{C} \) si definisce anti-trasformata di
+  Fourier la funzione:
+  \[
+    \mathcal{F}^{-1}\left[ V(f) \right](t) := \frac{1}{2 \pi } \int_{-\infty}^{+\infty} V(f) \cdot
+    e^{j \omega_0 t} \, df = v(t)
+  \] 
+  Dove \( v \) è una funzione che va da \( \mathbb{R} \to \mathbb{C} \), con \( t \in \mathbb{R} \).
+  Questa viene chiamata \textbf{equazione di analisi}.
+\end{definition}
+\vspace{1em}
+\noindent
+\textbf{Condizioni di esistenza della trasformata di Fourier}:
+\begin{theorem}
+  Sia \( v(t), \; t \in \mathbb{R} \) un segnale a valori reali o complessi. Se almeno
+  una delle seguenti condizioni è vera, allora la funzione è trasformabile secondo
+  \( \mathcal{F} \):
+  \begin{enumerate}
+    \item \( v(t) \) è sommabile, cioè: 
+      \[
+        \int_{-\infty}^{+\infty} \left| v(t) \right| \,dt < \infty
+      \]
+      e a variabile limitata su ogni intervallo finito di \( \mathbb{R} \), cioè è
+      esprimibile come differenza di funzioni limitate non decrescenti.
+
+    \item \( v(t) \) è un segnale di energia, cioè:
+      \[
+        \int_{-\infty}^{+\infty} \left| v(t) \right|^2 \, dt < \infty
+      \]
+
+    \item \( v(t) \) è un segnale di potenza, cioè:
+      \[
+        \lim_{T \to \infty} \frac{1}{2T} \int_{-\infty}^{+\infty} \left| v(t) \right|^2 \, dt < \infty
+      \] 
+      bisogna però "\textbf{finestrare}" il segnale, cioè moltiplicarlo per una
+      finestra rettangolare
+  \end{enumerate}
+\end{theorem}
+
+\subsection{Trasformate notevoli}
+Le trasformate di Fourier notevoli sono le seguenti:
+\begin{itemize}
+  \item \textbf{Impulso}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}[scale=1.5]
+        \draw[->] (-1.5,0) -- (1.5,0) node[right] {$t$};
+        \draw[->] (0,-0.1) -- (0,1.5) node[above] {$\delta(t)$};
+
+        \draw[->,blue,thick] (0,0) -- (0,1) node[right] {$A$};
+      \end{tikzpicture}
+      \caption{Impulso unitario}
+    \end{figure}
+    \noindent
+    La trasformata di Fourier è:
+    \[
+      \begin{aligned}
+        \mathcal{F}\left[ A \delta_0(t) \right](f) &= A 
+        \int_{-\infty}^{+\infty} \delta_0(t) \cdot e^{-j 2 \pi f t} \, dt\\
+                                                   &= A \int_{-\infty}^{+\infty}
+                                                   \delta_0(t) \cdot 1 \, dt\\
+                                                   &= A
+      \end{aligned}
+    \] 
+    (per le regole del campionamento)
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}[scale=1.5]
+        \draw[->] (-1.5,0) -- (1.5,0) node[right] {$f$};
+        \draw[->] (0,-0.1) -- (0,1.5) node[above] {$\delta(t)$};
+
+        \draw[->,blue,thick] (-1.5,1) -- (1.5,1) node[right] {$A$};
+      \end{tikzpicture}
+      \caption{Trasformata di Fourier dell'impulso}
+    \end{figure}
+
+  \item \textbf{Esponenziale causale}
+    \label{13-01-D2}
+    \noindent
+    La trasformata di Fourier è:
+    \[
+      \mathcal{F}\left[ A e^{j \phi} e^{\lambda t} 
+      \underbrace{\delta_{-1}(t)}_{\text{Causalità}} \right](t) =
+      \frac{A e^{j \phi}}{j 2 \pi  f - \lambda}
+    \] 
+
+    \vspace{1em}
+    \noindent
+    La trasformata di Laplace è molto simile, basta infatti sostituire la \( s \) 
+    con \( j \omega = j 2 \pi f \) e si ottiene la trasformata di Fourier:
+    \[
+      \mathcal{L}\left[ A e^{j \phi} e^{\lambda t} 
+      \delta_{-1}(t) \right](s) = \frac{A e^{j \phi}}{s - \lambda}
+    \] 
+
+  \item \textbf{Finestra rettangolare di altezza \( A \) e supporto \( T \)}
+    \label{13-01-D3}
+    \noindent
+    La trasformata di Fourier è:
+    \[
+      \mathcal{F}\left[ A \Pi\left(\frac{t}{T}\right) \right](f) = AT \cdot sinc(fT)
+    \]
+    \label{13-01-D4}
+  \item \textbf{Funzione costante}
+    \vspace{1em}
+    \noindent
+    \label{13-01-D5}
+    La funzione costante non può essere trasformata facilmente, quindi bisogna
+    "finestrarla", cioè moltiplicare il segnale per una finestra rettangolare:
+    \[
+    v(t) = A \to v_T(t) = A \cdot \Pi(\frac{t}{T})
+    \] 
+    La sua trasformata di Fourier è la stessa del segnale rettangolare:
+    \[
+      \mathcal{F}\left[\underbrace{v(t)}_{\text{Ampiezza } = A} \cdot 
+      \underbrace{\Pi\left(\frac{t}{T}\right)}_{\text{Ampiezza } = 1} \right](f)
+      = AT \cdot sinc(fT)
+    \] 
+    \label{13-01-D6}
+  \item \textbf{Fasore}
+    \vspace{1em}
+    \noindent
+    \label{13-01-D7}
+    \[
+      v(t) = A \cdot e^{j 2 \pi f_0 t}
+    \] 
+    Anche in questo caso bisogna moltiplicare per il segnale rettangolare:
+    \[
+      v_T(t) = A \cdot e^{j 2 \pi f_0 t} \cdot \Pi\left(\frac{t}{T}\right)
+    \] 
+    La trasformata di Fourier è:
+    \[
+      \mathcal{F}\left[ v_T(t) \right](f) = AT \cdot sinc((f - f_0) \cdot t)
+    \] 
+    \label{13-01-D8}
+  \item \textbf{Seno}
+    \vspace{1em}
+    \noindent
+    Possiamo derivare il seno utilizzando la formula di Eulero su un fasore:
+    \[
+    v(t) = A \cdot \sin(2 \pi f_0 t)
+    \] 
+    La trasformata di Fourier è:
+    \[
+      \mathcal{F}\left[ v(t) \right](f) = \frac{A}{2j} \left( \delta(f - f_0) - \delta(f + f_0) \right)
+    \]
+    Il seno è solo la parte immaginaria del fasore.
+  \item \textbf{Coseno}
+    \vspace{1em}
+    \noindent
+    \[
+    v(t) = A \cdot \cos(2 \pi f_0 t)
+    \] 
+    La trasformata di Fourier è:
+    \[
+      \mathcal{F}\left[ v(t) \right](f) = \frac{A}{2} \left( \delta(f - f_0) + \delta(f + f_0) \right)
+    \]
+    Il coseno è solo la parte reale del fasore.
+\end{itemize}
+
+\subsection{Proprietà della trasformata di Fourier}
+La trasformata di Laplace è un caso specifico della trasformata di Fourier:
+\[
+\begin{aligned}
+  TdL &\to TdF\\
+  s &\to j \omega
+\end{aligned}
+\] 
+Quindi alcune proprietà di Laplace valgono anche per Fourier.
+\begin{enumerate}
+  \item \textbf{Linearità}
+    \[
+      a v_1(t) + b v_2(t) \stackrel{\mathcal{F}}{\leftrightarrow} a V_1(f) + b V_2(f)
+    \] 
+
+  \item \textbf{Riflessione e coniugazione}
+    \[
+      v(-t) \stackrel{\mathcal{F}}{\leftrightarrow} V(-f) \quad \text{Riflessione}
+    \] 
+    \[
+      \left.
+      \begin{aligned}
+        v^*(t) \stackrel{\mathcal{F}}{\leftrightarrow} V^*(-f)\\
+        v^*(-t) \stackrel{\mathcal{F}}{\leftrightarrow} V^*(f)
+      \end{aligned}
+    \right\}
+    \text{ Coniugazione}
+    \]
+
+  \item \textbf{Convoluzione nel dominio del tempo}
+    \[
+      \left[ v_1 \ast v_2 \right](t) \stackrel{\mathcal{F}}{\leftrightarrow} V_1(f) \cdot V_2(f)
+    \] 
+
+  \item \textbf{Traslazione nel dominio del tempo}
+    \[
+      v(t - \tau) \stackrel{\mathcal{F}}{\leftrightarrow} e^{-j 2 \pi f \tau} \cdot V(f)
+    \] 
+
+  \item \textbf{Traslazione nel dominio delle frequenze}
+    \[
+      e^{j 2 \pi f_0 t} \cdot v(t) \stackrel{\mathcal{F}}{\leftrightarrow} V(f - f_0)
+    \]
+
+  \item \textbf{Modulazione/Prodotto nel dominio del tempo}
+    \[
+      v_1(t) \cdot v_2(t) \stackrel{\mathcal{F}}{\leftrightarrow} \left[ V_1 \ast V_2 \right](f)
+    \]
+\end{enumerate}
+
+\begin{example}
+  Consideriamo il seguente sistema a blocchi:
+  \label{13-01-D9}
+  Vogliamo capire come si comporta questo segnale nelle frequenze ($a(t)$) e cosa succede quando
+  viene alterato dalla sequenza degli operatori ($b(t)$).
+  \[
+    \begin{aligned}
+      u(t) &= 3 \cdot \cos(6 \pi t) + \cos(2 \pi t)\\
+      w(t) &= 2 \cdot \cos(4 \pi t) \\
+      h(t) &= 4 \cdot sinc(4t)\\
+      \color{blue}b(t) &= ?
+    \end{aligned}
+  \] 
+  Possiamo risolvere in maniera grafica questo problema:
+  \begin{enumerate}
+    \item Applichiamo le trasformate di Fourier per andare nel dominio delle frequenze:
+      \[
+      \text{Trasformata notevole: } A \cos(2 \pi f_0 t) = \frac{A}{2} \left( \delta(f - f_0) + \delta(f + f_0) \right)
+      \] 
+      \[
+        \begin{aligned}
+          3 \cdot \cos(2 \pi \cdot 3 \cdot t) \stackrel{\mathcal{F}}{=} \frac{3}{2} \left( \delta(f - 3) + \delta(f + 3) \right)\\
+          \cos(2 \pi \cdot t) \stackrel{\mathcal{F}}{=} \frac{1}{2} \left( \delta(f - 1) + \delta(f + 1) \right)\\
+          U(f) = \frac{3}{2} \left( \delta(f - 3) + \delta(f + 3) \right) + \frac{1}{2} \left( \delta(f - 1) + \delta(f + 1) \right)
+        \end{aligned}
+      \] 
+      \vspace{1em}
+      \noindent
+      \[
+      W(f) = \frac{2}{2} \left( \delta(f - 2) + \delta(f + 2) \right) 
+      = \delta(f - 2) + \delta(f + 2)
+      \] 
+      \vspace{1em}
+      \noindent
+      \[
+        \text{Trasformata notevole: } AT sinc(tT) = A \Pi\left(\frac{f}{T}\right)
+      \] 
+      \[
+        H(f) = 1 \cdot \Pi(\frac{f}{4}) = \Pi(\frac{f}{4})
+      \] 
+
+    \item Disegnamo tutti i singoli elementi su un grafico:
+      \label{13-01-D10}
+      \label{13-01-D11}
+      \label{13-01-D12}
+
+    \item Calcoliamo la convoluzione tra \( U(f) \) e \( W(f) \) per trovare \( A(f) \) :
+      \vspace{1em}
+      \noindent
+      Eseguiamo la convoluzione tra \( U(f) \) e \( W(f) \) fissando un segnale e
+      spostare l'altro specchiato. A livello più alto il segnale che si muove viene replicato
+      ogni volta che l'asse centrale corrisponde con il segnale fermo:
+      \label{13-01-D13}
+      \noindent
+      Le altezze dei nuovi segnali replicati saranno la moltiplcazione dei segnali
+      che si sovrappongono sommata alle altezze dei diversi segnali che si sovrappongono
+      nello stesso punto.
+
+    \item Calcoliamo il prodotto tra \( A(f) \) e \( H(f) \) per trovare \( B(f) \):
+      \vspace{1em}
+      \noindent
+      \label{13-01-D14}
+  \end{enumerate}
+\end{example}
+
 \end{document}
 
