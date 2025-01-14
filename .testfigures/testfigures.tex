@@ -1,0 +1,38 @@
+\documentclass[a4paper]{article}
+\usepackage{import}
+\input{../preamble.sty}
+
+\pgfplotsset{width=7cm}
+
+\begin{document}
+\noindent
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac purus sit amet
+nisl tincidunt tincidunt. Nullam nec mi et neque pharetra sollicitudin. Praesent
+imperdiet mi nec ante. Donec ullamcorper, felis non sodales commodo, lectus velit
+ultrices augue, a dignissim nibh lectus placerat pede. Vivamus nunc nunc, molestie
+nec, eleifend ut, fringilla vel, neque. Proin tellus mi, eleifend non venenatis
+sit amet, ullamcorper at ligula. Nunc dapibus. Lorem ipsum dolor sit amet,
+consectetur adipiscing elit. Sed ac purus sit amet nisl tincidunt tincidunt.
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      xmin= -10, xmax= 10,
+      ymin= -10, ymax = 10,
+      axis lines = middle,
+    ]
+      \addplot[blue,domain=-10:10, samples=100]{x};
+    \end{axis}
+  \end{tikzpicture}
+\end{figure}
+
+\noindent
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac purus sit amet
+nisl tincidunt tincidunt. Nullam nec mi et neque pharetra sollicitudin. Praesent
+imperdiet mi nec ante. Donec ullamcorper, felis non sodales commodo, lectus velit
+ultrices augue, a dignissim nibh lectus placerat pede. Vivamus nunc nunc, molestie
+nec, eleifend ut, fringilla vel, neque. Proin tellus mi, eleifend non venenatis
+sit amet, ullamcorper at ligula. Nunc dapibus. Lorem ipsum dolor sit amet,
+consectetur adipiscing elit. Sed ac purus sit amet nisl tincidunt tincidunt.
+\end{document}

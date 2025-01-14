@@ -10483,15 +10483,15 @@ generalizzando diventa:
       \centering
       \begin{tikzpicture}
         \begin{axis}[
-          scale=1.2,
-          width=8cm,
-          height=5cm,
-          ylabel = \( j \pi ak \),
-          xlabel = \( t \),
+          width = 1\textwidth,
+          height = 0.6\textwidth,
+          ylabel = \( j \pi a_k \),
+          xlabel = \( \omega \),
           ymin=-3, ymax=3,
           xmin=-6, xmax=6,
-          yticklabels=\empty,
-          xticklabel style = {anchor = south, scale=0.8},
+          ytick=\empty,
+          xtick = {-5,-4,...,5},
+          xticklabel style = {scale=0.8},
           axis lines = center
           ]
           \addplot[blue, mark=*, mark size=1.5pt] coordinates {
@@ -10570,15 +10570,15 @@ generalizzando diventa:
       \begin{tikzpicture}
         \begin{axis}[
           clip=false,
-          scale=1.2,
-          width=8cm,
-          height=5cm,
-          ylabel = \( j \pi ak \),
-          xlabel = \( t \),
+          width = 1\textwidth,
+          height = 0.6\textwidth,
+          ylabel = \( j \pi a_k \),
+          xlabel = \( \omega \),
           ymin=-1/2, ymax=2,
           xmin=-5.5, xmax=5.5,
-          yticklabels=\empty,
-          xticklabel style = {anchor = south, scale=0.8},
+          ytick=\empty,
+          xtick = {-5,-4,...,5},
+          xticklabel style = {scale=0.8},
           axis lines = center
           ]
           \addplot[blue, mark=*, mark size=1.5pt] coordinates {
@@ -10712,7 +10712,30 @@ misura l'energia della differenza di due segnali.
 
 \subsection{Dalla serie di Fourier alla trasformata di Fourier}
 Se si ha un segnale non periodico che va da \( \left[ -T_1, T_1 \right] \):
-\label{10-01-D7}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \def\Tone{2}
+    \begin{axis}[
+      height = 0.4\textwidth,
+      ylabel = $v(t)$,
+      xlabel = $t$,
+      xmin=-\Tone*2, xmax=\Tone*2,
+      ymin= 0, ymax = 3,
+      ytick = \empty,
+      xtick = {-\Tone, \Tone},
+      xticklabels = {$-T_1$, $T_1$},
+      axis lines = middle,
+      declare function ={ f(\x) = sin(deg(\x))/2 + 1.5; },
+    ]
+      \addplot[blue,thick,domain=-\Tone:\Tone,samples=100]{f(x)};
+      \draw[dashed] (axis cs:-\Tone,0) -- (axis cs:-\Tone,{f(-\Tone)});
+      \draw[dashed] (axis cs:\Tone,0) -- (axis cs:\Tone,{f(\Tone)});
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Segnale non periodico}
+\end{figure}
+
 \[
   \underbrace{\tilde{v}(t)}_{\text{Periodico}} = \underbrace{v(t)}_{\text{Non periodico}}
 \] 
@@ -10730,7 +10753,43 @@ e farlo diventare periodico.
 
 \begin{example}
   Partiamo da un segnale non periodico e lo replichiamo nel tempo con periodo \( T_0 \) 
-  \label{10-01-D8}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \def\Tone{2}
+      \def\Tzero{2.5*\Tone}
+      \begin{axis}[
+        clip=false,
+        width = 1\textwidth,
+        height = 0.4\textwidth,
+        ylabel = $\tilde{v}(t)$,
+        xlabel = $t$,
+        xmin=-\Tzero*1.5, xmax=\Tzero*1.5,
+        ymin= 0, ymax = 3,
+        ytick = \empty,
+        xtick = {-\Tzero, -\Tone, \Tone, \Tzero},
+        xticklabels = {$-T_0$, $-T_1$, $T_1$, $T_0$},
+        axis lines = middle,
+        declare function ={ f(\x) = sin(deg(\x))/2 + 1.5; },
+        ]
+        \addplot[blue,thick,domain=-\Tone:\Tone,samples=100]{f(x)};
+        \draw[dashed] (axis cs:-\Tone,0) -- (axis cs:-\Tone,{f(-\Tone)});
+        \draw[dashed] (axis cs:\Tone,0) -- (axis cs:\Tone,{f(\Tone)});
+
+        \addplot[green!50!black,thick,domain=-\Tone -\Tzero:\Tone - \Tzero,samples=100]{f(x + \Tzero)};
+        \draw[dashed] (axis cs:-\Tone-\Tzero,0) -- (axis cs:-\Tone-\Tzero,{f(-\Tone)});
+        \draw[dashed] (axis cs:\Tone-\Tzero,0) -- (axis cs:\Tone-\Tzero,{f(\Tone)});
+
+
+        \addplot[green!50!black,thick,domain=-\Tone +\Tzero:\Tone + \Tzero,samples=100]{f(x - \Tzero)};
+        \draw[dashed] (axis cs:-\Tone+\Tzero,0) -- (axis cs:-\Tone+\Tzero,{f(-\Tone)});
+        \draw[dashed] (axis cs:\Tone+\Tzero,0) -- (axis cs:\Tone+\Tzero,{f(\Tone)});
+
+        \node[coordinate, pin={[green!50!black,align=center,pin distance=1cm]above:Segnale non periodico\\replicato con periodo $T_0$}] at (axis cs:\Tzero,{f(0)}) {};
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Segnale non periodico replicato}
+  \end{figure}
   \[
     \tilde{v}(t) = v(t) \quad |t| < \frac{T_0}{2}
   \] 
@@ -10753,7 +10812,32 @@ e farlo diventare periodico.
     T_0 a_k = V(\omega) \Big|_{\omega = k \omega_0}
   \] 
   \( V(\omega) \) è l'\textbf{inviluppo} di \( T_0 a_k \):
-  \label{10-01-D9}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        width = 1\textwidth,
+        height = 0.6\textwidth,
+        ylabel = \( j \pi a_k \),
+        xlabel = \( \omega \),
+        ymin=-3, ymax=3,
+        xmin=-6, xmax=6,
+        ytick=\empty,
+        xtick={1,...,5},
+        xticklabel style = {scale=0.8},
+        axis lines = center
+        ]
+        \addplot[blue, mark=*, mark size=1.5pt] coordinates {
+            (-5,-2/5) (-4,0) (-3,-2/3) (-2,0) (-1,-2) (0,0)
+            (1,2) (2,0) (3,2/3) (4,0) (5,2/5)
+          };
+
+        \node[pin={[]right:$T_0 a_k$}] at (axis cs: 1, 2) {};
+        \node[pin={[blue]above:$V(w)$}] at (axis cs: 4.5, 0.1) {};
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Inviluppo di \( T_0 a_k \)}
+  \end{figure}
 
   \vspace{1em}
   \noindent
@@ -10843,23 +10927,266 @@ e farlo diventare periodico.
 
 \subsubsection{Sviluppo dei coefficienti di Fourier}
 Prendiamo in considerazione il segnale rettangolare:
-\label{10-01-D10}
-Replichiamo il segnale in un periodo \( T_0 \)
-\label{10-01-D11}
-\[
-T_0 = 4 T_1
-\] 
-\label{10-01-D12}
-\[
-T_0 = 8 T_1
-\] 
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \def\Tone{1/2}
+    \def\Tzero{2.5*\Tone}
+    \def\A{1}
+    \begin{axis}[
+      clip=false,
+      width = .6\textwidth,
+      height = .4\textwidth,
+      ylabel = $x(t)$,
+      xlabel = $t$,
+      xmin=-\Tzero*1.5, xmax=\Tzero*1.5,
+      ymin= -0.5, ymax = \A * 2,
+      ytick = \empty,
+      xtick = {-\Tzero, -\Tone, \Tone, \Tzero},
+      xticklabels = {$-T_0$, $-T_1$, $T_1$, $T_0$},
+      axis lines = middle,
+      xlabel style = {below},
+      declare function ={ 
+        rect(\x) = 
+        (abs(\x) > \Tone) * 0 +
+        (abs(\x) == \Tone) * 0 +
+        (abs(\x) < \Tone-0.0001) * \A
+      ;},
+      ]
+      \addplot[blue,thick,domain=-\Tone:\Tone,samples=100]{rect(x)};
+
+      % \addplot[green!50!black,thick,domain=-\Tone -\Tzero:\Tone - \Tzero,samples=100]{rect(x + \Tzero)};
+      % \addplot[green!50!black,thick,domain=-\Tone +\Tzero:\Tone + \Tzero,samples=100]{rect(x - \Tzero)};
+      \node[align=center,opacity=0,scale=0.8] at (axis description cs:0.5,-0.15) {Inviluppo dei\\coefficienti};
+    \end{axis}
+  \end{tikzpicture}
+  \begin{tikzpicture}
+    \def\Tone{1/2}
+    \def\Tzero{2.5*\Tone}
+    \def\A{1}
+    \begin{axis}[
+      clip=false,
+      width = .6\textwidth,
+      height = .4\textwidth,
+      ylabel = $\frac{1}{T_0}X(\omega)$,
+      xlabel = $\omega$,
+      xmin=-15, xmax=15,
+      ymin= -0.5, ymax = \A * 1.9,
+      ytick = \empty,
+      axis lines = middle,
+      xlabel style = {below},
+      declare function ={ 
+        sinc(\x) = 
+        (\x == 0) * \A +
+        sin(deg(\x))/\x
+      ;},
+      ]
+      \addplot[cyan,thick,domain=-15:15,samples=100]{sinc(x)};
+
+      \node[align=center,scale=0.8] at (axis description cs:0.5,-0.15) {Inviluppo dei\\coefficienti};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Segnale rettangolare}
+\end{figure}
+\noindent
+Replichiamo il segnale in un periodo \( T_0 \) e osserviamo il cambiamento dei coefficienti
+di Fourier:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \def\Tone{1/2}
+    \def\Tzero{2.5*\Tone}
+    \def\A{1}
+    \begin{axis}[
+      clip=false,
+      width = .6\textwidth,
+      height = .4\textwidth,
+      ylabel = $x(t)$,
+      xlabel = $t$,
+      xmin=-\Tzero*1.5, xmax=\Tzero*1.5,
+      ymin= -0.5, ymax = \A * 2,
+      ytick = \empty,
+      xtick = {-\Tzero, -\Tone, \Tone, \Tzero},
+      xticklabels = {$-T_0$, $-T_1$, $T_1$, $T_0$},
+      axis lines = middle,
+      xlabel style = {below},
+      declare function ={ 
+        rect(\x) = 
+        (abs(\x) > \Tone) * 0 +
+        (abs(\x) == \Tone) * 0 +
+        (abs(\x) < \Tone-0.0001) * \A
+      ;},
+      ]
+      \addplot[blue,thick,domain=-\Tone:\Tone,samples=100]{rect(x)};
+
+      \addplot[green!50!black,thick,domain=-\Tone -\Tzero:\Tone - \Tzero,samples=100]{rect(x + \Tzero)};
+      \addplot[green!50!black,thick,domain=-\Tone +\Tzero:\Tone + \Tzero,samples=100]{rect(x - \Tzero)};
+      \node[align=center,opacity=0,scale=0.8] at (axis description cs:0.5,-0.15) {Inviluppo dei\\coefficienti};
+    \end{axis}
+  \end{tikzpicture}
+  \begin{tikzpicture}
+    \def\Tone{1/2}
+    \def\Tzero{2.5*\Tone}
+    \def\A{1}
+    \begin{axis}[
+      clip=false,
+      width = .6\textwidth,
+      height = .4\textwidth,
+      ylabel = $\frac{1}{T_0}X(\omega)$,
+      xlabel = $\omega$,
+      xmin=-15, xmax=15,
+      ymin= -0.5, ymax = \A * 1.9,
+      ytick = \empty,
+      axis lines = middle,
+      xlabel style = {below},
+      declare function ={ 
+        sinc(\x) = 
+        (\x == 0) * \A +
+        sin(deg(\x))/\x
+      ;},
+      ]
+      \addplot[cyan,thick,domain=-15:15,samples=100]{sinc(x)};
+
+      \node[align=center,scale=0.8] at (axis description cs:0.5,-0.15) {Inviluppo dei\\coefficienti};
+
+      \def\inc{1.5}
+      \pgfplotsinvokeforeach{-15,-15 + \inc,...,15}{
+        \draw[blue, -latex] (axis cs:#1,0) -- (axis cs:#1,{sinc(#1)});
+      }
+    \end{axis}
+  \end{tikzpicture}
+  \caption{$T_0 = 4T_1$}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \def\Tone{1/2}
+    \def\Tzero{3.5*\Tone}
+    \def\A{1}
+    \begin{axis}[
+      clip=false,
+      width = .6\textwidth,
+      height = .4\textwidth,
+      ylabel = $x(t)$,
+      xlabel = $t$,
+      xmin=-\Tzero*1.5, xmax=\Tzero*1.5,
+      ymin= -0.5, ymax = \A * 2,
+      ytick = \empty,
+      xtick = {-\Tzero, -\Tone, \Tone, \Tzero},
+      xticklabels = {$-T_0$, $-T_1$, $T_1$, $T_0$},
+      axis lines = middle,
+      xlabel style = {below},
+      declare function ={ 
+        rect(\x) = 
+        (abs(\x) > \Tone) * 0 +
+        (abs(\x) == \Tone) * 0 +
+        (abs(\x) < \Tone-0.0001) * \A
+      ;},
+      ]
+      \addplot[blue,thick,domain=-\Tone:\Tone,samples=100]{rect(x)};
+
+      \addplot[green!50!black,thick,domain=-\Tone -\Tzero:\Tone - \Tzero,samples=100]{rect(x + \Tzero)};
+      \addplot[green!50!black,thick,domain=-\Tone +\Tzero:\Tone + \Tzero,samples=100]{rect(x - \Tzero)};
+      \node[align=center,opacity=0,scale=0.8] at (axis description cs:0.5,-0.15) {Inviluppo dei\\coefficienti};
+    \end{axis}
+  \end{tikzpicture}
+  \begin{tikzpicture}
+    \def\Tone{1/2}
+    \def\Tzero{2.5*\Tone}
+    \def\A{1}
+    \begin{axis}[
+      clip=false,
+      width = .6\textwidth,
+      height = .4\textwidth,
+      ylabel = $\frac{1}{T_0}X(\omega)$,
+      xlabel = $\omega$,
+      xmin=-15, xmax=15,
+      ymin= -0.5, ymax = \A * 1.9,
+      ytick = \empty,
+      axis lines = middle,
+      xlabel style = {below},
+      declare function ={ 
+        sinc(\x) = 
+        (\x == 0) * \A +
+        sin(deg(\x))/\x
+      ;},
+      ]
+      \addplot[cyan,thick,domain=-15:15,samples=100]{sinc(x)};
+
+      \node[align=center,scale=0.8] at (axis description cs:0.5,-0.15) {Inviluppo dei\\coefficienti};
+
+      \def\inc{0.75}
+      \pgfplotsinvokeforeach{-15,-15 + \inc,...,15}{
+        \draw[blue, -latex] (axis cs:#1,0) -- (axis cs:#1,{sinc(#1)});
+      }
+    \end{axis}
+  \end{tikzpicture}
+  \caption{$T_0 = 8T_1$}
+\end{figure}
 \[
 \ldots
 \] 
-\label{10-01-D13}
-\[
-T_0 \to \infty
-\] 
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \def\Tone{1/2}
+    \def\Tzero{6.5*\Tone}
+    \def\A{1}
+    \begin{axis}[
+      clip=false,
+      width = .6\textwidth,
+      height = .4\textwidth,
+      ylabel = $x(t)$,
+      xlabel = $t$,
+      xmin=-\Tzero*1.5, xmax=\Tzero*1.5,
+      ymin= -0.5, ymax = \A * 2,
+      ytick = \empty,
+      xtick = {-\Tzero, -\Tone, \Tone, \Tzero},
+      xticklabels = {$-\infty$, $-T_1$, $T_1$, $\infty$},
+      axis lines = middle,
+      xlabel style = {below},
+      declare function ={ 
+        rect(\x) = 
+        (abs(\x) > \Tone) * 0 +
+        (abs(\x) == \Tone) * 0 +
+        (abs(\x) < \Tone-0.0001) * \A
+      ;},
+      ]
+      \addplot[blue,thick,domain=-\Tone:\Tone,samples=100]{rect(x)};
+
+      \addplot[green!50!black,thick,domain=-\Tone -\Tzero:\Tone - \Tzero,samples=100]{rect(x + \Tzero)};
+      \addplot[green!50!black,thick,domain=-\Tone +\Tzero:\Tone + \Tzero,samples=100]{rect(x - \Tzero)};
+      \node[align=center,opacity=0,scale=0.8] at (axis description cs:0.5,-0.15) {Inviluppo dei\\coefficienti};
+    \end{axis}
+  \end{tikzpicture}
+  \begin{tikzpicture}
+    \def\Tone{1/2}
+    \def\Tzero{2.5*\Tone}
+    \def\A{1}
+    \begin{axis}[
+      clip=false,
+      width = .6\textwidth,
+      height = .4\textwidth,
+      ylabel = $\frac{1}{T_0}X(\omega)$,
+      xlabel = $\omega$,
+      xmin=-15, xmax=15,
+      ymin= -0.5, ymax = \A * 1.9,
+      ytick = \empty,
+      axis lines = middle,
+      xlabel style = {below},
+      declare function ={ 
+        sinc(\x) = 
+        (\x == 0) * \A +
+        sin(deg(\x))/\x
+      ;},
+      ]
+      \addplot[cyan,thick,fill=blue,fill opacity=0.5,domain=-15:15,samples=100]{sinc(x)} \closedcycle;
+
+      \node[align=center,scale=0.8] at (axis description cs:0.5,-0.15) {Inviluppo dei\\coefficienti};
+    \end{axis}
+  \end{tikzpicture}
+  \caption{$T_0 \to \infty$}
+\end{figure}
 
 \subsubsection{Trasformata di Fourier di un segnale periodico}
 \[
@@ -10901,9 +11228,263 @@ T_0 \to \infty
         \[
           \tilde{V}(\omega) = \sum_{k=-\infty}^{+\infty} 2 \pi a_k \cdot \delta(\omega - k \omega_0)
         \] 
-        \label{10-01-D14}
+        \begin{figure}[H]
+          \centering
+          \def\A{1}
+          \def\xmin{-4}
+          \def\xmax{4}
+          \begin{tikzpicture}
+            \begin{axis}[
+              clip = false,
+              height = 0.4\textwidth,
+              ylabel = \(v(t)\),
+              xlabel = \(t\),
+              xmin= \xmin, xmax= \xmax,
+              ymin= 0, ymax = 1.5,
+              ytick = \empty,
+              xtick = \empty,
+              axis lines = middle,
+              ]
+              \addplot[-latex,blue,ultra thick] coordinates {
+                  (0,0) (0,\A)
+                } node[above right,scale=0.9] {$v(t)$ non periodico};
+            \end{axis}
+          \end{tikzpicture}
+          \scalebox{2}{\( \stackrel{\mathcal{F}}{\leftrightarrow} \)}
+          \begin{tikzpicture}
+            \begin{axis}[
+              clip = false,
+              height = 0.4\textwidth,
+              ylabel = \(V(\omega)\),
+              xlabel = \(\omega\),
+              xmin= \xmin, xmax= \xmax,
+              ymin= 0, ymax = 1.5,
+              ytick = \empty,
+              xtick = \empty,
+              axis lines = middle,
+              ]
+              \addplot[blue,thick] coordinates {
+                  (\xmin,\A) (\xmax,\A)
+                };
+            \end{axis}
+          \end{tikzpicture}
+        \end{figure}
+        \noindent
         Se \( T_0 \to \infty\) allora il treno di impulsi diventa sempre più fitto fino
-        ad una retta costante.
+        ad una retta costante:
+        \begin{figure}[H]
+          \centering
+          \begin{tikzpicture}
+            \def\A{1}
+            \def\xmin{-10}
+            \def\xmax{10}
+            \def\Tzero{2}
+            \begin{axis}[
+              clip = false,
+              height = 0.4\textwidth,
+              ylabel = \(\tilde{v}(t)\),
+              xlabel = \(t\),
+              xmin= \xmin, xmax= \xmax,
+              ymin= 0, ymax = 1.5,
+              ytick = \empty,
+              xtick = {-\Tzero,\Tzero},
+              xticklabels = {\(-T_0\),\(T_0\)},
+              axis lines = middle,
+              ]
+              \pgfplotsinvokeforeach{0,\Tzero,...,\xmax-0.5}{
+                \addplot[-latex,blue,domain=\xmin:\xmax,ultra thick] coordinates {
+                    (#1,0) (#1,\A)
+                  };
+              }
+
+              \pgfplotsinvokeforeach{-\Tzero, -2*\Tzero,...,\xmin+0.5}{
+                \addplot[-latex,blue,domain=\xmin:\xmax,ultra thick] coordinates {
+                    (#1,0) (#1,\A)
+                  };
+              }
+
+              \draw[opacity=0] (axis cs:0,0) -- (axis cs:0,-0.1) 
+                -- (axis cs:{(2*pi)/\Tzero},-0.1)
+                node[midway, below] {\(\frac{2\pi}{T_0}\)} -- (axis cs:{(2*pi)/\Tzero},0);
+            \end{axis}
+          \end{tikzpicture}
+          \scalebox{2}{\( \stackrel{\mathcal{F}}{\leftrightarrow} \)}
+          \begin{tikzpicture}
+            \def\A{1}
+            \def\xmin{-10}
+            \def\xmax{10}
+            \def\Tzero{2}
+            \begin{axis}[
+              clip = false,
+              height = 0.4\textwidth,
+              ylabel = \(\tilde{V}(\omega)\),
+              xlabel = \(\omega\),
+              xmin= \xmin, xmax= \xmax,
+              ymin= 0, ymax = 1.5,
+              ytick = \empty,
+              xtick = \empty,
+              axis lines = middle,
+              xlabel style = {below},
+              ]
+
+              \def\inc{(2*pi)/\Tzero}
+              \pgfplotsinvokeforeach{\xmin+0.5,\xmin+0.5 + \inc,...,\xmax}{
+                \addplot[-latex,blue,domain=\xmin:\xmax,ultra thick] coordinates {
+                    (#1,0) (#1,\A)
+                  };
+              }
+
+              \draw (axis cs:\xmin+0.5,0) -- (axis cs:\xmin+0.5,-0.1) 
+                -- (axis cs:{\xmin+0.5+(2*pi)/\Tzero},-0.1)
+                node[midway, below] {\(\frac{2\pi}{T_0}\)} -- (axis cs:{\xmin+0.5+(2*pi)/\Tzero},0);
+            \end{axis}
+          \end{tikzpicture}
+        \end{figure}
+        \begin{figure}[H]
+          \centering
+          \begin{tikzpicture}
+            \def\A{1}
+            \def\xmin{-10}
+            \def\xmax{10}
+            \def\Tzero{4}
+            \begin{axis}[
+              clip = false,
+              height = 0.4\textwidth,
+              ylabel = \(\tilde{v}(t)\),
+              xlabel = \(t\),
+              xmin= \xmin, xmax= \xmax,
+              ymin= 0, ymax = 1.5,
+              ytick = \empty,
+              xtick = {-\Tzero,\Tzero},
+              xticklabels = {\(-T_0\),\(T_0\)},
+              axis lines = middle,
+              ]
+              \pgfplotsinvokeforeach{0,\Tzero,...,\xmax-0.5}{
+                \addplot[-latex,blue,domain=\xmin:\xmax,ultra thick] coordinates {
+                    (#1,0) (#1,\A)
+                  };
+              }
+
+              \pgfplotsinvokeforeach{-\Tzero, -2*\Tzero,...,\xmin+0.5}{
+                \addplot[-latex,blue,domain=\xmin:\xmax,ultra thick] coordinates {
+                    (#1,0) (#1,\A)
+                  };
+              }
+
+              \draw[opacity=0] (axis cs:0,0) -- (axis cs:0,-0.1) 
+                -- (axis cs:{(2*pi)/\Tzero},-0.1)
+                node[midway, below] {\(\frac{2\pi}{T_0}\)} -- (axis cs:{(2*pi)/\Tzero},0);
+            \end{axis}
+          \end{tikzpicture}
+          \scalebox{2}{\( \stackrel{\mathcal{F}}{\leftrightarrow} \)}
+          \begin{tikzpicture}
+            \def\A{1}
+            \def\xmin{-10}
+            \def\xmax{10}
+            \def\Tzero{4}
+            \begin{axis}[
+              clip = false,
+              height = 0.4\textwidth,
+              ylabel = \(\tilde{V}(\omega)\),
+              xlabel = \(\omega\),
+              xmin= \xmin, xmax= \xmax,
+              ymin= 0, ymax = 1.5,
+              ytick = \empty,
+              xtick = \empty,
+              axis lines = middle,
+              xlabel style = {below},
+              ]
+
+              \def\inc{(2*pi)/\Tzero}
+              \pgfplotsinvokeforeach{\xmin+0.5,\xmin+0.5 + \inc,...,\xmax}{
+                \addplot[-latex,blue,domain=\xmin:\xmax,ultra thick] coordinates {
+                    (#1,0) (#1,\A)
+                  };
+              }
+
+              \draw (axis cs:\xmin+0.5,0) -- (axis cs:\xmin+0.5,-0.1) 
+                -- (axis cs:{\xmin+0.5+(2*pi)/\Tzero},-0.1)
+                node[midway, below] {\(\frac{2\pi}{T_0}\)} -- (axis cs:{\xmin+0.5+(2*pi)/\Tzero},0);
+            \end{axis}
+          \end{tikzpicture}
+        \end{figure}
+        \begin{figure}[H]
+          \centering
+          \begin{tikzpicture}
+            \def\A{1}
+            \def\xmin{-10}
+            \def\xmax{10}
+            \def\Tzero{8}
+            \begin{axis}[
+              clip = false,
+              height = 0.4\textwidth,
+              ylabel = \(\tilde{v}(t)\),
+              xlabel = \(t\),
+              xmin= \xmin, xmax= \xmax,
+              ymin= 0, ymax = 1.5,
+              ytick = \empty,
+              xtick = {-\Tzero,\Tzero},
+              xticklabels = {\(-\infty\),\(\infty\)},
+              axis lines = middle,
+              ]
+              \pgfplotsinvokeforeach{0,\Tzero,...,\xmax-0.5}{
+                \addplot[-latex,blue,domain=\xmin:\xmax,ultra thick] coordinates {
+                    (#1,0) (#1,\A)
+                  };
+              }
+
+              \pgfplotsinvokeforeach{-\Tzero, -2*\Tzero,...,\xmin+0.5}{
+                \addplot[-latex,blue,domain=\xmin:\xmax,ultra thick] coordinates {
+                    (#1,0) (#1,\A)
+                  };
+              }
+
+              \draw[opacity=0] (axis cs:0,0) -- (axis cs:0,-0.1) 
+                -- (axis cs:{(2*pi)/\Tzero},-0.1)
+                node[midway, below] {\(\frac{2\pi}{T_0}\)} -- (axis cs:{(2*pi)/\Tzero},0);
+            \end{axis}
+          \end{tikzpicture}
+          \scalebox{2}{\( \stackrel{\mathcal{F}}{\leftrightarrow} \)}
+          \begin{tikzpicture}
+            \def\A{1}
+            \def\xmin{-10}
+            \def\xmax{10}
+            \def\Tzero{10}
+            \begin{axis}[
+              clip = false,
+              height = 0.4\textwidth,
+              ylabel = \(\tilde{V}(\omega)\),
+              xlabel = \(\omega\),
+              xmin= \xmin, xmax= \xmax,
+              ymin= 0, ymax = 1.5,
+              ytick = \empty,
+              xtick = \empty,
+              axis lines = middle,
+              xlabel style = {below},
+              ]
+
+              \addplot[blue,domain=\xmin:\xmax,ultra thick] coordinates {
+                  (\xmin+0.5,\A) (\xmax-0.5,\A)
+                };
+              \addplot[fill=blue,fill opacity=0.5,domain=\xmin:\xmax,draw opacity=0] coordinates {
+                  (\xmin+0.5,\A) (\xmax-0.5,\A)
+                  (\xmax-0.5,0) (\xmin+0.5,0)
+                } \closedcycle;
+
+              \def\inc{(2*pi)/\Tzero}
+              \pgfplotsinvokeforeach{\xmin+0.5,\xmin+0.5 + \inc,...,\xmax-0.5}{
+                \addplot[-latex,blue,opacity=0.2,domain=\xmin:\xmax,ultra thick] coordinates {
+                    (#1,0) (#1,\A)
+                  };
+              }
+
+              \draw (axis cs:\xmin+0.5,0) -- (axis cs:\xmin+0.5,-0.1) 
+                -- (axis cs:{\xmin+0.5+(2*pi)/\Tzero},-0.1)
+                node[midway, below] {\(\frac{2\pi}{T_0}\)} -- (axis cs:{\xmin+0.5+(2*pi)/\Tzero},0);
+            \end{axis}
+          \end{tikzpicture}
+          \caption{Trasformata di Fourier all'aumentare di \(T_0\)}
+        \end{figure}
     \end{itemize}
 \end{enumerate}
 
