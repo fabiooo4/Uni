@@ -11051,7 +11051,7 @@ di Fourier:
 
       \def\inc{1.5}
       \pgfplotsinvokeforeach{-15,-15 + \inc,...,15}{
-        \draw[blue, -latex] (axis cs:#1,0) -- (axis cs:#1,{sinc(#1)});
+        \draw[cyan, -latex] (axis cs:#1,0) -- (axis cs:#1,{sinc(#1)});
       }
     \end{axis}
   \end{tikzpicture}
@@ -11117,7 +11117,7 @@ di Fourier:
 
       \def\inc{0.75}
       \pgfplotsinvokeforeach{-15,-15 + \inc,...,15}{
-        \draw[blue, -latex] (axis cs:#1,0) -- (axis cs:#1,{sinc(#1)});
+        \draw[cyan, -latex] (axis cs:#1,0) -- (axis cs:#1,{sinc(#1)});
       }
     \end{axis}
   \end{tikzpicture}
@@ -11180,7 +11180,7 @@ di Fourier:
         sin(deg(\x))/\x
       ;},
       ]
-      \addplot[cyan,thick,fill=blue,fill opacity=0.5,domain=-15:15,samples=100]{sinc(x)} \closedcycle;
+      \addplot[cyan,thick,fill=cyan,fill opacity=0.5,domain=-15:15,samples=100]{sinc(x)} \closedcycle;
 
       \node[align=center,scale=0.8] at (axis description cs:0.5,-0.15) {Inviluppo dei\\coefficienti};
     \end{axis}
@@ -11263,7 +11263,7 @@ di Fourier:
               xtick = \empty,
               axis lines = middle,
               ]
-              \addplot[blue,thick] coordinates {
+              \addplot[cyan,thick] coordinates {
                   (\xmin,\A) (\xmax,\A)
                 };
             \end{axis}
@@ -11329,7 +11329,7 @@ di Fourier:
 
               \def\inc{(2*pi)/\Tzero}
               \pgfplotsinvokeforeach{\xmin+0.5,\xmin+0.5 + \inc,...,\xmax}{
-                \addplot[-latex,blue,domain=\xmin:\xmax,ultra thick] coordinates {
+                \addplot[-latex,cyan,domain=\xmin:\xmax,ultra thick] coordinates {
                     (#1,0) (#1,\A)
                   };
               }
@@ -11397,7 +11397,7 @@ di Fourier:
 
               \def\inc{(2*pi)/\Tzero}
               \pgfplotsinvokeforeach{\xmin+0.5,\xmin+0.5 + \inc,...,\xmax}{
-                \addplot[-latex,blue,domain=\xmin:\xmax,ultra thick] coordinates {
+                \addplot[-latex,cyan,domain=\xmin:\xmax,ultra thick] coordinates {
                     (#1,0) (#1,\A)
                   };
               }
@@ -11463,17 +11463,17 @@ di Fourier:
               xlabel style = {below},
               ]
 
-              \addplot[blue,domain=\xmin:\xmax,ultra thick] coordinates {
+              \addplot[cyan,domain=\xmin:\xmax,ultra thick] coordinates {
                   (\xmin+0.5,\A) (\xmax-0.5,\A)
                 };
-              \addplot[fill=blue,fill opacity=0.5,domain=\xmin:\xmax,draw opacity=0] coordinates {
+              \addplot[fill=cyan,fill opacity=0.5,domain=\xmin:\xmax,draw opacity=0] coordinates {
                   (\xmin+0.5,\A) (\xmax-0.5,\A)
                   (\xmax-0.5,0) (\xmin+0.5,0)
                 } \closedcycle;
 
               \def\inc{(2*pi)/\Tzero}
               \pgfplotsinvokeforeach{\xmin+0.5,\xmin+0.5 + \inc,...,\xmax-0.5}{
-                \addplot[-latex,blue,opacity=0.2,domain=\xmin:\xmax,ultra thick] coordinates {
+                \addplot[-latex,cyan,opacity=0.2,domain=\xmin:\xmax,ultra thick] coordinates {
                     (#1,0) (#1,\A)
                   };
               }
@@ -11547,9 +11547,9 @@ Le trasformate di Fourier notevoli sono le seguenti:
       \centering
       \begin{tikzpicture}[scale=1.5]
         \draw[->] (-1.5,0) -- (1.5,0) node[right] {$t$};
-        \draw[->] (0,-0.1) -- (0,1.5) node[above] {$\delta(t)$};
+        \draw[->] (0,-0.1) -- (0,1.5) node[above] {$v(t)$};
 
-        \draw[->,blue,thick] (0,0) -- (0,1) node[right] {$A$};
+        \draw[-latex,blue,thick] (0,0) -- (0,1) node[right] {$A$};
       \end{tikzpicture}
       \caption{Impulso unitario}
     \end{figure}
@@ -11569,15 +11569,35 @@ Le trasformate di Fourier notevoli sono le seguenti:
       \centering
       \begin{tikzpicture}[scale=1.5]
         \draw[->] (-1.5,0) -- (1.5,0) node[right] {$f$};
-        \draw[->] (0,-0.1) -- (0,1.5) node[above] {$\delta(t)$};
+        \draw[->] (0,-0.1) -- (0,1.5) node[above] {$V(\omega)$};
 
-        \draw[->,blue,thick] (-1.5,1) -- (1.5,1) node[right] {$A$};
+        \draw[cyan,thick] (-1.5,1) -- (1.5,1) node[right] {$A$};
       \end{tikzpicture}
       \caption{Trasformata di Fourier dell'impulso}
     \end{figure}
 
+
   \item \textbf{Esponenziale causale}
-    \label{13-01-D2}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \begin{axis}[
+          axis lines = middle,
+          xmin= 0, xmax= 6,
+          ymin= 0, ymax = 6,
+          ylabel = $v(t)$,
+          xlabel = $t$,
+          xtick = \empty,
+          ytick = \empty,
+          xlabel style = {below},
+          ylabel style = {left},
+          ]
+          \addplot[blue,thick,domain=0:6, samples=50]{exp(x/2)};
+          \addplot[red,thick,domain=0:6, samples=50]{exp(-x/2)};
+        \end{axis}
+      \end{tikzpicture}
+      \caption{Esponenziale causale}
+    \end{figure}
     \noindent
     La trasformata di Fourier è:
     \[
@@ -11595,18 +11615,156 @@ Le trasformate di Fourier notevoli sono le seguenti:
       \delta_{-1}(t) \right](s) = \frac{A e^{j \phi}}{s - \lambda}
     \] 
 
+
   \item \textbf{Finestra rettangolare di altezza \( A \) e supporto \( T \)}
-    \label{13-01-D3}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \def\T{1/2}
+        \def\xmin{-\T*3}
+        \def\xmax{\T*3}
+        \def\A{1}
+        \begin{axis}[
+          clip=false,
+          width = .6\textwidth,
+          height = .4\textwidth,
+          ylabel = $v(t)$,
+          xlabel = $t$,
+          xmin=\xmin, xmax=\xmax,
+          ymin= -0.5, ymax = \A * 2,
+          ytick = {\A},
+          yticklabels = {$A$},
+          yticklabel style = {above right},
+          xtick = {-\T, \T},
+          xticklabels = {$-\frac{T}{2}$, $\frac{T}{2}$},
+          axis lines = middle,
+          xlabel style = {below},
+          declare function ={ 
+            rect(\x) = 
+            (abs(\x) > \T) * 0 +
+            (abs(\x) == \T) * 0 +
+            (abs(\x) < \T-0.0001) * \A
+          ;},
+          ]
+          \addplot[blue,thick,domain=\xmin:\xmax,samples=100]{rect(x)};
+        \end{axis}
+      \end{tikzpicture}
+      \caption{Finestra rettangolare}
+    \end{figure}
     \noindent
     La trasformata di Fourier è:
     \[
       \mathcal{F}\left[ A \Pi\left(\frac{t}{T}\right) \right](f) = AT \cdot sinc(fT)
     \]
-    \label{13-01-D4}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \def\Tone{1/2}
+        \def\Tzero{2.5*\Tone}
+        \def\A{1}
+        \begin{axis}[
+          clip=false,
+          width = .6\textwidth,
+          height = .4\textwidth,
+          ylabel = $V(\omega)$,
+          xlabel = $\omega$,
+          xmin=-15, xmax=15,
+          ymin= -0.5, ymax = \A * 1.9,
+          ytick = {\A},
+          yticklabels = {$A$},
+          yticklabel style = {above right},
+          xtick = \empty,
+          axis lines = middle,
+          xlabel style = {below},
+          declare function ={ 
+            sinc(\x) = 
+            (\x == 0) * \A +
+            sin(deg(\x))/\x
+          ;},
+          ]
+          \addplot[cyan,thick,domain=-15:15,samples=100]{sinc(x)};
+        \end{axis}
+      \end{tikzpicture}
+      \caption{Trasformata di Fourier della finestra rettangolare}
+    \end{figure}
+    \noindent
+    Questa funzione è chiamata \textbf{sinc}.
+
+
   \item \textbf{Funzione costante}
     \vspace{1em}
     \noindent
-    \label{13-01-D5}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \def\T{1/2}
+        \def\xmin{-\T*3}
+        \def\xmax{\T*3}
+        \def\A{1}
+        \begin{axis}[
+          clip=false,
+          width = .5\textwidth,
+          height = .4\textwidth,
+          ylabel = $v(t)$,
+          xlabel = $t$,
+          xmin=\xmin, xmax=\xmax,
+          ymin= -0.5, ymax = \A * 2,
+          ytick = {\A},
+          yticklabels = {$A$},
+          yticklabel style = {above right},
+          xtick = {-\T, \T},
+          xticklabels = {$-\frac{T}{2}$, $\frac{T}{2}$},
+          axis lines = middle,
+          xlabel style = {below},
+          declare function ={ 
+            rect(\x) = 
+            (abs(\x) > \T) * 0 +
+            (abs(\x) == \T) * 0 +
+            (abs(\x) < \T-0.0001) * \A
+          ;},
+          ]
+          \addplot[orange,domain=\xmin:\xmax,samples=100]{rect(x)};
+
+          \addplot[blue,thick,domain=\xmin:\xmax]{\A/2};
+
+          \node[pin={[orange]45:{$\Pi\left( \frac{t}{T} \right)$}}] at (axis cs:\T,\A) {};
+        \end{axis}
+      \end{tikzpicture}
+      \scalebox{2}{\( \to \)}
+      \begin{tikzpicture}
+        \def\T{1/2}
+        \def\xmin{-\T*3}
+        \def\xmax{\T*3}
+        \def\A{1}
+        \begin{axis}[
+          clip=false,
+          width = .5\textwidth,
+          height = .4\textwidth,
+          ylabel = $v(t) \cdot \Pi \left( \frac{t}{T} \right) $,
+          xlabel = $t$,
+          xmin=\xmin, xmax=\xmax,
+          ymin= -0.5, ymax = \A * 2,
+          ytick = {\A},
+          yticklabels = {$A$},
+          yticklabel style = {above right},
+          xtick = {-\T, \T},
+          xticklabels = {$-\frac{T}{2}$, $\frac{T}{2}$},
+          axis lines = middle,
+          xlabel style = {below},
+          declare function ={ 
+            rect(\x) = 
+            (abs(\x) > \T) * 0 +
+            (abs(\x) == \T) * 0 +
+            (abs(\x) < \T-0.0001) * \A
+          ;},
+          ]
+          \addplot[blue,thick,domain=\xmin:\xmax,samples=100]{rect(x)};
+
+          \addplot[blue,dotted,thin,domain=\xmin:\xmax]{\A/2};
+        \end{axis}
+      \end{tikzpicture}
+      \caption{Funzione costante}
+    \end{figure}
     La funzione costante non può essere trasformata facilmente, quindi bisogna
     "finestrarla", cioè moltiplicare il segnale per una finestra rettangolare:
     \[
@@ -11618,11 +11776,52 @@ Le trasformate di Fourier notevoli sono le seguenti:
       \underbrace{\Pi\left(\frac{t}{T}\right)}_{\text{Ampiezza } = 1} \right](f)
       = AT \cdot sinc(fT)
     \] 
-    \label{13-01-D6}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \def\Tone{1/2}
+        \def\Tzero{2.5*\Tone}
+        \def\A{1}
+        \begin{axis}[
+          clip=false,
+          width = .6\textwidth,
+          height = .4\textwidth,
+          ylabel = $V(\omega)$,
+          xlabel = $\omega$,
+          xmin=-15, xmax=15,
+          ymin= -0.5, ymax = \A * 1.9,
+          ytick = {\A},
+          yticklabels = {$A$},
+          yticklabel style = {above right},
+          xtick = \empty,
+          axis lines = middle,
+          xlabel style = {below},
+          declare function ={ 
+            sinc(\x) = 
+            (\x == 0) * \A +
+            sin(deg(\x))/\x
+          ;},
+          ]
+          \addplot[cyan,thick,domain=-15:15,samples=100]{sinc(x)};
+        \end{axis}
+      \end{tikzpicture}
+      \caption{Trasformata di Fourier della funzione costante}
+    \end{figure}
+
+
   \item \textbf{Fasore}
-    \vspace{1em}
-    \noindent
-    \label{13-01-D7}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}[scale=1.5]
+        \draw[->] (-1.5,0) -- (1.5,0) node[right] {$\Re$};
+        \draw[->] (0,-1.5) -- (0,1.5) node[above] {$\Im$};
+
+        \draw (0,0) circle (1);
+
+        \draw[blue,thick,->] (1,0) arc (0:60:1);
+      \end{tikzpicture}
+      \caption{Fasore}
+    \end{figure}
     \[
       v(t) = A \cdot e^{j 2 \pi f_0 t}
     \] 
