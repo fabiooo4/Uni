@@ -16,13 +16,165 @@ consectetur adipiscing elit. Sed ac purus sit amet nisl tincidunt tincidunt.
 
 \begin{figure}[H]
   \centering
-  \begin{tikzpicture}[scale=1.5]
-    \draw[->] (-1.5,0) -- (1.5,0) node[right] {$\Re$};
-    \draw[->] (0,-1.5) -- (0,1.5) node[above] {$\Im$};
+  \begin{tikzpicture}
+    \begin{axis}[
+      width=0.8\textwidth,
+      height=0.4\textwidth,
+      xlabel = $f$,
+      ylabel = $U(f)$,
+      xmin= -6, xmax=6,
+      ymin= 0, ymax = 3,
+      xtick = {-3,-1,1,3},
+      ytick = {1/2,3/2},
+      yticklabels = {$\frac{1}{2}$,$\frac{3}{2}$},
+      axis lines = middle,
+    ]
+      \addplot[-latex,blue,thick] coordinates {
+          (-3,0) (-3,3/2)
+      };
+      \addplot[-latex,blue,thick] coordinates {
+          (-1,0) (-1,1/2)
+      };
+      \addplot[-latex,blue,thick] coordinates {
+          (1,0) (1,1/2)
+      };
+      \addplot[-latex,blue,thick] coordinates {
+          (3,0) (3,3/2)
+      };
+    \end{axis}
+  \end{tikzpicture}
+\end{figure}
 
-    \draw (0,0) circle (1);
 
-    \draw[blue,thick,->] (1,0) arc (0:60:1);
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      width=0.8\textwidth,
+      height=0.4\textwidth,
+      xlabel = $f$,
+      ylabel = $W(f)$,
+      xmin= -6, xmax=6,
+      ymin= 0, ymax = 3,
+      xtick = {-2,2},
+      ytick = {1},
+      axis lines = middle,
+    ]
+      \addplot[-latex,green!50!black,thick] coordinates {
+          (-2,0) (-2,1)
+      };
+      \addplot[-latex,green!50!black,thick] coordinates {
+          (2,0) (2,1)
+      };
+    \end{axis}
+  \end{tikzpicture}
+\end{figure}
+
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \def\T{4}
+    \def\A{1}
+    \begin{axis}[
+      width=0.8\textwidth,
+      height=0.4\textwidth,
+      xlabel = $f$,
+      ylabel = $H(f)$,
+      xmin= -6, xmax=6,
+      ymin= 0, ymax = 3,
+      xtick = {-2,2},
+      xticklabels = {$\underset{-\frac{T}{2}}{-2}$,$\underset{\frac{T}{2}}{2}$},
+      ytick = {1},
+      yticklabel style = {above left},
+      axis lines = middle,
+      declare function ={ 
+        rect(\x) = 
+        (abs(\x) > \T/2) * 0 +
+        (abs(\x) == \T/2) * 0 +
+        (abs(\x) < (\T/2)-0.0001) * \A
+      ;},
+    ]
+      \addplot[blue,thick,domain=-\T/2:\T/2,samples=100]{rect(x)};
+    \end{axis}
+  \end{tikzpicture}
+\end{figure}
+
+
+
+
+
+
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \def\T{4}
+    \def\A{1}
+    \begin{axis}[
+      width=0.8\textwidth,
+      height=0.4\textwidth,
+      xlabel = $f$,
+      ylabel = $\color{red}A(f)\color{black}\cdot \color{magenta}H(f)$,
+      xmin= -6, xmax=6,
+      ymin= 0, ymax = 3,
+      xtick = {-5,-3,-2,-1,1,2,3,5},
+      ytick = {1/2,1,3/2,2},
+      yticklabels = {$\frac{1}{2}$,,$\frac{3}{2}$,2},
+      axis lines = middle,
+      declare function ={ 
+        rect(\x) = 
+        (abs(\x) > \T/2) * 0 +
+        (abs(\x) == \T/2) * 0 +
+        (abs(\x) < (\T/2)-0.0001) * \A
+      ;},
+      ]
+      \addplot[-latex,red,thick] coordinates {
+          (-5,0) (-5,3/2)
+        };
+      \addplot[-latex,red,thick] coordinates {
+          (-3,0) (-3,1/2)
+        };
+      \addplot[-latex,red,thick] coordinates {
+          (-1,0) (-1,3/2+1/2)
+        };
+      \addplot[-latex,red,thick] coordinates {
+          (1,0) (1,1/2+3/2)
+        };
+      \addplot[-latex,red,thick] coordinates {
+          (3,0) (3,1/2)
+        };
+      \addplot[-latex,red,thick] coordinates {
+          (5,0) (5,3/2)
+        };
+
+      \addplot[magenta,thick,domain=-\T/2:\T/2,samples=100]{rect(x)};
+    \end{axis}
+  \end{tikzpicture}
+  \[
+  \Downarrow
+  \] 
+  \begin{tikzpicture}
+    \def\T{4}
+    \def\A{1}
+    \begin{axis}[
+      width=0.8\textwidth,
+      height=0.4\textwidth,
+      xlabel = $f$,
+      ylabel = $B(f)$,
+      xmin= -6, xmax=6,
+      ymin= 0, ymax = 3,
+      xtick = {-1,1},
+      ytick = {2},
+      axis lines = middle,
+      ]
+      \addplot[-latex,orange,thick] coordinates {
+          (-1,0) (-1,3/2+1/2)
+        };
+      \addplot[-latex,orange,thick] coordinates {
+          (1,0) (1,1/2+3/2)
+        };
+    \end{axis}
   \end{tikzpicture}
 \end{figure}
 

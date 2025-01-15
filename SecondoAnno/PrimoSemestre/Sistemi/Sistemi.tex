@@ -11833,7 +11833,38 @@ Le trasformate di Fourier notevoli sono le seguenti:
     \[
       \mathcal{F}\left[ v_T(t) \right](f) = AT \cdot sinc((f - f_0) \cdot t)
     \] 
-    \label{13-01-D8}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \def\Fzero{7}
+        \def\A{1}
+        \begin{axis}[
+          clip=false,
+          width = .6\textwidth,
+          height = .4\textwidth,
+          ylabel = $V(\omega)$,
+          xlabel = $\omega$,
+          xmin=-15, xmax=15,
+          ymin= -0.5, ymax = \A * 1.9,
+          ytick = {\A},
+          yticklabels = {$A$},
+          yticklabel style = {above right},
+          xtick = \empty,
+          axis lines = middle,
+          xlabel style = {below},
+          declare function ={ 
+            sinc(\x) = 
+            (\x == 0) * \A +
+            sin(deg(\x))/\x
+          ;},
+          ]
+          \addplot[cyan,thick,domain=-15:15,samples=100]{sinc(x - \Fzero)};
+
+          \draw[dashed] (axis cs:\Fzero,\A) -- (axis cs:\Fzero,0) node[below] {$f_0$};
+        \end{axis}
+      \end{tikzpicture}
+      \caption{Trasformata di Fourier del fasore}
+    \end{figure}
   \item \textbf{Seno}
     \vspace{1em}
     \noindent
@@ -11911,7 +11942,27 @@ Quindi alcune proprietà di Laplace valgono anche per Fourier.
 
 \begin{example}
   Consideriamo il seguente sistema a blocchi:
-  \label{13-01-D9}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \node (u) {$u(t)$};
+      \node[right=of u,circle,draw,minimum size=0.7cm] (mul) {$X$};
+      \node[below=of mul] (w) {$w(t)$};
+      \node[right=of mul,draw,minimum size=1cm] (h) {$h(t)$};
+
+      \draw[->] (u) -- (mul);
+      \draw[->] (w) -- (mul);
+      \draw[->] (mul) -- (h) node[midway,above] {$\color{blue}a(t)$};
+      \draw[->] (h) -- ++(1.5,0) node[midway,above] {$\color{blue}b(t)$};
+
+      \node[pin={[align=center,scale=0.8]above:{Convoluzione nelle frequenze/\\Prodotto nel tempo}}]
+        at (mul.north) {};
+      \node[pin={[align=center,scale=0.8,xshift=0.4cm]below:{Prodotti nelle frequenze/\\Convoluzioni nel tempo}}]
+        at (h.south) {};
+    \end{tikzpicture}
+    \caption{Sistema a blocchi}
+  \end{figure}
+  \noindent
   Vogliamo capire come si comporta questo segnale nelle frequenze ($a(t)$) e cosa succede quando
   viene alterato dalla sequenza degli operatori ($b(t)$).
   \[
@@ -11951,9 +12002,92 @@ Quindi alcune proprietà di Laplace valgono anche per Fourier.
       \] 
 
     \item Disegnamo tutti i singoli elementi su un grafico:
-      \label{13-01-D10}
-      \label{13-01-D11}
-      \label{13-01-D12}
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+          \begin{axis}[
+            width=0.8\textwidth,
+            height=0.4\textwidth,
+            xlabel = $f$,
+            ylabel = $U(f)$,
+            xmin= -6, xmax=6,
+            ymin= 0, ymax = 3,
+            xtick = {-3,-1,1,3},
+            ytick = {1/2,3/2},
+            yticklabels = {$\frac{1}{2}$,$\frac{3}{2}$},
+            axis lines = middle,
+            ]
+            \addplot[-latex,blue,thick] coordinates {
+                (-3,0) (-3,3/2)
+              };
+            \addplot[-latex,blue,thick] coordinates {
+                (-1,0) (-1,1/2)
+              };
+            \addplot[-latex,blue,thick] coordinates {
+                (1,0) (1,1/2)
+              };
+            \addplot[-latex,blue,thick] coordinates {
+                (3,0) (3,3/2)
+              };
+          \end{axis}
+        \end{tikzpicture}
+        \caption{Segnale \(U(f)\)}
+      \end{figure}
+
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+          \begin{axis}[
+            width=0.8\textwidth,
+            height=0.4\textwidth,
+            xlabel = $f$,
+            ylabel = $W(f)$,
+            xmin= -6, xmax=6,
+            ymin= 0, ymax = 3,
+            xtick = {-2,2},
+            ytick = {1},
+            axis lines = middle,
+            ]
+            \addplot[-latex,green!50!black,thick] coordinates {
+                (-2,0) (-2,1)
+              };
+            \addplot[-latex,green!50!black,thick] coordinates {
+                (2,0) (2,1)
+              };
+          \end{axis}
+        \end{tikzpicture}
+        \caption{Segnale \(W(f)\)}
+      \end{figure}
+
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+          \def\T{4}
+          \def\A{1}
+          \begin{axis}[
+            width=0.8\textwidth,
+            height=0.4\textwidth,
+            xlabel = $f$,
+            ylabel = $H(f)$,
+            xmin= -6, xmax=6,
+            ymin= 0, ymax = 3,
+            xtick = {-2,2},
+            xticklabels = {$\underset{-\frac{T}{2}}{-2}$,$\underset{\frac{T}{2}}{2}$},
+            ytick = {1},
+            yticklabel style = {above left},
+            axis lines = middle,
+            declare function ={ 
+              rect(\x) = 
+              (abs(\x) > \T/2) * 0 +
+              (abs(\x) == \T/2) * 0 +
+              (abs(\x) < (\T/2)-0.0001) * \A
+            ;},
+            ]
+            \addplot[magenta,thick,domain=-\T/2:\T/2,samples=100]{rect(x)};
+          \end{axis}
+        \end{tikzpicture}
+        \caption{Segnale \(H(f)\)}
+      \end{figure}
 
     \item Calcoliamo la convoluzione tra \( U(f) \) e \( W(f) \) per trovare \( A(f) \) :
       \vspace{1em}
@@ -11961,7 +12095,100 @@ Quindi alcune proprietà di Laplace valgono anche per Fourier.
       Eseguiamo la convoluzione tra \( U(f) \) e \( W(f) \) fissando un segnale e
       spostare l'altro specchiato. A livello più alto il segnale che si muove viene replicato
       ogni volta che l'asse centrale corrisponde con il segnale fermo:
-      \label{13-01-D13}
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+          \begin{axis}[
+            width=0.8\textwidth,
+            height=0.4\textwidth,
+            xlabel = $f$,
+            ylabel = $\color{blue}U(f)\color{black} \ast \color{green!50!black}W(f)$,
+            xmin= -6, xmax=6,
+            ymin= 0, ymax = 3,
+            xtick = {-5,-3,-1,1,3,5},
+            ytick = {1/2,1,3/2,2},
+            yticklabels = {$\frac{1}{2}$,1,$\frac{3}{2}$,2},
+            axis lines = middle,
+            ]
+
+
+            \addplot[-latex,green!50!black,thick] coordinates {
+                (-5,0) (-5,3/2)
+              };
+            \addplot[-latex,green!50!black,thick] coordinates {
+                (-3,0) (-3,1/2)
+              };
+            \addplot[-latex,green!50!black,thick] coordinates {
+                (-1,0) (-1,3/2)
+              };
+            \addplot[-latex,green!50!black,thick] coordinates {
+                (-1,3/2) (-1,3/2+1/2) 
+              };
+            \addplot[-latex,green!50!black,thick] coordinates {
+                (1,0) (1,1/2)
+              };
+            \addplot[-latex,green!50!black,thick] coordinates {
+                (1,1/2) (1,1/2+3/2)
+              };
+            \addplot[-latex,green!50!black,thick] coordinates {
+                (3,0) (3,1/2)
+              };
+            \addplot[-latex,green!50!black,thick] coordinates {
+                (5,0) (5,3/2)
+              };
+
+            \addplot[-latex,blue,thin,dashed] coordinates {
+                (-3,0) (-3,3/2)
+              };
+            \addplot[-latex,blue,thin,dashed] coordinates {
+                (-1,0) (-1,1/2)
+              };
+            \addplot[-latex,blue,thin,dashed] coordinates {
+                (1,0) (1,1/2)
+              };
+            \addplot[-latex,blue,thin,dashed] coordinates {
+                (3,0) (3,3/2)
+              };
+          \end{axis}
+        \end{tikzpicture}
+        \[
+          \Downarrow
+        \] 
+        \begin{tikzpicture}
+          \begin{axis}[
+            width=0.8\textwidth,
+            height=0.4\textwidth,
+            xlabel = $f$,
+            ylabel = $A(f)$,
+            xmin= -6, xmax=6,
+            ymin= 0, ymax = 3,
+            xtick = {-5,-3,-1,1,3,5},
+            ytick = {1/2,3/2,2},
+            yticklabels = {$\frac{1}{2}$,$\frac{3}{2}$,2},
+            axis lines = middle,
+            ]
+            \addplot[-latex,red,thick] coordinates {
+                (-5,0) (-5,3/2)
+              };
+            \addplot[-latex,red,thick] coordinates {
+                (-3,0) (-3,1/2)
+              };
+            \addplot[-latex,red,thick] coordinates {
+                (-1,0) (-1,3/2+1/2)
+              };
+            \addplot[-latex,red,thick] coordinates {
+                (1,0) (1,1/2+3/2)
+              };
+            \addplot[-latex,red,thick] coordinates {
+                (3,0) (3,1/2)
+              };
+            \addplot[-latex,red,thick] coordinates {
+                (5,0) (5,3/2)
+              };
+          \end{axis}
+        \end{tikzpicture}
+        \caption{Segnale \(A(f)\)}
+      \end{figure}
       \noindent
       Le altezze dei nuovi segnali replicati saranno la moltiplcazione dei segnali
       che si sovrappongono sommata alle altezze dei diversi segnali che si sovrappongono
@@ -11970,7 +12197,78 @@ Quindi alcune proprietà di Laplace valgono anche per Fourier.
     \item Calcoliamo il prodotto tra \( A(f) \) e \( H(f) \) per trovare \( B(f) \):
       \vspace{1em}
       \noindent
-      \label{13-01-D14}
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+          \def\T{4}
+          \def\A{1}
+          \begin{axis}[
+            width=0.8\textwidth,
+            height=0.4\textwidth,
+            xlabel = $f$,
+            ylabel = $\color{red}A(f)\color{black}\cdot \color{magenta}H(f)$,
+            xmin= -6, xmax=6,
+            ymin= 0, ymax = 3,
+            xtick = {-5,-3,-2,-1,1,2,3,5},
+            ytick = {1/2,1,3/2,2},
+            yticklabels = {$\frac{1}{2}$,,$\frac{3}{2}$,2},
+            axis lines = middle,
+            declare function ={ 
+              rect(\x) = 
+              (abs(\x) > \T/2) * 0 +
+              (abs(\x) == \T/2) * 0 +
+              (abs(\x) < (\T/2)-0.0001) * \A
+            ;},
+            ]
+            \addplot[-latex,red,thick] coordinates {
+                (-5,0) (-5,3/2)
+              };
+            \addplot[-latex,red,thick] coordinates {
+                (-3,0) (-3,1/2)
+              };
+            \addplot[-latex,red,thick] coordinates {
+                (-1,0) (-1,3/2+1/2)
+              };
+            \addplot[-latex,red,thick] coordinates {
+                (1,0) (1,1/2+3/2)
+              };
+            \addplot[-latex,red,thick] coordinates {
+                (3,0) (3,1/2)
+              };
+            \addplot[-latex,red,thick] coordinates {
+                (5,0) (5,3/2)
+              };
+
+            \addplot[magenta,thick,domain=-\T/2:\T/2,samples=100]{rect(x)};
+          \end{axis}
+        \end{tikzpicture}
+        \[
+          \Downarrow
+        \] 
+        \begin{tikzpicture}
+          \def\T{4}
+          \def\A{1}
+          \begin{axis}[
+            width=0.8\textwidth,
+            height=0.4\textwidth,
+            xlabel = $f$,
+            ylabel = $B(f)$,
+            xmin= -6, xmax=6,
+            ymin= 0, ymax = 3,
+            xtick = {-1,1},
+            ytick = {2},
+            axis lines = middle,
+            ]
+            \addplot[-latex,orange,thick] coordinates {
+                (-1,0) (-1,3/2+1/2)
+              };
+            \addplot[-latex,orange,thick] coordinates {
+                (1,0) (1,1/2+3/2)
+              };
+          \end{axis}
+        \end{tikzpicture}
+        \caption{Segnale \(B(f)\)}
+      \end{figure}
   \end{enumerate}
 \end{example}
 
