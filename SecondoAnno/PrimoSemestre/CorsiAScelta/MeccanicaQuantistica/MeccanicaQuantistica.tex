@@ -2,6 +2,7 @@
 \usepackage{import}
 \input{../../../../preamble.sty}
 
+% Libro: Sakurai
 \begin{document}
 
 \input{title.tex}
@@ -9,6 +10,595 @@
 \tableofcontents
 \pagebreak
 
+\section{Introduzione}
+TODO
+
+\section{Formalismo della meccanica quantistica}
+Deriviamo il formalismo partendo dall'esperimento di Stern-Gerlach e di Feynman utilizzando la
+notazione di Dirac.
+
+\subsection{Principi}
+\begin{itemize}
+  \item Ad un \textbf{sistema fisico} corrisponde uno spazio vettoriale complesso
+    di dimensione \( n \), dove \( n \) è il numero di gradi di libertà del sistema
+    quanto-meccanico. Il grado di libertà è il numero di alternative, o scelte, a
+    disposizione del sistema (da qui deriva il termine "quantistico", siccome le
+    alternative sono quantizzate).
+    \[
+    \text{Sistema fisico } \to \mathbb{C}^n
+    \] 
+
+    \vspace{1em}
+    \noindent
+    Ad esempio nell'espermimento di Stern-Gerlach la misura è lo spin di un atomo
+    che può avere solo due valori, quindi \( \pm \frac{\hslash}{2} \), ovvero \( n = 2 \).
+
+    Nell'esperimento di Feynman con la doppia fenditura il sistema è una particella
+    che può passare per una delle due fenditure, quindi \( n = 2 \).
+    Se oltre al percorso in cui è passato l'atomo si vuole sapere anche lo spin, allora
+    il grado di libertà aumenta.
+
+    \vspace{1em}
+    \noindent
+    I sistemi con \( n = 2 \) si chiamano \textbf{sistemi a due stati}.
+
+  \item Allo \textbf{stato fisico} corrisponde un vettore di stato dello spazio 
+    vettoriale complesso chiamato \textbf{Ket}. Nella notazione di Dirac il vettore di
+    stato è indicato con \( \ket{\alpha} \). Questo vettore è definito a meno di una 
+    costante, quindi:
+    \[
+      \ket{\alpha} \iff c \ket{\alpha}
+    \] 
+    sono lo stesso stato e ciò significa che il Ket è \textbf{normalizzato} e sarà un 
+    vettore unitario.
+
+    \vspace{1em}
+    \noindent
+    Ad esempio un atomo di argento con un certo spin rappresenta uno stato fisico. E
+    il Ket contiene tutte le informazioni riguardanti alla direzione (""raggi"") che si possono 
+    avere su quell'atomo.
+
+  \item Un \textbf{osservabile} è una variabile fisica che si può misurare. All'osservabile
+    corrisponde un operatore dello spazio \( \mathbb{C}^n \) che agisce sui Ket e
+    restituisce un altro Ket:
+    \[
+      \mathcal{A} \ket{\alpha} \quad \text{dove } \mathcal{A} \text{ è l'operatore che
+      agisce su alfa}
+    \] 
+    (potrebbero essere matrici se si trova una base ad esempio)
+
+    \vspace{1em}
+    \noindent
+    Ci sono degli operatori importanti, cioè quelli che agendo su un Ket \( \ket{a_i} \)
+    restituiscono un vettore parallelo ad \( \ket{a_i} \) e quindi sono \textbf{autoKet}
+    (si può pensare agli autovettori dell'algebra linare):
+    \[
+      \underbrace{\mathcal{A} \ket{a_i}}_{\text{autoKet } \leftrightarrow \text{ autostato}}
+      = \underbrace{a_i}_{\text{autovalore}} \ket{a_i}
+    \] 
+    L'oggetto risultante rappresenta lo stesso stato fisico, siccome è solo moltiplicato
+    per una costante. L'insieme degli autoKet e autostati è rappresentato come:
+    \[
+      \left\{ \ket{a_i} \right\}; \left\{ a_i \right\}
+    \] 
+
+    \vspace{1em}
+    \noindent
+    Ad esempio nell'esperimento di Stern-Gerlach si aveva l'operatore
+    \( \mathcal{S}_{\hat{z}} \) che rappresentava la misura dello spin lungo l'asse \( z \).
+    \[
+      \left\{ \mathcal{S}_z; \pm \right\}; \left\{ \pm \frac{\hslash}{2} \right\}
+    \] 
+    nell'esperimento si ha che l'operatore \( \mathcal{S}_z \) che agisce sullo stato a
+    spin in su restituisce:
+    \[
+      \mathcal{S}_z \ket{\mathcal{S}_z; +} = \frac{\hslash}{2} \ket{\mathcal{S}_z; +}
+    \] 
+    l'operatore \( \mathcal{S}_z \) agisce sullo stato a spin in giu restituisce:
+    \[
+      \mathcal{S}_z \ket{\mathcal{S}_z; -} = -\frac{\hslash}{2} \ket{\mathcal{S}_z; -}
+    \]
+
+    \vspace{1em}
+    \noindent
+    Nell'esperimento di Stern-Gerlach i due autoKet di \( \mathcal{S}_z \) sono una base
+    dello spazio \( \mathbb{C}^2 \) e quindi si può scrivere un qualsiasi Ket come
+    combinazione lineare di questi due Ket:
+    \[
+      \begin{aligned}
+        \ket{\mathcal{S}_x; \pm}\\
+        \ket{\mathcal{S}_y; \pm}\\
+      \end{aligned}
+    \] 
+    Un generico stato rappresentato come combinazione lineare di questi Ket è:
+    \[
+      \ket{\alpha} = c_+ \ket{\mathcal{S}_z; +} + c_- \ket{\mathcal{S}_z; -}
+    \] 
+    o anche la seguente notazione (qbit):
+    \[
+      \ket{\alpha} = c_0 \ket{0} + c_1 \ket{1}
+    \] 
+
+  \item Qualsiasi \textbf{generico stato fisico} del sistema si può rappresentare come 
+    \textbf{sovrapposizione di autostati}, cioè una combinazione lineare degli autoKet.
+    \[
+      \ket{\alpha} = \sum_i^n c_i \ket{a_i}
+    \] 
+    (questo sviluppo è unico per il sistema \( a_i \))
+    dove \( n \) è il grado di libertà e:
+    \[
+      A \ket{a_i} = a_i \ket{a_i}
+    \] 
+    Finchè non viene effettuata una misura, il sistema è in uno stato di sovrapposizione
+    e non si può sapere il suo stato.
+    \vspace{1em}
+    \noindent
+    Trovare tutti gli autostati di un sistema si chiama problema di quantizzazione.
+\end{itemize}
+
+\subsection{Operazioni}
+\subsubsection{Prodotto "interno"}
+\begin{itemize}
+  \item Esiste una corrispondenza uno ad uno tra lo spazio degli stati (Ket) e un suo
+    spazio duale (Bra):
+    \[
+      \underset{\text{Ket}}{\ket{\alpha}} \stackrel{\text{Duale}}{\longleftrightarrow} 
+      \underset{\text{Bra}}{\bra{\alpha}}
+    \] 
+
+    La base dei Ket è in corrispondenza duale con la base dei Bra:
+    \[
+      \underbrace{\{\ket{a_n}\}}_{\text{autoKet}} \stackrel{\text{C.D.}}{\longleftrightarrow}
+      \underbrace{\{\bra{a_n}\}}_{\text{autoBra}}
+    \]
+    ad exempio:
+    \[
+      C \ket{\alpha} \stackrel{\text{C.D.}}{\longleftrightarrow} C^* \bra{\alpha}
+    \] 
+    dove \( C^* \) è il complesso coniugato di \( C \). Questo vuol dire che ad una
+    somma di Ket corrisponde la somma dei Bra.
+\end{itemize}
+Vogliamo definire un prodotto tra stati fisici.
+\begin{definition}[Prodotto interno]
+  È definito \textbf{prodotto interno} il prodotto tra un Ket e un Bra:
+  \[
+    \underbrace{\braket{\alpha}{\beta}}_{\text{Notazione di Dirac}} = \left(\bra{\alpha}\right) \cdot \left(\ket{\beta}\right)
+  \] 
+\end{definition}
+
+\vspace{1em}
+\noindent
+\textbf{Proprietà}:
+
+\begin{itemize}
+  \item \( \braket{\alpha}{\beta} = \braket{\beta}{\alpha}^* \) 
+  \item \( \braket{\alpha}{\alpha} \geq 0 \), quindi \( \braket{\alpha}{\alpha} \) è reale.
+\end{itemize}
+
+\begin{definition}[Ket ortogonali]
+  Due Ket sono \textbf{ortogonali} quando:
+  \[
+    \braket{\alpha}{\beta} = 0
+  \] 
+\end{definition}
+
+\vspace{3em}
+\noindent
+Con questo operatore si possono normalizzare gli stati fisici, che sono definiti a meno di
+una costante.
+\begin{definition}[Normalizzazione]
+  La normalizzazione di uno stato fisico si esegue come:
+  \[
+    \ket{\hat{\alpha}} = \frac{\ket{\alpha}}{\sqrt{\braket{\alpha}{\alpha}}}
+  \] 
+
+  \vspace{1em}
+  \noindent
+  Di conseguenza
+  \[
+    \braket{\hat{\alpha}}{\hat{\alpha}} = 1
+  \] 
+\end{definition}
+
+\subsubsection{Operazioni illecite}
+Alcune operazioni nella meccanica quantistica sono vietate, perchè non hanno significato.
+\begin{itemize}
+  \item Un operatore non può agire su un Ket da destra:
+    \[
+      \begin{aligned}
+        A \ket{\alpha} \quad \color{green}\surd\\
+        \ket{\alpha}A \quad \color{red}\times
+      \end{aligned}
+    \] 
+    Analogamente un osservabile non può agire da sinistra su un Bra:
+    \[
+      \begin{aligned}
+        \bra{\alpha}A \quad \color{green}\surd\\
+        A\bra{\alpha} \quad \color{red}\times
+      \end{aligned}
+    \]
+
+  \item Non ha significato moltiplicare due Ket:
+    \[
+      \ket{\alpha} \ket{\beta} \quad \color{red}\times
+    \] 
+    Non ha significato moltiplicare due Bra:
+    \[
+      \bra{\alpha} \bra{\beta} \quad \color{red}\times
+    \] 
+\end{itemize}
+
+\noindent
+La notazione \( \ket{\alpha} \ket{\beta} \) si può utilizzare solo quando si hanno spazi fisici diversi (due variabili
+diverse dello stesso sistema o due sistemi diversi). Ad esempio se si hanno 2 particelle
+si può rappresentare il sistema fisico di ogni singola particella con un Ket diverso:
+\[
+  \begin{aligned}
+    \ket{\alpha}_1\\
+    \ket{\alpha}_2
+  \end{aligned}
+\]
+ma si può anche rappresentare il sistema fisico totale di entrambe le particelle con
+la seguente notazione:
+\[
+  \ket{\alpha}_1 \otimes \ket{\alpha}_2 = \ket{\alpha}_1 \ket{\alpha}_2
+\] 
+
+\vspace{1em}
+\noindent
+Nell'esperimento di Feynman avremo lo stato fisico del percorso:
+\[
+  \ket{\text{Percorso}}
+\] 
+ma se si vuole rappresentare il percorso e lo spin si avrà:
+\[
+  \ket{\text{Percorso}} \otimes \ket{\text{Spin}} = \ket{\text{Percorso}} \ket{\text{Spin}}
+\]
+
+\subsubsection{Prodotto esterno}
+In meccanica quantistica ha senso definire un prodotto esterno:
+\[
+  \ket{\alpha} \bra{\beta}
+\] 
+Questo oggetto è un operatore.
+
+\vspace{1em}
+\noindent
+\begin{theorem}[Assioma associativo della moltiplicazione]
+  \[
+    \left( \ket{\alpha} \bra{\beta} \right)\ket{\psi} =
+    \ket{\alpha} \left( \bra{\beta} \ket{\psi} \right)
+  \] 
+\end{theorem}
+Secondo l'assioma associativo della moltiplicazione si ha che:
+\[
+  \underbrace{\left( \ket{\alpha} \bra{\beta} \right)}_{\text{Operatore}}
+  \underbrace{\ket{\psi}}_{\text{Ket}} =
+  \underbrace{\ket{\alpha}}_{\text{Ket}} 
+  \underbrace{\left( \bra{\beta} \ket{\psi} \right)}_{\text{Numero}}
+\] 
+Osserviamo che \( \left( \ket{\beta} \bra{\alpha} \right)  \) è un operatore
+
+Ha agito come proiettore, proiettando il Ket \( \ket{\psi} \) sullo stato \( \ket{\alpha} \)
+(esegue una rotazione di uno stato).
+
+\subsubsection{Operatore aggiunto}
+\begin{definition}[Operatore aggiunto]
+  Si definisce operatore aggiunto l'operatore \( A^+ \).
+  Ogni operatore che agisce su uno stato ha una corrispondenza uno ad uno con un operatore
+  duale (operatore aggiunto) che agisce su un Bra:
+  \[
+    A \ket{\alpha} \stackrel{\text{C.D.}}{\longleftrightarrow} \bra{\alpha}A^+
+  \] 
+
+  \vspace{1em}
+  \noindent
+  Se \( A = A^+ \) allora l'operatore è \textbf{hermitiano} o \textbf{autoaggiunto}.
+\end{definition}
+
+\subsection{Rappresentazione matriciale}
+\subsubsection{Ket di base}
+Se \( A = A^+ \), allora
+\begin{itemize}
+  \item Gli autovalori \( \{a_i\} \) sono reali
+  \item Gli autoKet \( \{\ket{a_i}\}  \) sono una base
+    \[
+      \braket{a_i}{a_j} = \delta_{ij}
+    \] 
+\end{itemize}
+e un ket arbitrario potrà essere espresso come sovrapposizione di autoket dell'osservabile
+\( A \):
+\[
+  \text{Ket qualunque} = \sum_i \text{autoKet di } A
+\] 
+\[
+\Downarrow
+\] 
+\[
+  \ket{\alpha} = \sum_i c_i \ket{a_i}
+\] 
+L'oggetto \( c_i \) è la proiezione \( \braket{a_i}{\alpha} \):
+\[
+  \braket{a_i}{\alpha} = \sum_i c_i \braket{a_i}{a_i} = c_i
+\] 
+ovvero:
+\[
+  \ket{\alpha} = \sum_i \ket{a_i} \braket{a_i}{\alpha}
+\] 
+Questa è la \textbf{relazione di completezza}, che dice che \( a_i \) è base dello spazio:
+\[
+  \sum \ket{a_i} \bra{a_i} = \mathbb{I}
+\] 
+Questo oggetto è il proiettore sul Ket di base \( \ket{a_i} \) e si può indicare anche
+come:
+\[
+  \ket{a_i} \bra{a_i} = \Lambda_{a_i}
+\] 
+
+\vspace{1em}
+\noindent
+Da questo si deriva che la somma dei coefficienti al quadrato fa 1:
+\[
+  \sum |c_i|^2 = 1
+\] 
+perchè:
+\[
+  \begin{aligned}
+    \braket{\alpha}{\alpha} &= 1\\
+                            &=\bra{\alpha} \left( \sum \ket{a_i} \bra{a_i} \right) \ket{\alpha}\\
+                            &= \sum_i \braket{\alpha}{a_i} \braket{a_i}{\alpha}\\
+                            &= \sum |c_i|^2 = 1
+  \end{aligned}
+\] 
+
+\subsection{Teoria della misura}
+In pratica ogni Ket si può rappresentare come un vettore colonna:
+\[
+  \ket{\alpha} =
+  \begin{pmatrix} 
+    \alpha_1\\
+    \vdots\\
+    \alpha_n
+  \end{pmatrix} 
+\] 
+dove le componenti \( \alpha_n \) sono i coefficienti della sovrapposizione \( \braket{a_i}{\alpha} \) 
+
+\vspace{1em}
+\noindent
+Ogni Bra è un vettore riga:
+\[
+  \bra{\alpha} = \begin{pmatrix} \alpha_1^* & \cdots & \alpha_n^* \end{pmatrix}
+\] 
+dove le componenti sono il complesso coniugato delle componenti del Ket.
+
+\vspace{1em}
+\noindent
+La componente \( \braket{\alpha}{\beta} \) si può calcolare come un prodotto scalare:
+\[
+  \braket{\alpha}{\beta} = 
+  \begin{pmatrix} \alpha_1^* & \cdots & \alpha_n^* \end{pmatrix}
+  \begin{pmatrix} 
+    \beta_1\\
+    \vdots\\
+    \beta_n
+  \end{pmatrix}
+\] 
+e quindi:
+\[
+  \ket{\alpha} \bra{\beta} =
+  \begin{pmatrix} 
+    \alpha_1\\
+    \vdots\\
+    \alpha_n
+  \end{pmatrix}
+  \begin{pmatrix} \beta_1^* & \cdots & \beta_n^* \end{pmatrix}
+\] 
+In entrambi i casi si ottiene una matrice quadrata \( N \times N \).
+
+\vspace{1em}
+\noindent
+Qualunque operatore \( B \) è rappresentato da una matrice quadrata \( N \times N \) e
+agisce sui Bra (a destra) o sui Ket (a sinistra):
+\[
+  B = \sum_i \sum_j \underbrace{\ket{a_i} \bra{a_j} B \ket{a_j} \bra{a_i}}_{
+    N^2 \text{ numeri } B_{ij}
+  } = \mathbb{I} B \mathbb{I}
+\] 
+cioè si moltiplica per l'identità a destra e sinistra:
+
+\vspace{1em}
+\noindent
+Nella base \( a_i \) \( A = A^+ \) è osservabile e la sua base è diagonale con elementi reali:
+\[
+  A = 
+  \begin{pmatrix} 
+    a_1 & 0 & \cdots & 0\\
+    0 & a_2 & \cdots & 0\\
+    \vdots & \vdots & \ddots & \vdots\\
+    0 & 0 & \cdots & a_n
+  \end{pmatrix}
+  \quad a_i \in \mathbb{R}
+\]
+
+\section{Quantizzazione dell'esperimento Stern-Gerlach}
+Scelgo i Ket di base:
+\[
+  \ket{\mathcal{S}_z; \pm}
+\] 
+con la seguente notazione:
+\[
+  \{\ket{+}, \ket{-}\} =
+    \begin{pmatrix} 1\\0 \end{pmatrix};
+    \begin{pmatrix} 0\\1 \end{pmatrix}
+  =
+  \ket{0}, \ket{1}
+\] 
+
+\subsection{Operatori}
+\begin{itemize}
+  \item 
+    Il più semplice operatore è l'operatore di completezza:
+    \[
+      \mathbb{I} = \ket{+} \bra{+} + \ket{-} \bra{-}
+    \] 
+
+  \item Operatore \( \mathcal{S}_z \) 
+    \[
+      \mathcal{S}_z = \frac{\hslash}{2} \left[ \ket{+}\bra{+} - \ket{-}\bra{-} \right]
+    \]
+    in forma matriciale:
+    \[
+      \mathcal{S}_z = 
+      \begin{pmatrix} 
+        \frac{\hslash}{2} & 0\\
+        0 & -\frac{\hslash}{2}
+      \end{pmatrix} 
+    \] 
+
+  \item Autostati di \( \mathcal{S}_z \):
+    \[
+      \begin{aligned}
+        \mathcal{S}_z \ket{+} &= \frac{\hslash}{2} \ket{+}\\
+        \mathcal{S}_z \ket{-} &= -\frac{\hslash}{2} \ket{-}
+      \end{aligned}
+    \] 
+\end{itemize}
+
+\noindent
+Uno stato arbitrario \( \alpha \) sarà dato dalla combinazione di autoKet di cui i coefficienti
+si trovano proiettando \( \alpha \) sugli autoKet:
+\[
+  \begin{aligned}
+    \ket{\alpha} &= \ket{+} \overbrace{\braket{+}{\alpha}}^{C_+} \;\; + \;\;
+    \ket{-} \overbrace{\braket{-}{\alpha}}^{C_-}\\
+                 &= \begin{pmatrix} 
+                   \braket{+}{\alpha}\\
+                   \braket{-}{\alpha}
+                 \end{pmatrix} 
+  \end{aligned}
+\] 
+
+\section{Processi della misura}
+Il quadrato della funzione d'onda descrive la probabilità di trovare una particella in una
+certa posizione:
+\[
+  P = |\phi|^2
+\] 
+Se abbiamo due particelle e vogliamo calcolare la probabilità della somma delle ampiezze
+notiamo che:
+\begin{itemize}
+  \item Se non misuro si ha interferenza:
+    \[
+    \sum \phi \quad P = |\phi_1 + \phi_2|^2
+    \] 
+
+  \item Se misuro si ha che la probabilità è la somma delle probabilità:
+    \[
+      P = \sum P
+    \]
+\end{itemize}
+
+\subsection{Teoria della misura}
+Prendiamo in considerazione la base \( \ket{a_i} \), sappiamo che lo stato prima della
+misura è espresso come sovrapposizione di autostati:
+\[
+  \ket{\psi} = \sum_i c_i \ket{a_i} \quad c_i = \braket{a_i}{\psi}
+\] 
+\begin{enumerate}
+  \item Se faccio la misura di un osservabile \( A \) lo stato \( \psi \) \textbf{collassa}
+    in un autostato di \( A \) con una certa probabilità \( P \) :
+    \[
+      \ket{\psi} \stackrel{\text{Misura di A}}{\longrightarrow} \ket{a_i}
+    \] 
+    il risultato della misura è \( a_i \), cioè l'autovalore. Sono i possibili
+    risultati della misura, \textbf{lo spettro dell'osservabile}.
+
+    \vspace{1em}
+    \noindent
+    La probabilità \( P \) di misurare \( a_i \) è data dal coefficiente dello sviluppo
+    di \( \ket{\psi } \) al quadrato:
+    \[
+      P = |c_i|^2 = |\braket{a_i}{\psi}|^2 \quad \text{Con stato normalizzato}
+    \]
+
+    \vspace{1em}
+    \noindent
+    \textbf{La misura in meccanica quantistica cambia lo stato del sistema.} Ad
+    esempio nell'esperimento di Stern-Gerlach lo stato \( \ket{\psi } \) rappresenta
+    lo spin di un atomo. Prima di misurare non sappiamo che stato abbia, cioè è in
+    sovrapposizione. Attraverso un operatore misuriamo lo spin e la particella
+    potrà dare come risultato l'autostato \( \ket{+} \) o l'autostato \( \ket{-} \):
+    \label{16-01-D1}
+
+  \item Se \( \ket{\psi } = \ket{a} \) è un autostato, allora la misura di \( A \) non lo cambia:
+    \[
+      \ket{a} \stackrel{\text{Misura di A}}{\longrightarrow} \ket{a}
+    \] 
+
+    \vspace{1em}
+    \noindent
+    Ad esempio nell'esperimento di Stern-Gerlach se dopo aver misurato lo spin \( \mathcal{S}_z \) 
+    ho trovato l'autostato \( \ket{+} \) rifaccio la misura ritrovo lo stesso autostato ed
+    è un risultato certo:
+    \label{16-01-D2}
+\end{enumerate}
+
+\begin{definition}[Valore di aspettazione]
+  Il \textbf{valore di aspettazione} di un osservabile \( A \) rispetto a \( \ket{\psi } \)
+  è la media dei valori che si possono ottenere misurando \( A \) sullo stato 
+  \( \ket{\psi } \):
+  \[
+    \expval{A} = \expval{A}{\psi} = \bra{\psi} \left( A \ket{\psi } \right) 
+  \]
+\end{definition}
+\textbf{Dimostrazione}:
+
+\noindent
+\[
+  \begin{aligned}
+    \ev{A}{\psi} &= \sum_i \sum_j \braket{\psi }{a_i} \bra{a_i} \underbrace{A \ket{a_j}}_{a_j \ket{a_j}} 
+    \braket{a_j}{\psi }\\
+                 &=\sum_i a_i \braket{\psi }{a_i} \braket{a_i}{\psi }\\
+                 &=\sum_i a_i |\braket{a_i}{\psi}|^2
+  \end{aligned}
+\] 
+dove \( a_i \) è la misura e \( |\braket{a_i}{\psi}|^2 = P \) è la probabilità di
+ottenerla.
+
+\subsection{Osservabili compatibili}
+\( \mathcal{S}_z, \mathcal{S}_x \;\; (\mathcal{S}_y) \) non si possono misurare 
+simultaneamente. Si vuole definire cosa significa che due osservabili siano compatibili.
+\begin{definition}
+  Dati due osservabili \( [A,B] = AB - BA \) è il \textbf{commutatore} di \( A \) e \( B \).
+  \begin{itemize}
+    \item \( A(B) \ket{\psi } \) vuol dire che si misura prima \( B \) e poi \( \psi  \) 
+  \end{itemize}
+\end{definition}
+
+\begin{theorem}
+  Se \( A,B \) commutano
+  \begin{itemize}
+    \item Gli elementi di \( B \) sono diagonali nella rappresentazione di \( A \),
+      cioè la base di \( A \) \( \ket{a_i} \) è anche la base di \( B \)
+  \end{itemize}
+  Due operatori che commutano hanno una base comune e la notazione è:
+  \[
+    \ket{a,b}
+  \] 
+\end{theorem}
+\vspace{1em}
+\noindent
+Consideriamo che \( [A,B] \) siano osservabili che commutano
+\[
+  \ket{\psi} \stackrel{\text{Misuro A}}{\longrightarrow} \ket{a}
+  \stackrel{\text{Misuro A}}{\longrightarrow} \underbrace{\ket{a}}_{100\% \text{ risultato a}}
+\] 
+\[
+  \ket{\psi} \stackrel{\text{Misuro A}}{\longrightarrow} \ket{a,b}
+  \stackrel{\text{Misuro B}}{\longrightarrow} \ket{a,b}
+  \stackrel{\text{Misuro A}}{\longrightarrow} \ket{a,b}
+\] 
+Non si avrà nessuna distruzione dell'informazione perchè \( A \) è anche autostato di \( B \).
 
 
 \end{document}
