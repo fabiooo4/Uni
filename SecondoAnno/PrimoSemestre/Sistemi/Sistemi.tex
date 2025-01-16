@@ -12272,5 +12272,186 @@ Quindi alcune proprietà di Laplace valgono anche per Fourier.
   \end{enumerate}
 \end{example}
 
-\end{document}
+\subsection{Campionamento e replicazione}
+Prendiamo in considerazione il seguente sistema a blocchi
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node (u) {$u(t)$};
+    \node[right=of u,circle,draw,minimum size=0.7cm] (mul) {$X$};
+    \node[below=of mul] (w) {$w(t)$};
+    \node[right=of mul,draw,minimum size=1cm] (h) {$h(t)$};
 
+    \draw[->] (u) -- (mul);
+    \draw[->] (w) -- (mul);
+    \draw[->] (mul) -- (h) node[midway,above] {$\color{blue}a(t)$};
+    \draw[->] (h) -- ++(1.5,0) node[midway,above] {$\color{blue}b(t)$};
+
+    \node[pin={[align=center,scale=0.8]above:{Convoluzione nelle frequenze/\\Prodotto nel tempo}}]
+      at (mul.north) {};
+    \node[pin={[align=center,scale=0.8,xshift=0.4cm]below:{Prodotti nelle frequenze/\\Convoluzioni nel tempo}}]
+      at (h.south) {};
+  \end{tikzpicture}
+  \caption{Sistema a blocchi}
+\end{figure}
+\[
+  \begin{aligned}
+    a(t) &= u(t) \cdot w(t)\\
+    b(t) &= \left[ h(t) \ast a(t) \right](f)
+  \end{aligned}
+\] 
+Esiste un operatore chiamato \textbf{campionatore} che si chiude a intervalli regolari
+derivati da \( T_c \) (\textbf{frequenza di campionamento} [\( Hz \)]) e "compone" il
+segnale. È il componente che permette di passare dal segnale a tempo continuo a quello
+a tempo discreto.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[scale=1.5]
+    \draw (0,0) -- ++(0.5,0) -- ++(0.5,0.5) node[midway,below,yshift=-0.2cm] {$T_c$};
+    \draw (0,0) ++(0.5,0) ++(0.5,0) -- ++(0.5,0);
+  \end{tikzpicture}
+  \caption{Campionatore}
+\end{figure}
+\noindent
+Quindi se prendiamo in considerazione il seguente segnale si ha un passaggio da continuo
+a discreto:
+\label{16-01-D1}
+
+\vspace{1em}
+\noindent
+Nella realtà dopo il campionatore si inserisce uno \textbf{zero-holder} che mantiene il valore
+del segnale fino al prossimo campione:
+\label{16-01-D2}
+
+\noindent
+Un segnale discreto può essere \textbf{quantizzato}, cioè approssimato ad un valore
+discreto. Questo processo è chiamato \textbf{quantizzazione}.
+
+Inoltre un segnale quantizzato può essere \textbf{codificato} in binario, cioè rappresentato
+da una sequenza di bit, ovvero segnali alti e bassi:
+\label{16-01-D3}
+
+\subsubsection{Treno campionatore/impulsi}
+Un treno di impulsi a distanza \( T_c \) moltiplicato per un altro segnale fa ottenere
+un segnale campionato in quel punto \( kT_c \):
+\label{16-01-D4}
+\[
+  \begin{aligned}
+    \hat{\delta}_{T_c}(t) &= \sum_{k = -\infty}^{\infty} \delta(t - kT_c)\\
+                       &\updownarrow \mathcal{F}\\
+    \frac{1}{T_c} \hat{\delta}_{\frac{1}{T_c}}(f) &= \frac{1}{T_c} \sum_{k = -\infty}^{\infty} \delta(f - \frac{k}{T_c})
+  \end{aligned}
+\] 
+
+\subsubsection{Campionamento}
+\begin{definition}
+  Dato un segnale \( v(t), \; t \in \mathbb{R} \) e un periodo di campionamento 
+  \( 0 < T_c \in \mathbb{R} \), il campionamento è deinito come:
+  \[
+    \left[ samp_{T_c} v \right](t) = \sum_{k = -\infty}^{\infty} v(kT_c)
+  \] 
+  \[
+  \downarrow \text{ Per la proprietà del campionamento dell'impulso}
+  \] 
+  \[
+    \begin{aligned}
+      \left[ samp_{T_c} v \right](t) &= \sum_{k = -\infty}^{\infty} v(kT_c) \cdot \delta(t - kT_c)\\
+                                     &= v(t) \cdot \hat{\hat{\delta}}_{T_c}(t)\\
+    \end{aligned}
+  \] 
+  \label{16-01-D5}
+\end{definition}
+
+\subsubsection{Replicazione}
+\begin{definition}
+  Sia un segnale \( v(t), t \in \mathbb{R} \) e un periodo di campionamento \( 0 < T_c \in \mathbb{R} \),
+  la replicazione è definita come:
+  \[
+    \begin{aligned}
+      \left[ rep_{T_c} v \right](t) &= \sum_{k = -\infty}^{\infty} v(t - kT_c)\\
+                                    &= \sum_{k = -\infty}^{\infty} v(t) \ast \delta(t - kT_c)\\
+                                    &= \left[ v \ast \hat{\delta}_{T_C} \right](t)
+    \end{aligned}
+  \]
+  \label{16-01-D6}
+\end{definition}
+
+\vspace{1em}
+\noindent
+Se si replica nel tempo si ottiene un campionamento scalato nelle frequenze
+\[
+  \left[ rep_{T_c} v\right](t) \stackrel{\mathcal{F}}{\leftrightarrow} \frac{1}{T_c} \left[ samp_{T_c} V \right](f)
+\] 
+Se si campiona nel tempo si ottiene una replicazione scalata nelle frequenze
+\[
+  \left[ samp_{T_c} v \right](t) \stackrel{\mathcal{F}}{\leftrightarrow} \frac{1}{T_c} \left[ rep_{T_c} V \right](f)
+\] 
+
+\subsubsection{Teorema del campionamento ideale di Shannon}
+\begin{theorem}
+  Sia \( v(t), \; t \in \mathbb{R} \) un segnale campionato con frequenza di campionamento
+  \( f_c = \frac{1}{T_c} \) ottenendo:
+  \[
+    \begin{aligned}
+      v(k) &= v_0(kT_c)\\
+           &= \sum_{n = -\infty}^{\infty} v_0(t) \cdot \delta(t - kT_c)\\
+           &= \left[ samp_{T_c} v_0 \right](t)
+    \end{aligned}
+  \] 
+  Se:
+  \begin{enumerate}
+    \item \( v_0(t) \) è limitato in banda, cioè esiste almeno un \( B > 0 \) tale che
+      \( V_0(f) = 0 \) per frequenze \( |f| > B \), e \( B \) è il più piccolo per cui
+      questo è vero. Ad esempio:
+      \label{16-01-D7}
+
+    \item e la frequenza di campionamento \( f_c \) è tale per cui \( f_c > 2B \),
+      dove \( 2B \) è detta \textbf{frequenza di Nyquist}. Ad esempio:
+      \label{16-01-D8}
+      Se:
+      \[
+      \begin{aligned}
+        B &= 10 Hz\\
+        f_c &= 5 Hz \\
+      \end{aligned}
+      \] 
+      \[
+        f_c > 2B \to 5 > 20 \text{ (FALSO)}
+      \] 
+
+      \vspace{1em}
+      \noindent
+      Se:
+      \[
+      \begin{aligned}
+        B &= 5 Hz \\
+        f_c &= 20 Hz \\
+      \end{aligned}
+      \] 
+      \[
+        f_c > 2B \to 20 > 10 \text{ (VERO)}
+      \] 
+  \end{enumerate}
+  Allora \( v_0(t) \) è ricostruibile a partire dal segnale campionato 
+  \( \left[ samp_{T_c} v_0\right](t) \) utilizzando un filtro di ricostruzione \( H_r \):
+  \[
+  H_r(f) = T_c \Pi \left( \frac{f}{2f_L} \right) = \frac{1}{f_c} \Pi \left( \frac{f}{2f_L} \right) 
+  \] 
+  \[
+  B < f_L < f_c - B
+  \] 
+  Quindi:
+  \[
+    v_0(t) = \left[ (samp_{T_c} v_0) \ast \underbrace{h(T)}_{sinc \left( \frac{t}{T_c} \right) } \right](t)
+  \] 
+  
+  \vspace{1em}
+  \noindent
+  Se \( f_c < 2B \) si presenta il fenomeno di \textbf{aliasing}
+  \label{16-01-D9}
+  \noindent
+  Cioè il segnale si mescola con le repliche delle bande laterali e la ricostruzione
+  da origine ad un segnale diverso da quello originale.
+\end{theorem}
+
+\end{document}
