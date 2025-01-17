@@ -17,16 +17,24 @@ consectetur adipiscing elit. Sed ac purus sit amet nisl tincidunt tincidunt.
 \begin{figure}[H]
   \centering
   \begin{tikzpicture}
+    \def\Tc{13}
     \begin{axis}[
-      xmin= -1, xmax= 2.5*pi,
+      width=0.4\textwidth,
+      height=0.4\textwidth,
+      xmin= 0, xmax= 2.5*pi,
       ymin= -1.5, ymax = 1.5,
+      ytick = \empty,
+      xtick = \empty,
       axis lines = middle,
     ]
-      \addplot[blue,thick,domain=-10:10, samples=100]{sin(deg(x))};
+      \addplot[domain=0:2.5*pi, samples=100]{sin(deg(x))};
+      \addplot[const plot,blue,thick,domain=0:2.5*pi, samples=\Tc]{sin(deg(x))};
+
+      \draw (axis cs:{(2.5*pi)/\Tc},-0.1) -- (axis cs:{(2.5*pi)/\Tc},-0.2)
+        -- (axis cs:{2*(2.5*pi)/\Tc},-0.2) node[below] {$T_c$}
+        -- (axis cs:{2*(2.5*pi)/\Tc},-0.1);
     \end{axis}
   \end{tikzpicture}
-  \caption{}
-  \label{}
 \end{figure}
 
 \noindent

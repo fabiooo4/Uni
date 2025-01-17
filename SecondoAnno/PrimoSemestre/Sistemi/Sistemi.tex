@@ -10097,7 +10097,7 @@ Una volta disegnati i singoli grafici si sommano assieme:
                                     & \color{red}0 & \color{red}0 & \color{red}0 & \color{red}12 & \color{red}20 \\ 
           \color{green!50!black} \( \text{zero-nullo}_1 \; \left(40 \cdot \log(\omega)\right) \)
                                     & \color{green!50!black}-40 & \color{green!50!black}-12& \color{green!50!black}0 & \color{green!50!black}24 & \color{green!50!black}40 \\ 
-          \color{purple} \( \text{zero-cc}_1 \; \left(40 \cdot \log(\frac{\omega}{\omega_n}), \; \zeta = \frac{3}{8}, \omega_n = 4\right) \)
+          \color{purple} \( \text{zero-cc}_1 \, \left(40 \cdot \log(\frac{\omega}{\omega_n}), \; \zeta = \frac{3}{8}, \omega_n = 4\right) \)
                                     & \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}16 \\ 
           \color{orange} \( \text{Polo-}\mathbb{R}_1 \; \left(-20 \cdot \log(\omega \cdot |\tau|), \; \tau = -2\right)\) 
                                     & \color{orange}0 & \color{orange}0 & \color{orange}-6 & \color{orange}-18 & \color{orange}-26 \\ 
@@ -11488,7 +11488,6 @@ di Fourier:
     \end{itemize}
 \end{enumerate}
 
-% -----------------
 \subsection{Condizioni di esistenza della trasformata di Fourier}
 \begin{definition}[Equazione di sintesi]
   Sia \( v(t), \; t \in \mathbb{R} \) un segnale a valori reali o complessi, si definisce
@@ -12315,13 +12314,72 @@ a tempo discreto.
 \noindent
 Quindi se prendiamo in considerazione il seguente segnale si ha un passaggio da continuo
 a discreto:
-\label{16-01-D1}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      width=0.4\textwidth,
+      height=0.4\textwidth,
+      xmin= 0, xmax= 2.5*pi,
+      ymin= -1.5, ymax = 1.5,
+      ytick = \empty,
+      xtick = \empty,
+      axis lines = middle,
+    ]
+      \addplot[blue,thick,domain=0:2.5*pi, samples=100]{sin(deg(x))};
+    \end{axis}
+    \draw (3.5,1.5) -- ++(0.5,0) -- ++(0.5,0.5) node[midway,below,yshift=-0.2cm] {$T_c$};
+    \draw (3.5,1.5) ++(0.5,0) ++(0.5,0) -- ++(0.5,0);
+  \end{tikzpicture}
+  \begin{tikzpicture}
+    \begin{axis}[
+      width=0.4\textwidth,
+      height=0.4\textwidth,
+      xmin= 0, xmax= 2.5*pi,
+      ymin= -1.5, ymax = 1.5,
+      ytick = \empty,
+      xtick = \empty,
+      axis lines = middle,
+    ]
+      \addplot[domain=0:2.5*pi, samples=100]{sin(deg(x))};
+
+      \pgfplotsinvokeforeach{0,0.5,...,2.5*pi}{
+        \addplot[-latex,blue,thick] coordinates {
+            (#1,0) (#1,{sin(deg(#1))})
+          };
+      }
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Campionamento del segnale}
+\end{figure}
 
 \vspace{1em}
 \noindent
 Nella realtà dopo il campionatore si inserisce uno \textbf{zero-holder} che mantiene il valore
 del segnale fino al prossimo campione:
-\label{16-01-D2}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \def\Tc{13}
+    \begin{axis}[
+      width=0.4\textwidth,
+      height=0.4\textwidth,
+      xmin= 0, xmax= 2.5*pi,
+      ymin= -1.5, ymax = 1.5,
+      ytick = \empty,
+      xtick = \empty,
+      axis lines = middle,
+    ]
+      \addplot[domain=0:2.5*pi, samples=100]{sin(deg(x))};
+      \addplot[const plot,blue,thick,domain=0:2.5*pi, samples=\Tc]{sin(deg(x))};
+
+      \draw (axis cs:{(2.5*pi)/\Tc},-0.1) -- (axis cs:{(2.5*pi)/\Tc},-0.2)
+        -- (axis cs:{2*(2.5*pi)/\Tc},-0.2) node[below] {$T_c$}
+        -- (axis cs:{2*(2.5*pi)/\Tc},-0.1);
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Zero-holder}
+\end{figure}
 
 \noindent
 Un segnale discreto può essere \textbf{quantizzato}, cioè approssimato ad un valore
