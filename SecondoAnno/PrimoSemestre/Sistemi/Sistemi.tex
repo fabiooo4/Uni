@@ -12743,11 +12743,138 @@ Se si campiona nel tempo si ottiene una replicazione scalata nelle frequenze
     \item \( v_0(t) \) è limitato in banda, cioè esiste almeno un \( B > 0 \) tale che
       \( V_0(f) = 0 \) per frequenze \( |f| > B \), e \( B \) è il più piccolo per cui
       questo è vero. Ad esempio:
-      \label{16-01-D7}
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+          \def\Tone{1/2}
+          \def\Tzero{2.5*\Tone}
+          \def\A{1}
+          \begin{axis}[
+            clip=false,
+            width = .5\textwidth,
+            height = .4\textwidth,
+            xlabel = $f$,
+            xmin=-15, xmax=15,
+            ymin= -0.5, ymax = \A * 1.9,
+            yticklabel style = {above right},
+            ytick = \empty,
+            xtick = \empty,
+            axis lines = middle,
+            xlabel style = {below},
+            declare function ={ 
+              sinc(\x) = 
+              (\x == 0) * \A +
+              sin(deg(\x))/\x
+            ;},
+            ]
+            \addplot[blue,thick,domain=-15:15,samples=100]{sinc(x)};
+            \node[align=center,yshift=-1.2cm] at (xticklabel* cs:0.5) {\color{red}Non è limitato in banda\\
+              \color{red}perchè \( \not\exists B\) };
+          \end{axis}
+        \end{tikzpicture}
+        \begin{tikzpicture}
+          \begin{axis}[
+            clip=false,
+            width = .5\textwidth,
+            height = .4\textwidth,
+            xlabel = $f$,
+            xmin=-5, xmax=5,
+            ymin= -0.5, ymax = 4,
+            yticklabel style = {above right},
+            ytick = \empty,
+            xtick = {-3,3},
+            xticklabels = {\(-B\),\(B\)},
+            xticklabel style = {green!50!black},
+            axis lines = middle,
+            xlabel style = {below},
+            declare function ={ 
+              sinc(\x) = 
+              (\x == 0) * \A +
+              sin(deg(\x))/\x
+            ;},
+            ]
+            \addplot[->,blue,thick] coordinates {
+                (-1,0) (-1,1)
+              };
+            \addplot[->,blue,thick] coordinates {
+                (-2,0) (-2,2)
+              };
+            \addplot[->,blue,thick] coordinates {
+                (-3,0) (-3,3)
+              };
+
+            \addplot[->,blue,thick] coordinates {
+                (1,0) (1,1)
+              };
+            \addplot[->,blue,thick] coordinates {
+                (2,0) (2,2)
+              };
+            \addplot[->,blue,thick] coordinates {
+                (3,0) (3,3)
+              };
+
+            \draw[green!50!black,fill,fill opacity=0.3,draw opacity=0]
+              (axis cs:-3,0) rectangle (axis cs:-5,4);
+
+            \draw[green!50!black,fill,fill opacity=0.3,draw opacity=0]
+              (axis cs:3,0) rectangle (axis cs:5,4);
+
+            \node[align=center,yshift=-1.2cm] at (xticklabel* cs:0.5) {\color{green!50!black}\( \exists B \),
+              quindi è limitato in banda };
+          \end{axis}
+        \end{tikzpicture}
+        \caption{Esempi di segnali limitati in banda}
+      \end{figure}
 
     \item e la frequenza di campionamento \( f_c \) è tale per cui \( f_c > 2B \),
       dove \( 2B \) è detta \textbf{frequenza di Nyquist}. Ad esempio:
-      \label{16-01-D8}
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+          \def\B{4}
+          \begin{axis}[
+            clip=false,
+            width = .8\textwidth,
+            height = .4\textwidth,
+            xlabel = $f$,
+            xmin=-3*\B, xmax=3*\B,
+            ymin= -0.5, ymax = 4,
+            yticklabel style = {above right},
+            ytick = \empty,
+            xtick = {-2*\B,-\B,\B,2*\B},
+            xticklabels = {
+              \( -f_0 \),
+              \( \color{green!50!black}-B \),
+              \( \color{green!50!black}B \),
+              \( f_0 \)
+            },
+            axis lines = middle,
+            xlabel style = {below},
+            declare function ={ 
+              sinc(\x) = 
+              (\x == 0) * \A +
+              sin(deg(\x))/\x
+            ;},
+            ]
+            \pgfplotsinvokeforeach{-2*\B,0,2*\B}{
+              \addplot[->,blue,thick] coordinates {
+                  (#1-1,0) (#1-1,1)
+                };
+              \addplot[->,blue,thick] coordinates {
+                  (#1-2,0) (#1-2,3)
+                };
+
+              \addplot[->,blue,thick] coordinates {
+                  (#1+1,0) (#1+1,1)
+                };
+              \addplot[->,blue,thick] coordinates {
+                  (#1+2,0) (#1+2,3)
+                };
+            }
+          \end{axis}
+        \end{tikzpicture}
+        \caption{Esempio di frequenza di campionamento}
+      \end{figure}
       Se:
       \[
       \begin{aligned}
@@ -12788,7 +12915,144 @@ Se si campiona nel tempo si ottiene una replicazione scalata nelle frequenze
   \vspace{1em}
   \noindent
   Se \( f_c < 2B \) si presenta il fenomeno di \textbf{aliasing}
-  \label{16-01-D9}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        clip=false,
+        width=0.5\textwidth,
+        height=0.4\textwidth,
+        xmin= -22, xmax= 22,
+        ymin= 0, ymax = 5,
+        ytick = \empty,
+        xtick = {-10,10},
+        xticklabel style = {scale=0.8},
+        axis lines = middle,
+        ]
+        \addplot[-latex,blue,thick] coordinates {
+            (-5,0) (-5,1)
+          };
+        \addplot[-latex,blue,thick] coordinates {
+            (-10,0) (-10,2)
+          };
+
+        \addplot[-latex,blue,thick] coordinates {
+            (5,0) (5,1)
+          };
+        \addplot[-latex,blue,thick] coordinates {
+            (10,0) (10,2)
+          };
+
+        \node at (xticklabel* cs:0.5) [below,yshift=-0.5cm] {$f_c = 5$};
+      \end{axis}
+    \end{tikzpicture}
+    \begin{tikzpicture}
+      \node at (0,0) {};
+      \draw (0,1.5) -- ++(0.5,0) -- ++(0.5,0.5) node[midway,below,yshift=-0.2cm] {$T_c$};
+      \draw (0,1.5) ++(0.5,0) ++(0.5,0) -- ++(0.5,0);
+    \end{tikzpicture}
+    \hspace{0.1cm}
+    \begin{tikzpicture}
+      \begin{axis}[
+        clip=false,
+        width=0.5\textwidth,
+        height=0.4\textwidth,
+        xmin= -22, xmax= 22,
+        ymin= 0, ymax = 5,
+        ytick = \empty,
+        xticklabel style = {scale=0.8},
+        axis lines = middle,
+        ]
+        \addplot[-latex,blue,thick] coordinates {
+            (-5,0) (-5,1)
+          };
+        \addplot[-latex,blue,thick] coordinates {
+            (-10,0) (-10,2)
+          };
+
+        \addplot[-latex,blue,thick] coordinates {
+            (5,0) (5,1)
+          };
+        \addplot[-latex,blue,thick] coordinates {
+            (10,0) (10,2)
+          };
+
+        \addplot[-latex,green!50!black,thick] coordinates {
+            (-15,0) (-15,1)
+          };
+        \addplot[-latex,green!50!black,thick] coordinates {
+            (-10,2) (-10,3)
+          };
+        \addplot[-latex,green!50!black,thick] coordinates {
+            (15,0) (15,1)
+          };
+        \addplot[-latex,green!50!black,thick] coordinates {
+            (10,2) (10,3)
+          };
+        \addplot[-latex,green!50!black,thick] coordinates {
+            (-5,1) (-5,3)
+          };
+        \addplot[-latex,green!50!black,thick] coordinates {
+            (5,1) (5,3)
+          };
+
+        \addplot[-latex,red,thick] coordinates {
+            (-20,0) (-20,1)
+          };
+        \addplot[-latex,red,thick] coordinates {
+            (20,0) (20,1)
+          };
+        \addplot[-latex,red,thick] coordinates {
+            (-15,1) (-15,2)
+          };
+        \addplot[-latex,red,thick] coordinates {
+            (15,1) (15,2)
+          };
+        \addplot[-latex,red,thick] coordinates {
+            (-10,3) (-10,4)
+          };
+        \addplot[-latex,red,thick] coordinates {
+            (10,3) (10,4)
+          };
+
+        \draw[dashed] (axis cs:-10,0) rectangle (axis cs:10,5);
+        \node at (axis cs:0,5) [above] {Rettangolo di supporto \( 2B \)};
+
+        \node[opacity=0] at (xticklabel* cs:0.5) [below,yshift=-0.5cm] {$f_c = 5$};
+      \end{axis}
+    \end{tikzpicture}
+    \[
+      \hspace{6.7cm}
+      \downarrow
+    \] 
+    \hspace{6.5cm}
+    \begin{tikzpicture}
+      \begin{axis}[
+        clip=false,
+        width=0.5\textwidth,
+        height=0.4\textwidth,
+        xmin= -22, xmax= 22,
+        ymin= 0, ymax = 5,
+        ytick = \empty,
+        xticklabel style = {scale=0.8},
+        axis lines = middle,
+        ]
+        \addplot[-latex,blue,thick] coordinates {
+            (-5,0) (-5,3)
+          };
+        \addplot[-latex,blue,thick] coordinates {
+            (5,0) (5,3)
+          };
+        \addplot[-latex,blue,thick] coordinates {
+            (-10,0) (-10,4)
+          };
+        \addplot[-latex,blue,thick] coordinates {
+            (10,0) (10,4)
+          };
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Fenomeno di aliasing}
+  \end{figure}
   \noindent
   Cioè il segnale si mescola con le repliche delle bande laterali e la ricostruzione
   da origine ad un segnale diverso da quello originale.
