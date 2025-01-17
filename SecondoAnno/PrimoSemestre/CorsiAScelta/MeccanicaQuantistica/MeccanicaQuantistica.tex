@@ -3,6 +3,12 @@
 \input{../../../../preamble.sty}
 
 % Libro: Sakurai
+
+% Potenziali approfondimenti:
+% Qiskit: implementare un circuito di teletrasporto
+% E collegarsi a computer quantistico di IBM
+% Quantum machine learning (lettura di un paper)
+% Approfondire le altre porte (teletrasporto)
 \begin{document}
 
 \input{title.tex}
@@ -600,5 +606,395 @@ Consideriamo che \( [A,B] \) siano osservabili che commutano
 \] 
 Non si avrà nessuna distruzione dell'informazione perchè \( A \) è anche autostato di \( B \).
 
+\subsection{Osservabili incompatibili}
+Se \( A,B \) non commutano allora non hanno una base comune e non si possono misurare
+simultaneamente.
+
+\subsection{Postulati (Interpretazione di Copenhagen)}
+\begin{enumerate}
+  \item 
+    \begin{itemize}
+      \item 
+        Ad ogni sistema fisico, si associa uno spazio di \textbf{Hilbert} \( \mathcal{H} \) , cioè una
+        generalizzazione dello spazio complesso.
+      \item 
+        Ad ogni stato di questo sistema si associa un vettore normalizzato dello spazio di
+        Hilbert:
+        \[
+          \ket{\psi} \leftrightarrow \left( a \ket{\psi } \right) \leftrightarrow \braket{\psi} = 1
+        \] 
+      \item Arbitrarietà della fase, cioè \( \ket{\psi} \) è definito a meno di una fase:
+        \[
+           e^\phi \ket{\psi}
+        \]
+    \end{itemize}
+    La conseguenza è che \textbf{ogni stato} può essere espresso come sovrapposizione di
+    altri stati:
+    \[
+      \ket{\psi} = \sum_i c_i \ket{a_i}
+    \] 
+    (Principio di sovrapposizione)
+
+  \item Ad ogni osservabile \( A \) si associa un operatore lineare autoaggiunto \( \hat{A} \)
+    dello spazio \( \mathcal{H} \)  che si dice hermitiano.
+
+    Lo spettro di \( \hat{A} \) (l'insieme degli autovalori) è l'insieme dei valori
+    possibili della misura (spettro della misura).
+    \[
+      \hat{A} \ket{a_i} = a_i \ket{a_i}
+    \] 
+
+  \item Se il sistema fisico si trova in uno stato \( \ket{\psi } \), la probabilità che
+    la misura di \( A \) (grandezza fisica) dia come risultato \( a \) è proporzionale a:
+    \[
+      P(a_i) \propto |\braket{a}{\psi}|^2
+    \] 
+    dove \( \braket{a}{\psi} \) è il coefficiente \( c_i \).
+
+    Ne consegue che la somma delle probabilità è 1:
+    \[
+      \sum |\braket{\alpha}{\psi}|^2 = 1
+    \] 
+
+  \item Collasso della funzione d'onda \( \psi  \) (non c'è spiegazione fisica).
+    La misura dell'osservabile \( A \) sullo stato generico \( \ket{\psi } \) (che ha dato
+    un risultato \( a \)) proietta \( \ket{\psi } \) sull'autospazio di \( a \), (cioè \( \ket{a} \))
+
+  \item Gli stati \( \ket{\psi } \) evolvono nel tempo secondo l'equazione di Schrödinger:
+    \[
+      i \hslash \frac{d}{dt} \ket{\psi(t) } = \hat{H}(t) \ket{\psi(t) }
+    \] 
+    dove \( \hat{H} \) è l'\textbf{operatore Hamiltoniano} del sistema.
+    L'operatore Hamiltoniano è l'"energia" del sistema che è data da:
+    \[
+      \underbrace{\mathbb{T}}_{\text{Cinetica}} + \underbrace{\mathbb{V}(\vec{x})}_{\text{Potenziale}}
+    \] 
+    Il risultato di questa equazione sono tutti i possibili valori dell'energia.
+\end{enumerate}
+
+\section{Dalla meccanica quantistica al quantum computing}
+L'informazione è \textbf{fisica}, cioè manipolare l'informazione è un processo fisico e
+quindi non si può separare le operazioni logiche dalla loro implementazione fisica.
+Esiste quindi un limite dato dal \textbf{principio di Landauer} che dice che c'è un limite
+minimo all'energia spesa (lavoro) per una singola computazione irreversibile (ad esempio
+cancellare un bit). Il limite è dato da:
+\[
+  \Delta E = k_bT \ln 2
+\] 
+dove \( k_b \) è la costante di Boltzmann e \( T \) è la temperatura a cui avviene il 
+processo (in gradi Kelvin).
+
+\begin{example}
+  Un esempio a temperatura ambiente è il seguente:
+  \[
+    T = 300 K
+  \] 
+  \[
+    \Delta E \approx 18 mV
+  \] 
+  È un valore altissimo, quindi visto che l'unica variabile disponibile è la temperatura
+  se si vuole diminuire il limite bisogna diminuire la temperatura a livelli criogenici.
+\end{example}
+
+\subsection{Computazione quantistica}
+Si ha uno stato fisico \( \ket{\psi } \) di input preparato che entra in un computer
+quantistico (processo fisico reversibile) e si ottiene un output \( \ket{\psi } \) che è un altro
+stato fisico, quindi un operatore unitario che indica l'evoluzione temporale di \( \ket{\psi } \) .
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw,rectangle,minimum size=1cm] (A) at (0,0) {QC};
+    \draw[<-] (A) -- ++(-1,0) node[left] {
+        \( 
+        \underbrace{\underset{\text{Input}}{\ket{\psi }}}_{\text{Stato fisico (preparato)}}
+        \) 
+      };
+
+    \draw[->] (A) -- ++(1,0) node[right] { \( \underset{\text{Output}}{\ket{\psi }} =
+        \mathbb{U} \underset{\text{Input}}{\ket{\psi }}\) };
+  \end{tikzpicture}
+  \caption{Computazione quantistica}
+\end{figure}
+\noindent
+Dove \( \mathbb{U} \mathbb{U}^+ = \mathbb{I} \) 
+\[
+  \mathbb{U} = exp \left( -\frac{i}{\hslash} \mathcal{H} t \right)
+\] 
+Si farà poi una misura quantistica per selezionare uno dei possibili esiti di
+\( \underset{\text{Output}}{\ket{\psi }} \).
+
+\noindent
+L'algoritmo quantistico ottimizza questo processo di estrazione dell'informazione
+
+\begin{theorem}[Teorema di No-Cloning]
+  In meccanica quantistica non si può creare (clonare) una copia esatta di uno stato
+  senza distruggere l'originale.
+\end{theorem}
+
+\vspace{1em}
+\noindent
+Nella computazione quantistica si possono sfruttare tutte le proprietà quantistiche,
+come ad esempio:
+\begin{itemize}
+  \item Sovrapposizione
+  \item Correlazione quantistica (entanglement)
+  \item Teletrasporto
+\end{itemize}
+
+\subsection{Comunicazione quantistica}
+Si considerano due entità \( A \) e \( B \) che vogliono comunicare attraverso un
+canale di comunicazione quantistico. Si ha che:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node (A) at (0,0) {A};
+    \node[below=0.1cm of A] (kA) {\( \underset{\text{Funzione d'onda}}{\ket{\psi}} \)};
+
+    \node (B) at (4,0) {B};
+
+    \draw[->] (A) -- (B) node[midway,below,align=center,scale=0.8]
+      {Canale quantistico\\(es. fotoni, spin)};
+  \end{tikzpicture}
+  \caption{Comunicazione quantistica}
+\end{figure}
+\noindent
+Questo da luogo a:
+\begin{itemize}
+  \item Crittografia quantistica
+  \item Teletrasporto
+  \item Teletrasporto di maggiori informazioni
+\end{itemize}
+\( B \) per rilevare il messaggio ha un rilevatore quantistico.
+
+\subsection{Calcolo quantistico}
+L'elemento base di un'operazione è il \textbf{Qubit}, cioè un insieme di due possibili
+stati quantistici distinguibili:
+\[
+  \underset{\text{Stato fondamentale}}{\ket{0}}; \quad
+  \underset{\text{Stato eccitato}}{\ket{1}}
+\] 
+nell'implementazione fisica potrebbe essere uno spin in su o in giù, un fotone con
+polarizzazione orizzontale o verticale ecc...
+
+\vspace{1em}
+\noindent
+Si possono creare, quindi, degli stati che non hanno analogo classico. Un generico qubit
+\( \ket{\psi} \) si trova in sovrapposizione dei suoi stati:
+\[
+  \ket{\psi} = \alpha_0 \ket{0} + \alpha_1 \ket{1} \quad \alpha_0, \alpha_1 \in \mathbb{C}
+\] 
+\[
+  |\alpha_0|^2 + |\alpha_1|^2 = 1
+\] 
+La fase non ha significato nel mondo quantistico:
+\[
+  z = r \left( \cos \theta  + i \sin \theta  \right) = r e^{i \theta }
+\] 
+quindi si può scrivere il qubit come:
+\[
+  \ket{\psi} = \cos \frac{\theta }{2} \ket{0} + e^{i \phi } \sin \frac{\theta }{2} \ket{1}
+\]
+Questo è un punto sulla \textbf{sfera di Bloch}.
+
+\subsubsection{Rappresentazione geometrica del Qubit}
+Il qubit è un punto sulla superficie della sfera di Bloch:
+\label{17-01-D1}
+\[
+  \begin{aligned}
+    \ket{\psi} &= \begin{pmatrix} 
+      \cos \frac{\theta }{2}\\
+      e^{i \phi } \sin \frac{\theta }{2}
+    \end{pmatrix} \\
+    \bra{\psi} &= \begin{pmatrix} 
+      \cos \frac{\theta }{2} & e^{-i \phi } \sin \frac{\theta }{2}
+    \end{pmatrix}
+  \end{aligned}
+\] 
+
+\subsection{Qubit}
+Il Qubit codifica una quantità infinita di informazioni perchè è in sovrapposizione, ma
+questo si può sfruttare soltanto all'interno del calcolo quantistico, perchè quando il
+valore viene estratto si ha il collasso della funzione d'onda e potrà essere soltanto uno
+dei due stati \( \ket{0} \) o \( \ket{1} \).
+
+\vspace{1em}
+\noindent
+Si hanno \( n \) qubit preparati nello stato fondamentale:
+\[
+  \ket{\alpha_i} = \{\ket{0}, \; \ket{1}\}_i
+\] 
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw,rectangle,minimum size=1cm] (A) at (0,0) {\( \mathbb{U} \)};
+    \draw[<-] (A) -- ++(-1,0) node[left] {
+        \( 
+        \begin{cases}
+          \ket{0}_1\\
+          \vdots\\
+          \ket{0}_n
+        \end{cases}
+        \) 
+      };
+
+    \draw[->] (A) -- ++(1,0) node[right] {
+        \(
+        \ket{\psi } = \alpha_{1,2,\ldots,n} \ket{\alpha_1, \ldots, \alpha_n} =
+        \ket{\alpha}_1 \otimes \ket{\alpha}_2 \otimes \ldots \otimes \ket{\alpha}_n
+        \)
+      };
+  \end{tikzpicture}
+  \caption{Calcolo quantistico}
+\end{figure}
+\noindent
+Il sistema descritto da 2 qubit: $\ket{\alpha}_1 ; \ket{\alpha}_2$ si indica con:
+\[
+  \ket{\alpha}_1 \otimes \ket{\alpha}_2 = \ket{\alpha_1 \alpha_2} \quad \in \mathbb{C}^2 \otimes \mathbb{C}^2
+\] 
+
+\vspace{1em}
+\noindent
+Due qubit possono essere ad esempio 2 fotoni che possono assumere gli stati:
+\[
+  \begin{aligned}
+    \{\ket{0}, \ket{1}\}_1\\
+    \{\ket{0}, \ket{1}\}_2\\
+  \end{aligned}
+\] 
+e quindi ci sono 4 stati possibili che formano la base. Gli stati si indicano:
+\[
+  \begin{aligned}
+    \ket{00}\\
+    \ket{01}\\
+    \ket{10}\\
+    \ket{11}
+  \end{aligned}
+\] 
+Qualsiasi combinazione di questi consiste in una formazione quantistica trasportata all'interno
+del circuito e quindi:
+\[
+  \ket{\psi} = \alpha_{00} \ket{00} + \alpha_{01} \ket{01} + \alpha_{10} \ket{10} + \alpha_{11} \ket{11}
+\] 
+\[
+  \sum |\alpha_{ij}|^2 = 1
+\] 
+I coefficienti sono la probabilità di ottenere il primo stato in un certo stato fondamentale
+e il secondo stato in un altro stato fondamentale.
+
+\vspace{1em}
+\noindent
+Gli stati \( \ket{0} \) e \( \ket{1} \) a livello fisico hanno una differenza di energia
+piccolissima, che viene annullata dal bagno termico (non si possono differenziare per
+l'interferenza dell'ambiente) in cui è immerso il sistema, per
+questo motivo bisogna lavorare a temperature criogeniche.
+Quando un sistema fisico perde il suo stato si dice \textbf{incoerenza fisica}.
+
+\subsubsection{Porta di Hadamard}
+Il processo fisico:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw,rectangle,minimum size=1cm] (A) at (0,0) {\( \mathbb{U} \)};
+    \draw[<-] (A) ++(-0.5,0.4) -- ++(-0.5,0);
+    \draw[<-] (A) -- ++(-1,0);
+    \draw[<-] (A) ++(-0.5,-0.4) -- ++(-0.5,0);
+
+    \draw[->] (A) ++(0.5,0.4) -- ++(0.5,0);
+    \draw[->] (A) -- ++(1,0);
+    \draw[->] (A) ++(0.5,-0.4) -- ++(0.5,0);
+  \end{tikzpicture}
+  \caption{Processo fisico}
+\end{figure}
+\noindent
+si può separare in operatori più piccoli che agiscono su un qubit, quindi sono rappresentate
+da matrici unitarie \( 2 \times 2 \) (se agiscono su 2 qbit da matrici \( 4 \times 4 \)...)
+in cui ogni colonna rappresenta uno stato del qubit.
+
+\vspace{1em}
+\noindent
+Porta di Hadamard o porta H (non ha analogo classico):
+\begin{itemize}
+  \item 
+    Il vettore di stato \( \ket{0} \) viene trasformato in sovrapposizione di:
+    \[
+      \ket{0} \to \frac{1}{\sqrt{2}} \left( \ket{0} + \ket{1} \right)
+    \] 
+  \item 
+    Il vettore di stato \( \ket{1} \) viene trasformato in sovrapposizione di:
+    \[
+      \ket{1} \to \frac{1}{\sqrt{2}} \left( \ket{0} - \ket{1} \right)
+    \]
+\end{itemize}
+\[
+  \begin{aligned}
+    H &= \begin{pmatrix} 
+      \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}}\\
+      \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}}
+    \end{pmatrix} \\
+      &= \frac{1}{\sqrt{2}} \begin{pmatrix} 
+        1 & 1\\
+        1 & -1
+      \end{pmatrix} 
+  \end{aligned}
+\] 
+
+\vspace{1em}
+\noindent
+Un generico qubit viene trasformato in:
+\[
+  \alpha \ket{0} + \beta \ket{1} \to 
+  \alpha \underbrace{\left( \frac{\ket{0} + \ket{1}}{\sqrt{2} } \right)}_{\ket{+}} +
+  \beta \underbrace{\left( \frac{\ket{0} - \ket{1}}{\sqrt{2} } \right)}_{\ket{-}}
+\] 
+quindi torna in sovrapposizione. Si sta essenzialmente effettuando un cambiamento di base.
+
+\section{Entanglement}
+\subsection{Stato singoletto di spin}
+Lo \( \ket{\text{stato "singoletto di Spin"}} \) è uno stato composto da 2 particelle
+che hanno \( \text{Spin totale} = 0 \)  e spin opposto.
+
+\vspace{1em}
+\noindent
+Ad esempio una sorgente
+radioattiva che emette una particella in una direzione e una particella nella direzione
+opposta:
+\label{17-01-D2}
+\noindent
+Bisogna mantenere lo spin totale a 0, quindi se una particella ha spin "su" l'altra
+deve avere spin "giù". Abbiamo 2 particelle con 2 stati e quindi 4 possibili stati:
+\[
+  \mathbb{C}^2 \otimes \mathbb{C}^2
+\] 
+Per mettere lo spin (\( \ket{0} = \text{"su"} \) e \( \ket{1} = \text{"giù"} \)) in relazione si avrà:
+\[
+  \ket{\text{stato "singoletto di Spin"}} =
+  \frac{1}{\sqrt{2}} \left( \ket{01} - \ket{10} \right)
+\] 
+Le due particelle si dicono \textbf{entangled} perchè le particelle devono avere spin
+opposto. Questo stato si dice \textbf{stato di Bell}.
+
+\vspace{1em}
+\noindent
+Se aggiungiamo degli osservatori \( A \) e \( B \) al sistema:
+\label{17-01-D3}
+Se \( A \) fa una misura sulla particella \( p_1 \) e trova \( \ket{0} \) al \( 50\% \) e
+\( \ket{1} \) al \( 50\% \). Siccome si sta lavorando in un sistema di 2 qubit, se \( A \)
+trova \( \ket{0} \) esso cade nell'autostato di \( A \), ad esempio:
+\begin{itemize}
+  \item Al primo lancio \( A \) trova \( \ket{0}_A \) ed esso collassa nell'autostato
+    \[
+      \frac{1}{\sqrt{2}} \ket{01}
+    \] 
+    quindi \( B \) troverà \( \ket{1}_B \) al \( 100\% \)
+\end{itemize}
+La misura di A determina \textbf{"simultaneamente"} il valore di \( B \), senza che egli
+lo abbia misurato.
+
+\vspace{1em}
+\noindent
+In meccanica quantistica questa relazione è detta \textbf{correlazione di spin}
+o \textbf{entanglement}. Questo avviene solo nella stessa base, se un osservatore non
+conosce la base del secondo osservatore la misura rimane incerta e questa cosa è la
+fondamentale per la \textbf{crittografia quantistica}.
 
 \end{document}
