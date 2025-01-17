@@ -12387,12 +12387,203 @@ discreto. Questo processo è chiamato \textbf{quantizzazione}.
 
 Inoltre un segnale quantizzato può essere \textbf{codificato} in binario, cioè rappresentato
 da una sequenza di bit, ovvero segnali alti e bassi:
-\label{16-01-D3}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \def\Tzero{3.73711}
+    \begin{axis}[
+      clip=false,
+      width=0.5\textwidth,
+      height=0.4\textwidth,
+      xmin= 0, xmax= 4*pi,
+      ymin= 0, ymax = 5,
+      xtick = {\Tzero},
+      xticklabels = {$\underset{t_0 \in \mathbb{Z}}{t_0}$},
+      declare function ={ f(\x) = sin(deg(1/2*\x)) + sin(deg(1/5*\x))+2; },
+      ytick = {f(\Tzero)},
+      axis lines = middle,
+    ]
+      \addplot[blue,thick,domain=0:4*pi, samples=100]{f(x)};
+      \addplot[dashed] coordinates {
+          (\Tzero,{f(x)}) (\Tzero,0)
+        };
+
+      \addplot[dashed] coordinates {
+          (0,{f(\Tzero)}) (\Tzero,{f(\Tzero)})
+        };
+
+      \draw (axis description cs: 1.15,0.5)
+        node {$\stackrel{T_{\text{disc}}}{\longrightarrow}$};
+
+      \draw[opacity=0] (axis description cs: 0.5,-0.4)
+        node {$\stackrel{T_{\text{disc}}}{\longrightarrow}$};
+    \end{axis}
+  \end{tikzpicture}
+  \begin{tikzpicture}
+    \def\Tzero{4}
+    \begin{axis}[
+      clip=false,
+      width=0.5\textwidth,
+      height=0.4\textwidth,
+      xmin= 0, xmax= 4*pi,
+      ymin= 0, ymax = 5,
+      xtick = {\Tzero},
+      xticklabels = {$t_0$},
+      declare function ={ f(\x) = sin(deg(1/2*\x)) + sin(deg(1/5*\x))+2; },
+      ytick = {f(\Tzero)},
+      axis lines = middle,
+    ]
+      \addplot[domain=0:4*pi, samples=100]{f(x)};
+      \pgfplotsinvokeforeach{0,1,...,4*pi-1}{
+        \addplot[-latex,blue,thick] coordinates {
+            (#1,0) (#1,{f(#1)})
+          };
+      }
+
+      \addplot[dashed] coordinates {
+          (\Tzero,{f(x)}) (\Tzero,0)
+        };
+
+      \addplot[dashed] coordinates {
+          (0,{f(\Tzero)}) (\Tzero,{f(\Tzero)})
+        };
+
+      \draw (axis description cs: 0.5,-0.4)
+        node {$\big\downarrow$\footnotesize\text{Quantizzazione}};
+    \end{axis}
+  \end{tikzpicture}
+
+  % Below plots
+
+  \begin{tikzpicture}
+    \def\Tzero{3.73711}
+    \begin{axis}[
+      clip=false,
+      width=0.5\textwidth,
+      height=0.4\textwidth,
+      xmin= 0, xmax= 40,
+      ymin= 0, ymax = 1.5,
+      xtick = {1,...,39},
+      xticklabels = {1},
+      xticklabel style = {opacity=0},
+      ytick = {0,1},
+      yticklabels = {0,1},
+      axis lines = middle,
+      declare function ={ f(\x) = sin(deg(1/2*\x)) + sin(deg(1/5*\x))+2; },
+    ]
+      % 010 011 100 100 100 100 100 011 011 010 010 011 011
+      %  2   3   4   4   4   4   4   3   3   2   2   3   3
+      \addplot[blue,thick] coordinates {
+          (0,0)  (1,0)  % 0
+          (1,1)  (2,1)  % 1
+          (2,0)  (3,0)  % 0
+          (4,0)         % 0
+          (4,1)  (5,1)  % 1
+          (6,1)         % 1
+          (7,1)         % 1
+          (7,0)  (8,0)  % 0
+          (9,0)         % 0
+          (9,1)  (10,1) % 1
+          (10,0) (11,0) % 0
+          (12,0)        % 0
+          (12,1) (13,1) % 1
+          (13,0) (14,0) % 0
+          (15,0)        % 0
+          (15,1) (16,1) % 1
+          (16,0) (17,0) % 0
+          (18,0)        % 0
+          (18,1) (19,1) % 1
+          (19,0) (20,0) % 0
+          (21,0)        % 0
+          (22,0)        % 0
+          (22,1) (23,1) % 1
+          (24,1)        % 1
+          (24,0) (25,0) % 0
+          (25,1) (26,1) % 1
+          (27,1)        % 1
+          (27,0) (28,0) % 0
+          (28,1) (29,1) % 1
+          (29,0) (30,0) % 0
+          (31,0)        % 0
+          (31,1) (32,1) % 1
+          (32,0) (33,0) % 0
+          (34,0)        % 0
+          (34,1) (35,1) % 1
+          (36,1)        % 1
+          (36,0) (37,0) % 0
+          (37,1) (38,1) % 1
+          (39,1)        % 1
+      };
+
+      \draw (axis description cs: -0.15,0.5)
+        node {};
+
+      \draw (axis description cs: 1.18,0.5)
+        node {$\stackrel{\text{\footnotesize Encoding}}{\longleftarrow}$};
+    \end{axis}
+  \end{tikzpicture}
+  \begin{tikzpicture}
+    \def\Tzero{4}
+    \begin{axis}[
+      clip=false,
+      width=0.5\textwidth,
+      height=0.4\textwidth,
+      xmin= 0, xmax= 4*pi,
+      ymin= 0, ymax = 5,
+      xtick = {\Tzero},
+      xticklabels = {$t_0$},
+      ytick = {0,...,4},
+      axis lines = middle,
+      declare function ={ f(\x) = ceil(sin(deg(1/2*\x)) + sin(deg(1/5*\x))+2); },
+    ]
+      \pgfplotsinvokeforeach{0,1,...,4*pi-1}{
+        \addplot[-latex,blue,thick] coordinates {
+            (#1,0) (#1,{f(#1)})
+          };
+      }
+
+      \addplot[dashed] coordinates {
+          (\Tzero,{f(x)}) (\Tzero,0)
+        };
+
+      \addplot[dashed] coordinates {
+          (0,{f(\Tzero)}) (\Tzero,{f(\Tzero)})
+        };
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Discretizzazione, quantizzazione e codifica}
+\end{figure}
 
 \subsubsection{Treno campionatore/impulsi}
 Un treno di impulsi a distanza \( T_c \) moltiplicato per un altro segnale fa ottenere
 un segnale campionato in quel punto \( kT_c \):
-\label{16-01-D4}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \def\Tc{1}
+    \def\H{2}
+    \begin{axis}[
+      clip=false,
+      width=0.5\textwidth,
+      height=0.4\textwidth,
+      xmin= 0, xmax= 4*pi,
+      ymin= 0, ymax = \H + 1,
+      xtick = {\Tc, 12*\Tc},
+      xticklabels = {$T_c$,$kT_c$},
+      declare function ={ f(\x) = 2; },
+      ytick = \empty,
+      axis lines = middle,
+    ]
+      \addplot[dashed,domain=0:4*pi, samples=100]{f(x)};
+      \pgfplotsinvokeforeach{\Tc,\Tc*2,...,4*pi-1}{
+        \addplot[-latex,blue,thick] coordinates {
+            (#1,0) (#1,{f(#1)})
+          };
+      }
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Treno di impulsi}
+\end{figure}
 \[
   \begin{aligned}
     \hat{\delta}_{T_c}(t) &= \sum_{k = -\infty}^{\infty} \delta(t - kT_c)\\
@@ -12417,7 +12608,52 @@ un segnale campionato in quel punto \( kT_c \):
                                      &= v(t) \cdot \hat{\hat{\delta}}_{T_c}(t)\\
     \end{aligned}
   \] 
-  \label{16-01-D5}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \def\Tc{0.3}
+      \def\H{2}
+      \begin{axis}[
+        clip=false,
+        width=0.5\textwidth,
+        height=0.4\textwidth,
+        xmin=-sqrt(\H)-1, xmax=sqrt(\H)+1,
+        ymin= 0, ymax = \H + 1,
+        xtick = \empty,
+        ytick = \empty,
+        xlabel = $t$,
+        axis lines = middle,
+        declare function ={ f(\x) = -x^2 + \H; },
+        ]
+        \addplot[blue,thick,domain=-sqrt(\H):sqrt(\H) , samples=100]{f(x)};
+      \end{axis}
+    \end{tikzpicture}
+    \hspace{1cm}
+    \begin{tikzpicture}
+      \def\Tc{sqrt(\H)/4}
+      \def\H{2}
+      \begin{axis}[
+        clip=false,
+        width=0.5\textwidth,
+        height=0.4\textwidth,
+        xmin=-sqrt(\H)-1, xmax=sqrt(\H)+1,
+        ymin= 0, ymax = \H + 1,
+        xtick = \empty,
+        ytick = \empty,
+        xlabel = $t$,
+        axis lines = middle,
+        declare function ={ f(\x) = -x^2 + \H; },
+        ]
+        \addplot[dashed,domain=-sqrt(\H):sqrt(\H) , samples=100]{f(x)};
+        \pgfplotsinvokeforeach{-sqrt(\H)+\Tc,-sqrt(\H)+2*\Tc,...,sqrt(\H)-\Tc}{
+          \addplot[-latex,blue,thick] coordinates {
+              (#1,0) (#1,{f(#1)})
+            };
+        }
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Campionamento del segnale}
+  \end{figure}
 \end{definition}
 
 \subsubsection{Replicazione}
@@ -12431,7 +12667,53 @@ un segnale campionato in quel punto \( kT_c \):
                                     &= \left[ v \ast \hat{\delta}_{T_C} \right](t)
     \end{aligned}
   \]
-  \label{16-01-D6}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \def\Tc{0.3}
+      \def\H{2}
+      \def\W{4}
+      \begin{axis}[
+        clip=false,
+        width=0.5\textwidth,
+        height=0.4\textwidth,
+        xmin=-sqrt(\H/\W)*3-1, xmax=sqrt(\H/\W)*3+1,
+        ymin= 0, ymax = \H + 1,
+        xtick = \empty,
+        ytick = \empty,
+        xlabel = $t$,
+        axis lines = middle,
+        declare function ={ f(\x) = -\W*x^2 + \H; },
+        ]
+        \addplot[blue,thick,domain=-sqrt(\H/\W):sqrt(\H/\W),samples=100]{f(x)};
+      \end{axis}
+    \end{tikzpicture}
+    \hspace{1cm}
+    \begin{tikzpicture}
+      \def\Tc{\H}
+      \def\H{2}
+      \def\W{4}
+      \begin{axis}[
+        width=0.5\textwidth,
+        height=0.4\textwidth,
+        xmin=-sqrt(\H/\W)*3-1, xmax=sqrt(\H/\W)*3+1,
+        ymin= 0, ymax = \H + 1,
+        xtick = \empty,
+        ytick = \empty,
+        xlabel = $t$,
+        axis lines = middle,
+        declare function ={ f(\x) = -\W*x^2 + \H; },
+        ]
+        \pgfplotsinvokeforeach{-\H,0,\H}{
+          \addplot[blue,thick,domain=-sqrt(\H/\W)+#1:sqrt(\H/\W)+#1, samples=100]{-\W*(x-#1)^2 + \H};
+          \addplot[-latex,cyan] coordinates {
+              (#1,0) (#1,\H)
+            };
+        }
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Replicazione del segnale}
+  \end{figure}
 \end{definition}
 
 \vspace{1em}
