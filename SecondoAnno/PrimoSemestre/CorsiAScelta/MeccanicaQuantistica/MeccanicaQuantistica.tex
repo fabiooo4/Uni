@@ -534,7 +534,19 @@ misura è espresso come sovrapposizione di autostati:
     lo spin di un atomo. Prima di misurare non sappiamo che stato abbia, cioè è in
     sovrapposizione. Attraverso un operatore misuriamo lo spin e la particella
     potrà dare come risultato l'autostato \( \ket{+} \) o l'autostato \( \ket{-} \):
-    \label{16-01-D1}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \node[draw,rectangle,minimum size=1cm] (S) at (0,0) {\( \mathcal{S}_z \)};
+        \node[left=of S] (psi) {\( \ket{\psi } \)};
+
+        \draw[<-] (S) -- (psi);
+        \draw[->] (S.east) ++(0,0.25) -- ++(1,0) node[right] {\( \ket{+} \)} 
+          node[below right=0.1cm and 0.8cm,scale=0.8] {OR};
+        \draw[->] (S.east) ++(0,-0.25) -- ++(1,0) node[right] {\( \ket{-} \)};
+      \end{tikzpicture}
+      \caption{Misura di \( \mathcal{S}_z \)}
+    \end{figure}
 
   \item Se \( \ket{\psi } = \ket{a} \) è un autostato, allora la misura di \( A \) non lo cambia:
     \[
@@ -546,7 +558,22 @@ misura è espresso come sovrapposizione di autostati:
     Ad esempio nell'esperimento di Stern-Gerlach se dopo aver misurato lo spin \( \mathcal{S}_z \) 
     ho trovato l'autostato \( \ket{+} \) rifaccio la misura ritrovo lo stesso autostato ed
     è un risultato certo:
-    \label{16-01-D2}
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \node[draw,rectangle,minimum size=1cm] (S) at (0,0) {\( \mathcal{S}_z \)};
+        \node[left=of S] (psi) {\( \ket{\psi } \)};
+
+        \draw[<-] (S) -- (psi);
+        \draw[->] (S.east) ++(0,0.25) -- ++(1,0) node[right] (plus) {\( \ket{+} \)};
+        \draw[->] (S.east) ++(0,-0.25) -- ++(1,0) node[right] {\( \ket{-} \)};
+
+        \node[right=of plus,draw,rectangle,minimum size=1cm] (S2) {\( \mathcal{S}_z \)};
+        \draw[->] (plus) -- (S2);
+        \draw[->] (S2.east) -- ++(1,0) node[right] (plus2) {\( \ket{+} \)};
+      \end{tikzpicture}
+      \caption{Doppia misura di \( \ket{+} \)}
+    \end{figure}
 \end{enumerate}
 
 \begin{definition}[Valore di aspettazione]
@@ -798,7 +825,11 @@ Questo è un punto sulla \textbf{sfera di Bloch}.
 
 \subsubsection{Rappresentazione geometrica del Qubit}
 Il qubit è un punto sulla superficie della sfera di Bloch:
-\label{17-01-D1}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.4\textwidth]{Bloch_sphere}
+  \caption{Sfera di Bloch}
+\end{figure}
 \[
   \begin{aligned}
     \ket{\psi} &= \begin{pmatrix} 
@@ -958,7 +989,22 @@ che hanno \( \text{Spin totale} = 0 \)  e spin opposto.
 Ad esempio una sorgente
 radioattiva che emette una particella in una direzione e una particella nella direzione
 opposta:
-\label{17-01-D2}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw,circle,minimum size=1cm] (s) at (0,0) {} 
+      node[below=0.5cm,align=center,scale=0.8]
+      {Sorgente\\radioattiva};
+
+    \draw[->] (s.west) -- ++(-1.5,0) 
+      node[midway,above=0.1cm,draw,circle,scale=0.7] {\( p_1 \) }
+      node[midway,below=0.1cm] {\( \uparrow \downarrow \) };
+    \draw[->] (s.east) -- ++(1.5,0) 
+      node[midway,above=0.1cm,draw,circle,scale=0.7] {\( p_2 \) }
+      node[midway,below=0.1cm] {\( \downarrow \uparrow \) };
+  \end{tikzpicture}
+  \caption{Particelle con spin opposto}
+\end{figure}
 \noindent
 Bisogna mantenere lo spin totale a 0, quindi se una particella ha spin "su" l'altra
 deve avere spin "giù". Abbiamo 2 particelle con 2 stati e quindi 4 possibili stati:
@@ -976,7 +1022,25 @@ opposto. Questo stato si dice \textbf{stato di Bell}.
 \vspace{1em}
 \noindent
 Se aggiungiamo degli osservatori \( A \) e \( B \) al sistema:
-\label{17-01-D3}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw,circle,minimum size=1cm] (s) at (0,0) {} 
+      node[below=0.5cm,align=center,scale=0.8]
+      {Sorgente\\radioattiva};
+
+    \draw[->] (s.west) -- ++(-1.5,0) 
+      node[midway,above=0.1cm,draw,circle,scale=0.7] {\( p_1 \) }
+      node[midway,below=0.1cm] {\( \uparrow \downarrow \) }
+      node[left] (A) {\( \underset{\text{Osservatore}}{A} \) };
+    \draw[->] (s.east) -- ++(1.5,0) 
+      node[midway,above=0.1cm,draw,circle,scale=0.7] {\( p_2 \) }
+      node[midway,below=0.1cm] {\( \downarrow \uparrow \) }
+      node[right] (B) {\( \underset{\text{Osservatore}}{B} \) };
+  \end{tikzpicture}
+  \caption{Sistema con osservatori}
+\end{figure}
+\noindent
 Se \( A \) fa una misura sulla particella \( p_1 \) e trova \( \ket{0} \) al \( 50\% \) e
 \( \ket{1} \) al \( 50\% \). Siccome si sta lavorando in un sistema di 2 qubit, se \( A \)
 trova \( \ket{0} \) esso cade nell'autostato di \( A \), ad esempio:
