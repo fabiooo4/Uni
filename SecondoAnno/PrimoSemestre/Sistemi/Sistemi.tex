@@ -13058,4 +13058,261 @@ Se si campiona nel tempo si ottiene una replicazione scalata nelle frequenze
   da origine ad un segnale diverso da quello originale.
 \end{theorem}
 
+\section{Sistemi a tempo discreto}
+\begin{definition}
+  Un sistema a tempo discreto è un sistema i cui elementi descrittivi (funzioni di ingresso
+  e uscita) sono successioni di valori discreti:
+  \[
+    (a_k)_{k \in \mathbb{Z}}
+  \] 
+\end{definition}
+
+\subsection{Proprietà}
+\begin{enumerate}
+  \item \textbf{Linearità}
+    \[
+      a u_1(k) + b u_2(k) \mapsto a v_1(k) + b v_2(k)
+    \] 
+    
+  \item \textbf{Tempo invarianza}
+    \[
+      u(k) \mapsto v(k) \Rightarrow u(k - d) \mapsto v(k - d) \quad d \in \mathbb{Z}
+    \] 
+
+  \item \textbf{Causalità}
+    L'uscita di \( v(d) \) dipende solo da \( u(k) \) con \( k \le d \). Da questo
+    segue la definizione di \textbf{segnale inizialmente a riposo}, cioè dato
+    un instante \( d \) sia l'ingresso che l'uscita sono nulli.
+
+    \vspace{1em}
+    \noindent
+    Se un sistema è lineare, causale e tempo invariante si dice \textbf{LTI}.
+
+  \item \textbf{Stabilità asintotica} \( \exists d \in \mathbb{Z} \) 
+    \[
+      u(k) = 0, \forall k \ge d \Rightarrow \lim_{k \to \infty} v(k) = 0
+    \] 
+
+  \item \textbf{BIBO stabilità} $\exists d \in \mathbb{Z}$ e $\exists \mu_u > 0$ tale che:
+    \[
+      |u(k)| < \mu_u, \forall k \ge d \Rightarrow \exists \mu_v > 0 \text{ tale che } |v(k)| < \mu_v
+    \] 
+    Se un sistema è asintoticamente stabile è anche bibo stabile, ma non viceversa
+\end{enumerate}
+
+\subsection{Modellare un sistema a tempo discreto}
+Nel continuo il modello era il seguente:
+\[
+    \sum_{i = 0}^{n} a_i \frac{d^i v(t)}{dt^i} = \sum_{j = 0}^{m} b_j \frac{d^j u(t)}{dt^j}
+\] 
+Nel \textbf{discreto} si ha un modello con equazioni alle differenze:
+\begin{equation}
+  \label{eqn:arma}
+    \sum_{i = 0}^{n} a_i v(k-i) = \sum_{j = 0}^{m} b_j 
+    \underbrace{u(k-j)}_{\text{Derivata del segnale nel tempo}} \quad k \in \mathbb{Z}
+\end{equation}
+Si dice che \( n \) è l'\textbf{ordine del sistema} se e solo se \( a_n \neq 0 \).
+Questo modello è chiamato \textbf{Modello ARMA} (AutoRegressive Moving Average).
+\begin{itemize}
+  \item \textbf{Auto regressivo}: ogni sistema descritto dall'equazione \ref{eqn:arma}
+    e con \( m = 0 \) è descritto come:
+    \[
+      \sum_{i = 0}^{n} a_i v(k-i) = u(k)
+    \] 
+    Cioè l'uscita in ogni istante si determina, una volta noto l'ingresso, tramite
+    regressione con gli \( n \) valori precedenti dell'uscita.
+  \item \textbf{Modello a media mobile}: ogni sistema descritto dall'equazione \ref{eqn:arma}
+    e con \( n = 0 \) è descritto come:
+    \[
+      v(k) = \sum_{j = 0}^{m} b_j u(k-j)
+    \] 
+    Cioè l'uscita del sistema è descritta ad ogni istante da una combinazione lineare
+    degli \( m \) valori precedenti dell'ingresso.
+\end{itemize}
+Per capire come si comporta un modello a tempo discreto bisogna imporre le \( n \) condizioni
+iniziali:
+\[
+  v(-1); v(-2); \ldots; v(-n)
+\] 
+
+\subsubsection{Risoluzione di sistemi a tempo discreto}
+Bisogna riscrivere l'equazione \ref{eqn:arma} esplicitando \( v(k) \):
+\[
+  v(k) = \sum_{j = 0}^{m} \frac{b_j}{b_0} u(k-j) - \sum_{i = 0}^{n} \frac{a_i}{a_0} v(k-i)
+\] 
+Verifichiamo il comportamento anche ai tempi precedenti a \( k \):
+\[
+  v(k - n) = \sum_{j = 0}^{m} \frac{b_j}{b_n} u(k-j) - \sum_{i = 0}^{n-1} \frac{a_i}{a_n} v(k-i)
+\] 
+
+\begin{example}
+  Prendiamo in considerazione il seguente sistema:
+
+  \[
+  v(k) - v(k-1) + v(k-2) = u(k) + 4u(k-2)
+  \] 
+
+  \vspace{1em}
+  \noindent
+  Con condizioni iniziali:
+  \[
+  \begin{cases}
+    v(-1) = 1\\
+    v(-2) = 2\\
+    u(k) = 3k \cdot \delta_{-1}(k)
+  \end{cases}
+  \] 
+
+  \vspace{1em}
+  \noindent
+  \begin{itemize}
+    \item \( k \ge 0 \) 
+      \begin{itemize}
+        \item \( k = 0 \) 
+          \[
+            \begin{aligned}
+              k = 0 = v(0) &= v(-1) - v(-2) + u(0) + 4u(-2)\\
+                           &= 1 - 2 + 0 + 0 = -1
+            \end{aligned}
+          \] 
+        \item \( k = 1 \) 
+          \[
+            \begin{aligned}
+              k = 1 = v(1) &= v(0) - v(-1) + u(1) + 4u(-1)\\
+                           &= -1 - 1 + 3 + 0 = 1
+            \end{aligned}
+          \] 
+        \item \( k = 2 \) 
+          \[
+            \begin{aligned}
+              k = 2 = v(2) &= v(1) - v(0) + u(2) + 4u(0)\\
+                           &= 1 + 1 + 6 + 0 = 8
+            \end{aligned}
+          \] 
+      \end{itemize}
+    \item \( k < 0 \) Cosa succede al sistema per \( k = -1 \) e \( k = -2 \)?
+      \begin{itemize}
+        \item \( k = -1 \) 
+          \[
+            \begin{aligned}
+              k = -1 = v(-3) &= v(-2) - v(-1) + u(-1) + 4u(-3)\\
+                            &= 2 - 1 + 0 + 0 = 1
+            \end{aligned}
+          \] 
+        \item \( k = -2 \) 
+          \[
+            \begin{aligned}
+              k = -2 = v(-4) &= v(-3) - v(-2) + u(-2) + 4u(-4)\\
+                            &= 1 - 2 + 0 + 0 = -1
+            \end{aligned}
+          \]
+      \end{itemize}
+  \end{itemize}
+\end{example}
+Anche per i sistemi a tempo discreto si può separare la risposta totale in risposta
+libera e risposta forzata.
+\[
+v_t = v_l + v_f
+\] 
+\begin{enumerate}
+  \item \textbf{Equazione omogenea}:
+    \[
+      \sum_{i=0}^{n} a_i v(k-i) = 0
+    \] 
+    (uscita = 0)
+
+  \item \textbf{Polinomio caratteristico}:
+    \[
+      p(z) = \sum_{i=0}^{n} a_i z^{-i}
+    \] 
+    \[
+    \begin{aligned}
+      r \le n \text{ radici distinte}\\
+      \mu_r \text{ molteplicità algebrica}
+    \end{aligned}
+    \] 
+    Moltiplicando per \( z^n \) si ottiene un polinomio caratteristico di un'altra forma:
+    \[
+      p(z) = \sum_{i=0}^{n} a_{n-i} z^{i}
+    \] 
+
+  \item \textbf{Risposta libera}:
+    \[
+      v_l(k) = \sum_{i=1}^{r} \sum_{l=0}^{\mu_i - 1} c_{i,l} \frac{k^l}{l!} \lambda_i^k
+    \] 
+
+  \item \textbf{Modi elementari}:
+    \[
+      m_i(k) = \frac{k^l}{l!} \lambda_i^k
+    \] 
+    nel tempo continuo c'era il concetto di stabilità asintotica, cioè:
+    \[
+      lim_{k \to \infty} v_l(k) = 0
+    \] 
+    nel \textbf{tempo discreto} il sistema è asintoticamente stabile se i modi elementari
+    convergono:
+    \[
+      \lim_{k \to \infty} m_i(k) = 0
+    \] 
+    di conseguenza:
+    \[
+      |\lambda_i| < 1
+    \] 
+
+  \item \textbf{Prodotto di convoluzione}
+    Siano \( u,v: \mathbb{Z} \mapsto \mathbb{R} \) due successioni, il prodotto di convoluzione
+    è definito come la seguente successione, se esiste:
+    \[
+      \begin{aligned}
+        [u \ast v](k) &:= \sum_{l = -\infty}^{\infty} u(i) v(k-i)\\
+                      &:= \sum_{l = -\infty}^{\infty} v(i) u(k-i)
+      \end{aligned}
+    \] 
+    
+  \item \textbf{Risposta impulsiva discreta}:
+    \[
+      u(k) = \delta_0(k) \to v(k) = \underbrace{h(k)}_{\text{Risposta impulsiva}}
+    \] 
+
+  \item \textbf{Forma della risposta impulsiva}:
+    Nel tempo continuo la risposta impulsiva era:
+    \[
+      h(t) = d_0 \delta_0(t) + \sum_{i=1}^{r} \sum_{l=0}^{\mu_i - 1} d_{i,l}
+      \frac{t^l}{l!} e^{\lambda_i t} \delta_{-1}(t)
+    \] 
+    Nel \textbf{tempo discreto} la risposta impulsiva assume 2 forme diverse:
+    \begin{itemize}
+      \item Se \( n \neq 0 \) e \( n > m  \) 
+        \[
+          h(k) = \sum_{i=1}^{r} \sum_{l=0}^{\mu_i - 1} d_{i,l} \frac{k^l}{l!} \lambda_i^k
+          \delta_{-1}(k)
+        \] 
+      \item Se \( n \neq 0 \) e \( n \le m \) 
+        \[
+          h(k) = \sum_{i=0}^{m-n} d_i \delta_0(k-i) + \sum_{i=1}^{r} \sum_{l=0}^{\mu_i - 1}
+          d_{i,l} \frac{k^l}{l!} \lambda_i^k \delta_{-1}(k - (m - n + 1))
+        \] 
+    \end{itemize}
+
+  \item \textbf{Risposta forzata}:
+    \[
+      \begin{aligned}
+        v_f(k) = [u \ast h](k) &= \sum_{i=-\infty}^{\infty} u(i) h(k-i)\\
+                               &= \sum_{i=-\infty}^{\infty} h(i) u(k-i)
+      \end{aligned}
+    \] 
+    Siccome la risposta impulsiva è causale si possono cambiare gli estremi della sommatoria:
+    \[
+      \begin{aligned}
+        v_f(k) = [u \ast h](k) &= \sum_{i=0}^{k} h(i) u(k-i)\\
+               &= \sum_{i=0}^{k} u(i) h(k-i)
+      \end{aligned}
+    \]
+
+  \item \textbf{Risposta totale}:
+    \[
+      v_t(k) = v_l(k) + v_f(k)
+    \] 
+\end{enumerate}
+
 \end{document}
