@@ -3873,4 +3873,261 @@ optimal_multiply(S, A, i, j)
 \end{lstlisting}
 
 
+\subsection{Programmazione greedy}
+La programmazione greedy è una tecnica che prende decisioni il prima possibile
+e spera che siano le migliori.
+
+\begin{example}
+  \label{ex:greedy}
+  Prendiamo in considerazione un insieme di attività che sono caratterizzate dal
+  tempo di inizio e dal tempo di fine (con tempo discreto). In ogni istante di
+  tempo c'è solo un'attività che può essere svolta, quindi i periodi di attività
+  devono essere disgiunti. Una lista di attività è la seguente:
+\begin{lstlisting}[language=Scala]
+// Questa lista puo' essere rappresentata come un array
+1:  [8..12] 
+2:  [3..5]
+3:  [8..11]
+4:  [3..8]
+5:  [0..6]
+6:  [1..4]
+7:  [5..9]
+8:  [2..13]
+9:  [6..10]
+10: [5..7]
+11: [12..14]
+\end{lstlisting}
+\noindent
+Ad esempio l'attività 5 e l'attività 10 non possono essere svolte contemporaneamente
+perchè si sovrappongono. L'attività 5 e l'attività 11 invece si possono svolgere
+contemporaneamente.
+
+\vspace{1em}
+\noindent
+\textbf{Obiettivo:}
+\noindent
+Bisogna trovare un insieme di attività compatibili di cardinalità massima.
+
+\vspace{1em}
+\noindent
+Consideriamo che qualcuno ci dica che l'attività 3 fa parte dell'insieme di attività
+compatibili di cardinalità massima, allora possiamo cancellare tutte le attività
+compatibili:
+\begin{lstlisting}[language=Scala]
+1:  [8..12]  // X
+2:  [3..5]   // V
+3:  [8..11]  // <-
+4:  [3..8]   // X
+5:  [0..6]   // V
+6:  [1..4]   // V
+7:  [5..9]   // X
+8:  [2..13]  // X
+9:  [6..10]  // X
+10: [5..7]   // V
+11: [12..14] // V
+\end{lstlisting}
+\noindent
+Verificare la compatibilità per tutte le combinazioni ha un numero di istanze troppo
+alto e quindi bisogna trovare un altro metodo. Si può ordinare la lista di attività
+in base al tempo di fine in modo crescente:
+\begin{lstlisting}[language=Scala]
+1:  [1..4]
+2:  [3..5]
+3:  [0..6]
+4:  [5..7]
+5:  [3..8]
+6:  [5..9]
+7:  [6..10]
+8:  [8..11]
+9:  [8..12]
+10: [2..13]
+11: [12..14]
+\end{lstlisting}
+Ora è più facile trovare un insieme di attività compatibili di cardinalità maggiore di 3.
+C'è un teorema che dice chce tra tutte le soluzioni di cardinalità massima ce n'è una
+che contiene la prima attività della lista ordinata. Si prende la prima attività e
+si cancellano tutte le attività incompatibili:
+\begin{lstlisting}[language=Scala]
+1:  [1..4]   // <-
+2:  [3..5]   // X
+3:  [0..6]   // X
+4:  [5..7]   // V
+5:  [3..8]   // X
+6:  [5..9]   // X
+7:  [6..10]  // V
+8:  [8..11]  // V
+9:  [8..12]  // V
+10: [2..13]  // V
+11: [12..14] // V
+\end{lstlisting}
+Ora si può ripetere il procedimento con le attività rimanenti, perchè il problema si è
+ridotto ad un problema dello stesso tipo, ma più piccolo.
+\begin{lstlisting}[language=Scala]
+1:  [1..4]   // --
+2:  [3..5]   // X
+3:  [0..6]   // X
+4:  [5..7]   // <-
+5:  [3..8]   // X
+6:  [5..9]   // X
+7:  [6..10]  // X
+8:  [8..11]  // V
+9:  [8..12]  // V
+10: [2..13]  // X
+11: [12..14] // V
+\end{lstlisting}
+\begin{lstlisting}[language=Scala]
+1:  [1..4]   // --
+2:  [3..5]   // X
+3:  [0..6]   // X
+4:  [5..7]   // --
+5:  [3..8]   // X
+6:  [5..9]   // X
+7:  [6..10]  // X
+8:  [8..11]  // <-
+9:  [8..12]  // X
+10: [2..13]  // X
+11: [12..14] // V
+\end{lstlisting}
+\begin{lstlisting}[language=Scala]
+1:  [1..4]   // --
+2:  [3..5]   // X
+3:  [0..6]   // X
+4:  [5..7]   // --
+5:  [3..8]   // X
+6:  [5..9]   // X
+7:  [6..10]  // X
+8:  [8..11]  // --
+9:  [8..12]  // X
+10: [2..13]  // X
+11: [12..14] // --
+\end{lstlisting}
+Abbiamo trovato un insieme di attività compatibili di cardinalità massima:
+\[
+  \left\{ 1, 4, 8, 11 \right\}
+\]
+facendo una scelta greedy.
+
+\vspace{1em}
+\noindent
+Per migliorare l'algoritmo si può evitare di controllare tutte le attività maggiori
+della prima attività compatibile trovata.
+\end{example}
+Il teorema menzionato sopra si può dimostrare come:
+\noindent
+Sia \( A \) un insieme di attività compatibili, sia \( k = min(A) \) e definiamo
+\( A' = (A - \{k\}) \cup \{1\}  \). Si sa che il tempo di fine di \( 1 \) è minore
+del tempo di fine di \( k \)
+\[
+f_1 \le f_k
+\] 
+perchè la lista è ordinata. Per questo si sa che ogni attività che si trova nell'insieme
+\( A \) ha tempo di fine maggiore di \( f_k \) perchè il tempo di fine di \( k \) non
+è mai minore del tempo di fine di \( 1 \), quindi tutte le altre attività avranno tempo
+di fine maggiore di \( f_k \) e quindi non si sovrappongono con \( 1 \). Di conseguenza
+\( A' \) è un insieme di attività compatibili e il primo elemento fa sempre parte
+dell'insieme di attività compatibili di cardinalità massima.
+
+\vspace{1em}
+\noindent
+L'algoritmo mostrato nell'esempio \ref{ex:greedy} è il seguente:
+\begin{lstlisting}[language=Scala]
+// S e' un array che contiene tutti i tempi di inizio delle attivita'
+// F e' un array che contiene tutti i tempi di fine delle attivita'
+activity_selector(s,f)
+  sort s,f by f
+  A <- {1}
+  j <- 1
+  for i <- 2 to length(s)
+    if s[i] >= f[j]
+      A <- A U {i}
+      j <- i
+
+  return A
+\end{lstlisting}
+Questo algoritmo ha complessità \( O(n \log n) \) perchè viene fatto un ordinamento, ma
+se le attività sono già ordinate allora la complessità è \( O(n) \). La complessità di
+questo algoritmo dipende anche dalle condizioni in cui viene utilizzato.
+
+\begin{example}
+Ci sono 3 tipi di sostanze che hanno un prezzo diverso in base al peso:
+\begin{lstlisting}
+1: 20Kg -> 100$
+2: 30Kg -> 120$
+3: 10Kg -> 60$
+\end{lstlisting}
+Bisogna inserirle in uno zaino che può contenere al massimo \( 50Kg \). 
+Si vuole massimizzare il valore dello zaino, quindi bisogna vedere quanto
+costa ogni sostanza per \( 1Kg \) 
+\begin{lstlisting}
+1: 20Kg -> 100$ -> 5$/Kg
+2: 30Kg -> 120$ -> 4$/Kg
+3: 10Kg -> 60$ -> 6$/Kg
+\end{lstlisting}
+Per massimizzare il costo si può prendere \( 20Kg \) della prima sostanza, \( 20Kg \) della
+seconda e \( 10Kg \) della terza. Si da quindi priorità alla sostanza che vale di più
+per \( 1Kg \) e si riempie lo zaino con quella.
+
+\vspace{1em}
+\noindent
+Si può ordinare la lista in base al valore al chilo e si prende il massimo della
+prima risorsa della lista ordinata ripetendo il procedimento sullo stesso problema, ma con
+uno zaino con capacità minore, cioè si è ridotto il problema ad uno dello stesso tipo,
+ma più piccolo.
+
+\vspace{1em}
+\noindent
+Se queste sostanze non fossero divisibili allora il problema non ha nè una soluzione
+greedy, nè una soluzione dinamica. Questo tipo di problema si chiama problema 
+di tipo NP-completo, cioè non è stato ancora trovato un algoritmo che risolve il problema
+in tempo polinomiale.
+\end{example}
+
+\begin{exercise}
+  Data una stringa si modifichi inserendo il minimo numero di caratteri per renderla
+  palindroma:
+\begin{lstlisting}
+  AAB    ABC   BACB
+   |      |     |
+   V      V     V
+  BAAB  ABCBA  BACAB
+\end{lstlisting}
+Si parte dall'esterno e si va verso l'interno, se i caratteri sono uguali si passa
+ad un problema dello stesso tipo, ma più piccolo. Se i caratteri non sono uguali
+bisogna capire quale dei due caratteri inserire per rendere la stringa palindroma.
+In questo caso bisogna risolvere entrambi i problemi e vedere quale dei due ha
+il minor numero di caratteri da inserire.
+
+\begin{lstlisting}[language=Scala]
+// s e' la stringa
+// i e j sono gli indici di inizio e fine della stringa
+minimum_palindrome(s,i,j)
+  if j <= i
+    return 0
+  if s[i] == s[j]
+    return minimum_palindrome(s,i+1,j-1)
+  else
+    return 1 + min(
+      minimum_palindrome(s,i+1,j),
+      minimum_palindrome(s,i,j-1)
+      )
+\end{lstlisting}
+Implementando la memoization la soluzione diventa:
+\begin{lstlisting}[language=Scala]
+minimum_palindrome(s,i,j)
+  if j <= i
+    return 0
+  if M[i,j] != +inf
+    return M[i,j]
+  if s[i] == s[j]
+    M[i,j] <- minimum_palindrome(s,i+1,j-1)
+  else
+    M[i,j] <- 1 + min(
+      minimum_palindrome(s,i+1,j),
+      minimum_palindrome(s,i,j-1)
+      )
+  return M[i,j]
+\end{lstlisting}
+Completare creando la matrice Z che contiene i caratteri da inserire per rendere
+la stringa palindroma. E implementare l'algoritmo in modo iterativo.
+\end{exercise}
 \end{document}
