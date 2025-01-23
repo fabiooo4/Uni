@@ -13317,4 +13317,277 @@ v_t = v_l + v_f
     \] 
 \end{enumerate}
 
+\subsection{Trasformata Z}
+\begin{definition}
+  Sia \( v(k) \) una successione di valori reali o complessi. La \textbf{trasformata Z}
+  è definita come:
+  \[
+    \mathcal{Z}\left[ v(k) \right](z) = \sum_{k=-\infty}^{\infty} v(k) z^{-k} = V(z)
+  \] 
+  \[
+    V: \mathbb{C} \mapsto \mathbb{C}, \quad z \in \mathbb{C}
+  \] 
+  è definita per tutti i numeri complessi \( z \) per cui la serie è \textbf{convergente}.
+  Il raggio di convergenza è:
+  \[
+    RdC = \left\{ s \in \mathbb{C} | |s| > r \right\} \quad r \in \mathbb{R}^+
+  \] 
+  Il raggio di convergenza è formato dal semipiano destro e sinistro.
+\end{definition}
+
+\subsubsection{Proprietà}
+\begin{enumerate}
+  \item \textbf{Linearità}:
+    \[
+      \mathcal{Z}\left[ a v_1(k) + b v_2(k) \right](z) = a V_1(z) + b V_2(z)
+    \] 
+
+  \item \textbf{Molitplicazione per un esponenziale}:
+    \[
+      \mathcal{Z}\left[ \lambda^k \cdot v(k) \right](z) = V\left( \frac{z}{\lambda} \right)
+    \] 
+
+  \item \textbf{Moltiplicazione per un monomio}:
+    \[
+      \mathcal{Z}\left[ k \cdot v(k) \right](z) = \frac{d}{dz} V(z)
+    \] 
+
+  \item \textbf{Ritardo temporale}:
+    (equivale alla derivata nel tempo)
+    \[
+      \mathcal{Z}\left[ v(k-d) \right](z) = z^{-d} V(z) + \sum_{i=-d}^{-1} v(i) \cdot z^{-d-i}
+    \] 
+
+  \item \textbf{Convoluzione}:
+    \[
+      \mathcal{Z}\left[ [u \ast v](k) \right](z) = U(z) \cdot V(z)
+    \] 
+\end{enumerate}
+
+\subsubsection{Trasformate notevoli}
+\begin{enumerate}
+  \item \textbf{Delta di Kronecker (o impulso unitario)}:
+    \[
+      \mathcal{Z}\left[ A \cdot \delta_0(k) \right](z) = 1 \cdot A
+    \]
+
+  \item Delta di Kronecker ritardato:
+    \[
+      \mathcal{Z}\left[ \delta_0(k-d) \right](z) = z^{-d} \quad d \in \mathbb{Z}
+    \] 
+
+  \item \textbf{Gradino unitario}:
+    \[
+      \mathcal{Z}\left[ \delta_{-1}(k) \right](z) = \frac{z}{z-1}
+    \] 
+
+  \item \textbf{Successione esponenziale causale}:
+    \[
+      \mathcal{Z}\left[ \lambda^k \cdot \delta_{-1}(k) \right](z) =
+      \frac{z}{z - \lambda}
+    \]
+
+  \item \textbf{Successione esponenziale moltiplicata per un polinomio}:
+    \[
+      \mathcal{Z}\left[ k^n \cdot \lambda^k \cdot \delta_{-1}(k) \right](z) =
+       \frac{z}{(z - \lambda)^{n+1}} 
+    \]
+\end{enumerate}
+
+\subsubsection{Applicazione della trasformata Z a un sistema LTI a tempo discreto}
+Consideriamo un sistema discreto descritto dalla seguente equazione alle differenze:
+\[
+  \sum_{i=0}^{n} a_i v(k-i) = \sum_{j=0}^{m} b_j u(k-j)
+\] 
+\[
+  n \ge m ,\; a_0, b_0 \neq 0
+\] 
+e vengono date le \( n \) condizioni iniziali, definite come:
+\[
+  v(-1); v(-2); \ldots; v(-n)
+\] 
+\[
+  u(-1) = u(-2) = \ldots = u(-m) = 0
+\] 
+Trasformiamo il sistema con la trasformata Z:
+\[
+  \begin{aligned}
+    \mathcal{Z} \left[ \sum_{i=0}^{n} a_i v(k-i) \right](z) &=
+    \mathcal{Z} \left[ \sum_{j=0}^{m} b_j u(k-j) \right](z) \\
+    \sum_{i=0}^{n} a_i \mathcal{Z} \left[ v(k-i) \right](z) &= 
+    \sum_{j=0}^{m} b_j \mathcal{Z} \left[ u(k-j) \right](z) \\
+    \sum_{i=0}^{n} a_i \left( z^{-i} V(z) + \sum_{d=-i}^{-1} v(d) \cdot z^{-i-d} \right) &=
+    \sum_{j=0}^{m} b_j \left( z^{-j} U(z) + \sum_{d=-j}^{-1} u(d) \cdot z^{-j-d} \right)\\
+    \sum_{i=0}^{n} a_i \left( z^{-i} V(z) + \sum_{d=-i}^{-1} v(d) \cdot z^{-i-d} \right) &=
+    \sum_{j=0}^{m} b_j z^{-j} U(z)\\
+  \end{aligned}
+\] 
+\[
+  \color{blue}\underbrace{\sum_{i=0}^{n} a_i z^{-i} V(z)}_{d(z)}
+  \color{black}+ \color{red}\underbrace{\sum_{i=0}^{n} a_i \sum_{d=-i}^{-1} v(d) \cdot z^{-i-d}}_{-p(z)}
+  \color{black}=
+  \color{green!50!black}\underbrace{\sum_{j=0}^{m} b_j z^{-j} U(z)}_{n(z)}\\
+\] 
+dove:
+\begin{itemize}
+  \item \( \color{blue}d(z) \) è il polinomio caratteristico dell'uscita
+  \item \( \color{red}-p(z) \) è il polinomio caratteristico delle condizioni di
+    esistenza dell'uscita
+  \item \( \color{green!50!black}n(z) \) è il polinomio caratteristico dell'ingresso
+\end{itemize}
+\textbf{Ora bisogna moltiplicare tutto il polinomio per \( z^n \)}:
+\[
+  \color{blue}\underbrace{\sum_{i=0}^{n} a_i z^{n-i} V(z)}_{d(z)} \color{black}+
+  \color{red}\underbrace{\sum_{i=0}^{n} a_i \sum_{d=-i}^{-1} v(d) \cdot z^{n-i-d}}_{-p(z)}
+  \color{black}=
+  \color{green!50!black}\underbrace{\sum_{j=0}^{m} b_j z^{n-j} U(z)}_{n(z)}\\
+\] 
+da cui deriviamo la risposta totale:
+\[
+  V(z) = \underbrace{\frac{p(z)}{d(z)}}_{V_L(z)} + 
+  \underbrace{\overbrace{\frac{n(z)}{d(z)}}^{H(z)} U(z)}_{V_F(z)}
+\] 
+
+\vspace{1em}
+\noindent
+Per antitrasformare e ottenere la risposta totale nel tempo:
+\[
+  V(z) = \frac{n(z)}{d(z)}
+\] 
+dove \( n(z) \) è il polinomio al numeratore e \( d(z) \) è il polinomio al denominatore e
+\( deg(n(z)) \le deg(d(z)) \) 
+
+\vspace{1em}
+\noindent
+Definiamo:
+\( \alpha_1, \ldots, \alpha_r \) sono le radici e \( \mu_1, \ldots, \mu_r \) sono le molteplicità.
+\( \zeta \) è la molteplicità delle radici nulle.
+\[
+  \begin{aligned}
+    \tilde{V}(z) &= \frac{V(z)}{z} = \frac{n(z)}{z(z-\alpha_1)^{\mu_1} \ldots (z-\alpha_r)^{\mu_r}}\\
+                 &= \underbrace{\sum_{i=0}^{\zeta} \frac{d_i}{z^i}}_{\text{Radici nulle}}
+                 + \underbrace{\sum_{i=1}^{t} \sum_{l=0}^{\mu_i - 1}
+                 c_{i,l} \frac{1}{(z-\alpha_i)^{l+1}}}_{\text{Radici reali}}
+  \end{aligned}
+\] 
+Di conseguenza moltiplicando per \( z \):
+\[
+  V(z) = \sum_{i=0}^{\zeta} \frac{d_i}{z^i} + \sum_{i=1}^{t} \sum_{l=0}^{\mu_i - 1}
+  c_{i,l} \frac{z}{(z-\alpha_i)^{l+1}}
+\] 
+tutto questo per arrivare ad una forma più semplice per utilizzare le trasformate
+notevoli. A questo punto si può antitrasformatre.
+
+\begin{example}
+  Prendiamo in considerazione il seguente sistema:
+  \[
+    v(k) - v(k-2) = u(k-1) - 2u(k-2)
+  \]
+  Con condizioni iniziali:
+  \[
+    \begin{aligned}
+      v(-1) &= 1 \\
+      v(-2) &= -2 \\
+      u(k) &= (-1)^k \delta_{-1}(k)
+    \end{aligned}
+  \] 
+  Si vuole trovare la risposta libera usando la trasformata Z.
+  \begin{enumerate}
+    \item Troviamo il polinomio caratteristico:
+      \[
+      \begin{aligned}
+        v(k) &\to z^0\\
+        v(k-2) &\to z^{-2}\\
+      \end{aligned}
+      \] 
+      \[
+        z^0 - z^{-2} = 0
+      \] 
+      \[
+        \downarrow \cdot z^2
+      \] 
+      \[
+        z^2 - 1 = 0
+      \] 
+      \[
+        \lambda_1 = -1, \quad \lambda_2 = 1
+      \] 
+
+    \item Passiamo a Z
+      \[
+        \begin{aligned}
+          v(k) &\to z^0 \cdot V(k) = V(k)\\
+          v(k-2) &\to 1 \cdot z^{-2} \cdot V(z) + \sum_{d=-2}^{-1} v(d) \cdot z^{-2-d}\\
+                 &= 1 \cdot z^{-2} \cdot V(z) + z^{-2+2} v(-2) + z^{-2+1} v(-1)\\
+                 &= 1 \cdot z^{-2} \cdot V(z) - z^0 v(-2) + z^{-1} v(-1)\\
+                 &= z^{-2} V(z) + z^{-1} v(-1) + z^0 v(-2)
+        \end{aligned}
+      \] 
+      \[
+        \begin{aligned}
+          u(k-1) &\to z^{-1} \cdot U(z)\\
+          u(k-2) &\to z^{-2} \cdot U(z)
+        \end{aligned}
+      \] 
+      Quindi il sistema è descritto da:
+      \[
+        z^0 V(z) - z^{-2} V(z) - z^{-1} v(-1) - z^0 v(-2) = z^{-1} U(z) + 2z^{-2} U(z)
+      \] 
+      \[
+        V(z) - z^{-2} V(z) - z^{-1} - 2 = z^{-1} U(z) + 2z^{-2} U(z)
+      \] 
+    \item Moltiplichiamo tutto per \( z^2 \):
+      \[
+        z^2 V(z) - z^0 V(z) - z^1 - 2z^2 = z^1 U(z) + 2z^0 U(z)
+      \] 
+    \item Raccogliamo \( V(z) \) e \( U(z) \):
+      \[
+      V(z) (z^2 - 1) = U(z) (z + 2z^2) + U(z) (z + 2)
+      \] 
+      \[
+        V(z) = \frac{z-2z^2}{z^2-1} + \frac{z+2}{z^2-1} U(z)
+      \] 
+  \end{enumerate}
+  La risposta libera nel tempo è:
+  \[
+    V_l(z) = \frac{z-2z^2}{(z-1)(z+1)}
+  \] 
+  \begin{enumerate}
+    \item  Dividiamo tutto per \( z \):
+      \[
+        \tilde{V}_l(z) = \frac{V_l(z)}{z} = \frac{\cancel{z}(1-2z)}{(z-1)(z+1)} \cdot
+        \frac{1}{\cancel{z}}
+      \] 
+    \item Passiamo ai fratti semplici:
+      \[
+        \begin{aligned}
+          \frac{A}{z-1} + \frac{B}{z+1} &= \frac{1-2z}{(z-1)(z+1)}\\
+          \frac{Az + A + Bz - B}{(z-1)(z+1)} &= \frac{(A+B)z + (A-B)}{(z-1)(z+1)}\\
+        \end{aligned}
+      \] 
+      \[
+      \begin{cases}
+        A+B = -2\\
+        A-B = 1
+      \end{cases}
+      \to 
+      \begin{cases}
+        A = -\frac{1}{2}\\
+        B = -\frac{3}{2}
+      \end{cases}
+      \] 
+    \item Torniamo a \( V(z) \) moltiplicando per \( z \):
+      \[
+        \begin{aligned}
+          V_l(z) &= -\frac{1}{2} \frac{1}{z-1} \cdot z - \frac{3}{2} \frac{1}{z+1} \cdot z\\
+                 &= -\frac{1}{2} \frac{z}{z-1} - \frac{3}{2} \frac{z}{z+1}
+        \end{aligned}
+      \] 
+    \item Applichiamo l'antitrasformata Z
+      \[
+        v_l(t) = -\frac{1}{2} \delta_{-1}(t) - \frac{3}{2} (-1)^t \delta_{-1}(t)
+      \] 
+  \end{enumerate}
+\end{example}
+
 \end{document}
