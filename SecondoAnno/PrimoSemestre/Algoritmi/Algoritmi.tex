@@ -3631,6 +3631,153 @@ search(x,I)
   della radice e quidi non ci sono intersezioni.
 \end{exercise}
 
+\subsection{Tabelle Hash}
+Le tabelle hash sono strutture dati che permettono di memorizzare elementi associandoli
+ad un valore univoco. Si vuole accedere ad un elemento inserendo una chiave per ottenere
+il valore associato. Questa tabella si può creare idealmente utilizzando un array 
+indicizzato da caratteri:
+\begin{lstlisting}[language=Scala]
+  T["element"]
+\end{lstlisting}
+Se si utilizza un array indicizzato da una stringa lunga massimo 256, si dovranno
+allocare \( 26^{256} \) celle di memoria. Si può allora creare una struttura che
+abbia la stessa funzione, ma allocando meno memoria?
+L'idea è quella di creare uno spazio più piccolo associato all'array dei dati e poi
+creare una funzione chiamata \textbf{hash} che associa lo spazio più grande, cioè quello
+delle stringhe, a quello più piccolo.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw,circle,minimum size=3cm] (chiavi) {Chiavi};
+    \node[draw,circle,right=of chiavi,align=center,minimum size=2cm] (hash) {Chiavi\\array};
+
+    \node[draw,rectangle,right=of hash,minimum height=3cm, minimum width=1cm] (array) {Array};
+
+    \draw[->] (chiavi) -- (hash);
+    \draw[->] (hash) -- (array);
+  \end{tikzpicture}
+  \caption{Struttura di una tabella hash}
+\end{figure}
+\noindent
+Questa funzione deve essere tale che due stringhe
+diverse abbiano un hash diverso e che due stringhe uguali abbiano lo stesso hash.
+Per ottenere l'elemento associato ad una stringa si avrà:
+\[
+  A(\text{stringa}) \Rightarrow A'\left( H \left( \text{stringa} \right)  \right) 
+\] 
+Mappare uno spazio grande in uno più piccolo crea conflitti, cioè due stringhe diverse
+possono essere associate allo stesso valore e quindi bisogna trovare un meccanismo
+per risolvere i conflitti.
+
+\subsubsection{Risoluzione dei conflitti}
+\begin{itemize}
+  \item 
+    L'array \( A' \) è una lista concatenata di coppie chiave valore.
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \node[draw,circle,minimum size=3cm] (chiavi) {Chiavi};
+        \node[draw,circle,right=of chiavi,align=center,minimum size=2cm] (hash) {Chiavi\\array};
+
+        \node[draw,rectangle,right=of hash,minimum height=3cm, minimum width=1cm] (array) {Array};
+
+        \node[draw,rectangle,minimum height=0.5cm,right=0.2cm of array,scale=0.8] (e1) {"Pippo": 5};
+        \node[draw,rectangle,minimum height=0.5cm,right=0.2cm of e1,scale=0.8] (e2) {"Pluto": 7};
+
+        \draw[->] (chiavi) -- (hash);
+        \draw[->] (hash) -- (array);
+
+        \draw[->] (array) -- (e1);
+        \draw[->] (e1) -- (e2);
+      \end{tikzpicture}
+      \caption{Risoluzione dei conflitti}
+    \end{figure}
+    \noindent
+    La complessità di questa
+    struttura dati è \( O(n) \) perchè bisogna scorrere tutta la lista per trovare l'elemento
+    ricercato. Se però si riesce a trovare una funzione hash che riesce a distribuire in 
+    maniera uniforme gli input nella lista di dati, allora il \textbf{fattore di carico},
+    cioè il rapporto tra il numero di elementi e il numero di celle allocate, sarà:
+    \[
+      \frac{n}{m}
+    \] 
+    dove \( n \) è il numero di elementi e \( m \) è il numero di celle allocate.
+
+  \item Un altro approccio è quello di mantenere tutti i dati nell'array \( A' \) e non
+    più in una lista concatenata. Se in una cella è presente un elemento e si aggiunge
+    un elemento diverso che viene mappato nella stessa cella si può rilevare che la cella
+    è piena e quindi si inserisce l'elemento in una cella successiva. Per la ricerca
+    si guarda nella cella mappata e se non si trova l'elemento si guarda nella cella
+    successiva e così via fino a trovare l'elemento o una cella vuota. Questo metodo
+    funziona finchè l'array non è pieno, ma questo non viene mai raggiunto perchè
+    il fattore di carico è $\frac{1}{2}$.
+
+    \vspace{1em}
+    \noindent
+    Per implementare questo concetto si usa la seguente funzione di hash che prende
+    in input la chiave e il numero di tentativi fatti per trovare la cella giusta:
+    \[
+      H(k, i) = \left( h(k) + i \right) mod m
+    \] 
+    dove \( h(k) \) è una funzione di hash qualsiasi.
+
+    \vspace{1em}
+    \noindent
+    Con questa funzione si verifica il problema di \textbf{aggregazione primaria},
+    cioè una sezione dell'array viene riempita prima delle altre. Per risolvere questo
+    problema si può scalare l'offset \( i \) con una costante \( l \) per fare
+    salti più grandi e lasciare quindi più buchi vuoti. Bisogna però scegliere
+    \( l \) in maniera tale da non dover arrivare al punto di partenza senza
+    prima aver passato tutti gli elementi, cioè \( l \) e \( m \) devono essere
+    \textbf{relativamente primi tra di loro}, cioè non devono avere divisori comuni.
+    Nonostante ci siano più buchi, la lista della ricerca rimane sempre lunga quanto gli
+    elementi in conflitto, quindi per ridurre la lista di ricerca si può usare la
+    tecnica dell'\textbf{hashing doppio}:
+    \[
+    H(k, i) = \left( h_1(k) + i \cdot h_2(k) \right) mod m
+    \] 
+    In questo modo l'offset per fare le ricerche non è più costante, ma dipende dalla
+    chiave. In questa funzione di hash \( m \) e \( h_2(k) \) sono sempre relativamente
+    primi tra di loro.
+
+    \vspace{1em}
+    \noindent
+    Per eliminare un elemento bisogna scorrere tutta la lista per trovare l'elemento
+    e dopo averlo eliminato bisogna far scorrere tutti gli elementi successivi per
+    riempire il buco lasciato.
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Se il numero di celle allocate è il doppio del numero di elementi, allora il fattore
+di carico sarà \( \frac{1}{2} \) e quindi la complessità sarà \( O(1) \) perchè si 
+avrà metà elemento per ogni cella.
+
+\vspace{1em}
+\noindent
+Data la funzione di hash si possono trovare subito dei conflitti, quindi per evitare
+ciò bisogna introdurre un metodo di crittografia.
+
+
+\subsubsection{Funzioni di hash}
+Alcune funzioni di hash sono:
+\begin{enumerate}
+  \item \( H(k) = k mod m = k \% m \). Questa funzione è molto semplice, ma non è
+    molto buona. Ad esempio se \( m = 2^l \) tutte le chiavi che hanno gli ultimi
+    \( l \) bit uguali avranno lo stesso hash. Gli \( m \) che funzionano bene sono
+    i numeri primi.
+
+  \item \( H(k) = \left\lfloor m \left( k \cdot A mod 1 \right)  \right\rfloor \) dove
+    \( A \in \mathbb{R} \). Questo rappresenta un numero compreso tra 0 e 1 moltiplicato
+    per \( m \), quindi un numero tra 0 e \( m-1 \). Il valore più critico in questa
+    funzione è il valore di \( A \). Il valore ottimale di \( A \) è:
+    \[
+      A = \frac{\sqrt{5} - 1}{2} \approx 0.6180339887 = \phi - 1 = \text{Golden ratio} - 1
+    \] 
+
+\end{enumerate}
+
+
 \section{Tecniche di programmazione}
 Fin'ora abbiamo utilizzato la tecnica del \textbf{divide et impera}, cioè dividere
 il problema in parti più piccole e risolverle con lo stesso algoritmo per poi unirle
@@ -4130,4 +4277,20 @@ minimum_palindrome(s,i,j)
 Completare creando la matrice Z che contiene i caratteri da inserire per rendere
 la stringa palindroma. E implementare l'algoritmo in modo iterativo.
 \end{exercise}
+
+\begin{exercise}[Love calculator]
+  L'affinità tra due persone è proporzionale alla stringa più piccola tra le stringhe
+  che contengono i due nomi come sottostringhe. Dati due nomi trovare la stringa
+  più corta che li contiene come sottostringhe e in quanti modi si può scrivere una
+  stringa partendo dai due nomi. Ad esempio:
+\begin{lstlisting}
+      USA & USSR
+          |
+          V
+        USASR
+        USSAR
+        USSRA
+\end{lstlisting}
+\end{exercise}
+
 \end{document}
