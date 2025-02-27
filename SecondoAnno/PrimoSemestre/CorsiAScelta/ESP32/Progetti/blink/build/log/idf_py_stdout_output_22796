@@ -1,0 +1,29 @@
+[1/14] Linking C static library esp-idf/mqtt/libmqtt.a
+[2/14] Linking C static library esp-idf/spiffs/libspiffs.a
+[3/14] Linking C static library esp-idf/fatfs/libfatfs.a
+[4/14] Linking C static library esp-idf/wifi_provisioning/libwifi_provisioning.a
+[5/14] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/blink.c.obj
+[6/14] Linking C static library esp-idf/main/libmain.a
+[7/14] Performing build step for 'bootloader'
+[1/3] Linking C executable bootloader.elf
+[2/3] Generating binary image from built executable
+esptool.py v4.8.1
+Creating esp32 image...
+Merged 2 ELF sections
+Successfully created esp32 image.
+Generated /home/fabio/dev/esp32/blink/build/bootloader/bootloader.bin
+[3/3] cd /home/fabio/dev/esp32/blink/build/bootloader/esp-idf/esptool_py && /home/fabio/.espressif/python_env/idf5.4_py3.13_env/bin/python /home/fabio/esp/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 bootloader 0x1000 /home/fabio/dev/esp32/blink/build/bootloader/bootloader.bin
+Bootloader binary size 0x6560 bytes. 0xaa0 bytes (9%) free.
+[8/14] No install step for 'bootloader'
+[9/14] Completed 'bootloader'
+[10/14] Generating ld/sections.ld
+[11/14] Building C object CMakeFiles/blink.elf.dir/project_elf_src_esp32.c.obj
+[12/14] Linking CXX executable blink.elf
+[13/14] Generating binary image from built executable
+esptool.py v4.8.1
+Creating esp32 image...
+Merged 2 ELF sections
+Successfully created esp32 image.
+Generated /home/fabio/dev/esp32/blink/build/blink.bin
+[14/14] cd /home/fabio/dev/esp32/blink/build/esp-idf/esptool_py && /home/fabio/.espressif/python_env/idf5.4_py3.13_env/bin/python /home/fabio/esp/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 partition --type app /home/fabio/dev/esp32/blink/build/partition_table/partition-table.bin /home/fabio/dev/esp32/blink/build/blink.bin
+blink.bin binary size 0x2b870 bytes. Smallest app partition is 0x100000 bytes. 0xd4790 bytes (83%) free.
