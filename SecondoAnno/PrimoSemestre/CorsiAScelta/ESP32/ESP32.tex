@@ -1,0 +1,66 @@
+\documentclass[a4paper]{article}
+\usepackage{import}
+\input{../../../../preamble.sty}
+
+\begin{document}
+
+\input{title.tex}
+
+\tableofcontents
+\pagebreak
+
+\section{Introduzione}
+\subsection{Tipi di microcontrollori}
+\subsubsection{STM}
+Hanno più risorse hardware e ampio supporto dalla community. Fornisce come strumento
+\textbf{STM32CubeMX} che permette di configurare il microcontrollore in modo grafico,
+come ad esempio i GPIO (General Purpose Input Output) ecc... per dire alla CPU come 
+interagire con ogni pin.
+
+\subsubsection{Espressif}
+L'ESP32 è il microcontrollore utilizzato all'interno di questo corso. Usato per il basso
+costo e facilità di utilizzo e l'ambiente di sviluppo (\textbf{ESP-IDF SDK}) è fatto
+molto bene. La documentazione è completa con tanto di esempi. Questo microcontrollore
+è basato su \textbf{FreeRTOS}, un sistema operativo real time.
+
+\subsection{Sistema operativo FreeRTOS}
+È un sistema operativo open source altamente configurabile che fornisce primitive per
+la creazione di thread, mutex, semafori, timer e memoria dinamica. Questo più che un 
+sistema operativo come Linux, è un kernel che fornisce le primitive per la gestione
+dei thread e delle risorse, come ad esempio lo scheduler ecc...
+
+Un sistema operativo real time ha la caratteristica di avere un tempo di risposta
+garantito, cioè se un evento deve essere gestito in un tempo massimo, il sistema
+operativo deve garantire che l'evento venga gestito entro quel tempo.
+
+\subsubsection{Schemmi di allocazione}
+FreeRTOS mette a disposizione varie strategie di allocazione:
+\begin{itemize}
+  \item Solo allocazione
+  \item Allocazione e deallocazione semplice
+  \item Allocazione e deallocazione in coalescenza
+  \item Coalescenza e heap frammentato
+  \item Allocazione e deallocazione completa con mutua esclusione
+\end{itemize}
+
+\subsubsection{Estensioni}
+FreeRTOS dà la possibilità di estendere il sistema operativo mediante librerie con
+varie funzionalità come:
+\begin{itemize}
+  \item Stack TCP/IP
+  \item File system
+  \item Command line interface
+  \item Interfaccia per i driver
+  \item Ecc...
+\end{itemize}
+
+\section{Configurazione dell'ambiente di sviluppo}
+La seguente configurazione è stata fatta su un sistema operativo Linux con il 
+microcontrollore ESP32.
+
+\subsection{Installazione del toolchain}
+Scaricare Visual Studio Code e installare l'estensione \textbf{ESP-IDF} seguendo
+le istruzioni presenti nell'estensione. O scaricare l'SDK manualmente seguendo
+questa guida \url{https://docs.espressif.com/projects/esp-idf/en/v5.4/esp32/get-started/}.
+
+\end{document}
