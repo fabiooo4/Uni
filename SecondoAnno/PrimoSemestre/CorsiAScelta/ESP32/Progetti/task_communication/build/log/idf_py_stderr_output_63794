@@ -1,0 +1,90 @@
+[0;33m--- esp-idf-monitor 1.5.0 on /dev/ttyUSB0 115200[0m
+[0;33m--- Quit: Ctrl+] | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H[0m
+[0;33m--- 0x40080400: _init at ??:?
+[0m
+[0;33m--- 0x400867ed: uxListRemove at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/list.c:209
+[0m
+[0;33m--- 0x400867ea: uxListRemove at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/list.c:209
+0x40087d4a: xTaskPriorityDisinherit at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/tasks.c:5169
+0x40085783: prvCopyDataToQueue at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/queue.c:2469
+0x40085b38: xQueueGenericSend at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/queue.c:964
+0x40085c86: xQueueGiveMutexRecursive at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/queue.c:789
+0x40082833: lock_release_generic at /home/fabio/esp/esp-idf/components/newlib/locks.c:197
+0x40082905: _lock_release_recursive at /home/fabio/esp/esp-idf/components/newlib/locks.c:211
+0x40082952: __retarget_lock_release_recursive at /home/fabio/esp/esp-idf/components/newlib/locks.c:347
+0x400dbe27: _vfprintf_r at /builds/idf/crosstool-NG/.build/xtensa-esp-elf/src/newlib/newlib/libc/stdio/vfprintf.c:1779 (discriminator 3)
+0x400d888b: printf at /builds/idf/crosstool-NG/.build/xtensa-esp-elf/src/newlib/newlib/libc/stdio/printf.c:56
+0x400d63f0: task2 at /home/fabio/uni/SecondoAnno/PrimoSemestre/CorsiAScelta/ESP32/Progetti/task_communication/main/task_communication.c:38
+0x40085f51: vPortTaskWrapper at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/port.c:139
+[0m
+[0;33m--- 0x40080400: _init at ??:?
+[0m
+[0;33m--- 0x400867ed: uxListRemove at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/list.c:209
+[0m
+[0;33m--- 0x400867ea: uxListRemove at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/list.c:209
+0x40087d4a: xTaskPriorityDisinherit at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/tasks.c:5169
+0x40085783: prvCopyDataToQueue at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/queue.c:2469
+0x40085b38: xQueueGenericSend at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/queue.c:964
+0x40085c86: xQueueGiveMutexRecursive at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/queue.c:789
+0x40082833: lock_release_generic at /home/fabio/esp/esp-idf/components/newlib/locks.c:197
+0x40082905: _lock_release_recursive at /home/fabio/esp/esp-idf/components/newlib/locks.c:211
+0x40082952: __retarget_lock_release_recursive at /home/fabio/esp/esp-idf/components/newlib/locks.c:347
+0x400dbe27: _vfprintf_r at /builds/idf/crosstool-NG/.build/xtensa-esp-elf/src/newlib/newlib/libc/stdio/vfprintf.c:1779 (discriminator 3)
+0x400d888b: printf at /builds/idf/crosstool-NG/.build/xtensa-esp-elf/src/newlib/newlib/libc/stdio/printf.c:56
+0x400d63f0: task2 at /home/fabio/uni/SecondoAnno/PrimoSemestre/CorsiAScelta/ESP32/Progetti/task_communication/main/task_communication.c:38
+0x40085f51: vPortTaskWrapper at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/port.c:139
+[0m
+[0;33m--- 0x40080400: _init at ??:?
+[0m
+[0;33m--- 0x400867ed: uxListRemove at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/list.c:209
+[0m
+[0;33m--- 0x400867ea: uxListRemove at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/list.c:209
+0x40087d4a: xTaskPriorityDisinherit at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/tasks.c:5169
+0x40085783: prvCopyDataToQueue at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/queue.c:2469
+0x40085b38: xQueueGenericSend at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/queue.c:964
+0x40085c86: xQueueGiveMutexRecursive at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/queue.c:789
+0x40082833: lock_release_generic at /home/fabio/esp/esp-idf/components/newlib/locks.c:197
+0x40082905: _lock_release_recursive at /home/fabio/esp/esp-idf/components/newlib/locks.c:211
+0x40082952: __retarget_lock_release_recursive at /home/fabio/esp/esp-idf/components/newlib/locks.c:347
+0x400dbe27: _vfprintf_r at /builds/idf/crosstool-NG/.build/xtensa-esp-elf/src/newlib/newlib/libc/stdio/vfprintf.c:1779 (discriminator 3)
+[0m
+[0;33m--- 0x400d63f0: task2 at /home/fabio/uni/SecondoAnno/PrimoSemestre/CorsiAScelta/ESP32/Progetti/task_communication/main/task_communication.c:38
+0x40085f51: vPortTaskWrapper at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/port.c:139
+[0m
+[0;33m--- 0x40080400: _init at ??:?
+[0m
+[0;33m--- 0x400867ed: uxListRemove at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/list.c:209
+[0m
+[0;33m--- 0x400867ea: uxListRemove at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/list.c:209
+0x40087d4a: xTaskPriorityDisinherit at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/tasks.c:5169
+0x40085783: prvCopyDataToQueue at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/queue.c:2469
+0x40085b38: xQueueGenericSend at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/queue.c:964
+0x40085c86: xQueueGiveMutexRecursive at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/queue.c:789
+0x40082833: lock_release_generic at /home/fabio/esp/esp-idf/components/newlib/locks.c:197
+0x40082905: _lock_release_recursive at /home/fabio/esp/esp-idf/components/newlib/locks.c:211
+0x40082952: __retarget_lock_release_recursive at /home/fabio/esp/esp-idf/components/newlib/locks.c:347
+0x400dbe27: _vfprintf_r at /builds/idf/crosstool-NG/.build/xtensa-esp-elf/src/newlib/newlib/libc/stdio/vfprintf.c:1779 (discriminator 3)
+0x400d888b: printf at /builds/idf/crosstool-NG/.build/xtensa-esp-elf/src/newlib/newlib/libc/stdio/printf.c:56
+0x400d63f0: task2 at /home/fabio/uni/SecondoAnno/PrimoSemestre/CorsiAScelta/ESP32/Progetti/task_communication/main/task_communication.c:38
+0x40085f51: vPortTaskWrapper at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/port.c:139
+[0m
+[0;33m--- 0x40080400: _init at ??:?
+[0m
+[0;33m--- 0x400867ed: uxListRemove at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/list.c:209
+[0m
+[0;33m--- 0x400867ea: uxListRemove at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/list.c:209
+0x40087d4a: xTaskPriorityDisinherit at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/tasks.c:5169
+0x40085783: prvCopyDataToQueue at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/queue.c:2469
+0x40085b38: xQueueGenericSend at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/queue.c:964
+0x40085c86: xQueueGiveMutexRecursive at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/queue.c:789
+0x40082833: lock_release_generic at /home/fabio/esp/esp-idf/components/newlib/locks.c:197
+0x40082905: _lock_release_recursive at /home/fabio/esp/esp-idf/components/newlib/locks.c:211
+0x40082952: __retarget_lock_release_recursive at /home/fabio/esp/esp-idf/components/newlib/locks.c:347
+0x400dbe27: _vfprintf_r at /builds/idf/crosstool-NG/.build/xtensa-esp-elf/src/newlib/newlib/libc/stdio/vfprintf.c:1779 (discriminator 3)
+0x400d888b: printf at /builds/idf/crosstool-NG/.build/xtensa-esp-elf/src/newlib/newlib/libc/stdio/printf.c:56
+0x400d63f0: task2 at /home/fabio/uni/SecondoAnno/PrimoSemestre/CorsiAScelta/ESP32/Progetti/task_communication/main/task_communication.c:38
+0x40085f51: vPortTaskWrapper at /home/fabio/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/port.c:139
+[0m
+[0;33m--- 0x40080400: _init at ??:?
+[0m
+[0m

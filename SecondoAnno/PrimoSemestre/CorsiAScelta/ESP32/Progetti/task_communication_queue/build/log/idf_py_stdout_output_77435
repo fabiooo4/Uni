@@ -1,0 +1,17 @@
+[1/9] Performing build step for 'bootloader'
+[1/1] cd /home/fabio/uni/SecondoAnno/PrimoSemestre/CorsiAScelta/ESP32/Progetti/task_communication_queue/build/bootloader/esp-idf/esptool_py && /home/fabio/.espressif/python_env/idf5.4_py3.13_env/bin/python /home/fabio/esp/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 bootloader 0x1000 /home/fabio/uni/SecondoAnno/PrimoSemestre/CorsiAScelta/ESP32/Progetti/task_communication_queue/build/bootloader/bootloader.bin
+Bootloader binary size 0x6560 bytes. 0xaa0 bytes (9%) free.
+[2/9] No install step for 'bootloader'
+[3/9] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/task_communication_queue.c.obj
+[4/9] Linking C static library esp-idf/main/libmain.a
+[5/9] Completed 'bootloader'
+[6/9] Generating ld/sections.ld
+[7/9] Linking CXX executable task_communication_queue.elf
+[8/9] Generating binary image from built executable
+esptool.py v4.8.1
+Creating esp32 image...
+Merged 2 ELF sections
+Successfully created esp32 image.
+Generated /home/fabio/uni/SecondoAnno/PrimoSemestre/CorsiAScelta/ESP32/Progetti/task_communication_queue/build/task_communication_queue.bin
+[9/9] cd /home/fabio/uni/SecondoAnno/PrimoSemestre/CorsiAScelta/ESP32/Progetti/task_communication_queue/build/esp-idf/esptool_py && /home/fabio/.espressif/python_env/idf5.4_py3.13_env/bin/python /home/fabio/esp/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 partition --type app /home/fabio/uni/SecondoAnno/PrimoSemestre/CorsiAScelta/ESP32/Progetti/task_communication_queue/build/partition_table/partition-table.bin /home/fabio/uni/SecondoAnno/PrimoSemestre/CorsiAScelta/ESP32/Progetti/task_communication_queue/build/task_communication_queue.bin
+task_communication_queue.bin binary size 0x2ba50 bytes. Smallest app partition is 0x100000 bytes. 0xd45b0 bytes (83%) free.

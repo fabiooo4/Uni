@@ -59,8 +59,206 @@ La seguente configurazione è stata fatta su un sistema operativo Linux con il
 microcontrollore ESP32.
 
 \subsection{Installazione del toolchain}
-Scaricare Visual Studio Code e installare l'estensione \textbf{ESP-IDF} seguendo
-le istruzioni presenti nell'estensione. O scaricare l'SDK manualmente seguendo
-questa guida \url{https://docs.espressif.com/projects/esp-idf/en/v5.4/esp32/get-started/}.
+Per scaricare la toolchain su Visual Studio Code installare l'estensione \textbf{ESP-IDF}
+e seguire le istruzioni presenti nell'estensione.
+
+\subsubsection{Linux + Qualsiasi editor}
+Il manuale di installazione si trova a: \href{https://docs.espressif.com/projects/esp-idf/en/v5.4/esp32/get-started/linux-macos-setup.html}{\textit{\underline{getting-started}}}.
+
+\begin{enumerate}
+  \item Installare i prerequisiti
+    \begin{itemize}
+      \item Fedora
+
+\begin{lstlisting}[language=Bash]
+sudo dnf install git wget flex bison gperf python3 cmake ninja-build ccache dfu-util libusbx
+\end{lstlisting}
+
+      \item Ubuntu e Debian
+
+\begin{lstlisting}[language=Bash]
+sudo apt-get install git wget flex bison gperf python3 python3-pip python3-venv cmake ninja-build ccache libffi-dev libssl-dev dfu-util libusb-1.0-0
+\end{lstlisting}
+
+      \item CentOS 7 \& 8
+
+\begin{lstlisting}[language=Bash]
+sudo yum -y update && sudo yum install git wget flex bison gperf python3 cmake ninja-build ccache dfu-util libusbx
+\end{lstlisting}
+
+      \item Arch
+
+\begin{lstlisting}[language=Bash]
+sudo pacman -S --needed gcc git make flex bison gperf python cmake ninja ccache dfu-util libusb
+\end{lstlisting}
+
+    \end{itemize}
+
+  \item Scaricare le librerie fornite da Espressif in 
+    \href{https://github.com/espressif/esp-idf}{\textit{\underline{ESP-IDF repository}}}.
+
+\begin{lstlisting}[language=Bash]
+mkdir -p ~/esp
+cd ~/esp
+git clone -b v5.4 --recursive https://github.com/espressif/esp-idf.git
+\end{lstlisting}
+
+    ESP-IDF verrà scaricato in \lstinline{~/esp/esp-idf}.
+
+  \item Installazione dei tool
+
+    \vspace{1em}
+    \noindent
+    Oltre alle librerie, è necessario installare gli strumenti necessari usati da ESP-IDF,
+    come ad esempio il compilatore, il debugger, i pacchetti python ecc...
+
+\begin{lstlisting}[language=Bash]
+cd ~/esp/esp-idf
+./install.sh esp32
+\end{lstlisting}
+    
+    Questo script installerà tutti i pacchetti necessari per lo sviluppo con ESP32. Se
+    si vuole installare per più microcontrollori, basta passare il nome del microcontrollore
+    come argomento:
+
+\begin{lstlisting}[language=Bash]
+cd ~/esp/esp-idf
+./install.sh esp32,esp32s2
+\end{lstlisting}
+
+    Oppure per scaricare gli strumenti per tutti i target supportati:
+
+\begin{lstlisting}[language=Bash]
+cd ~/esp/esp-idf
+./install.sh all
+\end{lstlisting}
+
+  \item Configurare le variabili d'ambiente
+
+    \vspace{1em}
+    \noindent
+    ESP-IDF fornisce uno script che imposta le variabili d'ambiente necessarie per
+    compilare il codice. Questo script è da eseguire ogni volta che si vuole sviluppare
+    con ESP-IDF:
+
+\begin{lstlisting}[language=Bash]
+. $HOME/esp/esp-idf/export.sh
+\end{lstlisting}
+
+    Per facilitare l'uso di questo script, si può aggiungere al file \lstinline{.bashrc}
+    o \lstinline{.zshrc} il seguente alias (riavviare il terminale, o fare il source
+    del file per rendere effettive le modifiche):
+
+\begin{lstlisting}[language=Bash]
+alias get_idf='. $HOME/esp/esp-idf/export.sh'
+\end{lstlisting}
+
+    In questo modo, ogni volta che si apre un terminale, basta eseguire il comando
+    \lstinline{get_idf} per impostare le variabili d'ambiente.
+\end{enumerate}
+
+\subsection{Creazione ed esecuzione di un progetto}
+Prima di creare un progetto bisogna entrare nell'ambiente di sviluppo con il comando
+\lstinline{get_idf}. Questo comando rende disponibile il comando \lstinline{idf.py}.
+\begin{itemize}
+  \item Creare un progetto
+
+    \vspace{1em}
+    \noindent
+    Per creare un progetto eseguire il seguente comando:
+
+\begin{lstlisting}[language=Bash]
+idf.py create-project <nome-progetto>
+\end{lstlisting}
+    
+  \item Connetti il microcontrollore
+
+    \vspace{1em}
+    \noindent
+    Connettere il microcontrollore e verificare in quale porta seriale è disponibile.
+    Su linux le porte seriali si trovano in \lstinline{/dev/tty*}. Per verificare la
+    lista delle porte seriali disponibili, eseguire il seguente comando:
+
+\begin{lstlisting}[language=Bash]
+ls /dev/tty*
+\end{lstlisting}
+      
+    Se collegato tramite usb, il microcontrollore dovrebbe essere disponibile in
+    \lstinline{/dev/ttyUSB0}. Questa porta seriale potrebbe essere in possesso di
+    \textbf{root}, quindi per poterla usare bisogna dare i permessi all'utente:
+
+\begin{lstlisting}[language=Bash]
+sudo usermod -a -G dialout $USER
+\end{lstlisting}
+
+  \item Configurare il progetto
+
+    \vspace{1em}
+    \noindent
+    Per configurare il progetto, entrare nella cartella del progetto e lanciare il
+    seguente comando per impostare il microcontrollore di target:
+
+\begin{lstlisting}[language=Bash]
+idf.py set-target esp32
+\end{lstlisting}
+
+    Successivamente, per configurare il progetto, eseguire il seguente comando:
+
+    \begin{lstlisting}[language=Bash]
+idf.py menuconfig
+\end{lstlisting}
+
+    Questo comando aprirà un menu con tutte le configurazioni del progetto.
+
+  \item Compilare il progetto
+
+    \vspace{1em}
+    \noindent
+    Per compilare il progetto, eseguire il seguente comando:
+\begin{lstlisting}[language=Bash]
+idf.py build
+\end{lstlisting}
+
+  \item Flash del microcontrollore
+
+    \vspace{1em}
+    \noindent
+    Per caricare il programma sul microcontrollore (flash), eseguire il seguente comando:
+
+\begin{lstlisting}[language=Bash]
+idf.py -p PORT flash
+\end{lstlisting}
+
+    Dove \lstinline{PORT} è la porta seriale in cui è collegato il microcontrollore.
+
+  \item Monitorare il microcontrollore
+
+    \vspace{1em}
+    \noindent
+    Per monitorare il microcontrollore, eseguire il seguente comando:
+
+\begin{lstlisting}[language=Bash]
+idf.py -p PORT monitor
+\end{lstlisting}
+
+  \item Consigli
+    \begin{itemize}
+      \item 
+        Il flash compila in automatico, quindi per compilare, flashare e fare il monitoraggio
+        si può eseguire il seguente comando:
+
+\begin{lstlisting}[language=Bash]
+idf.py -p PORT flash monitor
+\end{lstlisting}
+
+      \item Per eliminare il flash, eseguire il seguente comando:
+
+\begin{lstlisting}[language=Bash]
+idf.py -p PORT erase-flash
+\end{lstlisting}
+
+    \end{itemize}
+
+\end{itemize}
 
 \end{document}

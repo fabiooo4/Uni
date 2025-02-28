@@ -1,0 +1,6726 @@
+). Using the size in the binary image header.
+[0;32mI (274) main_task: Started on CPU0[0m
+[0;32mI (284) main_task: C�ets Jul 29 2019 12:21:46[0m
+
+rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:6276
+load:0x40078000,len:15716
+load:0x40080400,len:4
+ho 8 tail 4 room 4
+load:0x40080404,len:3860
+entry 0x4008063c
+[0;32mI (31) boot: ESP-IDF v5.4 2nd stage bootloader[0m
+[0;32mI (31) boot: compile time Feb 28 2025 10:38:58[0m
+[0;32mI (31) boot: Multicore bootloader[0m
+[0;32mI (32) boot: chip revision: v3.1[0m
+[0;32mI (35) boot.esp32: SPI Speed      : 40MHz[0m
+[0;32mI (39) boot.esp32: SPI Mode       : DIO[0m
+[0;32mI (42) boot.esp32: SPI Flash Size : 2MB[0m
+[0;32mI (46) boot: Enabling RNG early entropy source...[0m
+[0;32mI (50) boot: Partition Table:[0m
+[0;32mI (53) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (59) boot:  0 nvs              WiFi data        01 02 00009000 00006000[0m
+[0;32mI (66) boot:  1 phy_init         RF data          01 01 0000f000 00001000[0m
+[0;32mI (72) boot:  2 factory          factory app      00 00 00010000 00100000[0m
+[0;32mI (79) boot: End of partition table[0m
+[0;32mI (82) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=0972ch ( 38700) map[0m
+[0;32mI (103) esp_image: segment 1: paddr=00019754 vaddr=3ff80000 size=0001ch (    28) load[0m
+[0;32mI (103) esp_image: segment 2: paddr=00019778 vaddr=3ffb0000 size=02314h (  8980) load[0m
+[0;32mI (110) esp_image: segment 3: paddr=0001ba94 vaddr=40080000 size=04584h ( 17796) load[0m
+[0;32mI (121) esp_image: segment 4: paddr=00020020 vaddr=400d0020 size=132ech ( 78572) map[0m
+[0;32mI (149) esp_image: segment 5: paddr=00033314 vaddr=40084584 size=0873ch ( 34620) load[0m
+[0;32mI (169) boot: Loaded app from partition at offset 0x10000[0m
+[0;32mI (169) boot: Disabling RNG early entropy source...[0m
+[0;32mI (179) cpu_start: Multicore app[0m
+[0;32mI (187) cpu_start: Pro cpu start user code[0m
+[0;32mI (188) cpu_start: cpu freq: 160000000 Hz[0m
+[0;32mI (188) app_init: Application information:[0m
+[0;32mI (188) app_init: Project name:     task_communication_queue[0m
+[0;32mI (193) app_init: App version:      b9a22da-dirty[0m
+[0;32mI (197) app_init: Compile time:     Feb 28 2025 10:38:53[0m
+[0;32mI (202) app_init: ELF file SHA256:  f5dbe2b2b...[0m
+[0;32mI (207) app_init: ESP-IDF:          v5.4[0m
+[0;32mI (210) efuse_init: Min chip rev:     v0.0[0m
+[0;32mI (214) efuse_init: Max chip rev:     v3.99 [0m
+[0;32mI (218) efuse_init: Chip rev:         v3.1[0m
+[0;32mI (222) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (229) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM[0m
+[0;32mI (233) heap_init: At 3FFB3F28 len 0002C0D8 (176 KiB): DRAM[0m
+[0;32mI (239) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM[0m
+[0;32mI (244) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM[0m
+[0;32mI (250) heap_init: At 4008CCC0 len 00013340 (76 KiB): IRAM[0m
+[0;32mI (256) spi_flash: detected chip: generic[0m
+[0;32mI (259) spi_flash: flash io: dio[0m
+[0;33mW (261) spi_flash: Detected size(4096k) larger than the size in the binary image header(2048k). Using the size in the binary image header.[0m
+[0;32mI (274) main_task: Started on CPU0[0m
+[0;32mI (284) main_task: Calling app_main()[0m
+Produced:
+ ID: 0  value: 0
+
+[0;32mI (284) main_task: Returned from app_main()[0m
+Consumer recieved:
+ ID: 0  value: 0
+
+Produced:
+ ID: 1  value: 10
+
+Consumer recieved:
+ ID: 1  value: 10
+
+Produced:
+ ID: 2  value: 20
+
+Consumer recieved:
+ ID: 2  value: 20
+
+Produced:
+ ID: 3  value: 30
+
+Consumer recieved:
+ ID: 3  value: 30
+
+Produced:
+ ID: 4  value: 40
+
+Consumer recieved:
+ ID: 4  value: 40
+
+Produced:
+ ID: 5  value: 50
+
+Consumer recieved:
+ ID: 5  value: 50
+
+Produced:
+ ID: 6  value: 60
+
+Consumer recieved:
+ ID: 6  value: 60
+
+Produced:
+ ID: 7  value: 70
+
+Consumer recieved:
+ ID: 7  value: 70
+
+Produced:
+ ID: 8  value: 80
+
+Consumer recieved:
+ ID: 8  value: 80
+
+Produced:
+ ID: 9  value: 90
+
+Consumer recieved:
+ ID: 9  value: 90
+
+Produced:
+ ID: 10  value: 100
+
+Consumer recieved:
+ ID: 10  value: 100
+
+Produced:
+ ID: 11  value: 110
+
+Consumer recieved:
+ ID: 11  value: 110
+
+Produced:
+ ID: 12  value: 120
+
+Consumer recieved:
+ ID: 12  value: 120
+
+Produced:
+ ID: 13  value: 130
+
+Consumer recieved:
+ ID: 13  value: 130
+
+Produced:
+ ID: 14  value: 140
+
+Consumer recieved:
+ ID: 14  value: 140
+
+Produced:
+ ID: 15  value: 150
+
+Consumer recieved:
+ ID: 15  value: 150
+
+Produced:
+ ID: 16  value: 160
+
+Consumer recieved:
+ ID: 16  value: 160
+
+Produced:
+ ID: 17  value: 170
+
+Consumer recieved:
+ ID: 17  value: 170
+
+Produced:
+ ID: 18  value: 180
+
+Consumer recieved:
+ ID: 18  value: 180
+
+Produced:
+ ID: 19  value: 190
+
+Consumer recieved:
+ ID: 19  value: 190
+
+Produced:
+ ID: 20  value: 200
+
+Consumer recieved:
+ ID: 20  value: 200
+
+Produced:
+ ID: 21  value: 210
+
+Consumer recieved:
+ ID: 21  value: 210
+
+Produced:
+ ID: 22  value: 220
+
+Consumer recieved:
+ ID: 22  value: 220
+
+Produced:
+ ID: 23  value: 230
+
+Consumer recieved:
+ ID: 23  value: 230
+
+Produced:
+ ID: 24  value: 240
+
+Consumer recieved:
+ ID: 24  value: 240
+
+Produced:
+ ID: 25  value: 250
+
+Consumer recieved:
+ ID: 25  value: 250
+
+Produced:
+ ID: 26  value: 260
+
+Consumer recieved:
+ ID: 26  value: 260
+
+Produced:
+ ID: 27  value: 270
+
+Consumer recieved:
+ ID: 27  value: 270
+
+Produced:
+ ID: 28  value: 280
+
+Consumer recieved:
+ ID: 28  value: 280
+
+Produced:
+ ID: 29  value: 290
+
+Consumer recieved:
+ ID: 29  value: 290
+
+Produced:
+ ID: 30  value: 300
+
+Consumer recieved:
+ ID: 30  value: 300
+
+Produced:
+ ID: 31  value: 310
+
+Consumer recieved:
+ ID: 31  value: 310
+
+Produced:
+ ID: 32  value: 320
+
+Consumer recieved:
+ ID: 32  value: 320
+
+Produced:
+ ID: 33  value: 330
+
+Consumer recieved:
+ ID: 33  value: 330
+
+Produced:
+ ID: 34  value: 340
+
+Consumer recieved:
+ ID: 34  value: 340
+
+Produced:
+ ID: 35  value: 350
+
+Consumer recieved:
+ ID: 35  value: 350
+
+Produced:
+ ID: 36  value: 360
+
+Consumer recieved:
+ ID: 36  value: 360
+
+Produced:
+ ID: 37  value: 370
+
+Consumer recieved:
+ ID: 37  value: 370
+
+Produced:
+ ID: 38  value: 380
+
+Consumer recieved:
+ ID: 38  value: 380
+
+Produced:
+ ID: 39  value: 390
+
+Consumer recieved:
+ ID: 39  value: 390
+
+Produced:
+ ID: 40  value: 400
+
+Consumer recieved:
+ ID: 40  value: 400
+
+Produced:
+ ID: 41  value: 410
+
+Consumer recieved:
+ ID: 41  value: 410
+
+Produced:
+ ID: 42  value: 420
+
+Consumer recieved:
+ ID: 42  value: 420
+
+Produced:
+ ID: 43  value: 430
+
+Consumer recieved:
+ ID: 43  value: 430
+
+Produced:
+ ID: 44  value: 440
+
+Consumer recieved:
+ ID: 44  value: 440
+
+Produced:
+ ID: 45  value: 450
+
+Consumer recieved:
+ ID: 45  value: 450
+
+Produced:
+ ID: 46  value: 460
+
+Consumer recieved:
+ ID: 46  value: 460
+
+Produced:
+ ID: 47  value: 470
+
+Consumer recieved:
+ ID: 47  value: 470
+
+Produced:
+ ID: 48  value: 480
+
+Consumer recieved:
+ ID: 48  value: 480
+
+Produced:
+ ID: 49  value: 490
+
+Consumer recieved:
+ ID: 49  value: 490
+
+Produced:
+ ID: 50  value: 500
+
+Consumer recieved:
+ ID: 50  value: 500
+
+Produced:
+ ID: 51  value: 510
+
+Consumer recieved:
+ ID: 51  value: 510
+
+Produced:
+ ID: 52  value: 520
+
+Consumer recieved:
+ ID: 52  value: 520
+
+Produced:
+ ID: 53  value: 530
+
+Consumer recieved:
+ ID: 53  value: 530
+
+Produced:
+ ID: 54  value: 540
+
+Consumer recieved:
+ ID: 54  value: 540
+
+Produced:
+ ID: 55  value: 550
+
+Consumer recieved:
+ ID: 55  value: 550
+
+Produced:
+ ID: 56  value: 560
+
+Consumer recieved:
+ ID: 56  value: 560
+
+Produced:
+ ID: 57  value: 570
+
+Consumer recieved:
+ ID: 57  value: 570
+
+Produced:
+ ID: 58  value: 580
+
+Consumer recieved:
+ ID: 58  value: 580
+
+Produced:
+ ID: 59  value: 590
+
+Consumer recieved:
+ ID: 59  value: 590
+
+Produced:
+ ID: 60  value: 600
+
+Consumer recieved:
+ ID: 60  value: 600
+
+Produced:
+ ID: 61  value: 610
+
+Consumer recieved:
+ ID: 61  value: 610
+
+Produced:
+ ID: 62  value: 620
+
+Consumer recieved:
+ ID: 62  value: 620
+
+Produced:
+ ID: 63  value: 630
+
+Consumer recieved:
+ ID: 63  value: 630
+
+Produced:
+ ID: 64  value: 640
+
+Consumer recieved:
+ ID: 64  value: 640
+
+Produced:
+ ID: 65  value: 650
+
+Consumer recieved:
+ ID: 65  value: 650
+
+Produced:
+ ID: 66  value: 660
+
+Consumer recieved:
+ ID: 66  value: 660
+
+Produced:
+ ID: 67  value: 670
+
+Consumer recieved:
+ ID: 67  value: 670
+
+Produced:
+ ID: 68  value: 680
+
+Consumer recieved:
+ ID: 68  value: 680
+
+Produced:
+ ID: 69  value: 690
+
+Consumer recieved:
+ ID: 69  value: 690
+
+Produced:
+ ID: 70  value: 700
+
+Consumer recieved:
+ ID: 70  value: 700
+
+Produced:
+ ID: 71  value: 710
+
+Consumer recieved:
+ ID: 71  value: 710
+
+Produced:
+ ID: 72  value: 720
+
+Consumer recieved:
+ ID: 72  value: 720
+
+Produced:
+ ID: 73  value: 730
+
+Consumer recieved:
+ ID: 73  value: 730
+
+Produced:
+ ID: 74  value: 740
+
+Consumer recieved:
+ ID: 74  value: 740
+
+Produced:
+ ID: 75  value: 750
+
+Consumer recieved:
+ ID: 75  value: 750
+
+Produced:
+ ID: 76  value: 760
+
+Consumer recieved:
+ ID: 76  value: 760
+
+Produced:
+ ID: 77  value: 770
+
+Consumer recieved:
+ ID: 77  value: 770
+
+Produced:
+ ID: 78  value: 780
+
+Consumer recieved:
+ ID: 78  value: 780
+
+Produced:
+ ID: 79  value: 790
+
+Consumer recieved:
+ ID: 79  value: 790
+
+Produced:
+ ID: 80  value: 800
+
+Consumer recieved:
+ ID: 80  value: 800
+
+Produced:
+ ID: 81  value: 810
+
+Consumer recieved:
+ ID: 81  value: 810
+
+Produced:
+ ID: 82  value: 820
+
+Consumer recieved:
+ ID: 82  value: 820
+
+Produced:
+ ID: 83  value: 830
+
+Consumer recieved:
+ ID: 83  value: 830
+
+Produced:
+ ID: 84  value: 840
+
+Consumer recieved:
+ ID: 84  value: 840
+
+Produced:
+ ID: 85  value: 850
+
+Consumer recieved:
+ ID: 85  value: 850
+
+Produced:
+ ID: 86  value: 860
+
+Consumer recieved:
+ ID: 86  value: 860
+
+Produced:
+ ID: 87  value: 870
+
+Consumer recieved:
+ ID: 87  value: 870
+
+Produced:
+ ID: 88  value: 880
+
+Consumer recieved:
+ ID: 88  value: 880
+
+Produced:
+ ID: 89  value: 890
+
+Consumer recieved:
+ ID: 89  value: 890
+
+Produced:
+ ID: 90  value: 900
+
+Consumer recieved:
+ ID: 90  value: 900
+
+Produced:
+ ID: 91  value: 910
+
+Consumer recieved:
+ ID: 91  value: 910
+
+Produced:
+ ID: 92  value: 920
+
+Consumer recieved:
+ ID: 92  value: 920
+
+Produced:
+ ID: 93  value: 930
+
+Consumer recieved:
+ ID: 93  value: 930
+
+Produced:
+ ID: 94  value: 940
+
+Consumer recieved:
+ ID: 94  value: 940
+
+Produced:
+ ID: 95  value: 950
+
+Consumer recieved:
+ ID: 95  value: 950
+
+Produced:
+ ID: 96  value: 960
+
+Consumer recieved:
+ ID: 96  value: 960
+
+Produced:
+ ID: 97  value: 970
+
+Consumer recieved:
+ ID: 97  value: 970
+
+Produced:
+ ID: 98  value: 980
+
+Consumer recieved:
+ ID: 98  value: 980
+
+Produced:
+ ID: 99  value: 990
+
+Consumer recieved:
+ ID: 99  value: 990
+
+Produced:
+ ID: 100  value: 1000
+
+Consumer recieved:
+ ID: 100  value: 1000
+
+Produced:
+ ID: 101  value: 1010
+
+Consumer recieved:
+ ID: 101  value: 1010
+
+Produced:
+ ID: 102  value: 1020
+
+Consumer recieved:
+ ID: 102  value: 1020
+
+Produced:
+ ID: 103  value: 1030
+
+Consumer recieved:
+ ID: 103  value: 1030
+
+Produced:
+ ID: 104  value: 1040
+
+Consumer recieved:
+ ID: 104  value: 1040
+
+Produced:
+ ID: 105  value: 1050
+
+Consumer recieved:
+ ID: 105  value: 1050
+
+Produced:
+ ID: 106  value: 1060
+
+Consumer recieved:
+ ID: 106  value: 1060
+
+Produced:
+ ID: 107  value: 1070
+
+Consumer recieved:
+ ID: 107  value: 1070
+
+Produced:
+ ID: 108  value: 1080
+
+Consumer recieved:
+ ID: 108  value: 1080
+
+Produced:
+ ID: 109  value: 1090
+
+Consumer recieved:
+ ID: 109  value: 1090
+
+Produced:
+ ID: 110  value: 1100
+
+Consumer recieved:
+ ID: 110  value: 1100
+
+Produced:
+ ID: 111  value: 1110
+
+Consumer recieved:
+ ID: 111  value: 1110
+
+Produced:
+ ID: 112  value: 1120
+
+Consumer recieved:
+ ID: 112  value: 1120
+
+Produced:
+ ID: 113  value: 1130
+
+Consumer recieved:
+ ID: 113  value: 1130
+
+Produced:
+ ID: 114  value: 1140
+
+Consumer recieved:
+ ID: 114  value: 1140
+
+Produced:
+ ID: 115  value: 1150
+
+Consumer recieved:
+ ID: 115  value: 1150
+
+Produced:
+ ID: 116  value: 1160
+
+Consumer recieved:
+ ID: 116  value: 1160
+
+Produced:
+ ID: 117  value: 1170
+
+Consumer recieved:
+ ID: 117  value: 1170
+
+Produced:
+ ID: 118  value: 1180
+
+Consumer recieved:
+ ID: 118  value: 1180
+
+Produced:
+ ID: 119  value: 1190
+
+Consumer recieved:
+ ID: 119  value: 1190
+
+Produced:
+ ID: 120  value: 1200
+
+Consumer recieved:
+ ID: 120  value: 1200
+
+Produced:
+ ID: 121  value: 1210
+
+Consumer recieved:
+ ID: 121  value: 1210
+
+Produced:
+ ID: 122  value: 1220
+
+Consumer recieved:
+ ID: 122  value: 1220
+
+Produced:
+ ID: 123  value: 1230
+
+Consumer recieved:
+ ID: 123  value: 1230
+
+Produced:
+ ID: 124  value: 1240
+
+Consumer recieved:
+ ID: 124  value: 1240
+
+Produced:
+ ID: 125  value: 1250
+
+Consumer recieved:
+ ID: 125  value: 1250
+
+Produced:
+ ID: 126  value: 1260
+
+Consumer recieved:
+ ID: 126  value: 1260
+
+Produced:
+ ID: 127  value: 1270
+
+Consumer recieved:
+ ID: 127  value: 1270
+
+Produced:
+ ID: 128  value: 1280
+
+Consumer recieved:
+ ID: 128  value: 1280
+
+Produced:
+ ID: 129  value: 1290
+
+Consumer recieved:
+ ID: 129  value: 1290
+
+Produced:
+ ID: 130  value: 1300
+
+Consumer recieved:
+ ID: 130  value: 1300
+
+Produced:
+ ID: 131  value: 1310
+
+Consumer recieved:
+ ID: 131  value: 1310
+
+Produced:
+ ID: 132  value: 1320
+
+Consumer recieved:
+ ID: 132  value: 1320
+
+Produced:
+ ID: 133  value: 1330
+
+Consumer recieved:
+ ID: 133  value: 1330
+
+Produced:
+ ID: 134  value: 1340
+
+Consumer recieved:
+ ID: 134  value: 1340
+
+Produced:
+ ID: 135  value: 1350
+
+Consumer recieved:
+ ID: 135  value: 1350
+
+Produced:
+ ID: 136  value: 1360
+
+Consumer recieved:
+ ID: 136  value: 1360
+
+Produced:
+ ID: 137  value: 1370
+
+Consumer recieved:
+ ID: 137  value: 1370
+
+Produced:
+ ID: 138  value: 1380
+
+Consumer recieved:
+ ID: 138  value: 1380
+
+Produced:
+ ID: 139  value: 1390
+
+Consumer recieved:
+ ID: 139  value: 1390
+
+Produced:
+ ID: 140  value: 1400
+
+Consumer recieved:
+ ID: 140  value: 1400
+
+Produced:
+ ID: 141  value: 1410
+
+Consumer recieved:
+ ID: 141  value: 1410
+
+Produced:
+ ID: 142  value: 1420
+
+Consumer recieved:
+ ID: 142  value: 1420
+
+Produced:
+ ID: 143  value: 1430
+
+Consumer recieved:
+ ID: 143  value: 1430
+
+Produced:
+ ID: 144  value: 1440
+
+Consumer recieved:
+ ID: 144  value: 1440
+
+Produced:
+ ID: 145  value: 1450
+
+Consumer recieved:
+ ID: 145  value: 1450
+
+Produced:
+ ID: 146  value: 1460
+
+Consumer recieved:
+ ID: 146  value: 1460
+
+Produced:
+ ID: 147  value: 1470
+
+Consumer recieved:
+ ID: 147  value: 1470
+
+Produced:
+ ID: 148  value: 1480
+
+Consumer recieved:
+ ID: 148  value: 1480
+
+Produced:
+ ID: 149  value: 1490
+
+Consumer recieved:
+ ID: 149  value: 1490
+
+Produced:
+ ID: 150  value: 1500
+
+Consumer recieved:
+ ID: 150  value: 1500
+
+Produced:
+ ID: 151  value: 1510
+
+Consumer recieved:
+ ID: 151  value: 1510
+
+Produced:
+ ID: 152  value: 1520
+
+Consumer recieved:
+ ID: 152  value: 1520
+
+Produced:
+ ID: 153  value: 1530
+
+Consumer recieved:
+ ID: 153  value: 1530
+
+Produced:
+ ID: 154  value: 1540
+
+Consumer recieved:
+ ID: 154  value: 1540
+
+Produced:
+ ID: 155  value: 1550
+
+Consumer recieved:
+ ID: 155  value: 1550
+
+Produced:
+ ID: 156  value: 1560
+
+Consumer recieved:
+ ID: 156  value: 1560
+
+Produced:
+ ID: 157  value: 1570
+
+Consumer recieved:
+ ID: 157  value: 1570
+
+Produced:
+ ID: 158  value: 1580
+
+Consumer recieved:
+ ID: 158  value: 1580
+
+Produced:
+ ID: 159  value: 1590
+
+Consumer recieved:
+ ID: 159  value: 1590
+
+Produced:
+ ID: 160  value: 1600
+
+Consumer recieved:
+ ID: 160  value: 1600
+
+Produced:
+ ID: 161  value: 1610
+
+Consumer recieved:
+ ID: 161  value: 1610
+
+Produced:
+ ID: 162  value: 1620
+
+Consumer recieved:
+ ID: 162  value: 1620
+
+Produced:
+ ID: 163  value: 1630
+
+Consumer recieved:
+ ID: 163  value: 1630
+
+Produced:
+ ID: 164  value: 1640
+
+Consumer recieved:
+ ID: 164  value: 1640
+
+Produced:
+ ID: 165  value: 1650
+
+Consumer recieved:
+ ID: 165  value: 1650
+
+Produced:
+ ID: 166  value: 1660
+
+Consumer recieved:
+ ID: 166  value: 1660
+
+Produced:
+ ID: 167  value: 1670
+
+Consumer recieved:
+ ID: 167  value: 1670
+
+Produced:
+ ID: 168  value: 1680
+
+Consumer recieved:
+ ID: 168  value: 1680
+
+Produced:
+ ID: 169  value: 1690
+
+Consumer recieved:
+ ID: 169  value: 1690
+
+Produced:
+ ID: 170  value: 1700
+
+Consumer recieved:
+ ID: 170  value: 1700
+
+Produced:
+ ID: 171  value: 1710
+
+Consumer recieved:
+ ID: 171  value: 1710
+
+Produced:
+ ID: 172  value: 1720
+
+Consumer recieved:
+ ID: 172  value: 1720
+
+Produced:
+ ID: 173  value: 1730
+
+Consumer recieved:
+ ID: 173  value: 1730
+
+Produced:
+ ID: 174  value: 1740
+
+Consumer recieved:
+ ID: 174  value: 1740
+
+Produced:
+ ID: 175  value: 1750
+
+Consumer recieved:
+ ID: 175  value: 1750
+
+Produced:
+ ID: 176  value: 1760
+
+Consumer recieved:
+ ID: 176  value: 1760
+
+Produced:
+ ID: 177  value: 1770
+
+Consumer recieved:
+ ID: 177  value: 1770
+
+Produced:
+ ID: 178  value: 1780
+
+Consumer recieved:
+ ID: 178  value: 1780
+
+Produced:
+ ID: 179  value: 1790
+
+Consumer recieved:
+ ID: 179  value: 1790
+
+Produced:
+ ID: 180  value: 1800
+
+Consumer recieved:
+ ID: 180  value: 1800
+
+Produced:
+ ID: 181  value: 1810
+
+Consumer recieved:
+ ID: 181  value: 1810
+
+Produced:
+ ID: 182  value: 1820
+
+Consumer recieved:
+ ID: 182  value: 1820
+
+Produced:
+ ID: 183  value: 1830
+
+Consumer recieved:
+ ID: 183  value: 1830
+
+Produced:
+ ID: 184  value: 1840
+
+Consumer recieved:
+ ID: 184  value: 1840
+
+Produced:
+ ID: 185  value: 1850
+
+Consumer recieved:
+ ID: 185  value: 1850
+
+Produced:
+ ID: 186  value: 1860
+
+Consumer recieved:
+ ID: 186  value: 1860
+
+Produced:
+ ID: 187  value: 1870
+
+Consumer recieved:
+ ID: 187  value: 1870
+
+Produced:
+ ID: 188  value: 1880
+
+Consumer recieved:
+ ID: 188  value: 1880
+
+Produced:
+ ID: 189  value: 1890
+
+Consumer recieved:
+ ID: 189  value: 1890
+
+Produced:
+ ID: 190  value: 1900
+
+Consumer recieved:
+ ID: 190  value: 1900
+
+Produced:
+ ID: 191  value: 1910
+
+Consumer recieved:
+ ID: 191  value: 1910
+
+Produced:
+ ID: 192  value: 1920
+
+Consumer recieved:
+ ID: 192  value: 1920
+
+Produced:
+ ID: 193  value: 1930
+
+Consumer recieved:
+ ID: 193  value: 1930
+
+Produced:
+ ID: 194  value: 1940
+
+Consumer recieved:
+ ID: 194  value: 1940
+
+Produced:
+ ID: 195  value: 1950
+
+Consumer recieved:
+ ID: 195  value: 1950
+
+Produced:
+ ID: 196  value: 1960
+
+Consumer recieved:
+ ID: 196  value: 1960
+
+Produced:
+ ID: 197  value: 1970
+
+Consumer recieved:
+ ID: 197  value: 1970
+
+Produced:
+ ID: 198  value: 1980
+
+Consumer recieved:
+ ID: 198  value: 1980
+
+Produced:
+ ID: 199  value: 1990
+
+Consumer recieved:
+ ID: 199  value: 1990
+
+Produced:
+ ID: 200  value: 2000
+
+Consumer recieved:
+ ID: 200  value: 2000
+
+Produced:
+ ID: 201  value: 2010
+
+Consumer recieved:
+ ID: 201  value: 2010
+
+Produced:
+ ID: 202  value: 2020
+
+Consumer recieved:
+ ID: 202  value: 2020
+
+Produced:
+ ID: 203  value: 2030
+
+Consumer recieved:
+ ID: 203  value: 2030
+
+Produced:
+ ID: 204  value: 2040
+
+Consumer recieved:
+ ID: 204  value: 2040
+
+Produced:
+ ID: 205  value: 2050
+
+Consumer recieved:
+ ID: 205  value: 2050
+
+Produced:
+ ID: 206  value: 2060
+
+Consumer recieved:
+ ID: 206  value: 2060
+
+Produced:
+ ID: 207  value: 2070
+
+Consumer recieved:
+ ID: 207  value: 2070
+
+Produced:
+ ID: 208  value: 2080
+
+Consumer recieved:
+ ID: 208  value: 2080
+
+Produced:
+ ID: 209  value: 2090
+
+Consumer recieved:
+ ID: 209  value: 2090
+
+Produced:
+ ID: 210  value: 2100
+
+Consumer recieved:
+ ID: 210  value: 2100
+
+Produced:
+ ID: 211  value: 2110
+
+Consumer recieved:
+ ID: 211  value: 2110
+
+Produced:
+ ID: 212  value: 2120
+
+Consumer recieved:
+ ID: 212  value: 2120
+
+Produced:
+ ID: 213  value: 2130
+
+Consumer recieved:
+ ID: 213  value: 2130
+
+Produced:
+ ID: 214  value: 2140
+
+Consumer recieved:
+ ID: 214  value: 2140
+
+Produced:
+ ID: 215  value: 2150
+
+Consumer recieved:
+ ID: 215  value: 2150
+
+Produced:
+ ID: 216  value: 2160
+
+Consumer recieved:
+ ID: 216  value: 2160
+
+Produced:
+ ID: 217  value: 2170
+
+Consumer recieved:
+ ID: 217  value: 2170
+
+Produced:
+ ID: 218  value: 2180
+
+Consumer recieved:
+ ID: 218  value: 2180
+
+Produced:
+ ID: 219  value: 2190
+
+Consumer recieved:
+ ID: 219  value: 2190
+
+Produced:
+ ID: 220  value: 2200
+
+Consumer recieved:
+ ID: 220  value: 2200
+
+Produced:
+ ID: 221  value: 2210
+
+Consumer recieved:
+ ID: 221  value: 2210
+
+Produced:
+ ID: 222  value: 2220
+
+Consumer recieved:
+ ID: 222  value: 2220
+
+Produced:
+ ID: 223  value: 2230
+
+Consumer recieved:
+ ID: 223  value: 2230
+
+Produced:
+ ID: 224  value: 2240
+
+Consumer recieved:
+ ID: 224  value: 2240
+
+Produced:
+ ID: 225  value: 2250
+
+Consumer recieved:
+ ID: 225  value: 2250
+
+Produced:
+ ID: 226  value: 2260
+
+Consumer recieved:
+ ID: 226  value: 2260
+
+Produced:
+ ID: 227  value: 2270
+
+Consumer recieved:
+ ID: 227  value: 2270
+
+Produced:
+ ID: 228  value: 2280
+
+Consumer recieved:
+ ID: 228  value: 2280
+
+Produced:
+ ID: 229  value: 2290
+
+Consumer recieved:
+ ID: 229  value: 2290
+
+Produced:
+ ID: 230  value: 2300
+
+Consumer recieved:
+ ID: 230  value: 2300
+
+Produced:
+ ID: 231  value: 2310
+
+Consumer recieved:
+ ID: 231  value: 2310
+
+Produced:
+ ID: 232  value: 2320
+
+Consumer recieved:
+ ID: 232  value: 2320
+
+Produced:
+ ID: 233  value: 2330
+
+Consumer recieved:
+ ID: 233  value: 2330
+
+Produced:
+ ID: 234  value: 2340
+
+Consumer recieved:
+ ID: 234  value: 2340
+
+Produced:
+ ID: 235  value: 2350
+
+Consumer recieved:
+ ID: 235  value: 2350
+
+Produced:
+ ID: 236  value: 2360
+
+Consumer recieved:
+ ID: 236  value: 2360
+
+Produced:
+ ID: 237  value: 2370
+
+Consumer recieved:
+ ID: 237  value: 2370
+
+Produced:
+ ID: 238  value: 2380
+
+Consumer recieved:
+ ID: 238  value: 2380
+
+Produced:
+ ID: 239  value: 2390
+
+Consumer recieved:
+ ID: 239  value: 2390
+
+Produced:
+ ID: 240  value: 2400
+
+Consumer recieved:
+ ID: 240  value: 2400
+
+Produced:
+ ID: 241  value: 2410
+
+Consumer recieved:
+ ID: 241  value: 2410
+
+Produced:
+ ID: 242  value: 2420
+
+Consumer recieved:
+ ID: 242  value: 2420
+
+Produced:
+ ID: 243  value: 2430
+
+Consumer recieved:
+ ID: 243  value: 2430
+
+Produced:
+ ID: 244  value: 2440
+
+Consumer recieved:
+ ID: 244  value: 2440
+
+Produced:
+ ID: 245  value: 2450
+
+Consumer recieved:
+ ID: 245  value: 2450
+
+Produced:
+ ID: 246  value: 2460
+
+Consumer recieved:
+ ID: 246  value: 2460
+
+Produced:
+ ID: 247  value: 2470
+
+Consumer recieved:
+ ID: 247  value: 2470
+
+Produced:
+ ID: 248  value: 2480
+
+Consumer recieved:
+ ID: 248  value: 2480
+
+Produced:
+ ID: 249  value: 2490
+
+Consumer recieved:
+ ID: 249  value: 2490
+
+Produced:
+ ID: 250  value: 2500
+
+Consumer recieved:
+ ID: 250  value: 2500
+
+Produced:
+ ID: 251  value: 2510
+
+Consumer recieved:
+ ID: 251  value: 2510
+
+Produced:
+ ID: 252  value: 2520
+
+Consumer recieved:
+ ID: 252  value: 2520
+
+Produced:
+ ID: 253  value: 2530
+
+Consumer recieved:
+ ID: 253  value: 2530
+
+Produced:
+ ID: 254  value: 2540
+
+Consumer recieved:
+ ID: 254  value: 2540
+
+Produced:
+ ID: 255  value: 2550
+
+Consumer recieved:
+ ID: 255  value: 2550
+
+Produced:
+ ID: 256  value: 2560
+
+Consumer recieved:
+ ID: 256  value: 2560
+
+Produced:
+ ID: 257  value: 2570
+
+Consumer recieved:
+ ID: 257  value: 2570
+
+Produced:
+ ID: 258  value: 2580
+
+Consumer recieved:
+ ID: 258  value: 2580
+
+Produced:
+ ID: 259  value: 2590
+
+Consumer recieved:
+ ID: 259  value: 2590
+
+Produced:
+ ID: 260  value: 2600
+
+Consumer recieved:
+ ID: 260  value: 2600
+
+Produced:
+ ID: 261  value: 2610
+
+Consumer recieved:
+ ID: 261  value: 2610
+
+Produced:
+ ID: 262  value: 2620
+
+Consumer recieved:
+ ID: 262  value: 2620
+
+Produced:
+ ID: 263  value: 2630
+
+Consumer recieved:
+ ID: 263  value: 2630
+
+Produced:
+ ID: 264  value: 2640
+
+Consumer recieved:
+ ID: 264  value: 2640
+
+Produced:
+ ID: 265  value: 2650
+
+Consumer recieved:
+ ID: 265  value: 2650
+
+Produced:
+ ID: 266  value: 2660
+
+Consumer recieved:
+ ID: 266  value: 2660
+
+Produced:
+ ID: 267  value: 2670
+
+Consumer recieved:
+ ID: 267  value: 2670
+
+Produced:
+ ID: 268  value: 2680
+
+Consumer recieved:
+ ID: 268  value: 2680
+
+Produced:
+ ID: 269  value: 2690
+
+Consumer recieved:
+ ID: 269  value: 2690
+
+Produced:
+ ID: 270  value: 2700
+
+Consumer recieved:
+ ID: 270  value: 2700
+
+Produced:
+ ID: 271  value: 2710
+
+Consumer recieved:
+ ID: 271  value: 2710
+
+Produced:
+ ID: 272  value: 2720
+
+Consumer recieved:
+ ID: 272  value: 2720
+
+Produced:
+ ID: 273  value: 2730
+
+Consumer recieved:
+ ID: 273  value: 2730
+
+Produced:
+ ID: 274  value: 2740
+
+Consumer recieved:
+ ID: 274  value: 2740
+
+Produced:
+ ID: 275  value: 2750
+
+Consumer recieved:
+ ID: 275  value: 2750
+
+Produced:
+ ID: 276  value: 2760
+
+Consumer recieved:
+ ID: 276  value: 2760
+
+Produced:
+ ID: 277  value: 2770
+
+Consumer recieved:
+ ID: 277  value: 2770
+
+Produced:
+ ID: 278  value: 2780
+
+Consumer recieved:
+ ID: 278  value: 2780
+
+Produced:
+ ID: 279  value: 2790
+
+Consumer recieved:
+ ID: 279  value: 2790
+
+Produced:
+ ID: 280  value: 2800
+
+Consumer recieved:
+ ID: 280  value: 2800
+
+Produced:
+ ID: 281  value: 2810
+
+Consumer recieved:
+ ID: 281  value: 2810
+
+Produced:
+ ID: 282  value: 2820
+
+Consumer recieved:
+ ID: 282  value: 2820
+
+Produced:
+ ID: 283  value: 2830
+
+Consumer recieved:
+ ID: 283  value: 2830
+
+Produced:
+ ID: 284  value: 2840
+
+Consumer recieved:
+ ID: 284  value: 2840
+
+Produced:
+ ID: 285  value: 2850
+
+Consumer recieved:
+ ID: 285  value: 2850
+
+Produced:
+ ID: 286  value: 2860
+
+Consumer recieved:
+ ID: 286  value: 2860
+
+Produced:
+ ID: 287  value: 2870
+
+Consumer recieved:
+ ID: 287  value: 2870
+
+Produced:
+ ID: 288  value: 2880
+
+Consumer recieved:
+ ID: 288  value: 2880
+
+Produced:
+ ID: 289  value: 2890
+
+Consumer recieved:
+ ID: 289  value: 2890
+
+Produced:
+ ID: 290  value: 2900
+
+Consumer recieved:
+ ID: 290  value: 2900
+
+Produced:
+ ID: 291  value: 2910
+
+Consumer recieved:
+ ID: 291  value: 2910
+
+Produced:
+ ID: 292  value: 2920
+
+Consumer recieved:
+ ID: 292  value: 2920
+
+Produced:
+ ID: 293  value: 2930
+
+Consumer recieved:
+ ID: 293  value: 2930
+
+Produced:
+ ID: 294  value: 2940
+
+Consumer recieved:
+ ID: 294  value: 2940
+
+Produced:
+ ID: 295  value: 2950
+
+Consumer recieved:
+ ID: 295  value: 2950
+
+Produced:
+ ID: 296  value: 2960
+
+Consumer recieved:
+ ID: 296  value: 2960
+
+Produced:
+ ID: 297  value: 2970
+
+Consumer recieved:
+ ID: 297  value: 2970
+
+Produced:
+ ID: 298  value: 2980
+
+Consumer recieved:
+ ID: 298  value: 2980
+
+Produced:
+ ID: 299  value: 2990
+
+Consumer recieved:
+ ID: 299  value: 2990
+
+Produced:
+ ID: 300  value: 3000
+
+Consumer recieved:
+ ID: 300  value: 3000
+
+Produced:
+ ID: 301  value: 3010
+
+Consumer recieved:
+ ID: 301  value: 3010
+
+Produced:
+ ID: 302  value: 3020
+
+Consumer recieved:
+ ID: 302  value: 3020
+
+Produced:
+ ID: 303  value: 3030
+
+Consumer recieved:
+ ID: 303  value: 3030
+
+Produced:
+ ID: 304  value: 3040
+
+Consumer recieved:
+ ID: 304  value: 3040
+
+Produced:
+ ID: 305  value: 3050
+
+Consumer recieved:
+ ID: 305  value: 3050
+
+Produced:
+ ID: 306  value: 3060
+
+Consumer recieved:
+ ID: 306  value: 3060
+
+Produced:
+ ID: 307  value: 3070
+
+Consumer recieved:
+ ID: 307  value: 3070
+
+Produced:
+ ID: 308  value: 3080
+
+Consumer recieved:
+ ID: 308  value: 3080
+
+Produced:
+ ID: 309  value: 3090
+
+Consumer recieved:
+ ID: 309  value: 3090
+
+Produced:
+ ID: 310  value: 3100
+
+Consumer recieved:
+ ID: 310  value: 3100
+
+Produced:
+ ID: 311  value: 3110
+
+Consumer recieved:
+ ID: 311  value: 3110
+
+Produced:
+ ID: 312  value: 3120
+
+Consumer recieved:
+ ID: 312  value: 3120
+
+Produced:
+ ID: 313  value: 3130
+
+Consumer recieved:
+ ID: 313  value: 3130
+
+Produced:
+ ID: 314  value: 3140
+
+Consumer recieved:
+ ID: 314  value: 3140
+
+Produced:
+ ID: 315  value: 3150
+
+Consumer recieved:
+ ID: 315  value: 3150
+
+Produced:
+ ID: 316  value: 3160
+
+Consumer recieved:
+ ID: 316  value: 3160
+
+Produced:
+ ID: 317  value: 3170
+
+Consumer recieved:
+ ID: 317  value: 3170
+
+Produced:
+ ID: 318  value: 3180
+
+Consumer recieved:
+ ID: 318  value: 3180
+
+Produced:
+ ID: 319  value: 3190
+
+Consumer recieved:
+ ID: 319  value: 3190
+
+Produced:
+ ID: 320  value: 3200
+
+Consumer recieved:
+ ID: 320  value: 3200
+
+Produced:
+ ID: 321  value: 3210
+
+Consumer recieved:
+ ID: 321  value: 3210
+
+Produced:
+ ID: 322  value: 3220
+
+Consumer recieved:
+ ID: 322  value: 3220
+
+Produced:
+ ID: 323  value: 3230
+
+Consumer recieved:
+ ID: 323  value: 3230
+
+Produced:
+ ID: 324  value: 3240
+
+Consumer recieved:
+ ID: 324  value: 3240
+
+Produced:
+ ID: 325  value: 3250
+
+Consumer recieved:
+ ID: 325  value: 3250
+
+Produced:
+ ID: 326  value: 3260
+
+Consumer recieved:
+ ID: 326  value: 3260
+
+Produced:
+ ID: 327  value: 3270
+
+Consumer recieved:
+ ID: 327  value: 3270
+
+Produced:
+ ID: 328  value: 3280
+
+Consumer recieved:
+ ID: 328  value: 3280
+
+Produced:
+ ID: 329  value: 3290
+
+Consumer recieved:
+ ID: 329  value: 3290
+
+Produced:
+ ID: 330  value: 3300
+
+Consumer recieved:
+ ID: 330  value: 3300
+
+Produced:
+ ID: 331  value: 3310
+
+Consumer recieved:
+ ID: 331  value: 3310
+
+Produced:
+ ID: 332  value: 3320
+
+Consumer recieved:
+ ID: 332  value: 3320
+
+Produced:
+ ID: 333  value: 3330
+
+Consumer recieved:
+ ID: 333  value: 3330
+
+Produced:
+ ID: 334  value: 3340
+
+Consumer recieved:
+ ID: 334  value: 3340
+
+Produced:
+ ID: 335  value: 3350
+
+Consumer recieved:
+ ID: 335  value: 3350
+
+Produced:
+ ID: 336  value: 3360
+
+Consumer recieved:
+ ID: 336  value: 3360
+
+Produced:
+ ID: 337  value: 3370
+
+Consumer recieved:
+ ID: 337  value: 3370
+
+Produced:
+ ID: 338  value: 3380
+
+Consumer recieved:
+ ID: 338  value: 3380
+
+Produced:
+ ID: 339  value: 3390
+
+Consumer recieved:
+ ID: 339  value: 3390
+
+Produced:
+ ID: 340  value: 3400
+
+Consumer recieved:
+ ID: 340  value: 3400
+
+Produced:
+ ID: 341  value: 3410
+
+Consumer recieved:
+ ID: 341  value: 3410
+
+Produced:
+ ID: 342  value: 3420
+
+Consumer recieved:
+ ID: 342  value: 3420
+
+Produced:
+ ID: 343  value: 3430
+
+Consumer recieved:
+ ID: 343  value: 3430
+
+Produced:
+ ID: 344  value: 3440
+
+Consumer recieved:
+ ID: 344  value: 3440
+
+Produced:
+ ID: 345  value: 3450
+
+Consumer recieved:
+ ID: 345  value: 3450
+
+Produced:
+ ID: 346  value: 3460
+
+Consumer recieved:
+ ID: 346  value: 3460
+
+Produced:
+ ID: 347  value: 3470
+
+Consumer recieved:
+ ID: 347  value: 3470
+
+Produced:
+ ID: 348  value: 3480
+
+Consumer recieved:
+ ID: 348  value: 3480
+
+Produced:
+ ID: 349  value: 3490
+
+Consumer recieved:
+ ID: 349  value: 3490
+
+Produced:
+ ID: 350  value: 3500
+
+Consumer recieved:
+ ID: 350  value: 3500
+
+Produced:
+ ID: 351  value: 3510
+
+Consumer recieved:
+ ID: 351  value: 3510
+
+Produced:
+ ID: 352  value: 3520
+
+Consumer recieved:
+ ID: 352  value: 3520
+
+Produced:
+ ID: 353  value: 3530
+
+Consumer recieved:
+ ID: 353  value: 3530
+
+Produced:
+ ID: 354  value: 3540
+
+Consumer recieved:
+ ID: 354  value: 3540
+
+Produced:
+ ID: 355  value: 3550
+
+Consumer recieved:
+ ID: 355  value: 3550
+
+Produced:
+ ID: 356  value: 3560
+
+Consumer recieved:
+ ID: 356  value: 3560
+
+Produced:
+ ID: 357  value: 3570
+
+Consumer recieved:
+ ID: 357  value: 3570
+
+Produced:
+ ID: 358  value: 3580
+
+Consumer recieved:
+ ID: 358  value: 3580
+
+Produced:
+ ID: 359  value: 3590
+
+Consumer recieved:
+ ID: 359  value: 3590
+
+Produced:
+ ID: 360  value: 3600
+
+Consumer recieved:
+ ID: 360  value: 3600
+
+Produced:
+ ID: 361  value: 3610
+
+Consumer recieved:
+ ID: 361  value: 3610
+
+Produced:
+ ID: 362  value: 3620
+
+Consumer recieved:
+ ID: 362  value: 3620
+
+Produced:
+ ID: 363  value: 3630
+
+Consumer recieved:
+ ID: 363  value: 3630
+
+Produced:
+ ID: 364  value: 3640
+
+Consumer recieved:
+ ID: 364  value: 3640
+
+Produced:
+ ID: 365  value: 3650
+
+Consumer recieved:
+ ID: 365  value: 3650
+
+Produced:
+ ID: 366  value: 3660
+
+Consumer recieved:
+ ID: 366  value: 3660
+
+Produced:
+ ID: 367  value: 3670
+
+Consumer recieved:
+ ID: 367  value: 3670
+
+Produced:
+ ID: 368  value: 3680
+
+Consumer recieved:
+ ID: 368  value: 3680
+
+Produced:
+ ID: 369  value: 3690
+
+Consumer recieved:
+ ID: 369  value: 3690
+
+Produced:
+ ID: 370  value: 3700
+
+Consumer recieved:
+ ID: 370  value: 3700
+
+Produced:
+ ID: 371  value: 3710
+
+Consumer recieved:
+ ID: 371  value: 3710
+
+Produced:
+ ID: 372  value: 3720
+
+Consumer recieved:
+ ID: 372  value: 3720
+
+Produced:
+ ID: 373  value: 3730
+
+Consumer recieved:
+ ID: 373  value: 3730
+
+Produced:
+ ID: 374  value: 3740
+
+Consumer recieved:
+ ID: 374  value: 3740
+
+Produced:
+ ID: 375  value: 3750
+
+Consumer recieved:
+ ID: 375  value: 3750
+
+Produced:
+ ID: 376  value: 3760
+
+Consumer recieved:
+ ID: 376  value: 3760
+
+Produced:
+ ID: 377  value: 3770
+
+Consumer recieved:
+ ID: 377  value: 3770
+
+Produced:
+ ID: 378  value: 3780
+
+Consumer recieved:
+ ID: 378  value: 3780
+
+Produced:
+ ID: 379  value: 3790
+
+Consumer recieved:
+ ID: 379  value: 3790
+
+Produced:
+ ID: 380  value: 3800
+
+Consumer recieved:
+ ID: 380  value: 3800
+
+Produced:
+ ID: 381  value: 3810
+
+Consumer recieved:
+ ID: 381  value: 3810
+
+Produced:
+ ID: 382  value: 3820
+
+Consumer recieved:
+ ID: 382  value: 3820
+
+Produced:
+ ID: 383  value: 3830
+
+Consumer recieved:
+ ID: 383  value: 3830
+
+Produced:
+ ID: 384  value: 3840
+
+Consumer recieved:
+ ID: 384  value: 3840
+
+Produced:
+ ID: 385  value: 3850
+
+Consumer recieved:
+ ID: 385  value: 3850
+
+Produced:
+ ID: 386  value: 3860
+
+Consumer recieved:
+ ID: 386  value: 3860
+
+Produced:
+ ID: 387  value: 3870
+
+Consumer recieved:
+ ID: 387  value: 3870
+
+Produced:
+ ID: 388  value: 3880
+
+Consumer recieved:
+ ID: 388  value: 3880
+
+Produced:
+ ID: 389  value: 3890
+
+Consumer recieved:
+ ID: 389  value: 3890
+
+Produced:
+ ID: 390  value: 3900
+
+Consumer recieved:
+ ID: 390  value: 3900
+
+Produced:
+ ID: 391  value: 3910
+
+Consumer recieved:
+ ID: 391  value: 3910
+
+Produced:
+ ID: 392  value: 3920
+
+Consumer recieved:
+ ID: 392  value: 3920
+
+Produced:
+ ID: 393  value: 3930
+
+Consumer recieved:
+ ID: 393  value: 3930
+
+Produced:
+ ID: 394  value: 3940
+
+Consumer recieved:
+ ID: 394  value: 3940
+
+Produced:
+ ID: 395  value: 3950
+
+Consumer recieved:
+ ID: 395  value: 3950
+
+Produced:
+ ID: 396  value: 3960
+
+Consumer recieved:
+ ID: 396  value: 3960
+
+Produced:
+ ID: 397  value: 3970
+
+Consumer recieved:
+ ID: 397  value: 3970
+
+Produced:
+ ID: 398  value: 3980
+
+Consumer recieved:
+ ID: 398  value: 3980
+
+Produced:
+ ID: 399  value: 3990
+
+Consumer recieved:
+ ID: 399  value: 3990
+
+Produced:
+ ID: 400  value: 4000
+
+Consumer recieved:
+ ID: 400  value: 4000
+
+Produced:
+ ID: 401  value: 4010
+
+Consumer recieved:
+ ID: 401  value: 4010
+
+Produced:
+ ID: 402  value: 4020
+
+Consumer recieved:
+ ID: 402  value: 4020
+
+Produced:
+ ID: 403  value: 4030
+
+Consumer recieved:
+ ID: 403  value: 4030
+
+Produced:
+ ID: 404  value: 4040
+
+Consumer recieved:
+ ID: 404  value: 4040
+
+Produced:
+ ID: 405  value: 4050
+
+Consumer recieved:
+ ID: 405  value: 4050
+
+Produced:
+ ID: 406  value: 4060
+
+Consumer recieved:
+ ID: 406  value: 4060
+
+Produced:
+ ID: 407  value: 4070
+
+Consumer recieved:
+ ID: 407  value: 4070
+
+Produced:
+ ID: 408  value: 4080
+
+Consumer recieved:
+ ID: 408  value: 4080
+
+Produced:
+ ID: 409  value: 4090
+
+Consumer recieved:
+ ID: 409  value: 4090
+
+Produced:
+ ID: 410  value: 4100
+
+Consumer recieved:
+ ID: 410  value: 4100
+
+Produced:
+ ID: 411  value: 4110
+
+Consumer recieved:
+ ID: 411  value: 4110
+
+Produced:
+ ID: 412  value: 4120
+
+Consumer recieved:
+ ID: 412  value: 4120
+
+Produced:
+ ID: 413  value: 4130
+
+Consumer recieved:
+ ID: 413  value: 4130
+
+Produced:
+ ID: 414  value: 4140
+
+Consumer recieved:
+ ID: 414  value: 4140
+
+Produced:
+ ID: 415  value: 4150
+
+Consumer recieved:
+ ID: 415  value: 4150
+
+Produced:
+ ID: 416  value: 4160
+
+Consumer recieved:
+ ID: 416  value: 4160
+
+Produced:
+ ID: 417  value: 4170
+
+Consumer recieved:
+ ID: 417  value: 4170
+
+Produced:
+ ID: 418  value: 4180
+
+Consumer recieved:
+ ID: 418  value: 4180
+
+Produced:
+ ID: 419  value: 4190
+
+Consumer recieved:
+ ID: 419  value: 4190
+
+Produced:
+ ID: 420  value: 4200
+
+Consumer recieved:
+ ID: 420  value: 4200
+
+Produced:
+ ID: 421  value: 4210
+
+Consumer recieved:
+ ID: 421  value: 4210
+
+Produced:
+ ID: 422  value: 4220
+
+Consumer recieved:
+ ID: 422  value: 4220
+
+Produced:
+ ID: 423  value: 4230
+
+Consumer recieved:
+ ID: 423  value: 4230
+
+Produced:
+ ID: 424  value: 4240
+
+Consumer recieved:
+ ID: 424  value: 4240
+
+Produced:
+ ID: 425  value: 4250
+
+Consumer recieved:
+ ID: 425  value: 4250
+
+Produced:
+ ID: 426  value: 4260
+
+Consumer recieved:
+ ID: 426  value: 4260
+
+Produced:
+ ID: 427  value: 4270
+
+Consumer recieved:
+ ID: 427  value: 4270
+
+Produced:
+ ID: 428  value: 4280
+
+Consumer recieved:
+ ID: 428  value: 4280
+
+Produced:
+ ID: 429  value: 4290
+
+Consumer recieved:
+ ID: 429  value: 4290
+
+Produced:
+ ID: 430  value: 4300
+
+Consumer recieved:
+ ID: 430  value: 4300
+
+Produced:
+ ID: 431  value: 4310
+
+Consumer recieved:
+ ID: 431  value: 4310
+
+Produced:
+ ID: 432  value: 4320
+
+Consumer recieved:
+ ID: 432  value: 4320
+
+Produced:
+ ID: 433  value: 4330
+
+Consumer recieved:
+ ID: 433  value: 4330
+
+Produced:
+ ID: 434  value: 4340
+
+Consumer recieved:
+ ID: 434  value: 4340
+
+Produced:
+ ID: 435  value: 4350
+
+Consumer recieved:
+ ID: 435  value: 4350
+
+Produced:
+ ID: 436  value: 4360
+
+Consumer recieved:
+ ID: 436  value: 4360
+
+Produced:
+ ID: 437  value: 4370
+
+Consumer recieved:
+ ID: 437  value: 4370
+
+Produced:
+ ID: 438  value: 4380
+
+Consumer recieved:
+ ID: 438  value: 4380
+
+Produced:
+ ID: 439  value: 4390
+
+Consumer recieved:
+ ID: 439  value: 4390
+
+Produced:
+ ID: 440  value: 4400
+
+Consumer recieved:
+ ID: 440  value: 4400
+
+Produced:
+ ID: 441  value: 4410
+
+Consumer recieved:
+ ID: 441  value: 4410
+
+Produced:
+ ID: 442  value: 4420
+
+Consumer recieved:
+ ID: 442  value: 4420
+
+Produced:
+ ID: 443  value: 4430
+
+Consumer recieved:
+ ID: 443  value: 4430
+
+Produced:
+ ID: 444  value: 4440
+
+Consumer recieved:
+ ID: 444  value: 4440
+
+Produced:
+ ID: 445  value: 4450
+
+Consumer recieved:
+ ID: 445  value: 4450
+
+Produced:
+ ID: 446  value: 4460
+
+Consumer recieved:
+ ID: 446  value: 4460
+
+Produced:
+ ID: 447  value: 4470
+
+Consumer recieved:
+ ID: 447  value: 4470
+
+Produced:
+ ID: 448  value: 4480
+
+Consumer recieved:
+ ID: 448  value: 4480
+
+Produced:
+ ID: 449  value: 4490
+
+Consumer recieved:
+ ID: 449  value: 4490
+
+Produced:
+ ID: 450  value: 4500
+
+Consumer recieved:
+ ID: 450  value: 4500
+
+Produced:
+ ID: 451  value: 4510
+
+Consumer recieved:
+ ID: 451  value: 4510
+
+Produced:
+ ID: 452  value: 4520
+
+Consumer recieved:
+ ID: 452  value: 4520
+
+Produced:
+ ID: 453  value: 4530
+
+Consumer recieved:
+ ID: 453  value: 4530
+
+Produced:
+ ID: 454  value: 4540
+
+Consumer recieved:
+ ID: 454  value: 4540
+
+Produced:
+ ID: 455  value: 4550
+
+Consumer recieved:
+ ID: 455  value: 4550
+
+Produced:
+ ID: 456  value: 4560
+
+Consumer recieved:
+ ID: 456  value: 4560
+
+Produced:
+ ID: 457  value: 4570
+
+Consumer recieved:
+ ID: 457  value: 4570
+
+Produced:
+ ID: 458  value: 4580
+
+Consumer recieved:
+ ID: 458  value: 4580
+
+Produced:
+ ID: 459  value: 4590
+
+Consumer recieved:
+ ID: 459  value: 4590
+
+Produced:
+ ID: 460  value: 4600
+
+Consumer recieved:
+ ID: 460  value: 4600
+
+Produced:
+ ID: 461  value: 4610
+
+Consumer recieved:
+ ID: 461  value: 4610
+
+Produced:
+ ID: 462  value: 4620
+
+Consumer recieved:
+ ID: 462  value: 4620
+
+Produced:
+ ID: 463  value: 4630
+
+Consumer recieved:
+ ID: 463  value: 4630
+
+Produced:
+ ID: 464  value: 4640
+
+Consumer recieved:
+ ID: 464  value: 4640
+
+Produced:
+ ID: 465  value: 4650
+
+Consumer recieved:
+ ID: 465  value: 4650
+
+Produced:
+ ID: 466  value: 4660
+
+Consumer recieved:
+ ID: 466  value: 4660
+
+Produced:
+ ID: 467  value: 4670
+
+Consumer recieved:
+ ID: 467  value: 4670
+
+Produced:
+ ID: 468  value: 4680
+
+Consumer recieved:
+ ID: 468  value: 4680
+
+Produced:
+ ID: 469  value: 4690
+
+Consumer recieved:
+ ID: 469  value: 4690
+
+Produced:
+ ID: 470  value: 4700
+
+Consumer recieved:
+ ID: 470  value: 4700
+
+Produced:
+ ID: 471  value: 4710
+
+Consumer recieved:
+ ID: 471  value: 4710
+
+Produced:
+ ID: 472  value: 4720
+
+Consumer recieved:
+ ID: 472  value: 4720
+
+Produced:
+ ID: 473  value: 4730
+
+Consumer recieved:
+ ID: 473  value: 4730
+
+Produced:
+ ID: 474  value: 4740
+
+Consumer recieved:
+ ID: 474  value: 4740
+
+Produced:
+ ID: 475  value: 4750
+
+Consumer recieved:
+ ID: 475  value: 4750
+
+Produced:
+ ID: 476  value: 4760
+
+Consumer recieved:
+ ID: 476  value: 4760
+
+Produced:
+ ID: 477  value: 4770
+
+Consumer recieved:
+ ID: 477  value: 4770
+
+Produced:
+ ID: 478  value: 4780
+
+Consumer recieved:
+ ID: 478  value: 4780
+
+Produced:
+ ID: 479  value: 4790
+
+Consumer recieved:
+ ID: 479  value: 4790
+
+Produced:
+ ID: 480  value: 4800
+
+Consumer recieved:
+ ID: 480  value: 4800
+
+Produced:
+ ID: 481  value: 4810
+
+Consumer recieved:
+ ID: 481  value: 4810
+
+Produced:
+ ID: 482  value: 4820
+
+Consumer recieved:
+ ID: 482  value: 4820
+
+Produced:
+ ID: 483  value: 4830
+
+Consumer recieved:
+ ID: 483  value: 4830
+
+Produced:
+ ID: 484  value: 4840
+
+Consumer recieved:
+ ID: 484  value: 4840
+
+Produced:
+ ID: 485  value: 4850
+
+Consumer recieved:
+ ID: 485  value: 4850
+
+Produced:
+ ID: 486  value: 4860
+
+Consumer recieved:
+ ID: 486  value: 4860
+
+Produced:
+ ID: 487  value: 4870
+
+Consumer recieved:
+ ID: 487  value: 4870
+
+Produced:
+ ID: 488  value: 4880
+
+Consumer recieved:
+ ID: 488  value: 4880
+
+Produced:
+ ID: 489  value: 4890
+
+Consumer recieved:
+ ID: 489  value: 4890
+
+Produced:
+ ID: 490  value: 4900
+
+Consumer recieved:
+ ID: 490  value: 4900
+
+Produced:
+ ID: 491  value: 4910
+
+Consumer recieved:
+ ID: 491  value: 4910
+
+Produced:
+ ID: 492  value: 4920
+
+Consumer recieved:
+ ID: 492  value: 4920
+
+Produced:
+ ID: 493  value: 4930
+
+Consumer recieved:
+ ID: 493  value: 4930
+
+Produced:
+ ID: 494  value: 4940
+
+Consumer recieved:
+ ID: 494  value: 4940
+
+Produced:
+ ID: 495  value: 4950
+
+Consumer recieved:
+ ID: 495  value: 4950
+
+Produced:
+ ID: 496  value: 4960
+
+Consumer recieved:
+ ID: 496  value: 4960
+
+Produced:
+ ID: 497  value: 4970
+
+Consumer recieved:
+ ID: 497  value: 4970
+
+Produced:
+ ID: 498  value: 4980
+
+Consumer recieved:
+ ID: 498  value: 4980
+
+Produced:
+ ID: 499  value: 4990
+
+Consumer recieved:
+ ID: 499  value: 4990
+
+Produced:
+ ID: 500  value: 5000
+
+Consumer recieved:
+ ID: 500  value: 5000
+
+Produced:
+ ID: 501  value: 5010
+
+Consumer recieved:
+ ID: 501  value: 5010
+
+Produced:
+ ID: 502  value: 5020
+
+Consumer recieved:
+ ID: 502  value: 5020
+
+Produced:
+ ID: 503  value: 5030
+
+Consumer recieved:
+ ID: 503  value: 5030
+
+Produced:
+ ID: 504  value: 5040
+
+Consumer recieved:
+ ID: 504  value: 5040
+
+Produced:
+ ID: 505  value: 5050
+
+Consumer recieved:
+ ID: 505  value: 5050
+
+Produced:
+ ID: 506  value: 5060
+
+Consumer recieved:
+ ID: 506  value: 5060
+
+Produced:
+ ID: 507  value: 5070
+
+Consumer recieved:
+ ID: 507  value: 5070
+
+Produced:
+ ID: 508  value: 5080
+
+Consumer recieved:
+ ID: 508  value: 5080
+
+Produced:
+ ID: 509  value: 5090
+
+Consumer recieved:
+ ID: 509  value: 5090
+
+Produced:
+ ID: 510  value: 5100
+
+Consumer recieved:
+ ID: 510  value: 5100
+
+Produced:
+ ID: 511  value: 5110
+
+Consumer recieved:
+ ID: 511  value: 5110
+
+Produced:
+ ID: 512  value: 5120
+
+Consumer recieved:
+ ID: 512  value: 5120
+
+Produced:
+ ID: 513  value: 5130
+
+Consumer recieved:
+ ID: 513  value: 5130
+
+Produced:
+ ID: 514  value: 5140
+
+Consumer recieved:
+ ID: 514  value: 5140
+
+Produced:
+ ID: 515  value: 5150
+
+Consumer recieved:
+ ID: 515  value: 5150
+
+Produced:
+ ID: 516  value: 5160
+
+Consumer recieved:
+ ID: 516  value: 5160
+
+Produced:
+ ID: 517  value: 5170
+
+Consumer recieved:
+ ID: 517  value: 5170
+
+Produced:
+ ID: 518  value: 5180
+
+Consumer recieved:
+ ID: 518  value: 5180
+
+Produced:
+ ID: 519  value: 5190
+
+Consumer recieved:
+ ID: 519  value: 5190
+
+Produced:
+ ID: 520  value: 5200
+
+Consumer recieved:
+ ID: 520  value: 5200
+
+Produced:
+ ID: 521  value: 5210
+
+Consumer recieved:
+ ID: 521  value: 5210
+
+Produced:
+ ID: 522  value: 5220
+
+Consumer recieved:
+ ID: 522  value: 5220
+
+Produced:
+ ID: 523  value: 5230
+
+Consumer recieved:
+ ID: 523  value: 5230
+
+Produced:
+ ID: 524  value: 5240
+
+Consumer recieved:
+ ID: 524  value: 5240
+
+Produced:
+ ID: 525  value: 5250
+
+Consumer recieved:
+ ID: 525  value: 5250
+
+Produced:
+ ID: 526  value: 5260
+
+Consumer recieved:
+ ID: 526  value: 5260
+
+Produced:
+ ID: 527  value: 5270
+
+Consumer recieved:
+ ID: 527  value: 5270
+
+Produced:
+ ID: 528  value: 5280
+
+Consumer recieved:
+ ID: 528  value: 5280
+
+Produced:
+ ID: 529  value: 5290
+
+Consumer recieved:
+ ID: 529  value: 5290
+
+Produced:
+ ID: 530  value: 5300
+
+Consumer recieved:
+ ID: 530  value: 5300
+
+Produced:
+ ID: 531  value: 5310
+
+Consumer recieved:
+ ID: 531  value: 5310
+
+Produced:
+ ID: 532  value: 5320
+
+Consumer recieved:
+ ID: 532  value: 5320
+
+Produced:
+ ID: 533  value: 5330
+
+Consumer recieved:
+ ID: 533  value: 5330
+
+Produced:
+ ID: 534  value: 5340
+
+Consumer recieved:
+ ID: 534  value: 5340
+
+Produced:
+ ID: 535  value: 5350
+
+Consumer recieved:
+ ID: 535  value: 5350
+
+Produced:
+ ID: 536  value: 5360
+
+Consumer recieved:
+ ID: 536  value: 5360
+
+Produced:
+ ID: 537  value: 5370
+
+Consumer recieved:
+ ID: 537  value: 5370
+
+Produced:
+ ID: 538  value: 5380
+
+Consumer recieved:
+ ID: 538  value: 5380
+
+Produced:
+ ID: 539  value: 5390
+
+Consumer recieved:
+ ID: 539  value: 5390
+
+Produced:
+ ID: 540  value: 5400
+
+Consumer recieved:
+ ID: 540  value: 5400
+
+Produced:
+ ID: 541  value: 5410
+
+Consumer recieved:
+ ID: 541  value: 5410
+
+Produced:
+ ID: 542  value: 5420
+
+Consumer recieved:
+ ID: 542  value: 5420
+
+Produced:
+ ID: 543  value: 5430
+
+Consumer recieved:
+ ID: 543  value: 5430
+
+Produced:
+ ID: 544  value: 5440
+
+Consumer recieved:
+ ID: 544  value: 5440
+
+Produced:
+ ID: 545  value: 5450
+
+Consumer recieved:
+ ID: 545  value: 5450
+
+Produced:
+ ID: 546  value: 5460
+
+Consumer recieved:
+ ID: 546  value: 5460
+
+Produced:
+ ID: 547  value: 5470
+
+Consumer recieved:
+ ID: 547  value: 5470
+
+Produced:
+ ID: 548  value: 5480
+
+Consumer recieved:
+ ID: 548  value: 5480
+
+Produced:
+ ID: 549  value: 5490
+
+Consumer recieved:
+ ID: 549  value: 5490
+
+Produced:
+ ID: 550  value: 5500
+
+Consumer recieved:
+ ID: 550  value: 5500
+
+Produced:
+ ID: 551  value: 5510
+
+Consumer recieved:
+ ID: 551  value: 5510
+
+Produced:
+ ID: 552  value: 5520
+
+Consumer recieved:
+ ID: 552  value: 5520
+
+Produced:
+ ID: 553  value: 5530
+
+Consumer recieved:
+ ID: 553  value: 5530
+
+Produced:
+ ID: 554  value: 5540
+
+Consumer recieved:
+ ID: 554  value: 5540
+
+Produced:
+ ID: 555  value: 5550
+
+Consumer recieved:
+ ID: 555  value: 5550
+
+Produced:
+ ID: 556  value: 5560
+
+Consumer recieved:
+ ID: 556  value: 5560
+
+Produced:
+ ID: 557  value: 5570
+
+Consumer recieved:
+ ID: 557  value: 5570
+
+Produced:
+ ID: 558  value: 5580
+
+Consumer recieved:
+ ID: 558  value: 5580
+
+Produced:
+ ID: 559  value: 5590
+
+Consumer recieved:
+ ID: 559  value: 5590
+
+Produced:
+ ID: 560  value: 5600
+
+Consumer recieved:
+ ID: 560  value: 5600
+
+Produced:
+ ID: 561  value: 5610
+
+Consumer recieved:
+ ID: 561  value: 5610
+
+Produced:
+ ID: 562  value: 5620
+
+Consumer recieved:
+ ID: 562  value: 5620
+
+Produced:
+ ID: 563  value: 5630
+
+Consumer recieved:
+ ID: 563  value: 5630
+
+Produced:
+ ID: 564  value: 5640
+
+Consumer recieved:
+ ID: 564  value: 5640
+
+Produced:
+ ID: 565  value: 5650
+
+Consumer recieved:
+ ID: 565  value: 5650
+
+Produced:
+ ID: 566  value: 5660
+
+Consumer recieved:
+ ID: 566  value: 5660
+
+Produced:
+ ID: 567  value: 5670
+
+Consumer recieved:
+ ID: 567  value: 5670
+
+Produced:
+ ID: 568  value: 5680
+
+Consumer recieved:
+ ID: 568  value: 5680
+
+Produced:
+ ID: 569  value: 5690
+
+Consumer recieved:
+ ID: 569  value: 5690
+
+Produced:
+ ID: 570  value: 5700
+
+Consumer recieved:
+ ID: 570  value: 5700
+
+Produced:
+ ID: 571  value: 5710
+
+Consumer recieved:
+ ID: 571  value: 5710
+
+Produced:
+ ID: 572  value: 5720
+
+Consumer recieved:
+ ID: 572  value: 5720
+
+Produced:
+ ID: 573  value: 5730
+
+Consumer recieved:
+ ID: 573  value: 5730
+
+Produced:
+ ID: 574  value: 5740
+
+Consumer recieved:
+ ID: 574  value: 5740
+
+Produced:
+ ID: 575  value: 5750
+
+Consumer recieved:
+ ID: 575  value: 5750
+
+Produced:
+ ID: 576  value: 5760
+
+Consumer recieved:
+ ID: 576  value: 5760
+
+Produced:
+ ID: 577  value: 5770
+
+Consumer recieved:
+ ID: 577  value: 5770
+
+Produced:
+ ID: 578  value: 5780
+
+Consumer recieved:
+ ID: 578  value: 5780
+
+Produced:
+ ID: 579  value: 5790
+
+Consumer recieved:
+ ID: 579  value: 5790
+
+Produced:
+ ID: 580  value: 5800
+
+Consumer recieved:
+ ID: 580  value: 5800
+
+Produced:
+ ID: 581  value: 5810
+
+Consumer recieved:
+ ID: 581  value: 5810
+
+Produced:
+ ID: 582  value: 5820
+
+Consumer recieved:
+ ID: 582  value: 5820
+
+Produced:
+ ID: 583  value: 5830
+
+Consumer recieved:
+ ID: 583  value: 5830
+
+Produced:
+ ID: 584  value: 5840
+
+Consumer recieved:
+ ID: 584  value: 5840
+
+Produced:
+ ID: 585  value: 5850
+
+Consumer recieved:
+ ID: 585  value: 5850
+
+Produced:
+ ID: 586  value: 5860
+
+Consumer recieved:
+ ID: 586  value: 5860
+
+Produced:
+ ID: 587  value: 5870
+
+Consumer recieved:
+ ID: 587  value: 5870
+
+Produced:
+ ID: 588  value: 5880
+
+Consumer recieved:
+ ID: 588  value: 5880
+
+Produced:
+ ID: 589  value: 5890
+
+Consumer recieved:
+ ID: 589  value: 5890
+
+Produced:
+ ID: 590  value: 5900
+
+Consumer recieved:
+ ID: 590  value: 5900
+
+Produced:
+ ID: 591  value: 5910
+
+Consumer recieved:
+ ID: 591  value: 5910
+
+Produced:
+ ID: 592  value: 5920
+
+Consumer recieved:
+ ID: 592  value: 5920
+
+Produced:
+ ID: 593  value: 5930
+
+Consumer recieved:
+ ID: 593  value: 5930
+
+Produced:
+ ID: 594  value: 5940
+
+Consumer recieved:
+ ID: 594  value: 5940
+
+Produced:
+ ID: 595  value: 5950
+
+Consumer recieved:
+ ID: 595  value: 5950
+
+Produced:
+ ID: 596  value: 5960
+
+Consumer recieved:
+ ID: 596  value: 5960
+
+Produced:
+ ID: 597  value: 5970
+
+Consumer recieved:
+ ID: 597  value: 5970
+
+Produced:
+ ID: 598  value: 5980
+
+Consumer recieved:
+ ID: 598  value: 5980
+
+Produced:
+ ID: 599  value: 5990
+
+Consumer recieved:
+ ID: 599  value: 5990
+
+Produced:
+ ID: 600  value: 6000
+
+Consumer recieved:
+ ID: 600  value: 6000
+
+Produced:
+ ID: 601  value: 6010
+
+Consumer recieved:
+ ID: 601  value: 6010
+
+Produced:
+ ID: 602  value: 6020
+
+Consumer recieved:
+ ID: 602  value: 6020
+
+Produced:
+ ID: 603  value: 6030
+
+Consumer recieved:
+ ID: 603  value: 6030
+
+Produced:
+ ID: 604  value: 6040
+
+Consumer recieved:
+ ID: 604  value: 6040
+
+Produced:
+ ID: 605  value: 6050
+
+Consumer recieved:
+ ID: 605  value: 6050
+
+Produced:
+ ID: 606  value: 6060
+
+Consumer recieved:
+ ID: 606  value: 6060
+
+Produced:
+ ID: 607  value: 6070
+
+Consumer recieved:
+ ID: 607  value: 6070
+
+Produced:
+ ID: 608  value: 6080
+
+Consumer recieved:
+ ID: 608  value: 6080
+
+Produced:
+ ID: 609  value: 6090
+
+Consumer recieved:
+ ID: 609  value: 6090
+
+Produced:
+ ID: 610  value: 6100
+
+Consumer recieved:
+ ID: 610  value: 6100
+
+Produced:
+ ID: 611  value: 6110
+
+Consumer recieved:
+ ID: 611  value: 6110
+
+Produced:
+ ID: 612  value: 6120
+
+Consumer recieved:
+ ID: 612  value: 6120
+
+Produced:
+ ID: 613  value: 6130
+
+Consumer recieved:
+ ID: 613  value: 6130
+
+Produced:
+ ID: 614  value: 6140
+
+Consumer recieved:
+ ID: 614  value: 6140
+
+Produced:
+ ID: 615  value: 6150
+
+Consumer recieved:
+ ID: 615  value: 6150
+
+Produced:
+ ID: 616  value: 6160
+
+Consumer recieved:
+ ID: 616  value: 6160
+
+Produced:
+ ID: 617  value: 6170
+
+Consumer recieved:
+ ID: 617  value: 6170
+
+Produced:
+ ID: 618  value: 6180
+
+Consumer recieved:
+ ID: 618  value: 6180
+
+Produced:
+ ID: 619  value: 6190
+
+Consumer recieved:
+ ID: 619  value: 6190
+
+Produced:
+ ID: 620  value: 6200
+
+Consumer recieved:
+ ID: 620  value: 6200
+
+Produced:
+ ID: 621  value: 6210
+
+Consumer recieved:
+ ID: 621  value: 6210
+
+Produced:
+ ID: 622  value: 6220
+
+Consumer recieved:
+ ID: 622  value: 6220
+
+Produced:
+ ID: 623  value: 6230
+
+Consumer recieved:
+ ID: 623  value: 6230
+
+Produced:
+ ID: 624  value: 6240
+
+Consumer recieved:
+ ID: 624  value: 6240
+
+Produced:
+ ID: 625  value: 6250
+
+Consumer recieved:
+ ID: 625  value: 6250
+
+Produced:
+ ID: 626  value: 6260
+
+Consumer recieved:
+ ID: 626  value: 6260
+
+Produced:
+ ID: 627  value: 6270
+
+Consumer recieved:
+ ID: 627  value: 6270
+
+Produced:
+ ID: 628  value: 6280
+
+Consumer recieved:
+ ID: 628  value: 6280
+
+Produced:
+ ID: 629  value: 6290
+
+Consumer recieved:
+ ID: 629  value: 6290
+
+Produced:
+ ID: 630  value: 6300
+
+Consumer recieved:
+ ID: 630  value: 6300
+
+Produced:
+ ID: 631  value: 6310
+
+Consumer recieved:
+ ID: 631  value: 6310
+
+Produced:
+ ID: 632  value: 6320
+
+Consumer recieved:
+ ID: 632  value: 6320
+
+Produced:
+ ID: 633  value: 6330
+
+Consumer recieved:
+ ID: 633  value: 6330
+
+Produced:
+ ID: 634  value: 6340
+
+Consumer recieved:
+ ID: 634  value: 6340
+
+Produced:
+ ID: 635  value: 6350
+
+Consumer recieved:
+ ID: 635  value: 6350
+
+Produced:
+ ID: 636  value: 6360
+
+Consumer recieved:
+ ID: 636  value: 6360
+
+Produced:
+ ID: 637  value: 6370
+
+Consumer recieved:
+ ID: 637  value: 6370
+
+Produced:
+ ID: 638  value: 6380
+
+Consumer recieved:
+ ID: 638  value: 6380
+
+Produced:
+ ID: 639  value: 6390
+
+Consumer recieved:
+ ID: 639  value: 6390
+
+Produced:
+ ID: 640  value: 6400
+
+Consumer recieved:
+ ID: 640  value: 6400
+
+Produced:
+ ID: 641  value: 6410
+
+Consumer recieved:
+ ID: 641  value: 6410
+
+Produced:
+ ID: 642  value: 6420
+
+Consumer recieved:
+ ID: 642  value: 6420
+
+Produced:
+ ID: 643  value: 6430
+
+Consumer recieved:
+ ID: 643  value: 6430
+
+Produced:
+ ID: 644  value: 6440
+
+Consumer recieved:
+ ID: 644  value: 6440
+
+Produced:
+ ID: 645  value: 6450
+
+Consumer recieved:
+ ID: 645  value: 6450
+
+Produced:
+ ID: 646  value: 6460
+
+Consumer recieved:
+ ID: 646  value: 6460
+
+Produced:
+ ID: 647  value: 6470
+
+Consumer recieved:
+ ID: 647  value: 6470
+
+Produced:
+ ID: 648  value: 6480
+
+Consumer recieved:
+ ID: 648  value: 6480
+
+Produced:
+ ID: 649  value: 6490
+
+Consumer recieved:
+ ID: 649  value: 6490
+
+Produced:
+ ID: 650  value: 6500
+
+Consumer recieved:
+ ID: 650  value: 6500
+
+Produced:
+ ID: 651  value: 6510
+
+Consumer recieved:
+ ID: 651  value: 6510
+
+Produced:
+ ID: 652  value: 6520
+
+Consumer recieved:
+ ID: 652  value: 6520
+
+Produced:
+ ID: 653  value: 6530
+
+Consumer recieved:
+ ID: 653  value: 6530
+
+Produced:
+ ID: 654  value: 6540
+
+Consumer recieved:
+ ID: 654  value: 6540
+
+Produced:
+ ID: 655  value: 6550
+
+Consumer recieved:
+ ID: 655  value: 6550
+
+Produced:
+ ID: 656  value: 6560
+
+Consumer recieved:
+ ID: 656  value: 6560
+
+Produced:
+ ID: 657  value: 6570
+
+Consumer recieved:
+ ID: 657  value: 6570
+
+Produced:
+ ID: 658  value: 6580
+
+Consumer recieved:
+ ID: 658  value: 6580
+
+Produced:
+ ID: 659  value: 6590
+
+Consumer recieved:
+ ID: 659  value: 6590
+
+Produced:
+ ID: 660  value: 6600
+
+Consumer recieved:
+ ID: 660  value: 6600
+
+Produced:
+ ID: 661  value: 6610
+
+Consumer recieved:
+ ID: 661  value: 6610
+
+Produced:
+ ID: 662  value: 6620
+
+Consumer recieved:
+ ID: 662  value: 6620
+
+Produced:
+ ID: 663  value: 6630
+
+Consumer recieved:
+ ID: 663  value: 6630
+
+Produced:
+ ID: 664  value: 6640
+
+Consumer recieved:
+ ID: 664  value: 6640
+
+Produced:
+ ID: 665  value: 6650
+
+Consumer recieved:
+ ID: 665  value: 6650
+
+Produced:
+ ID: 666  value: 6660
+
+Consumer recieved:
+ ID: 666  value: 6660
+
+Produced:
+ ID: 667  value: 6670
+
+Consumer recieved:
+ ID: 667  value: 6670
+
+Produced:
+ ID: 668  value: 6680
+
+Consumer recieved:
+ ID: 668  value: 6680
+
+Produced:
+ ID: 669  value: 6690
+
+Consumer recieved:
+ ID: 669  value: 6690
+
+Produced:
+ ID: 670  value: 6700
+
+Consumer recieved:
+ ID: 670  value: 6700
+
+Produced:
+ ID: 671  value: 6710
+
+Consumer recieved:
+ ID: 671  value: 6710
+
+Produced:
+ ID: 672  value: 6720
+
+Consumer recieved:
+ ID: 672  value: 6720
+
+Produced:
+ ID: 673  value: 6730
+
+Consumer recieved:
+ ID: 673  value: 6730
+
+Produced:
+ ID: 674  value: 6740
+
+Consumer recieved:
+ ID: 674  value: 6740
+
+Produced:
+ ID: 675  value: 6750
+
+Consumer recieved:
+ ID: 675  value: 6750
+
+Produced:
+ ID: 676  value: 6760
+
+Consumer recieved:
+ ID: 676  value: 6760
+
+Produced:
+ ID: 677  value: 6770
+
+Consumer recieved:
+ ID: 677  value: 6770
+
+Produced:
+ ID: 678  value: 6780
+
+Consumer recieved:
+ ID: 678  value: 6780
+
+Produced:
+ ID: 679  value: 6790
+
+Consumer recieved:
+ ID: 679  value: 6790
+
+Produced:
+ ID: 680  value: 6800
+
+Consumer recieved:
+ ID: 680  value: 6800
+
+Produced:
+ ID: 681  value: 6810
+
+Consumer recieved:
+ ID: 681  value: 6810
+
+Produced:
+ ID: 682  value: 6820
+
+Consumer recieved:
+ ID: 682  value: 6820
+
+Produced:
+ ID: 683  value: 6830
+
+Consumer recieved:
+ ID: 683  value: 6830
+
+Produced:
+ ID: 684  value: 6840
+
+Consumer recieved:
+ ID: 684  value: 6840
+
+Produced:
+ ID: 685  value: 6850
+
+Consumer recieved:
+ ID: 685  value: 6850
+
+Produced:
+ ID: 686  value: 6860
+
+Consumer recieved:
+ ID: 686  value: 6860
+
+Produced:
+ ID: 687  value: 6870
+
+Consumer recieved:
+ ID: 687  value: 6870
+
+Produced:
+ ID: 688  value: 6880
+
+Consumer recieved:
+ ID: 688  value: 6880
+
+Produced:
+ ID: 689  value: 6890
+
+Consumer recieved:
+ ID: 689  value: 6890
+
+Produced:
+ ID: 690  value: 6900
+
+Consumer recieved:
+ ID: 690  value: 6900
+
+Produced:
+ ID: 691  value: 6910
+
+Consumer recieved:
+ ID: 691  value: 6910
+
+Produced:
+ ID: 692  value: 6920
+
+Consumer recieved:
+ ID: 692  value: 6920
+
+Produced:
+ ID: 693  value: 6930
+
+Consumer recieved:
+ ID: 693  value: 6930
+
+Produced:
+ ID: 694  value: 6940
+
+Consumer recieved:
+ ID: 694  value: 6940
+
+Produced:
+ ID: 695  value: 6950
+
+Consumer recieved:
+ ID: 695  value: 6950
+
+Produced:
+ ID: 696  value: 6960
+
+Consumer recieved:
+ ID: 696  value: 6960
+
+Produced:
+ ID: 697  value: 6970
+
+Consumer recieved:
+ ID: 697  value: 6970
+
+Produced:
+ ID: 698  value: 6980
+
+Consumer recieved:
+ ID: 698  value: 6980
+
+Produced:
+ ID: 699  value: 6990
+
+Consumer recieved:
+ ID: 699  value: 6990
+
+Produced:
+ ID: 700  value: 7000
+
+Consumer recieved:
+ ID: 700  value: 7000
+
+Produced:
+ ID: 701  value: 7010
+
+Consumer recieved:
+ ID: 701  value: 7010
+
+Produced:
+ ID: 702  value: 7020
+
+Consumer recieved:
+ ID: 702  value: 7020
+
+Produced:
+ ID: 703  value: 7030
+
+Consumer recieved:
+ ID: 703  value: 7030
+
+Produced:
+ ID: 704  value: 7040
+
+Consumer recieved:
+ ID: 704  value: 7040
+
+Produced:
+ ID: 705  value: 7050
+
+Consumer recieved:
+ ID: 705  value: 7050
+
+Produced:
+ ID: 706  value: 7060
+
+Consumer recieved:
+ ID: 706  value: 7060
+
+Produced:
+ ID: 707  value: 7070
+
+Consumer recieved:
+ ID: 707  value: 7070
+
+Produced:
+ ID: 708  value: 7080
+
+Consumer recieved:
+ ID: 708  value: 7080
+
+Produced:
+ ID: 709  value: 7090
+
+Consumer recieved:
+ ID: 709  value: 7090
+
+Produced:
+ ID: 710  value: 7100
+
+Consumer recieved:
+ ID: 710  value: 7100
+
+Produced:
+ ID: 711  value: 7110
+
+Consumer recieved:
+ ID: 711  value: 7110
+
+Produced:
+ ID: 712  value: 7120
+
+Consumer recieved:
+ ID: 712  value: 7120
+
+Produced:
+ ID: 713  value: 7130
+
+Consumer recieved:
+ ID: 713  value: 7130
+
+Produced:
+ ID: 714  value: 7140
+
+Consumer recieved:
+ ID: 714  value: 7140
+
+Produced:
+ ID: 715  value: 7150
+
+Consumer recieved:
+ ID: 715  value: 7150
+
+Produced:
+ ID: 716  value: 7160
+
+Consumer recieved:
+ ID: 716  value: 7160
+
+Produced:
+ ID: 717  value: 7170
+
+Consumer recieved:
+ ID: 717  value: 7170
+
+Produced:
+ ID: 718  value: 7180
+
+Consumer recieved:
+ ID: 718  value: 7180
+
+Produced:
+ ID: 719  value: 7190
+
+Consumer recieved:
+ ID: 719  value: 7190
+
+Produced:
+ ID: 720  value: 7200
+
+Consumer recieved:
+ ID: 720  value: 7200
+
+Produced:
+ ID: 721  value: 7210
+
+Consumer recieved:
+ ID: 721  value: 7210
+
+Produced:
+ ID: 722  value: 7220
+
+Consumer recieved:
+ ID: 722  value: 7220
+
+Produced:
+ ID: 723  value: 7230
+
+Consumer recieved:
+ ID: 723  value: 7230
+
+Produced:
+ ID: 724  value: 7240
+
+Consumer recieved:
+ ID: 724  value: 7240
+
+Produced:
+ ID: 725  value: 7250
+
+Consumer recieved:
+ ID: 725  value: 7250
+
+Produced:
+ ID: 726  value: 7260
+
+Consumer recieved:
+ ID: 726  value: 7260
+
+Produced:
+ ID: 727  value: 7270
+
+Consumer recieved:
+ ID: 727  value: 7270
+
+Produced:
+ ID: 728  value: 7280
+
+Consumer recieved:
+ ID: 728  value: 7280
+
+Produced:
+ ID: 729  value: 7290
+
+Consumer recieved:
+ ID: 729  value: 7290
+
+Produced:
+ ID: 730  value: 7300
+
+Consumer recieved:
+ ID: 730  value: 7300
+
+Produced:
+ ID: 731  value: 7310
+
+Consumer recieved:
+ ID: 731  value: 7310
+
+Produced:
+ ID: 732  value: 7320
+
+Consumer recieved:
+ ID: 732  value: 7320
+
+Produced:
+ ID: 733  value: 7330
+
+Consumer recieved:
+ ID: 733  value: 7330
+
+Produced:
+ ID: 734  value: 7340
+
+Consumer recieved:
+ ID: 734  value: 7340
+
+Produced:
+ ID: 735  value: 7350
+
+Consumer recieved:
+ ID: 735  value: 7350
+
+Produced:
+ ID: 736  value: 7360
+
+Consumer recieved:
+ ID: 736  value: 7360
+
+Produced:
+ ID: 737  value: 7370
+
+Consumer recieved:
+ ID: 737  value: 7370
+
+Produced:
+ ID: 738  value: 7380
+
+Consumer recieved:
+ ID: 738  value: 7380
+
+Produced:
+ ID: 739  value: 7390
+
+Consumer recieved:
+ ID: 739  value: 7390
+
+Produced:
+ ID: 740  value: 7400
+
+Consumer recieved:
+ ID: 740  value: 7400
+
+Produced:
+ ID: 741  value: 7410
+
+Consumer recieved:
+ ID: 741  value: 7410
+
+Produced:
+ ID: 742  value: 7420
+
+Consumer recieved:
+ ID: 742  value: 7420
+
+Produced:
+ ID: 743  value: 7430
+
+Consumer recieved:
+ ID: 743  value: 7430
+
+Produced:
+ ID: 744  value: 7440
+
+Consumer recieved:
+ ID: 744  value: 7440
+
+Produced:
+ ID: 745  value: 7450
+
+Consumer recieved:
+ ID: 745  value: 7450
+
+Produced:
+ ID: 746  value: 7460
+
+Consumer recieved:
+ ID: 746  value: 7460
+
+Produced:
+ ID: 747  value: 7470
+
+Consumer recieved:
+ ID: 747  value: 7470
+
+Produced:
+ ID: 748  value: 7480
+
+Consumer recieved:
+ ID: 748  value: 7480
+
+Produced:
+ ID: 749  value: 7490
+
+Consumer recieved:
+ ID: 749  value: 7490
+
+Produced:
+ ID: 750  value: 7500
+
+Consumer recieved:
+ ID: 750  value: 7500
+
+Produced:
+ ID: 751  value: 7510
+
+Consumer recieved:
+ ID: 751  value: 7510
+
+Produced:
+ ID: 752  value: 7520
+
+Consumer recieved:
+ ID: 752  value: 7520
+
+Produced:
+ ID: 753  value: 7530
+
+Consumer recieved:
+ ID: 753  value: 7530
+
+Produced:
+ ID: 754  value: 7540
+
+Consumer recieved:
+ ID: 754  value: 7540
+
+Produced:
+ ID: 755  value: 7550
+
+Consumer recieved:
+ ID: 755  value: 7550
+
+Produced:
+ ID: 756  value: 7560
+
+Consumer recieved:
+ ID: 756  value: 7560
+
+Produced:
+ ID: 757  value: 7570
+
+Consumer recieved:
+ ID: 757  value: 7570
+
+Produced:
+ ID: 758  value: 7580
+
+Consumer recieved:
+ ID: 758  value: 7580
+
+Produced:
+ ID: 759  value: 7590
+
+Consumer recieved:
+ ID: 759  value: 7590
+
+Produced:
+ ID: 760  value: 7600
+
+Consumer recieved:
+ ID: 760  value: 7600
+
+Produced:
+ ID: 761  value: 7610
+
+Consumer recieved:
+ ID: 761  value: 7610
+
+Produced:
+ ID: 762  value: 7620
+
+Consumer recieved:
+ ID: 762  value: 7620
+
+Produced:
+ ID: 763  value: 7630
+
+Consumer recieved:
+ ID: 763  value: 7630
+
+Produced:
+ ID: 764  value: 7640
+
+Consumer recieved:
+ ID: 764  value: 7640
+
+Produced:
+ ID: 765  value: 7650
+
+Consumer recieved:
+ ID: 765  value: 7650
+
+Produced:
+ ID: 766  value: 7660
+
+Consumer recieved:
+ ID: 766  value: 7660
+
+Produced:
+ ID: 767  value: 7670
+
+Consumer recieved:
+ ID: 767  value: 7670
+
+Produced:
+ ID: 768  value: 7680
+
+Consumer recieved:
+ ID: 768  value: 7680
+
+Produced:
+ ID: 769  value: 7690
+
+Consumer recieved:
+ ID: 769  value: 7690
+
+Produced:
+ ID: 770  value: 7700
+
+Consumer recieved:
+ ID: 770  value: 7700
+
+Produced:
+ ID: 771  value: 7710
+
+Consumer recieved:
+ ID: 771  value: 7710
+
+Produced:
+ ID: 772  value: 7720
+
+Consumer recieved:
+ ID: 772  value: 7720
+
+Produced:
+ ID: 773  value: 7730
+
+Consumer recieved:
+ ID: 773  value: 7730
+
+Produced:
+ ID: 774  value: 7740
+
+Consumer recieved:
+ ID: 774  value: 7740
+
+Produced:
+ ID: 775  value: 7750
+
+Consumer recieved:
+ ID: 775  value: 7750
+
+Produced:
+ ID: 776  value: 7760
+
+Consumer recieved:
+ ID: 776  value: 7760
+
+Produced:
+ ID: 777  value: 7770
+
+Consumer recieved:
+ ID: 777  value: 7770
+
+Produced:
+ ID: 778  value: 7780
+
+Consumer recieved:
+ ID: 778  value: 7780
+
+Produced:
+ ID: 779  value: 7790
+
+Consumer recieved:
+ ID: 779  value: 7790
+
+Produced:
+ ID: 780  value: 7800
+
+Consumer recieved:
+ ID: 780  value: 7800
+
+Produced:
+ ID: 781  value: 7810
+
+Consumer recieved:
+ ID: 781  value: 7810
+
+Produced:
+ ID: 782  value: 7820
+
+Consumer recieved:
+ ID: 782  value: 7820
+
+Produced:
+ ID: 783  value: 7830
+
+Consumer recieved:
+ ID: 783  value: 7830
+
+Produced:
+ ID: 784  value: 7840
+
+Consumer recieved:
+ ID: 784  value: 7840
+
+Produced:
+ ID: 785  value: 7850
+
+Consumer recieved:
+ ID: 785  value: 7850
+
+Produced:
+ ID: 786  value: 7860
+
+Consumer recieved:
+ ID: 786  value: 7860
+
+Produced:
+ ID: 787  value: 7870
+
+Consumer recieved:
+ ID: 787  value: 7870
+
+Produced:
+ ID: 788  value: 7880
+
+Consumer recieved:
+ ID: 788  value: 7880
+
+Produced:
+ ID: 789  value: 7890
+
+Consumer recieved:
+ ID: 789  value: 7890
+
+Produced:
+ ID: 790  value: 7900
+
+Consumer recieved:
+ ID: 790  value: 7900
+
+Produced:
+ ID: 791  value: 7910
+
+Consumer recieved:
+ ID: 791  value: 7910
+
+Produced:
+ ID: 792  value: 7920
+
+Consumer recieved:
+ ID: 792  value: 7920
+
+Produced:
+ ID: 793  value: 7930
+
+Consumer recieved:
+ ID: 793  value: 7930
+
+Produced:
+ ID: 794  value: 7940
+
+Consumer recieved:
+ ID: 794  value: 7940
+
+Produced:
+ ID: 795  value: 7950
+
+Consumer recieved:
+ ID: 795  value: 7950
+
+Produced:
+ ID: 796  value: 7960
+
+Consumer recieved:
+ ID: 796  value: 7960
+
+Produced:
+ ID: 797  value: 7970
+
+Consumer recieved:
+ ID: 797  value: 7970
+
+Produced:
+ ID: 798  value: 7980
+
+Consumer recieved:
+ ID: 798  value: 7980
+
+Produced:
+ ID: 799  value: 7990
+
+Consumer recieved:
+ ID: 799  value: 7990
+
+Produced:
+ ID: 800  value: 8000
+
+Consumer recieved:
+ ID: 800  value: 8000
+
+Produced:
+ ID: 801  value: 8010
+
+Consumer recieved:
+ ID: 801  value: 8010
+
+Produced:
+ ID: 802  value: 8020
+
+Consumer recieved:
+ ID: 802  value: 8020
+
+Produced:
+ ID: 803  value: 8030
+
+Consumer recieved:
+ ID: 803  value: 8030
+
+Produced:
+ ID: 804  value: 8040
+
+Consumer recieved:
+ ID: 804  value: 8040
+
+Produced:
+ ID: 805  value: 8050
+
+Consumer recieved:
+ ID: 805  value: 8050
+
+Produced:
+ ID: 806  value: 8060
+
+Consumer recieved:
+ ID: 806  value: 8060
+
+Produced:
+ ID: 807  value: 8070
+
+Consumer recieved:
+ ID: 807  value: 8070
+
+Produced:
+ ID: 808  value: 8080
+
+Consumer recieved:
+ ID: 808  value: 8080
+
+Produced:
+ ID: 809  value: 8090
+
+Consumer recieved:
+ ID: 809  value: 8090
+
+Produced:
+ ID: 810  value: 8100
+
+Consumer recieved:
+ ID: 810  value: 8100
+
+Produced:
+ ID: 811  value: 8110
+
+Consumer recieved:
+ ID: 811  value: 8110
+
+Produced:
+ ID: 812  value: 8120
+
+Consumer recieved:
+ ID: 812  value: 8120
+
+Produced:
+ ID: 813  value: 8130
+
+Consumer recieved:
+ ID: 813  value: 8130
+
+Produced:
+ ID: 814  value: 8140
+
+Consumer recieved:
+ ID: 814  value: 8140
+
+Produced:
+ ID: 815  value: 8150
+
+Consumer recieved:
+ ID: 815  value: 8150
+
+Produced:
+ ID: 816  value: 8160
+
+Consumer recieved:
+ ID: 816  value: 8160
+
+Produced:
+ ID: 817  value: 8170
+
+Consumer recieved:
+ ID: 817  value: 8170
+
+Produced:
+ ID: 818  value: 8180
+
+Consumer recieved:
+ ID: 818  value: 8180
+
+Produced:
+ ID: 819  value: 8190
+
+Consumer recieved:
+ ID: 819  value: 8190
+
+Produced:
+ ID: 820  value: 8200
+
+Consumer recieved:
+ ID: 820  value: 8200
+
+Produced:
+ ID: 821  value: 8210
+
+Consumer recieved:
+ ID: 821  value: 8210
+
+Produced:
+ ID: 822  value: 8220
+
+Consumer recieved:
+ ID: 822  value: 8220
+
+Produced:
+ ID: 823  value: 8230
+
+Consumer recieved:
+ ID: 823  value: 8230
+
+Produced:
+ ID: 824  value: 8240
+
+Consumer recieved:
+ ID: 824  value: 8240
+
+Produced:
+ ID: 825  value: 8250
+
+Consumer recieved:
+ ID: 825  value: 8250
+
+Produced:
+ ID: 826  value: 8260
+
+Consumer recieved:
+ ID: 826  value: 8260
+
+Produced:
+ ID: 827  value: 8270
+
+Consumer recieved:
+ ID: 827  value: 8270
+
+Produced:
+ ID: 828  value: 8280
+
+Consumer recieved:
+ ID: 828  value: 8280
+
+Produced:
+ ID: 829  value: 8290
+
+Consumer recieved:
+ ID: 829  value: 8290
+
+Produced:
+ ID: 830  value: 8300
+
+Consumer recieved:
+ ID: 830  value: 8300
+
+Produced:
+ ID: 831  value: 8310
+
+Consumer recieved:
+ ID: 831  value: 8310
+
+Produced:
+ ID: 832  value: 8320
+
+Consumer recieved:
+ ID: 832  value: 8320
+
+Produced:
+ ID: 833  value: 8330
+
+Consumer recieved:
+ ID: 833  value: 8330
+
+Produced:
+ ID: 834  value: 8340
+
+Consumer recieved:
+ ID: 834  value: 8340
+
+Produced:
+ ID: 835  value: 8350
+
+Consumer recieved:
+ ID: 835  value: 8350
+
+Produced:
+ ID: 836  value: 8360
+
+Consumer recieved:
+ ID: 836  value: 8360
+
+Produced:
+ ID: 837  value: 8370
+
+Consumer recieved:
+ ID: 837  value: 8370
+
+Produced:
+ ID: 838  value: 8380
+
+Consumer recieved:
+ ID: 838  value: 8380
+
+Produced:
+ ID: 839  value: 8390
+
+Consumer recieved:
+ ID: 839  value: 8390
+
+Produced:
+ ID: 840  value: 8400
+
+Consumer recieved:
+ ID: 840  value: 8400
+
+Produced:
+ ID: 841  value: 8410
+
+Consumer recieved:
+ ID: 841  value: 8410
+
+Produced:
+ ID: 842  value: 8420
+
+Consumer recieved:
+ ID: 842  value: 8420
+
+Produced:
+ ID: 843  value: 8430
+
+Consumer recieved:
+ ID: 843  value: 8430
+
+Produced:
+ ID: 844  value: 8440
+
+Consumer recieved:
+ ID: 844  value: 8440
+
+Produced:
+ ID: 845  value: 8450
+
+Consumer recieved:
+ ID: 845  value: 8450
+
+Produced:
+ ID: 846  value: 8460
+
+Consumer recieved:
+ ID: 846  value: 8460
+
+Produced:
+ ID: 847  value: 8470
+
+Consumer recieved:
+ ID: 847  value: 8470
+
+Produced:
+ ID: 848  value: 8480
+
+Consumer recieved:
+ ID: 848  value: 8480
+
+Produced:
+ ID: 849  value: 8490
+
+Consumer recieved:
+ ID: 849  value: 8490
+
+Produced:
+ ID: 850  value: 8500
+
+Consumer recieved:
+ ID: 850  value: 8500
+
+Produced:
+ ID: 851  value: 8510
+
+Consumer recieved:
+ ID: 851  value: 8510
+
+Produced:
+ ID: 852  value: 8520
+
+Consumer recieved:
+ ID: 852  value: 8520
+
+Produced:
+ ID: 853  value: 8530
+
+Consumer recieved:
+ ID: 853  value: 8530
+
+Produced:
+ ID: 854  value: 8540
+
+Consumer recieved:
+ ID: 854  value: 8540
+
+Produced:
+ ID: 855  value: 8550
+
+Consumer recieved:
+ ID: 855  value: 8550
+
+Produced:
+ ID: 856  value: 8560
+
+Consumer recieved:
+ ID: 856  value: 8560
+
+Produced:
+ ID: 857  value: 8570
+
+Consumer recieved:
+ ID: 857  value: 8570
+
+Produced:
+ ID: 858  value: 8580
+
+Consumer recieved:
+ ID: 858  value: 8580
+
+Produced:
+ ID: 859  value: 8590
+
+Consumer recieved:
+ ID: 859  value: 8590
+
+Produced:
+ ID: 860  value: 8600
+
+Consumer recieved:
+ ID: 860  value: 8600
+
+Produced:
+ ID: 861  value: 8610
+
+Consumer recieved:
+ ID: 861  value: 8610
+
+Produced:
+ ID: 862  value: 8620
+
+Consumer recieved:
+ ID: 862  value: 8620
+
+Produced:
+ ID: 863  value: 8630
+
+Consumer recieved:
+ ID: 863  value: 8630
+
+Produced:
+ ID: 864  value: 8640
+
+Consumer recieved:
+ ID: 864  value: 8640
+
+Produced:
+ ID: 865  value: 8650
+
+Consumer recieved:
+ ID: 865  value: 8650
+
+Produced:
+ ID: 866  value: 8660
+
+Consumer recieved:
+ ID: 866  value: 8660
+
+Produced:
+ ID: 867  value: 8670
+
+Consumer recieved:
+ ID: 867  value: 8670
+
+Produced:
+ ID: 868  value: 8680
+
+Consumer recieved:
+ ID: 868  value: 8680
+
+Produced:
+ ID: 869  value: 8690
+
+Consumer recieved:
+ ID: 869  value: 8690
+
+Produced:
+ ID: 870  value: 8700
+
+Consumer recieved:
+ ID: 870  value: 8700
+
+Produced:
+ ID: 871  value: 8710
+
+Consumer recieved:
+ ID: 871  value: 8710
+
+Produced:
+ ID: 872  value: 8720
+
+Consumer recieved:
+ ID: 872  value: 8720
+
+Produced:
+ ID: 873  value: 8730
+
+Consumer recieved:
+ ID: 873  value: 8730
+
+Produced:
+ ID: 874  value: 8740
+
+Consumer recieved:
+ ID: 874  value: 8740
+
+Produced:
+ ID: 875  value: 8750
+
+Consumer recieved:
+ ID: 875  value: 8750
+
+Produced:
+ ID: 876  value: 8760
+
+Consumer recieved:
+ ID: 876  value: 8760
+
+Produced:
+ ID: 877  value: 8770
+
+Consumer recieved:
+ ID: 877  value: 8770
+
+Produced:
+ ID: 878  value: 8780
+
+Consumer recieved:
+ ID: 878  value: 8780
+
+Produced:
+ ID: 879  value: 8790
+
+Consumer recieved:
+ ID: 879  value: 8790
+
+Produced:
+ ID: 880  value: 8800
+
+Consumer recieved:
+ ID: 880  value: 8800
+
+Produced:
+ ID: 881  value: 8810
+
+Consumer recieved:
+ ID: 881  value: 8810
+
+Produced:
+ ID: 882  value: 8820
+
+Consumer recieved:
+ ID: 882  value: 8820
+
+Produced:
+ ID: 883  value: 8830
+
+Consumer recieved:
+ ID: 883  value: 8830
+
+Produced:
+ ID: 884  value: 8840
+
+Consumer recieved:
+ ID: 884  value: 8840
+
+Produced:
+ ID: 885  value: 8850
+
+Consumer recieved:
+ ID: 885  value: 8850
+
+Produced:
+ ID: 886  value: 8860
+
+Consumer recieved:
+ ID: 886  value: 8860
+
+Produced:
+ ID: 887  value: 8870
+
+Consumer recieved:
+ ID: 887  value: 8870
+
+Produced:
+ ID: 888  value: 8880
+
+Consumer recieved:
+ ID: 888  value: 8880
+
+Produced:
+ ID: 889  value: 8890
+
+Consumer recieved:
+ ID: 889  value: 8890
+
+Produced:
+ ID: 890  value: 8900
+
+Consumer recieved:
+ ID: 890  value: 8900
+
+Produced:
+ ID: 891  value: 8910
+
+Consumer recieved:
+ ID: 891  value: 8910
+
+Produced:
+ ID: 892  value: 8920
+
+Consumer recieved:
+ ID: 892  value: 8920
+
+Produced:
+ ID: 893  value: 8930
+
+Consumer recieved:
+ ID: 893  value: 8930
+
+Produced:
+ ID: 894  value: 8940
+
+Consumer recieved:
+ ID: 894  value: 8940
+
+Produced:
+ ID: 895  value: 8950
+
+Consumer recieved:
+ ID: 895  value: 8950
+
+Produced:
+ ID: 896  value: 8960
+
+Consumer recieved:
+ ID: 896  value: 8960
+
+Produced:
+ ID: 897  value: 8970
+
+Consumer recieved:
+ ID: 897  value: 8970
+
+Produced:
+ ID: 898  value: 8980
+
+Consumer recieved:
+ ID: 898  value: 8980
+
+Produced:
+ ID: 899  value: 8990
+
+Consumer recieved:
+ ID: 899  value: 8990
+
+Produced:
+ ID: 900  value: 9000
+
+Consumer recieved:
+ ID: 900  value: 9000
+
+Produced:
+ ID: 901  value: 9010
+
+Consumer recieved:
+ ID: 901  value: 9010
+
+Produced:
+ ID: 902  value: 9020
+
+Consumer recieved:
+ ID: 902  value: 9020
+
+Produced:
+ ID: 903  value: 9030
+
+Consumer recieved:
+ ID: 903  value: 9030
+
+Produced:
+ ID: 904  value: 9040
+
+Consumer recieved:
+ ID: 904  value: 9040
+
+Produced:
+ ID: 905  value: 9050
+
+Consumer recieved:
+ ID: 905  value: 9050
+
+Produced:
+ ID: 906  value: 9060
+
+Consumer recieved:
+ ID: 906  value: 9060
+
+Produced:
+ ID: 907  value: 9070
+
+Consumer recieved:
+ ID: 907  value: 9070
+
+Produced:
+ ID: 908  value: 9080
+
+Consumer recieved:
+ ID: 908  value: 9080
+
+Produced:
+ ID: 909  value: 9090
+
+Consumer recieved:
+ ID: 909  value: 9090
+
+Produced:
+ ID: 910  value: 9100
+
+Consumer recieved:
+ ID: 910  value: 9100
+
+Produced:
+ ID: 911  value: 9110
+
+Consumer recieved:
+ ID: 911  value: 9110
+
+Produced:
+ ID: 912  value: 9120
+
+Consumer recieved:
+ ID: 912  value: 9120
+
+Produced:
+ ID: 913  value: 9130
+
+Consumer recieved:
+ ID: 913  value: 9130
+
+Produced:
+ ID: 914  value: 9140
+
+Consumer recieved:
+ ID: 914  value: 9140
+
+Produced:
+ ID: 915  value: 9150
+
+Consumer recieved:
+ ID: 915  value: 9150
+
+Produced:
+ ID: 916  value: 9160
+
+Consumer recieved:
+ ID: 916  value: 9160
+
+Produced:
+ ID: 917  value: 9170
+
+Consumer recieved:
+ ID: 917  value: 9170
+
+Produced:
+ ID: 918  value: 9180
+
+Consumer recieved:
+ ID: 918  value: 9180
+
+Produced:
+ ID: 919  value: 9190
+
+Consumer recieved:
+ ID: 919  value: 9190
+
+Produced:
+ ID: 920  value: 9200
+
+Consumer recieved:
+ ID: 920  value: 9200
+
+Produced:
+ ID: 921  value: 9210
+
+Consumer recieved:
+ ID: 921  value: 9210
+
+Produced:
+ ID: 922  value: 9220
+
+Consumer recieved:
+ ID: 922  value: 9220
+
+Produced:
+ ID: 923  value: 9230
+
+Consumer recieved:
+ ID: 923  value: 9230
+
+Produced:
+ ID: 924  value: 9240
+
+Consumer recieved:
+ ID: 924  value: 9240
+
+Produced:
+ ID: 925  value: 9250
+
+Consumer recieved:
+ ID: 925  value: 9250
+
+Produced:
+ ID: 926  value: 9260
+
+Consumer recieved:
+ ID: 926  value: 9260
+
+Produced:
+ ID: 927  value: 9270
+
+Consumer recieved:
+ ID: 927  value: 9270
+
+Produced:
+ ID: 928  value: 9280
+
+Consumer recieved:
+ ID: 928  value: 9280
+
+Produced:
+ ID: 929  value: 9290
+
+Consumer recieved:
+ ID: 929  value: 9290
+
+Produced:
+ ID: 930  value: 9300
+
+Consumer recieved:
+ ID: 930  value: 9300
+
+Produced:
+ ID: 931  value: 9310
+
+Consumer recieved:
+ ID: 931  value: 9310
+
+Produced:
+ ID: 932  value: 9320
+
+Consumer recieved:
+ ID: 932  value: 9320
+
+Produced:
+ ID: 933  value: 9330
+
+Consumer recieved:
+ ID: 933  value: 9330
+
+Produced:
+ ID: 934  value: 9340
+
+Consumer recieved:
+ ID: 934  value: 9340
+
+Produced:
+ ID: 935  value: 9350
+
+Consumer recieved:
+ ID: 935  value: 9350
+
+Produced:
+ ID: 936  value: 9360
+
+Consumer recieved:
+ ID: 936  value: 9360
+
+Produced:
+ ID: 937  value: 9370
+
+Consumer recieved:
+ ID: 937  value: 9370
+
+Produced:
+ ID: 938  value: 9380
+
+Consumer recieved:
+ ID: 938  value: 9380
+
+Produced:
+ ID: 939  value: 9390
+
+Consumer recieved:
+ ID: 939  value: 9390
+
+Produced:
+ ID: 940  value: 9400
+
+Consumer recieved:
+ ID: 940  value: 9400
+
+Produced:
+ ID: 941  value: 9410
+
+Consumer recieved:
+ ID: 941  value: 9410
+
+Produced:
+ ID: 942  value: 9420
+
+Consumer recieved:
+ ID: 942  value: 9420
+
+Produced:
+ ID: 943  value: 9430
+
+Consumer recieved:
+ ID: 943  value: 9430
+
+Produced:
+ ID: 944  value: 9440
+
+Consumer recieved:
+ ID: 944  value: 9440
+
+Produced:
+ ID: 945  value: 9450
+
+Consumer recieved:
+ ID: 945  value: 9450
+
+Produced:
+ ID: 946  value: 9460
+
+Consumer recieved:
+ ID: 946  value: 9460
+
+Produced:
+ ID: 947  value: 9470
+
+Consumer recieved:
+ ID: 947  value: 9470
+
+Produced:
+ ID: 948  value: 9480
+
+Consumer recieved:
+ ID: 948  value: 9480
+
+Produced:
+ ID: 949  value: 9490
+
+Consumer recieved:
+ ID: 949  value: 9490
+
+Produced:
+ ID: 950  value: 9500
+
+Consumer recieved:
+ ID: 950  value: 9500
+
+Produced:
+ ID: 951  value: 9510
+
+Consumer recieved:
+ ID: 951  value: 9510
+
+Produced:
+ ID: 952  value: 9520
+
+Consumer recieved:
+ ID: 952  value: 9520
+
+Produced:
+ ID: 953  value: 9530
+
+Consumer recieved:
+ ID: 953  value: 9530
+
+Produced:
+ ID: 954  value: 9540
+
+Consumer recieved:
+ ID: 954  value: 9540
+
+Produced:
+ ID: 955  value: 9550
+
+Consumer recieved:
+ ID: 955  value: 9550
+
+Produced:
+ ID: 956  value: 9560
+
+Consumer recieved:
+ ID: 956  value: 9560
+
+Produced:
+ ID: 957  value: 9570
+
+Consumer recieved:
+ ID: 957  value: 9570
+
+Produced:
+ ID: 958  value: 9580
+
+Consumer recieved:
+ ID: 958  value: 9580
+
+Produced:
+ ID: 959  value: 9590
+
+Consumer recieved:
+ ID: 959  value: 9590
+
+Produced:
+ ID: 960  value: 9600
+
+Consumer recieved:
+ ID: 960  value: 9600
+
+Produced:
+ ID: 961  value: 9610
+
+Consumer recieved:
+ ID: 961  value: 9610
+
+Produced:
+ ID: 962  value: 9620
+
+Consumer recieved:
+ ID: 962  value: 9620
+
+Produced:
+ ID: 963  value: 9630
+
+Consumer recieved:
+ ID: 963  value: 9630
+
+Produced:
+ ID: 964  value: 9640
+
+Consumer recieved:
+ ID: 964  value: 9640
+
+Produced:
+ ID: 965  value: 9650
+
+Consumer recieved:
+ ID: 965  value: 9650
+
+Produced:
+ ID: 966  value: 9660
+
+Consumer recieved:
+ ID: 966  value: 9660
+
+Produced:
+ ID: 967  value: 9670
+
+Consumer recieved:
+ ID: 967  value: 9670
+
+Produced:
+ ID: 968  value: 9680
+
+Consumer recieved:
+ ID: 968  value: 9680
+
+Produced:
+ ID: 969  value: 9690
+
+Consumer recieved:
+ ID: 969  value: 9690
+
+Produced:
+ ID: 970  value: 9700
+
+Consumer recieved:
+ ID: 970  value: 9700
+
+Produced:
+ ID: 971  value: 9710
+
+Consumer recieved:
+ ID: 971  value: 9710
+
+Produced:
+ ID: 972  value: 9720
+
+Consumer recieved:
+ ID: 972  value: 9720
+
+Produced:
+ ID: 973  value: 9730
+
+Consumer recieved:
+ ID: 973  value: 9730
+
+Produced:
+ ID: 974  value: 9740
+
+Consumer recieved:
+ ID: 974  value: 9740
+
+Produced:
+ ID: 975  value: 9750
+
+Consumer recieved:
+ ID: 975  value: 9750
+
+Produced:
+ ID: 976  value: 9760
+
+Consumer recieved:
+ ID: 976  value: 9760
+
+Produced:
+ ID: 977  value: 9770
+
+Consumer recieved:
+ ID: 977  value: 9770
+
+Produced:
+ ID: 978  value: 9780
+
+Consumer recieved:
+ ID: 978  value: 9780
+
+Produced:
+ ID: 979  value: 9790
+
+Consumer recieved:
+ ID: 979  value: 9790
+
+Produced:
+ ID: 980  value: 9800
+
+Consumer recieved:
+ ID: 980  value: 9800
+
+Produced:
+ ID: 981  value: 9810
+
+Consumer recieved:
+ ID: 981  value: 9810
+
+Produced:
+ ID: 982  value: 9820
+
+Consumer recieved:
+ ID: 982  value: 9820
+
+Produced:
+ ID: 983  value: 9830
+
+Consumer recieved:
+ ID: 983  value: 9830
+
+Produced:
+ ID: 984  value: 9840
+
+Consumer recieved:
+ ID: 984  value: 9840
+
+Produced:
+ ID: 985  value: 9850
+
+Consumer recieved:
+ ID: 985  value: 9850
+
+Produced:
+ ID: 986  value: 9860
+
+Consumer recieved:
+ ID: 986  value: 9860
+
+Produced:
+ ID: 987  value: 9870
+
+Consumer recieved:
+ ID: 987  value: 9870
+
+Produced:
+ ID: 988  value: 9880
+
+Consumer recieved:
+ ID: 988  value: 9880
+
+Produced:
+ ID: 989  value: 9890
+
+Consumer recieved:
+ ID: 989  value: 9890
+
+Produced:
+ ID: 990  value: 9900
+
+Consumer recieved:
+ ID: 990  value: 9900
+
+Produced:
+ ID: 991  value: 9910
+
+Consumer recieved:
+ ID: 991  value: 9910
+
+Produced:
+ ID: 992  value: 9920
+
+Consumer recieved:
+ ID: 992  value: 9920
+
+Produced:
+ ID: 993  value: 9930
+
+Consumer recieved:
+ ID: 993  value: 9930
+
+Produced:
+ ID: 994  value: 9940
+
+Consumer recieved:
+ ID: 994  value: 9940
+
+Produced:
+ ID: 995  value: 9950
+
+Consumer recieved:
+ ID: 995  value: 9950
+
+Produced:
+ ID: 996  value: 9960
+
+Consumer recieved:
+ ID: 996  value: 9960
+
+Produced:
+ ID: 997  value: 9970
+
+Consumer recieved:
+ ID: 997  value: 9970
+
+Produced:
+ ID: 998  value: 9980
+
+Consumer recieved:
+ ID: 998  value: 9980
+
+Produced:
+ ID: 999  value: 9990
+
+Consumer recieved:
+ ID: 999  value: 9990
+
+Produced:
+ ID: 1000  value: 10000
+
+Consumer recieved:
+ ID: 1000  value: 10000
+
+Produced:
+ ID: 1001  value: 10010
+
+Consumer recieved:
+ ID: 1001  value: 10010
+
+Produced:
+ ID: 1002  value: 10020
+
+Consumer recieved:
+ ID: 1002  value: 10020
+
+Produced:
+ ID: 1003  value: 10030
+
+Consumer recieved:
+ ID: 1003  value: 10030
+
+Produced:
+ ID: 1004  value: 10040
+
+Consumer recieved:
+ ID: 1004  value: 10040
+
+Produced:
+ ID: 1005  value: 10050
+
+Consumer recieved:
+ ID: 1005  value: 10050
+
+Produced:
+ ID: 1006  value: 10060
+
+Consumer recieved:
+ ID: 1006  value: 10060
+
+Produced:
+ ID: 1007  value: 10070
+
+Consumer recieved:
+ ID: 1007  value: 10070
+
+Produced:
+ ID: 1008  value: 10080
+
+Consumer recieved:
+ ID: 1008  value: 10080
+
+Produced:
+ ID: 1009  value: 10090
+
+Consumer recieved:
+ ID: 1009  value: 10090
+
+Produced:
+ ID: 1010  value: 10100
+
+Consumer recieved:
+ ID: 1010  value: 10100
+
+Produced:
+ ID: 1011  value: 10110
+
+Consumer recieved:
+ ID: 1011  value: 10110
+
+Produced:
+ ID: 1012  value: 10120
+
+Consumer recieved:
+ ID: 1012  value: 10120
+
+Produced:
+ ID: 1013  value: 10130
+
+Consumer recieved:
+ ID: 1013  value: 10130
+
+Produced:
+ ID: 1014  value: 10140
+
+Consumer recieved:
+ ID: 1014  value: 10140
+
+Produced:
+ ID: 1015  value: 10150
+
+Consumer recieved:
+ ID: 1015  value: 10150
+
+Produced:
+ ID: 1016  value: 10160
+
+Consumer recieved:
+ ID: 1016  value: 10160
+
+Produced:
+ ID: 1017  value: 10170
+
+Consumer recieved:
+ ID: 1017  value: 10170
+
+Produced:
+ ID: 1018  value: 10180
+
+Consumer recieved:
+ ID: 1018  value: 10180
+
+Produced:
+ ID: 1019  value: 10190
+
+Consumer recieved:
+ ID: 1019  value: 10190
+
+Produced:
+ ID: 1020  value: 10200
+
+Consumer recieved:
+ ID: 1020  value: 10200
+
+Produced:
+ ID: 1021  value: 10210
+
+Consumer recieved:
+ ID: 1021  value: 10210
+
+Produced:
+ ID: 1022  value: 10220
+
+Consumer recieved:
+ ID: 1022  value: 10220
+
+Produced:
+ ID: 1023  value: 10230
+
+Consumer recieved:
+ ID: 1023  value: 10230
+
+Produced:
+ ID: 1024  value: 10240
+
+Consumer recieved:
+ ID: 1024  value: 10240
+
+Produced:
+ ID: 1025  value: 10250
+
+Consumer recieved:
+ ID: 1025  value: 10250
+
+Produced:
+ ID: 1026  value: 10260
+
+Consumer recieved:
+ ID: 1026  value: 10260
+
+Produced:
+ ID: 1027  value: 10270
+
+Consumer recieved:
+ ID: 1027  value: 10270
+
+Produced:
+ ID: 1028  value: 10280
+
+Consumer recieved:
+ ID: 1028  value: 10280
+
+Produced:
+ ID: 1029  value: 10290
+
+Consumer recieved:
+ ID: 1029  value: 10290
+
+Produced:
+ ID: 1030  value: 10300
+
+Consumer recieved:
+ ID: 1030  value: 10300
+
+Produced:
+ ID: 1031  value: 10310
+
+Consumer recieved:
+ ID: 1031  value: 10310
+
+Produced:
+ ID: 1032  value: 10320
+
+Consumer recieved:
+ ID: 1032  value: 10320
+
+Produced:
+ ID: 1033  value: 10330
+
+Consumer recieved:
+ ID: 1033  value: 10330
+
+Produced:
+ ID: 1034  value: 10340
+
+Consumer recieved:
+ ID: 1034  value: 10340
+
+Produced:
+ ID: 1035  value: 10350
+
+Consumer recieved:
+ ID: 1035  value: 10350
+
+Produced:
+ ID: 1036  value: 10360
+
+Consumer recieved:
+ ID: 1036  value: 10360
+
+Produced:
+ ID: 1037  value: 10370
+
+Consumer recieved:
+ ID: 1037  value: 10370
+
+Produced:
+ ID: 1038  value: 10380
+
+Consumer recieved:
+ ID: 1038  value: 10380
+
+Produced:
+ ID: 1039  value: 10390
+
+Consumer recieved:
+ ID: 1039  value: 10390
+
+Produced:
+ ID: 1040  value: 10400
+
+Consumer recieved:
+ ID: 1040  value: 10400
+
+Produced:
+ ID: 1041  value: 10410
+
+Consumer recieved:
+ ID: 1041  value: 10410
+
+Produced:
+ ID: 1042  value: 10420
+
+Consumer recieved:
+ ID: 1042  value: 10420
+
+Produced:
+ ID: 1043  value: 10430
+
+Consumer recieved:
+ ID: 1043  value: 10430
+
+Produced:
+ ID: 1044  value: 10440
+
+Consumer recieved:
+ ID: 1044  value: 10440
+
+Produced:
+ ID: 1045  value: 10450
+
+Consumer recieved:
+ ID: 1045  value: 10450
+
+Produced:
+ ID: 1046  value: 10460
+
+Consumer recieved:
+ ID: 1046  value: 10460
+
+Produced:
+ ID: 1047  value: 10470
+
+Consumer recieved:
+ ID: 1047  value: 10470
+
+Produced:
+ ID: 1048  value: 10480
+
+Consumer recieved:
+ ID: 1048  value: 10480
+
+Produced:
+ ID: 1049  value: 10490
+
+Consumer recieved:
+ ID: 1049  value: 10490
+
+Produced:
+ ID: 1050  value: 10500
+
+Consumer recieved:
+ ID: 1050  value: 10500
+
+Produced:
+ ID: 1051  value: 10510
+
+Consumer recieved:
+ ID: 1051  value: 10510
+
+Produced:
+ ID: 1052  value: 10520
+
+Consumer recieved:
+ ID: 1052  value: 10520
+
+Produced:
+ ID: 1053  value: 10530
+
+Consumer recieved:
+ ID: 1053  value: 10530
+
+Produced:
+ ID: 1054  value: 10540
+
+Consumer recieved:
+ ID: 1054  value: 10540
+
+Produced:
+ ID: 1055  value: 10550
+
+Consumer recieved:
+ ID: 1055  value: 10550
+
+Produced:
+ ID: 1056  value: 10560
+
+Consumer recieved:
+ ID: 1056  value: 10560
+
+Produced:
+ ID: 1057  value: 10570
+
+Consumer recieved:
+ ID: 1057  value: 10570
+
+Produced:
+ ID: 1058  value: 10580
+
+Consumer recieved:
+ ID: 1058  value: 10580
+
+Produced:
+ ID: 1059  value: 10590
+
+Consumer recieved:
+ ID: 1059  value: 10590
+
+Produced:
+ ID: 1060  value: 10600
+
+Consumer recieved:
+ ID: 1060  value: 10600
+
+Produced:
+ ID: 1061  value: 10610
+
+Consumer recieved:
+ ID: 1061  value: 10610
+
+Produced:
+ ID: 1062  value: 10620
+
+Consumer recieved:
+ ID: 1062  value: 10620
+
+Produced:
+ ID: 1063  value: 10630
+
+Consumer recieved:
+ ID: 1063  value: 10630
+
+Produced:
+ ID: 1064  value: 10640
+
+Consumer recieved:
+ ID: 1064  value: 10640
+
+Produced:
+ ID: 1065  value: 10650
+
+Consumer recieved:
+ ID: 1065  value: 10650
+
+Produced:
+ ID: 1066  value: 10660
+
+Consumer recieved:
+ ID: 1066  value: 10660
+
+Produced:
+ ID: 1067  value: 10670
+
+Consumer recieved:
+ ID: 1067  value: 10670
+
+Produced:
+ ID: 1068  value: 10680
+
+Consumer recieved:
+ ID: 1068  value: 10680
+
+Produced:
+ ID: 1069  value: 10690
+
+Consumer recieved:
+ ID: 1069  value: 10690
+
+Produced:
+ ID: 1070  value: 10700
+
+Consumer recieved:
+ ID: 1070  value: 10700
+
+Produced:
+ ID: 1071  value: 10710
+
+Consumer recieved:
+ ID: 1071  value: 10710
+
+Produced:
+ ID: 1072  value: 10720
+
+Consumer recieved:
+ ID: 1072  value: 10720
+
+Produced:
+ ID: 1073  value: 10730
+
+Consumer recieved:
+ ID: 1073  value: 10730
+
+Produced:
+ ID: 1074  value: 10740
+
+Consumer recieved:
+ ID: 1074  value: 10740
+
+Produced:
+ ID: 1075  value: 10750
+
+Consumer recieved:
+ ID: 1075  value: 10750
+
+Produced:
+ ID: 1076  value: 10760
+
+Consumer recieved:
+ ID: 1076  value: 10760
+
+Produced:
+ ID: 1077  value: 10770
+
+Consumer recieved:
+ ID: 1077  value: 10770
+
+Produced:
+ ID: 1078  value: 10780
+
+Consumer recieved:
+ ID: 1078  value: 10780
+
+Produced:
+ ID: 1079  value: 10790
+
+Consumer recieved:
+ ID: 1079  value: 10790
+
+Produced:
+ ID: 1080  value: 10800
+
+Consumer recieved:
+ ID: 1080  value: 10800
+
+Produced:
+ ID: 1081  value: 10810
+
+Consumer recieved:
+ ID: 1081  value: 10810
+
+Produced:
+ ID: 1082  value: 10820
+
+Consumer recieved:
+ ID: 1082  value: 10820
+
+Produced:
+ ID: 1083  value: 10830
+
+Consumer recieved:
+ ID: 1083  value: 10830
+
+Produced:
+ ID: 1084  value: 10840
+
+Consumer recieved:
+ ID: 1084  value: 10840
+
+Produced:
+ ID: 1085  value: 10850
+
+Consumer recieved:
+ ID: 1085  value: 10850
+
+Produced:
+ ID: 1086  value: 10860
+
+Consumer recieved:
+ ID: 1086  value: 10860
+
+Produced:
+ ID: 1087  value: 10870
+
+Consumer recieved:
+ ID: 1087  value: 10870
+
+Produced:
+ ID: 1088  value: 10880
+
+Consumer recieved:
+ ID: 1088  value: 10880
+
+Produced:
+ ID: 1089  value: 10890
+
+Consumer recieved:
+ ID: 1089  value: 10890
+
+Produced:
+ ID: 1090  value: 10900
+
+Consumer recieved:
+ ID: 1090  value: 10900
+
+Produced:
+ ID: 1091  value: 10910
+
+Consumer recieved:
+ ID: 1091  value: 10910
+
+Produced:
+ ID: 1092  value: 10920
+
+Consumer recieved:
+ ID: 1092  value: 10920
+
+Produced:
+ ID: 1093  value: 10930
+
+Consumer recieved:
+ ID: 1093  value: 10930
+
+Produced:
+ ID: 1094  value: 10940
+
+Consumer recieved:
+ ID: 1094  value: 10940
+
+Produced:
+ ID: 1095  value: 10950
+
+Consumer recieved:
+ ID: 1095  value: 10950
+
+Produced:
+ ID: 1096  value: 10960
+
+Consumer recieved:
+ ID: 1096  value: 10960
+
+Produced:
+ ID: 1097  value: 10970
+
+Consumer recieved:
+ ID: 1097  value: 10970
+
+Produced:
+ ID: 1098  value: 10980
+
+Consumer recieved:
+ ID: 1098  value: 10980
+
+Produced:
+ ID: 1099  value: 10990
+
+Consumer recieved:
+ ID: 1099  value: 10990
+
+Produced:
+ ID: 1100  value: 11000
+
+Consumer recieved:
+ ID: 1100  value: 11000
+
+Produced:
+ ID: 1101  value: 11010
+
+Consumer recieved:
+ ID: 1101  value: 11010
+
+Produced:
+ ID: 1102  value: 11020
+
+Consumer recieved:
+ ID: 1102  value: 11020
+
+Produced:
+ ID: 1103  value: 11030
+
+Consumer recieved:
+ ID: 1103  value: 11030
+
+Produced:
+ ID: 1104  value: 11040
+
+Consumer recieved:
+ ID: 1104  value: 11040
+
+Produced:
+ ID: 1105  value: 11050
+
+Consumer recieved:
+ ID: 1105  value: 11050
+
+Produced:
+ ID: 1106  value: 11060
+
+Consumer recieved:
+ ID: 1106  value: 11060
+
+Produced:
+ ID: 1107  value: 11070
+
+Consumer recieved:
+ ID: 1107  value: 11070
+
+Produced:
+ ID: 1108  value: 11080
+
+Consumer recieved:
+ ID: 1108  value: 11080
+
+Produced:
+ ID: 1109  value: 11090
+
+Consumer recieved:
+ ID: 1109  value: 11090
+
+Produced:
+ ID: 1110  value: 11100
+
+Consumer recieved:
+ ID: 1110  value: 11100
+
