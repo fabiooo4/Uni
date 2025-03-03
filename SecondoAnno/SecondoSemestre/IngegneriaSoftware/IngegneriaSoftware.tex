@@ -9,4 +9,135 @@
 \tableofcontents
 \pagebreak
 
+% Info:
+% Libri: Sommerdille - Ingegneria del Software
+%        Larman - Applicare UML e i Pattern
+% Esame: Il risultato finale è la media dei 2 voti tra Ingegneria
+%        e programmazione 2.
+%        L'esame consiste in un esame orale concentrato su un
+%        progetto da discutere, più alcune domande sulla teoria.
+%        Il progetto è da scegliere fra 3 proposti dal docente.
+%        Il progetto riguarda il progetto e lo sviluppo di un
+%        software, bisogna anche implementare un sistema di
+%        memorizzazione sulla memoria di massa (fare anche i test). 
+%        Il progetto deve essere svolto in gruppi da 2 o 3 persone.
+\section{Introduzione}
+\subsection{Cos'è l'ingegneria del software?}
+L'ingegneria del software è un insieme di metodologie, teorie, metodi e strumenti, che
+guidano nello sviluppo di software \textbf{professionale} in modo che esso fornisca
+le funzionalità richieste, sia performante e mantenibile, affidabile e usabile. Il
+\textbf{software} non è solo il programma e l'eseguibile, ma anche \textbf{la 
+documentazione associata}. Le attività principale dell'ingegneria del software sono:
+\begin{itemize}
+  \item \textbf{Specifica del software}: Il cliente e l'ingegnere del software definiscono
+  le funzionalità e i vincoli del software da produrre.
+  \item \textbf{Sviluppo}: Il software viene progettato e implementato.
+  \item \textbf{Validazione}: Il software viene verificato per
+    assicurarsi che soddisfi i requisiti forniti dal cliente.
+  \item \textbf{Evoluzione}: Il software viene modificato per adattarlo a nuovi
+    requisiti del cliente o del mercato. 
+\end{itemize}
+
+\subsection{Economia}
+Il software spesso costa più dell'hardware, e il costo è più legato alla manutenzione che
+allo sviluppo. Quindi l'ingegneria del software è importante per ridurre i costi di
+manutenzione.
+
+\subsection{Fallimento dei progetti}
+I progetti spesso falliscono per la \textbf{crescente complessità del sistema}: nuove 
+tecniche di sviluppo e nuove tecnologie rendono i sistemi sempre più complessi, e quindi 
+più difficili da mantenere.
+
+\subsection{Prodotti software}
+\subsubsection{Prodotti generici}
+Sono prodotti che vengono pubblicizzati e venduti a qualsiasi cliente che ne faccia 
+richiesta. La specifica è di proprietà del produttore e le decisioni sulle modifiche
+sono prese dai produttori.
+
+\subsubsection{Prodotti personalizzati}
+Sono prodotti che vengono commissionati da clienti specifici per soddisfare le loro
+necessità. La specifica è di proprietà del cliente dopo una contrattazione con il
+produttore e le decisioni sulle modifiche sono prese dal cliente.
+
+\subsection{Caratteristiche di un buon software}
+\begin{itemize}
+  \item \textbf{Mantenibilità}: la facilità con cui il software può essere modificato
+  per correggere difetti, migliorare le prestazioni o adattarlo a cambiamenti.
+
+  \item \textbf{Affidabilità e sicurezza}: la capacità del software di svolgere le sue
+  funzioni in modo corretto. I malfunzionamenti non devono causare danni fisici o economici.
+  Utenti malintenzionati non devono poter violare la sicurezza del sistema.
+  
+  \item \textbf{Efficienza}: il software non deve sprecare risorse (CPU, memoria, ecc).
+
+  \item \textbf{Accettabilità}: il software deve essere accettato dagli utenti per i quali
+  è stato progettato.
+\end{itemize}
+
+\subsection{Problemi che influenzano il software}
+\subsubsection{Eterogeneità}
+I sistemi devono sempre di più operare in modo distribuito, e quindi devono essere in grado
+di comunicare con sistemi diversi. Oppure bisogna garantire che il software funzioni su
+piattaforme diverse.
+
+\subsubsection{Cambiamento sociale o del business}
+Il software deve essere in grado di adattarsi a cambiamenti sociali o organizzativi
+nelle aziende.
+
+\subsubsection{Sicurezza e fiducia}
+Siccome il software fa parte della vita di tutti i giorni è essenziale che ci sia
+fiducia nel software.
+
+\subsubsection{Scalabilità}
+Il software deve essere sviluppato a più scale, cioè soluzione che funziona in piccolo
+deve adattarsi anche a grandi scale senza rischiare di fallire.
+
+\subsection{Diversità di ingegneria del software}
+Ci sono diversi tipi di sistemi software e non c'è un insieme universale di tecniche
+applicabili a tutti i sistemi. Quindi i metodi e gli strumenti utilizzati dipendono
+dal tipo di applicazione che si deve sviluppare, dalle richieste dei clienti
+e dalle competenze degli sviluppatori.
+
+\subsection{Tipi di applicazione}
+\subsubsection{Applicazioni stand-alone}
+Sono applicazioni che si eseguono su un singolo computer locale e includono le
+funzionalità necessarie per l'utente.
+
+\subsubsection{Applicazioni interattive transaction-based}
+Sono applicazioni che sono eseguite su un computer in remoto e sono accessibili
+dagli utenti dai propri computer. Queste includono le applicazioni web come
+gli e-commerce.
+
+\subsubsection{Sistemi embedded}
+Sono applicazioni che controllano e gestiscono dispositivi hardware. Questi sistemi
+sono i più numerosi.
+
+\subsubsection{Sistemi batch}
+Questi sistemi elaborano grandi quantità di dati per produrre un output.
+
+\subsubsection{Sistemi di intrattenimento}
+Questi sistemi sono per uso personale e servono ad intrattenere l'utente.
+
+\subsubsection{Sistemi di modellazione e simulazione}
+Questi sistemi sono sviluppati da scienziati per modallare processi fisici o situazioni
+che includono tanti oggetti separati che interagiscono tra di loro.
+
+\subsubsection{Sistemi di collezione di dati (o IOT)}
+Questi sitemi raccolgono dati da sensori e li inviano ad un sistema centrale per
+l'elaborazione.
+
+\subsubsection{Sistemi di sistemi}
+Questi sistemi sono composti da più sistemi software che collaborano tra di loro.
+
+\subsection{Principi fondamentali}
+\begin{itemize}
+  \item I sistemi devono essere sviluppati utilizzando un processo strutturato e ben
+    pensato.
+  \item L'affidabilità e la performance sono importanti per ogni tipo di software.
+  \item Capire e gestire i requisiti del software è essenziale.
+  \item Dove appropriato si dovrebbe riutilizzare software che è già stato sviluppato
+    al posto di svilupparne uno da zero.
+\end{itemize}
+
+
 \end{document}
