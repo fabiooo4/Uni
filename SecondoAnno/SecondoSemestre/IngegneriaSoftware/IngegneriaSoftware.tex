@@ -38,12 +38,12 @@ documentazione associata}. Le attività principale dell'ingegneria del software 
     requisiti del cliente o del mercato. 
 \end{itemize}
 
-\subsection{Economia}
+\subsubsection{Economia}
 Il software spesso costa più dell'hardware, e il costo è più legato alla manutenzione che
 allo sviluppo. Quindi l'ingegneria del software è importante per ridurre i costi di
 manutenzione.
 
-\subsection{Fallimento dei progetti}
+\subsubsection{Fallimento dei progetti}
 I progetti spesso falliscono per la \textbf{crescente complessità del sistema}: nuove 
 tecniche di sviluppo e nuove tecnologie rendono i sistemi sempre più complessi, e quindi 
 più difficili da mantenere.
@@ -75,59 +75,74 @@ produttore e le decisioni sulle modifiche sono prese dal cliente.
 \end{itemize}
 
 \subsection{Problemi che influenzano il software}
-\subsubsection{Eterogeneità}
-I sistemi devono sempre di più operare in modo distribuito, e quindi devono essere in grado
-di comunicare con sistemi diversi. Oppure bisogna garantire che il software funzioni su
-piattaforme diverse.
+\begin{itemize}
+  \item \textbf{Eterogeneità}:
+    I sistemi devono sempre di più operare in modo distribuito, e quindi devono essere in grado
+    di comunicare con sistemi diversi. Oppure bisogna garantire che il software funzioni su
+    piattaforme diverse.
 
-\subsubsection{Cambiamento sociale o del business}
-Il software deve essere in grado di adattarsi a cambiamenti sociali o organizzativi
-nelle aziende.
+  \item 
+    \textbf{Cambiamento sociale o del business}:
+    Il software deve essere in grado di adattarsi a cambiamenti sociali o organizzativi
+    nelle aziende.
 
-\subsubsection{Sicurezza e fiducia}
-Siccome il software fa parte della vita di tutti i giorni è essenziale che ci sia
-fiducia nel software.
+  \item 
+    \textbf{Sicurezza e fiducia}:
+    Siccome il software fa parte della vita di tutti i giorni è essenziale che ci sia
+    fiducia nel software.
 
-\subsubsection{Scalabilità}
-Il software deve essere sviluppato a più scale, cioè soluzione che funziona in piccolo
-deve adattarsi anche a grandi scale senza rischiare di fallire.
+  \item 
+    \textbf{Scalabilità}:
+    Il software deve essere sviluppato a più scale, cioè soluzione che funziona in piccolo
+    deve adattarsi anche a grandi scale senza rischiare di fallire.
+\end{itemize}
 
-\subsection{Diversità di ingegneria del software}
+\subsection{Tipi di applicazione}
 Ci sono diversi tipi di sistemi software e non c'è un insieme universale di tecniche
 applicabili a tutti i sistemi. Quindi i metodi e gli strumenti utilizzati dipendono
 dal tipo di applicazione che si deve sviluppare, dalle richieste dei clienti
-e dalle competenze degli sviluppatori.
+e dalle competenze degli sviluppatori. I principali tipi di applicazione sono:
+\begin{itemize}
+  \item 
+    \textbf{Applicazioni stand-alone}:
+    Sono applicazioni che si eseguono su un singolo computer locale e includono le
+    funzionalità necessarie per l'utente.
 
-\subsection{Tipi di applicazione}
-\subsubsection{Applicazioni stand-alone}
-Sono applicazioni che si eseguono su un singolo computer locale e includono le
-funzionalità necessarie per l'utente.
+  \item 
+    \textbf{Applicazioni interattive transaction-based}:
+    Sono applicazioni che sono eseguite su un computer in remoto e sono accessibili
+    dagli utenti dai propri computer. Queste includono le applicazioni web come
+    gli e-commerce.
 
-\subsubsection{Applicazioni interattive transaction-based}
-Sono applicazioni che sono eseguite su un computer in remoto e sono accessibili
-dagli utenti dai propri computer. Queste includono le applicazioni web come
-gli e-commerce.
+  \item 
+    \textbf{Sistemi embedded}:
+    Sono applicazioni che controllano e gestiscono dispositivi hardware. Questi sistemi
+    sono i più numerosi.
 
-\subsubsection{Sistemi embedded}
-Sono applicazioni che controllano e gestiscono dispositivi hardware. Questi sistemi
-sono i più numerosi.
+  \item 
+    \textbf{Sistemi batch}:
+    Questi sistemi elaborano grandi quantità di dati per produrre un output.
 
-\subsubsection{Sistemi batch}
-Questi sistemi elaborano grandi quantità di dati per produrre un output.
+  \item 
+    \textbf{Sistemi di intrattenimento}:
+    Questi sistemi sono per uso personale e servono ad intrattenere l'utente.
 
-\subsubsection{Sistemi di intrattenimento}
-Questi sistemi sono per uso personale e servono ad intrattenere l'utente.
+  \item 
+    \textbf{Sistemi di modellazione e simulazione}:
+    Questi sistemi sono sviluppati da scienziati per modallare processi fisici o situazioni
+    che includono tanti oggetti separati che interagiscono tra di loro.
 
-\subsubsection{Sistemi di modellazione e simulazione}
-Questi sistemi sono sviluppati da scienziati per modallare processi fisici o situazioni
-che includono tanti oggetti separati che interagiscono tra di loro.
+  \item 
+    \textbf{Sistemi di collezione di dati (o IOT)}:
+    Questi sitemi raccolgono dati da sensori e li inviano ad un sistema centrale per
+    l'elaborazione.
 
-\subsubsection{Sistemi di collezione di dati (o IOT)}
-Questi sitemi raccolgono dati da sensori e li inviano ad un sistema centrale per
-l'elaborazione.
+  \item 
+    \textbf{Sistemi di sistemi}:
+    Questi sistemi sono composti da più sistemi software che collaborano tra di loro.
+\end{itemize}
 
-\subsubsection{Sistemi di sistemi}
-Questi sistemi sono composti da più sistemi software che collaborano tra di loro.
+
 
 \subsection{Principi fondamentali}
 \begin{itemize}
@@ -139,5 +154,79 @@ Questi sistemi sono composti da più sistemi software che collaborano tra di lor
     al posto di svilupparne uno da zero.
 \end{itemize}
 
+\section{Processi del software}
+I \textbf{processi} del software sono un insieme di attività strutturate che sono necessarie
+per sviluppare un sistema software. Ci sono diversi tipi di processi, ma tutti coinvolgono
+le seguenti attività:
+\begin{itemize}
+  \item \textbf{Specificazione}
+  \item \textbf{Sviluppo}
+  \item \textbf{Design e implementazione}
+  \item \textbf{Validazione}
+  \item \textbf{Evoluzione}
+\end{itemize}
+Un modello di processo software è una rappresentazione astratta di un processo da un punto
+di vista particolare.
+
+Per descrivere e discutere i processi di solito si parla delle attività all'interno di
+questi processi e dell'ordine in cui queste attività vengono svolte. Alcune descrizioni
+possono anche includere:
+\begin{itemize}
+  \item \textbf{Prodotti}: cioè i risultati di un'attività.
+  \item \textbf{Ruoli}: cioè le responsabilità di un individuo o di un gruppo.
+  \item \textbf{Pre e post condizioni}: cioè le condizioni che devono essere soddisfatte
+    prima e dopo un'attività.
+\end{itemize}
+Alcuni esempi di processi sono:
+\begin{itemize}
+  \item \textbf{Processi plan-driven}: sono processi dove tutte le attività sono pianificate
+    in anticipo e tutti i progressi sono misurati rispetto al piano.
+  \item \textbf{Processi agili}: sono processi in cui la pianificazione è incrementale ed
+    è più facile adattarsi ai cambiamenti.
+\end{itemize}
+Nel pratico si utilizza un approccio ibrido tra i due.
+
+\subsection{Modelli di processo}
+\begin{itemize}
+  \item \textbf{Modello a cascata}: è un modello plan-driven con fasi di specificazione e
+    di sviluppo distinte e separate
+  \item \textbf{Modello incrementale}: la specifica, lo sviluppo e la validazione sono
+    intercalate. Può essere plan-driven o agile.
+  \item \textbf{Integrazione e configurazione}: i sistemi sono sviluppati da componenti
+    già esistenti e configurabili.
+\end{itemize}
+Nel pratico, sistemi molto grandi sono sviluppati utilizzando un processo che incorpora
+elementi di tutti e tre i modelli.
+
+\subsubsection{Modello a cascata}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+    node distance=0.4cm and 0cm,
+    every node/.style={draw,rectangle,align=center,scale=0.8,rounded corners=1mm},
+    ]
+    \node (1) {Definizione dei\\requisiti};
+    \node[below right=of 1]
+      (2) {Design del sistema\\e del software};
+    \node[below right=of 2]
+      (3) {Implementazione e\\unit testing};
+    \node[below right=of 3]
+      (4) {Integrazione e\\testing del sistema};
+    \node[below right=of 4]
+      (5) {Operazione e\\manutenzione};
+
+    \draw[->] (1) -| (2);
+    \draw[->] (2) -| (3);
+    \draw[->] (3) -| (4);
+    \draw[->] (4) -| (5);
+
+    \draw (5) -- (1.south |- 52,52 |- 5.west);
+    \draw[<-] (4.south) -- (4.south |- 52,52 |- 5.west);
+    \draw[<-] (3.south) -- (3.south |- 52,52 |- 5.west);
+    \draw[<-] (2.south) -- (2.south |- 52,52 |- 5.west);
+    \draw[<-] (1.south) -- (1.south |- 52,52 |- 5.west);
+  \end{tikzpicture}
+  \caption{Modello a cascata}
+\end{figure}
 
 \end{document}
