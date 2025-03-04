@@ -229,4 +229,389 @@ elementi di tutti e tre i modelli.
   \caption{Modello a cascata}
 \end{figure}
 
+\noindent
+Le diverse fasi del modello a cascata sono:
+\begin{itemize}
+  \item Analisi e definizione dei requisiti
+  \item Design del sistema e del software
+  \item Implementazione e unit testing
+  \item Integrazione e testing del sistema
+  \item Operazione e manutenzione
+\end{itemize}
+
+\noindent
+Il vantaggio del modello a cascata è la partizione inflessibile del progetto in fasi 
+distinte rende difficile rispondere ai cambiamenti dei requisiti, quindi questo modello 
+è adatto solo per progetti dove i requisiti sono ben definiti e i cambiamenti rimangono 
+limitati. Però pochi progetti soddisfano queste condizioni.
+
+\vspace{1em}
+\noindent
+Questo modello è più utilizzato in sistemi molto grandi e sviluppati da molte persone.
+In quelle circostanze la natura plan-driven di questo modello è utile per coordinare
+il lavoro.
+
+\subsubsection{Modello incrementale}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw,rectangle,align=center]
+      (outline) {Descrizione\\dell'outline};
+
+    \node[fill,fill opacity=0.2,rectangle,align=center,minimum width=3cm,
+      minimum height=4.5cm]
+      (box1) [right=of outline] {};
+    \node[above,at={(box1.north)},align=center] {Attività\\concorrenti};
+
+    \draw[->] (outline) -- (box1);
+
+    \node[
+      draw=black,fill=white,rectangle,align=center,at={(box1.north)},yshift=-0.8cm,
+      minimum width=2.3cm,minimum height=0.8cm,rounded corners
+      ]
+      (specification) {Specificazione};
+
+    \node[
+      draw=black,fill=white,rectangle,align=center,at={(box1)},minimum width=2.3cm,
+      minimum height=0.8cm,rounded corners
+      ]
+      (development) {Sviluppo};
+
+    \node[
+      draw=black,fill=white,rectangle,align=center,at={(box1.south)},yshift=0.8cm,
+      minimum width=2.3cm, minimum height=0.8cm,rounded corners
+      ]
+      (validation) {Validazione};
+
+    \draw[<->] (specification) -- (development);
+    \draw[<->] (development) -- (validation);
+
+    \node[fill,fill opacity=0.2,rectangle,align=center,minimum width=3cm,
+      minimum height=4.5cm]
+      (box2) [right=of box1] {};
+
+    \node[
+      draw=black,fill=white,rectangle,align=center,at={(box2.north)},yshift=-0.8cm,
+      minimum width=2.3cm,minimum height=0.8cm
+      ]
+      (init) {Versione\\iniziale};
+
+    \node[
+      draw=black,fill=white,rectangle,align=center,at={(box2)},minimum width=2.3cm,
+      minimum height=0.8cm,shift={(0.1cm,-0.2cm)}
+      ]
+      (offset1) {};
+    \node[
+      draw=black,fill=white,rectangle,align=center,at={(offset1)},minimum width=2.3cm,
+      minimum height=0.8cm,shift={(-0.1cm,0.1cm)}
+      ]
+      (offset2) {};
+    \node[
+      draw=black,fill=white,rectangle,align=center,at={(offset2)},minimum width=2.3cm,
+      minimum height=0.8cm,shift={(-0.1cm,0.15cm)}
+      ]
+      (intermediate) {Versioni\\intermedie};
+
+    \node[
+      draw=black,fill=white,rectangle,align=center,at={(box2.south)},yshift=0.8cm,
+      minimum width=2.3cm, minimum height=0.8cm
+      ]
+      (final) {Versione\\finale};
+
+    \draw[<->] (specification) -- (init);
+    \draw[<->] (development) -- (intermediate);
+    \draw[->] (validation) -- (final);
+  \end{tikzpicture}
+  \caption{Modello incrementale}
+\end{figure}
+\noindent
+I vantaggi del modello incrementale sono:
+\begin{itemize}
+  \item Il costo del cambiamento dei requisiti è ridotto e la quantità di analisi e
+    documentazione da rifare è molto meno rispetto al modello a cascata.
+
+  \item È più facile ottenere un feedback dagli utenti sul lavoro svolto.
+
+  \item È possibile consegnare software utile più velocemente al cliente.
+\end{itemize}
+Gli svantaggi del modello incrementale sono:
+\begin{itemize}
+  \item Il processo non è visibile, cioè è difficile valutare il progresso. I manager
+    hanno bisogno di costanti "deliverables", cioè risultati intermedi, per misurare
+    il progresso e non sempre è poco costoso produrre documenti che riflettono lo stato
+    di ogni versione del software.
+
+  \item La struttura del sistema tende a decadere con l'aggiunta di nuovi incrementi.
+    A meno che il tempo e i soldi non vengano spesi per il refactor e il miglioramento
+    del software, i cambiamenti regolari tenderanno a corrompere la struttura del sistema
+    e quindi incorporare nuovi cambiamenti diventerà sempre più difficile e costoso.
+\end{itemize}
+
+\subsubsection{Modello a integrazione e configurazione}
+Questo modello si basa sulla realizzazione di sistemi integrati tramite componenti
+software già esistenti e configurabili. Il riutilizzo è l'approccio standard per
+creare molti tipi di sistemi.
+
+I tipi di software riutilizzabile sono:
+\begin{itemize}
+  \item Applicazioni o sistemi stand-alone (a volte chiamati COTS, Commercial Off-The-Shelf)
+    che sono configurati per essere utilizzati in un certo ambiente
+    
+  \item Collezioni di oggetti o librerie che sono sviluppati come pacchetti per 
+    l'integrazione con vari framework
+
+  \item Servizi web sviluppati secondo standard che permettono l'interazione tramite
+    internet
+\end{itemize}
+Le attività principali di questo modello sono:
+\begin{itemize}
+  \item Specificazione dei requisiti
+  \item Ricerca e analisi del software riutilizzabile
+  \item Adattamento dei requisiti
+  \item Configurazione del sistema
+  \item Adattamento e integrazione dei componenti
+\end{itemize}
+I vantaggi di questo modello sono:
+\begin{itemize}
+  \item Riduzione dei costi e del rischio siccome meno software è sviluppato da zero
+    
+  \item Deployment più veloce
+\end{itemize}
+Gli svantaggi sono:
+\begin{itemize}
+  \item È inevitabile fare compromessi per i requisiti, quindi i sistemi potrebbero non
+    essere più ciò che aveva richiesto il cliente
+
+  \item Perdita di controllo sull'evoluzione dei componenti riutilizzati
+\end{itemize}
+
+\subsection{Attività dei processi}
+I processi software reali sono sequenze interconnesse di attività tecniche, collaborative
+e manageriali con l'obiettivo di specificare, progettare, implementare e testare un
+sistema software. Questi quattro processi base sono organizzati in modo differente
+in processi di sviluppo diversi.
+
+\subsubsection{Specificazione}
+Il processo di stabilire che processi sono richiesti e quali sono i vincoli sull'operazione
+e lo sviluppo del sistema è chiamato \textbf{specificazione del software} e consiste in:
+\begin{itemize}
+  \item \textbf{Ricavo e analisi dei requisiti}: cosa vogliono o cosa si aspettano
+    gli utenti interessati dal sistema
+
+  \item \textbf{Specifica dei requisiti}: definizione formale dei requisiti del sistemao
+
+  \item \textbf{Validazione dei requisiti}: verifica che i requisiti siano completi e
+    consistenti
+\end{itemize}
+
+\subsubsection{Design}
+Questo processo consiste nella conversione delle specifiche del sistema in un sistema
+eseguibile e consiste in:
+\begin{itemize}
+  \item \textbf{Design del software}: progettazione di una struttura software che
+    realizzi i requisiti del sistema
+
+  \item \textbf{Implementazione}: traduzione del design in un programma eseguibile
+\end{itemize}
+Queste attività sono interconnesse e spesso si intrecciano.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+
+    % Box 1 ------------------------------------------------------------------------------
+    \node[fill,fill opacity=0.2,rectangle,align=center,minimum width=9.5cm,
+      minimum height=2cm]
+      (box1) {};
+
+    \node[above right,at={(box1.north west)},align=center] {Design inputs};
+
+    \node[
+      draw=black,fill=white,rectangle,align=center,at={(box1)},minimum width=2.7cm,
+      minimum height=1.2cm,xshift=-3cm
+      ]
+      (info) {Informazioni\\della piattaforma};
+
+    \node[
+      draw=black,fill=white,rectangle,align=center,at={(box1)},minimum width=2.7cm,
+      minimum height=1.2cm
+      ]
+      (requirements) {Specifica\\dei requisiti};
+
+    \node[
+      draw=black,fill=white,rectangle,align=center,at={(box1)},minimum width=2.7cm,
+      minimum height=1.2cm,xshift=3cm
+      ]
+      (data) {Descrizione\\dei dati};
+    % Box 1 ------------------------------------------------------------------------------
+
+    % Box 2 ------------------------------------------------------------------------------
+    \node[fill,fill opacity=0.2,rectangle,align=center,minimum width=9.5cm,
+      minimum height=3.8cm]
+      (box2) [below=of box1] {};
+
+    \node[above right,at={(box2.north west)},align=center] {Attività di design};
+
+    \node[
+      draw=black,fill=white,rectangle,align=center,at={(box2.north)},minimum width=2.7cm,
+      minimum height=1.2cm,shift={(-3cm,-1cm)},rounded corners=6mm
+      ]
+      (archi) {Design\\architetturale};
+
+    \node[
+      draw=black,fill=white,rectangle,align=center,at={(box2.north)},minimum width=2.7cm,
+      minimum height=1.2cm,shift={(0cm,-1cm)},rounded corners=6mm
+      ]
+      (interface) {Design\\dell'interfaccia};
+
+    \node[
+      draw=black,fill=white,rectangle,align=center,at={(box2.north)},minimum width=2.7cm,
+      minimum height=1.2cm,shift={(3cm,-1cm)},rounded corners=6mm
+      ]
+      (component) {Design\\dei componenti};
+
+    \node[
+      draw=black,fill=white,rectangle,align=center,at={(box2.north)},minimum width=2.7cm,
+      minimum height=1.2cm,shift={(0cm,-2.8cm)},rounded corners=6mm
+      ]
+      (database) {Design del database};
+
+    \draw[->] (archi) -- (interface);
+    \draw[->] (interface) -- (component);
+
+    \draw[->] (archi) -- (database);
+    \draw[->] (component) -- (database);
+
+    \draw[->] (box1) -- (box2);
+    % Box 2 ------------------------------------------------------------------------------
+
+    % Box 3 ------------------------------------------------------------------------------
+    \node[fill,fill opacity=0.2,rectangle,align=center,minimum width=12.1cm,
+      minimum height=2cm]
+      (box3) [below=of box2] {};
+
+    \node[above right,at={(box3.north west)},align=center] {Design outputs};
+
+    \node[
+      draw=black,fill=white,rectangle,align=center,at={(box3)},minimum width=2.7cm,
+      minimum height=1.2cm,xshift=-4.5cm
+      ]
+      (sysarch) {Architettura\\del sistema};
+
+    \node[
+      draw=black,fill=white,rectangle,align=center,at={(box3)},minimum width=2.7cm,
+      minimum height=1.2cm,xshift=-1.5cm
+      ]
+      (dbspec) {Specifica\\del database};
+
+    \node[
+      draw=black,fill=white,rectangle,align=center,at={(box3)},minimum width=2.7cm,
+      minimum height=1.2cm,xshift=1.5cm
+      ]
+      (intspec) {Specifica\\dell'interfaccia};
+
+    \node[
+      draw=black,fill=white,rectangle,align=center,at={(box3)},minimum width=2.7cm,
+      minimum height=1.2cm,xshift=4.5cm
+      ]
+      (compspec) {Specifica\\dei componenti};
+
+    \draw[->] (box2) -- (box3);
+    % Box 3 ------------------------------------------------------------------------------
+  \end{tikzpicture}
+  \caption{Modello generale del processo di design}
+\end{figure}
+
+\noindent
+Le principali attività di design sono:
+\begin{itemize}
+  \item \textbf{Design architetturale} dove si identifica la struttura complessiva del
+    sistema, i componenti principali, le loro relazioni e come sono distribuiti
+
+  \item \textbf{Design del database} dove si progettano le strutture dati del sistema e
+    come esse vengono rappresentate all'interno del database
+
+  \item \textbf{Design dell'interfaccia} dove si definiscono le interfacce tra i 
+    componenti del sistema
+
+  \item \textbf{Design e selezione dei componenti} dove si cercano componenti 
+    riutilizzabili. Se non sono disponibili si progettano nuovi componenti
+\end{itemize}
+
+\subsubsection{Implementazione}
+Il software è implementato sviluppando dei programmi, oppure configurando un'applicazione.
+Il design e l'implementazione sono attività interconnesse per la maggior parte dei sistemi
+software.
+
+La programmazione è un'attività individuale senza alcun processo standard,
+mentre invece il debugging consiste nel trovare e correggere errori nei programmi.
+
+\subsubsection{Validazione}
+La verifica e la validazione serve a dimostrare che un sistema è conforme alle specifiche
+e che soddisfa i requisiti del cliente. La validazione consiste nel controllare e
+verificare i processi e anche nel fare \textbf{testing}.
+
+Il testing consiste nell'esecuzione di un sistema con dei casi di test derivati dalla
+specificazione dei dati reali che il software deve processare. Il testing è il l'attività
+di validazione più utilizzata.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw,rectangle,align=center,rounded corners]
+      (component) {Testing dei\\componenti};
+
+    \node[draw,rectangle,align=center,rounded corners]
+      (system) [right=of component] {Testing del\\sistema};
+
+    \node[draw,rectangle,align=center,rounded corners]
+      (acceptance) [right=of system] {Testing\\dell'accettazione};
+
+    \draw[->] (component) -- (system);
+    \draw[->] (system) -- (acceptance);
+
+    \draw[->] (component.north) -- ++(0,0.5) -| (acceptance);
+    \draw[->] (acceptance.south) -- ++(0,-0.5) -| (component);
+  \end{tikzpicture}
+  \caption{Fasi del testing}
+\end{figure}
+
+\noindent
+Le principali fasi del testing sono:
+\begin{itemize}
+  \item \textbf{Testing dei componenti}: I singoli componenti vengono testati
+    individualmente. I componenti possono essere funzioni, oggetti o gruppi coesi di
+    tali entità.
+
+  \item \textbf{Testing del sistema}: I componenti vengono integrati e il sistema
+    viene testato come un'entità unica. È importare testare eventuali proprietà emergenti
+
+  \item \textbf{Testing dell'accettazione}: Il sistema viene testato con i dati reali
+    del cliente per verificare che soddisfi i requisiti del cliente
+\end{itemize}
+
+\subsubsection{Evoluzione}
+Il software è flessibile e può cambiare col cambiamento dei requisiti. Anche se la linea
+tra sviluppo e mantenimento è spesso sfumata, questo diventa irrilevante siccome sempre
+meno sistemi software vengono sviluppati da zero.
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw,rectangle,align=center,rounded corners]
+      (requirements) {Definizione\\dei requisiti};
+
+    \node[draw,rectangle,align=center,rounded corners]
+      (assessment) [right=of requirements] {Valutazione dei\\requisiti già esistenti};
+
+    \node[draw,rectangle,align=center,rounded corners]
+      (changes) [right=of assessment] {Proposta di\\modifiche};
+
+    \node[draw,rectangle,align=center,rounded corners]
+      (modify) [right=of changes] {Modifica\\del sistema};
+
+    \draw[->] (requirements) -- (assessment);
+    \draw[->] (assessment) -- (changes);
+    \draw[->] (changes) -- (modify);
+  \end{tikzpicture}
+\end{figure}
+
 \end{document}
