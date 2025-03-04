@@ -8,4 +8,62 @@
 \tableofcontents
 \pagebreak
 
+% Info:
+% Esame: Ci sarà un quiz di sbarramento che bisogna passare per poter dare l'esame.
+%        All'esame ci sono 8 esercizi da fare in 3 ore. Ci sarà un parziale.
+\section{Equazioni differenziali}
+L'equazione differenziale ordinaria (EDO) è un'equazione del tipo:
+\[
+  F(t, y, y', y^n, \ldots, y^{(n)}) = 0
+\] 
+dove \( y(t) \) è la funzione incognita e \( F \) è un operatore differenziale che lega le
+variabili \( t, y, y', y^n, \ldots, y^{(n)} \) a valori reali.
+
+Si dice \textbf{soluzione} di un'EDO nell'intervallo \( I \subset \mathbb{R} \) una
+\textbf{funzione} \( \varphi  \), definita almeno in \( I \) 
+e a valori reali per cui risulti:
+\[
+  F(t, \varphi(t), \varphi'(t), \ldots, \varphi^{(n)}(t)) = 0 \quad \forall t \in I
+\] 
+
+\begin{example}
+  Se prendiamo in considerazione una popolazione di conigli con tasso di natalità
+  \( \lambda \), abbiamo che l'equazione che descrive la crescita della popolazione
+  è:
+  \[
+    \dot{N}(t) = \lambda N(t)
+  \] 
+
+  \vspace{1em}
+  \noindent
+  Se \( N(t) = 0 \) si ha una \textbf{soluzione stazionaria} dell'equazione differenziale
+  perchè quando si raggiunge 0 la popolazione non cresce più. Risolviamo:
+  \[
+    \frac{\dot{N(t)}}{N(t)} = \lambda
+  \] 
+  Facciamo un cambio di variabile \( N(t) = n \) \( \dot{N(t)}dt = dn \) 
+  \[
+  \int \frac{\dot{N(t)}}{N(t)} \, dt = \int \frac{1}{n} \, dn = \log(N(t)) = \lambda t + c
+  \] 
+  \[
+    N(t) = c e^{\lambda t} \quad c > 0
+  \] 
+  Consideriamo che al tempo 0 la popolazione sia di 100 conigli: \( N(0) = 100 \),
+  abbiamo che:
+  \[
+  N(0) = c = 100
+  \] 
+  e la soluzione del problema è:
+  \[
+    N(t) = 100 e^{\lambda t}
+  \] 
+\end{example}
+
+\subsection{Equazioni differenziali di primo ordine}
+Un'equazione differenziale di primo ordine è un'equazione del tipo:
+\[
+  F(t,y,y') = 0
+\] 
+
+
 \end{document}
