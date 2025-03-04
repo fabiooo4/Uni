@@ -59,10 +59,126 @@ Sono prodotti che vengono commissionati da clienti specifici per soddisfare le l
 necessità. La specifica è di proprietà del cliente dopo una contrattazione con il
 produttore e le decisioni sulle modifiche sono prese dal cliente.
 
+\subsection{Etica dell'ingegneria del software}
+Progettare software richiede ulteriori responsabilità rispetto alla semplice applicazione
+delle abilità tecniche. Gli ingegneri si devono comportare in modo etico e responsabile
+e ciò implica più del semplice seguire la legge, bisogna infatti seguire un insieme di
+principi moralmente corretti.
+
+I problemi principali della responsabilità morale sono:
+\begin{itemize}
+  \item \textbf{Confidenzialità}: gli ingegneri dovrebbero rispettare la confidenzialità
+    delle informazioni fornite dai clienti o da altri a prescindere dal fatto che sia
+    stato firmato un contratto di confidenzialità
+
+  \item \textbf{Competenza}: gli ingegneri non dovrebbero rappresentare in modo negativo
+    il loro livello di competenza e non dovrebbero accettare volutamente incarichi che
+    vanno oltre le loro competenze
+
+  \item \textbf{Diritti di proprietà intellettuale}: gli ingegneri dovrebbero essere a
+    conoscenza delle leggi che governano l'utilizzo delle proprietà intellettuali, come
+    brevetti, copyright, ecc...e dovrebbero assicurarsi che la proprietà intellettuale
+    dei datori di lavoro e dei clienti sia protetta 
+
+  \item \textbf{Utilizzo sbagliato dei computer}: gli ingegneri non dovrebbero utilizzare
+    i computer per attività immorali, illegali o malevoli
+\end{itemize}
+
+\subsubsection{Codice etico ACM/IEEE}
+Società professionali hanno creato un codice etico da rispettare per tutti i membri
+di queste società. Questo codice contiene 8 principi relativi al comportamento e alle
+decisioni degli ingegneri:
+\begin{itemize}
+    \item \textbf{Pubblico:} Gli ingegneri del software devono agire in modo coerente con
+      l'interesse pubblico.
+    \item \textbf{Cliente e datore di lavoro:} Gli ingegneri del software devono agire 
+      in modo da tutelare al meglio gli interessi del loro cliente e datore di lavoro, 
+      in coerenza con l'interesse pubblico.
+    \item \textbf{Prodotto:} Gli ingegneri del software devono garantire che i loro 
+      prodotti e le relative modifiche soddisfino i più alti standard professionali 
+      possibili.
+    \item \textbf{Giudizio:} Gli ingegneri del software devono mantenere integrità e 
+      indipendenza nel loro giudizio professionale.
+    \item \textbf{Gestione:} I manager e i leader nell'ingegneria del software devono
+      aderire e promuovere un approccio etico alla gestione dello sviluppo e della 
+      manutenzione del software.
+    \item \textbf{Professione:} Gli ingegneri del software devono promuovere l'integrità
+      e la reputazione della professione in coerenza con l'interesse pubblico.
+    \item \textbf{Colleghi:} Gli ingegneri del software devono essere equi e solidali 
+      con i loro colleghi.
+    \item \textbf{Se stessi:} Gli ingegneri del software devono partecipare a un
+      apprendimento continuo riguardante la pratica della loro professione e promuovere
+      un approccio etico alla pratica professionale.
+\end{itemize}
+
+\subsubsection{Esempi}
+Alcuni esempi di dilemmi etici sono:
+\begin{itemize}
+  \item Disaccordo di principio con le politiche imposte dai superiori
+  \item Il datore di lavoro si comporta in modo non etico e rilascia un sistema
+    che può essere dannoso per la sicurezza senza finire la fase di test del sistema
+  \item Partecipazione nello sviluppo di armi militari o di sistemi nucleari
+\end{itemize}
+
+\subsubsection{Casi di studio}
+Prendiamo ad esempio i seguenti casi da studiare:
+\begin{itemize}
+  \item \textit{Pompa di insulina personale}: un sistema embedded in una pompa di insulina
+    utilizzata dai diabetici per controllare l'insulina nel sangue
+
+    \vspace{1em}
+    \noindent
+    In base ad un sensore del sangue il sistem calcola la quantità di insulina da iniettare.
+    Il calcolo è basato sul cambiamento dei livelli di glucosio nel sangue. Questi dati
+    vengono inviati ad una micro-pompa che invia la dose corretta di insulina.
+
+    Questo è un sistema \textbf{safety-critical} perchè bassi livelli di glucosio nel
+    sangue possono portare a effetti negativi della salute.
+
+    I requisiti del sistema sono:
+    \begin{itemize}
+      \item Iniettare insulina quando richiesto
+      \item Deve, in modo affidabile e corretto, iniettare la quantità corretta di insulina
+      \item Il sistema deve essere progettato e implementato per far si che il sistema
+        soddisfi \textbf{sempre} i requisiti
+    \end{itemize}
+
+  \item \textit{Un sistema di gestione di cartelle cliniche per pazienti con problemi di
+    salute mentale}:
+    Mentcare, un sistema utilizzato per mantenere cartelle cliniche per pazienti con
+    problemi di salute mentale
+
+    \vspace{1em}
+    \noindent
+    La maggior parte dei pazienti non ha bisogno di essere ricoverata, ma ha bisogno di
+    specialisti che li seguono. Questo sistema permette ai pazienti di avere un accesso
+    diretto ai loro dati in locale e di poterli condividere con i loro medici.
+
+    Gli obiettivi sono:
+    \begin{itemize}
+      \item Supportare le attività di trattamento dei pazienti
+      \item Generare informazioni che permettono ai medici di valutare il trattamento
+        e di fare diagnosi
+      \item Monitorare i progressi dei pazienti
+      \item Amministrare le cartelle cliniche
+    \end{itemize}
+    I problemi principali sono:
+    \begin{itemize}
+      \item Privacy dei dati confidenziali
+      \item Sicurezza dei pazienti, che potrebbero avere comportamenti pericolosi verso
+        se stessi o verso altri.
+    \end{itemize}
+
+  \item \textit{Stazione del meteo}: un sistema che colleziona dati sul meteo in aree remote
+
+  \item \textit{iLearn}: una specie di google
+\end{itemize}
+
 \subsection{Caratteristiche di un buon software}
 \begin{itemize}
   \item \textbf{Mantenibilità}: la facilità con cui il software può essere modificato
   per correggere difetti, migliorare le prestazioni o adattarlo a cambiamenti.
+
 
   \item \textbf{Affidabilità e sicurezza}: la capacità del software di svolgere le sue
   funzioni in modo corretto. I malfunzionamenti non devono causare danni fisici o economici.
@@ -611,7 +727,56 @@ meno sistemi software vengono sviluppati da zero.
     \draw[->] (requirements) -- (assessment);
     \draw[->] (assessment) -- (changes);
     \draw[->] (changes) -- (modify);
+
+    \node[draw,rectangle,align=center,rounded corners]
+      (existing) [below=of assessment] {Sistemi\\già esistenti};
+
+    \node[draw,rectangle,align=center,rounded corners]
+      (new) [below=of modify] {Nuovi\\sistemi};
+
+    \draw[->] (modify) -- (new);
+    \draw[->] (existing) -- (assessment.south);
+
+    \draw[->] (new) -- (assessment.south east);
+
+    \draw[->] (modify.north) -- ++(0,0.5) -| (requirements);
   \end{tikzpicture}
+  \caption{Evoluzione di un sistema}
 \end{figure}
+
+\subsection{Gestione dei cambiamenti}
+Il cambiamento è inevitabile in tutti i grandi progetti software ed esso è dovuto da:
+\begin{itemize}
+  \item Cambiamenti del mercato
+  \item Nuove tecnologie offrono nuove possibilità
+  \item Cambiamento delle piattaforme
+\end{itemize}
+Il cambiamento porta a costi aggiuntivi dovuti alla necessità di rifare il lavoro
+precedente più il lavoro aggiuntivo per implementare le nuove funzionalità. Per
+ridurre questi costi si può \textbf{anticipare il cambiamento}, cioè includere delle
+attività nel processo di sviluppo che permettano di anticipare i possibili cambiamenti
+prima che avvenga il rework, ad esempio si possono sviluppare dei prototipi da mostrare
+al cliente prima del prodotto finito. Oppure si può aumentare la tolleranza al cambiamento,
+quindi sviluppare il software in modo che sia più facile cambiare il software in futuro.
+
+\subsubsection{Prototipi}
+Un prototipo è un'implementazione parziale del sistema che viene utilizzata per dimostrare
+concetti e provare nuove opzioni di design. Un prototipo può essere utilizzato in:
+\begin{itemize}
+  \item Processi di specificazione dei requisiti per aiutare a scoprire i requisiti
+    del sistema
+
+  \item Processi di design per esplorare alternative di design
+
+  \item Processi di testing per provare parti del sistema
+\end{itemize}
+I vantaggi della prototipazione sono:
+\begin{itemize}
+  \item Miglioramento nell'usabilità del sistema
+  \item Un prodotto più vicino alle aspettative e alle esigenze del cliente
+  \item Miglioramento della qualità del design
+  \item Miglioramento della mantenibilità
+  \item Riduzione dell'impegno di sviluppo
+\end{itemize}
 
 \end{document}
