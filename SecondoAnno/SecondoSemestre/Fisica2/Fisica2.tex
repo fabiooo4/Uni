@@ -2,10 +2,241 @@
 \usepackage{import}
 \input{../../../preamble.sty}
 
+% Info: 
+% Libro: Fisica: Elettromagnetismo e Onde
+% Esame: Scritto di 2 ore e orale facoltativo per aumentare il voto
 \begin{document}
 \input{title.tex}
 
 \tableofcontents
 \pagebreak
+
+\section{Introduzione}
+L'oggetto dello studio prinicpale di questo costo è la \textbf{forza elettromagnetica}
+\( \vec{F}_{em} \), più precisamente la \textbf{teoria di campo}. 
+
+\begin{define}
+  La forza è l'interazione tra due oggetti.
+\end{define}
+
+\noindent
+In natura esistono solo 4 forze che governano tutto ciò che è
+misurabile in natura:
+\begin{itemize}
+  \item Forza di gravità: osservata quando negli oggetti interagenti c'è massa
+  \item Forza elettromagnetica
+  \item Forza elettronucleare forte
+  \item Forza elettronucleare debole
+\end{itemize}
+Le ultime due riguardano la materia microscopica. Le prime due invece riguardano la
+materia macroscopica e sono forze \textbf{a lungo raggio}, cioè ha effetto anche
+a distanza.
+
+Lo studio della forza elettromagnetica si può studiare con attraverso degli strumenti
+che approssimano il comportamento delle entità a livello macroscopico senza preoccuparci
+della natura microscopica.
+
+\subsection{Campo e forza}
+In fisica 1 si sono studiati i concetti delle forze, cioè ciò che agisce su un corpo con
+una massa, ad esempio la caduta di un grave che è attratto dalla Terra per la forza di
+gravità. La visione dei campi è una visione più generale e rappresenta la proprietà
+di un ambiente di interagire con un corpo, ad esempio un \textbf{campo} di gravità.
+
+\section{Forza elettrostatica}
+Facendo esperimenti che non sono analizzabili con i concetti della fisica 1 si arriva
+a capire che c'è una nuova interazione, la \textbf{forza elettrostatica} che ha 2 forme:
+\begin{itemize}
+  \item Forza attrattiva
+  \item Forza repulsiva
+\end{itemize}
+Gli oggetti sono divisi in due classi:
+\begin{itemize}
+  \item Carica positiva
+  \item Carica negativa
+\end{itemize}
+Gli oggetti della stessa classe si respingono, mentre quelli di classe diversa si respingono.
+\label{05-03-2025-D1}
+\begin{definition}[Carica elettrica]
+  È chiamata \textbf{carica elettrica} \( q \) la proprietà che ha il corpo di esprimere
+  questa forza. Le proprietà di questa carica elettrica sono \textbf{indipendenti} dal
+  meccanismo che l'ha generata, cioè può essere generata in modo diverso, ma ha sempre le
+  stesse proprietà. Questo implica che la carica è \textbf{preesistente} in natura.
+\end{definition}
+
+\subsection{Materia}
+L'atomo è formato da un nucleo centrale formato da protoni, carichi positivamente, e da
+neutroni, senza carica. Intorno al nucleo si ha una regione in cui si ha la probabilità
+di trovare un'altra particella, carica negativa, chiamata elettrone.
+\label{05-03-2025-D2}
+\noindent
+Il nucleo ha dimensione \( \approx 10^{-15}m \) e l'atomo ha dimensione
+\( \approx 10^{-10}m \). La carica totale dell'atomo è nulla, quindi è \textbf{neutro} e
+quindi la carica del nucleo è uguale alla carica degli elettroni, per la precisione
+il numero di protoni è uguale al numero di elettroni. \( Z \) è il numero atomico, cioè
+il numero di protoni.
+
+Elettrone e protone hanno, in modulo, la stessa carica:
+\[
+  |q_{e^{-}}| = q_{p^{+}}
+\] 
+L'elettrone è una \textbf{particella elementare}, indivisibile e la sua carica è detta
+\textbf{carica elementare}, cioè la più piccola unità di carica osservabile e vale:
+\[
+  e^- = 1.6 \times 10^{-19}C
+\] 
+La \textbf{carica elettrica} in natura è quindi \textbf{quantizzata}, ovvero deve
+essere un multiplo della carica dell'elettrone. Inoltre la carica non si può generare,
+si può \textbf{solo trasferire}.
+
+\begin{definition}[Legge di conservazione della carica]
+  In un sistema isolato, cioè non interagisce con altri sistemi, la carica totale 
+  \( Q \) si conserva.
+\end{definition}
+
+\noindent
+I componenti della materia hanno due comportamenti:
+\begin{itemize}
+  \item \textbf{Conduttore}: ad esempio il metallo, in cui gli elettroni sono liberi di
+    muoversi
+  \item \textbf{Dielettrico} (isolante): ad esempio il vetro, in cui le cariche non sono
+    libere di muoversi, quindi vincolate, cioè non si riesce a strappare gli elettroni
+    dall'atomo. Se si avvicina una carica positiva al dielettrico si avrà una deformazione
+    delle cariche, ma non si ha una separazione di carica:
+    \label{05-03-2025-D9}
+\end{itemize}
+
+\subsection{Elettrificazione}
+L'elettrificazione è il trasferimento di carica da un corpo all'altro. Ci sono 3 
+meccanismi di elettrificazione:
+\begin{itemize}
+  \item \textbf{Strofinio}
+    Si prende una bacchetta di vetro e un panno di lana e si strofina la bacchetta.
+    La bacchetta non è carica e meccanicamente con lo strofinia si strappa meccanicamente
+    dagli atomi gli elettroni. La bacchetta diventa carica positivamente e il panno
+    negativamente. Si avranno quindi le cariche \( q^+ \) della bacchetta e \( q^- \)
+    del panno. Per la legge di conservazione della carica si ha:
+    \[
+      |q^-| = q^+
+    \] 
+    \label{05-03-2025-D3}
+  \item \textbf{Induzione elettrostatica}
+    Con la precedente bacchetta caricata positivamente si avvicina un oggetto metallico e
+    si nota che le cariche negative \( -Q \)  del metallo si avvicinano il più possibile 
+    alla bacchetta respingendo le cariche positive \( +Q \)  creando una 
+    \textbf{separazione di carica per induzione}. La carica totale rimane nulla perchè 
+    non sono migrati elettroni.
+    \[
+      |-Q| = +Q
+    \] 
+    \label{05-03-2025-D4}
+    Se si allontana l'oggetto metallica si avrà una separazione meno potente.
+
+    \vspace{1em}
+    \noindent
+    L'\textbf{elettroscopio} si usa per misurare la carica elettrica. È un oggetto metallico
+    collegato a delle lamelle metalliche chiamate foglie:
+    \label{05-03-2025-D5}
+
+    Si misura la carica avvicinando la bacchetta e si osserva la forza repulsiva tra le
+    foglie:
+    \label{05-03-2025-D6}
+    Se si allontana la bacchetta la separazione delle foglie diminuisce.
+  \item \textbf{Contatto}
+    Se prendiamo un oggetto metallico caricato positivamente e si mette a
+    contatto con un filo conduttore si elettrifica il filo:
+    \label{05-03-2025-D7}
+    Se si attacca il filo a terra si scarica l'oggetto perchè le cariche migrano verso
+    la terra, cioè un conduttore immensamente più grande e quindi la carica si distribuisce
+    su tutta la superficie della terra e sull'oggetto metallico rimane una carica
+    \textbf{approssimativamente nulla}.
+    \label{05-03-2025-D8}
+\end{itemize}
+
+\subsection{Elettrostatica nel vuoto}
+\textbf{Fatti sperimentali}:
+
+\vspace{1em}
+\noindent
+Si crea un esperimento che permette di osservare il fenomeno che si vuole modellare.
+Si prende una bilancia di torsione formata da un filo torcente a cui è appesa un'asta 
+con una carica \( q^+_1 \) su un'estremità. Se si avvicina una carica dello stesso
+segno \( q^-_2 \) si osserva che viene applicata una forza repulsiva \( F \) che fa
+torcere il filo con un momento torcente
+\[
+  \tau_{\text{filo}} = (k \theta) = \tau_{\text{el}} = \vec{d} \times \vec{F}
+\]
+\label{05-03-2025-D10}
+\subsubsection{Interazione di Coulomb}
+Dai fatti sperimentali si nota che il modulo della forza è proporzionale al prodotto
+delle cariche e inversamente proporzionale al quadrato della distanza tra le cariche:
+\[
+  | F_{\text{el}} | = k \frac{q_1 q_2}{r^2}
+\] 
+Si osserva anche che la forza elettrica \( F_{\text{el}} \) è una forza \textbf{centrale},
+cioè la forza è diretta lungo la retta che congiunge le due cariche.
+
+\( k \) è la costante di Coulomb e vale:
+\[
+  k = \frac{1}{4 \pi \varepsilon_0}
+\]
+dove \( \varepsilon_0 \) è la costante dielettrica del vuoto.
+L'unità di misura della carica è il Coulomb:
+\[
+  [q] = C
+\] 
+
+\vspace{1em}
+\noindent
+Consideriamo la terna cartesiana con due cariche positive \( q^+_1 \) e \( q^+_2 \)
+descritte dai raggi vettori \( \vec{r}_1 \) e \( \vec{r}_2 \). Sulla carica \( q^+_2 \) 
+viene applicata una forza \( \vec{F}_{12} \) 
+\label{05-03-2025-D11}
+
+\noindent
+Notazione: 
+\begin{itemize}
+  \item 
+    Chiamo il vettore che va da \( \vec{r}_1 \) a \( \vec{r}_2 \) \( \vec{r}_{12} \).
+
+  \item 
+    Il versore è indicato con \( \hat{r} \) e rappresenta il vettore unitario:
+    \[
+      \hat{r} = \frac{\vec{r}}{|\vec{r}|}
+    \] 
+\end{itemize}
+
+
+\vspace{1em}
+\noindent
+Calcoliamo la forza \( \vec{F}_{12} \) che agisce su \( q^+_2 \) da \( q^+_1 \):
+\[
+  \vec{F}_{12} = \frac{1}{4 \pi \varepsilon_0} \frac{q_1 q_2}{\left( \vec{r}_{2}
+    - \vec{r}_1 \right)^2} \frac{\left( \vec{r}_{2} - \vec{r}_1 \right)}{|\vec{r}_{2}
+  - \vec{r}_1|} = 
+  \frac{1}{4 \pi \varepsilon_0} \cdot \frac{q_1 q_2}{r_{12}^2} \cdot \hat{r}_{12} \quad [N]
+\] 
+
+\subsubsection{Sistema di più cariche}
+Con più cariche si osserva che vale il principio di sovrapposizione, cioè due fenomeni
+si sommano in modo lineare; e vale la terza legge di Newton, cioè l'azione-reazione
+\( \left( \vec{F}_{12} = - \vec{F}_{21} \right)  \).
+
+Consideriamo un sistema discreto con \( n \) cariche \( q_1, q_2, \ldots, q_n \) e osserviamo
+la carica \( q_0 \). Ognuna di queste cariche sarà descritta dal suo raggio vettore.
+\label{05-03-2025-D12}
+La forza che la carica \( q_i \) agisce su \( q_0 \) è:
+\[
+  \vec{F}_{i0} = \frac{q_i q_0}{4 \pi \varepsilon_0} \cdot \frac{\hat{r}_{i0}}{r_{i0}^2}
+\] 
+dove \( \vec{r}_{i0} = \vec{r}_0 - \vec{r}_i \).
+
+Applichiamo questa formula osservando una ad una tutte le cariche come fatto per \( q_0 \)
+per calcolare la forza totale applicata sulla carica \( q_0 \):
+\[
+  \vec{F}_{\text{tot}} = \sum_{i=1}^{n} \frac{q_i q_0}{4 \pi \varepsilon_0} \cdot 
+  \frac{\hat{r}_{i0}}{r_{i0}^2} \quad \left[ N \right]
+\] 
+Questa forza ha direzione uguale alla somma delle forze.
+
 
 \end{document}
