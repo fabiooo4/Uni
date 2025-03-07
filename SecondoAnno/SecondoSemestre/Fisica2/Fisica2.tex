@@ -289,5 +289,132 @@ per calcolare la forza totale applicata sulla carica \( q_0 \):
 \] 
 Questa forza ha direzione uguale alla somma delle forze.
 
+\vspace{1em}
+\noindent
+Un'informazione si propaga con una \textbf{velocità finita}, cioè non istantaneamente. La
+velocità massima di propagazione è la velocità della luce \( c \) e vale:
+\[
+  c = 3 \times 10^8 \, \frac{m}{s}
+\]
+Consideriamo lo stesso sistema di cariche, ma con la carica \( q_0 \) spostata ad una
+distanza molto lontana e di considerare le altre cariche come cariche che si muovono.
+Si osserva che le cariche che si muovono cambiano il valore della forza 
+\( \vec{F}_{\text{tot}} \) e dalla formula si vede che la forza cambia istantaneamente, 
+ma in realtà la forza viene trasmessa dopo un tempo di propagazione (che la formula non 
+tiene in considerazione).
+
+Questa problematica si risolve con il concetto di \textbf{campo elettrostatico}.
+
+\subsubsection{Campo elettrostatico}
+Dalla formula della forza elettrostatica si può notare che la forza è proporzionale
+alla carica osservata \( q_0 \):
+\[
+  \vec{F}_{\text{tot}} = \sum_{i=1}^{n} \frac{q_i q_0}{4 \pi \varepsilon_0} \cdot
+  \frac{\hat{r}_{i0}}{r_{i0}^2} \propto q_0
+\] 
+Quindi la forza è proporzionale alla carica osservata e dalla distanza di questa carica:
+\[
+  \vec{F} = q_0 \vec{E} \left( \vec{r}_0 \right) 
+\] 
+Dove \( \vec{E} \) è il \textbf{campo elettrostatico} \textbf{posizionato in } \( r_0 \)
+della carica osservata \( q_0 \).
+
+La proprietà importante è che il campo è definito anche se altre cariche non sono presenti.
+
+\vspace{1em}
+\noindent
+Prendiamo in considerazione il seguente sistema in cui la particella \( Q \) è la
+\textbf{sorgente di campo} e la particella \( q \) è la \textbf{carica di prova}:
+\label{07-03-D1}
+\[
+    \vec{F} = q \vec{E} \left( \vec{r} \right)
+\] 
+\[
+  \vec{E} \left( r \right) = \frac{\vec{F}}{q}
+\] 
+Questa è la \textbf{definizione operativa} di campo, cioè serve una carica di prova per
+misurare il campo.
+
+\begin{definition}
+  Il campo di una singola carica puntiforme \( Q \), posizionata per comodità nell'origine,
+  considerata una particella di test \( q \) ad una distanza \( \vec{r} \) è definito come:
+  \[
+    \vec{E} \left( \vec{r} \right) = \frac{Q}{4 \pi \varepsilon_0} \cdot \frac{\hat{r}}{r^2}
+    \quad \left[ \frac{N}{C} \right]
+  \] 
+  \label{07-03-D2}
+\end{definition}
+\begin{definition}
+  Il campo di un sistema discreto di \( n \) cariche \( q_1, q_2, \ldots, q_n \) è definito
+  come:
+  \[
+    \vec{E} \left( \vec{r} \right) = \frac{1}{4 \pi \varepsilon_0} \sum_{i=1}^{n}
+    \frac{q_i}{r_i^2} \cdot \hat{r}_i \quad \left[ \frac{N}{C} \right]
+  \] 
+  per il \textbf{principio di sovrapposizione}.
+  \label{07-03-D3}
+\end{definition}
+
+\vspace{1em}
+\noindent
+\begin{define}
+  Il \textbf{lavoro elementare} è definito come:
+  \[
+    dL = \vec{F} \cdot \vec{dl}
+  \] 
+  dove \( \vec{dl} \) è il vettore spostamento.
+  \begin{itemize}
+    \item Il lavoro non dipende dal percorso, ma solo dai punti di inizio e fine.
+    \item Il lavoro in un percorso chiuso è nullo:
+      \[
+        \oint \vec{dl} = 0
+      \] 
+    \item Esiste una funzione di stato \( U \) tale che il lavoro per andare da \( A \) 
+      a \( B \) è uguale al negativo del lavoro per andare da \( B \) a \( A \):
+      \[
+        \exists U \;|\; L_{AB} = - \Delta U
+      \] 
+      dove \( U \) è l'\textbf{energia potenziale}.
+  \end{itemize}
+\end{define}
+
+\subsection{Energia potenziale elettrostatica}
+La \textbf{forza elettrostatica} \( \vec{F}_{\text{el}} \) è una forza 
+\textbf{conservativa}, cioè il lavoro per spostare una carica da un punto \( A \) a un 
+punto \( B \) è indipendente dal percorso e dipende solo dai punti di inizio e fine.
+
+Per calcolare il lavoro per spostare una carica \( q \) da un punto \( A \) a un punto \( B \)
+si usa la seguente formula:
+\[
+  \begin{aligned}
+    L_{AB} &= \int_{A}^{B} \vec{dL} = \int_{\text{curva}} \frac{1}{4 \pi \varepsilon_0}
+    \frac{Qq}{r^2} \cdot \underbrace{\hat{r} \cdot \vec{dl}}_{dr}\\
+           &= \frac{Qq}{4 \pi \varepsilon_0} \int_{r_A}^{r_B} \frac{dr}{r^2}\\
+           &= \frac{Qq}{4 \pi \varepsilon_0} \left( - \frac{1}{r} \right) \Big|_{r_A}^{r_B}\\
+           &= \frac{Qq}{4 \pi \varepsilon_0} \left( - \frac{1}{r_B} + \frac{1}{r_A} \right)\\
+           &= - \Delta U
+  \end{aligned}
+\] 
+dove \( U \) è l'\textbf{energia potenziale elettrostatica}:
+\[
+  U = \frac{Qq}{4 \pi \varepsilon_0} \cdot \frac{1}{r} + \text{costante} \quad [J]
+\] 
+\label{07-03-D4}
+
+\vspace{1em}
+\noindent
+Se poniamo l'energia all'infinito uguale a 0, allora \( U \) è il lavoro che fa il
+campo (la forza elettrostatica) per allontanare una particella all'infinito, cioè per
+distruggere il sistema:
+\[
+  U_{- \infty} = 0 \to U = \frac{Qq}{4 \pi \varepsilon_0 r} = - \left( U_{\infty} - U_r \right) 
+\] 
+\begin{itemize}
+  \item Con cariche uguali l'energia è positiva perchè la forza è repulsiva e si allontana
+    la carica verso l'infinito.
+  \item Con cariche opposte l'energia è negativa perchè la forza è attrattiva e si avvicina
+    la carica allontanandosi dall'infinito.
+\end{itemize}
+
 
 \end{document}
