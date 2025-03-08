@@ -2,8 +2,11 @@
 #define _SEMAPHORE_HH
 
 // definition of the union semun
+#include <sys/sem.h>
 union semun {
-    // ...
+  int val;
+  struct semid_ds* buf;
+  unsigned short* array;
 };
 
 /* errsemOpExit is a support function to manipulate a semaphore's value

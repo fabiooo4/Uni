@@ -29,8 +29,8 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
-  int semid = semget(IPC_PRIVATE, 4, S_IRUSR | S_IWUSR);
   // Create a semaphore set with 4 semaphores
+  int semid = semget(IPC_PRIVATE, 4, S_IRUSR | S_IWUSR);
   if (semid == -1)
     errExit("semget failed");
 
