@@ -833,5 +833,182 @@ I vantaggi della prototipazione sono:
   \item Miglioramento della mantenibilità
   \item Riduzione dell'impegno di sviluppo
 \end{itemize}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw,rectangle,align=center,rounded corners,minimum height=1.5cm]
+      (objectives) {Definizione\\degli obiettivi\\del prototipo};
+
+    \node[draw,rectangle,align=center,rounded corners,minimum height=1.5cm]
+      (function) [right=of objectives] {Definizione delle\\funzionalità\\del prototipo};
+
+    \node[draw,rectangle,align=center,rounded corners,minimum height=1.5cm]
+      (develop) [right=of function] {Sviluppo del\\prototipo};
+
+    \node[draw,rectangle,align=center,rounded corners,minimum height=1.5cm]
+      (evaluate) [right=of develop] {Valutazione\\del prototipo};
+
+    \draw[->] (objectives) -- (function);
+    \draw[->] (function) -- (develop);
+    \draw[->] (develop) -- (evaluate);
+
+    \node[draw,rectangle,align=center]
+      (plan) [below=of objectives] {Pianificazione\\del prototipo};
+
+    \node[draw,rectangle,align=center]
+      (outline) [below=of function] {Definizione\\dell'outline};
+
+    \node[draw,rectangle,align=center]
+      (execution) [below=of develop] {Esecuzione\\del prototipo};
+
+    \node[draw,rectangle,align=center]
+      (evaluation) [below=of evaluate] {Report della\\valutazione};
+
+    \draw[->] (objectives) -- (plan);
+    \draw[->] (function) -- (outline);
+    \draw[->] (develop) -- (execution);
+    \draw[->] (evaluate) -- (evaluation);
+  \end{tikzpicture}
+  \caption{Processo di sviluppo del prototipo}
+\end{figure}
+
+\noindent
+Lo sviluppo di un prototipo si può basare su linguaggi e strumenti fatti apposta 
+per la prototipazione. La prototipazzione consiste nel creare una versione parziale
+funzionante del sistema e ciò comporta tralasciare alcune funzionalità. Il prototipo
+si deve concentrare su:
+\begin{itemize}
+  \item Aree del prodotto che non sono ben definite o capite
+  \item Tralasciare il controllo degli errori per concentrarsi sui requisiti funzionali
+\end{itemize}
+I prototipi dovrebbero essere scartati siccome non sono una buona base per il sistema
+finale.
+
+\subsubsection{Consegna incrementale}
+Al posto di consegnare il sistema in un'unica volta già completo, si può separare lo
+sviluppo e la consegna in incrementi che implementano parte delle funzionalità richieste
+seguendo un ordine di priorità.
+Le due fasi si compongono di:
+\begin{itemize}
+  \item \textbf{Sviluppo incrementale}
+    \begin{itemize}
+      \item Sviluppare il sistema in incrementi e validare ogni incremento prima di 
+        procedere con il successivo
+      \item Utilizzare l'approccio utilizzato nei metodi agili per lo sviluppo
+      \item La valutazione di ogni incremento è fatta dal cliente/utente
+    \end{itemize}
+
+  \item \textbf{Consegna incrementale}
+    \begin{itemize}
+      \item Consegnare un incremento per permettere al cliente di utilizzarlo
+      \item Il cliente può valutare l'incremento e fornire feedback
+      \item Il feedback può essere utilizzato per modificare i requisiti per gli incrementi
+        successivi
+    \end{itemize}
+\end{itemize}
+I vantaggi della consegna incrementale sono:
+\begin{itemize}
+  \item Il feedback del cliente può essere ottenuto ad ogni incremento per migliorare
+    il sistema
+  \item I primi incrementi possono funzionare da prototipo
+  \item Rischio più basso di fallimento del progetto
+  \item I servizi con priorità più alta tendono ad essere testati di più
+\end{itemize}
+I problemi della consegna incrementale sono:
+\begin{itemize}
+  \item Molti sistemi richiedono un insieme di funzionalità comuni utilizzate da parti
+    diverse del sistema, ma nella consegna incrementale la definizione dei requisiti
+    avviene soltanto quando è necessario sviluppare un nuovo incremento e quindi è
+    difficile identificare queste funzionalità comunie in anticipo
+  \item La specifica è definita in congruenza con lo sviluppo, ma questo va contro
+    il modello di molte organizzazioni
+\end{itemize}
+
+\subsection{Miglioramento dei processi}
+Il miglioramento dei processi consiste nel capire processi esistenti e trovare modi
+per migliorare la qualità, ridurre il costo o accelerare lo sviluppo.
+
+Ci sono due principali approcci per il miglioramento dei processi:
+\begin{itemize}
+  \item \textbf{Approccio di maturità}: si concentra sul miglioramento dei processi
+    e della gestione del progetto e introdurre delle buone pratiche di sviluppo software.
+  \item \textbf{Approccio agile}: si concentra sullo sviluppo iterativo e sulla riduzione
+    di overhead dei processi
+\end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw,rectangle,align=center]
+      (measure) {Misurazione};
+
+    \node[draw,rectangle,align=center]
+      (analyze) [below right=of measure] {Analisi};
+
+    \node[draw,rectangle,align=center]
+      (change) [below left=of measure] {Cambiamento};
+
+    \draw[->] (measure) -| (analyze);
+    \draw[->] (analyze) -- (change);
+    \draw[->] (change) |- (measure);
+  \end{tikzpicture}
+  \caption{Ciclo di miglioramento dei processi}
+\end{figure}
+Le fasi del ciclo di miglioramento dei processi sono:
+\begin{itemize}
+  \item \textbf{Misurazione dei processi}: si misurano i processi esistenti per capire
+    come funzionano e dove ci sono problemi e questo farà da base per il miglioramento
+  \item \textbf{Analisi dei processi}: si analizza il processo corrente e tutti gli
+    svantaggi vengono identificati e si stila un modello che descrive il processo
+    (chiamato process map)
+  \item \textbf{Cambiamento dei processi}: si identificano i cambiamenti che possono
+    essere fatti per migliorare i problemi individuati. Quando questi cambiamenti vengono
+    introdotti, il ciclo ricomincia
+\end{itemize}
+
+\subsubsection{Misurazione dei processi}
+Quando possibile bisognerebbe raccogliere dati quantitativi sui processi per utilizzarli
+a monitorare il miglioramento dei processi. I dati però non devono guidare il processo
+di miglioramento. Le metriche più comuni sono:
+\begin{itemize}
+  \item Il tempo richiesto per completare un'attività
+  \item Le risorse richieste per i processi o le attività
+  \item Il numero di occorrenze di un particolare evento
+\end{itemize}
+Il modello di maturità SEI (Software Engineering Institute) è un modello per valutare
+la maturità dei processi di sviluppo software:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw,rectangle,align=center]
+      (5) {\textit{Livello 5}\\Ottimizzazione};
+
+    \node[draw,rectangle,align=center]
+      (4) [below=of 5] {\textit{Livello 4}\\Quantitativamente\\gestito};
+
+    \node[draw,rectangle,align=center]
+      (3) [below=of 4] {\textit{Livello 3}\\Definito};
+
+    \node[draw,rectangle,align=center]
+      (2) [below=of 3] {\textit{Livello 2}\\Gestito};
+
+    \node[draw,rectangle,align=center]
+      (1) [below=of 2] {\textit{Livello 1}\\Iniziale};
+
+    \draw[<-] (5) -- (4);
+    \draw[<-] (4) -- (3);
+    \draw[<-] (3) -- (2);
+    \draw[<-] (2) -- (1);
+  \end{tikzpicture}
+  \caption{Livelli di maturità}
+\end{figure}
+\begin{itemize}
+  \item \textbf{Iniziale}: essenzialmente incontrollato
+  \item \textbf{Ripetibile}: Procedure di gestione del prodotto definite e utilizzate
+  \item \textbf{Definito}: Processi di sviluppo definiti e utilizzati
+  \item \textbf{Gestito}: Strategie di gestione di qualità definiti e utilizzati
+  \item \textbf{Ottimizzazione}: Strategie di miglioramento dei processi definite e 
+    utilizzate
+\end{itemize}
 
 \end{document}
