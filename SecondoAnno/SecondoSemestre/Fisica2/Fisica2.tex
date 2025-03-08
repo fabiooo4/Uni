@@ -297,7 +297,7 @@ velocità massima di propagazione è la velocità della luce \( c \) e vale:
   c = 3 \times 10^8 \, \frac{m}{s}
 \]
 Consideriamo lo stesso sistema di cariche, ma con la carica \( q_0 \) spostata ad una
-distanza molto lontana e di considerare le altre cariche come cariche che si muovono.
+distanza molto lontana e consideriamo le altre cariche come cariche che si muovono.
 Si osserva che le cariche che si muovono cambiano il valore della forza 
 \( \vec{F}_{\text{tot}} \) e dalla formula si vede che la forza cambia istantaneamente, 
 ma in realtà la forza viene trasmessa dopo un tempo di propagazione (che la formula non 
@@ -319,13 +319,15 @@ Quindi la forza è proporzionale alla carica osservata e dalla distanza di quest
 Dove \( \vec{E} \) è il \textbf{campo elettrostatico} \textbf{posizionato in } \( r_0 \)
 della carica osservata \( q_0 \).
 
-La proprietà importante è che il campo è definito anche se altre cariche non sono presenti.
-
 \vspace{1em}
 \noindent
 Prendiamo in considerazione il seguente sistema in cui la particella \( Q \) è la
 \textbf{sorgente di campo} e la particella \( q \) è la \textbf{carica di prova}:
-\label{07-03-D1}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{campo_elettrostatico}
+  \caption{Campo elettrostatico}
+\end{figure}
 \[
     \vec{F} = q \vec{E} \left( \vec{r} \right)
 \] 
@@ -339,10 +341,14 @@ misurare il campo.
   Il campo di una singola carica puntiforme \( Q \), posizionata per comodità nell'origine,
   considerata una particella di test \( q \) ad una distanza \( \vec{r} \) è definito come:
   \[
-    \vec{E} \left( \vec{r} \right) = \frac{Q}{4 \pi \varepsilon_0} \cdot \frac{\hat{r}}{r^2}
+    \vec{E}( \vec{r} ) = \frac{Q}{4 \pi \varepsilon_0} \cdot \frac{\hat{r}}{r^2}
     \quad \left[ \frac{N}{C} \right]
   \] 
-  \label{07-03-D2}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{campo_elettrostatico_def}
+    \caption{Campo elettrostatico}
+  \end{figure}
 \end{definition}
 \begin{definition}
   Il campo di un sistema discreto di \( n \) cariche \( q_1, q_2, \ldots, q_n \) è definito
@@ -352,7 +358,11 @@ misurare il campo.
     \frac{q_i}{r_i^2} \cdot \hat{r}_i \quad \left[ \frac{N}{C} \right]
   \] 
   per il \textbf{principio di sovrapposizione}.
-  \label{07-03-D3}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{campo_elettrostatico_def_piu_cariche}
+    \caption{Campo elettrostatico con più cariche}
+  \end{figure}
 \end{definition}
 
 \vspace{1em}
@@ -399,7 +409,11 @@ dove \( U \) è l'\textbf{energia potenziale elettrostatica}:
 \[
   U = \frac{Qq}{4 \pi \varepsilon_0} \cdot \frac{1}{r} + \text{costante} \quad [J]
 \] 
-\label{07-03-D4}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{energia_potenziale}
+  \caption{Energia potenziale}
+\end{figure}
 
 \vspace{1em}
 \noindent
@@ -413,7 +427,7 @@ distruggere il sistema:
   \item Con cariche uguali l'energia è positiva perchè la forza è repulsiva e si allontana
     la carica verso l'infinito.
   \item Con cariche opposte l'energia è negativa perchè la forza è attrattiva e si avvicina
-    la carica allontanandosi dall'infinito.
+    la carica, allontanandosi dall'infinito.
 \end{itemize}
 
 
