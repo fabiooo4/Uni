@@ -171,7 +171,62 @@ Prendiamo ad esempio i seguenti casi da studiare:
 
   \item \textit{Stazione del meteo}: un sistema che colleziona dati sul meteo in aree remote
 
-  \item \textit{iLearn}: una specie di google
+    \vspace{1em}
+    \noindent
+    Le stazioni raccolgono dati da un insieme di sensori che periodicamente misurano 
+    temperatura, pressione, quantità di radiazione solare, quantità di pioggia, velocità 
+    e direzione del vento.
+
+    Queste stazioni sono responsabili di raccogliere e trasmettere i dati a un centro di
+    controllo dopo un'iniziale processamento. Queste stazioni possono comunicare tramite
+    i satelliti tra di loro per creare dei report sui principali problemi.
+
+    Il centro di controllo raccoglie i dati da tutte le stazioni, li analizza e li processa
+    e li archivia.
+
+    I requisiti del sistema sono:
+    \begin{itemize}
+      \item Monitorare i sensori, l'hardware dell'energia e della comunicazione e riportare
+        i problemi al centro di controllo
+
+      \item Monitorare il sistema di energia assicurando che le batterie siano ricaricate
+        quando le condizioni ambientali lo permettono e che i generatori siano spenti
+        durante conditioni pericolose
+
+      \item Supportare una reconfigurazione dinamica che permette di rimpiazzare parti del
+        software con delle nuove versioni e di sostituire i sensori danneggiati
+    \end{itemize}
+
+  \item \textit{iLearn}: un sistema che agevola lo studio
+
+    \vspace{1em}
+    \noindent
+    iLearn è un sistema che contiene strumenti e applicazioni general-purpose progettati
+    per supportare l'apprendimento. Gli strumenti presenti nel sistema sono scelti dai
+    docenti e dagli studenti. Alcuni esempi di applicazioni sono:
+    \begin{itemize}
+      \item Fogli di calcolo
+      \item Strumenti di presentazione
+      \item Strumenti di consegna e gestione dei compiti ed esami
+    \end{itemize}
+
+    Questo sistema è di tipo service-oriented, cioè è composto da un insieme di servizi
+    che possono essere combinati per creare un sistema unico e configurabile, questo
+    permette di aggiornare il sistema in modo incrementale ogni volta che sono necessari
+    nuovi servizi.
+
+    I requisiti del sistema sono:
+    \begin{itemize}
+      \item Servizi di utilità generale che forniscono funzionalità di base indipendenti
+        dalle applicazioni e che potrebbero essere utilizzati da altri servizi nel sistema
+
+      \item Servizi applicativi che mettono a disposizione applicazioni specifiche e 
+        contenuto educazionale
+
+      \item Servizi di configurazione che servono ad adattare un ambiente con un insieme
+        specifico di applicazioni e definiscono in che modo i servizi sono condivisi tra
+        professori, studenti e genitori
+    \end{itemize}
 \end{itemize}
 
 \subsection{Caratteristiche di un buon software}
