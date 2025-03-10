@@ -9,4 +9,168 @@
 \tableofcontents
 \pagebreak
 
+\section{Grafi}
+I grafi permettono di risolvere problemi particolarmente complessi, ma la parte difficile
+è la conversione di un problema in un grafo. I grafi sono costituiti da nodi e archi:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw,circle] (1) at (0,0) {1};
+    \node[draw,circle] (3) [below left=of 1] {3};
+    \node[draw,circle] (4) [below right=of 1] {4};
+    \node[draw,circle] (2) [right=of 1] {2};
+
+    \draw (1) -- (3);
+    \draw (1) -- (4);
+    \draw (1) -- (2);
+    \draw (4) -- (2);
+  \end{tikzpicture}
+  \caption{Esempio di grafo}
+  \label{fig:grafo1}
+\end{figure}
+\begin{itemize}
+  \item \textbf{Nodi}: rappresentano gli elementi del problema.
+  \item \textbf{Archi}: rappresentano le relazioni tra i nodi.
+\end{itemize}
+I grafi in cui gli archi hanno un valore (o peso) vengono chiamati \textbf{grafi pesati}.
+Si possono anche aggiungere delle direzioni agli archi, ottenendo così un 
+\textbf{grafo orientato}, in cui un arco si può attraversare in un solo verso.
+\begin{definition}[Cammino]
+  Un \textbf{cammino} è una sequenza di nodi per cui esiste un arco tra ogni coppia di nodi adiacenti.
+\end{definition}
+In un cammino, la ripetizione di un nodo rappresenta un \textbf{loop} e questo cammino
+viene detto \textbf{cammino ciclico}. (un cammino senza cicli si dice \textbf{cammino
+semplice})
+
+Il \textbf{grado} di un nodo è il numero di archi che incidono sul nodo. Ha senso parlare
+di grado di un nodo solo quando il grafo non è orientato perchè così ogni arco viene
+contato una sola volta.
+\begin{itemize}
+  \item \textbf{Grado entrante}: numero di archi entranti in un nodo.
+  \item \textbf{Grado uscente}: numero di archi uscenti da un nodo.
+\end{itemize}
+
+\vspace{1em}
+\noindent
+La definizione formale di un grafo è la seguente:
+\begin{definition}
+  Un grafo è definito come una coppia $G = (V, E)$ dove:
+  \begin{itemize}
+    \item $V$ è un insieme di nodi.
+    \item $E$ è un insieme di archi:
+      \[
+        E \subseteq V \times V
+      \] 
+  \end{itemize}
+\end{definition}
+Dallla figura \ref{fig:grafo1} si ha che:
+\begin{itemize}
+  \item $V = \{1, 2, 3, 4\}$.
+  \item $E = \left\{(1, 3), (3,1), (1,1), (1,4), (4,1), (1,2), (2,4), (4,2)\right\}$.
+\end{itemize}
+La definizione formale dei concetti precedenti è:
+\begin{definition}
+  Il \textbf{grado uscente} di un nodo $v$ in un grafo orientato $G = (V, E)$ è il numero
+  di archi uscenti da $v$ (\( |\ldots| \) è la cardinalità di un insieme):
+  \[
+    \text{grado\_uscente}(v) = \left|\{u \;|\; (v, u) \in E\}\right|
+  \]
+\end{definition}
+\begin{definition}
+  Il \textbf{grado entrante} di un nodo $v$ in un grafo orientato $G = (V, E)$ è il numero
+  di archi entranti in $v$:
+  \[
+    \text{grado\_entrante}(v) = \left|\{u \;|\; (u, v) \in E\}\right|
+  \]
+\end{definition}
+\begin{definition}
+  Un cammino è una sequenza di nodi in cui per ogni coppia di nodi consecutivi esiste un arco:
+  \[
+    \forall i \in \{0 \ldots n-1\} \quad (v_i, v_{i+1}) \in E
+  \] 
+\end{definition}
+
+\subsection{Rappresentazione di un grafo}
+Per rappresentare un grafo ci sono due modi:
+\begin{itemize}
+  \item \textbf{Rappresentazione per liste di adiacenza}:
+    Si crea una lista in cui si rappresentano i nodi e
+    ad ogni nodo si associa la lista di tutti i nodi raggiungibili tramite un arco.
+    Prendiamo in considerazione la figura \ref{fig:grafo1}:
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}[
+        node distance=0cm and 0.5cm
+        ]
+        \node[draw,rectangle,minimum width=1cm,minimum height=0.5cm] (1) at (0,0) {1};
+        \node[draw,rectangle,minimum width=1cm,minimum height=0.5cm] (2) [below=of 1] {2};
+        \node[draw,rectangle,minimum width=1cm,minimum height=0.5cm] (3) [below=of 2] {3};
+        \node[draw,rectangle,minimum width=1cm,minimum height=0.5cm] (4) [below=of 3] {4};
+
+        \node[draw,rectangle,minimum size=0.5cm] (1-1-1) [right=of 1] {3};
+        \node[draw,rectangle,minimum size=0.5cm] (1-1-2) [right=0cm of 1-1-1] {p};
+        \node[draw,rectangle,minimum size=0.5cm] (1-1-3) [right=0cm of 1-1-2] {};
+        \draw[->] (1) -- (1-1-1);
+        \node[draw,rectangle,minimum size=0.5cm] (1-2-1) [right=of 1-1-3] {1};
+        \node[draw,rectangle,minimum size=0.5cm] (1-2-2) [right=0cm of 1-2-1] {p};
+        \node[draw,rectangle,minimum size=0.5cm] (1-2-3) [right=0cm of 1-2-2] {};
+        \draw[->] (1-1-3.center) -- (1-2-1);
+        \node[draw,rectangle,minimum size=0.5cm] (1-3-1) [right=of 1-2-3] {4};
+        \node[draw,rectangle,minimum size=0.5cm] (1-3-2) [right=0cm of 1-3-1] {p};
+        \node[draw,rectangle,minimum size=0.5cm] (1-3-3) [right=0cm of 1-3-2] {};
+        \draw[->] (1-2-3.center) -- (1-3-1);
+        \node[draw,rectangle,minimum size=0.5cm] (1-4-1) [right=of 1-3-3] {2};
+        \node[draw,rectangle,minimum size=0.5cm] (1-4-2) [right=0cm of 1-4-1] {p};
+        \node[draw,rectangle,minimum size=0.5cm] (1-4-3) [right=0cm of 1-4-2] {\footnotesize/};
+        \draw[->] (1-3-3.center) -- (1-4-1);
+
+
+        \node[draw,rectangle,minimum size=0.5cm] (2-1-1) [right=of 2] {4};
+        \node[draw,rectangle,minimum size=0.5cm] (2-1-2) [right=0cm of 2-1-1] {p};
+        \node[draw,rectangle,minimum size=0.5cm] (2-1-3) [right=0cm of 2-1-2] {\footnotesize/};
+        \draw[->] (2) -- (2-1-1);
+
+
+        \node[draw,rectangle,minimum size=0.5cm] (3-1-1) [right=of 3] {1};
+        \node[draw,rectangle,minimum size=0.5cm] (3-1-2) [right=0cm of 3-1-1] {p};
+        \node[draw,rectangle,minimum size=0.5cm] (3-1-3) [right=0cm of 3-1-2] {\footnotesize/};
+        \draw[->] (3) -- (3-1-1);
+
+
+        \node[draw,rectangle,minimum size=0.5cm] (4-1-1) [right=of 4] {1};
+        \node[draw,rectangle,minimum size=0.5cm] (4-1-2) [right=0cm of 4-1-1] {p};
+        \node[draw,rectangle,minimum size=0.5cm] (4-1-3) [right=0cm of 4-1-2] {};
+        \draw[->] (4) -- (4-1-1);
+        \node[draw,rectangle,minimum size=0.5cm] (4-2-1) [right=of 4-1-3] {2};
+        \node[draw,rectangle,minimum size=0.5cm] (4-2-2) [right=0cm of 4-2-1] {p};
+        \node[draw,rectangle,minimum size=0.5cm] (4-2-3) [right=0cm of 4-2-2] {\footnotesize/};
+        \draw[->] (4-1-3.center) -- (4-2-1);
+      \end{tikzpicture}
+      \caption{Rappresentazione per liste di adiacenza}
+    \end{figure}
+    \noindent
+    Lo spazio in memoria occupato è \(\Theta(|V| + |E|)\).
+
+  \item \textbf{Rappresentazione per matrice di adiacenza}:
+    Si crea una matrice \(A\) di dimensione \(|V| \times |V|\) in cui \(A_{ij} = 1\) se esiste
+    un arco tra i nodi \(i\) e \(j\), altrimenti \(A_{ij} = 0\).
+    Prendiamo in considerazione la figura \ref{fig:grafo1}, dove \( p \) è il peso dell'arco:
+    \begin{table}[H]
+      \centering
+      \begin{tabular}{c|cccc}
+        / & 1 & 2 & 3 & 4 \\
+        \hline
+        1 & 1 & 1 & 1 & 1 \\
+        2 & 0 & 0 & 0 & 1 \\
+        3 & 1 & 0 & 0 & 0 \\
+        4 & 1 & 1 & 0 & 0 \\
+      \end{tabular}
+      \caption{Rappresentazione per matrice di adiacenza}
+    \end{table}
+    \noindent
+    Lo spazio in memoria occupato è \(\Theta(|V|^2)\).
+\end{itemize}
+
+
+
 \end{document}

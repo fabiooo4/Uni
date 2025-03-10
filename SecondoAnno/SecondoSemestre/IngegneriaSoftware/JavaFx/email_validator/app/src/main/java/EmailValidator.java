@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class EmailValidator extends Application {
@@ -17,9 +18,13 @@ public class EmailValidator extends Application {
     // Create UI elements
     TextField emailField = new TextField();
     emailField.setPromptText(" Enter your email address ");
+    emailField.setFont(Font.font(20));
 
     Button submitButton = new Button(" Validate ");
+    submitButton.setFont(Font.font(20));
+
     Label resultLabel = new Label("");
+    resultLabel.setFont(Font.font(20));
 
     // Set up event handler for the button
     submitButton.setOnAction(event -> {
@@ -38,14 +43,16 @@ public class EmailValidator extends Application {
 
     // Create and configure the layout
     VBox root = new VBox(10);
+    Label fieldLabel = new Label(" Email Validator ");
+    fieldLabel.setFont(Font.font(20));
     root.getChildren().addAll(
-        new Label(" Email Validator "),
+        fieldLabel,
         emailField,
         submitButton,
         resultLabel);
 
     // Create and show the scene
-    Scene scene = new Scene(root, 300, 200);
+    Scene scene = new Scene(root, 500, 200);
     primaryStage.setTitle(" Email Validator ");
     primaryStage.setScene(scene);
     primaryStage.show();
