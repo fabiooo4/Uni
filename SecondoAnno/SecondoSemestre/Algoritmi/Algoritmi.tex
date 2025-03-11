@@ -171,6 +171,252 @@ Per rappresentare un grafo ci sono due modi:
     Lo spazio in memoria occupato è \(\Theta(|V|^2)\).
 \end{itemize}
 
+\noindent
+\begin{itemize}
+  \item Un \textbf{grafo trasposto} è un grafo in cui tutti gli archi sono invertiti.
+
+  \item
+    La \textbf{chiusura transitiva di un grafo} è un grafo in cui se esiste un cammino tra due nodi
+    allora esiste un arco diretto tra i due nodi:
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \node[draw,circle] (a) at (0,0) {a};
+        \node[draw,circle] (b) [right=of a] {b};
+        \node[draw,circle] (c) [right=of b] {c};
+
+        \draw[->] (a) -- (b);
+        \draw[->] (b) -- (c);
+        \draw[->] (a) to [bend left=45] (c);
+      \end{tikzpicture}
+      \caption{Grafo con chiusura transitiva}
+    \end{figure}
+
+  \item Il \textbf{diametro} è il percorso più lungo fra i percorsi minimi
+\end{itemize}
+
+\subsection{Esplorazione di un grafo}
+\subsubsection{Visita in ampiezza (BFS: Breath First Search)}
+La visita in ampiezza (o a ventaglio) è un algoritmo che permette di visitare tutti i nodi
+di un grafo partendo da un nodo iniziale. L'algoritmo è il seguente:
+\begin{lstlisting}[language=Scala]
+// G e' un grafo composto da un insieme di nodi V e un insieme di archi E
+// s e' un nodo dell'arco
+bfs(G, s)
+  for u in G.V
+    u.color <- white // non esplorato
+    u.distance <- +inf // distanza dal nodo s
+    u.parent <- NIL // nodo da cui si arriva a u
+
+  s.color <- gray // scoperto, ma non esplorato
+  s.distance <- 0
+  s.parent <- NIL
+  Q <- {s} // coda FIFO che contiene i nodi scoperti non esplorati
+
+  while Q != empty
+    u <- q.head
+
+    for v in G.adj(u) // lista di nodi adiacenti a u
+      if v.color == white
+        v.color <- gray
+        v.distance <- u.distance + 1
+        v.parent <- u
+        Q.enqueue(v)
+
+  Q.dequeue()
+  u.color <- black // esplorato
+\end{lstlisting}
+\begin{example}
+  L'algoritmo passo per passo è il seguente, dove i colori rappresentano:
+  \begin{itemize}
+    \item Nero: non esplorato,
+    \item \textcolor{blue}{Blu}: scoperto, ma non esplorato,
+    \item \textcolor{red}{Rosso}: esplorato,
+  \end{itemize}
+  \begin{enumerate}
+    \item Primo passo:
+      \begin{table}[H]
+        \centering
+        \begin{tabular}{c|c}
+          Distanza & 0 \\
+          Coda & s 
+        \end{tabular}
+      \end{table}
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}[
+          every node/.style={minimum size=0.7cm},
+          ]
+          \node[draw,circle] (r) {} node[above] at (r.north) {r};
+          \node[draw,circle,blue] (s) [right=of r] {0} node[above] at (s.north) {s};
+          \node[draw,circle] (t) [right=of s] {} node[above] at (t.north) {t};
+          \node[draw,circle] (u) [right=of t] {} node[above] at (u.north) {u};
+
+          \node[draw,circle] (v) [below=of r] {} node[below] at (v.south) {v};
+          \node[draw,circle] (w) [below=of s] {} node[below] at (w.south) {w};
+          \node[draw,circle] (x) [below=of t] {} node[below] at (x.south) {x};
+          \node[draw,circle] (y) [below=of u] {} node[below] at (y.south) {y};
+
+          \draw (r) -- (s);
+          \draw (r) -- (v);
+          \draw (s) -- (w);
+          \draw (t) -- (w);
+          \draw (t) -- (x);
+          \draw (t) -- (u);
+          \draw (w) -- (x);
+          \draw (u) -- (y);
+          \draw (x) -- (y);
+        \end{tikzpicture}
+      \end{figure}
+
+    \item Secondo passo:
+      \begin{table}[H]
+        \centering
+        \begin{tabular}{c|ccc}
+          Distanza & 0 & 1 & 1\\
+          Coda & s & w & r
+        \end{tabular}
+      \end{table}
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}[
+          every node/.style={minimum size=0.7cm},
+          ]
+          \node[draw,circle,blue] (r) {1} node[above] at (r.north) {r};
+          \node[draw,circle,red] (s) [right=of r] {0} node[above] at (s.north) {s};
+          \node[draw,circle] (t) [right=of s] {} node[above] at (t.north) {t};
+          \node[draw,circle] (u) [right=of t] {} node[above] at (u.north) {u};
+
+          \node[draw,circle] (v) [below=of r] {} node[below] at (v.south) {v};
+          \node[draw,circle,blue] (w) [below=of s] {1} node[below] at (w.south) {w};
+          \node[draw,circle] (x) [below=of t] {} node[below] at (x.south) {x};
+          \node[draw,circle] (y) [below=of u] {} node[below] at (y.south) {y};
+
+          \draw[->,thick] (r) -- (s);
+          \draw (r) -- (v);
+          \draw[<-,thick] (s) -- (w);
+          \draw (t) -- (w);
+          \draw (t) -- (x);
+          \draw (t) -- (u);
+          \draw (w) -- (x);
+          \draw (u) -- (y);
+          \draw (x) -- (y);
+        \end{tikzpicture}
+      \end{figure}
+
+    \item Terzo passo:
+      \begin{table}[H]
+        \centering
+        \begin{tabular}{c|cccccc}
+          Distanza & 0 & 1 & 1 & 2 & 2 & 2\\
+          Coda & $\cancel{\text{s}}$ & $\cancel{\text{w}}$ & $\cancel{\text{r}}$
+               & t & x & v
+        \end{tabular}
+      \end{table}
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}[
+          every node/.style={minimum size=0.7cm},
+          ]
+          \node[draw,circle,red] (r) {1} node[above] at (r.north) {r};
+          \node[draw,circle,red] (s) [right=of r] {0} node[above] at (s.north) {s};
+          \node[draw,circle,blue] (t) [right=of s] {2} node[above] at (t.north) {t};
+          \node[draw,circle] (u) [right=of t] {} node[above] at (u.north) {u};
+
+          \node[draw,circle,blue] (v) [below=of r] {2} node[below] at (v.south) {v};
+          \node[draw,circle,red] (w) [below=of s] {1} node[below] at (w.south) {w};
+          \node[draw,circle,blue] (x) [below=of t] {2} node[below] at (x.south) {x};
+          \node[draw,circle] (y) [below=of u] {} node[below] at (y.south) {y};
+
+          \draw[->,thick] (r) -- (s);
+          \draw[<-,thick] (r) -- (v);
+          \draw[<-,thick] (s) -- (w);
+          \draw[->,thick] (t) -- (w);
+          \draw (t) -- (x);
+          \draw (t) -- (u);
+          \draw[<-,thick] (w) -- (x);
+          \draw (u) -- (y);
+          \draw (x) -- (y);
+        \end{tikzpicture}
+      \end{figure}
+
+    \item Quarto passo:
+      \begin{table}[H]
+        \centering
+        \begin{tabular}{c|cccccccc}
+          Distanza & 0 & 1 & 1 & 2 & 2 & 2 & 3 & 3\\
+          Coda & $\cancel{\text{s}}$ & $\cancel{\text{w}}$ & $\cancel{\text{r}}$
+               & $\cancel{\text{t}}$ & $\cancel{\text{x}}$ & $\cancel{\text{v}}$
+               & u & y
+        \end{tabular}
+      \end{table}
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}[
+          every node/.style={minimum size=0.7cm},
+          ]
+          \node[draw,circle,red] (r) {1} node[above] at (r.north) {r};
+          \node[draw,circle,red] (s) [right=of r] {0} node[above] at (s.north) {s};
+          \node[draw,circle,red] (t) [right=of s] {2} node[above] at (t.north) {t};
+          \node[draw,circle,blue] (u) [right=of t] {3} node[above] at (u.north) {u};
+
+          \node[draw,circle,red] (v) [below=of r] {2} node[below] at (v.south) {v};
+          \node[draw,circle,red] (w) [below=of s] {1} node[below] at (w.south) {w};
+          \node[draw,circle,red] (x) [below=of t] {2} node[below] at (x.south) {x};
+          \node[draw,circle,blue] (y) [below=of u] {3} node[below] at (y.south) {y};
+
+          \draw[->,thick] (r) -- (s);
+          \draw[<-,thick] (r) -- (v);
+          \draw[<-,thick] (s) -- (w);
+          \draw[->,thick] (t) -- (w);
+          \draw (t) -- (x);
+          \draw[<-,thick] (t) -- (u);
+          \draw[<-,thick] (w) -- (x);
+          \draw (u) -- (y);
+          \draw[<-,thick] (x) -- (y);
+        \end{tikzpicture}
+      \end{figure}
+
+    \item Quinto passo:
+      \begin{table}[H]
+        \centering
+        \begin{tabular}{c|cccccccc}
+          Distanza & 0 & 1 & 1 & 2 & 2 & 2 & 3 & 3\\
+          Coda & $\cancel{\text{s}}$ & $\cancel{\text{w}}$ & $\cancel{\text{r}}$
+               & $\cancel{\text{t}}$ & $\cancel{\text{x}}$ & $\cancel{\text{v}}$
+               & $\cancel{\text{u}}$ & $\cancel{\text{y}}$
+        \end{tabular}
+      \end{table}
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}[
+          every node/.style={minimum size=0.7cm},
+          ]
+          \node[draw,circle,red] (r) {1} node[above] at (r.north) {r};
+          \node[draw,circle,red] (s) [right=of r] {0} node[above] at (s.north) {s};
+          \node[draw,circle,red] (t) [right=of s] {2} node[above] at (t.north) {t};
+          \node[draw,circle,red] (u) [right=of t] {3} node[above] at (u.north) {u};
+
+          \node[draw,circle,red] (v) [below=of r] {2} node[below] at (v.south) {v};
+          \node[draw,circle,red] (w) [below=of s] {1} node[below] at (w.south) {w};
+          \node[draw,circle,red] (x) [below=of t] {2} node[below] at (x.south) {x};
+          \node[draw,circle,red] (y) [below=of u] {3} node[below] at (y.south) {y};
+
+          \draw[->,thick] (r) -- (s);
+          \draw[<-,thick] (r) -- (v);
+          \draw[<-,thick] (s) -- (w);
+          \draw[->,thick] (t) -- (w);
+          \draw (t) -- (x);
+          \draw[<-,thick] (t) -- (u);
+          \draw[<-,thick] (w) -- (x);
+          \draw (u) -- (y);
+          \draw[<-,thick] (x) -- (y);
+        \end{tikzpicture}
+      \end{figure}
+  \end{enumerate}
+  Se si vuole trovare il cammino minimo tra due nodi, si parte dal nodo di destinazione
+  e si risale al nodo di partenza seguendo il campo \texttt{parent} di ogni nodo.
+\end{example}
 
 
 \end{document}
