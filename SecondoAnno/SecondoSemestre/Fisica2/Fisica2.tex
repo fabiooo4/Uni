@@ -54,7 +54,7 @@ Gli oggetti sono divisi in due classi:
   \item Carica positiva
   \item Carica negativa
 \end{itemize}
-Gli oggetti della stessa classe si respingono, mentre quelli di classe diversa si respingono.
+Gli oggetti della stessa classe si respingono, mentre quelli di classe diversa si attraggono.
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.8\textwidth]{tipi_carica}
@@ -429,6 +429,200 @@ distruggere il sistema:
   \item Con cariche opposte l'energia è negativa perchè la forza è attrattiva e si avvicina
     la carica, allontanandosi dall'infinito.
 \end{itemize}
+
+\subsection{(Campo) Potenziale elettrostatico}
+Dalla forza abbiamo definito l'equivalente, ma sottoforma di campo:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node (f) {$\vec{F}$};
+    \node[right=of f] (e) {$\vec{E} = \frac{\vec{F}}{q}$};
+
+    \draw[->] (f) -- (e);
+  \end{tikzpicture}
+\end{figure}
+\noindent
+Si può definire un campo anche per l'energia potenziale:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node (f) {$\vec{F}$};
+    \node[right=of f] (e) {$\vec{E}$};
+    \node[below=of f] (u) {$\Delta U$} 
+      node at (u.south) [below,align=center,scale=0.7] {Energia\\elettrostatica};
+    \node[below=of e] (v) {$\Delta V$} 
+      node at (v.south) [below,align=center,scale=0.7] {Campo\\potenziale};
+
+
+    \draw[->] (f) -- (e);
+    \draw[->] (u) -- (v);
+    \draw[->] (f) -- (u);
+    \draw[->,dashed] (e) -- (v);
+  \end{tikzpicture}
+\end{figure}
+
+\begin{definition}
+  Il campo potenziale è definita come la differenza di energia di una carica \( q \) 
+  unitaria:
+  \[
+    V(F) := \Delta V_{AB} = \frac{\Delta U}{q} \quad \left[ V \right]
+  \] 
+  L'unità di misura è il Volt.
+
+  \vspace{1em}
+  \noindent
+  Quindi come \( \Delta U_{AB} = - \int_A^B \vec{F} \; dl \), così si avrà:
+  \[
+    \Delta V_{AB} = V_B - V_A = - \int_{\underset{\gamma}{A}}^B \vec{E} \; dl \quad \left[ V \right]
+  \] 
+  Di conseguenza il lavoro sulla carica \( q \) è:
+  \[
+    L_q = - q \Delta V \quad \left[ J \right]
+  \] 
+\end{definition}
+
+\subsubsection{Calcolo del potenziale}
+\( V(\vec{r}) \) è un campo definito a meno di una costante (come l'energia), ma si
+sceglie un punto di riferimento (uno \textbf{zero}) che chiamiamo ad esempio \( \vec{r}_0 \)
+e poniamo \( V(\vec{r}_0) = V_0 \). Successivamente si calcola il potenziale come
+\( V(\vec{r}) - V(\vec{r}_0)\):
+\[
+\begin{cases}
+  V(\vec{r_0}) = V_0 \to = 0\\
+  V(\vec{r}) - V_0 = - \int_{\vec{r}_0}^{\vec{r}} \vec{E} \; dl
+\end{cases}
+\] 
+Si calcola quindi il campo prendendo come punto di riferimento il punto \( \vec{r}_0 \) 
+
+\subsubsection{Potenziale della carica puntiforme}
+Ricordando la definizione di campo elettrostatico:
+\[
+  \vec{E} = \frac{Q}{4 \pi \varepsilon_0} \cdot \frac{\hat{r}}{r^2}
+\] 
+Il potenziale si calcola come:
+\[
+  \begin{aligned}
+    V(\vec{r}) - V_0 &= - \int_{\vec{r}_0}^{\vec{r}} \vec{E} \; dl \\
+                     &= - \int_{\vec{r}_0}^{\vec{r}} \frac{Q}{4 \pi \varepsilon_0}
+                     \cdot \frac{\hat{r}}{r^2} \cdot  dl \\
+                     &= - \frac{Q}{4 \pi \varepsilon_0} \int_{r_0}^{r} \frac{dr}{r^2} \\
+                     &= \frac{Q}{4 \pi \varepsilon_0 r} -
+                     \frac{Q}{4 \pi \varepsilon_0 r_0} \quad \left[ V \right]
+  \end{aligned}
+\] 
+dove \( r_0 \) è un punto di riferimento e \( V_0 \) è il potenziale in quel punto.
+
+Si può prendere \( r_0 = \infty \), quindi \( V_\infty = 0 \) e si ottiene:
+\[
+  V(\vec{r}) = \frac{Q}{4 \pi \varepsilon_0 r} \quad \left[ V \right]
+\] 
+
+\subsubsection{Potenziale di più cariche}
+Consideriamo un insieme di cariche discrete \( \{q_i\}_N \) vale il \textbf{principio
+di sovrapposizione} anche per il potenziale ed esso è definito tramite il campo.
+Gli operatori somma e integrale commutano e quindi si ottiene:
+\[
+  V_{\text{tot}} = \sum V_i
+\] 
+dove:
+\[
+  V_i = \frac{q_i}{4 \pi \varepsilon_0 |\vec{r} - \vec{r}_i|}
+\] 
+e quindi:
+\[
+  V_{\text{tot}}(\vec{r}) = \frac{1}{4 \pi \varepsilon_0} \sum \frac{q_i}{|\vec{r}-\vec{r}_i|}
+\] 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{potenziale_piu_cariche}
+  \caption{Potenziale di più cariche}
+\end{figure}
+\noindent
+In questo modo spostando l'origine degli assi il potenziale non cambia.
+
+\vspace{1em}
+\noindent
+Se si avesse un volume tutte le sommatorie diventerebbero integrali:
+\[
+  V_{\text{tot}}(\vec{r}) = \frac{1}{4 \pi \varepsilon_0} \int \frac{dq}{|\vec{r} - \vec{r}_i|}
+\] 
+
+Abbiamo quindi che:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node (f) {$\vec{F}$};
+    \node[right=1.32cm of f] (e) {$\vec{E} = \frac{\vec{F}}{q_{\text{test}}}$};
+    \node[below=of f] (u) {$\Delta U$} 
+      node at (u.south) [below,align=center,scale=0.7] {Energia\\elettrostatica};
+    \node[right=of u] (v) {$\Delta V = \frac{\Delta U}{q_{\text{test}}}$} 
+      node at (v.south) [below,align=center,scale=0.7] {Campo\\potenziale};
+
+    \node[below=1.1cm of u] (lu) {$L_q = - \Delta U$};
+    \node[below=of v] (lv) {$L_q = -q \Delta V$};
+
+
+    \draw[->] (f) -- (e);
+    \draw[->] (u) -- (v);
+    \draw[->] (f) -- (u) node[midway,left,scale=0.7] {conservativo};
+    \draw[->] (e) -- (v) node[midway,right,scale=0.7] {conservativo};
+    \draw[->] (lu) -- (lv);
+  \end{tikzpicture}
+\end{figure}
+\noindent
+La circuitazione in un percorso chiuso è nulla:
+\begin{figure}[H]
+  \[
+    \oint_{\Gamma} \vec{E} \cdot dl = 0
+  \] 
+  \caption{Equazione di Maxwell}
+\end{figure}
+quindi \( \vec{E} \) è \textbf{conservativo}.
+
+\subsection{Linee di campo}
+Sono linee tangenti al campo elettrostatico \( \vec{E} \) in ogni punto e dirette
+nel verso del campo. Hanno le seguenti caratteristiche:
+\begin{itemize}
+  \item Sono continue, quindi non si interrompono mai
+  \item Escono dalle cariche positive e entrano nelle cariche negative
+  \item Sono linee aperte, cioè non si chiudono mai
+
+  \item In una carica positiva puntiforme sono radiali
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.3\textwidth]{linee_campo_positivo}
+      \caption{Linee di campo su una carica positiva}
+    \end{figure}
+
+  \item In una carica negativa puntiforme sono radiali e entrano nella carica
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.3\textwidth]{linee_campo_negativo}
+      \caption{Linee di campo su una carica negativa}
+    \end{figure}
+
+  \item Le cariche sono l'origine delle linee di campo, se si hanno delle linee chiuse
+    vuol dire che non c'è una sorgente
+
+  \item Le linee di campo non si intersecano mai
+\end{itemize}
+
+\subsection{Superfici equipotenziali}
+Sono luoghi di punti (superficie bidimensionale) a potenziale costante:
+\[
+  V(\vec{r}) = \text{costante} \to \Delta V = 0 \to L = 0 \quad \text{sulla superficie}
+\] 
+Se il lavoro è nullo, allora la forza è perpendicolare alla superficie \( \vec{F} \perp \vec{dl} \).
+Quindi le superfici equipotenziali sono perpendicolari al campo elettrico perchè:
+\[
+  \vec{F} = q \vec{E} \to \vec{F} \perp \vec{E}
+\] 
+Quindi si nota che per una carica puntiforme la superficie equipotenziale è una sfera.
+Il campo elettrico punta sempre verso potenziali minori perchè il lavoro è positivo:
+\label{12-03-D3}
+\[
+  L = -q^+ \left( V_B - V_A \right) > 0 \quad \text{con } V_B < V_A
+\] 
 
 
 \end{document}
