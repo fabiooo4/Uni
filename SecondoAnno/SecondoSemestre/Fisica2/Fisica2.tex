@@ -628,5 +628,133 @@ Il campo elettrico punta sempre verso potenziali minori perchè il lavoro è pos
   L = -q^+ \left( V_B - V_A \right) > 0 \quad \text{con } V_B < V_A
 \] 
 
+\subsection{Teorema di Gauss}
+Si può calcolare il campo elettrostatico \( \vec{E} \) di un'entità più complicata, come
+ad esempio un filo, un cilindro ecc..., che presentano \textbf{situazioni di simmetria}.
+Questo calcolo non viene fatto direttamente tramite integrali, ma tramite il \textbf{teorema
+di Gauss}. Le simmetrie che analizziamo sono:
+\begin{itemize}
+  \item \textbf{Simmetria sfericha}: Un sistema \textbf{isotropo}, cioè che non varia in
+    base alla direzione. Ad esempio una sfera, una carica puntiforme oppure un
+    condensatore sferico.
+
+  \item \textbf{Simmetria cilindrica}: Un sistema che non varia in base alla rotazione 
+    intorno ad un asse. Ad esempio un cilindro \textbf{indefinito} (di lunghezza non 
+    definita) oppure un filo.
+
+  \item \textbf{Simmetria rispetto ad un piano}: Un sistema che non varia in base alla 
+    traslazione lungo un piano.
+\end{itemize}
+Tutte queste sono geometrie in cui sono distribuite cariche e avranno una certa densità
+di carica:
+\begin{itemize}
+  \item Carica puntiforme \( q \; \left[ C \right] \)
+  \item Densità lineare \( \lambda \; \left[ \frac{C}{m} \right] \) per una linea
+  \item Densità superficiale \( \sigma \; \left[ \frac{C}{m^2} \right] \) per una superficie
+  \item Densità volumetrica \( \rho \; \left[ \frac{C}{m^3} \right] \) per un volume
+\end{itemize}
+
+\vspace{1em}
+\noindent
+\textbf{Osservazione}: Moltiplicare un campo per una superficie equivale a calcolare un
+\textbf{flusso}, cioè contare le linee di campo per la superficie ortogonale. Se prendiamo
+un campo di una carica puntiforme notiamo che al variare della distanza \( \vec{r} \) 
+il valore del campo varia. Se invece moltiplichiamo il campo per la superficie di una 
+sfera, si ottiene un flusso che è costante e non dipende da \( \vec{r} \):
+\[
+  \vec{E} = \frac{q \hat{r}}{4 \pi \varepsilon_0 r^2}
+\] 
+\[
+  \vec{E} \cdot 4 \pi r^2 = \frac{q \hat{r}}{\cancel{4 \pi} \varepsilon_0 \cancel{r^2}}
+  \cdot \cancel{4 \pi r^2} = \frac{q}{\varepsilon_0} \cdot \hat{r}
+\] 
+
+\begin{define}[Angolo piano]
+  L'angolo solido \( d \alpha \) è definito come un elemento di linea \( dl \) di 
+  circonferenza diviso per il raggio:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{angolo_piano}
+    \caption{Angolo piano}
+  \end{figure}
+  \[
+    d \alpha = \frac{\vec{dl} \cdot \hat{n} \cdot \hat{r}}{r}
+  \] 
+\end{define}
+\begin{define}[Angolo solido]
+  L'angolo solido \( d \Omega \) è definito come un elemento di superficie \( dS \) diviso
+  per il raggio al quadrato:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{angolo_solido}
+    \caption{Angolo solido}
+  \end{figure}
+  \[
+    d \Omega = \frac{dS \cdot \hat{n} \cdot \hat{r}}{r^2}
+  \]
+  
+\end{define}
+
+\subsubsection{Flusso del campo \texorpdfstring{\( \vec{E} \)}{E}}
+Consideriamo una superficie con concavità verso il basso definita come la sua orientazione
+\( \hat{n} \) (normale) e la sua area \( dS \).
+\label{14-03-D3}
+\[
+  d\vec{S} = \hat{n} \cdot dS
+\] 
+\begin{definition}[Flusso elementare]
+  Il flusso elementare \( d \Phi \) è definito come il prodotto scalare tra il campo
+  e la superficie:
+  \[
+    d \Phi = \vec{E} \cdot d \vec{S} \quad \left[ V \cdot m \right]
+  \] 
+
+  \vspace{1em}
+  \noindent
+  Il flusso di una superficie si ottiene integrando:
+  \[
+    \Phi = \oint \vec{E} \cdot d \vec{S}
+  \] 
+\end{definition}
+
+\begin{example}
+  Consideriamo una carica puntiforme \( q \) e una superficie \( dS \) 
+  \label{14-03-D4}
+  Il flusso del campo elettrostatico è:
+  \[
+    d \Phi = \left( \vec{E} \cdot d\vec{S} \right) = \frac{q}{4 \pi \varepsilon_0} 
+    \underbrace{\frac{\hat{r}}{r^2} \cdot d\vec{S}}_{d \Omega} = \frac{q}{4 \pi \varepsilon_0}
+    d \Omega
+  \] 
+  Osserviamo che il flusso dipende solo da \( d \Omega \), cioè dall'angolo solido,
+  e non dalla distanza \( r \) della superficie dalla carica.
+\end{example}
+\begin{example}
+  Consideriamo una superficie chiusa, il flusso del campo elettrostatico è:
+  \[
+    \Phi = \oint \frac{q}{4 \pi \varepsilon_0} d \Omega = \frac{q}{4 \pi \varepsilon_0}
+    \underbrace{\oint d \Omega}_{= 4 \pi} = \frac{q}{\varepsilon_0}
+  \] 
+  L'integrale su una superficie chiusa dell'angolo piano è uguale a \( 2 \pi  \),
+  quindi l'integrale su una superficie chiusa dell'angolo solido è uguale a \( 4 \pi \).
+
+  \vspace{1em}
+  \noindent
+\end{example}
+Il flusso quindi non dipende dalla superficie. Questa è la dimostrazione del teorema
+di Gauss.
+
+\begin{theorem}[Teorema di Gauss]
+  Il flusso \( \Phi(\vec{E}) \) del campo elettrico \( \vec{E} \) attraverso una
+  superficie chiusa \textbf{qualsiasi} \( S \) è uguale alla somma delle cariche interne alla superficie
+  diviso \( \varepsilon_0 \):
+  \[
+    \Phi (\vec{E}) = \underset{\text{superficie chiusa QUALUNQUE}}{\oint} \vec{E} \cdot d \vec{S} = \frac{Q_{\text{interne}}}{\varepsilon_0}
+  \] 
+  Le cariche esterne non contano perchè quando esse entrano nella superficie, ad un
+  certo punto escono, quindi il flusso è nullo. Se all'interno della superficie c'è
+  una sorgente (quindi cariche interne) esse non entrano mai perchè sono già dentro,
+  quindi escono e il flusso è positivo.
+\end{theorem}
 
 \end{document}
