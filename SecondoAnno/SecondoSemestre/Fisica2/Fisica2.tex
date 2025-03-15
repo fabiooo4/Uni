@@ -698,10 +698,14 @@ sfera, si ottiene un flusso che è costante e non dipende da \( \vec{r} \):
 \subsubsection{Flusso del campo \texorpdfstring{\( \vec{E} \)}{E}}
 Consideriamo una superficie con concavità verso il basso definita come la sua orientazione
 \( \hat{n} \) (normale) e la sua area \( dS \).
-\label{14-03-D3}
-\[
-  d\vec{S} = \hat{n} \cdot dS
-\] 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{superficie}
+  \[
+    d\vec{S} = \hat{n} \cdot dS
+  \] 
+  \caption{Superficie}
+\end{figure}
 \begin{definition}[Flusso elementare]
   Il flusso elementare \( d \Phi \) è definito come il prodotto scalare tra il campo
   e la superficie:
@@ -715,11 +719,43 @@ Consideriamo una superficie con concavità verso il basso definita come la sua o
   \[
     \Phi = \oint \vec{E} \cdot d \vec{S}
   \] 
+  \begin{figure}[H]
+    \centering
+    \setkeys{Gin}{width=\linewidth}
+    \begin{subfigure}{0.3\textwidth}
+      \includegraphics{flusso_positivo}
+      \[
+        d \Phi > 0
+      \] 
+      \caption{Flusso positivo}
+    \end{subfigure}
+    \hfil
+    \begin{subfigure}{0.3\textwidth}
+      \includegraphics{flusso_generico}
+      \[
+       \Phi = \vec{E} \cdot \vec{S} \cos \theta
+      \] 
+      \caption{Flusso generico}
+    \end{subfigure}
+    \hfil
+    \begin{subfigure}{0.3\textwidth}
+      \includegraphics{flusso_nullo}
+      \[
+        \Phi = \vec{E} \cdot \vec{S} = 0
+      \] 
+      \caption{Flusso nullo}
+    \end{subfigure}
+    \caption{Esempi di flusso}
+  \end{figure}
 \end{definition}
 
 \begin{example}
   Consideriamo una carica puntiforme \( q \) e una superficie \( dS \) 
-  \label{14-03-D4}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{flusso_puntiforme}
+    \caption{Flusso di una carica puntiforme}
+  \end{figure}
   Il flusso del campo elettrostatico è:
   \[
     d \Phi = \left( \vec{E} \cdot d\vec{S} \right) = \frac{q}{4 \pi \varepsilon_0} 
@@ -730,16 +766,19 @@ Consideriamo una superficie con concavità verso il basso definita come la sua o
   e non dalla distanza \( r \) della superficie dalla carica.
 \end{example}
 \begin{example}
-  Consideriamo una superficie chiusa, il flusso del campo elettrostatico è:
+  Consideriamo una superficie chiusa:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{flusso_superficie_chiusa}
+    \caption{Flusso di una superficie chiusa}
+  \end{figure}
+  il flusso del campo elettrostatico è:
   \[
     \Phi = \oint \frac{q}{4 \pi \varepsilon_0} d \Omega = \frac{q}{4 \pi \varepsilon_0}
     \underbrace{\oint d \Omega}_{= 4 \pi} = \frac{q}{\varepsilon_0}
   \] 
   L'integrale su una superficie chiusa dell'angolo piano è uguale a \( 2 \pi  \),
   quindi l'integrale su una superficie chiusa dell'angolo solido è uguale a \( 4 \pi \).
-
-  \vspace{1em}
-  \noindent
 \end{example}
 Il flusso quindi non dipende dalla superficie. Questa è la dimostrazione del teorema
 di Gauss.
