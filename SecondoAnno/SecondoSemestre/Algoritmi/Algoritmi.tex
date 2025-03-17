@@ -417,7 +417,102 @@ La complessità di questo algoritmo è \(O(|V| + |E|)\).
   \end{enumerate}
   Se si vuole trovare il cammino minimo tra due nodi, si parte dal nodo di destinazione
   e si risale al nodo di partenza seguendo il campo \texttt{parent} di ogni nodo.
+
+  \vspace{1em}
+  \noindent
+  Questo algoritmo produce un \textbf{albero dei cammini di lunghezza minima} radicato in
+  \( s \) che ha un cammino minimo per ogni nodo, se tale cammino esiste.
 \end{example}
 
+\noindent
+\textbf{Dimostrazione}: Dimostriamo che l'algoritmo BFS produce sempre un albero dei 
+cammini di lunghezza minima:
+
+Sia \( \delta(v) \) la lunghezza del cammino minimo da \( s \) a \( v \). Dimostrare che
+\[
+  \forall v \quad v.distance = \delta(v)
+\]
+Per dimostrare l'uguaglianza dimostriamo che sia comtemporaneamente maggiore e uguale
+e minore e uguale:
+
+\vspace{1em}
+\noindent
+\textbf{Lemma 1.} \( \forall (u,v) \in E \quad \delta(v) \le \delta(u) + 1 \) 
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw,circle] (s) at (0,0) {s};
+    \node[draw,circle] (u) [below right=of s] {u};
+    \node[draw,circle] (v) [above right=of s] {v};
+
+    \draw[->,dashed] (s) -- (u) node[midway, below left] {$\delta(u)$};
+    \draw[->,dashed] (s) -- (v) node[midway, above left] {$\delta(v)$};
+    \draw[->] (u) -- (v) node[midway, right] {$\delta(u) + 1$};
+  \end{tikzpicture}
+  \caption{Lemma 1}
+\end{figure}
+
+\noindent
+\textbf{Lemma 2.} \( \forall v \quad v.distance \ge \delta(v) \) perchè:
+\[
+  \begin{aligned}
+    s.distance &= 0 \ge 0\\
+    v.distance &= u.distance + 1 \ge \delta(u) + 1 \ge \delta(v)
+  \end{aligned}
+\] 
+
+\noindent
+\textbf{Lemma 3.} Nella coda \( Q \) ci sono smpre al più 2 valori e la coda è ordinata
+per distanza crescente.
+Sia \( \left<v_1, \ldots, v_r \right> \) il contenuto di \( Q \) in un qualche istante,
+allora:
+\[
+  v_1.distance \le v_2.distance \le \ldots \le v_r.distance \le v_1.distance + 1
+\] 
+Questo è vero per ogni istruzione del programma, è un \textbf{invariante}.
+Ogni istruzione che non modifica \( Q \) e non modifica le distanze non modifica l'invariante.
+L'inizializzazione della coda e la modifica della distanza di un nodo da aggiungere alla
+coda non modificano l'invariante. L'aggiunta di un nodo alla coda mantiene l'invariante.
+Quindi tutte le istruzioni mantengono l'invariante.
+
+\begin{theorem}
+  Sia \( V_k \) l'insieme di nodi \( v \;\big|\; \delta(v) = k \), allora
+  \( \forall v \in V_k \) esiste un punto dell'algoritmo in cui:
+  \begin{itemize}
+    \item \( v \) è grigio (scoperto, ma non esplorato).
+    \item \( k \) è assegnato a \( v.distance \).
+    \item se \( v \neq s \) allora \( v.parent = u \) per qualche \( u \in V_{k-1} \).
+    \item \( v \) è inserito in coda
+  \end{itemize}
+\end{theorem}
+
+\subsubsection{Visita in profondità (DFS: Depth First Search)}
+L'algoritmo è il seguente:
+\begin{lstlisting}[language=Scala]
+// G e' un grafo composto da un insieme di nodi V e un insieme di archi E
+dfs(G)
+  for u in G.V
+    u.color <- white
+    u.parent <- NIL
+
+  time <- 0
+
+  for u in G.V
+    if u.color == white
+      dfs-visit(u)
+\end{lstlisting}
+\begin{lstlisting}[language=Scala]
+dfs_visit(u)
+  u.color <- gray
+  u.start <- time <- time + 1
+
+  for v in G.adj(u)
+    if v.color == white
+      v.parent <- u
+      dfs-visit(v)
+
+  u.color <- black
+  u.finish <- time <- time + 1
+\end{lstlisting}
 
 \end{document}
