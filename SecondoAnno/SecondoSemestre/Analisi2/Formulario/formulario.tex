@@ -7,8 +7,128 @@
 \tableofcontents
 \pagebreak
 
-\section{Passi di risoluzione delle equazioni differenziali lineari del secondo ordine a
-coefficienti costanti}
+\section{Equazioni differenziali}
+
+\subsection{Risoluzione delle equazioni differenziali  del primo ordine (Problema di Cauchy)}
+\begin{enumerate}
+  \item Spostare tutte le \( y \) da una parte dell'equazione:
+    \begin{example}
+      Ad esempio:
+      \[
+        \begin{cases}
+          y' = \frac{y ^2}{y ^2 + 4}t\\
+          y(0) = 2
+        \end{cases}
+      \]
+      si può riscrivere come:
+      \[
+        \frac{y ^2 + 4}{y ^2}y' = t\\
+      \]
+    \end{example}
+
+  \item Integrare da entrambe le parti per rimuovere la derivata:
+    \begin{example}
+      Ad esempio:
+      \[
+        \int \frac{y ^2 + 4}{y ^2}y' \, dy = \int t \, dt
+      \]
+      Sostituiamo:
+      \[
+        \begin{aligned}
+          u &= y\\
+          du &= y' \, dy
+        \end{aligned}
+      \] 
+      quindi sostituendo \( y' \, dy \) con \( du \) si ha:
+      \[
+        \int \frac{u ^2 + 4}{u ^2} \, du = \int t \, dt
+      \]
+      risostituisco \( y \) al posto di \( u \) per non avere variabili diverse:
+      \[
+        \int \frac{y ^2 + 4}{y ^2} \, dy = \int t \, dt
+      \]
+    \end{example}
+
+  \item Risolvere l'integrale
+    \begin{example}
+      Riprendendo l'esempio precedente:
+      \[
+        \begin{aligned}
+          \int \frac{y ^2 + 4}{y ^2} \, dy &= \int t \, dt \\
+          \int 1 \, dy + 4 \int y^{-2} \, dy &= \frac{t^2}{2} + c\\
+          y - \frac{4}{y} &= \frac{t^2}{2} + c\\
+          \frac{y^2 - 4}{y} &= \frac{t^2}{2} + c\\
+        \end{aligned}
+      \] 
+    \end{example}
+
+  \item Imporre le condizioni iniziali per trovare la costante \( c \):
+    \begin{example}
+      Riprendendo l'esempio precedente:
+      \[
+        y(0) = 2
+      \] 
+      \[
+        \downarrow
+      \] 
+      \[
+        \begin{aligned}
+          \frac{2^2 - 4}{2} &= \frac{0}{2} + c\\
+          0 &= 0 + c\\
+          c &= 0
+        \end{aligned}
+      \] 
+    \end{example}
+
+  \item Sostituire la costante trovata nella soluzione dell'integrale:
+    \begin{example}
+      Riprendendo l'esempio precedente:
+      \[
+        \begin{aligned}
+          \frac{y^2 - 4}{y} &= \frac{t^2}{2} + 0\\
+          y^2 - 4 &= \frac{t^2}{2}y\\
+          y^2 - \frac{t^2}{2}y - 4 &= 0
+        \end{aligned}
+      \] 
+    \end{example}
+
+  \item Risolvere l'equazione trovata nei punti definiti nelle condizioni iniziali
+    per trovare la soluzione dell'equazione differenziale:
+    \begin{example}
+      Riprendendo l'esempio precedente:
+      \[
+        y^2 - \frac{t^2}{2}y - 4 = 0
+      \] 
+      \[
+        \begin{aligned}
+          y(t) &= \frac{\frac{t^2}{2} \pm \sqrt{\left(\frac{t^2}{2}\right)^2 + 16}}{2}\\
+               &= \frac{t^2 \pm \sqrt{t^4+64}}{4}\\
+        \end{aligned}
+      \] 
+
+      \[
+        y(0) = 2
+      \] 
+      \[
+        \downarrow
+      \] 
+      \[
+        \begin{aligned}
+          y(0) &= \frac{0 \pm \sqrt{0+64}}{4}\\
+          2 &= \frac{\pm 8}{4}\\
+          2 &= \pm 2
+        \end{aligned}
+      \] 
+      Solo la soluzione \( y = 2 \) è accettabile, e quindi la soluzione dell'equazione differenziale
+      è:
+      \[
+        y(t) = \frac{t^2 + \sqrt{t^4+64}}{4}
+      \] 
+    \end{example}
+\end{enumerate}
+
+\subsection{Risoluzione delle equazioni differenziali lineari del secondo ordine a
+coefficienti costanti (Problema di Cauchy)}
 \begin{enumerate}
   \item Risolvere l'equazione omogenea associata all'equazione differenziale.
 
