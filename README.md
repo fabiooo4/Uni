@@ -65,11 +65,13 @@ to someone else, even though they are written in Italian.
 <details>
 <summary>&emsp;Second Semester</summary>
     
-- Data Structures and Algorithms
-- Operating Systems
-- Software Engineering
-- Calculus 2
-- Physics 2
+- [Data Structures and Algorithms](./SecondoAnno/SecondoSemestre/Algoritmi/Algoritmi.pdf)
+- [Operating Systems](./SecondoAnno/SecondoSemestre/SistemiOperativi/C) (Only exercises)
+- [Software Engineering](./SecondoAnno/SecondoSemestre/IngegneriaSoftware/IngegneriaSoftware.pdf) (Incomplete)
+  - [Course exercises](./SecondoAnno/SecondoSemestre/IngegneriaSoftware/JavaFx)
+- [Calculus 2](./SecondoAnno/SecondoSemestre/Analisi2/Esercitazione) (Only exercises)
+  - [Exercises summary](./SecondoAnno/SecondoSemestre/Analisi2/Formulario/formulario.pdf)
+- [Physics 2](./SecondoAnno/SecondoSemestre/Fisica2/Fisica2.pdf)
 </details>
 </details>
 <details>
