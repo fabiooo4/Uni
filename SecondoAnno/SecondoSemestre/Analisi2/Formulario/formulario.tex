@@ -1,0 +1,210 @@
+\documentclass{article}
+\usepackage{import}
+\input{../../../../preamble.sty}
+
+\begin{document}
+
+\tableofcontents
+\pagebreak
+
+\section{Passi di risoluzione delle equazioni differenziali lineari del secondo ordine a
+coefficienti costanti}
+\begin{enumerate}
+  \item Risolvere l'equazione omogenea associata all'equazione differenziale.
+
+    Se le soluzioni sono complesse coniugate si possono riscrivere come:
+    \[
+      \begin{aligned}
+        r_1 &= \alpha + i \beta = e^{\alpha x} \cos(\beta x) \\
+        r_2 &= \alpha - i \beta = e^{\alpha x} \sin(\beta x)
+      \end{aligned}
+    \] 
+    con \( \alpha, \beta \in \mathbb{R} \) e \( z(x) \) è:
+    \[
+      z(x) = e^{\alpha x} \left( c_1 \cos(\beta x) + c_2 \sin(\beta x) \right)
+    \] 
+
+    \begin{example}
+      Ad esempio:
+      \[
+        y''-6y'+9y = 3t+2 \quad \to \quad r^2 - 6r + 9 = 0
+      \] 
+      Per la regola del trinomio speciale si ha:
+      \[
+        \left( r-3 \right)^2
+      \] 
+      e le soluzioni sono:
+      \[
+        \begin{aligned}
+          r_1 &= 3 \\
+          r_2 &= 3
+        \end{aligned}
+      \] 
+    \end{example}
+
+  \item Trovare la soluzione generale (equivale alla risposta libera in Sistemi)
+    con la seguente formula:
+      \[
+        z(x) = \sum_{i=1}^{r} \sum_{l=0}^{\mu_i -1} c_{i,l} \cdot 
+        e^{\lambda_i x} \cdot \frac{x^l}{l!}
+      \] 
+      dove:
+      \[
+      \begin{aligned}
+        r &\text{ è il numero di radici distinte} \\
+        \mu_i &\text{ è la molteplicità della radice } \lambda_i \\
+        c_{i,l} &\text{ sono costanti da determinare} \\
+      \end{aligned}
+      \] 
+    \begin{example}
+      Calcoliamo la soluzione generale dell'equazione differenziale:
+      \[
+        z(t) = c_1 e^{3t} + c_2 t e^{3t}
+      \] 
+    \end{example}
+
+  \item Trovare una soluzione particolare (equivale alla risposta forzata in Sistemi)
+    dell'equazione differenziale. La soluzione dipende dalla funzione $f(x)$ dove:
+    \[
+      y'' + a y' + b y = f(x)
+    \] 
+    \begin{enumerate}
+      \item Se \( f(x) = p_r(x) \) è un polinomio di grado \( r \) allora la soluzione
+        particolare è un polinomio di grado \( r \) con coefficienti indeterminati:
+        \begin{table}[H]
+          \centering
+          \begin{tabular}{|c|c|}
+            \hline
+            \( \bar{y}(x) = q_r(x) \) & se \( b \neq 0 \) \\
+            \hline
+            \( \bar{y}(x) = xq_{r}(x) \) & se \( b = 0 \) e \( a \neq 0 \) \\
+            \hline
+            \( \bar{y}(x) = x^2q_{r}(x) \) & se \( b = 0 \) e \( a = 0 \) \\
+            \hline
+          \end{tabular}
+        \end{table}
+      \begin{example}
+        Ad esempio:
+        \begin{itemize}
+          \item Se consideriamo \( y'' - 6y' + 9y = 3t + 2 \) 
+            Abbiamo che
+            \[
+              f(x) = p_1(t) = 3t + 2
+            \]
+            con \( a = -6 \) e \( b = 9 \) 
+            quindi siamo nel primo caso:
+            \[
+              \bar{y}(t) = q_0 + q_1 t
+            \] 
+
+          \item Se consideriamo \( y'' - 6y' = t^2+2 \) abbiamo che
+            \[
+              f(x) = p_2(t) = t^2 + 2
+            \] 
+            con \( a = -6 \) e \( b = 0 \) quindi siamo nel secondo caso:
+            \[
+              \bar{y}(t) = q_0 t + q_1 t^2 + q_2 t^3
+            \] 
+
+          \item Se consideriamo \( y'' = t-1 \) abbiamo che
+            \[
+              f(x) = p_1(t) = t-1
+            \] 
+            con \( a = 0 \) e \( b = 0 \) quindi siamo nel terzo caso:
+            \[
+              \bar{y}(t) = q_0 t^2 + q_1 t^3
+            \]
+        \end{itemize}
+      \end{example}
+
+    \item Se \( f(x) = Ae^{\lambda x} \) con \( \lambda \in \mathbb{C} \) allora
+      la soluzione particolare è del tipo:
+      \[
+        \bar{y}(x) = e^{\lambda x} \gamma(x)
+      \] 
+      Per trovare \( \gamma (x) \) bisogna risolvere la seguente equazione:
+      \[
+        \gamma'' + \gamma'(2 \lambda + a) + \gamma(\lambda^2 + a \lambda + b) = A
+      \] 
+      quindi si distinguono i seguenti casi:
+      \begin{table}[H]
+        \centering
+        \begin{tabular}{|c|c|c|}
+          \hline
+          se \( \lambda^2 + a \lambda + b \neq 0 \) & 
+          \(\gamma (x) = \frac{A}{\lambda^2 + a \lambda + b} \) &
+          \( \bar{y}(x) = \frac{A e^{\lambda x}}{\lambda^2 + a \lambda + b} \) \\
+          \hline
+          se \( \lambda^2 + a \lambda + b = 0 \) e \( 2 \lambda + a \neq 0 \) &
+          \( \gamma (x) = \frac{A x}{2 \lambda + a} \) &
+          \( \bar{y}(x) = \frac{A x e^{\lambda x}}{2 \lambda + a} \) \\
+          \hline
+          se \( \lambda^2 + a \lambda + b = 0 \) e \( 2 \lambda + a = 0 \) &
+          \( \gamma (x) = \frac{A}{2}x^2 \) &
+          \( \bar{y}(x) = \frac{A}{2} x^2 e^{\lambda x} \) \\
+          \hline
+        \end{tabular}
+      \end{table}
+
+      \noindent
+      In questa classe particolare di termini noti del tipo \( A e^{\lambda x} \) con
+      \( \lambda \in \mathbb{C} \) rientrano anche i casi:
+      \[
+        cos \omega x,\; sin \omega x,\; e^{\mu x} cos \omega x,\; e^{\mu x} sin \omega x
+      \] 
+      con \( \mu \in \mathbb{R} \) 
+
+      \begin{example}
+        Prendiamo ad esempio la seguente equazione differenziale:
+        \[
+          y'' -4y' +8y = e^{-2t}
+        \] 
+        Una soluzione particolare sarà del tipo:
+        \[
+          \bar{y}(t) = e^{-2t} \gamma(t)
+        \] 
+        con \( A = 1 \) e \( \lambda = -2 \) quindi:
+        \[
+          \begin{aligned}
+            \gamma'' + \gamma'(2 \cdot -2 - 4) + \gamma (-2^2 - 4 \cdot -2 + 8) &= 1\\
+            \gamma'' - 8 \gamma' + 20 \gamma = 1
+          \end{aligned}
+        \]
+        Siamo nel primo caso quindi:
+        \[
+          \gamma(t) = \frac{A}{\lambda^2 + a \lambda + b} = \frac{1}{4 + 8 + 8} = \frac{1}{20}
+        \]
+        quindi la soluzione particolare è:
+        \[
+          \bar{y}(t) = \frac{e^{-2t}}{20}
+        \] 
+      \end{example}
+
+    \item Se \( f(x) = A e^{\mu x} cos(\omega x) \),
+      ricordando che:
+      \[
+        A e^{(\mu + i \omega)x} = A e^{\mu x} \left(\cos(\omega x) + i \sin(\omega x)\right)
+      \] 
+      si può risolvere l'equazione con termine noto \( f(x) = A e^{(\mu + i \omega)x} \)
+      e poi prendere solo la parte reale della soluzione complessa. Analogamente se
+      \( f(x) = A e^{\mu x} sin(\omega x) \) si procede andando a prendere la parte
+      immaginaria.
+
+      Alternativamente si può calcolare una soluzione particolare senza numeri complessi
+      e tale soluzione è del tipo:
+      \[
+        \bar{y}(x) = e^{x} \left( c_1 \cos(3x) + c_2 \sin(3x) \right) 
+      \] 
+      In ogni caso se il termine noto contiene solo seno oppure coseno, quando si cerca 
+      una soluzione particolare si deve sempre cercare come combinazione lineare di 
+      entrambi seno e coseno.
+
+    \item Se \( f(x) \) è una combinazione lineare dei termini precedenti (ad esempio
+      un polinomio più un esponenziale) allora per linearità si trova la soluzione
+      dell'equazione che ha come termine noto il primo termine, poi si trova la soluzione
+      dell'equazione che ha come termine noto il secondo termine e si sommano le due
+      soluzioni per trovare la soluzione particolare dell'equazione differenziale di partenza.
+    \end{enumerate}
+\end{enumerate}
+    
+\end{document}
