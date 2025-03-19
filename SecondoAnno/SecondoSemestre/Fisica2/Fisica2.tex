@@ -796,4 +796,154 @@ di Gauss.
   quindi escono e il flusso è positivo.
 \end{theorem}
 
+\subsection{Applicazione del teorema di Gauss}
+Siccome il teorema di Gauss dice che il flusso non dipende dalla superficie si prende
+una superficie particolarmente simmetrica chiamata \textbf{superficie di Gauss} che
+rende facilmente calcolabile il flusso, grazie al campo costante su tutta la superficie.
+Per calcolare il campo \( \vec{E} \) siccome esso è costante e parallelo alla normale
+(grazie alla superficie scelta) si può tirare fuori dall'integrale per ottenere un
+prodotto tra l'incognita \( \vec{E} \) e un integrale geometrico.
+\[
+  \Phi (\vec{E}) = \vec{E} \cdot \oint_{\text{Sup}} d \vec{S} =
+  \frac{Q_{\text{Interne}}}{\varepsilon_0}
+\] 
+\subsubsection{Simmetria sferica}
+Le caratteristiche necessarie sono:
+\begin{itemize}
+  \item Distribuzione di carica con simmetria sferica. Potrebbe essere una:
+    \begin{itemize}
+      \item Carica di volume \( \rho \)
+        \label{19-03-D1}
+      \item Carica di superficie \( \sigma \)
+        \label{19-03-D2}
+    \end{itemize}
+    Se la carica \( \{Q\} \) è a simmetria sferica, allora il campo \( \vec{E} \) sarà
+    a simmetria sferica. Questo campo sarà \textbf{radiale} e dipenderà solo da \( \vec{r} \):
+    \[
+      \vec{E} = E(r) \hat{r}
+    \] 
+\end{itemize}
+
+\begin{example}
+  Consideriamo una carica positiva \( Q^+ \) distribuita su una superficie. L'obiettivo
+  è quello di cercare una superficie di Gauss in cui il campo elettrico sia costante.
+  Siccome dipende solo da \( r \) esso sarà costante solo nelle superfici sferiche \( S(r) \) 
+  di raggio \( r \).
+  \label{19-03-D3}
+  \[
+    \begin{aligned}
+      \Phi(\vec{E}) &= \oint_{S(r)} \vec{E} \cdot \hat{n} \cdot_{S(r)} dS\\
+      &= \oint_{S(r)} E(r) dS\\
+      &= E(r) \overbrace{\oint_{S(r)} dS}^{\text{Sup sfera}}\\
+      &= E(r) \cdot 4 \pi r^2 = \frac{Q_{\text{int}}}{\varepsilon_0}
+    \end{aligned}
+  \]
+  Dove:
+  \[
+    Q_{\text{int}} =
+  \begin{cases}
+    Q & \text{se } r \ge R \text{ (esterno)}\\
+    0 & \text{se } r < R \text{ (interno)}
+  \end{cases}
+  \] 
+  Quindi:
+  \[
+    E(r) = \begin{cases}
+      \frac{Q}{4 \pi \varepsilon_0 r^2} & \text{se } r \ge R\\
+      0 & \text{se } r < R
+    \end{cases}
+    \quad \left[ \frac{V}{m} \right]
+  \] 
+  In \( r = R \) il campo vale:
+  \[
+    E(R) = \frac{Q}{4 \pi \varepsilon_0 R^2} = \frac{\sigma}{\varepsilon_0}
+  \] 
+  Il grafico del campo elettrico è:
+  \label{19-03-D4}
+\end{example}
+\begin{example}
+  Consideriamo una carica positiva \( Q^+ \) distribuita su un volume. L'obiettivo è
+  quello di cercare una superficie di Gauss in cui il campo elettrico sia costante.
+  Siccome dipende solo da \( r \) esso sarà costante solo nelle sfere \( S(r) \) di raggio
+  \( r \).
+  \label{19-03-D5}
+  Siccome la sfea all'interno non è più vuota come nell'esempio precedente, ma è piena
+  il valore di \( Q_{\text{int}} \) esterno rimane invariato, ma all'interno si ha:
+  \[
+    Q_{\text{Int}} = 
+    \begin{cases}
+      Q & \text{se } r \ge R\\
+      \rho \cdot \frac{4}{3} \pi r^3 & \text{se } r < R
+    \end{cases}
+  \] 
+  Quindi:
+  \[
+    E(r) = \begin{cases}
+      \frac{Q}{4 \pi \varepsilon_0 r^2} & \text{se } r \ge R\\
+      \frac{\rho}{3 \varepsilon_0} \cdot r & \text{se } r < R
+    \end{cases}
+    \quad \left[ \frac{V}{m} \right]
+  \]
+  In \( r = R \) il campo vale:
+  \[
+    E(R) = \frac{\frac{4}{3} \pi R^3 \rho}{4 \pi \varepsilon_0 R^2} 
+    = \frac{\rho}{3 \varepsilon_0} \cdot R
+  \] 
+  Il grafico del campo elettrico è:
+  \label{19-03-D6}
+\end{example}
+
+\subsubsection{Simmetria cilindrica}
+Le possibili simmetrie sono:
+\begin{itemize}
+  \item Filo indefinito con distribuzione di carica lineare \( \lambda \)
+  \item Cilindro
+    \begin{itemize}
+      \item Con distribuzione di carica sulla superficie
+      \item Con distribuzione di carica nel volume
+    \end{itemize}
+\end{itemize}
+La caratteristica principale è la \textbf{simmetria attorno all'asse del sistema}.
+La superficie di Gauss in cui il campo è costante è un cilindro di raggio \( r \) e
+altezza \( h \).
+\begin{example}
+  Consideriamo una carica \( \lambda^+ \) distribuita su un filo indefinito:
+  \label{19-03-D7}
+  Il flusso del campo è il flusso delle basi (che essendo perpendicolari al campo radiale
+  vale 0) più il flusso laterale:
+  \[
+    \Phi (\vec{E}) = \Phi_{\text{Basi}} + \Phi_{\text{Laterale}} = E \cdot 2 \pi r h =
+    \frac{Q_{\text{Int}}}{\varepsilon_0} = \frac{\lambda h}{\varepsilon_0}
+  \] 
+  Quindi il campo è:
+  \[
+    E(r) = \frac{\lambda}{2 \pi \varepsilon_0 r}
+  \] 
+  Il grafico del campo elettrico è:
+  \label{19-03-D8}
+\end{example}
+\begin{example}
+  Consideriamo una carica \( \sigma^+ \) distribuita su un cilindro di raggio \( R \):
+  \label{19-03-D9}
+  Il flusso del campo è lo stesso del caso precedente, ma con \( Q_{\text{Int}} \) diverso:
+  \[
+    Q_{\text{Int}} =
+    \begin{cases}
+      \sigma \cdot 2 \pi R h & \text{se } r \ge R\\
+      0 & \text{se } r < R
+    \end{cases}
+  \] 
+  Quindi il campo è:
+  \[
+    E(r) = \begin{cases}
+      \frac{\sigma}{2 \varepsilon_0 Rr} & \text{se } r \ge R\\
+      0 & \text{se } r < R
+    \end{cases}
+  \]
+  Il grafico del campo elettrico è:
+  \label{19-03-D10}
+\end{example}
+
+
+
 \end{document}
