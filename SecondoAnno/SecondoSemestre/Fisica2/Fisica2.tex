@@ -813,9 +813,25 @@ Le caratteristiche necessarie sono:
   \item Distribuzione di carica con simmetria sferica. Potrebbe essere una:
     \begin{itemize}
       \item Carica di volume \( \rho \)
-        \label{19-03-D1}
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width=0.5\textwidth]{simmetria_sferica_volume}
+          \[
+            Q = \rho \cdot \overbrace{\frac{4}{3}\pi R^3}^{\text{Volume sfera}}
+            \quad \left[C\right]
+          \] 
+          \caption{Simmetria sferica di volume}
+        \end{figure}
       \item Carica di superficie \( \sigma \)
-        \label{19-03-D2}
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width=0.5\textwidth]{simmetria_sferica_superficie}
+          \[
+            Q = \sigma \cdot \overbrace{4 \pi R^2}^{\text{Superficie sfera}}
+            \quad \left[C\right]
+          \] 
+          \caption{Simmetria sferica di superficie}
+        \end{figure}
     \end{itemize}
     Se la carica \( \{Q\} \) è a simmetria sferica, allora il campo \( \vec{E} \) sarà
     a simmetria sferica. Questo campo sarà \textbf{radiale} e dipenderà solo da \( \vec{r} \):
@@ -829,7 +845,11 @@ Le caratteristiche necessarie sono:
   è quello di cercare una superficie di Gauss in cui il campo elettrico sia costante.
   Siccome dipende solo da \( r \) esso sarà costante solo nelle superfici sferiche \( S(r) \) 
   di raggio \( r \).
-  \label{19-03-D3}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{carica_superficie_sferica}
+    \caption{Carica distribuita su una superficie sferica}
+  \end{figure}
   \[
     \begin{aligned}
       \Phi(\vec{E}) &= \oint_{S(r)} \vec{E} \cdot \hat{n} \cdot_{S(r)} dS\\
@@ -859,14 +879,23 @@ Le caratteristiche necessarie sono:
     E(R) = \frac{Q}{4 \pi \varepsilon_0 R^2} = \frac{\sigma}{\varepsilon_0}
   \] 
   Il grafico del campo elettrico è:
-  \label{19-03-D4}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{grafico_superficie_sferica}
+    \caption{Grafico del campo elettrico}
+  \end{figure}
 \end{example}
 \begin{example}
   Consideriamo una carica positiva \( Q^+ \) distribuita su un volume. L'obiettivo è
   quello di cercare una superficie di Gauss in cui il campo elettrico sia costante.
   Siccome dipende solo da \( r \) esso sarà costante solo nelle sfere \( S(r) \) di raggio
   \( r \).
-  \label{19-03-D5}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{carica_volume_sferico}
+    \caption{Carica distribuita su un volume sferico}
+  \end{figure}
+  \noindent
   Siccome la sfea all'interno non è più vuota come nell'esempio precedente, ma è piena
   il valore di \( Q_{\text{int}} \) esterno rimane invariato, ma all'interno si ha:
   \[
@@ -890,7 +919,10 @@ Le caratteristiche necessarie sono:
     = \frac{\rho}{3 \varepsilon_0} \cdot R
   \] 
   Il grafico del campo elettrico è:
-  \label{19-03-D6}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{grafico_volume_sferico}
+  \end{figure}
 \end{example}
 
 \subsubsection{Simmetria cilindrica}
@@ -908,11 +940,16 @@ La superficie di Gauss in cui il campo è costante è un cilindro di raggio \( r
 altezza \( h \).
 \begin{example}
   Consideriamo una carica \( \lambda^+ \) distribuita su un filo indefinito:
-  \label{19-03-D7}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{carica_filo_indefinito}
+    \caption{Carica distribuita su un filo indefinito}
+  \end{figure}
+  \noindent
   Il flusso del campo è il flusso delle basi (che essendo perpendicolari al campo radiale
   vale 0) più il flusso laterale:
   \[
-    \Phi (\vec{E}) = \Phi_{\text{Basi}} + \Phi_{\text{Laterale}} = E \cdot 2 \pi r h =
+    \Phi (\vec{E}) = \Phi_{\text{Basi}} + \Phi_{\text{Laterale}} = 0 + E \cdot 2 \pi r h =
     \frac{Q_{\text{Int}}}{\varepsilon_0} = \frac{\lambda h}{\varepsilon_0}
   \] 
   Quindi il campo è:
@@ -920,11 +957,20 @@ altezza \( h \).
     E(r) = \frac{\lambda}{2 \pi \varepsilon_0 r}
   \] 
   Il grafico del campo elettrico è:
-  \label{19-03-D8}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{grafico_filo_indefinito}
+    \caption{Grafico del campo elettrico}
+  \end{figure}
 \end{example}
 \begin{example}
-  Consideriamo una carica \( \sigma^+ \) distribuita su un cilindro di raggio \( R \):
-  \label{19-03-D9}
+  Consideriamo una carica \( \sigma^+ \) distribuita su un cilindro di raggio \( R \) e
+  altezza \( h \):
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{carica_superficie_cilindrica}
+    \caption{Carica distribuita su un cilindro di raggio \( R \) e altezza \( h \)}
+  \end{figure}
   Il flusso del campo è lo stesso del caso precedente, ma con \( Q_{\text{Int}} \) diverso:
   \[
     Q_{\text{Int}} =
@@ -936,14 +982,16 @@ altezza \( h \).
   Quindi il campo è:
   \[
     E(r) = \begin{cases}
-      \frac{\sigma}{2 \varepsilon_0 Rr} & \text{se } r \ge R\\
+      \frac{\sigma R}{\varepsilon_0 r} & \text{se } r \ge R\\
       0 & \text{se } r < R
     \end{cases}
   \]
   Il grafico del campo elettrico è:
-  \label{19-03-D10}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{grafico_superficie_cilindrica}
+    \caption{Grafico del campo elettrico}
+  \end{figure}
 \end{example}
-
-
 
 \end{document}
