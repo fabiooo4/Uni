@@ -3011,4 +3011,71 @@ Le prestazioni di questo algoritmo sono:
   \end{table}
 \end{example}
 
+\subsection{Code multilivello}
+Nei sistemi modelli si utilizzano più scheduler tramite le \textbf{code multilivello}
+che implementano più ready queue con priorità diverse. In queste code si accodano processi
+diversi in base alle loro caratteristiche (ad esempio processi in foreground e processi in
+background), ma questo introduce la necessità di schedulare le code tra di loro. Si
+possono avere due approcci:
+\begin{itemize}
+  \item \textbf{Scheduling a priorità fissa}: Ogni coda ha una priorità fissa e si
+    schedula la coda con priorità più alta prima di quelle con priorità più basse.
+    Questo approccio però può portare a starvation delle code con priorità più basse.
+
+  \item \textbf{Scheduling con time-slice}: Ogni coda ha un quanto di tempo in cui
+    può schedulare i processi. Ad esempio 80\% per i processi in foreground e 20\%
+    per i processi in background con FCFS.
+\end{itemize}
+
+\subsubsection{Code multilivello con feedback}
+I processi però non hanno caratteristiche fisse durante la loro esecuzione, quindi
+esiste un sistema di feedback che permette di promuovere dei processi da una coda
+all'altra.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+    node distance=0.5cm,
+    ]
+    \node[draw,rectangle,minimum width=5cm,minimum height=0.8cm]
+      (1) {Processi si sistema};
+    \draw[<-] (1.west) -- ++(-1,0);
+    \draw[->] (1.east) -- ++(1,0);
+
+    \node[draw,rectangle,minimum width=5cm,minimum height=0.8cm,below=of 1]
+      (2) {Processi interattivi};
+    \draw[<-] (2.west) -- ++(-1,0);
+    \draw[->] (2.east) -- ++(1,0);
+
+    \node[draw,rectangle,minimum width=5cm,minimum height=0.8cm,below=of 2]
+      (3) {Processi interattivi modificabili};
+    \draw[<-] (3.west) -- ++(-1,0);
+    \draw[->] (3.east) -- ++(1,0);
+
+    \node[draw,rectangle,minimum width=5cm,minimum height=0.8cm,below=of 3]
+      (4) {Processi batch};
+    \draw[<-] (4.west) -- ++(-1,0);
+    \draw[->] (4.east) -- ++(1,0);
+
+    \node[draw,rectangle,minimum width=5cm,minimum height=0.8cm,below=of 4]
+      (5) {Processi studente};
+    \draw[<-] (5.west) -- ++(-1,0);
+    \draw[->] (5.east) -- ++(1,0);
+
+    \node[above] at (1.north) {Priorità più alta};
+    \node[below] at (5.south) {Priorità più bassa};
+  \end{tikzpicture}
+  \caption{Esempio di code multilivello}
+\end{figure}
+\noindent
+In questo sistema in cui i processi possono cambiare coda si può anche implementare un
+meccanismo di aging per evitare la starvation.
+
+\subsection{Scheduler fair share}
+Sono scheduler che al posto di gestire il singolo processo 
+\textbf{gestiscono le applicazioni}, cioè gruppi di processi. Quindi tutti i processi che
+fanno parte di un'applicazione vengono schedulati insieme e le risorse non vengono 
+assegnate tra la totalità dei processi, ma tra i vari gruppi. Ad ogni gruppo di processi
+poi è associato uno scheduler normale che si occupa di schedulare i processi all'interno 
+del gruppo.
+
 \end{document}
