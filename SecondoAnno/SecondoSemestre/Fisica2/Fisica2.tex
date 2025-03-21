@@ -994,4 +994,95 @@ altezza \( h \).
   \end{figure}
 \end{example}
 
+\subsubsection{Simmetria rispetto ad un piano indefinito}
+Consideriamo un piano indefinito con una distribuzione di carica superficiale 
+positiva \( \sigma^+ \; \left[ \frac{C}{m^2} \right] \). L'unico grado di libertà
+è la distanza dal piano. L'elemento di campo è definito come:
+\[
+  d\vec{E} = \frac{dq}{4 \pi \varepsilon_0 r^2} \hat{r}
+\] 
+Se consideriamo un elemento di carica che agisce su un punto \( p \), allora siccome
+il piano è indefinito ci sarà un elemento di carica simmetrico che genera un campo
+con componente orizzontale uguale e opposto a quella dell'elemento precedente.
+Di conseguenza il campo totale sarà perpendicolare al piano:
+\label{21-03-D1}
+\noindent
+Il campo avrà questa forma:
+\[
+  \vec{E} = E(z) \hat{z}
+\] 
+La superficie di Gauss da considerare è un cilindro che si trova metà sopra e metà sotto
+il piano:
+\label{21-03-D2}
+\noindent
+Il flusso del sistema sarà il flusso delle basi più il flusso dei lati, ma il flusso
+laterale sarà nullo:
+\[
+  \Phi = \Phi_{\text{Basi}} + \Phi_{\text{Laterale}} = 2 E(z) \cancel{\Sigma} + 0 
+  = \frac{Q_{\text{Int}}}{\varepsilon_0} = \frac{\cancel{\Sigma} \sigma}{\varepsilon_0}
+\] 
+Quindi il campo è:
+\[
+  E = \frac{\sigma^\pm}{2 \varepsilon_0}
+\] 
+La particolarità di questo campo è che non dipende dalla distanza, quindi è un campo
+costante.
+
+\subsection{Elettrostatica nei conduttori}
+Un materiale conduttore ha \textbf{le cariche libere di muoversi}. Se si avvicina un
+campo elettrico e sulle cariche viene esercitata una forza. Per un momento ci sarà
+del caos, ma poi le cariche si sposteranno fino a quando non si raggiunge l'equilibrio,
+in quel momento si studia il comportamento delle cariche.
+
+\subsubsection{Proprietà dei conduttori in equilibrio elettrostatico}
+\begin{enumerate}
+  \item \textbf{Prima proprietà}: Il campo totale interno in un conduttore è 0:
+    \[
+      E_{\text{Interno}} = 0
+    \] 
+
+    \vspace{1em}
+    \noindent
+    Consideriamo un conduttore immerso in un campo chiamato \textbf{campo esterno}.
+    Le cariche sono libere di muoversi, quindi quelle positive andranno nella direzione
+    del campo, mentre quelle negative andranno nella direzione opposta al campo.
+    \label{21-03-D3}
+    Si nota quindi una separazione di carica che creerà un \textbf{campo indotto}.
+    \label{21-03-D4}
+    Vale il principio di sovrapposizione e quindi all'interno del conduttore si avrà
+    la somma dei due campi:
+    \[
+      E_{\text{tot}} = E_{\text{est}} + E_{\text{ind}}
+    \] 
+    Ad un certo punto si raggiungerà l'equilibrio, quindi le cariche non si muovono più,
+    di conseguenza il campo è nullo.
+
+  \item \textbf{Seconda proprietà}: Siccome il campo è nullo, il potenziale è costante su
+    tutto il conduttore:
+    \[
+      V - V_0 = - \int_{\vec{r}_0}^{\vec{r}} \cancel{\vec{E}} \cdot d\vec{l}
+    \] 
+    \[
+      V = \text{costante}
+    \] 
+
+  \item \textbf{Terza proprietà}: Siccome il campo interno è nullo, la carica interna
+    in un conduttore in equilibrio è 0 (dal teorema di Gauss) \( Q_{\text{Int}} = 0 \) :
+    \[
+      \oint_S \cancel{\vec{E}} \cdot d\vec{S} = \frac{Q_{\text{int}}}{\varepsilon_0} = 0 \to Q_{\text{int}} = 0
+    \] 
+    Quindi \textbf{le cariche si distribuiscono solo in superficie}
+
+  \item \textbf{Quarta proprietà}: Il campo nella superficie di un conduttore è ortogonale 
+    alla superficie e vale sempre:
+    \[
+      \vec{E}_{\text{sup}} = \frac{\sigma}{\varepsilon_0} \hat{n}
+    \] 
+    (Teorema di Coulomb)
+\end{enumerate}
+Notiamo quindi che il conduttore in equilibrio elettrostatico distorce il campo nel
+seguente modo:
+\label{21-03-D5}
+
+
 \end{document}
