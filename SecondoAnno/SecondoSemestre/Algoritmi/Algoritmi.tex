@@ -492,7 +492,7 @@ L'algoritmo è il seguente:
 // G e' un grafo composto da un insieme di nodi V e un insieme di archi E
 dfs(G)
   for u in G.V
-    u.color <- white
+    u.color <- white // non esplorato
     u.parent <- NIL
 
   time <- 0
@@ -502,17 +502,259 @@ dfs(G)
       dfs-visit(u)
 \end{lstlisting}
 \begin{lstlisting}[language=Scala]
+// Le variabili della funzione dfs sono accessibili anche da dfs-visit
 dfs_visit(u)
-  u.color <- gray
+  u.color <- gray // scoperto, ma non esplorato
   u.start <- time <- time + 1
 
   for v in G.adj(u)
-    if v.color == white
+    if v.color == white // non esplorato
       v.parent <- u
       dfs-visit(v)
 
-  u.color <- black
+  u.color <- black // esplorato
   u.finish <- time <- time + 1
 \end{lstlisting}
+La complessità di questo algoritmo è \(O(|V| + |E|)\).
+\begin{example}
+  I numeri a sinistra indicano il tempo di inizio della visita e i numeri a destra
+  la fine della visita
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+      every node/.style={minimum size=1.2cm},
+      ]
+      \node[draw,circle] (y) {3/6} node[above] at (y.north) {y};
+      \node[draw,circle] (z) [right=of y] {2/9} node[above] at (z.north) {z};
+      \node[draw,circle] (s) [right=of z] {1/10} node[above] at (s.north) {s};
+      \node[draw,circle] (t) [right=of s] {11/16} node[above] at (t.north) {t};
+
+      \node[draw,circle] (x) [below=of y] {4/5} node[below] at (x.south) {x};
+      \node[draw,circle] (w) [below=of z] {7/8} node[below] at (w.south) {w};
+      \node[draw,circle] (v) [below=of s] {12/13} node[below] at (v.south) {v};
+      \node[draw,circle] (u) [below=of t] {14/15} node[below] at (u.south) {u};
+
+      \draw[->] (y) -- (x);
+      \draw[<-] (y) -- (z);
+      \draw[->] (z) -- (w);
+      \draw[<-] (z) -- (s);
+      \draw[<-] (s) -- (v);
+      \draw[->] (t) -- (v);
+      \draw[->] (t) -- (u);
+      \draw[->] (v) -- (w);
+      \draw[->] (w) -- (x);
+      \draw[->] (x) -- (z);
+      \draw[->] (s) -- (w);
+
+      \draw[->,thick] (x) to [bend left] (y);
+      \draw[->,thick] (y) to [bend left] (z);
+      \draw[->,thick] (z) to [bend left] (s);
+      \draw[->,thick] (w) to [bend left] (z);
+
+      \draw[->,thick] (v) to [bend left] (t);
+      \draw[->,thick] (u) to [bend left] (t);
+
+      \node[below left=0cm and 0.2cm of y] {Parent};
+    \end{tikzpicture}
+    \caption{Visita in profondità}
+  \end{figure}
+\end{example}
+
+Riprendendo l'esempio precedente scriviamo i passaggi nel seguente modo:
+Il tipo di nodo è denotato dal tipo di parentesi:
+\begin{itemize}
+  \item Parentesi aperta: inizio a visitare il nodo
+  \item Parentesi chiusa: fine della visita del nodo
+\end{itemize}
+
+\begin{table}[H]
+  \centering
+  \setlength{\tabcolsep}{2pt}
+  \begin{tabular}{ccccccccccccccccc}
+    Tempo & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 & 16\\
+  \hline
+          & (s & (z & (y & (x & x) & y) & (w & w) & z) & s) & (t & (v & v) & (u & u) & t)\\
+  \end{tabular}
+\end{table}
+Questa espressione è ben parentesizzata:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[scale=0.7]
+    \node (1) at (1,0) {1} node[below=0.2cm] at (1) {(s};
+    \node (2) at (2,0) {2} node[below=0.2cm] at (2) {(z};
+    \node (3) at (3,0) {3} node[below=0.2cm] at (3) {(y};
+    \node (4) at (4,0) {4} node[below=0.2cm] at (4) {(x};
+    \node (5) at (5,0) {5} node[below=0.2cm] at (5) {x)};
+    \node (6) at (6,0) {6} node[below=0.2cm] at (6) {y)};
+    \node (7) at (7,0) {7} node[below=0.2cm] at (7) {(w};
+    \node (8) at (8,0) {8} node[below=0.2cm] at (8) {w)};
+    \node (9) at (9,0) {9} node[below=0.2cm] at (9) {z)};
+    \node (10) at (10,0) {10} node[below=0.2cm] at (10) {s)};
+    \node (11) at (11,0) {11} node[below=0.2cm] at (11) {(t};
+    \node (12) at (12,0) {12} node[below=0.2cm] at (12) {(v};
+    \node (13) at (13,0) {13} node[below=0.2cm] at (13) {v)};
+    \node (14) at (14,0) {14} node[below=0.2cm] at (14) {(u};
+    \node (15) at (15,0) {15} node[below=0.2cm] at (15) {u)};
+    \node (16) at (16,0) {16} node[below=0.2cm] at (16) {t)};
+
+    \draw (4,1) rectangle (5,1.6) node[below left] {x} node[midway] (x) {};
+
+    \draw (3,2) rectangle (6,2.6) node[below left] {y} node[midway] (y) {};
+    \draw (7,2) rectangle (8,2.6) node[below left] {w} node[midway] (w) {};
+
+    \draw (2,3) rectangle (9,3.6) node[below left] {z} node[midway] (z) {};
+    \draw (12,3) rectangle (13,3.6) node[below left] {v} node[midway] (v) {};
+    \draw (14,3) rectangle (15,3.6) node[below left] {u} node[midway] (u) {};
+
+    \draw (1,4) rectangle (10,4.6) node[below left] {s} node[midway] (s) {};
+    \draw (11,4) rectangle (16,4.6) node[below left] {t} node[midway] (t) {};
+
+    \draw[->] (y) -- (x);
+    \draw[->] (z) -- (y);
+    \draw[->] (z) -- (w);
+    \draw[->] (s) -- (z);
+    \draw[->] (t) -- (v);
+    \draw[->] (t) -- (u);
+  \end{tikzpicture}
+  \caption{Visualizzazione dell'albero}
+\end{figure}
+
+\noindent
+Gli archi si dividono in:
+\begin{itemize}
+  \item \textbf{Arco dell'albero} (T): è un arco che collega un nodo a un suo discendente
+  \item \textbf{Arco all'indietro} (B): è un arco che collega un nodo a un suo antenato
+  \item \textbf{Arco in avanti} (F): è un arco che collega un nodo a un discendente non diretto
+  \item \textbf{Arco trasversale} (C): è un arco che collega due nodi non correlati
+\end{itemize}
+Quindi nell'esempio precedente abbiamo:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+    every node/.style={minimum size=1.2cm},
+    ]
+    \node[draw,circle] (y) {3/6} node[above] at (y.north) {y};
+    \node[draw,circle] (z) [right=of y] {2/9} node[above] at (z.north) {z};
+    \node[draw,circle] (s) [right=of z] {1/10} node[above] at (s.north) {s};
+    \node[draw,circle] (t) [right=of s] {11/16} node[above] at (t.north) {t};
+
+    \node[draw,circle] (x) [below=of y] {4/5} node[below] at (x.south) {x};
+    \node[draw,circle] (w) [below=of z] {7/8} node[below] at (w.south) {w};
+    \node[draw,circle] (v) [below=of s] {12/13} node[below] at (v.south) {v};
+    \node[draw,circle] (u) [below=of t] {14/15} node[below] at (u.south) {u};
+
+    \draw[->] (y) -- (x) node[midway, right=-0.3cm] {T};
+    \draw[<-] (y) -- (z) node[midway, above=-0.3cm] {T};
+    \draw[->] (z) -- (w) node[midway, right=-0.3cm] {T};
+    \draw[<-] (z) -- (s) node[midway, above=-0.3cm] {T};
+    \draw[<-] (s) -- (v) node[midway, right=-0.3cm] {C};
+    \draw[->] (t) -- (v) node[midway, right=-0.2cm] {T};
+    \draw[->] (t) -- (u) node[midway, right=-0.3cm] {T};
+    \draw[->] (v) -- (w) node[midway, above=-0.3cm] {C};
+    \draw[->] (w) -- (x) node[midway, above=-0.3cm] {C};
+    \draw[->] (x) -- (z) node[midway, right=-0.3cm] {B};
+    \draw[->] (s) -- (w) node[midway, right=-0.3cm] {F};
+  \end{tikzpicture}
+  \caption{Tipi di archi}
+\end{figure}
+
+nel nostro algoritmo abbiamo che il clolore degli archi distingue i vari tipi:
+\begin{itemize}
+  \item \textbf{Bianco} (non esplorato): arco trasversale (T)
+  \item \textbf{Grigio} (scoperto, ma non esplorato): arco all'indietro (B)
+  \item \textbf{Nero} (esplorato): arco dell'albero o arco in avanti (F,C)
+\end{itemize}
+Da questo consegue che se ci sono archi all'indietro è presente un ciclo, quindi esiste
+un algoritmo di complessità \(O(|V| + |E|)\) per trovare se un grafo è ciclico e questo
+algoritmo è il DFS.
+
+\begin{theorem}
+  Dopo una DFS \( \forall u, v \) gli intervalli \( [\text{\texttt{u.start}},
+  \text{\texttt{u.finish}}] \) sono disgiunti, oppure uno sottointervallo dell'altro
+
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione}:
+  \begin{enumerate}
+    \item Caso 1: Supponiamo che \( \text{\texttt{u.start}} < \text{\texttt{v.start}} \)
+      \begin{enumerate}
+        \item Se \( \text{\texttt{u.finish}} < \text{\texttt{v.start}} \) allora
+          i due intervalli sono disgiunti
+        \item Se \( \text{\texttt{u.start}} < \text{\texttt{v.finish}} \) allora
+          \( v \) è un sottointervallo di \( u \) 
+      \end{enumerate}
+      \textbf{Corollario}: In DFS \( v \) discende da \( u \) se e solo se:
+      \[
+        \text{\texttt{u.start}} < \text{\texttt{v.start}} < \text{\texttt{v.finish}} < \text{\texttt{u.finish}}
+      \] 
+  \end{enumerate}
+\end{theorem}
+\begin{theorem}
+  Nella foresta di alberi generata da una DFS, un nodo \( v \) è un discendente di un nodo
+  \( u \) se e solo se al tempo \( \text{\texttt{u.start}} \) esiste un cammino da \( u \) 
+  a \( v \) fatto di soli nodi bianchi (non esplorati).
+
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione}: Supponiamo che \( v \) discende da \( u \), sia \( w \) un nodo
+  del cammino da \( u \to v \) della foresta:
+  \[
+    \text{\texttt{u.start}} < \text{\texttt{w.start}}
+  \] 
+  Quindi nel momento in cui \( u \) viene scoperto, \( w \) è ancora bianco.
+  \begin{figure}[H]
+    \begin{itemize}
+      \item Nero: non esplorato,
+      \item \textcolor{blue}{Blu}: scoperto, ma non esplorato,
+      \item \textcolor{red}{Rosso}: esplorato,
+    \end{itemize}
+    \centering
+    \begin{tikzpicture}
+      \node[draw,circle,red] (u) {u};
+      \node[draw,circle] (w) [right=of u] {w};
+      \node[draw,circle] (v) [right=of w] {v};
+
+      \draw[->] (u) -- (w);
+      \draw[->] (w) -- (v);
+    \end{tikzpicture}
+  \end{figure}
+
+  \vspace{1em}
+  \noindent
+  \( v \) raggiungibile da \( u \) al tempo \( \text{\texttt{u.start}} \) con cammino
+  di nodi bianchi (non esplorati). Supponiamo per assurdo che \( v \) non discende da \( u \) 
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+      every node/.style={minimum size=0.8cm},
+      ]
+      \node[draw,circle] (u) {\( u \) };
+      \node[draw,circle] (u1) [right=of u] {\( u_1 \)};
+      \node[draw,circle] (u2) [right=of u1] {\( u_2 \)};
+      \node[draw,circle] (w) [right=of u2] {\( w \)};
+      \node[draw,circle] (v) [right=of w] {\( v \)};
+
+      \draw[->] (u) -- (u1);
+      \draw[->] (u1) -- (u2);
+      \draw[->] (u2) -- (w);
+      \draw[->] (w) -- (v);
+    \end{tikzpicture}
+  \end{figure}
+  \noindent
+  Supponiamo, senza perdita di generalità, che il predecessore di \( v \) discende da \( u \).
+  Sia \( w \) il predecessore di \( v \), allora \( w \) discende da \( u \), quindi:
+  \[
+    \text{\texttt{w.finish}} < \text{\texttt{u.finish}}
+  \] 
+  di conseguenza:
+  \[
+    \text{\texttt{u.start}} < \text{\texttt{w.start}} < 
+    \underbrace{\text{\texttt{v.start}} < \text{\texttt{v.finish}}}_{\text{Sottointervallo
+    di \( u \)}}
+    < \text{\texttt{w.finish}} < \text{\texttt{u.finish}}
+  \] 
+  Quindi l'intervallo \( v \) è un sottointervallo di \( u \) contraddicendo l'ipotesi
+  e dimostrando che \( v \) discende da \( u \).
+\end{theorem}
 
 \end{document}
