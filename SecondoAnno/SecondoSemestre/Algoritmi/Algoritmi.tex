@@ -676,7 +676,7 @@ algoritmo è il DFS.
   \noindent
   \textbf{Dimostrazione}:
   \begin{enumerate}
-    \item Caso 1: Supponiamo che \( \text{\texttt{u.start}} < \text{\texttt{v.start}} \)
+    \item Supponiamo che \( \text{\texttt{u.start}} < \text{\texttt{v.start}} \)
       \begin{enumerate}
         \item Se \( \text{\texttt{u.finish}} < \text{\texttt{v.start}} \) allora
           i due intervalli sono disgiunti
@@ -756,5 +756,207 @@ algoritmo è il DFS.
   Quindi l'intervallo \( v \) è un sottointervallo di \( u \) contraddicendo l'ipotesi
   e dimostrando che \( v \) discende da \( u \).
 \end{theorem}
+
+\begin{theorem}
+  Un grafo è aciclico se e solo se DFS \textbf{non} trova archi indietro, ed è ciclico
+  se e solo se trova almeno un arco indietro.
+
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione}: consideriamo un qualsiasi grafo ciclico. DFS scoprirà un nodo
+  per primo e quel nodo lo chiamiamo \( u \) e ci sarà un nodo scoperto per ultimo
+  chiamato \( v \). Se \( v \) discende da \( u \) allora esiste un cammino da \( u \) a
+  \( v \) fatto di nodi bianchi (non esplorati) e quindi esiste un ciclo.
+\end{theorem}
+
+\begin{example}
+  Un robot si vuole vestire e deve indossare degli indumenti in un certo ordine. Bisogna
+  trovare un algoritmo che trovi una soluzione tenendo in considerazione tutti i vincoli.
+
+  Una rappresentazione più astratta del problema potrebbe essere un grafo orientato
+  in cui i nodi sono gli indumenti e tra due nodi c'è un arco se un indumento deve essere
+  indossato prima dell'altro. Ad esempio:
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \node[draw,ellipse] (slip) {Slip};
+      \node[draw,ellipse] (pantaloni) [below=of slip] {Pantaloni};
+      \node[draw,ellipse] (cintura) [below=of pantaloni] {Cintura};
+      \node[draw,ellipse] (camicia) [above right=of pantaloni] {Camicia};
+      \node[draw,ellipse] (cravatta) [below=of camicia] {Cravatta};
+      \node[draw,ellipse] (giacca) [below=of cravatta] {Giacca};
+      \node[draw,ellipse] (calzini) [above left=of pantaloni] {Calzini};
+      \node[draw,ellipse] (scarpe) [below=of calzini] {Scarpe};
+      \node[draw,ellipse] (orologio) [left=of calzini] {Orologio};
+
+      \draw[->] (slip) -- (pantaloni);
+      \draw[->] (pantaloni) -- (cintura);
+      \draw[->] (camicia) -- (pantaloni);
+      \draw[->] (camicia) -- (cravatta);
+      \draw[->] (cravatta) -- (giacca);
+      \draw[->] (cintura) -- (giacca);
+      \draw[->] (calzini) -- (scarpe);
+      \draw[->] (pantaloni) -- (scarpe);
+    \end{tikzpicture}
+    \caption{Esempio di rappresentazione del problema}
+  \end{figure}
+  \noindent
+  Questo grafo \textbf{rappresenta una relazione} di ordinamento \textbf{parziale} tra gli indumenti
+  (se non sono presenti cicli). L'obiettivo è di prendere la relazione parziale e renderla
+  totale, ma mantenendola compatibile coi vincoli già imposti. In questo caso ad esempio
+  bisogna imporre altri vincoli e dire che l'orologio va messo prima di qualcos'altro
+  mantenendo l'ordinamento parziale dato all'inizio.
+
+  Questo problema si chiama \textbf{Ordinamento topologico} e la risoluzione è la seguente:
+\begin{lstlisting}[language=Scala]
+// G e' un grafo
+topological_sorting(G)
+  stack = dfs(G) // DFS ritorna una pila con i nodi in ordine decrescente di finish
+\end{lstlisting}
+  Questo algoritmo ha complessità \(O(|V| + |E|)\), quindi si può risolvere un ordinamento
+  topologico in tempo lineare.
+
+  \vspace{1em}
+  \noindent
+  L'applicazione dell'algoritmo sul grafo preso in esempio è la seguente consideramdo che
+  si inizi visitando la camicia (i numeri a sinistra indicano il tempo di inizio della visita
+  e i numeri a destra la fine della visita):
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \node[draw,ellipse] (slip) {Slip}
+        node[above,scale=0.7] at (slip.north) {17/18};
+      \node[draw,ellipse] (pantaloni) [below=of slip] {Pantaloni}
+        node[above=0.2cm,scale=0.7] at (pantaloni.west) {6/11};
+      \node[draw,ellipse] (cintura) [below=of pantaloni] {Cintura}
+        node[left,scale=0.7] at (cintura.west) {7/8};
+      \node[draw,ellipse] (camicia) [above right=of pantaloni] {Camicia}
+        node[right,scale=0.7] at (camicia.east) {1/12};
+      \node[draw,ellipse] (cravatta) [below=of camicia] {Cravatta}
+        node[right,scale=0.7] at (cravatta.east) {2/5};
+      \node[draw,ellipse] (giacca) [below=of cravatta] {Giacca}
+        node[right,scale=0.7] at (giacca.east) {3/4};
+      \node[draw,ellipse] (calzini) [above left=of pantaloni] {Calzini}
+        node[above,scale=0.7] at (calzini.north) {15/16};
+      \node[draw,ellipse] (scarpe) [below=of calzini] {Scarpe}
+        node[left,scale=0.7] at (scarpe.west) {9/10};
+      \node[draw,ellipse] (orologio) [left=of calzini] {Orologio}
+        node[above,scale=0.7] at (orologio.north) {13/14};
+
+      \draw[->] (slip) -- (pantaloni);
+      \draw[->] (pantaloni) -- (cintura);
+      \draw[->] (camicia) -- (pantaloni);
+      \draw[->] (camicia) -- (cravatta);
+      \draw[->] (cravatta) -- (giacca);
+      \draw[->] (cintura) -- (giacca);
+      \draw[->] (calzini) -- (scarpe);
+      \draw[->] (pantaloni) -- (scarpe);
+    \end{tikzpicture}
+    \caption{Esempio di rappresentazione del problema}
+  \end{figure}
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{|c|}
+      \hline
+      Slip\\
+      \hline
+      Calzini\\
+      \hline
+      Orologio\\
+      \hline
+      Camicia\\
+      \hline
+      Pantaloni\\
+      \hline
+      Scarpe\\
+      \hline
+      Cintura\\
+      \hline
+      Cravatta\\
+      \hline
+      Giacca\\
+      \hline
+    \end{tabular}
+    \caption{Stack}
+  \end{table}
+  \noindent
+  Per dire che l'algoritmo funziona bisogna dimostrare che:
+  \[
+    \forall (u,v) \in E \quad \text{\texttt{v.finish}} < \text{\texttt{u.finish}}
+  \] 
+  \textbf{Dimostrazione}: Quando \( (u,v) \) viene esplorato, allora se:
+  \begin{itemize}
+    \item \( v \) è bianco (non esplorato) allora \( v \) è un discendente di \( u \),
+      quindi:
+      \[
+        \text{\texttt{v.finish}} < \text{\texttt{u.finish}}
+      \] 
+    \item \( v \) è grigio (scoperto, ma non esplorato) non è possibile, perchè se \( v \) 
+      vosse grigio ci sarebbe un grafo ciclico e la soluzione non esiste.
+    \item \( v \) è nero (esplorato) allora \( u \) non è ancora stato esplorato, quindi: 
+      \[
+        \text{\texttt{v.finish}} < \text{\texttt{u.finish}}
+      \] 
+  \end{itemize}
+  Quindi l'algoritmo funziona.
+\end{example}
+
+\begin{theorem}
+  In un grafo aciclico c'è per forza almeno un nodo che non ha archi entranti.
+
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione}: Supponiamo per assurdo che tutti i nodi abbiano almeno un arco
+  entrante. Si può creare una catena di nodi di grandezza \( |V|+1 \) all'infinito, che
+  prima o poi si ripeterà, creando un ciclo.
+\end{theorem}
+
+\begin{example}
+  Consideriamo le strade d'Italia come grafo, dove i nodi sono le città e gli archi
+  sono le strade a doppio senso. Ci sono parti non raggiungibili (come la Sardegna)
+  e quindi ci sono più grafi separati chiamati \textbf{componenti connesse}.
+\begin{lstlisting}[language=Scala]
+cc(G)
+  for v in G.V
+    make_set(v)
+  for (u,v) in G.E
+    union(u,v)
+\end{lstlisting}
+  Questo algoritmo costruisce le componenti connesse di un grafo in tempo \(O(|V| + |E|)\).
+  Quindi dati 2 elementi si può trovare in tempo costante se appartengono alla stessa
+  componente connessa e di conseguenza se sono raggiungibili.
+
+  Un'alternativa è modificare il DFS in modo che quando si visita un nodo si metta
+  un'etichetta con il numero della componente connessa.
+\begin{lstlisting}[language=Scala]
+dfs_cc(G)
+  for v in G.V
+    v.color <- white
+    v.parent <- NIL
+
+  cc <- 0
+  time <- 0
+
+  for u in G.V
+    if u.color == white
+      cc <- cc + 1
+      dfs_visit_cc(u, cc)
+\end{lstlisting}
+\begin{lstlisting}[language=Scala]
+dfs_visit_cc(u, cc)
+  u.color <- gray
+  u.start <- time <- time + 1
+
+  u.cc <- cc
+
+  for v in G.adj(u)
+    if v.color == white
+      v.parent <- u
+      dfs_visit_cc(v, cc)
+
+  u.color <- black
+  u.finish <- time <- time + 1
+\end{lstlisting}
+\end{example}
 
 \end{document}
