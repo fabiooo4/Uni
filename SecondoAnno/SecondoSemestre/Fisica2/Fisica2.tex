@@ -803,10 +803,13 @@ rende facilmente calcolabile il flusso, grazie al campo costante su tutta la sup
 Per calcolare il campo \( \vec{E} \) siccome esso è costante e parallelo alla normale
 (grazie alla superficie scelta) si può tirare fuori dall'integrale per ottenere un
 prodotto tra l'incognita \( \vec{E} \) e un integrale geometrico.
-\[
-  \Phi (\vec{E}) = \vec{E} \cdot \oint_{\text{Sup}} d \vec{S} =
-  \frac{Q_{\text{Interne}}}{\varepsilon_0}
-\] 
+\begin{figure}[H]
+  \[
+    \Phi (\vec{E}) = \vec{E} \cdot \oint_{\text{Sup}} d \vec{S} =
+    \frac{Q_{\text{Interne}}}{\varepsilon_0}
+  \] 
+  \caption{Equazione di Maxwell}
+\end{figure}
 \subsubsection{Simmetria sferica}
 Le caratteristiche necessarie sono:
 \begin{itemize}
@@ -1036,6 +1039,31 @@ Quindi il campo è:
 La particolarità di questo campo è che non dipende dalla distanza, quindi è un campo
 costante.
 
+\begin{example}
+  Vogliamo analizzare il campo elettrico tra due piani indefiniti distanti \( h \) uno
+  caricato positivamente e l'altro negativamente.
+  \label{26-03-D1}
+  \noindent
+  Il piano, per il principio di sovrapposizione, è uguale a:
+  \[
+    \sigma = \sigma ^+ + \sigma ^-
+  \] 
+  Dal teorema di Gauss abbiamo che il campo è costante e vale:
+  \[
+    \vec{E} = \frac{\sigma}{2 \varepsilon_0}
+  \] 
+  quindi:
+  \label{26-03-D2}
+  Notiamo che all'esterno dei piani il campo è nullo, mentre al centro è la somma
+  dei due campi con verso dal positivo al negativo.
+  \[
+    \vec{E} = \frac{\sigma}{2\varepsilon_0} + \frac{\sigma}{2\varepsilon_0} =
+    \frac{\sigma}{\varepsilon_0}
+  \] 
+  Le linee di campo sono quindi:
+  \label{26-03-D3}
+\end{example}
+
 \subsection{Elettrostatica nei conduttori}
 Un materiale conduttore ha \textbf{le cariche libere di muoversi}. Se si avvicina un
 campo elettrico e sulle cariche viene esercitata una forza. Per un momento ci sarà
@@ -1104,5 +1132,192 @@ seguente modo:
   \caption{Campo in un conduttore in equilibrio}
 \end{figure}
 
+\subsubsection{Cavità in un conduttore}
+La cavità non dipende dalla geometria del conduttore. Un esempio di un conduttore con
+una cavità è il seguente (un guscio):
+\label{26-03-D4}
+
+\noindent
+Carichiamo un conduttore con una cavità \textbf{vuota} con una carica \( Q \). Questa carica
+si distribuirà sulla superficie del conduttore e ha le seguenti proprietà:
+\begin{enumerate}
+  \item La densità nella superficie della cavità è scarica:
+    \[
+      \sigma_{\text{Cavità}} = 0
+    \] 
+    quindi se si deposita una carica sul guscio, l'interno non può essere caricato
+    
+  \item Il campo all'interno della cavità è nullo:
+    \[
+      E_{\text{Cavità}} = 0
+    \] 
+    \textbf{Dimostrazione}: Per il teorema di Gauss posiziono una superficie di Gauss
+    all'interno del conduttore, quindi:
+    \[
+      \oint_S \vec{E} \cdot d\vec{S} = \frac{Q_{\text{int \textbf{totale}}}}{\varepsilon_0}
+    \] 
+    Il campo vale 0 perchè la superficie di Gauss si trova all'interno del conduttore,
+    quindi:
+    \[
+      \oint_S \vec{E} \cdot d\vec{S} = 0 \Rightarrow Q_{\text{Cavità}} = 0
+    \] 
+    La carica totale è nulla, però si potrebbe avere una situazione con una carica positiva
+    e negativa che si annullano. Se per assurdo si avesse una separazione di carica,
+    con carica totale nulla:
+    \[
+      q^+ + q^- = 0
+    \] 
+    allora ci sarebbe un campo interno:
+    \label{26-03-D5}
+    per l'equazione di Maxwell sapppiamo che:
+    \[
+      \int_\Gamma E \cdot dl = \int_{\Gamma_{\text{Conduttore}}} E +
+      \underbrace{\cancel{\int_{\Gamma_{\text{Cavità}}} E}}_{=0} \neq 0
+    \] 
+    E questo è assurdo, quindi il campo è nullo.
+\end{enumerate}
+Le linee di campo sono:
+\label{26-03-D9}
+\noindent
+Questa superficie con una cavità agisce come uno \textbf{schermo elettrostatico} (
+o gabbia di Faraday) perchè il campo all'interno è nullo. 
+
+\vspace{1em}
+\noindent
+Consideriamo ora un conduttore con una cavità \textbf{carica}, ciò vuol dire che
+nella cavità è presente un conduttore carico e questa carica si distribuisce sulla
+superficie:
+\label{26-03-D6}
+\noindent
+Per Gauss posiziono una superficie all'interno del conduttore con la cavità, quindi:
+\label{26-03-D7}
+\[
+  \oint_S \underbrace{\vec{E}}_{=0} \cdot d\vec{S} = 0 = \frac{Q_{\text{int}}}{\varepsilon_0}
+\] 
+Visto che la carica deve essere 0, compare \textbf{per induzione} una carica uguale
+ed opposta a quella della cavità:
+\[
+  Q_{\text{Indotta}} = - Q_{\text{Cavità}}
+\]
+Però la carica si conserva, quindi compare sempre per induzione una carica \( Q \)
+sulla superficie esterna:
+\label{26-03-D8}
+\noindent
+Le linee di campo sono:
+\label{26-03-D10}
+\noindent
+Se viene aggiunta una carica all'esterno il sistema \textbf{nella cavità} non cambia
+perchè la superficie agisce come uno schermo. All'esterno invece le cariche si sommano.
+
+\begin{example}
+  Consideriamo il seguente sistema:
+  \label{26-03-D11}
+  Se si mette al contatto il conduttore interno con il conduttore esterno si ottiene il
+  sistema del conduttore con una cavità perchè i due conduttori agiscono come se fossero
+  uno solo:
+  \label{26-03-D12}
+\end{example}
+
+\subsection{Capacità elettrostatica}
+Un carica \( \{dq\}  \) genera un campo
+\[
+  d\vec{E} = \frac{\{dq\}}{4 \pi \varepsilon _0} \frac{\hat{r}}{r^2} \quad \left[ \frac{V}{m} \right]
+\]
+e un potenziale
+\[
+  dV = \frac{\{dq\}}{4 \pi \varepsilon_0 r} \quad \left[ V \right]
+\] 
+Osserviamo che c'è una linearità tra la carica e il potenziale, quindi \( V \) è
+proporzionale a \( Q \) e il coefficiente di proporzionalità è la \textbf{capacità}.
+
+\subsubsection{Conduttore isolato}
+Consideriamo un qualsiasi conduttore isolato con una carica \( Q \) e un potenziale
+\( V \) costante.
+
+\begin{definition}
+  Si definisce \textbf{capacità elettrostatica} \( C \) di un conduttore isolato la
+  quantità di carica \( Q \) tarsferita al conduttore da un potenziale \( V \)
+  \[
+    C = \frac{Q}{V} \quad \left[ F \right] \text{ (Farad)}
+  \]
+  La capacità dipende solo dalla geometria e dal materiale.
+\end{definition}
+
+\subsubsection{Conduttore non isolato}
+Consideriamo due conduttori, uno con carica \( Q \) e uno con carica \( -Q \) in
+\textbf{induzione completa}, cioè tutte le linee di campo del primo oggetto vanno nel
+secondo oggetto. Per avere ciò bisogna eliminare ogni interazione con l'esterno e l'unica
+opzione è inserire il primo oggetto nella cavità del secondo.
+\label{26-03-D13}
+\noindent
+Un \textbf{Condensatore} è un sistema di due conduttori in induzione completa. In
+un condensatore i due conduttori si dicono \textbf{armature} o \textbf{lastre}.
+
+\vspace{1em}
+\noindent
+Nella pratica si distinguono 3 casi (in questo corso):
+\begin{enumerate}
+  \item \textbf{Condensatore sferico}: Si hanno due sfere, una nella concavità 
+    dell'altra
+    \label{26-03-D14}
+
+  \item \textbf{Condensatore cilindrico}: È una struttura tubolare, in cui
+    se il raggio è molto minore della lunghezza del tubo allora si può \textbf{approssimare}
+    come un induzione completa:
+    \label{26-03-D15}
+
+  \item \textbf{Condensatore piano}: È formato da due lastre piane parallele
+    separate da una distanza \( h \) con una certa area \( A \). Anche in questo
+    caso se le lastre sono molto grandi rispetto alla distanza si può approssimare
+    come un induzione completa.
+    \label{26-03-D16}
+\end{enumerate}
+
+\subsubsection{Capacità nei condensatori}
+Consideriamo un condensatore:
+\label{26-03-D17}
+\noindent
+La capacità è:
+\[
+  C = \frac{Q}{\Delta V} \quad \text{(presa positiva)}
+\] 
+
+\begin{example}
+  Calcoliamo la capacità del condensatore piano nel vuoto, indicato con il seguente simbolo:
+  \begin{figure}[H]
+    \centering
+    \begin{circuitikz}
+      \draw (0,0) to[C] (2,0);
+    \end{circuitikz}
+    \caption{Condensatore piano}
+  \end{figure}
+  \noindent
+  Consideriamo un piano con carica positiva e uno con carica negativa e area \( A \):
+  \label{26-03-D18}
+  \noindent
+  Il campo è solo all'interno e vale:
+  \[
+    E = \frac{\sigma}{\varepsilon_0}
+  \] 
+  La capacità è:
+  \[
+    C = \frac{Q}{V^+ - V^-}
+  \] 
+  Ora bisogna calcolare la differenza di potenziale tra le due lastre ricordando la
+  definizione di potenziale:
+  \[
+    V_2 - V_1 = -\int_1^2 \vec{E} \cdot d\vec{l}
+  \] 
+  quindi:
+  \[
+    V^+ - V^- = - \int_-^+ \left( - \frac{\sigma}{\varepsilon_0} \right) dx 
+    = \frac{\sigma }{\varepsilon _0} h \quad \left[ V \right]
+  \] 
+  Di conseguenza la capacità è:
+  \[
+    C = \frac{Q}{\frac{\sigma}{\varepsilon_0} h} = \frac{\sigma A}{\frac{\sigma}{\varepsilon_0} h}
+    = \frac{\varepsilon_0 A}{h} \quad \left[ F \right]
+  \]
+\end{example}
 
 \end{document}
