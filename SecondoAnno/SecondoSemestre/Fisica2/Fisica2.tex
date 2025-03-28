@@ -1320,4 +1320,117 @@ La capacità è:
   \]
 \end{example}
 
+\subsection{Calcolo del campo potenziale}
+\subsubsection{Simmetria sferica}
+Il campo di una superficie sferica è:
+\[
+  \vec{E} =
+  \begin{cases}
+    \frac{Q}{4 \pi \varepsilon_0 r^2} \hat{r} & r \ge R\\
+    0 & r < R
+  \end{cases}
+\] 
+La definizione di potenziale è:
+\[
+  V(r) - V_{\text{Riferimento}} = - \int_{\gamma }\vec{E} \cdot d\vec{l}
+  = -\int_{\vec{r_0}}^{\vec{r}} \vec{E}(r) \, dr
+\] 
+dove \( V_{\text{Riferimento}} = V(rif) \to V(\infty) = 0 \). Il potenziale di reiferimento
+\textbf{può} essere preso all'infinito soltanto per sistemi in cui \textbf{non} ci sono
+cariche all'infinito.
+
+Quindi il calcolo del potenziale diventa:
+\[
+  V(r) - \underset{=0}{\cancel{V_{\text{Riferimento}}}}
+  = - \int_{\infty}^{r} \frac{Q}{4 \pi \varepsilon_0 r^2} \, dr
+  = - \left.\left( \frac{-Q}{4 \pi \varepsilon_0 r} \right)\right|_{\infty}^{r}
+    = \frac{Q}{4 \pi \varepsilon_0 r} \quad \left[ V \right]
+\] 
+(solo per \( r > R \)). Il grafico è:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{grafico_potenziale}
+  \caption{Grafico del potenziale}
+\end{figure}
+
+\begin{definition}
+  Il potenziale si calcola come:
+  \[
+    V(r) =
+    \begin{cases}
+      \frac{Q}{4 \pi \varepsilon_0 r} & r \ge R\\
+      \text{Costante} & r < R
+    \end{cases}
+  \] 
+\end{definition}
+
+\vspace{1em}
+\noindent
+Con il potenziale si può calcolare la capacita come:
+\[
+  C = \frac{Q}{V_{\text{Sup}}} = \frac{Q}{\frac{Q}{4 \pi \varepsilon_0 R}}
+  = 4 \pi \varepsilon_0 R \quad \left[ F \right]
+\] 
+
+\begin{example}[Potenziale di un condensatore sferico]
+  Consideriamo un condensatore sferico con carica \( Q \) in cui il raggio del conduttore
+  sferico interno è \( R_1 \) e i raggi del conduttore sferico sono \( R_2 \) e \( R_3 \).
+  Il campo è:
+  \[
+    \vec{E} = \frac{Q}{4 \pi \varepsilon_0 r^2} \hat{r} \quad R_1 < r < R_2
+  \] 
+  Il campo è nullo nei seguenti casi:
+  \[
+    \vec{E} = 0 \to \begin{cases}
+      r < R_1\\
+      R_2 < r < R_3
+    \end{cases}
+  \] 
+  quindi all'interno del conduttore.
+
+  Il potenziale sarà:
+  \[
+    V(r) = \frac{Q}{4 \pi \varepsilon_0 r} \quad \left[ V \right] \quad \text{Nella cavità}
+  \] 
+  All'interno dei conduttori il potenziale vale:
+  \[
+    \begin{aligned}
+      V(R_1) &= \frac{Q}{4 \pi \varepsilon_0 R_1}\\
+      V(R_2) &= \frac{Q}{4 \pi \varepsilon_0 R_2}
+    \end{aligned}
+  \] 
+  La capacità è:
+  \[
+    C = \frac{Q}{\Delta V} = \frac{Q}{V(R_2) - V(R_1)}
+    = \frac{Q}{\frac{Q}{4 \pi \varepsilon_0 \left( \frac{1}{R_1} - \frac{1}{R_2} \right)}}
+    = 4 \pi \varepsilon_0 \frac{R_1 R_2}{R_2 - R_1} \quad \left[ F \right]
+  \] 
+\end{example}
+\begin{example}[Potenziale in un filo indefinito]
+  Consideriamo un filo indefinito conduttore con carica \( \lambda \). Il campo
+  è:
+  \[
+    \vec{E} = \frac{\lambda}{2 \pi \varepsilon_0 r}
+  \] 
+  Il potenziale è calcolato come:
+  \[
+    V(r) - \underset{=0}{\cancel{V(rif)}} = - \int_{rif}^r \frac{\lambda}{2 \pi \varepsilon_0 r} \, dr
+    = - \frac{\lambda}{2 \pi \varepsilon_0} \left( \ln(r) - \ln(rif) \right) 
+  \] 
+  Vogliamo che il punto di riferimento renda nullo il potenziale, quindi:
+  \[
+    V(rif) = 0
+  \] 
+  quindi il punto di riferimento è un punto qualunque
+  \[
+    rif \neq \infty
+  \] 
+  Il grafico del potenziale è:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{grafico_potenziale_filo}
+    \caption{Grafico del potenziale}
+  \end{figure}
+\end{example}
+
 \end{document}
