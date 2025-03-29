@@ -1042,18 +1042,33 @@ costante.
 \begin{example}
   Vogliamo analizzare il campo elettrico tra due piani indefiniti distanti \( h \) uno
   caricato positivamente e l'altro negativamente.
-  \label{26-03-D1}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{carica_superficie_piano_positivo_negativo}
+    \caption{Carica distribuita su due piani indefiniti}
+  \end{figure}
   \noindent
   Il piano, per il principio di sovrapposizione, è uguale a:
   \[
     \sigma = \sigma ^+ + \sigma ^-
   \] 
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1.\textwidth]{sovrapposizione_piano}
+    \caption{Sovrapposizione di due piani}
+  \end{figure}
+  \noindent
   Dal teorema di Gauss abbiamo che il campo è costante e vale:
   \[
     \vec{E} = \frac{\sigma}{2 \varepsilon_0}
   \] 
   quindi:
-  \label{26-03-D2}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{sovrapposizione_piano_2}
+    \caption{Risultato della sovrapposizione di due piani}
+  \end{figure}
+  \noindent
   Notiamo che all'esterno dei piani il campo è nullo, mentre al centro è la somma
   dei due campi con verso dal positivo al negativo.
   \[
@@ -1061,7 +1076,11 @@ costante.
     \frac{\sigma}{\varepsilon_0}
   \] 
   Le linee di campo sono quindi:
-  \label{26-03-D3}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{linee_campo_piano}
+    \caption{Linee di campo tra due piani}
+  \end{figure}
 \end{example}
 
 \subsection{Elettrostatica nei conduttori}
@@ -1135,7 +1154,11 @@ seguente modo:
 \subsubsection{Cavità in un conduttore}
 La cavità non dipende dalla geometria del conduttore. Un esempio di un conduttore con
 una cavità è il seguente (un guscio):
-\label{26-03-D4}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{conduttore_guscio}
+  \caption{Conduttore con una cavità}
+\end{figure}
 
 \noindent
 Carichiamo un conduttore con una cavità \textbf{vuota} con una carica \( Q \). Questa carica
@@ -1153,6 +1176,11 @@ si distribuirà sulla superficie del conduttore e ha le seguenti proprietà:
     \] 
     \textbf{Dimostrazione}: Per il teorema di Gauss posiziono una superficie di Gauss
     all'interno del conduttore, quindi:
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.6\textwidth]{superficie_gauss_conduttore_cavita}
+      \caption{Superficie di Gauss in un conduttore con cavità}
+    \end{figure}
     \[
       \oint_S \vec{E} \cdot d\vec{S} = \frac{Q_{\text{int \textbf{totale}}}}{\varepsilon_0}
     \] 
@@ -1168,7 +1196,11 @@ si distribuirà sulla superficie del conduttore e ha le seguenti proprietà:
       q^+ + q^- = 0
     \] 
     allora ci sarebbe un campo interno:
-    \label{26-03-D5}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.6\textwidth]{dim_conduttore_cavita}
+      \caption{Dimostrazione del campo nullo in un conduttore con cavità}
+    \end{figure}
     per l'equazione di Maxwell sapppiamo che:
     \[
       \int_\Gamma E \cdot dl = \int_{\Gamma_{\text{Conduttore}}} E +
@@ -1177,7 +1209,11 @@ si distribuirà sulla superficie del conduttore e ha le seguenti proprietà:
     E questo è assurdo, quindi il campo è nullo.
 \end{enumerate}
 Le linee di campo sono:
-\label{26-03-D9}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{linee_campo_conduttore_cavita}
+  \caption{Linee di campo in un conduttore con cavità}
+\end{figure}
 \noindent
 Questa superficie con una cavità agisce come uno \textbf{schermo elettrostatico} (
 o gabbia di Faraday) perchè il campo all'interno è nullo. 
@@ -1187,10 +1223,18 @@ o gabbia di Faraday) perchè il campo all'interno è nullo.
 Consideriamo ora un conduttore con una cavità \textbf{carica}, ciò vuol dire che
 nella cavità è presente un conduttore carico e questa carica si distribuisce sulla
 superficie:
-\label{26-03-D6}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{conduttore_cavita_carica}
+  \caption{Conduttore con una cavità carica}
+\end{figure}
 \noindent
 Per Gauss posiziono una superficie all'interno del conduttore con la cavità, quindi:
-\label{26-03-D7}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{superficie_gauss_conduttore_cavita_carica}
+  \caption{Superficie di Gauss in un conduttore con cavità carica}
+\end{figure}
 \[
   \oint_S \underbrace{\vec{E}}_{=0} \cdot d\vec{S} = 0 = \frac{Q_{\text{int}}}{\varepsilon_0}
 \] 
@@ -1201,21 +1245,38 @@ ed opposta a quella della cavità:
 \]
 Però la carica si conserva, quindi compare sempre per induzione una carica \( Q \)
 sulla superficie esterna:
-\label{26-03-D8}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{induzione_conduttore_cavita_carica}
+  \caption{Induzione in un conduttore con cavità carica}
+\end{figure}
 \noindent
 Le linee di campo sono:
-\label{26-03-D10}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{linee_campo_conduttore_cavita_carica}
+  \caption{Linee di campo in un conduttore con cavità carica}
+\end{figure}
 \noindent
 Se viene aggiunta una carica all'esterno il sistema \textbf{nella cavità} non cambia
 perchè la superficie agisce come uno schermo. All'esterno invece le cariche si sommano.
 
 \begin{example}
   Consideriamo il seguente sistema:
-  \label{26-03-D11}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{conduttore_cavita_sferica_carica}
+    \caption{Conduttore con cavità sferica carica}
+  \end{figure}
+  \noindent
   Se si mette al contatto il conduttore interno con il conduttore esterno si ottiene il
   sistema del conduttore con una cavità perchè i due conduttori agiscono come se fossero
   uno solo:
-  \label{26-03-D12}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{conduttore_cavita_sferica_carica_2}
+    \caption{Trasformazione del condensatore in un conduttore con cavità carica}
+  \end{figure}
 \end{example}
 
 \subsection{Capacità elettrostatica}
@@ -1248,7 +1309,11 @@ Consideriamo due conduttori, uno con carica \( Q \) e uno con carica \( -Q \) in
 \textbf{induzione completa}, cioè tutte le linee di campo del primo oggetto vanno nel
 secondo oggetto. Per avere ciò bisogna eliminare ogni interazione con l'esterno e l'unica
 opzione è inserire il primo oggetto nella cavità del secondo.
-\label{26-03-D13}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{conduttore_isolato}
+  \caption{Isolamento di un conduttore}
+\end{figure}
 \noindent
 Un \textbf{Condensatore} è un sistema di due conduttori in induzione completa. In
 un condensatore i due conduttori si dicono \textbf{armature} o \textbf{lastre}.
@@ -1259,23 +1324,39 @@ Nella pratica si distinguono 3 casi (in questo corso):
 \begin{enumerate}
   \item \textbf{Condensatore sferico}: Si hanno due sfere, una nella concavità 
     dell'altra
-    \label{26-03-D14}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.5\textwidth]{condensatore_sferico}
+      \caption{Condensatore sferico}
+    \end{figure}
 
   \item \textbf{Condensatore cilindrico}: È una struttura tubolare, in cui
     se il raggio è molto minore della lunghezza del tubo allora si può \textbf{approssimare}
     come un induzione completa:
-    \label{26-03-D15}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.5\textwidth]{condensatore_cilindrico}
+      \caption{Condensatore cilindrico}
+    \end{figure}
 
   \item \textbf{Condensatore piano}: È formato da due lastre piane parallele
     separate da una distanza \( h \) con una certa area \( A \). Anche in questo
     caso se le lastre sono molto grandi rispetto alla distanza si può approssimare
     come un induzione completa.
-    \label{26-03-D16}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.7\textwidth]{condensatore_piano}
+      \caption{Condensatore piano}
+    \end{figure}
 \end{enumerate}
 
 \subsubsection{Capacità nei condensatori}
 Consideriamo un condensatore:
-\label{26-03-D17}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{potenziale_condensatore_sferico}
+  \caption{Condensatore sferico}
+\end{figure}
 \noindent
 La capacità è:
 \[
@@ -1293,7 +1374,11 @@ La capacità è:
   \end{figure}
   \noindent
   Consideriamo un piano con carica positiva e uno con carica negativa e area \( A \):
-  \label{26-03-D18}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{potenziale_condensatore_piano}
+    \caption{Potenziale di un condensatore piano}
+  \end{figure}
   \noindent
   Il campo è solo all'interno e vale:
   \[
@@ -1308,7 +1393,8 @@ La capacità è:
   \[
     V_2 - V_1 = -\int_1^2 \vec{E} \cdot d\vec{l}
   \] 
-  quindi:
+  quindi
+  (Il campo è negatico perchè la sua direzione è opposta a quella del potenziale):
   \[
     V^+ - V^- = - \int_-^+ \left( - \frac{\sigma}{\varepsilon_0} \right) dx 
     = \frac{\sigma }{\varepsilon _0} h \quad \left[ V \right]
