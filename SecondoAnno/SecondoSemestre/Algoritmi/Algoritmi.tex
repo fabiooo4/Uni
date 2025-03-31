@@ -959,4 +959,141 @@ dfs_visit_cc(u, cc)
 \end{lstlisting}
 \end{example}
 
+\subsection{Componenti fortemente connesse}
+\begin{definition}
+  Dato un grafo orientato \( G = (V,E) \) una componente fortemente connessa (SCC) è un
+  sottoinsieme \( V' \subseteq V \) tale che:
+  \[
+    \forall u,v \in V' \quad \exists \text{ cammino da } u \to v \quad \text{e} \quad
+    \exists \text{ cammino da } v \to u
+  \]
+\end{definition}
+\begin{example}
+  Nel seguente esempio ci sono 2 componenti fortemente connesse, una composta da \( a,b,c,d \)
+  e l'altra da \( e,f,g \).
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+      every node/.style={minimum size=0.8cm},
+      ]
+      \node[draw,circle,blue] (a) {a};
+      \node[draw,circle,blue] (b) [below left=of a] {b};
+      \node[draw,circle,blue] (d) [below right=of b] {d};
+      \node[draw,circle,blue] (c) [below right=of a] {c};
+
+      \draw[->] (a) -- (b);
+      \draw[->] (b) -- (d);
+      \draw[->] (d) -- (c);
+      \draw[->] (c) -- (a);
+
+
+      \node[draw,circle,red] (e) [right=of c] {e};
+      \node[draw,circle,red] (f) [below right=of e] {f};
+      \node[draw,circle,red] (g) [below left=of f] {g};
+      \draw[->] (c) -- (e);
+
+      \draw[->] (e) -- (f);
+      \draw[->] (f) -- (g);
+      \draw[->] (g) -- (e);
+    \end{tikzpicture}
+    \caption{Esempio di grafo con 2 componenti fortemente connesse}
+  \end{figure}
+\end{example}
+L'algoritmo per individuare le componenti fortemente connesse è il seguente:
+\begin{lstlisting}[language=Scala]
+scc(G)
+  finish[] = dfs_finish(G) // Usa DFS per trovare i tempi di fine
+  Gt = G.transpose() // Grafo trasposto
+  dfs_from_highest_finish(Gt) // Visita i nodi in ordine decrescente di finish
+\end{lstlisting}
+Questo algoritmo ha complessità \(O(|V| + |E|)\).
+\begin{example}
+  L'algoritmo eseguito passo passo su un grafo è il seguente:
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+      every node/.style={minimum size=1.2cm},
+      ]
+      \node[draw,circle,blue] (a) {13/14} node[above] at (a.north) {a};
+      \node[draw,circle,blue] (b) [right=of a] {11/16} node[above] at (b.north) {b};
+      \node[draw,circle,red] (c) [right=of b] {1/10} node[above] at (c.north) {c};
+      \node[draw,circle,red] (d) [right=of c] {8/9} node[above] at (d.north) {d};
+
+      \node[draw,circle,blue] (e) [below=of a] {12/15} node[below] at (e.south) {e};
+      \node[draw,circle,red] (f) [below=of b] {3/4} node[below] at (f.south) {f};
+      \node[draw,circle,red] (g) [below=of c] {2/7} node[below] at (g.south) {g};
+      \node[draw,circle,red] (h) [below=of d] {5/6} node[below] at (h.south) {h};
+
+      \draw[->] (a) -- (b);
+      \draw[->] (b) -- (c);
+      \draw[->] (c) edge [bend left] (d);
+      \draw[->] (d) edge [bend left] (c);
+      \draw[->] (d) -- (h);
+      \draw[->] (c) -- (g);
+      \draw[->] (g) edge [bend left] (f);
+      \draw[->] (f) edge [bend left] (g);
+      \draw[->] (e) -- (f);
+      \draw[->] (e) -- (a);
+      \draw[->] (b) -- (e);
+      \draw[->] (b) -- (f);
+      \draw[->] (g) -- (h);
+      \draw[->] (h) edge [loop right] (h);
+    \end{tikzpicture}
+    \caption{Tipi di archi}
+  \end{figure}
+  Mentre sul grafo trasposto:
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+      every node/.style={minimum size=1.2cm},
+      ]
+      \node[draw,circle,blue] (a) {2/5} node[above] at (a.north) {a};
+      \node[draw,circle,blue] (b) [right=of a] {1/6} node[above] at (b.north) {b};
+      \node[draw,circle,red] (c) [right=of b] {7/10} node[above] at (c.north) {c};
+      \node[draw,circle,red] (d) [right=of c] {8/9} node[above] at (d.north) {d};
+
+      \node[draw,circle,blue] (e) [below=of a] {3/4} node[below] at (e.south) {e};
+      \node[draw,circle,green!50!black] (f) [below=of b] {12/13} node[below] at (f.south) {f};
+      \node[draw,circle,green!50!black] (g) [below=of c] {11/14} node[below] at (g.south) {g};
+      \node[draw,circle,magenta] (h) [below=of d] {15/16} node[below] at (h.south) {h};
+
+      \draw[<-] (a) -- (b);
+      \draw[<-] (b) -- (c);
+      \draw[<-] (c) edge [bend left] (d);
+      \draw[<-] (d) edge [bend left] (c);
+      \draw[<-] (d) -- (h);
+      \draw[<-] (c) -- (g);
+      \draw[<-] (g) edge [bend left] (f);
+      \draw[<-] (f) edge [bend left] (g);
+      \draw[<-] (e) -- (f);
+      \draw[<-] (e) -- (a);
+      \draw[<-] (b) -- (e);
+      \draw[<-] (b) -- (f);
+      \draw[<-] (g) -- (h);
+      \draw[<-] (h) edge [loop right] (h);
+    \end{tikzpicture}
+    \caption{Tipi di archi}
+  \end{figure}
+\end{example}
+
+\vspace{1em}
+\noindent
+\textbf{Lemma}: Dopo la prima DFS, ogni componente fortemente connessa è interamente
+inclusa in un albero della foresta DFS.
+
+\vspace{1em}
+\noindent
+Il \textbf{grafo delle componenti fortemente connesse} è un grafo in cui ogni nodo corrisponde
+a una componente fortemente connessa e gli archi tra due nodi indicano che esiste un
+arco tra due nodi delle due componenti connesse.
+
+Se c'è un ciclo tra due componenti fortemente connesse, tutti i nodi che fanno parte 
+del ciclo sono in una stessa componente fortemente connessa.
+
+\vspace{1em}
+\noindent
+Un grafo delle componenti fortemente connesse contiene un cammino infinito che raggiunge
+infinite volte uno stato finale quando il cammino arriva in una componente fortemente
+connessa che contiene almeno 2 nodi o un solo nodo con un autoanello.
+
 \end{document}
