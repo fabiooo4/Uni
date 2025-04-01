@@ -1096,4 +1096,442 @@ Un grafo delle componenti fortemente connesse contiene un cammino infinito che r
 infinite volte uno stato finale quando il cammino arriva in una componente fortemente
 connessa che contiene almeno 2 nodi o un solo nodo con un autoanello.
 
+\subsubsection{Cammini minimi}
+I ponti di Verona sono tutti rotti e non si possono più riparare, ma bisogna garantire
+un servizio minimo, cioè permettere ad ogni persona di spostarsi in qualunque zona a
+piacimento. Quindi tra 2 zone c'è bisogno di un collegamento. Ogni ponte ha un costo
+di riparazione.
+
+L'obiettivo è quello di trovare il costo minimo per riparare i ponti in modo che
+ogni zona sia raggiungibile da ogni altra zona.
+
+\vspace{1em}
+\noindent
+I nodi saranno le zone e gli archi saranno i ponti. Sappiamo che se il numero di
+nodi è \( n \), allora il numero di ponti per garantire la connettività è \( n-1 \).
+E per induzione se si aggiunge un nodo bisogna aggiungere un arco.
+\begin{enumerate}
+  \item Se si vuole minimizzare il costo, bisogna minimizzare il numero di ponti riparati.
+  \item Presi due nodi esiste un unico modo per andare da un nodo all'altro. Se non fosse
+    così vuol dire che ci sono più ponti che collegano due nodi e quindi il numero di
+    ponti non è minimo. (Quindi il grafo è un albero)
+  \item Bisogna trovare un albero, tra tutti gli alberi che garantisce la connettività
+    del grafo (chiamati \textbf{albero di copertura} o \textbf{spanning tree}), con
+    costo minimo. Quindi bisogna trovare il \textbf{Minimum Spanning Tree} (MST).
+  \item Se i pesi negativi, allora la soluzione potrebbe non essere più un albero,
+    però da questa soluzione si può trovare un albero che collega tutti i nodi con
+    costo minimo. Quindi si può risolvere il problema in modo più generale senza
+    imporre i pesi positivi.
+  \item Si può assegnare ad ogni ponte un indice di gradimento e trovare il MST
+    che massimizza il gradimento. Si può usare un algoritmo che calcola
+    il costo minimo e invertire i segni per trovare il massimo.
+\end{enumerate}
+
+\vspace{1em}
+\noindent
+L'idea dell'algoritmo è quella di \textbf{tagliare} in due un grafo, cioè una bipartizione
+dell'insieme dei nodi. Se gli estremi di un arco fanno parte dello stesso insieme, allora
+l'arco è un \textbf{arco interno}, altrimenti è un \textbf{arco di taglio}. Tra tutti
+gli archi del taglio, quello con costo minimo è chiamato \textbf{arco sicuro}.
+
+\textbf{Lemma}: Dato un albero qualsiasi con un taglio, fra tutti gli MST c'è almeno uno
+che contiene l'arco sicuro.
+
+Con questo si può ridurre il problema ad uno dello stesso tipo, ma con un nodo in meno,
+e questo si può fare rappresentando due nodi collegati da un arco sicuro come un nodo
+singolo e rifare un altro taglio (senza dividere ciò che è stato unito prima).
+
+L'algoritmo è il seguente (algoritmo di Kruskal):
+\begin{lstlisting}[language=Scala]
+// G e' un grafo
+// w e' una matrice che associa ad ogni arco il suo peso
+kruskal(G, w)
+  A <- {}
+
+  for v in G.V
+    make_set(v)
+
+  sort(G.E, w.not_descending) // Ordina per peso NON decrescente
+  for (u,v) in G.E
+    if find_set(u) != find_set(v)
+      A <- union(A, {(u,v)})
+      union(u,v)
+
+  return A
+\end{lstlisting}
+
+\begin{example}
+L'applicazione di questo algoritmo è la seguente:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw,circle] (a) {a};
+    \node[draw,circle] (b) [above right=of a] {b};
+    \node[draw,circle] (f) [below right=of b] {f};
+    \node[draw,circle] (d) [above right=of f] {d};
+    \node[draw,circle] (c) [below left=of f] {c};
+    \node[draw,circle] (e) [below right=of f] {e};
+
+    \draw (a) -- (b) node[midway, above] {4};
+    \draw (a) -- (c) node[midway, left] {8};
+    \draw (b) -- (c) node[midway, left] {11};
+    \draw (b) -- (f) node[midway, above right] {9};
+    \draw (f) -- (d) node[midway, below right] {2};
+    \draw (d) -- (e) node[midway, right] {6};
+    \draw (e) -- (f) node[midway, above right] {5};
+    \draw (c) -- (f) node[midway, above left] {7};
+    \draw (c) -- (e) node[midway, below] {1};
+    \draw (b) -- (d) node[midway, above] {8};
+  \end{tikzpicture}
+  \caption{Esempio di grafo}
+\end{figure}
+\begin{enumerate}
+  \item 
+    Eseguiamo il primo taglio e prendiamo il nodo sicuro:
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \node[draw,circle] (a) {a};
+        \node[draw,circle] (b) [above right=of a] {b};
+        \node[draw,circle] (f) [below right=of b] {f};
+        \node[draw,circle] (d) [above right=of f] {d};
+        \node[draw,circle] (c) [below left=of f] {c};
+        \node[draw,circle] (e) [below right=of f] {e};
+
+        \draw (a) -- (b) node[midway, above] {4};
+        \draw (a) -- (c) node[midway, left] {8};
+        \draw (b) -- (c) node[midway, left] {11};
+        \draw (b) -- (f) node[midway, above right] {9};
+        \draw (f) -- (d) node[midway, below right] {2};
+        \draw (d) -- (e) node[midway, right] {6};
+        \draw (e) -- (f) node[midway, above right] {5};
+        \draw (c) -- (f) node[midway, above left] {7};
+        \draw[thick,blue] (c) -- (e) node[midway, below] {1};
+        \draw (b) -- (d) node[midway, above] {8};
+
+        \draw[dashed] (2.2,2) -- (2.2,-2);
+      \end{tikzpicture}
+    \end{figure}
+
+  \item Secondo taglio
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \node[draw,circle] (a) {a};
+        \node[draw,circle] (b) [above right=of a] {b};
+        \node[draw,circle] (f) [below right=of b] {f};
+        \node[draw,circle] (d) [above right=of f] {d};
+        \node[draw,circle] (c) [below left=of f] {c};
+        \node[draw,circle] (e) [below right=of f] {e};
+
+        \draw (a) -- (b) node[midway, above] {4};
+        \draw (a) -- (c) node[midway, left] {8};
+        \draw (b) -- (c) node[midway, left] {11};
+        \draw (b) -- (f) node[midway, above right] {9};
+        \draw[thick,blue] (f) -- (d) node[midway, below right] {2};
+        \draw (d) -- (e) node[midway, right] {6};
+        \draw (e) -- (f) node[midway, above right] {5};
+        \draw (c) -- (f) node[midway, above left] {7};
+        \draw[thick] (c) -- (e) node[midway, below] {1};
+        \draw (b) -- (d) node[midway, above] {8};
+
+        \draw[dashed] (3,2) -- (5,0);
+      \end{tikzpicture}
+    \end{figure}
+
+  \item Terzo taglio
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \node[draw,circle] (a) {a};
+        \node[draw,circle] (b) [above right=of a] {b};
+        \node[draw,circle] (f) [below right=of b] {f};
+        \node[draw,circle] (d) [above right=of f] {d};
+        \node[draw,circle] (c) [below left=of f] {c};
+        \node[draw,circle] (e) [below right=of f] {e};
+
+        \draw[thick,blue] (a) -- (b) node[midway, above] {4};
+        \draw (a) -- (c) node[midway, left] {8};
+        \draw (b) -- (c) node[midway, left] {11};
+        \draw (b) -- (f) node[midway, above right] {9};
+        \draw[thick] (f) -- (d) node[midway, below right] {2};
+        \draw (d) -- (e) node[midway, right] {6};
+        \draw (e) -- (f) node[midway, above right] {5};
+        \draw (c) -- (f) node[midway, above left] {7};
+        \draw[thick] (c) -- (e) node[midway, below] {1};
+        \draw (b) -- (d) node[midway, above] {8};
+
+        \draw[dashed] (0.8,2) -- (0.8,-2);
+      \end{tikzpicture}
+    \end{figure}
+
+  \item Quarto taglio
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \node[draw,circle] (a) {a};
+        \node[draw,circle] (b) [above right=of a] {b};
+        \node[draw,circle] (f) [below right=of b] {f};
+        \node[draw,circle] (d) [above right=of f] {d};
+        \node[draw,circle] (c) [below left=of f] {c};
+        \node[draw,circle] (e) [below right=of f] {e};
+
+        \draw[thick] (a) -- (b) node[midway, above] {4};
+        \draw (a) -- (c) node[midway, left] {8};
+        \draw (b) -- (c) node[midway, left] {11};
+        \draw (b) -- (f) node[midway, above right] {9};
+        \draw[thick] (f) -- (d) node[midway, below right] {2};
+        \draw (d) -- (e) node[midway, right] {6};
+        \draw[thick,blue] (e) -- (f) node[midway, above right] {5};
+        \draw (c) -- (f) node[midway, above left] {7};
+        \draw[thick] (c) -- (e) node[midway, below] {1};
+        \draw (b) -- (d) node[midway, above] {8};
+
+        \draw[dashed] (-1,-0.8) -- (5,-0.8);
+      \end{tikzpicture}
+    \end{figure}
+
+  \item Quinto taglio
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \node[draw,circle] (a) {a};
+        \node[draw,circle] (b) [above right=of a] {b};
+        \node[draw,circle] (f) [below right=of b] {f};
+        \node[draw,circle] (d) [above right=of f] {d};
+        \node[draw,circle] (c) [below left=of f] {c};
+        \node[draw,circle] (e) [below right=of f] {e};
+
+        \draw[thick] (a) -- (b) node[midway, above] {4};
+        \draw[thick,blue] (a) -- (c) node[midway, left] {8};
+        \draw (b) -- (c) node[midway, left] {11};
+        \draw (b) -- (f) node[midway, above right] {9};
+        \draw[thick] (f) -- (d) node[midway, below right] {2};
+        \draw (d) -- (e) node[midway, right] {6};
+        \draw[thick] (e) -- (f) node[midway, above right] {5};
+        \draw (c) -- (f) node[midway, above left] {7};
+        \draw[thick] (c) -- (e) node[midway, below] {1};
+        \draw (b) -- (d) node[midway, above] {8};
+
+        \draw[dashed] (0,-1.5) -- (3,2.5);
+      \end{tikzpicture}
+    \end{figure}
+  \item Alla fine la soluzione è:
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \node[draw,circle] (a) {a};
+        \node[draw,circle] (b) [above right=of a] {b};
+        \node[draw,circle] (f) [below right=of b] {f};
+        \node[draw,circle] (d) [above right=of f] {d};
+        \node[draw,circle] (c) [below left=of f] {c};
+        \node[draw,circle] (e) [below right=of f] {e};
+
+        \draw[thick,blue] (a) -- (b) node[midway, above] {4};
+        \draw[thick,blue] (a) -- (c) node[midway, left] {8};
+        \draw (b) -- (c) node[midway, left] {11};
+        \draw (b) -- (f) node[midway, above right] {9};
+        \draw[thick,blue] (f) -- (d) node[midway, below right] {2};
+        \draw (d) -- (e) node[midway, right] {6};
+        \draw[thick,blue] (e) -- (f) node[midway, above right] {5};
+        \draw (c) -- (f) node[midway, above left] {7};
+        \draw[thick,blue] (c) -- (e) node[midway, below] {1};
+        \draw (b) -- (d) node[midway, above] {8};
+      \end{tikzpicture}
+    \end{figure}
+\end{enumerate}
+\end{example}
+
+\vspace{1em}
+\noindent
+Un altro algoritmo per risolvere questo problema è l'algoritmo di Prim:
+\begin{lstlisting}[language=Scala]
+// G e' un grafo
+// w e' una matrice che associa ad ogni arco il suo peso
+// s e' il nodo di partenza
+prim(G,w,s)
+  Q <- G.V
+  for u in G.V
+    u.key <- +inf
+    s.key <- 0
+    s.parent <- NIL
+
+    while Q != {}
+      u <- extract_min(Q)
+      for v in G.adj(u)
+        if Q.contains(v) and w(u,v) < v.key
+          v.parent <- u
+          v.key <- w(u,v)
+\end{lstlisting}
+La complessità di questo algoritmo è:
+\begin{itemize}
+  \item \( V \) per la \texttt{make\_set}
+  \item \( E \log E \) per l'ordinamento
+  \item \( E \) per la \texttt{find\_set}
+  \item \( V \) union
+\end{itemize}
+Il risultato finale è:
+\[
+  (V+E) \alpha(\ldots) + E \log E
+\] 
+Quindi la complessità è:
+\[
+  O(E \log E)
+\]
+\begin{example}
+  L'applicazione dell'algoritmo è la seguente
+  \begin{enumerate}
+    \item Il grafo è il seguente
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+          \node[draw,circle,thick,blue,double] (a) {a} node[above] at (a.north) {0};
+          \node[draw,circle] (b) [above right=of a] {b} node[above] at (b.north) {$\infty$};
+          \node[draw,circle] (f) [below right=of b] {f} node[above] at (f.north) {$\infty$};
+          \node[draw,circle] (d) [above right=of f] {d} node[above] at (d.north) {$\infty$};
+          \node[draw,circle] (c) [below left=of f] {c} node[below] at (c.south) {$\infty$};
+          \node[draw,circle] (e) [below right=of f] {e} node[below] at (e.south) {$\infty$};
+
+          \draw (a) -- (b) node[midway, above] {4};
+          \draw (a) -- (c) node[midway, left] {8};
+          \draw (b) -- (c) node[midway, left] {11};
+          \draw (b) -- (f) node[midway, above right] {9};
+          \draw (f) -- (d) node[midway, below right] {2};
+          \draw (d) -- (e) node[midway, right] {6};
+          \draw (e) -- (f) node[midway, above right] {5};
+          \draw (c) -- (f) node[midway, above left] {7};
+          \draw (c) -- (e) node[midway, below] {1};
+          \draw (b) -- (d) node[midway, above] {8};
+        \end{tikzpicture}
+        \caption{Esempio di grafo}
+      \end{figure}
+
+    \item Secondo passo
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+          \node[draw,circle,thick,blue,double] (a) {a} node[above] at (a.north) {0};
+          \node[draw,circle,thick,blue] (b) [above right=of a] {b} node[above] at (b.north) {$4$};
+          \node[draw,circle] (f) [below right=of b] {f} node[above] at (f.north) {$\infty$};
+          \node[draw,circle] (d) [above right=of f] {d} node[above] at (d.north) {$\infty$};
+          \node[draw,circle] (c) [below left=of f] {c} node[below] at (c.south) {$8$};
+          \node[draw,circle] (e) [below right=of f] {e} node[below] at (e.south) {$\infty$};
+
+          \draw[<-,thick,blue] (a) -- (b) node[midway, above] {4};
+          \draw[<-] (a) -- (c) node[midway, left] {8};
+          \draw (b) -- (c) node[midway, left] {11};
+          \draw (b) -- (f) node[midway, above right] {9};
+          \draw (f) -- (d) node[midway, below right] {2};
+          \draw (d) -- (e) node[midway, right] {6};
+          \draw (e) -- (f) node[midway, above right] {5};
+          \draw (c) -- (f) node[midway, above left] {7};
+          \draw (c) -- (e) node[midway, below] {1};
+          \draw (b) -- (d) node[midway, above] {8};
+        \end{tikzpicture}
+        \caption{Esempio di grafo}
+      \end{figure}
+
+    \item Terzo passo
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+          \node[draw,circle,thick,blue,double] (a) {a} node[above] at (a.north) {0};
+          \node[draw,circle,thick,blue] (b) [above right=of a] {b} node[above] at (b.north) {$4$};
+          \node[draw,circle] (f) [below right=of b] {f} node[above] at (f.north) {$9$};
+          \node[draw,circle,thick,blue] (d) [above right=of f] {d} node[above] at (d.north) {$8$};
+          \node[draw,circle] (c) [below left=of f] {c} node[below] at (c.south) {$8$};
+          \node[draw,circle] (e) [below right=of f] {e} node[below] at (e.south) {$\infty$};
+
+          \draw[<-,thick,blue] (a) -- (b) node[midway, above] {4};
+          \draw (a) -- (c) node[midway, left] {8};
+          \draw (b) -- (c) node[midway, left] {11};
+          \draw (b) -- (f) node[midway, above right] {9};
+          \draw (f) -- (d) node[midway, below right] {2};
+          \draw (d) -- (e) node[midway, right] {6};
+          \draw (e) -- (f) node[midway, above right] {5};
+          \draw (c) -- (f) node[midway, above left] {7};
+          \draw (c) -- (e) node[midway, below] {1};
+          \draw[<-,thick,blue] (b) -- (d) node[midway, above] {8};
+        \end{tikzpicture}
+        \caption{Esempio di grafo}
+      \end{figure}
+
+    \item Quarto passo
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+          \node[draw,circle,thick,blue,double] (a) {a} node[above] at (a.north) {0};
+          \node[draw,circle,thick,blue] (b) [above right=of a] {b} node[above] at (b.north) {$4$};
+          \node[draw,circle,thick,blue] (f) [below right=of b] {f} node[above] at (f.north) {$2$};
+          \node[draw,circle,thick,blue] (d) [above right=of f] {d} node[above] at (d.north) {$8$};
+          \node[draw,circle] (c) [below left=of f] {c} node[below] at (c.south) {$8$};
+          \node[draw,circle] (e) [below right=of f] {e} node[below] at (e.south) {$6$};
+
+          \draw[<-,thick,blue] (a) -- (b) node[midway, above] {4};
+          \draw (a) -- (c) node[midway, left] {8};
+          \draw (b) -- (c) node[midway, left] {11};
+          \draw (b) -- (f) node[midway, above right] {9};
+          \draw[->,thick,blue] (f) -- (d) node[midway, below right] {2};
+          \draw (d) -- (e) node[midway, right] {6};
+          \draw (e) -- (f) node[midway, above right] {5};
+          \draw (c) -- (f) node[midway, above left] {7};
+          \draw (c) -- (e) node[midway, below] {1};
+          \draw[<-,thick,blue] (b) -- (d) node[midway, above] {8};
+        \end{tikzpicture}
+        \caption{Esempio di grafo}
+      \end{figure}
+
+    \item Quinto passo
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+          \node[draw,circle,thick,blue,double] (a) {a} node[above] at (a.north) {0};
+          \node[draw,circle,thick,blue] (b) [above right=of a] {b} node[above] at (b.north) {$4$};
+          \node[draw,circle,thick,blue] (f) [below right=of b] {f} node[above] at (f.north) {$2$};
+          \node[draw,circle,thick,blue] (d) [above right=of f] {d} node[above] at (d.north) {$8$};
+          \node[draw,circle] (c) [below left=of f] {c} node[below] at (c.south) {$7$};
+          \node[draw,circle,thick,blue] (e) [below right=of f] {e} node[below] at (e.south) {$5$};
+
+          \draw[<-,thick,blue] (a) -- (b) node[midway, above] {4};
+          \draw (a) -- (c) node[midway, left] {8};
+          \draw (b) -- (c) node[midway, left] {11};
+          \draw (b) -- (f) node[midway, above right] {9};
+          \draw[->,thick,blue] (f) -- (d) node[midway, below right] {2};
+          \draw (d) -- (e) node[midway, right] {6};
+          \draw[->,thick,blue] (e) -- (f) node[midway, above right] {5};
+          \draw (c) -- (f) node[midway, above left] {7};
+          \draw (c) -- (e) node[midway, below] {1};
+          \draw[<-,thick,blue] (b) -- (d) node[midway, above] {8};
+        \end{tikzpicture}
+        \caption{Esempio di grafo}
+      \end{figure}
+
+    \item Ultimo passo
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+          \node[draw,circle,thick,blue,double] (a) {a} node[above] at (a.north) {0};
+          \node[draw,circle,thick,blue] (b) [above right=of a] {b} node[above] at (b.north) {$4$};
+          \node[draw,circle,thick,blue] (f) [below right=of b] {f} node[above] at (f.north) {$2$};
+          \node[draw,circle,thick,blue] (d) [above right=of f] {d} node[above] at (d.north) {$8$};
+          \node[draw,circle,thick,blue] (c) [below left=of f] {c} node[below] at (c.south) {$1$};
+          \node[draw,circle,thick,blue] (e) [below right=of f] {e} node[below] at (e.south) {$5$};
+
+          \draw[<-,thick,blue] (a) -- (b) node[midway, above] {4};
+          \draw (a) -- (c) node[midway, left] {8};
+          \draw (b) -- (c) node[midway, left] {11};
+          \draw (b) -- (f) node[midway, above right] {9};
+          \draw[->,thick,blue] (f) -- (d) node[midway, below right] {2};
+          \draw (d) -- (e) node[midway, right] {6};
+          \draw[->,thick,blue] (e) -- (f) node[midway, above right] {5};
+          \draw (c) -- (f) node[midway, above left] {7};
+          \draw[<-,thick,blue] (c) -- (e) node[midway, below] {1};
+          \draw[<-,thick,blue] (b) -- (d) node[midway, above] {8};
+        \end{tikzpicture}
+        \caption{Esempio di grafo}
+      \end{figure}
+  \end{enumerate}
+  Anche con questo algoritmo abbiamo trovato un MST.
+\end{example}
+
 \end{document}
