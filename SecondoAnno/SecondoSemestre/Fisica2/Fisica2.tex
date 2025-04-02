@@ -1519,4 +1519,178 @@ Con il potenziale si può calcolare la capacita come:
   \end{figure}
 \end{example}
 
+\subsection{Elettrostatica nei dielettrici}
+\subsubsection{Polarizzazione}
+I dielettrici hanno cariche vincolate.
+
+\begin{enumerate}
+  \item 
+    Consideriamo un atomo neutro,
+    applichiamo un campo e osserviamo che le cariche negative si separano in direzione
+    del campo:
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{dipolo_atomo}
+      \caption{Atomo in un campo}
+    \end{figure}
+    \noindent
+    Questo sistema si può modellare nel seguente modo:
+    \label{02-04-D1}
+    \noindent
+    Due cariche opposte \( q \) e \( -q \) rigidamente separate da una distanza \( \vec{d} \)
+    formano un \textbf{dipolo elettrico} (che produce un campo). Questo oggetto è caratterizzato dal
+    \textbf{momento di dipolo elettrostatico}:
+    \[
+      \vec{p} = q \vec{d}
+    \] 
+    Quindi il materiale si \textbf{polarizza}, cioè si è creata una separazione di carica
+    rigidamente separata.
+
+  \item 
+    Alcune molecole sono già polarizzate e si chiamano \textbf{molecole polari}, ad esempio
+    l'acqua:
+    \label{02-04-D2}
+
+  \item 
+    Quando si ha un insieme di molecole polarizzate casualmente si ha un materiale
+    globalmente neutro:
+    \[
+      \vec{p}_{\text{tot}} = 0
+    \] 
+    \label{02-04-D3}
+    \noindent
+    Se si applica un campo esterno si ha una polarizzazione del materiale i momenti
+    di dipolo si allineano per rotazione e il materiale si \textbf{polarizza per
+    orientamento}:
+    \label{02-04-D4}
+\end{enumerate}
+\vspace{1em}
+\noindent
+Si introduce un oggetto chiamato \textbf{campo di polarizzazione} che misura
+la polarizzazione del materiale per unità di volume:
+\[
+  \mathbb{P}(r) = \text{Momento di dipolo per unità di volume}
+\] 
+
+\begin{exercise}[Esperimento condensatore con dielettrico]
+  Consideriamo un condensatore piano e carichiamo le lastre (collegandole ad una batteria)
+  \label{02-04-D5}
+  Sappiamo che nel vuoto:
+  \begin{itemize}
+    \item \( Q = C_0 V_0 \) 
+    \item \( C_0 = \frac{\varepsilon_0 A}{h} \)
+    \item \( E_0 = \frac{\sigma_0}{\varepsilon_0} \) 
+  \end{itemize}
+  Poi stacchiamo il circuito, e quindi il sistema diventa isolato, cioè la carica si
+  conserva \( Q_{\text{tot}} = \text{Costante} \):
+  \label{02-04-D6}
+  \noindent
+  Riempiamo il condensatore con materiale dielettrico. Osserviamo che il potenziale
+  nel dielettrico scala di un fattore \( k \) (diminuisce):
+  \label{02-04-D7}
+  \[
+    V_k = \frac{V_0}{k} < V_0
+  \] 
+  Quindi la differenza di potenziale tra le armature diminuisce, quindi
+  la capacità aumenta di \( k \) :
+  \[
+    C_k = \frac{Q}{V} = \frac{Q}{\frac{V_0}{k}} = k C_0
+  \]
+  La \( k \) è tipica del materiale dielettrico e si chiama \textbf{costante dielettrica}.
+  (Il vuoto è un dielettrico con \( k_{\text{vuoto}} = 1 \)).
+
+  \vspace{1em}
+  \noindent
+  Se il potenziale diminuisce, il campo diminuisce:
+  \[
+    V_k < V_0 \Rightarrow E_k = \frac{E_0}{k} < E_0
+  \] 
+  Quindi si è formato un campo opposto indotto \( E_{\text{Indotto}} \) che si somma
+  al campo \( E_0 \) e quindi il campo totale è:
+  \[
+    E_{k} = E_0 + E_{\text{Indotto}}
+  \]
+  All'interno del dielettrico si è formata una carica di polarizzazione opposta:
+  \label{02-04-D8}
+\end{exercise}
+
+\subsubsection{Equazioni dell'elettrostatica nei dielettrici}
+Consideriamo un conddensatore piano:
+\label{02-04-D9}
+\noindent
+Con il teorema di Gauss prendiamo un cilindro di Gauss che ha una base nell'armatura
+e una nel dielettrico:
+\label{02-04-D10}
+\noindent
+Applichiamo Gauss all'interno del cilindro calcolando il flusso:
+\label{02-04-D11}
+\[
+  \begin{aligned}
+    \oint_S \vec{E} \cdot \hat{n} dS &= \vec{E}_{\underset{\text{Conduttore}}{\text{Tot}}}
+    \Sigma + \vec{E}_{\underset{\text{Dielettrico}}{\text{Tot}}} \Sigma \\
+    &= 0 + E_{\underset{\text{Dielettrico}}{\text{Tot}}} \Sigma\\
+    &= \frac{Q_{\text{int}}}{\varepsilon_0}\\
+    &= \frac{\sigma _0 \cancel{\Sigma} }{\varepsilon _0}
+    - \frac{\sigma _{\text{pol}} \cancel{\Sigma} }{\varepsilon _0} \\
+  \end{aligned}
+\] 
+Quindi il campo totale è:
+\[
+  E_k = \frac{\sigma _0}{\varepsilon _0} - \frac{\sigma _{\text{pol}}}{\varepsilon _0}
+\] 
+Di conseguenza un dipolo induce una carica opposta di polarizzazione:
+\[
+  |\sigma_{\text{Pol}}| = |\sigma_0| \frac{k-1}{k}
+\] 
+
+\vspace{1em}
+\noindent
+Consideriamo un volume unitario \( Vol_1 \) con superfici unitarie \( \Sigma_1 \).
+Il numero di dipoli all'interno del volume per il momento del dipolo è la
+polarizzazione \( \mathbb{P} \):
+\[
+  \frac{\text{\#atomi}}{Vol} \cdot \underbrace{\vec{p}}_{q\vec{d}} = \mathbb{P}
+\] 
+Quindi abbiamo che le cariche di polarizzazione sono equivalenti alla polarizzazione:
+\[
+  |\sigma_{\text{Pol}}| = \mathbb{P}
+\] 
+In termini generali:
+\[
+  \sigma_{\text{Pol}} = \mathbb{P} \cdot \hat{n}
+\] 
+Le cariche di polarizzazione si formano sulle superfici del dielettrico.
+
+\subsubsection{Teorema di Gauss}
+Prendiamo in considerazione un condensatore piano riempito con un dielettrico, abbiamo
+che il flusso del campo elettrico è:
+\[
+  \begin{aligned}
+    \oint \vec{E} &= \underbrace{\frac{\sigma_0}{\varepsilon_0} \Sigma}_{Q} - 
+    \underbrace{\frac{\sigma_{\text{Pol}}}{\varepsilon_0} \Sigma}_{\text{Flusso di } \vec{\mathbb{P}}}
+  \end{aligned}
+\] 
+Quindi abbiamo il teorema di Gauss:
+\[
+  \oint \left( \varepsilon_0 \vec{E} - \vec{\mathbb{P}} \right) \cdot \hat{n} dS = Q_{\text{Libere}}
+\] 
+Il campo \( \left( \varepsilon_0 \vec{E} - \vec{\mathbb{P}} \right) \) si chiama 
+\textbf{spostamento dielettrico} o \textbf{induzione} \( \vec{D} \).
+
+\begin{itemize}
+  \item Nel vuoto:
+    \[
+      \oint_S \vec{E} \cdot \hat{n} dS = \frac{Q_{\text{Tot}}}{\varepsilon_0}
+    \] 
+    dove le cariche totali sono:
+    \[
+      Q_{\text{Tot}} = Q_{\text{Libere}} + Q_{\text{Polarizzazione}}
+    \] 
+
+  \item Nel dielettrico:
+    \[
+      \oint_S \vec{D} \cdot \hat{n} dS = Q_{\text{Libere}}
+    \] 
+\end{itemize}
+
 \end{document}
