@@ -1535,7 +1535,11 @@ I dielettrici hanno cariche vincolate.
     \end{figure}
     \noindent
     Questo sistema si può modellare nel seguente modo:
-    \label{02-04-D1}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.6\textwidth]{dipolo}
+      \caption{Dipolo elettrico}
+    \end{figure}
     \noindent
     Due cariche opposte \( q \) e \( -q \) rigidamente separate da una distanza \( \vec{d} \)
     formano un \textbf{dipolo elettrico} (che produce un campo). Questo oggetto è caratterizzato dal
@@ -1549,20 +1553,32 @@ I dielettrici hanno cariche vincolate.
   \item 
     Alcune molecole sono già polarizzate e si chiamano \textbf{molecole polari}, ad esempio
     l'acqua:
-    \label{02-04-D2}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.5\textwidth]{molecola_acqua}
+      \caption{Molecola di acqua}
+    \end{figure}
 
   \item 
     Quando si ha un insieme di molecole polarizzate casualmente si ha un materiale
     globalmente neutro:
-    \[
-      \vec{p}_{\text{tot}} = 0
-    \] 
-    \label{02-04-D3}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.7\textwidth]{molecole_polarizzate_casualmente}
+      \[
+        \vec{p}_{\text{tot}} = 0
+      \] 
+      \caption{Molecole polarizzate casualmente}
+    \end{figure}
     \noindent
     Se si applica un campo esterno si ha una polarizzazione del materiale i momenti
     di dipolo si allineano per rotazione e il materiale si \textbf{polarizza per
     orientamento}:
-    \label{02-04-D4}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.7\textwidth]{polarizzazione_orientamento}
+      \caption{Polarizzazione per orientamento}
+    \end{figure}
 \end{enumerate}
 \vspace{1em}
 \noindent
@@ -1574,7 +1590,12 @@ la polarizzazione del materiale per unità di volume:
 
 \begin{exercise}[Esperimento condensatore con dielettrico]
   Consideriamo un condensatore piano e carichiamo le lastre (collegandole ad una batteria)
-  \label{02-04-D5}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{circuito_condensatore_1}
+    \caption{Circuito con un condensatore}
+  \end{figure}
+  \noindent
   Sappiamo che nel vuoto:
   \begin{itemize}
     \item \( Q = C_0 V_0 \) 
@@ -1583,11 +1604,19 @@ la polarizzazione del materiale per unità di volume:
   \end{itemize}
   Poi stacchiamo il circuito, e quindi il sistema diventa isolato, cioè la carica si
   conserva \( Q_{\text{tot}} = \text{Costante} \):
-  \label{02-04-D6}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{circuito_condensatore_2}
+    \caption{Circuito con un condensatore isolato}
+  \end{figure}
   \noindent
   Riempiamo il condensatore con materiale dielettrico. Osserviamo che il potenziale
   nel dielettrico scala di un fattore \( k \) (diminuisce):
-  \label{02-04-D7}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{circuito_condensatore_3}
+    \caption{Circuito con un condensatore e dielettrico}
+  \end{figure}
   \[
     V_k = \frac{V_0}{k} < V_0
   \] 
@@ -1611,19 +1640,35 @@ la polarizzazione del materiale per unità di volume:
     E_{k} = E_0 + E_{\text{Indotto}}
   \]
   All'interno del dielettrico si è formata una carica di polarizzazione opposta:
-  \label{02-04-D8}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{circuito_condensatore_4}
+    \caption{Cariche di polarizzazione}
+  \end{figure}
 \end{exercise}
 
 \subsubsection{Equazioni dell'elettrostatica nei dielettrici}
-Consideriamo un conddensatore piano:
-\label{02-04-D9}
+Consideriamo un condensatore piano:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{condensatore_piano_dielettrico}
+  \caption{Condensatore piano con dielettrico}
+\end{figure}
 \noindent
 Con il teorema di Gauss prendiamo un cilindro di Gauss che ha una base nell'armatura
 e una nel dielettrico:
-\label{02-04-D10}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{gauss_condensatore_piano_dielettrico}
+  \caption{Superficie di Gauss in un condensatore piano con dielettrico}
+\end{figure}
 \noindent
 Applichiamo Gauss all'interno del cilindro calcolando il flusso:
-\label{02-04-D11}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.4\textwidth]{gauss_condensatore_piano_dielettrico_2}
+  \caption{Flusso del campo elettrico in un condensatore piano con dielettrico}
+\end{figure}
 \[
   \begin{aligned}
     \oint_S \vec{E} \cdot \hat{n} dS &= \vec{E}_{\underset{\text{Conduttore}}{\text{Tot}}}
