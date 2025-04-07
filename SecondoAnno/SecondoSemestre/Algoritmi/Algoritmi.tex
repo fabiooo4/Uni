@@ -1534,4 +1534,134 @@ Quindi la complessità è:
   Anche con questo algoritmo abbiamo trovato un MST.
 \end{example}
 
+\subsection{Cammini minimi}
+Il problema dei cammini minimi è quello di trovare il cammino più breve
+tra 2 nodi di un grafo. Il problema è definito su un grafo orientato e pesato.
+Un arco è rilassabile se la relax su quell'arco porta ad un miglioramento. In un albero
+di cammini minimi nessun arco è rilassabile perchè tutti i cammini sono già minimi.
+Esiste un algoritmo per risolvere il problema dei cammini minimi che parte dal presupposto
+che tutti gli archi non devono essere negativi:
+\begin{lstlisting}[language=Scala]
+// G e' un grafo
+// s e' il nodo di partenza
+init(G, s)
+  for v in G.V
+    v.distance <- +inf
+    v.parent <- NIL
+  s.distance <- 0
+
+// u e v sono due nodi
+// w rappresenta il tempo di percorrenza tra i 2 nodi
+// Prende l'arco u-v che costa w e controlla se
+// esiste un cammino minimo migliore di quello da s a v
+// passando per u
+relax(u, v, w)
+  if v.distance > u.distance + w(u,v)
+    v.distance <- u.distance + w(u,v)
+    v.parent <- u
+
+// G e' un grafo
+// s e' il nodo di partenza
+// w indica la distanza tra i nodi
+dijkstra(G,s,w)
+  init(G,s)
+  Q <- G.V
+  while Q != {}
+    u <- extract_min(Q)
+    for v in G.adj(u)
+      relax(u,v,w)
+\end{lstlisting}
+In questo algoritmo la relax viene effettuata una sola volta per arco perchè ogni
+nodo viene estratto dalla coda una sola volta e la lista di adiacenza viene esaminata
+soltanto una volta per nodo.
+
+\vspace{1em}
+\noindent
+La complessità di questo algoritmo è
+\begin{itemize}
+  \item \( V \) volte la init
+  \item \( V \) volte la extract min
+  \item \( E \) volte la reduce key, quindi a seconda di come viene
+    implementata la coda cambia la complessità dell'algoritmo
+    \begin{itemize}
+      \item Liste non ordinate: Complessità \( V \) per trovare il nodo minimo
+        \begin{itemize}
+          \item \( V^2 \) per la extract min, quindi la complessità diventa:
+            \[
+              V + V^2 + E = O(V^2)
+            \] 
+        \end{itemize}
+
+      \item Liste ordinate: La extract min è costante, la reduce key è lineare
+        \begin{itemize}
+          \item \( V \) volte un lavoro costante ed \( E \) volte un lavoro linere:
+            \[
+              EV
+            \] 
+        \end{itemize}
+
+      \item Heap: La extract min è logaritmica, la reduce key è costante
+        \begin{itemize}
+          \item 
+            \[
+              (V + E) \log V
+            \] 
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Un altro algoritmo per trovare i cammini minimi è quello di Bellman-Ford:
+\begin{lstlisting}[language=Scala]
+bellman_ford(G, w, s)
+  init(G,s)
+  for i <- 1 to |G.V| - 1 // --
+    for (u,v) in G.E      //  | VE
+      relax(u,v,w)        // --
+
+  for (u,v) in G.E        // E
+    if v.distance > u.distance + w(u,v)
+      return false // ciclo negativo
+  return true
+\end{lstlisting}
+Se esistono archi rilassabili la soluzione non è stata trovata, se invece non esistono
+archi rilassabili è stata trovata la soluzione. La complessità di questo algoritmo è:
+\[
+  O(VE)
+\] 
+\vspace{1em}
+\noindent
+\textbf{Lemma}: Dopo \( i \) iterazioni di Bellman-Ford, tutti i cammini minimi di
+lunghezza al più \( i \) sono stati trovati.
+
+Quindi l'algoritmo di Bellman-Ford trova sempre la soluzione se essa esiste.
+
+\vspace{1em}
+\noindent
+Consideriamo un grafo che contiene un ciclo negativo.
+\[
+  u_1 \to u_2 \to u_3 \to \ldots \to u_n \to u_1
+\] 
+Supponiamo per assurdo che
+Bellman-Ford non dia false, sappiamo che per ognuno dei seguenti archi vale la
+seguente disequazione:
+\[
+\begin{aligned}
+  u_2.\text{distance} & \le u_1.\text{distance} + w(u_1,u_2) \\
+  u_3.\text{distance} & \le u_2.\text{distance} + w(u_2,u_3) \\
+  \vdots\\
+  u_n.\text{distance} & \le u_{n-1}.\text{distance} + w(u_{n-1},u_n) \\
+  u_1.\text{distance} & \le u_{n}.\text{distance} + w(u_{n},u_1) \\
+\end{aligned}
+\] 
+Se sommiamo queste cose si ottiene:
+\[
+  \sum_{i=1}^n u_i.\text{distance} \le \sum_{i=1}^m u_i + \text{costo\_ciclico}
+\] 
+\[
+  \cancel{\sum_{i=1}^n u_i.\text{distance}} \le \cancel{\sum_{i=1}^m u_i} + \text{costo\_ciclico}
+\] 
+Quindi otteniamo una contraddizione.
+
 \end{document}
