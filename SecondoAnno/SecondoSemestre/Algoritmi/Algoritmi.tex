@@ -1534,11 +1534,8 @@ Quindi la complessità è:
   Anche con questo algoritmo abbiamo trovato un MST.
 \end{example}
 
-\subsection{Cammini minimi}
-Il problema dei cammini minimi è quello di trovare il cammino più breve
-tra 2 nodi di un grafo. Il problema è definito su un grafo orientato e pesato.
-Un arco è rilassabile se la relax su quell'arco porta ad un miglioramento. In un albero
-di cammini minimi nessun arco è rilassabile perchè tutti i cammini sono già minimi.
+\vspace{1em}
+\noindent
 Esiste un algoritmo per risolvere il problema dei cammini minimi che parte dal presupposto
 che tutti gli archi non devono essere negativi:
 \begin{lstlisting}[language=Scala]
@@ -1663,5 +1660,44 @@ Se sommiamo queste cose si ottiene:
   \cancel{\sum_{i=1}^n u_i.\text{distance}} \le \cancel{\sum_{i=1}^m u_i} + \text{costo\_ciclico}
 \] 
 Quindi otteniamo una contraddizione.
+
+\vspace{1em}
+\noindent
+Per risolvere il problema dei cammini minimi sui grafi aciclici esiste l'algoritmo
+Directed Acyclic Graph Shortest Path:
+\begin{lstlisting}[language=Scala]
+dag_sp(G, s, w)
+  init(G,s) // V
+  topological_sort(G) // V + E
+  for u in G.V        // -------+ 
+    for v in G.adj(u) // -| < E | V = V + E
+      relax(u,v,w)    // -------+
+\end{lstlisting}
+Ogni arco viene rilassato soltanto una volta. La complessità di questo algoritmo è:
+\[
+  V + (V + E) + (V + E) = 3V + 2E = O(V + E)
+\] 
+
+\begin{exercise}
+  In una gara vengono consegnati dei dischi con un diametro e una morbidezz.
+  L'obiettivo è quello di formare la pila più alta, ma un piatto grande non può essere
+  messo sopra un piatto piccolo e un piatto duro non deve essere messo sopra un piatto
+  morbido.
+
+  \vspace{1em}
+  \noindent
+  Il problema si può rappresentare come un grafo in cui i nodi sono i dischi e due
+  nodi \( a \) e \( b \) sono connessi se \( a \) può stare sotto a \( b \). Gli
+  archi sono orientati e il peso è \( -1 \).
+
+  \vspace{1em}
+  \noindent
+  Non è definito però il nodo di partenza, quindi bisogna ridurre il problema ad uno
+  in cui il nodo di partenza è definito, e di conseguenza bisogna trasformare il grafo.
+  Si possono aggiungere due nodi che sono collegati a tutti gli altri nodi con archi
+  a peso 0 che funzionano rispettivamente da punto di partenza e da punto di arrivo.
+  Questi nodi sono chiamati \textbf{supernodi}.
+\end{exercise}
+
 
 \end{document}
