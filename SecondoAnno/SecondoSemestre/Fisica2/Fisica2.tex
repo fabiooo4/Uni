@@ -1738,4 +1738,105 @@ Il campo \( \left( \varepsilon_0 \vec{E} - \vec{\mathbb{P}} \right) \) si chiama
     \] 
 \end{itemize}
 
+\subsection{Energia elettrostatica}
+Se un campo agisce su una carica essa sentirà una forza, quindi si può calcolare un'energia
+\label{09-04-D1}
+\begin{definition}
+  L'energia di un sistema è il lavoro esterno per costruire il sistema
+
+  \begin{itemize}
+    \item In un sistema discreto ci saranno \( N \) cariche discrete \( q_i \) 
+    \item In un sistema continuo ci sarà una carica continua \( \rho \) 
+  \end{itemize}
+\end{definition}
+
+\subsubsection{Energia di N cariche discrete}
+Si calcola il lavoro esterno per portare la prima carica \( q_1 \) dall'infinito
+\[
+  L_1 = 0
+\] 
+Il lavoro è nullo perchè è la prima carica.
+
+La seconda carica \( q_2 \)  trova un campo, quindi il suo lavoro è
+\[
+  L_2 = q_2 \Delta V_1
+\] 
+Il potenziale è quello del campo della prima carica. Sappiamo che \( V_\infty = 0 \),
+quindi:
+\[
+  L_2 = q_2 \Delta V_1 = q_2 V_1(r_2) = \frac{q_2 q_1}{4 \pi \varepsilon_0 r_{12}}
+\] 
+Per l'n-esima carica \( q_n \) il lavoro è:
+\[
+  L_n = q_n V_1(r_n) + q_n V_2(r_n) + \ldots + q_n V_{n-1}(r_n)
+\]
+\label{09-04-D2}
+
+\vspace{1em}
+\noindent
+L'energia del sistema è quindi:
+\[
+  \begin{aligned}
+    U_{el} &= \frac{1}{2} \sum_{i=1}^N q_i V_i\\
+           &= \frac{1}{2} \sum_i \sum_{j \neq i} \frac{q_i q_j}{r \pi \varepsilon_0 r_{ij}}
+  \quad [J]
+  \end{aligned}
+\] 
+
+\subsubsection{Energia in un sistema continuo}
+Il procedimento è lo stesso del sistema discreto, solo che le sommatorie diventeranno
+integrali e le cariche diventeranno densità di carica:
+\[
+  \sum \to \int \quad q_i \to \rho d\tau = dq
+\] 
+Quindi:
+\[
+  U_{el} = \frac{1}{2} \int_{\text{vol}} \int_{\text{vol}}
+  \frac{
+    \rho(r_1) \rho(r_2) \, d\tau_1 d\tau_2
+  }{
+    4 \pi \varepsilon_0 r_{12}
+  }
+  \quad [J]
+\] 
+
+\subsubsection{Energia con N conduttori}
+Applichiamo la formula dell'energia in un sistema continuo
+\[
+  \begin{aligned}
+    U_{el} &= \frac{1}{2} \int_{\text{vol}} \rho V \, d\tau\\
+           &= \frac{1}{2} \int_{\text{sup}} \sigma V_0 \, dS \\
+           &= \frac{1}{2} V_0 \underbrace{\int_{\text{sup}} \sigma \, dS}_{Q_0} \\
+           &= \frac{1}{2} V_0 Q_0  \quad [J]\
+  \end{aligned}
+\] 
+Quindi l'energia di un conduttore è:
+\[
+  \begin{aligned}
+    U_{\text{cond}} &= \frac{1}{2} Q V\\
+    &= \frac{1}{2} \frac{Q^2}{C} \\
+    &= \frac{1}{2} C V^2 \
+  \end{aligned}
+\] 
+
+\vspace{1em}
+\noindent
+Se consideriamo \( N \) conduttori l'energia è la somma delle energie dei singoli
+conduttori:
+\[
+  U_{\text{Tot}} = \sum_{i=1}^N U_i = \frac{1}{2} \sum_{i=1}^N Q_i V_i
+\] 
+
+\vspace{1em}
+\noindent
+Un condensatore è semplicemente un sistema di due conduttori in induzione completa, quindi
+\[
+  \begin{aligned}
+    U_{el} &= \frac{1}{2} (Q_1 V_1 + Q_2 + V_2)\\
+    &= \frac{1}{2} Q \Delta V \\
+    &= \frac{1}{2} C \Delta V^2 \\
+    &= \frac{1}{2} \frac{Q^2}{C} \
+  \end{aligned}
+\] 
+
 \end{document}
