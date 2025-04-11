@@ -1850,4 +1850,108 @@ Un condensatore è semplicemente un sistema di due conduttori in induzione compl
   \end{aligned}
 \] 
 
+\subsubsection{Processo di carica del condensatore}
+Un condensatore diventa tale solo dopo che viene caricato, quidi all'inizio è
+semplicemente un'insieme di conduttori:
+\label{11-04-D1}
+Per caricare il condensatore si prende una carica positiva \( q^+ \) e si sposta
+da un armatura all'altra:
+\label{11-04-D2}
+Una volta spostata la prima carica (che non compie lavoro) si crea un potenziale
+dovuto alla carica \( q^+ \) e lo spostamento delle altre quantità di carica
+\( dq \) compie lavoro:
+\label{11-04-D3}
+Il lavoro è:
+\[
+  dL = V(q) dq
+\] 
+Si continua con questo procedimento finchè non si arriva alla carica desiderata
+\( Q_{\text{Finale}} \):
+\label{11-04-D4}
+Il lavoro totale sarà:
+\[
+  \begin{aligned}
+    L_{\underset{\text{esterno}}{\text{tot}}} &= \int_{\text{Inizio}}^{\text{Fine}} dL\\
+                                              &= \int_0^{Q_{\text{Finale}}} V(q) \, dq\\
+                                              &= \int_0^{Q_{\text{Finale}}} \frac{q}{C} \, dq\\
+                                              &= \frac{q^2}{2C} \Big|_0^{Q_{\text{Finale}}}\\
+                                              &= \frac{Q_{\text{Finale}}^2}{2C} \\
+                                              &= U_{\text{Sistema}}
+  \end{aligned}
+\] 
+Quindi l'energia del sistema è il lavoro esterno per costruirlo:
+\[
+  U_{\text{Sistema}} = L_{\underset{\text{esterno}}{\text{tot}}}
+\] 
+
+\begin{define}
+  L'energia è il lavoro per costruire qualcosa, in questo caso il condensatore.
+\end{define}
+
+\subsubsection{Densità di energia}
+L'energia \( U_{el} \) è \textbf{localizzata nel campo} \( \vec{E} \) con densità:
+\[
+  u_E = \frac{\varepsilon_0}{2} E^2 \quad \left[ \frac{J}{m^3} \right]
+\] 
+\label{11-04-D5}
+
+\begin{example}
+  Consideriamo un conduttore sferico con una carica \( Q \). Il campo è:
+  \[
+    \vec{E} =
+    \begin{cases}
+      \frac{Q}{4 \pi \varepsilon_0 r^2} \hat{r} & r \ge R\\
+      0 & r < R
+    \end{cases}
+  \] 
+  La densità di energia della sfera carica è:
+  \[
+    u_E = 
+    \begin{cases}
+      \frac{\cancel{\varepsilon_0}}{2} \frac{Q^2}{16 \pi^2 \varepsilon_0^{\cancel{2}} r^4}
+      = \frac{Q^2}{32 \pi ^2 \varepsilon _0 r^4} & r \ge R\\
+      0 & r < R
+    \end{cases}
+    \quad \left[ \frac{J}{m^3} \right]
+  \] 
+  E l'energia del sistema è:
+  \[
+    U = \frac{1}{2} QV_{\text{Cond}} = \frac{1}{2} Q \frac{Q}{4 \pi \varepsilon_0 R}
+    = \frac{Q^2}{8 \pi \varepsilon_0 R} \quad [J]
+  \] 
+  Questa è anche l'energia del campo in tutto lo spazio dove c'è campo \( E \neq 0 \):
+  \[
+    \begin{aligned}
+      U &= \int_{\text{Ovunque}} u_E \, d\tau\\
+      &= \int_R^\infty \frac{Q^2}{32 \pi^2 \varepsilon_0 r^2} \cdot 4 \pi r^2 \, dr \\
+      &= \int_R^\infty \frac{Q^2}{\cancel{32} \pi^{\cancel{2}} \varepsilon_0 \cancel{r^2}}
+      \cdot \cancel{4} \pi \cancel{r^2} \, dr \\
+      &= \frac{Q^2}{8 \pi \varepsilon_0 R} \quad \left[ J \right]
+    \end{aligned}
+  \] 
+\end{example}
+
+\begin{exercise}
+  Calcolare l'energia di un condensatore sferico:
+  \label{11-04-D6}
+  L'energia sarà la somma dei seguenti sistemi
+  \label{11-04-D7}
+  Quindi:
+  \[
+    \begin{aligned}
+      C_{\text{Condens. Sfer.}} &= \frac{4 \pi \varepsilon_0 R_1 R_2}{R_2 - R_1}\\
+      C_{\text{Condutt. Sfer.}} &= 4 \pi \varepsilon_0 R\\
+    \end{aligned}
+  \] 
+  \[
+    U = \frac{Q^2_1}{2C} + \frac{Q^2_2}{2C} = \frac{Q^2_1 (R_2 - R_1)}{8 \pi \varepsilon_0 R_1 R_2}
+    + \frac{Q^2_2}{8 \pi \varepsilon_0 R} \quad [J]
+  \] 
+  Se aggiungiamo del dielettrico all'esterno la capacità aumenta, quindi l'energia diminuisce
+  perchè si esegue del lavoro di polarizzazione:
+  \[
+    U_k = \frac{Q^2}{2C} = \frac{U_0}{k}
+  \] 
+\end{exercise}
+
 \end{document}
