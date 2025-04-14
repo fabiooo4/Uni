@@ -1,7 +1,15 @@
+# Disclaimer
+
+These are my personal study notes, shared for reference purposes only.
+They have not been reviewed for accuracy, completeness, or alignment with official course
+materials. There may be errors or omissions. Please use them as a supplementary resource,
+not a primary source of information.
+
 # University notes
 
-These are my university notes for my bachelor in Computer Science. I'm sharing them because they can be useful
-to someone else, even though they are written in Italian.
+These are my personal university notes for my bachelor in Computer Science; everything was
+written during the lectures.
+I'm sharing them because they can be useful to other students.
 
 ## Index of the courses
 
@@ -69,7 +77,7 @@ to someone else, even though they are written in Italian.
 - [Operating Systems](./SecondoAnno/SecondoSemestre/SistemiOperativi/C) (Only exercises)
 - [Software Engineering](./SecondoAnno/SecondoSemestre/IngegneriaSoftware/IngegneriaSoftware.pdf) (Incomplete)
   - [Course exercises](./SecondoAnno/SecondoSemestre/IngegneriaSoftware/JavaFx)
-- [Calculus 2](./SecondoAnno/SecondoSemestre/Analisi2/Esercitazione) (Only exercises)
+- [Calculus 2-3](./SecondoAnno/SecondoSemestre/Analisi2/Esercitazione) (Only exercises)
   - [Exercises summary](./SecondoAnno/SecondoSemestre/Analisi2/Formulario/formulario.pdf)
 - [Physics 2](./SecondoAnno/SecondoSemestre/Fisica2/Fisica2.pdf)
 </details>
@@ -99,6 +107,7 @@ to someone else, even though they are written in Italian.
 ## How do I take notes?
 
 ### Language
+
 When I was deciding what to use when taking notes I tried markdown, but it was too slow and too limited, so I switched to LaTeX because it has better math and figure support.
 I didn't know anything about it, so i started learning by taking notes, without taking any courses. Here is an example of how my notes look:
 
@@ -106,6 +115,7 @@ I didn't know anything about it, so i started learning by taking notes, without 
 ![notesExample2](https://github.com/user-attachments/assets/75a541e3-84c5-4466-84af-884b9072249b)
 
 ### Setup
+
 I use [Nvim](https://neovim.io/) as my editor and [Sioyek](https://sioyek.info/) as my pdf viewer. I chose Neovim because it's fast, very customizable and it allows me to have access
 to custom snippets and themes. Sioyek is a great pdf viewer, but the main features are: vim motions and custom themes that adapt well with every color.
 
@@ -114,5 +124,6 @@ to custom snippets and themes. Sioyek is a great pdf viewer, but the main featur
 You can checkout my [Neovim configuration](https://github.com/fabiooo4/Neovim) and my [Sioyek configuration](https://github.com/fabiooo4/dotfiles/blob/main/.config/sioyek/prefs_user.config) in their respective repos.
 
 #### Credits
+
 This setup was heavily inspired by [Gilles Castel's blog](https://castel.dev/post/lecture-notes-1/) and I encourage you to check it out as it explains better all the features of this type
 of setup
