@@ -1853,21 +1853,40 @@ Un condensatore è semplicemente un sistema di due conduttori in induzione compl
 \subsubsection{Processo di carica del condensatore}
 Un condensatore diventa tale solo dopo che viene caricato, quidi all'inizio è
 semplicemente un'insieme di conduttori:
-\label{11-04-D1}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.3\textwidth]{condensatore_piano_non_carico}
+  \caption{Condensatore non carico}
+\end{figure}
+\noindent
 Per caricare il condensatore si prende una carica positiva \( q^+ \) e si sposta
 da un armatura all'altra:
-\label{11-04-D2}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.4\textwidth]{condensatore_piano_carico}
+  \caption{Condensatore carico}
+\end{figure}
+\noindent
 Una volta spostata la prima carica (che non compie lavoro) si crea un potenziale
 dovuto alla carica \( q^+ \) e lo spostamento delle altre quantità di carica
 \( dq \) compie lavoro:
-\label{11-04-D3}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{potenziale_condensatore_piano_caricato}
+  \caption{Potenziale di un condensatore piano}
+\end{figure}
+\noindent
 Il lavoro è:
 \[
   dL = V(q) dq
 \] 
 Si continua con questo procedimento finchè non si arriva alla carica desiderata
 \( Q_{\text{Finale}} \):
-\label{11-04-D4}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.4\textwidth]{condensatore_piano_completamente_carico}
+  \caption{Condensatore completamente carico}
+\end{figure}
 Il lavoro totale sarà:
 \[
   \begin{aligned}
@@ -1893,7 +1912,14 @@ L'energia \( U_{el} \) è \textbf{localizzata nel campo} \( \vec{E} \) con densi
 \[
   u_E = \frac{\varepsilon_0}{2} E^2 \quad \left[ \frac{J}{m^3} \right]
 \] 
-\label{11-04-D5}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.3\textwidth]{densita_energia}
+  \[
+    u = \frac{U}{vol}
+  \] 
+  \caption{Densità di energia}
+\end{figure}
 
 \begin{example}
   Consideriamo un conduttore sferico con una carica \( Q \). Il campo è:
@@ -1932,10 +1958,20 @@ L'energia \( U_{el} \) è \textbf{localizzata nel campo} \( \vec{E} \) con densi
 \end{example}
 
 \begin{exercise}
-  Calcolare l'energia di un condensatore sferico:
-  \label{11-04-D6}
+  Calcolare l'energia di un conduttore sferico cavo:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{conduttore_sferico_cavo}
+    \caption{Conduttore sferico cavo}
+  \end{figure}
+  \noindent
   L'energia sarà la somma dei seguenti sistemi
-  \label{11-04-D7}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{conduttore_somma_sistemi_isolati}
+    \caption{Somma dei sistemi isolati}
+  \end{figure}
+  \noindent
   Quindi:
   \[
     \begin{aligned}
