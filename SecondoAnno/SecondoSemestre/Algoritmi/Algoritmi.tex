@@ -1705,5 +1705,190 @@ Ogni arco viene rilassato soltanto una volta. La complessità di questo algoritm
   modo il cammino di costo minimo risolve il problema.
 \end{exercise}
 
+\subsubsection{Cammini minimi con tutte le sorgenti}
+Il problema dei cammini minimi con tutte le sorgenti è la risoluzione del problema
+dei cammini minimi per ogni nodo del grafo. Si avrà un vettore di parent e un vettore
+di distanze che rappresentano la soluzione per ogni sorgente:
+\[
+  \begin{aligned}
+    \pi = \begin{pmatrix} 
+      \pi_1\\
+      \pi_2\\
+      \vdots\\
+      \pi_n
+    \end{pmatrix} 
+    \quad
+    D = \begin{pmatrix} 
+      D_1\\
+      D_2\\
+      \vdots\\
+      D_n
+    \end{pmatrix}
+  \end{aligned}
+\] 
+dove \( \pi \) è la matrice dei parent e \( D \) è la matrice delle distanze.
+
+La matrice \( D \) ha 0 sulla diagonale e infinito altrove:
+\[
+  \begin{pmatrix} 
+    0 & \infty & \ldots & \infty\\
+    \infty & 0 & \ldots & \infty\\
+    \vdots & \vdots & \ddots & \vdots\\
+    \infty & \infty & \ldots & 0
+  \end{pmatrix} 
+\] 
+
+Per calcolare \( D \) si usa il seguente algoritmo:
+\begin{lstlisting}[language=Scala]
+// G e' un grafo
+// w e' la matrice dei pesi
+distance_matrix(G,w)
+  D <- init(G)
+  for l <- 1 to n-1
+    D <- extend_SP(D, w)
+\end{lstlisting}
+\begin{lstlisting}[language=Scala]
+// D e' la matrice delle distanze
+// w e' la matrice dei pesi
+extend_sp(D, w)
+  n <- rows(D)
+  for i <- 1 to n // per ogni istanza
+    for j <- 1 to n // per ogni sorgente
+      D_1[i][j] <- inf
+      for k <- 1 to n // per ogni destinazione
+        D_1[i][j] <- min(D_1[i][j], D[i][k] + w[k][j])
+\end{lstlisting}
+Per ogni arco si tenta di "rilassare" l'arco \( i \to j \) passando per \( k \):
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node (i) {i};
+    \node (k) [right=of i] {k};
+    \node (j) [above right=of i] {j};
+
+    \draw[->] (i) -- (k) node[midway, below] {D[i][k]};
+    \draw[->] (k) -- (j) node[midway, right] {w[k][j]};
+    \draw[->] (i) -- (j) node[midway, above left] {D\_1[i][j]};
+  \end{tikzpicture}
+\end{figure}
+L'algoritmo che moltiplica due matrici è:
+\begin{lstlisting}[language=Scala]
+mult(D,w)
+  n <- rows(D)
+  for i <- 1 to n
+    for j <- 1 to n
+      D_1[i][j] <- 0
+      for k <- 1 to n
+        D_1[i][j] <- D_1[i][j] + D[i][k] * w[k][j]
+\end{lstlisting}
+si nota che la moltiplicazione è molto simile alla extend\_sp, solo che al posto
+dell'operazione di sommma si fa un minimo e al posto del prodotto si fa una somma.
+Quindi Bellman Ford è una moltiplicazione tra matrici, ma in un algebra diversa:
+\[
+  D \cdot w
+\] 
+Nello specifico si sta facendo un prodotto tante volte tenendo in considerazione che
+dopo aver trovato la soluzione il risultato non varia più:
+\[
+  I \cdot w \cdot w \cdots w = w^{n-1} = w^{n} = w^{n+l} \forall l > 0
+\] 
+Questo algoritmo ha una complessità di: \( \Theta (n^4) \), però si possono sfruttare
+tutti quegli algoritmi fatti per migliorare la complessità della moltiplicazione tra
+matrici.
+
+Per eseguire moltiplicazioni di seguito si può sfruttare il \textbf{iterative squaring}:
+\[
+  \begin{aligned}
+    w^2 & \leftarrow w \cdot w \\
+    w^4 & \leftarrow w^2 \cdot w^2 \\
+    w^8 & \leftarrow w^4 \cdot w^4 \\
+    \vdots & \\
+  \end{aligned}
+\] 
+e questo permette di calcolare potenze pari in \( log(n) \) operazioni.
+
+\vspace{1em}
+\noindent
+L'algoritmo di Floyd Warshal calcola gli elementi \( D_{ij}^k \) dove \( k \) è il numero
+di nodi intermedi che si possono usare per calcolare il cammino minimo tra \( i \) e \( j \):
+\[
+  D^0 = w
+\] 
+La soluzione sarà quindi \( D^n \) 
+\begin{lstlisting}[language=Scala]
+floyd_warshal(G,w)
+  n <- rows(G)
+  D^0 <- w
+  for k <- 1 to n
+    for i <- 1 to n
+      for j <- 1 to n
+        D^k[i][j] <- min(D^{k-1}[i][j], D^{k-1}[i][k] + D^{k-1}[k][j])
+\end{lstlisting}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node (i) {i};
+    \node (k) [right=of i] {k};
+    \node (j) [above right=of i] {j};
+
+    \draw[->] (i) -- (k) node[midway, below, scale=0.8] {\( [1 .. k-1] \) };
+    \draw[->] (k) -- (j) node[midway, right, scale=0.8] {\( [1 .. k-1] \) };
+    \draw[->] (i) -- (j) node[midway, above left, scale=0.8] {\( [1 .. k-1] \) };
+  \end{tikzpicture}
+\end{figure}
+
+\vspace{1em}
+\noindent
+Se i pesi degli archi fossero tutti positivi si potrebbe applicare l'algoritmo di
+Dijkstra ad ogni singola sorgente, questo algoritmo si chiama algoritmo di Johnson:
+\begin{lstlisting}[language=Scala]
+johnson(G,w)
+  for i <- 1 to n
+    D[i] = dijkstra(G, i, w)
+\end{lstlisting}
+e la complessità è:
+\[
+  V(V+E) \log(V)
+\] 
+se il grafo è connesso si ottiene:
+\[
+  VE \log(V)
+\] 
+
+Il problema è che questo algoritmo non si può usare su grafi con archi negativi. Per farlo
+si deve trasformare il grafo in modo da non avere archi negativi e mantenere il fatto che
+i cammini minimi non cambiano tra il grafo originale e quello trasformato. Se la trasformazione
+ha costo maggiore dell'algoritmo da eseguire, non ha senso farla.
+
+I cammini minimi dipendono solo dal punto di partenza e punto di arrivo, quindi Johnson
+ha definito la seguente funzione:
+\[
+  h: V \to R \quad \hat{w}(u,v) = w(u,v) + h(v) - h(u)
+\] 
+quindi:
+\[
+  \hat{w}(v_0,v_1, \ldots, v_k) = \sum_{i=0}^{k-1} \hat{w}(v_i,v_{i+1}) =
+\] 
+\[
+\begin{aligned}
+  w(v_0,v_1)& + \cancel{h(v_1)} - h(v_0)\\
+  w(v_1,v_2)& + \cancel{h(v_2)} - \cancel{h(v_1)}\\
+  \vdots\\
+  w(v_{k-1},v_k)& + \cancel{h(v_k)} - \cancel{h(v_{k-1})}\\
+\end{aligned}
+\] 
+\[
+  = \sum_{i=0}^{k-1} w(v_i,v_{i+1}) + h(v_k) - h(v_0)
+\] 
+Questa trasformazione produce nuovi pesi in cui i cammini minimi non cambiano. Bisogna ora
+trovare la funzione \( h \) che produca pesi che non sono negativi. La disequazione di
+Bellman Ford era:
+\[
+  v.distance \le u.distance + w(u,v)
+\] 
+e questo diventa:
+\[
+  w(u,v) + u.distance - v.distance \ge 0
+\] 
 
 \end{document}
