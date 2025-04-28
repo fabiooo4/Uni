@@ -1891,4 +1891,58 @@ e questo diventa:
   w(u,v) + u.distance - v.distance \ge 0
 \] 
 
+\subsection{Grafo bipartito}
+Un grafo bipartito è un grafo in cui ogni ogni arco unisce due nodi appartenenti a
+due insiemi distinti.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw,circle,blue] (a) {a};
+    \node[draw,circle,blue] (b) [below=of a] {b};
+    \node[draw,circle,blue] (c) [below=of b] {c};
+
+    \node[draw,circle,red] (e) [right=of a] {e};
+    \node[draw,circle,red] (f) [below=of e] {f};
+    \node[draw,circle,red] (g) [below=of f] {g};
+
+    \draw (a) -- (e);
+    \draw (e) -- (b);
+    \draw (e) -- (c);
+    \draw (c) -- (f);
+    \draw (c) -- (g);
+  \end{tikzpicture}
+  \caption{Esempio di grafo bipartito}
+\end{figure}
+Un altro esempio sarebbe un grafo numerato in cui si dividono i numeri pari e quelli dispari.
+
+\vspace{1em}
+\noindent
+Se c'è una bipartizione si possono colorare diversamente i nodi appartenenti ai due
+insiemi. Quindi un grafo è bipartito se e solo se è \textbf{bicolorabile}.
+
+Una volta scelto il colore del primo nodo, il colore di tutti gli altri è vincolato
+dalla scelta del primo nodo. Se si incontra un nodo già colorato e il colore è
+diverso da quello che si aspetta, il grafo non è bipartito.
+
+\vspace{1em}
+\noindent
+Un algoritmo per trovare se un grafo è bipartito è il seguente:
+\begin{lstlisting}[language=Scala]
+is_bipartito(u, color, G)
+  // DFS visit
+  u.discovered <- gray // scoperto, ma non esplorato
+  u.color <- color // colore della bipartizione
+
+  for v in G.adj(u)
+    if v.discovered == white // non esplorato
+      v.parent <- u
+      v.color <- !color
+      is_bipartito(v, !color, G)
+    else v.color == c
+      return false
+
+  u.color <- black // esplorato
+  return true
+\end{lstlisting}
+
 \end{document}
