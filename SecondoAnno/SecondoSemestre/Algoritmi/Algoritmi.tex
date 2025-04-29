@@ -1945,4 +1945,210 @@ is_bipartito(u, color, G)
   return true
 \end{lstlisting}
 
+\subsection{Problema di flusso massimo}
+\begin{example}
+  Piove e dai monti viene giù molta acqua che finirà a valle. Vogliamo che quest'acqua
+  defluisca nel mare passando per una rete di canali. L'obiettivo è sapere quanta acqua
+  può passare per i canali senza che questi straripino.
+
+  Si vuole trasferire un flusso materiale da un punto sorgente a un punto di destinazione rendendo
+  massimo il flusso.
+\end{example}
+Questo tipo di problema è rappresentabile con i grafi tramite una \textbf{rete di flusso}.
+I nodi rappresentano i punti di partenza e arrivo del flusso, gli archi rappresentano i canali.
+Per ogni canale è indicato quante unità di flusso \textbf{netto} passano rispetto al totale.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+    node distance=1.5cm,
+    every edge quotes/.style = {auto, font=\footnotesize, sloped}
+    ]
+    \node[draw,circle,minimum size=0.8cm] (s) {s};
+    \node[draw,circle,minimum size=0.8cm] (a1) [above right=of s] {a};
+    \node[draw,circle,minimum size=0.8cm] (a2) [right=of a1] {b};
+    \node[draw,circle,minimum size=0.8cm] (d) [below right=of a2] {d};
+    \node[draw,circle,minimum size=0.8cm] (b1) [below right=of s] {c};
+    \node[draw,circle,minimum size=0.8cm] (b2) [right=of b1] {e};
+
+    \draw[->] (s) edge["11/16"] (a1);
+    \draw[->] (s) edge["8/13",swap] (b1);
+    \draw[->] (a1) edge[bend right,"0/10"] (b1);
+    \draw[<-] (a1) edge[bend left,"1/4"] (b1);
+    \draw[->] (a1) edge["12/12"] (a2);
+    \draw[->] (b1) edge["11/14"] (b2);
+    \draw[->] (b2) edge["7/7"] (a2);
+    \draw[->] (a2) edge["15/20"] (d);
+    \draw[->] (b2) edge["4/4",swap] (d);
+    \draw[->] (a2) edge["4/9",swap] (b1);
+  \end{tikzpicture}
+  \caption{Esempio di rete di flusso}
+\end{figure}
+
+\subsubsection{Funzione di flusso e le sue proprietà}
+La funzione di flusso è:
+\[
+  f: V \times V \to \mathbb{R}
+\] 
+e deve soddisfare:
+\begin{itemize}
+  \item Il flusso di un arco non deve superare la propria capacità:
+    \[
+      \forall (u,v) \; f(u,v) < c(u,v)
+    \]
+
+  \item Anti simmetria, cioè il flusso da \( u \) a \( v \) è uguale al
+    negativo del flusso da \( v \) a \( u \):
+    \[
+      f(u,v) = -f(v,u)
+    \] 
+
+  \item Conservazione: ciò che entra è uguale a ciò che esce, non si consuma niente
+    \[
+      \forall u \in  V - \{s,d\} \; \sum_v f(u,v) = 0
+    \] 
+    oppure
+    \[
+      |f| = \sum_v f(s,v) = \sum_u f(u,d)
+    \] 
+\end{itemize}
+\vspace{1em}
+\noindent
+\begin{define}
+  Il \textbf{taglio di un grafo} è una bipartizione (S,T) dell'insieme dei nodi del grafo 
+  \[
+    S \cup T = V
+  \] 
+  Ogni arco che va da un nodo in \( S \) a un nodo in \( T \) è detto \textbf{arco di taglio}.
+\end{define}
+
+Se assegnamo il nodo sorgente all'insieme \( s \in S \) e il nodo destinazione
+all'insieme \( d \in T \) possiamo definire la quantità di liquido che attraversa il
+taglio come:
+\[
+  \sum_{\underset{v \in T}{u \in S}} f(u,v)
+\] 
+Per ogni taglio che separa \( s \) e \( d \) il flusso che attraversa il taglio è
+sempre uguale al modulo del flusso che esce da \( s \): \( |f| \) 
+
+\textbf{Dimostrazione}: 
+\begin{itemize}
+  \item Caso base: c'è solo il nodo sorgente, quindi il flusso è la somma del flusso
+    uscente:
+    \[
+      |f| = \sum_{v} f(s,v)
+    \]
+  \item Caso induttivo: si aggiunge un nuovo nodo all'interno del taglio,
+    la variazione di flusso per un nuovo arco all'interno del taglio
+    è 0 perchè la somma del flusso che entra e che esce dal nuovo arco è 0.
+    \[
+      |f| = \sum_{v} f(s,v) + 0
+    \]
+\end{itemize}
+Il flusso massimo non può superare la capacità minima del taglio.
+
+\subsubsection{Rete residua}
+La rete residua è una rete in cui gli archi hanno una capacità residua, cioè
+quanto flusso può ancora passare. La rete residua è definita come:
+\[
+  \forall u,v \; c_f(u,v) = c(u,v) - f(u,v)
+\] 
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+    node distance=1.5cm,
+    every edge quotes/.style = {auto, font=\footnotesize, sloped}
+    ]
+    \node[draw,circle,minimum size=0.8cm] (s) {s};
+    \node[draw,circle,minimum size=0.8cm] (a1) [above right=of s] {a};
+    \node[draw,circle,minimum size=0.8cm] (a2) [right=of a1] {b};
+    \node[draw,circle,minimum size=0.8cm] (d) [below right=of a2] {d};
+    \node[draw,circle,minimum size=0.8cm] (b1) [below right=of s] {c};
+    \node[draw,circle,minimum size=0.8cm] (b2) [right=of b1] {e};
+
+    \draw[->] (s) edge[bend left=10,"5"] (a1);
+    \draw[<-] (s) edge[bend right=10,"11",swap] (a1);
+
+    \draw[->] (s) edge[bend left=10,"5"] (b1);
+    \draw[<-] (s) edge[bend right=10,"8",swap] (b1);
+
+    \draw[->] (a1) edge[bend right=10,"11",swap] (b1);
+    \draw[<-] (a1) edge[bend left=10,"3"] (b1);
+
+    \draw[<-] (a1) edge["12"] (a2);
+
+    \draw[->] (b1) edge[bend left=10,"3"] (b2);
+    \draw[<-] (b1) edge[bend right=10,"11",swap] (b2);
+
+    \draw[<-] (b2) edge["7"] (a2);
+    
+    \draw[->] (a2) edge[bend left=10,"5"] (d);
+    \draw[<-] (a2) edge[bend right=10,"15",swap] (d);
+
+    \draw[<-] (b2) edge["4",swap] (d);
+
+    \draw[->] (a2) edge[bend left=10,"5",swap] (b1);
+    \draw[<-] (a2) edge[bend right=10,"4"] (b1);
+  \end{tikzpicture}
+  \caption{Esempio di rete residua}
+\end{figure}
+\noindent
+Si dice \textbf{cammino aumentante} un cammino che va da \( s \) a \( d \) in cui
+il flusso può essere aumentato, e quindi il residuo diminuito. In questo cammino
+si dice \textbf{arco critico} l'arco con capacità residua minima.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+    node distance=1.5cm,
+    every edge quotes/.style = {auto, font=\footnotesize, sloped}
+    ]
+    \node[draw,circle,minimum size=0.8cm] (s) {s};
+    \node[draw,circle,minimum size=0.8cm] (a1) [above right=of s] {a};
+    \node[draw,circle,minimum size=0.8cm] (a2) [right=of a1] {b};
+    \node[draw,circle,minimum size=0.8cm] (d) [below right=of a2] {d};
+    \node[draw,circle,minimum size=0.8cm] (b1) [below right=of s] {c};
+    \node[draw,circle,minimum size=0.8cm] (b2) [right=of b1] {e};
+
+    \draw[->] (s) edge[bend left=10,"5"] (a1);
+    \draw[<-] (s) edge[bend right=10,"11",swap] (a1);
+
+    \draw[->] (s) edge[bend left=10,"5"] (b1);
+    \draw[<-] (s) edge[bend right=10,"8",swap] (b1);
+    \draw[->,blue,thick] (s) edge[] (b1);
+
+    \draw[->] (a1) edge[bend right=10,"11",swap] (b1);
+    \draw[<-] (a1) edge[bend left=10,"3"] (b1);
+
+    \draw[<-] (a1) edge["12"] (a2);
+
+    \draw[->] (b1) edge[bend left=10,"3"] (b2);
+    \draw[<-] (b1) edge[bend right=10,"11",swap] (b2);
+
+    \draw[<-] (b2) edge["7"] (a2);
+    
+    \draw[->] (a2) edge[bend left=10,"5"] (d);
+    \draw[<-] (a2) edge[bend right=10,"15",swap] (d);
+    \draw[->,blue,thick] (a2) edge[] (d);
+
+    \draw[<-] (b2) edge["4",swap] (d);
+
+    \draw[->] (a2) edge[bend left=10,"5",swap] (b1);
+    \draw[<-] (a2) edge[bend right=10,"4"] (b1);
+    \draw[->,blue,thick] (b1) edge[] (a2);
+  \end{tikzpicture}
+  \caption{Esempio di cammino aumentante}
+\end{figure}
+\noindent
+Quando non si trovano più cammini aumentanti si dice che il flusso è massimo.
+Esiste l'algoritmo di Ford-Fulkerson che trova il flusso massimo in un grafo iterando
+al massimo \( |f^*| \), cioè il flusso ottimo. La complessità di questo algoritmo
+è \( O(|f^*| \cdot |V + E|) \) e si basa sull'idea di trovare un cammino
+aumentante e aumentare di una unità il flusso lungo quel cammino fino a quando non
+si trovano più cammini aumentanti.
+
+
+
+
+
+
+
 \end{document}
