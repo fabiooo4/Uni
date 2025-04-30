@@ -1990,4 +1990,256 @@ L'energia \( U_{el} \) è \textbf{localizzata nel campo} \( \vec{E} \) con densi
   \] 
 \end{exercise}
 
+
+\section{Elettrodinamica}
+Nell'elettrodinamica viene introdotto il \textbf{tempo} quindi tutte le considerazioni
+fatte per l'elettrostatica non sono più valide.
+
+Ricordiamo le equazioni di maxwell nel caso \textbf{stazionario}:
+\begin{itemize}
+  \item 
+    Cioè le cariche isolate sono sorgenti del campo elettrico \( \vec{E} \) 
+    \[
+      \oint_{\text{Sup}} \vec{E} \cdot \hat{n} dS = \frac{Q_{\text{Tot}}}{\varepsilon_0}
+    \] 
+
+  \item Il campo \( \vec{E} \) è conservativo
+    \[
+      \oint_{\Gamma} \vec{E} \cdot \vec{dl} = 0
+    \] 
+    cioè in un circuito chiuso \( \Gamma \) il lavoro è nullo
+\end{itemize}
+Ora introduciamo il \textbf{tempo} e notiamo che:
+\begin{itemize}
+  \item La prima equazione vale sempre, perchè anche nel tempo le cariche sono sorgenti.
+
+  \item Per la seconda invece non si può dire la stessa cosa, perchè per avere delle 
+    cariche in movimento su un circuito chiuso il lavoro non è nullo, quindi:
+    \[
+      \oint_{\Gamma } \vec{E} \cdot \vec{dl} \neq 0
+    \] 
+    e quindi questa equazione andrà modificata.
+\end{itemize}
+
+\subsection{Corrente elettrica}
+\subsubsection{Forza elettromotrice}
+Consideriamo un conduttore ad un certo potenziale \( V^+ \)  e un secondo conduttore con
+un potenziale \( V^- \)  \textbf{minore del primo} (il meno non indica che è negativo,
+ma che è minore).
+\label{30-04-D1}
+Se i due conduttori vengono collegati da un filo conduttore si avrà un potenziale costante:
+\label{30-04-D2}
+Ma cosa succede prima che il condutttore raggiunga l'equilibrio?
+Si forma un campo dal potenziale \( V^+ \) al potenziale \( V^- \)  e quidi si avrà
+un moto di cariche:
+\label{30-04-D3}
+Lo spostamento delle cariche azzera il potenziale secondo il seguente grafico:
+\label{30-04-D4}
+Per mantenere le cariche \( q \) in moto, quindi un circuito, bisogna avere un \textbf{lavoro
+esterno} che va contro il campo elettrico che riporta le cariche da \( V^- \) a
+\( V^+ \). Questo lavoro esterno è fornito da un generatore e si chiama \textbf{forza
+elettromotrice} \( \mathcal{E} \):
+\label{30-04-D5}
+\[
+  \mathcal{E} = \int_{A^-}^{B^+} \frac{\vec{F}}{q} \cdot \vec{dl}
+  = V^+_B - V^-_A \quad \left[ V \right]
+\] 
+La forza elettromotrice è nota anche come FEM (Forza ElettroMotrice), tensione o
+differenza di potenziale.
+
+\vspace{1em}
+\noindent
+Se espandiamo il circuito osserviamo che:
+\label{30-04-D6}
+\[
+  E^* = \frac{F^*}{q}
+\] 
+Quindi la forza elettromotrice può essere espressa anche come:
+\[
+  \mathcal{E} = \oint_{\Gamma} E \cdot dl
+\] 
+E la seconda equazione di Maxwell diventa:
+\[
+  \oint_{\Gamma} E \cdot dl = \mathcal{E} \quad \left[ V \right]
+\]
+
+\subsubsection{Intensità di corrente}
+La corrente elettrica è un insisme di cariche in moto. L'intensità di corrente \( i \) 
+è definita come la quantità di caricha che \textbf{attraversa una data superficie} per
+unità di tempo:
+\[
+  i = \frac{dq}{dt} \quad \left[ A \right] \; \text{(Ampere)}
+\] 
+Il verso della corrente è convenzionalmente quello del moto delle cariche positive.
+\label{30-04-D7}
+
+\subsubsection{Densità di corrente}
+\begin{example}
+  La superficie del conduttore influisce sulla corrente di carica:
+  \label{30-04-D8}
+\end{example}
+La densità di corrente \( \vec{j} \) è definita come la quantità di carica che attraversa
+una superficie unitaria \textbf{ortogonale alla direzione} delle cariche in moto.
+L'unità di misura è \( \left[ \frac{A}{m^2} \right] \) . Quindi la corrente \( i \)  è il flusso
+di densità di corrente \( \vec{j} \) :
+\[
+  i = \int_{\text{Sup}} \vec{j} \cdot \hat{n} dS
+\]
+
+Al livello microscopico la quantità di carica \( q_e \)  è quella che passa attraverso una superficie
+unitaria \( dS \) con una certa velocità \( \vec{v} = \frac{dx}{dt} \) in un unità di tempo:
+\label{30-04-D9}
+\[
+  \vec{j} = N q_e \vec{v}_{\text{Deriva}}
+\] 
+Mentre invece la corrente \( i \) è la carica nell'unità di tempo sulla superficie:
+\[
+  i = N q_e \vec{v}_{\text{Deriva}} \cdot \hat{n} dS
+\] 
+
+\vspace{1em}
+\noindent
+È detta corrente stazionaria (o \textbf{corrente continua}) una corrente con intensità 
+costante:
+\[
+   i = costante
+\] 
+\label{30-04-D10}
+Quidi se si ha la stessa intensità ma sezioni di dimensione diversa, sarà la densità
+di corrente a cambiare:
+\[
+  i_1 = i_2
+\] 
+\[
+  j_1 \neq j_2
+\] 
+\[
+  j_1 S_1 = j_2 S_2
+\] 
+
+\subsection{Legge di Ohm}
+Consideriamo un circuito con un generatore e un interruttore aperto concentrandoci sul cavo conduttore:
+\label{30-04-D11}
+Ogni oggetto materiale ha una certa temperatura, quindi all'interno del conduttore le
+cariche elementari sono in moto casuale con una certa velocità, di cui la media è nulla:
+\[
+  \left< \vec{v}_{\text{Termica}} \right> = 0
+\] 
+Questo moto è chiamato \textbf{agitazione termica}. Invece la velocità quadratica
+media non è nulla e rappresenta la \textbf{temperatura}:
+\[
+  \left< v^2 \right> \neq 0
+\] 
+all'aumentare della temperatura aumenta l'agitazione termica.
+
+Se chiudiamo l'interruttore si osserva una corrente \( i \) che corrisponde al moto 
+\textbf{ordinato} delle cariche nella direzione da \( V^+ \) a \( V^- \). La velocità di 
+questo moto si chiama \textbf{velocità di deriva} e non è nulla:
+\[
+  \left<v_{\text{deriva}} \right> \neq 0 \quad \text{Moto ordinato di cariche}
+\] 
+\label{30-04-D12}
+Se si aumenta la temperatura a parità di differenza di potenziale si avrà minore
+velocità di deriva, quindi minore corrente. Questo fenomeno è dovuto al fatto che
+l'agitazione termica aumenta la \textbf{resistenza elettrica} del conduttore, cioè le cariche urtano
+più spesso gli atomi del conduttore e quindi si ha una minore velocità di deriva.
+Il simbolo della resistenza è il seguente:
+\begin{figure}[H]
+  \centering
+  \begin{circuitikz}
+    \draw (0,0) to[R, l_=R] (2,0);
+  \end{circuitikz}
+  \caption{Simbolo della resistenza}
+\end{figure}
+
+Si osserva quindi che l'intensità di corrente \( i \) è lineare alla differenza di
+potenziale \( V \):
+\[
+  V = Ri
+\] 
+dove \( R \) è la resistenza elettrica, cioè un coefficiente che dipende dal materiale,
+dalla temperatura e dalla geometria, misurato in Ohm \( \left[ \Omega \right] \):
+\[
+  R = \frac{l}{s} \cdot \rho
+\] 
+dove:
+\[
+  \begin{aligned}
+    l &= \text{lunghezza del conduttore} \\
+    s &= \text{sezione del conduttore} \\
+    \rho &= \text{resistività del materiale} \quad [\Omega m]
+  \end{aligned}
+\] 
+
+\vspace{1em}
+\noindent
+Consideriamo un conduttore elementare di sezione infinitesima \( dS \) e di lunghezza
+\( dl \) con una tensione \( dV \):
+\label{30-04-D13}
+\noindent
+Osserviamo che:
+\[
+  dV = R \cdot di
+\] 
+E sappiamo che:
+\[
+  \begin{aligned}
+    dV &= E \cdot dl \\
+    di &= j \cdot dS
+    R &= \frac{dl}{dS} \cdot \rho
+  \end{aligned}
+\] 
+Sostituiamo e si ottiene:
+\[
+  \begin{aligned}
+    E\cancel{dl} &= \rho \frac{\cancel{dl}}{\cancel{dS}} \cdot j\cancel{ds}\\
+    \vec{E} &= \rho \vec{j}
+  \end{aligned}
+\] 
+\begin{definition}[Legge di Ohm]
+  Il campo elettrico genera una densità di corrente \( \vec{j} \) locale e il coefficiente
+  di proporzionalità è la \textbf{resistività} \( \rho \) del materiale:
+  \[
+    \vec{E} = \rho \vec{j}
+  \] 
+  quindi:
+  \[
+    \vec{j} = \vec{E} \cdot \sigma
+  \] 
+  dove \( \sigma = \frac{1}{\rho} \) e si chiama \textbf{conducibilità elettrica}.
+\end{definition}
+Dalla legge di Ohm si ricava che da una forza si ottiene una velocità e non una accelerazione,
+e questo è dovuto agli urti delle cariche con gli atomi del conduttore. Quindi:
+\[
+  \Delta p = F \Delta t
+\] 
+
+\subsection{Potenza elettrica}
+Consideriamo una resistenza con una differenza di potenziale \( V \) ai capi:
+\label{30-04-D14}
+Sappiamo che il lavoro elettrico è dato da:
+\[
+  dL = V dq
+\] 
+che è il lavoro esterno che compie il generatore per mantenere la corrente.
+La potenza \( P \) è definita come il lavoro per unità di tempo, quindi la potenza
+elettrica è:
+\[
+  P_{\text{Elettrica}} = \frac{dL}{dt} = \frac{V dq}{dt} = V i
+\] 
+Nel caso di una resistenza si parla di \textbf{potenza dissipata} (\( V = Ri \)):
+\[
+  P_{\text{Dissipata}} = R i^2 = \frac{V^2}{R} \quad \left[ W \right]
+\] 
+Se invece consideriamo un generatore si parlerà di \textbf{potenza erogata} 
+(\( V = \mathcal{E} \)), cioè:
+\[
+  P_{\text{Erogata}} = \mathcal{E} i
+\] 
+
+Si osserva da un circuito elementare che la potenza erogata e uguale alla potenza dissipata:
+\[
+  \mathcal{E}i = r_{int} i^2 + Ri^2
+\] 
+
 \end{document}
