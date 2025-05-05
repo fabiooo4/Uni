@@ -2145,8 +2145,63 @@ al massimo \( |f^*| \), cioè il flusso ottimo. La complessità di questo algori
 aumentante e aumentare di una unità il flusso lungo quel cammino fino a quando non
 si trovano più cammini aumentanti.
 
+\vspace{1em}
+\noindent
+Il teorema di Max-Flow Min-Cut afferma che il flusso massimo è uguale alla capacità
+del taglio minimo.
 
+\vspace{1em}
+\noindent
+Considerando \( \delta(u) \) come distanza di un nodo \( u \) dal nodo sorgente \( s \)
+definiamo \( \delta_0 \), \( \delta_1 \) \( \ldots \delta_n \) come la distanza
+dalla sorgente \( s \) a un nodo \( u \) all'iterazione \( i \) dell'algoritmo di
+Ford-Fulkerson. È stato dimostrato che la funzione \( \delta \) è monotona non decrescente:
+\[
+  \delta_0(u) \le \delta_1(u) \le \ldots \le \delta_n(u)
+\] 
+Consideriamo due nodi \( u \) e \( v \) collegati da un arco critico che fa parte di un
+cammino aumentante. La distanza di \( u \) dalla sorgente è \( \delta(u) \) e la 
+distanza di \( v \) è \( \delta(u) + 1 \). Se si aumenta l'arco critico della sua
+capacità residua, allora esso diventa saturo e quindi nella rete residua quell'arco
+viene rimosso. L'unico modo per far tornare l'arco \( (u,v) \) è necessario aumentare
+il flusso lungo \( (v,u) \). Per aumentere \( (v,u) \) però è necessario che ci
+sia un cammino aumentante che contiene l'arco critico \( (v,u) \) e il nodo v
+avrà distanza \( \delta'(v) \) e sapendo che è monotona non decrescente vale:
+\[
+  \delta'(v) \ge  \delta(u) + 1
+\] 
+e quindi la distanza di u è:
+\[
+  \delta'(v) + 1 \ge \delta(u) + 2
+\] 
+Quindi ogni volta che un arco \( (u,v) \) diventa critico, la distanza di \( u \)
+aumenta di 2 dalla sorgente.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture} [
+      node distance=2.5cm,
+      every edge quotes/.style = {auto, font=\footnotesize, sloped}
+    ]
+    \node[draw,circle,minimum size=0.8cm] (u) {u};
+    \node[draw,circle,minimum size=0.8cm] (v) [right=of u] {v};
+    \node[above] at (u.north) {\( \delta(u) \)};
+    \node[above] at (v.north) {\( \delta(u) + 1 \)};
+    \node[below] at (u.south) {\( \delta'(v) \ge \delta(u) + 1 \)};
+    \node[below] at (v.south) {\( \delta'(v) + 1 \ge \delta(u) + 2 \)};
 
+    \draw[->] (u) edge[bend left=20] (v);
+    \draw[<-,dashed] (u) edge[bend right=20] (v);
+  \end{tikzpicture}
+\end{figure}
+\noindent
+La distanza di \( u \) può aumentare al massimo di \( \frac{v}{2} \) volte, perchè
+altrimenti la sua distanza sarebbe superiore a \( v \) e quindi non esisterebbe più un
+cammino aumentante. Quindi il massimo numero di volte che si può trovare un cammino
+aumentante è \( E \cdot \frac{v}{2} \). Quindi un altro limite superiore al numero
+di operazioni dell'algoritmo di Ford-Fulkerson è:
+\[
+  VE(V+E)
+\] 
 
 
 
