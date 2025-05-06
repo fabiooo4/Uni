@@ -2025,35 +2025,66 @@ Ora introduciamo il \textbf{tempo} e notiamo che:
 \subsubsection{Forza elettromotrice}
 Consideriamo un conduttore ad un certo potenziale \( V^+ \)  e un secondo conduttore con
 un potenziale \( V^- \)  \textbf{minore del primo} (il meno non indica che è negativo,
-ma che è minore).
-\label{30-04-D1}
+ma che è minore):
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{conduttore_potenziale}
+  \caption{Conduttori con un potenziale}
+\end{figure}
+\noindent
 Se i due conduttori vengono collegati da un filo conduttore si avrà un potenziale costante:
-\label{30-04-D2}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{conduttore_potenziale_collegato}
+  \caption{Conduttori collegati a potenziale costante}
+\end{figure}
+\noindent
 Ma cosa succede prima che il condutttore raggiunga l'equilibrio?
+
 Si forma un campo dal potenziale \( V^+ \) al potenziale \( V^- \)  e quidi si avrà
 un moto di cariche:
-\label{30-04-D3}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{conduttore_potenziale_collegato_2}
+  \caption{Stabilizzazione del potenziale}
+\end{figure}
+\noindent
 Lo spostamento delle cariche azzera il potenziale secondo il seguente grafico:
-\label{30-04-D4}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{grafico_stabilizzazione_potenziale}
+  \caption{Grafico di stabilizzazione del potenziale}
+\end{figure}
+\noindent
 Per mantenere le cariche \( q \) in moto, quindi un circuito, bisogna avere un \textbf{lavoro
 esterno} che va contro il campo elettrico che riporta le cariche da \( V^- \) a
 \( V^+ \). Questo lavoro esterno è fornito da un generatore e si chiama \textbf{forza
 elettromotrice} \( \mathcal{E} \):
-\label{30-04-D5}
 \[
   \mathcal{E} = \int_{A^-}^{B^+} \frac{\vec{F}}{q} \cdot \vec{dl}
   = V^+_B - V^-_A \quad \left[ V \right]
 \] 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{forza_elettromotrice}
+  \caption{Forza elettromotrice}
+\end{figure}
+\noindent
 La forza elettromotrice è nota anche come FEM (Forza ElettroMotrice), tensione o
 differenza di potenziale.
 
 \vspace{1em}
 \noindent
 Se espandiamo il circuito osserviamo che:
-\label{30-04-D6}
-\[
-  E^* = \frac{F^*}{q}
-\] 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{forza_elettromotrice_2}
+  \[
+    E^* = \frac{F^*}{q}
+  \] 
+  \caption{Forza elettromotrice nel dettaglio}
+\end{figure}
+\noindent
 Quindi la forza elettromotrice può essere espressa anche come:
 \[
   \mathcal{E} = \oint_{\Gamma} E \cdot dl
@@ -2071,12 +2102,20 @@ unità di tempo:
   i = \frac{dq}{dt} \quad \left[ A \right] \; \text{(Ampere)}
 \] 
 Il verso della corrente è convenzionalmente quello del moto delle cariche positive.
-\label{30-04-D7}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.4\textwidth]{intensita_corrente}
+  \caption{Intensità di corrente}
+\end{figure}
 
 \subsubsection{Densità di corrente}
 \begin{example}
   La superficie del conduttore influisce sulla corrente di carica:
-  \label{30-04-D8}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{densita_corrente}
+    \caption{Densità di corrente}
+  \end{figure}
 \end{example}
 La densità di corrente \( \vec{j} \) è definita come la quantità di carica che attraversa
 una superficie unitaria \textbf{ortogonale alla direzione} delle cariche in moto.
@@ -2085,10 +2124,13 @@ di densità di corrente \( \vec{j} \) :
 \[
   i = \int_{\text{Sup}} \vec{j} \cdot \hat{n} dS
 \]
-
 Al livello microscopico la quantità di carica \( q_e \)  è quella che passa attraverso una superficie
 unitaria \( dS \) con una certa velocità \( \vec{v} = \frac{dx}{dt} \) in un unità di tempo:
-\label{30-04-D9}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{densita_corrente_microscopica}
+  \caption{Densità di corrente al livello microscopico}
+\end{figure}
 \[
   \vec{j} = N q_e \vec{v}_{\text{Deriva}}
 \] 
@@ -2104,8 +2146,13 @@ costante:
 \[
    i = costante
 \] 
-\label{30-04-D10}
-Quidi se si ha la stessa intensità ma sezioni di dimensione diversa, sarà la densità
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{corrente_stazionaria}
+  \caption{Corrente stazionaria}
+\end{figure}
+\noindent
+Quindi se si ha la stessa intensità ma sezioni di dimensione diversa, sarà la densità
 di corrente a cambiare:
 \[
   i_1 = i_2
@@ -2119,7 +2166,12 @@ di corrente a cambiare:
 
 \subsection{Legge di Ohm}
 Consideriamo un circuito con un generatore e un interruttore aperto concentrandoci sul cavo conduttore:
-\label{30-04-D11}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{circuito_conduttore}
+  \caption{Circuito elementare}
+\end{figure}
+\noindent
 Ogni oggetto materiale ha una certa temperatura, quindi all'interno del conduttore le
 cariche elementari sono in moto casuale con una certa velocità, di cui la media è nulla:
 \[
@@ -2138,7 +2190,12 @@ questo moto si chiama \textbf{velocità di deriva} e non è nulla:
 \[
   \left<v_{\text{deriva}} \right> \neq 0 \quad \text{Moto ordinato di cariche}
 \] 
-\label{30-04-D12}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{circuito_conduttore_2}
+  \caption{Circuito conduttore con velocità di deriva}
+\end{figure}
+\noindent
 Se si aumenta la temperatura a parità di differenza di potenziale si avrà minore
 velocità di deriva, quindi minore corrente. Questo fenomeno è dovuto al fatto che
 l'agitazione termica aumenta la \textbf{resistenza elettrica} del conduttore, cioè le cariche urtano
@@ -2151,7 +2208,7 @@ Il simbolo della resistenza è il seguente:
   \end{circuitikz}
   \caption{Simbolo della resistenza}
 \end{figure}
-
+\noindent
 Si osserva quindi che l'intensità di corrente \( i \) è lineare alla differenza di
 potenziale \( V \):
 \[
@@ -2175,7 +2232,11 @@ dove:
 \noindent
 Consideriamo un conduttore elementare di sezione infinitesima \( dS \) e di lunghezza
 \( dl \) con una tensione \( dV \):
-\label{30-04-D13}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.3\textwidth]{conduttore_elementare}
+  \caption{Conduttore elementare}
+\end{figure}
 \noindent
 Osserviamo che:
 \[
@@ -2216,7 +2277,12 @@ e questo è dovuto agli urti delle cariche con gli atomi del conduttore. Quindi:
 
 \subsection{Potenza elettrica}
 Consideriamo una resistenza con una differenza di potenziale \( V \) ai capi:
-\label{30-04-D14}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.4\textwidth]{resistenza_differenza_potenziale}
+  \caption{Resistenza con differenza di potenziale}
+\end{figure}
+\noindent
 Sappiamo che il lavoro elettrico è dato da:
 \[
   dL = V dq
@@ -2236,8 +2302,7 @@ Se invece consideriamo un generatore si parlerà di \textbf{potenza erogata}
 \[
   P_{\text{Erogata}} = \mathcal{E} i
 \] 
-
-Si osserva da un circuito elementare che la potenza erogata e uguale alla potenza dissipata:
+Si osserva da un circuito elementare che la potenza erogata è uguale alla potenza dissipata:
 \[
   \mathcal{E}i = r_{int} i^2 + Ri^2
 \] 
