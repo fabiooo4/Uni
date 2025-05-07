@@ -2307,4 +2307,148 @@ Si osserva da un circuito elementare che la potenza erogata è uguale alla poten
   \mathcal{E}i = r_{int} i^2 + Ri^2
 \] 
 
+\subsection{Reti lineari (o circuiti elementari)}
+Una rete lineare è composta nel seguente modo:
+\label{03-05-D1}
+Il \textbf{bilancio energetico} (o legge di Ohm generalizzata) è:
+\[
+  \mathcal{E} = \sum V_i = \underbrace{Ri}_{V_R} + \underbrace{ri}_{V_r}
+\] 
+Quindi la corrente è la stessa in tutti i punti della rete, cioè la corrente è
+continua. Il grafico della tensione facendo la circuitazione della rete, partendo dalla
+lastra positiva del generatore fino alla lastra negativa è la seguente:
+\label{03-05-D2}
+L'intensità di corrente \( i \) è facilmente calcolabile utilizzando la legge di Ohm
+generalizzata:
+\[
+  i = \frac{\mathcal{E}}{R + r} \quad \left[ A \right]
+\] 
+La differenza di potenziale tra i due capi \( A \) e \( B \) è data anch'essa dalla
+legge di Ohm:
+\[
+  V_A - V_B = Ri = \mathcal{E} - r i < \mathcal{E} \quad \left[ V \right]
+\] 
+E questo indica che la tensione \( V_A - V_B \) è minore della tensione del generatore.
+Un altro modo per scrivere l'equazione è sostituire \( i \):
+\[
+  V_A - V_B = \frac{\mathcal{E}}{1 + \frac{ri}{R}}
+\] 
+A \textbf{circuito aperto} si ha che \( R \to \infty \), allora \( V_{AB} = \mathcal{E} \)
+e \( i = 0 \).
+
+\begin{define}
+  Ricordiamo che \( V = \frac{U}{q} \), quindi il bilancio energetico per unità di carica in \( V \) è:
+  \[
+    V: \;\; \underbrace{\mathcal{E} = Ri + ri}_{q=1} \quad \left[ V \right]
+  \] 
+  Per una quantità di carica generica \( dq = idt \) si avrà quindi un bilancio in \( U \):
+  \[
+    U: \;\; \mathcal{E}idt = R i^2 dt + r i^2 dt \quad \left[ J \right]
+  \] 
+  Ricordando che la potenza è \( P = \frac{dL}{dt} \) il bilancio energetico in \( P \) è:
+  \[
+    P: \;\; \mathcal{E}i = R i^2 + r i^2 \quad \left[ W \right]
+  \] 
+\end{define}
+
+\subsubsection{Collegamento di resistori}
+I collegamenti si dividono in due tipi:
+\begin{itemize}
+  \item \textbf{Serie}: I collegamenti in serie portano la stessa corrente:
+    \label{03-05-D3}
+    \[
+      i_1 = i_2
+    \] 
+    Si vuole rappresentare una serie di resistori come un unico resistore equivalente \( R_{eq} \):
+    \label{03-05-D5}
+    \[
+      V_{Tot} = R_{eq} i_{Tot} = \sum V_i = \sum (R\underbrace{i_i}_{i_{Tot}}) 
+      = i \sum R_i
+    \] 
+    Quindi la resistenza equivalente della serie è:
+    \[
+      R_{eq} = \sum_{i=1}^{N} R_i \quad \left[ \Omega \right]
+    \] 
+  \item \textbf{Parallelo}: I collegamenti in parallelo portano la stessa tensione:
+    \label{03-05-D4}
+    \[
+      V_1 = V_2
+    \]
+    Si vuole rappresentare un insieme di resistori in parallelo come un unico resistore
+    equivalente \( R_{eq} \):
+    \label{03-05-D6}
+    \[
+      i_{Tot} = \sum_k i_k = \sum_k \frac{\overbrace{V_k}^{V}}{R_k}
+      = V \sum_k \frac{1}{R_k} = \frac{V_{Tot}}{R_{eq}}
+    \] 
+    Quindi la resistenza equivalente del parallelo è:
+    \[
+      \frac{1}{R_{eq}} = \sum_{i=1}^{N} \frac{1}{R_i} \quad \left[ \Omega \right]
+    \]
+
+\end{itemize}
+
+\subsubsection{Partitore resistivo}
+\begin{itemize}
+  \item \textbf{Partitore in tensione}: 
+    \label{03-05-D7}
+    \[
+      R_{eq} = R_1 + R_2
+    \] 
+    \[
+      i = i_1 = i_2 = \frac{\mathcal{E}}{R_1 + R_2} = \frac{\mathcal{E}}{R_{eq}} \quad \left[ A \right]
+    \] 
+    Ai capi di \( R_1 \) la tensione è ripartita \textbf{linearmente} una tensione \( V_1 \) che è
+    proporzionale alla resistenza \( R_1 \).
+    \[
+    V_1 = R_1 i_1 = \frac{R_1}{R_1 + R_2} \mathcal{E}
+    \] 
+    Lo stesso vale per la resistenza \( R_2 \):
+    \[
+      V_2 = R_2 i_2 = \frac{R_2}{R_1 + R_2} \mathcal{E}
+    \] 
+
+  \item \textbf{Partitore in corrente}:
+    \label{03-05-D8}
+    \[
+      \frac{1}{R_{eq}} = \frac{1}{R_1} + \frac{1}{R_2} \Rightarrow R_{eq} = \frac{R_1R_2}{R_1 + R_2}
+    \] 
+    \[
+      V = V_1 = V_2
+    \] 
+    La corrente è ripartita \textbf{linearmente} tra le due resistenze \( R_1 \) e \( R_2 \):
+    \[
+      i_1 = \frac{\mathcal{E}}{R_1} = \frac{R_2}{R_1+R_2} i
+    \] 
+    \[
+      i_2 = \frac{\mathcal{E}}{R_2} = \frac{R_1}{R_1+R_2} i
+    \]
+\end{itemize}
+Per quanto riguarda le potenze dissipate sappiamo che la potenza è locale, quindi per
+calcolare la potenza totale si possono sommare le potenze locali:
+\[
+  P_{Tot} = \sum P_k
+\] 
+\begin{itemize}
+  \item Per la serie:
+    \[
+      P_{Tot} = P_1 + P_2 = R_1 i_1^2 + R_2 i_2^2
+      = (R_1 + R_2)i^2 = R_{eq} i^2
+    \] 
+    Quindi:
+    \[
+      P_1 = R_1 i^2
+    \] 
+    oppure anche:
+    \[
+      P_{Tot} = R_{eq} i_{Tot}^2
+    \] 
+  \item Per il parallelo (ricordiamo che \( i = \frac{V}{R} \)):
+    \[
+      P_{Tot} = P_1 + P_2 = R_1 i_1^2 + R_2 i_2^2
+      = \frac{V^2}{R_1} + \frac{V^2}{R_2}
+      = V^2 \left( \frac{1}{R_1} + \frac{1}{R_2} \right)
+    \] 
+\end{itemize}
+
 \end{document}
