@@ -2309,7 +2309,12 @@ Si osserva da un circuito elementare che la potenza erogata è uguale alla poten
 
 \subsection{Reti lineari (o circuiti elementari)}
 Una rete lineare è composta nel seguente modo:
-\label{03-05-D1}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{rete_lineare}
+  \caption{Rete lineare}
+\end{figure}
+\noindent
 Il \textbf{bilancio energetico} (o legge di Ohm generalizzata) è:
 \[
   \mathcal{E} = \sum V_i = \underbrace{Ri}_{V_R} + \underbrace{ri}_{V_r}
@@ -2317,7 +2322,12 @@ Il \textbf{bilancio energetico} (o legge di Ohm generalizzata) è:
 Quindi la corrente è la stessa in tutti i punti della rete, cioè la corrente è
 continua. Il grafico della tensione facendo la circuitazione della rete, partendo dalla
 lastra positiva del generatore fino alla lastra negativa è la seguente:
-\label{03-05-D2}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{circuito_generatore}
+  \caption{Grafico della tensione}
+\end{figure}
+\noindent
 L'intensità di corrente \( i \) è facilmente calcolabile utilizzando la legge di Ohm
 generalizzata:
 \[
@@ -2355,10 +2365,15 @@ e \( i = 0 \).
 I collegamenti si dividono in due tipi:
 \begin{itemize}
   \item \textbf{Serie}: I collegamenti in serie portano la stessa corrente:
-    \label{03-05-D3}
-    \[
-      i_1 = i_2
-    \] 
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.5\textwidth]{collegamento_serie}
+      \[
+        i_1 = i_2
+      \] 
+      \caption{Collegamento in serie}
+    \end{figure}
+    \noindent
     Si vuole rappresentare una serie di resistori come un unico resistore equivalente \( R_{eq} \):
     \label{03-05-D5}
     \[
@@ -2370,10 +2385,14 @@ I collegamenti si dividono in due tipi:
       R_{eq} = \sum_{i=1}^{N} R_i \quad \left[ \Omega \right]
     \] 
   \item \textbf{Parallelo}: I collegamenti in parallelo portano la stessa tensione:
-    \label{03-05-D4}
-    \[
-      V_1 = V_2
-    \]
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.5\textwidth]{collegamento_parallelo}
+      \[
+        V_1 = V_2
+      \]
+      \caption{Collegamento in parallelo}
+    \end{figure}
     Si vuole rappresentare un insieme di resistori in parallelo come un unico resistore
     equivalente \( R_{eq} \):
     \label{03-05-D6}
@@ -2398,7 +2417,7 @@ I collegamenti si dividono in due tipi:
     \[
       i = i_1 = i_2 = \frac{\mathcal{E}}{R_1 + R_2} = \frac{\mathcal{E}}{R_{eq}} \quad \left[ A \right]
     \] 
-    Ai capi di \( R_1 \) la tensione è ripartita \textbf{linearmente} una tensione \( V_1 \) che è
+    Ai capi di \( R_1 \) è ripartita \textbf{linearmente} una tensione \( V_1 \) che è
     proporzionale alla resistenza \( R_1 \).
     \[
     V_1 = R_1 i_1 = \frac{R_1}{R_1 + R_2} \mathcal{E}
@@ -2449,6 +2468,211 @@ calcolare la potenza totale si possono sommare le potenze locali:
       = \frac{V^2}{R_1} + \frac{V^2}{R_2}
       = V^2 \left( \frac{1}{R_1} + \frac{1}{R_2} \right)
     \] 
+\end{itemize}
+
+\subsubsection{Leggi di Kirchhoff}
+\begin{itemize}
+  \item \textbf{Conservazione della carica}: La somma delle correnti che entrano in un nodo è
+    zero:
+    \label{09-05-D9}
+    \[
+      \sum i_{k} = 0 
+    \] 
+  \item \textbf{Conservazione dell'energia}: (Una maglia è un circuito chiuso con un verso).
+    La somma degli elementi attivi è uguale alla somma degli elementi passivi:
+    \[
+      \underbrace{\sum \mathcal{E}_k}_{\text{Generatori "attivi"}} 
+      = \underbrace{\sum \overbrace{R_k i_k}^{V_k}}_{\text{Resistori "passivi"}}
+    \]
+    I segni vengono presi in base al verso della maglia:
+    \begin{itemize}
+      \label{09-05-D10}
+      \item Se la corrente è nello stesso verso della maglia, allora è positiva
+      \item Se la corrente è nel verso opposto alla maglia, allora è negativa
+    \end{itemize}
+    \begin{itemize}
+      \label{09-05-D11}
+      \item Se il generatore è nel verso della maglia, allora è positivo
+      \item Se il generatore è nel verso opposto alla maglia, allora è negativo
+    \end{itemize}
+\end{itemize}
+\begin{example}
+  Consideriamo il circuito seguente:
+  \label{09-05-D12}
+  \begin{enumerate}
+    \item Trovare il verso della maglia
+      \label{09-05-D13}
+    \item Trovare il verso della corrente
+      \label{09-05-D14}
+    \item Trovare i segni della FEM
+      \[
+        \left( +\mathcal{E}_1 + \mathcal{E}_2 - \mathcal{E}_3 - \mathcal{E}_4 \right) 
+      \] 
+    \item Trovare i segni degli elementi passivi
+      \[
+        R_1 i_1 + R_2 i_2 - R_3 i_3 - R_4 i_4
+      \] 
+  \end{enumerate}
+
+  \[
+    \left( \mathcal{E}_1 + \mathcal{E}_2 - \mathcal{E}_3 - \mathcal{E}_4 \right)
+    = \left( R_1 i_1 + R_2 i_2 - R_3 i_3 - R_4 i_4 \right)
+  \] 
+\end{example}
+
+\subsection{Reti non lineari (o circuiti RC)}
+\subsubsection{Collegamento di condensatori}
+\begin{itemize}
+  \item \textbf{Condensatori in serie}: Avranno la stessa carica \( Q \):
+    \label{09-05-D1}
+    Una serie di condensatori si comportano come un unico condensatore equivalente:
+    \label{09-05-D2}
+    Ricordando la definizione di capacità \( C = \frac{Q}{\Delta V} \) che nei circuiti
+    scriviamo come \( C = \frac{Q}{V} \to V = \frac{Q}{C} \). Il potenziale totale è:
+    \[
+      V_{Tot} = \sum V_i =  \sum \frac{Q_i}{C_i}
+    \] 
+    Siccome la carica è la stessa, la tensione totale diventa:
+    \[
+      V_{Tot} = Q \sum \frac{1}{C_i}
+    \] 
+    Quindi la capacità totale sarà:
+    \[
+      C_{Tot} = \left( \sum \frac{1}{C_i} \right)^{-1}
+    \] 
+    Si nota che la capacità di condensatori in serie \textbf{diminuisce}.
+
+  \item \textbf{Condensatori in parallelo}: I condensatori in parallelo hanno lo stesso
+    potenziale \( V \):
+    \label{09-05-D3}
+    Anche i condensatori in parallelo si comportano come un unico condensatore equivalente.
+    La carica totale sarà la somma di tutte le cariche:
+    \[
+      Q_{Tot} = \sum Q_i = \sum C_i V_i
+    \] 
+    Siccome il potenziale è lo stesso, la carica totale diventa:
+    \[
+      Q_{Tot} = V \sum C_i
+    \]
+    Quindi la capacità totale sarà:
+    \[
+      C_{Tot} = \sum C_i
+    \]
+    Si nota che la capacità di condensatori in parallelo \textbf{aumenta}.
+\end{itemize}
+
+\subsubsection{Partitore capacitivo}
+Sfrutta il collegamento in serie. Consideriamo
+la stessa carica \( Q \), cioè \( C_i V_i \) è costante. La tensione è ripartita
+\textbf{inversamente proporzionale} alla capacità:
+\[
+  V_i = \frac{Q}{C_i} = \frac{C_{Tot}}{C_i}
+\] 
+
+\subsubsection{Processo di carica e scarica del condensatore}
+\begin{itemize}
+  \item \textbf{Scarica}: Si vuole trovare la legge oraria di \( i \), \( Q \) e \( V \):
+    \[
+      i(t) \quad Q(t) \quad V(t)
+    \] 
+    Consideriamo il seguente circuito con un condensatore carico e un interruttore
+    \label{09-05-D4}
+    Consideriamo il tempo \( t_0 \) il tempo in cui chiudiamo l'interruttore:
+    \[
+      t_0 = 0 \to Q(0) = Q_0
+    \] 
+    La chiusura dell'interruttore in un circuito con un condensatore carico modella
+    la scarica del condensatore. La corrente scorre dal \( + \) al \( - \):
+    \label{09-05-D5}
+    Il potenziale ai capi del condensatore è:
+    \[
+      V_C(t) = \frac{Q(t)}{C}
+    \] 
+    e la corrente:
+    \[
+      i = - \frac{dQ}{dt}
+    \] 
+    Ai capi del resistore la corrente vale (Legge di Ohm):
+    \[
+      i = \frac{V_R(t)}{R}
+    \] 
+    Si potrebbe dire che \( V_C(t) = V_R(t) \), ma questo \textbf{non vale} perchè il segnale
+    non si propaga istantaneamente, quindi si ha un ritardo. Si può approssimare
+    a \( V_C(t) = V_R(t) \) solo se il circuito è piccolo rispetto allo spazio che 
+    deve percorrere l'informazione o se il fenomeno è sufficientemente veloce.
+
+    \vspace{1em}
+    \noindent
+    Da questo si ricava la seguente equazione differenziale:
+    \begin{definition}[Legge di scarica di un condensatore]
+    \[
+      \frac{dQ}{dt} + \frac{Q}{RC} = 0
+    \] 
+    che rappresenta un moto esponenziale decrescente. La soluzione è:
+
+    Porto a sinistra tutto ciò che non dipende dal tempo
+    \[
+      \frac{dQ}{Q} = -\frac{dt}{RC}
+    \] 
+    Integro dall'entrambe le parti:
+    \[
+      \int_{\underset{\text{(Inizio)}}{Q_0}}^{Q(t)} \frac{dQ}{Q}
+      = -\int_{\underset{\text{(Inizio)}}{t_0 = 0}}^t \frac{dt}{RC}
+    \] 
+    \[
+      \ln Q \bigg|_{Q_0}^{Q(t)} = -\frac{t}{RC} \bigg|_{0}^{t}
+    \] 
+    \[
+      \ln Q - \ln Q_0 = -\frac{t}{RC}
+    \] 
+    \[
+      \ln \frac{Q}{Q_0} = -\frac{t}{RC}
+    \] 
+    \[
+      Q(t) = Q_0 e^{-\frac{t}{RC}}
+    \] 
+    \( RC = \tau \) è detto \textbf{tempo di decadimento} del fenomeno.
+
+    Il grafico della carica è il seguente:
+    \label{09-05-D6}
+    La corrente e il potenziale hanno lo stesso andamento:
+    \[
+      i(t) = -\frac{dQ}{dt} = \frac{Q_0}{RC} e^{-\frac{t}{RC}} = \frac{V}{R} e^{-\frac{t}{RC}} = i_0 e^{-\frac{t}{RC}}
+    \] 
+    \[
+      V(t) = \frac{Q(t)}{C} = \frac{Q_0}{C} e^{-\frac{t}{RC}} = V_0 e^{-\frac{t}{RC}}
+    \] 
+    \end{definition}
+
+  \item \textbf{Carica}: Si vuole trovare la legge oraria di \( i \), \( Q \) e \( V \).
+    Consideriamo il seguente circuito con un condensatore scarico, un interruttore e
+    un generatore:
+    \label{09-05-D7}
+    \[
+      t_0 = 0 \quad Q_0 = 0
+    \] 
+    \[
+      i = + \frac{dQ}{dt}
+    \] 
+    La corrente scorre verso il condensatore e gli fornisce la carica. Le leggi sono le
+    stesse della scarica, tranne la legge di Ohm che diventa:
+    \begin{definition}[Legge di carica di un condensatore]
+      \[
+        \mathcal{E} V_R + V_C = Ri + \frac{Q}{C}
+      \] 
+      Il grafico della carica è il seguente:
+      \label{09-05-D8}
+      La legge esponenziale è quella che caratterizza il fenomeno, cioè \textbf{quanto
+      manca} a raggiungere la carica massima \( Q_0 \):
+      \[
+        Q(t) = Q_0 \left( 1 - e^{-\frac{t}{RC}} \right)
+      \]
+      La corrente è massima all'inizio e decresce esponenzialmente:
+      \[
+        i = i_0 e^{-\frac{t}{RC}} \to \frac{\mathcal{E}}{R}
+      \] 
+      Quindi corrente ed esponenziale hanno un andamento esponenziale decrescente.
+    \end{definition}
 \end{itemize}
 
 \end{document}
