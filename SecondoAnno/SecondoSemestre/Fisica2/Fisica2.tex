@@ -2375,7 +2375,11 @@ I collegamenti si dividono in due tipi:
     \end{figure}
     \noindent
     Si vuole rappresentare una serie di resistori come un unico resistore equivalente \( R_{eq} \):
-    \label{03-05-D5}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=1\textwidth]{resistore_equivalente_serie}
+      \caption{Resistore equivalente in serie}
+    \end{figure}
     \[
       V_{Tot} = R_{eq} i_{Tot} = \sum V_i = \sum (R\underbrace{i_i}_{i_{Tot}}) 
       = i \sum R_i
@@ -2395,7 +2399,11 @@ I collegamenti si dividono in due tipi:
     \end{figure}
     Si vuole rappresentare un insieme di resistori in parallelo come un unico resistore
     equivalente \( R_{eq} \):
-    \label{03-05-D6}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{resistore_equivalente_parallelo}
+      \caption{Resistore equivalente in parallelo}
+    \end{figure}
     \[
       i_{Tot} = \sum_k i_k = \sum_k \frac{\overbrace{V_k}^{V}}{R_k}
       = V \sum_k \frac{1}{R_k} = \frac{V_{Tot}}{R_{eq}}
@@ -2404,13 +2412,16 @@ I collegamenti si dividono in due tipi:
     \[
       \frac{1}{R_{eq}} = \sum_{i=1}^{N} \frac{1}{R_i} \quad \left[ \Omega \right]
     \]
-
 \end{itemize}
 
 \subsubsection{Partitore resistivo}
 \begin{itemize}
   \item \textbf{Partitore in tensione}: 
-    \label{03-05-D7}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{partitore_tensione}
+      \caption{Partitore in tensione}
+    \end{figure}
     \[
       R_{eq} = R_1 + R_2
     \] 
@@ -2428,7 +2439,11 @@ I collegamenti si dividono in due tipi:
     \] 
 
   \item \textbf{Partitore in corrente}:
-    \label{03-05-D8}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.7\textwidth]{partitore_corrente}
+      \caption{Partitore in corrente}
+    \end{figure}
     \[
       \frac{1}{R_{eq}} = \frac{1}{R_1} + \frac{1}{R_2} \Rightarrow R_{eq} = \frac{R_1R_2}{R_1 + R_2}
     \] 
