@@ -2489,10 +2489,14 @@ calcolare la potenza totale si possono sommare le potenze locali:
 \begin{itemize}
   \item \textbf{Conservazione della carica}: La somma delle correnti che entrano in un nodo è
     zero:
-    \label{09-05-D9}
-    \[
-      \sum i_{k} = 0 
-    \] 
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.25\textwidth]{conservazione_carica}
+      \[
+        \sum i_{k} = 0 
+      \] 
+      \caption{Conservazione della carica}
+    \end{figure}
   \item \textbf{Conservazione dell'energia}: (Una maglia è un circuito chiuso con un verso).
     La somma degli elementi attivi è uguale alla somma degli elementi passivi:
     \[
@@ -2501,34 +2505,70 @@ calcolare la potenza totale si possono sommare le potenze locali:
     \]
     I segni vengono presi in base al verso della maglia:
     \begin{itemize}
-      \label{09-05-D10}
-      \item Se la corrente è nello stesso verso della maglia, allora è positiva
-      \item Se la corrente è nel verso opposto alla maglia, allora è negativa
-    \end{itemize}
-    \begin{itemize}
-      \label{09-05-D11}
-      \item Se il generatore è nel verso della maglia, allora è positivo
-      \item Se il generatore è nel verso opposto alla maglia, allora è negativo
+      \item \textbf{Corrente}:
+        \begin{itemize}
+          \item Se la corrente è nello stesso verso della maglia, allora è positiva
+            \begin{figure}[H]
+              \centering
+              \includegraphics[width=0.3\textwidth]{verso_corrente_maglia}
+              \caption{Verso della corrente nella maglia}
+            \end{figure}
+
+          \item Se la corrente è nel verso opposto alla maglia, allora è negativa
+            \begin{figure}[H]
+              \centering
+              \includegraphics[width=0.3\textwidth]{verso_corrente_maglia_2}
+              \caption{Verso della corrente nella maglia}
+            \end{figure}
+        \end{itemize}
+
+      \item \textbf{Generatore}:
+        \begin{itemize}
+          \item Se il generatore è nel verso della maglia, allora è positivo
+            \begin{figure}[H]
+              \centering
+              \includegraphics[width=0.3\textwidth]{verso_generatore_maglia}
+              \caption{Verso del generatore nella maglia}
+            \end{figure}
+          \item Se il generatore è nel verso opposto alla maglia, allora è negativo
+            \begin{figure}[H]
+              \centering
+              \includegraphics[width=0.3\textwidth]{verso_generatore_maglia_2}
+              \caption{Verso del generatore nella maglia}
+            \end{figure}
+        \end{itemize}
     \end{itemize}
 \end{itemize}
 \begin{example}
   Consideriamo il circuito seguente:
-  \label{09-05-D12}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{circuito_esempio_1_1}
+    \caption{Circuito esempio}
+  \end{figure}
   \begin{enumerate}
     \item Trovare il verso della maglia
-      \label{09-05-D13}
+      \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\textwidth]{circuito_esempio_1_2}
+        \caption{Verso della maglia}
+      \end{figure}
     \item Trovare il verso della corrente
-      \label{09-05-D14}
-    \item Trovare i segni della FEM
-      \[
-        \left( +\mathcal{E}_1 + \mathcal{E}_2 - \mathcal{E}_3 - \mathcal{E}_4 \right) 
-      \] 
+    \item Trovare i segni delle FEM
+      \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\textwidth]{circuito_esempio_1_3}
+        \[
+          \left( +\mathcal{E}_1 + \mathcal{E}_2 - \mathcal{E}_3 - \mathcal{E}_4 \right) 
+        \] 
+        \caption{Segni delle FEM}
+      \end{figure}
     \item Trovare i segni degli elementi passivi
       \[
         R_1 i_1 + R_2 i_2 - R_3 i_3 - R_4 i_4
       \] 
   \end{enumerate}
-
+  Il risultato finale è quindi:
   \[
     \left( \mathcal{E}_1 + \mathcal{E}_2 - \mathcal{E}_3 - \mathcal{E}_4 \right)
     = \left( R_1 i_1 + R_2 i_2 - R_3 i_3 - R_4 i_4 \right)
@@ -2538,10 +2578,14 @@ calcolare la potenza totale si possono sommare le potenze locali:
 \subsection{Reti non lineari (o circuiti RC)}
 \subsubsection{Collegamento di condensatori}
 \begin{itemize}
-  \item \textbf{Condensatori in serie}: Avranno la stessa carica \( Q \):
-    \label{09-05-D1}
+  \item \textbf{Condensatori in serie}: Avranno la stessa carica \( Q \).
     Una serie di condensatori si comportano come un unico condensatore equivalente:
-    \label{09-05-D2}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=1\textwidth]{condensatori_serie}
+      \caption{Condensatori in serie}
+    \end{figure}
+    \noindent
     Ricordando la definizione di capacità \( C = \frac{Q}{\Delta V} \) che nei circuiti
     scriviamo come \( C = \frac{Q}{V} \to V = \frac{Q}{C} \). Il potenziale totale è:
     \[
@@ -2559,7 +2603,12 @@ calcolare la potenza totale si possono sommare le potenze locali:
 
   \item \textbf{Condensatori in parallelo}: I condensatori in parallelo hanno lo stesso
     potenziale \( V \):
-    \label{09-05-D3}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.9\textwidth]{condensatori_parallelo}
+      \caption{Condensatori in parallelo}
+    \end{figure}
+    \noindent
     Anche i condensatori in parallelo si comportano come un unico condensatore equivalente.
     La carica totale sarà la somma di tutte le cariche:
     \[
@@ -2591,14 +2640,24 @@ la stessa carica \( Q \), cioè \( C_i V_i \) è costante. La tensione è ripart
       i(t) \quad Q(t) \quad V(t)
     \] 
     Consideriamo il seguente circuito con un condensatore carico e un interruttore
-    \label{09-05-D4}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.5\textwidth]{circuito_condensatore_scarica}
+      \caption{Circuito con condensatore carico}
+    \end{figure}
+    \noindent
     Consideriamo il tempo \( t_0 \) il tempo in cui chiudiamo l'interruttore:
     \[
       t_0 = 0 \to Q(0) = Q_0
     \] 
     La chiusura dell'interruttore in un circuito con un condensatore carico modella
     la scarica del condensatore. La corrente scorre dal \( + \) al \( - \):
-    \label{09-05-D5}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.6\textwidth]{circuito_condensatore_scarica_2}
+      \caption{Corrente che scorre dal + al -}
+    \end{figure}
+    \noindent
     Il potenziale ai capi del condensatore è:
     \[
       V_C(t) = \frac{Q(t)}{C}
@@ -2649,7 +2708,12 @@ la stessa carica \( Q \), cioè \( C_i V_i \) è costante. La tensione è ripart
     \( RC = \tau \) è detto \textbf{tempo di decadimento} del fenomeno.
 
     Il grafico della carica è il seguente:
-    \label{09-05-D6}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{grafico_scarica_condensatore}
+      \caption{Grafico della carica}
+    \end{figure}
+    \noindent
     La corrente e il potenziale hanno lo stesso andamento:
     \[
       i(t) = -\frac{dQ}{dt} = \frac{Q_0}{RC} e^{-\frac{t}{RC}} = \frac{V}{R} e^{-\frac{t}{RC}} = i_0 e^{-\frac{t}{RC}}
@@ -2662,7 +2726,11 @@ la stessa carica \( Q \), cioè \( C_i V_i \) è costante. La tensione è ripart
   \item \textbf{Carica}: Si vuole trovare la legge oraria di \( i \), \( Q \) e \( V \).
     Consideriamo il seguente circuito con un condensatore scarico, un interruttore e
     un generatore:
-    \label{09-05-D7}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.6\textwidth]{circuito_condensatore_carica}
+      \caption{Circuito con condensatore scarico}
+    \end{figure}
     \[
       t_0 = 0 \quad Q_0 = 0
     \] 
@@ -2676,7 +2744,12 @@ la stessa carica \( Q \), cioè \( C_i V_i \) è costante. La tensione è ripart
         \mathcal{E} V_R + V_C = Ri + \frac{Q}{C}
       \] 
       Il grafico della carica è il seguente:
-      \label{09-05-D8}
+      \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\textwidth]{grafico_carica_condensatore}
+        \caption{Grafico della carica}
+      \end{figure}
+      \noindent
       La legge esponenziale è quella che caratterizza il fenomeno, cioè \textbf{quanto
       manca} a raggiungere la carica massima \( Q_0 \):
       \[
