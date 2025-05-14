@@ -2763,4 +2763,197 @@ la stessa carica \( Q \), cioè \( C_i V_i \) è costante. La tensione è ripart
     \end{definition}
 \end{itemize}
 
+\section{Magnetostatica}
+\subsection{Fatti sperimentali}
+Si osserva che ci sono alcuni \textbf{materiali} (ossidi di ferro:
+\( FeO \), \( Fe_2O_3 \)) che esercitano un nuovo tipo di forza.
+Questa forza può essere di due tipi:
+\begin{itemize}
+  \item \textbf{Attrattiva} (\( + \))
+  \item \textbf{Repulsiva} (\( - \))
+\end{itemize}
+Gli effetti di questa forza sono \textbf{localizzati ai poli} (Nord e Sud).
+\label{14-05-D1}
+Se si considera un oggetto, di questi materiali, piccolo tale da non perturbare il sistema ,
+si osserva che questo oggetto non rimane statico, ma \textbf{si orienta}. Questo oggetto
+"di test" è chiamato \textbf{ago magnetico}:
+\label{14-05-D2}
+Si deduce che esiste un effetto \textbf{magnetico} nel pianeta Terra.
+
+\begin{example}[Esperimento della calamita spezzata]
+  Si considera un oggetto magnetico, una calamita, e la si spezza in due parti. Si
+  osserva che si ottengono due calamite, ognuna con un polo Nord e un polo Sud.
+  \label{14-05-D3}
+  Se si spezza ulteriormente si nota che \textbf{non è possibile separare i due poli
+  magnetici}.
+  \label{14-05-D4}
+  Non esistono monopoli magnetici, nel senso che non è mai stato osservato, quindi non
+  esiste la sorgente singola di un campo magnetico. Non si avranno linee di campo magnetico
+  \( \vec{B} \) aperte, ma sempre \textbf{chiuse} e da questo si deduce che il flusso
+  attraverso la superficie chiusa è nullo:
+  \[
+    \Phi(\vec{B}) = \oint_{\text{Sup}} \vec{B} \cdot \hat{n} d\vec{S} = 0
+  \] 
+  Questa è la \textbf{prima equazione di Maxwell}.
+\end{example}
+
+\begin{definition}[Prima equazione di Maxwell]
+  Il flusso del campo magnetico attraverso una superficie chiusa è nullo:
+  \[
+    \Phi(\vec{B}) = \oint_{\text{Sup}} \vec{B} \cdot \hat{n} d\vec{S} = 0
+  \]
+  Un campo a linee chiuse è chiamato campo \textbf{solenoidale}.
+\end{definition}
+
+\begin{example}[Esperimento di Ørsted]
+  Si considera un filo percorso da una corrente \( i \) e si fa passare attraverso
+  un dielettrico pieno di piccoli aghi magnetici si osserva che si dispongono lungo
+  linee chiuse. Si osserva quindi che la corrente elettrica \( i \) \textbf{è sorgente}
+  di un campo magnetico \( \vec{B} \).
+  \label{14-05-D5}
+  Ricordando che la corrente è un flusso di cariche in moto. Se una carica è ferma si
+  genera un campo elettrico \( \vec{E} \), mentre se la carica si muove si forma un
+  campo elettromagnetico \( \vec{B} \).
+\end{example}
+Ampére scoprì che il campo magnetico è dovuto al flusso degli elettroni all'interno
+del'atomo:
+\label{14-05-D6}
+Quindi nei magneti si hanno delle \textbf{micro-correnti Amperiane}.
+
+\subsection{Forza magnetica (di Lorentz)}
+Consideriamo uno schema in cui si ha come sorgenti di campo le correnti e le cariche.
+Si ha un campo magnetico \( \vec{B} \) e degli oggetti su cui agisce (una forza),
+ovvero correnti e cariche.
+Si svolgono degli esperimenti analoghi a quelli per l'elettrostatica, cioè con la bilancia
+di torsione, per \textbf{osservare} le proprietà del campo magnetico.
+
+Consideriamo un campo \( \vec{B} \) e mettiamo una carica \( q \) ferma. Osserviamo che
+se la carica è ferma non si ha nessuna interazione:
+\label{14-05-D7}
+Mettiamo la carica in moto con una velocità \( \vec{v} \) e si osserva che si
+ha un'interazione con il campo magnetico:
+\label{14-05-D8}
+Si osserva che la forza:
+\begin{itemize}
+  \item È perpendicolare al campo: \( \vec{F} \perp \vec{B} \).
+  \item È perpendicolare alla velocità: \( \vec{F} \perp \vec{v} \).
+  \item È proporzionale alla carica, alla velocità e al campo magnetico:
+    \[
+      \vec{F} = q,\; |\vec{v}|,\; |\vec{B}|
+    \]
+\end{itemize}
+Quindi da queste proprietà si deduce che la forza di Lorentz magnetica è:
+\[
+  \vec{F} = q \vec{v} \times \vec{B} \quad \left[ N \right]
+\] 
+Siccome questa forza è centripeta, \textbf{non compie lavoro}, di conseguenza non esiste
+potenziale magnetico.
+\label{14-05-D9}
+
+\vspace{1em}
+\noindent
+Se si considera una particella carica \( q \) che si muove all'interno di un campo 
+\( \vec{B} \) e un campo \( \vec{E} \). Si osserva che vale il principio di sovrapposizione,
+quindi i due campi si sommano e si osserva una forza totale (la vera forza di Lorentz).
+\begin{definition}[Forza di Lorentz]
+  La forza di Lorentz è quindi la somma della forza elettrica e della forza magnetica.
+  \[
+    \vec{F} = q \vec{E} + q \vec{v} \times \vec{B} \quad \left[ N \right]
+  \] 
+  Questa è la forza che agisce su una sola carica.
+\end{definition}
+
+\begin{example}
+  Consideriamo un filo percorso da una corrente \( i \). Si avrà una densità di
+  corrente (quantità di carica per una superficie unitaria)
+  \[
+    \vec{j} = N \cdot q \cdot \vec{v}_{\text{Deriva}} \to i = jS
+  \] 
+  \label{14-05-D10}
+  Il campo magnetico agisce sul filo \( dl \) e si osserva una forza totale magnetica sul filo
+  ottenuta sommando tutte le particelle all'interno del volume:
+  \[
+    d\vec{F} = \sum_{\underset{\text{Vol}}{S \cdot dl}} q \vec{v}_q \times \vec{B}
+    = \underbrace{\vec{j} S}_{i} dl \times \vec{B} = i d\vec{l} \times \vec{B}
+  \] 
+  osserviamo che la forza è in relazione macroscopica alla corrente \( i \).
+\end{example}
+
+\begin{definition}[Seconda legge elementare di Laplace]
+  La forza magnetica su un filo percorso da una corrente \( i \) è:
+  \[
+    d\vec{F} = i d\vec{l} \times \vec{B} \quad \left[ N \right]
+  \] 
+  Questa è la forza che agisce su un gruppo di cariche.
+\end{definition}
+
+\begin{define}
+  La convenzione per rappresentare un vettore tridimensionale è la seguente:
+  \label{14-05-D11}
+  Quindi si ha la vista dall'alto e da sotto:
+  \begin{itemize}
+    \item Vettore uscente \( \odot \)
+    \item Vettore entrante \( \otimes \)
+  \end{itemize}
+\end{define}
+
+\subsubsection{Dipolo magnetico}
+\begin{definition}[Dipolo magnetico]
+  Il dipolo magnetico è una \textbf{spira} elementare percorsa da una corrente \( i \).
+  \label{14-05-D12}
+  Il \textbf{momento di dipolo magnetico} è definito come:
+  \[
+    \vec{\mu} = i \vec{S}
+  \]
+  Il verso segue la regola della mano destra. Il momento si orienta nel verso del
+  campo magnetico \( \vec{B} \), proprio come gli aghi magnetici.
+\end{definition}
+
+\subsubsection{Applicazione della forza magnetica}
+Andiamo ad analizzare:
+\begin{itemize}
+  \item Una spira
+  \item Il moto di cariche
+  \item Effetto Hall
+\end{itemize}
+
+\begin{example}
+  Consideriamo una spira immersa in un campo magnetico esterno \( \vec{B} \):
+  \label{14-05-D13}
+  Per vedere cosa succede alla spira si può utilizzare la seconda legge di Laplace
+  \( \left( d\vec{F} = i d\vec{l} \times \vec{B} \right) \).
+  Sul tratto \( a \) si avrà una forza entrante, mentre il tratto \( b \) è parallelo
+  al campo magnetico e quindi non subisce nessuna forza. Il tratto \( c \) ha una
+  forza uscente, mentre il tratto \( d \) è parallelo al campo magnetico e quindi
+  non subisce nessuna forza.
+  La somma delle forze è nulla perchè la spira non trasla,
+  ma costituiscono un momento \( \tau \neq 0 \) perchè sono una coppia di forze.
+  \[
+    \vec{\tau} = \vec{r} \times \vec{F} = bF = \overbrace{\underbrace{iab}_{\mu}}^{\text{Sup}}B
+  \]
+  Il momento magnetico è uscente e al centro della spira, quindi il momento meccanico
+  esterno è: 
+  \[
+   \vec{\tau} = \vec{\mu} \times \vec{B}
+  \] 
+  Questo vuol dire che \( \mu \) si corica su \( \vec{B} \).
+  Un dipolo in un campo magnetico si allinea con il campo magnetico.
+
+  \vspace{1em}
+  \noindent
+  La spira ha ruotato:
+  \label{14-05-D14}
+  Il momento meccanico è nullo e anche la somma delle forze:
+  \[
+    \vec{\tau} = 0 \quad \sum \vec{F} = 0
+  \] 
+  Però la spira continua a ruotare per inerzia:
+  \label{14-05-D15}
+  Il momento magnetico ha invertito il verso e quindi la spira continuerà a ruotare in
+  verso orario.
+
+  Questo è un oscillatore armonico.
+\end{example}
+
+
 \end{document}
