@@ -2817,11 +2817,12 @@ Si deduce che esiste un effetto \textbf{magnetico} nel pianeta Terra.
   Questa è la \textbf{prima equazione di Maxwell}.
 \end{example}
 
-\begin{definition}[Prima equazione di Maxwell]
+\begin{definition}[Seconda equazione di Maxwell]
   Il flusso del campo magnetico attraverso una superficie chiusa è nullo:
   \[
     \Phi(\vec{B}) = \oint_{\text{Sup}} \vec{B} \cdot \hat{n} d\vec{S} = 0
   \]
+  Questo vuol dire che non esistono cariche magnetiche isolate.
   Un campo a linee chiuse è chiamato campo \textbf{solenoidale}.
 \end{definition}
 
@@ -3025,6 +3026,7 @@ Andiamo ad analizzare:
     \centering
     \includegraphics[width=0.7\textwidth]{spira_3}
   \end{figure}
+  \noindent
   Il momento magnetico ha invertito il verso e quindi la spira continuerà a ruotare in
   verso orario.
 
@@ -3045,5 +3047,153 @@ Andiamo ad analizzare:
   \end{figure}
 \end{example}
 
+\subsection{Teorema di Ampere}
+Studiamo come le sorgenti producono il campo \( \vec{B} \) in particolari situazioni
+di simmetria. In elettrostatica si aveva un sistema di cariche, mentre in magnetostatica
+si ha un sistema di correnti.
+
+\vspace{1em}
+\noindent
+\textbf{Osservazione}: Se consideriamo un filo indefinito con una corrente, sappiamo che
+il campo ha linee chiuse a \textbf{simmetria cilindrica} e quindi il campo magnetico
+è circolare. Bisogna però stabilire il verso del campo magnetico e questo si fa seguendo
+la regola della mano destra, cioè se la corrente è verso l'alto, il campo magnetico
+è antiorario:
+\label{16-05-D1}
+L'intensità del campo è proporzionale alla corrente e inversamente proporzionale alla
+distanza dal filo:
+\[
+  |\vec{B}| \propto i \quad |\vec{B}| \propto \frac{1}{r}
+\] 
+e questo vuol dire che il campo magnetico su una linea di campo è costante. Quindi se
+si moltiplica il campo per il perimetro (si fa la circuitazione di \( \vec{B} \)) si
+ottiene una costante, cioè un invariante:
+\begin{definition}[Prima equazione di Maxwell per il campo magnetico]
+  \[
+    \oint_{\Gamma_{\text{Circonferenza}}} \vec{B} \; dl = \mu_0 i
+  \] 
+  dove:
+  \[
+    \begin{aligned}
+      \mu_0 & = 4 \pi \cdot 10^{-7} = \text{Permeabilità magnetica del vuoto} \\
+      i & = \text{Corrente che attraversa la superficie delimitata dalla circonferenza}
+    \end{aligned}
+  \] 
+  Siccome la circuitazione del campo è costante, si può parametrizzare il campo come:
+  \[
+    B(r) = \frac{\mu_0 i}{2 \pi r}
+  \] 
+\end{definition}
+
+\begin{theorem}[Teorema di Ampere]
+  La circuitazione del campo è il flusso del suo rotore (teorema di Stokes).
+  \[
+    \oint_{\Gamma_{\text{Qualunque}}} \vec{B} \; dl = \mu_0 i_{\text{Concatenate Totali}}
+  \] 
+  Dove una \textbf{sorgente concatenata} sono le seguenti:
+  \label{16-05-D2}
+
+  Questo teorema dimostra che le sorgenti di \( \vec{B} \) sono le correnti.
+\end{theorem}
+
+\subsubsection{Applicazione del teorema di Ampere}
+\begin{example}
+  Calcoliamo il campo magnetico in un cavo indefinito di raggio \( R \) con una corrente
+  \( i \) nel \textbf{volume}:
+  \label{16-05-D3}
+  L'obiettivo è calcolare il campo magnetico \( \vec{B}(r) \) in tutte le regioni di spazio.
+
+  \vspace{1em}
+  \noindent
+  Sappiamo che in una simmetria cilindrica le linee di campo magnetico sono chiuse e sono
+  circonferenze centrate sull'asse.
+  Scegliamo come \textbf{linea Amperiana} \( \Gamma(r) \) le circonferenze di raggio \( r \):
+  \label{16-05-D4}
+  \[
+    \oint_{\Gamma_{\text{Qualsiasi}}} \vec{B} \; dl = \mu_0 i_{\text{Conc}}
+  \] 
+  Il campo sulla linea Amperiana è costante e quindi \( \vec{B} \) si può tirare fuori
+  dall'integrale:
+  \[
+    \vec{B} \oint_{\Gamma(r)} \; dl = B(r) 2 \pi r = \mu_0 i_{\text{Conc}}
+  \] 
+  dove:
+  \[
+    i_{\text{Conc}} = \begin{cases}
+      i & \text{se } r \ge R \\
+      j \pi r^2 & \text{se } r < R
+    \end{cases}
+  \] 
+  \[
+   \left( j = \frac{i}{\pi R^2} \right) 
+  \] 
+  Quindi si ha:
+  \[
+    B(r) = \begin{cases}
+      \frac{\mu_0 i}{2 \pi r} & \text{se } r \ge R \\
+      \frac{\mu_0 j \cancel{\pi} r^{\cancel{2}}}{2 \cancel{\pi} r} = \frac{\mu_0 j}{2} r & \text{se } r < R
+    \end{cases}
+    \quad \left[ T \right]
+  \] 
+  Il grafico del campo magnetico è il seguente:
+  \label{16-05-D5}
+\end{example}
+
+\begin{example}
+  Se consideriamo un cavo indefinito cilindrico di raggio \( R \) percorso da una corrente \( i \)
+  che scorre in \textbf{superficie}
+  \label{16-05-D6}
+  si avrà una densità di corrente \( j \) superficiale:
+  \[
+    j = \frac{i}{2 pi R}
+  \] 
+  Consideriamo le circonferenze di raggio \( r \) come linea Amperiana \( \Gamma(r) \) :
+  \[
+    \oint_{\Gamma(r)} \vec{B} \; dl = B(r) 2 \pi r = \mu_0 i_{\text{Conc}}
+  \] 
+  dove:
+  \[
+    i_{\text{Conc}} = \begin{cases}
+      i & \text{se } r \ge R \\
+      0 & \text{se } r < R
+    \end{cases}
+  \]
+  Quindi si ha:
+  \[
+    B(r) = \begin{cases}
+      \frac{\mu_0 i}{2 \pi r} & \text{se } r \ge R \\
+      0 & \text{se } r < R
+    \end{cases}
+    \quad \left[ T \right] \text{ (Tesla)}
+  \]
+\end{example}
+
+\begin{example}
+  Consideriamo una linea indefinita con una corrente \( i \), si avrà lo stesso svolgimento
+  del cavo cilindrico, ma senza distinzione tra linea Amperiana esterna e interna.
+  \label{16-05-D7}
+  Quindi:
+  \[
+    B(r) = \frac{\mu_0 i}{2 \pi r} \quad \left[ T \right]
+  \] 
+  In sostanza, dall'esterno non si riesce a distinguere l'interno del filo,
+  quindi il campo magnetico è lo stesso.
+\end{example}
+
+\begin{example}
+  Consideriamo un cavo con una guaina (trascurabilmente sottile) in cui scorre una
+  corrente opposta:
+  \label{16-05-D8}
+  Si distinguono 3 regioni:
+  \[
+    B(r) = \begin{cases}
+      \frac{\mu_0 j}{2}r & \text{se } r < R_1 \\
+      \frac{\mu_0 i}{2 \pi r} & \text{se } R_1 \le r < R_2 \\
+      i - i = 0 & \text{se } r \ge R_2
+    \end{cases}
+  \] 
+  Il grafico del campo magnetico è il seguente:
+  \label{16-05-D9}
+\end{example}
 
 \end{document}
