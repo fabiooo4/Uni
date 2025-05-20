@@ -3059,7 +3059,12 @@ il campo ha linee chiuse a \textbf{simmetria cilindrica} e quindi il campo magne
 è circolare. Bisogna però stabilire il verso del campo magnetico e questo si fa seguendo
 la regola della mano destra, cioè se la corrente è verso l'alto, il campo magnetico
 è antiorario:
-\label{16-05-D1}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.3\textwidth]{verso_campo_magnetico}
+  \caption{Verso del campo magnetico}
+\end{figure}
+\noindent
 L'intensità del campo è proporzionale alla corrente e inversamente proporzionale alla
 distanza dal filo:
 \[
@@ -3090,9 +3095,13 @@ ottiene una costante, cioè un invariante:
   \[
     \oint_{\Gamma_{\text{Qualunque}}} \vec{B} \; dl = \mu_0 i_{\text{Concatenate Totali}}
   \] 
-  Dove una \textbf{sorgente concatenata} sono le seguenti:
-  \label{16-05-D2}
-
+  Dove le \textbf{sorgenti concatenate} sono le seguenti:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{sorgenti_concatenate}
+    \caption{Sorgenti concatenate}
+  \end{figure}
+  \noindent
   Questo teorema dimostra che le sorgenti di \( \vec{B} \) sono le correnti.
 \end{theorem}
 
@@ -3100,7 +3109,12 @@ ottiene una costante, cioè un invariante:
 \begin{example}
   Calcoliamo il campo magnetico in un cavo indefinito di raggio \( R \) con una corrente
   \( i \) nel \textbf{volume}:
-  \label{16-05-D3}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.2\textwidth]{cavo_indefinito}
+    \caption{Cavo indefinito}
+  \end{figure}
+  \noindent
   L'obiettivo è calcolare il campo magnetico \( \vec{B}(r) \) in tutte le regioni di spazio.
 
   \vspace{1em}
@@ -3108,7 +3122,11 @@ ottiene una costante, cioè un invariante:
   Sappiamo che in una simmetria cilindrica le linee di campo magnetico sono chiuse e sono
   circonferenze centrate sull'asse.
   Scegliamo come \textbf{linea Amperiana} \( \Gamma(r) \) le circonferenze di raggio \( r \):
-  \label{16-05-D4}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{linea_amperiana}
+    \caption{Linea Amperiana}
+  \end{figure}
   \[
     \oint_{\Gamma_{\text{Qualsiasi}}} \vec{B} \; dl = \mu_0 i_{\text{Conc}}
   \] 
@@ -3136,13 +3154,22 @@ ottiene una costante, cioè un invariante:
     \quad \left[ T \right]
   \] 
   Il grafico del campo magnetico è il seguente:
-  \label{16-05-D5}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{grafico_cavo_indefinito}
+    \caption{Grafico del campo magnetico}
+  \end{figure}
 \end{example}
 
 \begin{example}
   Se consideriamo un cavo indefinito cilindrico di raggio \( R \) percorso da una corrente \( i \)
   che scorre in \textbf{superficie}
-  \label{16-05-D6}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{cavo_indefinito_superficie}
+    \caption{Cavo indefinito cilindrico}
+  \end{figure}
+  \noindent
   si avrà una densità di corrente \( j \) superficiale:
   \[
     j = \frac{i}{2 pi R}
@@ -3171,7 +3198,12 @@ ottiene una costante, cioè un invariante:
 \begin{example}
   Consideriamo una linea indefinita con una corrente \( i \), si avrà lo stesso svolgimento
   del cavo cilindrico, ma senza distinzione tra linea Amperiana esterna e interna.
-  \label{16-05-D7}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{linea_indefinita}
+    \caption{Linea indefinita}
+  \end{figure}
+  \noindent
   Quindi:
   \[
     B(r) = \frac{\mu_0 i}{2 \pi r} \quad \left[ T \right]
@@ -3183,7 +3215,12 @@ ottiene una costante, cioè un invariante:
 \begin{example}
   Consideriamo un cavo con una guaina (trascurabilmente sottile) in cui scorre una
   corrente opposta:
-  \label{16-05-D8}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{cavo_guaina}
+    \caption{Cavo con guaina}
+  \end{figure}
+  \noindent
   Si distinguono 3 regioni:
   \[
     B(r) = \begin{cases}
@@ -3193,7 +3230,11 @@ ottiene una costante, cioè un invariante:
     \end{cases}
   \] 
   Il grafico del campo magnetico è il seguente:
-  \label{16-05-D9}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{grafico_cavo_guaina}
+    \caption{Grafico del campo magnetico}
+  \end{figure}
 \end{example}
 
 \end{document}
