@@ -2209,5 +2209,167 @@ di operazioni dell'algoritmo di Ford-Fulkerson è:
   da \( A \) a \( B \). Una volta trovato il numero trovare i cammini.
 \end{exercise}
 
+\section{Programmazione Lineare}
+È lo studio di algoritmi che permettono di risolvere problemi descritti da equazioni
+lineari.
+\begin{example}
+  In una fabbrica di cioccolato si producono due tipi di cioccolato:
+  \begin{itemize}
+    \item Cioccolatini normali: \( 1 \) euro a scatola
+    \item Cioccolatini deliziosi: \( 6 \) euro a scatola
+  \end{itemize}
+  L'azienda ha i seguenti vincoli:
+  \begin{itemize}
+    \item Non può produrre più di \( 200 \) scatole di cioccolatini normali al giorno
+    \item Non può produrre più di \( 300 \) scatole di cioccolatini deliziosi al giorno
+    \item Non può produrre più di \( 400 \) scatole di cioccolatini al giorno
+  \end{itemize}
+  La soluzione è quella di prendere il massimo numero di scatole di cioccolatini deliziosi
+  e il resto di cioccolatini normali.
+
+  \vspace{1em}
+  \noindent
+  \textbf{Definiamo meglio il problema}:
+  Chiamiamo \( x_1 \) i coccolatini normali e \( x_2 \) i cioccolatini deliziosi. Si vuole
+  trovare il valore massimo di
+  \[
+    max \;\; x_1 + 6 x_2
+  \]
+  (questa funzione è chiamata \textbf{funzione obiettivo})
+  I vincoli sono un sistema di disequazioni (\textbf{vincoli lineari}):
+  \[
+    \begin{cases}
+      x_1 & \le 200\\
+      x_2 & \le 300\\
+      x_1 + x_2 &\le 400
+    \end{cases}
+  \] 
+  Il problema può essere rappresentato più generalmente come una \textbf{forma canonica}:
+  \[
+    \begin{cases}
+      max \;\; \bar{c} \bar{x}\\
+      A \bar{x} \le \bar{b}
+    \end{cases}
+  \] 
+  che rappresenta:
+  \[
+    \begin{cases}
+      max \;\; \begin{pmatrix} 1 & 6 \end{pmatrix} \begin{pmatrix} x_1 \\ x_2 \end{pmatrix} \\
+      \begin{pmatrix} 
+        1 & 0 \\
+        0 & 1 \\
+        1 & 1 \\
+      \end{pmatrix} 
+      \begin{pmatrix} x_1 \\ x_2 \end{pmatrix} 
+      \le 
+      \begin{pmatrix} 200 \\ 300 \\ 400 \end{pmatrix} 
+    \end{cases}
+  \] 
+  Fa comodo avere variabili non negative, quindi si può considerare la variabile \( x \)
+  come somma di variabili non negative:
+  \[
+    x = x^+ - x^-
+  \] 
+  e da questo si ottiene:
+  \[
+    x^+ > 0 \quad x^- > 0
+  \] 
+  
+  \vspace{1em}
+  \noindent
+  Rappresentiamo questo problema in un piano cartesiano:
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \draw[->] (0,0) -- (5,0) node[below] {x1};
+      \draw[->] (0,0) -- (0,5) node[left] {x2};
+
+      \draw[thick,blue] (0,4) -- (4,0);
+      \draw[thick,green!50!black] (2,3) -- (2,0);
+      \draw[thick,purple] (2,3) -- (0,3);
+
+      \node at (2,-0.3) {200};
+      \node at (-0.3,3) {300};
+      \node at (-0.3,4) {400};
+      \node at (4,-0.3) {400};
+
+      \fill[green,opacity=0.2] (0,0) -- (0,3) -- (1,3) -- (2,2) -- (2,0) -- cycle;
+    \end{tikzpicture}
+    \caption{Rappresentazione dei vincoli}
+  \end{figure}
+  \noindent
+  Si vuole prendere la retta che ha il massimo valore di \( x_1 + 6x_2 \):
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \draw[->] (0,0) -- (5,0) node[below] {x1};
+      \draw[->] (0,0) -- (0,5) node[left] {x2};
+
+      \node at (2,-0.3) {200};
+      \node at (-0.3,3) {300};
+      \node at (-0.3,4) {400};
+      \node at (4,-0.3) {400};
+
+      \draw[green!50!black] (0,0) -- (0,3) -- (1,3) -- (2,2) -- (2,0) -- cycle;
+      \fill[green,opacity=0.2] (0,0) -- (0,3) -- (1,3) -- (2,2) -- (2,0) -- cycle;
+
+      \draw[thick,red] (0,3.15) -- (5,2.5) node[above] {$x_1 + 6x_2$};
+
+      \fill[red] (1,3) circle (2pt);
+    \end{tikzpicture}
+    \caption{Retta più alta}
+  \end{figure}
+\end{example}
+\begin{theorem}
+  Qualunque problema di programmazione lineare può essere ricondotto ad una forma canonica.
+\end{theorem}
+
+\begin{exercise}
+  Si hanno due miccie che impiegano un'ora a consumarsi, ma la velocità di combustione non è
+  costante e si ha un accendino per accenderle. L'obiettivo è quello di misurare 45 minuti.
+\end{exercise}
+
+\subsection{Algoritmo del simplesso}
+L'idea per un algoritmo è quella di percorrere gli spigoli del vincolo e trovare il
+punto in cui la funzione obiettivo è massima. Finchè esiste uno spigolo sul vincolo
+che produce un valore maggiore della funzione obiettivo, si può continuare a
+cercare. Se non esiste più uno spigolo che produce un valore maggiore della funzione
+obiettivo, si è trovato il massimo.
+
+Questo funziona perchè l'insieme dei vincoli è
+\textbf{convesso}, cioè se si prendono due punti all'interno del vincolo, la retta
+che li unisce è anch'essa interamente all'interno del vincolo.
+
+\begin{example}
+  Estendiamo l'esempio precedente. 
+  In una fabbrica di cioccolato si producono tre tipi di cioccolato:
+  \begin{itemize}
+    \item Cioccolatini normali: \( 1 \) euro a scatola
+    \item Cioccolatini deliziosi: \( 6 \) euro a scatola
+    \item Cioccolatini deluxe: \( 13 \) euro a scatola
+  \end{itemize}
+  L'azienda ha i seguenti vincoli:
+  \begin{itemize}
+    \item Non può produrre più di \( 200 \) scatole di cioccolatini normali al giorno
+    \item Non può produrre più di \( 300 \) scatole di cioccolatini deliziosi al giorno
+    \item Non può produrre più di \( 400 \) scatole di cioccolatini al giorno
+    \item I cioccolatini deluxe richiedono il triplo del materiale dei deliziosi
+  \end{itemize}
+  Il problema è rappresentato da:
+  \[
+    \begin{cases}
+      max \;\; x_1 + 6 x_2 + 13 x_3\\
+      x_1 & \le 200\\
+      x_2 & \le 300\\
+      x_1 + x_2 + 3 x_3 & \le 400\\
+      x_2 + 3x_3 & \le 600
+    \end{cases}
+  \] 
+  Questa soluzione non è immediata come prima.
+
+  Si può fare una combinazione lineare dei vincoli per ottenere un \textbf{limite
+  superiore} al valore della funzione obiettivo. Se il minimo limite superiore coincide
+  con il massimo limite inferiore (la soluzione al problema), allora la soluzione è ottima.
+\end{example}
 
 \end{document}
