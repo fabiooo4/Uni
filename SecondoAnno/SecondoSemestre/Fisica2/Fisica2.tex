@@ -3237,4 +3237,231 @@ ottiene una costante, cioè un invariante:
   \end{figure}
 \end{example}
 
+\begin{example}
+  Consideriamo un sistema di spire rettangolari arrotolate secondo un solenoide toroidale:
+  \label{20-05-D12}
+  Si vuole calcolare il campo magnetico \( \vec{B}(r) \).
+
+  Si ha una simmetria cilindrica, quindi consideriamo come linee Amperiane dei cerchi
+  centrati nell'asse:
+  \label{20-05-D13}
+  Si hanno quindi 3 regioni distinte:
+  \begin{itemize}
+    \item \textbf{Interna alla cavià del toroide}: \( r < R \)
+
+      Corrente totale nulla
+      \[
+        i_{\text{Conc}} = 0
+      \] 
+
+    \item \textbf{Interna al toroide}: \( R < r < R + l \) 
+
+      La corrente totale è la corrente che si incontra per ogni spira, quindi se il
+      numero di spire è \( N \) e la corrente è \( i \):
+      \[
+        i_{\text{Conc}} = N i
+      \]
+
+    \item \textbf{Esterno al toroide}: \( r > R + l \)
+      
+      Corrente totale nulla perchè si vede una corrente in un verso e una in un altro
+      verso se si immaginano delle spire molto alte e di conseguenza si cancellano.
+      \[
+        i_{\text{Conc}} = 0
+      \]
+  \end{itemize}
+  \[
+    B(r) = \begin{cases}
+      0 & \text{se } r < R \\
+      \frac{\mu_0 N i}{2 \pi r} & \text{se } R \le r \le R + l \\
+      0 & \text{se } r > R + l
+    \end{cases}
+  \] 
+  Si avrà un campo del tipo:
+  \label{20-05-D14}
+  Se si aggiungono più spire in parallelo si avrà un campo magnetico più grande:
+  \label{20-05-D15}
+  Il grafico del campo magnetico è il seguente:
+  \label{20-05-D16}
+\end{example}
+
+\begin{example}
+  Consideriamo un solenoide rettilineo indefinito percorso da una corrente \( i \):
+  \label{20-05-D17}
+  Il numero di spire per unità di lunghezza è \( n \):
+  \[
+    n = \frac{N_{\text{spire}}}{\text{Unità di lunghezza}}
+  \] 
+  Conosciamo il campo di una spira:
+  \label{20-05-D18}
+  Se si aggiungono altre spire si nota che il campo si cancella:
+  \label{20-05-D19}
+  Quindi notiamo che nel solenoide rettilineo indefinito il campo non riesce mai a
+  chiudersi, quindi c'è soltanto un campo interno:
+  \label{20-05-D20}
+  In pratica questo solenoide confina il campo magnetico all'interno di una regione.
+
+  \vspace{1em}
+  \noindent
+  Consideriamo come linea Amperiana un rettangolo che attraversa sia il centro del
+  solenoide sia l'esterno:
+  \label{20-05-D21}
+  \[
+    \Gamma = \Gamma _1 + \Gamma _2 + \Gamma _3 + \Gamma _4
+  \] 
+  Spezziamo l'integrale in 4 parti:
+  \[
+    \underbrace{\int_{\Gamma_1} B \cdot dl}_{\parallel \text{Est.}} +
+    \underbrace{\int_{\Gamma_2} B \cdot dl}_{\perp} +
+    \underbrace{\int_{\Gamma_3} B \cdot dl}_{\perp} +
+    \underbrace{\int_{\Gamma_4} B \cdot dl}_{\parallel \text{Int.}}
+    = 0 + 0 + 0 + Bl = \mu_0 i \underbrace{nl}_{\text{Spire in } \Gamma_4}
+  \] 
+  \[
+    \downarrow
+  \] 
+  \[
+    B\cancel{l} = \mu_0 i n \cancel{l}
+  \] 
+  \[
+    B = \mu_0 i n
+  \] 
+\end{example}
+
+\subsubsection{Interazione meccanica tra due fili}
+\begin{example}
+  Consideriamo una carica positiva \( q^+ \) ad una certa distanza \( r = d \) da un
+  filo indefinito percorso da una corrente \( i \):
+  \label{20-05-D1}
+  Quale forza agisce sulla carica? Il campo è esattamente la linea di campo del filo che passa
+  per la carica:
+  \label{20-05-D2}
+  La forza applicata alla carica è:
+  \[
+    \begin{aligned}
+      |F_{\text{su }q}| &= q v B(r = d)\\
+                      &= \frac{qv \mu_0 i}{2 \pi d} \quad \left[ N \right]
+    \end{aligned}
+  \] 
+  Si ha quindi una \textbf{forza attrattiva}.
+
+  \vspace{1em}
+  \noindent
+  Se si avesse una carica negativa \( q^- \) si avrebbe una forza repulsiva:
+  \label{20-05-D3}
+  Ciò vuol dire che la carica negativa si muove e quindi forma una corrente.
+\end{example}
+
+\begin{example}
+  Consideriamo due fili paralleli percorsi da correnti \( i_1 \) e \( i_2 \) ad
+  una certa distanza \( r = d \) l'uno dall'altro:
+  \label{20-05-D4}
+  Sull'elemento di corrente agisce la forza di Laplace (seconda legge di Laplace):
+  \[
+    d\vec{F} = i d\vec{l} \times \vec{B}_{\text{Esterno}}
+  \] 
+  Su \( i_2 \) agisce il campo magnetico \( \vec{B}_1 \) prodotto da \( i_1 \):
+  \label{20-05-D5}
+  La forza che agisce su \( i_2 \) (per unità di lunghezza) è:
+  \[
+    \begin{aligned}
+      d\vec{F}_{i_2} &= i_2 d\vec{l} \times \vec{B}_1(r = d)\\
+                     &= i_2 \frac{\mu_0 i_1}{2 \pi d} d\vec{l} \quad \left[ N \right] \\
+    \end{aligned}
+  \]
+  Con direzione \textbf{attrattiva} verso il filo \( i_1 \):
+  \label{20-05-D6}
+
+  \vspace{1em}
+  \noindent
+  Anche sul filo \( i_1 \) agisce una forza \( d\vec{F}_{i_1} \) prodotta dal campo
+  magnetico \( \vec{B}_2 \) prodotto da \( i_2 \) e sarà uguale e opposta alla forza
+  \( d\vec{F}_{i_2} \) (per il principio di azione e reazione):
+  \[
+    d\vec{F}_{i_1} = i_1 d\vec{l} \times \vec{B}(r = d) = i_1 \frac{\mu_0 i_2}{2 \pi d} d\vec{l}
+    = -d\vec{F}_{i_2}
+  \]
+  \label{20-05-D7}
+\end{example}
+
+\subsubsection{Osservazioni}
+Si osserva che due fili paralleli con una corrente che scorre:
+\begin{itemize}
+  \item Nello stesso verso si \textbf{attraggono}:
+    \label{20-05-D8}
+
+  \item Nel verso opposto si \textbf{repellono}:
+    \label{20-05-D9}
+\end{itemize}
+Un filo con una corrente si può vedere come una carica in movimento:
+\label{20-05-D10}
+Di conseguenza si può considerare il filo come una carica in movimento:
+\label{20-05-D11}
+\[
+  |F| = \frac{\mu_0 i_1 i_2}{2 \pi d} \Leftrightarrow |F| = qvB
+\] 
+
+\vspace{1em}
+\noindent
+Questo è il metodo per calcolare l'Ampere, cioè \( 1 N \) di forza che agisce su due
+fili paralleli di lunghezza \( 1 m \) distanti \( 1 m \) l'uno dall'altro.
+
+\subsection{Flusso del campo magnetico}
+Il flusso elementare è sempre definito come il numero di linee di campo sono ortogonali
+ad una superficie:
+\[
+  d \Phi = \vec{B} \cdot \hat{n} d\vec{S} \quad \left[ Wb \right] \text{ (Weber)}
+\] 
+Di conseguenza il flusso del campo magnetico attraverso una superficie \( S \) è:
+\[
+  \Phi (B) = \int_S \vec{B} \cdot \hat{n} d\vec{S}
+\] 
+Il flusso di un campo magnetico su una superficie chiusa è sempre nullo, perchè il campo
+magnetico ha linee di campo chiuse, quindi ciò che entra esce e non si ha un flusso netto.
+Mentre nel caso del campo elettrico si avevano linee radiali e quindi ciò che usciva non
+rientrava mai. Quindi:
+\[
+  \oint_{S} \vec{B} \cdot \hat{n} d\vec{S} = 0
+\] 
+Se si considerano due circuiti \( \Gamma_1 \) e \( \Gamma_2 \) si sa che il campo magnetico
+si concatena tra i due circuiti e si può calcolare il flusso sulla superficie \( S_2 \) 
+applicato dal circuito \( \Gamma_1 \):
+\[
+  \Phi_{12} = \int_{S_2} \vec{B}_1 \cdot \hat{n} d\vec{S} \propto i_1
+\] 
+\label{20-05-D22}
+Sappiamo che \( B \propto i \) e quindi il flusso è proporzionale alla corrente
+e ad un oggetto che dipende dalla distanza dei circuiti e dalla forma dei circuiti.
+Questo oggetto è il \textbf{coefficiente di mutua induzione} \( M_{12} \):
+\[
+  \Phi_{12} = M_{12} i_1
+\] 
+Si può anche calcolare il flusso inverso:
+\[
+  \Phi_{21} = \int_{S_1} \vec{B}_2 \cdot \hat{n} d\vec{S} \propto i_2 = M_{21} i_2
+\] 
+Il coefficiente di mutua induzione è \textbf{simmetrico}, cioè:
+\[
+  M_{12} = M_{21} \quad \left[ H \right] \text{ (Henry)}
+\] 
+
+\subsubsection{Autoflusso}
+Consideriamo un singolo circuito, si può calcolare il flusso del campo prodotto dalla
+spira, su se stessa:
+\label{20-05-D23}
+\[
+  \Phi = \int_{\text{Sup}} \vec{B} \cdot \hat{n} d\vec{S} = Li
+\] 
+Dove \( L \) è l'\textbf{induttanza} della spira (o coefficiente di autoinduzione) misurato
+in \( \left[ H \right] \) Henry.
+
+Nei circuiti il simbolo dell'induttanza è:
+\begin{figure}[H]
+  \centering
+  \begin{circuitikz}
+    \draw (0,0) to[L, l=$L$] (2,0);
+  \end{circuitikz}
+  \caption{Induttanza}
+\end{figure}
+
 \end{document}
