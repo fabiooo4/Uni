@@ -3239,12 +3239,24 @@ ottiene una costante, cioè un invariante:
 
 \begin{example}
   Consideriamo un sistema di spire rettangolari arrotolate secondo un solenoide toroidale:
-  \label{20-05-D12}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{solenoide_toroidale}
+    \caption{Solenoide toroidale}
+  \end{figure}
+  \noindent
   Si vuole calcolare il campo magnetico \( \vec{B}(r) \).
 
+  \vspace{1em}
+  \noindent
   Si ha una simmetria cilindrica, quindi consideriamo come linee Amperiane dei cerchi
   centrati nell'asse:
-  \label{20-05-D13}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.72\textwidth]{linea_amperiana_toroide}
+    \caption{Linea Amperiana toroidale}
+  \end{figure}
+  \noindent
   Si hanno quindi 3 regioni distinte:
   \begin{itemize}
     \item \textbf{Interna alla cavià del toroide}: \( r < R \)
@@ -3277,44 +3289,88 @@ ottiene una costante, cioè un invariante:
       0 & \text{se } r > R + l
     \end{cases}
   \] 
-  Si avrà un campo del tipo:
-  \label{20-05-D14}
+
+  \vspace{1em}
+  \noindent
+  In una spira si ha un campo magnetico del tipo:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{campo_magnetico_spira}
+    \caption{Campo magnetico in una spira}
+  \end{figure}
+  \noindent
   Se si aggiungono più spire in parallelo si avrà un campo magnetico più grande:
-  \label{20-05-D15}
-  Il grafico del campo magnetico è il seguente:
-  \label{20-05-D16}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{campo_magnetico_spire}
+    \caption{Campo magnetico in più spire}
+  \end{figure}
+
+  \vspace{1em}
+  \noindent
+  Il grafico del campo magnetico del solenoide toroidale è il seguente:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{grafico_campo_magnetico_toroide}
+    \caption{Grafico del campo magnetico}
+  \end{figure}
 \end{example}
 
 \begin{example}
   Consideriamo un solenoide rettilineo indefinito percorso da una corrente \( i \):
-  \label{20-05-D17}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{solenoide_rettilineo}
+    \caption{Solenoide rettilineo}
+  \end{figure}
+  \noindent
   Il numero di spire per unità di lunghezza è \( n \):
   \[
     n = \frac{N_{\text{spire}}}{\text{Unità di lunghezza}}
   \] 
   Conosciamo il campo di una spira:
-  \label{20-05-D18}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{campo_magnetico_spira_2}
+    \caption{Campo magnetico in una spira}
+  \end{figure}
+  \noindent
   Se si aggiungono altre spire si nota che il campo si cancella:
-  \label{20-05-D19}
-  Quindi notiamo che nel solenoide rettilineo indefinito il campo non riesce mai a
-  chiudersi, quindi c'è soltanto un campo interno:
-  \label{20-05-D20}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{campo_magnetico_spire_2}
+    \caption{Campo magnetico in più spire}
+  \end{figure}
+  \noindent
+  Quindi osserviamo che nel solenoide rettilineo indefinito il campo non riesce mai a
+  chiudersi, di conseguenza c'è soltanto un campo interno:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{campo_magnetico_solenoide_rettilineo}
+    \caption{Campo magnetico in un solenoide rettilineo}
+  \end{figure}
+  \noindent
   In pratica questo solenoide confina il campo magnetico all'interno di una regione.
 
   \vspace{1em}
   \noindent
   Consideriamo come linea Amperiana un rettangolo che attraversa sia il centro del
   solenoide sia l'esterno:
-  \label{20-05-D21}
-  \[
-    \Gamma = \Gamma _1 + \Gamma _2 + \Gamma _3 + \Gamma _4
-  \] 
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{linea_amperiana_solenoide_rettilineo}
+    \[
+      \Gamma = \Gamma _1 + \Gamma _2 + \Gamma _3 + \Gamma _4
+    \] 
+    \caption{Linea Amperiana in un solenoide rettilineo}
+  \end{figure}
+  \noindent
   Spezziamo l'integrale in 4 parti:
   \[
-    \underbrace{\int_{\Gamma_1} B \cdot dl}_{\parallel \text{Est.}} +
+    \underbrace{\int_{\Gamma_1} B \cdot dl}_{\parallel \text{ Esterno}} +
     \underbrace{\int_{\Gamma_2} B \cdot dl}_{\perp} +
     \underbrace{\int_{\Gamma_3} B \cdot dl}_{\perp} +
-    \underbrace{\int_{\Gamma_4} B \cdot dl}_{\parallel \text{Int.}}
+    \underbrace{\int_{\Gamma_4} B \cdot dl}_{\parallel \text{ Interno}}
     = 0 + 0 + 0 + Bl = \mu_0 i \underbrace{nl}_{\text{Spire in } \Gamma_4}
   \] 
   \[
@@ -3332,10 +3388,18 @@ ottiene una costante, cioè un invariante:
 \begin{example}
   Consideriamo una carica positiva \( q^+ \) ad una certa distanza \( r = d \) da un
   filo indefinito percorso da una corrente \( i \):
-  \label{20-05-D1}
-  Quale forza agisce sulla carica? Il campo è esattamente la linea di campo del filo che passa
-  per la carica:
-  \label{20-05-D2}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{carica_filo}
+    \caption{Carica e filo}
+  \end{figure}
+  \noindent
+  Quale forza agisce sulla carica?
+
+  \vspace{1em}
+  \noindent
+  Il campo è esattamente la linea di campo del filo che passa
+  per la carica.
   La forza applicata alla carica è:
   \[
     \begin{aligned}
@@ -3343,25 +3407,43 @@ ottiene una costante, cioè un invariante:
                       &= \frac{qv \mu_0 i}{2 \pi d} \quad \left[ N \right]
     \end{aligned}
   \] 
-  Si ha quindi una \textbf{forza attrattiva}.
-
-  \vspace{1em}
+  Si ha quindi una \textbf{forza attrattiva}:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{forza_magnetica_attrattiva}
+    \caption{Forza attrattiva}
+  \end{figure}
   \noindent
   Se si avesse una carica negativa \( q^- \) si avrebbe una forza repulsiva:
-  \label{20-05-D3}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{forza_magnetica_repulsiva}
+    \caption{Forza repulsiva}
+  \end{figure}
+  \noindent
   Ciò vuol dire che la carica negativa si muove e quindi forma una corrente.
 \end{example}
 
 \begin{example}
   Consideriamo due fili paralleli percorsi da correnti \( i_1 \) e \( i_2 \) ad
   una certa distanza \( r = d \) l'uno dall'altro:
-  \label{20-05-D4}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{interazione_fili}
+    \caption{Interazione tra due fili}
+  \end{figure}
+  \noindent
   Sull'elemento di corrente agisce la forza di Laplace (seconda legge di Laplace):
   \[
     d\vec{F} = i d\vec{l} \times \vec{B}_{\text{Esterno}}
   \] 
   Su \( i_2 \) agisce il campo magnetico \( \vec{B}_1 \) prodotto da \( i_1 \):
-  \label{20-05-D5}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{interazione_fili_2}
+    \caption{Sul filo \( i_2 \) agisce il campo magnetico \( \vec{B}_1 \)}
+  \end{figure}
+  \noindent
   La forza che agisce su \( i_2 \) (per unità di lunghezza) è:
   \[
     \begin{aligned}
@@ -3370,9 +3452,11 @@ ottiene una costante, cioè un invariante:
     \end{aligned}
   \]
   Con direzione \textbf{attrattiva} verso il filo \( i_1 \):
-  \label{20-05-D6}
-
-  \vspace{1em}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{interazione_fili_3}
+    \caption{Forza sul filo \( i_2 \)}
+  \end{figure}
   \noindent
   Anche sul filo \( i_1 \) agisce una forza \( d\vec{F}_{i_1} \) prodotta dal campo
   magnetico \( \vec{B}_2 \) prodotto da \( i_2 \) e sarà uguale e opposta alla forza
@@ -3381,30 +3465,48 @@ ottiene una costante, cioè un invariante:
     d\vec{F}_{i_1} = i_1 d\vec{l} \times \vec{B}(r = d) = i_1 \frac{\mu_0 i_2}{2 \pi d} d\vec{l}
     = -d\vec{F}_{i_2}
   \]
-  \label{20-05-D7}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{interazione_fili_4}
+    \caption{Forza sul filo \( i_1 \)}
+  \end{figure}
 \end{example}
 
 \subsubsection{Osservazioni}
 Si osserva che due fili paralleli con una corrente che scorre:
 \begin{itemize}
   \item Nello stesso verso si \textbf{attraggono}:
-    \label{20-05-D8}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.3\textwidth]{forza_magnetica_attrattiva_2}
+      \caption{Forza attrattiva}
+    \end{figure}
 
   \item Nel verso opposto si \textbf{repellono}:
-    \label{20-05-D9}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.3\textwidth]{forza_magnetica_repulsiva_2}
+      \caption{Forza repulsiva}
+    \end{figure}
 \end{itemize}
 Un filo con una corrente si può vedere come una carica in movimento:
-\label{20-05-D10}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.4\textwidth]{corrente_cariche_movimento}
+  \caption{Corrente come cariche in movimento}
+\end{figure}
+\noindent
 Di conseguenza si può considerare il filo come una carica in movimento:
-\label{20-05-D11}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{filo_cariche_movimento}
+  \caption{Filo come cariche in movimento}
+\end{figure}
+\noindent
+da cui segue la seguente relazione:
 \[
   |F| = \frac{\mu_0 i_1 i_2}{2 \pi d} \Leftrightarrow |F| = qvB
 \] 
-
-\vspace{1em}
-\noindent
-Questo è il metodo per calcolare l'Ampere, cioè \( 1 N \) di forza che agisce su due
-fili paralleli di lunghezza \( 1 m \) distanti \( 1 m \) l'uno dall'altro.
 
 \subsection{Flusso del campo magnetico}
 Il flusso elementare è sempre definito come il numero di linee di campo sono ortogonali
@@ -3423,13 +3525,18 @@ rientrava mai. Quindi:
 \[
   \oint_{S} \vec{B} \cdot \hat{n} d\vec{S} = 0
 \] 
-Se si considerano due circuiti \( \Gamma_1 \) e \( \Gamma_2 \) si sa che il campo magnetico
+Se si considerano due circuiti \( \Gamma_1 \) e \( \Gamma_2 \) il campo magnetico
 si concatena tra i due circuiti e si può calcolare il flusso sulla superficie \( S_2 \) 
 applicato dal circuito \( \Gamma_1 \):
-\[
-  \Phi_{12} = \int_{S_2} \vec{B}_1 \cdot \hat{n} d\vec{S} \propto i_1
-\] 
-\label{20-05-D22}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{flusso_circuiti}
+  \[
+    \Phi_{12} = \int_{S_2} \vec{B}_1 \cdot \hat{n} d\vec{S} \propto i_1
+  \] 
+  \caption{Flusso sulla superficie \( S_2 \)}
+\end{figure}
+\noindent
 Sappiamo che \( B \propto i \) e quindi il flusso è proporzionale alla corrente
 e ad un oggetto che dipende dalla distanza dei circuiti e dalla forma dei circuiti.
 Questo oggetto è il \textbf{coefficiente di mutua induzione} \( M_{12} \):
@@ -3448,14 +3555,21 @@ Il coefficiente di mutua induzione è \textbf{simmetrico}, cioè:
 \subsubsection{Autoflusso}
 Consideriamo un singolo circuito, si può calcolare il flusso del campo prodotto dalla
 spira, su se stessa:
-\label{20-05-D23}
-\[
-  \Phi = \int_{\text{Sup}} \vec{B} \cdot \hat{n} d\vec{S} = Li
-\] 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{autoflusso}
+  \[
+    \Phi = \int_{\text{Sup}} \vec{B} \cdot \hat{n} d\vec{S} = Li
+  \] 
+  \caption{Autoflusso}
+\end{figure}
+\noindent
 Dove \( L \) è l'\textbf{induttanza} della spira (o coefficiente di autoinduzione) misurato
 in \( \left[ H \right] \) Henry.
 
-Nei circuiti il simbolo dell'induttanza è:
+\vspace{1em}
+\noindent
+Nei circuiti il simbolo dell'induttanza è il seguente:
 \begin{figure}[H]
   \centering
   \begin{circuitikz}
