@@ -3552,7 +3552,7 @@ Il coefficiente di mutua induzione è \textbf{simmetrico}, cioè:
   M_{12} = M_{21} \quad \left[ H \right] \text{ (Henry)}
 \] 
 
-\subsubsection{Autoflusso}
+\subsubsection{Induttanza}
 Consideriamo un singolo circuito, si può calcolare il flusso del campo prodotto dalla
 spira, su se stessa:
 \begin{figure}[H]
@@ -3577,5 +3577,187 @@ Nei circuiti il simbolo dell'induttanza è il seguente:
   \end{circuitikz}
   \caption{Induttanza}
 \end{figure}
+
+\subsubsection{Calcolo dell'induttanza}
+I passaggi per calcolare l'induttanza sono i seguenti:
+\begin{itemize}
+  \item \textbf{Solenoide toroidale}:
+
+    Per calcolare l'induttanza
+    si risolve l'integrale della definizione di autoflusso, si isola la corrente e tutto
+    ciò che rimane è l'induttanza.
+    \[
+      \Phi(B) = \int_S B \cdot \hat{n} dS = \ldots = Li
+    \] 
+
+  \item \textbf{Solenoide rettilineo indefinito}
+
+    Sappiamo che il campo magnetico è uniforme e vale:
+    \[
+      B = \mu_0 i n
+    \] 
+    dove \( n \) è il numero di spire per unità di lunghezza.
+
+    Per calcolare l'induttanza si calcola il flusso:
+    \[
+      \Phi_{1 \text{ spira}} = B \cdot \text{Area spira}
+    \] 
+    Il flusso totale (per unità di lunghezza) è:
+    \[
+      \Phi_{\text{Tot}} = n \Phi_{1 \text{ spira}} = n B \cdot (\pi R^2) = n (\mu_0 i n)(\pi R^2) =
+      \underbrace{\mu_0 n^2 \pi R^2}_{\text{Induttanza}} i \quad \left[ Wb \right]
+    \] 
+    In questo caso l'induttanza è per unità di lunghezza.
+\end{itemize}
+
+\begin{example}
+  Consideriamo un solenoide toroidale di raggio \( R \) e lunghezza \( l \):
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{solenoide_toroidale}
+    \caption{Solenoide toroidale}
+  \end{figure}
+  \noindent
+  Sappiamo che il campo scorre soltanto all'interno delle spire 
+  \label{23-05-D1}
+  \[
+    B = \frac{\mu_0 N i}{2 \pi r} \quad \left[ T \right]
+  \] 
+  Il flusso totale è il flusso attraverso una spira moltiplicato per il numero di spire:
+  \[
+    \Phi_{\text{Tot}} = N \Phi_{1 \text{ spira}}
+  \] 
+  \[
+    \Phi_{1 \text{ spira}} = \int_{S_{\text{spira}}} \vec{B} \cdot \hat{n} dS
+  \] 
+  Per risolvere questo integrale dobbiamo calcolarlo "a pezzi" calcolando un elemento
+  di superficie della spira:
+  \label{23-05-D2}
+  \[
+  d \Phi = B(r) l dr
+  \] 
+  \[
+    \begin{aligned}
+      \Phi_{1 \text{ spira}} &= \int_{S_{\text{spira}}} \vec{B} \cdot \overbrace{\hat{n} dS}^{d \Phi}\\
+                             &= \int_R^{R + l} B(r) l dr \\
+                             &= \int_R^{R + l} \frac{\mu_0 N i}{2 \pi r} l dr \\
+                             &= \frac{\mu_0 N i l}{2 \pi} \int_R^{R + l} \frac{1}{r} dr \\
+                             &= \frac{\mu_0 N i l}{2 \pi} \left[ \ln(R + l) - \ln(R) \right] \\
+                             &= \frac{\mu_0 N i l}{2 \pi} \ln \left( \frac{R + l}{R} \right) \quad \left[ Wb \right]
+    \end{aligned}
+  \] 
+  \[
+    \Phi_{\text{Tot}} = N \Phi_{1 \text{ spira}} = N \cdot \frac{\mu_0 N i l}{2 \pi} \ln \left( \frac{R + l}{R} \right)
+  \] 
+  L'induttanza (o coefficiente di autoinduzione) è:
+  \[
+    L = \frac{N^2 \mu_0 l}{2 \pi} \ln \left( \frac{R + l}{R} \right) \quad \left[ H \right]
+  \] 
+\end{example}
+
+\subsection{Prima legge elementare di Laplace}
+Si hanno sorgenti (correnti o cariche in moto) che generano un campo (cioè un mediatore
+di forza) e si hanno gli oggetti su cui agisce il campo (correnti o cariche in moto).
+Si ha un'analogia con l'elettrostatica:
+\label{23-05-D3}
+Osserviamo che manca un modo per calcolare direttamente il campo magnetico \( dB \). 
+Questa è la \textbf{prima legge elementare di Laplace}.
+
+\begin{definition}[Prima legge elementare di Laplace]
+  \label{23-05-D4}
+  \[
+    d\vec{B} = \frac{\mu_0}{4 \pi} \frac{i d\vec{l} \times \hat{r}}{r^2}
+  \] 
+  La direzione del campo magnetico è data dalla regola della mano destra:
+  \label{23-05-D5}
+
+  \vspace{1em}
+  \noindent
+  Il campo di una singola carica in moto è:
+  \[
+    B_q = \frac{\mu_0}{4 \pi} q \vec{v} \times \frac{\hat{r}}{r^2} \quad \left[ T \right]
+  \] 
+  \label{23-05-D6}
+\end{definition}
+
+\subsection{Densità di energia magnetica}
+Nell'elettrostatica abbiamo osservato che se un volume di spazio elementare \( d \tau \)
+è attraversato da un campo \( \vec{E} \), allora si può calcolare l'energia elettrostatica
+ed era chiamata densità di energia elettrica:
+\label{23-05-D7}
+\[
+  u_E = \frac{\varepsilon_0}{2} E^2 \quad \left[ J/m^3 \right]
+\] 
+
+\vspace{1em}
+\noindent
+Anche nel caso della magnetostatica se si ha un volume di spazio \( d \tau \)
+attraversato da un campo \( \vec{B} \) si può calcolare la \textbf{densità di energia magnetica}:
+\label{23-05-D8}
+\[
+  u_B = \frac{B^2}{2 \mu_0} \quad \left[ J/m^3 \right]
+\] 
+
+\section{Induzione elettromagnetica}
+\subsection{Fatti sperimentali}
+Faraday si è chiesto se il campo magnetico può generare una corrente elettrica. 
+Alcuni esperimenti sono i seguenti:
+\begin{enumerate}
+  \item Si prende una spira su cui scorre una corrente \( i \) e un campo magnetico \( B \)
+    stazionario. Se si mette in moto una seconda spira scarica si osserva una corrente
+    indotta nella spira scarica:
+    \label{23-05-D9}
+    Se si ha una corrente indotta, allora si ha una forza elettromotrice indotta.
+
+  \item Si prende una spira scarica e al posto di muoverla verso il campo magnetico,
+    si muove il campo magnetico verso la spira. Si osserva che si ha una corrente indotta
+    nella spira scarica.
+    \label{23-05-D10}
+
+  \item Si considera una spira scarica e una seconda spira con una corrente variabile
+    \( i(t) \). Se varia la corrente, allora varia il campo magnetico che di conseguenza
+    sarà non stazionario \( B(t) \). Si osserva una corrente indotta nella spira
+    scarica e quindi una forza elettromotrice indotta.
+    \label{23-05-D11}
+\end{enumerate}
+Se la spira scarica si muove verso il campo magnetico si ha una forza di Lorentz che agisce
+sulle cariche della spira che le mette in moto. Se invece è il campo magnetico a muoversi
+verso la spira, \textbf{non è la forza di Lorentz} a mettere in moto le cariche, ma è un
+nuovo fenomeno chiamato \textbf{induzione elettromagnetica}.
+
+\subsection{Legge del flusso di Faraday}
+Una variazione del flusso di campo magnetico nel tempo \( B(t) \) produce una forza
+elettromotrice indotta \( \mathcal{E} \):
+\[
+  \mathcal{E}_{\text{Indotta}} = - \frac{d \Phi(B)}{dt} \quad \left[ V \right]
+\] 
+\label{23-05-D12}
+Il segno negativo è dovuto al fatto che la corrente indotta si \textbf{oppone alla variazione
+del flusso magnetico}. Questo fenomeno è chiamato \textbf{legge di Lenz}, quindi
+l'effetto è tale da opporsi alla causa che lo produce.
+
+\begin{itemize}
+  \item 
+    Se si ha un aumento di flusso in un verso, si osserva una forza elettromotrice
+    nel senso opposto e un campo magnetico indotto che si oppone all'aumento del flusso:
+    \label{23-05-D13}
+
+  \item 
+    Se si ha una diminuzione di flusso in un verso, si osserva una forza elettromotrice
+    nel senso opposto e un campo magnetico indotto che si oppone alla diminuzione del flusso:
+    \label{23-05-D14}
+\end{itemize}
+L'elemento di flusso è calcolato come:
+\[
+  d \Phi(B) = \vec{B} \cdot d\vec{S} \quad \left[ Wb \right]
+\] 
+Per variare il flusso si può:
+\begin{itemize}
+  \item Variare il campo magnetico \( B \)
+  \item Variare la superficie \( S \)
+  \item Variare l'angolo \( \theta \) tra il campo magnetico e la superficie
+\end{itemize}
+In tutti e tre i casi si ha una variazione del flusso magnetico e quindi si ha una forza
+elettromotrice indotta.
 
 \end{document}
