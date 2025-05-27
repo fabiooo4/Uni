@@ -2340,6 +2340,8 @@ Questo funziona perchè l'insieme dei vincoli è
 \textbf{convesso}, cioè se si prendono due punti all'interno del vincolo, la retta
 che li unisce è anch'essa interamente all'interno del vincolo.
 
+La complessità dell'algoritmo del simplesso è esponenziale.
+
 \begin{example}
   Estendiamo l'esempio precedente. 
   In una fabbrica di cioccolato si producono tre tipi di cioccolato:
@@ -2370,6 +2372,167 @@ che li unisce è anch'essa interamente all'interno del vincolo.
   Si può fare una combinazione lineare dei vincoli per ottenere un \textbf{limite
   superiore} al valore della funzione obiettivo. Se il minimo limite superiore coincide
   con il massimo limite inferiore (la soluzione al problema), allora la soluzione è ottima.
+
+  Una soluzione è \( (0, 300, 100) = 3100 \), quindi un limite superiore è:
+  \[
+    x_1 + 6x_2 + 13x_3 \le 3100
+  \] 
+
+  \vspace{1em}
+  \noindent
+  Si vuole trovare un peso \( y_i \) tale per cui la combinazione lineare dei vincoli
+  con i pesi \( y_i \) sia un limite superiore alla funzione obiettivo:
+  \[
+    \begin{cases}
+     y_1 \quad (x_1)               & \le 200\\
+     y_2 \quad (x_2)               & \le 300\\
+     y_3 \quad (x_1 + x_2 + 3 x_3) & \le 400\\
+     y_4 \quad (x_2 + 3x_3)        & \le 600
+    \end{cases}
+  \] 
+  Rappresentiamo il problema in forma matriciale:
+  \[
+  A = \begin{pmatrix} 
+    1 & 0 & 0 \\
+    0 & 1 & 0 \\
+    1 & 1 & 1 \\
+    0 & 1 & 3
+  \end{pmatrix} 
+  \quad
+  b = \begin{pmatrix} 
+    200 \\ 300 \\ 400 \\ 600
+  \end{pmatrix} 
+  \quad
+  c = \begin{pmatrix} 
+    1 & 6 & 13
+  \end{pmatrix}
+  \] 
+  \[
+    \begin{cases}
+      A \bar{x} \le b\\
+      max \;\; c \bar{x}
+    \end{cases}
+  \] 
+  La disequazione risultante è:
+  \[
+    (y_1 + y_3) x_1 + (y_2 + y_3 + y_4) x_2 + (y_3 + 3y_4) x_3
+    \le 200 y_1 + 300 y_2 + 400 y_3 + 600 y_4
+  \] 
+  se ogni coefficiente \( y_i \) è maggiore o uguale dei coefficienti della funzione
+  obiettivo, allora la disequazione da un limite superiore alla funzione obiettivo.
+
+  Quindi se valgono i seguenti vincoli:
+  \[
+    \begin{cases}
+      y_1 + y_3 & \ge 1\\
+      y_2 + y_3 + y_4 & \ge 6\\
+      y_3 + 3y_4 & \ge 13
+    \end{cases}
+  \] 
+  allora la seguente funzione è un limite superiore alla funzione obiettivo:
+  \[
+    200 y_1 + 300 y_2 + 400 y_3 + 600 y_4
+  \] 
+  Si vuole trovare quindi il minimo limite superiore alla funzione obiettivo, cioè:
+  \[
+    \begin{cases}
+      min \;\; 200 y_1 + 300 y_2 + 400 y_3 + 600 y_4 \\
+      y_1 + y_3 & \ge 1\\
+      y_2 + y_3 + y_4 & \ge 6\\
+      y_3 + 3y_4 & \ge 13
+    \end{cases}
+  \] 
+  La matrice che rappresenta i vincoli dei pesi è:
+  \[
+    \begin{pmatrix} 
+      1 & 0 & 1 & 0 \\
+      0 & 1 & 1 & 1 \\
+      0 & 0 & 1 & 3
+    \end{pmatrix} = A^T
+  \] 
+  Quindi si ha la seguente rappresentazione del problema in forma duale:
+  \[
+    \begin{cases}
+      A^T y \ge c^T\\
+      min \;\; b^T y
+    \end{cases}
+  \] 
+  Si ha quindi la seguente distinzione:
+  \begin{itemize}
+    \item \textbf{Problema primale}: si vuole massimizzare la funzione obiettivo
+      soggetta a vincoli lineari:
+      \[
+        \begin{cases}
+          max \;\; c \bar{x}\\
+          A \bar{x} \le b
+        \end{cases}
+      \] 
+    \item \textbf{Problema duale}: si vuole minimizzare la funzione obiettivo
+      soggetta a vincoli lineari:
+      \[
+        \begin{cases}
+          min \;\; b^T y\\
+          A^T y \ge c^T
+        \end{cases}
+      \]
+  \end{itemize}
+  Ad ogni problema primale corrisponde un problema duale, e i due problemi
+  hanno la stessa soluzione ottima.
+\end{example}
+
+\begin{example}
+  Una fabbrica di tappeti all'inizio dell'anno ha delle richieste mensili per l'anno
+  successivo:
+  \[
+   d_1, d_2, \ldots, d_{12}
+  \] 
+  Si hanno poi le seguenti informazioni:
+  \begin{itemize}
+    \item Ci sono 30 dipendenti iniziali
+    \item Ogni dipendente produce 20 tappeti al mese
+    \item Il salario mensile di un dipendente è di 2000 euro
+    \item All'inizio dell'anno non si ha nessun tappeto in magazzino
+    \item Lo straordinario costa l'80\% in più del salario normale
+    \item Al massimo si può fare il 30\% di straordinario
+    \item Il costo di assunzione è di 320 euro
+    \item Il costo di licenziamento è di 400 euro
+    \item Il costo di stoccaggio di un tappeto in magazzino è di 8 euro al mese
+  \end{itemize}
+  L'obiettivo è capire quanti dipendenti avere al mese, quanti straordinari fare, quanti
+  tappeti produrre. Si vuole quindi minimizzare il costo totale.
+  
+  Creiamo le variabili:
+  \begin{itemize}
+    \item \( d_i \): Tappeti venduti nel mese \( i \)
+    \item \( w_i \): Lavoratori a fine mese \( i \)
+    \item \( x_i \): Tappeti prodotti nel mese \( i \)
+    \item \( o_i \): Tappeti prodotti in straordinario nel mese \( i \)
+    \item \( h_i \): Numero di dipendenti assunti alla fine del mese \( i \)
+    \item \( f_i \): Numero di dipendenti licenziati alla fine del mese \( i \)
+    \item \( s_i \): Tappeti in magazzino nel mese \( i \)
+  \end{itemize}
+  Osservazioni:
+  \[
+  \begin{aligned}
+    s_0 &= 0 \quad w_0 = 30 \\
+    x_i &= 20 w_i + o_i \\
+    o_i &\le (0.3*20) w_i \le 6 w_i \\
+    w_i &= w_{i-1} + h_i - f_i \\
+    s_i &= s_{i-1} + 20 w_i + o_i - d_i \\
+  \end{aligned}
+  \] 
+  (tutte le variabili sono non negative).
+  
+  \vspace{1em}
+  \noindent
+  Si vuole minimizzare il costo totale:
+  \[
+    \sum 2000 w_i + \sum 320 h_i + \sum 400 f_i + \sum 8 s_i +
+    \sum \underbrace{\left(\frac{2000}{20} * 1.8\right)}_{=180} o_i
+  \] 
+  alcune variabili sembrano superflue, come \( h_i \) e \( f_i \), ma queste servono
+  per mantenere la rappresentazione in forma lineare.
+  
 \end{example}
 
 \end{document}

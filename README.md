@@ -80,6 +80,7 @@ I'm sharing them because they can be useful to other students.
 - [Calculus 2-3](./SecondoAnno/SecondoSemestre/Analisi2/Esercitazione) (Only exercises)
   - [Exercises summary](./SecondoAnno/SecondoSemestre/Analisi2/Formulario/formulario.pdf)
 - [Physics 2](./SecondoAnno/SecondoSemestre/Fisica2/Fisica2.pdf)
+  - [Course exercises](./SecondoAnno/SecondoSemestre/Fisica2/Esercitazione/Esercitazione.pdf)
 </details>
 </details>
 <details>
