@@ -3733,7 +3733,7 @@ attraversato da un campo \( \vec{B} \) si può calcolare la \textbf{densità di 
   \caption{Densità di energia magnetica}
 \end{figure}
 
-\section{Induzione elettromagnetica}
+\section{Elettromagnetismo}
 \subsection{Fatti sperimentali}
 Faraday si è chiesto se il campo magnetico può generare una corrente elettrica. 
 Alcuni esperimenti sono i seguenti:
@@ -3820,5 +3820,247 @@ Per variare il flusso si può:
 \end{itemize}
 In tutti e tre i casi si ha una variazione del flusso magnetico e quindi si ha una forza
 elettromotrice indotta.
+
+\vspace{1em}
+\noindent
+La legge di Faraday può essere scritta in forma integrale:
+\[
+  \mathcal{E} = \oint_{\Gamma} \vec{E} \cdot d\vec{l} 
+\] 
+\[
+  \downarrow
+\] 
+\[
+  \oint_{\Gamma} \vec{E} \cdot d\vec{l} = - \frac{d \Phi (B)}{dt}
+\] 
+e questa è l'\textbf{equazione di Maxwell}.
+
+\subsection{Circuito mobile di Faraday}
+Il circuito mobile di Faraday è composto da un circuito a U con un'asta conduttrice
+che si può muovere lungo il circuito. Questo circuito è un trasformatore di energia
+meccanica in energia elettrica. Si hanno quindi due resistenze in serie: il filo
+e l'asta:
+\label{28-05-D1}
+Quando l'asta si muove, si ha una variazione dell'area del circuito e quindi nel flusso
+magnetico. Immergiamo il circuito in un campo magnetico \( B \) perpendicolare al piano
+del circuito:
+\label{28-05-D2}
+La variazione del flusso magnetico genera una forza elettromotrice indotta \textbf{
+localizzata sull'asta} (cioè l'elemento che fa variare il flusso). Di conseguenza 
+i seguenti sistemi sono equivalenti:
+\label{28-05-D3}
+
+\vspace{1em}
+\noindent
+Calcoliamo il flusso del circuito mobile:
+\[
+  \Phi = B \cdot S = B (ax) \quad \left[ Wb \right]
+\] 
+Deriviamo il flusso rispetto al tempo per ottenere la forza elettromotrice indotta
+(ricordiamo che la derivata dello spazio \( x \) rispetto al tempo è la velocità \( v \)):
+\[
+  \frac{d \Phi }{dt} = B a v = |\mathcal{E}| \quad \left[ V \right]
+\] 
+La forza elettromotrice indotta risultante è soltanto il modulo, senza il verso. Per
+ottenere il verso bisogna assegnare un'orientamento al circuito, ad esempio:
+\label{28-05-D4}
+Quindi il verso della forza elettromotrice indotta è:
+\label{28-05-D5}
+Nel circuito mobile si avrà un campo magnetico indotto sull'asta che si oppone
+alla variazione del flusso magnetico, quindi si ha una forza elettromotrice e una
+corrente indotta che si oppongono al moto dell'asta:
+\label{28-05-D6}
+Il circuito può essere chiuso con qualsiasi componente; consideriamo una resistenza:
+\[
+  R_{\text{circuito}}(\text{totale}) = \ldots \quad \left[ \Omega \right]
+\] 
+Si otterrà quindi il seguente \textbf{schema del circuito} mobile:
+\label{28-05-D7}
+Si ha quindi una carica immersa in un campo e quindi la carica è soggetta ad una forza
+che tenta di fermare il moto dell'asta:
+\label{28-05-D8}
+\[
+  dF = i d\vec{l} \times \vec{B}
+\]
+Questa forza è chiamata \textbf{forza di attrito elettromagnetico} e vale:
+\[
+  \begin{aligned}
+    |\vec{F}| &= ia B \quad \left[ N \right]\\
+              &= \frac{\mathcal{E}}{R} aB \\
+              &= \frac{Bav}{R} aB\\
+              &= \frac{B^2 a^2 v}{R}
+  \end{aligned}
+\] 
+(perchè sono tutte ortogonali tra loro)
+
+\subsubsection{Bilancio energetico del sistema}
+\begin{itemize}
+  \item In fisica 1 la potenza è il lavoro nel tempo
+    (\( \frac{dL}{dt} \; \left[ W \right] \)):
+    \[
+      P = \vec{F} \cdot \vec{v}
+    \]
+    \[
+      dL = F \cdot dS
+    \] 
+
+  \item In fisica 2 la potenza è la stessa cosa ma abbiamo che:
+    \[
+      L = -q \Delta V
+    \] 
+    quindi la potenza è:
+    \[
+      P = \vec{F} \cdot \vec{v} = Vi
+    \] 
+    dove \( V \) può essere:
+    \[
+      V_R, \quad V_L, \quad V_C, \quad \mathcal{E}
+    \] 
+\end{itemize}
+Calcoliamo la potenza \textbf{dissipata} dalla resistenza \( R \) nel circuito mobile:
+\[
+  \begin{aligned}
+    P_R &= (V_r i)\\
+        &= i^2 R\\
+        &= \left( \frac{\mathcal{E}}{R} \right)^2 R\\
+        &= \left( \frac{Bav}{R} \right)^2 R\\
+        &= \frac{B^2 a^2 v^2}{R} \quad \left[ W \right]
+  \end{aligned}
+\] 
+La potenza \textbf{erogata} dal generatore è:
+\[
+  \begin{aligned}
+    P_{\mathcal{E}} &= V_{\mathcal{E}} i \\
+                    &= \mathcal{E}_{\text{Indotta}} i \\
+                    &= (Bav) \cdot (\frac{\mathcal{E}}{R})\\
+                    &= (Bav) \cdot (\frac{Bav}{R})\\
+                    &= \frac{B^2 a^2 v}{R} \quad \left[ W \right]
+  \end{aligned}
+\] 
+Per tenere in moto la barra a velocità costante \( v \) serve una forza uguale e contraria
+all'attrito che la vuole fermare. Quindi la potenza \textbf{meccanica} dell'asta è:
+\[
+  \begin{aligned}
+    P_{\text{Asta}} &= F \cdot v\\
+                    &= iaB \cdot v\\
+                    &= \frac{B^2 a^2 v}{R} \cdot v\\
+                    &= \frac{B^2 a^2 v^2}{R} \quad \left[ W \right]
+  \end{aligned}
+\] 
+Osserviamo che la potenza dissipata dalla resistenza \( R \) è uguale alla potenza
+erogata dal generatore \( \mathcal{E} \) e alla potenza meccanica dell'asta, quindi
+tutta la potenza meccanica dell'asta viene trasformata in potenza elettrica, di conseguenza
+questo sistema è un trasformatore.
+
+\subsubsection{Circuito mobile con un condensatore}
+Siccome il circuito mobile si può chiudere con qualsiasi componente, consideriamo
+un circuito mobile chiuso con un condensatore:
+\label{28-05-D9}
+Lo schema del circuito è il seguente:
+\label{28-05-D10}
+(Nel circuito c'è sempre una resistenza \( R \) che rappresenta la resistenza del filo e
+dell'asta). Osserviamo che questo è un circuito RC e l'andamento nel tempo è il seguente:
+\label{28-05-D11}
+Le potenze si calcolano come nel caso precedente, ma ora la corrente varia nel tempo.
+Siccome l'andamento va all'infinito, si integra la potenza nell'intervallo di tempo
+\([0, \infty]\) e si osserva che la potenza viene dissipata completamente
+dalla resistenza \( R \) e dal condensatore \( C \).
+
+\subsection{Induzione elettromagnetica}
+Abbiamo già visto che la variazione di flusso ha un effetto duale:
+\begin{itemize}
+  \item 
+    Un conduttore in movimento in un campo magnetico produce una
+    forza elettromotrice indotta dovuta alla forza di Lorentz che agisce sulle cariche
+    del conduttore.
+
+  \item La stessa cosa succede quando è il campo magnetico
+    a muoversi verso il conduttore. Questo fenomeno però è nuovo ed è l'\textbf{induzione
+    elettromagnetica}.
+\end{itemize}
+Osserviamo più da vicino il sistema del circuito mobile di Faraday:
+\label{28-05-D12}
+La forza elettromotrice indotta è data dall'azione della forza di Lorentz sulle cariche:
+\[
+  \begin{aligned}
+    \mathcal{E} &= \oint_{\Gamma} E \cdot dl\\
+                &= \oint_{\Gamma} \frac{F}{q} \cdot dl\\
+                &= \int_{\text{Asta}} vB\\
+                &= \int_0^a vB = vBa
+  \end{aligned}
+\] 
+Se invece è il campo magnetico \( B(t) \) a variare (con qualsiasi legge) si ha:
+\label{28-05-D13}
+\[
+  |\mathcal{E}_{\text{Indotto}}| = \underbrace{Sup \cdot \frac{dB}{dt}}_{\frac{d \Phi }{dt}}
+\] 
+
+\subsection{Circuito RL}
+Abbiamo visto che se si fa scorrere una corrente \( i \) in un circuito si ha un campo
+che \textbf{arrotola} la corrente secondo la regola della mano destra e quindi si ha
+un autoflusso, cioè un'induttanza \( L \):
+\[
+  \Phi = Li
+\] 
+Se la correte varia \( i(t) \), allora varierà anche l'autoflusso \( \Phi(t) \) e si
+avrà una forza elettromotrice \textbf{sempre opposta} alla variazione della corrente:
+\[
+  i(t) \Rightarrow \Phi(t) \Rightarrow \mathcal{E}_{\text{Opposta a } i(t)}
+\] 
+e si chiama forza \textbf{forza contro elettromotrice}:
+\[
+  \mathcal{E}_{\text{Contro}} = - \frac{d \Phi }{dt} = - L \frac{di}{dt}
+\] 
+Se si considera un circuito con una resistenza \( R \) e un generatore \( \mathcal{E} \)
+con un interruttore, se si chiude l'interruttore si ha una variazione della corrente:
+\[
+  i: 0 \mapsto i
+\] 
+e quindi si avrà una forza contro elettromotrice che si rappresenta con un induttore:
+\label{28-05-D14}
+e vale la legge di Ohm generalizzata:
+\[
+  \mathcal{E} = Ri
+\] 
+che adattandola al circuito RL si ottiene: 
+\begin{definition}[Legge di Ohm del circuito RL]
+  \[
+    \mathcal{E} - L \frac{di}{dt} = Ri
+  \] 
+\end{definition}
+La legge di Ohm del circuito RL rappresenta un circuito di accensione. Un circuito di
+spegnimento è rappresentato da:
+\label{28-05-D15}
+\[
+  - L \frac{di}{dt} = Ri
+\] 
+che è un'equazione differenziale del primo ordine omogenea. La soluzione di questa
+equazione è:
+\[
+  \begin{aligned}
+    - L \frac{di}{dt} = Ri\\
+    L \frac{di}{dt} + Ri = 0\\
+    \frac{di}{i} = - \frac{R}{L} dt\\
+    \int \frac{di}{i} = - \frac{R}{L} \int dt\\
+    \ln |i| = - \frac{R}{L} t\\
+  \end{aligned}
+\] 
+Quindi lo spegnimento segue un andamento esponenziale:
+\[
+  i = i_0 e^{-\frac{t}{\tau}} = i_0 e^{-\frac{R}{L} t}
+\] 
+\label{28-05-D16}
+E anche per l'accensione si ha un andamento esponenziale:
+\label{28-05-D17}
+\[
+  i(t) = \frac{\mathcal{E}}{R} \left( 1 - e^{-\frac{t}{\tau}} \right) = \frac{\mathcal{E}}{R} \left( 1 - e^{-\frac{R}{L} t} \right)
+\] 
+(Attenzione: l'andamento esponenziale è del \textbf{raggiungimento dell'equilibrio}, che
+nello spegnimento è il valore \( i = 0 \) e nell'accensione è il valore \( i = i_0 \)).
+\begin{itemize}
+  \item Se si trascura l'autoinduzione, si ha un circuito senza induttanza \( L \)
+  \item Se non si trascura l'autoinduzione, si ha un circuito con un induttanza \( L \) 
+\end{itemize}
+
 
 \end{document}
