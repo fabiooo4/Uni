@@ -3840,15 +3840,29 @@ Il circuito mobile di Faraday è composto da un circuito a U con un'asta condutt
 che si può muovere lungo il circuito. Questo circuito è un trasformatore di energia
 meccanica in energia elettrica. Si hanno quindi due resistenze in serie: il filo
 e l'asta:
-\label{28-05-D1}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{circuito_mobile_faraday}
+  \caption{Circuito mobile di Faraday}
+\end{figure}
+\noindent
 Quando l'asta si muove, si ha una variazione dell'area del circuito e quindi nel flusso
 magnetico. Immergiamo il circuito in un campo magnetico \( B \) perpendicolare al piano
 del circuito:
-\label{28-05-D2}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{circuito_mobile_faraday_2}
+  \caption{Circuito mobile di Faraday con campo magnetico}
+\end{figure}
+\noindent
 La variazione del flusso magnetico genera una forza elettromotrice indotta \textbf{
 localizzata sull'asta} (cioè l'elemento che fa variare il flusso). Di conseguenza 
 i seguenti sistemi sono equivalenti:
-\label{28-05-D3}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{equivalenza_circuito_mobile_faraday}
+  \caption{Circuito mobile di Faraday equivalente}
+\end{figure}
 
 \vspace{1em}
 \noindent
@@ -3863,22 +3877,46 @@ Deriviamo il flusso rispetto al tempo per ottenere la forza elettromotrice indot
 \] 
 La forza elettromotrice indotta risultante è soltanto il modulo, senza il verso. Per
 ottenere il verso bisogna assegnare un'orientamento al circuito, ad esempio:
-\label{28-05-D4}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{orientamento_circuito_mobile_faraday}
+  \caption{Orientamento del circuito mobile di Faraday}
+\end{figure}
+\noindent
 Quindi il verso della forza elettromotrice indotta è:
-\label{28-05-D5}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{verso_forza_elettromotrice_indotta}
+  \caption{Verso della forza elettromotrice indotta}
+\end{figure}
+\noindent
 Nel circuito mobile si avrà un campo magnetico indotto sull'asta che si oppone
 alla variazione del flusso magnetico, quindi si ha una forza elettromotrice e una
 corrente indotta che si oppongono al moto dell'asta:
-\label{28-05-D6}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{forza_elettromotrice_indotta}
+  \caption{Forza elettromotrice indotta}
+\end{figure}
+\noindent
 Il circuito può essere chiuso con qualsiasi componente; consideriamo una resistenza:
 \[
   R_{\text{circuito}}(\text{totale}) = \ldots \quad \left[ \Omega \right]
 \] 
 Si otterrà quindi il seguente \textbf{schema del circuito} mobile:
-\label{28-05-D7}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{schema_circuito_mobile_faraday}
+  \caption{Schema del circuito mobile di Faraday}
+\end{figure}
+\noindent
 Si ha quindi una carica immersa in un campo e quindi la carica è soggetta ad una forza
 che tenta di fermare il moto dell'asta:
-\label{28-05-D8}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.4\textwidth]{forza_asta_circuito_mobile}
+  \caption{Forza di attrito elettromagnetico}
+\end{figure}
 \[
   dF = i d\vec{l} \times \vec{B}
 \]
@@ -3955,12 +3993,27 @@ questo sistema è un trasformatore.
 \subsubsection{Circuito mobile con un condensatore}
 Siccome il circuito mobile si può chiudere con qualsiasi componente, consideriamo
 un circuito mobile chiuso con un condensatore:
-\label{28-05-D9}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{circuito_mobile_condensatore}
+  \caption{Circuito mobile di Faraday con condensatore}
+\end{figure}
+\noindent
 Lo schema del circuito è il seguente:
-\label{28-05-D10}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{schema_circuito_mobile_condensatore}
+  \caption{Schema del circuito mobile di Faraday con condensatore}
+\end{figure}
+\noindent
 (Nel circuito c'è sempre una resistenza \( R \) che rappresenta la resistenza del filo e
 dell'asta). Osserviamo che questo è un circuito RC e l'andamento nel tempo è il seguente:
-\label{28-05-D11}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{andamento_circuito_mobile_condensatore}
+  \caption{Grafico dell'andamento della corrente}
+\end{figure}
+\noindent
 Le potenze si calcolano come nel caso precedente, ma ora la corrente varia nel tempo.
 Siccome l'andamento va all'infinito, si integra la potenza nell'intervallo di tempo
 \([0, \infty]\) e si osserva che la potenza viene dissipata completamente
@@ -3979,7 +4032,12 @@ Abbiamo già visto che la variazione di flusso ha un effetto duale:
     elettromagnetica}.
 \end{itemize}
 Osserviamo più da vicino il sistema del circuito mobile di Faraday:
-\label{28-05-D12}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{zoom_circuito_mobile}
+  \caption{Osservazione del circuito mobile di Faraday}
+\end{figure}
+\noindent
 La forza elettromotrice indotta è data dall'azione della forza di Lorentz sulle cariche:
 \[
   \begin{aligned}
@@ -3990,10 +4048,14 @@ La forza elettromotrice indotta è data dall'azione della forza di Lorentz sulle
   \end{aligned}
 \] 
 Se invece è il campo magnetico \( B(t) \) a variare (con qualsiasi legge) si ha:
-\label{28-05-D13}
-\[
-  |\mathcal{E}_{\text{Indotto}}| = \underbrace{Sup \cdot \frac{dB}{dt}}_{\frac{d \Phi }{dt}}
-\] 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{induzione_elettromagnetica}
+  \[
+    |\mathcal{E}_{\text{Indotto}}| = \underbrace{Sup \cdot \frac{dB}{dt}}_{\frac{d \Phi }{dt}}
+  \] 
+  \caption{Forza elettromotrice indotta da un campo magnetico variabile}
+\end{figure}
 
 \subsection{Circuito RL}
 Abbiamo visto che se si fa scorrere una corrente \( i \) in un circuito si ha un campo
@@ -4017,7 +4079,11 @@ con un interruttore, se si chiude l'interruttore si ha una variazione della corr
   i: 0 \mapsto i
 \] 
 e quindi si avrà una forza contro elettromotrice che si rappresenta con un induttore:
-\label{28-05-D14}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{circuito_RL}
+  \caption{Circuito RL}
+\end{figure}
 e vale la legge di Ohm generalizzata:
 \[
   \mathcal{E} = Ri
@@ -4030,7 +4096,11 @@ che adattandola al circuito RL si ottiene:
 \end{definition}
 La legge di Ohm del circuito RL rappresenta un circuito di accensione. Un circuito di
 spegnimento è rappresentato da:
-\label{28-05-D15}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{circuito_RL_spegnimento}
+  \caption{Circuito RL di spegnimento}
+\end{figure}
 \[
   - L \frac{di}{dt} = Ri
 \] 
@@ -4049,9 +4119,17 @@ Quindi lo spegnimento segue un andamento esponenziale:
 \[
   i = i_0 e^{-\frac{t}{\tau}} = i_0 e^{-\frac{R}{L} t}
 \] 
-\label{28-05-D16}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{andamento_spegnimento}
+  \caption{Andamento della corrente durante lo spegnimento}
+\end{figure}
 E anche per l'accensione si ha un andamento esponenziale:
-\label{28-05-D17}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{andamento_accensione}
+  \caption{Andamento della corrente durante l'accensione}
+\end{figure}
 \[
   i(t) = \frac{\mathcal{E}}{R} \left( 1 - e^{-\frac{t}{\tau}} \right) = \frac{\mathcal{E}}{R} \left( 1 - e^{-\frac{R}{L} t} \right)
 \] 
