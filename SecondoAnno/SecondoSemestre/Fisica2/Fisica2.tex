@@ -69,7 +69,7 @@ Gli oggetti della stessa classe si respingono, mentre quelli di classe diversa s
 
 \subsection{Materia}
 L'atomo è formato da un nucleo centrale composto da protoni, carichi positivamente, e da
-neutroni, senza carica. Intorno al nucleo si ha una regione in cui si ha la probabilità
+neutroni, senza carica. Intorno al nucleo si ha una regione in cui c'è la probabilità
 di trovare un'altra particella, carica negativamente, chiamata elettrone.
 \begin{figure}[H]
   \centering
@@ -101,12 +101,12 @@ si può \textbf{solo trasferire}.
 \end{definition}
 
 \noindent
-I componenti della materia hanno due comportamenti:
+Le componenti della materia hanno due comportamenti:
 \begin{itemize}
   \item \textbf{Conduttore}: ad esempio il metallo, in cui gli elettroni sono liberi di
     muoversi
   \item \textbf{Dielettrico} (isolante): ad esempio il vetro, in cui le cariche non sono
-    libere di muoversi, quindi vincolate, cioè non si riesce a strappare gli elettroni
+    libere di muoversi, quindi vincolate, cioè non si riescono a strappare gli elettroni
     dall'atomo. Se si avvicina una carica positiva al dielettrico si avrà una deformazione
     delle cariche, ma non si ha una separazione di carica:
     \begin{figure}[H]
@@ -122,11 +122,11 @@ L'elettrificazione è il trasferimento di carica da un corpo all'altro. Ci sono 
 meccanismi di elettrificazione:
 \begin{itemize}
   \item \textbf{Strofinio}:
-    Si prende una bacchetta di vetro e un panno di lana e si strofina la bacchetta.
+    Si prende una bacchetta di vetro e un panno di lana e si strofina la bacchetta con il panno.
     La bacchetta, inizialmente, non è carica e meccanicamente con lo strofinio si strappano
-    gli elettroni dagli atomi. La bacchetta diventa carica positivamente e il panno
-    negativamente. Si avranno quindi le cariche \( q^+ \) della bacchetta e \( q^- \)
-    del panno. Per la legge di conservazione della carica si ha:
+    gli elettroni dagli atomi della bacchetta. La bacchetta diventa carica positivamente e
+    il panno negativamente. Si avranno quindi le cariche \( q^+ \) della bacchetta e
+    \( q^- \) del panno. Per la legge di conservazione della carica si ha:
     \[
       |q^-| = q^+
     \] 
@@ -154,7 +154,7 @@ meccanismi di elettrificazione:
 
     \vspace{1em}
     \noindent
-    L'\textbf{elettroscopio} si usa per misurare la carica elettrica. È un oggetto metallico
+    Per misurare la carica elettrica si usa l'\textbf{elettroscopio}. È un oggetto metallico
     collegato a delle lamelle metalliche chiamate foglie:
     \begin{figure}[H]
       \centering
@@ -221,7 +221,8 @@ cioè la forza è diretta lungo la retta che congiunge le due cariche.
 \[
   k = \frac{1}{4 \pi \varepsilon_0}
 \]
-dove \( \varepsilon_0 \) è la costante dielettrica del vuoto.
+dove \( \varepsilon_0 = 8,854187 \cdot 10^{-12} \; \frac{F}{m} \) è la costante dielettrica del vuoto.
+
 L'unità di misura della carica è il Coulomb:
 \[
   [q] = C
@@ -281,8 +282,8 @@ La forza che la carica \( q_i \) agisce su \( q_0 \) è:
 \] 
 dove \( \vec{r}_{i0} = \vec{r}_0 - \vec{r}_i \).
 
-Applichiamo questa formula osservando una ad una tutte le cariche come fatto per \( q_0 \)
-per calcolare la forza totale applicata sulla carica \( q_0 \):
+Applichiamo questa formula osservando una ad una tutte le cariche come abbiamo fatto per
+\( q_0 \) per calcolare la forza totale applicata sulla carica \( q_0 \):
 \[
   \vec{F}_{\text{tot}} = \sum_{i=1}^{n} \frac{q_i q_0}{4 \pi \varepsilon_0} \cdot 
   \frac{\hat{r}_{i0}}{r_{i0}^2} \quad \left[ N \right]
@@ -462,7 +463,7 @@ Si può definire un campo anche per l'energia potenziale:
 \end{figure}
 
 \begin{definition}
-  Il campo potenziale è definita come la differenza di energia di una carica \( q \) 
+  Il campo potenziale è definito come la differenza di energia di una carica \( q \) 
   unitaria:
   \[
     V(F) := \Delta V_{AB} = \frac{\Delta U}{q} \quad \left[ V \right]
@@ -488,7 +489,7 @@ e poniamo \( V(\vec{r}_0) = V_0 \). Successivamente si calcola il potenziale com
 \( V(\vec{r}) - V(\vec{r}_0)\):
 \[
 \begin{cases}
-  V(\vec{r_0}) = V_0 \to = 0\\
+  V(\vec{r_0}) = V_0 = 0\\
   V(\vec{r}) - V_0 = - \int_{\vec{r}_0}^{\vec{r}} \vec{E} \; dl
 \end{cases}
 \] 
@@ -587,14 +588,14 @@ nel verso del campo. Hanno le seguenti caratteristiche:
   \item Escono dalle cariche positive e entrano nelle cariche negative
   \item Sono linee aperte, cioè non si chiudono mai
 
-  \item In una carica positiva puntiforme sono radiali
+  \item In una carica positiva puntiforme sono radiali uscenti
     \begin{figure}[H]
       \centering
       \includegraphics[width=0.3\textwidth]{linee_campo_positivo}
       \caption{Linee di campo su una carica positiva}
     \end{figure}
 
-  \item In una carica negativa puntiforme sono radiali e entrano nella carica
+  \item In una carica negativa puntiforme sono radiali entranti
     \begin{figure}[H]
       \centering
       \includegraphics[width=0.3\textwidth]{linee_campo_negativo}
@@ -640,7 +641,7 @@ di Gauss}. Le simmetrie che analizziamo sono:
 
   \item \textbf{Simmetria cilindrica}: Un sistema che non varia in base alla rotazione 
     intorno ad un asse. Ad esempio un cilindro \textbf{indefinito} (di lunghezza non 
-    definita) oppure un filo.
+    definita) oppure un filo indefinito.
 
   \item \textbf{Simmetria rispetto ad un piano}: Un sistema che non varia in base alla 
     traslazione lungo un piano.
@@ -670,7 +671,7 @@ sfera, si ottiene un flusso che è costante e non dipende da \( \vec{r} \):
 \] 
 
 \begin{define}[Angolo piano]
-  L'angolo solido \( d \alpha \) è definito come un elemento di linea \( dl \) di 
+  L'angolo piano \( d \alpha \) è definito come un elemento di linea \( dl \) della
   circonferenza diviso per il raggio:
   \begin{figure}[H]
     \centering
@@ -682,8 +683,8 @@ sfera, si ottiene un flusso che è costante e non dipende da \( \vec{r} \):
   \] 
 \end{define}
 \begin{define}[Angolo solido]
-  L'angolo solido \( d \Omega \) è definito come un elemento di superficie \( dS \) diviso
-  per il raggio al quadrato:
+  L'angolo solido \( d \Omega \) è definito come un elemento di superficie \( dS \) della
+  sfera diviso per il raggio al quadrato:
   \begin{figure}[H]
     \centering
     \includegraphics[width=0.4\textwidth]{angolo_solido}
@@ -727,7 +728,7 @@ Consideriamo una superficie con concavità verso il basso definita come la sua o
       \[
         d \Phi > 0
       \] 
-      \caption{Flusso positivo}
+      \caption{Flusso positivo (massimo)}
     \end{subfigure}
     \hfil
     \begin{subfigure}{0.3\textwidth}
@@ -780,15 +781,14 @@ Consideriamo una superficie con concavità verso il basso definita come la sua o
   L'integrale su una superficie chiusa dell'angolo piano è uguale a \( 2 \pi  \),
   quindi l'integrale su una superficie chiusa dell'angolo solido è uguale a \( 4 \pi \).
 \end{example}
-Il flusso quindi non dipende dalla superficie. Questa è la dimostrazione del teorema
-di Gauss.
+Il flusso quindi non dipende dalla superficie e dimostra il teorema di Gauss.
 
 \begin{theorem}[Teorema di Gauss]
   Il flusso \( \Phi(\vec{E}) \) del campo elettrico \( \vec{E} \) attraverso una
   superficie chiusa \textbf{qualsiasi} \( S \) è uguale alla somma delle cariche interne alla superficie
   diviso \( \varepsilon_0 \):
   \[
-    \Phi (\vec{E}) = \underset{\text{superficie chiusa QUALUNQUE}}{\oint} \vec{E} \cdot d \vec{S} = \frac{Q_{\text{interne}}}{\varepsilon_0}
+    \Phi (\vec{E}) = \underset{\substack{\text{superficie chiusa} \\ \text{QUALUNQUE}}}{\oint} \vec{E} \cdot d \vec{S} = \frac{Q_{\text{interne}}}{\varepsilon_0}
   \] 
   Le cariche esterne non contano perchè quando esse entrano nella superficie, ad un
   certo punto escono, quindi il flusso è nullo. Se all'interno della superficie c'è
@@ -855,7 +855,7 @@ Le caratteristiche necessarie sono:
   \end{figure}
   \[
     \begin{aligned}
-      \Phi(\vec{E}) &= \oint_{S(r)} \vec{E} \cdot \hat{n} \cdot_{S(r)} dS\\
+      \Phi(\vec{E}) &= \oint_{S(r)} \vec{E} \cdot \hat{n} \cdot dS\\
       &= \oint_{S(r)} E(r) dS\\
       &= E(r) \overbrace{\oint_{S(r)} dS}^{\text{Sup sfera}}\\
       &= E(r) \cdot 4 \pi r^2 = \frac{Q_{\text{int}}}{\varepsilon_0}
@@ -899,7 +899,7 @@ Le caratteristiche necessarie sono:
     \caption{Carica distribuita su un volume sferico}
   \end{figure}
   \noindent
-  Siccome la sfea all'interno non è più vuota come nell'esempio precedente, ma è piena
+  Siccome la sfera all'interno non è più vuota come nell'esempio precedente, ma è piena
   il valore di \( Q_{\text{int}} \) esterno rimane invariato, ma all'interno si ha:
   \[
     Q_{\text{Int}} = 
@@ -1004,8 +1004,8 @@ positiva \( \sigma^+ \; \left[ \frac{C}{m^2} \right] \). L'unico grado di libert
 \[
   d\vec{E} = \frac{dq}{4 \pi \varepsilon_0 r^2} \hat{r}
 \] 
-Se consideriamo un elemento di carica che agisce su un punto \( p \), allora siccome
-il piano è indefinito ci sarà un elemento di carica simmetrico che genera un campo
+Se consideriamo un elemento di carica che agisce su un punto \( p \) allora, siccome
+il piano è indefinito, ci sarà un elemento di carica simmetrico che genera un campo
 con componente orizzontale uguale e opposto a quella dell'elemento precedente.
 Di conseguenza il campo totale sarà perpendicolare al piano:
 \begin{figure}[H]
@@ -1048,7 +1048,7 @@ costante.
     \caption{Carica distribuita su due piani indefiniti}
   \end{figure}
   \noindent
-  Il piano, per il principio di sovrapposizione, è uguale a:
+  Il sistema, per il principio di sovrapposizione, è uguale a:
   \[
     \sigma = \sigma ^+ + \sigma ^-
   \] 
@@ -1085,9 +1085,9 @@ costante.
 
 \subsection{Elettrostatica nei conduttori}
 Un materiale conduttore ha \textbf{le cariche libere di muoversi}. Se si avvicina un
-campo elettrico e sulle cariche viene esercitata una forza. Per un momento ci sarà
+campo elettrico sulle cariche viene esercitata una forza. Per un momento ci sarà
 del caos, ma poi le cariche si sposteranno fino a quando non si raggiunge l'equilibrio,
-in quel momento si studia il comportamento delle cariche.
+e solo in quel momento si studia il comportamento delle cariche.
 
 \subsubsection{Proprietà dei conduttori in equilibrio elettrostatico}
 \begin{enumerate}
