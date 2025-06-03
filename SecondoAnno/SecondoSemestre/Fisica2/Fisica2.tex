@@ -1394,7 +1394,7 @@ La capacità è:
     V_2 - V_1 = -\int_1^2 \vec{E} \cdot d\vec{l}
   \] 
   quindi
-  (Il campo è negatico perchè la sua direzione è opposta a quella del potenziale):
+  (Il campo è negativo perchè la sua direzione è opposta a quella del potenziale):
   \[
     V^+ - V^- = - \int_-^+ \left( - \frac{\sigma}{\varepsilon_0} \right) dx 
     = \frac{\sigma }{\varepsilon _0} h \quad \left[ V \right]
@@ -1410,7 +1410,7 @@ La capacità è:
 \subsubsection{Simmetria sferica}
 Il campo di una superficie sferica è:
 \[
-  \vec{E} =
+  \vec{E}(r) =
   \begin{cases}
     \frac{Q}{4 \pi \varepsilon_0 r^2} \hat{r} & r \ge R\\
     0 & r < R
@@ -1460,8 +1460,8 @@ Con il potenziale si può calcolare la capacita come:
 
 \begin{example}[Potenziale di un condensatore sferico]
   Consideriamo un condensatore sferico con carica \( Q \) in cui il raggio del conduttore
-  sferico interno è \( R_1 \) e i raggi del conduttore sferico sono \( R_2 \) e \( R_3 \).
-  Il campo è:
+  sferico interno è \( R_1 \) e i raggi del conduttore sferico esterno sono \( R_2 \) e
+  \( R_3 \). Il campo è:
   \[
     \vec{E} = \frac{Q}{4 \pi \varepsilon_0 r^2} \hat{r} \quad R_1 < r < R_2
   \] 
@@ -1526,7 +1526,7 @@ I dielettrici hanno cariche vincolate.
 \begin{enumerate}
   \item 
     Consideriamo un atomo neutro,
-    applichiamo un campo e osserviamo che le cariche negative si separano in direzione
+    applichiamo un campo e osserviamo che le cariche negative si spostano in direzione
     del campo:
     \begin{figure}[H]
       \centering
@@ -1571,7 +1571,7 @@ I dielettrici hanno cariche vincolate.
       \caption{Molecole polarizzate casualmente}
     \end{figure}
     \noindent
-    Se si applica un campo esterno si ha una polarizzazione del materiale i momenti
+    Se si applica un campo esterno si ha una polarizzazione del materiale, i momenti
     di dipolo si allineano per rotazione e il materiale si \textbf{polarizza per
     orientamento}:
     \begin{figure}[H]
