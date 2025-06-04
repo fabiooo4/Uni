@@ -3608,6 +3608,16 @@ I passaggi per calcolare l'induttanza sono i seguenti:
       \underbrace{\mu_0 n^2 \pi R^2}_{\text{Induttanza}} i \quad \left[ Wb \right]
     \] 
     In questo caso l'induttanza è per unità di lunghezza.
+
+  \item \textbf{Filo indefinito}:
+
+    In un filo indefinito \textbf{non} ha senso chiedersi qual'è l'induttanza, cioè il flusso concatenato
+    a se stesso:
+    \[
+      \Phi = Li
+    \] 
+    Perchè se non si considera soltanto una parte finita del filo, allora il flusso sarà
+    infinito.
 \end{itemize}
 
 \begin{example}
@@ -4140,5 +4150,75 @@ nello spegnimento è il valore \( i = 0 \) e nell'accensione è il valore \( i =
   \item Se non si trascura l'autoinduzione, si ha un circuito con un induttanza \( L \) 
 \end{itemize}
 
+
+\subsection{Energia intrinseca della corrente}
+Consideriamo un circuito RL con induttanza non trascurabile:
+\label{04-06-D1}
+L'intensità di questo circuito varia nel tempo: \( i: 0 \mapsto i_{\text{regime}} \).
+L'induttanza in accensione applica un attrito, quindi si ha una forza contro
+elettromotrice. Ricordando la definizione di potenza \( P = Vi = \frac{dL}{dt} \; \left[ W \right] \) si ha:
+\[
+  -\mathcal{E}_L i = P
+\] 
+L'energia del sistema è il lavoro fatto per costruirlo. Quindi si può riscrivere come:
+\[
+  \mathcal{E}_L = - L \frac{di}{dt}
+\] 
+E si ha Faraday declinato per l'autoflusso:
+\[
+  \mathcal{E}_{\text{Faraday Autoflusso}} = - \frac{d \Phi (B)}{dt}
+\] 
+Quindi il lavoro totale per "creare" \( i \) a regime sarà:
+\[
+  \begin{aligned}
+    \text{Lavoro} &= \int_0^\infty P(t) dt\\
+      &= \int_0^\infty Li \frac{di}{dt} \, dt\\
+  \end{aligned}
+\] 
+Gli apici vanno da quando la corrente non c'è (\( 0 \)), fino alla fine (\( \infty \)).
+Il risultato dell'integrale è:
+\[
+  \text{Lavoro} = \frac{1}{2} L i^2 = U_{\text{intrinseca}} \quad \left[ J \right]
+\] 
+Ciò vuol dire che se si ha un circuito scarico e si vuole caricare si deve fare un lavoro
+pari a \( \frac{1}{2} Li^2 \). Da questo consegue che un solenoide e anche i condensatori
+sono sistemi di accumulo di energia.
+
+\subsubsection{Energia di un sistema di circuiti}
+Se si hanno \( N \) circuiti:
+\label{04-06-D2}
+Quando in un circuito scorre una corrente \( i \) si ha un campo magnetico con un flusso
+che, \textbf{se varia}, induce una forza elettromotrice su un circuito vicino (\textbf{mutua induzione}),
+o più precisamente nella regione di spazio in cui il flusso varia:
+\[
+  \Phi_{12} = M i_1 \quad \Rightarrow \quad \mathcal{E} = - \frac{d \Phi_{12}}{dt} = - M \frac{di_1}{dt}
+\] 
+La presenza di un circuito con un flusso variabile induce una forza elettromotrice
+su un circuito vicino. Se si hanno \( N \) circuiti, si ha una forza elettromotrice
+su ogni circuito \( i_n \) che dipende da tutti gli altri circuiti \( i_m \), si avrà
+quindi una potenza che dipende dal coefficiente di mutua induzione \( V_M \). La potenza
+è calcolata come:
+\[
+  \begin{aligned}
+    P &= - V_M i\\
+      &= -M \frac{di_1}{dt} \cdot i_2\\
+  \end{aligned}
+\] 
+e quindi:
+\[
+  \int P dt = M i_1 i_2
+\] 
+L'energia intrinseca totale di un sistema di circuiti è la somma delle energie dei singoli
+circuiti più una parte di energia dovuta alla mutua induzione di ogni coppia
+\textbf{inserita una sola volta}:
+\[
+  \begin{aligned}
+    U_{\text{Totale}} &= \sum_{k}^N \frac{1}{2} L_k i_k^2 
+    + \frac{1}{2} \sum_{k,m}^N M_{km} i_k i_m\\
+  \end{aligned}
+\] 
+Il primo $\frac{1}{2}$ fa parte dell'energia intrinseca di ogni circuito, il secondo
+$\frac{1}{2}$ serve soltanto per non contare due volte
+l'energia di mutua induzione (\( M_{12} = M_{21} \)).
 
 \end{document}
