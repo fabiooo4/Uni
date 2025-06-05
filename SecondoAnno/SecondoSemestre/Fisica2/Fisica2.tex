@@ -4153,7 +4153,12 @@ nello spegnimento è il valore \( i = 0 \) e nell'accensione è il valore \( i =
 
 \subsection{Energia intrinseca della corrente}
 Consideriamo un circuito RL con induttanza non trascurabile:
-\label{04-06-D1}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{circuito_RL_2}
+  \caption{Circuito RL}
+\end{figure}
+\noindent
 L'intensità di questo circuito varia nel tempo: \( i: 0 \mapsto i_{\text{regime}} \).
 L'induttanza in accensione applica un attrito, quindi si ha una forza contro
 elettromotrice. Ricordando la definizione di potenza \( P = Vi = \frac{dL}{dt} \; \left[ W \right] \) si ha:
@@ -4186,13 +4191,24 @@ sono sistemi di accumulo di energia.
 
 \subsubsection{Energia di un sistema di circuiti}
 Se si hanno \( N \) circuiti:
-\label{04-06-D2}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{N_circuiti}
+  \caption{Sistema di \( N \) circuiti}
+\end{figure}
+\noindent
 Quando in un circuito scorre una corrente \( i \) si ha un campo magnetico con un flusso
 che, \textbf{se varia}, induce una forza elettromotrice su un circuito vicino (\textbf{mutua induzione}),
 o più precisamente nella regione di spazio in cui il flusso varia:
-\[
-  \Phi_{12} = M i_1 \quad \Rightarrow \quad \mathcal{E} = - \frac{d \Phi_{12}}{dt} = - M \frac{di_1}{dt}
-\] 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.4\textwidth]{mutua_induzione}
+  \[
+    \Phi_{12} = M i_1 \quad \Rightarrow \quad \mathcal{E} = - \frac{d \Phi_{12}}{dt} = - M \frac{di_1}{dt}
+  \] 
+  \caption{Mutua induzione tra circuiti}
+\end{figure}
+\noindent
 La presenza di un circuito con un flusso variabile induce una forza elettromotrice
 su un circuito vicino. Se si hanno \( N \) circuiti, si ha una forza elettromotrice
 su ogni circuito \( i_n \) che dipende da tutti gli altri circuiti \( i_m \), si avrà
@@ -4218,7 +4234,7 @@ circuiti più una parte di energia dovuta alla mutua induzione di ogni coppia
   \end{aligned}
 \] 
 Il primo $\frac{1}{2}$ fa parte dell'energia intrinseca di ogni circuito, il secondo
-$\frac{1}{2}$ serve soltanto per non contare due volte
-l'energia di mutua induzione (\( M_{12} = M_{21} \)).
+$\frac{1}{2}$ serve soltanto per non contare due volte l'energia di mutua induzione
+(\( M_{12} = M_{21} \)).
 
 \end{document}
