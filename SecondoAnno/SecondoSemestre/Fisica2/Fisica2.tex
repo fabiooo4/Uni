@@ -525,7 +525,6 @@ Gli operatori somma e integrale commutano e quindi si ottiene:
 \[
   V_{\text{tot}} = \sum V_i
 \] 
-dove:
 \[
   V_i = \frac{q_i}{4 \pi \varepsilon_0 |\vec{r} - \vec{r}_i|}
 \] 
@@ -1992,13 +1991,13 @@ L'energia \( U_{el} \) è \textbf{localizzata nel campo} \( \vec{E} \) con densi
 
 
 \section{Elettrodinamica}
-Nell'elettrodinamica viene introdotto il \textbf{tempo} quindi tutte le considerazioni
+Nell'elettrodinamica viene introdotto il \textbf{tempo} quindi molte considerazioni
 fatte per l'elettrostatica non sono più valide.
 
 Ricordiamo le equazioni di maxwell nel caso \textbf{stazionario}:
 \begin{itemize}
-  \item 
-    Cioè le cariche isolate sono sorgenti del campo elettrico \( \vec{E} \) 
+  \item
+    Le cariche isolate sono sorgenti del campo elettrico \( \vec{E} \) 
     \[
       \oint_{\text{Sup}} \vec{E} \cdot \hat{n} dS = \frac{Q_{\text{Tot}}}{\varepsilon_0}
     \] 
@@ -2022,11 +2021,11 @@ Ora introduciamo il \textbf{tempo} e notiamo che:
   \item La prima equazione vale sempre, perchè anche nel tempo le cariche sono sorgenti.
 
   \item Per la seconda invece non si può dire la stessa cosa, perchè per avere delle 
-    cariche in movimento su un circuito chiuso il lavoro non è nullo, quindi:
+    cariche in movimento su un circuito chiuso il lavoro non può essere nullo, quindi:
     \[
       \oint_{\Gamma } \vec{E} \cdot \vec{dl} \neq 0
     \] 
-    e quindi questa equazione andrà modificata.
+    di conseguenza questa equazione di Maxwell andrà modificata.
 \end{itemize}
 
 \subsection{Corrente elettrica}
@@ -2064,8 +2063,8 @@ Lo spostamento delle cariche azzera il potenziale secondo il seguente grafico:
   \caption{Grafico di stabilizzazione del potenziale}
 \end{figure}
 \noindent
-Per mantenere le cariche \( q \) in moto, quindi un circuito, bisogna avere un \textbf{lavoro
-esterno} che va contro il campo elettrico che riporta le cariche da \( V^- \) a
+Per mantenere le cariche \( q \) in moto, ad esempio in un circuito, bisogna avere un \textbf{lavoro
+esterno} che va contro il campo elettrico e che riporta le cariche da \( V^- \) a
 \( V^+ \). Questo lavoro esterno è fornito da un generatore e si chiama \textbf{forza
 elettromotrice} \( \mathcal{E} \):
 \[
@@ -2093,12 +2092,12 @@ Se espandiamo il circuito osserviamo che:
   \caption{Forza elettromotrice nel dettaglio}
 \end{figure}
 \noindent
-Quindi la forza elettromotrice può essere espressa anche come:
+La forza elettromotrice può essere espressa anche come:
 \[
   \mathcal{E} = \oint_{\Gamma} E \cdot dl
 \] 
-E la seconda equazione di Maxwell diventa:
-\begin{definition}
+E la prima equazione di Maxwell diventa:
+\begin{definition}[Prima equazione di Maxwell per il campo elettrico nel tempo]
   \[
     \oint_{\Gamma} E \cdot dl = \mathcal{E} \quad \left[ V \right]
   \]
