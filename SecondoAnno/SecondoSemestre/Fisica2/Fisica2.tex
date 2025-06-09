@@ -2105,7 +2105,7 @@ E la prima equazione di Maxwell diventa:
 
 \subsubsection{Intensità di corrente}
 La corrente elettrica è un insisme di cariche in moto. L'intensità di corrente \( i \) 
-è definita come la quantità di caricha che \textbf{attraversa una data superficie} per
+è definita come la quantità di carica che \textbf{attraversa una data superficie} per
 unità di tempo:
 \[
   i = \frac{dq}{dt} \quad \left[ A \right] \; \text{(Ampere)}
@@ -2255,14 +2255,14 @@ E sappiamo che:
 \[
   \begin{aligned}
     dV &= E \cdot dl \\
-    di &= j \cdot dS
+    di &= j \cdot dS \\
     R &= \frac{dl}{dS} \cdot \rho
   \end{aligned}
 \] 
 Sostituiamo e si ottiene:
 \[
   \begin{aligned}
-    E\cancel{dl} &= \rho \frac{\cancel{dl}}{\cancel{dS}} \cdot j\cancel{ds}\\
+    E \cdot \cancel{dl} &= \rho \frac{\cancel{dl}}{\cancel{dS}} \cdot j \cdot \cancel{ds}\\
     \vec{E} &= \rho \vec{j}
   \end{aligned}
 \] 
@@ -2636,7 +2636,7 @@ calcolare la potenza totale si possono sommare le potenze locali:
 
 \subsubsection{Partitore capacitivo}
 Sfrutta il collegamento in serie. Consideriamo
-la stessa carica \( Q \), cioè \( C_i V_i \) è costante. La tensione è ripartita
+la stessa carica \( Q \), cioè \( C_i V_i \) è costante. La tensione è ripartita in modo
 \textbf{inversamente proporzionale} alla capacità:
 \[
   V_i = \frac{Q}{C_i} = \frac{C_{Tot}}{C_i}
@@ -2655,7 +2655,7 @@ la stessa carica \( Q \), cioè \( C_i V_i \) è costante. La tensione è ripart
       \caption{Circuito con condensatore carico}
     \end{figure}
     \noindent
-    Consideriamo il tempo \( t_0 \) il tempo in cui chiudiamo l'interruttore:
+    Consideriamo come \( t_0 \) il tempo in cui chiudiamo l'interruttore:
     \[
       t_0 = 0 \to Q(0) = Q_0
     \] 
@@ -2768,7 +2768,7 @@ la stessa carica \( Q \), cioè \( C_i V_i \) è costante. La tensione è ripart
       \[
         i = i_0 e^{-\frac{t}{RC}} \to \frac{\mathcal{E}}{R}
       \] 
-      Quindi corrente ed esponenziale hanno un andamento esponenziale decrescente.
+      Quindi corrente e potenziale hanno un andamento esponenziale decrescente.
     \end{definition}
 \end{itemize}
 
@@ -2788,7 +2788,7 @@ Gli effetti di questa forza sono \textbf{localizzati ai poli} (Nord e Sud).
   \caption{Poli magnetici}
 \end{figure}
 \noindent
-Se si considera un oggetto, di questi materiali, piccolo tale da non perturbare il sistema ,
+Se si considera un oggetto, di questi materiali, piccolo tale da non perturbare il sistema,
 si osserva che questo oggetto non rimane statico, ma \textbf{si orienta}. Questo oggetto
 "di test" è chiamato \textbf{ago magnetico}:
 \begin{figure}[H]
@@ -2816,23 +2816,29 @@ Si deduce che esiste un effetto \textbf{magnetico} nel pianeta Terra.
     \caption{Calamita spezzata}
   \end{figure}
   \noindent
-  Non esistono monopoli magnetici, nel senso che non è mai stato osservato, quindi non
+  Non esistono monopoli magnetici, quindi non
   esiste la sorgente singola di un campo magnetico. Non si avranno linee di campo magnetico
   \( \vec{B} \) aperte, ma sempre \textbf{chiuse} e da questo si deduce che il flusso
   attraverso la superficie chiusa è nullo:
   \[
     \Phi(\vec{B}) = \oint_{\text{Sup}} \vec{B} \cdot \hat{n} d\vec{S} = 0
   \] 
-  Questa è la \textbf{prima equazione di Maxwell}.
+  Questa è la \textbf{prima equazione di Maxwell per il campo magnetico}.
 \end{example}
 
-\begin{definition}[Seconda equazione di Maxwell]
+\begin{definition}[Prima equazione di Maxwell per il campo magnetico]
+  \label{prima-eq-maxwell-campo-magnetico}
   Il flusso del campo magnetico attraverso una superficie chiusa è nullo:
   \[
     \Phi(\vec{B}) = \oint_{\text{Sup}} \vec{B} \cdot \hat{n} d\vec{S} = 0
   \]
   Questo vuol dire che non esistono cariche magnetiche isolate.
   Un campo a linee chiuse è chiamato campo \textbf{solenoidale}.
+
+  In termini locali si ha:
+  \[
+    \nabla \cdot \vec{B} = 0
+  \]
 \end{definition}
 
 \begin{example}[Esperimento di Ørsted]
@@ -2861,7 +2867,7 @@ del'atomo:
 Quindi nei magneti si hanno delle \textbf{micro-correnti Amperiane}.
 
 \subsection{Forza magnetica (di Lorentz)}
-Consideriamo uno schema in cui si ha come sorgenti di campo le correnti e le cariche.
+Consideriamo uno schema in cui si hanno come sorgenti di campo le correnti e le cariche.
 Si ha un campo magnetico \( \vec{B} \) e degli oggetti su cui agisce (una forza),
 ovvero correnti e cariche.
 Si svolgono degli esperimenti analoghi a quelli per l'elettrostatica, cioè con la bilancia
@@ -2983,13 +2989,6 @@ C'è un'analogia con il dipolo elettrico.
 \end{definition}
 
 \subsubsection{Applicazione della forza magnetica}
-Andiamo ad analizzare:
-\begin{itemize}
-  \item Una spira
-  \item Il moto di cariche
-  \item Effetto Hall
-\end{itemize}
-
 \begin{example}
   Consideriamo una spira immersa in un campo magnetico esterno \( \vec{B} \):
   \begin{figure}[H]
@@ -3082,7 +3081,7 @@ distanza dal filo:
 e questo vuol dire che il campo magnetico su una linea di campo è costante. Quindi se
 si moltiplica il campo per il perimetro (si fa la circuitazione di \( \vec{B} \)) si
 ottiene una costante, cioè un invariante:
-\begin{definition}[Prima equazione di Maxwell per il campo magnetico]
+\begin{definition}[Seconda equazione di Maxwell per il campo magnetico]
   \[
     \oint_{\Gamma_{\text{Circonferenza}}} \vec{B} \; dl = \mu_0 i
   \] 
@@ -3523,7 +3522,7 @@ da cui segue la seguente relazione:
 \] 
 
 \subsection{Flusso del campo magnetico}
-Il flusso elementare è sempre definito come il numero di linee di campo sono ortogonali
+Il flusso elementare è sempre definito come il numero di linee di campo ortogonali
 ad una superficie:
 \[
   d \Phi = \vec{B} \cdot \hat{n} d\vec{S} \quad \left[ Wb \right] \text{ (Weber)}
@@ -3535,17 +3534,10 @@ Di conseguenza il flusso del campo magnetico attraverso una superficie \( S \) �
 Il flusso di un campo magnetico su una superficie chiusa è sempre nullo, perchè il campo
 magnetico ha linee di campo chiuse, quindi ciò che entra esce e non si ha un flusso netto.
 Mentre nel caso del campo elettrico si avevano linee radiali e quindi ciò che usciva non
-rientrava mai. Quindi:
-\begin{definition}[Seconda equazione di Maxwell per il campo magnetico]
-  \[
-    \oint_{S} \vec{B} \cdot \hat{n} d\vec{S} = 0
-  \] 
+rientrava mai (\ref{prima-eq-maxwell-campo-magnetico} Prima equazione di Maxwell per campo magnetico).
 
-  In termini locali si ha:
-  \[
-    \nabla \cdot \vec{B} = 0
-  \]
-\end{definition}
+\vspace{1em}
+\noindent
 Se si considerano due circuiti \( \Gamma_1 \) e \( \Gamma_2 \) il campo magnetico
 si concatena tra i due circuiti e si può calcolare il flusso sulla superficie \( S_2 \) 
 applicato dal circuito \( \Gamma_1 \):
@@ -3790,8 +3782,8 @@ Alcuni esperimenti sono i seguenti:
     \end{figure}
 
   \item Si considera una spira scarica e una seconda spira con una corrente variabile
-    \( i(t) \). Se varia la corrente, allora varia il campo magnetico che di conseguenza
-    sarà non stazionario \( B(t) \). Si osserva una corrente indotta nella spira
+    \( i(t) \). Se varia la corrente, allora varia il campo magnetico \( B(t) \) che di conseguenza
+    sarà non stazionario. Si osserva una corrente indotta nella spira
     scarica e quindi una forza elettromotrice indotta.
     \begin{figure}[H]
       \centering
@@ -3904,10 +3896,10 @@ i seguenti sistemi sono equivalenti:
 \noindent
 Calcoliamo il flusso del circuito mobile:
 \[
-  \Phi = B \cdot S = B (ax) \quad \left[ Wb \right]
+  \Phi = B \cdot S = B \cdot ax \quad \left[ Wb \right]
 \] 
 Deriviamo il flusso rispetto al tempo per ottenere la forza elettromotrice indotta
-(ricordiamo che la derivata dello spazio \( x \) rispetto al tempo è la velocità \( v \)):
+(ricordando che la derivata dello spazio \( x \) rispetto al tempo è la velocità \( v \)):
 \[
   \frac{d \Phi }{dt} = B a v = |\mathcal{E}| \quad \left[ V \right]
 \] 
@@ -4120,6 +4112,7 @@ e quindi si avrà una forza contro elettromotrice che si rappresenta con un indu
   \includegraphics[width=0.5\textwidth]{circuito_RL}
   \caption{Circuito RL}
 \end{figure}
+\noindent
 e vale la legge di Ohm generalizzata:
 \[
   \mathcal{E} = Ri
@@ -4195,7 +4188,7 @@ L'energia del sistema è il lavoro fatto per costruirlo. Quindi si può riscrive
 \[
   \mathcal{E}_L = - L \frac{di}{dt}
 \] 
-E si ha Faraday declinato per l'autoflusso:
+E si ottiene Faraday declinato per l'autoflusso:
 \[
   \mathcal{E}_{\text{Faraday Autoflusso}} = - \frac{d \Phi (B)}{dt}
 \] 
@@ -4288,17 +4281,17 @@ Se non c'è materia (\( \rho = 0 \) e \( j = 0 \)) le equazioni di Maxwell sono 
 e quindi si ha:
 \[
   \begin{cases}
-    \nabla \times \vec{E} &= 0\\
-    \nabla \cdot \vec{E} &= 0\\
+    \nabla \times \vec{E} = 0\\
+    \nabla \cdot \vec{E} = 0\\
   \end{cases}
   \quad
   \begin{cases}
-    \nabla \times \vec{B} &= 0\\
-    \nabla \cdot \vec{B} &= 0\\
+    \nabla \times \vec{B} = 0\\
+    \nabla \cdot \vec{B} = 0\\
   \end{cases}
 \] 
 Mettendo insieme le equazioni di Maxwell si ottiene 
-l'\textbf{equazione delle onde elettromagnetiche} (Equazione di Alembert), la cui
+l'\textbf{equazione delle onde elettromagnetiche} (Equazione di d'Alembert), la cui
 soluzione è un \textbf{onda che si propaga nello spazio} con la velocità della luce.
 Il campo \( \vec{B} \) oscilla ortogonalmente al campo \( \vec{E} \) con la stessa
 frequenza:
@@ -4308,6 +4301,6 @@ frequenza:
   \caption{Onda elettromagnetica}
 \end{figure}
 \noindent
-Quest'onda è la luce e la frequenza rappresenta il colore.
+Quest'onda è la luce e la sua frequenza rappresenta il colore.
 
 \end{document}
