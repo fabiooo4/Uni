@@ -8,7 +8,7 @@ not a primary source of information.
 # University notes
 
 These are my personal university notes for my bachelor in Computer Science; everything was
-written during the lectures.
+written during the lectures, except some figures.
 I'm sharing them because they can be useful to other students.
 
 ## Index of the courses
@@ -106,6 +106,11 @@ I'm sharing them because they can be useful to other students.
 - Compilers (Personal choice)
 </details>
 </details>
+
+## Wanna buy me a coffee?
+<a href="https://ko-fi.com/fabiooo4" target="_blank">
+<img src="https://github.com/user-attachments/assets/8686e15e-dcc8-4fba-b694-bf913c5250d0" width="30%" height="auto">
+</a>
 
 ## How do I take notes?
 
