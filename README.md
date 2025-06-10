@@ -74,6 +74,7 @@ I'm sharing them because they can be useful to other students.
 <summary>&emsp;Second Semester</summary>
     
 - [Data Structures and Algorithms](./SecondoAnno/SecondoSemestre/Algoritmi/Algoritmi.pdf)
+  - [Exam exercises](./SecondoAnno/SecondoSemestre/Algoritmi/Esami)
 - [Operating Systems](./SecondoAnno/SecondoSemestre/SistemiOperativi/C) (Only exercises)
 - [Software Engineering](./SecondoAnno/SecondoSemestre/IngegneriaSoftware/IngegneriaSoftware.pdf) (Incomplete)
   - [Course exercises](./SecondoAnno/SecondoSemestre/IngegneriaSoftware/JavaFx)
@@ -81,6 +82,7 @@ I'm sharing them because they can be useful to other students.
   - [Exercises summary](./SecondoAnno/SecondoSemestre/Analisi2/Formulario/formulario.pdf)
 - [Physics 2](./SecondoAnno/SecondoSemestre/Fisica2/Fisica2.pdf)
   - [Course exercises](./SecondoAnno/SecondoSemestre/Fisica2/Esercitazione/Esercitazione.pdf)
+  - [Exam exercises](./SecondoAnno/SecondoSemestre/Fisica2/Esami)
 </details>
 </details>
 <details>
