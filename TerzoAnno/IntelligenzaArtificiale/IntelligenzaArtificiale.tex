@@ -1,0 +1,113 @@
+\documentclass[a4paper]{article}
+\usepackage{import}
+\input{../../preamble.sty}
+
+\begin{document}
+
+\input{title.tex}
+
+\tableofcontents
+\pagebreak
+
+\section{Introduzione}
+Nel 1950 Alan Turing pubblica un articolo intitolato "Computing Machinery and Intelligence" in cui propone
+un esperimento per determinare se una macchina può essere considerata intelligente. L'esperimento, noto
+come "test di Turing", coinvolge un interrogatore umano che comunica con due entità nascoste: una macchina
+e un essere umano. L'interrogatore deve fare domande a entrambe le entità e, basandosi sulle risposte,
+deve determinare quale delle due è la macchina. Se l'interrogatore non riesce a distinguere tra le risposte
+della macchina e quelle dell'essere umano, la macchina è considerata intelligente.
+
+\vspace{1em}
+\noindent
+In futuro l'attenzione si è spostata sulla ricerca di metodi per risolvere problemi che richiedono intelligenza
+umana, utilizzando algoritmi e modelli matematici fino ad arrivare alle reti neurali e intelligenza artificiale.
+
+\begin{definition}
+  L'intelligenza artificiale è una disciplina che studia come \textbf{simulare} l'intelligenza umana in
+  scenari complessi
+\end{definition}
+
+\subsection{Tipi di intelligenza artificiale}
+\subsubsection{Autonomous agents}
+Sono sistemi che percepiscono l'ambiente e agiscono in modo autonomo per raggiungere obiettivi specifici.
+
+\subsubsection{Data analysis}
+Utilizzo di algoritmi per analizzare grandi quantità di dati e estrarre informazioni utili e correlazioni
+complesse.
+
+\subsubsection{Machine Learning}
+È lo sviluppo di algoritmi che permettono a dei modelli di apprendere dai dati
+di esempio e migliorare le loro prestazioni nel tempo senza essere esplicitamente programmati.
+Ad esempio riconoscimento di immagini.
+
+L'apprendimento automatico è diviso in tre categorie principali:
+\begin{itemize}
+  \item \textbf{Unsupervised learning}: il modello viene addestrato su un insieme di dati non etichettati,
+  dove l'obiettivo è scoprire strutture nascoste o pattern nei dati senza avere risposte corrette predefinite.
+\item \textbf{Supervised learning}: il modello viene addestrato su un insieme di dati etichettati,
+  dove ogni esempio di input è associato a una risposta corretta. L'obiettivo è che il modello impari a
+  mappare gli input alle risposte corrette.
+  \item \textbf{Reinforced learning}: il modello impara attraverso interazioni con l'ambiente, ricevendo
+  ricompense o penalità in base alle azioni intraprese. L'obiettivo è massimizzare la ricompensa totale nel
+  tempo.
+\end{itemize}
+
+\subsubsection{Time series analysis}
+L'analisi delle serie temporali è un'area dell'apprendimento automatico che si concentra sull'analisi di dati
+collezionati nel tempo. Le serie temporali sono sequenze di dati misurati a intervalli regolari, come
+temperatura giornaliera, prezzi delle azioni o dati di vendita mensili. L'obiettivo dell'analisi delle
+serie temporali è identificare pattern, tendenze e stagionalità nei dati per fare previsioni future.
+
+\vspace{1em}
+\noindent
+Gli approcci comuni per l'analisi delle serie temporali includono:
+\begin{itemize}
+  \item \textbf{Riconoscimento di anomalie e cause}:
+    è un processo di identificazione di dati o eventi che si discostano
+    significativamente dal comportamento normale o atteso. Queste anomalie possono indicare problemi,
+    errori o situazioni insolite che richiedono attenzione.
+
+  \item \textbf{Generative transformers}:
+    sono una classe di modelli che permettono di predirre il prossimo elemento in una
+    sequenza di dati partendo dagli elementi precedenti, come ad esempio la parola successiva in una frase o il
+    pixel successivo in un'immagine. Si sfrutta il concetto di \textbf{attenzione} per pesare l'importanza
+    relativa delle diverse parti della sequenza di input durante la generazione dell'output.
+\end{itemize}
+
+\subsubsection{Intelligent Agents}
+Un agente intelligente è un sistema che percepisce l'ambiente circostante attraverso sensori e agisce su
+l'ambiente per raggiungere un obiettivo specifico. Gli elementi chiave di un agente intelligente includono:
+\begin{itemize}
+  \item \textbf{Performance measure}: misura il successo dell'agente nel raggiungere i suoi obiettivi
+  \item \textbf{Rationality}: l'agente deve agire in modo da massimizzare la sua performance measure attesa
+\end{itemize}
+
+\subsection{Markov Decision Process (MDP)}
+Un MDP è un modello matematico utilizzato per rappresentare problemi di decisione sequenziali. Gli elementi
+principali sono:
+\begin{itemize}
+  \item \textbf{State}: rappresenta l'ambiente in un dato momento
+  \item \textbf{Actions}: insieme delle azioni che l'agente può intraprendere
+  \item \textbf{Transition model}: effetto che le azioni hanno sull'ambiente (potrebbero essere parzialmente incognite
+    \[
+      T: (state, action) \to next\_state
+    \] 
+  \item \textbf{Reward}: valore \textbf{immediato} dell'esecuzione di un'azione
+    \[
+      R: (state, action, next\_state) \to real\_number
+    \] 
+  \item \textbf{Policy}: strategia che l'agente utilizza per decidere quale azione intraprendere in ogni stato
+    con l'obiettivo di massimizzare la ricompensa totale attesa nel tempo
+    \[
+      \pi: (state) \to action
+    \] 
+\end{itemize}
+
+\subsection{Generative AI}
+L'intelligenza artificiale generativa si riferisce a una classe di modelli di intelligenza artificiale
+che sono in grado di generare nuovi contenuti, come testo, immagini, musica o video, a partire da dati di
+addestramento. Questi modelli hanno miliardi di parametri e sono \textbf{preaddestrati} su grandi quantità
+di dati. In sostanza questi modelli "predicono il futuro" basandosi sui dati su cui sono stati addestrati e
+un \textbf{propmpt} (input dell'utente).
+
+\end{document}
