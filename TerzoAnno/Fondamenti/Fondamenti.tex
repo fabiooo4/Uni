@@ -1,6 +1,6 @@
 \documentclass[a4paper]{article}
 \usepackage{import}
-\input{../../../preamble.sty}
+\input{../../preamble.sty}
 
 \begin{document}
 
@@ -10,5 +10,49 @@
 \pagebreak
 
 \section{Introduzione}
+\subsection{Cos'è l'informatica?}
+È una scienza che studia la calcolabilità, cioè cerca di capire che problemi si possono
+risolvere con un programma. Nasce dall'unione di matematica, ingegneria e logica. Il
+computer è solo uno strumento, mentre la matematica è il linguaggio con cui si
+creano algoritmi che permettono di risolvere i problemi.
+
+\subsection{Origini dell'informatica}
+Hilbert, nel 1900, si pose l'obiettivo di formalizzare tutta la matematica con un insieme
+finito e non contraddittorio di assiomi. Nel 1931, invece, Gödel dimostrò che l'informatica
+non potrà mai rappresentare tutta la matematica, perché ci saranno sempre proposizioni
+vere ma non dimostrabili tramite il calcolo. Ci si iniziò a chiedere se esistessero
+modelli di calcolo meccanici in grado di risolvere tutti i problemi. Nel 1936, Turing
+propose la macchina di Turing, una \textbf{sola} macchina programmabile in grado di
+risolvere tutti i problemi risolvibili:
+\[
+  Int(P,x) = \begin{cases}
+    P(x) & \text{se } P(x) \text{ termina}\\
+    \uparrow & \text{se } P(x) \text{ non termina}
+  \end{cases}
+\] 
+dove $P$ è un programma e $x$ è un input. La macchina di Turing è un modello teorico
+di calcolatore, che non esiste fisicamente, ma è in grado di simulare qualsiasi altro
+calcolatore. Da questo modello deriva la concezione di calcolabilità, cioè se un problema
+è intuitivamente calcolabile, allora esiste un programma in grado di risolverlo.
+
+Altri modelli di calcolo che sono stati proposti sono:
+\begin{itemize}
+  \item Lambda-calcolo
+  \item Funzioni ricorsive
+  \item Linguaggi di programmazione (Turing-completi)
+\end{itemize}
+
+\begin{define}
+  La Turing-completezza è la proprietà di un linguaggio di programmazione di essere
+  in grado di simulare una macchina di Turing, cioè di poter risolvere qualsiasi problema
+  risolvibile.
+\end{define}
+
+\subsubsection{Calcolabilità}
+Un programma è calcolabile se termina, ma non è detto che termini in un tempo ragionevole.
+Non esistono algoritmi che possono dire se un programma termina o meno. Questo è un esempio
+di problema non calcolabile.
+
+I problemi non calcolabili sono infinitamente più numerosi di quelli calcolabili
 
 \end{document}
