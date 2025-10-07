@@ -14,4 +14,121 @@ Le basi di dati sono raccolte di dati strutturati, organizzati in modo tale da p
 un facile accesso. Questi dati sono persistenti, ovvero rimangono memorizzati anche dopo
 la chiusura del programma che li ha creati.
 
+\section{Sistema informativo}
+Un sistema informativo è l'insieme delle attività umane e dei dispositivi di memorizzazione
+ed elaborazione che organizza e gestisce l'informazione di interesse per un organizzazione
+di dimensioni qualsiasi. Non contiene necessariamente dati memorizzati in un computer.
+
+Un sistema informativo è composto da:
+\begin{itemize}
+  \item \textbf{Dato}: è l'elemento di conoscenza di base costituito da simboli che devono
+    essere elaborati
+  \item \textbf{Informazione}: è l'interpretazione dei dati che permette di ottenere una
+    conoscenza più o meno esatta di fatti e situazioni
+\end{itemize}
+
+
+\subsection{Base di dati}
+\begin{definition}
+  Una \textbf{base di dati} è una \textbf{collezione di dati persistenei} utilizzati per
+  rappresentare \textbf{con tecnologia informatica} le informazioni di interesse per un
+  \textbf{sistema informativo}
+\end{definition}
+La soluzione convenzionale per la gestione dei dati è l'uso di file, ma questa presenta
+alcuni problemi:
+\begin{itemize}
+  \item Scarsa efficienza nell'accesso ai dati (accesso sequenziale)
+  \item Ridondanza nei dati
+  \item Inconsistenza nei dati (aggiornamenti parziali)
+  \item Progettazione dei dati replicata per ogni applicazione
+\end{itemize}
+Per risolvere questi problemi si è creato un livello di astrazione maggiore tra le
+applicazioni e il filesystem, ovvero il \textbf{Data Base Management System (DBMS)}.
+
+\begin{definition}
+  Un \textbf{DBMS} è un sistema che gestisce su \textbf{memoria secondaria} collezioni
+  di dati (chiamate "basi di dati"). Le caratteristiche principali sono:
+  \begin{itemize}
+    \item Grandi
+    \item Condivise, cioè accessibili da più utenti
+    \item Persistenti
+  \end{itemize}
+  Un DBMS assicura:
+  \begin{itemize}
+    \item Affidabilità, cioè nessuna perdita di dati
+    \item Privatezza
+    \item Accesso efficiente
+  \end{itemize}
+\end{definition}
+
+\subsubsection{Modello dei dati}
+Un \textbf{modello dei dati} è un insieme di strutture che permettono di descrivere
+una base di dati. Per accedere a questi dati si usano delle \textbf{interrogazioni},
+cioè delle richieste, in un linguaggio dichiarativo specifico, che permettono di ottenere
+i dati desiderati.
+
+Ci sono diversi linguaggi per interagire con un DBMS:
+\begin{itemize}
+  \item Linguaggio per la definizione dei dati (DDL), consente di definire la struttura
+    della base di dati
+  \item Linguaggio per l'interrogazione e aggiornamento dei dati (DML), consente
+    di interrogare e aggiornare i dati
+    \begin{itemize}
+      \item Linguaggio di interrogazione: estrae informazioni da una base di dati,
+        ad esempio SQL, algèbre relazionale, calcolo relazionale
+      \item Linguaggio di manipolazione: popola la base di dati, modifica il suo contenuto
+        con aggiunge, cancellazioni e variazioni sui dati, ad esempio SQL
+    \end{itemize}
+\end{itemize}
+
+Il modello di dati è un insisme di \textbf{costrutti} forniti dal DBMS per descrivere la
+struttura e le proprietà dell'informazione contenute in una base di dati.
+
+Ci sono diversi tipi di modelli di dati:
+\begin{itemize}
+  \item \textbf{Modelli di dati del passato}:
+    \begin{itemize}
+      \item Modello reticolare
+      \item modello gerarchico
+    \end{itemize}
+
+  \item \textbf{Modelli di dati attuali}:
+    \begin{itemize}
+      \item Modello relazionale
+      \item Modello ad oggetti
+      \item Modello a oggetti-relazionale
+      \item Modello basato su documenti (JSON)
+      \item Modelli NoSQL
+    \end{itemize}
+\end{itemize}
+
+I modelli vengono utilizzati per creare:
+\begin{itemize}
+  \item \textbf{Schema di una base di dati}: è la descrizione della struttura e delle
+    proprietà di una specifica base di dati fatta utilizzando i costrutti del modello dei
+    dati (lo schema di una base di dati è invariante nel tempo)
+  \item \textbf{Istanza di una base di dati}: è costituita dai \textbf{valori effettivi}
+    che in un certo istante popolano le strutture dati (l'istanza di una base di dati
+    varia nel tempo)
+\end{itemize}
+
+Lo schema di una base di dati è diviso in tre livelli:
+\begin{itemize}
+  \item \textbf{Schema esterno}: è la visione dell'utente della base di dati, cioè la
+    parte di base di dati che interessa a un particolare utente o gruppo di utenti
+  \item \textbf{Schema logico}: è la visione globale della base di dati, cioè la
+    struttura logica della base di dati che descrive tutti i dati e le relazioni tra
+    essi
+  \item \textbf{Schema interno}: è la rappresentazione fisica della base di dati, cioè
+    il modo in cui i dati sono effettivamente memorizzati nella memoria secondaria
+\end{itemize}
+Le proprietà dello schema sono:
+\begin{itemize}
+  \item \textbf{Indipendenza fisica}: lo schema logico della base di dati è completamente
+    indipendente dallo schema interno
+  \item \textbf{Indipendenza logica}: gli schemi esterni della base di dati sono
+    indipendenti dallo schema logico
+\end{itemize}
+
+
 \end{document}
