@@ -110,4 +110,320 @@ addestramento. Questi modelli hanno miliardi di parametri e sono \textbf{preadde
 di dati. In sostanza questi modelli "predicono il futuro" basandosi sui dati su cui sono stati addestrati e
 un \textbf{propmpt} (input dell'utente).
 
+\section{Agenti e ambiente}
+Gli agenti includono umani, robot, softbot, termostati ecc... La funzione dell'agente
+mappa lo storico di percezioni in azioni:
+\[
+  f: \mathcal{P}^* \mapsto \mathcal{A}
+\] 
+Il programma dell'agente è eseguito su architettura fisica per produrre la funzione \( f \).
+\begin{example}
+  Un esempio potrebbe essere un insieme di stanze \( \{A, B\}  \) e un robot aspirapolvere che può
+  percepire la sua posizione e il contenuto della stanza. L'agente potrebbe quindi percepire
+  \( [A, Sporco] \) se ci fosse dello sporco nella stanza A. Le azioni potrebbero essere
+  di movimento o pulizia. Tutto questo dipende dalla squenza di percezioni, ad esempio 
+  in una tabella:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|}
+      \hline
+      Percezione & Azione \\
+      \hline
+      \( [A, Pulito] \) & Vai a B \\
+      \( [A, Sporco] \) & Pulisci \\
+      \( [B, Pulito] \) & Vai ad A \\
+      \( [B, Sporco] \) & Pulisci \\
+      \( [A, Pulito], [A, Pulito] \) & Vai a B \\
+      \( [A, Pulito], [A, Sporco] \) & Pulisci \\
+      \hline
+    \end{tabular}
+    \caption{Esempio di tabella di percezioni e azioni}
+  \end{table}
+  \noindent
+  Non possiamo dire se questa è una funzione corretta perchè non abbiamo una
+  \textbf{performance measure} che ci dica se l'agente sta facendo un buon lavoro.
+\end{example}
+
+\begin{definition}
+  Se un agente ha \( \left| \mathcal{P} \right|  \) possibili percezioni, allora al tempo
+  \( T \) avrà:
+  \[
+    \sum_{t=1}^{T} \left| \mathcal{P} \right|^t
+  \] 
+\end{definition}
+\noindent
+Se lo storico di percezioni è irrilevante, cioè se ad ogni percezione è associata un'azione
+la funzione viene chiamata \textbf{Reflex}.
+
+\subsection{Razionalità}
+Per definire l'intelligenza di un agente si utilizza una misura di performance che
+valuta la sequenza di percezioni.
+\begin{example}
+  Tornando all'esempio del robot aspirapolvere si potrebbero assegnare i seguenti
+  punteggi:
+  \begin{itemize}
+    \item Un punto per ogni stanza pulita per ogni unità di tempo
+    \item Meno un punto per ogni mossa
+    \item Penalizzazione per ogni stanza sporca
+  \end{itemize}
+\end{example}
+
+\begin{example}
+  Un altro esempio è il seguente ambiente:
+  \begin{itemize}
+    \item Ci sono 3 stanze \( (A,B,C) \) e due robot \( (r_1, r_2) \) 
+    \item \( r_1 \) può sorvegliare solo \( A \) e \( B \) e \( r_2 \) solo \( B \) e \( C \)
+    \item \( r_1 \) inizia dalla stanza \( A \) e \( r_2 \) dalla \( C \)
+    \item Il tempo di percorrenza tra le stanze è 0
+    \item Performance measure: minimizza il tempo in cui una stanza non è sorvegliata,
+      cioè il tempo totale in cui una stanza non è visitata da nessun robot
+  \end{itemize}
+
+  Un possibile comportamento razionale potrebbe essere il seguente (alternata):
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c||c|c|}
+      \hline
+      Stato & \( A \) & \( B \) & \( C \) & Tempo  \\
+      \hline
+      \( [A, C] \) & 0 & 1 & 0 & 1 \\
+      \( [B, C] \) & 1 & 0 & 0 & 2 \\
+      \( [A, C] \) & 0 & 1 & 0 & 3 \\
+      \( [A, B] \) & 0 & 0 & 1 & 4 \\
+      \hline
+      Average idleness & \( \frac{1}{4} \)  & \( \frac{1}{2} \)  & \( \frac{1}{4} \)  & Tot: \( \frac{1}{3} \)  \\
+      \hline
+    \end{tabular}
+  \end{table}
+  \noindent
+  Un altro comportamento potrebbe essere (fissata):
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c||c|c|}
+      \hline
+      Stato & \( A \) & \( B \) & \( C \) & Tempo  \\
+      \hline
+      \( [A, C] \) & 0 & 1 & 0 & 1 \\
+      \( [B, C] \) & 1 & 0 & 0 & 2 \\
+      \( [A, C] \) & 0 & 1 & 0 & 3 \\
+      \( [B, C] \) & 1 & 0 & 0 & 4 \\
+      \hline
+      Average idleness & \( \frac{1}{2} \)  & \( \frac{1}{2} \)  & \( 0 \)  & Tot: \( \frac{1}{3} \)  \\
+      \hline
+    \end{tabular}
+  \end{table}
+  \noindent
+  Entrambi i comportamenti hanno la stessa performance measure, ma il primo è migliore
+  del secondo perchè penalizza meno una singola stanza rispetto alle altre. Per capirlo
+  bisogna non solo minimizzare la performance measure, ma anche minimizzare la varianza.
+\end{example}
+
+\subsection{PEAS}
+Per progettare un agente intelligente bisogna definire l'ambiente in cui opera:
+\begin{itemize}
+  \item \textbf{Performance measure}: come viene valutato il successo dell'agente
+  \item \textbf{Environment}: il contesto in cui l'agente opera
+  \item \textbf{Actuators}: i mezzi attraverso cui l'agente agisce sull'ambiente
+  \item \textbf{Sensors}: i mezzi attraverso cui l'agente percepisce l'ambiente
+\end{itemize}
+
+\begin{example}
+  Prendiamo ad esempio un taxi automatico, il PEAS potrebbe essere:
+  \begin{itemize}
+    \item Performance measure:
+      \begin{itemize}
+        \item Soddisfazione del cliente
+        \item Sicurezza
+        \item Efficienza del carburante
+        \item Rispetto delle leggi stradali
+      \end{itemize}
+    \item Environment:
+      \begin{itemize}
+        \item Traffico stradale
+        \item Condizioni meteorologiche
+        \item Segnali stradali
+        \item Pedoni e altri veicoli
+      \end{itemize}
+    \item Actuators:
+      \begin{itemize}
+        \item Volante
+        \item Acceleratore
+        \item Freni
+        \item Indicatori di direzione
+      \end{itemize}
+    \item Sensors:
+      \begin{itemize}
+        \item Telecamere
+        \item Lidar
+        \item Radar
+        \item Sensori di velocità
+        \item GPS
+      \end{itemize}
+  \end{itemize}
+\end{example}
+
+\section{Tipi di ambienti}
+Gli ambienti possono essere classificati in base a diverse caratteristiche:
+\begin{itemize}
+  \item \textbf{Osservabile}: se l'agente può percepire completamente lo stato dell'ambiente
+    in ogni momento
+  \item \textbf{Deterministico}: se l'azione dell'agente determina in modo univoco il prossimo stato
+    dell'ambiente
+  \item \textbf{Episodico}: se l'esperienza dell'agente è divisa in episodi indipendenti,
+    cioè l'azione in un episodio non influisce sugli episodi successivi
+  \item \textbf{Statico}: se l'ambiente non cambia mentre l'agente sta prendendo una
+    decisione
+  \item \textbf{Discreto}: se l'insieme di stati, azioni e percezioni è finito o numerabile
+  \item \textbf{Singolo agente}: se l'agente opera da solo nell'ambiente senza la presenza
+    di altri agenti
+\end{itemize}
+\begin{example}
+  Prendiamo ad esempio i seguenti ambienti provando a classificarli:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|}
+      \hline
+      & Crossword & Robo-selector & Poker & Taxi \\
+      \hline
+      Osservabile & Sì & Parziale & Parziale & Parziale \\
+      Deterministico & Sì & No & No & No \\
+      Episodico & No & Sì & No & No \\
+      Statico & Sì & No & Sì & No \\
+      Discreto & Sì & No & Sì & No \\
+      Singolo agente & Sì & Sì & No & No \\
+      \hline
+    \end{tabular}
+  \end{table}
+\end{example}
+Il tipo di ambiente cambia radicalmente la soluzione del problema:
+\begin{itemize}
+  \item \textbf{Deterministico, completamente osservabile}: Single-state problem
+  \item \textbf{Completamente non osservabile}: Conformant problem, l'agente non sa in che
+    stato si trova, ma potrebbe trovare una soluzione
+  \item \textbf{Non deterministico e/o parzialmente osservabile}: Contingency problem,
+    l'agente deve prevedere le possibili situazioni future e agire di conseguenza
+  \item \textbf{Spazio degli stati sconosciuto}: Exploration problem, l'agente deve esplorare
+    l'ambiente per scoprire gli stati e le azioni disponibili
+\end{itemize}
+
+\subsection{Agenti di problem solving}
+È una forma ristretta di agenti che formulato un problema e un obiettivo partendo da uno stato
+cerca una soluzione ignorando le percezioni, siccome ci si trova in un single-state problem.
+Questo si chiama Offline problem solving perchè l'agente ha completa conoscenza dell'ambiente.
+Online problem solving è quando l'agente non ha completa conoscenza dell'ambiente.
+\begin{example}
+  Il seguente è un esempio di problem solving agent:
+  \begin{lstlisting}[language=Python]
+function Simple-Problem-Solving-Agent(percept) returns action
+  static: seq, an action sequence, initially empty
+          state, some description of the current world state
+          goal, a goal, initially null
+          problem, a problem formulation
+
+  state <- Update-State(state, percept)
+
+  if seq is empty then
+    goal <- Formulate-Goal(state)
+    problem <- Formulate-Problem(state, goal)
+    seq <- Search( problem)
+
+  action <- First(seq)
+  seq <- Rest(seq)
+  return action
+  \end{lstlisting}
+\end{example}
+\begin{example}
+  Consideriamo il problema "Vacanze in Romania". Bisogna formulare un viaggio da Arad a
+  Bucarest sapendo che l'aereo parte domani.
+  \begin{itemize}
+    \item \textbf{Goal}: Arrivare a Bucarest
+    \item \textbf{Formulazione del problema}:
+      \begin{itemize}
+        \item Stati: città della Romania
+        \item Azioni: volare tra le città
+      \end{itemize}
+    \item \textbf{Soluzione}: Sequenza di città
+  \end{itemize}
+  \noindent
+  Si potrebbe usare una mappa per trovare il percorso più breve (visione completa del mondo)
+  e trovare una soluzione ottimale.
+  Questo problema è definito da 4 componenti:
+  \begin{itemize}
+    \item \textbf{Stato iniziale}: ad esempio "ad Arad"
+    \item \textbf{Funzione di transizione}: insieme di coppie (stato, azione) che mappano
+      uno stato in un altro, ad esempio:
+      \[
+        S(A) = \left\{ \left< \text{Arad} \to \text{Zerind}, \text{Zerind} \right>, \ldots \right\}
+      \] 
+    \item \textbf{Test dell'obiettivo}: una funzione che verifica se lo stato corrente
+      soddisfa l'obiettivo, ad esempio:
+      \[
+        Goal\text{-}Test(s) = \begin{cases}
+          \text{true} & \text{se } s = \text{Bucarest} \\
+          \text{false} & \text{altrimenti}
+        \end{cases}
+      \]
+    \item \textbf{Path cost}: è una funzione che assegna un costo (additivo) a ogni azione,
+      ad esempio la somma di distanze o il numero di azioni:
+      \[
+        c(x, a, y) \ge 0
+      \] 
+    \item \textbf{Soluzione}: Una sequenza di azioni che portano dallo stato iniziale allo
+      stato obiettivo.
+  \end{itemize}
+\end{example}
+
+\subsection{Algoritmo tree search}
+Un algoritmo di ricerca ad albero esplora lo spazio degli stati partendo dallo stato iniziale
+e generando nuovi stati (successori) applicando le azioni disponibili, cioè 
+\textbf{espandendo} gli stati:
+\begin{lstlisting}[language=Python]
+function Tree-Search(problem, strategy) runction Tree-Search( problem, strategy) returns a solution, or failure
+initialize the search tree using the initial state of problem
+loop do
+if no candidates for expansion then return failure
+choose a leaf node for expansion according to strategy
+if node contains a goal state then return the solution
+else add successor nodes to the search tree (expansion)
+endeturns a solution, or failure
+  initialize the search tree using the initial state of problem
+  loop do
+    if no candidates for expansion then return failure
+      choose a leaf node for expansion according to strategy
+    if node contains a goal state then return the solution
+      else add successor nodes to the search tree (expansion)
+end
+\end{lstlisting}
+
+\subsubsection{Stato e nodo}
+Stato e nodo non sono la stessa cosa, infatti:
+\begin{itemize}
+  \item \textbf{Stato}: rappresenta una configurazione dell'ambiente
+  \item \textbf{Nodo}: è una struttura dati che costituisce una parte dell'albero di ricerca
+    e include informazioni aggiuntive come il genitore, l'azione che ha portato a quello stato,
+    il costo del percorso o la profondità nell'albero, ecc...
+\end{itemize}
+
+\subsubsection{Tree search generale}
+Espandere un nodo significa generare i suoi figli, cioè i nodi successori e tutti i nodi
+non esplorati sono chiamati \textbf{frontiera}.
+\begin{lstlisting}[language=Python]
+function Tree-Search( problem, frontier) returns a solution, or failure
+  frontier <- Insert(Make-Node(problem.Initial-State))
+  while not IsEmty(frontier) do
+    node <- Pop(frontier)
+    if problem.Goal-Test(node.State) then return node
+      frontier <- InsertAll(Expand(node, problem))
+  end loop
+  return failure
+\end{lstlisting}
+La strategia è quella di scegliere l'ordine in cui i nodi vengono espansi, cioè
+come viene gestita la frontiera. Le strategie sono valutate in base a:
+\begin{itemize}
+  \item \textbf{Completezza}: se garantisce di trovare una soluzione quando esiste
+  \item \textbf{Complessità di tempo}: numero di nodi generati o espansi
+  \item \textbf{Complessità di spazio}: numero massimo di nodi memorizzati in memoria
+  \item \textbf{Ottimalità}: se garantisce di trovare la soluzione migliore
+\end{itemize}
+
 \end{document}
