@@ -10,11 +10,12 @@
 \pagebreak
 
 \section{Introduzione}
-Nel 1950 Alan Turing pubblica un articolo intitolato "Computing Machinery and Intelligence" in cui propone
-un esperimento per determinare se una macchina può essere considerata intelligente. L'esperimento, noto
-come "test di Turing", coinvolge un interrogatore umano che comunica con due entità nascoste: una macchina
-e un essere umano. L'interrogatore deve fare domande a entrambe le entità e, basandosi sulle risposte,
-deve determinare quale delle due è la macchina. Se l'interrogatore non riesce a distinguere tra le risposte
+Nel 1950 Alan Turing pubblica un articolo intitolato "Computing Machinery and Intelligence"
+in cui propone un esperimento per determinare se una macchina può essere considerata
+intelligente. L'esperimento, noto come "test di Turing", coinvolge un interrogatore umano
+che comunica con due entità nascoste: una macchina e un essere umano. L'interrogatore deve
+fare domande a entrambe le entità e, basandosi sulle risposte, deve determinare quale delle
+due è la macchina. Se l'interrogatore non riesce a distinguere tra le risposte
 della macchina e quelle dell'essere umano, la macchina è considerata intelligente.
 
 \vspace{1em}
@@ -262,7 +263,7 @@ Per progettare un agente intelligente bisogna definire l'ambiente in cui opera:
   \end{itemize}
 \end{example}
 
-\section{Tipi di ambienti}
+\subsection{Tipi di ambienti}
 Gli ambienti possono essere classificati in base a diverse caratteristiche:
 \begin{itemize}
   \item \textbf{Osservabile}: se l'agente può percepire completamente lo stato dell'ambiente
@@ -373,7 +374,9 @@ function Simple-Problem-Solving-Agent(percept) returns action
   \end{itemize}
 \end{example}
 
-\subsection{Algoritmo tree search}
+\section{Ricerca nello spazio degli stati}
+\subsection{Ricerca generale}
+\subsubsection{Tree search}
 Un algoritmo di ricerca ad albero esplora lo spazio degli stati partendo dallo stato iniziale
 e generando nuovi stati (successori) applicando le azioni disponibili, cioè 
 \textbf{espandendo} gli stati:
@@ -424,6 +427,293 @@ come viene gestita la frontiera. Le strategie sono valutate in base a:
   \item \textbf{Complessità di tempo}: numero di nodi generati o espansi
   \item \textbf{Complessità di spazio}: numero massimo di nodi memorizzati in memoria
   \item \textbf{Ottimalità}: se garantisce di trovare la soluzione migliore
+\end{itemize}
+Le complessità di spazio e di tempo sono misurate in termini di:
+\begin{itemize}
+  \item \( b \): maximum branching factor, numero massimo di figli per nodo
+  \item \( d \): profondità della soluzione meno costosa
+  \item \( m \): profondità massima dell'albero di ricerca (potrebbe essere infinita)
+\end{itemize}
+
+\subsubsection{Stati ripetuti}
+Fallire nel riconoscere stati ripetuti può trasformare un problema lineare in un problema
+esponenziale. Bisogna quindi mantenere una lista di stati già visitati e non espandere
+nodi che portano a stati già visitati:
+\begin{lstlisting}[language=Python]
+function Graph-Search( problem, frontier) returns a solution, or failure
+  explored <- an empty set
+  frontier <- Insert(Make-Node(problem.Initial-State))
+  while not IsEmty(frontier) do
+    node <- Pop(frontier)
+    if problem.Goal-Test(node.State) then return node
+    if node.State is not in explored then
+      add node.State to explored
+      frontier <- InsertAll(Expand(node, problem))
+    end if
+  end loop
+  return failure
+\end{lstlisting}
+
+\subsection{Ricerca non informata}
+Gli algoritmi di ricerca non informata utilizzano soltanto i dati disponibili nella
+definizione del problema e i principali sono:
+\begin{itemize}
+  \item Breadth-first search
+  \item Uniform-cost search (Dijkstra)
+  \item Depth-first search
+  \item Depth-limited search
+  \item Iterative deepening search
+\end{itemize}
+
+\subsubsection{Breadth-first search}
+Questo algoritmo espande il nodo non esplorato più superficiale, cioè il nodo più vicino
+alla radice. Utilizza una coda FIFO per la frontiera e i nuovi successori vengono
+aggiunti alla fine della coda.
+\begin{lstlisting}[language=Python]
+function BFS( problem) returns a solution, or failure
+  node <- node with State=problem.Initial-State,Path-Cost=0
+  if problem.Goal-Test(node.State) then return node
+  explored <- empty set frontier <- FIFO queue with node as the only element
+  loop do
+    if frontier is empty then return failure
+    node <- Pop(frontier)
+    add node.State to explored
+    for each action in problem.Actions(node.State) do
+      child <- Child-Node(problem,node,action)
+      if child.State is not in (explored or frontier) then
+        if problem.Goal-Test(child.State) then return child
+        frontier <- Insert(child)
+      end if
+    end for
+  end loop
+\end{lstlisting}
+\noindent
+Questo tipo di ricerca è:
+\begin{itemize}
+  \item \textbf{Completa}: Sì, soltanto se \( b \) è finito, cioè se il branching factor
+    è limitato
+  \item \textbf{Complessità di tempo}: \( b + b^2 + b^3 + \ldots + b^d = O(b^d) \)
+  \item \textbf{Complessità di spazio}: \( O(b^d) \), perchè bisogna memorizzare tutti i nodi
+    generati
+  \item \textbf{Ottimale}: Sì, soltanto se il costo delle azioni è uniforme
+\end{itemize}
+
+\subsubsection{Uniform-cost search}
+Questo algoritmo espande il nodo non esplorato con il \textbf{costo del percorso più basso}.
+La frontiera è una coda di priorità ordinata in base al costo del percorso.
+Questo tipo di ricerca è:
+\begin{itemize}
+  \item \textbf{Completa}: Sì, se il costo minimo delle azioni \( \ge \varepsilon \) 
+    (con piccola ma \( \varepsilon > 0 \))
+  \item \textbf{Complessità di tempo}: Numero di nodi \( g \le  \) del costo del percorso
+    ottimale \( C^* \). \( O(b^{1+\lfloor C^*/\epsilon \rfloor}) \)
+  \item \textbf{Complessità di spazio}: \( O(b^{1+\lfloor C^*/\epsilon \rfloor}) \)
+  \item \textbf{Ottimale}: Sì perchè i nodi vengono espansi in ordine di costo del percorso
+\end{itemize}
+Ci sono due modifiche principali rispetto alla BFS che garantiscono l'ottimalità:
+\begin{enumerate}
+  \item Il goal test viene fatto quando il nodo viene estratto dalla frontiera, non quando
+    viene generato. (Questo elemento spiega il \( +1 \) nella complessità
+  \item Controllare se un nodo generato è già presente nella frontiera con un costo più
+    alto e in tal caso sostituirlo con il nuovo nodo a costo più basso
+\end{enumerate}
+
+\subsubsection{Depth-first search}
+Questo algoritmo espande il nodo non esplorato più profondo, cioè il nodo più lontano
+dalla radice. Utilizza una pila LIFO per la frontiera e i nuovi successori vengono
+aggiunti all'inizio.
+Questo tipo di ricerca è:
+\begin{itemize}
+  \item \textbf{Completa}: No, perchè può rimanere bloccata in un ramo infinito,
+    a meno che l'albero di ricerca non abbia una profondità limitata. Si potrebbero
+    evitare loop modificando l'algoritmo per evitare stati ripetuti sul percorso corrente
+  \item \textbf{Complessità di tempo}: \( O(b^m) \), dove \( m \) è la profondità massima
+    dell'albero di ricerca
+  \item \textbf{Complessità di spazio}: \( O(bm) \), bisogna memorizzare soltanto il
+    percorso corrente e i nodi fratelli
+  \item \textbf{Ottimale}: No, perchè non garantisce di trovare la soluzione migliore
+\end{itemize}
+
+\subsubsection{Iterative deepening search}
+Questo algoritmo combina i vantaggi della BFS e della DFS. Esegue una serie di ricerche
+in profondità limitata, aumentando progressivamente il limite di profondità fino a
+trovare una soluzione.
+\begin{lstlisting}[language=Python]
+# Depth-Limited Search
+function DLS(problem, limit) returns soln/fail/cutoff
+  R-DLS(Make-Node(problem.Initial-State), problem, limit)
+
+
+function R-DLS(node, problem, limit) returns soln/fail/cutoff
+  if problem.Goal-Test(node.State) then return node
+  else if limit = 0 then return cutoff # raggiunta la profondita' massima
+  else
+    # flag: c'e' stato un cutoff in uno dei sottoalberi?
+    cutoff-occurred? <- false
+    for each action in problem.Actions(node.State) do
+      child <- Child-Node(problem, node, action)
+      result <- R-DLS(child, problem, limit-1)
+      if result = cutoff then cutoff-occurred? <- true
+      else if result 6 = failure then return result
+    end for
+    if cutoff-occurred? then return cutoff else return failure
+  end else
+
+# Iterative Deepening Search
+function IDS(problem) returns a solution
+  inputs: problem, a problem
+  for depth <- 0 to infinity do
+    result <- DLS(problem, depth)
+    if result 6 = cutoff then return result
+  end
+\end{lstlisting}
+Questo tipo di ricerca è:
+\begin{itemize}
+  \item \textbf{Completa}: Sì
+  \item \textbf{Complessità di tempo}: \( db^1 + (d-1)b^2 + \ldots + b^d = O(b^d) \) 
+  \item \textbf{Complessità di spazio}: \( O(bd) \) 
+  \item \textbf{Ottimale}: Sì, se il costo delle azioni è uniforme
+\end{itemize}
+
+\begin{exercise}
+  Assumi:
+  \begin{enumerate}
+    \item Un albero di ricerca ben bilanciato, tutti i nodi hanno lo stesso numero di figli
+    \item Il goal state è l'ultimo che viene espanso nel suo livello (il più a destra)
+    \item Se il branching factor è 3, la soluzione più superficiale è a profondità 3
+      (la radice è a profondità 0) e si utilizza la ricerca in ampiezza quanti nodi
+      vengono generati?
+    \item Se il branching factor è 3, la soluzione più superficiale è a profondità 3
+      (la radice è a profondità 0) e si utilizza la iterative deepening quanti nodi
+      vengono generati?
+  \end{enumerate}
+\end{exercise}
+\begin{exercise}
+  Un uomo ha un lupo, una pecora e un cavolo. L'uomo è sulla riva di un fiume con una
+  barca che può trasportare solo lui e un altro oggetto. Il lupo mangia la pecora e la
+  pecora mangia il cavolo, quindi non può lasciarli insieme da soli.
+  \begin{enumerate}
+    \item Formalizza il problema come un problema di ricerca
+    \item Usa BFS per risolvere il problema
+  \end{enumerate}
+
+  \vspace{1em}
+  \noindent
+  \textbf{Soluzione:}
+
+  Formalizziamo gli stati come una tupla:
+  \[
+    <W, S, C, M, B>
+  \] 
+  dove:
+  \begin{itemize}
+    \item \( W \): posizione del lupo
+    \item \( S \): posizione della pecora
+    \item \( C \): posizione del cavolo
+    \item \( M \): posizione dell'uomo
+    \item \( B \): stato della barca
+  \end{itemize}
+  La posizione può essere \( 0 \) (left) o \( 1 \) (right).
+
+  Lo stato iniziale è:
+  \[
+    <0, 0, 0, 0, 0>
+  \] 
+  Lo stato obiettivo è:
+  \[
+    <1, 1, 1, 1, 1>
+  \]
+  Le azioni possibili sono:
+  \begin{itemize}
+    \item Porta il lupo (CW)
+    \item Porta la pecora (CS)
+    \item Porta il cavolo (CC)
+    \item Porta niente (CN)
+  \end{itemize}
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|}
+      \hline
+      Operatore & Precondizione & Funzione \\
+      \hline
+      \footnotesize CW & \footnotesize \( M = B, M = W, S \neq C \) & \footnotesize\( \left<W,S,C,M,B\right> \mapsto \left<\bar{W},S,C,\bar{M},\bar{B}\right> \)\\
+      \footnotesize CS & \footnotesize \( M = B, M = S \) & \footnotesize\( \left<W,S,C,M,B\right> \mapsto \left<W,\bar{S},C,\bar{M},\bar{B}\right> \)\\
+      \footnotesize CC & \footnotesize \( M = B, M = C, W \neq S \) & \footnotesize\( \left<W,S,C,M,B\right> \mapsto \left<W,S,\bar{C},\bar{M},\bar{B}\right> \)\\
+      \footnotesize CN & \footnotesize \( M = B \) & \footnotesize\( \left<W,S,C,M,B\right> \mapsto \left<W,S,C,\bar{M},\bar{B}\right> \)\\
+      \hline
+    \end{tabular}
+  \end{table}
+  Notiamo che in tutte le precondizioni c'è \( M = B \) perchè l'uomo deve essere
+  sempre con la barca, quindi si possono unire i due stati in uno solo \( M \).
+\end{exercise}
+
+\subsection{Ricerca informata}
+Gli algoritmi di ricerca informata utilizzano informazioni aggiuntive (euristiche)
+per guidare la ricerca verso la soluzione in modo più efficiente.
+
+\subsubsection{Best-first search}
+Questo algoritmo usa una \textbf{funzione di valutazione} per ogni nodo che stima la
+"desiderabilità". La frontiera è una coda ordinata in ordine decrescente di desiderabilità.
+A seconda di come viene definita la desiderabilità si ottengono diversi algoritmi:
+\begin{itemize}
+  \item Greedy best-first search
+  \item A*
+\end{itemize}
+
+\subsubsection{Greedy best-first search}
+Questo algoritmo espande il nodo che sembra essere il più vicino alla soluzione
+secondo una funzione di valutazione euristica \( h(n) \) che stima il costo
+rimanente per raggiungere l'obiettivo da un nodo \( n \).
+\begin{example}
+  In una mappa di una città, la funzione di valutazione potrebbe essere la distanza
+  in linea d'aria dal nodo corrente alla destinazione. In questo modo, l'algoritmo
+  esplora prima i nodi che sembrano più vicini alla destinazione, riducendo il numero
+  di nodi esplorati rispetto a una ricerca non informata.
+\end{example}
+Questo tipo di ricerca è:
+\begin{itemize}
+  \item \textbf{Completa}: No, perchè può rimanere bloccata in un ciclo infinito. È
+    completo se lo spazio di ricerca è finito e ci sono controlli per evitare stati
+    ripetuti
+  \item \textbf{Complessità di tempo}: \( O(b^m) \) nel peggiore dei casi, ma può essere
+    molto più veloce con una buona euristica
+  \item \textbf{Complessità di spazio}: \( O(b^m) \), bisogna memorizzare tutti i nodi
+    generati
+  \item \textbf{Ottimale}: No
+\end{itemize}
+
+\subsubsection{A* search}
+Questo algoritmo evita di espandere cammini che sono già molto costosi e ha come
+funzione di valutazione:
+\[
+  f(n) = g(n) + h(n)
+\] 
+dove:
+\begin{itemize}
+  \item \( g(n) \): costo del percorso dal nodo iniziale a \( n \)
+  \item \( h(n) \): stima del costo rimanente per raggiungere l'obiettivo da \( n \)
+  \item \( f(n) \): stima del costo totale del percorso passando per \( n \)
+\end{itemize}
+L'euristica, per poter garantire l'ottimalità, deve essere \textbf{ammissibile}, cioè
+per ogni nodo la stima di quel nodo deve essere minore o uguale del vero costo per arrivare
+all'obbiettivo, quindi non deve \textbf{sovrastimare} il costo rimanente:
+\[
+  h(n) \le h^*(n) \quad h(n) \ge 0 \to h(G) = 0
+\] 
+dove \( h^*(n) \) è il costo effettivo del percorso da \( n \).
+\begin{theorem}
+  Per A* l'euristica ammissibile implica l'ottimalità
+\end{theorem}
+\noindent
+Questo tipo di ricerca è:
+\begin{itemize}
+  \item \textbf{Completa}: Sì, tranne se ci sono nodi infiniti con \( f \le f(G) \) 
+  \item \textbf{Complessità di tempo}: Esponenziale in errore relativo in \( h \times  \) 
+    lunghezza del numeo di passi della soluzione ottimale. (Se l'euristica è buona, la
+    complessità sarà molto più bassa)
+  \item \textbf{Complessità di spazio}: \( O(b^d) \), bisogna memorizzare tutti i nodi
+    generati
+  \item \textbf{Ottimale}: Sì, se l'euristica è ammissibile e consistente
 \end{itemize}
 
 \end{document}
