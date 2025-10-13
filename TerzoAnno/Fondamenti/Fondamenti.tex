@@ -158,6 +158,97 @@ e questo implica che l'insieme delle \textbf{funzioni calcolabili è numerabile}
   \caption{Cardinalità delle funzioni}
 \end{figure}
 
+\begin{example}
+  Prendiamo ad esempio la seguente funzione (serie di fibonacci):
+  \[
+    f(n) \subseteq \mathbb{N} \times \mathbb{N}
+  \] 
+
+  \vspace{1em}
+  \noindent
+  Dove:
+  \[
+    f(0) = 1, f(1) = 1, f(2) = 2
+  \] 
+  \[
+    f(3) = 3, f(4) = 5, f(5) = 8
+  \] 
+  \[
+    f(6) = 13, f(7) = 21, \ldots
+  \] 
+  Definiamo un algoritmo ricorsivo:
+  \[
+    \begin{cases}
+      f(0) = 1 = f(1)\\
+      f(x+2) = f(x+1) + f(x)
+    \end{cases}
+  \] 
+
+  \vspace{1em}
+  \noindent
+  Trovare un algoritmo non è possibile per tutte le funzioni, ma solo per quelle calcolabili.
+\end{example}
+Nell'insieme delle funzioni calcolabili ci sono:
+\begin{itemize}
+  \item Funzioni totali, cioè definite per ogni input \( n \in \mathbb{N} \) e terminano
+    sempre
+  \item Funzioni parziali, cioè non definite per ogni \( n \in \mathbb{N} \)
+\end{itemize}
+
+\subsection{Funzioni vs Insiemi}
+Una funzione può essere vista come un linguaggio \( \mathcal{L}_f \) tale che:
+\[
+  f: \mathbb{N} \to \mathbb{N} \quad \leftrightarrow \quad
+  \mathcal{L}_f = \left\{ 1^{f(x)} \left| x \in \mathbb{N} \right.\right\} \quad
+  \Sigma = \{1\}
+\] 
+Questo linguaggio permette di dire se un input appartiene o meno al linguaggio:
+\[
+  \sigma  \in \Sigma^*
+\] 
+\[
+  \downarrow
+\] 
+\[
+  \begin{cases}
+    \sigma  \in \mathcal{L}_f \quad \text{se appartiene al linguaggio}\\
+    \sigma  \notin \mathcal{L}_f \quad \text{se non appartiene al linguaggio}
+  \end{cases}
+\] 
+Parliamo di insiemi invece che di funzioni dove gli elementi dell'insieme dipendono dal
+calcolo della funzione.
+\begin{example}
+  Prendiamo ad esempio le seguenti funzioni:
+  \begin{itemize}
+    \item Funzione costante (Finite)
+      \[
+        f(x) = 2 \to \mathcal{L}_f \text{ è finito}
+      \] 
+    \item Funzione lineare (Regolari)
+      \[
+        f(x) = 2x \to \mathcal{L}_f \text{ è infinito numerabile}
+      \]
+      C'è bisogno di una memoria finita per determinare se la stringa appartiene al linguaggio
+    \item (Context free)
+      \[
+        f(\sigma) = \sigma \sigma^{\text{reverse}}
+      \] 
+      \[
+        \sigma = abc \quad \sigma^\text{reverse} = cba
+      \] 
+      Per calcolare questa funzione c'è bisogno di una memoria illimitata, cioè non
+      si può sapere a priori quanta ce n'è bisogno, è sufficiente uno stack.
+
+    \item Decidibile
+      \[
+        f(x) = x^2
+      \] 
+      Per calcolare questa funzione c'è bisogno di una memoria illimitata
+  \end{itemize}
+\end{example}
+
+\label{13-10-D1}
+
 \section{Principio di induzione}
 Il principio di induzione è un meccanismo di definizione e dimostrazione che funziona
 \textbf{solo su insiemi infiniti}. Esistono due metodi di induzione:
@@ -249,7 +340,7 @@ e \( \left\{ 2,3 \right\} \).
     A = \mathbb{N} \setminus \{0\} = \{1,2,3, \ldots\}
   \] 
   \begin{itemize}
-    \item \textbf{Basse}
+    \item \textbf{Base}
       \[
         \text{Base}_A = \{1\}
       \] 
@@ -327,5 +418,291 @@ I linguaggi sono divisi in:
   \end{tikzpicture}
   \caption{Linguaggi formali e linguaggi regolari}
 \end{figure}
+
+\subsection{Linguaggi regolari (automi a stati finiti)}
+Il meccanismo più semplice per una memoria finita è l'automa a stati finiti
+
+\vspace{1em}
+\noindent
+Consideriamo il linguaggio:
+\[
+  \mathcal{L}_f = \left\{ 1^2n \left| n \in \mathbb{N} \right. \right\}
+\] 
+ha bisogno di due stati \( q_0 \) e \( q_1 \). Lo stato \( q_0 \) rappresenta
+l'informazione di essere di lunghezza pari, mentre lo stato \( q_1 \)
+rappresenta l'informazione di essere di lunghezza dispari.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[node distance=3cm, on grid, auto]
+    \node[state, initial, accepting] (q0) {$q_0$};
+    \node[state, right of=q0] (q1) {$q_1$};
+
+    \draw (q0) edge[bend left, above] node{1} (q1);
+    \draw (q1) edge[bend left, below] node{1} (q0);
+  \end{tikzpicture}
+  \caption{Automa a stati finiti per il linguaggio \( \mathcal{L}_f = \left\{ 1^{2n} \left| n
+            \in \mathbb{N} \right. \right\} \)}
+\end{figure}
+L'automa a stati finiti \textbf{deterministico} è definito come una tupla:
+\[
+  M = \left( Q, \Sigma , \delta, q_0, F \right) 
+\] 
+dove:
+\begin{itemize}
+  \item \( Q \) è un insieme \textbf{finito} di stati. Ogni stato rappresenta
+    un'informazione
+
+  \item \( \Sigma  \) è un insieme \textbf{finito} di simboli (alfabeto).
+    Ogni simbolo è un elemento atomico che posso leggere e che compone le
+    stringhe da riconoscere
+    
+  \item \( q_0 \in Q \) è uno stato e identifica lo stato iniziale
+
+  \item \( F \subseteq Q \) è l'insieme degli stati finali (di accettazione)
+
+  \item \( \delta: Q \times \Sigma \to Q \) È una \textbf{funzione di transizione}
+    che dato uno stato e un simbolo, restituisce lo stato successivo ed è come se
+    fosse una tabella che associa ad ogni coppia (stato, simbolo) uno stato:
+    \begin{table}[H]
+      \centering
+      \begin{tabular}{c|c|c}
+        \( \Sigma \setminus Q\) & \( q_0 \) & \( q_1 \)\\
+        \hline
+        1 & \( q_1 \) & \( q_0 \)\\
+      \end{tabular}
+    \end{table}
+    La funzione deve essere \textbf{totale}, cioè deve essere definita per ogni
+    coppia \( (q,a) \in Q \times \Sigma  \), quindi la tabella deve essere completa.
+
+  \item \( \hat{\delta}: Q \times \Sigma^* \to Q \) Descrive lo stato che raggiungono
+    leggendo una sequenza di simboli
+    \[
+      \begin{cases}
+        \hat{\delta}(q, \epsilon) = q\\
+        \hat{\delta}(q, wa) = \delta(\hat{\delta}(q,w), a)
+      \end{cases}
+      \quad
+      w \in \Sigma^*, \quad a \in \Sigma 
+    \] 
+    È quindi la \textbf{chiusura transitiva} di \( \delta \)
+\end{itemize}
+
+\subsubsection{Come si dimostra che un linguaggio è regolare?}
+\begin{example}
+  Prendiamo in considerazione il seguente linguaggio:
+  \[
+    L = \left\{ \sigma  \left| \sigma \text{ contiene almeno due } 1 \right. \right\}
+  \] 
+  \[
+    \Sigma = \{0,1\}
+  \] 
+  Con le seguenti stringhe si ha:
+  \begin{itemize}
+    \item \( \sigma = 011 \in \mathcal{L} \) 
+    \item \( \sigma = 1000100 \in \mathcal{L} \) 
+    \item \( \sigma = 00010 \notin \mathcal{L} \) 
+  \end{itemize}
+  L'informazione che codifica lo stato iniziale deve essere coerente con \( \varepsilon  \) 
+  (stringa vuota)
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[->, node distance=2cm, on grid, auto]
+      \node[state, initial] (q0) {$q_0$};
+      \node[state, right of=q0] (q1) {$q_1$};
+      \node[state, right of=q1, accepting] (q2) {$q_2$};
+
+      \draw (q0) edge[above] node{1} (q1);
+      \draw (q0) edge[loop above] node{0} (q0);
+      \draw (q1) edge[loop above] node{0} (q2);
+      \draw (q1) edge[above] node{1} (q2);
+      \draw (q2) edge[loop above] node{0,1} (q2);
+    \end{tikzpicture}
+    \caption{Automa a stati finiti per il linguaggio \( \mathcal{L} \)}
+  \end{figure}
+\end{example}
+Un lingauggio \( L \) è riconosciuto da \( M = \left( Q, \Sigma, \delta, q_0, f \right)  \) (DFA, Deterministic Finite Automaton) se:
+\( L = L(M) \) dove \( L(M) \) è il linguaggio di \( M \) definito come:
+\[
+  L(M) = \left\{ \sigma  \in \Sigma^* \left| \hat{\delta}(q_0, \sigma) \in F \right. \right\}
+\] 
+Cioè sono tutte le stringhe che partendo da \( q_0 \) fanno raggiungere uno stato finale.
+
+\vspace{1em}
+\noindent
+\begin{definition}
+  Per dimostrare che \( L \) è regolare dobbiamo costruire \( M \) (almeno un \( M \)) e
+  \textbf{dimostrare che} \( L = L(M) \) 
+\end{definition}
+\( L = L(M) \) è un uguaglianza insiemistica e si dimostra con due contenimenti:
+\[
+  L = L(M) \equiv L \subset L(M) \wedge L(M) \subset L
+\]  
+\begin{itemize}
+  \item Se un elemento si trova nel primo insieme, allora si trova anche nel secondo
+    \[
+      L \subseteq L(M) \equiv \sigma \in L \Rightarrow \sigma \in L(M) \equiv
+      \sigma \in L \Rightarrow \hat{\delta}(q_0, \sigma) \in F
+    \] 
+  \item Se un elemento si trova nel secondo insieme, allora si trova anche nel primo
+    \[
+      L(M) \subseteq L \equiv \sigma \in L(M) \Rightarrow \sigma \in L \equiv
+      \hat{\delta}(q_0, \sigma) \in F \Rightarrow \sigma \in L
+    \]
+    o per contrapposizione:
+    \[
+      \sigma \notin L \Rightarrow \hat{\delta}(q_0, \sigma) \notin F
+    \] 
+\end{itemize}
+Questo dimostra che il linguaggio è regolare perchè è riconosciuto da un automa.
+
+\begin{example}
+  Riprendendo l'esempio precedente:
+  \[
+    L = \left\{ \sigma  \left| \sigma \text{ contiene almeno due } 1 \right. \right\}
+  \] 
+  \[
+    \Sigma = \{0,1\}
+  \]
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[->, node distance=2cm, on grid, auto]
+      \node[state, initial] (q0) {$q_0$};
+      \node[state, right of=q0] (q1) {$q_1$};
+      \node[state, right of=q1, accepting] (q2) {$q_2$};
+
+      \draw (q0) edge[above] node{1} (q1);
+      \draw (q0) edge[loop above] node{0} (q0);
+      \draw (q1) edge[loop above] node{0} (q2);
+      \draw (q1) edge[above] node{1} (q2);
+      \draw (q2) edge[loop above] node{0,1} (q2);
+    \end{tikzpicture}
+    \caption{Automa a stati finiti per il linguaggio \( \mathcal{L} \)}
+  \end{figure}
+  Dimostriamo per induzione sulla lunghezza delle stringhe \( \sigma \in \Sigma^* \) 
+  che se \( x \in L \) allora \( \hat{\delta}(q_0, x) \in F \) e se \( x \notin L \) allora
+  \( \hat{\delta}(q_0, x) \notin F \).
+
+  \vspace{1em}
+  \noindent
+  \( \left| \sigma  \right| = 0 \) non è \textbf{mai} sufficiente come base, ma
+  è eventualmente la base \textbf{solo} per una delle due dimostrazioni. Bisogna
+  quindi prendere la lunghezza più piccola che permette di avere sia \( \sigma \in L \) 
+  che  \( \sigma \notin L \), in questo caso è \( \left| \sigma  \right| = 2 \).
+  Per ogni \( \sigma  \) tale che \( \left| \sigma  \right| < 2 \quad \sigma \notin L \)
+  perchè non può contenere due 1 e non è riconosciuta da \( M \) dove il primo stato finale
+  è raggiunto leggendo almeno due simboli.
+  \[
+    \varepsilon \in L \quad \varepsilon \notin L
+  \] 
+  \begin{itemize}
+    \item \textbf{Base}: Controlliamo ogni stringa di lungheezza minima nel linguaggio per
+      provare il caso base
+      \[
+        \begin{cases}
+          \sigma &= 11 \in L \; \text{ e } \; \hat{\delta}(q_0, 11) = q_2 \in F \\
+          \sigma &= 10 \notin L \; \text{ e } \; \hat{\delta}(q_0, 10) = q_1 \notin F \\
+          \sigma &= 01 \notin L \; \text{ e } \; \hat{\delta}(q_0, 01) = q_1 \notin F \\
+          \sigma &= 00 \notin L \; \text{ e } \; \hat{\delta}(q_0, 00) = q_0 \notin F
+        \end{cases}
+      \] 
+
+    \item \textbf{Passo induttivo}: Dimostriamo l'\textbf{ipotesi induttiva}, cioè
+      la tesi con un limite fissato:
+      \[
+        \forall \sigma \in \Sigma^* \;.\; \left| \sigma  \right| \le n \;.\;
+        \begin{cases}
+          \sigma \in L &\Rightarrow \hat{\delta}(q_0, \sigma) \in F\\
+          \sigma \notin L &\Rightarrow \hat{\delta}(q_0, \sigma) \notin F
+        \end{cases}
+      \] 
+      Vogliamo dimostrare se \( \left| \sigma  \right| = n + 1 \) (la successiva stringa
+      che posso considerare) allora vale
+      \( 
+        \begin{cases}
+          \sigma \in L \Rightarrow \hat{\delta}(q_0,\sigma) \in F\\
+          \sigma \notin L \Rightarrow \hat{\delta}(q_0,\sigma) \notin F
+        \end{cases}
+      \) 
+
+      \vspace{1em}
+      \noindent
+      Dimostrazione:
+      \[
+        \left| \sigma  \right| = n + 1 \to 
+          \sigma = \sigma'1 \; \vee \; \sigma = \sigma'0
+      \] 
+      \begin{itemize}
+        \item Supponiamo che \( \sigma  \) appartiene al linguaggio e termini con 1:
+          \[
+            \sigma \in L \wedge \sigma  = \sigma'1 \to 
+          \] 
+          \begin{itemize}
+            \item Se \( \sigma' \in L \) applico l'ipotesi induttiva:
+              \[
+                  \hat{\delta}(q_0, \sigma') = q_2\\
+              \] 
+              \[
+                \begin{aligned}
+                  \hat{\delta}(q_0, \sigma) &\stackrel{\sigma = \sigma'1}{=}
+                  \hat{\delta}(q_0, \sigma'1)\\
+                                            &= \delta(\hat{\delta}(q_0, \sigma'), 1)\\
+                                            &= \delta(q_2, 1) = q_2 \in F
+                \end{aligned}
+              \] 
+
+            \item Se \( \sigma' \notin L \) allora \( \sigma' \) contiene esattamente un 1:
+              \[
+                \hat{\delta}(q_0, \sigma') = q_1
+              \] 
+              \[
+                \hat{\delta}(q_0, \sigma'1) = \delta(q_1, 1) = q_2
+              \] 
+          \end{itemize}
+
+        \item Supponiamo che \( \sigma  \) appartiene al linguaggio e termini con 0:
+          \[
+            \sigma \in L \wedge \sigma = \sigma'0
+          \] 
+          Per definizione di \( L \) abbiamo che
+          \[
+            \sigma \in L \wedge \sigma = \sigma'0 \Rightarrow \sigma' \in L
+          \] 
+          Dimostriamo l'ipotesi induttiva:
+          \[
+            \hat{\delta}(q_0, \sigma') = q_2
+          \] 
+          allora
+          \[
+            \begin{aligned}
+              \hat{\delta}(q_0, \sigma) &= \hat{\delta}(q_0, \sigma'0)\\
+                                        &= \delta(\hat{\delta}(q_0, \sigma'), 0)\\
+                                        &= \delta(q_2, 0) = q_2 \in F
+            \end{aligned}
+          \] 
+
+        \item Supponiamo che \( \sigma  \) non appartiene al linguaggio e termini con 1:
+          \[
+            \sigma \notin L \wedge  \sigma  = \sigma'1 \text{ (ha esattamente un 1)}
+          \] 
+          \[
+            \Downarrow
+          \] 
+          \[
+            \sigma  \notin L \text{ non ha 1}
+          \] 
+
+        \item Supponiamo che \( \sigma  \) non appartiene al linguaggio e termini con 0:
+          \[
+            \sigma \notin L \wedge  \sigma  = \sigma'0
+          \] 
+          \[
+            \Downarrow
+          \] 
+          \[
+            \sigma' \notin L
+          \] 
+      \end{itemize}
+  \end{itemize}
+\end{example}
 
 \end{document}
