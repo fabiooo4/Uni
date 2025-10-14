@@ -199,7 +199,7 @@ Nell'insieme delle funzioni calcolabili ci sono:
 Una funzione può essere vista come un linguaggio \( \mathcal{L}_f \) tale che:
 \[
   f: \mathbb{N} \to \mathbb{N} \quad \leftrightarrow \quad
-  \mathcal{L}_f = \left\{ 1^{f(x)} \left| x \in \mathbb{N} \right.\right\} \quad
+  \mathcal{L}_f = \left\{ 1^{f(x)} \;\left|\; x \in \mathbb{N} \right.\right\} \quad
   \Sigma = \{1\}
 \] 
 Questo linguaggio permette di dire se un input appartiene o meno al linguaggio:
@@ -419,14 +419,14 @@ I linguaggi sono divisi in:
   \caption{Linguaggi formali e linguaggi regolari}
 \end{figure}
 
-\subsection{Linguaggi regolari (automi a stati finiti)}
+\subsection{Linguaggi regolari (automi a stati finiti, DFA)}
 Il meccanismo più semplice per una memoria finita è l'automa a stati finiti
 
 \vspace{1em}
 \noindent
 Consideriamo il linguaggio:
 \[
-  \mathcal{L}_f = \left\{ 1^2n \left| n \in \mathbb{N} \right. \right\}
+\mathcal{L}_f = \left\{ 1^{2n} \;\left|\; n \in \mathbb{N} \right. \right\}
 \] 
 ha bisogno di due stati \( q_0 \) e \( q_1 \). Lo stato \( q_0 \) rappresenta
 l'informazione di essere di lunghezza pari, mentre lo stato \( q_1 \)
@@ -440,10 +440,10 @@ rappresenta l'informazione di essere di lunghezza dispari.
     \draw (q0) edge[bend left, above] node{1} (q1);
     \draw (q1) edge[bend left, below] node{1} (q0);
   \end{tikzpicture}
-  \caption{Automa a stati finiti per il linguaggio \( \mathcal{L}_f = \left\{ 1^{2n} \left| n
+  \caption{Automa a stati finiti per il linguaggio \( \mathcal{L}_f = \left\{ 1^{2n} \;\left|\; n
             \in \mathbb{N} \right. \right\} \)}
 \end{figure}
-L'automa a stati finiti \textbf{deterministico} è definito come una tupla:
+L'automa a stati finiti \textbf{deterministico} è definito come una quintupla: 
 \[
   M = \left( Q, \Sigma , \delta, q_0, F \right) 
 \] 
@@ -456,7 +456,8 @@ dove:
     Ogni simbolo è un elemento atomico che posso leggere e che compone le
     stringhe da riconoscere
     
-  \item \( q_0 \in Q \) è uno stato e identifica lo stato iniziale
+  \item \( q_0 \in Q \) è uno stato e identifica lo stato iniziale. Lo stato finale
+    viene indicato con un doppio cerchio
 
   \item \( F \subseteq Q \) è l'insieme degli stati finali (di accettazione)
 
@@ -491,7 +492,7 @@ dove:
 \begin{example}
   Prendiamo in considerazione il seguente linguaggio:
   \[
-    L = \left\{ \sigma  \left| \sigma \text{ contiene almeno due } 1 \right. \right\}
+    L = \left\{ \sigma  \;\left|\; \sigma \text{ contiene almeno due } 1 \right. \right\}
   \] 
   \[
     \Sigma = \{0,1\}
@@ -523,7 +524,7 @@ dove:
 Un lingauggio \( L \) è riconosciuto da \( M = \left( Q, \Sigma, \delta, q_0, f \right)  \) (DFA, Deterministic Finite Automaton) se:
 \( L = L(M) \) dove \( L(M) \) è il linguaggio di \( M \) definito come:
 \[
-  L(M) = \left\{ \sigma  \in \Sigma^* \left| \hat{\delta}(q_0, \sigma) \in F \right. \right\}
+  L(M) = \left\{ \sigma  \in \Sigma^* \;\left|\; \hat{\delta}(q_0, \sigma) \in F \right. \right\}
 \] 
 Cioè sono tutte le stringhe che partendo da \( q_0 \) fanno raggiungere uno stato finale.
 
@@ -558,11 +559,12 @@ Questo dimostra che il linguaggio è regolare perchè è riconosciuto da un auto
 \begin{example}
   Riprendendo l'esempio precedente:
   \[
-    L = \left\{ \sigma  \left| \sigma \text{ contiene almeno due } 1 \right. \right\}
+    L = \left\{ \sigma \in \Sigma^* \;\left|\; \sigma \text{ contiene almeno due } 1 \right. \right\}
   \] 
   \[
     \Sigma = \{0,1\}
   \]
+  \( M = \) 
   \begin{figure}[H]
     \centering
     \begin{tikzpicture}[->, node distance=2cm, on grid, auto]
@@ -578,6 +580,7 @@ Questo dimostra che il linguaggio è regolare perchè è riconosciuto da un auto
     \end{tikzpicture}
     \caption{Automa a stati finiti per il linguaggio \( \mathcal{L} \)}
   \end{figure}
+  \noindent
   Dimostriamo per induzione sulla lunghezza delle stringhe \( \sigma \in \Sigma^* \) 
   che se \( x \in L \) allora \( \hat{\delta}(q_0, x) \in F \) e se \( x \notin L \) allora
   \( \hat{\delta}(q_0, x) \notin F \).
@@ -596,7 +599,8 @@ Questo dimostra che il linguaggio è regolare perchè è riconosciuto da un auto
   \] 
   \begin{itemize}
     \item \textbf{Base}: Controlliamo ogni stringa di lungheezza minima nel linguaggio per
-      provare il caso base
+      provare il caso base. In questo caso la lunghezza minima è
+      \( \left| \sigma  \right| = 2 \) 
       \[
         \begin{cases}
           \sigma &= 11 \in L \; \text{ e } \; \hat{\delta}(q_0, 11) = q_2 \in F \\
@@ -606,7 +610,7 @@ Questo dimostra che il linguaggio è regolare perchè è riconosciuto da un auto
         \end{cases}
       \] 
 
-    \item \textbf{Passo induttivo}: Dimostriamo l'\textbf{ipotesi induttiva}, cioè
+    \item \textbf{Passo induttivo}: Assumiamo che valga l'\textbf{ipotesi induttiva}, cioè
       la tesi con un limite fissato:
       \[
         \forall \sigma \in \Sigma^* \;.\; \left| \sigma  \right| \le n \;.\;
@@ -615,26 +619,46 @@ Questo dimostra che il linguaggio è regolare perchè è riconosciuto da un auto
           \sigma \notin L &\Rightarrow \hat{\delta}(q_0, \sigma) \notin F
         \end{cases}
       \] 
-      Vogliamo dimostrare se \( \left| \sigma  \right| = n + 1 \) (la successiva stringa
-      che posso considerare) allora vale
+      Vogliamo dimostrare che la tesi vale per \( \left| \sigma  \right| = n + 1 \)
+      (la successiva stringa che posso considerare).
+
+      \noindent
+      \textbf{Tesi}:
       \( 
         \begin{cases}
-          \sigma \in L \Rightarrow \hat{\delta}(q_0,\sigma) \in F\\
-          \sigma \notin L \Rightarrow \hat{\delta}(q_0,\sigma) \notin F
+          \sigma \in L \Rightarrow \hat{\delta}(q_0,\sigma) = q_2
+          \; \sigma \text{ contiene almeno due 1}\\
+          \sigma \notin L \Rightarrow \hat{\delta}(q_0,\sigma) = q_0
+          \; \sigma \text{ non contiene 1}\\
+          \sigma \notin L \Rightarrow \hat{\delta}(q_0,\sigma) = q_1
+          \; \sigma \text{ contiene esattamente un 1}
         \end{cases}
       \) 
 
       \vspace{1em}
       \noindent
-      Dimostrazione:
+      \textbf{Ipotesi induttiva}:
+      \[
+        \forall \sigma \in \Sigma^* \;.\; \left| \sigma  \right| \le n \;.\;
+        \text{ allora la tesi vale su } \sigma
+      \] 
+
+      \vspace{1em}
+      \noindent
+      Dimostrazione della tesi per \( \sigma  \) tale che \( \left| \sigma  \right| = n + 1 \).
+      (\( \left| \sigma' \right| = n \) quindi su \( \sigma' \) possiamo applicare l'ipotesi
+      induttiva):
       \[
         \left| \sigma  \right| = n + 1 \to 
           \sigma = \sigma'1 \; \vee \; \sigma = \sigma'0
       \] 
       \begin{itemize}
-        \item Supponiamo che \( \sigma  \) appartiene al linguaggio e termini con 1:
+        \item Supponiamo che \( \sigma  \) appartenga al linguaggio e termini con 1:
           \[
-            \sigma \in L \wedge \sigma  = \sigma'1 \to 
+            \sigma \in L \wedge \sigma  = \sigma'1
+          \] 
+          \[
+            \downarrow
           \] 
           \begin{itemize}
             \item Se \( \sigma' \in L \) applico l'ipotesi induttiva:
@@ -659,7 +683,7 @@ Questo dimostra che il linguaggio è regolare perchè è riconosciuto da un auto
               \] 
           \end{itemize}
 
-        \item Supponiamo che \( \sigma  \) appartiene al linguaggio e termini con 0:
+        \item Supponiamo che \( \sigma  \) appartenga al linguaggio e termini con 0:
           \[
             \sigma \in L \wedge \sigma = \sigma'0
           \] 
@@ -680,29 +704,400 @@ Questo dimostra che il linguaggio è regolare perchè è riconosciuto da un auto
             \end{aligned}
           \] 
 
-        \item Supponiamo che \( \sigma  \) non appartiene al linguaggio e termini con 1:
-          \[
-            \sigma \notin L \wedge  \sigma  = \sigma'1 \text{ (ha esattamente un 1)}
-          \] 
-          \[
-            \Downarrow
-          \] 
-          \[
-            \sigma  \notin L \text{ non ha 1}
-          \] 
+        \item Supponiamo che \( \sigma  \) non appartenga al linguaggio e contiene
+          esatatmente un 1:
+          \begin{itemize}
+            \item \( \sigma  = \sigma'0 \Rightarrow \sigma' \notin L \) e contiene esattamente un 1\\
+              \noindent
+              Ipotesi induttiva:
+              \[
+                \hat{\delta}(q_0, \sigma') = q_1
+              \] 
+              \[
+                \Downarrow
+              \] 
+              \[
+                \begin{aligned}
+                  \hat{\delta}(q_0, \sigma) &= \hat{\delta}(q_0, \sigma'0)\\
+                                            &= \delta(\hat{\delta}(q_0, \sigma'), 0)\\
+                                            &= \delta(q_1, 0) = q_1 \notin F
+                \end{aligned}
+              \] 
 
-        \item Supponiamo che \( \sigma  \) non appartiene al linguaggio e termini con 0:
+            \item \( \sigma = \sigma'1 \Rightarrow \sigma' \notin L \) e non contiene 1\\
+              \noindent
+              Ipotesi induttiva:
+              \[
+                \hat{\delta}(q_0, \sigma') = q_0
+              \] 
+              \[
+                \Downarrow
+              \] 
+              \[
+                \begin{aligned}
+                  \hat{\delta}(q_0, \sigma) &= \hat{\delta}(q_0, \sigma'1)\\
+                                            &= \delta(\hat{\delta}(q_0, \sigma'), 1)\\
+                                            &= \delta(q_0, 1) = q_1 \notin F
+                \end{aligned}
+              \] 
+          \end{itemize}
+
+        \item Supponiamo che \( \sigma  \) non appartenga al linguaggio e non contiene 1
           \[
             \sigma \notin L \wedge  \sigma  = \sigma'0
           \] 
+          \( \sigma = \sigma'1 \) non è possibile per l'ipotesi che \( \sigma  \) non contiene 1\\
+          \noindent
+          Ipotesi induttiva:
+          \[
+              \hat{\delta}(q_0, \sigma') = q_0\\
+          \] 
           \[
             \Downarrow
           \] 
           \[
-            \sigma' \notin L
+            \begin{aligned}
+              \hat{\delta}(q_0, \sigma) &= \hat{\delta}(q_0, \sigma'0)\\
+                                        &= \delta(\hat{\delta}(q_0, \sigma'), 0)\\
+                                        &= \delta(q_0, 0) = q_0 \notin F
+            \end{aligned}
           \] 
       \end{itemize}
   \end{itemize}
+  Tutti i casi sono dimostrati, quindi abbiamo dimostrato che:
+  \[
+    L = L(M) \quad \Rightarrow \quad L \text{ è regolare}
+  \]
 \end{example}
+\begin{exercise}
+  Consideriamo il seguente linguaggio:
+  \[
+    \begin{aligned}
+      L &= \left\{ \sigma \in \Sigma^* \;\left|\; \text{ogni sequenza di } 0 \text{ è di lunghezza pari} \right.\right\}\\
+    \end{aligned}
+  \] 
+  \[
+    \Sigma = \{0,1\}
+  \] 
+  Si può accettare anche sequenze di lunghezza 0. Alcuni esempi sono:
+  \[
+    \begin{aligned}
+      101 \notin L\\
+      1111 \in L\\
+      10010000 \in L\\
+      00101 \notin L\\
+    \end{aligned}
+  \] 
+  L'automa a stati finiti \( M \) è il seguente:
+  \begin{itemize}
+    \item \( q_0 \): Non sono stati letti 0
+    \item \( q_1 \): Sequenza di 0 consecutiva di lunghezza dispari
+    \item \( q_2 \): Sequenza di 0 consecutiva di lunghezza pari
+  \end{itemize}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[->, node distance=2cm, on grid, auto]
+      \node[state, initial, accepting] (q0) {$q_0$};
+
+      \node[state, right of=q0] (q1) {$q_1$};
+
+      \node[state, right of=q1, accepting] (q2) {$q_2$};
+
+      \node[state, above of=q1] (q3) {$q_{\bot}$};
+
+      \draw (q0) edge[loop above] node{1} (q0);
+      \draw (q0) edge[above] node{0} (q1);
+      \draw (q1) edge[bend left, above] node{0} (q2);
+      \draw (q2) edge[bend left, above] node{0} (q1);
+      \draw (q2) edge[loop above] node{1} (q2);
+      \draw (q1) edge[left] node{1} (q3);
+      \draw (q3) edge[loop above] node{0,1} (q3);
+    \end{tikzpicture}
+    \caption{Automa a stati finiti per il linguaggio \( L \)}
+  \end{figure}
+  \noindent
+  La tesi è:
+  \begin{itemize}
+    \item \( \sigma \in L \) e non contiene 0:
+      \(
+        \Rightarrow \hat{\delta}(q_0, \sigma) = q_0
+      \) 
+
+    \item \( \sigma \in L \) e contiene una sequenza pari di 0:
+      \(
+        \Rightarrow \hat{\delta}(q_0, \sigma) = q_2
+      \)
+
+    \item \( \sigma \notin L \) e contiene una sequenza \textbf{finale} dispari di 0:
+      \(
+        \Rightarrow \hat{\delta}(q_0, \sigma) = q_1
+      \)
+
+    \item \( \sigma \notin L \) e contiene una sequenza dispari di 0 seguita da 1:
+      \(
+        \Rightarrow \hat{\delta}(q_0, \sigma) = q_{\bot}
+      \)
+  \end{itemize}
+\end{exercise}
+\begin{exercise}
+  Consideriamo il seguente linguaggio (ogni sequenza di 0 è di lunghezza almeno 2):
+  \[
+    L = \left\{ \sigma \in \Sigma^* \;\left|\; \exists n \ge 1 \;.\; \sigma = 0^n \Rightarrow n \ge 2 \right.\right\}\\
+  \] 
+  \[
+    \Sigma = \{0,1\}
+  \]
+  L'automa a stati finiti \( M \) è il seguente:
+  \begin{itemize}
+    \item \( q_0 \): Non contiene 0, oppure \textbf{tutte} le sequenze di 0
+      sono lunghe almeno 2
+
+    \item \( q_1 \): Esattamente uno 0
+      
+    \item \( q_2 \): Almeno due 0
+  \end{itemize}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[->, node distance=2cm, on grid, auto]
+      \node[state, initial, accepting] (q0) {$q_0$};
+
+      \node[state, right of=q0] (q1) {$q_1$};
+
+      \node[state, right of=q1, accepting] (q2) {$q_2$};
+
+      \node[state, below of=q1] (q3) {$q_{\bot}$};
+
+      \draw (q0) edge[loop above] node{1} (q0);
+      \draw (q0) edge[above] node{0} (q1);
+      \draw (q1) edge[above] node{0} (q2);
+      \draw (q0) edge[bend left, above] node{1} (q2);
+      \draw (q2) edge[loop above] node{0} (q2);
+      \draw (q1) edge[right] node{1} (q3);
+      \draw (q3) edge[loop below] node{0,1} (q3);
+
+    \end{tikzpicture}
+    \caption{Automa a stati finiti per il linguaggio \( L \)}
+  \end{figure}
+  \noindent
+  La tesi è:
+  \begin{itemize}
+    \item \( \sigma \in L \) e \( \sigma = \sigma'1 \)
+      \(
+        \Rightarrow \hat{\delta}(q_0, \sigma) = q_0
+      \) 
+
+    \item \( \sigma \in L \) e \( \sigma = \sigma'0 \) 
+      \(
+        \Rightarrow \hat{\delta}(q_0, \sigma) = q_2
+      \) 
+
+    \item \( \sigma \notin L \) e \( \sigma = \sigma'0 \) dove l'ultima sequenza di 0
+      è esattamente lunga 1:
+      \(
+        \Rightarrow \hat{\delta}(q_0, \sigma) = q_1
+      \) 
+
+    \item \( \sigma \notin L \) e \( \sigma  \) contiene una sequenza lunga 1 di 0:
+      \(
+        \Rightarrow \hat{\delta}(q_0, \sigma) = q_{\bot}
+      \)
+  \end{itemize}
+\end{exercise}
+
+\subsection{Automi a stati finiti non deterministici (NFA)}
+Un automa a stati finiti non deterministico si crea quando ad un solo simbolo sono
+associate più transizioni. Quando questo succede gli stati vengono considerati in
+parallelo. Un NFA è definito come una quintupla:
+\[
+  N = \left< Q, \Sigma, \delta, q_0, F \right>
+\] 
+\begin{itemize}
+  \item \( Q \) è un insieme finito di stati
+  \item \( \Sigma  \) è un insieme finito di simboli (alfabeto)
+  \item \( q_0 \in Q \) è uno stato e identifica lo stato iniziale
+  \item \( F \subseteq Q \) è l'insieme degli stati finali
+  \item \( \delta: Q \times \Sigma \to \mathcal{P}(Q) \) è una funzione di transizione che
+    dato uno stato e un simbolo restituisce un insieme di stati \textbf{potenzialmente}
+    raggiungibili. È possibile che esistano coppie associate all'insieme vuoto:
+    \[
+      \emptyset \in \mathcal{P}(Q)
+    \] 
+    Inoltre non è obbligatorio avere un arco uscente per ogni simbolo di \( \Sigma \).
+  \item \( \hat{\delta}: Q \times \Sigma^* \to \mathcal{P}(Q) \) Descrive gli stati che si possono
+    raggiungere leggendo una sequenza di simboli:
+    \[
+      \begin{cases}
+        \hat{\delta}(q, \epsilon) = \{q\}\\
+        \hat{\delta}(q, wa) = \bigcup_{p \in \hat{\delta}(q,w)} \delta(p, a)
+      \end{cases}
+      \quad
+      w \in \Sigma^*, \quad a \in \Sigma 
+    \] 
+    È quindi la chiusura transitiva di \( \delta \)
+\end{itemize}
+\begin{example}
+  Un esempio di NFA è il seguente:
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[->, node distance=2cm, on grid, auto]
+      \node[state, initial] (q0) {$q_0$};
+
+      \node[state, above right of=q0] (q1) {$q_1$};
+
+      \node[state, below right of=q1] (q2) {$q_2$};
+
+      \draw (q0) edge[above] node{a} (q1);
+      \draw (q0) edge[below] node{a} (q2);
+
+    \end{tikzpicture}
+    \caption{Esempio di NFA}
+  \end{figure}
+  \[
+    \delta(q_0, a) = \{q_1, q_2\} \subseteq Q
+  \] 
+\end{example}
+
+\subsubsection{Linguaggio riconosciuto da un NFA}
+Un linguaggio \( L \) è riconosciuto da un NFA \( N \) se:
+\[
+  L(N) = \left\{ \sigma \in \Sigma^* \;\left|\;
+  \hat{\delta}(q_0, a) \cap F \neq \emptyset \right.\right\}
+\] 
+\begin{example}
+  Consideriamo il seguente linguaggio:
+  \[
+  L(N) = \left\{ \sigma \in \Sigma^* \;\left|\; \sigma \text{ contiene almeno due } 1 \right. \right\}
+  \] 
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[->, node distance=2cm, on grid, auto]
+      \node[state, initial] (q0) {$q_0$};
+
+      \node[state, right of=q0] (q1) {$q_1$};
+
+      \node[state, above of=q0] (q2) {$q_2$};
+
+      \draw (q2) edge[right] node{1} (q0);
+      \draw (q0) edge[bend left, below] node{1} (q1);
+      \draw (q1) edge[bend left, below] node{1} (q0);
+
+      \draw (q1) edge[below] node{1} (q2);
+      \draw (q2) edge[bend left, above] node{0,1} (q1);
+
+      \draw (q2) edge[loop above] node{0,1} (q2);
+
+    \end{tikzpicture}
+    \caption{Esempio di NFA per il linguaggio \( L \)}
+  \end{figure}
+\end{example}
+
+\begin{theorem}[Teorema di Rabin-Scott]
+  Ogni linguaggio riconosciuto da un NFA è riconosciuto da un DFA.
+  \[
+    \forall N = (Q, \Sigma, \delta, q_0, F) \; \exists M = (Q', \Sigma, \delta', q_0', F') \;.\;
+    L(N) = L(M)
+  \] 
+
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione}: Consideriamo un NFA \( N = (Q, \Sigma, \delta, q_0, F) \) e
+  costruiamo un DFA \( M = (Q', \Sigma, \delta', q_0', F') \).
+  Gli insiemi degli stati sono:
+  \[
+    Q' = \mathcal{P}(Q)
+  \] 
+  \[
+   Q = \{q_0, q_1, q_2\}
+  \] 
+  \[
+    \Downarrow
+  \] 
+  \[
+    Q' = \left\{ 
+      \stackrel{q'_1}{\emptyset}, \stackrel{q'_0}{\{q_0\}}, \stackrel{q'_2}{\{q_1\}},
+      \stackrel{q'_3}{\{q_2\}}, \stackrel{q'_4}{\{q_0, q_1\}}, \stackrel{q'_5}{\{q_0, q_2\}},
+      \stackrel{q'_6}{\{q_1, q_2\}}, \stackrel{q'_7}{\{q_0, q_1, q_2\}}
+    \right\}
+  \] 
+  Lo stato iniziale rimane uguale per entrambi gli insiemi: \( q'_0 = \{q_0\}  \).
+
+  Gli insiemi degli stati finali sono:
+  \[
+    F' = \left\{ P \subseteq Q \;\left|\; P \cap F \neq \emptyset \right. \right\} \quad
+    P \in \mathcal{P}(Q)
+  \] 
+  Quindi:
+  \[
+    F = \{q_2\} 
+  \] 
+  \[
+    F' = \left\{ \stackrel{q'_3}{\{q_2\}}, \stackrel{q'_6}{\{q_1, q_2\}},
+      \stackrel{q'_5}{\{q_0, q_2\}}, \stackrel{q'_7}{\{q_0, q_1, q_2\}}
+    \right\}
+  \] 
+  La funzione di transizione è definita come:
+  \[
+    \delta'(P, a) = \bigcup_{q \in P} \delta(q, a) \in \mathcal{P}(Q) \quad P \in Q' = \mathcal{P}(Q),\; a \in \Sigma 
+  \]
+  Quindi:
+  \[
+    \begin{aligned}
+      \underbrace{\delta'(q'_5, 1)}_{= \{q_1, q_2\} }
+      &= \delta(q_1, 1) \cup \delta(q_2, 1)\\
+                       &= \{q_0, q_2\} \cup \{q_0, q_1, q_2\}\\
+                       &= \{q_0, q_1, q_2\} = q'_7
+    \end{aligned}
+  \] 
+
+  \vspace{1em}
+  \noindent
+  Dimostriamo: 
+  \begin{enumerate}
+    \item 
+      \( \hat{\delta}(q_0, \sigma) = \hat{\delta}'(q'_0, \sigma) = \{q_0\}  \) 
+
+      \vspace{1em}
+      \noindent
+      Dimostriamo per induzione su \( \left| \sigma  \right|  \):
+
+      \begin{itemize}
+        \item 
+          Se \( \sigma = \varepsilon \) allora:
+          \[
+            \hat{\delta}'(q'_0, \varepsilon) = q'_0 = \{q_0\} = \hat{\delta}(q_0, \varepsilon)
+          \] 
+          per le definizioni
+
+        \item Se \( \sigma = \sigma'a \):
+          \[
+            \begin{aligned}
+              \hat{\delta}'(q'_0, \sigma'a) &= \delta'(\hat{\delta}'(q_0, \sigma'), a)\\
+                                            &= \delta'(\hat{\delta}(q_0, \sigma'), a)\\
+                                            &= \bigcup_{p \in \hat{\delta}(q_0, \sigma')} \delta(p, a)\\
+                                            &= \hat{\delta}(q_0, \sigma'a)
+            \end{aligned}
+          \] 
+          Definizione di \( \hat{\delta}' \) non deterministica
+      \end{itemize}
+    \item
+      \(
+        \sigma \in L(N) \iff \sigma \in L(M)
+      \) 
+
+      \vspace{1em}
+      \noindent
+      Dimostriamo la definizione di linguaggio riconosciuto in NFA:
+      \[
+        \begin{aligned}
+          \sigma \in L(N) &\iff \hat{\delta}(q_0, \sigma) \cap F \neq \emptyset\\
+                          &\iff \hat{\delta}'(q'_0, \sigma) \cap F' \neq \emptyset \;(\text{(1.)})\\
+                          &\iff \hat{\delta}'(q'_0, \sigma) \in F'\\
+                          &\iff \sigma \in L(M) \; \text{(def. linguaggio accettato in DFA)}
+        \end{aligned}
+      \] 
+  \end{enumerate}
+
+\end{theorem}
+
 
 \end{document}
