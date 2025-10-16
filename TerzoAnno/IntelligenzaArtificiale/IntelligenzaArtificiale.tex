@@ -707,13 +707,105 @@ dove \( h^*(n) \) è il costo effettivo del percorso da \( n \).
 \noindent
 Questo tipo di ricerca è:
 \begin{itemize}
-  \item \textbf{Completa}: Sì, tranne se ci sono nodi infiniti con \( f \le f(G) \) 
+  \item \textbf{Completa}: Sì, tranne se ci sono infiniti nodi con \( f \le f(G) \) 
   \item \textbf{Complessità di tempo}: Esponenziale in errore relativo in \( h \times  \) 
     lunghezza del numeo di passi della soluzione ottimale. (Se l'euristica è buona, la
     complessità sarà molto più bassa)
   \item \textbf{Complessità di spazio}: \( O(b^d) \), bisogna memorizzare tutti i nodi
     generati
-  \item \textbf{Ottimale}: Sì, se l'euristica è ammissibile e consistente
+  \item \textbf{Ottimale}: Sì, ma richiede assunzioni sull'euristica (ammissibilità,
+    consistenza) e una strategia di ricerca (ricerca ad albero o grafo)
 \end{itemize}
+
+\subsubsection{Consistenza e ammissibilità}
+\begin{definition}
+  Un euristica è \textbf{consistente} se:
+  \[
+    h(n) \le c(n,a,n') + h(n')
+  \] 
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[->, node distance=2cm, on grid, auto]
+      \node[state] (n) {$n$};
+
+      \node[state, below of=n] (n1) {$n'$};
+
+      \node[state, below right of=n1] (G) {$G$};
+
+      \draw (n) edge[left] node{\( c(n,a,n') \)} (n1);
+      \draw (n) edge[right] node{\( h(n) \)} (G);
+      \draw (n1) edge[left] node{\( h(n') \)} (G);
+    \end{tikzpicture}
+    \caption{Esempio di euristica consistente}
+  \end{figure}
+  \begin{itemize}
+    \item Si può dimostrare che se \( h \) è consistente, allora \( f(n) \) non decresce
+      lungo qualsiasi cammino
+
+    \item A* espande i nodi in ordine crescente di \( f \), quindi trova sempre la soluzione
+      ottimale
+  \end{itemize}
+  Quindi si espande sempre prima un cammino ottimo rispetto a un cammino non ottimo.
+\end{definition}
+
+\noindent
+La consistenza implica l'ammissibilità e può essere dimostrato per induzione sul cammino
+verso il goal. L'ammissibilità però non implica la consistenza.
+\[
+  \begin{aligned}
+    \text{Consistenza} \to \text{Ammissibilità}\\
+    \text{Ammissibilità} \not\to \text{Consistenza}
+  \end{aligned}
+\] 
+\begin{itemize}
+  \item Tree-Search + euristica ammissibile \( \to \) A* ottimale
+  \item Graph-Search + euristica ammissibile \( \not\to \) A* ottimale (può scartare
+    il cammino ottimale per un nodo ripetuto)
+  \item Graph-Search + euristica consistente \( \to \) A* ottimale
+\end{itemize}
+
+\subsubsection{Euristiche}
+Le euristiche possono essere create in diversi modi, prendiamo ad esempio l'8-puzzle:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{8-puzzle}
+  \caption{Esempio di 8-puzzle}
+\end{figure}
+Per questo problema si potrebbe utilizzare come euristica:
+\begin{itemize}
+  \item \( h_1(n) = \) numero di pezzi fuori posto
+  \item \( h_2(n) = \) somma delle distanze di Manhattan (numero di mosse orizzontali e verticali
+    necessarie per portare ogni pezzo alla sua posizione obiettivo)
+\end{itemize}
+Entrambe le euristiche sono ammissibili, ma \( h_2 \) è più precisa di \( h_1 \) perchè
+fornisce una stima più vicina al costo reale per raggiungere l'obiettivo.
+
+In questo caso si dice che \( h_2 \) \textbf{domina} \( h_1 \) se sono entrambe ammissibili
+e \( h_2(n) \) è sempre maggiore o uguale a \( h_1 \):
+\[
+  h_2(n) \ge h_1(n) \quad \forall n
+\] 
+
+\begin{theorem}
+  Date due qualsiasi euristiche \textbf{ammissibili} \( h_a \) e \( h_b \),
+  allora l'euristica definita come:
+  \[
+    h(n) = \max(h_a(n), h_b(n))
+  \]
+  è anch'essa ammissibile e domina sia \( h_a \) che \( h_b \)
+\end{theorem}
+
+\noindent
+Le euristiche ammissiibli possono essere derivate dall'esatto costo della soluzione di un
+problema \textbf{rilassato}, cioè un problema simile a quello originale ma con
+restrizioni rimosse. Ad esempio, per l'8-puzzle si potrebbe rilassare il problema
+permettendo di muovere una casella ovunque (in questo caso \( h_1(n) \) da la soluzione
+migliore), oppure permettendo di muovere una casella in qualsiasi casella adiacente (
+in questo caso \( h_2(n) \) da la soluzione migliore)
+
+\begin{define}
+  Il costo della soluzione ottimale di un problema rilassato non è maggiore del costo
+  della soluzione ottimale del problema reale.
+\end{define}
 
 \end{document}
