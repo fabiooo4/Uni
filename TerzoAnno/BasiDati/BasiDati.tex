@@ -302,7 +302,7 @@ La popolazione di \( R \) rappresenta l'insieme delle coppie di istanze delle en
     \centering
     \begin{tikzpicture}
       \node[draw, rectangle, minimum width=2cm, minimum height=1cm ]
-        (E1) {Person};
+        (E1) {Persona};
       \node[draw, diamond, minimum width=0.7cm, minimum height=0.7cm, right=1cm of E1]
         (R) {};
       \node[below=0.3cm] at (R) {Residenza};
@@ -363,9 +363,9 @@ con accanto il nome dell'attributo:
   \begin{tikzpicture}
     \node[draw, rectangle, minimum width=2cm, minimum height=1cm ]
       (E) {Entità \( E \)};
-    \node[draw, circle, right=0.5cm of E]
+    \node[draw, circle, scale=0.7, right=0.5cm of E]
       (A) {};
-    \node[right=0.3cm] at (A) {Attributo \( A \)};
+    \node[right=0.1cm] at (A) {\( A \)};
     \draw (E) -- (A);
   \end{tikzpicture}
   \caption{Rappresentazione grafica di un attributo di un'entità}
@@ -377,9 +377,9 @@ con accanto il nome dell'attributo:
     \node[draw, diamond, minimum width=0.7cm, minimum height=0.7cm ]
       (E) {};
     \node[below=0.3cm] at (E) {Relazione \( R \)};
-    \node[draw, circle, right=0.5cm of E]
+    \node[draw, circle, scale=0.7, right=0.5cm of E]
       (A) {};
-    \node[right=0.3cm] at (A) {Attributo \( A \)};
+    \node[right=0.1cm] at (A) {\( A \)};
     \draw (E) -- (A);
   \end{tikzpicture}
   \caption{Rappresentazione grafica di un attributo di una relazione}
@@ -393,17 +393,258 @@ con accanto il nome dell'attributo:
     \begin{tikzpicture}
       \node[draw, rectangle, minimum width=2cm, minimum height=1cm ]
         (E) {Persona};
-      \node[draw, circle, yshift=0.4cm, right=0.5cm of E]
+      \node[draw, circle, scale=0.7, yshift=0.4cm, right=0.5cm of E]
         (A1) {};
-      \node[right=0.3cm] at (A1) {Nome};
-      \node[draw, circle, yshift=-0.4cm, right=0.5cm of E]
+      \node[right=0.1cm] at (A1) {Nome};
+      \node[draw, circle, scale=0.7, yshift=-0.4cm, right=0.5cm of E]
         (A2) {};
-      \node[right=0.3cm] at (A2) {Cognome};
-      \draw (A1) -- +(-0.68cm,0);
-      \draw (A2) -- +(-0.68cm,0);
+      \node[right=0.1cm] at (A2) {Cognome};
+      \draw (A1) -- +(-0.65cm,0);
+      \draw (A2) -- +(-0.65cm,0);
     \end{tikzpicture}
     \caption{Rappresentazione grafica dell'entità Persona con gli attributi Nome e Cognome}
   \end{figure}
 \end{example}
+
+\subsection{Identificatore}
+Data un'entità \( E \), un identificatore è un insieme di proprietà (attributi e/o relazioni)
+che \textbf{identificano univocamente} ogni istanza di \( E \). Un insieme di proprietà
+identifica univocamente le istanze di un'entità \( E \) se \textbf{non esistono} due
+istanze di \( E \) che presentano gli stessi valori o istanze nelle proprietà dell'insieme.
+
+\vspace{1em}
+\noindent
+La sintassi grafica di un identificatore per un'entità con un solo attributo \( a \) è
+la seguente:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm ]
+      (E) {Entità \( E \)};
+    \node[draw, circle, scale=0.7, fill, right=0.5cm of E]
+      (A) {};
+    \node[right=0.1cm] at (A) {\( A \)};
+    \draw (E) -- (A);
+  \end{tikzpicture}
+  \caption{Rappresentazione grafica di un identificatore con un solo attributo}
+\end{figure}
+Per un identificatore costituito da più attributi \( a, b \) la sintassi grafica è la seguente:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm ]
+      (E) {Entità \( E \)};
+    \node[draw, circle, scale=0.7, yshift=0.5cm, right=0.5cm of E]
+      (A) {};
+    \node[right=0.1cm] at (A) {\( A \)};
+    \draw (A) -- +(-0.65cm,0);
+
+    \node[draw, circle, scale=0.7, below=0.5cm of A]
+      (B) {};
+    \node[right=0.1cm] at (B) {\( B \)};
+    \draw (B) -- +(-0.65cm,0);
+
+    \node[draw, circle, scale=0.7, fill, above left=0.2cm of A]
+      (I) {};
+    \draw (I) -- +(0,-1.3cm);
+  \end{tikzpicture}
+  \caption{Rappresentazione grafica di un identificatore con più attributi}
+\end{figure}
+Può anche esistere un identificatore costituito da una relazione \( R \) (deve essere
+una funzione):
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm ]
+      (E1) {Entità \( E \)};
+    \node[draw, diamond, minimum width=0.7cm, minimum height=0.7cm, right=1cm of E1]
+      (R) {};
+    \node[below=0.3cm] at (R) {Relazione \( R \)};
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm, right=1cm of R]
+      (E2) {\( \ldots \)};
+    \draw (E1) -- (R);
+    \draw (E2) -- (R);
+
+    \node[draw, circle, scale=0.7, yshift=0.5cm, right=0.5cm of E1]
+      (A) {};
+    \node[right=0.1cm] at (A) {\( A \)};
+    \draw (A) -- +(-0.65cm,0);
+
+    \node[draw, circle, scale=0.7, fill, above left=0.2cm of A]
+      (I) {};
+    \draw (I) -- +(0,-1.3cm);
+  \end{tikzpicture}
+  \caption{Rappresentazione grafica di un identificatore costituito da un attributo e una relazione}
+\end{figure}
+Oppure un identificatore può essere costituito soltanto da una relazione \( R \):
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm ]
+      (E1) {Entità \( E \)};
+    \node[draw, diamond, minimum width=0.7cm, minimum height=0.7cm, right=1cm of E1]
+      (R) {};
+    \node[below=0.3cm] at (R) {Relazione \( R \)};
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm, right=1cm of R]
+      (E2) {\( \ldots \)};
+    \draw (E1) -- (R);
+    \draw (E2) -- (R);
+
+    \node[draw, circle, scale=0.7, fill, above left=0.2cm of A]
+      (I) {};
+    \draw (I) -- +(0,-1.3cm);
+  \end{tikzpicture}
+  \caption{Rappresentazione grafica di un identificatore costituito da una relazione}
+\end{figure}
+Ci sono due tipi di identificatori:
+\begin{itemize}
+  \item \textbf{Identificatori interni}: sono costituiti solo da attributi dell'entità
+  \item \textbf{Identificatori esterni}: sono costituiti da almeno una relazione
+    con un'altra entità
+\end{itemize}
+
+\vspace{1em}
+\noindent
+\textbf{Attenzione}: Non esistono identificatori sulle relazioni perchè ogni relazione
+è già univocamente identificata dalle istanze delle entità coinvolte.
+
+\begin{example}
+  Rappresentiamo il concetto di persona tramite un'entità, bisogna gestire nella base
+  di dati il codice fiscale, il nome, il cognome e la data di nascita di un gruppo
+  di persone
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \node[draw, rectangle, minimum width=2cm, minimum height=1cm ]
+        (E1) {Persona};
+      \node[draw, circle, scale=0.7, yshift=0.6cm, right=0.5cm of E1]
+        (nome) {};
+      \node[right=0.1cm] at (nome) {Nome};
+      \draw (nome) -- +(-0.65cm,0);
+
+      \node[draw, circle, scale=0.7, yshift=0cm, right=0.5cm of E1]
+        (cognome) {};
+      \node[right=0.1cm] at (cognome) {Cognome};
+      \draw (cognome) -- +(-0.65cm,0);
+
+      \node[draw, circle, scale=0.7, yshift=-0.6cm, right=0.5cm of E1]
+        (data_nascita) {};
+      \node[right=0.1cm] at (data_nascita) {Data di nascita};
+      \draw (data_nascita) -- +(-0.65cm,0);
+
+      \node[draw, circle, scale=0.7, fill, above left=0.2cm of A]
+        (I) {};
+      \draw (I) -- +(0,-1.3cm);
+
+      \node[draw, circle, fill, scale=0.7, below=0.5cm of E1]
+        (fiscale) {};
+      \node[right=0.1cm] at (fiscale) {Codice fiscale};
+      \draw (fiscale) -- +(0,0.65cm);
+    \end{tikzpicture}
+    \caption{Esempio di identificatore interno}
+  \end{figure}
+\end{example}
+
+\begin{definition}
+  Un \textbf{vincolo di identificazione} limita la popolazione di un'entità impedendo
+  l'esistenza di due istanze con gli stessi valori nelle proprietà che costituiscono
+  l'identificatore.
+
+  \vspace{1em}
+  \noindent
+  La scelta dell'identificatore va sempre fatta considerando le proprietà significative
+  per il sistema informativo. A \textbf{livello concettuale} è quindi da \textbf{evitare}
+  l'introduzione di nuovi attributi identificatori (ad esempio l'ID).
+\end{definition}
+
+\subsection{Cardinalità}
+Tra due relazioni esistono dei vincoli di cardinalità che limitano il numero di istanze
+di una entità che possono essere in relazione con una singola istanza dell'altra entità.
+Data una relazione \( R \) i vincoli di cardinalità vengono specificati per ogni entità
+\( E_i \) coinvolta nella relazione \( R \) e specificano il numero \textbf{minimo} e
+\textbf{massimo} di istanze di \( R \) a cui un istanza di \( E_j \) deve o può 
+partecipare.
+
+\vspace{1em}
+\noindent
+La sintassi grafica per rappresentare i vincoli di cardinalità è la seguente:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm ]
+      (E1) {Entità \( E \)};
+    \node[draw, diamond, minimum width=0.7cm, minimum height=0.7cm, right=2cm of E1]
+      (R) {};
+    \node[below=0.3cm] at (R) {Relazione \( R \)};
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm, right=2cm of R]
+      (E2) {Entità \( F \)};
+    \draw (E1) -- node[midway, above, scale=0.8] {\( (min_1, max_1) \)} (R);
+    \draw (E2) -- node[midway, above, scale=0.8] {\( (min_2, max_2) \)} (R);
+  \end{tikzpicture}
+  \caption{Rappresentazione grafica dei vincoli di cardinalità}
+\end{figure}
+
+\subsubsection{Valori possibili per \texorpdfstring{\( \text{MIN}_i \)}{MIN\_i}}
+I possibili valori che il minimo \( \text{MIN}_i \) può assumere sono:
+\begin{itemize}
+  \item 0: Indica che la partecipazione alla relazione \( R \) delle istanze di \( E_i \)
+    è \textbf{opzionale}
+
+  \item 1: Indica che la partecipazione alla relazione \( R \) delle istanze di \( E_i \)
+    è \textbf{obbligatoria}
+
+  \item \( num > 1 \): Indica che per ogni istanza di \( E_i \) devono essere presenti
+    almeno \( num \) occorrenze della relazione \( R \) che la coinvolgono
+\end{itemize}
+
+\subsubsection{Valori possibili per \texorpdfstring{\( \text{MAX}_i \)}{MAX\_i}}
+\begin{itemize}
+  \item 1: Indica che un'istanza di \( E_i \) può \textbf{al massimo} partecipare a una
+    sola occorrenza della relazione \( R \) (se \( R \) è binaria questo indica che \( R \)
+    \textbf{è una funzione})
+
+  \item \( N \): Indica che un'istanza di \( E_i \) può partecipare a più occorrenze
+    della relazione \( R \) senza limite massimo
+
+  \item \( num > 1 \): Indica che per ogni istanza di \( E_i \) possono essere presenti
+    \textbf{al massimo} \( num \) occorrenze della relazione \( R \) che la coinvolgono
+\end{itemize}
+
+\begin{example}
+  Rappresentiamo il concetto di persona e comune tramite due entità, bisogna gestire
+  la residenza delle persone nei comuni italiani. Questi requisiti non rappresentano
+  la realtà perchè una persona deve avere obbligatoriamente una residenza e può avere
+  al massimo una residenza, mentre un comune può avere zero o più persone residenti.
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \node[draw, rectangle, minimum width=2cm, minimum height=1cm ]
+        (E1) {Persona};
+      \node[draw, diamond, minimum width=0.7cm, minimum height=0.7cm, right=1.3cm of E1]
+        (R) {};
+      \node[below=0.3cm] at (R) {Residenza};
+      \node[draw, rectangle, minimum width=2cm, minimum height=1cm, right=1.3cm of R]
+        (E2) {Comune};
+      \draw (E1) -- node[midway, above, scale=0.8] {\( (1, 1) \)} (R);
+      \draw (E2) -- node[midway, above, scale=0.8] {\( (0, N) \)} (R);
+    \end{tikzpicture}
+    \caption{Esempio di Residenza con i vincoli di cardinalità}
+  \end{figure}
+\end{example}
+
+\begin{definition}
+  Una relazione \( R \) può partecipare ad un identificatore esterno di un'entità \( E \)
+  \textbf{solo se} tale entità partecipa alla relazione \( R \) con vincolo di
+  cardinalità \( (1, 1) \), quindi se \( R \) è una \textbf{funzione} che associa ad
+  ogni istanza di \( E \) una e una sola istanza dell'altra entità coinvolta in \( R \).
+  Questo vale anche quando \( R \) è la sola proprietà che partecipa all'identificatore.
+\end{definition}
+
+\vspace{1em}
+\noindent
+Si potrebbe utilizzare anche il diagramma UML per rappresentare i concetti del modello
+Entità-Relazione, ma questa rappresentazione segue regole diverse, ad esempio la
+posizione dove specificare nel diagramma UML i vincoli di cardinalità è invertita rispetto
+all'ER.
 
 \end{document}
