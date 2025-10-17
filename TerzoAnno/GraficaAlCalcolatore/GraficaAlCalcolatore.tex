@@ -9,7 +9,9 @@
 \tableofcontents
 \pagebreak
 
-\section{Interazione con l'utente}
+\section{Introduzione}
+
+\subsection{Interazione con l'utente}
 Un modo per far interagire l'utente con il programma è l'interfaccia grafica. L'interazione
 può essere ottenuta in vari modi, ad esempio:
 \begin{itemize}
@@ -19,8 +21,125 @@ può essere ottenuta in vari modi, ad esempio:
     \item Giochi
 \end{itemize}
 
-\section{Sintesi e analisi}
+\subsection{Sintesi e analisi}
 La sintesi è il processo di creazione di un'immagine a partire da una descrizione matematica,
 mentre l'analisi è il processo di estrazione di informazioni da un concetto già esistente.
+
+\section{Modelling}
+La modellazione 3D è un processo di \textbf{descrizione} di un oggetto o una scena al fine
+di poterla disegnare. La descrizione avviene attraverso:
+\begin{itemize}
+  \item \textbf{Struttura}: Viene descritta dalla geometria degli oggetti e dalla loro
+    posizione reciproca nello spazio tridimensionale
+    \begin{itemize}
+      \item Definizione geometrica
+      \item Trasformazioni 3D
+    \end{itemize}
+
+  \item \textbf{Apparenza}: Descrive come la superficie del modello interagisce con
+    la luce (colori, riflessi, ecc...)
+    \begin{itemize}
+      \item Definizione telecamere virtuali
+      \item Definizione sorgenti di luce
+      \item Definizione proprietà dei materiali
+    \end{itemize}
+\end{itemize}
+
+\subsection{Definizione geometrica}
+Ci sono varie tecniche di modellazione:
+\begin{itemize}
+  \item \textbf{Low poly diretta}, ad esempio con Wings3D. È la costruzione manuale di una mesh
+    poligonale a bassa risoluzione, partendo anche da primitive già fatte.
+  \item \textbf{Subdivision surfaces}, ad esempio con Blender. Si parte da una mesh
+    poligonale a bassa risoluzione e si applicano algoritmi di suddivisione per
+    ottenere superfici più lisce e dettagliate.
+  \item \textbf{Digital sculpting}, ad esempio con ZBrush
+  \item \textbf{Modellazione procedurale}, ad esempio con Houdini. Si utilizzano algoritmi
+    e regole per generare automaticamente modelli 3D complessi, ad esempio generazione di
+    terreni, vegetazione, edifici, ecc...
+\end{itemize}
+
+\subsubsection{Mesh}
+Gli oggetti tridimensionali vengono codificati come una maglia (mesh) di triangoli.
+I triangoli vengono utilizzati perchè sono il poligono più semplice che può essere utilizzato
+per approssimare una qualsiasi superficie. Una mesh è composta da:
+\begin{itemize}
+  \item \textbf{Vertici}: Punti nello spazio 3D
+  \item \textbf{Facce}: Insiemi di vertici che formano triangoli
+\end{itemize}
+
+\begin{definition}[Definizione matematica di mesh]
+  Una mesh di triangoli è una discretizzazione lineare a tratti di una superficie
+  continua (un "2-manifold") immersa in \( \mathbb{R}^3 \), cioè un oggetto bidimensionale
+  che si trova in uno spazio tridimensionale. Le componenti sono:
+  \begin{itemize}
+    \item \textbf{Geometria}: i vertici, ciascuno con coordinate \( (x, y, z) \in \mathbb{R}^3 \)
+    \item \textbf{Topologia}: come sono connessi tra loro i vertici, nel caso di una tri-mesh
+      ogni faccia è definita da un insieme di tre vertici
+  \end{itemize}
+\end{definition}
+
+\subsection{Trasformazioni 3D}
+Per posizionare e orientare gli oggetti nello spazio 3D, si utilizzano trasformazioni
+geometriche, che possono essere rappresentate tramite matrici. Le principali trasformazioni sono:
+\begin{itemize}
+  \item \textbf{Traslazione}: Spostamento di un oggetto da una posizione a un'altra
+  \item \textbf{Rotazione}: Rotazione di un oggetto attorno a un asse specifico
+  \item \textbf{Scalatura}: Modifica delle dimensioni di un oggetto lungo gli assi
+    X, Y e Z
+\end{itemize}
+
+\subsection{Telecamere virtuali}
+Per visualizzare una scena 3D su uno schermo 2D, è necessario utilizzare
+una telecamera virtuale che definisce il punto di vista da cui viene osservata la scena.
+Il problema è che nel passaggio dal 2D al 3D c'è perdita di informazione.
+
+Per definire una telecamera virtuale, sono necessari:
+\begin{itemize}
+  \item \textbf{View point}: da dove si osserva
+  \item \textbf{Look at point}: dove si guarda
+  \item \textbf{View direction}: orientamento della telecamera
+  \item \textbf{Regole di proiezione}:
+    \begin{itemize}
+      \item Ortografica: mantiene le proporzioni reali degli oggetti
+      \item Prospettica: simula la visione umana, con oggetti
+        più lontani che appaiono più piccoli
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Proiezione}
+Il mondo non è infinito, quindi bisogna definire il \textbf{cono di vista} (frustum),
+che delimita la porzione di scena visibile dalla telecamera. Il frustum è definito
+dal parallelepipedo delimitato da due piani:
+\begin{itemize}
+  \item \textbf{Near plane}: piano più vicino alla telecamera
+  \item \textbf{Far plane}: piano più lontano dalla telecamera
+\end{itemize}
+Gli oggetti al di fuori del frustum non vengono proiettati (fase di clipping). La proiezione
+avviene su un piano di vista (view plane), che rappresenta lo schermo 2D.
+
+\subsection{Illuminazione}
+Tramite l'illuminazione si riesce a distinguere la forma degli oggetti tridimensionali.
+La modellazione delle luci della scena si occupa del loro posizionamento e del tipo di luce
+utilizzata. I tipi di luce più comuni sono:
+\begin{itemize}
+  \item \textbf{Directional light}: luce proveniente da una direzione specifica, simula
+    la luce solare
+  \item \textbf{Point light}: luce che si propaga in tutte le direzioni da un punto
+    specifico, simula una lampadina
+  \item \textbf{Spotlight}: luce che si propaga in un cono da un punto specifico,
+    simula un faro
+  \item \textbf{Ambient light}: luce diffusa che illumina uniformemente tutta la scena,
+    senza una direzione specifica
+\end{itemize}
+
+\subsection{Proprietà dei materiali}
+Il materiale di cui è fatta la superficie di un oggetto condiziona il suo aspetto nel
+momento in cui viene colpito dalla luce. Le proprietà principali dei materiali sono:
+\begin{itemize}
+  \item \textbf{Colore}
+  \item \textbf{Riflettività}
+  \item \textbf{Rugosità}
+\end{itemize}
 
 \end{document}
