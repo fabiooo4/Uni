@@ -55,6 +55,93 @@ di problema non calcolabile.
 
 I problemi non calcolabili sono infinitamente più numerosi di quelli calcolabili
 
+\subsection{Nozioni di base}
+\subsubsection{Basi di logica}
+
+Alcune nozioni di logica che ci serviranno in seguito:
+
+\begin{itemize}
+    \item \textbf{Linguaggio del primo ordine:} 
+    \begin{itemize}
+        \item Simboli relazionali $(p,q, ...)$
+        \item Simboli di funzione $(f,g, ...)$
+        \item Simboli di costante $(c,d, ...)$
+    \end{itemize}
+    \item \textbf{Simboli logici:}
+    \begin{itemize}
+        \item Parentesi (,) e virgola
+        \item Insieme numerabile di variabili $(v,x,...)$
+        \item Connettivi logici ($\neg, \land, \lor, \rightarrow, \leftrightarrow$)
+        \item Quantificatori ($\forall, \exists$)
+    \end{itemize}
+    \item \textbf{Termini:}
+        \begin{itemize}
+            \item Variabili
+            \item Costanti
+            \item $f$ simbolo di funzione m-ario $t_1, t_2, \dots, t_m$ termini, allora
+
+              $f(t_1, t_2, \dots, t_m)$ è un termine.
+        \end{itemize}
+    \item \textbf{Formula atomica:} $p$ simbolo di relazione n-ario, 
+    $t_1,t_2,\dots,t_n$ 
+    termini, allora $p(t_1,t_2,\dots,t_n)$ è una formula atomica.
+    \item \textbf{Formula:}
+    \begin{itemize}
+        \item Formula atomica
+        \item $\phi$ formula, allora $\neg \phi$ è una formula
+        \item $\phi$ e $\psi$ formule, allora $(\phi \land \psi)$, $(\phi \lor \psi)$, $(\phi \rightarrow \psi)$, $(\phi \leftrightarrow \psi)$ sono formule.
+        \item $\phi$ formula e $v$ variabile, alloar e $\forall v . \phi$ e $\exists v . \phi$ sono formule.
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Nozioni sugli insiemi}
+
+\begin{itemize}
+    \item $x \in A$ signfiica che $x$ è un elemento dell'insieme $A$
+    \item $\{x | P(x)\}$ si identifica insieme costuito dagli $x$ che soddisfano la proprietà (o predicato) $P(x)$
+    \item $A \subseteq B$ significa che $A$ è un sottoinsieme di $B$ se ogni elemento di $A$ è anche in $B$
+    \item $\mathcal{P}(S)$ denota l'insieme delle parti di $S$, ovvero l'insieme di tutti i sottoinsiemi di $S$ ($\mathcal{P}(S) = \{X | X \subseteq S\}$)
+    \item $A \backslash B = \{x | x \in A \land x \notin B\}, A \cup B = \{x | x \in A \lor x \in B\}, A \cap B = \{x | x \in A \land x \in B\}$   
+    \item $|A|$ denota la cardinalità di $A$, ovvero il numero di elementi in $A$.
+    \item $\bar{A}$ denota il complemento di $A$, ovvero $x \bar{\in} A \leftrightarrow x \notin A$
+\end{itemize}
+
+\subsubsection{Nozioni sulle relazioni}
+
+\begin{itemize}
+    \item Prodotto cartesiano:
+      \[
+        A_1 \times A_2 \times \dots \times A_n = \{\langle a_1,a_2,\dots,a_n \rangle | a_1 \in A_1,\dots, a_n \in A_n\}
+      \]
+    \item Una \textbf{relazione} (binaria) è un sottoinsieme del prodotto cartesiano di (due) insiemi; dati $A$ e $B$, $R \subseteq A \times B$ 
+    è una relazione su $A$ e $B$ 
+    \begin{itemize}
+        \item \textbf{Riflessiva:} $\forall a \in S$ si ha che $aRa$
+        \item \textbf{Simmetrica:} $\forall a,b \in S$ se $aRb$ allora $bRa$
+        \item \textbf{Antisimmetrica:} $\forall a,b \in S$ se $aRb$ e $bRa$ allora $a=b$
+        \item \textbf{Transitiva:} $\forall a,b,c \in S$ se $aRb$ e $bRc$ allora $aRc$
+    \end{itemize}  
+    \item Per ogni relazione $R \subseteq S \times S$ la chiusura transitiva di $R$ è il più piccolo 
+    insieme $R^*$ tale che $\langle a,b \rangle \in R \land \langle b,c \rangle \in R \rightarrow \langle a,c \rangle \in R^*$  
+    \item Una relazione è detta \textbf{totale} su $S$ se $\forall a,b \in S$ si ha che $aRb \lor bRa$
+    \item Una relazione $R$ di \textit{di equivalenza} è una relazione binaria riflessiva, simmetrica e transitiva.
+    \item Una relazione binaria $R \subseteq S \times S$ è un \textbf{pre-ordine} se è riflessiva e transitiva.
+    \item $R$ è un ordine parziale se è un pre-ordine antisimmetrico.
+    \item $x \in S$ è \textbf{minimale} rispetto a $R$ se $\forall y \in S . y \not{R} x$ (ovvero $\neg(yRx))$
+    \item $x \in S$ è \textbf{minimo} rispetto a $R$ se $\forall y \in S . xRy$
+    \item $x \in S$ è \textbf{massimale} rispetto a $R$ se $\forall y \in S . x \not{R} y$ (ovvero $\neg(xRy)$)
+    \item $x \in S$ è \textbf{massimo} rispetto a $R$ se $\forall y \in S . yRx$
+\end{itemize}
+
+\subsubsection{Nozioni sulle funzioni}
+
+\begin{itemize}
+    \item Una relazione $f$ è una \textbf{funzione} se $\forall a \in A$ esiste uno ed un solo $b \in B$ tale che $(a,b) \in f$
+    \item $A$ dominio e $B$ codominio di $f$. Il range di $f$ è l'insieme di tutti i valori che $f$ può assumere.
+    \item f è \textbf{iniettiva} se $\forall a_1,a_2 \in A$ se $a_1 \neq a_2$ allora $f(a_1) \neq f(a_2)$
+    \item Se $f : A \mapsto B$ è sia iniettiva che suriettiva allora è \textbf{biiettiva} e quindi esiste $f^{-1} : B \mapsto A$ 
+\end{itemize}
+
 \section{Funzioni calcolabili}
 Un insieme è una proprietà ed è rappresentato da una funzione che indica se un elemento
 appartiene o meno all'insieme. I problemi da risolvere (in questo corso) hanno come
@@ -247,7 +334,14 @@ calcolo della funzione.
   \end{itemize}
 \end{example}
 
-\label{13-10-D1}
+\vspace{1em}
+\noindent
+Le funzioni calcolabili sono divise in classi secondo la gerarchia di Chomsky:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{gerarchia_chomsky}
+  \caption{Gerarchia di Chomsky}
+\end{figure}
 
 \section{Principio di induzione}
 Il principio di induzione è un meccanismo di definizione e dimostrazione che funziona
