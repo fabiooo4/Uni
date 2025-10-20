@@ -173,7 +173,7 @@ Il numero di funzioni è:
 \begin{example}
   Un esempio di insieme delle parti per l'insieme \( A = \{1,2,3\} \) è:
   \[
-    \mathcal{P}(A) = \{\emptyset, \{1\}, \{2\}, \{3\}, \{1,2\}, \{1,3\}, \{2,3\}, \{1,2,3\}\}
+    \mathcal{P}(A) = \{\varnothing, \{1\}, \{2\}, \{3\}, \{1,2\}, \{1,3\}, \{2,3\}, \{1,2,3\}\}
   \] 
   E le cardinalità sono:
   \[
@@ -1014,7 +1014,7 @@ parallelo. Un NFA è definito come una quintupla:
     dato uno stato e un simbolo restituisce un insieme di stati \textbf{potenzialmente}
     raggiungibili. È possibile che esistano coppie associate all'insieme vuoto:
     \[
-      \emptyset \in \mathcal{P}(Q)
+      \varnothing \in \mathcal{P}(Q)
     \] 
     Inoltre non è obbligatorio avere un arco uscente per ogni simbolo di \( \Sigma \).
   \item \( \hat{\delta}: Q \times \Sigma^* \to \mathcal{P}(Q) \) Descrive gli stati che si possono
@@ -1055,7 +1055,7 @@ parallelo. Un NFA è definito come una quintupla:
 Un linguaggio \( L \) è riconosciuto da un NFA \( N \) se:
 \[
   L(N) = \left\{ \sigma \in \Sigma^* \;\left|\;
-  \hat{\delta}(q_0, a) \cap F \neq \emptyset \right.\right\}
+  \hat{\delta}(q_0, a) \cap F \neq \varnothing \right.\right\}
 \] 
 \begin{example}
   Consideriamo il seguente linguaggio:
@@ -1108,7 +1108,7 @@ Un linguaggio \( L \) è riconosciuto da un NFA \( N \) se:
   \] 
   \[
     Q' = \left\{ 
-      \stackrel{q'_1}{\emptyset}, \stackrel{q'_0}{\{q_0\}}, \stackrel{q'_2}{\{q_1\}},
+      \stackrel{q'_1}{\varnothing}, \stackrel{q'_0}{\{q_0\}}, \stackrel{q'_2}{\{q_1\}},
       \stackrel{q'_3}{\{q_2\}}, \stackrel{q'_4}{\{q_0, q_1\}}, \stackrel{q'_5}{\{q_0, q_2\}},
       \stackrel{q'_6}{\{q_1, q_2\}}, \stackrel{q'_7}{\{q_0, q_1, q_2\}}
     \right\}
@@ -1117,7 +1117,7 @@ Un linguaggio \( L \) è riconosciuto da un NFA \( N \) se:
 
   Gli insiemi degli stati finali sono:
   \[
-    F' = \left\{ P \subseteq Q \;\left|\; P \cap F \neq \emptyset \right. \right\} \quad
+    F' = \left\{ P \subseteq Q \;\left|\; P \cap F \neq \varnothing \right. \right\} \quad
     P \in \mathcal{P}(Q)
   \] 
   Quindi:
@@ -1183,8 +1183,8 @@ Un linguaggio \( L \) è riconosciuto da un NFA \( N \) se:
       Dimostriamo la definizione di linguaggio riconosciuto in NFA:
       \[
         \begin{aligned}
-          \sigma \in L(N) &\iff \hat{\delta}(q_0, \sigma) \cap F \neq \emptyset\\
-                          &\iff \hat{\delta}'(q'_0, \sigma) \cap F' \neq \emptyset \;(\text{(1.)})\\
+          \sigma \in L(N) &\iff \hat{\delta}(q_0, \sigma) \cap F \neq \varnothing\\
+                          &\iff \hat{\delta}'(q'_0, \sigma) \cap F' \neq \varnothing \;(\text{(1.)})\\
                           &\iff \hat{\delta}'(q'_0, \sigma) \in F'\\
                           &\iff \sigma \in L(M) \; \text{(def. linguaggio accettato in DFA)}
         \end{aligned}
@@ -1192,6 +1192,415 @@ Un linguaggio \( L \) è riconosciuto da un NFA \( N \) se:
   \end{enumerate}
 
 \end{theorem}
+
+\subsubsection{Conversione da NFA a DFA}
+Prendiamo in considerazione il seguente NFA:
+  \[
+  L(N) = \left\{ \sigma \in \Sigma^* \;\left|\; \sigma \text{ contiene almeno due } 1 \right. \right\}
+  \] 
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[->, node distance=2cm, on grid, auto]
+    \node[state, initial] (q0) {$q_0$};
+
+    \node[state, right of=q0] (q1) {$q_1$};
+
+    \node[state, above of=q0] (q2) {$q_2$};
+
+    \draw (q0) edge[loop below] node{0,1} (q0);
+
+    \draw (q2) edge[right] node{1} (q0);
+    \draw (q0) edge[bend left, below] node{1} (q1);
+    \draw (q1) edge[bend left, below] node{1} (q0);
+
+    \draw (q1) edge[below] node{1} (q2);
+    \draw (q1) edge[loop below] node{0} (q1);
+    \draw (q2) edge[bend left, above] node{0,1} (q1);
+
+    \draw (q2) edge[loop above] node{0,1} (q2);
+
+  \end{tikzpicture}
+  \caption{Esempio di NFA per il linguaggio \( L \)}
+\end{figure}
+\noindent
+Per trasformare un NFA in un DFA bisogna creare dei nuovi stati che raggruppano
+gli stati non deterministici. In questo caso:
+\begin{itemize}
+  \item \textbf{Tabella degli stati della NFA}:
+    \begin{table}[H]
+      \centering
+      \begin{tabular}{|c|c|c|}
+        \hline
+        Stato & Input 0 & Input 1\\
+        \hline
+        \( q_0 \) & \( \{q_0\} \) & \( \{q_0, q_1\} \)\\
+        \( q_1 \) & \( \{q_1\} \) & \( \{q_0, q_2\} \)\\
+        \( q_2 \) & \( \{q_1, q_2\} \) & \( \{q_0, q_1, q_2\} \)\\
+        \hline
+      \end{tabular}
+      \caption{Tabella di transizione della NFA}
+    \end{table}
+
+  \item \textbf{Traduzione degli stati della NFA in stati del DFA}:
+    \begin{table}[H]
+      \centering
+      \begin{tabular}{|c|c|c|c|}
+        \hline
+        & & 0 & 1 \\
+        \hline
+        & \( \varnothing \) & \( \varnothing \) & \( \varnothing \) \\
+
+      \end{tabular}
+      \caption{Tabella di traduzione degli stati della NFA in stati del DFA}
+    \end{table}
+\end{itemize}
+
+
+\subsection{Automi non deterministici con \texorpdfstring{\( \varepsilon  \)}{epsilon}-transizioni (\texorpdfstring{\( \varepsilon  \)-NFA}{epsilon-NFA})}
+Questo tipo di NFA permette di cambiare stato anche senza leggere simboli:
+\[
+  q_1 \stackrel{\varepsilon}{\to} q_2
+\] 
+Un \( \varepsilon \)-NFA è definito come un NFA con la differenza che la funzione di transizione
+è definita come:
+\[
+  \delta: Q \times (\Sigma \cup \{\varepsilon\}) \to \underbrace{\mathcal{P}(Q)}_{\text{Non determinismo}}
+\] 
+\begin{example}
+  Prendiamo ad esempio il seguente \( \varepsilon \)-NFA in cui leggendo solo \( a \) 
+  si può raggiungere sia \( q' \) che \( q" \):
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[->, node distance=2cm, on grid, auto]
+      \node[state, initial] (q0) {$q_0$};
+
+      \node[state, right of=q0] (q1) {$q'$};
+
+      \node[state, right of=q1] (q2) {$q"$};
+
+      \draw (q0) edge[above] node{a} (q1);
+
+      \draw (q1) edge[above] node{\( \varepsilon  \) } (q2);
+
+    \end{tikzpicture}
+    \caption{Esempio di \( \varepsilon \)-NFA}
+  \end{figure}
+\end{example}
+
+\subsubsection{\texorpdfstring{\( \varepsilon  \)}{epsilon}-closure}
+Per definire \( \hat{\delta} \) bisogna prima definire la \( \varepsilon \)-closure.
+
+Una \( \varepsilon \)-closure di uno stato \( q \) è l'insieme di tutti gli stati
+che si possono raggiungere da \( q \) seguendo archi etichettati con \( \varepsilon  \):
+\[
+  \varepsilon\text{-closure}: Q \to \mathcal{P}(Q)
+\] 
+O definito per insiemi:
+\[
+  \varepsilon\text{-closure}: \mathcal{P}(Q) \to \mathcal{P}(Q)
+\] 
+\[
+  \varepsilon\text{-closure}(P) = \bigcup_{p \in P} \varepsilon\text{-closure}(p)
+\] 
+
+La funzione \( \hat{\delta} \) è definita come:
+\[
+  \begin{cases}
+    \hat{\delta}(q, \varepsilon) &= \varepsilon\text{-closure}(q)\\
+    \hat{\delta}(q, wa) &= \bigcup_{p \in \hat{\delta}(q,w)} \varepsilon\text{-closure}(\delta(p, a))
+  \end{cases}
+\] 
+\begin{example}
+  La \( \varepsilon \)-closure dell'esempio precedente è:
+  \[
+    \varepsilon\text{-closure}(q') = \{q', q"\}
+  \] 
+\end{example}
+
+\vspace{1em}
+\noindent
+Il riconoscimento di un linguaggio è analogo a quello di un NFA:
+\[
+  L(N) = \left\{ \sigma \in \Sigma^*
+  \;\left|\; \hat{\delta}(q_0, \sigma) \cap F \neq \varnothing \right.\right\}
+\] 
+\begin{theorem}
+  Sia \( M = \left<Q, \Sigma, \delta, q_0, F \right> \) una \( \varepsilon \)-NFA, allora
+  esiste una NFA \( M' \) tale che \( L(M) = L(M') \).
+
+  Quindi l'insieme dei linguaggi riconosciuti da \( \varepsilon  \)-NFA coincide
+  con quello degli NFA, che a sua volta coincide con i linguaggi regolari.
+
+  \vspace{1em}
+  \noindent
+  \[
+    M = \left<Q, \Sigma, \delta, q_0, F \right> \; \varepsilon\text{-NFA}
+  \] 
+  Costruiamo una NFA
+  \[
+    M' = \left<Q', \Sigma', \delta', q_0', F' \right>
+  \]
+  Dove:
+  \[
+    Q'=Q, \quad \Sigma'=\Sigma, \quad q_0'=q_0 
+  \] 
+  \[
+   \quad \delta'(q,a)=\hat{\delta}(q,a) \quad
+    F'= \begin{cases}
+      F \cup \{q_0\} \; \text{se } \varepsilon\text{-closure}(q_0) \cap F \neq \varnothing\\
+      F
+    \end{cases}
+  \] 
+  in cui il numero degli stati rimane lo stesso, l'alfabeto non cambia e neanche lo stato
+  iniziale.
+\end{theorem}
+
+\section{Espressioni regolari}
+Le espressioni regolari sono operazioni algebriche sui linguaggi regolari.
+Le operazioni che si possono fare sono:
+\begin{itemize}
+  \item \textbf{Unione}: Dati i linguaggi \( L_1, L_2 \subseteq \Sigma^* \) 
+    \[
+      L_1 \cup L_2 = \left\{ \sigma \;\left|\; \sigma \in L_1 \vee \sigma \in L_2 \right. \right\}
+    \] 
+
+  \item \textbf{Concatenazione}: Dati i linguaggi \( L_1, L_2 \subseteq \Sigma^* \) 
+    \[
+      L_1 \cdot L_2 = \left\{ \sigma_1\sigma_2 \;\left|\; \sigma_1 \in L_1 \wedge \sigma_2 \in L_2 \right. \right\}
+      \equiv L_1 L_2
+    \]
+    Ad esempio:
+    \[
+      \color{blue}{L_1 = \{0101, 010101\}}
+      \quad 
+      \color{red}{L_2 = \{000, 111\}}
+    \] 
+    \[
+      L_1 \cdot L_2 = \{\color{blue}{0101}\color{red}{000},
+        \color{blue}{0101}\color{red}{111},
+        \color{blue}{010101}\color{red}{000},
+        \color{blue}{010101}\color{red}{111}
+      \}
+    \] 
+
+  \item \textbf{Stella di Kleene}: Dato un linguaggio \( L \subseteq \Sigma^* \)
+    \[
+      L^* = \bigcup_{n \in \mathbb{N}} L^n
+    \] 
+    Cioè la concatenazione di \( L \) con se stesso \( n \) volte, con:
+    \[
+      \begin{cases}
+        L^0 = \{\varepsilon\}\\
+        L^{n+1} = L \cdot L^n
+      \end{cases}
+    \] 
+    Ad esempio:
+    \[
+      L = \{000, 111\} 
+    \] 
+    \[
+      \begin{aligned}
+        L^0 &= \{\varepsilon\}\\
+        L^1 &= L \cdot L^0 = \{000, 111\}\\
+        L^2 &= L \cdot L^1 = \{000000, 000111, 111000, 111111\}\\
+        L^3 &= L \cdot L^2 = \left\{\begin{array}{l}
+          000000000, 000000111, 000111000, 000111111,\\
+          111000000, 111000111, 111111000, 111111111
+        \end{array}\right\}\\
+        \vdots\\
+        L^* &= \{L^0, L^1, L^2, L^3, \ldots\}\\
+      \end{aligned}
+    \] 
+
+    \vspace{1em}
+    \noindent
+    \begin{itemize}
+      \item \( L^* \) è l'insieme di tutte le possibili concatenazioni di stringhe
+        appartenenti a \( L \), compresa la stringa vuota \( \varepsilon \)
+      \item \( L^+ = \bigcup_{n \ge 0} L^n \) è definito come \( L^* \) senza la
+        stringa vuota \( \varepsilon \):
+        \[
+          L^+ = L \cdot L^* 
+        \]
+    \end{itemize}
+\end{itemize}
+
+\begin{definition}
+  Definiamo per induzione le espressioni regolari su un alfabeto \( \Sigma \):
+  \begin{itemize}
+    \item \textbf{Caso base}:
+      \begin{itemize}
+        \item \( \varnothing \subseteq \Sigma^* \) è un'espressione regolare che rappresenta
+          il linguaggio vuoto
+
+        \item \( \varepsilon \) è un'espressione regolare che rappresenta il linguaggio:
+          \[
+            \{\varepsilon\} \subseteq \Sigma^*
+          \] 
+
+        \item \( a \in \Sigma  \) è un'espressione regolare che rappresenta il linguaggio:
+          \[
+            \{a\} \subseteq \Sigma^*
+          \]
+      \end{itemize}
+
+    \item \textbf{Passo induttivo}:
+
+      \vspace{1em}
+      \noindent
+      Siamo \( r, s \) sono espressioni regolari che rappresentano il linguaggio
+      \[
+        R \subseteq \Sigma^* \wedge S \subseteq \Sigma^*
+      \] 
+      \begin{itemize}
+        \item \( r + s \) è un'espressione regolare che rappresenta il linguaggio \( R \cup S \) 
+        \item \( r \cdot s \) è un'espressione regolare che rappresenta il linguaggio \( R \cdot S \)
+        \item \( r^* \) è un'espressione regolare che rappresenta il linguaggio:
+          \[
+            R^*
+          \]
+      \end{itemize}
+  \end{itemize}
+\end{definition}
+
+\begin{example}
+  Prendiamo ad esempio l'espressione regolare:
+  \[
+    1^* + 0^* + (10)^*
+  \] 
+  che equivale a
+  \[
+    \left\{ 1^n \;\left|\; n \in \mathbb{N} \right. \right\} \cup 
+    \left\{ 0^n \;\left|\; n \in \mathbb{N} \right. \right\} \cup
+    \left\{ (10)^n \;\left|\; n \in \mathbb{N} \right. \right\}
+  \] 
+\end{example}
+
+\begin{theorem}[Teorema di equivalenza]
+  Dato un DFA \( M = \left< Q, \Sigma, \delta, q_0, F \right> \) allora esiste
+  un'espressione regolare \( r \) tale che \( L(M) = L(r) \).
+  \[
+    L \text{ Regolare} \stackrel{\text{def}}{\iff}
+    \underbrace{\exists M \text{ DFA }.\; L}_{L(M) = L}
+    \stackrel{\text{Th}}{\Rightarrow} \exists r \in \underbrace{ER}{\text{Espressioni Regolari}} \;.\; L(r) = L
+  \] 
+\end{theorem}
+\begin{theorem}
+  Data un'espressione regolare (ER) \( r \) esiste una \( \varepsilon \)-NFA \( M \)
+  tale che: \( L(r) = L(M) \) 
+
+  \vspace{1em}
+  \noindent
+  Quindi:
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[node distance=2cm, on grid, auto]
+      \node[] (s) {$\varepsilon \leadsto$};
+      \node[state, accepting, right of=s] (q0) {$q_0$};
+      \node[right of=q0] (f) {$L(M) = \{\varepsilon \} $};
+
+    \end{tikzpicture}
+  \end{figure}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[node distance=1.5cm, on grid, auto]
+      \node[] (s) {$\varnothing \leadsto$};
+      \node[state, right of=s] (q0) {$q_0$};
+      \node[state, accepting, right of=q0] (q1) {$q_1$};
+      \node[right of=q1] (f) {$L(M) = \{\varnothing \} $};
+
+      \draw (q0) edge[above] node{a} (q1);
+    \end{tikzpicture}
+  \end{figure}
+  \label{20-10-D1}
+
+  \[
+    \begin{aligned}
+      r \text{ ER} \Rightarrow M \; \underbrace{\varepsilon\text{-NFA}}_{L(r) = L(M)} \iff\\
+      M' \; \underbrace{\text{DFA}}_{L(M) = L(M') = L(r)} \iff\\
+      L(r) = L(M') \text{ è regolare}
+    \end{aligned}
+  \] 
+\end{theorem}
+
+\begin{example}
+  Consideriamo il seguente linguaggio:
+  \[
+    L = \left\{ \sigma \in \Sigma^* \;\left|\; \sigma \text{ contiene almeno due } 1 \right. \right\}
+  \] 
+  Per dimostrare che è regolare si costruisce il DFA \( M \) e si dimostra \( L = L(M) \).
+  Però se si ha un'espressione regolare \( r = 0^*1 0^*1 0^* \) \textbf{non} dimostra
+  che \( L \) è regolare. Bisognerebbe dimostrare \( L = L(r) \) 
+\end{example}
+
+\subsection{Proprietà dei linguaggi regolari}
+
+\subsubsection{Proprietà di chiusura}
+Indica se l'insieme dei linguaggi regolari è chiuso rispetto ad alcune operazioni,
+cioè se applicando queste operazioni a linguaggi regolari si ottengono sempre
+linguaggi regolari.
+
+Operazioni:
+\begin{itemize}
+  \item \( * \) 
+  \item \( \cup \) 
+  \item \( \cdot  \) 
+\item \( \cap \quad \left(L_1 \cap L_2 = \left\{ \sigma \;\left|\; \sigma \in L_1 \wedge \sigma \in L_2 \right. \right\}\right) \)
+\item \( \bar{} \quad \left(\bar{L} = \left\{ \sigma \;\left|\; \sigma \\notin L \right. \right\}\right) \)
+\end{itemize}
+
+\begin{theorem}
+  I linguaggi regolari sono chiusi rispetto alle operazioni di:
+  \begin{itemize}
+    \item Stella di Kleene
+    \item Unione (finita)
+    \item Concatenazione
+  \end{itemize}
+  Consideriamo i linguaggi regolari \( L_1, L_2 \). Allora:
+  \begin{itemize}
+    \item \( L_1^* \) è regolare
+    \item \( L_1 \cup L_2 \) è regolare
+    \item \( L_1 \cdot L_2 \) è regolare
+  \end{itemize}
+\end{theorem}
+
+\begin{theorem}
+  I linguaggi regolari sono chiusi rispetto alla complementazione. Dato un automa
+  a stati finiti, il linguaggio complementare è riconosciuto dall'automa complementare,
+  cioè quello in cui gli stati finali diventano non finali e viceversa.
+
+  \vspace{1em}
+  \noindent
+  Per le leggi di De Morgan, i linguaggi regolari sono chiusi per intersezione finita:
+  \[
+    L_1 \cap L_2 = \overline{\overline{L_1} \cup \overline{L_2}}
+  \] 
+\end{theorem}
+
+
+\subsubsection{Proprietà di decidibilità}
+Indica se esistono algoritmi che risolvono alcuni problemi sui linguaggi regolari.
+Consideriamo un insieme di stringhe accettate da un DFA (linguaggiio regolare) \( M \) 
+con \( n \) stati.
+\begin{itemize}
+  \item \( L(M) \neq \varnothing \) se e solo se accetta almeno una stringa di lunghezza \( \le n \) 
+
+  \item \( L(M) \) è infinito se e solo se accetta almeno una stringa di lunghezza
+    \( l \) con \( n \le l < 2n \). Cioè se esiste un ciclo. Questo fornisce un estremo
+    superiore per verificare se un linguaggio è infinito.
+\end{itemize}
+
+
+\subsubsection{Proprietà dell'automa minimo}
+Fornisce strategie per costruire un automa minimo.
+
+\subsubsection{Condizione necessarie perchè un linguaggio sia regolare}
+Un linguaggio \( L \) è regolare se esiste un automa, quindi per dimostrare che
+un linguaggio non è regolare si può dimostrare che non esiste un automa (Pumping Lemma).
+\[
+  L \text{ regolare} \Rightarrow \Pi \quad \equiv \quad \neg \Pi \Rightarrow L \text{ non regolare}
+\] 
+
 
 
 \end{document}
