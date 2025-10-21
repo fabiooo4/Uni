@@ -406,6 +406,67 @@ con accanto il nome dell'attributo:
   \end{figure}
 \end{example}
 
+\subsubsection{Attributo opzionale e multivalore}
+L'attributo opzionale o multivalore si ottiene da un attributo normale specificando un vincolo
+di cardinalità (spiegato più avanti per le relazioni \ref{Cardinalità}) sui valori che
+l'attributo può assumere (il default è (1,1)). I valori possibili sono i seguenti:
+\begin{itemize}
+  \item (0,1): attributo opzionale
+  \item (1,N): attributo multivalore obbligatorio
+  \item (0,N): attributo multivalore opzionale
+\end{itemize}
+
+\vspace{1em}
+\noindent
+La sintassi grafica per rappresentare un attributo opzionale o multivalore è la seguente:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm ]
+      (E) {Entità \( E \)};
+    \node[draw, circle, scale=0.7, right=1.3cm of E]
+      (A) {};
+    \node[right=0.1cm] at (A) {\( A \)};
+    \draw (E) -- node[midway, above, scale=0.8] {(min,max)} (A);
+
+  \end{tikzpicture}
+  \caption{Rappresentazione grafica di un attributo opzionale o multivalore}
+\end{figure}
+
+\subsubsection{Attributo composto}
+Permette di raggruppare gli attributi di un'entità o di una relazione che hanno un significato
+comune.
+
+\vspace{1em}
+\noindent
+La sintassi grafica per rappresentare un attributo composto è la seguente:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw, rectangle, minimum width=2cm, minimum height=1.5cm ]
+      (E) {Entità \( E \)};
+    \node[draw, circle, scale=0.7, right=1.3cm of E]
+      (B) {};
+    \node[right=0.1cm] at (B) {\( B \)};
+    \draw (B) -- +(-0.58cm,0);
+
+    \node[draw, circle, scale=0.7, above=0.2cm of B]
+      (A) {};
+    \node[right=0.1cm] at (A) {\( A \)};
+    \draw (A) -- +(-0.62cm,0);
+
+    \node[draw, circle, scale=0.7, below=0.2cm of B]
+      (C) {};
+    \node[right=0.1cm] at (C) {\( C \)};
+    \draw (C) -- +(-0.62cm,0);
+
+    \node[draw, ellipse, minimum height=1.3cm, right=0.5cm of E] (comp) {};
+
+    \draw (E) -- (comp);
+  \end{tikzpicture}
+  \caption{Rappresentazione grafica di un attributo composto}
+\end{figure}
+
 \subsection{Identificatore}
 Data un'entità \( E \), un identificatore è un insieme di proprietà (attributi e/o relazioni)
 che \textbf{identificano univocamente} ogni istanza di \( E \). Un insieme di proprietà
@@ -428,6 +489,7 @@ la seguente:
   \end{tikzpicture}
   \caption{Rappresentazione grafica di un identificatore con un solo attributo}
 \end{figure}
+\noindent
 Per un identificatore costituito da più attributi \( a, b \) la sintassi grafica è la seguente:
 \begin{figure}[H]
   \centering
@@ -450,6 +512,7 @@ Per un identificatore costituito da più attributi \( a, b \) la sintassi grafic
   \end{tikzpicture}
   \caption{Rappresentazione grafica di un identificatore con più attributi}
 \end{figure}
+\noindent
 Può anche esistere un identificatore costituito da una relazione \( R \) (deve essere
 una funzione):
 \begin{figure}[H]
@@ -476,6 +539,7 @@ una funzione):
   \end{tikzpicture}
   \caption{Rappresentazione grafica di un identificatore costituito da un attributo e una relazione}
 \end{figure}
+\noindent
 Oppure un identificatore può essere costituito soltanto da una relazione \( R \):
 \begin{figure}[H]
   \centering
@@ -496,6 +560,7 @@ Oppure un identificatore può essere costituito soltanto da una relazione \( R \
   \end{tikzpicture}
   \caption{Rappresentazione grafica di un identificatore costituito da una relazione}
 \end{figure}
+\noindent
 Ci sono due tipi di identificatori:
 \begin{itemize}
   \item \textbf{Identificatori interni}: sono costituiti solo da attributi dell'entità
@@ -557,7 +622,7 @@ Ci sono due tipi di identificatori:
   l'introduzione di nuovi attributi identificatori (ad esempio l'ID).
 \end{definition}
 
-\subsection{Cardinalità}
+\subsection{Cardinalità}\label{Cardinalità}
 Tra due relazioni esistono dei vincoli di cardinalità che limitano il numero di istanze
 di una entità che possono essere in relazione con una singola istanza dell'altra entità.
 Data una relazione \( R \) i vincoli di cardinalità vengono specificati per ogni entità
@@ -646,5 +711,73 @@ Si potrebbe utilizzare anche il diagramma UML per rappresentare i concetti del m
 Entità-Relazione, ma questa rappresentazione segue regole diverse, ad esempio la
 posizione dove specificare nel diagramma UML i vincoli di cardinalità è invertita rispetto
 all'ER.
+
+\subsection{Generalizzazione di entità}
+La generalizzazione è un legame logico (simile ad un'ereditarietà tra classi) tra un'entità
+padre \( E \) e \( n \) \( (n > 0) \) entità figlie \( E_1, E_2, \ldots, E_n \) dove
+\( E \) rappresenta una classe di oggetti più generale rispetto alle classi di oggetti
+rappresentate dalle entità figlie.
+
+\vspace{1em}
+\noindent
+La sintassi grafica per rappresentare una generalizzazione è la seguente:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm]
+      (E) {\( E \) };
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm, below left=1.3cm of E]
+      (E1) {\( E_1 \) };
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm, below right=1.3cm of E]
+      (E2) {\( E_2 \) };
+
+    \draw[-latex] (E1.north) -- +(0,0.5) -| (E);
+    \draw (E2.north) -- +(0,0.5) -| (E);
+
+    \node[below=1.3cm of E] {\( \ldots \)};
+  \end{tikzpicture}
+  \caption{Esempio di Residenza con i vincoli di cardinalità}
+\end{figure}
+
+\subsubsection{Proprietà delle istanze generalizzate}
+\begin{itemize}
+  \item Ogni istanza di un'entità figlia \( E_i \) è anche istanza dell'entità padre \( E \)
+  \item Ogni proprietà (attributi, identificatori e relazioni) dell'entità padre \( E \)
+    è anche proprietà di ogni entità figlia \( E_i \) 
+\end{itemize}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw (0,0) circle(2cm) node[yshift=-1.5cm] {\( I(E_{\text{padre}}) \)};
+    \draw (-0.8,0) circle(1cm) node
+      {\( I(E_1) \)};
+    \draw (0.8,0) circle(1cm) node
+      {\( I(E_2) \)};
+  \end{tikzpicture}
+  \caption{Istanze di entità generalizzate}
+\end{figure}
+
+\subsubsection{Classificazione delle generalizzazioni}
+Una generalizzazione può essere classificata secondo due criteri:
+\begin{itemize}
+  \item \textbf{Totale} se ogni istanza dell'entità padre \( E \) è anche istanza
+    di \textbf{almeno una} delle entità figlie \( E_i \), altrimenti si dice
+    \textbf{parziale}
+
+  \item \textbf{Esclusiva} se ogni istanza dell'entità padre \( E \) è anche istanza
+    di \textbf{al massimo una} delle entità figlie \( E_i \), altrimenti si dice
+    \textbf{sovrapposta}
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Per indicare la classificazione di una generalizzazione si mettono le seguenti
+notazioni accanto alla freccia della generalizzazione:
+\begin{itemize}
+  \item (t,e): totale ed esclusiva
+  \item (t,s): totale e sovrapposta
+  \item (p,e): parziale ed esclusiva
+  \item (p,s): parziale e sovrapposta
+\end{itemize}
 
 \end{document}
