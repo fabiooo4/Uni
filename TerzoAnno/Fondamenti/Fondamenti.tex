@@ -1588,19 +1588,308 @@ con \( n \) stati.
   \item \( L(M) \) è infinito se e solo se accetta almeno una stringa di lunghezza
     \( l \) con \( n \le l < 2n \). Cioè se esiste un ciclo. Questo fornisce un estremo
     superiore per verificare se un linguaggio è infinito.
+
+  \item \( L(M_1) = L(M_2) \) 
 \end{itemize}
 
 
-\subsubsection{Proprietà dell'automa minimo}
-Fornisce strategie per costruire un automa minimo.
+\subsubsection{Esistenza dell'automa minimo}
+Forniamo strategie per costruire un automa minimo.
 
-\subsubsection{Condizione necessarie perchè un linguaggio sia regolare}
+\begin{definition}[Relazione di equivalenza e partizione]
+  Data una relazione \( R \) su \( \Sigma \).
+  \( R \) è una relazione di:
+  \begin{itemize}
+    \item Equivalenza: \( E \subset \Sigma \times \Sigma  \) 
+    \item Riflessiva: \( \forall a \;.\; aRa \) 
+    \item Simmetrica: \( \forall a,b \;.\; aRb \Rightarrow bRa \)
+    \item Transitiva: \( \forall a,b,c \;.\; aRb \wedge bRc \Rightarrow aRc \)
+  \end{itemize}
+  La \textbf{relazione di equivalenza} \( R \) \textbf{induce una partizione} (unione di insiemi)
+  di \( S \):
+  \[
+    R \subseteq S \times S
+  \] 
+  ovvero:
+  \[
+    S = S_1 \cup S_2 \cup \ldots \cup S_k
+  \] 
+  dove \( S_i \) sono una partizione di \( S \).
+  Inoltre:
+  \begin{itemize}
+    \item \( \forall i,j \;.\; S_i \cap S_j = \varnothing \)
+    \item \( \forall i \;.\; \forall a,b \in S_i \;.\; aRb \)
+    \item \( \forall a \in S_i, b \in S_j, i \neq j \;.\; a \not R b \)
+  \end{itemize}
+
+  \vspace{1em}
+  \noindent
+  Quindi \( R \) è come se dividesse \( S \) in insiemi disgiunti:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{partizione}
+    \caption{Esempio di partizione su S}
+  \end{figure}
+  \noindent
+  \( S_i \) sono detti \textbf{classi di equivalenza} di \( R \) e si indica con:
+  \[
+    a \in R \Rightarrow [a]_R = \left\{ b \;\left|\; aRb \right. \right\}
+  \] 
+  Ad esempio:
+  \[
+    cRa \Rightarrow [a]_R \equiv [c]_R
+  \] 
+\end{definition}
+
+\vspace{1em}
+\noindent
+Definiamo di seguito due relazioni di equivalenza:
+\begin{definition}[Classe di equivalenza definita per tutti i linguaggi]
+  Consideriamo un linguaggio \( L \subseteq \Sigma^* \), possiamo definire una relazione
+  \( R_L \) come:
+  \[
+    R_L \subseteq \Sigma^* \times \Sigma^*
+  \] 
+  \[
+    x,y \in \Sigma^* \quad x R_L y \iff \forall z \in \Sigma^* \;.\; xz \in L \iff
+    yz \in L
+  \] 
+  Quindi o entrambi appartengono a \( L \) o entrambi non appartengono a \( L \).
+\end{definition}
+\begin{definition}[Classe di equivalenza definita per gli automi]
+  Consideriamo un automa \( M \) DFA \( \left< Q, \Sigma, \delta, q_0, F \right> \).
+  Possiamo definire una relazione \( R_M \) come:
+  \[
+    R_M \subseteq \Sigma^* \times \Sigma^*
+  \] 
+  \[
+    x,y \in \Sigma^* \quad x R_M y \iff \delta(q_0, x) = \delta(q_0, y)
+  \] 
+  Due stringhe sono in relazione se raggiungono lo stesso stato.
+\end{definition}
+
+
+\vspace{1em}
+\noindent
+\begin{definition}[Relazione invariante destra]
+  Una relazione \( R \) su \( \Sigma^* \): \( R \subseteq \Sigma^* \times \Sigma^* \) 
+  è \textbf{invariante destra} se e solo se:
+  \[
+    x,y \in \Sigma^* \quad xRy \implies \forall z \in \Sigma^* \;.\; xz R yz
+  \] 
+  Se due stringhe sono in relazione tra di loro, allora in qualunque modo vengano
+  estese, rimarranno in relazione tra di loro.
+  Quindi essere in relazione è invariante rispetto all'estensione della stringa
+  \textbf{verso destra}
+
+  \vspace{1em}
+  \noindent
+  \( R_L \) e \( R_M \) sono relazioni invarianti destre.
+\end{definition}
+
+\begin{definition}[Raffinamento]
+  La relazione \( R_2 \) è \textbf{raffinamento} di \( R_1 \) se:
+  \[
+    \begin{array}{ll}
+      R_2 \subseteq S \times S \\
+      R_1 \subseteq S \times S
+    \end{array}
+    \text{ di equivalenza}
+  \] 
+  e \( R_1 \) è più grossa di \( R_2 \), cioè ogni classe di equivalenza di \( R_2 \)
+  è contenuta in una classe di equivalenza di \( R_1 \) e quindi è come se fosse
+  più dettagliata:
+  \[
+    \forall x \;.\; [x]_{R_2} \subseteq [x]_{R_1}
+  \] 
+  Il numero di classi di equivalenza di \( R_2 \) è maggiore del numero di classi
+  di equivalenza di \( R_1 \).
+\end{definition}
+
+\begin{definition}
+  Dato un automa DFA \( M = \left< Q, \Sigma, \delta, q_0, F \right> \),
+  ogni stato definisce un linguaggio \( L_q \) come:
+  \[
+    q \in Q \quad : \quad L_q = \left\{ \sigma \in \Sigma^* \;\left|\; \hat{\delta}(q, \sigma) = q \right. \right\}
+  \] 
+\end{definition}
+
+\begin{theorem}[Teorema di Myhill-Nerode]
+  I seguenti enunciati sono equivalenti:
+  \begin{enumerate}
+    \item \( L \subseteq \Sigma^* \) è un linguaggio regolare, ovvero esiste un
+      DFA \( M \) tale che \( L = L(M) \) 
+
+    \item \( L \) è unione di classi di equivalenza (cioè è partizionato) indotte da
+      una relazione di equivalenza \( R \) invariante destra e di indice finito,
+      cioè se il numero di classi di equivalenza indotte è finito. 
+
+    \item \( R_L \) è di indice finito
+  \end{enumerate}
+  Dimostriamo che:
+  \[
+    1. \implies 2. \underset{R \text{ raffina } R_L}{\implies} 3.
+    \underset{\text{Costruisce } M}{\implies} 1.
+  \] 
+  \begin{itemize}
+    \item \( 1. \implies 2. \)
+
+      \textbf{Ipotesi}: \( L \) è un linguaggio riconosciuto da
+      un DFA \( M = \left< Q, \Sigma, \delta, q_0, F \right> \) \( L = L(M) \).
+
+      \textbf{Tesi}: Esisrte una relazione di equivalenza \( R \) invariante destra
+      e di indice finito tale che \( L \) è unione di classi di equivalenza di \( R \).
+
+      \vspace{1em}
+      \noindent
+      Prendiamo \( R = R_M \quad x R_M y \iff \delta(q_0, x) = \delta(q_0, y) \).
+      \begin{enumerate}
+        \item Il numero delle classi di equivalenza di \( R_M \) è uguale al numero
+          di stati di \( M \): \( \left| Q \right| \)
+          e \( \left| Q \right| \) è finito, quindi \( R_M \) è di indice finito
+
+        \item \( R_M \) è invariante destra
+      \end{enumerate}
+
+      \[
+        \begin{aligned}
+        L = L(M) &= \left\{ x \in \Sigma^* \;\left|\; \hat{\delta}(q_0, x) \in F \right. \right\}\\
+                 &= \left\{ x \in \Sigma^* \;\left|\; \hat{\delta}(q_0, x) = q \wedge q \in F \right. \right\}\\
+                 &= \bigcup_{q \in F} \left\{ x \in \Sigma^* \;\left|\; \hat{\delta}(q_0, x) =
+                 q \right. \right\}\\
+                 &= \bigcup_{q \in F} L_q
+        \end{aligned}
+      \] 
+      Quindi \( L \) è unione di classi di equivalenza di \( R_M \).
+
+    \item \( 2. \implies 3. \)
+
+      \textbf{Ipotesi}: \( L \) è unione di classi di equivalenza di
+      una relazione di equivalenza \( R \) invariante destra e di indice finito.
+
+      \textbf{Tesi}: \( R_L \) è di indice finito (numero di classi finito).
+
+      \vspace{1em}
+      \noindent
+      Dimostriamo che \( R \) è raffinamento di \( R_L \) perchè allora il numero
+      di classi di equivalenza di \( R \) (finito per ipotesi) sarebbe maggiore del numero di classi
+      di \( R_L \) (che quindi sarebbe finito).
+
+      Per dimostrare \( R \) raffinamento di \( R_L \) bisogna dobbiamo dimostrare
+      che se due oggetti sono in relazione secondo la relazione più fine \( R \), lo sono
+      anche secondo la relazione più grossa \( R_L \):
+      \[
+        \begin{aligned}
+          \forall x,y &\;.\; xRy \implies x R_L y\\
+                      &\equiv \left[ y \in [x]_R \implies y \in [x]_{R_L} \right]\\
+                      &\equiv [x]_R \subseteq [x]_{R_L} \text{ per raffinamento}
+        \end{aligned}
+      \] 
+
+      Prendiamo \( xRy \) sapendo che \( R \) è invariante destra, cioè:
+      \[
+        \forall z \in \Sigma^* \;.\; xRy \implies xzRyz
+      \] 
+      \[
+        L = \cup \text{ classi di equivalenza}
+      \] 
+      Questo implica che o entrambe \( x \) e \( y \) appartengono a \( L \) o entrambe
+      non appartengono a \( L \):
+      \[
+        xRy \implies x \in L \iff y \in L
+      \] 
+      \[
+        [x]_R \subseteq L \quad \vee \quad [x]_R \text{ fuori da } L
+      \] 
+
+      \[
+        \begin{aligned}
+          xRy &\implies x \in L \iff y \in L\\
+              &\underset{\text{Invariante destra}}{\implies}
+              \forall z \;.\; xz R yz
+              \underset{L = \cup \text{ classi}}{\implies} xz \in L \iff yz \in L\\
+              &\underset{\text{Def. di } R_L}{\implies} x R_L y
+        \end{aligned}
+      \] 
+      Questo dimostra che dato un \( M \) generico \( R_M \) è un raffinamento di \( R_L \).
+
+    \item \( 3. \implies 1. \)
+      \textbf{Ipotesi}: \( R_L \) è di indice finito.
+
+      \textbf{Tesi}: \( L \) è regolare, cioè è riconisciuto da un DFA \( M \): \( L = L(M) \).
+
+      \vspace{1em}
+      \noindent
+      Costriuiamo \( M \):
+      \begin{itemize}
+        \item \( Q = \left\{ [x]_{R_L} \;\left|\; x \in \Sigma^* \right. \right\} \) 
+          è l'insieme delle classi di equivalenza di \( R_L \) (sono finite per ipotesi)
+
+        \item \( \Sigma \) è l'alfabeto del linguaggio \( L \)
+
+        \item \( q_0 = [\varepsilon]_{R_L} \) è la classe di equivalenza della stringa vuota
+
+        \item \( F = \left\{ [x]_{R_L} \;\left|\; x \in L \right. \right\} \) è l'insieme
+          delle classi di equivalenza che contengono almeno una stringa appartenente a \( L \)
+
+        \item \( \delta(q, a) = \delta\left( [x]_{R_L}, a \right) = [xa]_{R_L} \). Si
+          potrebbe anche prendere un elemento qualsiasi \( y \in [x]_{R_L} \) e definire:
+          \[
+            yRx \implies [x]_{R_L} = [y]_{R_L} \quad \implies \quad [ya]_{R_L} = [xa]_{R_L}
+          \] 
+          e questo vale perchè \( R_L \) è invariante destra. Quindi la definizione
+          di \( \delta \) è una buona definizione perchè è indipendente dall'elemento
+          che rappresenta la classe di equivalenza.
+      \end{itemize}
+      Bisogna dimostrare che \( L = L(M) \):
+      \begin{itemize}
+        \item Dimostrazione per induzione che \( \hat{\delta}([x],y) = [xy] \) 
+
+          \vspace{1em}
+          \noindent
+          \[
+            \hat{\delta}(q_0, x) = \hat{\delta}([\varepsilon]_{R_L}, x) = [x]_{R_L}
+          \] 
+          \[
+            \begin{aligned}
+              \implies x \in L(M) &\iff \hat{\delta}(q_0, x) \in F\\
+                                  &\iff \hat{\delta}([\varepsilon]_{R_L}, x) \in F\\
+                                  &\iff [x]_{R_L} \in F\\
+                                  &\iff x \in L \implies L(M) = L
+            \end{aligned}
+          \] 
+
+      \end{itemize}
+      Dato \( L \) esiste un DFA \( M \) tale che \( L = L(M) \) ed \( M \) ha il numero
+      minimo di stati. (Quello costruito con le classi di equivalenza di \( R_L \))
+  \end{itemize}
+\end{theorem}
+
+
+\subsubsection{Condizione necessaria perchè un linguaggio sia regolare}
 Un linguaggio \( L \) è regolare se esiste un automa, quindi per dimostrare che
-un linguaggio non è regolare si può dimostrare che non esiste un automa (Pumping Lemma).
+un linguaggio non è regolare si può dimostrare che non esiste un automa. Per fare ciò
+si usa il Pumping lemma che fornisce una condizione \( \Pi_L \) \textbf{necessaria}
+alla regolarità di un linguaggio:
 \[
-  L \text{ regolare} \Rightarrow \Pi \quad \equiv \quad \neg \Pi \Rightarrow L \text{ non regolare}
+  L \text{ regolare} \Rightarrow \Pi_L \quad \equiv \quad \neg \Pi_L \Rightarrow L \text{ non regolare}
 \] 
 
+\begin{theorem}[Pumping lemma]
+  Consideriamo un linguaggio regolare \( L \), allora esiste una costante
+  \( k \in \mathbb{N} \) tale che per ogni stringa di lunghezza maggiore di \( k \) nel
+  linguaggio, esiste una suddivisione della stringa in tre parti \( u,v,w \) tale che:
+  \[
+    \exists k \in \mathbb{N} \;.\; \forall z \in L, |z| \ge k \;\exists\; u,v,w \in \Sigma^* \;.\;
+    z = uvw \wedge \begin{cases}
+      |uv| \le k\\
+      |v| \ge 0\\
+      \forall i \in \mathbb{N} \;.\; uv^iw \in L
+    \end{cases}
+  \] 
+  cioè la parte \( v \) può essere "pompata" (ripetuta \( i \) volte) e la stringa
+  risultante appartiene ancora a \( L \).
+\end{theorem}
 
 
 \end{document}
