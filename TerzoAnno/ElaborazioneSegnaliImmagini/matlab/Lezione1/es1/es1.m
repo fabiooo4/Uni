@@ -45,7 +45,7 @@ MatY = randn(4, 10);
 disp('Matrice MatY (4 righe e 10 colonne di numeri reali random):');
 disp(MatY);
 
-MatZ = [MatX; MatY];
+MatZ = [MatX; MatY, MatX];
 disp('Matrice MatZ (concatenazione di MatX, MatY e di nuovo MatX):');
 disp(MatZ);
 
