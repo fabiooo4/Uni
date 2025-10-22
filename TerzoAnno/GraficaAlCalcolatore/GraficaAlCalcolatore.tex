@@ -25,7 +25,7 @@ può essere ottenuta in vari modi, ad esempio:
 La sintesi è il processo di creazione di un'immagine a partire da una descrizione matematica,
 mentre l'analisi è il processo di estrazione di informazioni da un concetto già esistente.
 
-\section{Modelling}
+\section{Modeling}
 La modellazione 3D è un processo di \textbf{descrizione} di un oggetto o una scena al fine
 di poterla disegnare. La descrizione avviene attraverso:
 \begin{itemize}
@@ -140,6 +140,130 @@ momento in cui viene colpito dalla luce. Le proprietà principali dei materiali 
   \item \textbf{Colore}
   \item \textbf{Riflettività}
   \item \textbf{Rugosità}
+\end{itemize}
+
+\section{Rendering}
+Il rendering ha l'obiettivo di creare un'\textbf{immagine bidimensionale} a partire dalla
+descrizione di una scena tridimensionale. Ogni pixel dell'immagine deve avere un colore
+che dipende dalla geometria, dall'illuminazione e dalle proprietà dei materiali della
+scena. Per renderizzare una scena c'è bisogno di tradurre il processo fisico della luce
+in un algoritmo e questo ha bisogno di molte semplificazioni e approssimazioni.
+
+\subsection{Modello fisico dell'illuminazione}
+La luce è una radiazione elettromagnetica con lunghezza d'onda tra i 400 e i 700 nm che
+parte da una \textbf{sorgente} verso un \textbf{ricevente}. La sorgente può essere
+un \textbf{emittente} (sorgente primaria) oppure un \textbf{riflettore} (sorgente secondaria).
+La lunghezza d'onda determina il colore della luce percepita dall'occhio umano:
+\begin{itemize}
+  \item Luce monocromatica: Quando è presente soltanto una lunghezza d'onda (es.
+    laser)
+
+  \item Luce policromatica: Quando sono presenti più lunghezze d'onda (es. luce solare)
+\end{itemize}
+L'energia trasportata dalla luce determina l'\textbf{intensità} luminosa.
+
+\subsubsection{Interazione della luce con i materiali}
+La luce può interagire con la materia in vari modi:
+\begin{itemize}
+  \item Una sorgente di luce (luce \textbf{incidente}) illumina la superficie di un oggetto
+  \item Una parte della luce \textbf{riflessa} da un punto si distribuisce uniformemente in
+    tutte le direzioni (luce \textbf{diffusa})
+  \item Una parte della luce viene \textbf{riflessa} da un punto verso una direzione preferita
+    (luce \textbf{speculare})
+  \item Una parte della luce viene assorbita all'interno del materiale (luce \textbf{trasmessa})
+\end{itemize}
+Per generare l'immagine bisogna tenere conto della \textbf{quantità di luce} che viene
+trasportata fino all'osservatore (camera virtuale) interagendo con i vari materiali.
+Il pixel dell'immagine misura dunque la \textbf{radianza} o \textbf{luminanza} delle
+superfici visibili dalla camera virtuale.
+\begin{itemize}
+  \item Fissata la camera virtuale e fissato un pixel si osserva una porzione di superficie
+    di un oggetto della scena
+  \item Il pixel prende un valore sulla base dello stato fotometrico di questa porzione di
+    superficie.
+\end{itemize}
+
+\subsection{Equazione del rendering}
+Per poter modellare al meglio i fenomeni fotometrici dei materiali viene definita la 
+\textbf{Bidirectional Reflectance Distribution Function} (BRDF), che descrive come la luce
+viene riflessa da una superficie in funzione della direzione di arrivo e della direzione
+di uscita della luce:
+\[
+  f_r(x, \omega_i, \omega_o)
+\] 
+Dove:
+\begin{itemize}
+  \item \( x \) è il punto della superficie
+  \item \( \omega_i \) è l'angolo della luce incidente
+  \item \( \omega_o \) è l'angolo della luce riflessa
+\end{itemize}
+
+\subsubsection{Path tracing}
+Il path tracing è un algoritmo di rendering che simula il comportamento della luce
+nella scena tracciando il percorso dei raggi di luce. Al posto di calcolare quali raggi
+partendo dalla sorgente di luce colpiscono la camera, si parte dalla camera e si
+tracciano i raggi che da essa colpiscono la fonte di luce. Questo metodo è più efficiente
+perchè si concentra solo sui raggi che effettivamente contribuiscono all'immagine finale.
+
+\subsubsection{Algoritmi di lighting}
+Ci sono diversi metodi per calcolare l'illuminazione in una scena 3D:
+\begin{itemize}
+  \item I metodi \textbf{locali} tengono conto solo dell'effetto delle sorgenti di luce
+    dirette sulla superficie, senza considerare le interazioni tra le superfici.
+    Esempi: \textbf{Flat shading}, \textbf{Gouraud shading}, \textbf{Phong shading}
+  \item I metodi \textbf{globali} considerano tutte le interazioni della luce con le
+    superfici della scena, inclusi riflessi, rifrazioni e ombre. Esempi: \textbf{Ray tracing},
+    \textbf{Radiosity}, \textbf{Path tracing}
+\end{itemize}
+
+\subsubsection{Shading}
+Lo shading ha lo scopo di determinare il colore effettivo dei pixel a partire da un modello
+di illuminazione dato. Determina come e quando applicare il modello di illuminazione prescelto.
+Ci sono tre tipi principali di shading:
+\begin{itemize}
+  \item \textbf{Flat shading}: A ogni primitiva geometrica (triangolo) è associato uno
+    stesso colore uniforme. È il metodo più semplice e veloce, ma meno realistico.
+  \item \textbf{Gouraud shading}: Il valore di illuminazione viene calcolato ai vertici
+    e viene \textbf{interpolato} per i pixel (fragment) interni
+  \item \textbf{Phong shading}: Vengono interpolate le normali ai vertici per ottenere le
+    normali di ciascun pixel e il modello viene calcolato per ogni pixel. Produce risultati
+    migliori e più realistici, ma è più costoso computazionalmente.
+\end{itemize}
+
+\section{Animazione}
+L'animazione in 3D è il processo di creazione di modelli (o camera virtuale)
+in movimento all'interno di una scena tridimensionale.
+
+\subsection{Produzione del modello}
+Il modello viene costruito con una descrizione geometrica del suo aspetto e in base
+al tipo di \textbf{cinematica} adottata per l'animazione è possibile dotare il
+modello di una struttura scheletrica (\textbf{rigging}) che ne consente il movimento.
+
+\subsubsection{Rigging}
+È la fase di preparazione del modello per fare in modo che possa essere animato. Vengono
+inserite delle componenti aggiuntive al modello che permettono all'animazione di
+diventare \textbf{parametrica} (cioè dipendente da parametri variabili nel tempo).
+L'obiettivo è quello di definire i parametri che governano l'animazione in modo da
+inserire una sorta di \textbf{semantica} nel \textbf{movimento}.
+
+\vspace{1em}
+\noindent
+L'animazione è la fase in cui i parametri definiti dal rigging vengono istanziati per
+generare i movimenti e le deformazioni desiderate.
+
+\subsubsection{Animazione del volto}
+Per animare un volto umano in modo realistico si può ricomporre il movimento del volto a
+partire dal controllo dei movimenti elementari della muscolatura. Questo viene fatto
+muovendo gruppi di punti di controllo o interpolando tra una forma di riferimento.
+Le tecniche più diffuse sono:
+\begin{itemize}
+  \item \textbf{Blend based}: si costruiscono numerose versioni del modello
+    (dette shape di espressioni di base). L'animazione deriva dalla combinazione
+    di queste versioni.
+  \item \textbf{Rig based}: si inseriscono delle "ossa" all'interno della faccia che
+    controllano i movimenti e li propagano sulla superficie del volto.
+  \item \textbf{Phisycally based}: vengono simulate le proprietà fisice ed elastiche dei tessuti
+    molli della pelle e deu muscoli.
 \end{itemize}
 
 \end{document}
