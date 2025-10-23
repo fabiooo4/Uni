@@ -808,4 +808,161 @@ in questo caso \( h_2(n) \) da la soluzione migliore)
   della soluzione ottimale del problema reale.
 \end{define}
 
+\subsection{Ricerca locale}
+La ricerca locale è una tecnica di ricerca che si concentra su una soluzione
+cercando di migliorarla iterativamente. Gli algoritmi più comuni sono:
+\begin{itemize}
+  \item Hill climbing
+  \item Simulated annealing
+  \item Algoritmi genetici
+\end{itemize}
+Questo tipo di ricerca è utile quando il percorso per arrivare alla soluzione non è
+importante, ma solo la soluzione finale. Ci sono due approcci principali:
+\begin{itemize}
+  \item Trovare la configurazione ottimale (ad esempio (TSP - Traveling Salesman Problem))
+  \item Trovare una configurazione che soddisfa dei vincoli (ad esempio il problema delle
+    \( n \) regine)
+\end{itemize}
+Si possono anche usare algoritmi di \textbf{iterative improvement} che partono da una
+configurazione iniziale e cercano di migliorarla iterativamente fino a raggiungere
+un punto di ottimo locale.
+\begin{example}
+  Un esempio di ricerca locale è il Traveling Salesman Problem (TSP), dove
+  l'obiettivo è trovare il percorso più breve che visita un insieme di città
+  esattamente una volta e ritorna alla città di partenza.
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{tsp}
+    \caption{Esempio di TSP}
+  \end{figure}
+  \noindent
+  Varianti di questo approccio arrivano fino a 1\% della soluzione ottimale in tempi
+  ragionevoli per migliaia di città.
+\end{example}
+\begin{example}
+  Un altro esempio è il problema delle \( n \) regine, dove l'obiettivo è posizionare
+  \( n \) regine su una scacchiera \( n \times n \) in modo che nessuna regina
+  minacci un'altra.
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{n-queens}
+    \caption{Esempio di n-regine}
+  \end{figure}
+  \noindent
+  Risolve quasi sempre il problema quasi istantaneamente per \( n \) molto grande,
+  ad esempio \( n = 1.000.000 \).
+\end{example}
+
+\subsubsection{Hill climbing}
+Hill climbing è un algoritmo di ricerca locale che parte da una soluzione iniziale
+e cerca di migliorarla iterativamente spostandosi verso la soluzione migliore
+nella sua vicinanza. L'algoritmo continua a muoversi finché non trova un punto
+dove nessuna delle soluzioni vicine è migliore della soluzione corrente.
+Ritorna un massimo locale, che potrebbe non essere il massimo globale.
+\begin{lstlisting}[language=Python]
+function Hill-Climbing(problem) returns a state that is a local maximum
+  inputs: problem, a problem
+  local variables: current, a node
+                   neighbor, a node
+  current <- Make-Node(problem.Initial-State)
+  loop do
+    neighbor <- a highest-valued successor of current
+    if neighbour.Value <= current.Value then return
+      current.State
+    end if
+    current <- neighbor
+  end
+\end{lstlisting}
+La rappresentazione del problema assumendo di avere tutti gli stati sull'asse x
+e il valore della funzione obiettivo sull'asse y è chiamata \textbf{state space landscape}:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{hill-climbing}
+  \caption{Esempio di state space landscape per hill climbing}
+\end{figure}
+\begin{itemize}
+  \item \textbf{Random-restart hill climbing}: esegue hill climbing più volte
+    da stati iniziali casuali per aumentare le probabilità di trovare il massimo globale
+  \item \textbf{Random sideways moves}: permette di fare mosse che non migliorano
+    la soluzione corrente per evitare di rimanere bloccati in una sezione piatta
+\end{itemize}
+
+\subsubsection{Simulated annealing}
+Simulated annealing è un algoritmo di ricerca locale ispirato al processo di
+raffreddamento dei metalli. L'algoritmo parte da una soluzione iniziale e
+cerca di migliorarla iterativamente, ma a differenza di hill climbing, permette
+di \textbf{accettare soluzioni peggiori} con una certa probabilità che
+\textbf{diminuisce nel tempo}. Questo aiuta a evitare di rimanere bloccati in massimi
+locali.
+\begin{lstlisting}[language=Python]
+function Simulated-Annealing( problem, schedule) returns a solution state
+  inputs: problem, a problem
+          schedule, a mapping from time to 'temperature'
+  local variables: current, a node
+                   next, a node
+                   T, a 'temperature' controlling prob. of downward steps
+  current <- Make-Node(problem.Initial-State)
+  for t <- 1 to infinity do
+    T <- schedule(t) // temperature at time t
+    if T = 0 then return current
+    next <- a randomly selected successor of current
+    deltaE <- next.Value - current.Value
+    if deltaE > 0 then current <- next
+    else current <- next only with probability e^(deltaE/T)
+\end{lstlisting}
+\noindent
+Se la "temperatura" \( T \) diminuisce lentamente abbastanza, allora l'algoritmo
+converge \textbf{sempre} alla soluzione ottimale \( x^* \) . Questo perchè:
+\[
+  e^{\frac{E(x^*)}{kT}}/e^{\frac{E(x)}kT}
+  =
+  e^{\frac{E(x^*) - E(x)}{kT}} \gg 1 \quad \text{per } T \to 0
+\] 
+
+\subsubsection{Local beam search}
+Local beam search è un algoritmo di ricerca locale che mantiene \textbf{un insieme di
+soluzioni candidate} e cerca di migliorarle iterativamente.
+In ogni iterazione, l'algoritmo 
+\textbf{seleziona casualmente i successori di \( k \), ma con un bias verso i migliori}
+per formare il nuovo insieme di soluzioni candidate.
+
+\subsubsection{Algoritmi genetici}
+Gli algoritmi genetici sono una classe di algoritmi di ricerca ispirati ai
+processi di evoluzione biologica. Questi algoritmi utilizzano meccanismi simili
+alla selezione naturale, alla mutazione e al crossover per evolvere una popolazione
+di soluzioni candidate verso soluzioni migliori. Gli algoritmi genetici hanno bisogno
+di stati encodati come stringhe di caratteri. Il crossover combina due stringhe
+per creare una nuova stringa e ha senso solo se le sottostringhe hanno un significato
+indipendente.
+\begin{example}
+  Prendiamo ad esempio il problema delle \( n \) regine in cui si ha un encoding
+  della scacchiera come un numero in cui la cifra in posizione \( i \) rappresenta
+  la riga in cui si trova la regina nella colonna \( i \).
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{genetic-n-queens}
+    \caption{Esempio di algoritmo genetico per il problema delle n-regine}
+  \end{figure}
+  \noindent
+  Questo genera una configurazione nuova a partire da coppie di configurazioni
+  esistenti, selezionate in base alla loro "fitness" (un valore che misura
+  quanto una configurazione si avvicina alla soluzione ottimale).
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{genetic-n-queens-2}
+    \caption{Rappresentazione della scacchiera}
+  \end{figure}
+  \noindent
+  In questo caso la fitness è calcolata come il numero di regine che si minacciano
+  a vicenda. Il caso peggiore è quello in cui tutte le regine si minacciano a vicenda,
+  quindi la fitness è \( 28 \) (per \( n = 8 \)) perchè:
+  \[
+    \text{num\_minacce} = \frac{n(n-1)}{2} = \frac{8 \cdot 7}{2} = 28
+  \] 
+  quindi:
+  \[
+    \text{fitness} = 28 - \text{num\_minacce}
+  \] 
+\end{example}
+
 \end{document}
