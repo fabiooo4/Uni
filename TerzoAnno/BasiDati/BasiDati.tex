@@ -774,10 +774,44 @@ Una generalizzazione può essere classificata secondo due criteri:
 Per indicare la classificazione di una generalizzazione si mettono le seguenti
 notazioni accanto alla freccia della generalizzazione:
 \begin{itemize}
-  \item (t,e): totale ed esclusiva
-  \item (t,s): totale e sovrapposta
-  \item (p,e): parziale ed esclusiva
-  \item (p,s): parziale e sovrapposta
+  \item (p,s): parziale e sovrapposta: 
+  \item (p,e): parziale ed esclusiva: non si possono avere istanze comuni tra le entità figlie
+  \item (t,s): totale e sovrapposta: non si possono avere istanze dell'entità padre
+    che non siano istanze di almeno una delle entità figlie
+  \item (t,e): totale ed esclusiva: ogni istanza dell'entità padre è istanza
+    di \textbf{esattamente una} delle entità figlie
 \end{itemize}
+
+\subsubsection{Relazioni ternarie}
+Una relazione ternaria è una relazione che coinvolge tre entità e si usa quando:
+\begin{itemize}
+  \item Un'istanza del concetto per esistere nel sistema informativo richiede sempre
+    la presenza di tre istanze di entità (una per ogni entità coinvolta nella relazione)
+
+  \item Non esistono eccezioni al punto precedente
+  \item Non esistono situazioni nelle quali la terna di entità debba essere rappresentata
+    più volte
+\end{itemize}
+La sintassi grafica per rappresentare una relazione ternaria è la seguente:
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm ]
+      (E1) {Entità \( E \)};
+    \node[draw, diamond, minimum width=0.7cm, minimum height=0.7cm, right=1cm of E1]
+      (R) {};
+    \node[above=0.3cm] at (R) {Relazione \( R \)};
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm, right=1cm of R]
+      (E2) {Entità \( F \)};
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm, below=1cm of R]
+      (E3) {Entità \( G \)};
+
+    \draw (E1) -- (R);
+    \draw (E2) -- (R);
+    \draw (E3) -- (R);
+  \end{tikzpicture}
+  \caption{Rappresentazione grafica di una relazione tra due entità}
+\end{figure}
 
 \end{document}
