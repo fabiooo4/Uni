@@ -266,4 +266,125 @@ Le tecniche più diffuse sono:
     molli della pelle e deu muscoli.
 \end{itemize}
 
+\subsubsection{Animazione del corpo umano}
+L'animazione del corpo umano consiste nella creazione di un modello geometrico articolato,
+cioè un manichino. Per animare il manichino si devono definire:
+\begin{itemize}
+  \item Parametri fisici della struttura articolata
+  \item Tipologie standard di comportamento
+  \item Interazione con l'ambiente circostante
+  \item Aspetto del manichino
+\end{itemize}
+Un esempio di modello di struttura articolata è lo \textbf{stick figure}, cioè aste
+rigide collegate con giunti in grado di ruotare l'uno rispetto all'altro. Questo simula
+uno scheletro umano semplificato.
+
+\vspace{1em}
+\noindent
+Le parti di una struttura articolata sono organizzate in una gerarchia ad albero, dove
+ogni nodo rappresenta una parte del corpo e le trasformazioni applicate a un nodo
+vengono \textbf{propagate} ai nodi figli.
+
+\subsubsection{Animazione automatica}
+Animare in 3D con metodi informatici significa attribuire variazioni ai valori assunti dai
+parametri che descrivono l'aspetto e lo stato di un oggetto nella scena 3D.
+Si crea qundi una funzione parametrica che varia nel tempo. Ci sono due approcci principali:
+\begin{itemize}
+  \item \textbf{Traiettoria analitica}: Si definisce una funzione matematica che descrive il
+    movimento dell'oggetto nel tempo. Ad esempio, una traiettoria circolare può essere
+    descritta con funzioni trigonometriche.
+  \item \textbf{Keyframing}: Si definiscono dei fotogrammi chiave (keyframe) che rappresentano
+    stati specifici dell'oggetto in determinati istanti di tempo. Il software interpola
+    automaticamente i valori tra i keyframe per creare un'animazione fluida. Il tipo
+    di interpolazione può essere lineare, cubica, spline, ecc...
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Un modo alternativo per definire delle traiettorie complesse è l'utilizzo di
+\textbf{motion capture}, che consiste nel registrare i movimenti di un attore reale
+e trasferirli a un modello 3D.
+
+\section{Graphics Pipeline}
+La graphics pipeline è il processo che trasforma una scena 3D in un'immagine 2D visualizzabile
+su uno schermo. Tra il "mondo" 3D e il "mondo" 2D bisogna introdurre delle trasformazioni
+intermedie per poter rappresentare correttamente la scena.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{trasformazioni}
+  \caption{Trasformazione della scena 3D in immagine 2D}
+\end{figure}
+\noindent
+Per applicare queste trasformazioni bisogna avere un sistema di coordinate ben definito
+in ogni fase della pipeline:
+\begin{itemize}
+  \item \textbf{Object coordinates}: coordinate locali dell'oggetto
+  \item \textbf{World coordinates}: coordinate globali della scena
+  \item \textbf{Camera coordinates}: coordinate relative alla telecamera virtuale
+  \item \textbf{Screen coordinates}: coordinate 2D dell'immagine finale
+\end{itemize}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{coordinate}
+  \caption{Sistemi di coordinate nella graphics pipeline}
+\end{figure}
+
+\subsection{Trasformazioni}
+Per realizzare la pipeline grafica bisogna capire il processo che mappa le componenti
+della scena da uno spazio di coordinate ad un altro. Le trasformazioni principali sono:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{trasformazioni_pipeline}
+  \caption{Trasformazioni nella graphics pipeline}
+\end{figure}
+
+\subsubsection{Model transformation}
+La model transformation mappa le coordinate locali dell'oggetto (object coordinates)
+nelle coordinate globali della scena (world coordinates) in base al grafo della scena.
+Questa trasformazione tiene conto della posizione, dell'orientamento e della scala
+dell'oggetto nella scena.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.3\textwidth]{model_transformation}
+  \caption{Model transformation}
+\end{figure}
+
+\subsubsection{Camera transformation}
+La camera transformation mappa le coordinate globali della scena (world coordinates)
+nelle coordinate relative alla telecamera virtuale (camera coordinates). Questa
+trasformazione tiene conto della posizione e dell'orientamento della telecamera
+nella scena. Questa trasformazione dipende soltanto dalla posizione della telecamera.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.3\textwidth]{camera_transformation}
+  \caption{Camera transformation}
+\end{figure}
+
+\subsubsection{Projection transformation}
+La projection transformation mappa le coordinate della telecamera (camera coordinates)
+nelle coordinate normalizzate del dispositivo (clip space),
+cioè uno spazio di coordinate 3D normalizzato in cui le coordinate X e Y sono comprese
+tra -1 e 1.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.3\textwidth]{projection_transformation}
+  \caption{Projection transformation}
+\end{figure}
+La coordinata Z dipende dal tipo di proiezione (ortografica o prospettica).
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.4\textwidth]{prospettive}
+  \caption{Proiezione ortografica (sinistra) e prospettica (destra)}
+\end{figure}
+
+\subsubsection{Viewport transformation}
+La viewport transformation mappa le coordinate normalizzate del dispositivo (clip space)
+nelle coordinate dello schermo (screen coordinates), cioè le coordinate 2D dell'immagine
+finale. Dipende soltanto dalla risoluzione dello schermo.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.3\textwidth]{viewport_transformation}
+  \caption{Viewport transformation}
+\end{figure}
+
 \end{document}
