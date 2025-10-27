@@ -1875,21 +1875,262 @@ alla regolarità di un linguaggio:
   L \text{ regolare} \Rightarrow \Pi_L \quad \equiv \quad \neg \Pi_L \Rightarrow L \text{ non regolare}
 \] 
 
-\begin{theorem}[Pumping lemma]
+\begin{theorem}[Pumping lemma per linguaggi regolari]
   Consideriamo un linguaggio regolare \( L \), allora esiste una costante
   \( k \in \mathbb{N} \) tale che per ogni stringa di lunghezza maggiore di \( k \) nel
   linguaggio, esiste una suddivisione della stringa in tre parti \( u,v,w \) tale che:
   \[
-    \exists k \in \mathbb{N} \;.\; \forall z \in L, |z| \ge k \;\exists\; u,v,w \in \Sigma^* \;.\;
+    \exists k \in \mathbb{N} \;.\; \forall z \in L \;:\; |z| \ge k
+  \] 
+  \[
+    \Downarrow
+  \] 
+  \[
+    \exists\;
+    u,v,w \in \Sigma^* \;.\;
     z = uvw \wedge \begin{cases}
       |uv| \le k\\
-      |v| \ge 0\\
+      |v| > 0\\
       \forall i \in \mathbb{N} \;.\; uv^iw \in L
     \end{cases}
   \] 
   cioè la parte \( v \) può essere "pompata" (ripetuta \( i \) volte) e la stringa
   risultante appartiene ancora a \( L \).
+
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione}:
+
+  \noindent
+  Consideriamo \( L \) regolare, allora esiste un automa DFA \( M \) tale che \( L = L(M) \) 
+  \[
+    M = \left< Q, \Sigma, \delta, q_0, F \right> \quad |Q| = n \in \mathbb{N} \text{ stati finiti}
+  \] 
+  Vogliamo dimostrare che il lemma vale per \( k = n \) (k è \( |Q| \)). Prendiamo
+  una stringa nel linguaggio \( z \in L \) tal che la sua lunghezza sia maggiore o
+  uguale di \( k \): \( |z| \ge k \). Scriviamo \( z \) come insieme di caratteri:
+  \[
+    z = a_1 a_2 a_3 \ldots a_{m} \quad m \ge k
+  \] 
+  Rappresentiamo l'elaborazione di \( z \) come una sequenza di stati:
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[->,node distance=1.5cm, on grid, auto]
+      \node[state] (q0) {$q_0$};
+      \node[state, right of=q0] (q1) {$q_1$};
+      \node[state, right of=q1] (q2) {$q_2$};
+      \node[state, right of=q2] (q3) {$q_3$};
+      \node[right of=q3] (dots) {$\ldots$};
+      \node[state, right of=dots] (qm) {$q_m$};
+
+      \draw (q0) edge[above] node{\( a_1 \)} (q1);
+      \draw (q1) edge[above] node{\( a_2 \)} (q2);
+      \draw (q2) edge[above] node{\( a_3 \)} (q3);
+      \draw (q3) edge[above] node{\( a_4 \)} (dots);
+      \draw (dots) edge[above] node{\( a_m \)} (qm);
+    \end{tikzpicture}
+  \end{figure}
+  \noindent
+  Per leggere \( m \) simboli si attraversano \( m+1 \) stati e quindi per
+  \textbf{riconoscere} \( z \) si usano \( m+1 \) stati, ma \( m \ge n \),
+  quindi si attraversano almeno \( n+1 \) stati \( \Rightarrow m+1 \ge n+1 \).
+  Questo implica che si attraversano più stati di quelli in \( Q \), ovvero \textbf{almeno}
+  uno stato è ripetuto nel riconoscimento di \( z \).
+  
+  \vspace{1em}
+  \noindent
+  Supponiamo che \( \bar{q} \in Q \) sia il primo stato (leggendo \( z \)) che viene
+  \textbf{ripetuto}, in cui si torna per riconoscere \( z \):
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[->,node distance=1.5cm, on grid, auto]
+      \node[state] (q0) {$q_0$};
+      \node[right of=q0] (dots1) {$\ldots$};
+      \node[state, right of=dots1] (qbar) {$\bar{q}$};
+      \node[right of=qbar] (dots2) {$\ldots$};
+      \node[state, right of=dots2] (qm) {$q_m$};
+
+      \draw (q0) edge[above] node{\( a_1 \)} (dots1);
+    \end{tikzpicture}
+    \label{27-10-D1}
+  \end{figure}
+  \noindent
+  \begin{itemize}
+    \item \( u \) va da \( q_0 \) alla prima occorrenza di \( \bar{q} \) (il primo
+      stato ripetuto)
+
+    \item \( v \) va da \( \bar{q} \) a \( \bar{q} \) (percorso che porta a ritrovare
+      lo stato ripetuto)
+
+    \item \( w \) va da \( \bar{q} \) allo stato finale \( q_m \)
+  \end{itemize}
+  Questa suddivisione è accettabile per il teorema?
+  \begin{enumerate}
+    \item \( \left| uv \right| \le k \) 
+      \label{27-10-D2}
+      \noindent
+      Per arrivare allo stato finale \( q_n \) si attraversano \( n-1 \) simboli
+      \[
+        Q = \left\{ q_0, q_1, \ldots, q_{n-1} \right\} \to \left| Q \right| = n
+      \] 
+
+    \item \( \left| v \right| > 0 \) almeno un arco deve essere uscire dallo stato
+      e ritornare nello stesso stato
+
+    \item \( uw \) arrivano in \( q_m \), quindi:
+      \[
+        \forall i \;.\; uv^iw \in L
+      \] 
+      e raggiunge lo stato finale \( q_m \)
+  \end{enumerate}
 \end{theorem}
 
+\subsubsection{Dimostrazione che un linguaggio non è regolare}
+Per dimostrare che un linguaggio non è regolare si può usare il pumping lemma:
+\[
+  L \text{ regolare } \Rightarrow \exists k \;.\; \forall z \in L \;:\; |z| \ge k
+\] 
+\[
+  \Downarrow
+\] 
+\[
+  \exists z = uvw \;.\; \begin{cases}
+    |uv| \le k\\
+    |v| > 0\\
+    \forall i \in \mathbb{N} \;.\; uv^iw \in L
+  \end{cases}
+\]
+Per fare ciò si nega il pumping lemma:
+\[
+  A \leadsto B
+\] 
+\[
+  \neg B \leadsto \neg A
+\] 
+\[
+  \exists \leadsto \forall 
+\] 
+Il pumping lemma si nega come segue:
+\begin{itemize}
+  \item \( \exists k \leadsto \forall K \):
+    La dimostrazione \textbf{non} deve imporre vincoli su \( k \)
+
+  \item \( \forall z \leadsto \exists z \in L \;.\; \left| z \right| \ge k \):
+    costruiamo noi la \( z \in L \) di lunghezza \( \ge k \) 
+
+  \item \( \exists uvw = z \leadsto \forall uvw = z \):
+    \( |v| > 0 \; |uv \le k \) 
+  \item \( \forall i \in \mathbb{N} \leadsto \exists i \in \mathbb{N} \;.\; uv^iw \notin L \):
+    troviamo un \( i \) che "rompe" la stringa
+\end{itemize}
+Quindi il pumping lemma negato diventa:
+\[
+  \forall k \in \mathbb{N} \;.\; \exists z \in L \;:\; |z| \ge k
+\] 
+\[
+  \Downarrow
+\] 
+\[
+  \forall  uvw = z \;.\; \begin{cases}
+    |uv| \le k\\
+    |v| > 0\\
+    \exists i \in \mathbb{N} \;.\; uv^iw \notin L
+  \end{cases}
+\] 
+\label{27-10-D3}
+
+\begin{example}
+  Consideriamo il linguaggio:
+  \[
+    L = \left\{ 0^n 1^n \;\left|\; n \in \mathbb{N} \right. \right\}
+  \] 
+  Bisogna creare un automa che riconosca tutte le stringhe, ad esempio:
+  \[
+    \varepsilon, 01, 0011, 000111, 00001111, \ldots
+  \] 
+  Scriviamo le condizioni di appartenenza a \( L \):
+  \[
+    0^a 1^b \in L \iff a = b
+  \] 
+  (gli 0 devono essere uguali agli 1).
+
+  \noindent
+  Ogni volta che si legge un 1 bisogna ricordarsi quanti 0 sono stati letti prima,
+  però si possono leggere infiniti 0 e quindi servirebbero infiniti stati.
+  Vogliamo quindi dimostrare che \( L \) non è regolare usando il pumping lemma negato:
+  \[
+    \forall k \in \mathbb{N} \;.\; \exists z \in L \;:\; |z| \ge k
+  \] 
+  \[
+    \Downarrow
+  \] 
+  \[
+    \forall  uvw = z \;.\; \begin{cases}
+      |uv| \le k\\
+      |v| > 0\\
+      \exists i \in \mathbb{N} \;.\; uv^iw \notin L
+    \end{cases}
+  \] 
+
+  \vspace{1em}
+  \noindent
+  Fissiamo \( k \in \mathbb{N} \) (\( k \) non deve avere nessun vincolo). Qualunque sia
+  \( k \) prendiamo la stringa:
+  \[
+    z = 0^k 1^k \in L \quad |z| \ge k
+  \] 
+  Le uniche suddivisioni che vanno bene sono quelle in cui \( uv \) stanno nella
+  parte degli 0 (perchè per ipotesi \( |uv| \le k \).
+  Si può concludere che la sottostringa \( uv \) è composta da soli 0:
+  \[
+    uv \in 0^k
+  \] 
+
+  \vspace{1em}
+  \noindent
+  Consideriamo la stringa:
+  \[
+    z_i = uv^iw = 0^{k + (i-1)|v|} 1^k
+  \] 
+  (ripetere \( v \) \( i \) volte equivale ad aggiungere \( (i-1)|v| \) volte \( v \) a quella
+  già esistente). Ad esempio:
+  Supponendo di avere 10 zeri un esempio di suddivisione è il seguente
+  \[
+    \underbrace{000000}_{u}
+    \underbrace{000}_{v}
+    \underbrace{01111111111}_{w}
+  \] 
+  \begin{itemize}
+    \item Con \( i = 0 \) (togliere \( v \))
+      \[
+        0^{k + (0-1)|v|} 1^k = 0^{k - |v|} 1^k
+      \] 
+
+    \item Con \( i = 1 \) (lasciare \( v \) una volta)
+      \[
+        0^{k + (1-1)|v|} 1^k = 0^{k} 1^k
+      \] 
+
+    \item Con \( i = 3 \) (ripetere \( v \) tre volte)
+      \[
+        0^{k + (3-1)|v|} 1^k = 0^{k + 2|v|} 1^k
+      \]
+  \end{itemize}
+
+  \vspace{1em}
+  \noindent
+  Troviamo un \( i \) tale che \( z_i \notin L \):
+  \[
+    z_i = 0^{k + (i-1)|v|} 1^k
+  \] 
+  Scegliamo ad esempio \( i = 2 \):
+  \[
+    \begin{aligned}
+      z_2 = 0^{k + |v|} 1^k \in L &\iff \underbrace{k + |v|}_a = \underbrace{k}_b\\
+                                  &\iff |v| = 0 \text{ che è assurdo perchè } |v| > 0
+                                  &\implies z_2 \notin L
+    \end{aligned}
+  \] 
+\end{example}
 
 \end{document}
