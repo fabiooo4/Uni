@@ -191,6 +191,78 @@ La progettazione fisica è la terza fase della progettazione dei dati. L'obietti
 di ottimizzare l'accesso ai dati completando lo schema logico con i parametri relativi
 alla memorizzazione fisica dei dati e con gli opportuni metodi d'accesso (\textbf{indici}).
 
+\subsection{Strategie di progettazione}
+Lo sviluppo do uno schema concettuale può essere visto come un processo di ingegnerizzazione
+ed è quindi possibile applicare anche a tale processo le strategie classiche:
+\begin{itemize}
+  \item \textbf{Top-Down}: consiste nel considerare le specifiche \textbf{globalmente}
+    e produrre uno schema iniziale completo ma con \textbf{pochi concetti} molto astratti.
+    Si va poi a \textbf{raffinare} i concetti astratti fino ad arrivare allo schema
+    concettuale completo in ogni dettaglio
+
+  \item \textbf{Bottom-Up}: consiste nel \textbf{decomporre} le specifiche iniziali in
+    parti elementari e produrre uno schema iniziale dettagliato
+
+  \item \textbf{Inside-Out}: consiste nell'individuare nelle specifiche alcuni concetti
+    importanti (detti concetti guida) e partendo da quelli generare gli schemi
+    per i relativi concetti. Si procede fondendo gli schemi precedenti per generare
+    lo schema finale.
+\end{itemize}
+
+\subsubsection{Analisi di qualità dello shema}
+L'analisi della qualità dello schema concettuale prodotto può essere suddivisa in diverse
+fasi:
+\begin{itemize}
+  \item \textbf{Verifica della correttezza}: Uno schema concettuale è corretto se utilizza
+    correttamente i costrutti del modello concettuale adottato (nel nostro caso E-R).
+    I possibili errori sono:
+    \begin{itemize}
+      \item Errori sintattici: si verificano quando i costrutti vengono usati senza seguire
+        le regole sintattiche
+      \item Errori semantici: si verificano quando i costrutti vengono usati senza seguire
+        le regole semantiche, cioè la loro definizione
+    \end{itemize}
+
+  \item \textbf{Verifica della completezza}: Uno schema concettuale è completo se
+    rappresenta tutti i requisiti espressi nelle specifiche.
+
+  \item \textbf{Verifica di minimalità}: Uno schema è minimale quando tutti i concetti
+    descritti nei requisiti sono rappresentati nello schema \textbf{una volta sola}.
+    Uno schema non minimale contiene delle \textbf{ridondanze}. I casi di probabile
+    ridondanza sono:
+    \begin{itemize}
+      \item Ereditarietà nelle relazioni: si manifesta quando due 
+        entità padri sono in relazione e le loro entità figlie sono anch'esse in relazione.
+        Per far si che non ci sia ridondanza in questo caso bisogna verificare che le 
+        due relazioni non rappresentino lo stesso concetto
+
+      \item Cicli di relazioni: si manifesta quando esistono dei cicli tra le relazioni
+        di più entità. Non è detto che ci sia sicuramente ridondanza, ma per evitarla
+        bisogna verificare se la relazione \( R_i \) si possa ottenere dalla composizione
+        delle altre relazioni. Se è così allora \( R_i \) va eliminata in quanto ridondante.
+    \end{itemize}
+
+  \item \textbf{Verifica di leggibilità}: Uno schema concettuale è leggiible quando
+    rappresenta tutti i requisiti in modo naturale e facilmente compresnsibile. Alcuni
+    consigli per migliorare la leggibilità sono:
+    \begin{itemize}
+      \item Curare la scelta dei nomi delle componenti dello schema
+      \item Disegnare bene lo schema
+    \end{itemize}
+    Si può migliorare la leggibilità anche semplificando lo schema. Le relazioni
+    ternarie non sono facili da leggere e interpretare, quindi solitamente la loro
+    eliminazione può comportare una migliore leggibilità dello schema.
+    Le operazioni possibili sono:
+    \begin{itemize}
+      \item Trasformare una relazione ternaria in un'entità (sempre applicabile)
+      \item Riduzione di una relazione ternariaa a due relazioni binarie\\
+        (\textbf{precondizione}: una delle entità partecipa alla relazione ternaria
+        con cardinalità (1,1) (spiegata nel capitolo \ref{Cardinalità})) 
+      \item Trasformare una relazione sovrapposta in una generalizzazione esclusiva
+        esplicitando l'entità che rappresenta la sovrapposizione
+    \end{itemize}
+\end{itemize}
+
 \section{Modello Entità-Relazione}
 È un modello, formale e non ambiguo, utilizzato per la progettazione concettuale di una
 base di dati. Fornisce strumenti formali (costrutti), con sintassi grafica, per specificare la
@@ -298,6 +370,8 @@ La popolazione di \( R \) rappresenta l'insieme delle coppie di istanze delle en
   Supponiamo che nello schema ci siano le entità \textbf{Persona} e \textbf{Comune},
   bisogna gestire la \textbf{Residenza} delle persone nei comuni italiani.
 
+  \vspace{2em}
+  \noindent
   \begin{figure}[H]
     \centering
     \begin{tikzpicture}
@@ -792,7 +866,8 @@ Una relazione ternaria è una relazione che coinvolge tre entità e si usa quand
   \item Non esistono situazioni nelle quali la terna di entità debba essere rappresentata
     più volte
 \end{itemize}
-La sintassi grafica per rappresentare una relazione ternaria è la seguente:
+La sintassi grafica per rappresentare una relazione ternaria è la seguente (i vincoli
+di cardinalità sono richiesti, ma qua sono omessi):
 
 \begin{figure}[H]
   \centering
@@ -813,5 +888,20 @@ La sintassi grafica per rappresentare una relazione ternaria è la seguente:
   \end{tikzpicture}
   \caption{Rappresentazione grafica di una relazione tra due entità}
 \end{figure}
+\noindent
+Un uso errato avviene quando per rappresentare lo stato del sistema informativo
+sarebbe necessario che un'istanza della relazione \textbf{contenga solo una
+coppia e non una terna} di istanze di entità (cioè quando manca un attore).
+Quindi in questo caso si può sostituire la relazione ternaria con 3 relazioni binarie
+indipendenti.
+
+\vspace{1em}
+\noindent
+L'utilizzo delle relazioni ternarie è utile per "storicizzare" le relazioni binarie.
+Nella rappresentazione di una relazione binaria storicizzata è necessario poter rappresentare
+più volte \textbf{la stessa coppia in tempi diversi}. Pertanto la relazione binaria può
+essere trasformata in una relazione ternaria includendo l'entità \textbf{Tempo} come
+nuovo attore nella relazione in modo da poter rappresentare più volte la stessa coppia
+in istanti di tempo diversi.
 
 \end{document}
