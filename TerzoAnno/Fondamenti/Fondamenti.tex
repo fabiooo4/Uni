@@ -2133,4 +2133,372 @@ Quindi il pumping lemma negato diventa:
   \] 
 \end{example}
 
+\section{Linguaggi context free}
+I linguaggi context free sono più potenti dei linguaggi regolari, mantenendo comunque
+la decidibilità di molti problemi. Lo strumento che si utilizza per \textbf{definire} i linguaggi
+context free sono le \textbf{grammatiche}. Rispetto ai linguaggi regolari in cui l'automa
+era un riconoscitore, per i linguaggi context free la grammatica è un generatore.
+Un esempio di linguaggi context free sono i linguaggi di programmazione.
+
+\subsection{Grammatiche context free}
+Una grammatica context free è una quadrupla \( E = \left< V, T, P, S \right> \) dove:
+\begin{itemize}
+  \item \( V \) è un insieme \textbf{finito} di simboli \textbf{non terminali} (variabili).
+    Il loro ruolo è quello di rappresentare una categoria sintattica (ad esempio: espressione,
+    istruzione, comando, ecc.)
+
+  \item \( T \) è un insieme finito di simboli \textbf{terminali}. Sono i simboli effettivi
+    che possono essere sostituiti a quelli non terminali. Ad esempio:
+    \[
+      \underbrace{x}_{\text{terminale}} = \underbrace{\text{espressione}}_{\text{non terminale}}
+    \] 
+
+  \item \( P \) è un insieme finito di \textbf{produzioni} (regole di derivazione).
+    Indicano come sostituire i simboli non terminali con stringhe di simboli.
+
+  \item \( S \in V \) è il simbolo iniziale
+
+  \item il \textbf{tipo di produzioni} (come possono essere fatte) determina il tipo
+    di grammatica. In una \textbf{grammatica context free} le produzioni sono della forma:
+    \[
+      A \to \alpha
+    \] 
+    dove \( A \in V \) (non terminali) e \( \alpha \in \left( V \cup T \right)^* \)
+    (sequenza di simboli terminali e non terminali). Il vincolo principale è il fatto
+    che a sinistra del'implicazione ci sia esattamente \textbf{una sola variabile}.
+    Questa implicazione significa che \( A \) può essere sostituito con \( \alpha \),
+    indipendentemente dal contesto in cui \( A \) si trova,
+    cioè dai simboli presenti prima e dopo \( A \).
+\end{itemize}
+
+\begin{example}
+  Un esempio di grammatica sono le \textbf{espressioni booleane}.
+  Consideriamo la grammatica: \( G = \left< V, T, P, S \right> \) dove:
+  \[
+    \begin{aligned}
+      V &= \left\{ E \right\}\\
+      T &= \left\{ 0, 1, \text{and}, \text{or}, \text{not}, (, ) \right\}\\
+      P &= \left\{
+        \begin{aligned}
+          &E \to 0 \;|\; 1 \equiv E \to 0 \; E \to 1\\
+          &E \to (E \text{ and } E)\\
+          &E \to (E \text{ or } E)\\
+          &E \to \text{not } E
+        \end{aligned}
+      \right. = 
+      E \to 0 \;|\; 1 \;|\; (E \text{ and } E) \;|\; (E \text{ or } E) \;|\; (\text{not } E)
+      \\
+        S &= E
+    \end{aligned}
+  \] 
+  (\( | \) è l'operatore or). Una grammatica può essere scritta anche solamente con
+  l'insieme delle sue produzioni.
+
+  \vspace{1em}
+  \noindent
+  Il \textbf{linguaggio generato} dalla grammatica \( E \) è una combinazione di
+  produzioni. Ad esempio:
+  \[
+    A \to \beta \in P \quad \alpha, \gamma \in (V \cup T)^*
+  \] 
+  dove:
+  \[
+  \begin{aligned}
+    A &\in V\\
+    \beta &\in (V \cup T)^*
+  \end{aligned}
+  \] 
+  Si deriva la stringa a destra applicando la produzione \( A \to \beta \) 
+  \[
+    \alpha \color{red}A\color{black} \gamma \Rightarrow \alpha \color{red}\beta\color{black} \gamma
+  \] 
+  Si è generata una nuova stringa sostituendo \( A \) con \( \beta \).
+  \noindent
+  La singola freccia (\( \to  \)) indica una produzione, mentre la doppia freccia
+  (\( \Rightarrow \)) indica una derivazione (applicazione di una produzione).
+  \label{28-10-D1}
+  \noindent
+  Altri esempi di derivazioni:
+  \begin{itemize}
+    \item \( E \to (E \text{ or } E) \equiv E \Rightarrow (E \text{ or } E) \) 
+    \item \( E \to (E \text{ and } E) \equiv
+      \underbrace{(}_{\alpha}\underbrace{E}_{A} \underbrace{\text{ or } E)}_{\gamma } \Rightarrow
+      \underbrace{(}_{\alpha}\underbrace{(E \text{ and } E)}_{\beta} \underbrace{\text{ or } E)}_{\gamma} \)
+  \end{itemize}
+\end{example}
+\begin{definition}[Derivazione]
+  Partendo da una sequenza \( \alpha \in V \cup T \) una derivazione consiste nell'applicazione
+  di una produzione ad uno dei simboli non terminali presenti nella sequenza \( \alpha \).
+  Consideramdo la stringa:
+  \[
+    \alpha_1, \alpha_2, \alpha_3, \ldots, \alpha_n \in (V \cup T)^*
+  \] 
+  e
+  \[
+    \underset{j \in \left[ 1, n-1 \right]}{\forall j} \;.\; \alpha_j \Rightarrow \alpha_{j+1}
+  \] 
+  allora si può scrivere l'applicazione di \( n \) produzioni come:
+  \[
+   \alpha_1 \Rightarrow_n \alpha_n
+  \] 
+  Ad esempio:
+  \[
+    \alpha_i \Rightarrow_0 \alpha_j \quad \text{ Nessuna produzione applicata}
+  \] 
+  \vspace{1em}
+  \noindent
+  Si può scrivere la chiusura transitiva di \( \Rightarrow_n \) come:
+  \[
+    \alpha \Rightarrow^* \beta \text{ se } \exists i \;.\; \alpha \Rightarrow_i \beta
+  \] 
+  Cioè esiste un numero di passi \( i \) tale che applicando \( i \) produzioni si passa
+  da \( \alpha \) a \( \beta \). (Da \( \alpha \) si deriva \( \beta \))
+\end{definition}
+
+\begin{definition}[Linguaggio generato]
+  Il linguaggio \( L \) è generato dalla grammatica \( G: L(G) \) con \( G = \left<V,T,P,S\right> \)
+  è l'insieme delle sequenze di terminali generate da \( S \), ovvero per le quali
+  esiste una derivazione a partire da \( S \):
+  \[
+    L(G) = \left\{ \sigma \in T^* \;\left|\; S \stackrel{G}{\Rightarrow^*}
+    \sigma \right. \right\}
+  \] 
+  Il linguaggio \( L \subseteq T^* \) è \textbf{context free} se esiste una grammatica
+  \( G \) context free che lo genera, ovvero tale che \( L = L(G) \). Quindi per dimostrare
+  che un linguaggio è context free basta costruire una grammatica che lo genera.
+\end{definition}
+
+\subsubsection{Dimostrazione canonica che un linguaggio è context free}
+\begin{definition}[Dimostrazione che un linguaggio è context free]
+  Possiamo dimostrare che \( L = L(G) \), quindi \( L \) è context free. Dimostriamo:
+  \begin{enumerate}
+    \item \( L \subseteq L(G) \)
+
+      \vspace{1em}
+      \noindent
+      Se \( \sigma  \) appartiene al linguaggio, allora da \( S \) si può derivare \( \sigma \):
+      \[
+        L \subseteq L(G) \equiv \sigma \in L \implies \sigma \in L(G) \equiv S \Rightarrow^* \sigma
+      \] 
+
+      \vspace{1em}
+      \noindent
+      Dimostriamo per induzione sulla lunghezza di \( \sigma  \).
+      \begin{itemize}
+        \item \textbf{Caso base}: \( |\sigma| = \text{ lunghezza minima in } L \)
+        \item \textbf{Passo induttivo}: Si suppone che per ogni \( \sigma  \) di lunghezza
+          \( n \) valga l'ipotesi induttiva, e si dimostra che vale anche per
+          \( \sigma  \) di lunghezza maggiore di \( n \).
+          \[
+            \forall \sigma  \;.\; |\sigma| = n \text{ vale l'ipotesi induttiva 1.}
+          \] 
+      \end{itemize}
+    \item \( L(G) \subseteq L \) 
+
+      \vspace{1em}
+      \noindent
+      Se \( \sigma \) appartiene al linguaggio generato dalla grammatica, allora \( \sigma \)
+      appartiene al linguaggio:
+      \[
+        L(G) \subseteq L \equiv \sigma \in L(G) \implies \sigma \in L \equiv S \Rightarrow^* \sigma
+      \] 
+
+      \vspace{1em}
+      \noindent
+      Dimostriamo per induzione sulla lunghezza della derivazione:
+      \[
+        S \Rightarrow^* \sigma \equiv \exists i \;.\; S \Rightarrow_i \sigma
+      \] 
+      quindi l'induzione è su \( i \).
+      \begin{itemize}
+        \item \textbf{Caso base}: La derivazione più corta possibile di simboli terminali
+        \item \textbf{Passo induttivo}: Si suppone che per ogni \( i \le n \) se
+          la \( S \) deriva in \( i \) passi in una stringa di soli terminali \( \sigma  \) 
+          allora \( \sigma  \in L \):
+          \[
+            \forall i \le n \;.\; S \Rightarrow_i \sigma \text{ allora } \sigma \in L
+          \] 
+          Dimostriamo che \( S \Rightarrow_{n+1} \sigma \text{ allora } \sigma \in L \).
+      \end{itemize}
+  \end{enumerate}
+\end{definition}
+
+\begin{example}
+  Consideriamo il seguente linguaggio:
+  \[
+  L = \left\{ 0^n 1^n \;\left|\; n \in \mathbb{N} \right. \right\}
+  \] 
+  Vogliamo dimostrare che \( L \) è context free. Per farlo bisogna costruire una grammatica
+  \( G \) che genera \( L \):
+  \begin{itemize}
+    \item \( S \): Bisogna chiedersi se la stringa vuota appartiene a \( L \).
+      \begin{enumerate}
+        \item \( \varepsilon \in L? \) Si, per \( n = 0 \) \( 0^0 1^0 = \varepsilon \).
+          \( \varepsilon \) va sempre generata dalla grammatica.
+      \end{enumerate}
+      Quindi \( S \) diventa:
+      \[
+        S \to \varepsilon \;|\; 0 S 1
+      \] 
+  \end{itemize}
+  La grammatica di questo linguaggio quindi è:
+  \[
+    G: S \to \varepsilon \;|\; 0 S 1 \text{ (grammatica context free)}
+  \] 
+
+  \vspace{1em}
+  \noindent
+  Dimostriamo: \( L = L(G) \) 
+  \begin{enumerate}
+    \item \( L \subseteq L(G) \) per induzione sulla lunghezza di \( \sigma \in L \)
+      \begin{itemize}
+        \item \text{Tesi}: \( \sigma \in L \) allora \( S \Rightarrow^* \sigma \)
+        \item \textbf{Base}: \( n = 0 \) \( |\sigma| = 0 \) è tale che \( \sigma = \varepsilon  \) 
+          e \( \sigma  \to \varepsilon \; (S \Rightarrow \varepsilon ) \) 
+        \item \textbf{Passo induttivo}: L'ipotesi induttiva è la tesi, ma limitata a n:
+          \[
+            \forall i \le n \;.\; |\sigma| = i \; \sigma \in L \text{ allora } S \Rightarrow^* \sigma
+          \] 
+          Dimostriamo che \( |\sigma| = n \) e \( \sigma \in L \) allora \( S \Rightarrow^* \sigma \).
+          Prendiamo \( \sigma \in L \), ovvero:
+          \[
+            \exists j \;.\; \sigma = 0^j 1^j \quad 2j = n
+          \] 
+          Bisogna trovare la derivazione. Possiamo osservare che:
+          \[ \sigma = 0 \underbrace{0^{j-1} 1^{j-1}}_{2j-2 < n} 1 \]
+          (abbiamo separato il primo 0 e l'ultimo 1 dalla
+          sequenza centrale). \( \sigma  \) può essere scritta come:
+          \[
+            \sigma = 0 \underbrace{0^{j-1} 1^{j-1}}_{2j-2 < n} 1
+            = 0 \sigma' 1 \quad \text{ con } \sigma' = 0^{j-1} 1^{j-1} \in L
+          \]
+          Siccome \( \left| \sigma' \right| < n \) e \( \sigma' \in L \) allora vale
+          l'ipotesi induttiva e quindi:
+          \[
+            \implies \exists S \Rightarrow^* \sigma' \equiv 0^{j-1} 1^{j-1}
+          \] 
+          usiamo questa derivazione per costruire la derivazione di \( \sigma \).
+          Questa derivazione deve essere fatta in modo da avere come ultimo passo
+          \( S \Rightarrow \varepsilon \) per ottenere \( \sigma' \):
+          \[
+            S \Rightarrow^* 0^{j-1} 1^{j-1} \equiv
+            S \Rightarrow 0^{j-1} S 1^{j-1} \Rightarrow 0^{j-1} \varepsilon 1^{j-1}
+            = 0^{j-1} 1^{j-1}
+          \] 
+          Per arrivare a \(\sigma = 0^j 1^j \) bisogna sostituire la \( S \) con \( 0 S 1 \):
+          \[
+            S \Rightarrow^* 0^j S 1^j \Rightarrow 0^{j-1} 0 S 1 1^{j-1} \Rightarrow
+            0^{j-1} 0 \varepsilon 1 1^{j-1} = 0^j 1^j = \sigma \quad \square
+          \] 
+          Questo conclude la dimostrazione del primo punto, cioè trovare una derivazione
+          per \( \sigma \). Quindi abbiamo dimostrato che \( L \subseteq L(G) \).
+      \end{itemize}
+
+    \item \( L(G) \subseteq L \) Dimostriamo per induzione sulla lunghezza delle derivazioni
+      \begin{itemize}
+        \item \textbf{Tesi:} \( S \Rightarrow^* \sigma  \) allora \( \sigma  \in L \) 
+        \item \textbf{Base:} \( S \Rightarrow \varepsilon \; (S \to \varepsilon ) \) e
+          \( \varepsilon \in L \) 
+        \item \textbf{Passo induttivo:} L'ipotesi induttiva è la tesi limitata a \( i \):
+          \[
+            \forall i \le n \;.\; S \Rightarrow_i \sigma \text{ allora } \sigma \in L
+          \] 
+          Prendiamo una stringa generata in \( n \) passi:
+          \[
+            S \Rightarrow_n \sigma \quad\equiv\quad S \Rightarrow_{n-1} \sigma_1 S \sigma_2
+            \Rightarrow \sigma_1 \sigma_2 = \sigma
+          \] 
+          Per come è fatta la grammatica \( \sigma_1 \) contiene solo 0 e \( \sigma_2 \)
+          contiene solo 1. Ovvero:
+          \[
+            \sigma_1 = 0^j \quad \sigma_2 = 1^k
+          \] 
+          Bisogna riuscire ad ottenere una derivazione più corta di \( n \) simboli terminali
+          in modo tale da poter applicare l'ipotesi induttiva. Un solo passo indietro
+          non basta perchè non si ha una derivazione di tutti simboli terminali, quindi
+          si può andare ancora più indietro:
+          \[
+            S \Rightarrow_{n-1} \sigma_1 S \sigma_2 \quad\equiv\quad
+            S \Rightarrow_{n-2} \sigma_1' \color{red}S\color{black} \sigma_2'
+            \Rightarrow \underbrace{\sigma_1
+            \color{red}0\color{black}}_{\sigma_1} \color{red}S\color{black}
+            \underbrace{\color{red}1\color{black} \sigma_2}_{\sigma_2}
+          \] 
+          Scorporiamo la derivazione di \( n-2 \) passi in:
+          \[
+            S \Rightarrow_{n-2} \sigma_1' S \sigma_2' \Rightarrow \sigma_1' \sigma_2'
+          \] 
+          abbiamo una derivazione lunga \( n-1 \) di simboli terminali dove:
+          \[
+          \begin{aligned}
+            \sigma_1 = \sigma_1' 0 &\implies \sigma_1' = 0^{h-1}\\
+            \sigma_2 = 1 \sigma_2' &\implies \sigma_2' = 1^{k-1}
+          \end{aligned}
+          \] 
+          Per ipotesi induttiva:
+          \[
+            \stackrel{I.I.}{\implies} \sigma_1' \sigma_2' \in L
+          \] 
+          Quindi:
+          \[
+            \sigma_1' \sigma_2' = 0^{h-1} 1^{k-1} \in L \implies h-1 = k-1 \implies h = k
+          \] 
+          ma allora \( \sigma = \sigma_1 \sigma_2 = 0^h 1^k \) è tale che \( h=k \) 
+          e quindi \( \sigma \in L \) 
+
+          \vspace{1em}
+          \noindent
+          Ricapitolando:
+          \begin{itemize}
+            \item Si parte da \( S \Rightarrow_n 0^h 1^k \), ma non si può applicare
+              l'ipotesi induttiva, quindi si va un passo indietro
+            \item  \( S \Rightarrow_{n-1} 0^h S 1^k \), ma ancora non si può applicare l'ipotesi induttiva
+            \item Si va ancora un passo indietro:
+              \[
+                S \Rightarrow_{n-2} 0^{h-1} S 1^{k-1} \Rightarrow 0^{h-1} 0 S 1 1^{k-1}
+                \Rightarrow 0^h 1^k
+              \] 
+              questo si può usare per generare \( 0^{h-1} 1^{k-1} \):
+              \[
+                S \Rightarrow_{n-2} 0^{h-1} S 1^{k-1} \Rightarrow 0^{h-1} 1^{k-1}
+              \] 
+              che è lunga \( n-1 \) e quindi si può applicare l'ipotesi induttiva.
+            \item Quindi \( 0^{h-1} 1^{k-1} \in L \implies h-1 = k-1 \implies h = k \)
+              e quindi \( 0^h 1^k \in L \quad \square \)
+          \end{itemize}
+          Siamo andati indietro tanto quanto serviva per generare una stringa di soli
+          simboli terminali.
+      \end{itemize}
+  \end{enumerate}
+\end{example}
+
+\subsubsection{Dimostrazione alternativa}
+\begin{example}
+  Considerando l'esempio precedente, una dimostrazione alternativa che un linguaggio è context free consiste
+  nel partire dall'inizio e fare passi avanti piuttosto che partire dalla fine e fare passi indietro.
+  Questo non funziona sempre, ma in questo caso sì:
+  \[
+    L(G) \subseteq L
+  \] 
+  \[
+    \forall i < n \;.\; S \Rightarrow_i \sigma \text{ allora } \sigma \in L
+  \] 
+  \begin{itemize}
+    \item \textbf{Passo induttivo}:
+      \[
+        S \Rightarrow_n \sigma \quad\equiv\quad S \Rightarrow 0 S 1 \Rightarrow_{n-1} \sigma
+        \quad\equiv\quad 0 \sigma' 1
+      \] 
+      dove \( S \Rightarrow_{n-1} \sigma' \). Ma allora si può applicare l'ipotesi induttiva
+      e quindi \( \sigma' \in L \) e questo significa che:
+      \[
+        \exists j \;.\; \sigma' = 0^{j} 1^{j}
+      \] 
+      questo implica che:
+      \[
+        \sigma = 0 \sigma' 1 = 0 0^{j} 1^{j} 1 = 0^{j+1} 1^{j+1} \in L
+      \] 
+  \end{itemize}
+\end{example}
+
 \end{document}
