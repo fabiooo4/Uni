@@ -1512,7 +1512,6 @@ Le operazioni che si possono fare sono:
       \draw (q0) edge[above] node{a} (q1);
     \end{tikzpicture}
   \end{figure}
-  \label{20-10-D1}
 
   \[
     \begin{aligned}
@@ -1896,6 +1895,11 @@ alla regolarità di un linguaggio:
   \] 
   cioè la parte \( v \) può essere "pompata" (ripetuta \( i \) volte) e la stringa
   risultante appartiene ancora a \( L \).
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{insieme_pumping_lemma}
+    \caption{Rappresentazione grafica dell'insieme per il Pumping lemma}
+  \end{figure}
 
   \vspace{1em}
   \noindent
@@ -1928,6 +1932,8 @@ alla regolarità di un linguaggio:
       \draw (q2) edge[above] node{\( a_3 \)} (q3);
       \draw (q3) edge[above] node{\( a_4 \)} (dots);
       \draw (dots) edge[above] node{\( a_m \)} (qm);
+
+      \draw[-] (0,0.5) -- ++(0,0.2) -- ++(7.5,0) node[midway, above] {z} -- ++(0,-0.2);
     \end{tikzpicture}
   \end{figure}
   \noindent
@@ -1951,8 +1957,17 @@ alla regolarità di un linguaggio:
       \node[state, right of=dots2] (qm) {$q_m$};
 
       \draw (q0) edge[above] node{\( a_1 \)} (dots1);
+      \draw (dots1) edge[above] node{} (qbar);
+
+      \draw (qbar) edge[loop below, dashed] node{} (qbar);
+      \draw (qbar) edge[above] node{} (dots2);
+
+      \draw (dots2) edge[above] node{\( a_m \)} (qm);
+
+      \draw[-] (0,0.5) -- ++(0,0.2) -- ++(2.5,0) node[midway, above] {u} -- ++(0,-0.2);
+      \draw[-] (2.5,0.5) -- ++(0,0.2) -- ++(1,0) node[midway, above] {v} -- ++(0,-0.2);
+      \draw[-] (3.5,0.5) -- ++(0,0.2) -- ++(2.5,0) node[midway, above] {w} -- ++(0,-0.2);
     \end{tikzpicture}
-    \label{27-10-D1}
   \end{figure}
   \noindent
   \begin{itemize}
@@ -1966,13 +1981,52 @@ alla regolarità di un linguaggio:
   \end{itemize}
   Questa suddivisione è accettabile per il teorema?
   \begin{enumerate}
-    \item \( \left| uv \right| \le k \) 
-      \label{27-10-D2}
+    \item \( \left| uv \right| \le k = n\) 
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}[->,node distance=1.5cm, on grid, auto]
+          \node[state] (q0) {$q_0$};
+          \node[state, right of=q0] (q1) {$q_1$};
+          \node[state, right of=q1] (q2) {$q_2$};
+          \node[right of=q2] (dots1) {$\ldots$};
+          \node[state, right of=dots1] (qn) {$q_{n-1}$};
+
+          \draw (q0) edge[above] node{\( a_1 \)} (q1);
+          \draw (q1) edge[above] node{\( a_2 \)} (q2);
+          \draw (q2) edge[above] node{} (dots1);
+          \draw (dots1) edge[above] node{\( a_{n-1} \) } (qn);
+          \draw (qn) edge[loop below] node{\( a_n \) } (qn);
+        \end{tikzpicture}
+      \end{figure}
       \noindent
       Per arrivare allo stato finale \( q_n \) si attraversano \( n-1 \) simboli
       \[
         Q = \left\{ q_0, q_1, \ldots, q_{n-1} \right\} \to \left| Q \right| = n
       \] 
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}[->,node distance=1.5cm, on grid, auto]
+          \node[state] (q0) {$q_0$};
+          \node[state, right of=q0] (q1) {$q_1$};
+          \node[state, right of=q1] (q2) {$q_2$};
+          \node[state, right of=q2] (q3) {$q_3$};
+          \node[state, below right=2cm of q3] (q4) {$q_4$};
+          \node[state, below left=2cm of q3] (qn) {$q_{n-1}$};
+          \node[right=3.5cm of q3] (dots) {$\ldots$};
+
+          \draw (q0) edge[above] node{\( a_1 \)} (q1);
+          \draw (q1) edge[above] node{\( a_2 \)} (q2);
+          \draw (q2) edge[above] node{\( a_3 \)} (q3);
+          \draw (q3) edge[right] node{\( a_4 \)} (q4);
+          \draw (q4) edge[above, dashed] node{\( a_{n-1} \)} (qn);
+          \draw (qn) edge[left] node{\( a_n \)} (q3);
+          \draw (q3) edge[above] node{} (dots);
+
+          \draw[-] (7,0.5) -- ++(0,0.2) -- ++(1.2,0) node[midway, above] {w};
+          \draw[-] (-0.5,-2) -- ++(0,-0.2) -- ++(7,0) node[midway,below]
+            {$\le n \text{ num. di stati}$} -- ++(0,0.2);
+        \end{tikzpicture}
+      \end{figure}
 
     \item \( \left| v \right| > 0 \) almeno un arco deve essere uscire dallo stato
       e ritornare nello stesso stato
@@ -2037,7 +2091,11 @@ Quindi il pumping lemma negato diventa:
     \exists i \in \mathbb{N} \;.\; uv^iw \notin L
   \end{cases}
 \] 
-\label{27-10-D3}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{insieme_pumping_lemma_negato}
+  \caption{Rappresentazione grafica dell'insieme per il Pumping lemma negato}
+\end{figure}
 
 \begin{example}
   Consideriamo il linguaggio:
@@ -2213,10 +2271,52 @@ Una grammatica context free è una quadrupla \( E = \left< V, T, P, S \right> \)
     \alpha \color{red}A\color{black} \gamma \Rightarrow \alpha \color{red}\beta\color{black} \gamma
   \] 
   Si è generata una nuova stringa sostituendo \( A \) con \( \beta \).
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \coordinate (A) at (0,0);
+      \draw[red,fill] (A) circle (0.1cm) node[above=0.2cm] {\( A \)};
+      \node[below left=1.5cm of A] (A1) {};
+      \node[below right=1.5cm of A] (A2) {};
+      \draw[red,|-|] (A1) -- (A2) node[midway, below] {\( \beta \in P \)};
+      \draw[red] (A) -- (A1);
+      \draw[red] (A) -- (A2);
+      \draw[red,->] (A) -- ++(0,-0.5);
+    \end{tikzpicture}
+    \caption{Rappresentazione grafica della produzione \( A \to \beta \)}
+  \end{figure}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \coordinate (A) at (0,0);
+      \coordinate[below left=1.5cm of A] (Al) {};
+      \coordinate[below right=1.5cm of A] (Ar) {};
+      \draw[red,|-|] (Al) -- (Ar) node[midway, below] {\( \beta \)};
+      \draw[red] (A) -- (Al);
+      \draw[red] (A) -- (Ar);
+
+      \coordinate (alpha) at A + (-2,0);
+      \draw[|-] (alpha) -- (A) node[midway, above] {\( \alpha \)};
+
+      \coordinate (gamma) at A + (+3,0);
+      \draw[|-] (gamma) -- (A) node[midway, above] {\( \gamma \)};
+
+      \draw[red,fill] (A) circle (0.1cm) node[above=0.2cm] {\( A \)};
+
+      \coordinate[xshift=-2cm] (alpha2) at (Al);
+      \draw[-] (alpha) -- (alpha2);
+      \draw[|-] (alpha2) -- (Al) node[midway, below] {\( \alpha \)};
+
+      \coordinate[xshift=+3cm] (gamma2) at (Ar);
+      \draw[-] (gamma) -- (gamma2);
+      \draw[|-] (gamma2) -- (Ar) node[midway, below] {\( \gamma \)};
+    \end{tikzpicture}
+    \caption{Rappresentazione grafica della derivazione \( \alpha A \gamma \Rightarrow
+      \alpha \beta \gamma \)}
+  \end{figure}
   \noindent
   La singola freccia (\( \to  \)) indica una produzione, mentre la doppia freccia
   (\( \Rightarrow \)) indica una derivazione (applicazione di una produzione).
-  \label{28-10-D1}
   \noindent
   Altri esempi di derivazioni:
   \begin{itemize}
