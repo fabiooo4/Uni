@@ -404,7 +404,8 @@ Le fasi principali della graphics pipeline sono:
     coordinate locali (object coordinates) alle coordinate della telecamera (camera coordinates)
     tramite la model transformation e la camera transformation.
   \item \textbf{Rasterization}: I triangoli vengono convertiti in insiemi di pixel (fragments)
-  \item \textbf{Fragment processing}: Per ogni pixel viene calcolato il colore
+  \item \textbf{Fragment processing}: Per ogni pixel viene calcolato il colore in base
+    al modello di illuminazione scelto e alle proprietà dei materiali.
   \item \textbf{Fragment blending}: I pixel vengono scritti nel framebuffer per creare
     l'immagine finale
 \end{enumerate}
@@ -413,7 +414,13 @@ Le fasi principali della graphics pipeline sono:
   \includegraphics[width=0.4\textwidth]{graphics_pipeline}
   \caption{Fasi della graphics pipeline}
 \end{figure}
-Un esempio è il seguente:
+Il programmatore può intervenire in due fasi della pipeline (viola nell'immagine):
+\begin{itemize}
+  \item \textbf{Vertex shader}: Permette di personalizzare il processo di trasformazione
+    dei vertici
+  \item \textbf{Fragment shader}: Permette di personalizzare il processo di calcolo del colore
+    dei pixel
+\end{itemize}
 \begin{figure}[H]
   \centering
   \includegraphics[width=1\textwidth]{graphics_pipeline_example}
@@ -431,9 +438,7 @@ triangoli) in pixel sull'immagine 2D.
 \end{figure}
 \noindent
 Durante la rasterization, ogni triangolo viene suddiviso in pixel e per ogni pixel
-viene calcolato il colore in base al modello di illuminazione e alle proprietà dei materiali
-della scena.
-
+viene calcolato se disegnarlo oppure no.
 \vspace{1em}
 \noindent
 Quando il rasterizer riceve una primitiva esegue questi passi:
@@ -445,6 +450,20 @@ Quando il rasterizer riceve una primitiva esegue questi passi:
 L'output del rasterizer è un insieme di \textbf{fragments}, uno per ogni pixel, che
 copre tutta l'area della primitiva. Ogni fragment si trova in un pixel specifico dello
 schermo e contiene il suo insieme di attributi.
+
+\vspace{1em}
+\noindent
+\begin{itemize}
+  \item 
+    Prima che una primitiva venga rastereizzata, i vertici che la definiscono devono essere
+    trasformati in coordinate screen space e i colori e altri eventuali attributi devono
+    essere noti. Questo viene effettuato dalla fase di \textbf{vertex processing}. Anche
+    gli attributi devono essere trasformati in clip space.
+
+  \item Dopo aver rasterizzato si svolgono altri processi sui fragment, come il calcolo
+    del colore o della profondita e viene svolto dalla fase di \textbf{fragment processing}.
+\end{itemize}
+
 
 \subsubsection{Rasterization di linee}
 Per rasterizzare una linea tra due punti \( (x_0, y_0) \) bisogna rappresentarla come
@@ -504,5 +523,199 @@ Un triangolo è rappresentato come una tripla di coordinate bidimensionali:
   \includegraphics[width=0.6\textwidth]{triangle}
   \caption{Rappresentazione di un triangolo}
 \end{figure}
+\noindent
+Il metodo più utile per rasterizzare un triangolo è usando le
+\textbf{coordinate baricentriche}, che permettono di esprimere la posizione di un punto
+all'interno del triangolo come combinazione lineare dei vertici del triangolo stesso:
+\[
+  \begin{aligned}
+    x &= \alpha x_0 + \beta x_1 + \gamma x_2 \\
+    y &= \alpha y_0 + \beta y_1 + \gamma y_2 \\
+    \text{con }& \alpha + \beta + \gamma = 1
+  \end{aligned}
+\] 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{barycentric}
+  \caption{Coordinate baricentriche}
+\end{figure}
+\noindent
+Bisogna quindi calcolare i valori di \( \alpha, \beta, \gamma \) che dipendono dal
+triangolo. Consideriamo il seguente triangolo:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.4\textwidth]{barycentric2}
+  \caption{Triangolo per il calcolo delle coordinate baricentriche}
+\end{figure}
+\[
+  \begin{aligned}
+    \alpha(p) = \frac{\color{blue}area(p, b, c)\color{black}}{area(a, b, c)}
+    \quad \text{ vale 1 quando } p = a \\
+    \beta(p) = \frac{\color{orange}area(a, p, c)\color{black}}{area(a, b, c)}
+    \quad \text{ vale 1 quando } p = b \\
+    \gamma(p) = \frac{\color{green}area(a, b, p)\color{black}}{area(a, b, c)}
+    \quad \text{ vale 1 quando } p = c \\
+  \end{aligned}
+\] 
+La combinazione lineare delle coordinate baricentriche permette di ottenere la posizione
+di un qualsiasi fragment all'interno del triangolo, ma anche di interpolare qualsiasi
+attributo associato ai vertici del triangolo (colore, normale, coordinate texture, ecc...).
+Il codice per rasterizzare un triangolo è il seguente:
+\begin{lstlisting}[language=Python]
+for all y:
+    for all x:
+        compute (alpha, beta, gamma) for pixel (x, y)
+        if (alpha >= 0 and alpha <= 1 and
+          beta >= 0 and beta <= 1 and
+          gamma >= 0 and gamma <= 1):
+            draw(x, y)
+\end{lstlisting}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{raster_triangle}
+  \caption{Rasterization di un triangolo}
+\end{figure}
+
+\vspace{1em}
+\noindent
+Un esempio di interpolazione del colore ai vertici di un triangolo è il seguente:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{triangle_color_interpolation}
+  \caption{Interpolazione del colore in un triangolo}
+\end{figure}
+
+\vspace{1em}
+\noindent
+Quando si rasterizzano più triangoli bisogna stare attenti a non disegnare più volte
+lo stesso pixel:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{overlap_triangles}
+  \caption{Esempio di overlap tra triangoli}
+\end{figure}
+
+\subsubsection{Clipping}
+Il clipping è il processo di rimozione delle parti delle primitive geometriche
+che si trovano al di fuori dello schermo e al di fuori della camera virtuale. Bisogna
+quindi tagliare la parte non visible della primitiva e mantenere solo la parte visibile
+modificando eventualmente la sua topologia:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{clipping}
+  \caption{Clipping di una primitiva}
+\end{figure}
+
+La camera virtuale è rappresentata da un \textbf{frustum}, cioè un volume delimitato
+da due piani (near plane e far plane) e da quattro piani laterali (left, right, top, bottom).
+La scena è visualizzata soltanto se si trova all'interno del frustum, quindi tra il near
+plane e il far plane.
+
+\vspace{1em}
+\noindent
+Ci sono quattro casi durante un clip:
+\begin{itemize}
+  \item Tutta la primitiva è dentro il frustum: non serve fare nulla
+  \item Tutta la primitiva è fuori dal frustum: si scarta la primitiva
+  \item La primitiva è parzialmente dentro il frustum: si calcolano i punti di intersezione
+    con i piani del frustum e si crea una nuova primitiva con la parte visibile
+  \item La primitiva attraversa più piani del frustum: si calcolano i punti di intersezione
+    con tutti i piani del frustum e si crea una nuova primitiva con la parte visibile
+\end{itemize}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{clipping2}
+  \caption{Cambio di topologia dopo il clipping}
+\end{figure}
+
+\subsubsection{Intersezione tra una linea e un piano}
+Consideriamo l'equazione di un piano:
+\[
+  f(p) = n \cdot p + D = 0
+\] 
+dove:
+\begin{itemize}
+  \item \( n \) è il vettore normale al piano
+  \item \( p \) è un punto generico del piano
+  \item \( D \) è la distanza del piano dall'origine
+\end{itemize}
+E l'equazione di una linea:
+\[
+  p = a + t(b - a)
+\] 
+dove:
+\begin{itemize}
+  \item \( a \) e \( b \) sono i due punti estremi della linea che definisce la direzione
+  \item \( t \) è un parametro scalare
+\end{itemize}
+Sostituendo l'equazione della linea in quella del piano si ottiene l'equazione per
+calcolare il parametro \( t \) del punto di intersezione:
+\[
+  n \cdot \left( a + t \left( b-a \right)  \right) + D = 0
+\] 
+risolvendo per t si ottiene:
+\[
+  t = \frac{n \cdot a+D}{n \cdot (a-b)}
+\] 
+
+\subsubsection{Blending}
+La fase di blending combina i fragment generati dalle primitive che si sovrappongono
+a ogni pixel per calcolare il colore finale. Questa fase è molto importante per gestire
+le occlusioni e per la rimozione delle superfici nascoste (hidden surface removal, HSR).
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{blending}
+  \caption{Blending di fragment sovrapposti}
+\end{figure}
+
+\vspace{1em}
+\noindent
+L'algoritmo di blending più è il \textbf{Painter's algorithm}, disegna per primi i fragment
+più lontani e poi quelli più vicini, sovrapponendoli. In questo modo, i fragment più vicini
+coprono quelli più lontani.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{painter_algorithm}
+  \caption{Painter's algorithm}
+\end{figure}
+
+\vspace{1em}
+\noindent
+Un altro metodo per il blending è il \textbf{Z-buffering}, che consiste nel mantenere
+una \textbf{depth map} (Z-buffer) che memorizza la profondità di ogni pixel. Se la
+profondità del nuovo fragment è minore di quella memorizzata nel Z-buffer, il fragment
+viene disegnato e la profondità viene aggiornata, altrimenti viene scartato.
+\begin{figure}[H]
+  \centering
+  \begin{minipage}{0.48\textwidth}
+     \centering
+     \includegraphics[width=.9\linewidth]{z_buffer}
+     \caption{Buffer dell'immagine}
+   \end{minipage}\hfill
+   \begin{minipage}{0.48\textwidth}
+     \centering
+     \includegraphics[width=.9\linewidth]{z_buffer2}
+     \caption{Buffer della profondità}
+   \end{minipage}
+\end{figure}
+Per rappresentare la profondità di solito più un pixel è scuro più è vicino alla camera.
+Un esempio di Z-buffering è il seguente:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{z_buffering_example}
+  \caption{Esempio di Z-buffering}
+\end{figure}
+
+\vspace{1em}
+\noindent
+Siccome il buffer della profondità ha una risoluzione limitata, possono verificarsi
+dei problemi di \textbf{Z-fighting}, cioè due fragment molto vicini tra loro che
+creano artefatti visivi nell'immagine finale:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{z_fighting}
+  \caption{Esempio di Z-fighting}
+\end{figure}
+
 
 \end{document}
