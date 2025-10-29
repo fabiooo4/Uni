@@ -383,8 +383,126 @@ nelle coordinate dello schermo (screen coordinates), cioè le coordinate 2D dell
 finale. Dipende soltanto dalla risoluzione dello schermo.
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.3\textwidth]{viewport_transformation}
+  \includegraphics[width=0.6\textwidth]{viewport_transformation}
   \caption{Viewport transformation}
+\end{figure}
+
+\subsection{Pipeline}
+La sequenza di operazioni richiesta per trasformare gli oggetti di una scena in pixel
+su uno schermo è chiamata \textbf{graphics pipeline}. Ci sono due tipi di pipeline:
+\begin{itemize}
+  \item \textbf{Hardware pipeline}: utilizza la GPU tramite API grafiche come OpenGL
+    o Direct3D
+  \item \textbf{Software pipeline}: implementa tutte le fasi della pipeline tramite codice
+    eseguito dalla CPU
+\end{itemize}
+Le fasi principali della graphics pipeline sono:
+\begin{enumerate}
+  \item \textbf{Input}: Gli oggetti della scena, sempre descritti da triangoli, vengono
+    passati alla pipeline
+  \item \textbf{Vertex processing}: Ogni vertice dei triangoli viene trasformato dalle
+    coordinate locali (object coordinates) alle coordinate della telecamera (camera coordinates)
+    tramite la model transformation e la camera transformation.
+  \item \textbf{Rasterization}: I triangoli vengono convertiti in insiemi di pixel (fragments)
+  \item \textbf{Fragment processing}: Per ogni pixel viene calcolato il colore
+  \item \textbf{Fragment blending}: I pixel vengono scritti nel framebuffer per creare
+    l'immagine finale
+\end{enumerate}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.4\textwidth]{graphics_pipeline}
+  \caption{Fasi della graphics pipeline}
+\end{figure}
+Un esempio è il seguente:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{graphics_pipeline_example}
+  \caption{Esempio di graphics pipeline}
+\end{figure}
+
+
+\subsubsection{Rasterization}
+La rasterization è il processo di conversione delle primitive geometriche (di solito
+triangoli) in pixel sull'immagine 2D.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{rasterization}
+  \caption{Rasterization}
+\end{figure}
+\noindent
+Durante la rasterization, ogni triangolo viene suddiviso in pixel e per ogni pixel
+viene calcolato il colore in base al modello di illuminazione e alle proprietà dei materiali
+della scena.
+
+\vspace{1em}
+\noindent
+Quando il rasterizer riceve una primitiva esegue questi passi:
+\begin{enumerate}
+  \item \textbf{Enumera} i pixel coperti dalla primitiva
+  \item \textbf{Interpola} i valori dei vertici (coordinate, colori, normali, ecc...),
+    chiamati attributi, per ogni pixel della primitiva
+\end{enumerate}
+L'output del rasterizer è un insieme di \textbf{fragments}, uno per ogni pixel, che
+copre tutta l'area della primitiva. Ogni fragment si trova in un pixel specifico dello
+schermo e contiene il suo insieme di attributi.
+
+\subsubsection{Rasterization di linee}
+Per rasterizzare una linea tra due punti \( (x_0, y_0) \) bisogna rappresentarla come
+un rettangolo per fornire uno spessore alla linea. Si disegnano tutti i pixel che hanno
+il centro all'interno del rettangolo.
+\begin{figure}[H]
+  \centering
+  \begin{minipage}{0.48\textwidth}
+     \centering
+     \includegraphics[width=.9\linewidth]{raster_line}
+     \caption{Rasterization di una linea}
+   \end{minipage}\hfill
+   \begin{minipage}{0.48\textwidth}
+     \centering
+     \includegraphics[width=.9\linewidth]{raster_line_2}
+     \caption{Output della rasterization di una linea}
+   \end{minipage}
+\end{figure}
+\noindent
+Si può migliorare l'approssimazione utilizzando l'algoritmo \textbf{Mid-Point}
+che seleziona i pixel in modo da minimizzare l'errore tra la linea ideale e la
+linea rasterizzata. Consideriamo l'equazione implicita di una linea tra due punti:
+\[
+  f(x,y) = (y_0 - y_1)x + (x_1 - x_0)y + (x_0y_1 - x_1y_0) = 0
+\] 
+L'algoritmo (solo per le linee della griglia orizzontali) è il seguente:
+\begin{lstlisting}[language=Python]
+y = y_0
+for x = x_0 to x_1:
+    draw(x, y)
+
+    if f(x + 1, y + 0.5) < 0:
+        y = y + 1
+\end{lstlisting}
+L'effetto di questo algoritmo è il seguente:
+\begin{figure}[H]
+  \centering
+  \begin{minipage}{0.48\textwidth}
+     \centering
+     \includegraphics[width=.9\linewidth]{midpoint_line}
+     \caption{La linea si trova sopra il midpoint, quindi viene disegnato il pixel in alto}
+   \end{minipage}\hfill
+   \begin{minipage}{0.48\textwidth}
+     \centering
+     \includegraphics[width=.9\linewidth]{midpoint_line_2}
+     \caption{La linea si trova sotto il midpoint, quindi viene disegnato il pixel in basso}
+  \end{minipage}
+\end{figure}
+
+\subsubsection{Rasterization di triangoli}
+Un triangolo è rappresentato come una tripla di coordinate bidimensionali:
+\[
+  (x_0, y_0), (x_1, y_1), (x_2, y_2)
+\] 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{triangle}
+  \caption{Rappresentazione di un triangolo}
 \end{figure}
 
 \end{document}
