@@ -965,4 +965,156 @@ indipendente.
   \] 
 \end{example}
 
+\subsection{Ricerca locale in uno spazio continuo}
+La ricerca locale può essere estesa a spazi di stato continui. Per risolvere questi
+problemi si possono utilizzare tecniche come:
+\begin{itemize}
+  \item \textbf{Discretizzazione}: suddividere lo spazio continuo in una griglia di punti
+    discreti con una risoluzione \( \delta \) e utilizzare algoritmi di ricerca locale
+  \item \textbf{Random perturbations}: si prende una soluzione e si applicano piccole
+    perturbazioni casuali per esplorare lo spazio delle soluzioni
+  \item \textbf{Gradient}: si calcola analiticamente il gradiente della
+    funzione obiettivo \( f(x) \) 
+\end{itemize}
+
+\subsubsection{Gradient ascent/descent}
+Il gradiente di una funzione \( f(x) \) è il seguente:
+\[
+  \nabla f(x) = \left( \frac{\partial f}{\partial x_1}, \frac{\partial f}{\partial x_2},
+  \ldots, \frac{\partial f}{\partial x_n} \right)
+\] 
+Per trovare la direzione di massima crescita della funzione obiettivo si pone
+il gradiente uguale a zero:
+\[
+  \nabla f(x) = 0
+\] 
+Spesso non si può porre il gradiente a 0 globalmente, ma si può migliorare localmente:
+\begin{itemize}
+  \item Aggiornare la soluzione nella direzione massima del gradiente per ogni coordinata
+  \item Più la funzione è "ripida" più si fanno passi grandi
+\end{itemize}
+Aggiornare una coordinata viene effettuato tramite una funzione generale \( g(x_1, x_2) \):
+\[
+  x_1 \leftarrow x_1 + \alpha \frac{\partial g(x_1, x_2)}{\partial x_1}
+  \quad
+  x_2 \leftarrow x_2 + \alpha \frac{\partial g(x_1, x_2)}{\partial x_2}
+\] 
+Oppure in forma vettoriale:
+\[
+  X = \begin{bmatrix}
+    x_1 \\
+    x_2 \\
+  \end{bmatrix}
+  ,\quad
+  \nabla g(X) = \begin{bmatrix}
+    \frac{\partial g(X)}{\partial x_1} \\
+    \frac{\partial g(X)}{\partial x_2} \\
+  \end{bmatrix}
+\] 
+\[
+  X \leftarrow X + \alpha \nabla g(X)
+\] 
+Dove \( \alpha \) è lo "step size", cioè la dimensione del passo da fare:
+\begin{itemize}
+  \item Se \( \alpha \) è troppo grande si rischia di saltare soluzioni
+  \item Se \( \alpha \) è troppo piccolo i passi richiesti possono essere troppi
+\end{itemize}
+
+\subsubsection{Algoritmo di Newton-Raphson}
+È una tecnica generale per trovare le radici di una funzione, cioè risolvere un'equazione
+del tipo \( g(x) = 0 \). Per farlo si trova un'approssimazione iniziale \( \bar{x}_0 \) della
+soluzione e iterativamente si aggiorna l'approssimazione usando la formula:
+\[
+  \bar{x}_{n+1} = \bar{x}_n - \frac{g(\bar{x}_n)}{g'(\bar{x}_n)}
+\] 
+dove \( g' \) è la derivata di \( g \):
+\[
+  g'(x) = \frac{dg(x)}{dx}
+\] 
+\begin{example}
+  Consideriamo la funzione \( g(x) = x^2 - a \).
+  \begin{enumerate}
+    \item 
+      Mostra che il
+      metodo di Newton-Raphson porta alla formula:
+      \[
+        x_{n+1} = \frac{1}{2} \left( x_n + \frac{a}{x_n} \right)
+      \] 
+
+      \vspace{1em}
+      \noindent
+      \textbf{Soluzione:}\\
+      La formula di Newton-Raphson è:
+      \[
+        \begin{aligned}
+          \bar{x}_{n+1} &= \bar{x}_n - \frac{g(\bar{x}_n)}{g'(\bar{x}_n)}\\
+                        &= \bar{x}_n - \frac{\bar{x}_n^2 - a}{2\bar{x}_n} \\
+                        &= \frac{2 \bar{x}_n^2 - (\bar{x}_n^2 - a)}{2\bar{x}_n}\\
+                        &= \frac{\bar{x}_n^2 + a}{2\bar{x}_n} \\
+                        &= \frac{1}{2} \left( \bar{x}_n + \frac{a}{\bar{x}_n} \right)
+        \end{aligned}
+      \] 
+
+
+    \item Fissato \( a = 4 \) e \( x_0 = 1 \), calcola \( x_i, \; i \in \{1,2,3\}  \) 
+
+      \vspace{1em}
+      \noindent
+      \textbf{Soluzione:}\\
+      Sostituendo i valori nella formula ottenuta al passo precedente si ottiene:
+      \[
+      \begin{aligned}
+        x_1 &= \frac{1}{2} \left( 1 + \frac{4}{1} \right) = \frac{5}{2} = 2.5\\
+        x_2 &= \frac{1}{2} \left( \frac{5}{2} + \frac{4}{\frac{5}{2}} \right)
+              = \frac{1}{2} \left( \frac{25}{10} + \frac{8}{5} \right)
+              = \frac{1}{2} \cdot \frac{41}{10} = \frac{41}{20} = 2.05\\
+        x_3 &= \frac{1}{2} \left( \frac{41}{20} + \frac{4}{\frac{41}{20}} \right)
+              = \frac{1}{2} \left( \frac{41}{20} + \frac{80}{41} \right)
+              = \frac{1}{2} \cdot \frac{1681 + 1600}{820}
+              \approx 2.0006\\
+      \end{aligned}
+      \] 
+      Graficamente si può vedere che la funzione converge rapidamente a \( 2 \):
+      \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\textwidth]{newton_raphson}
+        \caption{Esempio grafico del metodo di Newton-Raphson}
+      \end{figure}
+  \end{enumerate}
+\end{example}
+
+\subsubsection{Calcolo degli zeri del gradiente}
+Utilizzando il metodo di Newton-Raphson si possono trovare gli zeri del gradiente,
+cioè dove la funzione generica \( g(x) \) è \( \nabla f(X) \). In questo caso
+le funzioni di aggiornamento in forma vettoriale diventano:
+\[
+  x \leftarrow x - H^{-1}_f(x) \nabla f(x)
+\] 
+dove \( H_{ij} = \frac{\partial^2 f}{\partial x_i \partial x_j} \) è la matrice Hessiana.
+Per problemi in più dimensioni calcolare tutte le entrate della matrice Hessiana può
+essere computazionalmente costoso, quindi spesso si usano metodi approssimati.
+
+\vspace{1em}
+\noindent
+Questo è ancora un metodo \textbf{locale}, quindi soffre degli stessi problemi
+della ricerca locale, come massimi locali e punti sella. Random restart e
+simulated annealing possono essere utili anche per spazi continui.
+
+\subsubsection{Gradiente empirico}
+A volte si può calcolare \( f(X) \) per un certo input, ma non si può calcolare
+\( \nabla f(X) = 0 \) neanche localmente. L'\textbf{empirical gradient} è la risposta
+di \( f(X) \) a piccoli incrementi o decrementi di \( X \).
+
+\subsection{Constrined satisfaction problem}
+Assumiamo di avere un singolo agente, azioni deterministiche e un ambiente completamente
+osservabile (discreto). In questo tipo di problemi:
+\begin{itemize}
+  \item Lo stato è definito da un insieme di variabili \( X = X_i \) che può assumere
+    valori in un insieme di domini \( D = D_i \).
+  \item Il goal test è un insieme di vincoli che specificano le combinazioni ammissibili
+    per sottoinsiemi di variabili
+  \item Si possono usare algoritmi che sfruttano queste proprietà che sono più efficenti
+    degli algoritmi di ricerca generici
+\end{itemize}
+
 \end{document}
