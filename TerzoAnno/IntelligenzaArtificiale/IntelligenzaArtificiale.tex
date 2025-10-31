@@ -1105,7 +1105,7 @@ A volte si può calcolare \( f(X) \) per un certo input, ma non si può calcolar
 \( \nabla f(X) = 0 \) neanche localmente. L'\textbf{empirical gradient} è la risposta
 di \( f(X) \) a piccoli incrementi o decrementi di \( X \).
 
-\subsection{Constrined satisfaction problem}
+\subsection{Constrained satisfaction problem}
 Assumiamo di avere un singolo agente, azioni deterministiche e un ambiente completamente
 osservabile (discreto). In questo tipo di problemi:
 \begin{itemize}
@@ -1116,5 +1116,364 @@ osservabile (discreto). In questo tipo di problemi:
   \item Si possono usare algoritmi che sfruttano queste proprietà che sono più efficenti
     degli algoritmi di ricerca generici
 \end{itemize}
+
+\begin{example}
+  Un esempio di problema CSP è il problema del map coloring, in cui si deve colorare
+  una mappa in modo che nessuna regione confinante abbia lo stesso colore.
+  \begin{itemize}
+    \item \textbf{Variabili}: \( WA, NT, Q, NSW, V, SA, T \) 
+    \item \textbf{Domini}: \( D_i = \{\text{red}, \text{green}, \text{blue}\}  \) 
+    \item \textbf{Vincoli}: Regioni adiacenti devono avere colori diversi. Si rappresenta
+      con: \( WA \neq NT \)
+  \end{itemize}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{map_coloring}
+    \caption{Esempio di map coloring}
+  \end{figure}
+  \noindent
+  Una soluzione è ad esempio:
+  \[
+    \begin{aligned}
+      \{ WA = \text{red}, NT = \text{green}, Q = \text{red}, NSW = \text{green},\\
+      V = \text{red}, SA = \text{blue}, T = \text{green} \}
+    \end{aligned}
+  \] 
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{map_coloring_solution}
+    \caption{Esempio di soluzione del map coloring}
+  \end{figure}
+\end{example}
+
+\subsubsection{Grafo dei vincoli}
+Il grafo dei vincoli, detto anche primal graph, è una rappresentazione grafica
+di un problema CSP in cui è presente un nodo per ogni variabile e un arco per ogni
+vincolo tra due variabili:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{constraint_graph}
+  \caption{Esempio di grafo dei vincoli per il problema del map coloring}
+\end{figure}
+
+\begin{definition}
+  Il grafo dei vincoli è definito come una tupla di 3 elementi:
+  \[
+    CN = \left< X, D, C \right>
+  \] 
+  dove:
+  \begin{itemize}
+    \item \( X = \{x_1, \ldots, x_n\}  \): insieme di variabili
+    \item \( D = \{D_1, \ldots, D_n\}  \): insieme di domini
+    \item \( C = \{(S_1, R_1), \ldots, (S_m, R_m)\}  \): insieme di vincoli, dove ogni vincolo
+      \( (S_i, R_i) \) è composto da:
+      \begin{itemize}
+        \item \( S_i \subseteq X \): sottoinsieme di variabili coinvolte nel vincolo (scope)
+        \item \( R_i \): sottoinsieme del prodotto cartesiano delle variabili in \( S_i \),
+          cioè l'insieme delle combinazioni ammissibili delle variabili in \( S_i \)
+      \end{itemize}
+    \item Soluzione: un'assegnazione di \textbf{tutte} le variabili che soddisfa
+      \textbf{tutti} i vincoli. Esistono anche soluzioni parziali consistenti, cioè
+        una soluzione parziale che soddisfa tutti i vincoli in cui lo scope contiene
+        solo variabili assegnate. La soluzione parziale consistente non è necessariamente
+        parte di una soluzione completa.
+    \item Tasks: è una funzione di ottimizzazione, ad esempio controllo di consistenza,
+      trovare una o tutte le soluzioni
+  \end{itemize}
+\end{definition}
+
+\begin{example}
+  Consideriamo seguente crossword:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{crossword}
+    \caption{Esempio di crossword}
+  \end{figure}
+  \noindent
+  Bisogna assegnare le lettere delle parole disponibili alle caselle vuote in modo
+  che le parole risultanti siano valide.
+  \begin{itemize}
+    \item \textbf{Variabili}: parole possibili: \( {\text{MAP}, \text{ARC}} \) 
+    \item \textbf{Domini}: \( D_i = \text{ lettere dell'alfabeto} \) 
+    \item \textbf{Vincoli}: lettere condivise devono essere uguali:
+      \[
+        \begin{aligned}
+          C_1 \left[ \{x_1, x_2, x_3\}, \left( \text{MAP} \right), \left( \text{ARC} \right) \right]\\
+          C_2 \left[ \{x_2, x_4, x_5\}, \left( \text{MAP} \right), \left( \text{ARC} \right) \right]
+        \end{aligned}
+      \]
+  \end{itemize}
+  Il grafo dei vincoli è il seguente:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{crossword_constraint_graph}
+    \caption{Esempio di grafo dei vincoli per il problema del crossword}
+  \end{figure}
+  \noindent
+  Esiste un altro grafo chiamato \textbf{grafo duale} in cui i nodi rappresentano
+  i vincoli e gli archi rappresentano le variabili condivise tra i vincoli (vincolo di
+  uguaglianza):
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{crossword_dual_graph}
+    \caption{Esempio di grafo duale per il problema del crossword}
+  \end{figure}
+\end{example}
+\noindent
+
+\subsubsection{Problemi combinatori}
+I problemi combinatori sono tutti quei problemi in cui dato un insisme di soluzioni
+si vuole trovare la soluzione migliore. Il CSP è un sottoinsieme di problemi combinatori.
+I principali tipi di problemi combinatori sono:
+\begin{itemize}
+  \item \textbf{Decisioni}: dato un insieme di soluzioni, decidere se esiste una soluzione
+    che soddisfa certi criteri. Ad esempio colora un grafo con \( k \) colori, bisogna
+    dire se è possibile o no fissato un \( k \).
+  \item \textbf{Ottimizzazione}: bisogna ottimizzare un obiettivo. Ad esempio colorare
+    un grafo con \( k \) colori minimizzando i conflutti.
+  \item \textbf{Ottimizzazione multiobiettivo}: bisogna ottimizzare più obiettivi
+    contemporaneamente. Ad esempio minimizzare il rischio e massimizzare il profitto in
+    un portafoglio di investimenti.
+  \item \textbf{Graphical models}: sono problemi definiti da:
+    \begin{itemize}
+      \item Insieme di variabili
+      \item Domini delle variabili
+      \item Funzioni \textbf{locali} che definiscono i vincoli
+      \item Funzione \textbf{globale} che rappresenta un'aggregazione delle funzioni locali
+      \item Soluzioni, ovvero assegnazioni delle variabili, che ottimizzano la funzione
+        globale
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Backtracking search}
+Il backtracking search è un algoritmo di ricerca per i problemi CSP. Questo algoritmo
+è utile quando le assegnazioni delle variabili sono commutative, cioè l'ordine in cui
+le variabili vengono assegnate non cambia il risultato finale:
+\[
+  WA = \text{red}, NT = \text{green}
+  \quad \text{è equivalente a} \quad
+  NT = \text{green}, WA = \text{red}
+\] 
+Questo algoritmo è semplicemente una ricerca in profondità per CSP con assegnamenti
+alle variabili singoli. L'ordine delle variabili può impattare la performance dell'algoritmo.
+\begin{lstlisting}[language=Python]
+function Backtracking-Search(csp) returns solution or failure
+  return Backtrack({ }, csp)
+
+function Backtrack(assignment, csp) returns solution or failure
+  if assignment is complete then return assignment
+  var <- Select-Unassigned-Variable(csp)
+  for each value in Order-Domain-Values(var, assignment, csp) do
+    if value is consistent with assignment then
+      add {var = value} to assignment
+      inferences <- Inferences(csp, var, value)
+      if inferences 6 = failure then
+        add inferences to assignment
+        result <- Backtrack(assignment, csp)
+        if result 6 = failure then
+          return result
+        endif
+      endif
+    endif
+    remove {var = value} and inferences from assignment
+  endfor
+  return failure
+\end{lstlisting}
+Le principali decisioni che impattano l'algoritmo sono:
+\begin{itemize}
+  \item Come selezionare la variabile
+  \item Come selezionare il valore
+  \item Come fare inferenze
+\end{itemize}
+Per migliorare l'algoritmo si possono usare le seguenti tecniche:
+\begin{itemize}
+  \item \textbf{Ordinare le variabili}:
+    \begin{itemize}
+      \item Minimum Remaining Values: Seleziona la variabile con il minor numero di valori
+        legali rimasti nel dominio, quindi prima si fallisce meglio è
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width=0.7\textwidth]{minimum_remaining_value}
+          \caption{Esempio di Minimum Remaining Values}
+        \end{figure}
+      \item Degree Heuristic: Seleziona la variabile che è coinvolta nel maggior numero
+        di vincoli con altre variabili non assegnate
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width=0.7\textwidth]{degree_heuristic}
+          \caption{Esempio di Degree Heuristic}
+        \end{figure}
+    \end{itemize}
+
+  \item \textbf{Ordinare i valori delle variabili}:
+    \begin{itemize}
+      \item Least Constraining Value: Seleziona il valore che lascia il maggior numero
+        di opzioni aperte per le altre variabili non assegnate
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width=0.7\textwidth]{least_constraining_value}
+          \caption{Esempio di Least Constraining Value}
+        \end{figure}
+    \end{itemize}
+
+  \item \textbf{Consistenza locale}: Arc o Path consistency per ridurre i domini delle
+    variabili e individuare fallimenti precoci
+
+  \item \textbf{Look-ahead}: Predirre i conflitti futuri per evitare di esplorare
+    rami che porteranno a fallimenti
+
+  \item \textbf{Look-back}: Analizzare verso dove fare backtracking
+
+  \item \textbf{Tree decomposition}: Sfrutta la struttura del problema per dividerlo in
+    sotto-problemi più piccoli e risolverli separatamente
+\end{itemize}
+
+\subsubsection{Inferenza}
+Si possono fare ragionamenti riguardo ai vincoli per fare inferenze per nuovi vincoli.
+Se consideriamo l'esempio del graph coloring:
+\begin{itemize}
+  \item Dati \( \{x_1, x_2, x_3\} \), \( \{D_1 = D_2 = D_3\}, D_i = \{R, B\}  \) e\\
+    \( C = \left\{ C_1: (x_1 \neq x_2), C_2: (x_2 \neq x_3) \right\} \)
+  \item Si può inferire che \( C_3: (x_1 \neq x_3) \) perchè se \( x_1 = x_3 \)
+    allora \( x_2 \) non può assumere nessun valore legale
+\end{itemize}
+\noindent
+I vantaggi e svantaggi dell'aggiunta di vincoli sono:
+\begin{itemize}
+  \item Vincoli più stringenti portano ad uno spazio di ricerca più piccolo
+  \item Aggiungere vincoli richiede più computazione
+  \item Ogni volta che una nuova variabile viene assegnata bisogna controllare più
+    vincoli
+  \item Se il problema consiste soltanto in vincoli binari allora non si hanno mai più
+    di \( O(n) \) controlli
+  \item Se il problema consiste in vincoli di ordine superiore \( r \) allora si hanno
+    \( O(n^{r-1}) \) controlli
+\end{itemize}
+Questa inferenza rende il grafo backtrack free.
+
+\vspace{1em}
+\noindent
+Un grafo si dice \textbf{backtrack free} se ogni foglia è un goal state. Una DFS su un
+grafo backtrack-free garantisce un assegnamento completo e consistente
+
+\subsubsection{Look Ahead}
+Look ahead è una tecnica che permette di fare inferenze sui vincoli futuri
+per evitare di esplorare rami che porteranno a fallimenti. Quindi data un'inferenza
+approssimata si vuole predirre l'impatto della prossima assegnazione di una variabile
+e vedere come impatta i futuri assegnamenti. Ci sono due strategie principali:
+\begin{itemize}
+  \item \textbf{Forward checking}: Controlla le variabili assegnate separatamente
+    da quelle non assegnate.
+  \item \textbf{Arc consistency look ahead}: Propaga la consistenza di arco, cioè quella
+    che assicura che per ogni valore di una variabile esista un valore legale
+    nella variabile connessa tramite un vincolo binario, in tutta la rete
+\end{itemize}
+
+\subsubsection{Forward checking look ahead}
+È la forma più limitata di propagazione dei vincoli. Propaga l'effetto di un valore
+selezionato su tutte le variabili future \textbf{separatamente}, cioè una ad una.
+Se il dominio di una variabile futura diventa vuoto, allora si tenta il valore successivo
+per la variabile corrente.
+\begin{example}
+  Prendiamo ad esempio il problema del map coloring, l'idea principale è quella di tenere
+  traccia dei valori legali rimanenti per le variabili non assegnate. Viene terminata
+  la ricerca quando qualsiasi variabile non ha più valori legali.
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{map_coloring_forward_check}
+    \caption{Esempio di forward checking per il problema del map coloring}
+  \end{figure}
+\end{example}
+La complessità del forward checking è: \( O(ek^2) \), dove:
+\begin{itemize}
+  \item \( e \) il numero di vincoli
+  \item \( k \) valore per ogni variabile futura
+  \item \( k \) valore per la variabile corrente
+\end{itemize}
+
+\subsubsection{Arc consistency look ahead}
+L'arc consistency look ahead forza la consistenza di arco su tutte le variabili rimanenti.
+
+\begin{itemize}
+  \item Un arco \( x_k \to x_j \) è \textbf{consistente} se e solo se per ogni assegnamento di
+    \( x_k \) c'è almeno un assegnamento di \( x_j \) che è consistente con il vincolo
+    \( (x_k, x_j) \). 
+
+  \item Forzare la consistenza di arco: se nessun valore di \( x_j \) è consistente
+    con un dato valore di \( x_k = c \) allora si rimuove \( c \) dal dominio di \( x_k \)
+
+  \item Forward checking: si impone la consistenza da ogni variabile non assegnata
+    a un nuovo assegnamento
+
+  \item Nota: nel forward checking non si controlla mai la consistenza tra variabili
+    non assegnate, nell'arc consistency look-ahead per ogni nuovo assegnamento
+    si controlla la consistenza di arco tra ogni coppia di variabili
+\end{itemize}
+L'arc consistency viene rappresentata da una funzione che modifica il dominio di
+\( x_k \) se non è consistente con \( x_j \):
+\[
+  rev(x_k, x_j)
+\] 
+
+\begin{example}
+  Consideriamo il problema del map coloring. I passi dell'algoritmo sono:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{map_coloring_arc_consistency_1}
+    \caption{Passo 1}
+  \end{figure}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{map_coloring_arc_consistency_2}
+    \caption{Passo 2}
+  \end{figure}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{map_coloring_arc_consistency_3}
+    \caption{Passo 3}
+  \end{figure}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{map_coloring_arc_consistency_4}
+    \caption{Passo 4}
+  \end{figure}
+\end{example}
+
+\vspace{1em}
+\noindent
+La complessità dell'algoritmo arc consistency migliore (AC-4) è \( O(ek^3) \).
+
+\subsubsection{Forzare l'arc consistency}
+\begin{definition}
+  \begin{itemize}
+    \item Un arco \( x_i, x_j \) è arc consistent se e solo se \( x_i \) è arc consistent
+    rispetto a \( x_j \) e \( x_j \) è arc consistent rispetto a \( x_i \).
+    
+    \item 
+    Un grafo è arc consistent se e solo se tutti i suoi vincoli sono arc consistent.
+
+    \item 
+    Si può facilmente assicurare che una coppia di variabili siano arc consistent
+    (procedura Revise),
+    Ma rivedere la consistenza di arco su una variabile potrebbe rendere un'altra
+    variabile non arc consistent.
+
+    \item 
+    Sono necessarie procedure sistematiche per garantire l'arc consistency sulle reti.
+  \end{itemize}
+\end{definition}
+\begin{itemize}
+  \item L'arc consistency con un dominio vuoto implica che il problema non ha soluzione.
+
+  \item 
+    L'arc consistency con tutti i domini non vuoti \textbf{non} implica che ci sia una soluzione.
+    Quindi l'arc consistency non è completa. 
+
+  \item L'unica cosa che si può dire a riguardo è che
+    se l'arc consistency con tutti i domini non vuoti non ha cicli nel grafo dei vincoli
+    e ha solo vincoli binari, allora il grafo è backtrack free ed esiste una soluzione.
+\end{itemize}
+
+\subsubsection{Tree decomposition}
 
 \end{document}
