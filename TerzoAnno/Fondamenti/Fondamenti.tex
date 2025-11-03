@@ -343,7 +343,7 @@ Le funzioni calcolabili sono divise in classi secondo la gerarchia di Chomsky:
   \caption{Gerarchia di Chomsky}
 \end{figure}
 
-\section{Principio di induzione}
+\section{Linguaggi regolari}
 Il principio di induzione è un meccanismo di definizione e dimostrazione che funziona
 \textbf{solo su insiemi infiniti}. Esistono due metodi di induzione:
 \begin{itemize}
@@ -2254,7 +2254,7 @@ Una grammatica context free è una quadrupla \( E = \left< V, T, P, S \right> \)
 
   \vspace{1em}
   \noindent
-  Il \textbf{linguaggio generato} dalla grammatica \( E \) è una combinazione di
+  Il \textbf{linguaggio generato} dalla grammatica \( G \) è una combinazione di
   produzioni. Ad esempio:
   \[
     A \to \beta \in P \quad \alpha, \gamma \in (V \cup T)^*
@@ -2599,6 +2599,327 @@ Una grammatica context free è una quadrupla \( E = \left< V, T, P, S \right> \)
         \sigma = 0 \sigma' 1 = 0 0^{j} 1^{j} 1 = 0^{j+1} 1^{j+1} \in L
       \] 
   \end{itemize}
+\end{example}
+
+\subsection{Alberi di derivazione}
+Data una grammatica context free \( G = \left< V, T, P, S \right> \), un albero di
+derivazione (parse tree) per \( G \) ha le seguenti caratteristiche:
+\begin{enumerate}
+  \item Ogni nodo ha un'etichetta che è un simbolo di \( V \cup T \cup \left\{ \varepsilon \right\} \)
+  \item L'etichetta della radice è un simbolo in \( V \) 
+  \item Ogni nodo interno interno (non foglia) ha etichetta in \( V \)
+  \item Se un nodo \( n \) è etichettato con \( A \in V \) e i nodi figli
+    \( n_1, n_2, \ldots, n_k \) sono etichettati con \( X_1, X_2, \ldots, X_k \in V \cup T \cup
+    \left\{ \varepsilon \right\} \) allora esiste una produzione che genera un arco per
+    ogni simbolo figlio:
+    \[
+      A \to X_1 X_2 \ldots X_k \in P
+    \]
+    \label{03-11-D1}
+
+  \item Se un nodo ha etichetta \( \varepsilon \) allora è una foglia ed è l'unico figlio
+    del padre
+    \label{03-11-D2}
+\end{enumerate}
+
+\begin{example}
+  Consideriamo la grammatica
+  \[
+    E \to 0 \;|\; 1 \;|\; (E \text{ and } E) \;|\; (E \text{ or } E) \;|\; (\text{not } E)
+  \]
+  Consideriamo la derivazione:
+  \[
+    E \Rightarrow^* \left( \left( 0 \text{ or } 1 \right)  \text{ and } \left( \text{not } 0 \right)  \right) 
+  \] 
+  L'albero di derivazione è il seguente:
+  \label{03-11-D3}
+\end{example}
+
+\begin{theorem}
+  Sia \( G = \left< V, T, P, S \right> \) una grammatica context free, allora:
+  \[
+    S \Rightarrow^* \alpha \in T^*
+  \] 
+  se e solo se esiste un albero di derivazione con radice etichettata \( S \) e
+  foglie etichettate (leggendo da sinistra verso destra) con i simboli di \( \alpha \).
+\end{theorem}
+
+\subsection{Ambiguità delle grammatiche}
+\begin{example}
+  Consideriamo una grammatica per le espressioni aritmetiche senza parentesi:
+  \[
+    E \to E + E \;|\; E * E \;|\; 0 \;|\; 1 \;|\; 2
+  \] 
+  Consideriamo la stringa:
+  \[
+    2 * 0 + 1
+  \]
+  Si hanno due casi:
+  \begin{itemize}
+    \item Si esegue prima la moltiplicazione:
+      \[
+        2 * 0 + 1 = (2 * 0) + 1 = 1
+      \] 
+    \item Si esegue prima l'addizione:
+      \[
+        2 * 0 + 1 = 2 * (0 + 1) = 2
+      \]
+  \end{itemize}
+  Notiamo che si ottengono due risultati diversi, quindi la grammatica è ambigua
+  perchè la stessa stringa può essere generata da due alberi di derivazione distinti:
+  \begin{itemize}
+    \item Albero di derivazione con precedenza alla moltiplicazione
+      \label{03-11-D4} 
+    \item Albero di derivazione con precedenza all'addizione
+      \label{03-11-D5}
+  \end{itemize}
+\end{example}
+
+\begin{definition}[Ambiguità]
+  Una grammatica è \textbf{ambigua} se esiste almeno una parola \( \alpha \) con più
+  di un albero di derivazione con radice \( S \).
+
+  Il linguaggio generato da una grammatica ambigua è detto \textbf{inerentemente ambiguo}.
+\end{definition}
+
+\subsection{Forma normale}
+Le forme normali sono grammatiche le cui produzioni rispettano vincoli di "forma"
+specifici. Ci sono due forme normali importanti per le grammatiche context free:
+\begin{itemize}
+  \item \textbf{Forma normale di Chomsky}: Tutte le produzioni hanno la forma:
+    \[
+      A \to a \quad \vee A \to BC
+    \] 
+    dove:
+    \[
+      A, B, C \in V \quad a \in T
+    \] 
+    Questa forma genera sempre un albero binario (ogni nodo ha al massimo due figli).
+
+  \item \textbf{Forma normale di Greibach}: Tutte le produzioni hanno la forma:
+    \[
+      A \to a \alpha
+    \] 
+    dove:
+    \[
+      A \in V \quad a \in T \quad \alpha \in V^*
+    \]
+    Rappresenta l'automa a pila in cui \( \alpha \) è il contenuto della pila e
+    \( a \) è il simbolo da aggiungere.
+\end{itemize}
+
+
+\subsection{Minimizzazione delle grammatiche context free}
+Ogni grammatica context free può essere riscritta in modo tale che:
+\begin{enumerate}
+  \item \textbf{Eliminazione dei simboli inutili}: Ogni simbolo non terminale genera
+    simboli terminali e ogni simbolo terminale è generato da almeno un simbolo non
+    terminale
+
+  \item \textbf{Eliminazione delle produzioni unitarie}: Nessuna produzione è della forma:
+    \[
+      A \to B \quad A, B \in V
+    \] 
+    perchè \( A \) è generabile da \( B \) e \( B \) è generabile da \( A \).
+
+  \item \textbf{Eliminazione della \( \varepsilon \)-produzione}: Se
+    \( \varepsilon \notin L \) allora \textbf{non} ci deve essere la produzione:
+    \[
+      A \to \varepsilon \quad A \in V
+    \] 
+\end{enumerate}
+
+\begin{definition}
+  Quando la grammatica è senza simboli inutili, senza produzioni unitarie e senza
+  \( \varepsilon \)-produzioni, si può trasformare in forma normale di Chomsky.
+\end{definition}
+
+\subsubsection{Eliminazione dei simboli inutili}
+\( x \in V \cup T \) è utile se esiste una derivazione
+\[
+  S \Rightarrow^* \underbrace{\alpha x \beta \Rightarrow^* w \in T^*}_{1.a}
+\] 
+\begin{theorem}
+  Per ogni grammatica context free \( \forall G = \left< V, T, P, S \right> \) esiste
+  una grammatica equivalente \( G' = \left< V', T, P', S \right> \) senza simboli
+  inutili:
+  \[
+    \forall G \;.\; \exists G' \;.\; L(G) = L(G') \text{ e } G' \text{ non ha simboli inutili}
+  \] 
+  \( G' \) si ottiene applicando in sequenza le due trasformazioni viste
+  (\ref{eliminazione_simboli_inutili_1}, \ref{eliminazione_simboli_inutili_2}) (nell'ordine visto)
+\end{theorem}
+
+\begin{enumerate}
+  \item \label{eliminazione_simboli_inutili_1}
+    Eliminiamo i simboli che non generano terminali:
+    \begin{example}
+      Consideriamo le produzioni \( S \to \alpha A B \) e \( A \to A \).
+      Il simbolo \( A \) è inutile perchè non genera mai simboli terminali.
+    \end{example}
+
+    \textbf{Metodo algoritmico per eliminare i simboli che non generano terminali}:
+    \begin{enumerate}
+      \item Dopo la trasformazione 
+        \[
+          \forall A \in V \;.\; \exists w \in T^* \;.\;
+          A \Rightarrow^* w
+        \] 
+        Allora \( L(G) = \varnothing \) tutti i simboli sono inutili
+
+      \item Prendiamo per ipotesi che \( L(G) \neq 0 \), definiamo:
+        \[
+          \Gamma(W) = \left\{ A \in V \;\left|\; \exists \alpha \in (T \cup W)^* \;.\;
+        A \to \alpha \in P \right. \right\}
+        \] 
+        \[
+          \begin{cases}
+            \Gamma^0(W) = W\\
+            \Gamma^{i+1}(W) = \Gamma \left( \Gamma^i(W) \right) 
+          \end{cases}
+        \] 
+        \begin{example}
+          Consideriamo le seguenti produzioni:
+          \[
+          \begin{aligned}
+            A &\to A\\
+            S &\to aS \;|\; B\\
+            B &\to b
+          \end{aligned}
+          \] 
+          Si parte con \( W = \varnothing \) :
+          \begin{itemize}
+            \item \( \Gamma^0(\varnothing) = \left\{ A \in V \;|\; \exists
+              \alpha \in T^* \;.\; A \to \alpha \in P \right\} = \varnothing \)
+
+            \item \( \Gamma^1(\varnothing) = \Gamma(\varnothing) =
+              \left\{ B \right\} \) perchè \( B \to b \in P \)
+
+            \item \( \Gamma^2(\varnothing) = \Gamma(\left\{ B \right\}) =
+              \left\{ A \in V \;\left|\; \exists \alpha \in (T \cup \left\{ B \right\})^* \;.\;
+            A \to \alpha \right. \right\}\)\\ \( = \left\{ B, S \right\} \)
+
+          \item \( \Gamma^3(\varnothing) = \Gamma(\left\{ B, S \right\}) \)\\
+            \( = \left\{ A \in V \;\left|\; \exists \alpha \in (T \cup \left\{ B, S \right\})^* \;.\;
+          A \to \alpha \right. \right\}\) \\ \( = \left\{ B, S \right\} \)
+          \\
+          Si è raggiunto il \textbf{punto fisso}, cioè non si ottengono più simboli
+          nuovi.
+          \end{itemize}
+          Alla fine si ottiene l'insieme di tutti i simboli utili, cioè quelli che generano
+          simboli terminali. Tutti gli altri (e le corrispondenti produzioni) vengono
+          eliminati.
+
+          \vspace{1em}
+          \noindent
+          Quindi \( S \to aS \;|\; B \;\; B \to b \) è equivalente ma senza simboli
+          inutili che non generano nulla
+        \end{example}
+    \end{enumerate}
+
+    \item \label{eliminazione_simboli_inutili_2}
+      Eliminiamo i simboli non raggiungibili da \( S \):
+      \[
+        \Gamma(W) = \left\{ X \in V \cup T \;\left|\; \exists A \in W \;.\;
+      A \to \alpha X \beta \in P \right. \right\} \cup S
+      \] 
+      Quindi ad esempio:
+      \[
+        \Gamma(\varnothing) = \left\{ S \right\}
+      \] 
+      Cioè si aggiunge ciò che possiamo raggiungere da \( S \) in un certo numero di passi.
+
+      \begin{example}
+        Consideriamo le seguenti produzioni:
+        \[
+        \begin{aligned}
+          S \to a \;|\; bC\\
+          C \to d \;|\;dE\\
+          E \to \varepsilon\\
+          F \to f
+        \end{aligned}
+        \] 
+        Si parte con \( W = \varnothing \) :
+        \begin{itemize}
+          \item \( \Gamma(\varnothing) = \left\{ S \right\} \)
+
+          \item \( \Gamma(\left\{ S \right\}) = \left\{ X \in V \cup T \;\left|\;
+          S \to \alpha X \beta \in P \right. \right\} \cup \left\{ S \right\} =
+          \left\{ S, a, b, C \right\} \)
+
+          \item \( \Gamma(\left\{ S, a, b, C \right\}) = \left\{ X \in V \cup T \;\left|\;
+          C \to \alpha X \beta \in P \vee S \to \alpha X \beta \in P \right. \right\}
+          = \left\{ S, a, b, C, d, E \right\} \)
+
+        \item \( \Gamma(\left\{ S, a, b, C, d, E \right\}) = \left\{ S, a, b, C, d, E, \varepsilon \right\} \)
+        \end{itemize}
+        Quindi \( F \) è un simbolo non raggiungibile da \( S \) e quindi è inutile.
+      \end{example}
+\end{enumerate}
+
+\subsubsection{Eliminazione delle produzioni unitarie}
+L'idea è quella di sostituire le produzioni unitarie con le produzioni
+dello stesso simbolo non terminale a cui puntano. Ad esempio se abbiamo
+\( S \to A \to 0A0 \) si può compattare \( S \) come:
+\(
+  S \to 0A0
+\) 
+\begin{example}
+  Consideriamo la seguente grammatica:
+  \[
+    \begin{aligned}
+      S &\to \varepsilon  \;|\; A \;|\; B\\
+      A &\to  0\;|\; 0A0 \;|\; B \;|\; 00 \\
+      B &\to 1 \;|\; 1B1 \;|\; A\;|\; 11
+    \end{aligned}
+  \] 
+  Sostituiamo in tutte le produzioni quello che è producibile dal non terminale a destra:
+  \[
+    \begin{aligned}
+      S \to \varepsilon \;|\; \underbrace{0 \;|\; 0A0 \;|\; 00}_{A} \;|\; \underbrace{1 \;|\; 1B1 \;|\; 11}_{B}\\
+      A \to 0 \;|\; 0A0 \;|\; 00 \;|\; \underbrace{1 \;|\; 1B1 \;|\; 11}_{B}\\
+      B \to 1 \;|\; 1B1 \;|\; 11 \;|\; \underbrace{0 \;|\; 0A0 \;|\; 00}_{A}
+    \end{aligned}
+  \] 
+\end{example}
+
+\subsubsection{Eliminazione delle \texorpdfstring{\( \varepsilon \)}{epsilon}-produzioni}
+L'idea è quella di sostituire la transizione con tutto quello che può generare
+\( \varepsilon  \) ad esempio:
+\begin{example}
+  Consideriamo le produzioni:
+  \[
+    \begin{aligned}
+      S &\to \varepsilon  \;|\; A \;|\; B\\
+      A &\to  0\;|\; 0A0 \;|\; B \\
+      B &\to 1 \;|\; 1B1 \;|\; A\;|\; \varepsilon 
+    \end{aligned}
+  \] 
+  Siccome sia \( S \) che \( B \) vanno in \( \varepsilon  \) si possono sostituire con:
+  \[
+    B \to S
+  \] 
+  Anche \( A \) con un certo numero di derivazioni arriva in \( \varepsilon  \), quindi
+  tutti i simboli non terminali che in un certo numero di passi generano \( \varepsilon  \)
+  sono:
+  \[
+    \left\{ S, A, B \right\}
+  \] 
+  Le nuove produzioni diventano:
+  \[
+    \begin{aligned}
+      S &\to \varepsilon \;|\; A \;|\; B \\
+      A &\to 0 \;|\; 0A0 \;|\; 00 \;|\; B \\
+      B &\to 1 \;|\; 1B1 \;|\; 11 \;|\; A
+    \end{aligned}
+  \] 
+  Eliminando \( B \to \varepsilon  \) le stringhe \( 00 \) e \( 11 \) non sarebbero più
+  generabili e quindi si aggiungono
+
+  \vspace{1em}
+  \noindent
+  In questo modo si sono eliminate tutte le \( \varepsilon\)-produzioni, tranne
+  \( S \to \varepsilon  \) se \( \varepsilon \in L \).
 \end{example}
 
 \end{document}
