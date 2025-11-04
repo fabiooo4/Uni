@@ -2922,4 +2922,229 @@ L'idea è quella di sostituire la transizione con tutto quello che può generare
   \( S \to \varepsilon  \) se \( \varepsilon \in L \).
 \end{example}
 
+\subsection{Trasformazione di una grammatica in forma normale di Chomsky}
+Quando una grammatica non ha simboli inutili, non ha produzioni unitarie e
+non ha \( \varepsilon \)-produzioni, si può trasformare in forma normale di
+Chomsky, cioè tutte le produzioni hanno la forma:
+\[
+  A \to a \in T \quad \vee \quad A \to BC \quad B, C \in V
+\] 
+\begin{example}
+  Consideriamo la seguente grammatica:
+  \[
+  \begin{aligned}
+    S &\to \varepsilon  \\ 
+    S &\to 0 \;|\; 1 \\
+    S &\to 00 \;|\; 0S0 \;|\; 11 \;|\; 1S1\\
+  \end{aligned}
+  \] 
+  Trasformiamo le sequenze più lunghe di 1 simbolo terminale in simboli non terminali:
+  \[
+  \begin{aligned}
+    S &\to \varepsilon  \\ 
+    S &\to 0 \;|\; 1 \\
+    S &\to V_1V_1 \;|\; V_1 S V_1 \;|\; V_2 V_2 \;|\; V_2 S V_2\\
+    V_1 &\to 0\\
+    V_2 &\to 1
+  \end{aligned}
+  \] 
+  Trasformiamo le sequenze più lunghe di 2 simboli non terminali in un singolo simbolo
+  non terminale:
+  \[
+  \begin{aligned}
+    S &\to \varepsilon  \\ 
+    S &\to 0 \;|\; 1 \\
+    S &\to V_1V_1 \;|\; V_3 V_1 \;|\; V_2 V_2 \;|\; V_4 V_2\\
+    V_1 &\to 0\\
+    V_2 &\to 1\\
+    V_3 &\to V_1 S\\
+    V_4 &\to V_2 S
+  \end{aligned}
+  \] 
+  Ora tutte le produzioni sono in forma normale di Chomsky.
+\end{example}
+Questa forma è semplicemente una forma canonica facilmente rappresentaible,
+non una forma più semplice.
+
+\subsection{Pumping lemma per i linguaggi context free}
+Il pumping lemma è una \textbf{condizione necessaria} per essere un linguaggio context free:
+\[
+  L \text{ è CF } \implies \text{ vale } \Pi \text{ condizione del pumping lemma}
+\] 
+\begin{theorem}[Pumping lemma per i linguaggi context free]
+  Sia \( L \) un linguaggio context free. Allora esiste una costante
+  \( k \) tale che per ogni stringa \( z \in L \) con
+  \( \left| \sigma \right| \ge k \) esiste una suddivisione di \( z \)
+  in cinque sottostringhe:
+  \[
+    \exists k \in \mathbb{N} \;.\; \forall z \in L \;.\; \left| z \right| \ge k \implies
+    \exists u, v, w, x, y = z \vee
+    \begin{cases}
+      \left| vwx \right| \le  k \\
+      \left| vx \right| \ge 0 \\
+    \end{cases}
+  \] 
+  \[
+    \;.\; \forall i \in \mathbb{N} \;.\; u v^i w x^i y \in L
+  \] 
+  \label{04-11-D1}
+\end{theorem}
+
+\subsubsection{Dimostrazione (grafica)}
+Consideriamo un linguaggio context free \( L \subseteq T^* \), allora esiste
+una grammatica tale che \( L = L(G) \):
+\[
+  L \subseteq T^* \implies \exists G = \left< V, T, P, S \right> \text{ CF } \;.\; L = L(G)
+\] 
+Supponiamo, senza perdere generalità, che \( G \) sia in forma normale di Chomsky.
+Definiamo \( n \) come la dimensione di \( V \), cioè il numero di simboli non terminali in
+\( G \):
+\[
+  n = \left| V \right|
+\] 
+Poichè la grammatica è in forma normale di Chomsky questo implica che tutti gli alberi
+di derivazione in \( G \) sono binari, cioè ogni nodi ha due figli non terminali oppure una foglia
+terminale.
+\label{04-11-D2}
+L'altezza dell'albero è \( h \) e di conseguenza il numero di elementi ad una certa
+altezza è \( 2^{h-1} \).
+
+\vspace{1em}
+\noindent
+Definiamo \( k = 2^n \) e prendiamo una stringa \( z \in L \) di lunghezza maggiore o
+uguale a \( k \):
+\[
+  z \in L \;.\; \left| z \right| \ge k
+\] 
+Se le foglie sono maggiori o uguali a \( 2^n \) allora l'altezza dell'albero
+è \( \ge n+1 \). Il numero di \textbf{archi} che collegano simboli non terminali sono \( \ge n \).
+Di conseguenza il numero di nodi interni (non terminali) nel cammino sono \( n+1 \) 
+\label{04-11-D3}
+Siccome in questa grammatica il numero di nodi non terminali è \( n \), allora almeno
+una etichetta non terminale è ripetuta nel cammino due volte. (Ci sono almeno due nodi
+interni che hanno la stessa etichetta)
+\label{04-11-D4}
+Supponiamo di prendere il nodo \( A \), più vicino alle foglie, che si ripete (implica che
+dalla prima occorrenza di \( A \) fino alle foglie non ci sono ripetizioni). Consideriamo
+il sottoalbero radicato in questo nodo e quello radicato nel secondo nodo con la stessa etichetta.
+Osserviamo che la stringa è stata divisa in cinque parti \( u, v, w, x, y \):
+\label{04-11-D5}
+Valgono i seguenti vincoli:
+\begin{itemize}
+  \item \( \left| vx \right| \ge 0 \): almeno un simbolo deve essere generato in \( v \) 
+    o \( x \)
+
+  \item \( \left| vwx \right| \le k \): se dalla prima occorrenza di \( A \) fino
+    alle foglie non ci sono ripetizioni, allora attraversiamo massimo \( n = \left| V \right|  \) 
+    nodi e quindi non si generano più di \( 2^n = k \) simboli terminali
+\end{itemize}
+\label{04-11-D6}
+
+\subsubsection{Dimostrare che un linguaggio non è context free}
+Il pumping lemma può essere usato per dimostrare che un linguaggio è context free:
+\[
+  L \text{ è CF } \implies \text{ vale } \Pi \text{ condizione del pumping lemma}
+\] 
+Si può negare il pumping lemma per ottenere una condizione \textbf{sufficiente} a
+dimostrare che un linguaggio non è context free:
+\[
+  \neg \Pi \text{ condizione del pumping lemma } \implies L \text{ non è CF}
+\]
+dove \( \Pi  \) è:
+\[
+  \Pi: \exists k \in \mathbb{N} \;.\; \forall z \in L \;.\; \left| z \right| \ge k
+  \;.\; \exists u, v, w, x, y = z \vee
+  \begin{cases}
+    \left| vwx \right| \le  k \\
+    \left| vx \right| \ge 0 \\
+  \end{cases}
+\] 
+\[
+    \;.\; \forall i \in \mathbb{N} \;.\; u v^i w x^i y \in L
+\] 
+La negazione di \( \Pi  \) è:
+\[
+  \neg \Pi: \forall k \in \mathbb{N} \;.\; \exists z \in L \;.\; \left| z \right| \ge k
+  \;.\; \forall u, v, w, x, y = z \vee
+  \begin{cases}
+    \left| vwx \right| \le  k \\
+    \left| vx \right| \ge 0 \\
+  \end{cases}
+\] 
+\[
+    \;.\; \exists i \in \mathbb{N} \;.\; u v^i w x^i y \notin L
+\]
+\label{04-11-D7}
+
+\begin{example}
+  Consideriamo il seguente linguaggio:
+  \[
+    L = \left\{ a^n b^n c^n \;\left|\; n \in \mathbb{N} \right. \right\}
+  \] 
+  Dimostriamo che \( L \) non è context free usando la negazione del pumping lemma.
+
+  Prendiamo \( n = k \) siccome \( n \) non ha alcun vincolo e scegliamo la stringa:
+  \[
+    z = a^k b^k c^k \in L
+  \] 
+  Tutte le possibili suddivisioni della stringa sono le seguenti:
+  \label{04-11-D8}
+  Le suddivisioni a cavallo di almeno due gtuppi sono tali che \( \forall i > 1 \) cambiamo
+  la struttura della stringa e quindi esce da \( L \) di conseguenza non le consideriamo.
+  Bisognerebbe dimostrare tutte le suddivisioni, ma siccome le dimostrazioni per alcune
+  sarebbero uguali non si ripetono.
+
+  \vspace{1em}
+  \noindent
+  Le condizioni di appartenenza a \( L \) sono:
+  \[
+    a^i b^j c^l \in L \iff i = j = l
+  \] 
+
+  \begin{enumerate}
+    \item Se la suddivisione è \( z = a^k b^k c^k \quad v,x \in a^k \):
+      \[
+        z_i = a^{k + (i-1) \left| v x \right|} b^k c^k
+      \] 
+      \begin{itemize}
+        \item Consideriamo \( i = 2 \):
+          \[
+            z_2 = a^{k + \left| v x \right|} b^k c^k
+          \]
+          verifichiamo se appartiene a \( L \):
+          \[
+            z_2 \in L \iff
+            \begin{cases}
+              k + \left| v x \right| = k \iff \left| v x \right| = 0 \text{ (falso)}\\
+              k = k \text{ (ovvio)}
+            \end{cases}
+          \] 
+          Poichè per costruzione \( \left| v x \right| \ge 0 \) allora \( z_2 \notin L \)
+      \end{itemize}
+
+    \item Se la suddivisione è \( v \in a^k \quad x \in b^k \):
+      \[
+        z_i = a^{k + (i-1) \left| v \right|} b^{k + (i-1) \left| x \right|} c^k
+      \]
+
+      \begin{itemize}
+        \item Consideriamo \( i = 2 \):
+          \[
+            z_2 = a^{k + \left| v \right|} b^{k + \left| x \right|} c^k
+          \] 
+          verifichiamo se appartiene a \( L \):
+          \[
+            \begin{aligned}
+              z_2 \in L &\iff k + \left| v \right| = k + \left| x \right| = k\\
+                        &\iff \left| v \right| = \left| x \right| = 0 \implies \left| vx \right| = 0
+              \text{ (falso)}
+            \end{aligned}
+          \]
+          poiche \( \left| vx \right| > 0 \) allora \( z_2 \notin L \)
+      \end{itemize}
+  \end{enumerate}
+  Abbiamo dimostrato che per ogni suddivisione di \( z \) esiste un \( i \)
+  tale che \( z_i \notin L \), quindi \( L \) non è context free.
+\end{example}
+
 \end{document}
