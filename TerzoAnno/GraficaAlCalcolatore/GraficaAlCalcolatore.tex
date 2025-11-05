@@ -717,5 +717,104 @@ creano artefatti visivi nell'immagine finale:
   \caption{Esempio di Z-fighting}
 \end{figure}
 
+\section{OpenGL}
+La pipeline di OpenGL è la seguente:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{opengl_pipeline}
+  \caption{Pipeline di OpenGL}
+\end{figure}
+\noindent
+Questa pipeline permette all'utente di intervenire in due fasi:
+\begin{itemize}
+  \item \textbf{Vertex shader}: Permette di personalizzare il processo di trasformazione
+    dei vertici
+  \item \textbf{Fragment shader}: Permette di personalizzare il processo di calcolo
+    del colore dei pixel
+\end{itemize}
+Le componenti principali di OpenGL sono:
+\begin{itemize}
+  \item \textbf{Buffers}: un allocatore lineare di memoria sul dispositivo che può
+    memorizzare diversi tipi di dati sui quali la GPU può operare
+  \item \textbf{Stato}: la scheda grafica mantiene uno stato computazionale che determina
+    come avvengono le operazioni associate con i dati della scena e agli shader sulla
+    GPU
+  \item \textbf{Shaders}: rappresentano il meccanismo secondo il quale la computazione
+    avviene sulla GPU. Spesso sono associati al processo per-vertex e per-fragment,
+    ma anche sulla geometria
+\end{itemize}
+OpenGL è una grande macchina a stati, cioè una collezione di variabili che definiscono
+come OpenGL dovrebbe operare. Lo stato di OpenGL è solitamente detto \textbf{context}.
+
+\subsection{Buffers}
+Rappresentano la memoria interna della scheda grafica che permette alla GPU di
+accedere rapidamente ai dati necessari per il rendering. La CPU può scrivere direttamente
+nei buffers. Alla fine dell'esecuzione i contenuti del buffer possono essere copiati
+dalla memoria GPU alla memoria CPU.
+
+\subsubsection{Display Buffers}
+Alla fine della pipeline grafica si trova il \textbf{Display Buffer}, che contiene
+il risultato finale del rendering, cioè il valore di ogni pixel dell'immagine,
+solitamente un array 2D di valori RGBA.
+
+\subsubsection{Double buffering}
+La maggior parte delle applicazioni grafiche utilizza il \textbf{double buffering},
+che consiste nell'avere due display buffer: uno visibile (front buffer) e uno
+nascosto (back buffer). La GPU disegna l'immagine nel back buffer mentre il
+front buffer viene visualizzato sullo schermo. Quando il rendering è completo,
+i due buffer vengono scambiati (swap) tramite uno scambio di puntatori
+per mostrare l'immagine appena disegnata.
+
+\subsection{Shaders}
+Gli shader sono \textbf{general purpose functions} che vengono eseguite in parallelo
+sulla GPU e permettono di personalizzare il processo di rendering. Gli shader
+sono scritti in un linguaggio simile al C chiamato GLSL (OpenGL Shading Language).
+Le fasi della pipeline che si possono personalizzare con gli shader sono:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{opengl_shaders}
+  \caption{Fasi della pipeline personalizzabili con gli shader}
+\end{figure}
+
+\subsubsection{Vertex shader}
+Il vertex shader è un programma sulla GPU che esegue operazioni su ciascun vertice
+e i relativi attributi prima che vengano inseriti nel vertex array. Questa funzione
+deve mettere in output la posizione finale del vertice nello spazio del dispositivo
+(device coordinates) e anche qualsiasi altro attributo utile per il fragment shader.
+Tutte le trasformazioni dalle coordinate del mondo alle coordinate del dispositivo
+avvengono nel vertex shader.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{vertex_shader}
+  \caption{Vertex shader}
+\end{figure}
+
+\subsubsection{Fragment shader}
+L'output del vertex shader viene interpolato per ogni pixel coperto da una primitiva
+sullo schermo. Questi pixel, chiamati \textbf{fragments}, sono i dati su cui opera
+il fragment shader. L'output del fragment shader è il colore finale del pixel
+che verrà scritto nel display buffer.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{fragment_shader}
+  \caption{Fragment shader}
+\end{figure}
+
+\subsection{Basi di OpenGL}
+\subsubsection{Creazione del contesto}
+Prima di poter disegnare qualcosa con OpenGL bisogna creare un \textbf{contesto}, cioè:
+\begin{itemize}
+  \item Aprire una finestra (ad esempio chiedere al sistema operativo di dare
+    accesso ad una porzione di schermo)
+  \item Inizializzare l'API di OpenGL e assegnargli la porzione di schermo disponibile
+\end{itemize}
+Questa fase dipende molto dal sistema operativo e dall'hardware.
+
+\subsubsection{Window manager}
+Ci sono molte librerie che permettono di creare una finestra e un contesto OpenGL,
+nascondendo tutte le complessità legate al sistema operativo e fornisce un'interfaccia
+cross-platform. In questo corso si utilizza \textbf{GLFW} \url{https://www.glfw.org/}.
+Questa libreria permette non solo di creare una finestra, ma anche di gestire gli eventi
+come input da tastiera e mouse.
 
 \end{document}
