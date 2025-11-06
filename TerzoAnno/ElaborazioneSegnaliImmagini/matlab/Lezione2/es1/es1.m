@@ -24,9 +24,7 @@ title("Immagine Originale")
 subplot(2,2,2);
 imshow(paperino_glasses);
 title("Immagine Modificata")
-%%
 
-%%
 paperino_rotated = paperino;
 imrotate(paperino_rotated, 45);
 subplot(2,2,3)
@@ -35,7 +33,7 @@ title("Immagine ruotata")
 
 paperino_cropped = paperino;
 paperino_cropped = imcrop(paperino_cropped);
-subplot(2,2,3)
+subplot(2,2,4)
 imshow(paperino_cropped);
 title("Immagine con dettaglio occhi")
 %%
