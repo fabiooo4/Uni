@@ -1475,5 +1475,200 @@ La complessità dell'algoritmo arc consistency migliore (AC-4) è \( O(ek^3) \).
 \end{itemize}
 
 \subsubsection{Tree decomposition}
+Consiste nel decomporre il problema in una struttura ad albero che permette di sfruttare
+la proprietà degli alberi di essere backtrack free. L'idea più semplice è quella
+di togliere le variabili assegnate fino a che il grafo non diventa un albero.
+\begin{definition}
+  Dato un grafo non orientato, il sottoinsieme di nodi del grafo è definito
+  \textbf{cycle cutset} se la rimozione di questi nodi rende il grafo aciclico.
+\end{definition}
+Per trovare una soluzione al problema si devono provare tutte le possibili assegnazioni
+delle variabili nel cycle cutset e per ogni assegnazione si risolve il problema tramite
+arc propagation.
+La complessità è esponenziale, ma dipende solo dal numero di nodi nel cycle cutset.
+
+\section{Logical Agents}
+Un agente logico è un agente che utilizza la logica per rappresentare la conoscenza
+e ragionare su di essa. La logica fornisce un linguaggio formale per esprimere fatti
+e regole sul mondo, permettendo all'agente di dedurre nuove informazioni e prendere decisioni
+basate sulla conoscenza acquisita.
+
+\subsection{Knowledge based agents}
+Gli agenti knowledge based sono divisi in due componenti principali:
+\begin{itemize}
+  \item \textbf{Inference engine}: si occupa di dedurre nuove informazioni dalla
+    knowledge base utilizzando regole logiche
+  \item \textbf{Knowledge base}: contiene la conoscenza dell'agente rappresentata
+    in forma logica, cioè è un insieme di frasi logiche appartenenti ad un linguaggio
+    formale
+\end{itemize}
+L'approccio dichiarativo per costruiere un agente consiste nel \textbf{dirgli} (Tell) cosa
+deve sapere e poi l'agente può \textbf{chiedere} (Ask) alla sua knowledge base per
+sapere cosa fare.
+
+\vspace{1em}
+\noindent
+Un esempio di agente knowledge based è il seguente:
+\begin{lstlisting}[language=Python]
+function KB-Agent( percept) returns an action
+  static: KB, a knowledge base
+          t, a counter, initially 0, indicating time
+  Tell(KB, Make-Percept-Sentence( percept, t))
+  action <- Ask(KB, Make-Action-Query(t))
+  Tell(KB, Make-Action-Sentence(action, t))
+  t <- t + 1
+  return action
+\end{lstlisting}
+L'agente deve essere in grado di:
+\begin{itemize}
+  \item Rappresentare stati, azioni ecc...
+  \item Incorporare nuove percezioni nella knowledge base
+  \item Aggiornare le rappresentazioni interne del mondo
+  \item \textbf{Dedurre} proprietà nascoste del mondo
+  \item \textbf{Dedurre} azioni appropriate
+\end{itemize}
+
+\begin{example}
+  Consideriamo il problema del Wumpus World:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{wumpus_world}
+    \caption{Esempio di Wumpus World}
+  \end{figure}
+  \begin{itemize}
+    \item \textbf{Performance measure}:
+      \begin{itemize}
+        \item +1000 per uscire con l'oro
+        \item -1 per ogni azione
+        \item -1000 per morire
+        \item -10 per ogni freccia usata
+      \end{itemize}
+    \item \textbf{Environment}:
+      \begin{itemize}
+        \item 4x4 griglia
+        \item Wumpus in una casella
+        \item Pozzi in alcune caselle
+        \item Oro in una casella
+
+        \item Caselle adiacenti al Wumpus hanno puzza
+        \item Caselle adiacenti ai pozzi hanno brezza
+        \item Glitter nella casella con l'oro
+        \item Prendi per prendere l'oro dalla casella
+        \item Rilascia per lasciare l'oro nella casella
+        \item Sparare uccide il Wumpus se è nella stessa direzione della freccia
+        \item Sparare usa l'unica freccia disponibile
+      \end{itemize}
+
+    \item \textbf{Actuators:}
+      \begin{itemize}
+        \item Gira a sinistra
+        \item Gira a destra
+        \item Avanti
+        \item Prendi
+        \item Rilascia
+      \end{itemize}
+
+    \item \textbf{Sensors:}
+      \begin{itemize}
+        \item Puzza
+        \item Brezza
+        \item Glitter
+      \end{itemize}
+  \end{itemize}
+  Questo problema è:
+  \begin{itemize}
+    \item \textbf{Non osservabile} perchè si ha solo percezione locale
+    \item \textbf{Deterministico} perchè le azioni hanno effetti certi
+    \item \textbf{Non episodico} perchè le azioni sono sequenziali
+    \item \textbf{Statico} perchè l'ambiente non cambia
+    \item \textbf{Discreto} perchè ci sono un numero finito di stati e azioni
+    \item \textbf{Singolo agente} perchè c'è solo un agente che agisce nell'ambiente
+      (il wumpus è parte dell'ambiente)
+  \end{itemize}
+\end{example}
+
+\subsection{Logica in generale}
+La logica è un sistema formale per rappresentare informazioni e ragionare su di esse.
+\begin{itemize}
+  \item \textbf{Sintassi}: definisce le regole per costruire frasi valide nel linguaggio
+  \item \textbf{Semantica}: definisce il significato delle frasi nel linguaggio, ad
+    esempioo definisce quando una frase è vera o falsa in un certo mondo
+\end{itemize}
+
+\subsubsection{Entailment (Derivazione logica)}
+La derivazione o entailment indica che da una certa cosa ne segue un altra:
+\[
+  KB \models \alpha
+\] 
+La knowledge base implica una frase \( \alpha \) se e solo se \( \alpha \) è vera
+in tutti i mondi in cui è vera la knowledge base. La derivazione è una relazione tra
+frasi logiche (sintassi) che si basa sulla semantica. Un modello è un mondo formalmente
+strutturato rispetto a quale verità o falsità di frasi logiche può essere valutata.
+\( m \) è un modello di una frase \( \alpha \), se \( \alpha \) è vera in \( m \),
+allora \( M(\alpha) \) è l'insieme di tutti i modelli di \( \alpha \). Di conseguenza
+\[
+  KB \models \alpha \iff M(KB) \subseteq M(\alpha)
+\] 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{entailment}
+  \caption{Esempio di entailment}
+\end{figure}
+
+\begin{example}
+  Un esempio potrebbe essere:
+  \begin{itemize}
+    \item \( KB = \text{ Juventus ha vinto e la Roma ha vinto} \) 
+    \item \( \alpha = \text{ Juventus ha vinto} \) 
+  \end{itemize}
+\end{example}
+
+\subsubsection{Inferenza}
+L'inferenza è il processo di derivare nuove frasi logiche da frasi esistenti
+nella knowledge base utilizzando regole logiche. Una frase \( \alpha \) può essere
+derivata dalla knowledge base \( KB \) con una procedura \( i \):
+\[
+  KB \vdash_i \alpha
+\] 
+Un sistema di inferenza ha due proprietà importanti:
+\begin{itemize}
+  \item \textbf{Soundness}: se \( KB \vdash_i \alpha \) allora \( KB \models \alpha \)
+    cioè tutto ciò che viene derivato è vero
+  \item \textbf{Completeness}: se \( KB \models \alpha \) allora \( KB \vdash_i \alpha \)
+    cioè tutto ciò che è vero può essere derivato
+\end{itemize}
+
+\begin{example}
+  Rappresentiamo il problema del Wumpus World in logica proposizionale:
+  \begin{itemize}
+    \item \( P_{i,j} \): è vero se c'è un pozzo nella casella \( (i,j) \)
+    \item \( B_{i,j} \): è vero se c'è brezza nella casella \( (i,j) \)
+  \end{itemize}
+  Consideriamo i seguenti fatti:
+  \[
+    \begin{aligned}
+      R_1: & \neg P_{1,1} \\
+      R_2: & \neg B_{1,1}\\
+      R_3: & B_{2,1}
+    \end{aligned}
+  \] 
+  Rappresentiamo in forma logica la frase "i pozzi causano brezza nelle caselle adiacenti":
+  \begin{itemize}
+    \item Considerando caselle specifiche:
+      \[
+        \begin{aligned}
+          R_4: &B_{1,1} \iff (P_{1,2} \vee  P_{2,1})\\
+          R_5: &B_{2,1} \iff (P_{1,1} \lor P_{2,2} \lor P_{3,1})
+        \end{aligned}
+      \] 
+  \end{itemize}
+
+  \begin{itemize}
+    \item \( R \) rappresenta le regole del mondo
+    \item \( P \) rappresenta le variabili da assegnare
+    \item \( KB \) è la knowledge base, cioè l'and logico di tutte le regole
+  \end{itemize}
+\end{example}
+
 
 \end{document}
