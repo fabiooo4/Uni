@@ -1,6 +1,17 @@
+%  Implementare a mano la cross-correlazione 1D,
+% partendo dallo script presente nel flie
+% “Lezione3_EserciziPrincipali.m”  
+%  (shifting circolare):
+%    Primo valore: creo questi due vettori e calcolo la
+%     cross-correlazione (moltiplicazione punto a punto e somma) 
+%    Secondo valore: shift circolare del secondo
+%     vettore, e calcolo cross-correlazione  
+%  Nota: se M è la lunghezza del primo vettore e N è la
+% lunghezza del secondo vettore 
+%    Primo vettore: devo aggiungere (N-1) zeri a sx e (N-1) zeri a dx 
+%    Secondo vettore: devo aggiungere (N-1 + M-1) zeri a dx 
+
 %%
-% Implement by hand 1D cross-correlation, starting
-% from the following script
 clear all
 close all
 clc
