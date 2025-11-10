@@ -560,10 +560,12 @@ dove:
     fosse una tabella che associa ad ogni coppia (stato, simbolo) uno stato:
     \begin{table}[H]
       \centering
-      \begin{tabular}{c|c|c}
+      \begin{tabular}{|c|c|c|}
+        \hline
         \( \Sigma \setminus Q\) & \( q_0 \) & \( q_1 \)\\
         \hline
         1 & \( q_1 \) & \( q_0 \)\\
+        \hline
       \end{tabular}
     \end{table}
     La funzione deve essere \textbf{totale}, cioè deve essere definita per ogni
@@ -3146,5 +3148,337 @@ La negazione di \( \Pi  \) è:
   Abbiamo dimostrato che per ogni suddivisione di \( z \) esiste un \( i \)
   tale che \( z_i \notin L \), quindi \( L \) non è context free.
 \end{example}
+
+\subsection{Proprietà di chiusura dei linguaggi context free}
+\begin{theorem}
+  I llinguaggi context free sono chiusi per \textbf{unione}, \textbf{concatenazione} e
+  \textbf{stella di Kleene}.
+
+  Consideriamo due grammatiche context free \( G_1 = \left< V_1, T_1, P_1, S_1 \right> \)
+  e \( G_2 = \left< V_2, T_2, P_2, S_2 \right> \). 
+
+  \begin{itemize}
+    \item 
+      Esiste una grammatica che genera
+      l'unione delle due grammatiche:
+      \[
+        L(G_1) \cup L(G_2) \text{ è CF}
+      \] 
+      Bisogna aggiungere un simbolo iniziale che andrà nei simboli iniziali delle due grammatiche:
+      \[
+        G' = \left< V_1 \cup V_2 \cup \left\{ S \right\},\; T_1 \cup T_2, P_1 \cup P_2 \cup
+        \left\{ S \to S_1 \;|\; S_2 \right\},\; S \right>
+      \] 
+
+    \item Esiste una grammatica che genera la concatenazione delle due grammatiche:
+      \[
+        L(G_1) \cdot L(G_2) \text{ è CF}
+      \] 
+      Bisogna aggiungere un simbolo iniziale che andrà nei simboli iniziali delle due grammatiche
+      in sequenza:
+      \[
+        G' = \left< V_1 \cup V_2 \cup \left\{ S \right\},\; T_1 \cup T_2, P_1 \cup P_2 \cup
+        \left\{ S \to S_1 S_2 \right\},\; S \right>
+      \]
+
+    \item Esiste una grammatica che genera la stella di Kleene della grammatica:
+      \[
+        L(G_1)^* \text{ è CF}
+      \]
+      Bisogna aggiungere un simbolo iniziale che andrà nel simbolo iniziale della grammatica
+      oppure in \( \varepsilon  \):
+      \[
+        G' = \left< V_1 \cup \left\{ S \right\},\; T_1, P_1 \cup
+        \left\{ S \to S_1 S \;|\; \varepsilon  \right\},\; S \right>
+      \]
+  \end{itemize}
+\end{theorem}
+
+\begin{theorem}
+  I linguaggi context free \textbf{non} sono chiusi per intersezione. Consideriamo
+  due linguaggi context free \( L_1 \) e \( L_2 \), allora:
+  \[
+    L_1 \cap L_2 \text{ potrebbe non essere CF}
+  \] 
+
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione}: Consideriamo il seguente linguaggio:
+  \[
+    L_1 = \left\{ a^i b^i c^j \left|\; i, j \in \mathbb{N} \right. \right\}
+  \] 
+  La grammatica che genera \( L_1 \) è:
+  \[
+    G_1 = 
+    \left\{
+    \begin{aligned}
+      S &\to RC\\
+      R &\to aR b \;|\; \varepsilon \\
+      C &\to cC \;|\; \varepsilon
+    \end{aligned}
+    \right.
+    \quad L_1 = L(G_1)
+  \] 
+  Consideriamo anche il seguente linguaggio:
+  \[
+    L_2 = \left\{ a^j b^i c^i \left|\; i, j \in \mathbb{N} \right. \right\}
+  \] 
+  La grammatica che genera \( L_2 \) è:
+  \[
+    G_2 = 
+    \left\{
+    \begin{aligned}
+      S &\to AR\\
+      A &\to aA \;|\; \varepsilon \\
+      C &\to bC c \;|\; \varepsilon
+    \end{aligned}
+    \right.
+    \quad L_2 = L(G_2)
+  \]
+  L'intersezione dei due linguaggi è:
+  \[
+    \begin{aligned}
+    L &= L_1 \cap L_2 \\
+      &= \left\{ a^i b^j c^k \left|\; i = j, j = k \right. \right\} \\
+      &= \left\{ a^i b^i c^k \left|\; i = j = k \right. \right\} \\
+      &= \left\{ a^n b^n c^n \left|\; n \in \mathbb{N} \right. \right\} \text{ non è CF}
+    \end{aligned}
+  \] 
+  L'intersezione non è context free (dimostrato tramite pumping lemma) e quindi abbiamo
+  dimostrato che i linguaggi context free non sono chiusi per intersezione.
+\end{theorem}
+
+\begin{define}
+  Le proprietà di \textbf{unione} e \textbf{intersezione} di linguaggi funzionano solo
+  l'unione e l'intersezione \textbf{finita}.
+
+  Se \( L_i \) sono infiniti linguaggi regolari o context free, allora:
+  \[
+    \bigcup_{i} L_i \text{ potrebbe non essere regolare o CF}
+  \] 
+\end{define}
+
+\begin{theorem}
+  I linguaggi context free non sono chiusi per \textbf{complemento}.
+
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione}: Dato \( L \in CF \), se anche il complemento
+  \( \overline{L} \in CF \) fosse context free, allora osserviamo che:
+  \[
+    L_1 \cap L_2 = \overline{\overline{L_1} \cup \overline{L_2}} \text{ (de Morgan)}
+  \] 
+  Poichè i linguaggi context free sono chiusi per unione e complemento,
+  allora \( \overline{L_1} \) e \( \overline{L_2} \) sarebbero context free e di
+  conseguenza anche la loro intersezione sarebbe context free:
+  \[
+    \overline{L_1}, \overline{L_2} \in CF \implies \overline{L_1} \cup \overline{L_2} \in CF
+  \] 
+  Questo implica che anche l'intersezione sarebbe context free:
+  \[
+    \implies \overline{\overline{L_1} \cup \overline{L_2}} \in CF \implies L_1 \cap L_2 \in CF
+  \] 
+  Abbiamo dimostrato però che l'intersezione di due linguaggi context free
+  potrebbe non essere context free, quindi la nostra ipotesi che anche
+\end{theorem}
+
+\subsection{Problemi dedcidibili per i linguaggi context free}
+Per i linguaggi context free i seguenti problemi sono decidibili, cioè esiste
+un algoritmo che risolve il problema in un numero finito di passi:
+Sia \( L \) un linguaggio context free:
+\begin{enumerate}
+  \item \( L = \varnothing \) 
+  \item \( L \) è finito
+  \item \( L \) è infinito
+  \item Determinare se una stringa appartiene al linguaggio \( x \in L\), cioè se è
+    generata dalla grammatica del linguaggio.
+\end{enumerate}
+
+\subsection{Automa per riconoscere i linguaggi context free (Automi a pila)}
+L'automa a pila è un automa con memoria ausiliaria (pila) che permette di riconoscere i
+linguaggi context free.
+\begin{example}
+  Per il seguente linguaggio:
+  \[
+    \left\{ a^n b^n \left|\; n \in \mathbb{N} \right. \right\}
+  \] 
+  Ci sarebbe bisogno di \( n \) stati per contare le occorrenze di \( a \) e
+  \( b \). Invece con un automa a pila si può usare la pila per contare le occorrenze
+  di \( a \) e \( b \)
+\end{example}
+
+\begin{definition}
+  L'APND (Automa a pila non deterministico) è costituito da:
+  \begin{itemize}
+    \item Nastro in sola lettura in un unica direzione
+    \item Memoria in scrittura a pila (LIFO)
+  \end{itemize}
+  L'automa è formato dalla quintupla della NFA a cui vengono
+  aggiunti un alfabeto per la pila e un simbolo iniziale per la pila.
+  \[
+    APND = \left< Q, \Sigma, \mathbf{R}, \delta, q_0, F, z_0 \right>
+  \] 
+  \begin{itemize}
+    \item \( Q \): è l'insieme \textbf{finito} degli stati
+    \item \( \Sigma \): è l'insieme \textbf{finito} di simboli (alfabeto)
+    \item \( R \): è l'insieme \textbf{finito} di simboli della pila
+    \item \( \delta: Q \times (\Sigma \cup \left\{ \varepsilon  \right\}) \times R
+      \to \mathcal{P}(Q \times R^*) \): è la funzione di transizione. Prende in input
+      lo stato in cui si trova la macchina \( (Q) \), l'eventuale simbolo sul nastro
+      \( \left( \Sigma \cup \left\{ \varepsilon  \right\} \right) \) e il simbolo
+      in cima alla pila \( (R) \) e restituisce un insieme di coppie
+      \( (Q \times R^*) \) che rappresentano il nuovo stato e il push di una sequenza
+      di simboli nella pila
+    \item \( q_0 \in Q \): è lo stato iniziale
+    \item \( F \subseteq Q \): è l'insieme degli stati finali
+    \item \( z_0 \in R \): è il simbolo iniziale della pila
+  \end{itemize}
+  La chiusura transitiva di \( \delta \) fornisce un'esecuzione dell'automa.
+\end{definition}
+
+\begin{definition}[Linguaggio riconosciuto da un APND]
+  Una stringa si può riconoscere quando l'automa arriva in uno stato finale oppure
+  quando la pila è vuota. Consideriamo un APND \( M \), allora si hanno due modi
+  per definire il linguaggio riconosciuto da \( M \):
+  \begin{itemize}
+    \item \( L_p(M) \) linguaggio per pila vuota
+      \[
+        L_p(M) = \left\{ \sigma \in \Sigma^* \;\left|\; \left( q_0, \sigma, z_0 \right)
+      \to^* \left( q, \varepsilon, \varepsilon \right), q \in Q \right. \right\}
+      \] 
+      cioè l'insieme delle stringhe \( \sigma \) tali che partendo dallo stato
+      iniziale \( q_0 \), con la stringa \( \sigma \) sul nastro e il simbolo iniziale
+      \( z_0 \) sulla pila, si arriva in uno stato qualsiasi \( q \in Q \) con
+      la pila vuota e il nastro vuoto.
+    \item \( L_f(M) \) linguaggio per stato finale
+      \[
+        L_f(M) = \left\{ \sigma \in \Sigma^* \;\left|\; \left( q_0, \sigma, z_0 \right)
+      \to^* \left( q, \varepsilon, \gamma \right), q \in F, \gamma \in R^* \right. \right\}
+      \] 
+  \end{itemize}
+  La scelta della modalità di riconoscimento non cambia la potenza espressiva:
+  \[
+    \forall M \text{ APND } \;.\; \exists M' \text{ APND } \;.\;
+    L_p(M) = L_f(M')
+  \] 
+\end{definition}
+
+\begin{example}
+  Consideriamo il linguaggio:
+  \[
+  L = \left\{ \sigma c \sigma^R \;\left|\; \sigma \in \left\{ a, b \right\}^* \right. \right\}
+  \] 
+  \( \sigma^R \) è definito come il \textit{reverse} di \( \sigma \), cioè la stringa
+  letta al contrario. Quindi questo linguaggio contiene tutte le stringhe palindrome,
+  ad esempio:
+  \[
+  \begin{aligned}
+    \sigma = abb &\implies \sigma^R = bba \implies abb c bba \in L\\
+  \end{aligned}
+  \] 
+  La grammatica che genera questo linguaggio è:
+  \[
+    \begin{aligned}
+      S &\to aSa \;|\; bSb \;|\; c
+    \end{aligned}
+  \] 
+  L'esempio di prima costruito con la grammatica è:
+  \[
+    S \to aSa \to abSba \to abbS bba \to abb c bba
+  \] 
+  Definiamo l'automa a pila \textbf{deterministico} che riconosce questo linguaggio:
+  \[
+    M = \left< \left\{ q_0, q_1 \right\}, \left\{ a, b, c \right\}, \left\{ Z, A, B \right\},
+    q_0, Z, \varnothing, \delta \right>
+  \] 
+  che si rappresenta con la seguente tabella (una per ogni stato):
+  \begin{table}[H]
+    \centering
+    \begin{minipage}{0.45\textwidth}
+      \centering
+      \begin{tabular}{|c|c|c|c|}
+        \hline
+        \( q_0 \) & a & b & c \\
+        \hline
+        Z & \( q_0, ZA \) & \( q_0, ZB \) & \( q_1, \varepsilon \) \\
+        \hline
+        A & \(  \) & \(  \) & \(  \) \\
+        \hline
+        B & \(  \) & \(  \) & \(  \) \\
+        \hline
+      \end{tabular}
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+      \centering
+      \begin{tabular}{|c|c|c|c|}
+        \hline
+        \( q_1 \) & a & b & c \\
+        \hline
+        Z & \( q_1, Z \) & \( q_1, Z \) & \(  \) \\
+        \hline
+        A & \( q_1, \varepsilon \) & \( q_1, Z \) & \(  \) \\
+        \hline
+        B & \( q_1, Z \) & \( q_1, \varepsilon \) & \(  \) \\
+        \hline
+      \end{tabular}
+    \end{minipage}
+  \end{table}
+  \label{10-11-D1}
+  Questo automa riconosce il linguaggio quando la pila è vuota.
+\end{example}
+
+\begin{example}
+  Consideriamo il linguaggio:
+  \[
+    L = \left\{ \sigma \sigma^R \;\left|\; \sigma^R \text{ è il reverse di } \sigma,
+    \sigma \in \left\{ a, b \right\}^* \right. \right\}
+  \] 
+  L'automa a pila \textbf{non deterministico} che riconosce questo linguaggio è:
+  \[
+    M = \left< \left\{ q_0, q_1 \right\}, \left\{ a, b \right\}, \left\{ Z, A, B \right\},
+    q_0, Z, \varnothing, \delta \right>
+  \]
+
+  \begin{table}[H]
+    \centering
+    \begin{minipage}{0.45\textwidth}
+      \centering
+      \begin{tabular}{|c|c|c|c|}
+        \hline
+        \( q_0 \) & \( \varepsilon  \) & a & b \\
+        \hline
+        Z & \(  \) & \( q_0, AZ \) & \( q_0, BZ \) \\
+        \hline
+        A & \(  \) & \makecell{\( q_0, AA \) \\ \( q_1, \varepsilon \) } & \( q_0, BA \) \\
+        \hline
+        B & \(  \) & \( q_0, AB \) & \(  \) \\
+        \hline
+      \end{tabular}
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+      \centering
+      \begin{tabular}{|c|c|c|c|}
+        \hline
+        \( q_1 \) & \( \varepsilon \) & a & b \\
+        \hline
+        Z & \( q_1, \varepsilon \) & \(  \) & \(  \) \\
+        \hline
+        A & \(  \) & \( q_1, \varepsilon \) & \(  \) \\
+        \hline
+        B & \(  \) & \(  \) & \( q_1, \varepsilon \) \\
+        \hline
+      \end{tabular}
+    \end{minipage}
+  \end{table}
+  \label{10-11-D2}
+  Questo automa riconosce il linguaggio quando viene letto dal nastro \( \varepsilon  \) e
+  nella pila rimane solo \( \varepsilon \).
+\end{example}
+\noindent
+Gli automi a pila deterministici sono sottoinsiemi degli automi a pila non deterministici:
+\[
+  \underbrace{APD}_{\text{Parser}} \subseteq \underbrace{APND}_{\text{CF}}
+\] 
+I linguaggi riconosciuti dagli APD sono i linguaggi di programmazione.
 
 \end{document}
