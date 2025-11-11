@@ -263,7 +263,7 @@ fasi:
     \end{itemize}
 \end{itemize}
 
-\section{Modello Entità-Relazione}
+\section{Progettazione Concettuale (Modello Entità - Relazione)}
 È un modello, formale e non ambiguo, utilizzato per la progettazione concettuale di una
 base di dati. Fornisce strumenti formali (costrutti), con sintassi grafica, per specificare la
 struttura e le proprietà dei dati da rappresentare indipendentemente dalla tecnologia.
@@ -903,5 +903,184 @@ più volte \textbf{la stessa coppia in tempi diversi}. Pertanto la relazione bin
 essere trasformata in una relazione ternaria includendo l'entità \textbf{Tempo} come
 nuovo attore nella relazione in modo da poter rappresentare più volte la stessa coppia
 in istanti di tempo diversi.
+
+\section{Implementazione dei dati (Modello Relazionale)}
+Il modello relazionale è un modello dei dati, quindi permette di definire le proprietà
+che la popolazione di una base di dati deve rispettare. I costrutti principali del
+modello relazionale sono:
+\begin{itemize}
+  \item \textbf{Domini di base}: insieme di valori atomici (non scomponibili) che
+    rappresentano i tipi di dati elementari
+  \item \textbf{Relazione (o tabella)}: rappresenta un insieme di entità o di relazioni
+    tra entità. Sono definite come un insieme di ennuple o tuple.
+  \item \textbf{Superchiavi, chiavi e chiavi primarie}: insieme di attributi che identificano
+    univocamente ogni ennupla di una relazione
+  \item \textbf{Vincoli di integrità referenziale}: vincoli che garantiscono la coerenza tra
+    i dati memorizzati in relazioni diverse
+  \item \textbf{Vincoli di integrità generici}: vincoli che garantiscono la coerenza dei dati
+    memorizzati in una singola relazione
+\end{itemize}
+
+\subsection{Domini di base}
+Sono i domini da cui si scelgono i valori delle proprietà delle istanze di informazione da
+rappresentare. I domini tipici sono:
+\begin{itemize}
+  \item Caratteri
+  \item Stringhe di caratteri
+  \item Numeri interi
+  \item Numeri decimali a virgola fissa
+  \item Numeri decimali a virgola mobile
+  \item Domini del tempo, per rappresentare istanti e intervalli di tempo
+  \item ecc...
+\end{itemize}
+I domini presenti variano a seconda del sistema, ma in questo corso vedremo il linguagigo
+SQL nel sistema postgreSQL.
+
+\subsection{Relazione}
+Una relazione può essere vista come una tabella.
+\begin{example}
+  \label{tab:esempio_relazione}
+  Ad esempio:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{|l|l|l|}
+      \hline
+      Milano & 20100 & 1.300.000 \\
+      \hline
+      Verona & 37100 & 350.000 \\
+      \hline
+      Brescia & 25100 & 250.000 \\
+      \hline
+    \end{tabular}
+    \caption{Esempio di tabella che rappresenta alcune città italiane}
+  \end{table}
+\end{example}
+Una tabella è un contenitore di dati la cui struttura è caratterizzata da una lista
+di colonne:
+\begin{itemize}
+  \item I dati sono scritti nelle righe dove \textbf{ogni riga} descrive le caratteristiche di
+    \textbf{un'istanza dell'informazione da rappresentare}
+  \item I valori contenuti nell \textbf{colonne} descrivono sempre la \textbf{stessa
+    proprietà delle istanze} di informazione da rappresentare
+\end{itemize}
+
+\begin{definition}[Definizione di relazione come insieme di ennulple (Lists)]
+  Dati \( n \) insiemi di valori (domini) \( D_1, \ldots, D_n \), con
+  \( n > 0 \) e indicato con \( D_1 \times \ldots \times D_n \) il loro prodotto
+  cartesiano:
+  \[
+    D_1 \times \ldots \times D_n = \left\{ (v_1, \ldots, v_n) \;\left|\; v_1 \in D_1 \wedge \ldots
+    \wedge v_n \in D_n \right. \right\}
+  \] 
+  una relazione \( \rho \) di grado \( n \) è un qualsiasi \textbf{sottoinsieme di}
+  \( D_1 \times \ldots \times D_n \):
+  \[
+    \rho \subseteq D_1 \times \ldots \times D_n
+  \] 
+  dove \( \left( v_1, \ldots, v_n \right) \) è una ennupla della relazione e \( |\rho| \) 
+  è la cardinalità della relazione (numero di ennuple).
+
+  \vspace{1em}
+  \noindent
+  \textbf{Nota}:
+  \begin{itemize}
+    \item I domini \( D_1, \ldots, D_n \) possono essere a \textbf{cardinalità infinita},
+      mentre le relazioni sono sempre a \textbf{cardinalità finita}
+    \item Dalla definizione si deduce inoltre che:
+      \begin{itemize}
+        \item \textbf{Non è definito alcun ordinamento} sulle ennuple di una relazione
+        \item \textbf{Non sono ammessi duplicati} di una ennupla
+        \item Nella definizione di relazione come insieme di ennuple, i valori delle
+          ennuple sono ordinati
+      \end{itemize}
+  \end{itemize}
+\end{definition}
+
+\begin{example}
+  Riprendendo l'esempio \ref{tab:esempio_relazione}, la relazione può essere vista come
+  insieme di ennuple (relazione città):
+  \[
+      \rho = \left.\begin{cases}
+        \left( \text{Milano}, 20100, 1300000 \right),\\
+        \left( \text{Verona}, 37100, 350000 \right),\\
+        \left( \text{Brescia}, 25100, 250000 \right)\\
+      \end{cases}
+      \right\}
+  \] 
+  dove:
+  \[
+    \rho \subseteq D_1 \times D_2 \times D_3
+  \] 
+\end{example}
+
+\subsubsection{Accesso ai valori di una ennupla}
+Se \( t \) è una ennupla \( \left( v_1, \ldots, v_n \right)  \) il valore posto in i-esima
+posizione si indica con la notazione:
+\[
+  t[i]
+\] 
+Questa modalità di accesso ai valori però non è efficace per l'uso pratico delle relazioni.
+Si preferisce quindi assegnare un \textbf{nome alle colonne}; ciò conduce all'introduzione
+della definizione di relazione come insieme di \textbf{tuple}.
+
+\begin{definition}[Definizione di relazione come insieme di tuple (Mappings)]
+  Sia \( X \) un insieme di nomi e sia \( \Delta \) l'insieme di tutti i domini di base
+  ammessi dal modello. Si definisce la funzione:
+  \[
+    DOM: X \to \Delta
+  \] 
+  Tale funzione associa ad ogni nome \( A \in X \) un dominio \( DOM(A) \in \Delta \).
+  I nomi di \( X \) si definiscono \textbf{attributi}.
+  Una tupla \( t \) su \( X \) è una funzione:
+  \[
+    t: X \to \bigcup_{A \in X} DOM(A)
+  \] 
+  dove:
+  \[
+    t[A] = v \in DOM(A)
+  \] 
+  Quindi una relazione su \( X \) è un \textbf{insieme di tuple su } \( X \), dove
+  \( X \) è l'insieme di attributi della relazione.
+
+  \vspace{1em}
+  \noindent
+  \textbf{Nota}:
+  \begin{itemize}
+    \item Una relazione è un \textbf{insieme} di tuple e quindi \textbf{non può contenere
+      tuple duplicate}
+    \item I domini per gli attributi possono essere solo domini di base, \textbf{non sono
+      ammessi altri domini}, nè \textbf{il prodotto cartesiano di domini}. Essenzialmente
+      non sono ammessi attributi annidati
+    \item In generale una base di dati relazionale è composta da \textbf{più relazioni}
+  \end{itemize}
+\end{definition}
+\begin{example}
+  Consideriamo l'esempio \ref{tab:esempio_relazione}. Definiamo l'insieme di attributi:
+  \[
+    X = \{ \text{Nome}, \text{CAP}, \text{Abitanti} \}
+  \] 
+  Definiamo il dominio di ciascun attributo:
+  \[
+    \begin{aligned}
+      DOM(\text{Nome}) & = \text{Stringhe di caratteri} \\
+      DOM(\text{CAP}) & = \text{Numeri interi} \\
+      DOM(\text{Abitanti}) & = \text{Numeri interi}
+    \end{aligned}
+  \]
+  La tabella della relazione è rappresentata come un insieme di tuple:
+  \[
+    \rho_X = \left\{
+      t_1, t_2, t_3
+    \right\}
+  \] 
+  dove:
+  \[
+    \begin{aligned}
+      t_1[\text{Nome}] & = \text{Milano} & t_1[\text{CAP}] & = 20100 & t_1[\text{Abitanti}] & = 1300000 \\
+      t_2[\text{Nome}] & = \text{Verona} & t_2[\text{CAP}] & = 37100 & t_2[\text{Abitanti}] & = 350000 \\
+      t_3[\text{Nome}] & = \text{Brescia} & t_3[\text{CAP}] & = 25100 & t_3[\text{Abitanti}] & = 250000 \\
+    \end{aligned}
+  \] 
+\end{example}
 
 \end{document}
