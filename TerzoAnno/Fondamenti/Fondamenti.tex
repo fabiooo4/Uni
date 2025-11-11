@@ -142,7 +142,7 @@ Alcune nozioni di logica che ci serviranno in seguito:
     \item Se $f : A \mapsto B$ è sia iniettiva che suriettiva allora è \textbf{biiettiva} e quindi esiste $f^{-1} : B \mapsto A$ 
 \end{itemize}
 
-\section{Funzioni calcolabili}
+\subsection{Funzioni calcolabili}
 Un insieme è una proprietà ed è rappresentato da una funzione che indica se un elemento
 appartiene o meno all'insieme. I problemi da risolvere (in questo corso) hanno come
 soluzione una funzione sui naturali:
@@ -201,7 +201,7 @@ Ci si chiede se queste funzioni sono tutte calcolabili:
   un algoritmo, cioè una sequenza finita di passi discreti elementari.
 \end{definition}
 
-\subsection{Quante funzioni numerabili ci sono?}
+\subsubsection{Quante funzioni numerabili ci sono?}
 Consideriamo \( \Sigma \) come un alfabeto finito, cioè una seguenza di simboli
 utilizzabili per scrivere un programma o algoritmo.
 \[
@@ -282,7 +282,7 @@ Nell'insieme delle funzioni calcolabili ci sono:
   \item Funzioni parziali, cioè non definite per ogni \( n \in \mathbb{N} \)
 \end{itemize}
 
-\subsection{Funzioni vs Insiemi}
+\subsubsection{Funzioni vs Insiemi}
 Una funzione può essere vista come un linguaggio \( \mathcal{L}_f \) tale che:
 \[
   f: \mathbb{N} \to \mathbb{N} \quad \leftrightarrow \quad
@@ -1357,7 +1357,7 @@ Il riconoscimento di un linguaggio è analogo a quello di un NFA:
   iniziale.
 \end{theorem}
 
-\section{Espressioni regolari}
+\subsection{Espressioni regolari}
 Le espressioni regolari sono operazioni algebriche sui linguaggi regolari.
 Le operazioni che si possono fare sono:
 \begin{itemize}
@@ -2698,7 +2698,8 @@ specifici. Ci sono due forme normali importanti per le grammatiche context free:
     \] 
     Questa forma genera sempre un albero binario (ogni nodo ha al massimo due figli).
 
-  \item \textbf{Forma normale di Greibach}: Tutte le produzioni hanno la forma:
+  \item \textbf{Forma normale di Greibach}: Ogni linguaggio context free è generato
+    da una grammatica le cui produzioni sono della forma
     \[
       A \to a \alpha
     \] 
@@ -2711,7 +2712,7 @@ specifici. Ci sono due forme normali importanti per le grammatiche context free:
 \end{itemize}
 
 
-\subsection{Minimizzazione delle grammatiche context free}
+\subsection{Conversione in forma normale di Chomsky}
 Ogni grammatica context free può essere riscritta in modo tale che:
 \begin{enumerate}
   \item \textbf{Eliminazione dei simboli inutili}: Ogni simbolo non terminale genera
@@ -2967,6 +2968,56 @@ Chomsky, cioè tutte le produzioni hanno la forma:
 \end{example}
 Questa forma è semplicemente una forma canonica facilmente rappresentaible,
 non una forma più semplice.
+
+\subsection{Transformazione in forma normale di Greibach}
+Per trasformare una grammatica in forma normale di Greibach si fa un \textbf{unfolding}.
+Consideriamo una grammatica \( G = \left< V, T, P, S \right> \) definita da:
+\[
+  \begin{aligned}
+    A &\to \alpha B \gamma \in P \\
+    B &\to \beta_1 \;|\; \beta_2 \;|\; \ldots \;|\; \beta_n \in P \\
+  \end{aligned}
+\] 
+Allora \( G' = \left< V, T, P', S \right> \) dove eliminiamo la produzione \( A \to \alpha B \gamma  \) 
+che non è nella forma corretta e aggiungiamo con la sostituzione:
+\[
+    A \to \alpha \beta_1 \gamma \;|\;
+    \alpha \beta_2 \gamma \;|\; \ldots \;|\; \alpha \beta_n \gamma \in P'
+\]
+Questa trasformazione non cambia il linguaggio generato:
+\[
+  L(G) = L(G')
+\] 
+
+\begin{example}
+  \[
+    \begin{aligned}
+      S &\to a S b \;|\; ab\\
+      B &\to b \\
+      S &\to aSB \;|\; aB
+    \end{aligned}
+  \] 
+\end{example}
+
+\begin{theorem}[Eliminazine ricorsiva sinistra]
+  Consideriamo la grammatica \( G = \left< V, T, P, S \right> \) con:
+  \[
+    \begin{aligned}
+      A &\to  A \alpha_1 \;|\; \ldots \;|\; A \alpha_n \quad &\mathrel{\reflectbox{$\leadsto$}} A \to Aa\\
+      A &\to  \beta_1 \;|\; \ldots \;|\; \beta_n \quad &\mathrel{\reflectbox{$\leadsto$}} A \to b \\
+    \end{aligned}
+  \] 
+  Se costruiamo \( G' = \left< V \cup \left\{ B \right\}, T, P', S \right> \) dove
+  in \( P' \) sostituiamo le produzioni per \( A \) con:
+  \[ 
+    \begin{aligned}
+      A &\to \beta_i \;|\; \beta_i B\\
+      B &\to \alpha_i \;|\; \alpha_i B\\
+    \end{aligned}
+  \] 
+  allora \( L(G) = L(G') \).
+\end{theorem}
+
 
 \subsection{Pumping lemma per i linguaggi context free}
 Il pumping lemma è una \textbf{condizione necessaria} per essere un linguaggio context free:
@@ -3282,7 +3333,7 @@ La negazione di \( \Pi  \) è:
   potrebbe non essere context free, quindi la nostra ipotesi che anche
 \end{theorem}
 
-\subsection{Problemi dedcidibili per i linguaggi context free}
+\subsection{Problemi decidibili per i linguaggi context free}
 Per i linguaggi context free i seguenti problemi sono decidibili, cioè esiste
 un algoritmo che risolve il problema in un numero finito di passi:
 Sia \( L \) un linguaggio context free:
@@ -3477,8 +3528,177 @@ linguaggi context free.
 \noindent
 Gli automi a pila deterministici sono sottoinsiemi degli automi a pila non deterministici:
 \[
-  \underbrace{APD}_{\text{Parser}} \subseteq \underbrace{APND}_{\text{CF}}
+  \underbrace{APD}_{\text{Parser}} \subset \underbrace{APND}_{\text{CF}}
 \] 
 I linguaggi riconosciuti dagli APD sono i linguaggi di programmazione.
+
+\subsection{Corrispondenza tra APND e grammatiche context free}
+\begin{theorem}
+  Consideriamo un linguaggio riconosciuto da un APND \( M \):
+  \[
+    L = L(M)
+  \] 
+  allora esiste \( M' \) APND \textbf{con un solo stato} tale che:
+  \[
+    L = L(M')
+  \] 
+
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione:} Consideriamo l'APND \( M = \left< Q, \Sigma, R, \delta, q_0, z_0, F \right> \).
+  con:
+  \begin{itemize}
+    \item 
+      \( \left| Q \right| \ge 1 \) 
+    \item \( \delta: Q \times \left( \Sigma \times \{\varepsilon \}  \right) \times R \to 
+      \mathcal{P}\left( Q \times R^* \right) \) 
+  \end{itemize}
+  L'idea è quella di prendere un nuovo simbolo per la pila che rappresenta ogni coppia
+  \( Q \times R \):
+  \[
+    \left( \underset{\in Q}{q_i}, \underset{\in R}{z_i} \right)
+    \leadsto \text{ Aggiungiamo } z'_i
+  \] 
+  \[
+    R' = R \cup \{z'_i\} 
+  \] 
+  Bisogna modificare la funzione di transizione \( \delta \) in modo da rappresentare
+  una coppia \( (q_i, z_i) \) con il nuovo simbolo \( z'_i \) associato ad un unico stato.
+  \[
+    \delta(q_i, a, z_i) = \delta'(q_0, a, z'_i)
+  \] 
+  Essenzialmente si codifica nella pila la coppia stato-simbolo.
+\end{theorem}
+
+\begin{theorem}
+  Se \( L = L(M) \) con \( M \) APND con uno stato, allora \( L \) è context free.
+  Quindi esiste una grammatica context free \( G \) che riconosce \( L \):
+  \[
+    \exists G \text{ CF } \;.\; L = L(G)
+  \] 
+
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione:} Consideriamo l'APND
+  \( M = \left< \left\{ q_0 \right\}, \Sigma, R, \delta, q_0, z_0, \varnothing \right> \)
+  (accettiamo \( L \) per pila vuota) che riconosce \( L \):
+  \[
+    L = L(M)
+  \] 
+  La grammatica è definita come \[ G = \left< V, \Sigma, P, S \right> \equiv
+  \left< R, \Sigma, P, z_0 \right> \]
+  con \( P \):
+  \[
+    \color{red}z\color{black} \to \color{blue}a\color{black} z_1 z_2 \ldots z_n \in P \iff \left( q_0, z_1 z_2 \ldots z_n \right) 
+    \in \delta \left( q_0, \color{blue}a\color{black}, \color{red}z\color{black} \right) 
+  \] 
+  Se si legge \( a \) sul nastro e \( z \) in cima alla pila, allora si può fare
+  il push di \( z_1 z_2 \ldots z_n \) nella pila.
+\end{theorem}
+
+\begin{theorem}
+  Se \( L \) è context free allora esiste una APND \( M \) che riconosce il linguaggio
+  \( L = L(M) \), cioè dall'automa si può costruire una grammatica.
+
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione:} Consideriamo il linguaggio context free \( L \) generato
+  dalla grammatica in forma normale di Greibach
+  \( G = \left< V, T, P, S \right> \;.\; L = L(G) \). Costruiamo \( M \):
+  \begin{itemize}
+    \item \( Q = \{q\}  \) 
+    \item \( \Sigma = T \) 
+    \item \( R = V \) 
+    \item \( z_0 = S \) 
+    \item \( F = \varnothing \) 
+  \end{itemize}
+  Dove ogni stato è:
+  \[
+    \left( q, \underset{\in  R^* = V^*}{\alpha} \right) \in \delta
+    \left( q, \underset{\in  T = \Sigma }{a}, \underset{\in R = V}{A} \right) 
+    \iff
+    \underset{\in V}{A} \to \underset{\in \Sigma}{a} \underset{\in V^*}{\alpha} \in P
+  \]
+  \begin{example}
+    \[
+      A \to a \alpha \;|\; a \beta \leadsto 
+      \begin{aligned}
+        \left( q, \alpha \right) \in \delta \left( q, a, A \right) \\
+        \left( q, \beta \right) \in \delta \left( q, a, A \right) \\
+      \end{aligned}
+    \] 
+  \end{example}
+\end{theorem}
+
+
+\section{Macchine di turing}
+\subsection{Potenza espressiva}
+Esistono diversi modelli di calcolo che hanno diversa potenza espressiva, ad esempio
+\begin{itemize}
+  \item Automi a stati finiti deterministici
+  \item Grammatiche context free
+  \item Automi a pila deterministici
+  \item ecc...
+\end{itemize}
+Ogni modello viene istanziato per riconoscere uno specifico linguaggio:
+\begin{itemize}
+  \item \( M = \left< Q, \Sigma, \delta, q_0, F \right> \) per gli automi a stati finiti
+  \item \( G = \left< V, T, P, S \right> \) per le grammatiche context free
+  \item \( M = \left< Q, \Sigma, R, \delta, q_0, z_0, F \right> \) per gli automi a pila
+  \item ecc...
+\end{itemize}
+Il risultato di queste istanze è una \textbf{funzione calcolata} (che era superflua
+per i modelli visti fin'ora):
+\[
+  \text{Modello } \leadsto \text{ Istanza del modello } \leadsto \text{ Funzione calcolata}
+\] 
+Per ragionare su ciò che sta fuori dai modelli visti, la funzione calcolabile diventa
+rilevante. In questo modo "trasformiamo" il calcolo di \( f \) nel riconoscimendo di
+un linguaggio \( L_f \) 
+\[
+  L_f = \left\{ a^f(n) \;\left|\; n \in \mathbb{N} \right. \right\}
+\] 
+I ragionamenti fatti fin'ora erano:
+\begin{itemize}
+  \item Quali funzioni corrispondono a \( L_f \) regolari
+  \item Quali funzioni corrispondono a \( L_f \) context free
+\end{itemize}
+\[
+ \begin{aligned}
+ f(n) = 2n &\implies L_f = \left\{ a^{2n} \;\left|\; n \in \mathbb{N} \right. \right\} \text{ regolare}\\
+  f(n) = n^2 &\implies L_f = \left\{ a^{n^2} \;\left|\; n \in \mathbb{N} \right. \right\} \text{ non CF}\\
+ \end{aligned}
+\] 
+Ora invece consideriamo un contesto più generale parlando di \textbf{insiemi} (di \( \mathbb{N} \))
+invece che di linguaggi. Quindi il calcolo diventa:
+\[
+  \begin{aligned}
+    A_f &= \left\{ f(n) \;\left|\; n \in \mathbb{N} \right. \right\}
+  \end{aligned}
+\] 
+Si abbandona il concetto di stringa e ci si focalizza sul calcolo di una funzione \( f \).
+
+\subsection{Calcolabilità}
+\begin{itemize}
+  \item \textbf{Funzinoe calcolata}: è un'associazione input-output:
+    \[
+      f: \underbrace{\mathbb{N}}_{\text{Dominio}} \to
+      \underbrace{\mathbb{N}}_{\text{Codominio}} \quad f \subseteq \mathbb{N} \times \mathbb{N}
+    \]
+    Questa associazione è definibile da tutte le coppie di input e output.  
+
+  \item \textbf{Algoritmo (processo di calcolo)}:
+  Alcune funzioni sono definibili con una sequenza di passi partendo dall'input, ad esempio:
+    \[
+      \begin{cases}
+        f(0) = 1\\
+        f(1) = 1\\
+        f(x+2) = f(x+1) + f(x) \text{ per } x \ge 0
+      \end{cases}
+    \]
+    Si introduce quindi il concetto di \textbf{calcolabilità}.
+    Per definire la calcolabilità ci domandiamo quali funzioni \( f: \mathbb{N} \to \mathbb{N} \) sono calcolabili
+    (mediante un algoritmo possiamo costruire l'output a partire dall'input)
+\end{itemize}
 
 \end{document}
