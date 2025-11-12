@@ -13,7 +13,7 @@
 %    determinare la similarità tra il segnale di test e ogni
 %     canzone tramite la cross-correlazione (si veda  esempio 2 nel flie
 %     Lezione3_EserciziPrincipali.m) 
-%  determinare la canzone più simile guardando quellax
+%  determinare la canzone più simile guardando quella
 %   con similarità più grande 
 
 %%
