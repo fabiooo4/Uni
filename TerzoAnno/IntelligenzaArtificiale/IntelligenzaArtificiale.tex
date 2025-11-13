@@ -1670,5 +1670,253 @@ Un sistema di inferenza ha due proprietà importanti:
   \end{itemize}
 \end{example}
 
+\subsubsection{Inferenza mediante enumerazione}
+Esiste un algoritmo che verifica per ogni possibile assegnamento se \( KB \models \alpha \):
+\begin{lstlisting}[language=Python]
+function TT-Entails?(KB, alpha) returns true or false
+  inputs: KB, the knowledge base, a sentence in prop. logic
+          alpha, the query, a sentence in prop. logic
+  symbols <- a list of the proposition symbols in KB and alpha
+  return TT-Check-All(KB, alpha, symbols, [ ])
+
+function TT-Check-All(KB, alpha, symbols, model) returns true or false
+  if Empty?(symbols) then
+    if PL-True?(KB, model) then return PL-True?(alpha, model)
+    else return true
+  else do
+    P <- First(symbols); rest <- Rest(symbols)
+    return TT-Check-All(KB, alpha, rest, Extend(P, true, model)) and
+           TT-Check-All(KB, alpha, rest, Extend(P, false, model))
+\end{lstlisting}
+Siccome si devono provare tutte le possibili combinazioni di verità per \( n \)
+variabili, la complessità è \( O(2^n) \), quindi il problema è co-NP-completo.
+
+\subsubsection{Metodi di dimostrazione}
+I metodi di dimostrazione si dividono in due categorie principali:
+\begin{itemize}
+  \item \textbf{Model checking}:
+    \begin{itemize}
+      \item Truth table enumeration: verifica tutti i modelli possibili
+      \item Improved backtracking: usa backtracking per evitare di esplorare
+        modelli non validi. Ad esempio DPLL (Davis-Putnam-Logemann-Loveland)
+      \item Heuristic search in model space: cerca modelli validi usando
+        euristiche per guidare la ricerca (corretto ma non completo). Ad esempio
+        algoritmo come hill-climbing
+    \end{itemize}
+
+  \item \textbf{Applicazione delle regole di inferenza}
+    \begin{itemize}
+      \item Generazione di nuove frasi logiche a partire da quelle esistenti
+      \item Dimostrazione: Una sequenza di applicazioni di regole di inferenza
+      \item Richiedono la traduzione di frasi logiche in \textbf{forma normale}
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Equivalenza logica}
+Due frasi logiche sono logicamente equivalenti se e solo se sono vere negli stessi
+modelli:
+\[
+  \alpha \equiv \beta \iff \alpha \models \beta \wedge \beta \models \alpha
+\] 
+\begin{example}
+  Delle tautologie importanti sono:
+  \begin{equation}
+    \begin{aligned}
+      \left( \alpha \wedge \beta \right) & \equiv \left( \beta \wedge \alpha \right)\\
+      \left( \alpha \vee \beta \right) & \equiv \left( \beta \vee \alpha \right)\\
+      %
+      \left( \left( \alpha \wedge \beta \right) \wedge \gamma \right) & \equiv
+        \left( \alpha \wedge \left( \beta \wedge \gamma \right) \right)\\
+      \left( \left( \alpha \vee \beta \right) \vee \gamma \right) & \equiv
+        \left( \alpha \vee \left( \beta \vee \gamma \right) \right)\\
+      %
+      \neg \left( \neg \alpha \right) & \equiv \alpha \\
+      \left( \alpha \implies \beta \right) & \equiv \left( \neg \alpha \implies \neg \beta \right) \\
+      \left( \alpha \implies \beta \right) & \equiv \left( \neg \alpha \vee \beta \right) \\
+      %
+      \left( \alpha \iff \beta \right) & \equiv \left( \left( \alpha \implies \beta \right) \wedge
+      \left( \beta \implies \alpha \right) \right) \\
+      %
+      \neg \left( \alpha \wedge \beta \right) & \equiv \left( \neg \alpha \vee \neg \beta \right) \\
+      %
+      \neg \left( \alpha \vee \beta \right) & \equiv \left( \neg \alpha \wedge \neg \beta \right) \\
+      \left( \alpha \wedge \left( \beta \vee \gamma  \right)  \right) & \equiv
+      %
+        \left( \left( \alpha \wedge \beta \right) \vee \left( \alpha \wedge \gamma \right) \right)\\
+      %
+      \left( \alpha \vee \left( \beta \wedge \gamma  \right)  \right) & \equiv
+        \left( \left( \alpha \vee \beta \right) \wedge \left( \alpha \vee \gamma \right) \right)
+      %
+    \end{aligned}
+  \end{equation}
+\end{example}
+
+\subsubsection{Validità e soddisfacibilità}
+Una frase logica è \textbf{valida} se è vera in tutti i modelli, ad esempio:
+\[
+  True, \quad \alpha \vee \neg \alpha, \quad \alpha \implies \alpha
+\] 
+La validità è collegata alla derivazione dal teorema della deduzione:
+\[
+  KB \models \alpha \iff \left( KB \implies \alpha \right) \text{ è valida}
+\] 
+
+\vspace{1em}
+\noindent
+Una frase logica è \textbf{soddisfacibile} se è vera in almeno un modello, ad esempio:
+\[
+  A \vee B, \quad C
+\] 
+Invece è \textbf{insoddisfacibile} se non è vera in nessun modello, ad esempio:
+\[
+  False, \quad A \wedge \neg A
+\]
+La soddisfacibilità è collegata alla derivazione dal seguente teorema:
+\[
+  KB \models \alpha \iff \left( KB \wedge \neg \alpha \right) \text{ è insoddisfacibile}
+\]
+
+\subsection{Sistema di inferenza}
+Un sistema di inferenza è un insieme di regole che permettono di derivare nuove frasi
+logiche da frasi esistenti. Le regole sono scritte nella forma:
+\[
+  \frac{A_1 \ldots A_k}{A} \quad \frac{\text{Premesse}}{\text{Conclusioni}}
+\] 
+\begin{definition}
+  Una derivazione \( A \) è derivata da un insieme di formule \( \Gamma  \) con un
+  sistema di inferenza \( \mathcal{R} \) \( \left( \Gamma \vdash_{\mathcal{R}} A \right)  \) 
+  se esiste una sequenza \( A_1, \ldots, A_n \) di formule tale che:
+  \begin{itemize}
+    \item \( A_n = A \)
+    \item \( \forall i \in \left\{ 1, \ldots, n \right\} \) è vera una delle seguenti:
+      \begin{enumerate}
+        \item \( A_i \in \Gamma  \) 
+        \item \( A_i \) è una derivazione diretta delle formule nella sequenza precedente
+      \end{enumerate}
+  \end{itemize}
+  La sequenza \( A_1, \ldots, A_n \) è una \textbf{dimostrazione} di \( A \). \( \Gamma  \) 
+  sono le \textbf{premesse} (assunzioni o ipotesi) per \( A \).
+\end{definition}
+
+\subsubsection{Proprietà di un sistema di inferenza}
+\begin{itemize}
+  \item \textbf{Correttezza delle regole di inferenza}: Le conclusioni devono essere
+    delle conseguenze logiche delle premesse
+  \item \textbf{Completezza}: Se una formula è una conseguenza logica delle premesse,
+    allora deve essere possibile derivarla usando le regole di inferenza
+  \item \textbf{Completezza refutazionale}: Esiste una derivazione di \( \square \) se
+    le ipotesi unite alla negazione della conclusione sono insoddisfacibili:
+    \[
+      \square \text{ è derivabile da } H \cup \left\{ \neg \psi \right\} \iff
+      \text{ è insoddisfacente}
+    \] 
+\end{itemize}
+
+\subsection{Problema di deduzione}
+Un problema di deduzione consiste nel determinare se una certa formula logica
+può essere derivata da un insieme di formule esistenti:
+\[
+  \Gamma \models \alpha
+\] 
+Per risolverlo si possono usare due approcci principali:
+\begin{itemize}
+  \item \textbf{Dimostrazione per assurdo} (reductio ad absurdum): Si dimostra che
+    \[
+      \Gamma \wedge \neg \alpha \text{ è insoddisfacibile}
+    \] 
+    I principali metodi sono la \textbf{resolution}
+  \item \textbf{Forware/backward reasoning}: È un algoritmo polinomiale corretto e
+    completo per un insieme limitato di formule logiche (Horn clauses)
+\end{itemize}
+
+\subsubsection{Resolution}
+Per usare la resolution si deve prima convertire ogni formula logica in \textbf{forma
+normale congiuntiva} (CNF). La CNF è una congiunzione di clausole (letterali), ad esempio:
+\[
+  \left( A \vee \neg B \right) \wedge \left( B \vee \neg C \vee \neg D \right) 
+\] 
+La regola di inferenza della resolution è:
+\[
+\frac{l_1 \vee \ldots \vee l_k \quad m_1 \vee \ldots \vee m_n}
+{
+  l_1 \vee \ldots \vee l_{i-1} \vee l_{i+1} \vee \ldots \vee
+  l_k \vee m_1 \vee \ldots \vee m_{j-1} \vee m_{j+1} \vee \ldots \vee m_n
+}
+\] 
+Dove \( l_i \) e \( m_j \) sono letterali complementari, cioè uno è la negazione
+dell'altro. La risoluzione è corretta e completa per la logica proposizionale.
+\begin{example}
+  Alcune applicazioni della risoluzione sono le seguenti:
+  \[
+    \frac{A \vee B \quad \neg B}{A}
+  \]
+\end{example}
+
+\subsubsection{Conversione in CNF}
+Consideriamo la formula logica:
+\[
+  B_{1,1} \iff (P_{1,2} \vee P_{2,1})
+\] 
+Per convertire una formula logica in CNF si seguono i seguenti passi:
+\begin{enumerate}
+  \item Elimina \( \iff \), sostituendo \( \alpha \iff \beta \) con
+    \( \left( \alpha \implies \beta \right) \wedge \left( \beta \implies \alpha \right)  \) 
+    \[
+      \left( B_{1,1} \implies \left( P_{1,2} \vee P_{2,1} \right)  \right) 
+      \wedge 
+      \left( \left( P_{1,2} \vee P_{2,1} \right) \implies B_{1,1} \right) 
+    \] 
+
+  \item Elimina \( \implies \), rimpiazzando \( \alpha \implies \beta \) con
+    \( \neg \alpha \vee \beta \) 
+    \[
+      \left( \neg B_{1,1} \vee P_{1,2} \vee P_{2,1} \right) \wedge 
+      \left( \neg \left( P_{1,2} \vee P_{2,1} \right) \vee B_{1,1}  \right) 
+    \] 
+
+  \item Muovi \( \neg \) dentro usando le leggi di De Morgan e doppia negazione:
+    \[
+      \left( \neg B_{1,1} \vee P_{1,2} \vee P_{2,1} \right) \wedge 
+      \left( \left( \neg P_{1,2} \wedge \neg P_{2,1} \right) \vee B_{1,1} \right) 
+    \] 
+
+  \item Applica la regola della distribuzione:
+    \[
+      \left( \neg B_{1,1} \vee P_{1,2} \vee P_{2,1} \right) \wedge 
+      \left( \neg P_{1,2} \vee B_{1,1} \right) \wedge 
+      \left( \neg P_{2,1} \vee B_{1,1} \right) 
+    \] 
+\end{enumerate}
+
+\vspace{1em}
+\noindent
+L'algoritmo della risoluzione è il seguente:
+\begin{lstlisting}[language=Python]
+function PL-Resolution(KB, alpha) returns true or false
+  inputs: KB, the knowledge base, a sentence in propositional logic
+          alpha, the query, a sentence in propositional logic
+  clauses <- the set of clauses in the CNF representation of KB and not alpha
+  new <- { }
+  loop do
+    for each Ci , Cj in clauses do
+      resolvents <- PL-Resolve(Ci , Cj )
+      if resolvents contains the empty clause then return true
+      new <- new union resolvents
+    if new is included in clauses then return false
+    clauses <- clauses union new
+\end{lstlisting}
+La risoluzione è da applicare solo a due singoli letterali alla volta.
+\begin{example}
+  Consideriamo la knowledge base:
+  \[
+    KB = \left( B_{1,1} \iff \left( P_{1,2} \vee P_{2,1}  \right) \wedge \neg B_{1,1} \right) 
+    \quad \alpha = \neg P_{1,2}
+  \] 
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{resolution}
+    \caption{Esempio di risoluzione}
+  \end{figure}
+\end{example}
 
 \end{document}
