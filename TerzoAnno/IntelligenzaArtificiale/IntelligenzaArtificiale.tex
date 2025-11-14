@@ -1919,4 +1919,412 @@ La risoluzione è da applicare solo a due singoli letterali alla volta.
   \end{figure}
 \end{example}
 
+\subsection{Forward e backward chaining}
+Per usare il forward e backward chaining si deve prima convertire ogni formula
+logica in \textbf{Horn clauses}.
+Ciascuna clausola deve rispettare una delle seguenti regole:
+\begin{itemize}
+  \item È un singolo simbolo proposizionale, oppure
+  \item È una congiunzione di simboli proposizionali che implica un singolo simbolo
+    proposizionale, ad esempio:
+    \[
+      \left( A \wedge B \right) \implies C
+    \] 
+\end{itemize}
+Questa forma permette di avere come regola il \textbf{modus ponens}, cioè:
+\[
+  \frac{\alpha_1, \ldots, \alpha_n \quad \alpha_1 \wedge \ldots \wedge \alpha_n \implies \beta}
+  {\beta}
+\] 
+Questi algoritmi hanno entrambi complessità lineare.
+
+\subsubsection{Forward chaining}
+L'idea di questo algoritmo è quella di trovare qualsiasi regola le cui premesse
+siano soddisfatte dalla knowledge base e aggiungere la conclusione alla knowledge base
+finchè non si trova la formula desiderata.
+\begin{lstlisting}[language=Python]
+function PL-FC-Entails?(KB, q) returns true or false
+  inputs: KB # knowledge base, a set of propositional Horn clauses
+          q # query, a prop. symbol
+  local variables: count # a table, indexed by clause, initially the number of premises
+                   inferred # a table, indexed by symbol, each entry initially false
+                   agenda # a list of symbols, initially the symbols known in KB
+  while agenda is not empty do
+    p <- Pop(agenda)
+    unless inferred[p] do
+      inferred[p] <- true
+      for each Horn Clause c in whose premise p appears do
+        decrement count[c]
+        if count[c] = 0 then do
+          if Head[c] = q then return true
+          Push(Head[c], agenda)
+  return false
+\end{lstlisting}
+
+\begin{definition}[Dimostrazione di completezz]
+  Forward checking deriva tutte le formule atomiche che possono essere derivate dalla knowledge
+  base.
+  \begin{enumerate}
+    \item Raggiunge un \textbf{punto fisso} dove non si possono più derivare nuove formule
+      atomiche
+    \item Si considera lo stato finale come un modello \( m \) assegnando true o false
+      ai simboli
+    \item Ogni clausola nella knowledge base originale è vera in \( m \)
+    \item Quindi \( m \) è un modello di \( KB \)
+    \item Per ogni \( a \) (formula atomica), se la knowledge base deriva \( a \):
+      \[
+        KB \models a
+      \] 
+      allora \( a \) è vera in \textbf{ogni} modello di \( KB \), incluso \( m \)
+  \end{enumerate}
+\end{definition}
+
+\subsubsection{Backward chaining}
+L'idea di questo algoritmo è quella di iniziare dalla formula desiderata e
+cercare di dimostrare che è vera cercando regole che la concludono
+e poi cercando di dimostrare che le premesse di queste regole sono vere.
+Bisogna fare attenzione a:
+\begin{itemize}
+  \item Evitare cicli: controllare se il nuovo subgoal è già nella lista dei subgoal
+  \item Evitare ripetizioni: evitare di dimostrare lo stesso subgoal più volte
+\end{itemize}
+
+\subsubsection{Differenze tra forward e backward chaining}
+\begin{itemize}
+  \item \textbf{Forward chaining}:
+    È \textbf{data-driven}, cioè un processo automatico che parte dai fatti noti
+  \item \textbf{Backward chaining}:
+    È \textbf{goal-driven}, cioè parte da un obiettivo specifico da raggiungere.
+    La complessità può essere molto meglio di \( O(n) \) nella dimensione
+    della knowledge base
+\end{itemize}
+
+\section{Rappresentare l'incertezza}
+\begin{example}
+  Consideriamo l'azione \( A_t \) = lasciare l'aereoporto \( t \) minuti prima
+  del volo.
+
+  \vspace{1em}
+  \noindent
+  Ci chiediamo se \( A_t \) ci porterà al volo in orario. I problemi sono:
+  \begin{itemize}
+    \item \textbf{Osservabilità parziale}: non sappiamo se ci saranno ingorghi
+      stradali, condizioni meteo avverse, ecc...
+    \item \textbf{Sensori rumorosi}: le previsioni del tempo e le condizioni del traffico
+      non sono sempre accurate
+    \item \textbf{Incertezza nel risultato delle azioni}: si potrebbero avere imprevisti
+      come incidenti stradali, guasti dell'auto, ecc...
+    \item \textbf{Complessità immensa}: non è possibile modellare e predirre 
+      ogni possibile evento
+  \end{itemize}
+  Ci sono talmente tante precondizioni che non possiamo tenerle tutte in considerazione.
+\end{example}
+Ci sono tre principali metodi per gestire l'incertezza:
+\begin{itemize}
+  \item \textbf{Default o nonmonotonic logic}: si fanno assunzioni che sono vere a meno
+    che non si dimostri il contrario
+
+  \item \textbf{Fuzzy logic}: cerca di rendere la logica non binaria, permettendo
+    di esprimere \textbf{gradi di verità}, ad esempio valori tra 0 e 1
+
+  \item \textbf{Probabilità}: gli eventi sono binari (veri o falsi), ma con una
+    certa probabilità.
+\end{itemize}
+
+\subsection{Probabilità}
+Le asserzioni probabilistiche sommano gli effetti di:
+\begin{itemize}
+  \item \textbf{Lazyness}: mancanza di rappresentare informazioni complete
+  \item \textbf{Ignorance}: mancanza di conoscenza su fatti specifici
+\end{itemize}
+Esiste anche la probabilità \textbf{soggettiva} o \textbf{Bayesiana}, che
+rappresenta il grado di fiducia in una certa asserzione, basata sulle
+conoscenze attuali, ad esempio:
+\[
+  P(A_25 \;|\; \text{ nessun incidente riportato}) = 0.06
+\] 
+Questi non sono gradi di verità, ma gradi di \textbf{conoscenza} (belief). Le probabilità
+cambiano in base alle nuove evidenze.
+
+\subsubsection{Decidere con incertezza}
+Consideriamo di avere le seguenti probabilità:
+\[
+  \begin{aligned}
+    P(A_25 \text{ mi fa arrivare in tempo} \;|\; \ldots) & = 0.04 \\
+    P(A_90 \text{ mi fa arrivare in tempo} \;|\; \ldots) & = 0.70 \\
+    P(A_120 \text{ mi fa arrivare in tempo} \;|\; \ldots) & = 0.95 \\
+    P(A_1440 \text{ mi fa arrivare in tempo} \;|\; \ldots) & = 0.9999 \\
+  \end{aligned}
+\] 
+Non è immediato quale azione scegliere, questo dipende sulle \textbf{preferenze} di
+chi sceglie. Le preferenze sono rappresentate dalla \textbf{Utility theory}. Per scegliere
+l'azione che massimizza l'utilità attesa si usa la \textbf{Decision theory} che combina
+l'utility theory con la \textbf{Probability theory Maximum Expected Utility (MEU)}.
+
+\subsubsection{Basi di probabilità}
+\begin{itemize}
+  \item Il \textbf{sample space} \( \Omega  \) è l'insieme di tutti i possibili risultati
+    di un esperimento casuale
+
+  \item \( \omega \in \Omega \) è un \textbf{sample point} (o mondo possibile, o evento atomico)
+
+  \item Un \textbf{modello probabilistico} è un \textbf{sample space} con un assegnamento
+    di probabilità \( P(\omega) \) per ogni \( \omega \in \Omega  \)
+
+  \item Un evento \( A \) è un sottoinsieme di \( \Omega  \). La probabilità di un evento
+    è la somma delle probabilità dei sample point che lo compongono:
+    \[
+      P(A) = \sum_{\omega \in A} P(\omega)
+    \]
+
+  \item Le variabili casuali possono avere vari domini e sono soggette al cambiamento,
+    cioè non si possono decidere a priori i loro valori. \( P \) induce una \textbf{distribuzione
+    di probabilità} su ogni variabile casuale, cioè una funzione che assegna una probabilità
+    ad ogni possibile valore della variabile:
+    \[
+      P(X = x_i) = \sum_{\omega \in \Omega \;|\; X(\omega) = x_i} P(\omega)
+    \] 
+
+  \item Una \textbf{proposizione} è la probabilità che una variabile casuale assuma
+    un certo valore:
+    \[
+      P(X = x_i) \text{ è la proposizione "X assume il valore } x_i \text{"}
+    \]
+    Le proposizioni possono essere usate anche per creare modelli di logica proposizionale,
+    ad esempio date due variabili casuali \( A \) e \( B \):
+    \begin{itemize}
+      \item evento \( a \) = insieme di sample points in cui \( A(\omega) = true \)
+      \item evento \( \neg a \) = insieme di sample points in cui \( A(\omega) = false \)
+      \item evento \( a \wedge b \) = punti dove \( A(\omega) = true \) e \( B(\omega) = true \)
+    \end{itemize}
+\end{itemize}
+La probabilità implica che due eventi in relazione tra loro hanno probabilità 
+collegate. Quando si calcolano le probabilità quindi bisogna considerare l'intersezione
+degli eventi, sottraendo le sovrapposizioni dalla somma delle probabilità.
+
+\subsubsection{Variabili casuali}
+Le variabili casuali sono proposizioni atomiche, mentre invece le proposizioni composte
+sono create combinando variabili casuali. I tipi di variabili casuali sono:
+\begin{itemize}
+  \item \textbf{Proposizionali o booleane}: assumono valori vero o falso, ad esempio:
+    \[
+     \text{Carie } = \text{ ho una carie?}
+    \] 
+    \( \text{Carie } = true \) è una proposizione atomica, scritta anche come \( carie \) 
+  \item \textbf{Discrete} (finite o infinite): assumono un insieme numerabile di valori
+    \[
+      \text{Previsioni del tempo } = \left< \text{sole, pioggia, neve, nuvoloso} \right>
+    \] 
+    \( \text{Previsioni del tempo } = \text{ pioggia} \) è una proposizione. I valori
+    devono essere esaustivi e mutuamente esclusivi
+  \item \textbf{Continue} (limitate o illimitate): assumono un insieme non numerabile di valori
+    \[
+      \text{Temp } = 21.6
+    \] 
+\end{itemize}
+
+\subsubsection{Eventi atomici}
+Gli eventi atomici sono assegnazioni di tutte le variabili casuali. Gli eventi atomici
+hanno le seguenti proprietà:
+\begin{enumerate}
+  \item Mutuamente esclusivi, cioè non possono essere veri contemporaneamente
+  \item Esaustivi, cioè uno di essi deve essere vero
+  \item Consegue una verità per ogni proposizione
+  \item Qualsiasi proposizione è logicamente equivalente ad una disgiunzione di eventi atomici
+    rilevanti
+\end{enumerate}
+Gli eventi atomici sono come i modelli per la logica proposizionale.
+
+\subsubsection{Probabilità a priori}
+La probabilità a priori è la probabilità di un evento senza alcuna conoscenza
+aggiuntiva. È analoga ai fatti nella knowledge base logica.
+
+\subsubsection{Probabilità congiunta}
+La probabilità congiunta rappresenta la probabilità di ogni evento atomico di un
+insieme di variabili casuali.
+\begin{example}
+  Consideriamo la probabilità:
+  \[
+    P(\text{Weather, Cavity})
+  \] 
+  Questa probabilità condizionata è una matrice di valori:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+      \hline
+      \textbf{Weather =} & \text{Sunny} & \text{Rain} & \text{Cloudy} & \text{Snow} \\
+      \hline
+      \text{Cavity = True} & 0.144 & 0.02 & 0.016 & 0.02 \\
+      \hline
+      \text{Cavity = False} & 0.576 & 0.08 & 0.064 & 0.08 \\
+      \hline
+    \end{tabular}
+    \caption{Esempio di probabilità condizionata}
+  \end{table}
+  Se si sommano tutte queste probabilità si ottiene 1, mentre se si sommano
+  le probabilità per una riga o colonna si ottiene la probabilità marginale, cioè
+  la probabilità incondizionata di una variabile casuale.
+\end{example}
+
+\subsubsection{Probabilità continua}
+La probabilità continua è definita tramite una funzione parametrica di un valore chiamata
+\textbf{funzione di densità di probabilità} (PDF).
+
+\subsubsection{Probabilità condizionata}
+La probabilità condizionata rappresenta la probabilità di un evento dato che
+un altro evento sia vero. Ad esempio:
+\[
+  P(\text{carie} \;|\; \text{dolore}) = 0.6
+\] 
+rappresenta che la probabilità di avere una carie, dato che l'unica informazione disponibile
+è quella in cui si ha dolore, è del 60\%.
+
+\vspace{1em}
+\noindent
+La notazione per distribuzioni condizionate è:
+\[
+  P(C \;|\; T)
+\] 
+che è un vettore da due vettori di due elementi:
+\[
+  P(C \;|\; T) = \left[ \left[ P(c \;|\;| t), P(\neg c \;|\; t) \right],
+  \left[ P(c \;|\; \neg t), P(\neg c \;|\; \neg t) \right] \right]
+\] 
+Alcune informazioni possono essere irrilevanti e quindi possono essere ignorate.
+La probabilità condizionata può essere calcolata come:
+\[
+  P(a \;|\; b) = \frac{P(a \wedge b)}{P(b)} \text{ se } P(b) > 0
+\] 
+dove \( P(a \wedge b) \) è la probabilità congiunta di \( a \) e \( b \) e può essere
+anche scritta come (regola del prodotto):
+\[
+  P(a \wedge b) = P(a \;|\; b) \cdot P(b) = P(b \;|\; a) \cdot P(a)
+\] 
+Esiste anche la regola della catena che permette di rappresentare una probabilità generica
+utilizzando i condizionali:
+\[
+  \begin{aligned}
+    P(X_1, \ldots, X_n) &= P(X_1, \ldots, X_{n-1}) \cdot P(X_n \;|\; X_1, \ldots, X_{n-1}) \\
+                        &= P(X_1, \ldots, X_{n-2}) P(X_{n-1} \;|\; X_1, \ldots, X_{n-2})
+                        P(X_n \;|\; X_1, \ldots, X_{n-1}) \\
+                        &= \ldots \\
+                        &= \prod_{i=1}^{n} P(X_i \;|\; X_1, \ldots, X_{i-1})
+  \end{aligned}
+\] 
+
+\subsubsection{Inferenza per enumerazione}
+Per ogni proposizione \( \varphi  \), si sommano gli eventi atomici dove è vero:
+\[
+  P(\varphi) = \sum_{\omega : \omega \models \varphi} P(\omega)
+\] 
+Ricordando che:
+\begin{itemize}
+  \item Ogni proposizione \( \varphi  \) è equivalente alla disgiunzione degli eventi atomici
+    in cui è vera
+  \item Gli eventi atomici sono mutuamente esclusivi
+\end{itemize}
+\begin{example}
+  Consideriamo la seguente tabella di probabilità congiunta:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{joint_probability_1}
+    \caption{Tabella di esempio}
+  \end{figure}
+  La probabilità di avere \textit{toothache} è data dalla somma delle probabilità
+  degli eventi atomici in cui \textit{toothache} è vero:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{joint_probability_2}
+    \caption{Calcolo della probabilità di toothache}
+  \end{figure}
+  \[
+    P(toothache) = 0.108 + 0.012 + 0.016 + 0.064 = 0.2
+  \] 
+  Si può anche calcolare la probabilità congiunta di due eventi:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{joint_probability_3}
+    \caption{Calcolo della probabilità congiunta di toothache e cavity}
+  \end{figure}
+  \[
+    P(cavity \wedge toothache) = 0.108 + 0.012 + 0.072 + 0.008 + 0.016 + 0.064 = 0.28
+  \] 
+  Oppure anche probabilità condizionate:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{joint_probability_4}
+    \caption{Calcolo della probabilità condizionata di not cavity dato toothache}
+  \end{figure}
+  \[
+    \begin{aligned}
+      P(\neg cavity \;|\; toothache) &= \frac{P(\neg cavity \wedge toothache)}{P(toothache)}\\
+                                     &= \frac{0.016 + 0.064}{0.108 + 0.012 + 0.016 + 0.064} \\
+                                     &= 0.4
+    \end{aligned}
+  \] 
+\end{example}
+
+\subsubsection{Normalizzazione}
+L'idea è quella di calcolare la distribuzione di probabilità su una variabile di interesse
+fissando delle \textbf{variabili di evidenza} e sommando su tutte le \textbf{variabili
+nascoste}, cioè quelle non di interesse.
+\begin{example}
+  Consideriamo la tabella dell'esempio precedente, si può calcolare la probabilità
+  condizionata e considerare il denominatore come una costante di normalizzazione:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{joint_probability_5}
+    \caption{Calcolo della probabilità condizionata di cavity dato toothache}
+  \end{figure}
+  \[
+    \begin{aligned}
+      P(Cavity \;|\; Toothache) &= \alpha P(Cavity, Toothache)\\
+                                &= \alpha \left[ 
+                                  \begin{aligned}
+                                    & P(Cavity = true, Toothache = true) \\
+                                    & P(Cavity = false, Toothache = true)
+                                  \end{aligned}
+                                \right] \\
+                                &= \alpha \left[ 
+                                  \begin{aligned}
+                                    & \left<0.108, 0.016 \right> \\
+                                    & \left<0.012, 0.064 \right>
+                                  \end{aligned}
+                                \right] \\
+                                &= \alpha \left< 0.12, 0.08 \right> \\
+                                &= \left< 0.6, 0.4 \right>
+    \end{aligned}
+  \] 
+  Il risultato finale è un vettore la cui somma dei valori è 1.
+\end{example}
+
+\subsection{Indipendenza}
+Due variabili casuali \( A \) e \( B \) sono indipendenti se e solo se:
+\[
+  P(A \;|\; B) = P(A) \quad \text{ oppure } \quad P(B \;|\; A) = P(B) 
+  \text{ oppure } \quad P(A, B) = P(A) \cdot P(B)
+\]
+
+\subsubsection{Indipendenza condizionata}
+Non sempre si possono considerare due variabili casuali come indipendenti, ma 
+possono esistere delle terze variabili che non influenzano la relazione tra le prime due.
+\begin{example}
+  Consideriamo l'esempio del dentista, se sappiamo che una persona ha una carie, la
+  probabilità che la sonda del dentista si incastri tra i denti non dipende dal fatto che
+  la persona abbia dolore ai denti o meno. Quindi:
+  \[
+    P(catch \;|\; toothache, cavity) = P(catch \;|\; cavity)
+  \] 
+  e lo stesso vale se la persona non ha una carie:
+  \[
+    P(catch \;|\; toothache, \neg cavity) = P(catch \;|\; \neg cavity)
+  \] 
+  Quindi \( Catch \) è \textbf{condizionatamente indipendente} da \( Toothache \) dato\\
+  \( Cavity \):
+  \[
+    P(Catch \;|\; Toothache, Cavity) = P(Catch \;|\; Cavity)
+  \] 
+  Si può quindi ignorare una variabile quando si calcola la probabilità condizionata.
+\end{example}
+
 \end{document}
