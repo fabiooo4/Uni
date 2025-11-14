@@ -904,8 +904,8 @@ essere trasformata in una relazione ternaria includendo l'entità \textbf{Tempo}
 nuovo attore nella relazione in modo da poter rappresentare più volte la stessa coppia
 in istanti di tempo diversi.
 
-\section{Implementazione dei dati (Modello Relazionale)}
-Il modello relazionale è un modello dei dati, quindi permette di definire le proprietà
+\section{Progettazione Logica (Modello Relazionale)}
+Il \textbf{modello relazionale} è un modello dei dati, quindi permette di definire le proprietà
 che la popolazione di una base di dati deve rispettare. I costrutti principali del
 modello relazionale sono:
 \begin{itemize}
@@ -1082,5 +1082,218 @@ della definizione di relazione come insieme di \textbf{tuple}.
     \end{aligned}
   \] 
 \end{example}
+
+\subsection{Progettazione nel modello relazionale}
+\subsubsection{Progettazione dei dati}
+Nel modello relazionale lo schema è costituito da un insieme di relazioni (o tabelle).
+Le dipendenze tra proprietà elementari (attributi) sono costituite dalle
+\textbf{dipendenze funzionali} che in questo corso sono sostituite dalla progettazione
+concettuale. 
+Consideriamo i seguenti requisiti da implementare nel modello relazionale:
+
+Vogliamo rappresentare in una base di dati relazionale le informazioni sulla
+proprietà degli appartamenti siti nel comune di Verona.
+\begin{itemize}
+  \item Per ogni appartamento vogliamo memorizzare: il codice ecografico (univoco),
+    la categoria catastale e l’indirizzo composto da: via, numero civico,
+    subalterno.
+
+  \item Per ogni proprietario si registra: il codice fiscale, il nome, il cognome e la data
+    di nascita.
+
+  \item Un appartamento può essere in comproprietà e un proprietario può
+    possedere più appartamenti
+\end{itemize}
+
+\subsubsection{Relazione unica}
+Una soluzione possibile è rappresentata da un'unica relazione che contiene tutte le
+informazioni sugli appartamenti e sui proprietari:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{esempio_relazionale}
+  \caption{Schema relazionale con una sola relazione Proprietà}
+\end{figure}
+\noindent
+Questa tabella associa ogni appartamento ad un proprietario perchè i dati dell'appartamento
+e della persona fanno parte della stessa riga. Il problema è che non c'è distinzione
+tra queste due categorie di informazioni. Questo porta a diversi problemi:
+\begin{enumerate}
+  \item \textbf{Mancata separazione delle informazioni}: le due categorie di
+    informazione non possono esistere separatamente.
+
+  \item \textbf{Ridondanza dei dati}: se un proprietario possiede più appartamenti
+    i suoi dati vengono memorizzati più volte. Questo comporta un aumento dello spazio
+    di memorizzazione e una possibile inconsistenza dello stesso dato.
+\end{enumerate}
+
+\subsubsection{Anomalie}
+Le problematiche descritte nel paragrafo precedente portano sono descritte in modo
+più dettagliato come \textbf{anomalie} che si dividono in:
+\begin{itemize}
+  \item \textbf{Anomalia di aggiornamento}: per aggiornare il valore di un attributo
+    si è obbligati a modificare tale valore su più tuple
+
+  \item \textbf{Anomalie di inserimento}: per inserire una nuova tupla è necessario
+    inserire valori al momento sconosciuti (sostituibili da valori nulli) per gli
+    attributi non disponibili
+    
+  \item \textbf{Anomalie di cancellazione}: per cancellare una tupla è necessario
+    cancellare valori ancola validi oppure inserire valori nulli per gli attributi
+    da cancellare
+\end{itemize}
+
+\subsubsection{Decomposizione della relazione unica}
+Riprendiamo l'esempio precedente con una singola relazione e decomponiamola separando
+le diverse categorie di informazioni in relazioni distinte. Ci sono diversi modi
+per effettuare questa decomposizione:
+\begin{enumerate}
+  \item Separazione in due relazioni distinte per Appartamento e Proprietario
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=1\textwidth]{esempio_relazionale_decomposto_1}
+      \caption{Schema relazionale con relazioni distinte per Appartamento e Proprietario}
+    \end{figure}
+    \noindent
+    Questa separazione risolve i problemi di ridondanza e anomalie di aggiornamento.
+    Però manca l'informazione che mette in relazione la persona con l'appartamento.
+    Quindi siccome si è persa un'informazione, questa decomposizione è detta
+    \textbf{decomposizione con perdita}.
+
+  \item Separazione in due relazioni distinte per Appartamento e Proprietario
+    con l'aggiunta di un informazione identificante per la relazione Appartamento, in questo
+    casoè 
+    \begin{itemize}
+      \item codice fiscale della Persona nella relazione Appartamento 
+    \end{itemize}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.6\textwidth]{esempio_relazionale_decomposto_2_1}
+      \caption{Relazione Appartamento con codice fiscale}
+    \end{figure}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.6\textwidth]{esempio_relazionale_decomposto_2_2}
+      \caption{Relazione Proprietario con codice ecografico}
+    \end{figure}
+    \noindent
+    Siccome non esistono i puntatori bisogna duplicare i valori identificanti 
+    nelle due relazioni. Anche questa decomposizione ha dati ridondanti.
+
+  \item Separazione in due relazioni distinte per Appartamento e Proprietario
+    con l'aggiunta di un informazione identificante per la relazione Proprietario, in questo
+    caso è: 
+    \begin{itemize}
+      \item codice ecografico dell'Appartamento nella relazione Proprietario
+    \end{itemize}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.6\textwidth]{esempio_relazionale_decomposto_2_1}
+      \caption{Relazione Appartamento con codice fiscale}
+    \end{figure}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.6\textwidth]{esempio_relazionale_decomposto_2_2}
+      \caption{Relazione Proprietario}
+    \end{figure}
+    \noindent
+    Siccome non esistono i puntatori bisogna duplicare i valori identificanti 
+    nelle due relazioni. Anche questa decomposizione ha dati ridondanti.
+
+  \item Separazione in due relazioni distinte per Appartamento e Proprietario
+    con l'aggiunta di un informazione identificante per ciascuna relazione, in questo
+    caso sono:
+    \begin{itemize}
+      \item codice fiscale nella relazione Appartamento 
+      \item codice ecografico nella relazione Proprietario
+    \end{itemize}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.6\textwidth]{esempio_relazionale_decomposto_3_1}
+      \caption{Relazione Appartamento}
+    \end{figure}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.6\textwidth]{esempio_relazionale_decomposto_3_2}
+      \caption{Relazione Proprietario con codice ecografico}
+    \end{figure}
+    \noindent
+    Anche in questo caso si presentano le stesse problematiche del punto precedente.
+
+  \item Separazione in tre relazione distinte:
+    \begin{itemize}
+      \item Appartamento
+      \item Persona
+      \item Proprietà (relazione tra Appartamento e Persona)
+    \end{itemize}
+    Per rappresentare la relazione tra Appartamento e Persona si introduce
+    una nuova relazione chiamata Proprietà che contiene i valori degli attributi
+    identificanti di entrambe le relazioni.
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.6\textwidth]{esempio_relazionale_decomposto_4_1}
+      \caption{Relazione Appartamento}
+    \end{figure}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.6\textwidth]{esempio_relazionale_decomposto_4_2}
+      \caption{Relazione Persona}
+    \end{figure}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.3\textwidth]{esempio_relazionale_decomposto_4_3}
+      \caption{Relazione Proprietà}
+    \end{figure}
+    \noindent
+    In questa decomposizione non esistono ridondanze e non si perdono informazioni.
+    Quindi questa è la decomposizione corretta e \textbf{senza perdita}. L'unica
+    ridondanza è quella degli attributi identificanti che però è necessaria per
+    rappresentare la relazione tra le due entità.
+\end{enumerate}
+
+\subsubsection{Proprietà del modello relazionale}
+\begin{itemize}
+  \item I legami tra relazioni si realizzano attraverso la replicazione
+    di un insieme di attributi, dove il legame tra due tuple si
+    intende stabilito quando esse presentano gli stessi valori
+    negli attributi replicati.
+
+  \item Il modello relazionale è \textbf{value-based} (basato sui valori).
+    Il modello non prevede l’uso di puntatori per rappresentare
+    legami tra i dati. Questo implica:
+    \begin{itemize}
+      \item Completa indipendenza dall'implementazione e dallo schema fisico
+      \item Facilità di trasferimento dei dati tra sistemi
+      \item Viene rappresentato solo ciò che è rilevante per il sistema informativo
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Terminologia}
+\begin{itemize}
+  \item \textbf{Schema di una relazione}: è costituito dal nome della relazione e
+    da un insieme di nomi per i suoi attributi:
+    \[
+      R(X) \text{ oppure } R(A_1, \ldots, A_n) \text{ oppure } R(A_1: D_1, \ldots, A_n: D_n)
+    \] 
+
+  \item \textbf{Schema di una base di dati relazionale}: è costituito da un insieme di
+    schemi di relazioni:
+    \[
+      S = \{ R_1(X_1), \ldots, R_n(X_n) \}
+    \]
+    con \( R_1 \neq \ldots \neq R_n \) 
+
+  \item \textbf{Istanza di uan relazione di schema \( R(X) \)}: è un insieme \( r \) 
+    di tuple su \( X \):
+    \[
+      r = \{ t_1, \ldots, t_k \}
+    \]
+
+  \item \textbf{Istanza di una base di dati relazionale di schema\\ \( S = \{ R_1(X_1), \ldots, R_n(X_n) \} \)}:
+    è costituito da un insieme di istanze delle relazioni \( R_1(X_1), \ldots, R_n(X_n) \):
+    \[
+      db = \{ r_1, \ldots, r_n \}
+    \] 
+\end{itemize}
+
 
 \end{document}
