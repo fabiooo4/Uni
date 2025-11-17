@@ -3631,7 +3631,7 @@ I linguaggi riconosciuti dagli APD sono i linguaggi di programmazione.
 \end{theorem}
 
 
-\section{Macchine di turing}
+\section{Calcolabilità e funzioni ricorsive}
 \subsection{Potenza espressiva}
 Esistono diversi modelli di calcolo che hanno diversa potenza espressiva, ad esempio
 \begin{itemize}
@@ -3678,9 +3678,9 @@ invece che di linguaggi. Quindi il calcolo diventa:
 \] 
 Si abbandona il concetto di stringa e ci si focalizza sul calcolo di una funzione \( f \).
 
-\subsection{Calcolabilità}
+\subsection{Teoria della Calcolabilità}
 \begin{itemize}
-  \item \textbf{Funzinoe calcolata}: è un'associazione input-output:
+  \item \textbf{Funzione calcolata}: è un'associazione input-output:
     \[
       f: \underbrace{\mathbb{N}}_{\text{Dominio}} \to
       \underbrace{\mathbb{N}}_{\text{Codominio}} \quad f \subseteq \mathbb{N} \times \mathbb{N}
@@ -3700,5 +3700,429 @@ Si abbandona il concetto di stringa e ci si focalizza sul calcolo di una funzion
     Per definire la calcolabilità ci domandiamo quali funzioni \( f: \mathbb{N} \to \mathbb{N} \) sono calcolabili
     (mediante un algoritmo possiamo costruire l'output a partire dall'input)
 \end{itemize}
+
+\vspace{1em}
+\noindent
+Ci sono due modelli principali per definire la calcolabilità:
+\begin{itemize}
+  \item \textbf{Funzioni primitive ricorsive}
+  \item \textbf{Macchina di Turing}
+\end{itemize}
+
+\subsection{Funzioni primitive ricorsive}
+Le funzioni primitive ricorsive sono un modello di calcolo che permette di descrivere un
+processo di calcolo componendo funzioni già definite o funzioni di base. Per rappresentare
+la composizione di funzioni si usa la \textbf{Lambda notazione}:
+\[
+  \underbrace{\lambda}_{\text{Funzione}} \underbrace{x}_{\text{Input}}. \underbrace{f(x)}_{\text{Output}}
+\] 
+
+\subsubsection{Funzioni primitive di base}
+Le funzioni ricorsive di base sono:
+\begin{itemize}
+  \item \textbf{Funzione costante zero}:
+    \[
+      \lambda x. 0
+    \] 
+  \item \textbf{Funzione successore}:
+    \[
+      \lambda x. x + 1 \equiv S(x)
+    \]
+  \item \textbf{Funzione identità (su un valore) o funzione proiezione (su più valori)}:
+    \[
+      \lambda x_1, x_2, \ldots, x_n. x_i \quad 1 \le i \le n
+    \]
+    O per un solo valore:
+    \[
+      \lambda x. x
+    \] 
+\end{itemize}
+Queste funzioni sono \textbf{totali}, cioè sono definite per ogni valore naturale in input.
+
+
+\subsubsection{Operazioni sulle funzioni}
+Le possibili operazioni per costruire nuove funzioni sono:
+\begin{itemize}
+  \item \textbf{Composizione}: Consideriamo le funzioni:
+    \[
+      g: \mathbb{N} \to \mathbb{N} \quad
+      h: \mathbb{N} \to \mathbb{N}
+    \] 
+    Abbiamo la funzione composta:
+    \[
+      f = h \circ g = \lambda x. g(h(x)) \quad f: \mathbb{N} \to \mathbb{N}
+    \]
+
+    \vspace{1em}
+    \noindent
+    In generale:
+    \[
+      g: \mathbb{N}^k \to \mathbb{N} \quad
+      h_1, h_2, \ldots, h_k: \mathbb{N}^n \to \mathbb{N}
+    \] 
+    La funzione composta è:
+    \[
+      \begin{aligned}
+        f &= g \circ (h_1, \ldots, h_k)\\
+          &= \lambda x_1, \ldots, x_n. g(h_1(x_1, \ldots, x_n),
+        h_2(x_1, \ldots, x_n), \ldots, h_k(x_1, \ldots, x_n))
+      \end{aligned}
+    \]
+    La composizione di funzioni totali è totale.
+
+    \begin{example}
+      Consideriamo le funzioni:
+      \[
+        g: \mathbb{N}\times \mathbb{N} \to \mathbb{N} \quad
+        h_1, h_2: \mathbb{N} \times \mathbb{N} \times \mathbb{N} \to \mathbb{N}
+      \] 
+      La funzione composta è:
+      \[
+        f = g \circ (h_1, h_2) = \lambda x_1, x_2, x_3. g(h_1(x_1, x_2, x_3), h_2(x_1, x_2, x_3))
+      \] 
+      \[
+        f: \mathbb{N} \times \mathbb{N} \times \mathbb{N} \to \mathbb{N}
+      \] 
+    \end{example}
+    Queste funzioni equivalgono agli assegnamenti nei linguaggi di programmazione.
+
+  \item \textbf{Primitiva ricorsione}: Consideriamo le funzioni:
+    \[
+      g: \mathbb{N} \to \mathbb{N} \quad
+      h: \mathbb{N} \times \mathbb{N} \times \mathbb{N} \to \mathbb{N}
+    \] 
+    Definiamo la funzione \( f \) mediante primitiva ricorsione come:
+    \[
+      \begin{cases}
+        f(\overbrace{0}^{\text{indice}}, x) = g(x) \quad &\text{Caso base}\\
+        f(y+1, x) = h(y, f(y, x), \underbrace{x}_{\text{input}}) \quad &\text{Caso ricorsivo}
+      \end{cases}
+    \] 
+
+    Le funzioni definite per primitiva ricorsione sono totali.
+
+    Queste funzioni equivalgono al ciclo for nei linguaggi di programmazione.
+\end{itemize}
+
+\begin{definition}
+  Una funzione primitiva ricorsiva \( f \in PR \), dove \( PR \) è la classe delle funzioni primitive
+  ricorsive, ovvero la minima classe di funzioni chiuse per composizione e primitiva
+  ricorsione che contiene tutte le funzioni di base.
+\end{definition}
+
+\begin{definition}
+  Supponiamo che una funzione \( f \) sia primitiva ricorsiva, allora esiste una
+  sequenza finita di funzioni \(P_f\) in \( PR \) tali che
+  l'ultima funzione della sequenza è esattamente \( f \):
+  \[
+    \exists P_f = f_1, f_2, \ldots, f_n \;.\; \forall i f_i \in PR \wedge f_n = f
+  \] 
+\end{definition}
+
+\begin{define}
+  Quando una funzione totale termina si usa la seguente notazione:
+  \[
+    f(x) \downarrow
+  \] 
+  Quando una funzione non è definita e quindi non termina si usa la seguente notazione:
+  \[
+    f(x) \uparrow
+  \] 
+\end{define}
+
+
+\subsubsection{Esempi}
+\begin{example}[Somma]
+  Definiamo la funzione somma:
+  \[
+    +: \mathbb{N} \times \mathbb{N} \to \mathbb{N}
+  \] 
+  Definiamola prima induttivamente:
+  \[
+    \begin{cases}
+      +(0, x) &= x \\
+      +(y+1, x) &= S(+(y, x))
+    \end{cases}
+  \] 
+  Definiamo ora la funzione mediante funzioni ricorsive di base:
+  \[
+    \begin{aligned}
+      f_1 &= \lambda x.x \\
+      f_2 &= \lambda x. x+1 \\
+      f_3 &= \lambda x_1 x_2 x_3. x_2 \\
+      f_4 &= f_2 \circ f_3
+    \end{aligned}
+  \] 
+  \[
+    + = f_5:
+    \begin{cases}
+      f_5(0,x) = f_1(x) = x \\
+      \begin{aligned}
+        f_5(y+1,x) &= f_4(y, f_5(y,x), x) \\
+                   &= f_2 \circ f_3 (y, f_5(y,x), x) \\
+                   &= f_2(f_5(y,x)) = S(+(y,x))
+      \end{aligned}
+    \end{cases}
+  \] 
+  quindi è definita come:
+  \[
+    +: f_1, f_2, f_3, f_4, f_5
+  \] 
+\end{example}
+
+\begin{example}[Moltiplicazione]
+  Definiamo la funzione moltiplicazione:
+  \[
+    *: \mathbb{N} \times \mathbb{N} \to \mathbb{N}
+  \] 
+  Definiamola prima induttivamente:
+  \[
+    \begin{cases}
+      *(0, x) &= 0 \\
+      *(y+1, x) &= +(x, *(y, x))
+    \end{cases}
+  \] 
+  Definiamo ora la funzione mediante funzioni ricorsive di base:
+  \[
+    \begin{aligned}
+      f_1 &= \lambda x. 0 \\
+      f_2 &= \lambda x_1 x_2 x_3. x_2 \\
+      f_3 &= \lambda x_1 x_2 x_3. x_3 \\
+      f_4 &= + = \lambda x_1 x_2. +(x_1, x_2) \\
+      f_5 &= f_4 \circ (f_2, f_3)
+    \end{aligned}
+  \] 
+  \[
+    * = f_6:
+    \begin{cases}
+      f_5(0,x) = f_1(x) = 0 \\
+      \begin{aligned}
+        f_6(y+1, x) &= f_5(y, f_6(y x), x) \\
+                   &= f_4 \circ (f_2, f_3) (y, f_6(y x), x) \\
+                   &= f_4(f_2(y, f_6(y x), x), f_3(y, f_6(y x), x)) \\
+                   &= f_4(f_6(y x), x) = +(f_6(y x), x)
+      \end{aligned}
+    \end{cases}
+  \] 
+  quindi è definita come:
+  \[
+    *: f_1, f_2, f_3, f_4, f_5, f_6
+  \] 
+\end{example}
+
+\begin{example}[Decremento]
+  Definiamo la funzione decremento:
+  \[
+    D: \mathbb{N} \to \mathbb{N}
+  \] 
+  Definiamola prima induttivamente:
+  \[
+    \begin{cases}
+      D(0) &= 0 \\
+      D(y+1) &= y
+    \end{cases}
+  \] 
+  Definiamo ora la funzione mediante funzioni ricorsive di base:
+  \[
+    \begin{aligned}
+      f_1 &= \lambda x. 0 \\
+      f_2 &= \lambda x_1 x_2 x_3. x_1 \\
+    \end{aligned}
+  \] 
+  \[
+    D = f_3:
+    \begin{cases}
+      f_3(0, x) = f_1(x) = 0 \\
+      f_3(y+1, x) = f_2(y, f_3(y, x), x) = y
+    \end{cases}
+  \] 
+  quindi è definita come:
+  \[
+    D: f_1, f_2, f_3
+  \]
+\end{example}
+
+\begin{exercise}[Differenza]
+  Definiamo la funzione differenza:
+  \[
+    -: \mathbb{N} \times \mathbb{N} \to \mathbb{N}
+  \] 
+  Definiamola prima induttivamente:
+  \[
+    \begin{cases}
+      -(0, x) &= x \\
+      -(x, y+1) &= D(-(y, x))
+    \end{cases}
+  \] 
+\end{exercise}
+
+\subsubsection{Calcolabilità delle funzioni primitive ricorsive}
+Vogliamo mostrare che questo modello fallisce nel catturare il concetto di calcolabilità.
+Consideriamo una funzione \( f: \mathbb{N} \to  \mathbb{N} \) primitiva ricorsiva
+\( f \in PR \), sappiamo che:
+\[
+  \exists P_f = f_1, f_2, \ldots, f_n \;.\; \forall i f_i \in PR \wedge f_n = f
+\] 
+Definiamo una nuova funzione \( h : \mathbb{N} \to  \mathbb{N} \) tale che:
+\[
+  h(n) = f_n(n) + 1
+\] 
+Prendiamo un indice \( n \), generiamo la lista di funzioni fino a \( n \) e gli sommiamo
+1. Di conseguenza \( h(n) \) è calcolabile e visto che funzioni primitiva ricorsive catturano
+tutto ciò che è calcolabile, allora \( h \in PR \). Quindi vuol dire che esiste un
+indice \( i \) tale che:
+\[
+  \exists i \;.\; h = f_i \in PR
+\] 
+Allora possiamo calcolare \( h(i) \):
+\[
+  f_i(i) = h(i) = f_i(i) + 1 \quad \text{Assurdo}
+\] 
+È impossibile che un numero naturale sia uguale al suo successore. Quindi \( PR \) non
+può catturare tutte le funzioni calcolabili.
+
+\begin{example}
+  Un esempio di funzione totale non primitiva ricorsiva è la funzione di Ackermann:
+  \[
+    \begin{aligned}
+      Ack(0, y) &= y + 1 \quad \text{Caso base per il primo parametro} \\
+      Ack(x+1, 0) &= Ack(x, 1) \quad \text{Caso base per il secondo parametro}\\
+      Ack(x+1, y+1) &= Ack(x, Ack(x+1, y)) \quad \text{Caso ricorsivo}
+    \end{aligned}
+  \] 
+  Questa funzione cresce molto velocemente, ad esempio:
+  \[
+    Ack(4, 2) \text{ ha più di 19000 cifre}
+  \] 
+  Nella definizione, al posto di h, abbiamo una funzione da calcolare e quindi rappresenta
+  la \( f \) della definizione di primitiva ricorsione, cioè la funzione che calcolo
+  è quella calcolata. Quindi lo schema di primitiva ricorsione non è rispettato:
+  \[
+    Ack \notin PR
+  \] 
+  però \( Ack \) è totale, calcolabile, ma non primitiva ricorsiva.
+\end{example}
+
+\subsection{Macchina di Turing}
+È un modello basato su automi a stati finiti (DFA) che permette di descrivere come avviene
+il processo di calcolo come sequenza di operazioni di scrittura e lettura su una memoria.
+La macchina di Turing è costituita da:
+\begin{itemize}
+  \item \textbf{Programma finito}: rappresenta la funzione di transizione, cioè una tabella
+    finita in cui viene definito come output:
+    \begin{itemize}
+      \item Stato: è una testina
+      \item Simbolo (scritto)
+      \item Direzione di spostamento
+    \end{itemize}
+
+  \item \textbf{Nastro infinito}: rappresenta la memoria della macchina, è costituito da
+    celle che contengono simboli di un alfabeto finito. La testina può leggere e scrivere
+    su questo nastro.
+\end{itemize}
+
+\begin{definition}[Macchina di Turing]
+  Una macchina di Turing (MdT) \( M \) consiste di:
+  \begin{itemize}
+    \item \( \Sigma \): alfabeto \textbf{finito}:
+      \[
+        \Sigma = \{ s_0, s_1, \ldots, s_k \}
+      \] 
+      L'alfabeto contiene almeno due simboli:
+      \begin{itemize}
+        \item \( \$ \): rappresenta la cella vuota del nastro
+        \item \( 0 \): simbolo significativo
+      \end{itemize}
+
+    \item \( Q \): insieme finito di stati:
+      \[
+        q_0 \in Q \quad Q \varnothing
+      \] 
+
+    \item \( P \): insieme finito di istruzioni (corrisponde alla \( \delta \) del DFA):
+      \[
+        P = \left\{ I_1, \ldots, I_k \right\}
+      \] 
+      Ogni istruzione è una quintupla che può essere di due tipi:
+      \begin{itemize}
+        \item \( q,s,q',s', \{R, L\}  \): dove:
+          \begin{itemize}
+            \item \( q \): stato corrente
+            \item \( s \): simbolo letto sul nastro
+            \item \( q' \): stato successivo
+            \item \( s' \): simbolo da scrivere sul nastro sovrascrivendo \( s \)
+            \item \( R \) o \( L \): direzione di spostamento della testina (Right o Left)
+          \end{itemize}
+          Quindi la funzione di transizione è definita come:
+          \[
+            \delta: Q \times \Sigma \to Q \times \Sigma \times \{R, L\}
+          \] 
+      \end{itemize}
+  \end{itemize}
+\end{definition}
+
+\subsubsection{Descrizione istantanea di una MdT}
+La descrizione istantanea (ID) di una MdT rappresenta lo stato corrente della macchina
+in un dato istante di tempo:
+\[
+  \ldots \$ \$ \underbrace{s_1 s_2 \ldots s_{i-1}}_{v}
+  \underset{\underset{\text{Testina}}{q}}{s_i}
+  \underbrace{s_{i+1} \ldots s_n \$ \$ \ldots}_{w}
+\] 
+La descrizione istantanea contiene:
+\[
+  \left( q, v, s_i, w \right) 
+\] 
+\begin{itemize}
+  \item Lo stato corrente \( q \)
+  \item Il contenuto del nastro a sinistra della testina
+  \item Il simbolo sotto la testina \( s_i \)
+  \item Il contenuto del nastro a destra della testina
+\end{itemize}
+La computazione di una MdT è una sequenza di descrizioni istantanee.
+
+\begin{definition}
+  Una computazione è terminante se esiste una descrizione istantanea
+  \( \left<q, v, r, w \right> \) tale che nessuna istruzione inizia con \( (q, r) \),
+  ovvero \( \delta(q,r) \) non è definita.
+\end{definition}
+
+\vspace{1em}
+\noindent
+Le funzioni primitive ricorsive possono essere rappresentate con una macchina di Turing.
+\begin{example}
+  La funzione:
+  \[
+    \lambda x.0
+  \] 
+  è rappresentata dalla macchina:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|}
+      \hline
+      & \$ \\
+      \hline
+      \( q_1 \) & \\
+      \hline
+    \end{tabular}
+  \end{table}
+\end{example}
+\begin{example}
+  La funzione:
+  \[
+    \lambda x.x
+  \] 
+  è rappresentata dalla macchina:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|}
+      \hline
+      & \$ \\
+      \hline
+      \( q_1 \) & \( q_1 \$, R \) \\
+      \hline
+    \end{tabular}
+  \end{table}
+\end{example}
 
 \end{document}
