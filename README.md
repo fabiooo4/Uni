@@ -90,20 +90,18 @@ I'm sharing them because they can be useful to other students.
 <details>
 <summary>&emsp;First Semester</summary>
     
-- Databases
-- Signal and image processing
-- Foundations of computing
-- Programming languages
-- Compilers (Personal choice)
+- [Databases](./TerzoAnno/PrimoSemestre/BasiDati/BasiDati.pdf)
+- Signal and image processing (Only Matlab)
+- [Foundations of computing](./TerzoAnno/PrimoSemestre/Fondamenti/Fondamenti.pdf)
+- [Artificial Intelligence](./TerzoAnno/PrimoSemestre/IntelligenzaArtificiale/IntelligenzaArtificiale.pdf)
+- [Graphics Programming](./TerzoAnno/PrimoSemestre/GraficaAlCalcolatore/GraficaAlCalcolatore.pdf)
 </details>
 <details>
 <summary>&emsp;Second Semester</summary>
     
 - Databases
-- Signal and image processing
-- Foundations of computing
 - Programming languages
-- Compilers (Personal choice)
+- Compilers
 </details>
 </details>
 
