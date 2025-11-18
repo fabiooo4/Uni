@@ -4053,11 +4053,11 @@ La macchina di Turing è costituita da:
             \item \( s' \): simbolo da scrivere sul nastro sovrascrivendo \( s \)
             \item \( R \) o \( L \): direzione di spostamento della testina (Right o Left)
           \end{itemize}
-          Quindi la funzione di transizione è definita come:
-          \[
-            \delta: Q \times \Sigma \to Q \times \Sigma \times \{R, L\}
-          \] 
       \end{itemize}
+    \item \( \delta \): la funzione di transizione è definita come:
+      \[
+        \delta: Q \times \Sigma \to Q \times \Sigma \times \{R, L\}
+      \] 
   \end{itemize}
 \end{definition}
 
@@ -4067,7 +4067,8 @@ in un dato istante di tempo:
 \[
   \ldots \$ \$ \underbrace{s_1 s_2 \ldots s_{i-1}}_{v}
   \underset{\underset{\text{Testina}}{q}}{s_i}
-  \underbrace{s_{i+1} \ldots s_n \$ \$ \ldots}_{w}
+  \underbrace{s_{i+1} \ldots s_n}_{w}
+ \$ \$ \ldots
 \] 
 La descrizione istantanea contiene:
 \[
@@ -4080,12 +4081,77 @@ La descrizione istantanea contiene:
   \item Il contenuto del nastro a destra della testina
 \end{itemize}
 La computazione di una MdT è una sequenza di descrizioni istantanee.
+\[
+  \ldots \$ \$ \overbrace{\underbrace{r_m \ldots r_1}_{v'} r_0}^{v}
+  \underset{\underset{\text{Testina}}{q}}{r}
+  \overbrace{s_0 \underbrace{s_1 \ldots s_n}_{w'}}^{w}
+ \$ \$ \ldots
+\] 
+\begin{itemize}
+  \item 
+    Per lo spostamento a destra:
+    \[
+      \delta(q, r) = \left<q', r', R \right>
+    \] 
+    quindi:
+    \[
+      \left<q, v, r, w \right> \to \left< q', v r' , s_0, w' \right>
+    \] 
+    \[
+      \ldots \$ \$ \overbrace{r_m \ldots r_1 r_0 r'}^{vr'}
+      \underset{\underset{\text{Testina}}{q'}}{s_0}
+      \overbrace{s_1 \ldots s_n}^{w'}
+      \$ \$ \ldots
+    \] 
 
+  \item 
+    Per lo spostamento a sinistra:
+    \[
+      \delta(q, r) = \left<q', r', L \right>
+    \] 
+    quindi:
+    \[
+      \left<q, v, r, w \right> \to \left< q', v', r_0, r' w \right>
+    \] 
+    \[
+      \ldots \$ \$ \overbrace{r_m \ldots r_1}^{v'}
+      \underset{\underset{\text{Testina}}{q'}}{r_0}
+      \overbrace{r' s_0 s_1 \ldots s_n}^{r'w}
+      \$ \$ \ldots
+    \]
+\end{itemize}
+
+
+\vspace{1em}
+\noindent
 \begin{definition}
   Una computazione è terminante se esiste una descrizione istantanea
   \( \left<q, v, r, w \right> \) tale che nessuna istruzione inizia con \( (q, r) \),
   ovvero \( \delta(q,r) \) non è definita.
 \end{definition}
+
+\vspace{3em}
+\noindent
+\begin{theorem}[Funzione Turing calcolabile]
+  Una funzione \( f: \mathbb{N}^n \to \mathbb{N} \) è \textbf{Turing calcolabile} se
+  esiste una MdT \( M \) tale che partendo dalla configurazione iniziale:
+  \[
+    \$ x_1 \$ x_2 \$ \ldots \$ x_n \underset{\underset{q_0}{\uparrow}}{\$} \$ \ldots
+  \] 
+  dove \( x \in \mathbb{N} \) è la rappresentazione unaria, ad esempio: 
+  \[
+    \begin{aligned}
+      |x| = 2 &\to x = 11\\
+      |x| = 5 &\to x = 11111
+    \end{aligned}
+  \] 
+  e quindi \( x_1, \ldots, x_n \) sono gli input di \( f \), allora la MdT termina nella
+  configurazione:
+  \[
+    \ldots\$ f(x_1, \ldots, x_n) \underset{\underset{q_f}{\uparrow}}{\$} \$ \ldots
+  \] 
+  Una MdT termina quando nessuna computazione ulteriore è possibile.
+\end{theorem}
 
 \vspace{1em}
 \noindent
@@ -4102,11 +4168,19 @@ Le funzioni primitive ricorsive possono essere rappresentate con una macchina di
       \hline
       & \$ \\
       \hline
-      \( q_1 \) & \\
+      \( q_1 \) & \( q_1 \$, R \) \\
       \hline
     \end{tabular}
   \end{table}
+  Il nastro è:
+  \[
+    \begin{aligned}
+      \ldots \$ x \underset{\underset{q_0}{\uparrow}}{\$} \$ \ldots \\
+      \ldots \$ x \underset{\text{Risultato}}{\$} \underset{\underset{q_1}{\uparrow}}{\$} \ldots \\
+    \end{aligned}
+  \] 
 \end{example}
+
 \begin{example}
   La funzione:
   \[
@@ -4119,10 +4193,364 @@ Le funzioni primitive ricorsive possono essere rappresentate con una macchina di
       \hline
       & \$ \\
       \hline
-      \( q_1 \) & \( q_1 \$, R \) \\
+      \( q_1 \) & \\
       \hline
     \end{tabular}
   \end{table}
+  Il nastro è:
+  \[
+    \ldots \$ x \underset{\underset{q_1}{\uparrow}}{\$} \ldots
+  \] 
 \end{example}
+
+\begin{example}
+  Un esempio di MdT che non termina è:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|}
+      \hline
+      &  \$ \\
+      \hline
+      \( q_0 \) & \( q_0 \$, R \) \\
+      \hline
+    \end{tabular}
+  \end{table}
+  Scritta sotto forma di funzione:
+  \[
+    f(x) = \lambda x. \uparrow
+  \] 
+  o in un linguaggio di programmazione:
+  \begin{lstlisting}
+    while true do 
+      x := x
+  \end{lstlisting}
+\end{example}
+
+\subsection{Funzioni parziali ricorsive}
+Le funzioni parziali ricorsive sono funzioni primitive ricorsive con l'aggiunta
+dell'operazione di \textbf{minimizzazione}.
+
+\begin{definition}[Minimizzazione]
+  Sia \( f: \mathbb{N}^{n+1} \to N \) una funzione totale
+  \footnote{Di solito le lettere \( f, g, h \) indicano funzioni totali, mentre le lettere
+  greche, di solito \( \varphi, \psi \), indicano funzioni parziali.}
+  , definiamo una funzione
+  parziale \( \varphi: \mathbb{N}^n \to \mathbb{N} \text{ o diverge} \):
+  \[
+    \varphi(x_1 \ldots x_n) = \mu z. \left(f(x_1 \ldots x_n, z) = 0\right)
+  \] 
+  dove \( \mu z \) rappresenta il più piccolo \( z \) (se esiste) tale che
+  \( f(x_1 \ldots x_n, z) = 0 \). Se non esiste tale \( z \) allora
+  \( \varphi(x_1 \ldots x_n) \uparrow \).
+
+  \vspace{1em}
+  \noindent
+  L'algoritmo che calcola \( \varphi \) è:
+\begin{lstlisting}
+input(x_1, ..., x_n)
+  z = 0
+  while f(x_1, ..., x_n, z) != 0 do
+    z++
+
+  output(z)
+\end{lstlisting}
+\end{definition}
+
+\begin{example}
+  Un esempio di funzione calcolata con la minimizzazione è:
+  \[
+    \left\lfloor log_a x \right\rfloor
+  \]
+  cioè l'intero inferiore del logaritmo in base \( a \) di \( x \) (l'esponente più
+  piccolo che non fa superare il valore di \( x \)).
+
+  Definiamo la funzione con la minimizzazione:
+  \[
+    f(x) = \mu z. lte(x, a^{z+1}) = 0
+  \] 
+  dove \( lte \) è la funzione minore o uguale:
+  \[
+    lte(x, y) = \begin{cases}
+      0 & \text{se } x \le y \\
+      1 & \text{se } x > y
+    \end{cases}
+  \] 
+\end{example}
+\begin{example}
+  Un altro esempio è la funzione radice:
+  \[
+    \left\lfloor \sqrt[n]{x} \right\rfloor
+  \]
+  sappiamo che:
+  \[
+    x = a^n \iff \sqrt[n]{x} = a
+  \] 
+  Definiamo la funzione con la minimizzazione:
+  \[
+    f(x) = \mu z. \left( lte\left(x, \left(z+1\right)^n\right) = 0 \right) 
+  \] 
+\end{example}
+
+\begin{theorem}
+  Una funzione \( f: \mathbb{N} \to \mathbb{N} \) è una 
+  \textbf{parziale ricorsiva} se e solo se \( f \) è Turing calcolabile.
+
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione}:
+  \begin{itemize}
+    \item \( \implies \) (\( f \) parziale ricorsiva \( \Rightarrow \) Turing calcolabile):
+    \begin{itemize}
+      \item \textbf{Casi base}:
+        \begin{itemize}
+          \item Funzioni di base: esistono MdT che le calcolano
+        \end{itemize}
+
+      \item \textbf{Composizione}: Consideriamo le funzioni parziali ricorsive \( f \) e \( g \).
+        Per ipotesi induttiva sappiamo che esiste una macchina di turing \( M_f \) 
+        che calcola \( f \) e una macchina di turing \( M_g \) che calcola \( g \).
+        Vogliamo mostrare che la funzione composta \( f \circ g \) è parziale ricorsiva
+        \[
+          f \circ g \text{ è parziale ricorsiva } \implies \exists M_{f \circ g}
+        \] 
+        Definiamo la MdT che calcola \( f \circ g \) in pseudocodice:
+        \[
+          M_{f \circ g} =
+          \begin{cases}
+            input(x)\\
+            temp = M_g(x)\\
+            M_f(temp)\\
+          \end{cases}
+        \] 
+
+      \item \textbf{Primitiva ricorsione}: Consideriamo le funzioni parziali ricorsive
+        \( g \) e \( h \). Per ipotesi induttiva sappiamo che esiste una macchina di turing
+        \( M_h \) che calcola \( h \) e una macchina di turing \( M_g \) che calcola \( g \).
+        Vogliamo mostrare che la funzione definita mediante primitiva ricorsione \( f \) è
+        parziale ricorsiva
+        \[
+          f(x, n) =
+          \begin{cases}
+            g(x) & n = 0\\
+            h(x, n-1, f(x, n-1)) & n > 0
+          \end{cases}
+        \] 
+        La MdT che calcola \( f \) è:
+        \[
+          M_f =
+          \begin{cases}
+            input(x) \\
+            input(n) \\
+            temp = M_g(x) \\
+            \text{for } i = 0 \text{ to } n \text{ do } \\
+            \quad \left\{ temp := M_h(x, i, temp) \right\} \\
+            output(temp) \\
+          \end{cases}
+        \] 
+
+      \item \textbf{Minimizzazione}: Consideriamo la funzione parziale ricorsiva
+        \( f \). Per ipotesi induttiva sappiamo che esiste una macchina di turing \( M_f \)
+        che calcola \( f \).
+        Vogliamo mostrare che la funzione definita mediante minimizzazione \( \varphi \) è
+        parziale ricorsiva
+        \[
+          \varphi(x) = \mu z. (f(x_1 \ldots x_k, z) = 0)
+        \] 
+        La MdT che calcola \( \varphi \) è:
+        \[
+          M_\varphi =
+          \begin{cases}
+            input(x_1 \ldots x_k) \\
+            i = 0 \\
+            temp = M_f(x_1 \ldots x_k, i) \\
+            \text{while } temp \ne 0 \text{ do } \{ \\
+            \quad i++
+            \quad temp = M_f(x_1 \ldots x_k, i) \\
+            \} \\
+            output(temp) \\
+          \end{cases}
+        \]
+    \end{itemize}
+
+  \item \( \Leftarrow \) (\( f \) Turing calcolabile \( \Rightarrow \) parziale ricorsiva):
+    Data la descrizione istantanea:
+    \[
+      \left<q, n, s, m \right> \to \left<q', n', s', m' \right> \quad \text{ primo passo}
+    \] 
+    dove:
+    \begin{itemize}
+      \item I simboli della macchina di Turing sono \( \left\{ \$, 0, 1 \right\} \)
+      \item \( n, m \) le sequenze di simboli sul nastro sono numeri binari con il
+        numero meno significativo vicino alla testina
+      \item Codifichiamo gli spostamenti della testina come:
+        \begin{itemize}
+          \item \( L \to 0 \)
+          \item \( R \to 1 \)
+        \end{itemize}
+    \end{itemize}
+    Scorporiamo la funzione le funzioni in
+    \( \delta: Q \times \Sigma \to Q \times \Sigma \times \{ R, L\}  \):
+    \begin{itemize}
+      \item \( \mathbb{Q}: Q \times \Sigma \to Q \) funzione totale, quindi \( PR \). Rappresenta la 
+        transizione di stato
+      \item \( \mathbb{S}: Q \times \Sigma \to \Sigma  \) funzione totale, quindi \( PR \).
+        Rappresenta la transizione di simbolo
+      \item \( \mathbb{X}: Q \times \Sigma \to \{R, L\}  \) funzione totale, quindi \( PR \).
+        Rappresenta transizione di direzione
+    \end{itemize}
+    Distinguiamo due casi:
+    \begin{enumerate}
+      \item Se \( \mathbb{X}(q,s) = L = 0 \) allora:
+        \[
+          \begin{aligned}
+            q' &= \mathbb{Q}(q,s)\\
+            m' &= 2m + \mathbb{S}(q,s) \text{ (aggiungo il simbolo meno significativo di \( m \))} \\
+            n' &= n div 2 \text{ (\( n \) senza il suo simbolo meno significativo)} \\
+            s' &= n mod 2 \text{ (simbolo meno significativo di \( n \))}
+          \end{aligned}
+        \] 
+        con il nastro:
+        \[
+          \overbrace{\ldots}^n \underset{\underset{q}{\uparrow}}{s} \overbrace{\ldots}^{m}
+        \] 
+        Se ci si sposta a sinistra il nastro diventa:
+        \[
+          \overbrace{\ldots}^{n'} \underset{\underset{q'}{\uparrow}}{s'} \overbrace{\ldots}^{m'}
+        \] 
+        Essendo le funzioni \( mod \) e \( div \) primitiva ricorsive, allora tutte
+        queste operazioni sono primitiva ricorsive.
+
+      \item Se \( \mathbb{X}(q,s) = R = 1 \) allora:
+        \[
+          \begin{aligned}
+            q' &= \mathbb{Q}(q,s)\\
+            m' &= m div 2 \text{ (\( m \) senza il suo simbolo meno significativo)} \\
+            n' &= 2n + \mathbb{S}(q,s) \text{ (aggiungo il simbolo meno significativo di \( n \))} \\
+            s' &= m mod 2 \text{ (simbolo meno significativo di \( m \))}
+          \end{aligned}
+        \] 
+    \end{enumerate}
+    Combiniamo questi due casi:
+    \[
+      \begin{aligned}
+        q' &= \mathbb{Q}(q,s)\\
+        s' &= (n mod 2) \cdot \underbrace{(1 - \mathbb{X}(q,s))}_{\begin{aligned}
+          \neq 0 \text{ se } L \\
+          = 0 \text{ se } R
+        \end{aligned}}
+        + (m mod 2) \cdot \underbrace{\mathbb{X}(q,s)}_{\begin{aligned}
+          \neq 0 \text{ se } R \\
+          = 0 \text{ se } L
+        \end{aligned}}\\
+            m' &= (2m + \mathbb{S}(q,s)) \cdot (1 - \mathbb{X}(q,s)) + (m div 2) \cdot \mathbb{X}(q,s)\\
+            n' &= (n div 2) \cdot (1 - \mathbb{X}(q,s)) + (2n + \mathbb{S}(q,s)) \cdot \mathbb{X}(q,s)\\
+      \end{aligned}
+    \] 
+    quindi la funzione \( f \) definita come:
+    \[
+      f: \left<q, n, s, m \right> \to \left<q', n', s', m' \right>
+    \] 
+    è primitiva ricorsiva.
+
+    \vspace{1em}
+    \noindent
+    Per primitiva ricorsione calcoliamo lo stato raggiunto dopo \( t \) passi:
+    \[
+      P_q(t, q, n, s, m) =
+      \begin{cases}
+        P_q(0, q, n, s, m) = q \\
+        P_q(t+1, q, n, s, m) = P_q(t, \underbrace{q', n', s', m'}_{\text{Calcolati da \( f \) }})
+      \end{cases}
+    \]
+    Quindi \( P_q \) esegue \( t \) passi della MdT a partire dalla descrizione istantanea
+    \( \left<q, n, s, m \right> \) e restituisce lo stato raggiunto.
+
+    Supponendo l'output come ciò che sta a sinistra della testina quando la MdT termina,
+    definiamo per primitiva ricorsione (di computazione parziale) dopo \( t \) passi:
+    \[
+      P_{out}(t, q, n, s, m) =
+    \] 
+    \[
+      = \begin{cases}
+        P_{out}(0, q, n, s, m) = n \\
+        P_{out}(t+1, q, n, s, m) = P_{out}(t, q', n', s', m')
+      \end{cases}
+    \] 
+    Quindi \( P_{out} \) restituisce la sequenza a sinistra della testina dopo \( t \)
+    passi di calcolo.
+
+    \vspace{1em}
+    \noindent
+    In \( Q \) supponiamo di avere uno stato \( q_f \) di terminazione. Quindi il calcolo
+    di \( M \) è:
+    \[
+      \begin{aligned}
+        \varphi_M(x) = P_{out}(
+          &\mu t. \left( q_f - P_q\left( t, q_0, x div 2, x mod 2, 0 \right)  \right) = 0,\\
+          &q_0,\\
+          &x div 2,\\
+          & x mod 2,\\
+          &0)
+      \end{aligned}
+    \] 
+    dove:
+    \begin{itemize}
+      \item \( P_q\left( t, q_0, x, x mod 2, 0 \right) \) cerca il più piccolo \( t \) 
+        tale che partendo da \( q_0 \) con input \( x \) a sinistra della testina in
+        \( t \) passi arriva allo stato finale \( q_f \) 
+
+      \item \( P_{out}(\ldots) \) calcola l'output dopo \( t \) passi, i quali portano
+        allo stato finale
+    \end{itemize}
+  \end{itemize}
+  Abbiamo quindi dimostrato che le macchine di Turing sono equivalenti alle funzioni
+  parziali ricorsive:
+  \[
+    MdT \equiv \text{ Funzioni parziali ricorsive }
+  \] 
+  quindi se \( \varphi  \) è una funzione parziale ricorsiva allora esiste una MdT che la calcola,
+  cioè esiste un algoritmo che calcola \( \varphi \).
+  Se abbiamo una macchina di Turing \( M \) allora la funzione calcolata è parziale ricorsiva.
+\end{theorem}
+
+\subsubsection{Aritmetizzazione delle machcine di Turing}
+È possibile codificare (univicamente) ogni macchina di Turing in un numero naturale.
+\begin{example}
+  Se consideriamo:
+  \[
+    \sigma = \{0, \$\} \quad Q = \{q_0\} 
+  \] 
+  Tutte le macchine di Turing possibili sono:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|}
+      \hline
+      & 0 & \$ \\
+      \hline
+      \( q_0 \) & \( \bullet \)  & \( \bullet \)  \\
+      \hline
+    \end{tabular}
+  \end{table}
+  dove \( \bullet \) sono tutte le possibili istruzioni:
+  \[
+    \begin{cases}
+      (\$, \$, \$) \\
+      (q_0, \$, R) \\
+      (q_0, \$, L) \\
+      (q_0, 0, R) \\
+      (q_0, 0, L) \\
+    \end{cases}
+  \] 
+\end{example}
+
+\subsection{Lambda calcolo}
+Il lambda calcolo è un linguaggio di programmazione funzionale. Si è dimostrato che
+il lambda calcolo è equivalente alle macchine di Turing.
+Esiste una tesi (teorema non dimostrabile, ma non ancora confutata) chiamata tesi di Church
+e dice che:
+\begin{quote}
+  La classe delle funzioni "intuitivamente calcolabili" è equivalente alla classe
+  delle funzioni Turing calcolabili.
+\end{quote}
 
 \end{document}
