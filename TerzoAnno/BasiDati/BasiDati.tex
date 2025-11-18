@@ -904,7 +904,8 @@ essere trasformata in una relazione ternaria includendo l'entità \textbf{Tempo}
 nuovo attore nella relazione in modo da poter rappresentare più volte la stessa coppia
 in istanti di tempo diversi.
 
-\section{Progettazione Logica (Modello Relazionale)}
+\section{Progettazione logica}
+\subsection{Modello relazionale}
 Il \textbf{modello relazionale} è un modello dei dati, quindi permette di definire le proprietà
 che la popolazione di una base di dati deve rispettare. I costrutti principali del
 modello relazionale sono:
@@ -1295,5 +1296,168 @@ per effettuare questa decomposizione:
     \] 
 \end{itemize}
 
+\subsection{Valori nulli}
+Dalla definizione di relazione si ha che ogni tupla deve sempre contenere nei propri
+attributi valori significativi appartenenti ai domini di base del modello. Non sempre
+però in una base di dati reale esistono i valori per tutti gli attributi di una tupla.
+Un valore può mancare nei seguenti casi:
+\begin{itemize}
+  \item Il valore di un attributo \( A \) è \textbf{inesistente} (attributo opzionale
+    a livello concettuale), cioè non esiste per questa tupla un valore per l'attributo
+    \( A \).
+
+  \item Il valore di un attributo \( A \) è \textbf{sconosciuto}, cioè esiste un valore
+    per l'attributo \( A \) di questa tupla ma non è noto alla base di dati.
+
+  \item Il valore di un attributo \( A \) è inesistente o sconosciuto.
+\end{itemize}
+Per poter gestire tali situazioni viene introdotto nel modello relazionale un valore
+speciale detto \textbf{valore nullo}. Quindi gli attributi di una tupla possono assumere
+un valore del dominio oppure il valore nullo. Il valore nullo non dovrebbe essere abusato.
+
+\vspace{1em}
+\noindent
+\begin{definition}[Tupla con valore nullo]
+  Una tupla su \( X \) con valori nullo è definita come una funzione:
+  \[
+    t: X \to \{NULL\} \cup \left( \bigcup_{A \in X} DOM(A) \right)
+  \] 
+  dove:
+  \[
+    t[A] = v \in DOM(A) \vee t[A] = NULL
+  \] 
+\end{definition}
+
+\subsubsection{Osservazioni}
+\begin{itemize}
+  \item La presenza di valori nulli è accettabile \textbf{solo in alcuni attributi}
+    (non è possibile avere tuple di soli valori nulli).
+
+  \item In particolare, negli \textbf{attributi replicati per rappresentare legami tra
+    tuple} la presenza di valori nulli può rendere inutilizzabile l’informazione
+\end{itemize}
+
+\begin{example}
+  \label{ex:orario_ferroviario}
+  Rappresentare attraverso un insieme di relazioni le
+  informazioni contenute in un orario ferroviario dove si
+  riportino per ogni treno in partenza dalla stazione di
+  Verona Porta Nuova:
+  il numero, l’orario di partenza, la destinazione finale, la categoria,
+  le fermate intermedie (con orario di fermata) e l’orario di arrivo
+  alla destinazione finale.
+
+  Lo schema relazionale risultante è il seguente:
+  \[
+    \begin{aligned}
+      &TRENO(Numero, Categoria, OraPart, Destinazione, OraArr)\\
+      &FERMATA(NumTreno, Stazione, Orario)
+    \end{aligned}
+  \] 
+  In progettazione concettuale equivale a due entità (Treno e Stazione) collegate
+  da una relazione (Fermata).
+\end{example}
+
+\subsection{Vincoli di integrità}
+Consentono di precisare quali sono le condizioni (vincoli) che le istanze delle relazioni
+devono rispettare per essere considerate valide.
+\begin{definition}
+  Un vincolo di integrità è una condizione, espressa da un \textbf{predicato}, che deve
+  essere \textbf{sempre} soddisfatta da \textbf{ogni istanza} della base di dati.
+\end{definition}
+
+\vspace{1em}
+\noindent
+\begin{example}
+  Consideriamo l'esempio \ref{ex:orario_ferroviario}, i predicati che esprimono possibili
+  vincoli sono:
+  \[
+    \begin{aligned}
+      \forall t \in TRENO:& t[OraPart] \in \left\{ 0, 1, \ldots, 23 \right\}\\
+      \forall t \in TRENO:& t[MinutoPart] \in \left\{ 0, 1, \ldots, 59 \right\}\\
+      \forall t \in TRENO:& t[Numero] > 0\\
+      \forall t \in TRENO:& t[Numero] > 5000 \Rightarrow t[Categoria] = \text{'Regionale'}\\
+      \forall t, t' \in TRENO:& t \neq t' \Rightarrow t[Numero] \neq t'[Numero]\\
+      \forall f \in FERMATA:& \exists t \in TRENO: f[NumTreno] = t[Numero]\\
+        \forall t \in TRENO:& t[Categoria] = \text{'Regionale'}\\
+                            & \Rightarrow \exists f \in FERMATA: f[NumTreno] = t[Numero]
+    \end{aligned}
+  \] 
+\end{example}
+
+\subsubsection{Classificazione}
+I vincoli di integrità si possono classificare in:
+\begin{itemize}
+  \item Vincoli di dominio
+  \item Vincoli di tupla
+  \item Vincoli intrarelazionali
+    \begin{itemize}
+      \item Chiavi (vincolo strutturale)
+    \end{itemize}
+  \item Vincoli interrelazionali
+    \begin{itemize}
+      \item Vincoli di integrità referenziale (vincolo strutturale)
+    \end{itemize}
+\end{itemize}
+Ci sono anche vincoli che hanno più importanza degli altri in quanto garantiscono
+\textbf{proprietà generali valide per tutti gli schemi relazionali}. Questi
+vincoli sono detti \textbf{vincoli strutturali}.
+
+\subsubsection{Vincoli di dominio}
+Impongono una restrizione sui valori che un attributo può assumere. Ad esempio:
+\[
+    \begin{aligned}
+      \forall t \in TRENO:& t[OraPart] \in \left\{ 0, 1, \ldots, 23 \right\}\\
+      \forall t \in TRENO:& t[MinutoPart] \in \left\{ 0, 1, \ldots, 59 \right\}\\
+      \forall t \in TRENO:& t[Numero] > 0\\
+    \end{aligned}
+\] 
+
+\subsubsection{Vincoli di tupla}
+Impongono uan restrizione alla \textbf{combinazione di valori che una tupla della relazione}
+può assumere indipendentemente dalle altre tuple, ad esempio:
+\[
+  \begin{aligned}
+    \forall t \in TRENO:& t[Numero] > 5000 \Rightarrow t[Categoria] = \text{'Regionale'}\\
+  \end{aligned}
+\] 
+
+\subsubsection{Vincoli di intrarelazionali}
+Impongono una restrizione al contenuto di uan relazione e specificano una condizione che 
+\textbf{ogni tupla della relazione deve soddisfare rispetto alle altre tuple della medesima
+relazione}. Una sottocateoria importante di questi vincoli include i \textbf{vincoli di chiave}:
+\begin{itemize}
+  \item \textbf{Superchiave}: Data una relazione di schema \( R(X) \), un insieme di
+    attributi \( K \) sottoinsieme di \( X \) è \textbf{superchiave} per \( R(X) \) se
+    per ogni istanza \( r \) di \( R(X) \) vale la seguente condizione:
+    \[
+      \forall t, t' \in r: t \neq t' \Rightarrow t[K] \neq t'[K]
+    \] 
+    dove:
+    \[
+      t[K] \neq t'[K] \equiv \exists A_i \in K: t[A_i] \neq t'[A_i]
+    \] 
+
+  \item \textbf{Chiave candidata}: Data una relazione di schema \( R(X) \), un insieme di
+    attributi \( K \) sottoinsieme di \( X \) è \textbf{chiave candidata} (o chiave) per
+    \( R(X) \) se \( K \) è superchiave per \( R(X) \) e vale la seguente condizione:
+    \[
+      \neg \exists K' \subseteq K: K' \text{ è superchiave per } R(X)
+    \] 
+
+    \begin{theorem}
+      Esiste sempre una chiave candidata \( K \) per una relazione \( R(X) \)
+    \end{theorem}
+
+  \item \textbf{Chiave primaria}: Data una relazione di schema \( R(X) \) la sua
+    \textbf{chiave primaria} è la chiave candidata scelta per \textbf{identificare le
+    tuple della relazione}. La chiave primaria viene usata per rappresentare i legami
+    tra le relazioni e ha le seguenti caratteristiche:
+    \begin{itemize}
+      \item Non contiene \textbf{mai valori nulli}
+      \item Su \( K \) il sistema genera una struttura d'accesso ai dati (o indice)
+        per supportare le interrogazioni
+    \end{itemize}
+\end{itemize}
 
 \end{document}
