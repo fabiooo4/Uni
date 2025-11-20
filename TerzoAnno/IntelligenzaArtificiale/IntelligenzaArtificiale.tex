@@ -2327,4 +2327,95 @@ possono esistere delle terze variabili che non influenzano la relazione tra le p
   Si può quindi ignorare una variabile quando si calcola la probabilità condizionata.
 \end{example}
 
+\subsubsection{Regola di Bayes}
+La regola di Bayes permette di calcolare la probabilità condizionata invertendo
+i condizionali:
+\[
+  P(causa \;|\; effetto) = \frac{P(effetto \;|\; causa) \cdot P(causa)}{P(effetto)}
+\]
+Questa regola è utile quando \( P(effetto \;|\; causa) \) è più facile da calcolare rispetto a
+\( P(causa \;|\; effetto) \).
+
+\section{Sequential Decision Making}
+Le azioni vengono raramente scelte individualmente, ma sono parte di \textbf{sequenze} di azioni.
+Per valutare un'azione si deve andare oltre il semplice risultato immediato e considerare:
+\begin{itemize}
+  \item Utilità a lungo termine che deriva dall'azione
+  \item Acquisire nuove informazioni che possono influenzare le azioni future
+\end{itemize}
+
+\begin{example}
+  Consideriamo il problema di esplorazione di un labirinto in cui le azioni
+  hanno una certa probabilità di successo:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{esempio_labirinto}
+    \caption{Esempio di labirinto}
+  \end{figure}
+  \begin{itemize}
+    \item Stati \( s \in S \)
+    \item Azioni \( a \in A \)
+    \item Modello: \( T(s,a,s') \equiv P(s'|s, a) \) è la probabilità che l'azione \( a \) 
+      nello stato \( s \) porti allo stato \( s' \)
+    \item Funzione di ricompensa: \( R(s) \) (o \( R(s,a), R(s,a,s') \))
+      \[
+        R(s) = \begin{cases}
+          -0.04 & \text{ (piccola penalità) se lo stato non è terminale} \\
+          \pm 1 & \text{Per gli stati terminali}
+        \end{cases}
+      \] 
+
+      Un approccio può essere il seguente:
+      \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\textwidth]{esempio_labirinto_2}
+        \caption{Esempio di approccio al labirinto}
+      \end{figure}
+      \begin{itemize}
+        \item I nodi rossi sono nodi chance, cioè rappresentano l'incertezza
+        \item I nodi blu sono nodi di decisione, cioè rappresentano le azioni
+      \end{itemize}
+      I passi per calcolare la miglior sequenza di azioni sono:
+      \begin{enumerate}
+        \item Assegnare un utilità per ogni traiettoria, ad esempio:
+          \[
+            u(s_1 \to s_2 \to s_6)
+          \] 
+        \item Per ogni sequenza di azioni calcola la probabilità di ogni traiettoria:
+          \[
+            Pr(s_1 \to s_2 \to s_6 \;|\; [a_1, a_1]) = 0.9 * 0.7 = 0.63
+          \] 
+        \item Calcola EU (Expected Utility) per ogni sequenza di azioni:
+          \[
+            EU([a_1, a_1]), EU([a_1, a_2]), \ldots
+          \] 
+        \item Scegli la sequenza di azioni con la massima EU
+      \end{enumerate}
+      I problemi di questo approccio sono:
+      \begin{itemize}
+        \item \textbf{Concettuale}: valutare tutte le sequenze delle azioni \textbf{senza
+          considerare l'outcome reale non è la miglior strategia} 
+
+        \item \textbf{Pratico}: l'utilità per una sequenza è tipicamente più difficile da stimare rispetto
+          all'utilità di singoli stati
+
+        \item \textbf{Computazionale}: il numero di traiettorie cresce esponenzialmente
+          \[
+            k^t n^t
+          \] 
+          dove:
+          \begin{itemize}
+            \item \( k \) = numero di azioni
+            \item \( n \) = outcome per ogni azione
+            \item \( t \) = lunghezza della sequenza
+          \end{itemize}
+      \end{itemize}
+  \end{itemize}
+\end{example}
+Nei problemi di ricerca l'obiettivo è quello di trovare una \textbf{sequenza di azioni
+ottimale}. Considerando l'incertezza, l'obiettivo diventa quello di trovare una
+\textbf{politica ottimale} (policy) \( \pi(s) \), ad esempio l'azione migliore per ogni
+possibile stato. La politica ottimale massimizza \textbf{la somma delle ricompense attese}.
+
+
 \end{document}
