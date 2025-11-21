@@ -263,7 +263,7 @@ fasi:
     \end{itemize}
 \end{itemize}
 
-\section{Progettazione Concettuale (Modello Entità - Relazione)}
+\section{Progettazione Concettuale}
 È un modello, formale e non ambiguo, utilizzato per la progettazione concettuale di una
 base di dati. Fornisce strumenti formali (costrutti), con sintassi grafica, per specificare la
 struttura e le proprietà dei dati da rappresentare indipendentemente dalla tecnologia.
@@ -1461,7 +1461,7 @@ relazione}. Una sottocateoria importante di questi vincoli include i \textbf{vin
 \end{itemize}
 
 \begin{example}
-  Consideriamo l'esempio \ref{ex:orario_ferroviario}. I seguenti sottoinsiemi
+  Consideriamo la tabella Treno dell'esempio \ref{ex:orario_ferroviario}. I seguenti sottoinsiemi
   di \( X \) sono:
   \[
   \begin{aligned}
@@ -1472,5 +1472,168 @@ relazione}. Una sottocateoria importante di questi vincoli include i \textbf{vin
   \end{aligned}
   \] 
 \end{example}
+
+\subsubsection{Vincoli interrelazionali}
+Impongono una restrizione al contenuto di una relazione e
+specificano una condizione che ogni tupla della relazione
+deve soddisfare rispetto alle tuple \textbf{di altre relazioni della base}
+di dati.
+
+Una sottocategoria importante di tali vincoli include i \textbf{vincoli
+di integrità referenziale (o vincoli sulle chiavi esportate)}
+
+\begin{definition}[Vincolo di integrità referenziale]
+  Un vincolo di integrità referenziale tra un insieme di attributi
+  \( Y = \{A_1, \ldots, A_p\}  \) di \( R_1 \) e un insieme di attributi
+  \( K = \{K_1, \ldots, K_p\} \), chiave primaria di un'altra relazione \( R_2 \),
+  è soddisfatto se, per ogni istanza \( r_1 \) di \( R_1 \) e per ogni istanza
+  \( r_2 \) di \( R_2 \) vale la seguente condizione:
+  \[
+    \forall t \in r_1: \exists s \in r_2: \forall i \in \{1, \ldots, p\}: t[A_i] = s[K_i]
+  \] 
+
+  \vspace{1em}
+  \noindent
+  In presenza di valori nulli (legame opzionale) la condizione diventa:
+  \[
+    \begin{aligned}
+      &\forall t \in r_1: \exists s \in r_2:\\
+      &\left( \forall i \in \{1, \ldots, p\}:
+      t[A_i] = s[K_i] \right) \vee \left( \exists i \in \{1, \ldots, p\}: t[A_i] = NULL \right)
+    \end{aligned}
+  \] 
+\end{definition}
+
+\subsubsection{Notazione per indicare i vincoli strutturali}
+La chiave primaria di una relazione \( R(X) \) viene indicata sottolineando gli attributi
+della chiave.
+\begin{example}
+  Consideriamo l'esempio \ref{ex:orario_ferroviario}. La chiave primaria
+  della tabella Treno è l'attributo Numero:
+  \[
+    TRENO(\underline{Numero}, Categoria, OraPart, Destinazione, OraArr)
+  \] 
+  La chiave primaria della tabella FERMATA è:
+  \[
+    FERMATA(\underline{NumTreno, Stazione}, Orario)
+  \]
+\end{example}
+
+\vspace{1em}
+\noindent
+Il vincolo di integrità referenziale viene indicato in due modi:
+\begin{itemize}
+  \item 
+    Riquadrando gli attributi soggetti
+    al vincolo e collegando con una freccia il riquadro alla relazione (tabella) da cui 
+    la chiave proviene.
+    \begin{example}
+      Consideriamo l'esempio \ref{ex:orario_ferroviario}. Supponendo che esista un vincolo
+      di integrità referenziale sull'attributo NumTreno della tabella FERMATA rispetto
+      alla tabella TRENO, la notazione per indicarlo è la seguente:
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+          \node at (0,0)
+            {\( TRENO(\underline{Numero}, Categoria, OraPart, Destinazione, OraArr) \)};
+          \node at (0,-2)
+            {\( FERMATA(\fbox{\underline{NumTreno}}, \underline{Stazione}, Orario) \)};
+
+          \draw[->] (-1.45,-2.27) -- ++(-3.8,0) |- (-5,0);
+        \end{tikzpicture}
+      \end{figure}
+    \end{example}
+
+  \item Indicare con una freccia l'attributo soggetto al vincolo verso la relazione da cui
+    la chiave proviene, ad esempio:
+    \[
+      \begin{aligned}
+        R_1, D &\to R_2\\
+        R_3 (Y,X) &\to R_1
+      \end{aligned}
+    \] 
+\end{itemize}
+
+\vspace{1em}
+\noindent
+L'attributo opzionale è indicato con un asterisco accanto al nome dell'attributo.
+
+\subsection{Progettazione logica dallo schema concettuale}
+L'obiettivo della progettazione logica è quello di produrre uno schema logico che 
+descriva in modo \textbf{corretto ed efficace} tutte le informazioni contenute nello
+schema concettuale.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{diagramma_progettazione_logica}
+  \caption{Diagramma della progettazione logica}
+\end{figure}
+
+\subsubsection{Ristrutturazione dello schema concettuale}
+La ristrutturazione dello schema concettuale può essere necessaria per i seguenti motivi:
+\begin{itemize}
+  \item Semplificare la fase successiva di traduzione
+  \item Ottimizzare le strutture rispetto al carico di lavoro che è composto da:
+    \begin{itemize}
+      \item Dimensioni dei dati
+      \item Caratteristiche delle operazioni
+        \begin{itemize}
+          \item Costo (numero di accessi alla memoria secondaria)
+          \item Frequenza
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+Si divide nelle seguenti fasi:
+\begin{enumerate}
+  \item \textbf{Analisi delle ridondanze dovute a presenza di dati derivabili}:
+    \begin{itemize}
+      \item 
+        La derivabilità è la presenza di dati derivabili da altri:
+        \begin{itemize}
+          \item Attributi derivabili da altri attributi della stessa entità (o relazione)
+          \item Attributi derivabili da attributi di altre entità (o relazioni)
+          \item Attributi derivabili dal conteggio di occorrenze
+        \end{itemize}
+
+      \item 
+        L'obiettivo dell'analisi delle ridondanze è quello di analizzare i dati derivabili
+        presenti nello schema (o richiesti dalle operazioni) e decidere se:
+        \begin{itemize}
+          \item Mantenere il dato derivabile (memorizzandolo esplicitamente). Questo
+            conviene quando il costo del calcolo è maggiore del costo di memorizzazione.
+          \item Calcolare il dato derivabile quando serve. Questo conviene quando il costo di
+            memorizzazione è maggiore del costo del calcolo.
+        \end{itemize}
+        Il costo viene misurato come il numero di accessi per unità di tempo in quanto
+        vengono considerate le frequenze di calcolo e di aggiornamento del dato.
+    \end{itemize}
+
+  \item \textbf{Eliminazione delle generalizzazioni}:\\
+    L'obiettivo è quello di sostituire le \textbf{generalizzazioni} presenti nello schema
+    ER con strutture alternative, in quanto non direttamente rappresentabili nel
+    modello relazionale. Esistono tre possibili soluzioni:
+    \begin{enumerate}
+      \item Accorpamento delle entità figlie nel padre:
+        \begin{enumerate}
+          \item Eliminazione delle entità figlie
+
+          \item Accorpamento nel padre di tutti gli attributi specifici delle entità
+            figlie come attributi opzionali
+
+          \item Accorpamento nel padre delle relazioni che coinvolgono le entità figlie
+            assegnando cardinalità minima uguale a zero (lato entità padre)
+
+          \item Aggiunta di un attributo \texttt{"tipo"} per distinguere nel padre le
+            occorrenze delle entità figlie eliminate
+        \end{enumerate}
+
+      \item Accorpamento del padre nelle entità figlie
+
+      \item Sostituzione della generalizzazione con relazioni
+    \end{enumerate}
+
+  \item \textbf{Accorpamento (o partizionamento) di entità e relazioni}:
+
+  \item \textbf{Scelta degli identificatori principali}:
+\end{enumerate}
 
 \end{document}
