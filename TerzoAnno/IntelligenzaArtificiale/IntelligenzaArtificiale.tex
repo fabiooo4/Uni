@@ -2417,5 +2417,369 @@ ottimale}. Considerando l'incertezza, l'obiettivo diventa quello di trovare una
 \textbf{politica ottimale} (policy) \( \pi(s) \), ad esempio l'azione migliore per ogni
 possibile stato. La politica ottimale massimizza \textbf{la somma delle ricompense attese}.
 
+\subsection{Decision trees}
+Un albero di decisione è una rappresentazione ad albero delle decisioni che l'agente
+deve fare.
+\begin{example}
+  Consideriamo il seguente albero di decisione non deterministico:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{esempio_decision_tree}
+    \caption{Esempio di albero di decisione}
+  \end{figure}
+  \noindent
+  In questo albero:
+  \begin{itemize}
+    \item I nodi quadrati rappresentano le decisioni dell'agente. Il valore rappresenta
+      il massimo tra le expected utility dei nodi figli
+    \item I nodi rotondi rappresentano i nodi chance. Il valore del nodo è l'expected
+      utility, ad esempio:
+      \[
+        0.2 \cdot 3000 + 0.5 \cdot 2000 + 0.3 \cdot (-6000) = -200
+      \] 
+  \end{itemize}
+\end{example}
+
+\subsubsection{Risoluzione di alberi di decisione}
+Esiste un algoritmo che risolve gli alberi di decisione chiamato \textbf{backward induction}
+(o rollback o expectimax). L'idea dell'algoritmo è:
+\begin{enumerate}
+  \item Si parte dalle radici e si usa la maximum expected utility
+  \item Il valore di un nodo foglia \( C \) è:
+    \[
+      EU(C) = V(C)
+    \] 
+  \item Il valore di un nodo chance \( C \) non foglia è:
+    \[
+      EU(C) = \sum_{D \in Child(C)} Pr(D) \cdot EU(D)
+    \] 
+  \item Il valore di un nodo decisione \( D \) è:
+    \[
+      EU(D) = \max_{C \in Child(D)} EU(C)
+    \] 
+  \item La policy massimizza l'utility dei nodi decisione:
+    \[
+      \pi(D) = {\arg\max}_{C \in Child(D)} EU(C)
+    \] 
+\end{enumerate}
+Un decision tree con nodi ripetuti si espande in un albero molto grande.
+
+\subsection{Markov Decision Processes}
+Un Markov Decision Process (MDP) è una classe generale di problemi di decisione sequenziali
+più efficiente dei decision tree. Un MDP è definito da una tupla di 4 componenti:
+\[
+  \left<S, A, R, Pr\right>
+\] 
+dove:
+\begin{itemize}
+  \item \( S \): insieme finito di stati \( |S| = n \) 
+  \item \( A \): insieme finito di azioni \( |A| = m \)
+  \item \( p(s' \;|\; s, a) = Pr \left\{ S_{t+1} = s' \;|\; S_t = s, A_t = a \right\} \): 
+    Funzione di transizione
+  \item \( r(s', a, s) = \mathbb{E}\left[ R_{t+1} \;|\; S_{t+1} = s', A_t = a, S_t = s \right] \):
+    Funzione di ricompensa
+\end{itemize}
+Questa rappresentazione deriva dalla \textbf{Markov Chain}, cioè che dato uno stato corrente
+il futuro è indipendente dal passato. Nelle MDP le azioni e gli stati passati sono
+irrilevanti quando si prende una decisione in un certo stato.
+
+\subsubsection{Proprietà}
+Le proprietà delle MDP sono:
+\begin{itemize}
+  \item \textbf{Markov Dynamics}: Indipendenza dalla storia:
+    \[
+      Pr\left\{ R_{t+1}, S_{t+1} \;|\; S_0, A_0, R_1, \ldots, S_{t-1}, A_{t-1}, R_t, S_t, A_t \right\}
+    \] 
+    Se ci si trova in uno stato, le azioni e le ricompense passate non influenzano
+    la probabilità del prossimo stato e della prossima ricompensa
+
+  \item \textbf{Stazionarietà}: Le dinamiche non cambiano nel tempo:
+    \[
+      Pr\left\{ R_{t+1}, S_{t+1} \;|\; S_t, A_t \right\} = Pr\left\{ R_{t'+1}, S_{t'+1} \;|\; S_{t'}, A_{t'} \right\}
+      \forall t, t'
+    \] 
+    Cioè le probabilità di transizione e le ricompense non dipendono dal tempo
+
+  \item \textbf{Completa osservabilità}: Non si può predirre esattamente che stato si
+    raggiungerà, però si conosce sempre lo stato corrente
+\end{itemize}
+
+\begin{example}
+  Consideriamo l'esempio di un robot che deve muoversi in un ambiente e riciclare
+  delle lattine. Le possibili azioni sono:
+  \begin{itemize}
+    \item Cerca una lattina (alta probabilità, ma potrebbe finire la batteria)
+    \item Aspettare che qualcuno gli porti una lattina (bassa probabilità, ma non consuma
+      batteria)
+    \item Andare alla stazione di ricarica per caricare la batteria
+  \end{itemize}
+  L'agente decide in base al livello di batteria: \( \left\{ low, high \right\} \).
+  Le azioni dipendono dallo stato:
+  \[
+    \begin{aligned}
+      A(low) & = \left\{ search, wait \right\} \\
+      A(high) & = \left\{ search, wait, recharge \right\}
+    \end{aligned}
+  \] 
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{esempio_MDP}
+    \caption{Esempio di MDP}
+  \end{figure}
+  Si vuole capire la scelta migliore che il robot deve fare in ogni stato per massimizzare
+  la ricompensa attesa.
+\end{example}
+
+\subsubsection{Tipi di policy}
+Esistono diversi tipi di policy:
+\begin{itemize}
+  \item \textbf{Policy non stazionaria}: la politica dipende dal tempo \( t \):
+    \[
+      \pi : S \times T \to A
+    \] 
+    \( \pi(s, t) \) è l'azione allo stato \( s \) con \( t \) passi rimanenti
+
+  \item \textbf{Policy stazionaria}: la politica non dipende dal tempo:
+    \[
+      \pi : S \to A
+    \] 
+    \( \pi(s) \) è l'azione allo stato \( s \) (indipendente dal tempo)
+
+  \item \textbf{Policy stocastica}: la politica assegna una distribuzione di probabilità
+    sulle azioni:\\
+    \( \pi(a \;|\; s) \) è la probabilità di scegliere l'azione \( a \) nello stato \( s \)
+\end{itemize}
+
+\subsubsection{Decisione tra policy}
+Bisogna trovare un metodo per valutare e confrontare le policy, cioè una sequenza di
+ricompense. Tipicamente si considerano le \textbf{stationary preferences}:
+\[
+  \left[ r, r_0, r_1, r_2, \ldots \right] \succ \left[ r, r'_0, r'_1, r'_2, \ldots \right]
+  \iff
+  \left[ r_0, r_1, r_2, \ldots \right] \succ \left[ r'_0, r'_1, r'_2, \ldots \right]
+\] 
+
+\begin{theorem}
+  Ci sono soltanto due modi per combinare le ricompense nel tempo:
+  \begin{enumerate}
+    \item \textbf{Funzione di utilità additiva}:
+      \[
+        U\left( [s_0, s_1, s_2, \ldots] \right) = R(s_0) + R(s_1) + R(s_2) + \ldots
+      \] 
+      Le ricompense future hanno lo stesso peso di quelle presenti.
+
+    \item \textbf{Funzione di utilità scontata}:
+      \[
+        U\left( [s_0, s_1, s_2, \ldots] \right) = R(s_0) + \gamma R(s_1) + \gamma^2 R(s_2) + \ldots
+      \] 
+      dove \( 0 < \gamma < 1 \) è il fattore di sconto.
+      Più la ricompensa è nel futuro, meno valore ha.
+  \end{enumerate}
+\end{theorem}
+
+\subsubsection{Valore di una policy}
+Bisogna trovare un valore per determinare quanto è buona una policy:
+\[
+  V : S \to \mathcal{R}
+\] 
+Questa funzione associa un valore considerando le \textbf{ricompense acccumulate}.
+Mentre invece la funzione \( v_{\pi}(s) \) rappresenta il valore della policy \( \pi \)
+nello stato \( s \), cioè le ricompense accumulate attese in un orizzonte di tempo
+di interesse.
+
+\vspace{1em}
+\noindent
+Se le sequenze di ricompense sono infinite, cioè si hanno infiniti stati (infinite
+horizon problems), si possono utilizzare le seguenti soluzioni:
+\begin{itemize}
+  \item \textbf{Si sceglie un orizzonte finito}:
+    \begin{itemize}
+      \item Si termina dopo un certo numero di passi \( T \) 
+      \item Produce policy non stazionarie
+    \end{itemize}
+
+  \item \textbf{Absorbing states}: garantiscono che per ogni policy verrà raggiunto
+    eventualmente uno stato terminale
+  \item \textbf{Discounting}: si usa un fattore di sconto \( \gamma \) per
+    ridurre l'importanza delle ricompense future:
+    \[
+      U\left( [r_0, \ldots, r_{\infty}] \right) = \sum_{t=0}^{\infty} \gamma^t r_t
+      \le \frac{r_{max}}{1 - \gamma} \quad \forall 0 < \gamma < 1
+    \] 
+    Quindi la serie converge.\\
+    Se si utilizza un \( \gamma  \) più basso si ragiona su un orizzonte più breve e
+    quindi ricompense ottenute prima hanno più utilità rispetto a quelle ottenute nel
+    futuro.
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Quindi in breve:
+\begin{itemize}
+  \item Se l'orizzonte \( T \) è finito si usa la ricompensa totale attesa data la policy
+    \( \pi  \) 
+
+  \item Se l'orizzonte è infinito si usa la somma delle ricompense accumulate attese 
+    scontate data la policy \( \pi  \)
+
+  \item Si può anche usare la ricompensa media per ogni passo
+\end{itemize}
+
+\subsubsection{Risolvere un MDP}
+La soluzione di un MDP è una policy ottimale \( \pi^* \) che massimizza l'expected
+utility da ogni stato \( s \) seguendo quella policy \( \pi  \), cioè la ricompensa
+scontata accumulata attesa:
+\[
+  v_{\pi}(s) = \mathbb{E} \left\{ \sum_{k=0}^{\infty} \gamma^k r_{t+k+1} \;|\; s_t = s \right\}
+\] 
+La Q-value (quality functiono action-value) è il vaore di prendere un'azione \( a \) nello stato \( s \)
+seguendo la policy \( \pi  \):
+\[
+  q_{\pi}(s, a) = \sum_{s'} p(s' \;|\; a, s) \left( r(s, a, s') + \gamma v_{\pi}(s') \right)
+\] 
+\begin{define}
+  Si nota che:
+  \[
+    v_{\pi}(s) = q_{\pi}(s, \pi(s))
+  \] 
+\end{define}
+
+\subsubsection{Equazioni di Bellman}
+Le equazioni di Bellman forniscono una relazione ricorsiva tra i valori degli stati
+e i valori delle azioni. I valori dello stato iniziale deve essere uguale al valore
+(scontato) atteso dello stato successivo più la ricompensa attesa lungo la transizione:
+\[
+  v_{\pi}(s) = \sum_{s'} p(s' \;|\; \pi(s), s) \left( r(s, \pi(s), s') + \gamma v_{\pi}(s') \right)
+\] 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{diagramma_bellman}
+  \caption{Rappresentazione delle equazioni di Bellman}
+\end{figure}
+
+\vspace{1em}
+\noindent
+Una policy è ottima se e solo se:
+\[
+  v_{\pi^*}(s) \ge v_{\pi}(s) \quad \forall s, \pi 
+\] 
+Il valore dell'expected utility partendo da \( s \) e agendo in modo ottimale dopo è:
+\[
+  v_{*}(s) = \max_{\pi} v_{\pi}(s)
+\] 
+Il valore ottimale del Q-value è:
+\[
+  q_{*}(s, a) = \max_{\pi} q_{\pi}(s, a)
+\] 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{diagramma_bellman_ottimale}
+  \caption{Rappresentazione delle equazioni di Bellman per la policy ottimale}
+\end{figure}
+
+\vspace{1em}
+\noindent
+La policy ottima è calcolata come:
+\[
+  \pi^*(s) = \max_{a \in \mathcal{A}(s)} q_{*}(s, a) =
+  \max_{a \in \mathcal{A}(s)} \sum_{s'} p(s' \;|\; a, s) \left( r(s, a, s') + \gamma v_{*}(s') \right)
+\] 
+
+\subsubsection{Value iteration}
+Il value iteration è un algoritmo per calcolare la policy ottimale. L'idea è
+quella di trasformare l'equazione di ottimalità di Bellman in un'operazione
+di aggiornamento iterativo, combinando la valutazione della policy (calcolando
+il valore \( v_{\pi } \) di una data policy) e il miglioramento della policy
+(rendendo la policy greedy rispetto al valore calcolato).
+La funzione di aggiornamento è:
+\[
+  v_{k+1}(s) = \max_{a} \sum_{s'} p(s' \;|\; a, s) \left( r(s, a, s') + \gamma v_k(s') \right)
+\] 
+L'algoritmo è il seguente:
+\begin{lstlisting}[language=Python]
+Initialize array v with zeros for all s in S
+
+do
+  delta = 0
+  for s in S:
+      v_old = v[s]
+      v[s] = max_a sum_{s'} p(s'|a,s) * (r(s,a,s') + gamma * v[s'])
+      delta = max(delta, abs(v_old - v[s]))
+while delta > threshold
+
+Output a deterministic policy pi such that:
+  pi(s) = argmax_a sum_{s'} p(s'|s,a) * (r(s,a,s') + gamma * v[s'])
+\end{lstlisting}
+Le caratteristiche dell'algoritmo sono:
+\begin{itemize}
+  \item Garantisce la convergenza al valore ottimale \( v_* \).
+
+  \item Per orizzonti infiniti la policy ottima è stazionaria.
+
+  \item La complessità per ogni iterazione è quadratica nel numero degli stati
+    e lineare nel numero delle azioni: \( O(n^2 m) \).
+
+  \item Il rate di convergenza è lineare.
+\end{itemize}
+
+\subsubsection{Policy iteration}
+La policy iteration è un altro algoritmo per calcolare la policy ottimale. L'idea è
+quella di alternare la valutazione della policy e il miglioramento della policy
+fino a quando la policy non cambia più. Quindi i passi dell'algoritmo sono:
+\begin{lstlisting}[language=Python]
+pi = an arbitrary initial policy
+repeat until no change in pi
+  compute utilities given pi # policy evaluation
+  update pi as if utilities are correct # policy improvement
+\end{lstlisting}
+\begin{enumerate}
+  \item \textbf{Policy evaluation}: per calcolare le utilities data una policy \( \pi  \)
+    fissa, si risolve il seguente sistema di \( n \) equazioni lineari ad \( n \) incognite:
+    \[
+      v_(s) = \sum_{s'} p(s' \;|\; \pi(s), s) \left( r(s, \pi(s), s') + \gamma v(s') \right)
+    \] 
+    La risoluzione viene fatta in \( O(n^3) \).
+
+  \item \textbf{Policy improvement}: dato il valore di tutti gli stati \( v(s) \):
+    \begin{itemize}
+      \item Cambiare in modo greedy la prima azione presa in uno stato basandosi
+        sul valore corrente degli stati
+      \item Se il valore dello stato può essere migliorato, la nuova azione viene
+        utilizzata dalla policy e quindi la performance della policy migliora
+    \end{itemize}
+\end{enumerate}
+
+\vspace{1em}
+\noindent
+Questo algoritmo è molto costoso, quindi una modifica è quella di eseguire pochi step
+di value iteration (ma con \( \pi  \) fissa) iniziando dalla funzione di valore
+dell'iterazione precedente e poi eseguire la policy iteration. L'algoritmo è il
+seguente:
+\[
+\begin{aligned}
+  &\text{1. Initialization}\\
+  &v(s) \in \mathbb{R} \text{ and } \pi(s) \in A(s) \text{ arbitrarily } \forall s \in S\\
+  \\
+  &\text{2. Policy Evaluation}\\
+  &\text{Repeat}\\
+  &\quad \Delta \leftarrow 0\\
+  &\quad \text{For each } s \in S:\\
+  &\quad \quad v_{old} \leftarrow v(s)\\
+  &\quad \quad v(s) \leftarrow \sum_{s'} p(s' \;|\; s, \pi(s)) \left[ r(s, \pi(s), s') + \gamma v(s') \right]\\
+  &\quad \quad \Delta \leftarrow \max(\Delta, |v_{old} - v(s)|)\\
+  &\text{Until } \Delta < \theta \text{ (small pos number)}\\
+  \\
+  &\text{3. Policy Improvement}\\
+  &\text{policy\_stable} \leftarrow true\\
+  &\text{For each } s \in S:\\
+  &\quad \text{old\_action} \leftarrow \pi(s)\\
+  &\quad \pi(s) \leftarrow {\arg\max}_a \sum_{s'} p(s' \;|\; s, a) \left[ r(s, a, s') + \gamma v(s') \right]\\
+  &\quad \text{If old\_action } \ne \pi(s) \text{ then policy\_stable } \leftarrow false\\
+  &\text{If policy\_stable}\\
+  &\quad \text{Then return } \pi \text{ and } v\\
+  &\quad \text{Else go to step 2.}
+\end{aligned}
+\] 
+Questo algoritmo garantisce l'ottimalità della policy.
 
 \end{document}
