@@ -1612,7 +1612,7 @@ Si divide nelle seguenti fasi:
     ER con strutture alternative, in quanto non direttamente rappresentabili nel
     modello relazionale. Esistono tre possibili soluzioni:
     \begin{enumerate}
-      \item Accorpamento delle entità figlie nel padre:
+      \item Accorpamento delle entità figlie nel padre: I passi sono i seguenti.
         \begin{enumerate}
           \item Eliminazione delle entità figlie
 
@@ -1625,15 +1625,221 @@ Si divide nelle seguenti fasi:
           \item Aggiunta di un attributo \texttt{"tipo"} per distinguere nel padre le
             occorrenze delle entità figlie eliminate
         \end{enumerate}
+        \begin{example}
+          Consideriamo il seguente esempio:
+          \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\textwidth]{esempio_accorpamento_nel_padre}
+            \caption{Esempio di accorpamento delle entità figlie nel padre}
+          \end{figure}
+          \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\textwidth]{esempio_accorpamento_nel_padre_2}
+            \caption{Esempio dopo l'accorpamento delle entità figlie nel padre}
+          \end{figure}
+        \end{example}
 
-      \item Accorpamento del padre nelle entità figlie
+      \item Accorpamento del padre nelle entità figlie: La precondizione per poter
+        applicare questa trasformazione è che la generalizzazione sia \textbf{totale}.
+        I passi sono i seguenti.
+        \begin{enumerate}
+          \item Eliminazione dell'entità padre
+          \item Replicazione degli attributi dell’entità padre su ogni entità figlia
+          \item Partizionamento sui figli delle relazioni che coinvolgono l’entità
+            padre assegnando cardinalità minima uguale a zero (lato entità
+            esterne)
+        \end{enumerate}
+        \begin{example}
+          Consideriamo il seguente esempio:
+          \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\textwidth]{esempio_accorpamento_nel_figlio}
+            \caption{Esempio di accorpamento del padre nelle entità figlie}
+          \end{figure}
+          \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\textwidth]{esempio_accorpamento_nel_figlio_2}
+            \caption{Esempio dopo l'accorpamento del padre nelle entità figlie}
+          \end{figure}
+        \end{example}
 
-      \item Sostituzione della generalizzazione con relazioni
+      \item Sostituzione della generalizzazione con relazioni:
+        I passi sono i seguenti.
+      \begin{enumerate}
+        \item Eliminazione della generalizzazione
+        \item Inserire \( n \) relazioni tra il padre e ciascuna delle \( n \) entità figlie
+        \item Tutti gli attributi conservano la loro collocazione
+      \end{enumerate}
+      \begin{example}
+        Consideriamo il seguente esempio:
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width=0.8\textwidth]{esempio_accorpamento_entità_relazioni}
+          \caption{Esempio di accorpamento di entità e relazioni}
+        \end{figure}
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width=0.8\textwidth]{esempio_accorpamento_entità_relazioni_2}
+          \caption{Esempio dopo l'accorpamento di entità e relazioni}
+        \end{figure}
+      \end{example}
     \end{enumerate}
 
   \item \textbf{Accorpamento (o partizionamento) di entità e relazioni}:
+    \begin{itemize}
+      \item Partizionamento di entità:\\
+        È la sostituzione di un’entità dello schema con una coppia di entità con
+        lo stesso identificatore e una relazione uno a uno che le lega
+        tra loro. Si esegue solo nel caso in cui esistano operazioni frequenti che
+        trattano solo un sottoinsieme degli attributi dell’entità da
+        partizionare
+        \begin{example}
+          Consideriamo il seguente esempio:
+          \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\textwidth]{esempio_accorpamento_entità}
+            \caption{Esempio di accorpamento di entità}
+          \end{figure}
+          \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\textwidth]{esempio_accorpamento_entità_2}
+            \caption{Eliminazione di attributi multivalore}
+          \end{figure}
+        \end{example}
+
+      \item Partizionamento di relazioni:\\
+        Si realizza sostituendo una relazione \( R \)  con due
+        relazioni distinte \( R_1 \)  e \( R_2 \), dove le occorrenze di \( R \)  si
+        partizionano tra \( R_1 \)  e \( R_2 \).
+        È conveniente quando esistono operazioni che si
+        riferiscono ad un sottoinsieme delle occorrenze di
+        \( R \)  e altre operazioni che si riferiscono alle altre
+        occorrenze di \( R \).
+    \end{itemize}
 
   \item \textbf{Scelta degli identificatori principali}:
+    Va scelto un identificatore principale per ogni entità in
+    quanto tale identificatore verrà utilizzato nel modello
+    relazionale per identificare le tuple che rappresentano
+    istanze di entità. Si scelgono seguendo i seguenti criteri:
+    \begin{itemize}
+      \item Gli identificatori che includono attributi opzionali non
+        possono essere chiavi primarie
+      \item Meglio identificatori con pochi attributi
+      \item Meglio identificatori utilizzati nelle operazioni
+    \end{itemize}
+\end{enumerate}
+
+\subsubsection{Traduzione nel modello logico}
+La traduzione è un processo automatico che si realizza applicando allo schema concettuale
+ristrutturato un insieme di regole di traduzione. \textbf{Ogni regola si applica ad un
+costrutto deo modello concettuale ER e produce una o più strutture del modello relazionale}.
+\begin{itemize}
+  \item Si rappresenta un'\textbf{istanza di entità} con una \textbf{tupla}.
+
+  \item Si rappresenta un'\textbf{istanza di relazione} con un \textbf{legame tra tuple}
+    o con una \textbf{tupla esplicita}.
+
+  \item Si rappresenta \textbf{l'identificatore principale} di un'entità con la
+    \textbf{chiave primaria} della tabella che implementa l'entità.
+\end{itemize}
+Le relazioni binarie del modello ER sono classificate in:
+\begin{itemize}
+  \item \textbf{Uno a uno}: se entrambe le entità coinvolte nella relazione hanno
+    \textbf{cardinalità massima uguale a 1}.
+
+  \item \textbf{Uno a molti}: se una delle entità coinvolte nella relazione ha 
+    \textbf{cardinalità massima uguale a 1} e l'altra ha \textbf{cardinalità massima
+    maggiore di 1}.
+
+  \item \textbf{Molti a molti}: se entrambe le entità coinvolte nella relazione hanno
+    \textbf{cardinalità massima maggiore di 1}.
+\end{itemize}
+Le regole di traduzione sono le seguenti:
+\begin{enumerate}
+  \item \textbf{Entità}:
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{regola_traduzione_entità}
+      \caption{Regola di traduzione per entità}
+    \end{figure}
+
+  \item \textbf{Relazione uno a molti}:
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{regola_traduzione_relazione_uno_a_molti}
+      \caption{Regola di traduzione per relazione uno a molti}
+    \end{figure}
+
+  \item \textbf{Relazione uno a uno}:
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{regola_traduzione_relazione_uno_a_uno}
+      \caption{Regola di traduzione per relazione uno a uno}
+    \end{figure}
+
+  \item \textbf{Relazione molti a molti}:
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{regola_traduzione_relazione_molti_a_molti}
+      \caption{Regola di traduzione per relazione molti a molti}
+    \end{figure}
+
+  \item \textbf{Relazione uno a molti con identificatore esterno}:
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{regola_traduzione_relazione_uno_a_molti_con_identificatore_esterno}
+      \caption{Regola di traduzione per relazione uno a molti con identificatore esterno}
+    \end{figure}
+
+  \item \textbf{Relazione uno a molti con attributo sulla relazione}:
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{regola_traduzione_relazione_uno_a_molti_con_attributo}
+      \caption{Regola di traduzione per relazione uno a molti con attributo sulla relazione}
+    \end{figure}
+
+  \item \textbf{Relazione uno a uno con cardinalità minima uguale a 0}:
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{regola_traduzione_relazione_uno_a_uno_con_cardinalità_minima_0}
+      \caption{Regola di traduzione per relazione uno a uno con cardinalità minima uguale a 0}
+    \end{figure}
+
+  \item \textbf{Relazione uno a uno con due cardinalità minime uguali a 0}:
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{regola_traduzione_relazione_uno_a_uno_con_due_cardinalità_minime_0}
+      \caption{Regola di traduzione per relazione uno a uno con due cardinalità minime uguali a 0}
+    \end{figure}
+
+  \item \textbf{Relazione molti a molti con attributi}:
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{regola_traduzione_relazione_molti_a_molti_con_attributi}
+      \caption{Regola di traduzione per relazione molti a molti con attributi}
+    \end{figure}
+
+  \item \textbf{Relazione molti a molti con identificatori da più attributi}:
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{regola_traduzione_relazione_molti_a_molti_con_identificatori_da_più_attributi}
+      \caption{Regola di traduzione per relazione molti a molti con identificatori da più attributi}
+    \end{figure}
+
+  \item \textbf{Relazione molti a molti con relazione ternaria}:
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{regola_traduzione_relazione_molti_a_molti_con_relazione_ternaria}
+      \caption{Regola di traduzione per relazione molti a molti con relazione ternaria}
+    \end{figure}
+
+  \item \textbf{Relazione molti a molti con relazione ternaria a cardinalità (1,1)}:
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{regola_traduzione_relazione_molti_a_molti_con_relazione_ternaria_a_cardinalità_1_1}
+      \caption{Regola di traduzione per relazione molti a molti con relazione ternaria a cardinalità (1,1)}
+    \end{figure}
 \end{enumerate}
 
 \end{document}
