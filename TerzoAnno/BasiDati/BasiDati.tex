@@ -1842,4 +1842,73 @@ Le regole di traduzione sono le seguenti:
     \end{figure}
 \end{enumerate}
 
+\section{Tecnologie NoSQL: sistemi document based}
+Ci sono diversi approcci NoSQL per la gestione dei dati:
+\begin{itemize}
+  \item \textbf{Sistemi key-value}: tutti i dati sono rappresentati per mezzo di
+    \textbf{coppie chiave-valore}, dove la chiave identifica le istanze e il valore
+    può avere una qualsiasi struttura anche non omogenea nella collezione. Un esempio
+    di questo approccio è il sistema HADOOP.
+
+  \item \textbf{Sistemi document-store}: i dati sono rappresentati come
+    \textbf{collezioni di documenti} (oggetti con struttura complessa). Ogni oggetto
+    della collezione ha una struttura complessa (con dati \textbf{incapsulati}) senza
+    schema fisso. Consentono la definizione di indici secondari su proprietà degli oggetti
+    (attributi comuni). Un esempio di questo approccio è il sistema MongoDB.
+
+  \item \textbf{Sistemi extensible-record-store o column store}: i dati sono rappresentati
+    da \textbf{collezioni di record}, dette tabelle, dove ogni record ha un certa lista
+    di colonne che può variare da record a record (struttura variabile).
+    Esempi di sistemi di questa categoria sono: BigTable di Google, HBase, Cassandra.
+
+  \item \textbf{Sistemi graph-store}: le collezioni di dati sono rappresentati
+    come \textbf{grafi}. I nodi rappresentano gli oggetti, gli archi le relazioni
+    o proprietà (approccio RDF - Resource Description Framework).
+    Esempi di sistemi di questa categoria sono: Neo4j e OrientDB
+\end{itemize}
+
+\subsection{Modello dei dati dei sistemi document-store}
+Le caratteristiche principali di dali modelli sono:
+\begin{itemize}
+  \item I dati sono rappresentati da \textbf{collezioni di oggetti} (detti documenti)
+  \item Gli oggetti hanno \textbf{struttura complessa} (non sono tuple piatte ma
+    contengono dati nidificati)
+  \item L'incapsulamento (encapsulation) dei dati è un aspetto chiave di questi modelli
+  \item Gli oggetti di una collezione \textbf{non devono avere necessariamente tutti la
+    stessa struttura}, tuttavia dovrebbero condividere un \textbf{nucleo di proprietà
+    comuni}
+\end{itemize}
+
+\subsubsection{Progettazione dei dati come documenti}
+Le decisioni chiave nel processo di progettazione dei dati usando questo approccio sono:
+\begin{itemize}
+  \item Scegliere la \textbf{chiave di accesso}
+  \item \textbf{Strutturare i documenti} (grado di incapsulamento)
+  \item \textbf{Rappresentazione delle relazioni} (legami) tra i documenti
+\end{itemize}
+Esistono in particolare due approcci per rappresentare le relazioni tra i documenti:
+\begin{itemize}
+  \item Attraverso \textbf{riferimenti} che si ottengono esportando l'ID del documento
+  \item Attraverso \textbf{documenti nidificati} (incapsulamento)
+\end{itemize}
+\begin{example}
+  L’uso di riferimenti per rappresentare i legami tra documenti porta a
+  \textbf{schemi normalizzati}.
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{esempio_documenti_con_riferimenti}
+    \caption{Esempio di documenti con riferimenti}
+  \end{figure}
+  \noindent
+  Un alternativa è quella in cui si rappresentano i legami tra documenti
+  attraverso documenti nidificati:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{esempio_documenti_con_riferimenti_2}
+    \caption{Esempio di documenti con documenti nidificati}
+  \end{figure}
+  \noindent
+  Questa soluzione è meno efficiente.
+\end{example}
+
 \end{document}
