@@ -4514,7 +4514,15 @@ input(x_1, ..., x_n)
 \end{theorem}
 
 \subsubsection{Aritmetizzazione delle machcine di Turing}
-È possibile codificare (univicamente) ogni macchina di Turing in un numero naturale.
+Una macchina di Turing è costituita da due componenti principali:
+\begin{itemize}
+  \item Programma, ad esempio Mdt, funzioni parziale ricorsive, programma in un qualsiasi
+    linguaggio di programmazione
+  \item Input, ad esempio un numero o una stringa, ecc...
+\end{itemize}
+Un programma può essere rappresentato nello stesso dominio degli input e quindi
+è possibile codificare (univicamente) ogni macchina di Turing in un numero naturale.
+Questo processo è chiamato \textbf{aritmetizzazione delle macchine di Turing}.
 \begin{example}
   Se consideriamo:
   \[
@@ -4541,7 +4549,127 @@ input(x_1, ..., x_n)
       (q_0, 0, L) \\
     \end{cases}
   \] 
+  Il numero di macchine di Turing possibili da 1 stato e 2 simboli è:
+  \[
+    5 \cdot 5 = 25
+  \] 
 \end{example}
+Possiamo mettere in ordine gli insiemi degli stati e dei simboli perchè sono finiti:
+\[
+  Q \to q_0 < q_1 < \ldots < q_n \quad q_i \le q_j \text{ se } i \le j
+\] 
+\[
+  \Sigma \to s_0 < s_1 < \ldots < s_k \quad s_i \le s_j \text{ se } i \le j
+\]
+Anche le triple possono essere messe in ordine lessicografico:
+\[
+  q_{i_1} s_{j_1} m_{k_1} \le q_{i_2} s_{j_2} m_{k_2} \text{ se }
+  \begin{cases}
+    q_{i_1} \le  q_{i_2} \text{ oppure }\\
+    q_{i_1} = q_{i_2} \wedge s_{j_1} \le  s_{j_2} \text{ oppure }\\
+    q_{i_1} = q_{i_2} \wedge s_{j_1} = s_{j_2} \wedge m_{k_1} \le  m_{k_2} \\
+  \end{cases}
+\] 
+
+\subsubsection{Fattorizzazione di Gödel}
+Esistono diversi algoritmi per aritmetizzare una MdT, uno di questi è la
+\textbf{fattorizzazione di Gödel}. L'idea è quella di associare ad ogni macchina di
+Turing un numero naturale unico e codificare la macchina di Turing con gli esponenti
+dei numeri della fattorizzazione in numeri primi.
+\[
+  x \in \mathbb{N} \quad fact(x) = p_1^{x_1} \cdot p_2^{x_2} \cdot \ldots \cdot p_n^{x_n}
+  \quad p_i \text{ sono primi}
+\] 
+
+\begin{itemize}
+  \item \textbf{Fattorizzazione di Gödel di una istruzione}:\\
+    Associamo ad ogni simbolo \( y \) della macchina di Turing un numero dispari maggiore di
+    1: \( a(y) \). Un istruzione della macchina di Turing è una quintupla:
+    \[
+      E = \left< q, s, q', s', R | L \right>
+    \] 
+    Calcoliamo il numero associato all'istruzione \( E \):
+    \[
+      gn(E) = \Pi_{i=1}^{5} p_i^{a(s_i)}
+    \] 
+    \begin{example}
+      Consideriamo la seguente istruzione:
+      \[
+        E = \left< q_0, \$, q_0, 0, R \right>
+      \] 
+      Il numero di Gödel associato è:
+      \[
+        gn(E) = 2^{a(q_0)} \cdot 3^{a(\$)} \cdot 5^{a(q_0)} \cdot 7^{a(0)} \cdot 11^{a(R)}
+      \] 
+    \end{example}
+
+  \item \textbf{Fattorizzazione di Gödel di una macchina di Turing}:\\
+    Nello stesso modo si può calcolare il numero di Gödel associato ad una macchina di
+    Turing \( M \), cioè una sequenza di istruzioni:
+    \[
+      M = E_1 E_2 \ldots E_n \quad \text{Programma della MdT}
+    \] 
+    \[
+      gn(M) = \Pi_{i=1}^{n} p_i^{gn(E_i)}
+    \] 
+
+  \item \textbf{Decodifica}:\\
+    Per decodificare un numero naturale \( x \) e ottenere la macchina di Turing
+    associata, si esegue la fattorizzazione in numeri primi di \( x \) e si ricavano le
+    istruzioni \( E_i \) dai fattori primi:
+    \[
+      x = n_1 \cdot \ldots n_k
+      = \underbrace{\underbrace{m_1^1 \cdot \ldots \cdot m_5^1}_{\text{Tupla 1}} \;\cdot\; m_1^2 \cdot \ldots \cdot m_5^2 
+      \;\cdot\; \ldots \;\cdot\; m_1^n \cdot \ldots \cdot m_5^n}_{\text{Tabella di \( M_x \) }}
+    \] 
+    Indichiamo con \( M_x \) la macchina di Turing il cui programma è codificato in
+    \( x \in \mathbb{N} \). \( M_x \) calcola la funcione \( \varphi_x \), che è una
+    notazione per indicare la funzione parziale ricorsiva calcolata dal programma
+    codificato in \( x \in \mathbb{N} \).
+    \[
+      \varphi_x(y) = M_x(y) \text{ (Calcolo la MdT \( M_x \) su input \( y \))}
+    \] 
+    \( \varphi_x \) è la semantica (funzione calcolata) dal programma \( x \).
+    \begin{example}
+      Se \( x_1 \) è il programma che calcola \( y+y \) e \( x_2 \) fosse il programma
+      che calcola \( 2y \) allora sappiamo che i programmi sono diversi:
+      \[
+        x_1 \neq x_2
+      \] 
+      Però la funzione calcolata è la stessa:
+      \[
+        \varphi_{x_1}(y) = \varphi_{x_2}(y)
+      \] 
+    \end{example}
+\end{itemize}
+
+\subsubsection{Macchina universale (interprete)}
+La macchina universale è un modello di una macchina programmabile. È un programma che
+prende in input due valori, interpreta il primo come un programma e lo applica al secondo.
+\begin{definition}
+  Dati:
+  \[
+    \begin{cases}
+      x_1 & \text{Codifica \( M_{x_1} \)} \\
+      x_2 & \text{Input da manipolare}
+    \end{cases}
+  \] 
+  Una macchina universale è definita come:
+  \[
+    \varphi_u(x_1, x_2) = \varphi_{x_1}(x_2)
+  \] 
+  che sottoforma di pseudocodice diventa:
+\begin{lstlisting}[language=Python]
+input(x_1) # Programma
+input(x_2) # Dato 
+
+M = decodifica(x_1) # Algoritmo descritto di decodifica che da x_1 costruisce il programma corrispondente
+  if ok(M) then M(x_2) # ok(M) e' il parser che verifica se M e' ben formata
+  else 
+    while true 
+      x = x # Diverge
+\end{lstlisting}
+\end{definition}
 
 \subsection{Lambda calcolo}
 Il lambda calcolo è un linguaggio di programmazione funzionale. Si è dimostrato che
@@ -4552,5 +4680,135 @@ e dice che:
   La classe delle funzioni "intuitivamente calcolabili" è equivalente alla classe
   delle funzioni Turing calcolabili.
 \end{quote}
+
+\subsection{Problemi insolvibili}
+\subsubsection{Problema della terminazione}
+Il problema della terminazione (Halting Problem) è il seguente:
+Non esiste una funzione totale ricorsiva e quindi calcolabile \( g \) tale che:
+\[
+  \forall x. g(x) =
+  \begin{cases}
+    1 & \text{se } \varphi_x(x) \downarrow \text{ termina} \\
+    0 & \text{se } \varphi_x(x) \uparrow \text{ diverge}
+  \end{cases}
+\] 
+\( \varphi_x(x) \downarrow \) rappresenta la funzione calcolabile della MdT di codice \( x \) 
+e input \( x \) che termina.
+La funzione \( g \) decide (cioè risponde con 0 (diverge) o 1 (termina)) se \( \varphi_x \) 
+applicata a \( x \) termina.
+
+\vspace{1em}
+\noindent
+\textbf{Dimostrazione per assurdo}:\\
+Supponiamo che esista una tale funzione \( g \) totale ricorsiva, allora esiste
+una macchina di Turing di codice \( i_0 \in \mathbb{N} \) che la calcola.
+\[
+  g = \varphi_{i_0}
+\] 
+Possiamo definire una nuova funzione \( h \):
+\[
+  h(x) = 
+  \begin{cases}
+    0 & \text{se } g(x) = 0 = \varphi_{i_0}(x) \\
+    \uparrow & \text{se } g(x) = 1 = \varphi_{i_0}(x)
+  \end{cases}
+\] 
+Essendo \( g \) calcolabile, anche \( h \) è calcolabile, quindi:
+\[
+  \exists i_1 . h = \varphi_{i_1}
+\] 
+Definiamo \( h(x) \) in pseudocodice:
+\begin{lstlisting}[language=Python]
+input(x)
+
+if M_i0(x) == 1 then
+  output(0)
+else 
+  while true do 
+    x = x # Diverge
+\end{lstlisting}
+L'ipotesi è che \( M_{i_0} \) esiste e termina sempre. Si ha un assurdo per costruzione.
+Supponiamo che \( \varphi_{i_0}(i_0) \) converga:
+\[
+  \varphi_{i_1}(i_1) \downarrow
+  \iff \underbrace{h(i_1) = 0}_{\text{per \( h = \varphi_{i_1} \) }}
+  \iff \underbrace{g(i_1) = 0}_{\text{per def di \( h \) }}
+  \iff \underbrace{\varphi_{i_1}(i_1) \uparrow}_{\text{per def di \( g \)}} \quad \text{Assurdo}
+\] 
+Supponiamo che \( \varphi_{i_0}(i_0) \) diverga:
+\[
+  \varphi_{i_1}(i_1) \uparrow
+  \iff \underbrace{h(i_1) \uparrow}_{\text{per \( h = \varphi_{i_1} \) }}
+  \iff \underbrace{g(i_1) = 1}_{\text{per def di \( h \) }}
+  \iff \underbrace{\varphi_{i_1}(i_1) \downarrow}_{\text{per def di \( g \)}} \quad \text{Assurdo}
+\] 
+Si dovrebbero aspettare infiniti passi per decidere se \( \varphi_x(x) \) termina o diverge,
+quindi \( g \) non è calcolabile. Non esiste quindi un programma in grado di decidere
+\textbf{sempre} se un altro programma termina su un suo input:
+\[
+  \not \exists \psi . \psi(xy) =
+  \begin{cases}
+    1 & \text{se } \varphi_x(y) \downarrow \\
+    0 & \text{se } \varphi_x(y) \uparrow
+  \end{cases}
+\] 
+Se esistesse \( \psi(xy) \) allora potrei decidere se \( \varphi_x(x) \) termina o diverge:
+\[
+  \psi(xx) = g(x)
+\] 
+e abbiamo dimostrato sopra che non è possibile.
+
+\begin{definition}
+  Non esiste \( f \) totale ricorsiva tale che:
+  \[
+    \forall x . f(x) = 
+    \begin{cases}
+      1 & \text{se } \varphi_x(x) \text{ è totale} \\
+      0 & \text{se } \varphi_x(x) \text{ non è totale}
+    \end{cases}
+  \] 
+  \( \varphi_x(x) \) è totale se:
+  \[
+    \forall y . \varphi_x(y) \downarrow
+  \] 
+  e non è totale se:
+  \[
+    \exists y . \varphi_x(y) \uparrow
+  \] 
+\end{definition}
+Alcuni problemi \textbf{insolubili} sono:
+\begin{itemize}
+  \item 
+    Decidere se \( f \) è costante, cioè se:
+    \[
+      \exists n . \forall y . \varphi_x(y) = n
+    \] 
+    non è possibile.
+
+  \item 
+    Decidere se \( \varphi_x \) non restituisce mai un valore fissato \( m \) , cioè se:
+    \[
+      \forall y . \varphi_x(y) \ne m
+    \] 
+
+  \item Decidere se \( \varphi_x = \varphi_y \)
+\end{itemize}
+
+\subsection{Specializzatore}
+\begin{theorem}[s-m-n (specializzatore)]
+  Consideriamo una programma con due input:
+  \[
+    f(x,y) = \lambda x y . x + y
+  \] 
+  \textbf{Specializzare} equivale a costruire un nuovo programma in cui una parte
+  degli input è integrata nel codice.
+  Usiamo \( f \) per ottenere \( f' \) che somma ad un valore in unput il valore \( 5 \).
+  \[
+    f'(y) = \lambda y . 5 + y
+  \] 
+  Si è quindi speciallizzata \( f \) a 5 per \( x \). Se si specializza su tutti gli
+  input, il programma diventa costante. La specializzazione su input parziali viene
+  detta \textbf{partial computation}.
+\end{theorem}
 
 \end{document}
