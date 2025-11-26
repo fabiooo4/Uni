@@ -26,10 +26,10 @@ imshow(img,[]);
 title('Immagine');
 
 subplot(1,3,3);
-corr = xcorr2(template, img);
+corr = xcorr2(img, template);
 imagesc(corr);
 
-max_corr = max(corr, [], "all");
+max_corr = max(corr(:));
 [max_corr_y, max_corr_x] = find(corr == max_corr);
 
 template_size = size(template);
