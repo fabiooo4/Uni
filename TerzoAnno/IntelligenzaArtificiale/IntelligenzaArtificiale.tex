@@ -2782,4 +2782,295 @@ seguente:
 \] 
 Questo algoritmo garantisce l'ottimalità della policy.
 
+\subsection{MDP parzialmente osservabili}
+I POMDP (Partially Observable Markov Decision Processes) sono un modello di osservazione
+\( O(s, e) \) che definisce la probabilità che l'agente ottiene l'evidenza \( e \) quando
+si trova nello stato \( s \). L'agente non conosce lo stato corrente.
+
+\begin{theorem}
+  La policy ottima in un POMDP è una funzione \( \pi(b) \) dove \( b \) è il
+  \textbf{belief state}, cioè una distribuzione di probabilità sugli stati
+  possibili in cui l'agente può trovarsi.
+\end{theorem}
+
+\noindent
+Si può convertire un POMDP in un MDP nello spazio dei belief state, dove \( T(b, a, b') \) 
+è la probabilità che il nuovo belief state sia \( b' \) sapendo che il belief state
+corrente è \( b \) e l'azione eseguita è \( a \).
+
+\section{Machine learning}
+Il machine learning consiste nel creare modelli partendo da un insieme di dati. Ci
+sono diversi tipi di learning:
+\begin{itemize}
+  \item Supervised learning
+  \item Unsipervised learning
+  \item Reinforcement learning
+\end{itemize}
+
+\subsection{Concetti di base e terminologia}
+\begin{itemize}
+  \item \textbf{Variabili di input}:
+    \begin{itemize}
+      \item Variabili indipendenti o predittori o features
+      \item \( X \), o quando ci sono più variabili \( X_1, \ldots, X_p \) 
+    \end{itemize}
+
+  \item \textbf{Variabili di output}:
+    \begin{itemize}
+      \item Variabili dipendenti o risposte
+      \item \( Y \)
+    \end{itemize}
+
+  \item \textbf{Variabili quantitative}: sono variabili con valori numerici, ad esempio
+    la temperatura, l'altezza, il peso, ecc.
+
+  \item \textbf{Variabili qualitative} (o categoriche): sono variabili con valori in
+    una di \( K \) classi diverse, ad esempio il genere, la razza, la specie, ecc.
+
+  \item \textbf{Regressione}: predizione di una variabile quantitativa
+  \item \textbf{Classificatione}: predizione di una variabile qualitativa
+\end{itemize}
+
+\subsection{Supervised learning}
+È l'approccio più utilizzato e consiste nell'addestrare un modello a partire
+da un insieme di dati etichettati.
+\begin{example}
+  Prendiamo ad esempio la classificazione di numeri scritti a mano.
+  \begin{itemize}
+    \item Training set:
+      \begin{itemize}
+        \item Immagini conosciute \( x \) che rappresentano una certa cifra
+          \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\textwidth]{supervised_learning}
+            \caption{Esempio di immagini di cifre scritte a mano}
+          \end{figure}
+        \item Etichette \( t \)  che rappresenta la cifra
+      \end{itemize}
+
+    \item Training: Costruisce un modello che mappa immagini a cifre \( y(x) \) 
+
+    \item Test set: \textbf{Nuove} immagini \textbf{senza etichette}.
+    \item Testing: Applicazione del modello al test set
+  \end{itemize}
+\end{example}
+Questo approccio può essere rappresentato da una equazione:
+\[
+  y = f(x)
+\] 
+in cui dato \( (x, y) \) si vuole "imparare" \( f() \) (function approximation).
+
+\subsection{Unsupervised learning}
+Consiste nell'addestrare un modello a partire da un insieme di dati non etichettati.
+\begin{example}
+  Prendiamo ad esempio il raggruppamento di cellule basato sull'espressione genica.
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{unsupervised_learning}
+    \caption{Esempio di clustering di cellule}
+  \end{figure}
+  \noindent
+  Le righe rappresentano i geni e le colonne le cellule. Ogni entry \( (gene, cell) \) 
+  rappresenta il livello di espressione del gene in quella cellula. L'obiettivo è
+  quello di creare un modello che raggruppa per similarità (clustering):
+  \begin{itemize}
+    \item cellule (colonne)
+    \item geni (righe)
+    \item entrambi
+  \end{itemize}
+  Non si sa il significato del raggruppamento, proprio perchè non si hanno etichette,
+  però si sanno che i dati sono correlati.
+\end{example}
+Questo approccio può essere rappresentato da una funzione:
+\[
+  f(x)
+\] 
+Dato \( x \) si vuole "imparare" \( f() \) come una rappresentazione compatta di \( x \) 
+(clustering).
+
+\subsection{Reinforcement learning}
+Consiste nell'addestrare un modello a partire da un insieme di dati di interazioni
+con l'ambiente dando all'agente delle ricompense o penalità.
+\begin{example}
+  Consideriamo l'esempio di un agente che deve pianificare la traiettoria di un
+  braccio robotico per prendere una pallina.
+  \begin{itemize}
+    \item Problema di controllo (sequential decision making)
+    \item Segnale di reward per guidare le azioni dell'agente (ad esempio una ricompensa alta
+      quando il braccio raggiunge la pallina)
+    \item Richiede interazione con l'ambiente
+    \item Tecniche statistiche guidate dai dati ma con focus sul controllo e non
+      sull'analisi dei dati
+  \end{itemize}
+\end{example}
+Questo approccio può essere rappresentato da una equazione:
+\[
+  y = f(x), z
+\] 
+in cui dato \( (x, z) \) si vuole "imparare" \( f() \) che genera \( y \). \( x \) è lo
+stato corrente, \( z \) è il segnale di reward.
+
+\subsection{Predizione}
+Dato un insieme di input facile da ottenere:
+\[
+  X = (X_1, X_2, \ldots, X_p)
+\] 
+si vuole predirre un output che è difficile da misurare:
+\[
+  Y = f(X) + \varepsilon 
+\] 
+dove \( \varepsilon  \) è un \textbf{errore casuale}, \textbf{indipendente} da \( X \)
+e \( f() \) rappresenta un'informazione sistematica di \( X \) su \( Y \).
+La \textbf{predizione} è la costruzione di un modello \( \hat{f}() \) che calcola:
+\[
+  \hat{Y} = \hat{f}(X) \text{ dato } X
+\] 
+\begin{example}
+  \label{ex:educazione}
+  Nel seguente esempio la superficie blu è il modello di predizione e si
+  osserva che i valori (punti rossi) non cadono precisamente nel modello a causa
+  dell'errore casuale \( \varepsilon  \):
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{esempio_predizione}
+    \caption{Guadagno come funzione degli anni di educazione e anzianità}
+  \end{figure}
+\end{example}
+
+\subsubsection{Accuratezza della predizione}
+L'accuratezza di una predizione \( \hat{Y} \) di \( Y \) dipende da due quantità
+(assumendo che \( \hat{f}() \) e \( X \) siano fissati):
+\begin{itemize}
+  \item \textbf{Errore riducibile}: dovuto all'errore nel costruire il modello
+  \item \textbf{Errore irriducibile}: dovuto alla variabilità di \( \varepsilon  \) 
+    (errore casuale indipendente da \( X \))
+\end{itemize}
+\[
+  E(Y - \hat{Y})^2 
+  = E \left[ f(X) + \varepsilon - \hat{f}(X) \right]^2
+  = \underbrace{[f(X) - \hat{f}(X)]^2}_{\text{Errore riducibile}} +
+  \underbrace{Var(\varepsilon)}_{\text{Errore irriducibile}}
+\] 
+Dove \( E(X) \) con \( X \) variabile casuale è il valore atteso della \textbf{media}
+di \( X \). Ad esempio la media di una popolazione.
+\( Var(X) \) è la \textbf{varianza} di \( X \), cioè la misura della dispersione
+dei valori di \( X \) intorno alla media.
+
+\subsubsection{Inferenza}
+L'obiettivo è di capire come \( Y \) cambia al variare di \( X \) (non solo predire \( Y \)).
+Bisogna sapere la forma di \( f() \). Alcune domande che ci si possono porre sono:
+\begin{itemize}
+  \item Quali variabili indipendenti sono associate alla risposta?
+  \item Qual'è la relazione tra la risposta e ogni variabile indipendente?
+  \item Si può approssimare \( Y \) con un modello lineare rispetto ad \( X \)?
+\end{itemize}
+
+\subsection{Stima di una funzione}
+Per stimare una funzione \( f() \) consideriamo il seguente esempio:
+\begin{example}
+  Riprendiamo l'esempio \ref{ex:educazione} in cui vogliamo predirre il guadagno
+  annuale di una persona in base agli anni di educazione e all'anzianità:
+  \begin{itemize}
+    \item Dati di training:
+      \[
+        n = 30 \text{ osservazioni}
+      \] 
+    \item Numero di predittori:
+      \[
+        p = 2
+      \]
+      \begin{itemize}
+        \item Anni di educazione
+        \item Anzianità
+      \end{itemize}
+
+    \item \( x_{ij} \) è il valore per l'osservazione \( i \) del predittore \( j \)
+
+    \item \( y_i \) è il valore della risposta per l'osservazione \( i \)
+
+    \item Il training set sono le coppie:
+      \[
+        (x_1, y_1), (x_2, y_2), \ldots, (x_n, y_n)
+      \] 
+      dove \( x_i = (x_{i1}, x_{i2}, \ldots, x_{ip})^T \) è il vettore dei predittori
+      per l'osservazione \( i \).
+
+    \item L'obiettivo è quello di trovare una stima \( \hat{f}() \) tale che:
+      \[
+        Y \approx \hat{f}(X) \text{ per ogni osservazione } (X, Y)
+      \] 
+  \end{itemize}
+\end{example}
+
+\subsubsection{Metodi parametrici}
+I metodi parametrici fanno delle assunzioni sulla forma funzionale di \( f() \) facendo
+assunzioni sulla forma di \( f() \). È composta da due passi:
+\begin{enumerate}
+  \item Fare un assunzione sulla forma di \( f() \), ad esempio assumere che \( f() \) sia
+    lineare
+    \begin{itemize}
+      \item \( f(X) = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \ldots + \beta_p X_p \) con
+        \( p + 1 \) parametri \( \beta_0, \ldots, \beta_p \) 
+      \item Un modello è completamente identificato dai parametri
+    \end{itemize}
+
+  \item Trovare un procedimento per \textbf{fittare} o \textbf{trainare} il modello
+    usando i dati di training
+    \begin{itemize}
+      \item Per un modello lineare bisogna stimare i parametri \( \beta_0, \ldots, \beta_p \).
+        Bisogna quindi trovare i valori di \( \beta_j \) che minimizzano l'errore tali che:
+        \[
+          Y \approx \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \ldots + \beta_p X_p = \hat{f}(X)
+        \] 
+    \end{itemize}
+\end{enumerate}
+Il metodo più comune per trainare modelli lineari è il metodo dei \textbf{minimi quadrati}
+(least square)
+\begin{example}
+  Riprendendo l'esempio \ref{ex:educazione}, possiamo creare un modello lineare:
+  \[
+    Income \approx \beta_0 + \beta_1 \cdot \text{ Years of education} + \beta_2 \cdot \text{ Seniority}
+  \] 
+  Si utilizza il metodo dei minimi quadrati per stimare i parametri \( \beta_0, \beta_1, \beta_2 \)
+  e si ottiene:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{modello_lineare_guadagno}
+    \caption{Modello lineare per il guadagno in base agli anni di educazione e all'anzianità}
+  \end{figure}
+\end{example}
+
+\subsubsection{Metodi non parametrici}
+Nei metodi parametrici non si hanno assunzioni su \( f() \) e si prova a far fittare
+il più possibile \( f() \) ai dati di training.
+\begin{itemize}
+  \item \textbf{Vantaggi}:
+    \begin{itemize}
+      \item Può approssimare molto bene i dati di training
+    \end{itemize}
+
+  \item \textbf{Svantaggi}:
+    \begin{itemize}
+      \item Richiede molti dati di training per funzionare bene
+      \item Può fare overfitting sui dati di training, cioè approssimare troppo bene i dati
+        di training e non generalizzare bene su nuovi dati
+    \end{itemize}
+\end{itemize}
+\begin{example}
+  Riprendendo l'esempio \ref{ex:educazione}, possiamo utilizzare un metodo
+  non parametrico per stimare \( f() \):
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{metodo_non_parametrico_guadagno}
+    \caption{Metodo non parametrico per il guadagno in base agli anni di educazione e all'anzianità}
+  \end{figure}
+  Che in confronto con la funzione originale usata per generare i dati di training si
+  nota che è presente overfitting:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{metodo_non_parametrico_guadagno_2}
+    \caption{Confronto tra funzione originale e metodo non parametrico}
+  \end{figure}
+\end{example}
+
 \end{document}
