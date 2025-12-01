@@ -3631,7 +3631,7 @@ I linguaggi riconosciuti dagli APD sono i linguaggi di programmazione.
 \end{theorem}
 
 
-\section{Calcolabilità e funzioni ricorsive}
+\section{Teoria della calcolabilit}
 \subsection{Potenza espressiva}
 Esistono diversi modelli di calcolo che hanno diversa potenza espressiva, ad esempio
 \begin{itemize}
@@ -4809,6 +4809,414 @@ Alcuni problemi \textbf{insolubili} sono:
   Si è quindi speciallizzata \( f \) a 5 per \( x \). Se si specializza su tutti gli
   input, il programma diventa costante. La specializzazione su input parziali viene
   detta \textbf{partial computation}.
+
+  \vspace{1em}
+  \noindent
+  Quindi in modo formale:
+  \( \forall n, m \ge 1 \) esiste una funzione \textbf{totale} ricorsiva \( s \) tale che
+  \[
+    \begin{aligned}
+      &\forall x, y_1, \ldots, y_m \;.\; \lambda z_1 \ldots z_n . \\
+      &\underbrace{\varphi_x}_{\text{Codice}}(\overbrace{y_1 \ldots y_m}^{\text{Input specializzati}}
+      z_1 \ldots z_n)\\
+      &= \lambda z_1 \ldots z_n . \varphi_s(x, y_1 \ldots y_m)
+    \end{aligned}
+  \]
+  Dove \( \varphi_s(x, y_1 \ldots y_m) \) è la trasformazione totale \( S \) del codice \( x \) 
+  e considerando gli input specializzati \( y_1 \ldots y_m \) 
+
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione}: Consideriamo \( m = n = 1 \) (caso particolare, ma \( m > 1 \) e
+  \( n > 1 \) è analogo) con:
+  \[
+    \lambda z . \varphi_x(y,z)
+  \] 
+  Fissiamo \( x_0 \) (programma) e \( y_0 \) (l'input su cui specializzare):
+  \[
+    \implies \lambda z . \varphi_{x_0}(y_0, z)
+  \] 
+  dove \( \varphi_{x_0} \) denota la funzione calcolata dalla macchina di Turing il cui
+  codice è aritmetizzato in \( x_0 \). Questa funzione è \textbf{intuitivamente calcolabile},
+  di conseguenza esiste una macchina di Turing che la calcola (tesi di Church) il cui
+  codice dipende (ed è costruibile ricorsivamente) da \( x_0 \) (codice originale) e
+  \( y_0 \) (l'input specializzato). Quindi esiste una trasformazione \textbf{totale ricorsiva}
+  tale che il codice è \( s(x_0, y_0) \):
+  \[
+    \varphi_{s(x_0, y_0)}(z) = \lambda z . \lambda z . \varphi_{x_0}(y_0, z)
+  \] 
 \end{theorem}
+
+\subsection{Prima proiezione di Futamura}
+La proiezione di Futamura è una tecnica per ottenere un compilatore a partire
+da un interprete e uno specializzatore.
+
+\begin{definition}
+  Dato un programma sorgente \( source \in L \) esiste una trasformazione di
+  \( source \) in un programma (semanticamente equivalente) \( target \in L' \).
+
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione}: Supponiamo che \( int \) sia la macchina universale:
+  \[
+    int(p, d) = p(d)
+  \] 
+  dove:
+  \begin{itemize}
+    \item \( p \) è un programma
+    \item \( d \) è un dato di input
+  \end{itemize}
+  Supponiamo che \( spec \) sia uno specializzatore:
+  \[
+    spec(Q, d) = Q'_d \text{ integra nel codice l'input specializzato } d
+  \] 
+  dove:
+  \begin{itemize}
+    \item \( Q \) è un programma a due input
+  \end{itemize}
+  Allora:
+  \[
+    target = \underbrace{spec(int, source)}_{\text{Compilatore}}
+  \] 
+\end{definition}
+
+\subsubsection{Linguaggio Turing completo}
+Un linguaggio Turing completo permette di calcolare tutte le funzioni intuitivamente calcolabili.
+Un linguaggio Turing completo equivale ad una macchina di Turing. I costrutti 
+minimi per avere un linguaggio Turing completo sono:
+\[
+  \begin{aligned}
+    &\exists p \;.\; \varphi_p = \lambda x . 0\\
+    &\exists p \;.\; \varphi_p = \lambda x . x + 1\\
+    &\exists p \;.\; \varphi_p = \lambda x . x \text{ (proiezione)}\\
+    &\exists p \;.\; \varphi_p = \varphi_Q \circ \varphi_H \text{ (composizione)}\\
+    &\exists p \;.\; \varphi_p = \varphi_{\text{While}} B \; \{Q\} \text{ (minimizzazione)}
+    &\exists p \;.\; \varphi_p(x,y) = \varphi_x(y)\\
+    &\exists p \;.\; \varphi_{spec(x,y)}(z) = \lambda z . \varphi_x(y,z) \text{ (proiezione)}
+  \end{aligned}
+\] 
+Se consideriamo la \textbf{primitiva ricorsione} abbiamo solo cicli for. Un linguaggio che non
+permette cicli non determinati (while) \textbf{non} è Turing completo.
+
+\vspace{1em}
+\noindent
+I linguaggi di Turing sono tutti quei linguaggi accettati da una mcchina di Turing:
+\[
+  \exists  MdT \; m \;.\; L = L(M) = \left\{ \left. y \;\right|\; \varphi_m(y) \downarrow \right\}
+\] 
+dove \( y \) sono le stringhe su cui la MdT termina. E \( \varphi_x \) è la funzione
+parziale ricorsiva calcolata da una MdT di codice \( x \).
+
+\vspace{1em}
+\noindent
+\begin{definition}
+  Il dominio di una funzione parziale ricorsiva \( \varphi_x \) è l'insieme:
+  \[
+    dom(\varphi_x) = \left\{ \left. y \;\right|\; \varphi_x(y) \downarrow \right\}
+  \] 
+\end{definition}
+
+
+\section{Teoria della ricorsione}
+La teoria della ricorsione parla degli insiemi (linguaggi) caratterizzati dalle macchine
+di Turing.
+
+\subsection{Insiemi ricorsivamente enumerabili}
+\begin{definition}
+  Un insieme \( I \subseteq \mathbb{N} \) è ricorsivamente enumerabile (RE) se è
+  il dominio di una funzione parziale ricorsiva, cioè:
+  \[
+    \exists \varphi_x \text{ parziale ricorsiva} \;.\; dom(\varphi_x) = I
+  \] 
+  Cioè se esiste una macchina di Turing che si ferma su \textbf{tutti} gli elementi di \( I \).
+
+  \vspace{1em}
+  \noindent
+  \textbf{Notazione}: Per rappresentare un insieme RE si usa la notazione:
+  \[
+    W_x \stackrel{def}{=} dom(\varphi_x)
+  \] 
+  Se abbiamo \( \varphi_x \) parziale ricorsiva, allora \( W_x \) è RE:
+  \[
+    \varphi_x \text{ PR} \implies W_x = dom(\varphi_x) \text{ è RE}
+  \] 
+  Se abbiamo \( I \subseteq \mathbb{N} \) e riusciamo a costruire la sua \textbf{funzione
+  semicaratteristica}, cioè: 
+  \[
+    \psi_I(x) =
+    \begin{cases}
+      1 & \text{se } x \in I \\
+      \uparrow & \text{se } x \notin I
+    \end{cases}
+    \implies dom(\psi_I) = I
+  \] 
+\end{definition}
+Per dimostrare che un insieme è RE bisogna fornire l'algoritmo della funzione semicaratteristica
+che deve terminare se e solo se ha in input un elemento dell'insieme.
+
+\begin{example}
+  Consideriamo una variante del problema della terminazione, cioè quello che determina i
+  programmi che terminano su \textbf{almeno un input}.
+  Si può riscrivere con il seguente insieme:
+  \[
+    \left\{ \left. x \;\right|\; \exists y \;.\; \varphi_x(y) \downarrow \right\}
+  \] 
+  Consideriamo il caso specifico applicato all'input 0:
+  \[
+    I = \left\{ \left. x \;\right|\; \varphi_x(0) \downarrow \right\}
+  \] 
+  L'algoritmo della funzione semicaratteristica è:
+\begin{lstlisting}[language=Python]
+input(x)
+stop = 0
+build phi_x # Esiste algoritmo ricorsivo che costruisce la MdT di codice x
+while !stop do {
+  execute next step of phi_x(0)
+  if phi_x(0) halts then {
+    output(1)
+    stop = 1
+  }
+}
+output(1)
+\end{lstlisting}
+  La funzione è semicaratteristico perchè se \( \varphi_x(0)\downarrow \) restituisce
+  1, altrimenti diverge.
+\end{example}
+
+\begin{example}
+  Considderiamo l'insieme del problema della terminazione generale:
+  \[
+    I = \left\{ \left. x \;\right|\; \exists y \;.\; \varphi_x(y)\downarrow \right\}
+  \] 
+  Un possibile algoritmo è:
+\begin{lstlisting}[language=Python]
+input(x)
+y = 0
+stop = 0
+while !stop do {
+  execute next step of phi_x(y)
+  if phi_x(y) halts then {
+    stop = 1
+  }
+}
+return(1)
+\end{lstlisting}
+  Questo programma è sbagliato perchè se diverge su 0, non potrà mai testare \( y > 0 \),
+  ma \( \varphi_x(1) \) potrebbe terminare. Quindi questo algoritmo diverge anche per
+  \( x \in I \) e di conseguenza non è la funzione semicaratteristica di \( I \).
+
+  \vspace{1em}
+  \noindent
+  Un modo per risolvere questo problema è eseguire in parallelo tutte le \( \varphi_x(y) \)
+  per \( y = 0, 1, 2, \ldots \). Siccome non si può eseguire in parallelo, si può simulare
+  l'esecuzione in parallelo eseguendo un passo di ogni \( \varphi_x(y) \) in modo ciclico
+  facendo partire una nuova computazione ad ogni ciclo. In questo modo se c'è almeno un
+  input su cui prima o poi la macchina termina, prima o poi lo trova:
+  \begin{itemize}
+    \item \textbf{Passo 0:} Esegue un passo di \( \varphi_x(0) \).
+      \begin{itemize}
+        \item Se termina (\( \downarrow \)) allora finisce
+        \item Se non termina (\( \uparrow \)) allora si esegue il passo successivo
+      \end{itemize}
+
+    \item \textbf{Passo n+1:} Esegue un passo per \( \varphi_x(0), \varphi_x(1), \ldots, \varphi_x(n) \) 
+      (se non sono terminate prima). Esegue il primo passo di \( \varphi_x(n+1) \).
+  \end{itemize}
+  Questo algoritmo si chiama \textbf{Dovetail}.
+
+  \vspace{1em}
+  \noindent
+  La funzione semicaratteristica di \( I \) è:
+\begin{lstlisting}[language=Python]
+input(x)
+build phi_x # Esiste una procedura ricorsiva per costruire phi_x da x
+
+y = 0 # Serve per identificare gli input su cui abbiamo iniziato la computazione
+stop = 0
+
+while !stop do {
+  for i from 0 to y {
+    execute next step of phi_x(i)
+    if phi_x(i) halts then {
+      stop = 1
+    }
+    y++
+  }
+}
+return(1)
+\end{lstlisting}
+\end{example}
+
+\subsection{Insiemi ricorsivi}
+Esiste un algoritmo che decide se un elemento sta o meno nell'insieme. L'insieme ricorsivo
+è caratterizzato da una funzione totale (\( \implies \) dominio in \( \mathbb{N} \)).
+\begin{definition}
+  Un insieme \( I \) è ricorsivo se esiste una funzione totale ricorsiva \( f_I \) tale che:
+  \[
+    f_I(x) =
+    \begin{cases}
+      1 & \text{se } x \in I \\
+      0 & \text{se } x \notin I
+    \end{cases}
+  \] 
+  Questa funzione è detta \textbf{funzione caratteristica} di \( I \).
+\end{definition}
+Per dimostrare che un insieme è ricorsivo bisogna fornire l'algoritmo che calcola la
+sua funzione caratteristica.
+\begin{example}
+  Un esempio di insieme ricorsivo è l'insieme dei numeri pari:
+  \[
+    I = \left\{ \left. x \in \mathbb{N} \;\right|\; x \text{ è pari} \right\}
+  \] 
+  L'algoritmo che calcola la funzione caratteristica \( f \) è:
+\begin{lstlisting}[language=Python]
+input(x)
+y = x mod 2 # Resto della divisione per 2 (funzione PR)
+z = neg(y) # y = 0 -> z = 1; y = 1 -> z = 0
+output(z)
+\end{lstlisting}
+\( f \) è la caratteristica di \( I \):
+\[
+  f(x) = 
+  \begin{cases}
+    1 & \text{se } x \in I \text{ (x è pari)} \\
+    0 & \text{se } x \notin I \text{ (x è dispari)}
+  \end{cases}
+\] 
+\end{example}
+
+\begin{example}
+  Consideriamo il seguente insieme:
+  \[
+    I = \left\{ \left. x \;\right|\; \exists n \;.\; x = n^2 \right\}
+  \] 
+  Un esempio di algoritmo è:
+\begin{lstlisting}[language=Python]
+input(x)
+n = 0
+while x != n^2 do n++
+output(1)
+\end{lstlisting}
+  Questo programma però non è la funzione caratteristica di \( I \) perchè non può essere
+  totale. Bisogna quindi trovare un modo per far terminare il programma anche se \( x \notin I \).
+\begin{lstlisting}[language=Python]
+input(x)
+n = 0
+while n <= x do {
+  if (x - n) then {
+    output(1)
+  }
+  n++
+}
+output(0)
+\end{lstlisting}
+  Questo programma è la funzione caratteristica di \( I \) perchè termina sempre:
+  \[
+    f(x) =
+    \begin{cases}
+      1 & \text{se } \exists n \;.\; x = n^2 \\
+      0 & \text{altrimenti}
+    \end{cases}
+  \]
+\end{example}
+
+\begin{theorem}
+  Se l'insieme \( A \) è ricorsivo, allora è anche ricorsivamente enumerabile.
+  \[
+    \exists f_A(x) =
+    \begin{cases}
+      1 & \text{se } x \in A \\
+      0 & \text{se } x \notin A
+    \end{cases}
+  \] 
+  ma allora possiamo definire:
+  \[
+    \psi_A(x) =
+    \begin{cases}
+      1 & \text{se } f_A(x) = 1 \\
+      \text{while true}\;(\uparrow) & \text{se } f_A(x) = 0 
+    \end{cases}
+  \] 
+  Supponiamo \( C_A \) è l'algoritmo che codifica \( f_A \):
+\begin{lstlisting}[language=Python]
+input(x)
+y = C_A(x) # Esiste per ipotesi ed e' totale
+  if y = 1 then output(1)
+  else while true do x = x # Diverge
+\end{lstlisting}
+  ed è la funzione semicaratteristica di \( A \).
+\end{theorem}
+
+\vspace{1em}
+\noindent
+\begin{theorem}[Teorema di Post]
+  Un insieme \( A \) è ricorsivo se e solo se \( A \) e \( \bar{A} \) sono entrambi 
+  ricorsivamente enumerabili.
+
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione:} Se \( A \) è ricorsivo, allora \( A \) è RE (teorema precedente) e
+  analogamente costruiamo la sue semicaratteristica per \( \bar{A} \):
+  \[
+    f_{\bar{A}}(x) =
+    \begin{cases}
+      1 & \text{se } f_A(x) = 0 \\
+      \uparrow & \text{altrimenti}
+    \end{cases}
+  \] 
+  Siano \( A \) e \( \bar{A} \) entrambi RE:
+  \[
+    \begin{aligned}
+      \psi_A(x) &=
+      \begin{cases}
+        1 & \text{se } x \in A \\
+        \uparrow & \text{altrimenti}
+      \end{cases}\\
+      \psi_{\bar{A}}(x) &=
+      \begin{cases}
+        1 & \text{se } x \in \bar{A} \; (x \notin A) \\
+        \uparrow & \text{altrimenti}
+      \end{cases}
+    \end{aligned}
+  \] 
+  La funzione caratteristica di \( A \) è:
+\begin{lstlisting}[language=Python]
+input(x)
+stop = 0
+while !stop do {
+  execute next step of C_A(x)
+  if C_A(x) halts then output(1)
+  execute next step of C_barA(x)
+  if C_barA(x) halts then output(0)
+}
+\end{lstlisting}
+\end{theorem}
+
+\begin{example}
+  Consideriamo l'insieme:
+  \[
+    A_m = \left\{ \left. x \;\right|\; \varphi_x(x) \downarrow \text{ in meno di \( m \) passi} \right\}
+  \] 
+  Questo insieme è ricorsivo perchè \( m \) è un input che limita il numero di passi della
+  computazione. Per dimostrarlo forniamo l'algoritmo della funzione caratteristica:
+  \[
+    f_{A_m}(x) =
+    \begin{cases}
+      1 & \text{se } x \in A_m \\
+      0 & \text{se } x \notin A_m
+    \end{cases}
+  \] 
+\begin{lstlisting}[language=Python]
+input(x, m)
+build phi_x # Esiste procedura ricorsiva per costruire la MdT di codice x
+for i from 1 to m do {
+  execute next step of phi_x(x)
+  if phi_x(x) halts then { # In questo caso la phi_x(x) ha terminato in meno di m passi
+    output(1)
+  }
+}
+output(0) # phi_x(x) e' arrivata a m passi senza terminare
+\end{lstlisting}
+\end{example}
 
 \end{document}
