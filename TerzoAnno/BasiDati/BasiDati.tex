@@ -1911,4 +1911,438 @@ Esistono in particolare due approcci per rappresentare le relazioni tra i docume
   Questa soluzione è meno efficiente.
 \end{example}
 
+\begin{itemize}
+  \item L’approccio normalizzato consente di rappresentare il dato in modo
+    simile a quanto avviene nel modello relazionale. Non c’è ridondanza e gli
+    aggiornamenti sono più semplici (riguardano sempre una sola istanza).
+
+    \begin{example}
+      Un esempio dell'approccio normalizzato è il seguente:
+      \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\textwidth]{esempio_documenti_normalizzati}
+        \caption{Esempio di documenti normalizzati}
+      \end{figure}
+    \end{example}
+
+  \item 
+    L’approccio embedded consente di rappresentare in un
+    \textbf{unico documento} quanto viene rappresentato di solito nel modello ER con
+    una entità \( E \)  insieme alle sue "entità deboli" (entità collegate ad \( E \)  
+    attraverso identificatori esterni).
+    Vale a dire è possibile rappresentare nello stesso documento un’istanza di
+    informazione con altre istanze di informazione in essa logicamente
+    contenute.
+    In questo caso il documento può essere aggiornato come oggetto
+    complesso in modo atomico.
+\end{itemize}
+
+\subsubsection{Rappresentazione di un documento}
+Per rappresentare un documento si segue lo standard JSON (JavaScript Object Notation):
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{struttura_documento_json}
+  \caption{Struttura di un documento JSON}
+\end{figure}
+\begin{itemize}
+  \item Le parentesi graffe delimitano il documento
+  \item Il documento contiene una lista di proprietà separate da virgole
+  \item Ogni proprietà si specifica con la sintassi:
+    \begin{quote}
+      nome\_proprietà: valore
+    \end{quote}
+  \item I valori atomici si indicano come costanti stringa (delimitate da apici) o numeri
+    interi o reali
+  \item Le proprietà multi valore si specificano elencando i valori tra parentesi quadre
+  \item Il valore di una proprietà può essere un documento annidato che inizia e finisce
+    con parentesi graffe
+  \item Le proprietà multi valore possono contenere anche liste di documenti
+\end{itemize}
+
+\subsection{Traduzione di uno schema ER in collezioni di documenti}
+Per procedere con la progettazione logica dei dati come documenti bisogna fare delle
+ipotesi di partenza:
+\begin{itemize}
+  \item Supponiamo di applicare un \textbf{approccio embedded}
+  \item Supponiamo che lo schema ER sia già stato ristrutturato e quindi sia
+    \textbf{privo di generalizzazioni}
+  \item Vengono eliminate tutte le \textbf{relazioni ternarie (o ennarie)}
+  \item A partire dalle operazioni di elaborazione da eseguire sui dati vengono identificate
+    le collezioni di documenti da generare nel sistema:
+    \[
+      \left\{ DOC_1, \ldots, DOC_N \right\}
+    \] 
+    possono essere al massimo una per ogni entità dello schema.
+\end{itemize}
+
+\subsubsection{Regole di traduzione}
+\begin{itemize}
+  \item Ogni collezione \( DOC_i \) è in corrispondenza con un'entità \( EP \) dello
+    schema ER, detta \textbf{entità principale della collezione di documenti}
+
+  \item Per ogni istanza dell'entità principale ci sarà uno e sun solo documento
+    nella collezione
+
+  \item Ogni istanza delle \textbf{entità non principali} sarà rappresentata da uno
+    (o più) documenti \textbf{incapsulati in un altro documento} che rappresenta
+    un'istanza di un'entità principale
+
+  \item Le istanze di \textbf{relazione dello schema ER} saranno rappresentate
+    \textbf{strutturalmente} (attraverso l'incapsulamento) oppure esportando \( ID \) 
+    di documento o chiavi applicative
+\end{itemize}
+
+\subsubsection{Etichettatura dello schema ER}
+Ci sono diverse fasi per tradurre uno schema ER in collezioni di documenti:
+\begin{enumerate}
+  \item \textbf{Individuazione delle entità principali}
+    \begin{enumerate}
+      \item Etichettare l'entità principale di una collezione di documenti \( DOC_i \) 
+        con l'etichetta \( DOC_i \)
+        \begin{example}
+          Ad esempio, se la collezione \( DOC_3 \) ha come entità principale l'entità
+          \( E_2 \), questa va etichettata come segue:
+          \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.3\textwidth]{esempio_etichettatura_entità_principale}
+            \caption{Esempio di etichettatura dell'entità principale}
+          \end{figure}
+        \end{example}
+    \end{enumerate}
+
+  \item \textbf{Incapsulamento delle entità non principali}
+    \begin{enumerate}
+      \item Per ogni entità \( E_i \) non etichettata come principale, va deciso
+        \textbf{in quale collezione incapsularla}. Tutti i casi possibili sono:
+        \begin{enumerate}
+          \item Se \( E_i \) è collegata attraverso una relazione \( R \) ad una sola
+            entità principale \( EP \) allora \( E_i \) verrà incapsulata in \( EP \) 
+
+          \item Se \( E_i \) è collegata attraverso le relazioni \( R_1, \ldots, R_N \) 
+            a più entità principali \( EP_1, \ldots, EP_N \) bisogna scegliere in quale
+            entità principale \( EP_X \) incapsulare \( E_i \). \( E_i \) verrà quindi
+            incapsulata in \( EP_X \) 
+
+          \item Se \( E_i \) non è collegata attraverso una relazione \( R \) ad un'entità
+            principale, ma è collegata ad altre entità \( E_{Y_1}, \ldots, E_{Y_M} \) già
+            collegate ad altre entità principali, bisogna scegliere l'entità \( E_{Y_K} \)
+            in cui incapsulare \( E_i \). \( E_i \) verrà quindi incapsulata in \( E_{Y_K} \)
+        \end{enumerate} 
+        Per rappresentare che \( E_i \) viene incapsulata in \( EP \) si usa una freccia
+        che indica la direzione dell'incapsulamento:
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width=0.5\textwidth]{esempio_freccia_incapsulamento}
+          \caption{Esempio di freccia per indicare l'incapsulamento}
+        \end{figure}
+        L'etichetta da assegnare all'entità \( E_i \) dipende dalla cardinalità di \( R \) 
+        lato \( E_i \) 
+          \begin{enumerate}
+            \item Se \( E_i \) è collegata attraverso una relazione \( R \) ad un'entità
+              principale \( EP \) (unica scelta tra quelle possibili). \( E_i \) verrà
+              quindi incapsulata in \( EP \). \( E_i \) partecipa alla relazione \( R \) con
+              cardinalità massima \( (1,1) \).
+              \begin{figure}[H]
+                \centering
+                \includegraphics[width=0.5\textwidth]{esempio_incapsulamento_1}
+                \caption{Esempio di incapsulamento con cardinalità (1,1)}
+              \end{figure}
+              Se la relazione \( R \) è uno a uno o uno a molti con \( (1,1) \) lato \( E_i \),
+              allora l'etichetta di \( E_i \) è uguale a "X" e indica che l'incapsulamento è
+              senza perdita e non ridondante
+
+            \item Se \( E_i \) è collegata attraverso una relazione \( R \) ad un'entità
+              principale \( EP \) (unica o a scelta). \( E_i \) verrà
+              quindi incapsulata in \( EP \). \( E_i \) partecipa alla relazione \( R \) con
+              cardinalità massima \( (0,1) \).
+              \begin{figure}[H]
+                \centering
+                \includegraphics[width=0.5\textwidth]{esempio_incapsulamento_2}
+                \caption{Esempio di incapsulamento con cardinalità (0,1)}
+              \end{figure}
+              Se la relazione \( R \) è uno a uno o uno a molti con \( (0,1) \) lato \( E_i \),
+              allora l'etichetta di \( E_i \) è uguale a "XL" e indica che \textbf{si perdono}
+              le istanze di \( E_i \) che non sono collegate a nessuna istanza di \( EP \).
+              Ciò viene indicato dal suffisso "L" (loss) aggiunto all'etichetta.
+
+            \item Se \( E_i \) è collegata attraverso una relazione \( R \) ad un'entità
+              principale \( EP \) (unica o a scelta). \( E_i \) verrà
+              quindi incapsulata in \( EP \). \( E_i \) partecipa alla relazione \( R \) con
+              cardinalità massima \( (1,N) \).
+              \begin{figure}[H]
+                \centering
+                \includegraphics[width=0.5\textwidth]{esempio_incapsulamento_3}
+                \caption{Esempio di incapsulamento con cardinalità (1,N)}
+              \end{figure}
+              Se la relazione \( R \) è molti a molti o molti a uno con \( (1,N) \) lato \( E_i \),
+              allora le istanze di \( E_i \) vengono rappresentate in modo \textbf{ridondante}
+              in quanto sono collegate a più istanze di \( EP \). L'etichetta di \( E_i \) è
+              uguale a "XR" e indica che l'incapsulamento è ridondante dal suffisso "R".
+
+            \item Se \( E_i \) è collegata attraverso una relazione \( R \) ad un'entità
+              principale \( EP \) (unica o a scelta). \( E_i \) verrà
+              quindi incapsulata in \( EP \). \( E_i \) partecipa alla relazione \( R \) con
+              cardinalità massima \( (0,N) \).
+              \begin{figure}[H]
+                \centering
+                \includegraphics[width=0.5\textwidth]{esempio_incapsulamento_4}
+                \caption{Esempio di incapsulamento con cardinalità (0,N)}
+              \end{figure}
+              Se la relazione \( R \) è molti a molti o molti a uno con \( (0,N) \) lato \( E_i \),
+              allora le istanze di \( E_i \) vengono rappresentate in modo \textbf{ridondante}
+              in quanto sono collegate a più istanze di \( EP \) e si \textbf{perdono}
+              quelle non collegate. Ciò viene indicato dall'etichetta di \( E_i \) uguale
+              a "XLR" che indica che l'incapsulamento è ridondante e con perdita, dal
+              suffisso "LR".
+
+            \item Se \( E_i \) è collegata attraverso una relazione \( R \) ad un'entità
+              \( E_Y \) (unica o a scelta) a sua volta collegata ad un'entità principale \( EP \)
+              allora \( E_i \) verrà incapsulata in \( E_Y \).
+              \begin{figure}[H]
+                \centering
+                \includegraphics[width=0.5\textwidth]{esempio_incapsulamento_5}
+                \caption{Esempio di incapsulamento in un'entità non principale}
+              \end{figure}
+              Se la relazione \( R \) è uno a uno o uno a molti con \( (1,1) \) lato \( E_i \),
+              allora l'etichetta di \( x_i \) è uguale all'etichetta \( x_y \). Se invece di
+              \( (1,1) \) ci sono altri vincoli si ha:
+              \begin{itemize}
+                \item \( (0,1) \to x_y L \)
+                \item \( (1,N) \to x_y R \)
+                \item \( (0,N) \to x_y LR \)
+              \end{itemize}
+          \end{enumerate}
+      \end{enumerate}
+
+
+      \item \textbf{Rappresentazione delle relazione non già rappresentate strutturalmente}:\\
+        Tutte le relazioni che sono state etichettate da una freccia piena sono già
+        rappresentate strutturalmente. Quelle che rimangono devono essere
+        rappresentate con il meccanismo dei riferimenti
+        \begin{itemize}
+          \item Caso 1:\\
+            Per ogni relazione binaria \( R \) che coinvolge due entità principali \( EP_1 \)
+            ed \( EP_2 \), va deciso in quale collezione incapsularla. Tutti i casi possibili
+            sono:
+            \begin{enumerate}
+              \item \( R \) viene incapsulata in una sola entità principale \( EP_1 \) o
+                \( EP_2 \)
+              \item \( R \) viene incapsulata in entrambe le entità principali \( EP_1 \)
+                e \( EP_2 \) (questa scelta genera ridondanza)
+            \end{enumerate}
+            Viene utilizzata una freccia semplice per indicare dove viene
+            rappresentata la relazione e la sua etichetta indica se la
+            rappresentazione è per id del documento (\texttt{ID}) o per chiave applicativa
+            (\texttt{KEY}). Un suffisso "(R)" indica che la rappresentazione è ridondante
+
+            \begin{figure}[H]
+              \centering
+              \includegraphics[width=0.7\textwidth]{esempio_etichettatura}
+              \caption{Esempio di etichettatura di relazioni binarie}
+            \end{figure}
+        \end{itemize}
+        Casi particolari:
+        \begin{itemize}
+          \item Un'entità non principale \( E_i \) incapsulata in un'entità principale
+            \( EP_1 \) è collegata attraverso una relazione binaria \( R \) ad un'altra
+            entità principale \( EP_2 \). 
+            \begin{figure}[H]
+              \centering
+              \includegraphics[width=0.7\textwidth]{caso_particolare_etichettatura_1}
+              \caption{Esempio di etichettatura di relazioni binarie con entità non principale}
+            \end{figure}
+
+          \item Un'entità non principale \( E_i \) (incapsulata in un'entità principale
+            \( EP_1 \)) è collegata attraverso una relazione binaria \( R \) ad un'altra
+            entità non principale \( E_Y \) (incapsulata in un'altra entità principale
+            \( EP_2 \)).
+            \begin{figure}[H]
+              \centering
+              \includegraphics[width=0.7\textwidth]{caso_particolare_etichettatura_2}
+              \caption{Esempio di etichettatura di relazioni binarie con entità non principale}
+            \end{figure}
+        \end{itemize}
+
+  \item \textbf{Regole di traduzione di uno schema etichettato}:\\
+    Le strutture dei documenti vengono descritte con una sintassi semplificata e
+    la generazione della struttura dipende poi dallo specifico sistema scelto
+    \begin{enumerate}
+      \item Regola 1: Entità principale
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width=0.8\textwidth]{traduzione_etichettata_1}
+          \caption{Regola di traduzione per entità principale}
+        \end{figure}
+        \texttt{<TIPO>} può essere solo:
+        \begin{itemize}
+          \item string
+          \item integer
+          \item number
+          \item boolean
+          \item date
+          \item time
+          \item timestamp
+        \end{itemize}
+        L’attributo \texttt{\_id} è sempre presente ed è autogenerato dal sistema.
+        In tutti gli esempi a seguire i tipi sono stati scelti a caso. Nel caso specifico si
+        scelgono i tipi in base al contesto applicativo (requisiti)
+
+      \item Regola 2: Entità non principale
+        \begin{enumerate}
+          \item 
+            Se c'è un'entità principale \( EP \) con entità debole \( E_i \) (o
+            non principale) da incapsulare, allora \( E_i \) partecipa alla relazione \( R \) con
+            vincolo di cardinalità \( (1,1) \) e \( EP \) con vincolo di cardinalità
+            \( (X,N) \):
+            \begin{figure}[H]
+              \centering
+              \includegraphics[width=0.9\textwidth]{esempio_traduzione_etichettata_1}
+              \caption{Regola di traduzione per entità principale con entità debole}
+            \end{figure}
+
+            \begin{example}
+              Un esempio di applicazione è il seguente:
+              \begin{figure}[H]
+                \centering
+                \includegraphics[width=1\textwidth]{esempio_traduzione_etichettata_1_2}
+                \caption{Esempio di traduzione di entità principale con entità debole}
+              \end{figure}
+            \end{example}
+
+          \item Se c'è un entità principale \( EP \) con entità debole \( E_i \) (o
+            non principale) da incapsulare, allora \( E_i \) partecipa alla relazione \( R \) con
+            vincolo di cardinalità \( (1,1) \) e \( EP \) con vincolo di cardinalità
+            \( (X,1) \):
+            \begin{figure}[H]
+              \centering
+              \includegraphics[width=0.9\textwidth]{esempio_traduzione_etichettata_2}
+              \caption{Regola di traduzione per entità principale con entità debole}
+            \end{figure}
+        \end{enumerate}
+
+      \item Regola 3: Entità debole o non principale
+        \begin{enumerate}
+          \item Se c'è un'entità principale \( EP \) con entità debole \( E_i \) (o
+            non principale) da incapsulare, allora \( E_i \) partecipa alla relazione \( R \) con
+            vincolo di cardinalità \( (0,1) \) o \( (0,N) \) o \( (1,N) \) e \( EP \)
+            con vincolo di cardinalità \( (X,N) \):
+            \begin{figure}[H]
+              \centering
+              \includegraphics[width=0.9\textwidth]{esempio_traduzione_etichettata_3}
+              \caption{Regola di traduzione per entità principale con entità debole}
+            \end{figure}
+
+          \item Se c'è un'entità principale \( EP \) con entità debole \( E_i \) (o
+            non principale) da incapsulare, allora \( E_i \) partecipa alla relazione \( R \) con
+            vincolo di cardinalità \( (0,1) \) o \( (0,N) \) o \( (1,N) \) e \( EP \)
+            con vincolo di cardinalità \( (X,1) \):
+            \begin{figure}[H]
+              \centering
+              \includegraphics[width=0.9\textwidth]{esempio_traduzione_etichettata_4}
+              \caption{Regola di traduzione per entità principale con entità debole}
+            \end{figure}
+        \end{enumerate}
+
+      \item Regola 4: Entità non principale incapsulata in un'entità non principale
+        \begin{enumerate}
+          \item Se \( E_i \) è collegata attraverso una relazione \( R \) ad un'entità
+            \( E_y \) (unica o a scelta) a sua volta collegata con un'entità \( EP \),
+            allora \( E_i \) viene incapsulata in \( E_y \) e \( E_y \) viene incapsulata
+            in \( EP \). I vincoli su \( E_y \) e \( EP \) sono \( (0,N) \) o \( (1,N) \):
+            \begin{figure}[H]
+              \centering
+              \includegraphics[width=0.9\textwidth]{esempio_traduzione_etichettata_5}
+              \caption{Regola di traduzione per entità incapsulata in un'entità non principale}
+            \end{figure}
+
+          \item Se \( E_i \) è collegata attraverso una relazione \( R \) ad un'entità
+            \( E_y \) (unica o a scelta) a sua volta collegata con un'entità \( EP \),
+            allora \( E_i \) viene incapsulata in \( E_y \) e \( E_y \) viene incapsulata
+            in \( EP \). I vincoli su \( E_y \) e \( EP \) sono \( (0,1) \) o \( (1,1) \):
+            \begin{figure}[H]
+              \centering
+              \includegraphics[width=0.9\textwidth]{esempio_traduzione_etichettata_6}
+              \caption{Regola di traduzione per entità incapsulata in un'entità non principale}
+            \end{figure}
+        \end{enumerate}
+
+      \item Regola 5: Relazione molti a molti tra entità principali\\
+        Se c'è una relazione molti a molti tra entità principali \( EP_1 \) ed \( EP_2 \),
+        allora \( EP_2 \) partecipa alla relazione \( R \) con vincolo di cardinalità \( (0,N) \)
+        o \( (1,N) \) e incapsulo \( R \) solo in \( EP_2 \):
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width=0.9\textwidth]{esempio_traduzione_etichettata_7}
+          \caption{Regola di traduzione per relazione molti a molti tra entità principali}
+        \end{figure}
+        \begin{example}
+          Un esempio di applicazione è il seguente:
+          \begin{figure}[H]
+            \centering
+            \includegraphics[width=1\textwidth]{esempio_traduzione_etichettata_7_2}
+            \caption{Esempio di traduzione di relazione molti a molti tra entità principali}
+          \end{figure}
+
+          \vspace{1em}
+          \noindent
+          oppure
+          \begin{figure}[H]
+            \centering
+            \includegraphics[width=1\textwidth]{esempio_traduzione_etichettata_7_3}
+            \caption{Esempio di traduzione di relazione molti a molti tra entità principali}
+          \end{figure}
+        \end{example}
+
+      \item Regola 6: Relazione binaria tra entità non principale ed entità principale
+        \begin{enumerate}
+          \item Relazione binaria \( P_2 \) tra un'entità non principale
+            \( E_i \), da incapsulare in \( EP_1 \), e un'entità principale \( EP_2 \)
+            con vincolo \( (X,1) \) lato \( E_i \):
+            \begin{figure}[H]
+              \centering
+              \includegraphics[width=0.9\textwidth]{esempio_traduzione_etichettata_8}
+              \caption{Regola di traduzione per relazione binaria tra entità non principale ed entità principale}
+            \end{figure}
+            \begin{example}
+              Un esempio di applicazione è il seguente:
+              \begin{figure}[H]
+                \centering
+                \includegraphics[width=1\textwidth]{esempio_traduzione_etichettata_8_2}
+                \caption{Esempio di traduzione di relazione binaria tra entità non principale ed entità principale}
+              \end{figure}
+            \end{example}
+
+          \item Relazione binaria \( P_2 \) tra un'entità non principale
+            \( E_i \), da incapsulare in \( EP_1 \), e un'entità principale \( EP_2 \)
+            con vincolo \( (X,N) \) lato \( E_i \):
+            \begin{figure}[H]
+              \centering
+              \includegraphics[width=0.9\textwidth]{esempio_traduzione_etichettata_9}
+              \caption{Regola di traduzione per relazione binaria tra entità non principale ed entità principale}
+            \end{figure}
+        \end{enumerate}
+
+      \item Regola 7:
+        \begin{enumerate}
+          \item Relazione binaria \( P_2 \) tra due entità non principali
+            \( E_i, E_j \), da incapsulare in \( EP_1 \) ed \( EP_2 \) rispettivamente,
+            con vincolo \( (X,1) \) lato \( E_i \):
+            \begin{figure}[H]
+              \centering
+              \includegraphics[width=0.9\textwidth]{esempio_traduzione_etichettata_10}
+              \caption{Regola di traduzione per relazione binaria tra due entità non principali}
+            \end{figure}
+
+          \item Relazione binaria \( P_2 \) tra due entità non principali
+            \( E_i, E_j \), da incapsulare in \( EP_1 \) ed \( EP_2 \) rispettivamente,
+            con vincolo \( (X,N) \) lato \( E_i \):
+            \begin{figure}[H]
+              \centering
+              \includegraphics[width=0.9\textwidth]{esempio_traduzione_etichettata_11}
+              \caption{Regola di traduzione per relazione binaria tra due entità non principali}
+            \end{figure}
+        \end{enumerate}
+    \end{enumerate}
+\end{enumerate}
+
 \end{document}
