@@ -4795,7 +4795,7 @@ Alcuni problemi \textbf{insolubili} sono:
 \end{itemize}
 
 \subsection{Specializzatore}
-\begin{theorem}[s-m-n (specializzatore)]
+\begin{theorem}[smn (specializzatore)]
   Consideriamo una programma con due input:
   \[
     f(x,y) = \lambda x y . x + y
@@ -5217,6 +5217,274 @@ for i from 1 to m do {
 }
 output(0) # phi_x(x) e' arrivata a m passi senza terminare
 \end{lstlisting}
+\end{example}
+
+\subsection{Insieme K}
+Vogliamo mostrare che l'insieme dei ricorsivi è un sottoinsieme stretto dei RE:
+\[
+  R \subset RE
+\] 
+Per farlo introduciamo l'insieme \( K \), cioè l'insieme ricorsivamente
+enumerabile e \textbf{non} ricorsivo:
+\[
+  K \stackrel{def}{=} \left\{ \left. x \;\right|\; \varphi_x(x) \downarrow \right\}
+\] 
+
+\subsubsection{Dimostrazione}
+Per dimostrare che \( K \) è RE dobbiamo fornire l'algoritmo della semicaratteristica:
+\[
+  \psi_K(x) =
+  \begin{cases}
+    1 & \text{se } x \in K \\
+    \uparrow & \text{altrimenti}
+  \end{cases}
+\] 
+\begin{lstlisting}[language=Python]
+input(x)
+build phi_x # Esiste procedura ricorsiva per costruire la MdT di codice x
+stop = 0
+while !stop do {
+  execute next step of phi_x(x)
+  # Se esiste un numero di passi tale che phi_x(x) termina, allora il ciclo termina altrimenti diverge
+  if phi_x(x) halts then {
+    stop = 1
+  }
+}
+output(1)
+\end{lstlisting}
+Abbiamo dimostrato che \( K \) è RE.
+\begin{define}
+  Sappiamo quando una funzione parziale ricorsiva termina: 
+  \[
+    \varphi_x(y) \downarrow \iff \exists n \in \mathbb{N} \;.\; \varphi_x(y)
+    \text{ termina dopo esattamente } n \text{ passi}
+  \] 
+  e quando diverge:
+  \[
+    \varphi_x(y) \uparrow \iff \forall n \in \mathbb{N} \;.\; \varphi_x(y)
+    \text{ non termina dopo aver eseguito } n \text{ passi}
+  \] 
+\end{define}
+Ora dimostriamo che \( K \) non è ricorsivo per assurdo. Supponiamo che \( K \) sia
+ricorsivo, quindi per il teorema di Post anche \( \bar{K} \) è RE. Se \( \bar{K} \) è RE,
+allora, per definizione, è il dominio di una funzione parziale ricorsiva:
+\[
+  \exists y_0 \;.\; \bar{K} = dom(\varphi_{y_0}) \stackrel{def}{=} W_{y_0}
+\] 
+quindi:
+\[
+  \begin{aligned}
+    y_0 \in \bar{K} = W_{y_0} &\stackrel{\text{def di \( W_{y_0} \)}}{\iff}
+    y_0 \in dom(\varphi_{y_0}) \\
+                              &\stackrel{\text{def di dom}}{\iff} \varphi_{y_0}(y_0) \downarrow \\
+                              &\stackrel{\text{def di \( K \)}}{\iff} y_0 \in K \quad \text{Assurdo}
+  \end{aligned}
+\]
+Quindi \( K \) non è ricorsivo. Il suo complemento è definito come:
+\[
+  \begin{aligned}
+    \bar{K} &= \left\{ \left. x \;\right|\; \neg \varphi_x(x) \downarrow \right\}\\
+            &= \left\{ \left. x \;\right|\; \varphi_x(x) \uparrow \right\}
+  \end{aligned}
+\] 
+
+\subsection{Caratterizzare RE e RIC}
+\subsubsection{Teorema di caratterizzazione degli insiemi RE}
+\begin{theorem}
+  Le seguenti affermazioni sono equivalenti:
+  \begin{enumerate}
+    \item \( A \subseteq \mathbb{N} \) è RE, cioè
+      \( \exists \psi \in PR \;.\; A = dom\; \psi \) 
+
+    \item \( \exists \varphi \in PR \;.\; A = range\; \varphi \), dove
+      \[
+        range\; \varphi = \left\{ \left. \varphi(x) \;\right|\; x \in dom\; \varphi \right\}
+      \]
+      cioè l'insieme degli elementi restituiti da \( \varphi \) per tutti gli input su cui
+      termina.
+
+    \item \( A = \varnothing \) oppure \( \exists f \text{ totale ricorsiva} \;.\; A = range\; f \).
+      Essendo \( f \) totale, termina su tutti gli input, quindi:
+      \[
+        range\; f = \left\{ \left. f(x) \;\right|\; x \in \mathbb{N} \right\}
+      \] 
+  \end{enumerate}
+\end{theorem}
+
+\subsubsection{Teorema di caratterizzazione degli insiemi ricorsivi}
+\begin{theorem}
+  Le seguenti affermazioni sono equivalenti:
+  \begin{enumerate}
+    \item \( A \) è ricorsivo
+
+    \item \( A = \varnothing \) oppure \( \exists f \) totale ricorsiva \textbf{non decrescente}
+      tale che \( A = range\; f \). Una funzione non decrescente se:
+      \[
+        \forall x, y \;.\; x \le y \implies f(x) \le f(y)
+      \] 
+  \end{enumerate}
+\end{theorem}
+
+\subsubsection{Teorema di ricorsione di Kleene}
+\begin{theorem}
+  Sia \( t \) una funzione totale ricorsiva, allora esiste un codice \( n \in \mathbb{N} \) tale
+  che:
+  \[
+    \varphi_n = \varphi_{t(n)}
+  \] 
+  Cioè \( t(n) \) trasforma il codice \( n \) ma la semantica \( \varphi  \) dei due codici
+  è la stessa. Di conseguenza per ogni trasformazione esiste una programma tale che la
+  trasformazione modifica il codice ma non la funzione calcolata (semantica)
+
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione}: Consideriamo il codice \( u \in \mathbb{N} \) di una macchina
+  di Turing \( \varphi_u \). Definiamo:
+  \[
+    \psi(u, x) = 
+    \begin{cases}
+      \varphi_{\varphi_u(u)}(x) & \text{se } \varphi_u(u) \downarrow \\
+      \uparrow & \text{altrimenti}
+    \end{cases}
+  \] 
+  Dobbiamo verificare se \( \psi  \) è parziale ricorsiva, quidi dobbiamo fornire
+  l'algoritmo che la calcola e che deve terminare quando la funzione deve terminare:
+\begin{lstlisting}[language=Python]
+  input(u, x)
+  build phi_u # Esiste procedura ricorsiva per costruire la MdT di codice u
+  y = phi_u(u) # Se phi_u(u) non termina, il programma non termina, se termina, il risultato viene messo in y
+  build phi_y # Esiste procedura ricorsiva per costruire la MdT di codice y
+  output(phi_y(x)) # Esegue phi_y su x, se non termina, il programma non termina, se termina, restituisce il risultato
+\end{lstlisting}
+  Quindi \( \psi(u, x) \) è parziale ricorsiva.
+
+  \vspace{1em}
+  \noindent
+  Poichè \( \psi(u, x) \) è parziale ricorsiva, allora si può applicare il teorema smn:
+  \[
+    \exists g \text{ totale ricorsiva} \;.\; \psi(u, x) = \varphi_{g(u)}(x)
+  \] 
+  Prendiamo \( t \) totale ricorsiva e consideriamo:
+  \[
+    t \circ g \text{ composizione totale ricorsiva}
+  \] 
+  Essendo \( t \circ g \) ricorsiva, allora esiste una macchina di Turing che la calcola
+  con \( v \) l'indice di tale macchina, ovvero \( \varphi_v \) è la funzione calcolata:
+  \[
+    t \circ g = \varphi_v
+  \] 
+  Quindi \( t \circ g \) è la funzione calcolata dalla macchina di Turing di indice \( v \).
+
+  \vspace{1em}
+  \noindent
+  Calcoliamo ora \( \psi(v, x) \):
+  \[
+    \begin{aligned}
+      \psi(v, x) &\stackrel{smn}{=} \varphi_{g(v)}(x)\\
+                 &\stackrel{\text{def di } \psi}{=}
+                 \begin{cases}
+                    \varphi_{\varphi_v(v)}(x) & \text{se } \varphi_v(v) \downarrow \\
+                    \uparrow & \text{altrimenti}
+                 \end{cases}\\
+                 &\stackrel{\varphi_v = t \circ g}{=}
+                 \begin{cases}
+                   \varphi_{t \circ g(v)}(x) & \text{se } \varphi_v(v) = t \circ g(v) \downarrow \\
+                    \uparrow & \text{altrimenti}
+                 \end{cases}
+    \end{aligned}
+  \] 
+  Ma \( t \circ g \) è totale e termina sempre, quindi la condizione è sempre vera:
+  \[
+    \psi(v, x) = \varphi_{g(v)}(x) = \varphi_{t \circ g(v)}(x)
+  \] 
+  Quindi se prendiamo:
+  \[
+    n = g(v) \implies \varphi_n(x) = \varphi_{t(n)}(x) \; \forall x \in \mathbb{N}
+  \] 
+\end{theorem}
+
+\subsubsection{Dimostrare che un insieme è ricorsivo}
+Per dimostrare che un insieme \( A \) è ricorsivo, si usano i seguenti metodi:
+\begin{itemize}
+  \item \textbf{Insieme}: Per dimostrare che \( A \) è ricorsivo forniamo l'algoritmo per
+    la funzione caratteristica \( f \) 
+
+  \item \( range\;f \): Si costruisce il range:
+    \begin{itemize}
+      \item Se è finito allora \( A \) è ricorsivo
+      \item Se è infinito si dimostra che \( f \) non decresce per dimostrare che \( A \) è ricorsivo
+    \end{itemize}
+\end{itemize}
+
+\begin{example}
+  Consideriamo la funzione:
+  \[
+    f: \begin{cases}
+      f(0) = 2\\
+      f(n+1) = 2 \cdot f(n)
+    \end{cases}
+  \] 
+  Studiare l'insieme \( A = range\; f \).
+
+  \vspace{1em}
+  \noindent
+  La funzione \( f \) è totale in quanto definita ricorsivamente (primitiva ricorsione).
+  Controlliamo com'è fatta la funzione:
+  \[
+  \begin{aligned}
+    f(0) &= 2\\
+    f(1) &= 2 \cdot f(0) = = 4\\
+    f(2) &= 2 \cdot f(1) = = 8\\
+    f(3) &= 2 \cdot f(2) = = 16
+  \end{aligned}
+  \] 
+  Notiamo che questa funzione rappresenta le potenze di 2, quindi il range è:
+  \[
+    range\; f = \left\{ \left. 2^n \;\right|\; n \ge 1 \right\}
+  \] 
+  Si possono usare due metodi per dimostrare che \( A \) è ricorsivo:
+  \begin{enumerate}
+    \item Primo metodo
+      \begin{enumerate}
+        \item Dimostrare per induzione che:
+          \[
+            range\; f = \left\{ \left. 2^n \;\right|\; n \ge 1 \right\}
+            \] 
+
+          \item Fornire l'algoritmo per la funzione caratteristica
+        \end{enumerate}
+
+      \item Secondo metodo
+        \begin{enumerate}
+          \item 
+            Dimostrare per induzione che \( f \) è non decrescente
+        \end{enumerate}
+  \end{enumerate}
+
+  \vspace{1em}
+  \noindent
+  Svolgiamo il secondo metodo, cioè dimostriamo che \( f \) è non decrescente:
+  \[
+    \underbrace{\forall  n > 0 \;.\; f(n) \ge f(n-1)}_{\text{Tesi}} \equiv f(n) \le f(n+1)
+  \] 
+  \begin{itemize}
+    \item \textbf{Caso base}:\\
+      \( n = 1 \) dobbiamo verificare \( f(1) \ge f(0) \):
+      \[
+        f(1) = 4 \ge 2 = f(0) \quad \checkmark
+      \] 
+
+    \item \textbf{Passo induttivo}:\\
+      Prendiamo \( n >1 \). L'ipotesi induttiva è:
+      \[
+        \forall h \le n \;.\; f(h) \ge f(h-1)
+      \] 
+      Dimostriamo che vale per \( n \):
+      \[
+        f(n) = 2 f(n-1) \ge f(n-1) \quad \checkmark
+      \] 
+  \end{itemize}
+  Abbiamo dimostrato che \( f \) è non decrescente, quindi \( A \) è ricorsivo.
 \end{example}
 
 \end{document}
