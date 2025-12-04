@@ -3073,4 +3073,259 @@ il più possibile \( f() \) ai dati di training.
   \end{figure}
 \end{example}
 
+\subsection{Accuratezza del modello}
+\subsubsection{Interpretabilità e flessibilità}
+Non esiste un modello migliore in assoluto, ogni modello ha i suoi vantaggi
+e svantaggi misurati in base a:
+\begin{itemize}
+  \item \textbf{Interpretabilità}: quanto è facile capire come il modello fa le predizioni
+  \item \textbf{Flessibilità}: quanto il modello può adattarsi a diverse forme di dati
+\end{itemize}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{interpretabilita_flessibilita}
+  \caption{Rappresentazione grafica di flessibilità vs interpretabilità per diversi metodi di statistical learning}
+\end{figure}
+
+\subsubsection{Capire l'accuratezza}
+È importante capire che metodo utilizzare per un certo dataset. Alcuni modi per decidere
+sono:
+\begin{itemize}
+  \item \textbf{Regressione}: Mean Squared Error (MSE)
+    \[
+      MSE = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{f}(x_i))^2
+    \] 
+    dove \( y_i \) è il valore reale e \( \hat{f}(x_i) \) è la predizione
+  \item \textbf{Training MSE}: MSE calcolato sui dati di training
+  \item \textbf{Test MSE}: MSE stimato su nuovi dati non visti prima, è il parametro
+    più importante per valutare l'accuratezza del modello
+\end{itemize}
+Un metodo che ha training MSE minimo non garantisce che abbia anche test MSE minimo:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{training_test_mse}
+  \caption{Sinistra: dati simulati dalla curva nera (cerchi); modello lineare (arancione); due smoothing splines (blu e verde). Destra:
+    training MSE (curva grigia), test MSE (curva rossa), minimo possibile test MSE su tutti e tre i metodi (linea tratteggiata grigia). I quadrati
+    rappresentano l'MSE raggiunto dai tre metodi}
+\end{figure}
+
+\subsubsection{Bias-variance tradeoff}
+IL valore atteso del \textbf{test MSE} per un dato valore \( x_0 \) può essere sempre
+scomposto in una somma di 3 componenti:
+\begin{itemize}
+  \item Varianza di \( \hat{f}(x_0) \): Quantità con cui \( \hat{f}(x_0) \) cambierebbe variando
+    il dataset di training. Più flessibile è il metodo, più alta è la varianza
+
+  \item Squared bias di \( \hat{f}(x_0) \): Errore introdotto dalle assunzioni fatte sul modello.
+    Modelli più semplici (ad esempio lineari), hanno un bias più alto
+
+  \item Varianza dell'errore casuale \( \varepsilon  \)
+\end{itemize}
+\[
+  \color{red}E(y_0 - \hat{f}(x_0))^2\color{black} = Var(\hat{f}(x_0)) + [Bias(\hat{f}(x_0))]^2 + Var(\varepsilon)
+\] 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.3\textwidth]{bias_variance_tradeoff}
+  \caption{Rappresentazione grafica del bias-variance tradeoff}
+\end{figure}
+
+\subsubsection{Stimare il test error (cross-validation)}
+Per stimare il test error si usa l'approccio \textbf{Validation set} che consiste nel
+dividere \textbf{casualmente} il dataset in due parti:
+\begin{itemize}
+  \item \textbf{Training set}: usato per addestrare il modello
+  \item \textbf{Validation set} (o hold out set): usato per stimare il test error
+\end{itemize}
+Si fitta il modello sul training set e si calcola l'MSE sul validation set.
+Il validation set \textbf{non è} il set test, quindi l'errore è un'approssimazione.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{validation_set}
+  \caption{Rappresentazione grafica del validation set}
+\end{figure}
+
+\vspace{1em}
+\noindent
+\textbf{Svantaggi}:
+\begin{itemize}
+  \item La stima del test error può essere molto variabile a seconda di come
+    viene diviso il dataset
+  \item Si usano meno dati per addestrare il modello e quindi si può avere un
+    errore stimato più alto
+\end{itemize}
+
+\subsubsection{Leave one out cross validation}
+Per superare gli svantaggi del validation set si può utilizzare il metodo
+\textbf{Leave one out cross validation} che consiste nel lasciare una sola osservazione
+fuori dal training set e usare quella per il validation set. Si ripete questo
+processo \( n \) volte e si fa la media dell'errore.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{leave_one_out_cross_validation}
+  \caption{Rappresentazione grafica del leave one out cross validation}
+\end{figure}
+
+\vspace{1em}
+\noindent
+\textbf{Vantaggi:}
+\begin{itemize}
+  \item Si usano tutti i dati per addestrare il modello, quindi si ha meno bias e una
+    stima del test error più accurata
+  \item Non c'è nessuna casualità nella divisione del dataset, quindi se si ripete
+    questo approccio \( N \) volte si ottiene sempre lo stesso risultato
+\end{itemize}
+Con questo approccio non si trovano i parametri ottimali del modello, ma si ottiene
+il \textbf{tipo di modello} ottimale (ad esempio lineare, polinomiale, ecc...).
+Successivamente si usano tutti i dati per addestrare il modello con il tipo
+scelto.
+
+\subsubsection{K-fold cross validation}
+L'idea è quella di dividere l'insieme di osservazione in \( k \) gruppi (folds). 
+Si usa un fold come validation set e gli altri \( k-1 \) folds come training set.
+Si ripete questo processo \( k \) volte, cambiando il fold usato come validation
+set. Si calcola l'errore medio sui \( k \) fold:
+\[
+  \{MSE_1, MSE_2, \ldots, MSE_3\} 
+\] 
+\[
+  CV(k) = \frac{1}{k} \sum_{i=1}^{k} MSE_i
+\] 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{k_fold_cross_validation}
+  \caption{Leave one out cross validation come caso particolare di k-fold cross validation con \( k = n \)}
+\end{figure}
+
+\vspace{1em}
+\noindent
+\textbf{Vantaggi:}
+\begin{itemize}
+  \item Computazionalmente più efficiente del leave one out cross validation
+    (LOOCV) per grandi dataset, solitamente si usa \( k = 5 \) o \( k = 10 \)
+  \item Bias-varianza trade-off:
+    \begin{itemize}
+      \item Ogni split casuale delle osservazioni addestra un modello su meno
+        osservazioni: bias più alto rispetto a LOOCV
+      \item k-Fold media l'output di set di osservazioni meno correlate: varianza
+        più bassa rispetto a LOOCV
+    \end{itemize}
+\end{itemize}
+\begin{example}
+  Il test MSE non può essere calcolato in un'applicazione reale, ma si può calcolare
+  se si usano dati simulati. Nell'esempio seguente le curve di Cross Validation hanno
+  la forma generale corretta, ma \textbf{sottovalutano} il valore vero del test MSE:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{k_fold_cross_validation_example}
+    \caption{Vero test MSE (blu), LOOCV (nero, tratteggiato), k-fold (arancione, \( k=10 \))}
+  \end{figure}
+\end{example}
+
+\subsubsection{Visualizzazione intuitiva del bias-variance tradeoff}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{bias_variance_tradeoff_visualizzazione}
+  \caption{Rappresentazione intuitiva del bias-variance tradeoff}
+\end{figure}
+
+\subsubsection{Confronto tra cross validation}
+\begin{itemize}
+  \item \textbf{Bias}:
+    \begin{itemize}
+      \item \textbf{Validation set} può sopravvalutare il test error perchè il
+        training set utilizzato contiene soltanto metà delle osservazioni
+
+      \item \textbf{LOOCV} fornisce una stima approssimativamente non distorta del test error
+        dato che ogni training set contiene \( n - 1 \) osservazioni (quasi tante
+        quante le osservazioni nell'intero dataset)
+
+      \item \textbf{k-fold CV} (con \( k = 5 \) o \( k = 10 \)) porta a un livello intermedio di bias
+        dato che ogni training set contiene \( \frac{(k-1)n}{k} \) osservazioni
+
+      \item Per ridurre il bias si dovrebbe usare LOOCV.
+    \end{itemize}
+
+  \item \textbf{Varianza}:
+    \begin{itemize}
+      \item \textbf{LOOCV} media gli output di \( n \) modelli fittati, addestrati su
+        un insieme di osservazioni quasi identico → gli output sono altamente
+        (positivamente) correlati tra loro
+
+      \item \textbf{k-fold CV} con \( k < n \), fa la media gli output di \( k \) modelli fittati
+        meno correlati tra loro: la sovrapposizione tra i training set in ogni modello
+        è più piccola
+
+      \item \textbf{Bias-variance trade-off} è associato alla scelta di \( k \) in k-fold
+        cross-validation
+
+      \item Solitamente si usa \( k = 5 \) o \( k = 10 \) perchè questi valori
+        hanno mostrato empiricamente di fornire stime del test error che non soffrono
+        né di un bias eccessivamente alto né di una varianza molto alta
+    \end{itemize}
+\end{itemize}
+
+\subsection{Regressione lineare}
+La regressione lineare è un metodo utilizzato per predirre la risposta quantitativa
+ed è un approccio basilare per il \textbf{supervised learning}.
+I vantaggi sono:
+\begin{itemize}
+  \item Sono altamente interpretabili
+  \item Introducono bassa varianza
+\end{itemize}
+Gli svantaggi sono:
+\begin{itemize}
+  \item Non sono abbastanza potenti per esprimere relazioni complesse tra le variabili
+  \item Bassa accuratezza, alto bias
+\end{itemize}
+
+\subsubsection{Regressione lineare semplice (univariata)}
+La funzione lineare univariata è una linea: $y = w_1 x + w_0$ dove:
+\begin{itemize}
+  \item \( w_0 \) è l'intercetta, cioè il valore di \( y \) quando \( x = 0 \)
+  \item \( w_1 \) è il coefficiente angolare
+\end{itemize}
+Consideriamo il vettore dei \textbf{pesi}:
+\[
+  w = 
+  \begin{pmatrix}
+    w_0 \\
+    w_1
+  \end{pmatrix}
+\]
+e la funzione lineare dei pesi è:
+\[
+  h_w(x) = w_1 x + w_0
+\] 
+
+\vspace{1em}
+\noindent
+Il problema da risolvere è: dato un insieme di \( n \) osservazioni:
+\[
+  \left\{ (x_1,y_1), \ldots, (x_n,y_n) \right\}
+\] 
+trovare il valore di \( w \) che rappresenta al meglio le osservazioni, cioè si vuole
+trovare il vettore \( w \) che minimizza la \textbf{perdita}. Solitamente la perdita
+è definita come la somma dei minimi quadrati degli errori (\( L_2 \) norm) su tutte le osservazioni
+(Residual Sum of Squares oppure Least Squares)
+\[
+  Loss(h_w) = \sum_{i=1}^{n} L_2(y_i, h_w(x_i)) = \sum_{i=1}^{n} (y_i - h_w(x_i))^2
+  = \sum_{i=1}^{n} (y_i - (w_1 x_i + w_0))^2
+\] 
+
+\begin{example}
+% Sales of a product in 200 different markets, along with advertising budgets for the
+% product in each of those markets for three different media: TV, radio, and
+% newspaper. We consider here only TV.
+  Consideriamo il seguente dataset che rappresenta le vendite di un prodotto in
+  200 mercati diversi, insieme al budget pubblicitario per il prodotto in
+  ciascuno di questi mercati per tre diversi media: TV, radio e giornale. Qui
+  consideriamo solo la pubblicità in TV.
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{regressione_lineare_semplice}
+    \caption{Esempio di regressione lineare semplice}
+  \end{figure}
+\end{example}
+
 \end{document}
