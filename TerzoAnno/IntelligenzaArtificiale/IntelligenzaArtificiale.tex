@@ -3314,18 +3314,82 @@ trovare il vettore \( w \) che minimizza la \textbf{perdita}. Solitamente la per
 \] 
 
 \begin{example}
-% Sales of a product in 200 different markets, along with advertising budgets for the
-% product in each of those markets for three different media: TV, radio, and
-% newspaper. We consider here only TV.
   Consideriamo il seguente dataset che rappresenta le vendite di un prodotto in
   200 mercati diversi, insieme al budget pubblicitario per il prodotto in
   ciascuno di questi mercati per tre diversi media: TV, radio e giornale. Qui
   consideriamo solo la pubblicità in TV.
+  \[
+    sales = w_1 \cdot TV + w_0
+  \] 
+  dove:
+  \begin{itemize}
+    \item \( w_0 = 7.03 \)
+    \item \( w_1 = 0.0475 \) 
+  \end{itemize}
   \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{regressione_lineare_semplice}
     \caption{Esempio di regressione lineare semplice}
   \end{figure}
 \end{example}
+
+\subsubsection{Trovare i pesi ottimali}
+Per trovare i pesi ottimali \( w* \) si usa la seguente formula:
+\[
+  w* = argmin Loss(h_w) = argmin \sum_{i=1}^{n} (y_i - (w_1 x_i + w_0))^2
+\] 
+Questa funzione è minimizzata quando le derivate parziali rispetto a \( w_0 \)
+e \( w_1 \) sono uguali a zero:
+\[
+  \begin{aligned}
+    \frac{\partial Loss(h_w)}{\partial w_0} &= \frac{\partial}{\partial w_0} \sum_{i=1}^{n} (y_i - (w_1 x_i + w_0))^2 = 0\\
+    \frac{\partial Loss(h_w)}{\partial w_1} &= \frac{\partial}{\partial w_1} \sum_{i=1}^{n} (y_i - (w_1 x_i + w_0))^2 = 0
+  \end{aligned}
+\] 
+Queste equazioni hanno una sola soluzione che può essere calcolata come:
+\[
+  \begin{aligned}
+    \hat{w}_1 &= \frac{n \left(\sum_{i=1}^{n} x_i y_i \right)
+      - \left(\sum_{i=1}^{n} x_i\right)
+    \left(\sum_{i=1}^{n} y_i\right)}
+    {n \left(\sum_{i=1}^{n} x_i^2\right) - \left(\sum_{i=1}^{n} x_i\right)^2}\\
+      \hat{w}_0 &= \frac{\left( \sum_{i=1}^{n} y_i \right) - \hat{w}_1
+      \left( \sum_{i=1}^{n} x_i \right)}{n}
+  \end{aligned}
+\] 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{spazio_pesi_regressione_lineare_semplice}
+  \caption{Spazio dei pesi per la regressione lineare semplice con \( w = (\beta_0, \beta_1) \) }
+\end{figure}
+\noindent
+Questo metodo \textbf{garantisce} che la funzione di loss sia convessa, quindi si ha sempre
+un singolo punto di minimo e di conseguenza si trova sempre la soluzione ottimale. Questo
+non è sempre garantito per altri modelli e si devono usare altri approcci come
+il gradient descent.
+
+\subsubsection{Gradient descent}
+Il gradient descent è un algoritmo iterativo per trovare un \textbf{minimo locale}. L'algoritmo
+è il seguente:
+\[
+  \left\{ \begin{aligned}
+    &\text{inizializza vettore dei pesi \( w \) con un punto dello spazio dei pesi}\\
+    &\text{Ripeti fino a convergenza:}\\
+    &\quad w_i \leftarrow w_i - \alpha \frac{\partial}{\partial w_i} Loss(h_w) \;\forall w_i \in w\\
+  \end{aligned} \right.
+\] 
+dove \( \alpha \) è il \textbf{learning rate} che controlla la dimensione del passo
+ad ogni iterazione.
+\begin{example}
+  Per la regressione lineare semplice con loss \( L_2 \) abbiamo:
+  \[
+    \begin{aligned}
+      w_0 \leftarrow w_0 + \alpha \sum_{i=1}^{n} (y_i - h_w(x_i))\\
+      w_1 \leftarrow w_1 + \alpha \sum_{i=1}^{n} (y_i - h_w(x_i)) \cdot x_i
+    \end{aligned}
+  \]
+\end{example}
+
+
 
 \end{document}
