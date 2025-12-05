@@ -3391,5 +3391,329 @@ ad ogni iterazione.
 \end{example}
 
 
+\subsubsection{Stochastic gradient descent}
+Se si usano le regole di aggiornamento del gradient descent per ogni osservazione
+si ha solamente una sola \textbf{learning epoch}, cioè un solo passaggio attraverso
+tutte le osservazioni. Il gradient descent stocastico consiste nel fare l'aggiornamento
+dei pesi selezionando un piccolo sottoinsieme di osservazioni (minibatch) ad ogni
+iterazione. Questo permette di calcolare l'aggiornamento in parallelo per ogni minibatch
+rendendo l'altoritmo più veloce. Il problema di questo approccio è che la \textbf{convergenza
+non è garantita}. La convergenza si potrebbe raggiungere con una procedura che riduce
+\( \alpha \). Questo approccio è usato principalmente per funzioni loss non convesse e
+nonostante non garantisca l'ottimalità ha buone performance.
+
+
+\subsection{Reti neurali}
+L'idea principale di una Artificial Neural Network (ANN) è di modellare una funzione
+\textbf{non lineare} partendo da una combinazione lineare di input come feature derivate
+(funzione applicata agli input).
+
+\subsubsection{Feed-forward neural network}
+Una rete neurale feed-forward è composta da un modello di regressione (o classificazione)
+a due stadi rappresentato da un grafo aciclico diretto (DAG) in cui ogni nodo rappresenta
+l'unità di computazione (neurone). Il modello è composto da:
+\begin{itemize}
+  \item \( X \) \textbf{Inputs}: \( \{ X_1, \ldots, X_p \} \)
+  \item \( Z \) \textbf{Hidden layer(s)}: \( \{ Z_1, \ldots, Z_m \} \)
+  \item \( Y \) \textbf{Output}: \( \{ Y_1, \ldots, Y_k \} \)
+\end{itemize}
+Gli archi rappresentano le connessioni tra i nodi e ad ogni arco è associato un peso
+\( w_{ij} \) che rappresenta l'importanza della connessione tra il nodo \( i \) e il nodo
+\( j \).
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{feed_forward_neural_network}
+  \caption{Rappresentazione grafica di una rete neurale feed-forward}
+\end{figure}
+Un certo neurone (nodo) si \textbf{attiva} quando l'input \textbf{supera un certo limite}.
+Ogni neurone calcola una \textbf{funzione di attivazione} (tipicamente non lineare) \( h \):
+\[
+  h(w^T x + b)
+\] 
+dove:
+\begin{itemize}
+  \item \( w \) è il vettore dei pesi associati agli archi in ingresso
+  \item \( x \) è il vettore degli input
+  \item \( b \) è il bias (intercetta)
+\end{itemize}
+Ogni layer ha la propria funzione di attivazione \( h \), solitamente:
+\begin{itemize}
+  \item \textbf{Hidden units}: \( \sigma \) che tipicamente è:
+    \[
+      \sigma  = \frac{1}{1 + e^{-x}} \text{ (sigmoide)}
+    \] 
+
+  \item \textbf{Output units}: \( g \) 
+\end{itemize}
+
+\subsubsection{Caolcolo di una rete neurale}
+Il calcolo di una rete neurale si fa sommando tutti i pesi in ingresso moltiplicati
+per gli output dei nodi di partenza. Questo valore viene passato alla funzione di
+attivazione per calcolare l'output del nodo di arrivo.
+\begin{itemize}
+  \item \textbf{Hidden units}:
+    \[
+      z_j = h_1\left(w_j^{(1)}x + b_j^{(1)}\right)
+    \] 
+  \item \textbf{Output units}:
+    \[
+      y_k = h_2\left(w_k^{(2)}z + b_k^{(2)}\right)
+    \] 
+  \item \textbf{In generale} gli output si calcolano come:
+    \[
+      y_k = h_2\left(\sum_{j} w_{kj}^{(2)} h_1\left(\sum_{i} w_{ji}^{(1)} x_i + b_j^{(1)}\right) + b_k^{(2)}\right)
+    \] 
+\end{itemize}
+dove:
+\begin{itemize}
+  \item \( h_1, h_2 \) sono le funzioni di attivazione
+  \item \( w^{(1)}, w^{(2)} \) sono i pesi associati agli archi
+  \item \( b^{(1)}, b^{(2)} \) sono i bias, solitamente sono nodi costanti a 1
+\end{itemize}
+Un esempio di rete neurale feed-forward con 2 input, 2 hidden units e 1 output è:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{feed_forward_neural_network_example}
+  \caption{Esempio di rete neurale feed-forward}
+\end{figure}
+In una rete neurale ciò che si vuole stimare sono i pesi \( w \) associati agli archi.
+
+\begin{example}
+  Un esempio concreto di rete neurale feed-forward è il seguente:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{feed_forward_neural_network_example_2}
+    \caption{Esempio di rete neurale feed-forward con funzioni di attivazione sigmoide}
+  \end{figure}
+\end{example}
+
+\subsubsection{Funzione di attivazione}
+Ci sono diversi tipi di funzioni di attivazione:
+\begin{itemize}
+  \item \textbf{Threshold}: Questa funzione non è derivabile in \( x = 0 \), quindi
+    non è usata nelle reti neurali moderne siccome non è possibile calcolare il gradient
+    descent e quindi non è possibile stimare i pesi.
+    \[
+      h(x) =
+      \begin{cases}
+        1 & \text{se } x \ge 0\\
+        -1 & \text{altrimenti}
+      \end{cases}
+    \] 
+
+  \item \textbf{Sigmoid}:
+    \[
+      h(x) = \sigma(x) = \frac{1}{1 + e^{-x}}
+    \] 
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.4\textwidth]{sigmoid_function}
+      \caption{Funzione sigmoide}
+    \end{figure}
+     La derivata prima di questa funzione è facile da calcolare e vale:
+     \[
+        \frac{d\sigma(x)}{dx} = \sigma(x)(1 - \sigma(x))
+     \] 
+     È sempre compresa tra 0 e 1.
+
+  \item \textbf{Tanh} (tangente iperbolica):
+    \[
+      h(x) = \tanh(x) = \frac{e^{x} - e^{-x}}{e^{x} + e^{-x}}
+    \] 
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.4\textwidth]{tanh_function}
+      \caption{Funzione tanh}
+    \end{figure}
+    La derivata prima di questa funzione vale:
+    \[
+      \frac{d\tanh(x)}{dx} = 1 - \tanh^2(x)
+    \] 
+    È sempre compresa tra 0 e 1.
+
+  \item \textbf{Gaussian}:
+    \[
+      h(x) = e^{-\frac{1}{2} \left( \frac{x - \mu}{\sigma} \right)^2}
+    \] 
+
+  \item \textbf{Identity}:
+    \[
+      h(x) = x
+    \] 
+
+  \item \textbf{Rectified linear (ReLU)}: È la funzione di attivazione più usata nelle reti neurali moderne.
+    \[
+      h(x) = max \{0, x\} 
+    \] 
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.4\textwidth]{relu_function}
+      \caption{Funzione ReLU}
+    \end{figure}
+    Questa funzione non è derivabile in \( x = 0 \) e il suo valore è 1 per \( x > 0 \).
+
+    \vspace{1em}
+    \noindent
+    La funzione \textbf{softplus} è una versione smussata della ReLU (la approssima):
+    \[
+      h(x) = \log(1 + e^{x})
+    \] 
+    per \( x < 0 \) si ha \( h(x) \approx 0 \) e per \( x > 0 \) si ha \( h(x) \approx x \).
+    La sua derivata prima è uguale alla funzione sigmoide ed è sempre compresa tra 0 e 1:
+    \[
+      \frac{dh(x)}{dx} = \frac{1}{1 + e^{-x}} = \sigma(x)
+    \] 
+\end{itemize}
+
+\subsubsection{Proprietà universale di approssimazione}
+\begin{theorem}[Hornik et al., 1989, Cybenko, 1989]
+  Una rete neurale feed-forward con un layer di \textbf{output lineare} e \textbf{almeno un}
+  hidden layer con una funzione di attivazione "squashing" (sigmoide/tanh/gaussian)
+  \textbf{può approssimare qualsiasi funzione continua (definita su un insieme chiuso e
+    limitato di \( \mathbb{R}^n \)) arbitrariamente bene}, a patto che la rete abbia un
+    numero sufficiente di hidden units.
+\end{theorem}
+
+\subsubsection{Addestramento di una rete neurale}
+L'addestramento di una rete neurale consiste nel trovare i pesi \( w \) basandosi
+su un insieme di dati di training. L'insieme di pesi è composto da tutti i pesi
+associati agli archi di ogni layer:
+\[
+   \begin{aligned}
+     &\left\{ \alpha_{m0}, \alpha_{m}; m = 1, \ldots, M \right\}
+     &\text{ \( M \cdot (p+1) \) pesi tra input e hidden layer}\\
+     &\left\{ \beta_{k0}, \beta_{k}; k = 1, \ldots, K \right\}
+     &\text{ \( K \cdot (M+1) \) pesi tra hidden layer e output}
+   \end{aligned}
+\] 
+Per la \textbf{regressione}, cioè quando la risposta è quantitativa, si usa
+la \textbf{somma dei minimi quadrati} come misura di fit:
+\[
+  RSS = \sum_{k=1}^{K} \sum_{i=1}^{N} \left( y_{ik} - f_k(x_i) \right)^2
+\] 
+
+\subsubsection{Back-propagation}
+Siccome la rete neurale ha una forma composizionale, cioè la funzione di output
+è una composizione di funzioni derivate dagli hidden layer, si può sfruttare questa
+struttura per calcolare efficientemente le derivate
+della funzione di loss rispetto ai pesi usando l'algoritmo di \textbf{Back-propagation}:
+\begin{itemize}
+  \item Usare i pesi correnti per calcolare \( f_k(x_i) \), calcolo in avanti
+    (forward computation) sulla rete
+
+  \item Eseguire una fase all'indietro (backward phase) calcolando gli errori
+    nell'ultimo layer e propagando l'errore al layer precedente
+
+  \item Aggiornare i pesi usando il gradient descent
+\end{itemize}
+\[
+  E(W) = \sum_{i=1}^{N} E_i = \sum_{i=1}^{N} \sum_{k=1}^{K} \left( y_{ik} - f_k(x_i) \right)^2
+\] 
+Quindi considerando un hidden unit \( z_mi \):
+\[
+  z_mi = \sigma \left( \alpha_{m0} + \alpha_{m}^T x_i \right) \quad z_i = \{ z_{1i}, \ldots, z_{Mi} \}
+\] 
+Si può calcolare la derivata parziale dell'errore rispetto ai pesi come:
+\[
+  \begin{aligned}
+    &\frac{\partial E_i}{\partial \beta_{km}} = \color{blue}-2 \left( y_{ik} - f_k(x_i) \right) \cdot
+    g'_k \left( \beta_{k}^T z_i \right)\color{black} \cdot z_{mi}\\
+    &\frac{\partial E_i}{\partial \alpha_{ml}} = \sum_{k=1}^{K} \color{blue}-2
+    \left( y_{ik} - f_k(x_i) \right) \cdot g'_k \left( \beta_{k}^T z_i \right)\color{black} \cdot
+    \beta_{km} \cdot \sigma' \left( \alpha_{m}^T x_i \right) \cdot x_{il}
+  \end{aligned}
+\] 
+La parte in blu rappresenta l'errore propagato all'indietro (back propagation).
+Successivamente si aggiornano i pesi usando il gradient descent all'iterazione \( (r+1) \):
+\[
+  \begin{aligned}
+    &\beta_{km}^{(r+1)} = \beta_{km}^{(r)} - \gamma_r \sum_{i=1}^{N} \frac{\partial E_i}{\partial \beta_{km}^{(r)}}\\
+    &\alpha_{ml}^{(r+1)} = \alpha_{ml}^{(r)} - \gamma_r \sum_{i=1}^{N} \frac{\partial E_i}{\partial \alpha_{ml}^{(r)}}
+  \end{aligned}
+\] 
+
+\vspace{1em}
+\noindent
+Il back propagation è molto semplice e \textbf{locale}, cioè ogni unità calcola la
+propria parte di errore e la invia alle unità collegate a essa, quindi è facilmente
+parallelizzabile. Il training può essere effettuato in due modi:
+\begin{itemize}
+  \item \textbf{Batch}: Un solo aggiornamento dei pesi sommando i gradienti dell'errore
+    su tutte le osservazioni.
+
+  \item \textbf{Online}: Aggiornamento dei pesi per ogni osservazione.
+\end{itemize}
+\( \gamma_r \) è la costante di \textbf{batch learning} che dovrebbe diminuire a 0
+per \( r \to \infty \). Il valore che garantisce la convergenza è:
+\[
+  \gamma_r = \frac{1}{r}
+\] 
+
+\subsubsection{Deep neural networks}
+Le reti neurali profonde (DNN) sono reti neurali con più di un hidden layer. Il vantaggio
+è quello di avere espressività maggiore (più compatta rispetto ad un layer con tanti nodi),
+ma i problemi da affrontare sono: 
+\begin{itemize}
+  \item Addestrare la rete neurale (back-propagation diventa più complesso)
+  \item Evitare l'overfitting (regolarizzazione più complessa)
+\end{itemize}
+Il problema principale delle deep neural networks (con funzioni "squashing") è il
+\textbf{vanishing gradient}, cioè durante il back-propagation i gradienti
+diventano sempre più piccoli man mano che si procede verso gli strati più bassi della rete.
+Questo avviene perchè le funzioni "squashing" hanno derivate comprese tra 0 e 1, quindi
+moltiplicando più derivate si ottiene un valore sempre più piccolo. Questo è il motivo
+per cui si usano funzioni di attivazione come la ReLU che non soffrono di questo problema.
+\begin{example}
+  Prendiamo in considerazione la funzione \( tanh \) e osserviamo la derivata:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{tanh_vanishing_gradient}
+    \caption{Derivata della funzione \( tanh \)}
+  \end{figure}
+  Questo avviene anche per la funzione \textbf{softplus} che anch'essa ha derivata
+  minore di 1 nonostante sia un'approssimazione della ReLU.
+\end{example}
+
+\begin{example}
+  Consideriamo un dataset di immagini con label che indicano la linea d'acqua, l'addestramento
+  della rete neurale consiste nel trovare i pesi che riescono a dare in output un pixel
+  nero dove c'è acqua e un pixel bianco dove non c'è acqua:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{esempio_training}
+    \caption{Esempio di addestramento di una rete neurale per il riconoscimento della linea d'acqua}
+  \end{figure}
+\end{example}
+
+\subsection{Generative AI}
+Generative AI è un campo dell'intelligenza artificiale che si concentra sulla
+creazione di modelli in grado di generare nuovi dati simili a quelli su cui sono
+stati addestrati. L'idea principale è quella di rappresentare i concetti come
+vettori (\textbf{embedding}) in uno spazio multidimensionale, in modo che
+le relazioni tra i concetti possano essere catturate attraverso operazioni
+aritmetiche sui vettori. I concetti simili sono vicini nello spazio degli embedding.
+\begin{example}
+  Un esempio di word embedding, con alcune operazioni sui vettori è il seguente:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{word_embedding_example}
+    \caption{Esempio di word embedding}
+  \end{figure}
+\end{example}
+
+\subsubsection{Rappresentare i concetti tramite embedding}
+Per trovare la corretta rappresentazione nello spazio degli embedding dei concetti
+si usa la \textbf{contrastive learning}, che consiste nel dare esempi positivi e
+negativi al modello. Gli esempi positivi sono coppie di concetti simili, mentre
+gli esempi negativi sono coppie di concetti non simili. I concetti possono essere di
+diversi tipi, come immagini, testo, audio, video, ecc...
+\begin{example}
+  Un esempio di contrastive learning è il seguente:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{contrastive_learning_example}
+    \caption{Esempio di contrastive learning per immagini}
+  \end{figure}
+\end{example}
 
 \end{document}
