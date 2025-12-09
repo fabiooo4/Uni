@@ -1,0 +1,26 @@
+%  Inizializzare due vettori v1 e v2 con i valori [0 0] e [1 1]  rispettivamente.
+%  Assumendo che i due numeri contenuti in un vettore  siano coordinate (x,y) in un piano cartesiano,
+%   calcolare la distanza euclidea tra v1 e v2 (Comandi  utili: sum, sqrt)
+%  Ripetere l'esercizio inizializzando v1 con [2; 0] e v2  con [0; 2].
+%  Domanda. E' importante che i vettori siano definiti in  riga o in colonna?
+%  Formula della distanza euclidea fra due vettori a e b  di lunghezza n:
+%   `d = \sqrt{\sum_{i=1}^{n}(a_i - b_i)^2}`
+%
+%   Soluzione 1:  1.4142
+%   Soluzione 2:  2.8284
+
+%%
+v1 = [0 0];
+v2 = [1 1];
+
+v1_v2 = euclidean_distance(v1, v2);
+fprintf('\nDistance between v1: [%d %d] and v2: [%d %d] is: %.4f\n', ...
+  v1(1), v1(2), v2(1), v2(2), v1_v2);
+
+v1 = [2; 0];
+v2 = [0; 2];
+
+v1_v2 = euclidean_distance(v1, v2);
+fprintf('\nDistance between v1: [%d %d] and v2: [%d %d] is: %.4f\n', ...
+  v1(1), v1(2), v2(1), v2(2), v1_v2);
+%%

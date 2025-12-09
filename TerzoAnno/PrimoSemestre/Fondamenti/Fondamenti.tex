@@ -1,0 +1,5490 @@
+\documentclass[a4paper]{article}
+\usepackage{import}
+\input{../../preamble.sty}
+
+\begin{document}
+
+\input{title.tex}
+
+\tableofcontents
+\pagebreak
+
+\section{Introduzione}
+\subsection{Cos'è l'informatica?}
+È una scienza che studia la calcolabilità, cioè cerca di capire che problemi si possono
+risolvere con un programma. Nasce dall'unione di matematica, ingegneria e logica. Il
+computer è solo uno strumento, mentre la matematica è il linguaggio con cui si
+creano algoritmi che permettono di risolvere i problemi.
+
+\subsection{Origini dell'informatica}
+Hilbert, nel 1900, si pose l'obiettivo di formalizzare tutta la matematica con un insieme
+finito e non contraddittorio di assiomi. Nel 1931, invece, Gödel dimostrò che l'informatica
+non potrà mai rappresentare tutta la matematica, perché ci saranno sempre proposizioni
+vere ma non dimostrabili tramite il calcolo. Ci si iniziò a chiedere se esistessero
+modelli di calcolo meccanici in grado di risolvere tutti i problemi. Nel 1936, Turing
+propose la macchina di Turing, una \textbf{sola} macchina programmabile in grado di
+risolvere tutti i problemi risolvibili:
+\[
+  Int(P,x) = \begin{cases}
+    P(x) & \text{se } P(x) \text{ termina}\\
+    \uparrow & \text{se } P(x) \text{ non termina}
+  \end{cases}
+\] 
+dove $P$ è un programma e $x$ è un input. La macchina di Turing è un modello teorico
+di calcolatore, che non esiste fisicamente, ma è in grado di simulare qualsiasi altro
+calcolatore. Da questo modello deriva la concezione di calcolabilità, cioè se un problema
+è intuitivamente calcolabile, allora esiste un programma in grado di risolverlo.
+
+Altri modelli di calcolo che sono stati proposti sono:
+\begin{itemize}
+  \item Lambda-calcolo
+  \item Funzioni ricorsive
+  \item Linguaggi di programmazione (Turing-completi)
+\end{itemize}
+
+\begin{define}
+  La Turing-completezza è la proprietà di un linguaggio di programmazione di essere
+  in grado di simulare una macchina di Turing, cioè di poter risolvere qualsiasi problema
+  risolvibile.
+\end{define}
+
+\subsubsection{Calcolabilità}
+Un programma è calcolabile se termina, ma non è detto che termini in un tempo ragionevole.
+Non esistono algoritmi che possono dire se un programma termina o meno. Questo è un esempio
+di problema non calcolabile.
+
+I problemi non calcolabili sono infinitamente più numerosi di quelli calcolabili
+
+\subsection{Nozioni di base}
+\subsubsection{Basi di logica}
+
+Alcune nozioni di logica che ci serviranno in seguito:
+
+\begin{itemize}
+    \item \textbf{Linguaggio del primo ordine:} 
+    \begin{itemize}
+        \item Simboli relazionali $(p,q, ...)$
+        \item Simboli di funzione $(f,g, ...)$
+        \item Simboli di costante $(c,d, ...)$
+    \end{itemize}
+    \item \textbf{Simboli logici:}
+    \begin{itemize}
+        \item Parentesi (,) e virgola
+        \item Insieme numerabile di variabili $(v,x,...)$
+        \item Connettivi logici ($\neg, \land, \lor, \rightarrow, \leftrightarrow$)
+        \item Quantificatori ($\forall, \exists$)
+    \end{itemize}
+    \item \textbf{Termini:}
+        \begin{itemize}
+            \item Variabili
+            \item Costanti
+            \item $f$ simbolo di funzione m-ario $t_1, t_2, \dots, t_m$ termini, allora
+
+              $f(t_1, t_2, \dots, t_m)$ è un termine.
+        \end{itemize}
+    \item \textbf{Formula atomica:} $p$ simbolo di relazione n-ario, 
+    $t_1,t_2,\dots,t_n$ 
+    termini, allora $p(t_1,t_2,\dots,t_n)$ è una formula atomica.
+    \item \textbf{Formula:}
+    \begin{itemize}
+        \item Formula atomica
+        \item $\phi$ formula, allora $\neg \phi$ è una formula
+        \item $\phi$ e $\psi$ formule, allora $(\phi \land \psi)$, $(\phi \lor \psi)$, $(\phi \rightarrow \psi)$, $(\phi \leftrightarrow \psi)$ sono formule.
+        \item $\phi$ formula e $v$ variabile, alloar e $\forall v . \phi$ e $\exists v . \phi$ sono formule.
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Nozioni sugli insiemi}
+
+\begin{itemize}
+    \item $x \in A$ signfiica che $x$ è un elemento dell'insieme $A$
+    \item $\{x | P(x)\}$ si identifica insieme costuito dagli $x$ che soddisfano la proprietà (o predicato) $P(x)$
+    \item $A \subseteq B$ significa che $A$ è un sottoinsieme di $B$ se ogni elemento di $A$ è anche in $B$
+    \item $\mathcal{P}(S)$ denota l'insieme delle parti di $S$, ovvero l'insieme di tutti i sottoinsiemi di $S$ ($\mathcal{P}(S) = \{X | X \subseteq S\}$)
+    \item $A \backslash B = \{x | x \in A \land x \notin B\}, A \cup B = \{x | x \in A \lor x \in B\}, A \cap B = \{x | x \in A \land x \in B\}$   
+    \item $|A|$ denota la cardinalità di $A$, ovvero il numero di elementi in $A$.
+    \item $\bar{A}$ denota il complemento di $A$, ovvero $x \bar{\in} A \leftrightarrow x \notin A$
+\end{itemize}
+
+\subsubsection{Nozioni sulle relazioni}
+
+\begin{itemize}
+    \item Prodotto cartesiano:
+      \[
+        A_1 \times A_2 \times \dots \times A_n = \{\langle a_1,a_2,\dots,a_n \rangle | a_1 \in A_1,\dots, a_n \in A_n\}
+      \]
+    \item Una \textbf{relazione} (binaria) è un sottoinsieme del prodotto cartesiano di (due) insiemi; dati $A$ e $B$, $R \subseteq A \times B$ 
+    è una relazione su $A$ e $B$ 
+    \begin{itemize}
+        \item \textbf{Riflessiva:} $\forall a \in S$ si ha che $aRa$
+        \item \textbf{Simmetrica:} $\forall a,b \in S$ se $aRb$ allora $bRa$
+        \item \textbf{Antisimmetrica:} $\forall a,b \in S$ se $aRb$ e $bRa$ allora $a=b$
+        \item \textbf{Transitiva:} $\forall a,b,c \in S$ se $aRb$ e $bRc$ allora $aRc$
+    \end{itemize}  
+    \item Per ogni relazione $R \subseteq S \times S$ la chiusura transitiva di $R$ è il più piccolo 
+    insieme $R^*$ tale che $\langle a,b \rangle \in R \land \langle b,c \rangle \in R \rightarrow \langle a,c \rangle \in R^*$  
+    \item Una relazione è detta \textbf{totale} su $S$ se $\forall a,b \in S$ si ha che $aRb \lor bRa$
+    \item Una relazione $R$ di \textit{di equivalenza} è una relazione binaria riflessiva, simmetrica e transitiva.
+    \item Una relazione binaria $R \subseteq S \times S$ è un \textbf{pre-ordine} se è riflessiva e transitiva.
+    \item $R$ è un ordine parziale se è un pre-ordine antisimmetrico.
+    \item $x \in S$ è \textbf{minimale} rispetto a $R$ se $\forall y \in S . y \not{R} x$ (ovvero $\neg(yRx))$
+    \item $x \in S$ è \textbf{minimo} rispetto a $R$ se $\forall y \in S . xRy$
+    \item $x \in S$ è \textbf{massimale} rispetto a $R$ se $\forall y \in S . x \not{R} y$ (ovvero $\neg(xRy)$)
+    \item $x \in S$ è \textbf{massimo} rispetto a $R$ se $\forall y \in S . yRx$
+\end{itemize}
+
+\subsubsection{Nozioni sulle funzioni}
+
+\begin{itemize}
+    \item Una relazione $f$ è una \textbf{funzione} se $\forall a \in A$ esiste uno ed un solo $b \in B$ tale che $(a,b) \in f$
+    \item $A$ dominio e $B$ codominio di $f$. Il range di $f$ è l'insieme di tutti i valori che $f$ può assumere.
+    \item f è \textbf{iniettiva} se $\forall a_1,a_2 \in A$ se $a_1 \neq a_2$ allora $f(a_1) \neq f(a_2)$
+    \item Se $f : A \mapsto B$ è sia iniettiva che suriettiva allora è \textbf{biiettiva} e quindi esiste $f^{-1} : B \mapsto A$ 
+\end{itemize}
+
+\subsection{Funzioni calcolabili}
+Un insieme è una proprietà ed è rappresentato da una funzione che indica se un elemento
+appartiene o meno all'insieme. I problemi da risolvere (in questo corso) hanno come
+soluzione una funzione sui naturali:
+\[
+  f : \mathbb{N} \to \mathbb{N}
+\] 
+Questo tupo di funzione è un \textbf{insieme} di associazioni input-output. Un esempio
+è la funzione quadrato:
+\[
+  f = \text{quadrato} = \{(0,0), (1,1), (2,4), (3,9), \ldots\} = \{(n,n^2) | n \in \mathbb{N}\}
+\] 
+Quindi \( f \) è un insieme di coppie in \( \mathbb{N} \subseteq \mathbb{N} \times \mathbb{N} \) la
+cui cardinalità è: \( \left| \mathbb{N} \times \mathbb{N} \right| =
+\left| \mathbb{N} \right| \). Di conseguenza la funzione è un sottoinsieme di \( \mathbb{N}
+\times \mathbb{N}\):
+\[
+  f \subseteq \mathbb{N} \times \mathbb{N} \quad f \in \mathcal{P}(\mathbb{N} \times \mathbb{N})
+\] 
+Dove \( \mathcal{P}(\mathbb{N} \times \mathbb{N}) \) è l'insieme delle parti di \( \mathbb{N}
+\times \mathbb{N} \), cioè l'insieme di tutti i sottoinsiemi di \( \mathbb{N} \times
+\mathbb{N} \).
+
+Il numero di funzioni è:
+\[
+  f: \mathbb{N} \to \mathbb{N} = \left| \mathcal{P}(\mathbb{N} \times \mathbb{N}) \right| 
+  = \left| \mathcal{P}(\mathbb{N}) \right| 
+\] 
+\begin{example}
+  Un esempio di insieme delle parti per l'insieme \( A = \{1,2,3\} \) è:
+  \[
+    \mathcal{P}(A) = \{\varnothing, \{1\}, \{2\}, \{3\}, \{1,2\}, \{1,3\}, \{2,3\}, \{1,2,3\}\}
+  \] 
+  E le cardinalità sono:
+  \[
+    \left| A \right| = 3 \quad \left| \mathcal{P}(A) \right| = 8 = 2^3
+  \] 
+  \[
+    \downarrow
+  \] 
+  \[
+    \left| \mathbb{N} \right| = \omega < 
+    \underbrace{\left| \mathcal{P}(\mathbb{N}) \right| = 2^{\omega}}_{%
+      \substack{\text{Insieme delle funzioni,}\\ 
+      \text{non numerabile}}
+    }
+    = \left| \mathbb{R} \right| 
+  \] 
+\end{example}
+Si ha quindi che \textbf{l'insieme delle funzioni non è numerabile}
+
+\vspace{1em}
+\noindent
+Ci si chiede se queste funzioni sono tutte calcolabili:
+\begin{definition}
+  Una funzione \textbf{intuitivamente calcolabile} è una funzione descrivibile attraverso
+  un algoritmo, cioè una sequenza finita di passi discreti elementari.
+\end{definition}
+
+\subsubsection{Quante funzioni numerabili ci sono?}
+Consideriamo \( \Sigma \) come un alfabeto finito, cioè una seguenza di simboli
+utilizzabili per scrivere un programma o algoritmo.
+\[
+  \Sigma = \{s_1,s_2,s_3, \ldots, s_n\}
+\] 
+\[
+  \downarrow
+\] 
+\[
+  \text{Programma} \subseteq \text{sqeuenze di simboli in } \Sigma
+\] 
+Con \( \Sigma^* \) si descrive l'insieme di tutte le sequenze finite di simboli in \( \Sigma \),
+quindi l'insieme di tutti i possibili programmi è:
+\[
+  \text{Programmi} \subseteq \Sigma^*
+\]
+
+\begin{example}
+  Se \( \Sigma = \left\{ a, b, c \right\} \) allora la sequenza di tutti i possibili
+  simboli è:
+  \[
+    \Sigma^* = \{\epsilon, a, b, c, aa, ab, ac, ba, bb, bc, ca, cb, cc, aaa, aab, \ldots\}
+  \]
+  dove \( \epsilon \) è la stringa vuota.
+
+  La cardinalità di \( \Sigma^* \) è infinita numerabile (anche se \( \Sigma  \) è finito).
+  \[
+    \left| \Sigma^* \right| = \left| \mathbb{N} \right| 
+  \] 
+\end{example}
+
+Si ha quindi che l'insieme dei programmi è numerabile:
+\[
+  \left| \text{Programmi in } \Sigma \right| \leq \left| \Sigma^* \right| = \left| \mathbb{N} \right|
+\] 
+e questo implica che l'insieme delle \textbf{funzioni calcolabili è numerabile}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{cardinalita_funzioni_calcolabili}
+  \caption{Cardinalità delle funzioni}
+\end{figure}
+
+\begin{example}
+  Prendiamo ad esempio la seguente funzione (serie di fibonacci):
+  \[
+    f(n) \subseteq \mathbb{N} \times \mathbb{N}
+  \] 
+
+  \vspace{1em}
+  \noindent
+  Dove:
+  \[
+    f(0) = 1, f(1) = 1, f(2) = 2
+  \] 
+  \[
+    f(3) = 3, f(4) = 5, f(5) = 8
+  \] 
+  \[
+    f(6) = 13, f(7) = 21, \ldots
+  \] 
+  Definiamo un algoritmo ricorsivo:
+  \[
+    \begin{cases}
+      f(0) = 1 = f(1)\\
+      f(x+2) = f(x+1) + f(x)
+    \end{cases}
+  \] 
+
+  \vspace{1em}
+  \noindent
+  Trovare un algoritmo non è possibile per tutte le funzioni, ma solo per quelle calcolabili.
+\end{example}
+Nell'insieme delle funzioni calcolabili ci sono:
+\begin{itemize}
+  \item Funzioni totali, cioè definite per ogni input \( n \in \mathbb{N} \) e terminano
+    sempre
+  \item Funzioni parziali, cioè non definite per ogni \( n \in \mathbb{N} \)
+\end{itemize}
+
+\subsubsection{Funzioni vs Insiemi}
+Una funzione può essere vista come un linguaggio \( \mathcal{L}_f \) tale che:
+\[
+  f: \mathbb{N} \to \mathbb{N} \quad \leftrightarrow \quad
+  \mathcal{L}_f = \left\{ 1^{f(x)} \;\left|\; x \in \mathbb{N} \right.\right\} \quad
+  \Sigma = \{1\}
+\] 
+Questo linguaggio permette di dire se un input appartiene o meno al linguaggio:
+\[
+  \sigma  \in \Sigma^*
+\] 
+\[
+  \downarrow
+\] 
+\[
+  \begin{cases}
+    \sigma  \in \mathcal{L}_f \quad \text{se appartiene al linguaggio}\\
+    \sigma  \notin \mathcal{L}_f \quad \text{se non appartiene al linguaggio}
+  \end{cases}
+\] 
+Parliamo di insiemi invece che di funzioni dove gli elementi dell'insieme dipendono dal
+calcolo della funzione.
+\begin{example}
+  Prendiamo ad esempio le seguenti funzioni:
+  \begin{itemize}
+    \item Funzione costante (Finite)
+      \[
+        f(x) = 2 \to \mathcal{L}_f \text{ è finito}
+      \] 
+    \item Funzione lineare (Regolari)
+      \[
+        f(x) = 2x \to \mathcal{L}_f \text{ è infinito numerabile}
+      \]
+      C'è bisogno di una memoria finita per determinare se la stringa appartiene al linguaggio
+    \item (Context free)
+      \[
+        f(\sigma) = \sigma \sigma^{\text{reverse}}
+      \] 
+      \[
+        \sigma = abc \quad \sigma^\text{reverse} = cba
+      \] 
+      Per calcolare questa funzione c'è bisogno di una memoria illimitata, cioè non
+      si può sapere a priori quanta ce n'è bisogno, è sufficiente uno stack.
+
+    \item Decidibile
+      \[
+        f(x) = x^2
+      \] 
+      Per calcolare questa funzione c'è bisogno di una memoria illimitata
+  \end{itemize}
+\end{example}
+
+\vspace{1em}
+\noindent
+Le funzioni calcolabili sono divise in classi secondo la gerarchia di Chomsky:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{gerarchia_chomsky}
+  \caption{Gerarchia di Chomsky}
+\end{figure}
+
+\section{Linguaggi regolari}
+Il principio di induzione è un meccanismo di definizione e dimostrazione che funziona
+\textbf{solo su insiemi infiniti}. Esistono due metodi di induzione:
+\begin{itemize}
+  \item Induzione matematica
+  \item Induzione strutturale
+\end{itemize}
+In questo corso tratteremo solo l'induzione matematica.
+
+\vspace{1em}
+\noindent
+Un insieme \( A \) infinito con una relazione di ordine non riflessiva (senza l'uguale
+perchè l'elemento non è in relazione con sè stesso): \( < \;: (A, <) \).
+\( A = \mathbb{N} \) e \( < \) è l'ordinamento
+stretto tra numeri naturali. La relazione di ordine deve essere \textbf{ben fondata},
+quindi non devono esserci catene discendenti infinite, cioè una sequenza di elementi in
+ordine decrescente infinita:
+\[
+  a_0 > a_1 > a_2 > a_3 > \ldots \to \text{non ben fondata}
+\] 
+Una relazione di ordine riflessiva non è ben fondata, perchè esistono catene
+infinite:
+\[
+  a_0 \geq a_1 \geq a_2 \geq a_3 \geq a_3 \geq a_3 \geq \ldots \to \text{non ben fondata}
+\]
+
+\( b \) minimale in \( A : b \in A \) \( b \) è minimale se \( \forall b' < b \;.\; b' \notin A \) 
+Ad esempio: \( \left\{ 1, 2, 3 \right\} \) ha come minimali (di contenimento) \( \left\{ 1, 2 \right\} \) 
+e \( \left\{ 2,3 \right\} \).
+
+\begin{definition}[Principio di induzione]
+  Se \( A \) è un insisme ben fondato (con ordinamento \( < \)), e \( \Pi  \) è una
+  proprietà definita sugli elementi di \( A: \Pi \subseteq A \), allora:
+  \[
+    \forall  a \in A \;.\; \underbrace{\Pi(a) }_{a\text{ soddisfa } \Pi} \iff
+    \underbrace{
+      \forall a \in A \;.\; \left[ \left[ \forall b < a \;.\; \Pi(b) \right] \Rightarrow
+      \Pi(a)\right]
+    }_{
+      \substack{
+        \text{Se dimostriamo } \Pi \text{ per ogni }\\
+        \text{elemento più piccolo di } a, \\
+        \text{allora } \Pi \text{ vale anche per } a
+      }
+    }
+  \] 
+  Consideriamo come caso base gli elementi minimali di \( A \):
+  \[
+    \text{Base}_A = \left\{ a \in A \;\left|\; a \text{ minimale}  \right.\right\}
+  \] 
+  Se si dimostra che \( \Pi \) vale per tutti gli elementi minimali di \( A \) (la base):
+  \[
+    \overbrace{
+      \underbrace{
+        \forall a \in \text{Base}_A \;.\; \Pi(a)
+      }_{
+        \substack{
+          \text{Dimostriamo } \Pi \text{ per ogni }\\
+          \text{elemento minimale di } A
+        }
+      }
+    }^{\text{Base}}
+    \wedge 
+    \underbrace{
+      \forall a \in A \setminus \text{Base}_A
+    }_{
+      \text{Passo induttivo}
+    }
+    \;.\;
+    \underbrace{
+      \forall b < a \;.\; \Pi(b)
+    }_{
+      \text{Ipotesi induttiva}
+    }
+    \underbrace{
+      \Rightarrow \Pi(a)
+    }_{
+      \text{Tesi da dimostrare}
+    }
+  \] 
+\end{definition}
+\begin{example}
+  Dimostriamo che:
+  \[
+    \forall n \in \mathbb{N} \sum_{i=1}^{n} i = \frac{n(n+1)}{2}
+  \] 
+  L'insieme è:
+  \[
+    A = \mathbb{N} \setminus \{0\} = \{1,2,3, \ldots\}
+  \] 
+  \begin{itemize}
+    \item \textbf{Base}
+      \[
+        \text{Base}_A = \{1\}
+      \] 
+      \begin{itemize}
+        \item dimostriamo la base
+          \[
+            \sum_{i=1}^{1} i = n(n+1)/2 = 1(1+1)/2 = 1
+          \] 
+      \end{itemize}
+
+    \item \textbf{Passo induttivo}:
+      \vspace{1em}
+      \noindent
+      Prendo \( n \in \mathbb{N} \) 
+      \begin{itemize}
+        \item Ipotesi induttiva, cioè per ogni \( m < n \) vale la proprietà:
+          \[
+            \forall \underset{\in \mathbb{N}}{m} < n \;.\; \sum_{i=1}^{m} i =
+            \frac{m(m+1)}{2}
+          \] 
+          Dobbiamo dimostrare la proprietà per \( n \):
+          \[
+            \sum_{i=1}^{n} i = \sum_{i=1}^{n-1} i + n
+          \] 
+          \[
+            n - 1 < n \quad \text{quindi vale l'ipotesi induttiva}
+          \] 
+          \[
+            \sum_{i=1}^{n-1} i = \frac{(n-1)(n-1+1)}{2} = \frac{(n-1)n}{2}
+          \] 
+          \[
+            \downarrow
+          \] 
+          \[
+            \begin{aligned}
+              \sum_{i=1}^{n} i &= \sum_{i=1}^{n-1} i + n\\
+                               &= \frac{(n-1)n}{2} + n\\
+                               &= \frac{(n-1)n + 2n}{2}\\
+                               &= \frac{n^2 - n + 2n}{2}\\
+                               &= \frac{n(n+1)}{2} \quad \square
+            \end{aligned}
+          \] 
+      \end{itemize}
+  \end{itemize}
+  È quindi dimostrato che:
+  \[
+    \forall n \in \mathbb{N} \sum_{i=1}^{n} i = \frac{n(n+1)}{2}
+  \]
+\end{example}
+
+\subsection{Linguaggi formali}
+\begin{definition}
+  Un linguaggio formale è un insieme di stringhe costruite su un alfabeto finito \( \Sigma  \) .
+\end{definition}
+Solitamente un linguaggio formale \( \mathcal{L} \) è un sottoinsieme di \( \Sigma^* \),
+tipicamente infiniti, ma non necessariamente:
+\[
+  \mathcal{L} \subseteq \Sigma^*
+\] 
+I linguaggi sono divisi in:
+\begin{itemize}
+  \item Linguaggi finiti
+  \item Linguaggi regolari, il modello utilizzato è l'automa a stati finiti.
+\end{itemize}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw[thick] (0,0) circle(3);
+    \draw[thick] (0,1.9) circle(1);
+    \node at (4,1.9) {Linguaggi formali};
+    \draw[<-, thick] (0,1.9) -- (2.6,1.9);
+
+    \node at (5,0) {Linguaggi regolari};
+    \draw[<-, thick] (0,0) -- (3.6,0);
+  \end{tikzpicture}
+  \caption{Linguaggi formali e linguaggi regolari}
+\end{figure}
+
+\subsection{Linguaggi regolari (automi a stati finiti, DFA)}
+Il meccanismo più semplice per una memoria finita è l'automa a stati finiti
+
+\vspace{1em}
+\noindent
+Consideriamo il linguaggio:
+\[
+\mathcal{L}_f = \left\{ 1^{2n} \;\left|\; n \in \mathbb{N} \right. \right\}
+\] 
+ha bisogno di due stati \( q_0 \) e \( q_1 \). Lo stato \( q_0 \) rappresenta
+l'informazione di essere di lunghezza pari, mentre lo stato \( q_1 \)
+rappresenta l'informazione di essere di lunghezza dispari.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[node distance=3cm, on grid, auto]
+    \node[state, initial, accepting] (q0) {$q_0$};
+    \node[state, right of=q0] (q1) {$q_1$};
+
+    \draw (q0) edge[bend left, above] node{1} (q1);
+    \draw (q1) edge[bend left, below] node{1} (q0);
+  \end{tikzpicture}
+  \caption{Automa a stati finiti per il linguaggio \( \mathcal{L}_f = \left\{ 1^{2n} \;\left|\; n
+            \in \mathbb{N} \right. \right\} \)}
+\end{figure}
+L'automa a stati finiti \textbf{deterministico} è definito come una quintupla: 
+\[
+  M = \left( Q, \Sigma , \delta, q_0, F \right) 
+\] 
+dove:
+\begin{itemize}
+  \item \( Q \) è un insieme \textbf{finito} di stati. Ogni stato rappresenta
+    un'informazione
+
+  \item \( \Sigma  \) è un insieme \textbf{finito} di simboli (alfabeto).
+    Ogni simbolo è un elemento atomico che posso leggere e che compone le
+    stringhe da riconoscere
+    
+  \item \( q_0 \in Q \) è uno stato e identifica lo stato iniziale. Lo stato finale
+    viene indicato con un doppio cerchio
+
+  \item \( F \subseteq Q \) è l'insieme degli stati finali (di accettazione)
+
+  \item \( \delta: Q \times \Sigma \to Q \) È una \textbf{funzione di transizione}
+    che dato uno stato e un simbolo, restituisce lo stato successivo ed è come se
+    fosse una tabella che associa ad ogni coppia (stato, simbolo) uno stato:
+    \begin{table}[H]
+      \centering
+      \begin{tabular}{|c|c|c|}
+        \hline
+        \( \Sigma \setminus Q\) & \( q_0 \) & \( q_1 \)\\
+        \hline
+        1 & \( q_1 \) & \( q_0 \)\\
+        \hline
+      \end{tabular}
+    \end{table}
+    La funzione deve essere \textbf{totale}, cioè deve essere definita per ogni
+    coppia \( (q,a) \in Q \times \Sigma  \), quindi la tabella deve essere completa.
+
+  \item \( \hat{\delta}: Q \times \Sigma^* \to Q \) Descrive lo stato che raggiungono
+    leggendo una sequenza di simboli
+    \[
+      \begin{cases}
+        \hat{\delta}(q, \epsilon) = q\\
+        \hat{\delta}(q, wa) = \delta(\hat{\delta}(q,w), a)
+      \end{cases}
+      \quad
+      w \in \Sigma^*, \quad a \in \Sigma 
+    \] 
+    È quindi la \textbf{chiusura transitiva} di \( \delta \)
+\end{itemize}
+
+\subsubsection{Come si dimostra che un linguaggio è regolare?}
+\begin{example}
+  Prendiamo in considerazione il seguente linguaggio:
+  \[
+    L = \left\{ \sigma  \;\left|\; \sigma \text{ contiene almeno due } 1 \right. \right\}
+  \] 
+  \[
+    \Sigma = \{0,1\}
+  \] 
+  Con le seguenti stringhe si ha:
+  \begin{itemize}
+    \item \( \sigma = 011 \in \mathcal{L} \) 
+    \item \( \sigma = 1000100 \in \mathcal{L} \) 
+    \item \( \sigma = 00010 \notin \mathcal{L} \) 
+  \end{itemize}
+  L'informazione che codifica lo stato iniziale deve essere coerente con \( \varepsilon  \) 
+  (stringa vuota)
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[->, node distance=2cm, on grid, auto]
+      \node[state, initial] (q0) {$q_0$};
+      \node[state, right of=q0] (q1) {$q_1$};
+      \node[state, right of=q1, accepting] (q2) {$q_2$};
+
+      \draw (q0) edge[above] node{1} (q1);
+      \draw (q0) edge[loop above] node{0} (q0);
+      \draw (q1) edge[loop above] node{0} (q2);
+      \draw (q1) edge[above] node{1} (q2);
+      \draw (q2) edge[loop above] node{0,1} (q2);
+    \end{tikzpicture}
+    \caption{Automa a stati finiti per il linguaggio \( \mathcal{L} \)}
+  \end{figure}
+\end{example}
+Un lingauggio \( L \) è riconosciuto da \( M = \left( Q, \Sigma, \delta, q_0, f \right)  \) (DFA, Deterministic Finite Automaton) se:
+\( L = L(M) \) dove \( L(M) \) è il linguaggio di \( M \) definito come:
+\[
+  L(M) = \left\{ \sigma  \in \Sigma^* \;\left|\; \hat{\delta}(q_0, \sigma) \in F \right. \right\}
+\] 
+Cioè sono tutte le stringhe che partendo da \( q_0 \) fanno raggiungere uno stato finale.
+
+\vspace{1em}
+\noindent
+\begin{definition}
+  Per dimostrare che \( L \) è regolare dobbiamo costruire \( M \) (almeno un \( M \)) e
+  \textbf{dimostrare che} \( L = L(M) \) 
+\end{definition}
+\( L = L(M) \) è un uguaglianza insiemistica e si dimostra con due contenimenti:
+\[
+  L = L(M) \equiv L \subset L(M) \wedge L(M) \subset L
+\]  
+\begin{itemize}
+  \item Se un elemento si trova nel primo insieme, allora si trova anche nel secondo
+    \[
+      L \subseteq L(M) \equiv \sigma \in L \Rightarrow \sigma \in L(M) \equiv
+      \sigma \in L \Rightarrow \hat{\delta}(q_0, \sigma) \in F
+    \] 
+  \item Se un elemento si trova nel secondo insieme, allora si trova anche nel primo
+    \[
+      L(M) \subseteq L \equiv \sigma \in L(M) \Rightarrow \sigma \in L \equiv
+      \hat{\delta}(q_0, \sigma) \in F \Rightarrow \sigma \in L
+    \]
+    o per contrapposizione:
+    \[
+      \sigma \notin L \Rightarrow \hat{\delta}(q_0, \sigma) \notin F
+    \] 
+\end{itemize}
+Questo dimostra che il linguaggio è regolare perchè è riconosciuto da un automa.
+
+\begin{example}
+  Riprendendo l'esempio precedente:
+  \[
+    L = \left\{ \sigma \in \Sigma^* \;\left|\; \sigma \text{ contiene almeno due } 1 \right. \right\}
+  \] 
+  \[
+    \Sigma = \{0,1\}
+  \]
+  \( M = \) 
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[->, node distance=2cm, on grid, auto]
+      \node[state, initial] (q0) {$q_0$};
+      \node[state, right of=q0] (q1) {$q_1$};
+      \node[state, right of=q1, accepting] (q2) {$q_2$};
+
+      \draw (q0) edge[above] node{1} (q1);
+      \draw (q0) edge[loop above] node{0} (q0);
+      \draw (q1) edge[loop above] node{0} (q2);
+      \draw (q1) edge[above] node{1} (q2);
+      \draw (q2) edge[loop above] node{0,1} (q2);
+    \end{tikzpicture}
+    \caption{Automa a stati finiti per il linguaggio \( \mathcal{L} \)}
+  \end{figure}
+  \noindent
+  Dimostriamo per induzione sulla lunghezza delle stringhe \( \sigma \in \Sigma^* \) 
+  che se \( x \in L \) allora \( \hat{\delta}(q_0, x) \in F \) e se \( x \notin L \) allora
+  \( \hat{\delta}(q_0, x) \notin F \).
+
+  \vspace{1em}
+  \noindent
+  \( \left| \sigma  \right| = 0 \) non è \textbf{mai} sufficiente come base, ma
+  è eventualmente la base \textbf{solo} per una delle due dimostrazioni. Bisogna
+  quindi prendere la lunghezza più piccola che permette di avere sia \( \sigma \in L \) 
+  che  \( \sigma \notin L \), in questo caso è \( \left| \sigma  \right| = 2 \).
+  Per ogni \( \sigma  \) tale che \( \left| \sigma  \right| < 2 \quad \sigma \notin L \)
+  perchè non può contenere due 1 e non è riconosciuta da \( M \) dove il primo stato finale
+  è raggiunto leggendo almeno due simboli.
+  \[
+    \varepsilon \in L \quad \varepsilon \notin L
+  \] 
+  \begin{itemize}
+    \item \textbf{Base}: Controlliamo ogni stringa di lungheezza minima nel linguaggio per
+      provare il caso base. In questo caso la lunghezza minima è
+      \( \left| \sigma  \right| = 2 \) 
+      \[
+        \begin{cases}
+          \sigma &= 11 \in L \; \text{ e } \; \hat{\delta}(q_0, 11) = q_2 \in F \\
+          \sigma &= 10 \notin L \; \text{ e } \; \hat{\delta}(q_0, 10) = q_1 \notin F \\
+          \sigma &= 01 \notin L \; \text{ e } \; \hat{\delta}(q_0, 01) = q_1 \notin F \\
+          \sigma &= 00 \notin L \; \text{ e } \; \hat{\delta}(q_0, 00) = q_0 \notin F
+        \end{cases}
+      \] 
+
+    \item \textbf{Passo induttivo}: Assumiamo che valga l'\textbf{ipotesi induttiva}, cioè
+      la tesi con un limite fissato:
+      \[
+        \forall \sigma \in \Sigma^* \;.\; \left| \sigma  \right| \le n \;.\;
+        \begin{cases}
+          \sigma \in L &\Rightarrow \hat{\delta}(q_0, \sigma) \in F\\
+          \sigma \notin L &\Rightarrow \hat{\delta}(q_0, \sigma) \notin F
+        \end{cases}
+      \] 
+      Vogliamo dimostrare che la tesi vale per \( \left| \sigma  \right| = n + 1 \)
+      (la successiva stringa che posso considerare).
+
+      \noindent
+      \textbf{Tesi}:
+      \( 
+        \begin{cases}
+          \sigma \in L \Rightarrow \hat{\delta}(q_0,\sigma) = q_2
+          \; \sigma \text{ contiene almeno due 1}\\
+          \sigma \notin L \Rightarrow \hat{\delta}(q_0,\sigma) = q_0
+          \; \sigma \text{ non contiene 1}\\
+          \sigma \notin L \Rightarrow \hat{\delta}(q_0,\sigma) = q_1
+          \; \sigma \text{ contiene esattamente un 1}
+        \end{cases}
+      \) 
+
+      \vspace{1em}
+      \noindent
+      \textbf{Ipotesi induttiva}:
+      \[
+        \forall \sigma \in \Sigma^* \;.\; \left| \sigma  \right| \le n \;.\;
+        \text{ allora la tesi vale su } \sigma
+      \] 
+
+      \vspace{1em}
+      \noindent
+      Dimostrazione della tesi per \( \sigma  \) tale che \( \left| \sigma  \right| = n + 1 \).
+      (\( \left| \sigma' \right| = n \) quindi su \( \sigma' \) possiamo applicare l'ipotesi
+      induttiva):
+      \[
+        \left| \sigma  \right| = n + 1 \to 
+          \sigma = \sigma'1 \; \vee \; \sigma = \sigma'0
+      \] 
+      \begin{itemize}
+        \item Supponiamo che \( \sigma  \) appartenga al linguaggio e termini con 1:
+          \[
+            \sigma \in L \wedge \sigma  = \sigma'1
+          \] 
+          \[
+            \downarrow
+          \] 
+          \begin{itemize}
+            \item Se \( \sigma' \in L \) applico l'ipotesi induttiva:
+              \[
+                  \hat{\delta}(q_0, \sigma') = q_2\\
+              \] 
+              \[
+                \begin{aligned}
+                  \hat{\delta}(q_0, \sigma) &\stackrel{\sigma = \sigma'1}{=}
+                  \hat{\delta}(q_0, \sigma'1)\\
+                                            &= \delta(\hat{\delta}(q_0, \sigma'), 1)\\
+                                            &= \delta(q_2, 1) = q_2 \in F
+                \end{aligned}
+              \] 
+
+            \item Se \( \sigma' \notin L \) allora \( \sigma' \) contiene esattamente un 1:
+              \[
+                \hat{\delta}(q_0, \sigma') = q_1
+              \] 
+              \[
+                \hat{\delta}(q_0, \sigma'1) = \delta(q_1, 1) = q_2
+              \] 
+          \end{itemize}
+
+        \item Supponiamo che \( \sigma  \) appartenga al linguaggio e termini con 0:
+          \[
+            \sigma \in L \wedge \sigma = \sigma'0
+          \] 
+          Per definizione di \( L \) abbiamo che
+          \[
+            \sigma \in L \wedge \sigma = \sigma'0 \Rightarrow \sigma' \in L
+          \] 
+          Dimostriamo l'ipotesi induttiva:
+          \[
+            \hat{\delta}(q_0, \sigma') = q_2
+          \] 
+          allora
+          \[
+            \begin{aligned}
+              \hat{\delta}(q_0, \sigma) &= \hat{\delta}(q_0, \sigma'0)\\
+                                        &= \delta(\hat{\delta}(q_0, \sigma'), 0)\\
+                                        &= \delta(q_2, 0) = q_2 \in F
+            \end{aligned}
+          \] 
+
+        \item Supponiamo che \( \sigma  \) non appartenga al linguaggio e contiene
+          esatatmente un 1:
+          \begin{itemize}
+            \item \( \sigma  = \sigma'0 \Rightarrow \sigma' \notin L \) e contiene esattamente un 1\\
+              \noindent
+              Ipotesi induttiva:
+              \[
+                \hat{\delta}(q_0, \sigma') = q_1
+              \] 
+              \[
+                \Downarrow
+              \] 
+              \[
+                \begin{aligned}
+                  \hat{\delta}(q_0, \sigma) &= \hat{\delta}(q_0, \sigma'0)\\
+                                            &= \delta(\hat{\delta}(q_0, \sigma'), 0)\\
+                                            &= \delta(q_1, 0) = q_1 \notin F
+                \end{aligned}
+              \] 
+
+            \item \( \sigma = \sigma'1 \Rightarrow \sigma' \notin L \) e non contiene 1\\
+              \noindent
+              Ipotesi induttiva:
+              \[
+                \hat{\delta}(q_0, \sigma') = q_0
+              \] 
+              \[
+                \Downarrow
+              \] 
+              \[
+                \begin{aligned}
+                  \hat{\delta}(q_0, \sigma) &= \hat{\delta}(q_0, \sigma'1)\\
+                                            &= \delta(\hat{\delta}(q_0, \sigma'), 1)\\
+                                            &= \delta(q_0, 1) = q_1 \notin F
+                \end{aligned}
+              \] 
+          \end{itemize}
+
+        \item Supponiamo che \( \sigma  \) non appartenga al linguaggio e non contiene 1
+          \[
+            \sigma \notin L \wedge  \sigma  = \sigma'0
+          \] 
+          \( \sigma = \sigma'1 \) non è possibile per l'ipotesi che \( \sigma  \) non contiene 1\\
+          \noindent
+          Ipotesi induttiva:
+          \[
+              \hat{\delta}(q_0, \sigma') = q_0\\
+          \] 
+          \[
+            \Downarrow
+          \] 
+          \[
+            \begin{aligned}
+              \hat{\delta}(q_0, \sigma) &= \hat{\delta}(q_0, \sigma'0)\\
+                                        &= \delta(\hat{\delta}(q_0, \sigma'), 0)\\
+                                        &= \delta(q_0, 0) = q_0 \notin F
+            \end{aligned}
+          \] 
+      \end{itemize}
+  \end{itemize}
+  Tutti i casi sono dimostrati, quindi abbiamo dimostrato che:
+  \[
+    L = L(M) \quad \Rightarrow \quad L \text{ è regolare}
+  \]
+\end{example}
+\begin{exercise}
+  Consideriamo il seguente linguaggio:
+  \[
+    \begin{aligned}
+      L &= \left\{ \sigma \in \Sigma^* \;\left|\; \text{ogni sequenza di } 0 \text{ è di lunghezza pari} \right.\right\}\\
+    \end{aligned}
+  \] 
+  \[
+    \Sigma = \{0,1\}
+  \] 
+  Si può accettare anche sequenze di lunghezza 0. Alcuni esempi sono:
+  \[
+    \begin{aligned}
+      101 \notin L\\
+      1111 \in L\\
+      10010000 \in L\\
+      00101 \notin L\\
+    \end{aligned}
+  \] 
+  L'automa a stati finiti \( M \) è il seguente:
+  \begin{itemize}
+    \item \( q_0 \): Non sono stati letti 0
+    \item \( q_1 \): Sequenza di 0 consecutiva di lunghezza dispari
+    \item \( q_2 \): Sequenza di 0 consecutiva di lunghezza pari
+  \end{itemize}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[->, node distance=2cm, on grid, auto]
+      \node[state, initial, accepting] (q0) {$q_0$};
+
+      \node[state, right of=q0] (q1) {$q_1$};
+
+      \node[state, right of=q1, accepting] (q2) {$q_2$};
+
+      \node[state, above of=q1] (q3) {$q_{\bot}$};
+
+      \draw (q0) edge[loop above] node{1} (q0);
+      \draw (q0) edge[above] node{0} (q1);
+      \draw (q1) edge[bend left, above] node{0} (q2);
+      \draw (q2) edge[bend left, above] node{0} (q1);
+      \draw (q2) edge[loop above] node{1} (q2);
+      \draw (q1) edge[left] node{1} (q3);
+      \draw (q3) edge[loop above] node{0,1} (q3);
+    \end{tikzpicture}
+    \caption{Automa a stati finiti per il linguaggio \( L \)}
+  \end{figure}
+  \noindent
+  La tesi è:
+  \begin{itemize}
+    \item \( \sigma \in L \) e non contiene 0:
+      \(
+        \Rightarrow \hat{\delta}(q_0, \sigma) = q_0
+      \) 
+
+    \item \( \sigma \in L \) e contiene una sequenza pari di 0:
+      \(
+        \Rightarrow \hat{\delta}(q_0, \sigma) = q_2
+      \)
+
+    \item \( \sigma \notin L \) e contiene una sequenza \textbf{finale} dispari di 0:
+      \(
+        \Rightarrow \hat{\delta}(q_0, \sigma) = q_1
+      \)
+
+    \item \( \sigma \notin L \) e contiene una sequenza dispari di 0 seguita da 1:
+      \(
+        \Rightarrow \hat{\delta}(q_0, \sigma) = q_{\bot}
+      \)
+  \end{itemize}
+\end{exercise}
+\begin{exercise}
+  Consideriamo il seguente linguaggio (ogni sequenza di 0 è di lunghezza almeno 2):
+  \[
+    L = \left\{ \sigma \in \Sigma^* \;\left|\; \exists n \ge 1 \;.\; \sigma = 0^n \Rightarrow n \ge 2 \right.\right\}\\
+  \] 
+  \[
+    \Sigma = \{0,1\}
+  \]
+  L'automa a stati finiti \( M \) è il seguente:
+  \begin{itemize}
+    \item \( q_0 \): Non contiene 0, oppure \textbf{tutte} le sequenze di 0
+      sono lunghe almeno 2
+
+    \item \( q_1 \): Esattamente uno 0
+      
+    \item \( q_2 \): Almeno due 0
+  \end{itemize}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[->, node distance=2cm, on grid, auto]
+      \node[state, initial, accepting] (q0) {$q_0$};
+
+      \node[state, right of=q0] (q1) {$q_1$};
+
+      \node[state, right of=q1, accepting] (q2) {$q_2$};
+
+      \node[state, below of=q1] (q3) {$q_{\bot}$};
+
+      \draw (q0) edge[loop above] node{1} (q0);
+      \draw (q0) edge[above] node{0} (q1);
+      \draw (q1) edge[above] node{0} (q2);
+      \draw (q0) edge[bend left, above] node{1} (q2);
+      \draw (q2) edge[loop above] node{0} (q2);
+      \draw (q1) edge[right] node{1} (q3);
+      \draw (q3) edge[loop below] node{0,1} (q3);
+
+    \end{tikzpicture}
+    \caption{Automa a stati finiti per il linguaggio \( L \)}
+  \end{figure}
+  \noindent
+  La tesi è:
+  \begin{itemize}
+    \item \( \sigma \in L \) e \( \sigma = \sigma'1 \)
+      \(
+        \Rightarrow \hat{\delta}(q_0, \sigma) = q_0
+      \) 
+
+    \item \( \sigma \in L \) e \( \sigma = \sigma'0 \) 
+      \(
+        \Rightarrow \hat{\delta}(q_0, \sigma) = q_2
+      \) 
+
+    \item \( \sigma \notin L \) e \( \sigma = \sigma'0 \) dove l'ultima sequenza di 0
+      è esattamente lunga 1:
+      \(
+        \Rightarrow \hat{\delta}(q_0, \sigma) = q_1
+      \) 
+
+    \item \( \sigma \notin L \) e \( \sigma  \) contiene una sequenza lunga 1 di 0:
+      \(
+        \Rightarrow \hat{\delta}(q_0, \sigma) = q_{\bot}
+      \)
+  \end{itemize}
+\end{exercise}
+
+\subsection{Automi a stati finiti non deterministici (NFA)}
+Un automa a stati finiti non deterministico si crea quando ad un solo simbolo sono
+associate più transizioni. Quando questo succede gli stati vengono considerati in
+parallelo. Un NFA è definito come una quintupla:
+\[
+  N = \left< Q, \Sigma, \delta, q_0, F \right>
+\] 
+\begin{itemize}
+  \item \( Q \) è un insieme finito di stati
+  \item \( \Sigma  \) è un insieme finito di simboli (alfabeto)
+  \item \( q_0 \in Q \) è uno stato e identifica lo stato iniziale
+  \item \( F \subseteq Q \) è l'insieme degli stati finali
+  \item \( \delta: Q \times \Sigma \to \mathcal{P}(Q) \) è una funzione di transizione che
+    dato uno stato e un simbolo restituisce un insieme di stati \textbf{potenzialmente}
+    raggiungibili. È possibile che esistano coppie associate all'insieme vuoto:
+    \[
+      \varnothing \in \mathcal{P}(Q)
+    \] 
+    Inoltre non è obbligatorio avere un arco uscente per ogni simbolo di \( \Sigma \).
+  \item \( \hat{\delta}: Q \times \Sigma^* \to \mathcal{P}(Q) \) Descrive gli stati che si possono
+    raggiungere leggendo una sequenza di simboli:
+    \[
+      \begin{cases}
+        \hat{\delta}(q, \epsilon) = \{q\}\\
+        \hat{\delta}(q, wa) = \bigcup_{p \in \hat{\delta}(q,w)} \delta(p, a)
+      \end{cases}
+      \quad
+      w \in \Sigma^*, \quad a \in \Sigma 
+    \] 
+    È quindi la chiusura transitiva di \( \delta \)
+\end{itemize}
+\begin{example}
+  Un esempio di NFA è il seguente:
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[->, node distance=2cm, on grid, auto]
+      \node[state, initial] (q0) {$q_0$};
+
+      \node[state, above right of=q0] (q1) {$q_1$};
+
+      \node[state, below right of=q1] (q2) {$q_2$};
+
+      \draw (q0) edge[above] node{a} (q1);
+      \draw (q0) edge[below] node{a} (q2);
+
+    \end{tikzpicture}
+    \caption{Esempio di NFA}
+  \end{figure}
+  \[
+    \delta(q_0, a) = \{q_1, q_2\} \subseteq Q
+  \] 
+\end{example}
+
+\subsubsection{Linguaggio riconosciuto da un NFA}
+Un linguaggio \( L \) è riconosciuto da un NFA \( N \) se:
+\[
+  L(N) = \left\{ \sigma \in \Sigma^* \;\left|\;
+  \hat{\delta}(q_0, a) \cap F \neq \varnothing \right.\right\}
+\] 
+\begin{example}
+  Consideriamo il seguente linguaggio:
+  \[
+  L(N) = \left\{ \sigma \in \Sigma^* \;\left|\; \sigma \text{ contiene almeno due } 1 \right. \right\}
+  \] 
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[->, node distance=2cm, on grid, auto]
+      \node[state, initial] (q0) {$q_0$};
+
+      \node[state, right of=q0] (q1) {$q_1$};
+
+      \node[state, above of=q0] (q2) {$q_2$};
+
+      \draw (q2) edge[right] node{1} (q0);
+      \draw (q0) edge[bend left, below] node{1} (q1);
+      \draw (q1) edge[bend left, below] node{1} (q0);
+
+      \draw (q1) edge[below] node{1} (q2);
+      \draw (q2) edge[bend left, above] node{0,1} (q1);
+
+      \draw (q2) edge[loop above] node{0,1} (q2);
+
+    \end{tikzpicture}
+    \caption{Esempio di NFA per il linguaggio \( L \)}
+  \end{figure}
+\end{example}
+
+\begin{theorem}[Teorema di Rabin-Scott]
+  Ogni linguaggio riconosciuto da un NFA è riconosciuto da un DFA.
+  \[
+    \forall N = (Q, \Sigma, \delta, q_0, F) \; \exists M = (Q', \Sigma, \delta', q_0', F') \;.\;
+    L(N) = L(M)
+  \] 
+
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione}: Consideriamo un NFA \( N = (Q, \Sigma, \delta, q_0, F) \) e
+  costruiamo un DFA \( M = (Q', \Sigma, \delta', q_0', F') \).
+  Gli insiemi degli stati sono:
+  \[
+    Q' = \mathcal{P}(Q)
+  \] 
+  \[
+   Q = \{q_0, q_1, q_2\}
+  \] 
+  \[
+    \Downarrow
+  \] 
+  \[
+    Q' = \left\{ 
+      \stackrel{q'_1}{\varnothing}, \stackrel{q'_0}{\{q_0\}}, \stackrel{q'_2}{\{q_1\}},
+      \stackrel{q'_3}{\{q_2\}}, \stackrel{q'_4}{\{q_0, q_1\}}, \stackrel{q'_5}{\{q_0, q_2\}},
+      \stackrel{q'_6}{\{q_1, q_2\}}, \stackrel{q'_7}{\{q_0, q_1, q_2\}}
+    \right\}
+  \] 
+  Lo stato iniziale rimane uguale per entrambi gli insiemi: \( q'_0 = \{q_0\}  \).
+
+  Gli insiemi degli stati finali sono:
+  \[
+    F' = \left\{ P \subseteq Q \;\left|\; P \cap F \neq \varnothing \right. \right\} \quad
+    P \in \mathcal{P}(Q)
+  \] 
+  Quindi:
+  \[
+    F = \{q_2\} 
+  \] 
+  \[
+    F' = \left\{ \stackrel{q'_3}{\{q_2\}}, \stackrel{q'_6}{\{q_1, q_2\}},
+      \stackrel{q'_5}{\{q_0, q_2\}}, \stackrel{q'_7}{\{q_0, q_1, q_2\}}
+    \right\}
+  \] 
+  La funzione di transizione è definita come:
+  \[
+    \delta'(P, a) = \bigcup_{q \in P} \delta(q, a) \in \mathcal{P}(Q) \quad P \in Q' = \mathcal{P}(Q),\; a \in \Sigma 
+  \]
+  Quindi:
+  \[
+    \begin{aligned}
+      \underbrace{\delta'(q'_5, 1)}_{= \{q_1, q_2\} }
+      &= \delta(q_1, 1) \cup \delta(q_2, 1)\\
+                       &= \{q_0, q_2\} \cup \{q_0, q_1, q_2\}\\
+                       &= \{q_0, q_1, q_2\} = q'_7
+    \end{aligned}
+  \] 
+
+  \vspace{1em}
+  \noindent
+  Dimostriamo: 
+  \begin{enumerate}
+    \item 
+      \( \hat{\delta}(q_0, \sigma) = \hat{\delta}'(q'_0, \sigma) = \{q_0\}  \) 
+
+      \vspace{1em}
+      \noindent
+      Dimostriamo per induzione su \( \left| \sigma  \right|  \):
+
+      \begin{itemize}
+        \item 
+          Se \( \sigma = \varepsilon \) allora:
+          \[
+            \hat{\delta}'(q'_0, \varepsilon) = q'_0 = \{q_0\} = \hat{\delta}(q_0, \varepsilon)
+          \] 
+          per le definizioni
+
+        \item Se \( \sigma = \sigma'a \):
+          \[
+            \begin{aligned}
+              \hat{\delta}'(q'_0, \sigma'a) &= \delta'(\hat{\delta}'(q_0, \sigma'), a)\\
+                                            &= \delta'(\hat{\delta}(q_0, \sigma'), a)\\
+                                            &= \bigcup_{p \in \hat{\delta}(q_0, \sigma')} \delta(p, a)\\
+                                            &= \hat{\delta}(q_0, \sigma'a)
+            \end{aligned}
+          \] 
+          Definizione di \( \hat{\delta}' \) non deterministica
+      \end{itemize}
+    \item
+      \(
+        \sigma \in L(N) \iff \sigma \in L(M)
+      \) 
+
+      \vspace{1em}
+      \noindent
+      Dimostriamo la definizione di linguaggio riconosciuto in NFA:
+      \[
+        \begin{aligned}
+          \sigma \in L(N) &\iff \hat{\delta}(q_0, \sigma) \cap F \neq \varnothing\\
+                          &\iff \hat{\delta}'(q'_0, \sigma) \cap F' \neq \varnothing \;(\text{(1.)})\\
+                          &\iff \hat{\delta}'(q'_0, \sigma) \in F'\\
+                          &\iff \sigma \in L(M) \; \text{(def. linguaggio accettato in DFA)}
+        \end{aligned}
+      \] 
+  \end{enumerate}
+
+\end{theorem}
+
+\subsubsection{Conversione da NFA a DFA}
+Prendiamo in considerazione il seguente NFA:
+  \[
+  L(N) = \left\{ \sigma \in \Sigma^* \;\left|\; \sigma \text{ contiene almeno due } 1 \right. \right\}
+  \] 
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[->, node distance=2cm, on grid, auto]
+    \node[state, initial] (q0) {$q_0$};
+
+    \node[state, right of=q0] (q1) {$q_1$};
+
+    \node[state, above of=q0] (q2) {$q_2$};
+
+    \draw (q0) edge[loop below] node{0,1} (q0);
+
+    \draw (q2) edge[right] node{1} (q0);
+    \draw (q0) edge[bend left, below] node{1} (q1);
+    \draw (q1) edge[bend left, below] node{1} (q0);
+
+    \draw (q1) edge[below] node{1} (q2);
+    \draw (q1) edge[loop below] node{0} (q1);
+    \draw (q2) edge[bend left, above] node{0,1} (q1);
+
+    \draw (q2) edge[loop above] node{0,1} (q2);
+
+  \end{tikzpicture}
+  \caption{Esempio di NFA per il linguaggio \( L \)}
+\end{figure}
+\noindent
+Per trasformare un NFA in un DFA bisogna creare dei nuovi stati che raggruppano
+gli stati non deterministici. In questo caso:
+\begin{itemize}
+  \item \textbf{Tabella degli stati della NFA}:
+    \begin{table}[H]
+      \centering
+      \begin{tabular}{|c|c|c|}
+        \hline
+        Stato & Input 0 & Input 1\\
+        \hline
+        \( q_0 \) & \( \{q_0\} \) & \( \{q_0, q_1\} \)\\
+        \( q_1 \) & \( \{q_1\} \) & \( \{q_0, q_2\} \)\\
+        \( q_2 \) & \( \{q_1, q_2\} \) & \( \{q_0, q_1, q_2\} \)\\
+        \hline
+      \end{tabular}
+      \caption{Tabella di transizione della NFA}
+    \end{table}
+
+  \item \textbf{Traduzione degli stati della NFA in stati del DFA}:
+    \begin{table}[H]
+      \centering
+      \begin{tabular}{|c|c|c|c|}
+        \hline
+        & & 0 & 1 \\
+        \hline
+        & \( \varnothing \) & \( \varnothing \) & \( \varnothing \) \\
+
+      \end{tabular}
+      \caption{Tabella di traduzione degli stati della NFA in stati del DFA}
+    \end{table}
+\end{itemize}
+
+
+\subsection{Automi non deterministici con \texorpdfstring{\( \varepsilon  \)}{epsilon}-transizioni (\texorpdfstring{\( \varepsilon  \)-NFA}{epsilon-NFA})}
+Questo tipo di NFA permette di cambiare stato anche senza leggere simboli:
+\[
+  q_1 \stackrel{\varepsilon}{\to} q_2
+\] 
+Un \( \varepsilon \)-NFA è definito come un NFA con la differenza che la funzione di transizione
+è definita come:
+\[
+  \delta: Q \times (\Sigma \cup \{\varepsilon\}) \to \underbrace{\mathcal{P}(Q)}_{\text{Non determinismo}}
+\] 
+\begin{example}
+  Prendiamo ad esempio il seguente \( \varepsilon \)-NFA in cui leggendo solo \( a \) 
+  si può raggiungere sia \( q' \) che \( q" \):
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[->, node distance=2cm, on grid, auto]
+      \node[state, initial] (q0) {$q_0$};
+
+      \node[state, right of=q0] (q1) {$q'$};
+
+      \node[state, right of=q1] (q2) {$q"$};
+
+      \draw (q0) edge[above] node{a} (q1);
+
+      \draw (q1) edge[above] node{\( \varepsilon  \) } (q2);
+
+    \end{tikzpicture}
+    \caption{Esempio di \( \varepsilon \)-NFA}
+  \end{figure}
+\end{example}
+
+\subsubsection{\texorpdfstring{\( \varepsilon  \)}{epsilon}-closure}
+Per definire \( \hat{\delta} \) bisogna prima definire la \( \varepsilon \)-closure.
+
+Una \( \varepsilon \)-closure di uno stato \( q \) è l'insieme di tutti gli stati
+che si possono raggiungere da \( q \) seguendo archi etichettati con \( \varepsilon  \):
+\[
+  \varepsilon\text{-closure}: Q \to \mathcal{P}(Q)
+\] 
+O definito per insiemi:
+\[
+  \varepsilon\text{-closure}: \mathcal{P}(Q) \to \mathcal{P}(Q)
+\] 
+\[
+  \varepsilon\text{-closure}(P) = \bigcup_{p \in P} \varepsilon\text{-closure}(p)
+\] 
+
+La funzione \( \hat{\delta} \) è definita come:
+\[
+  \begin{cases}
+    \hat{\delta}(q, \varepsilon) &= \varepsilon\text{-closure}(q)\\
+    \hat{\delta}(q, wa) &= \bigcup_{p \in \hat{\delta}(q,w)} \varepsilon\text{-closure}(\delta(p, a))
+  \end{cases}
+\] 
+\begin{example}
+  La \( \varepsilon \)-closure dell'esempio precedente è:
+  \[
+    \varepsilon\text{-closure}(q') = \{q', q"\}
+  \] 
+\end{example}
+
+\vspace{1em}
+\noindent
+Il riconoscimento di un linguaggio è analogo a quello di un NFA:
+\[
+  L(N) = \left\{ \sigma \in \Sigma^*
+  \;\left|\; \hat{\delta}(q_0, \sigma) \cap F \neq \varnothing \right.\right\}
+\] 
+\begin{theorem}
+  Sia \( M = \left<Q, \Sigma, \delta, q_0, F \right> \) una \( \varepsilon \)-NFA, allora
+  esiste una NFA \( M' \) tale che \( L(M) = L(M') \).
+
+  Quindi l'insieme dei linguaggi riconosciuti da \( \varepsilon  \)-NFA coincide
+  con quello degli NFA, che a sua volta coincide con i linguaggi regolari.
+
+  \vspace{1em}
+  \noindent
+  \[
+    M = \left<Q, \Sigma, \delta, q_0, F \right> \; \varepsilon\text{-NFA}
+  \] 
+  Costruiamo una NFA
+  \[
+    M' = \left<Q', \Sigma', \delta', q_0', F' \right>
+  \]
+  Dove:
+  \[
+    Q'=Q, \quad \Sigma'=\Sigma, \quad q_0'=q_0 
+  \] 
+  \[
+   \quad \delta'(q,a)=\hat{\delta}(q,a) \quad
+    F'= \begin{cases}
+      F \cup \{q_0\} \; \text{se } \varepsilon\text{-closure}(q_0) \cap F \neq \varnothing\\
+      F
+    \end{cases}
+  \] 
+  in cui il numero degli stati rimane lo stesso, l'alfabeto non cambia e neanche lo stato
+  iniziale.
+\end{theorem}
+
+\subsection{Espressioni regolari}
+Le espressioni regolari sono operazioni algebriche sui linguaggi regolari.
+Le operazioni che si possono fare sono:
+\begin{itemize}
+  \item \textbf{Unione}: Dati i linguaggi \( L_1, L_2 \subseteq \Sigma^* \) 
+    \[
+      L_1 \cup L_2 = \left\{ \sigma \;\left|\; \sigma \in L_1 \vee \sigma \in L_2 \right. \right\}
+    \] 
+
+  \item \textbf{Concatenazione}: Dati i linguaggi \( L_1, L_2 \subseteq \Sigma^* \) 
+    \[
+      L_1 \cdot L_2 = \left\{ \sigma_1\sigma_2 \;\left|\; \sigma_1 \in L_1 \wedge \sigma_2 \in L_2 \right. \right\}
+      \equiv L_1 L_2
+    \]
+    Ad esempio:
+    \[
+      \color{blue}{L_1 = \{0101, 010101\}}
+      \quad 
+      \color{red}{L_2 = \{000, 111\}}
+    \] 
+    \[
+      L_1 \cdot L_2 = \{\color{blue}{0101}\color{red}{000},
+        \color{blue}{0101}\color{red}{111},
+        \color{blue}{010101}\color{red}{000},
+        \color{blue}{010101}\color{red}{111}
+      \}
+    \] 
+
+  \item \textbf{Stella di Kleene}: Dato un linguaggio \( L \subseteq \Sigma^* \)
+    \[
+      L^* = \bigcup_{n \in \mathbb{N}} L^n
+    \] 
+    Cioè la concatenazione di \( L \) con se stesso \( n \) volte, con:
+    \[
+      \begin{cases}
+        L^0 = \{\varepsilon\}\\
+        L^{n+1} = L \cdot L^n
+      \end{cases}
+    \] 
+    Ad esempio:
+    \[
+      L = \{000, 111\} 
+    \] 
+    \[
+      \begin{aligned}
+        L^0 &= \{\varepsilon\}\\
+        L^1 &= L \cdot L^0 = \{000, 111\}\\
+        L^2 &= L \cdot L^1 = \{000000, 000111, 111000, 111111\}\\
+        L^3 &= L \cdot L^2 = \left\{\begin{array}{l}
+          000000000, 000000111, 000111000, 000111111,\\
+          111000000, 111000111, 111111000, 111111111
+        \end{array}\right\}\\
+        \vdots\\
+        L^* &= \{L^0, L^1, L^2, L^3, \ldots\}\\
+      \end{aligned}
+    \] 
+
+    \vspace{1em}
+    \noindent
+    \begin{itemize}
+      \item \( L^* \) è l'insieme di tutte le possibili concatenazioni di stringhe
+        appartenenti a \( L \), compresa la stringa vuota \( \varepsilon \)
+      \item \( L^+ = \bigcup_{n \ge 0} L^n \) è definito come \( L^* \) senza la
+        stringa vuota \( \varepsilon \):
+        \[
+          L^+ = L \cdot L^* 
+        \]
+    \end{itemize}
+\end{itemize}
+
+\begin{definition}
+  Definiamo per induzione le espressioni regolari su un alfabeto \( \Sigma \):
+  \begin{itemize}
+    \item \textbf{Caso base}:
+      \begin{itemize}
+        \item \( \varnothing \subseteq \Sigma^* \) è un'espressione regolare che rappresenta
+          il linguaggio vuoto
+
+        \item \( \varepsilon \) è un'espressione regolare che rappresenta il linguaggio:
+          \[
+            \{\varepsilon\} \subseteq \Sigma^*
+          \] 
+
+        \item \( a \in \Sigma  \) è un'espressione regolare che rappresenta il linguaggio:
+          \[
+            \{a\} \subseteq \Sigma^*
+          \]
+      \end{itemize}
+
+    \item \textbf{Passo induttivo}:
+
+      \vspace{1em}
+      \noindent
+      Siamo \( r, s \) sono espressioni regolari che rappresentano il linguaggio
+      \[
+        R \subseteq \Sigma^* \wedge S \subseteq \Sigma^*
+      \] 
+      \begin{itemize}
+        \item \( r + s \) è un'espressione regolare che rappresenta il linguaggio \( R \cup S \) 
+        \item \( r \cdot s \) è un'espressione regolare che rappresenta il linguaggio \( R \cdot S \)
+        \item \( r^* \) è un'espressione regolare che rappresenta il linguaggio:
+          \[
+            R^*
+          \]
+      \end{itemize}
+  \end{itemize}
+\end{definition}
+
+\begin{example}
+  Prendiamo ad esempio l'espressione regolare:
+  \[
+    1^* + 0^* + (10)^*
+  \] 
+  che equivale a
+  \[
+    \left\{ 1^n \;\left|\; n \in \mathbb{N} \right. \right\} \cup 
+    \left\{ 0^n \;\left|\; n \in \mathbb{N} \right. \right\} \cup
+    \left\{ (10)^n \;\left|\; n \in \mathbb{N} \right. \right\}
+  \] 
+\end{example}
+
+\begin{theorem}[Teorema di equivalenza]
+  Dato un DFA \( M = \left< Q, \Sigma, \delta, q_0, F \right> \) allora esiste
+  un'espressione regolare \( r \) tale che \( L(M) = L(r) \).
+  \[
+    L \text{ Regolare} \stackrel{\text{def}}{\iff}
+    \underbrace{\exists M \text{ DFA }.\; L}_{L(M) = L}
+    \stackrel{\text{Th}}{\Rightarrow} \exists r \in \underbrace{ER}{\text{Espressioni Regolari}} \;.\; L(r) = L
+  \] 
+\end{theorem}
+\begin{theorem}
+  Data un'espressione regolare (ER) \( r \) esiste una \( \varepsilon \)-NFA \( M \)
+  tale che: \( L(r) = L(M) \) 
+
+  \vspace{1em}
+  \noindent
+  Quindi:
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[node distance=2cm, on grid, auto]
+      \node[] (s) {$\varepsilon \leadsto$};
+      \node[state, accepting, right of=s] (q0) {$q_0$};
+      \node[right of=q0] (f) {$L(M) = \{\varepsilon \} $};
+
+    \end{tikzpicture}
+  \end{figure}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[node distance=1.5cm, on grid, auto]
+      \node[] (s) {$\varnothing \leadsto$};
+      \node[state, right of=s] (q0) {$q_0$};
+      \node[state, accepting, right of=q0] (q1) {$q_1$};
+      \node[right of=q1] (f) {$L(M) = \{\varnothing \} $};
+
+      \draw (q0) edge[above] node{a} (q1);
+    \end{tikzpicture}
+  \end{figure}
+
+  \[
+    \begin{aligned}
+      r \text{ ER} \Rightarrow M \; \underbrace{\varepsilon\text{-NFA}}_{L(r) = L(M)} \iff\\
+      M' \; \underbrace{\text{DFA}}_{L(M) = L(M') = L(r)} \iff\\
+      L(r) = L(M') \text{ è regolare}
+    \end{aligned}
+  \] 
+\end{theorem}
+
+\begin{example}
+  Consideriamo il seguente linguaggio:
+  \[
+    L = \left\{ \sigma \in \Sigma^* \;\left|\; \sigma \text{ contiene almeno due } 1 \right. \right\}
+  \] 
+  Per dimostrare che è regolare si costruisce il DFA \( M \) e si dimostra \( L = L(M) \).
+  Però se si ha un'espressione regolare \( r = 0^*1 0^*1 0^* \) \textbf{non} dimostra
+  che \( L \) è regolare. Bisognerebbe dimostrare \( L = L(r) \) 
+\end{example}
+
+\subsection{Proprietà dei linguaggi regolari}
+
+\subsubsection{Proprietà di chiusura}
+Indica se l'insieme dei linguaggi regolari è chiuso rispetto ad alcune operazioni,
+cioè se applicando queste operazioni a linguaggi regolari si ottengono sempre
+linguaggi regolari.
+
+Operazioni:
+\begin{itemize}
+  \item \( * \) 
+  \item \( \cup \) 
+  \item \( \cdot  \) 
+\item \( \cap \quad \left(L_1 \cap L_2 = \left\{ \sigma \;\left|\; \sigma \in L_1 \wedge \sigma \in L_2 \right. \right\}\right) \)
+\item \( \bar{} \quad \left(\bar{L} = \left\{ \sigma \;\left|\; \sigma \\notin L \right. \right\}\right) \)
+\end{itemize}
+
+\begin{theorem}
+  I linguaggi regolari sono chiusi rispetto alle operazioni di:
+  \begin{itemize}
+    \item Stella di Kleene
+    \item Unione (finita)
+    \item Concatenazione
+  \end{itemize}
+  Consideriamo i linguaggi regolari \( L_1, L_2 \). Allora:
+  \begin{itemize}
+    \item \( L_1^* \) è regolare
+    \item \( L_1 \cup L_2 \) è regolare
+    \item \( L_1 \cdot L_2 \) è regolare
+  \end{itemize}
+\end{theorem}
+
+\begin{theorem}
+  I linguaggi regolari sono chiusi rispetto alla complementazione. Dato un automa
+  a stati finiti, il linguaggio complementare è riconosciuto dall'automa complementare,
+  cioè quello in cui gli stati finali diventano non finali e viceversa.
+
+  \vspace{1em}
+  \noindent
+  Per le leggi di De Morgan, i linguaggi regolari sono chiusi per intersezione finita:
+  \[
+    L_1 \cap L_2 = \overline{\overline{L_1} \cup \overline{L_2}}
+  \] 
+\end{theorem}
+
+
+\subsubsection{Proprietà di decidibilità}
+Indica se esistono algoritmi che risolvono alcuni problemi sui linguaggi regolari.
+Consideriamo un insieme di stringhe accettate da un DFA (linguaggiio regolare) \( M \) 
+con \( n \) stati.
+\begin{itemize}
+  \item \( L(M) \neq \varnothing \) se e solo se accetta almeno una stringa di lunghezza \( \le n \) 
+
+  \item \( L(M) \) è infinito se e solo se accetta almeno una stringa di lunghezza
+    \( l \) con \( n \le l < 2n \). Cioè se esiste un ciclo. Questo fornisce un estremo
+    superiore per verificare se un linguaggio è infinito.
+
+  \item \( L(M_1) = L(M_2) \) 
+\end{itemize}
+
+
+\subsubsection{Esistenza dell'automa minimo}
+Forniamo strategie per costruire un automa minimo.
+
+\begin{definition}[Relazione di equivalenza e partizione]
+  Data una relazione \( R \) su \( \Sigma \).
+  \( R \) è una relazione di:
+  \begin{itemize}
+    \item Equivalenza: \( E \subset \Sigma \times \Sigma  \) 
+    \item Riflessiva: \( \forall a \;.\; aRa \) 
+    \item Simmetrica: \( \forall a,b \;.\; aRb \Rightarrow bRa \)
+    \item Transitiva: \( \forall a,b,c \;.\; aRb \wedge bRc \Rightarrow aRc \)
+  \end{itemize}
+  La \textbf{relazione di equivalenza} \( R \) \textbf{induce una partizione} (unione di insiemi)
+  di \( S \):
+  \[
+    R \subseteq S \times S
+  \] 
+  ovvero:
+  \[
+    S = S_1 \cup S_2 \cup \ldots \cup S_k
+  \] 
+  dove \( S_i \) sono una partizione di \( S \).
+  Inoltre:
+  \begin{itemize}
+    \item \( \forall i,j \;.\; S_i \cap S_j = \varnothing \)
+    \item \( \forall i \;.\; \forall a,b \in S_i \;.\; aRb \)
+    \item \( \forall a \in S_i, b \in S_j, i \neq j \;.\; a \not R b \)
+  \end{itemize}
+
+  \vspace{1em}
+  \noindent
+  Quindi \( R \) è come se dividesse \( S \) in insiemi disgiunti:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{partizione}
+    \caption{Esempio di partizione su S}
+  \end{figure}
+  \noindent
+  \( S_i \) sono detti \textbf{classi di equivalenza} di \( R \) e si indica con:
+  \[
+    a \in R \Rightarrow [a]_R = \left\{ b \;\left|\; aRb \right. \right\}
+  \] 
+  Ad esempio:
+  \[
+    cRa \Rightarrow [a]_R \equiv [c]_R
+  \] 
+\end{definition}
+
+\vspace{1em}
+\noindent
+Definiamo di seguito due relazioni di equivalenza:
+\begin{definition}[Classe di equivalenza definita per tutti i linguaggi]
+  Consideriamo un linguaggio \( L \subseteq \Sigma^* \), possiamo definire una relazione
+  \( R_L \) come:
+  \[
+    R_L \subseteq \Sigma^* \times \Sigma^*
+  \] 
+  \[
+    x,y \in \Sigma^* \quad x R_L y \iff \forall z \in \Sigma^* \;.\; xz \in L \iff
+    yz \in L
+  \] 
+  Quindi o entrambi appartengono a \( L \) o entrambi non appartengono a \( L \).
+\end{definition}
+\begin{definition}[Classe di equivalenza definita per gli automi]
+  Consideriamo un automa \( M \) DFA \( \left< Q, \Sigma, \delta, q_0, F \right> \).
+  Possiamo definire una relazione \( R_M \) come:
+  \[
+    R_M \subseteq \Sigma^* \times \Sigma^*
+  \] 
+  \[
+    x,y \in \Sigma^* \quad x R_M y \iff \delta(q_0, x) = \delta(q_0, y)
+  \] 
+  Due stringhe sono in relazione se raggiungono lo stesso stato.
+\end{definition}
+
+
+\vspace{1em}
+\noindent
+\begin{definition}[Relazione invariante destra]
+  Una relazione \( R \) su \( \Sigma^* \): \( R \subseteq \Sigma^* \times \Sigma^* \) 
+  è \textbf{invariante destra} se e solo se:
+  \[
+    x,y \in \Sigma^* \quad xRy \implies \forall z \in \Sigma^* \;.\; xz R yz
+  \] 
+  Se due stringhe sono in relazione tra di loro, allora in qualunque modo vengano
+  estese, rimarranno in relazione tra di loro.
+  Quindi essere in relazione è invariante rispetto all'estensione della stringa
+  \textbf{verso destra}
+
+  \vspace{1em}
+  \noindent
+  \( R_L \) e \( R_M \) sono relazioni invarianti destre.
+\end{definition}
+
+\begin{definition}[Raffinamento]
+  La relazione \( R_2 \) è \textbf{raffinamento} di \( R_1 \) se:
+  \[
+    \begin{array}{ll}
+      R_2 \subseteq S \times S \\
+      R_1 \subseteq S \times S
+    \end{array}
+    \text{ di equivalenza}
+  \] 
+  e \( R_1 \) è più grossa di \( R_2 \), cioè ogni classe di equivalenza di \( R_2 \)
+  è contenuta in una classe di equivalenza di \( R_1 \) e quindi è come se fosse
+  più dettagliata:
+  \[
+    \forall x \;.\; [x]_{R_2} \subseteq [x]_{R_1}
+  \] 
+  Il numero di classi di equivalenza di \( R_2 \) è maggiore del numero di classi
+  di equivalenza di \( R_1 \).
+\end{definition}
+
+\begin{definition}
+  Dato un automa DFA \( M = \left< Q, \Sigma, \delta, q_0, F \right> \),
+  ogni stato definisce un linguaggio \( L_q \) come:
+  \[
+    q \in Q \quad : \quad L_q = \left\{ \sigma \in \Sigma^* \;\left|\; \hat{\delta}(q, \sigma) = q \right. \right\}
+  \] 
+\end{definition}
+
+\begin{theorem}[Teorema di Myhill-Nerode]
+  I seguenti enunciati sono equivalenti:
+  \begin{enumerate}
+    \item \( L \subseteq \Sigma^* \) è un linguaggio regolare, ovvero esiste un
+      DFA \( M \) tale che \( L = L(M) \) 
+
+    \item \( L \) è unione di classi di equivalenza (cioè è partizionato) indotte da
+      una relazione di equivalenza \( R \) invariante destra e di indice finito,
+      cioè se il numero di classi di equivalenza indotte è finito. 
+
+    \item \( R_L \) è di indice finito
+  \end{enumerate}
+  Dimostriamo che:
+  \[
+    1. \implies 2. \underset{R \text{ raffina } R_L}{\implies} 3.
+    \underset{\text{Costruisce } M}{\implies} 1.
+  \] 
+  \begin{itemize}
+    \item \( 1. \implies 2. \)
+
+      \textbf{Ipotesi}: \( L \) è un linguaggio riconosciuto da
+      un DFA \( M = \left< Q, \Sigma, \delta, q_0, F \right> \) \( L = L(M) \).
+
+      \textbf{Tesi}: Esisrte una relazione di equivalenza \( R \) invariante destra
+      e di indice finito tale che \( L \) è unione di classi di equivalenza di \( R \).
+
+      \vspace{1em}
+      \noindent
+      Prendiamo \( R = R_M \quad x R_M y \iff \delta(q_0, x) = \delta(q_0, y) \).
+      \begin{enumerate}
+        \item Il numero delle classi di equivalenza di \( R_M \) è uguale al numero
+          di stati di \( M \): \( \left| Q \right| \)
+          e \( \left| Q \right| \) è finito, quindi \( R_M \) è di indice finito
+
+        \item \( R_M \) è invariante destra
+      \end{enumerate}
+
+      \[
+        \begin{aligned}
+        L = L(M) &= \left\{ x \in \Sigma^* \;\left|\; \hat{\delta}(q_0, x) \in F \right. \right\}\\
+                 &= \left\{ x \in \Sigma^* \;\left|\; \hat{\delta}(q_0, x) = q \wedge q \in F \right. \right\}\\
+                 &= \bigcup_{q \in F} \left\{ x \in \Sigma^* \;\left|\; \hat{\delta}(q_0, x) =
+                 q \right. \right\}\\
+                 &= \bigcup_{q \in F} L_q
+        \end{aligned}
+      \] 
+      Quindi \( L \) è unione di classi di equivalenza di \( R_M \).
+
+    \item \( 2. \implies 3. \)
+
+      \textbf{Ipotesi}: \( L \) è unione di classi di equivalenza di
+      una relazione di equivalenza \( R \) invariante destra e di indice finito.
+
+      \textbf{Tesi}: \( R_L \) è di indice finito (numero di classi finito).
+
+      \vspace{1em}
+      \noindent
+      Dimostriamo che \( R \) è raffinamento di \( R_L \) perchè allora il numero
+      di classi di equivalenza di \( R \) (finito per ipotesi) sarebbe maggiore del numero di classi
+      di \( R_L \) (che quindi sarebbe finito).
+
+      Per dimostrare \( R \) raffinamento di \( R_L \) bisogna dobbiamo dimostrare
+      che se due oggetti sono in relazione secondo la relazione più fine \( R \), lo sono
+      anche secondo la relazione più grossa \( R_L \):
+      \[
+        \begin{aligned}
+          \forall x,y &\;.\; xRy \implies x R_L y\\
+                      &\equiv \left[ y \in [x]_R \implies y \in [x]_{R_L} \right]\\
+                      &\equiv [x]_R \subseteq [x]_{R_L} \text{ per raffinamento}
+        \end{aligned}
+      \] 
+
+      Prendiamo \( xRy \) sapendo che \( R \) è invariante destra, cioè:
+      \[
+        \forall z \in \Sigma^* \;.\; xRy \implies xzRyz
+      \] 
+      \[
+        L = \cup \text{ classi di equivalenza}
+      \] 
+      Questo implica che o entrambe \( x \) e \( y \) appartengono a \( L \) o entrambe
+      non appartengono a \( L \):
+      \[
+        xRy \implies x \in L \iff y \in L
+      \] 
+      \[
+        [x]_R \subseteq L \quad \vee \quad [x]_R \text{ fuori da } L
+      \] 
+
+      \[
+        \begin{aligned}
+          xRy &\implies x \in L \iff y \in L\\
+              &\underset{\text{Invariante destra}}{\implies}
+              \forall z \;.\; xz R yz
+              \underset{L = \cup \text{ classi}}{\implies} xz \in L \iff yz \in L\\
+              &\underset{\text{Def. di } R_L}{\implies} x R_L y
+        \end{aligned}
+      \] 
+      Questo dimostra che dato un \( M \) generico \( R_M \) è un raffinamento di \( R_L \).
+
+    \item \( 3. \implies 1. \)
+      \textbf{Ipotesi}: \( R_L \) è di indice finito.
+
+      \textbf{Tesi}: \( L \) è regolare, cioè è riconisciuto da un DFA \( M \): \( L = L(M) \).
+
+      \vspace{1em}
+      \noindent
+      Costriuiamo \( M \):
+      \begin{itemize}
+        \item \( Q = \left\{ [x]_{R_L} \;\left|\; x \in \Sigma^* \right. \right\} \) 
+          è l'insieme delle classi di equivalenza di \( R_L \) (sono finite per ipotesi)
+
+        \item \( \Sigma \) è l'alfabeto del linguaggio \( L \)
+
+        \item \( q_0 = [\varepsilon]_{R_L} \) è la classe di equivalenza della stringa vuota
+
+        \item \( F = \left\{ [x]_{R_L} \;\left|\; x \in L \right. \right\} \) è l'insieme
+          delle classi di equivalenza che contengono almeno una stringa appartenente a \( L \)
+
+        \item \( \delta(q, a) = \delta\left( [x]_{R_L}, a \right) = [xa]_{R_L} \). Si
+          potrebbe anche prendere un elemento qualsiasi \( y \in [x]_{R_L} \) e definire:
+          \[
+            yRx \implies [x]_{R_L} = [y]_{R_L} \quad \implies \quad [ya]_{R_L} = [xa]_{R_L}
+          \] 
+          e questo vale perchè \( R_L \) è invariante destra. Quindi la definizione
+          di \( \delta \) è una buona definizione perchè è indipendente dall'elemento
+          che rappresenta la classe di equivalenza.
+      \end{itemize}
+      Bisogna dimostrare che \( L = L(M) \):
+      \begin{itemize}
+        \item Dimostrazione per induzione che \( \hat{\delta}([x],y) = [xy] \) 
+
+          \vspace{1em}
+          \noindent
+          \[
+            \hat{\delta}(q_0, x) = \hat{\delta}([\varepsilon]_{R_L}, x) = [x]_{R_L}
+          \] 
+          \[
+            \begin{aligned}
+              \implies x \in L(M) &\iff \hat{\delta}(q_0, x) \in F\\
+                                  &\iff \hat{\delta}([\varepsilon]_{R_L}, x) \in F\\
+                                  &\iff [x]_{R_L} \in F\\
+                                  &\iff x \in L \implies L(M) = L
+            \end{aligned}
+          \] 
+
+      \end{itemize}
+      Dato \( L \) esiste un DFA \( M \) tale che \( L = L(M) \) ed \( M \) ha il numero
+      minimo di stati. (Quello costruito con le classi di equivalenza di \( R_L \))
+  \end{itemize}
+\end{theorem}
+
+
+\subsubsection{Condizione necessaria perchè un linguaggio sia regolare}
+Un linguaggio \( L \) è regolare se esiste un automa, quindi per dimostrare che
+un linguaggio non è regolare si può dimostrare che non esiste un automa. Per fare ciò
+si usa il Pumping lemma che fornisce una condizione \( \Pi_L \) \textbf{necessaria}
+alla regolarità di un linguaggio:
+\[
+  L \text{ regolare} \Rightarrow \Pi_L \quad \equiv \quad \neg \Pi_L \Rightarrow L \text{ non regolare}
+\] 
+
+\begin{theorem}[Pumping lemma per linguaggi regolari]
+  Consideriamo un linguaggio regolare \( L \), allora esiste una costante
+  \( k \in \mathbb{N} \) tale che per ogni stringa di lunghezza maggiore di \( k \) nel
+  linguaggio, esiste una suddivisione della stringa in tre parti \( u,v,w \) tale che:
+  \[
+    \exists k \in \mathbb{N} \;.\; \forall z \in L \;:\; |z| \ge k
+  \] 
+  \[
+    \Downarrow
+  \] 
+  \[
+    \exists\;
+    u,v,w \in \Sigma^* \;.\;
+    z = uvw \wedge \begin{cases}
+      |uv| \le k\\
+      |v| > 0\\
+      \forall i \in \mathbb{N} \;.\; uv^iw \in L
+    \end{cases}
+  \] 
+  cioè la parte \( v \) può essere "pompata" (ripetuta \( i \) volte) e la stringa
+  risultante appartiene ancora a \( L \).
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{insieme_pumping_lemma}
+    \caption{Rappresentazione grafica dell'insieme per il Pumping lemma}
+  \end{figure}
+
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione}:
+
+  \noindent
+  Consideriamo \( L \) regolare, allora esiste un automa DFA \( M \) tale che \( L = L(M) \) 
+  \[
+    M = \left< Q, \Sigma, \delta, q_0, F \right> \quad |Q| = n \in \mathbb{N} \text{ stati finiti}
+  \] 
+  Vogliamo dimostrare che il lemma vale per \( k = n \) (k è \( |Q| \)). Prendiamo
+  una stringa nel linguaggio \( z \in L \) tal che la sua lunghezza sia maggiore o
+  uguale di \( k \): \( |z| \ge k \). Scriviamo \( z \) come insieme di caratteri:
+  \[
+    z = a_1 a_2 a_3 \ldots a_{m} \quad m \ge k
+  \] 
+  Rappresentiamo l'elaborazione di \( z \) come una sequenza di stati:
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[->,node distance=1.5cm, on grid, auto]
+      \node[state] (q0) {$q_0$};
+      \node[state, right of=q0] (q1) {$q_1$};
+      \node[state, right of=q1] (q2) {$q_2$};
+      \node[state, right of=q2] (q3) {$q_3$};
+      \node[right of=q3] (dots) {$\ldots$};
+      \node[state, right of=dots] (qm) {$q_m$};
+
+      \draw (q0) edge[above] node{\( a_1 \)} (q1);
+      \draw (q1) edge[above] node{\( a_2 \)} (q2);
+      \draw (q2) edge[above] node{\( a_3 \)} (q3);
+      \draw (q3) edge[above] node{\( a_4 \)} (dots);
+      \draw (dots) edge[above] node{\( a_m \)} (qm);
+
+      \draw[-] (0,0.5) -- ++(0,0.2) -- ++(7.5,0) node[midway, above] {z} -- ++(0,-0.2);
+    \end{tikzpicture}
+  \end{figure}
+  \noindent
+  Per leggere \( m \) simboli si attraversano \( m+1 \) stati e quindi per
+  \textbf{riconoscere} \( z \) si usano \( m+1 \) stati, ma \( m \ge n \),
+  quindi si attraversano almeno \( n+1 \) stati \( \Rightarrow m+1 \ge n+1 \).
+  Questo implica che si attraversano più stati di quelli in \( Q \), ovvero \textbf{almeno}
+  uno stato è ripetuto nel riconoscimento di \( z \).
+  
+  \vspace{1em}
+  \noindent
+  Supponiamo che \( \bar{q} \in Q \) sia il primo stato (leggendo \( z \)) che viene
+  \textbf{ripetuto}, in cui si torna per riconoscere \( z \):
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[->,node distance=1.5cm, on grid, auto]
+      \node[state] (q0) {$q_0$};
+      \node[right of=q0] (dots1) {$\ldots$};
+      \node[state, right of=dots1] (qbar) {$\bar{q}$};
+      \node[right of=qbar] (dots2) {$\ldots$};
+      \node[state, right of=dots2] (qm) {$q_m$};
+
+      \draw (q0) edge[above] node{\( a_1 \)} (dots1);
+      \draw (dots1) edge[above] node{} (qbar);
+
+      \draw (qbar) edge[loop below, dashed] node{} (qbar);
+      \draw (qbar) edge[above] node{} (dots2);
+
+      \draw (dots2) edge[above] node{\( a_m \)} (qm);
+
+      \draw[-] (0,0.5) -- ++(0,0.2) -- ++(2.5,0) node[midway, above] {u} -- ++(0,-0.2);
+      \draw[-] (2.5,0.5) -- ++(0,0.2) -- ++(1,0) node[midway, above] {v} -- ++(0,-0.2);
+      \draw[-] (3.5,0.5) -- ++(0,0.2) -- ++(2.5,0) node[midway, above] {w} -- ++(0,-0.2);
+    \end{tikzpicture}
+  \end{figure}
+  \noindent
+  \begin{itemize}
+    \item \( u \) va da \( q_0 \) alla prima occorrenza di \( \bar{q} \) (il primo
+      stato ripetuto)
+
+    \item \( v \) va da \( \bar{q} \) a \( \bar{q} \) (percorso che porta a ritrovare
+      lo stato ripetuto)
+
+    \item \( w \) va da \( \bar{q} \) allo stato finale \( q_m \)
+  \end{itemize}
+  Questa suddivisione è accettabile per il teorema?
+  \begin{enumerate}
+    \item \( \left| uv \right| \le k = n\) 
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}[->,node distance=1.5cm, on grid, auto]
+          \node[state] (q0) {$q_0$};
+          \node[state, right of=q0] (q1) {$q_1$};
+          \node[state, right of=q1] (q2) {$q_2$};
+          \node[right of=q2] (dots1) {$\ldots$};
+          \node[state, right of=dots1] (qn) {$q_{n-1}$};
+
+          \draw (q0) edge[above] node{\( a_1 \)} (q1);
+          \draw (q1) edge[above] node{\( a_2 \)} (q2);
+          \draw (q2) edge[above] node{} (dots1);
+          \draw (dots1) edge[above] node{\( a_{n-1} \) } (qn);
+          \draw (qn) edge[loop below] node{\( a_n \) } (qn);
+        \end{tikzpicture}
+      \end{figure}
+      \noindent
+      Per arrivare allo stato finale \( q_n \) si attraversano \( n-1 \) simboli
+      \[
+        Q = \left\{ q_0, q_1, \ldots, q_{n-1} \right\} \to \left| Q \right| = n
+      \] 
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}[->,node distance=1.5cm, on grid, auto]
+          \node[state] (q0) {$q_0$};
+          \node[state, right of=q0] (q1) {$q_1$};
+          \node[state, right of=q1] (q2) {$q_2$};
+          \node[state, right of=q2] (q3) {$q_3$};
+          \node[state, below right=2cm of q3] (q4) {$q_4$};
+          \node[state, below left=2cm of q3] (qn) {$q_{n-1}$};
+          \node[right=3.5cm of q3] (dots) {$\ldots$};
+
+          \draw (q0) edge[above] node{\( a_1 \)} (q1);
+          \draw (q1) edge[above] node{\( a_2 \)} (q2);
+          \draw (q2) edge[above] node{\( a_3 \)} (q3);
+          \draw (q3) edge[right] node{\( a_4 \)} (q4);
+          \draw (q4) edge[above, dashed] node{\( a_{n-1} \)} (qn);
+          \draw (qn) edge[left] node{\( a_n \)} (q3);
+          \draw (q3) edge[above] node{} (dots);
+
+          \draw[-] (7,0.5) -- ++(0,0.2) -- ++(1.2,0) node[midway, above] {w};
+          \draw[-] (-0.5,-2) -- ++(0,-0.2) -- ++(7,0) node[midway,below]
+            {$\le n \text{ num. di stati}$} -- ++(0,0.2);
+        \end{tikzpicture}
+      \end{figure}
+
+    \item \( \left| v \right| > 0 \) almeno un arco deve essere uscire dallo stato
+      e ritornare nello stesso stato
+
+    \item \( uw \) arrivano in \( q_m \), quindi:
+      \[
+        \forall i \;.\; uv^iw \in L
+      \] 
+      e raggiunge lo stato finale \( q_m \)
+  \end{enumerate}
+\end{theorem}
+
+\subsubsection{Dimostrazione che un linguaggio non è regolare}
+Per dimostrare che un linguaggio non è regolare si può usare il pumping lemma:
+\[
+  L \text{ regolare } \Rightarrow \exists k \;.\; \forall z \in L \;:\; |z| \ge k
+\] 
+\[
+  \Downarrow
+\] 
+\[
+  \exists z = uvw \;.\; \begin{cases}
+    |uv| \le k\\
+    |v| > 0\\
+    \forall i \in \mathbb{N} \;.\; uv^iw \in L
+  \end{cases}
+\]
+Per fare ciò si nega il pumping lemma:
+\[
+  A \leadsto B
+\] 
+\[
+  \neg B \leadsto \neg A
+\] 
+\[
+  \exists \leadsto \forall 
+\] 
+Il pumping lemma si nega come segue:
+\begin{itemize}
+  \item \( \exists k \leadsto \forall K \):
+    La dimostrazione \textbf{non} deve imporre vincoli su \( k \)
+
+  \item \( \forall z \leadsto \exists z \in L \;.\; \left| z \right| \ge k \):
+    costruiamo noi la \( z \in L \) di lunghezza \( \ge k \) 
+
+  \item \( \exists uvw = z \leadsto \forall uvw = z \):
+    \( |v| > 0 \; |uv \le k \) 
+  \item \( \forall i \in \mathbb{N} \leadsto \exists i \in \mathbb{N} \;.\; uv^iw \notin L \):
+    troviamo un \( i \) che "rompe" la stringa
+\end{itemize}
+Quindi il pumping lemma negato diventa:
+\[
+  \forall k \in \mathbb{N} \;.\; \exists z \in L \;:\; |z| \ge k
+\] 
+\[
+  \Downarrow
+\] 
+\[
+  \forall  uvw = z \;.\; \begin{cases}
+    |uv| \le k\\
+    |v| > 0\\
+    \exists i \in \mathbb{N} \;.\; uv^iw \notin L
+  \end{cases}
+\] 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{insieme_pumping_lemma_negato}
+  \caption{Rappresentazione grafica dell'insieme per il Pumping lemma negato}
+\end{figure}
+
+\begin{example}
+  Consideriamo il linguaggio:
+  \[
+    L = \left\{ 0^n 1^n \;\left|\; n \in \mathbb{N} \right. \right\}
+  \] 
+  Bisogna creare un automa che riconosca tutte le stringhe, ad esempio:
+  \[
+    \varepsilon, 01, 0011, 000111, 00001111, \ldots
+  \] 
+  Scriviamo le condizioni di appartenenza a \( L \):
+  \[
+    0^a 1^b \in L \iff a = b
+  \] 
+  (gli 0 devono essere uguali agli 1).
+
+  \noindent
+  Ogni volta che si legge un 1 bisogna ricordarsi quanti 0 sono stati letti prima,
+  però si possono leggere infiniti 0 e quindi servirebbero infiniti stati.
+  Vogliamo quindi dimostrare che \( L \) non è regolare usando il pumping lemma negato:
+  \[
+    \forall k \in \mathbb{N} \;.\; \exists z \in L \;:\; |z| \ge k
+  \] 
+  \[
+    \Downarrow
+  \] 
+  \[
+    \forall  uvw = z \;.\; \begin{cases}
+      |uv| \le k\\
+      |v| > 0\\
+      \exists i \in \mathbb{N} \;.\; uv^iw \notin L
+    \end{cases}
+  \] 
+
+  \vspace{1em}
+  \noindent
+  Fissiamo \( k \in \mathbb{N} \) (\( k \) non deve avere nessun vincolo). Qualunque sia
+  \( k \) prendiamo la stringa:
+  \[
+    z = 0^k 1^k \in L \quad |z| \ge k
+  \] 
+  Le uniche suddivisioni che vanno bene sono quelle in cui \( uv \) stanno nella
+  parte degli 0 (perchè per ipotesi \( |uv| \le k \).
+  Si può concludere che la sottostringa \( uv \) è composta da soli 0:
+  \[
+    uv \in 0^k
+  \] 
+
+  \vspace{1em}
+  \noindent
+  Consideriamo la stringa:
+  \[
+    z_i = uv^iw = 0^{k + (i-1)|v|} 1^k
+  \] 
+  (ripetere \( v \) \( i \) volte equivale ad aggiungere \( (i-1)|v| \) volte \( v \) a quella
+  già esistente). Ad esempio:
+  Supponendo di avere 10 zeri un esempio di suddivisione è il seguente
+  \[
+    \underbrace{000000}_{u}
+    \underbrace{000}_{v}
+    \underbrace{01111111111}_{w}
+  \] 
+  \begin{itemize}
+    \item Con \( i = 0 \) (togliere \( v \))
+      \[
+        0^{k + (0-1)|v|} 1^k = 0^{k - |v|} 1^k
+      \] 
+
+    \item Con \( i = 1 \) (lasciare \( v \) una volta)
+      \[
+        0^{k + (1-1)|v|} 1^k = 0^{k} 1^k
+      \] 
+
+    \item Con \( i = 3 \) (ripetere \( v \) tre volte)
+      \[
+        0^{k + (3-1)|v|} 1^k = 0^{k + 2|v|} 1^k
+      \]
+  \end{itemize}
+
+  \vspace{1em}
+  \noindent
+  Troviamo un \( i \) tale che \( z_i \notin L \):
+  \[
+    z_i = 0^{k + (i-1)|v|} 1^k
+  \] 
+  Scegliamo ad esempio \( i = 2 \):
+  \[
+    \begin{aligned}
+      z_2 = 0^{k + |v|} 1^k \in L &\iff \underbrace{k + |v|}_a = \underbrace{k}_b\\
+                                  &\iff |v| = 0 \text{ che è assurdo perchè } |v| > 0
+                                  &\implies z_2 \notin L
+    \end{aligned}
+  \] 
+\end{example}
+
+\section{Linguaggi context free}
+I linguaggi context free sono più potenti dei linguaggi regolari, mantenendo comunque
+la decidibilità di molti problemi. Lo strumento che si utilizza per \textbf{definire} i linguaggi
+context free sono le \textbf{grammatiche}. Rispetto ai linguaggi regolari in cui l'automa
+era un riconoscitore, per i linguaggi context free la grammatica è un generatore.
+Un esempio di linguaggi context free sono i linguaggi di programmazione.
+
+\subsection{Grammatiche context free}
+Una grammatica context free è una quadrupla \( E = \left< V, T, P, S \right> \) dove:
+\begin{itemize}
+  \item \( V \) è un insieme \textbf{finito} di simboli \textbf{non terminali} (variabili).
+    Il loro ruolo è quello di rappresentare una categoria sintattica (ad esempio: espressione,
+    istruzione, comando, ecc.)
+
+  \item \( T \) è un insieme finito di simboli \textbf{terminali}. Sono i simboli effettivi
+    che possono essere sostituiti a quelli non terminali. Ad esempio:
+    \[
+      \underbrace{x}_{\text{terminale}} = \underbrace{\text{espressione}}_{\text{non terminale}}
+    \] 
+
+  \item \( P \) è un insieme finito di \textbf{produzioni} (regole di derivazione).
+    Indicano come sostituire i simboli non terminali con stringhe di simboli.
+
+  \item \( S \in V \) è il simbolo iniziale
+
+  \item il \textbf{tipo di produzioni} (come possono essere fatte) determina il tipo
+    di grammatica. In una \textbf{grammatica context free} le produzioni sono della forma:
+    \[
+      A \to \alpha
+    \] 
+    dove \( A \in V \) (non terminali) e \( \alpha \in \left( V \cup T \right)^* \)
+    (sequenza di simboli terminali e non terminali). Il vincolo principale è il fatto
+    che a sinistra del'implicazione ci sia esattamente \textbf{una sola variabile}.
+    Questa implicazione significa che \( A \) può essere sostituito con \( \alpha \),
+    indipendentemente dal contesto in cui \( A \) si trova,
+    cioè dai simboli presenti prima e dopo \( A \).
+\end{itemize}
+
+\begin{example}
+  Un esempio di grammatica sono le \textbf{espressioni booleane}.
+  Consideriamo la grammatica: \( G = \left< V, T, P, S \right> \) dove:
+  \[
+    \begin{aligned}
+      V &= \left\{ E \right\}\\
+      T &= \left\{ 0, 1, \text{and}, \text{or}, \text{not}, (, ) \right\}\\
+      P &= \left\{
+        \begin{aligned}
+          &E \to 0 \;|\; 1 \equiv E \to 0 \; E \to 1\\
+          &E \to (E \text{ and } E)\\
+          &E \to (E \text{ or } E)\\
+          &E \to \text{not } E
+        \end{aligned}
+      \right. = 
+      E \to 0 \;|\; 1 \;|\; (E \text{ and } E) \;|\; (E \text{ or } E) \;|\; (\text{not } E)
+      \\
+        S &= E
+    \end{aligned}
+  \] 
+  (\( | \) è l'operatore or). Una grammatica può essere scritta anche solamente con
+  l'insieme delle sue produzioni.
+
+  \vspace{1em}
+  \noindent
+  Il \textbf{linguaggio generato} dalla grammatica \( G \) è una combinazione di
+  produzioni. Ad esempio:
+  \[
+    A \to \beta \in P \quad \alpha, \gamma \in (V \cup T)^*
+  \] 
+  dove:
+  \[
+  \begin{aligned}
+    A &\in V\\
+    \beta &\in (V \cup T)^*
+  \end{aligned}
+  \] 
+  Si deriva la stringa a destra applicando la produzione \( A \to \beta \) 
+  \[
+    \alpha \color{red}A\color{black} \gamma \Rightarrow \alpha \color{red}\beta\color{black} \gamma
+  \] 
+  Si è generata una nuova stringa sostituendo \( A \) con \( \beta \).
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \coordinate (A) at (0,0);
+      \draw[red,fill] (A) circle (0.1cm) node[above=0.2cm] {\( A \)};
+      \node[below left=1.5cm of A] (A1) {};
+      \node[below right=1.5cm of A] (A2) {};
+      \draw[red,|-|] (A1) -- (A2) node[midway, below] {\( \beta \in P \)};
+      \draw[red] (A) -- (A1);
+      \draw[red] (A) -- (A2);
+      \draw[red,->] (A) -- ++(0,-0.5);
+    \end{tikzpicture}
+    \caption{Rappresentazione grafica della produzione \( A \to \beta \)}
+  \end{figure}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \coordinate (A) at (0,0);
+      \coordinate[below left=1.5cm of A] (Al) {};
+      \coordinate[below right=1.5cm of A] (Ar) {};
+      \draw[red,|-|] (Al) -- (Ar) node[midway, below] {\( \beta \)};
+      \draw[red] (A) -- (Al);
+      \draw[red] (A) -- (Ar);
+
+      \coordinate (alpha) at A + (-2,0);
+      \draw[|-] (alpha) -- (A) node[midway, above] {\( \alpha \)};
+
+      \coordinate (gamma) at A + (+3,0);
+      \draw[|-] (gamma) -- (A) node[midway, above] {\( \gamma \)};
+
+      \draw[red,fill] (A) circle (0.1cm) node[above=0.2cm] {\( A \)};
+
+      \coordinate[xshift=-2cm] (alpha2) at (Al);
+      \draw[-] (alpha) -- (alpha2);
+      \draw[|-] (alpha2) -- (Al) node[midway, below] {\( \alpha \)};
+
+      \coordinate[xshift=+3cm] (gamma2) at (Ar);
+      \draw[-] (gamma) -- (gamma2);
+      \draw[|-] (gamma2) -- (Ar) node[midway, below] {\( \gamma \)};
+    \end{tikzpicture}
+    \caption{Rappresentazione grafica della derivazione \( \alpha A \gamma \Rightarrow
+      \alpha \beta \gamma \)}
+  \end{figure}
+  \noindent
+  La singola freccia (\( \to  \)) indica una produzione, mentre la doppia freccia
+  (\( \Rightarrow \)) indica una derivazione (applicazione di una produzione).
+  \noindent
+  Altri esempi di derivazioni:
+  \begin{itemize}
+    \item \( E \to (E \text{ or } E) \equiv E \Rightarrow (E \text{ or } E) \) 
+    \item \( E \to (E \text{ and } E) \equiv
+      \underbrace{(}_{\alpha}\underbrace{E}_{A} \underbrace{\text{ or } E)}_{\gamma } \Rightarrow
+      \underbrace{(}_{\alpha}\underbrace{(E \text{ and } E)}_{\beta} \underbrace{\text{ or } E)}_{\gamma} \)
+  \end{itemize}
+\end{example}
+\begin{definition}[Derivazione]
+  Partendo da una sequenza \( \alpha \in V \cup T \) una derivazione consiste nell'applicazione
+  di una produzione ad uno dei simboli non terminali presenti nella sequenza \( \alpha \).
+  Consideramdo la stringa:
+  \[
+    \alpha_1, \alpha_2, \alpha_3, \ldots, \alpha_n \in (V \cup T)^*
+  \] 
+  e
+  \[
+    \underset{j \in \left[ 1, n-1 \right]}{\forall j} \;.\; \alpha_j \Rightarrow \alpha_{j+1}
+  \] 
+  allora si può scrivere l'applicazione di \( n \) produzioni come:
+  \[
+   \alpha_1 \Rightarrow_n \alpha_n
+  \] 
+  Ad esempio:
+  \[
+    \alpha_i \Rightarrow_0 \alpha_j \quad \text{ Nessuna produzione applicata}
+  \] 
+  \vspace{1em}
+  \noindent
+  Si può scrivere la chiusura transitiva di \( \Rightarrow_n \) come:
+  \[
+    \alpha \Rightarrow^* \beta \text{ se } \exists i \;.\; \alpha \Rightarrow_i \beta
+  \] 
+  Cioè esiste un numero di passi \( i \) tale che applicando \( i \) produzioni si passa
+  da \( \alpha \) a \( \beta \). (Da \( \alpha \) si deriva \( \beta \))
+\end{definition}
+
+\begin{definition}[Linguaggio generato]
+  Il linguaggio \( L \) è generato dalla grammatica \( G: L(G) \) con \( G = \left<V,T,P,S\right> \)
+  è l'insieme delle sequenze di terminali generate da \( S \), ovvero per le quali
+  esiste una derivazione a partire da \( S \):
+  \[
+    L(G) = \left\{ \sigma \in T^* \;\left|\; S \stackrel{G}{\Rightarrow^*}
+    \sigma \right. \right\}
+  \] 
+  Il linguaggio \( L \subseteq T^* \) è \textbf{context free} se esiste una grammatica
+  \( G \) context free che lo genera, ovvero tale che \( L = L(G) \). Quindi per dimostrare
+  che un linguaggio è context free basta costruire una grammatica che lo genera.
+\end{definition}
+
+\subsubsection{Dimostrazione canonica che un linguaggio è context free}
+\begin{definition}[Dimostrazione che un linguaggio è context free]
+  Possiamo dimostrare che \( L = L(G) \), quindi \( L \) è context free. Dimostriamo:
+  \begin{enumerate}
+    \item \( L \subseteq L(G) \)
+
+      \vspace{1em}
+      \noindent
+      Se \( \sigma  \) appartiene al linguaggio, allora da \( S \) si può derivare \( \sigma \):
+      \[
+        L \subseteq L(G) \equiv \sigma \in L \implies \sigma \in L(G) \equiv S \Rightarrow^* \sigma
+      \] 
+
+      \vspace{1em}
+      \noindent
+      Dimostriamo per induzione sulla lunghezza di \( \sigma  \).
+      \begin{itemize}
+        \item \textbf{Caso base}: \( |\sigma| = \text{ lunghezza minima in } L \)
+        \item \textbf{Passo induttivo}: Si suppone che per ogni \( \sigma  \) di lunghezza
+          \( n \) valga l'ipotesi induttiva, e si dimostra che vale anche per
+          \( \sigma  \) di lunghezza maggiore di \( n \).
+          \[
+            \forall \sigma  \;.\; |\sigma| = n \text{ vale l'ipotesi induttiva 1.}
+          \] 
+      \end{itemize}
+    \item \( L(G) \subseteq L \) 
+
+      \vspace{1em}
+      \noindent
+      Se \( \sigma \) appartiene al linguaggio generato dalla grammatica, allora \( \sigma \)
+      appartiene al linguaggio:
+      \[
+        L(G) \subseteq L \equiv \sigma \in L(G) \implies \sigma \in L \equiv S \Rightarrow^* \sigma
+      \] 
+
+      \vspace{1em}
+      \noindent
+      Dimostriamo per induzione sulla lunghezza della derivazione:
+      \[
+        S \Rightarrow^* \sigma \equiv \exists i \;.\; S \Rightarrow_i \sigma
+      \] 
+      quindi l'induzione è su \( i \).
+      \begin{itemize}
+        \item \textbf{Caso base}: La derivazione più corta possibile di simboli terminali
+        \item \textbf{Passo induttivo}: Si suppone che per ogni \( i \le n \) se
+          la \( S \) deriva in \( i \) passi in una stringa di soli terminali \( \sigma  \) 
+          allora \( \sigma  \in L \):
+          \[
+            \forall i \le n \;.\; S \Rightarrow_i \sigma \text{ allora } \sigma \in L
+          \] 
+          Dimostriamo che \( S \Rightarrow_{n+1} \sigma \text{ allora } \sigma \in L \).
+      \end{itemize}
+  \end{enumerate}
+\end{definition}
+
+\begin{example}
+  Consideriamo il seguente linguaggio:
+  \[
+  L = \left\{ 0^n 1^n \;\left|\; n \in \mathbb{N} \right. \right\}
+  \] 
+  Vogliamo dimostrare che \( L \) è context free. Per farlo bisogna costruire una grammatica
+  \( G \) che genera \( L \):
+  \begin{itemize}
+    \item \( S \): Bisogna chiedersi se la stringa vuota appartiene a \( L \).
+      \begin{enumerate}
+        \item \( \varepsilon \in L? \) Si, per \( n = 0 \) \( 0^0 1^0 = \varepsilon \).
+          \( \varepsilon \) va sempre generata dalla grammatica.
+      \end{enumerate}
+      Quindi \( S \) diventa:
+      \[
+        S \to \varepsilon \;|\; 0 S 1
+      \] 
+  \end{itemize}
+  La grammatica di questo linguaggio quindi è:
+  \[
+    G: S \to \varepsilon \;|\; 0 S 1 \text{ (grammatica context free)}
+  \] 
+
+  \vspace{1em}
+  \noindent
+  Dimostriamo: \( L = L(G) \) 
+  \begin{enumerate}
+    \item \( L \subseteq L(G) \) per induzione sulla lunghezza di \( \sigma \in L \)
+      \begin{itemize}
+        \item \text{Tesi}: \( \sigma \in L \) allora \( S \Rightarrow^* \sigma \)
+        \item \textbf{Base}: \( n = 0 \) \( |\sigma| = 0 \) è tale che \( \sigma = \varepsilon  \) 
+          e \( \sigma  \to \varepsilon \; (S \Rightarrow \varepsilon ) \) 
+        \item \textbf{Passo induttivo}: L'ipotesi induttiva è la tesi, ma limitata a n:
+          \[
+            \forall i \le n \;.\; |\sigma| = i \; \sigma \in L \text{ allora } S \Rightarrow^* \sigma
+          \] 
+          Dimostriamo che \( |\sigma| = n \) e \( \sigma \in L \) allora \( S \Rightarrow^* \sigma \).
+          Prendiamo \( \sigma \in L \), ovvero:
+          \[
+            \exists j \;.\; \sigma = 0^j 1^j \quad 2j = n
+          \] 
+          Bisogna trovare la derivazione. Possiamo osservare che:
+          \[ \sigma = 0 \underbrace{0^{j-1} 1^{j-1}}_{2j-2 < n} 1 \]
+          (abbiamo separato il primo 0 e l'ultimo 1 dalla
+          sequenza centrale). \( \sigma  \) può essere scritta come:
+          \[
+            \sigma = 0 \underbrace{0^{j-1} 1^{j-1}}_{2j-2 < n} 1
+            = 0 \sigma' 1 \quad \text{ con } \sigma' = 0^{j-1} 1^{j-1} \in L
+          \]
+          Siccome \( \left| \sigma' \right| < n \) e \( \sigma' \in L \) allora vale
+          l'ipotesi induttiva e quindi:
+          \[
+            \implies \exists S \Rightarrow^* \sigma' \equiv 0^{j-1} 1^{j-1}
+          \] 
+          usiamo questa derivazione per costruire la derivazione di \( \sigma \).
+          Questa derivazione deve essere fatta in modo da avere come ultimo passo
+          \( S \Rightarrow \varepsilon \) per ottenere \( \sigma' \):
+          \[
+            S \Rightarrow^* 0^{j-1} 1^{j-1} \equiv
+            S \Rightarrow 0^{j-1} S 1^{j-1} \Rightarrow 0^{j-1} \varepsilon 1^{j-1}
+            = 0^{j-1} 1^{j-1}
+          \] 
+          Per arrivare a \(\sigma = 0^j 1^j \) bisogna sostituire la \( S \) con \( 0 S 1 \):
+          \[
+            S \Rightarrow^* 0^j S 1^j \Rightarrow 0^{j-1} 0 S 1 1^{j-1} \Rightarrow
+            0^{j-1} 0 \varepsilon 1 1^{j-1} = 0^j 1^j = \sigma \quad \square
+          \] 
+          Questo conclude la dimostrazione del primo punto, cioè trovare una derivazione
+          per \( \sigma \). Quindi abbiamo dimostrato che \( L \subseteq L(G) \).
+      \end{itemize}
+
+    \item \( L(G) \subseteq L \) Dimostriamo per induzione sulla lunghezza delle derivazioni
+      \begin{itemize}
+        \item \textbf{Tesi:} \( S \Rightarrow^* \sigma  \) allora \( \sigma  \in L \) 
+        \item \textbf{Base:} \( S \Rightarrow \varepsilon \; (S \to \varepsilon ) \) e
+          \( \varepsilon \in L \) 
+        \item \textbf{Passo induttivo:} L'ipotesi induttiva è la tesi limitata a \( i \):
+          \[
+            \forall i \le n \;.\; S \Rightarrow_i \sigma \text{ allora } \sigma \in L
+          \] 
+          Prendiamo una stringa generata in \( n \) passi:
+          \[
+            S \Rightarrow_n \sigma \quad\equiv\quad S \Rightarrow_{n-1} \sigma_1 S \sigma_2
+            \Rightarrow \sigma_1 \sigma_2 = \sigma
+          \] 
+          Per come è fatta la grammatica \( \sigma_1 \) contiene solo 0 e \( \sigma_2 \)
+          contiene solo 1. Ovvero:
+          \[
+            \sigma_1 = 0^j \quad \sigma_2 = 1^k
+          \] 
+          Bisogna riuscire ad ottenere una derivazione più corta di \( n \) simboli terminali
+          in modo tale da poter applicare l'ipotesi induttiva. Un solo passo indietro
+          non basta perchè non si ha una derivazione di tutti simboli terminali, quindi
+          si può andare ancora più indietro:
+          \[
+            S \Rightarrow_{n-1} \sigma_1 S \sigma_2 \quad\equiv\quad
+            S \Rightarrow_{n-2} \sigma_1' \color{red}S\color{black} \sigma_2'
+            \Rightarrow \underbrace{\sigma_1
+            \color{red}0\color{black}}_{\sigma_1} \color{red}S\color{black}
+            \underbrace{\color{red}1\color{black} \sigma_2}_{\sigma_2}
+          \] 
+          Scorporiamo la derivazione di \( n-2 \) passi in:
+          \[
+            S \Rightarrow_{n-2} \sigma_1' S \sigma_2' \Rightarrow \sigma_1' \sigma_2'
+          \] 
+          abbiamo una derivazione lunga \( n-1 \) di simboli terminali dove:
+          \[
+          \begin{aligned}
+            \sigma_1 = \sigma_1' 0 &\implies \sigma_1' = 0^{h-1}\\
+            \sigma_2 = 1 \sigma_2' &\implies \sigma_2' = 1^{k-1}
+          \end{aligned}
+          \] 
+          Per ipotesi induttiva:
+          \[
+            \stackrel{I.I.}{\implies} \sigma_1' \sigma_2' \in L
+          \] 
+          Quindi:
+          \[
+            \sigma_1' \sigma_2' = 0^{h-1} 1^{k-1} \in L \implies h-1 = k-1 \implies h = k
+          \] 
+          ma allora \( \sigma = \sigma_1 \sigma_2 = 0^h 1^k \) è tale che \( h=k \) 
+          e quindi \( \sigma \in L \) 
+
+          \vspace{1em}
+          \noindent
+          Ricapitolando:
+          \begin{itemize}
+            \item Si parte da \( S \Rightarrow_n 0^h 1^k \), ma non si può applicare
+              l'ipotesi induttiva, quindi si va un passo indietro
+            \item  \( S \Rightarrow_{n-1} 0^h S 1^k \), ma ancora non si può applicare l'ipotesi induttiva
+            \item Si va ancora un passo indietro:
+              \[
+                S \Rightarrow_{n-2} 0^{h-1} S 1^{k-1} \Rightarrow 0^{h-1} 0 S 1 1^{k-1}
+                \Rightarrow 0^h 1^k
+              \] 
+              questo si può usare per generare \( 0^{h-1} 1^{k-1} \):
+              \[
+                S \Rightarrow_{n-2} 0^{h-1} S 1^{k-1} \Rightarrow 0^{h-1} 1^{k-1}
+              \] 
+              che è lunga \( n-1 \) e quindi si può applicare l'ipotesi induttiva.
+            \item Quindi \( 0^{h-1} 1^{k-1} \in L \implies h-1 = k-1 \implies h = k \)
+              e quindi \( 0^h 1^k \in L \quad \square \)
+          \end{itemize}
+          Siamo andati indietro tanto quanto serviva per generare una stringa di soli
+          simboli terminali.
+      \end{itemize}
+  \end{enumerate}
+\end{example}
+
+\subsubsection{Dimostrazione alternativa}
+\begin{example}
+  Considerando l'esempio precedente, una dimostrazione alternativa che un linguaggio è context free consiste
+  nel partire dall'inizio e fare passi avanti piuttosto che partire dalla fine e fare passi indietro.
+  Questo non funziona sempre, ma in questo caso sì:
+  \[
+    L(G) \subseteq L
+  \] 
+  \[
+    \forall i < n \;.\; S \Rightarrow_i \sigma \text{ allora } \sigma \in L
+  \] 
+  \begin{itemize}
+    \item \textbf{Passo induttivo}:
+      \[
+        S \Rightarrow_n \sigma \quad\equiv\quad S \Rightarrow 0 S 1 \Rightarrow_{n-1} \sigma
+        \quad\equiv\quad 0 \sigma' 1
+      \] 
+      dove \( S \Rightarrow_{n-1} \sigma' \). Ma allora si può applicare l'ipotesi induttiva
+      e quindi \( \sigma' \in L \) e questo significa che:
+      \[
+        \exists j \;.\; \sigma' = 0^{j} 1^{j}
+      \] 
+      questo implica che:
+      \[
+        \sigma = 0 \sigma' 1 = 0 0^{j} 1^{j} 1 = 0^{j+1} 1^{j+1} \in L
+      \] 
+  \end{itemize}
+\end{example}
+
+\subsection{Alberi di derivazione}
+Data una grammatica context free \( G = \left< V, T, P, S \right> \), un albero di
+derivazione (parse tree) per \( G \) ha le seguenti caratteristiche:
+\begin{enumerate}
+  \item Ogni nodo ha un'etichetta che è un simbolo di \( V \cup T \cup \left\{ \varepsilon \right\} \)
+  \item L'etichetta della radice è un simbolo in \( V \) 
+  \item Ogni nodo interno interno (non foglia) ha etichetta in \( V \)
+  \item Se un nodo \( n \) è etichettato con \( A \in V \) e i nodi figli
+    \( n_1, n_2, \ldots, n_k \) sono etichettati con \( X_1, X_2, \ldots, X_k \in V \cup T \cup
+    \left\{ \varepsilon \right\} \) allora esiste una produzione che genera un arco per
+    ogni simbolo figlio:
+    \[
+      A \to X_1 X_2 \ldots X_k \in P
+    \]
+    \label{03-11-D1}
+
+  \item Se un nodo ha etichetta \( \varepsilon \) allora è una foglia ed è l'unico figlio
+    del padre
+    \label{03-11-D2}
+\end{enumerate}
+
+\begin{example}
+  Consideriamo la grammatica
+  \[
+    E \to 0 \;|\; 1 \;|\; (E \text{ and } E) \;|\; (E \text{ or } E) \;|\; (\text{not } E)
+  \]
+  Consideriamo la derivazione:
+  \[
+    E \Rightarrow^* \left( \left( 0 \text{ or } 1 \right)  \text{ and } \left( \text{not } 0 \right)  \right) 
+  \] 
+  L'albero di derivazione è il seguente:
+  \label{03-11-D3}
+\end{example}
+
+\begin{theorem}
+  Sia \( G = \left< V, T, P, S \right> \) una grammatica context free, allora:
+  \[
+    S \Rightarrow^* \alpha \in T^*
+  \] 
+  se e solo se esiste un albero di derivazione con radice etichettata \( S \) e
+  foglie etichettate (leggendo da sinistra verso destra) con i simboli di \( \alpha \).
+\end{theorem}
+
+\subsection{Ambiguità delle grammatiche}
+\begin{example}
+  Consideriamo una grammatica per le espressioni aritmetiche senza parentesi:
+  \[
+    E \to E + E \;|\; E * E \;|\; 0 \;|\; 1 \;|\; 2
+  \] 
+  Consideriamo la stringa:
+  \[
+    2 * 0 + 1
+  \]
+  Si hanno due casi:
+  \begin{itemize}
+    \item Si esegue prima la moltiplicazione:
+      \[
+        2 * 0 + 1 = (2 * 0) + 1 = 1
+      \] 
+    \item Si esegue prima l'addizione:
+      \[
+        2 * 0 + 1 = 2 * (0 + 1) = 2
+      \]
+  \end{itemize}
+  Notiamo che si ottengono due risultati diversi, quindi la grammatica è ambigua
+  perchè la stessa stringa può essere generata da due alberi di derivazione distinti:
+  \begin{itemize}
+    \item Albero di derivazione con precedenza alla moltiplicazione
+      \label{03-11-D4} 
+    \item Albero di derivazione con precedenza all'addizione
+      \label{03-11-D5}
+  \end{itemize}
+\end{example}
+
+\begin{definition}[Ambiguità]
+  Una grammatica è \textbf{ambigua} se esiste almeno una parola \( \alpha \) con più
+  di un albero di derivazione con radice \( S \).
+
+  Il linguaggio generato da una grammatica ambigua è detto \textbf{inerentemente ambiguo}.
+\end{definition}
+
+\subsection{Forma normale}
+Le forme normali sono grammatiche le cui produzioni rispettano vincoli di "forma"
+specifici. Ci sono due forme normali importanti per le grammatiche context free:
+\begin{itemize}
+  \item \textbf{Forma normale di Chomsky}: Tutte le produzioni hanno la forma:
+    \[
+      A \to a \quad \vee A \to BC
+    \] 
+    dove:
+    \[
+      A, B, C \in V \quad a \in T
+    \] 
+    Questa forma genera sempre un albero binario (ogni nodo ha al massimo due figli).
+
+  \item \textbf{Forma normale di Greibach}: Ogni linguaggio context free è generato
+    da una grammatica le cui produzioni sono della forma
+    \[
+      A \to a \alpha
+    \] 
+    dove:
+    \[
+      A \in V \quad a \in T \quad \alpha \in V^*
+    \]
+    Rappresenta l'automa a pila in cui \( \alpha \) è il contenuto della pila e
+    \( a \) è il simbolo da aggiungere.
+\end{itemize}
+
+
+\subsection{Conversione in forma normale di Chomsky}
+Ogni grammatica context free può essere riscritta in modo tale che:
+\begin{enumerate}
+  \item \textbf{Eliminazione dei simboli inutili}: Ogni simbolo non terminale genera
+    simboli terminali e ogni simbolo terminale è generato da almeno un simbolo non
+    terminale
+
+  \item \textbf{Eliminazione delle produzioni unitarie}: Nessuna produzione è della forma:
+    \[
+      A \to B \quad A, B \in V
+    \] 
+    perchè \( A \) è generabile da \( B \) e \( B \) è generabile da \( A \).
+
+  \item \textbf{Eliminazione della \( \varepsilon \)-produzione}: Se
+    \( \varepsilon \notin L \) allora \textbf{non} ci deve essere la produzione:
+    \[
+      A \to \varepsilon \quad A \in V
+    \] 
+\end{enumerate}
+
+\begin{definition}
+  Quando la grammatica è senza simboli inutili, senza produzioni unitarie e senza
+  \( \varepsilon \)-produzioni, si può trasformare in forma normale di Chomsky.
+\end{definition}
+
+\subsubsection{Eliminazione dei simboli inutili}
+\( x \in V \cup T \) è utile se esiste una derivazione
+\[
+  S \Rightarrow^* \underbrace{\alpha x \beta \Rightarrow^* w \in T^*}_{1.a}
+\] 
+\begin{theorem}
+  Per ogni grammatica context free \( \forall G = \left< V, T, P, S \right> \) esiste
+  una grammatica equivalente \( G' = \left< V', T, P', S \right> \) senza simboli
+  inutili:
+  \[
+    \forall G \;.\; \exists G' \;.\; L(G) = L(G') \text{ e } G' \text{ non ha simboli inutili}
+  \] 
+  \( G' \) si ottiene applicando in sequenza le due trasformazioni viste
+  (\ref{eliminazione_simboli_inutili_1}, \ref{eliminazione_simboli_inutili_2}) (nell'ordine visto)
+\end{theorem}
+
+\begin{enumerate}
+  \item \label{eliminazione_simboli_inutili_1}
+    Eliminiamo i simboli che non generano terminali:
+    \begin{example}
+      Consideriamo le produzioni \( S \to \alpha A B \) e \( A \to A \).
+      Il simbolo \( A \) è inutile perchè non genera mai simboli terminali.
+    \end{example}
+
+    \textbf{Metodo algoritmico per eliminare i simboli che non generano terminali}:
+    \begin{enumerate}
+      \item Dopo la trasformazione 
+        \[
+          \forall A \in V \;.\; \exists w \in T^* \;.\;
+          A \Rightarrow^* w
+        \] 
+        Allora \( L(G) = \varnothing \) tutti i simboli sono inutili
+
+      \item Prendiamo per ipotesi che \( L(G) \neq 0 \), definiamo:
+        \[
+          \Gamma(W) = \left\{ A \in V \;\left|\; \exists \alpha \in (T \cup W)^* \;.\;
+        A \to \alpha \in P \right. \right\}
+        \] 
+        \[
+          \begin{cases}
+            \Gamma^0(W) = W\\
+            \Gamma^{i+1}(W) = \Gamma \left( \Gamma^i(W) \right) 
+          \end{cases}
+        \] 
+        \begin{example}
+          Consideriamo le seguenti produzioni:
+          \[
+          \begin{aligned}
+            A &\to A\\
+            S &\to aS \;|\; B\\
+            B &\to b
+          \end{aligned}
+          \] 
+          Si parte con \( W = \varnothing \) :
+          \begin{itemize}
+            \item \( \Gamma^0(\varnothing) = \left\{ A \in V \;|\; \exists
+              \alpha \in T^* \;.\; A \to \alpha \in P \right\} = \varnothing \)
+
+            \item \( \Gamma^1(\varnothing) = \Gamma(\varnothing) =
+              \left\{ B \right\} \) perchè \( B \to b \in P \)
+
+            \item \( \Gamma^2(\varnothing) = \Gamma(\left\{ B \right\}) =
+              \left\{ A \in V \;\left|\; \exists \alpha \in (T \cup \left\{ B \right\})^* \;.\;
+            A \to \alpha \right. \right\}\)\\ \( = \left\{ B, S \right\} \)
+
+          \item \( \Gamma^3(\varnothing) = \Gamma(\left\{ B, S \right\}) \)\\
+            \( = \left\{ A \in V \;\left|\; \exists \alpha \in (T \cup \left\{ B, S \right\})^* \;.\;
+          A \to \alpha \right. \right\}\) \\ \( = \left\{ B, S \right\} \)
+          \\
+          Si è raggiunto il \textbf{punto fisso}, cioè non si ottengono più simboli
+          nuovi.
+          \end{itemize}
+          Alla fine si ottiene l'insieme di tutti i simboli utili, cioè quelli che generano
+          simboli terminali. Tutti gli altri (e le corrispondenti produzioni) vengono
+          eliminati.
+
+          \vspace{1em}
+          \noindent
+          Quindi \( S \to aS \;|\; B \;\; B \to b \) è equivalente ma senza simboli
+          inutili che non generano nulla
+        \end{example}
+    \end{enumerate}
+
+    \item \label{eliminazione_simboli_inutili_2}
+      Eliminiamo i simboli non raggiungibili da \( S \):
+      \[
+        \Gamma(W) = \left\{ X \in V \cup T \;\left|\; \exists A \in W \;.\;
+      A \to \alpha X \beta \in P \right. \right\} \cup S
+      \] 
+      Quindi ad esempio:
+      \[
+        \Gamma(\varnothing) = \left\{ S \right\}
+      \] 
+      Cioè si aggiunge ciò che possiamo raggiungere da \( S \) in un certo numero di passi.
+
+      \begin{example}
+        Consideriamo le seguenti produzioni:
+        \[
+        \begin{aligned}
+          S \to a \;|\; bC\\
+          C \to d \;|\;dE\\
+          E \to \varepsilon\\
+          F \to f
+        \end{aligned}
+        \] 
+        Si parte con \( W = \varnothing \) :
+        \begin{itemize}
+          \item \( \Gamma(\varnothing) = \left\{ S \right\} \)
+
+          \item \( \Gamma(\left\{ S \right\}) = \left\{ X \in V \cup T \;\left|\;
+          S \to \alpha X \beta \in P \right. \right\} \cup \left\{ S \right\} =
+          \left\{ S, a, b, C \right\} \)
+
+          \item \( \Gamma(\left\{ S, a, b, C \right\}) = \left\{ X \in V \cup T \;\left|\;
+          C \to \alpha X \beta \in P \vee S \to \alpha X \beta \in P \right. \right\}
+          = \left\{ S, a, b, C, d, E \right\} \)
+
+        \item \( \Gamma(\left\{ S, a, b, C, d, E \right\}) = \left\{ S, a, b, C, d, E, \varepsilon \right\} \)
+        \end{itemize}
+        Quindi \( F \) è un simbolo non raggiungibile da \( S \) e quindi è inutile.
+      \end{example}
+\end{enumerate}
+
+\subsubsection{Eliminazione delle produzioni unitarie}
+L'idea è quella di sostituire le produzioni unitarie con le produzioni
+dello stesso simbolo non terminale a cui puntano. Ad esempio se abbiamo
+\( S \to A \to 0A0 \) si può compattare \( S \) come:
+\(
+  S \to 0A0
+\) 
+\begin{example}
+  Consideriamo la seguente grammatica:
+  \[
+    \begin{aligned}
+      S &\to \varepsilon  \;|\; A \;|\; B\\
+      A &\to  0\;|\; 0A0 \;|\; B \;|\; 00 \\
+      B &\to 1 \;|\; 1B1 \;|\; A\;|\; 11
+    \end{aligned}
+  \] 
+  Sostituiamo in tutte le produzioni quello che è producibile dal non terminale a destra:
+  \[
+    \begin{aligned}
+      S \to \varepsilon \;|\; \underbrace{0 \;|\; 0A0 \;|\; 00}_{A} \;|\; \underbrace{1 \;|\; 1B1 \;|\; 11}_{B}\\
+      A \to 0 \;|\; 0A0 \;|\; 00 \;|\; \underbrace{1 \;|\; 1B1 \;|\; 11}_{B}\\
+      B \to 1 \;|\; 1B1 \;|\; 11 \;|\; \underbrace{0 \;|\; 0A0 \;|\; 00}_{A}
+    \end{aligned}
+  \] 
+\end{example}
+
+\subsubsection{Eliminazione delle \texorpdfstring{\( \varepsilon \)}{epsilon}-produzioni}
+L'idea è quella di sostituire la transizione con tutto quello che può generare
+\( \varepsilon  \) ad esempio:
+\begin{example}
+  Consideriamo le produzioni:
+  \[
+    \begin{aligned}
+      S &\to \varepsilon  \;|\; A \;|\; B\\
+      A &\to  0\;|\; 0A0 \;|\; B \\
+      B &\to 1 \;|\; 1B1 \;|\; A\;|\; \varepsilon 
+    \end{aligned}
+  \] 
+  Siccome sia \( S \) che \( B \) vanno in \( \varepsilon  \) si possono sostituire con:
+  \[
+    B \to S
+  \] 
+  Anche \( A \) con un certo numero di derivazioni arriva in \( \varepsilon  \), quindi
+  tutti i simboli non terminali che in un certo numero di passi generano \( \varepsilon  \)
+  sono:
+  \[
+    \left\{ S, A, B \right\}
+  \] 
+  Le nuove produzioni diventano:
+  \[
+    \begin{aligned}
+      S &\to \varepsilon \;|\; A \;|\; B \\
+      A &\to 0 \;|\; 0A0 \;|\; 00 \;|\; B \\
+      B &\to 1 \;|\; 1B1 \;|\; 11 \;|\; A
+    \end{aligned}
+  \] 
+  Eliminando \( B \to \varepsilon  \) le stringhe \( 00 \) e \( 11 \) non sarebbero più
+  generabili e quindi si aggiungono
+
+  \vspace{1em}
+  \noindent
+  In questo modo si sono eliminate tutte le \( \varepsilon\)-produzioni, tranne
+  \( S \to \varepsilon  \) se \( \varepsilon \in L \).
+\end{example}
+
+\subsection{Trasformazione di una grammatica in forma normale di Chomsky}
+Quando una grammatica non ha simboli inutili, non ha produzioni unitarie e
+non ha \( \varepsilon \)-produzioni, si può trasformare in forma normale di
+Chomsky, cioè tutte le produzioni hanno la forma:
+\[
+  A \to a \in T \quad \vee \quad A \to BC \quad B, C \in V
+\] 
+\begin{example}
+  Consideriamo la seguente grammatica:
+  \[
+  \begin{aligned}
+    S &\to \varepsilon  \\ 
+    S &\to 0 \;|\; 1 \\
+    S &\to 00 \;|\; 0S0 \;|\; 11 \;|\; 1S1\\
+  \end{aligned}
+  \] 
+  Trasformiamo le sequenze più lunghe di 1 simbolo terminale in simboli non terminali:
+  \[
+  \begin{aligned}
+    S &\to \varepsilon  \\ 
+    S &\to 0 \;|\; 1 \\
+    S &\to V_1V_1 \;|\; V_1 S V_1 \;|\; V_2 V_2 \;|\; V_2 S V_2\\
+    V_1 &\to 0\\
+    V_2 &\to 1
+  \end{aligned}
+  \] 
+  Trasformiamo le sequenze più lunghe di 2 simboli non terminali in un singolo simbolo
+  non terminale:
+  \[
+  \begin{aligned}
+    S &\to \varepsilon  \\ 
+    S &\to 0 \;|\; 1 \\
+    S &\to V_1V_1 \;|\; V_3 V_1 \;|\; V_2 V_2 \;|\; V_4 V_2\\
+    V_1 &\to 0\\
+    V_2 &\to 1\\
+    V_3 &\to V_1 S\\
+    V_4 &\to V_2 S
+  \end{aligned}
+  \] 
+  Ora tutte le produzioni sono in forma normale di Chomsky.
+\end{example}
+Questa forma è semplicemente una forma canonica facilmente rappresentaible,
+non una forma più semplice.
+
+\subsection{Transformazione in forma normale di Greibach}
+Per trasformare una grammatica in forma normale di Greibach si fa un \textbf{unfolding}.
+Consideriamo una grammatica \( G = \left< V, T, P, S \right> \) definita da:
+\[
+  \begin{aligned}
+    A &\to \alpha B \gamma \in P \\
+    B &\to \beta_1 \;|\; \beta_2 \;|\; \ldots \;|\; \beta_n \in P \\
+  \end{aligned}
+\] 
+Allora \( G' = \left< V, T, P', S \right> \) dove eliminiamo la produzione \( A \to \alpha B \gamma  \) 
+che non è nella forma corretta e aggiungiamo con la sostituzione:
+\[
+    A \to \alpha \beta_1 \gamma \;|\;
+    \alpha \beta_2 \gamma \;|\; \ldots \;|\; \alpha \beta_n \gamma \in P'
+\]
+Questa trasformazione non cambia il linguaggio generato:
+\[
+  L(G) = L(G')
+\] 
+
+\begin{example}
+  \[
+    \begin{aligned}
+      S &\to a S b \;|\; ab\\
+      B &\to b \\
+      S &\to aSB \;|\; aB
+    \end{aligned}
+  \] 
+\end{example}
+
+\begin{theorem}[Eliminazine ricorsiva sinistra]
+  Consideriamo la grammatica \( G = \left< V, T, P, S \right> \) con:
+  \[
+    \begin{aligned}
+      A &\to  A \alpha_1 \;|\; \ldots \;|\; A \alpha_n \quad &\mathrel{\reflectbox{$\leadsto$}} A \to Aa\\
+      A &\to  \beta_1 \;|\; \ldots \;|\; \beta_n \quad &\mathrel{\reflectbox{$\leadsto$}} A \to b \\
+    \end{aligned}
+  \] 
+  Se costruiamo \( G' = \left< V \cup \left\{ B \right\}, T, P', S \right> \) dove
+  in \( P' \) sostituiamo le produzioni per \( A \) con:
+  \[ 
+    \begin{aligned}
+      A &\to \beta_i \;|\; \beta_i B\\
+      B &\to \alpha_i \;|\; \alpha_i B\\
+    \end{aligned}
+  \] 
+  allora \( L(G) = L(G') \).
+\end{theorem}
+
+
+\subsection{Pumping lemma per i linguaggi context free}
+Il pumping lemma è una \textbf{condizione necessaria} per essere un linguaggio context free:
+\[
+  L \text{ è CF } \implies \text{ vale } \Pi \text{ condizione del pumping lemma}
+\] 
+\begin{theorem}[Pumping lemma per i linguaggi context free]
+  Sia \( L \) un linguaggio context free. Allora esiste una costante
+  \( k \) tale che per ogni stringa \( z \in L \) con
+  \( \left| \sigma \right| \ge k \) esiste una suddivisione di \( z \)
+  in cinque sottostringhe:
+  \[
+    \exists k \in \mathbb{N} \;.\; \forall z \in L \;.\; \left| z \right| \ge k \implies
+    \exists u, v, w, x, y = z \vee
+    \begin{cases}
+      \left| vwx \right| \le  k \\
+      \left| vx \right| \ge 0 \\
+    \end{cases}
+  \] 
+  \[
+    \;.\; \forall i \in \mathbb{N} \;.\; u v^i w x^i y \in L
+  \] 
+  \label{04-11-D1}
+\end{theorem}
+
+\subsubsection{Dimostrazione (grafica)}
+Consideriamo un linguaggio context free \( L \subseteq T^* \), allora esiste
+una grammatica tale che \( L = L(G) \):
+\[
+  L \subseteq T^* \implies \exists G = \left< V, T, P, S \right> \text{ CF } \;.\; L = L(G)
+\] 
+Supponiamo, senza perdere generalità, che \( G \) sia in forma normale di Chomsky.
+Definiamo \( n \) come la dimensione di \( V \), cioè il numero di simboli non terminali in
+\( G \):
+\[
+  n = \left| V \right|
+\] 
+Poichè la grammatica è in forma normale di Chomsky questo implica che tutti gli alberi
+di derivazione in \( G \) sono binari, cioè ogni nodi ha due figli non terminali oppure una foglia
+terminale.
+\label{04-11-D2}
+L'altezza dell'albero è \( h \) e di conseguenza il numero di elementi ad una certa
+altezza è \( 2^{h-1} \).
+
+\vspace{1em}
+\noindent
+Definiamo \( k = 2^n \) e prendiamo una stringa \( z \in L \) di lunghezza maggiore o
+uguale a \( k \):
+\[
+  z \in L \;.\; \left| z \right| \ge k
+\] 
+Se le foglie sono maggiori o uguali a \( 2^n \) allora l'altezza dell'albero
+è \( \ge n+1 \). Il numero di \textbf{archi} che collegano simboli non terminali sono \( \ge n \).
+Di conseguenza il numero di nodi interni (non terminali) nel cammino sono \( n+1 \) 
+\label{04-11-D3}
+Siccome in questa grammatica il numero di nodi non terminali è \( n \), allora almeno
+una etichetta non terminale è ripetuta nel cammino due volte. (Ci sono almeno due nodi
+interni che hanno la stessa etichetta)
+\label{04-11-D4}
+Supponiamo di prendere il nodo \( A \), più vicino alle foglie, che si ripete (implica che
+dalla prima occorrenza di \( A \) fino alle foglie non ci sono ripetizioni). Consideriamo
+il sottoalbero radicato in questo nodo e quello radicato nel secondo nodo con la stessa etichetta.
+Osserviamo che la stringa è stata divisa in cinque parti \( u, v, w, x, y \):
+\label{04-11-D5}
+Valgono i seguenti vincoli:
+\begin{itemize}
+  \item \( \left| vx \right| \ge 0 \): almeno un simbolo deve essere generato in \( v \) 
+    o \( x \)
+
+  \item \( \left| vwx \right| \le k \): se dalla prima occorrenza di \( A \) fino
+    alle foglie non ci sono ripetizioni, allora attraversiamo massimo \( n = \left| V \right|  \) 
+    nodi e quindi non si generano più di \( 2^n = k \) simboli terminali
+\end{itemize}
+\label{04-11-D6}
+
+\subsubsection{Dimostrare che un linguaggio non è context free}
+Il pumping lemma può essere usato per dimostrare che un linguaggio è context free:
+\[
+  L \text{ è CF } \implies \text{ vale } \Pi \text{ condizione del pumping lemma}
+\] 
+Si può negare il pumping lemma per ottenere una condizione \textbf{sufficiente} a
+dimostrare che un linguaggio non è context free:
+\[
+  \neg \Pi \text{ condizione del pumping lemma } \implies L \text{ non è CF}
+\]
+dove \( \Pi  \) è:
+\[
+  \Pi: \exists k \in \mathbb{N} \;.\; \forall z \in L \;.\; \left| z \right| \ge k
+  \;.\; \exists u, v, w, x, y = z \vee
+  \begin{cases}
+    \left| vwx \right| \le  k \\
+    \left| vx \right| \ge 0 \\
+  \end{cases}
+\] 
+\[
+    \;.\; \forall i \in \mathbb{N} \;.\; u v^i w x^i y \in L
+\] 
+La negazione di \( \Pi  \) è:
+\[
+  \neg \Pi: \forall k \in \mathbb{N} \;.\; \exists z \in L \;.\; \left| z \right| \ge k
+  \;.\; \forall u, v, w, x, y = z \vee
+  \begin{cases}
+    \left| vwx \right| \le  k \\
+    \left| vx \right| \ge 0 \\
+  \end{cases}
+\] 
+\[
+    \;.\; \exists i \in \mathbb{N} \;.\; u v^i w x^i y \notin L
+\]
+\label{04-11-D7}
+
+\begin{example}
+  Consideriamo il seguente linguaggio:
+  \[
+    L = \left\{ a^n b^n c^n \;\left|\; n \in \mathbb{N} \right. \right\}
+  \] 
+  Dimostriamo che \( L \) non è context free usando la negazione del pumping lemma.
+
+  Prendiamo \( n = k \) siccome \( n \) non ha alcun vincolo e scegliamo la stringa:
+  \[
+    z = a^k b^k c^k \in L
+  \] 
+  Tutte le possibili suddivisioni della stringa sono le seguenti:
+  \label{04-11-D8}
+  Le suddivisioni a cavallo di almeno due gtuppi sono tali che \( \forall i > 1 \) cambiamo
+  la struttura della stringa e quindi esce da \( L \) di conseguenza non le consideriamo.
+  Bisognerebbe dimostrare tutte le suddivisioni, ma siccome le dimostrazioni per alcune
+  sarebbero uguali non si ripetono.
+
+  \vspace{1em}
+  \noindent
+  Le condizioni di appartenenza a \( L \) sono:
+  \[
+    a^i b^j c^l \in L \iff i = j = l
+  \] 
+
+  \begin{enumerate}
+    \item Se la suddivisione è \( z = a^k b^k c^k \quad v,x \in a^k \):
+      \[
+        z_i = a^{k + (i-1) \left| v x \right|} b^k c^k
+      \] 
+      \begin{itemize}
+        \item Consideriamo \( i = 2 \):
+          \[
+            z_2 = a^{k + \left| v x \right|} b^k c^k
+          \]
+          verifichiamo se appartiene a \( L \):
+          \[
+            z_2 \in L \iff
+            \begin{cases}
+              k + \left| v x \right| = k \iff \left| v x \right| = 0 \text{ (falso)}\\
+              k = k \text{ (ovvio)}
+            \end{cases}
+          \] 
+          Poichè per costruzione \( \left| v x \right| \ge 0 \) allora \( z_2 \notin L \)
+      \end{itemize}
+
+    \item Se la suddivisione è \( v \in a^k \quad x \in b^k \):
+      \[
+        z_i = a^{k + (i-1) \left| v \right|} b^{k + (i-1) \left| x \right|} c^k
+      \]
+
+      \begin{itemize}
+        \item Consideriamo \( i = 2 \):
+          \[
+            z_2 = a^{k + \left| v \right|} b^{k + \left| x \right|} c^k
+          \] 
+          verifichiamo se appartiene a \( L \):
+          \[
+            \begin{aligned}
+              z_2 \in L &\iff k + \left| v \right| = k + \left| x \right| = k\\
+                        &\iff \left| v \right| = \left| x \right| = 0 \implies \left| vx \right| = 0
+              \text{ (falso)}
+            \end{aligned}
+          \]
+          poiche \( \left| vx \right| > 0 \) allora \( z_2 \notin L \)
+      \end{itemize}
+  \end{enumerate}
+  Abbiamo dimostrato che per ogni suddivisione di \( z \) esiste un \( i \)
+  tale che \( z_i \notin L \), quindi \( L \) non è context free.
+\end{example}
+
+\subsection{Proprietà di chiusura dei linguaggi context free}
+\begin{theorem}
+  I llinguaggi context free sono chiusi per \textbf{unione}, \textbf{concatenazione} e
+  \textbf{stella di Kleene}.
+
+  Consideriamo due grammatiche context free \( G_1 = \left< V_1, T_1, P_1, S_1 \right> \)
+  e \( G_2 = \left< V_2, T_2, P_2, S_2 \right> \). 
+
+  \begin{itemize}
+    \item 
+      Esiste una grammatica che genera
+      l'unione delle due grammatiche:
+      \[
+        L(G_1) \cup L(G_2) \text{ è CF}
+      \] 
+      Bisogna aggiungere un simbolo iniziale che andrà nei simboli iniziali delle due grammatiche:
+      \[
+        G' = \left< V_1 \cup V_2 \cup \left\{ S \right\},\; T_1 \cup T_2, P_1 \cup P_2 \cup
+        \left\{ S \to S_1 \;|\; S_2 \right\},\; S \right>
+      \] 
+
+    \item Esiste una grammatica che genera la concatenazione delle due grammatiche:
+      \[
+        L(G_1) \cdot L(G_2) \text{ è CF}
+      \] 
+      Bisogna aggiungere un simbolo iniziale che andrà nei simboli iniziali delle due grammatiche
+      in sequenza:
+      \[
+        G' = \left< V_1 \cup V_2 \cup \left\{ S \right\},\; T_1 \cup T_2, P_1 \cup P_2 \cup
+        \left\{ S \to S_1 S_2 \right\},\; S \right>
+      \]
+
+    \item Esiste una grammatica che genera la stella di Kleene della grammatica:
+      \[
+        L(G_1)^* \text{ è CF}
+      \]
+      Bisogna aggiungere un simbolo iniziale che andrà nel simbolo iniziale della grammatica
+      oppure in \( \varepsilon  \):
+      \[
+        G' = \left< V_1 \cup \left\{ S \right\},\; T_1, P_1 \cup
+        \left\{ S \to S_1 S \;|\; \varepsilon  \right\},\; S \right>
+      \]
+  \end{itemize}
+\end{theorem}
+
+\begin{theorem}
+  I linguaggi context free \textbf{non} sono chiusi per intersezione. Consideriamo
+  due linguaggi context free \( L_1 \) e \( L_2 \), allora:
+  \[
+    L_1 \cap L_2 \text{ potrebbe non essere CF}
+  \] 
+
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione}: Consideriamo il seguente linguaggio:
+  \[
+    L_1 = \left\{ a^i b^i c^j \left|\; i, j \in \mathbb{N} \right. \right\}
+  \] 
+  La grammatica che genera \( L_1 \) è:
+  \[
+    G_1 = 
+    \left\{
+    \begin{aligned}
+      S &\to RC\\
+      R &\to aR b \;|\; \varepsilon \\
+      C &\to cC \;|\; \varepsilon
+    \end{aligned}
+    \right.
+    \quad L_1 = L(G_1)
+  \] 
+  Consideriamo anche il seguente linguaggio:
+  \[
+    L_2 = \left\{ a^j b^i c^i \left|\; i, j \in \mathbb{N} \right. \right\}
+  \] 
+  La grammatica che genera \( L_2 \) è:
+  \[
+    G_2 = 
+    \left\{
+    \begin{aligned}
+      S &\to AR\\
+      A &\to aA \;|\; \varepsilon \\
+      C &\to bC c \;|\; \varepsilon
+    \end{aligned}
+    \right.
+    \quad L_2 = L(G_2)
+  \]
+  L'intersezione dei due linguaggi è:
+  \[
+    \begin{aligned}
+    L &= L_1 \cap L_2 \\
+      &= \left\{ a^i b^j c^k \left|\; i = j, j = k \right. \right\} \\
+      &= \left\{ a^i b^i c^k \left|\; i = j = k \right. \right\} \\
+      &= \left\{ a^n b^n c^n \left|\; n \in \mathbb{N} \right. \right\} \text{ non è CF}
+    \end{aligned}
+  \] 
+  L'intersezione non è context free (dimostrato tramite pumping lemma) e quindi abbiamo
+  dimostrato che i linguaggi context free non sono chiusi per intersezione.
+\end{theorem}
+
+\begin{define}
+  Le proprietà di \textbf{unione} e \textbf{intersezione} di linguaggi funzionano solo
+  l'unione e l'intersezione \textbf{finita}.
+
+  Se \( L_i \) sono infiniti linguaggi regolari o context free, allora:
+  \[
+    \bigcup_{i} L_i \text{ potrebbe non essere regolare o CF}
+  \] 
+\end{define}
+
+\begin{theorem}
+  I linguaggi context free non sono chiusi per \textbf{complemento}.
+
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione}: Dato \( L \in CF \), se anche il complemento
+  \( \overline{L} \in CF \) fosse context free, allora osserviamo che:
+  \[
+    L_1 \cap L_2 = \overline{\overline{L_1} \cup \overline{L_2}} \text{ (de Morgan)}
+  \] 
+  Poichè i linguaggi context free sono chiusi per unione e complemento,
+  allora \( \overline{L_1} \) e \( \overline{L_2} \) sarebbero context free e di
+  conseguenza anche la loro intersezione sarebbe context free:
+  \[
+    \overline{L_1}, \overline{L_2} \in CF \implies \overline{L_1} \cup \overline{L_2} \in CF
+  \] 
+  Questo implica che anche l'intersezione sarebbe context free:
+  \[
+    \implies \overline{\overline{L_1} \cup \overline{L_2}} \in CF \implies L_1 \cap L_2 \in CF
+  \] 
+  Abbiamo dimostrato però che l'intersezione di due linguaggi context free
+  potrebbe non essere context free, quindi la nostra ipotesi che anche
+\end{theorem}
+
+\subsection{Problemi decidibili per i linguaggi context free}
+Per i linguaggi context free i seguenti problemi sono decidibili, cioè esiste
+un algoritmo che risolve il problema in un numero finito di passi:
+Sia \( L \) un linguaggio context free:
+\begin{enumerate}
+  \item \( L = \varnothing \) 
+  \item \( L \) è finito
+  \item \( L \) è infinito
+  \item Determinare se una stringa appartiene al linguaggio \( x \in L\), cioè se è
+    generata dalla grammatica del linguaggio.
+\end{enumerate}
+
+\subsection{Automa per riconoscere i linguaggi context free (Automi a pila)}
+L'automa a pila è un automa con memoria ausiliaria (pila) che permette di riconoscere i
+linguaggi context free.
+\begin{example}
+  Per il seguente linguaggio:
+  \[
+    \left\{ a^n b^n \left|\; n \in \mathbb{N} \right. \right\}
+  \] 
+  Ci sarebbe bisogno di \( n \) stati per contare le occorrenze di \( a \) e
+  \( b \). Invece con un automa a pila si può usare la pila per contare le occorrenze
+  di \( a \) e \( b \)
+\end{example}
+
+\begin{definition}
+  L'APND (Automa a pila non deterministico) è costituito da:
+  \begin{itemize}
+    \item Nastro in sola lettura in un unica direzione
+    \item Memoria in scrittura a pila (LIFO)
+  \end{itemize}
+  L'automa è formato dalla quintupla della NFA a cui vengono
+  aggiunti un alfabeto per la pila e un simbolo iniziale per la pila.
+  \[
+    APND = \left< Q, \Sigma, \mathbf{R}, \delta, q_0, F, z_0 \right>
+  \] 
+  \begin{itemize}
+    \item \( Q \): è l'insieme \textbf{finito} degli stati
+    \item \( \Sigma \): è l'insieme \textbf{finito} di simboli (alfabeto)
+    \item \( R \): è l'insieme \textbf{finito} di simboli della pila
+    \item \( \delta: Q \times (\Sigma \cup \left\{ \varepsilon  \right\}) \times R
+      \to \mathcal{P}(Q \times R^*) \): è la funzione di transizione. Prende in input
+      lo stato in cui si trova la macchina \( (Q) \), l'eventuale simbolo sul nastro
+      \( \left( \Sigma \cup \left\{ \varepsilon  \right\} \right) \) e il simbolo
+      in cima alla pila \( (R) \) e restituisce un insieme di coppie
+      \( (Q \times R^*) \) che rappresentano il nuovo stato e il push di una sequenza
+      di simboli nella pila
+    \item \( q_0 \in Q \): è lo stato iniziale
+    \item \( F \subseteq Q \): è l'insieme degli stati finali
+    \item \( z_0 \in R \): è il simbolo iniziale della pila
+  \end{itemize}
+  La chiusura transitiva di \( \delta \) fornisce un'esecuzione dell'automa.
+\end{definition}
+
+\begin{definition}[Linguaggio riconosciuto da un APND]
+  Una stringa si può riconoscere quando l'automa arriva in uno stato finale oppure
+  quando la pila è vuota. Consideriamo un APND \( M \), allora si hanno due modi
+  per definire il linguaggio riconosciuto da \( M \):
+  \begin{itemize}
+    \item \( L_p(M) \) linguaggio per pila vuota
+      \[
+        L_p(M) = \left\{ \sigma \in \Sigma^* \;\left|\; \left( q_0, \sigma, z_0 \right)
+      \to^* \left( q, \varepsilon, \varepsilon \right), q \in Q \right. \right\}
+      \] 
+      cioè l'insieme delle stringhe \( \sigma \) tali che partendo dallo stato
+      iniziale \( q_0 \), con la stringa \( \sigma \) sul nastro e il simbolo iniziale
+      \( z_0 \) sulla pila, si arriva in uno stato qualsiasi \( q \in Q \) con
+      la pila vuota e il nastro vuoto.
+    \item \( L_f(M) \) linguaggio per stato finale
+      \[
+        L_f(M) = \left\{ \sigma \in \Sigma^* \;\left|\; \left( q_0, \sigma, z_0 \right)
+      \to^* \left( q, \varepsilon, \gamma \right), q \in F, \gamma \in R^* \right. \right\}
+      \] 
+  \end{itemize}
+  La scelta della modalità di riconoscimento non cambia la potenza espressiva:
+  \[
+    \forall M \text{ APND } \;.\; \exists M' \text{ APND } \;.\;
+    L_p(M) = L_f(M')
+  \] 
+\end{definition}
+
+\begin{example}
+  Consideriamo il linguaggio:
+  \[
+  L = \left\{ \sigma c \sigma^R \;\left|\; \sigma \in \left\{ a, b \right\}^* \right. \right\}
+  \] 
+  \( \sigma^R \) è definito come il \textit{reverse} di \( \sigma \), cioè la stringa
+  letta al contrario. Quindi questo linguaggio contiene tutte le stringhe palindrome,
+  ad esempio:
+  \[
+  \begin{aligned}
+    \sigma = abb &\implies \sigma^R = bba \implies abb c bba \in L\\
+  \end{aligned}
+  \] 
+  La grammatica che genera questo linguaggio è:
+  \[
+    \begin{aligned}
+      S &\to aSa \;|\; bSb \;|\; c
+    \end{aligned}
+  \] 
+  L'esempio di prima costruito con la grammatica è:
+  \[
+    S \to aSa \to abSba \to abbS bba \to abb c bba
+  \] 
+  Definiamo l'automa a pila \textbf{deterministico} che riconosce questo linguaggio:
+  \[
+    M = \left< \left\{ q_0, q_1 \right\}, \left\{ a, b, c \right\}, \left\{ Z, A, B \right\},
+    q_0, Z, \varnothing, \delta \right>
+  \] 
+  che si rappresenta con la seguente tabella (una per ogni stato):
+  \begin{table}[H]
+    \centering
+    \begin{minipage}{0.45\textwidth}
+      \centering
+      \begin{tabular}{|c|c|c|c|}
+        \hline
+        \( q_0 \) & a & b & c \\
+        \hline
+        Z & \( q_0, ZA \) & \( q_0, ZB \) & \( q_1, \varepsilon \) \\
+        \hline
+        A & \(  \) & \(  \) & \(  \) \\
+        \hline
+        B & \(  \) & \(  \) & \(  \) \\
+        \hline
+      \end{tabular}
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+      \centering
+      \begin{tabular}{|c|c|c|c|}
+        \hline
+        \( q_1 \) & a & b & c \\
+        \hline
+        Z & \( q_1, Z \) & \( q_1, Z \) & \(  \) \\
+        \hline
+        A & \( q_1, \varepsilon \) & \( q_1, Z \) & \(  \) \\
+        \hline
+        B & \( q_1, Z \) & \( q_1, \varepsilon \) & \(  \) \\
+        \hline
+      \end{tabular}
+    \end{minipage}
+  \end{table}
+  \label{10-11-D1}
+  Questo automa riconosce il linguaggio quando la pila è vuota.
+\end{example}
+
+\begin{example}
+  Consideriamo il linguaggio:
+  \[
+    L = \left\{ \sigma \sigma^R \;\left|\; \sigma^R \text{ è il reverse di } \sigma,
+    \sigma \in \left\{ a, b \right\}^* \right. \right\}
+  \] 
+  L'automa a pila \textbf{non deterministico} che riconosce questo linguaggio è:
+  \[
+    M = \left< \left\{ q_0, q_1 \right\}, \left\{ a, b \right\}, \left\{ Z, A, B \right\},
+    q_0, Z, \varnothing, \delta \right>
+  \]
+
+  \begin{table}[H]
+    \centering
+    \begin{minipage}{0.45\textwidth}
+      \centering
+      \begin{tabular}{|c|c|c|c|}
+        \hline
+        \( q_0 \) & \( \varepsilon  \) & a & b \\
+        \hline
+        Z & \(  \) & \( q_0, AZ \) & \( q_0, BZ \) \\
+        \hline
+        A & \(  \) & \makecell{\( q_0, AA \) \\ \( q_1, \varepsilon \) } & \( q_0, BA \) \\
+        \hline
+        B & \(  \) & \( q_0, AB \) & \(  \) \\
+        \hline
+      \end{tabular}
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+      \centering
+      \begin{tabular}{|c|c|c|c|}
+        \hline
+        \( q_1 \) & \( \varepsilon \) & a & b \\
+        \hline
+        Z & \( q_1, \varepsilon \) & \(  \) & \(  \) \\
+        \hline
+        A & \(  \) & \( q_1, \varepsilon \) & \(  \) \\
+        \hline
+        B & \(  \) & \(  \) & \( q_1, \varepsilon \) \\
+        \hline
+      \end{tabular}
+    \end{minipage}
+  \end{table}
+  \label{10-11-D2}
+  Questo automa riconosce il linguaggio quando viene letto dal nastro \( \varepsilon  \) e
+  nella pila rimane solo \( \varepsilon \).
+\end{example}
+\noindent
+Gli automi a pila deterministici sono sottoinsiemi degli automi a pila non deterministici:
+\[
+  \underbrace{APD}_{\text{Parser}} \subset \underbrace{APND}_{\text{CF}}
+\] 
+I linguaggi riconosciuti dagli APD sono i linguaggi di programmazione.
+
+\subsection{Corrispondenza tra APND e grammatiche context free}
+\begin{theorem}
+  Consideriamo un linguaggio riconosciuto da un APND \( M \):
+  \[
+    L = L(M)
+  \] 
+  allora esiste \( M' \) APND \textbf{con un solo stato} tale che:
+  \[
+    L = L(M')
+  \] 
+
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione:} Consideriamo l'APND \( M = \left< Q, \Sigma, R, \delta, q_0, z_0, F \right> \).
+  con:
+  \begin{itemize}
+    \item 
+      \( \left| Q \right| \ge 1 \) 
+    \item \( \delta: Q \times \left( \Sigma \times \{\varepsilon \}  \right) \times R \to 
+      \mathcal{P}\left( Q \times R^* \right) \) 
+  \end{itemize}
+  L'idea è quella di prendere un nuovo simbolo per la pila che rappresenta ogni coppia
+  \( Q \times R \):
+  \[
+    \left( \underset{\in Q}{q_i}, \underset{\in R}{z_i} \right)
+    \leadsto \text{ Aggiungiamo } z'_i
+  \] 
+  \[
+    R' = R \cup \{z'_i\} 
+  \] 
+  Bisogna modificare la funzione di transizione \( \delta \) in modo da rappresentare
+  una coppia \( (q_i, z_i) \) con il nuovo simbolo \( z'_i \) associato ad un unico stato.
+  \[
+    \delta(q_i, a, z_i) = \delta'(q_0, a, z'_i)
+  \] 
+  Essenzialmente si codifica nella pila la coppia stato-simbolo.
+\end{theorem}
+
+\begin{theorem}
+  Se \( L = L(M) \) con \( M \) APND con uno stato, allora \( L \) è context free.
+  Quindi esiste una grammatica context free \( G \) che riconosce \( L \):
+  \[
+    \exists G \text{ CF } \;.\; L = L(G)
+  \] 
+
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione:} Consideriamo l'APND
+  \( M = \left< \left\{ q_0 \right\}, \Sigma, R, \delta, q_0, z_0, \varnothing \right> \)
+  (accettiamo \( L \) per pila vuota) che riconosce \( L \):
+  \[
+    L = L(M)
+  \] 
+  La grammatica è definita come \[ G = \left< V, \Sigma, P, S \right> \equiv
+  \left< R, \Sigma, P, z_0 \right> \]
+  con \( P \):
+  \[
+    \color{red}z\color{black} \to \color{blue}a\color{black} z_1 z_2 \ldots z_n \in P \iff \left( q_0, z_1 z_2 \ldots z_n \right) 
+    \in \delta \left( q_0, \color{blue}a\color{black}, \color{red}z\color{black} \right) 
+  \] 
+  Se si legge \( a \) sul nastro e \( z \) in cima alla pila, allora si può fare
+  il push di \( z_1 z_2 \ldots z_n \) nella pila.
+\end{theorem}
+
+\begin{theorem}
+  Se \( L \) è context free allora esiste una APND \( M \) che riconosce il linguaggio
+  \( L = L(M) \), cioè dall'automa si può costruire una grammatica.
+
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione:} Consideriamo il linguaggio context free \( L \) generato
+  dalla grammatica in forma normale di Greibach
+  \( G = \left< V, T, P, S \right> \;.\; L = L(G) \). Costruiamo \( M \):
+  \begin{itemize}
+    \item \( Q = \{q\}  \) 
+    \item \( \Sigma = T \) 
+    \item \( R = V \) 
+    \item \( z_0 = S \) 
+    \item \( F = \varnothing \) 
+  \end{itemize}
+  Dove ogni stato è:
+  \[
+    \left( q, \underset{\in  R^* = V^*}{\alpha} \right) \in \delta
+    \left( q, \underset{\in  T = \Sigma }{a}, \underset{\in R = V}{A} \right) 
+    \iff
+    \underset{\in V}{A} \to \underset{\in \Sigma}{a} \underset{\in V^*}{\alpha} \in P
+  \]
+  \begin{example}
+    \[
+      A \to a \alpha \;|\; a \beta \leadsto 
+      \begin{aligned}
+        \left( q, \alpha \right) \in \delta \left( q, a, A \right) \\
+        \left( q, \beta \right) \in \delta \left( q, a, A \right) \\
+      \end{aligned}
+    \] 
+  \end{example}
+\end{theorem}
+
+
+\section{Teoria della calcolabilit}
+\subsection{Potenza espressiva}
+Esistono diversi modelli di calcolo che hanno diversa potenza espressiva, ad esempio
+\begin{itemize}
+  \item Automi a stati finiti deterministici
+  \item Grammatiche context free
+  \item Automi a pila deterministici
+  \item ecc...
+\end{itemize}
+Ogni modello viene istanziato per riconoscere uno specifico linguaggio:
+\begin{itemize}
+  \item \( M = \left< Q, \Sigma, \delta, q_0, F \right> \) per gli automi a stati finiti
+  \item \( G = \left< V, T, P, S \right> \) per le grammatiche context free
+  \item \( M = \left< Q, \Sigma, R, \delta, q_0, z_0, F \right> \) per gli automi a pila
+  \item ecc...
+\end{itemize}
+Il risultato di queste istanze è una \textbf{funzione calcolata} (che era superflua
+per i modelli visti fin'ora):
+\[
+  \text{Modello } \leadsto \text{ Istanza del modello } \leadsto \text{ Funzione calcolata}
+\] 
+Per ragionare su ciò che sta fuori dai modelli visti, la funzione calcolabile diventa
+rilevante. In questo modo "trasformiamo" il calcolo di \( f \) nel riconoscimendo di
+un linguaggio \( L_f \) 
+\[
+  L_f = \left\{ a^f(n) \;\left|\; n \in \mathbb{N} \right. \right\}
+\] 
+I ragionamenti fatti fin'ora erano:
+\begin{itemize}
+  \item Quali funzioni corrispondono a \( L_f \) regolari
+  \item Quali funzioni corrispondono a \( L_f \) context free
+\end{itemize}
+\[
+ \begin{aligned}
+ f(n) = 2n &\implies L_f = \left\{ a^{2n} \;\left|\; n \in \mathbb{N} \right. \right\} \text{ regolare}\\
+  f(n) = n^2 &\implies L_f = \left\{ a^{n^2} \;\left|\; n \in \mathbb{N} \right. \right\} \text{ non CF}\\
+ \end{aligned}
+\] 
+Ora invece consideriamo un contesto più generale parlando di \textbf{insiemi} (di \( \mathbb{N} \))
+invece che di linguaggi. Quindi il calcolo diventa:
+\[
+  \begin{aligned}
+    A_f &= \left\{ f(n) \;\left|\; n \in \mathbb{N} \right. \right\}
+  \end{aligned}
+\] 
+Si abbandona il concetto di stringa e ci si focalizza sul calcolo di una funzione \( f \).
+
+\subsection{Teoria della Calcolabilità}
+\begin{itemize}
+  \item \textbf{Funzione calcolata}: è un'associazione input-output:
+    \[
+      f: \underbrace{\mathbb{N}}_{\text{Dominio}} \to
+      \underbrace{\mathbb{N}}_{\text{Codominio}} \quad f \subseteq \mathbb{N} \times \mathbb{N}
+    \]
+    Questa associazione è definibile da tutte le coppie di input e output.  
+
+  \item \textbf{Algoritmo (processo di calcolo)}:
+  Alcune funzioni sono definibili con una sequenza di passi partendo dall'input, ad esempio:
+    \[
+      \begin{cases}
+        f(0) = 1\\
+        f(1) = 1\\
+        f(x+2) = f(x+1) + f(x) \text{ per } x \ge 0
+      \end{cases}
+    \]
+    Si introduce quindi il concetto di \textbf{calcolabilità}.
+    Per definire la calcolabilità ci domandiamo quali funzioni \( f: \mathbb{N} \to \mathbb{N} \) sono calcolabili
+    (mediante un algoritmo possiamo costruire l'output a partire dall'input)
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Ci sono due modelli principali per definire la calcolabilità:
+\begin{itemize}
+  \item \textbf{Funzioni primitive ricorsive}
+  \item \textbf{Macchina di Turing}
+\end{itemize}
+
+\subsection{Funzioni primitive ricorsive}
+Le funzioni primitive ricorsive sono un modello di calcolo che permette di descrivere un
+processo di calcolo componendo funzioni già definite o funzioni di base. Per rappresentare
+la composizione di funzioni si usa la \textbf{Lambda notazione}:
+\[
+  \underbrace{\lambda}_{\text{Funzione}} \underbrace{x}_{\text{Input}}. \underbrace{f(x)}_{\text{Output}}
+\] 
+
+\subsubsection{Funzioni primitive di base}
+Le funzioni ricorsive di base sono:
+\begin{itemize}
+  \item \textbf{Funzione costante zero}:
+    \[
+      \lambda x. 0
+    \] 
+  \item \textbf{Funzione successore}:
+    \[
+      \lambda x. x + 1 \equiv S(x)
+    \]
+  \item \textbf{Funzione identità (su un valore) o funzione proiezione (su più valori)}:
+    \[
+      \lambda x_1, x_2, \ldots, x_n. x_i \quad 1 \le i \le n
+    \]
+    O per un solo valore:
+    \[
+      \lambda x. x
+    \] 
+\end{itemize}
+Queste funzioni sono \textbf{totali}, cioè sono definite per ogni valore naturale in input.
+
+
+\subsubsection{Operazioni sulle funzioni}
+Le possibili operazioni per costruire nuove funzioni sono:
+\begin{itemize}
+  \item \textbf{Composizione}: Consideriamo le funzioni:
+    \[
+      g: \mathbb{N} \to \mathbb{N} \quad
+      h: \mathbb{N} \to \mathbb{N}
+    \] 
+    Abbiamo la funzione composta:
+    \[
+      f = h \circ g = \lambda x. g(h(x)) \quad f: \mathbb{N} \to \mathbb{N}
+    \]
+
+    \vspace{1em}
+    \noindent
+    In generale:
+    \[
+      g: \mathbb{N}^k \to \mathbb{N} \quad
+      h_1, h_2, \ldots, h_k: \mathbb{N}^n \to \mathbb{N}
+    \] 
+    La funzione composta è:
+    \[
+      \begin{aligned}
+        f &= g \circ (h_1, \ldots, h_k)\\
+          &= \lambda x_1, \ldots, x_n. g(h_1(x_1, \ldots, x_n),
+        h_2(x_1, \ldots, x_n), \ldots, h_k(x_1, \ldots, x_n))
+      \end{aligned}
+    \]
+    La composizione di funzioni totali è totale.
+
+    \begin{example}
+      Consideriamo le funzioni:
+      \[
+        g: \mathbb{N}\times \mathbb{N} \to \mathbb{N} \quad
+        h_1, h_2: \mathbb{N} \times \mathbb{N} \times \mathbb{N} \to \mathbb{N}
+      \] 
+      La funzione composta è:
+      \[
+        f = g \circ (h_1, h_2) = \lambda x_1, x_2, x_3. g(h_1(x_1, x_2, x_3), h_2(x_1, x_2, x_3))
+      \] 
+      \[
+        f: \mathbb{N} \times \mathbb{N} \times \mathbb{N} \to \mathbb{N}
+      \] 
+    \end{example}
+    Queste funzioni equivalgono agli assegnamenti nei linguaggi di programmazione.
+
+  \item \textbf{Primitiva ricorsione}: Consideriamo le funzioni:
+    \[
+      g: \mathbb{N} \to \mathbb{N} \quad
+      h: \mathbb{N} \times \mathbb{N} \times \mathbb{N} \to \mathbb{N}
+    \] 
+    Definiamo la funzione \( f \) mediante primitiva ricorsione come:
+    \[
+      \begin{cases}
+        f(\overbrace{0}^{\text{indice}}, x) = g(x) \quad &\text{Caso base}\\
+        f(y+1, x) = h(y, f(y, x), \underbrace{x}_{\text{input}}) \quad &\text{Caso ricorsivo}
+      \end{cases}
+    \] 
+
+    Le funzioni definite per primitiva ricorsione sono totali.
+
+    Queste funzioni equivalgono al ciclo for nei linguaggi di programmazione.
+\end{itemize}
+
+\begin{definition}
+  Una funzione primitiva ricorsiva \( f \in PR \), dove \( PR \) è la classe delle funzioni primitive
+  ricorsive, ovvero la minima classe di funzioni chiuse per composizione e primitiva
+  ricorsione che contiene tutte le funzioni di base.
+\end{definition}
+
+\begin{definition}
+  Supponiamo che una funzione \( f \) sia primitiva ricorsiva, allora esiste una
+  sequenza finita di funzioni \(P_f\) in \( PR \) tali che
+  l'ultima funzione della sequenza è esattamente \( f \):
+  \[
+    \exists P_f = f_1, f_2, \ldots, f_n \;.\; \forall i f_i \in PR \wedge f_n = f
+  \] 
+\end{definition}
+
+\begin{define}
+  Quando una funzione totale termina si usa la seguente notazione:
+  \[
+    f(x) \downarrow
+  \] 
+  Quando una funzione non è definita e quindi non termina si usa la seguente notazione:
+  \[
+    f(x) \uparrow
+  \] 
+\end{define}
+
+
+\subsubsection{Esempi}
+\begin{example}[Somma]
+  Definiamo la funzione somma:
+  \[
+    +: \mathbb{N} \times \mathbb{N} \to \mathbb{N}
+  \] 
+  Definiamola prima induttivamente:
+  \[
+    \begin{cases}
+      +(0, x) &= x \\
+      +(y+1, x) &= S(+(y, x))
+    \end{cases}
+  \] 
+  Definiamo ora la funzione mediante funzioni ricorsive di base:
+  \[
+    \begin{aligned}
+      f_1 &= \lambda x.x \\
+      f_2 &= \lambda x. x+1 \\
+      f_3 &= \lambda x_1 x_2 x_3. x_2 \\
+      f_4 &= f_2 \circ f_3
+    \end{aligned}
+  \] 
+  \[
+    + = f_5:
+    \begin{cases}
+      f_5(0,x) = f_1(x) = x \\
+      \begin{aligned}
+        f_5(y+1,x) &= f_4(y, f_5(y,x), x) \\
+                   &= f_2 \circ f_3 (y, f_5(y,x), x) \\
+                   &= f_2(f_5(y,x)) = S(+(y,x))
+      \end{aligned}
+    \end{cases}
+  \] 
+  quindi è definita come:
+  \[
+    +: f_1, f_2, f_3, f_4, f_5
+  \] 
+\end{example}
+
+\begin{example}[Moltiplicazione]
+  Definiamo la funzione moltiplicazione:
+  \[
+    *: \mathbb{N} \times \mathbb{N} \to \mathbb{N}
+  \] 
+  Definiamola prima induttivamente:
+  \[
+    \begin{cases}
+      *(0, x) &= 0 \\
+      *(y+1, x) &= +(x, *(y, x))
+    \end{cases}
+  \] 
+  Definiamo ora la funzione mediante funzioni ricorsive di base:
+  \[
+    \begin{aligned}
+      f_1 &= \lambda x. 0 \\
+      f_2 &= \lambda x_1 x_2 x_3. x_2 \\
+      f_3 &= \lambda x_1 x_2 x_3. x_3 \\
+      f_4 &= + = \lambda x_1 x_2. +(x_1, x_2) \\
+      f_5 &= f_4 \circ (f_2, f_3)
+    \end{aligned}
+  \] 
+  \[
+    * = f_6:
+    \begin{cases}
+      f_5(0,x) = f_1(x) = 0 \\
+      \begin{aligned}
+        f_6(y+1, x) &= f_5(y, f_6(y x), x) \\
+                   &= f_4 \circ (f_2, f_3) (y, f_6(y x), x) \\
+                   &= f_4(f_2(y, f_6(y x), x), f_3(y, f_6(y x), x)) \\
+                   &= f_4(f_6(y x), x) = +(f_6(y x), x)
+      \end{aligned}
+    \end{cases}
+  \] 
+  quindi è definita come:
+  \[
+    *: f_1, f_2, f_3, f_4, f_5, f_6
+  \] 
+\end{example}
+
+\begin{example}[Decremento]
+  Definiamo la funzione decremento:
+  \[
+    D: \mathbb{N} \to \mathbb{N}
+  \] 
+  Definiamola prima induttivamente:
+  \[
+    \begin{cases}
+      D(0) &= 0 \\
+      D(y+1) &= y
+    \end{cases}
+  \] 
+  Definiamo ora la funzione mediante funzioni ricorsive di base:
+  \[
+    \begin{aligned}
+      f_1 &= \lambda x. 0 \\
+      f_2 &= \lambda x_1 x_2 x_3. x_1 \\
+    \end{aligned}
+  \] 
+  \[
+    D = f_3:
+    \begin{cases}
+      f_3(0, x) = f_1(x) = 0 \\
+      f_3(y+1, x) = f_2(y, f_3(y, x), x) = y
+    \end{cases}
+  \] 
+  quindi è definita come:
+  \[
+    D: f_1, f_2, f_3
+  \]
+\end{example}
+
+\begin{exercise}[Differenza]
+  Definiamo la funzione differenza:
+  \[
+    -: \mathbb{N} \times \mathbb{N} \to \mathbb{N}
+  \] 
+  Definiamola prima induttivamente:
+  \[
+    \begin{cases}
+      -(0, x) &= x \\
+      -(x, y+1) &= D(-(y, x))
+    \end{cases}
+  \] 
+\end{exercise}
+
+\subsubsection{Calcolabilità delle funzioni primitive ricorsive}
+Vogliamo mostrare che questo modello fallisce nel catturare il concetto di calcolabilità.
+Consideriamo una funzione \( f: \mathbb{N} \to  \mathbb{N} \) primitiva ricorsiva
+\( f \in PR \), sappiamo che:
+\[
+  \exists P_f = f_1, f_2, \ldots, f_n \;.\; \forall i f_i \in PR \wedge f_n = f
+\] 
+Definiamo una nuova funzione \( h : \mathbb{N} \to  \mathbb{N} \) tale che:
+\[
+  h(n) = f_n(n) + 1
+\] 
+Prendiamo un indice \( n \), generiamo la lista di funzioni fino a \( n \) e gli sommiamo
+1. Di conseguenza \( h(n) \) è calcolabile e visto che funzioni primitiva ricorsive catturano
+tutto ciò che è calcolabile, allora \( h \in PR \). Quindi vuol dire che esiste un
+indice \( i \) tale che:
+\[
+  \exists i \;.\; h = f_i \in PR
+\] 
+Allora possiamo calcolare \( h(i) \):
+\[
+  f_i(i) = h(i) = f_i(i) + 1 \quad \text{Assurdo}
+\] 
+È impossibile che un numero naturale sia uguale al suo successore. Quindi \( PR \) non
+può catturare tutte le funzioni calcolabili.
+
+\begin{example}
+  Un esempio di funzione totale non primitiva ricorsiva è la funzione di Ackermann:
+  \[
+    \begin{aligned}
+      Ack(0, y) &= y + 1 \quad \text{Caso base per il primo parametro} \\
+      Ack(x+1, 0) &= Ack(x, 1) \quad \text{Caso base per il secondo parametro}\\
+      Ack(x+1, y+1) &= Ack(x, Ack(x+1, y)) \quad \text{Caso ricorsivo}
+    \end{aligned}
+  \] 
+  Questa funzione cresce molto velocemente, ad esempio:
+  \[
+    Ack(4, 2) \text{ ha più di 19000 cifre}
+  \] 
+  Nella definizione, al posto di h, abbiamo una funzione da calcolare e quindi rappresenta
+  la \( f \) della definizione di primitiva ricorsione, cioè la funzione che calcolo
+  è quella calcolata. Quindi lo schema di primitiva ricorsione non è rispettato:
+  \[
+    Ack \notin PR
+  \] 
+  però \( Ack \) è totale, calcolabile, ma non primitiva ricorsiva.
+\end{example}
+
+\subsection{Macchina di Turing}
+È un modello basato su automi a stati finiti (DFA) che permette di descrivere come avviene
+il processo di calcolo come sequenza di operazioni di scrittura e lettura su una memoria.
+La macchina di Turing è costituita da:
+\begin{itemize}
+  \item \textbf{Programma finito}: rappresenta la funzione di transizione, cioè una tabella
+    finita in cui viene definito come output:
+    \begin{itemize}
+      \item Stato: è una testina
+      \item Simbolo (scritto)
+      \item Direzione di spostamento
+    \end{itemize}
+
+  \item \textbf{Nastro infinito}: rappresenta la memoria della macchina, è costituito da
+    celle che contengono simboli di un alfabeto finito. La testina può leggere e scrivere
+    su questo nastro.
+\end{itemize}
+
+\begin{definition}[Macchina di Turing]
+  Una macchina di Turing (MdT) \( M \) consiste di:
+  \begin{itemize}
+    \item \( \Sigma \): alfabeto \textbf{finito}:
+      \[
+        \Sigma = \{ s_0, s_1, \ldots, s_k \}
+      \] 
+      L'alfabeto contiene almeno due simboli:
+      \begin{itemize}
+        \item \( \$ \): rappresenta la cella vuota del nastro
+        \item \( 0 \): simbolo significativo
+      \end{itemize}
+
+    \item \( Q \): insieme finito di stati:
+      \[
+        q_0 \in Q \quad Q \varnothing
+      \] 
+
+    \item \( P \): insieme finito di istruzioni (corrisponde alla \( \delta \) del DFA):
+      \[
+        P = \left\{ I_1, \ldots, I_k \right\}
+      \] 
+      Ogni istruzione è una quintupla che può essere di due tipi:
+      \begin{itemize}
+        \item \( q,s,q',s', \{R, L\}  \): dove:
+          \begin{itemize}
+            \item \( q \): stato corrente
+            \item \( s \): simbolo letto sul nastro
+            \item \( q' \): stato successivo
+            \item \( s' \): simbolo da scrivere sul nastro sovrascrivendo \( s \)
+            \item \( R \) o \( L \): direzione di spostamento della testina (Right o Left)
+          \end{itemize}
+      \end{itemize}
+    \item \( \delta \): la funzione di transizione è definita come:
+      \[
+        \delta: Q \times \Sigma \to Q \times \Sigma \times \{R, L\}
+      \] 
+  \end{itemize}
+\end{definition}
+
+\subsubsection{Descrizione istantanea di una MdT}
+La descrizione istantanea (ID) di una MdT rappresenta lo stato corrente della macchina
+in un dato istante di tempo:
+\[
+  \ldots \$ \$ \underbrace{s_1 s_2 \ldots s_{i-1}}_{v}
+  \underset{\underset{\text{Testina}}{q}}{s_i}
+  \underbrace{s_{i+1} \ldots s_n}_{w}
+ \$ \$ \ldots
+\] 
+La descrizione istantanea contiene:
+\[
+  \left( q, v, s_i, w \right) 
+\] 
+\begin{itemize}
+  \item Lo stato corrente \( q \)
+  \item Il contenuto del nastro a sinistra della testina
+  \item Il simbolo sotto la testina \( s_i \)
+  \item Il contenuto del nastro a destra della testina
+\end{itemize}
+La computazione di una MdT è una sequenza di descrizioni istantanee.
+\[
+  \ldots \$ \$ \overbrace{\underbrace{r_m \ldots r_1}_{v'} r_0}^{v}
+  \underset{\underset{\text{Testina}}{q}}{r}
+  \overbrace{s_0 \underbrace{s_1 \ldots s_n}_{w'}}^{w}
+ \$ \$ \ldots
+\] 
+\begin{itemize}
+  \item 
+    Per lo spostamento a destra:
+    \[
+      \delta(q, r) = \left<q', r', R \right>
+    \] 
+    quindi:
+    \[
+      \left<q, v, r, w \right> \to \left< q', v r' , s_0, w' \right>
+    \] 
+    \[
+      \ldots \$ \$ \overbrace{r_m \ldots r_1 r_0 r'}^{vr'}
+      \underset{\underset{\text{Testina}}{q'}}{s_0}
+      \overbrace{s_1 \ldots s_n}^{w'}
+      \$ \$ \ldots
+    \] 
+
+  \item 
+    Per lo spostamento a sinistra:
+    \[
+      \delta(q, r) = \left<q', r', L \right>
+    \] 
+    quindi:
+    \[
+      \left<q, v, r, w \right> \to \left< q', v', r_0, r' w \right>
+    \] 
+    \[
+      \ldots \$ \$ \overbrace{r_m \ldots r_1}^{v'}
+      \underset{\underset{\text{Testina}}{q'}}{r_0}
+      \overbrace{r' s_0 s_1 \ldots s_n}^{r'w}
+      \$ \$ \ldots
+    \]
+\end{itemize}
+
+
+\vspace{1em}
+\noindent
+\begin{definition}
+  Una computazione è terminante se esiste una descrizione istantanea
+  \( \left<q, v, r, w \right> \) tale che nessuna istruzione inizia con \( (q, r) \),
+  ovvero \( \delta(q,r) \) non è definita.
+\end{definition}
+
+\vspace{3em}
+\noindent
+\begin{theorem}[Funzione Turing calcolabile]
+  Una funzione \( f: \mathbb{N}^n \to \mathbb{N} \) è \textbf{Turing calcolabile} se
+  esiste una MdT \( M \) tale che partendo dalla configurazione iniziale:
+  \[
+    \$ x_1 \$ x_2 \$ \ldots \$ x_n \underset{\underset{q_0}{\uparrow}}{\$} \$ \ldots
+  \] 
+  dove \( x \in \mathbb{N} \) è la rappresentazione unaria, ad esempio: 
+  \[
+    \begin{aligned}
+      |x| = 2 &\to x = 11\\
+      |x| = 5 &\to x = 11111
+    \end{aligned}
+  \] 
+  e quindi \( x_1, \ldots, x_n \) sono gli input di \( f \), allora la MdT termina nella
+  configurazione:
+  \[
+    \ldots\$ f(x_1, \ldots, x_n) \underset{\underset{q_f}{\uparrow}}{\$} \$ \ldots
+  \] 
+  Una MdT termina quando nessuna computazione ulteriore è possibile.
+\end{theorem}
+
+\vspace{1em}
+\noindent
+Le funzioni primitive ricorsive possono essere rappresentate con una macchina di Turing.
+\begin{example}
+  La funzione:
+  \[
+    \lambda x.0
+  \] 
+  è rappresentata dalla macchina:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|}
+      \hline
+      & \$ \\
+      \hline
+      \( q_1 \) & \( q_1 \$, R \) \\
+      \hline
+    \end{tabular}
+  \end{table}
+  Il nastro è:
+  \[
+    \begin{aligned}
+      \ldots \$ x \underset{\underset{q_0}{\uparrow}}{\$} \$ \ldots \\
+      \ldots \$ x \underset{\text{Risultato}}{\$} \underset{\underset{q_1}{\uparrow}}{\$} \ldots \\
+    \end{aligned}
+  \] 
+\end{example}
+
+\begin{example}
+  La funzione:
+  \[
+    \lambda x.x
+  \] 
+  è rappresentata dalla macchina:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|}
+      \hline
+      & \$ \\
+      \hline
+      \( q_1 \) & \\
+      \hline
+    \end{tabular}
+  \end{table}
+  Il nastro è:
+  \[
+    \ldots \$ x \underset{\underset{q_1}{\uparrow}}{\$} \ldots
+  \] 
+\end{example}
+
+\begin{example}
+  Un esempio di MdT che non termina è:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|}
+      \hline
+      &  \$ \\
+      \hline
+      \( q_0 \) & \( q_0 \$, R \) \\
+      \hline
+    \end{tabular}
+  \end{table}
+  Scritta sotto forma di funzione:
+  \[
+    f(x) = \lambda x. \uparrow
+  \] 
+  o in un linguaggio di programmazione:
+  \begin{lstlisting}
+    while true do 
+      x := x
+  \end{lstlisting}
+\end{example}
+
+\subsection{Funzioni parziali ricorsive}
+Le funzioni parziali ricorsive sono funzioni primitive ricorsive con l'aggiunta
+dell'operazione di \textbf{minimizzazione}.
+
+\begin{definition}[Minimizzazione]
+  Sia \( f: \mathbb{N}^{n+1} \to N \) una funzione totale
+  \footnote{Di solito le lettere \( f, g, h \) indicano funzioni totali, mentre le lettere
+  greche, di solito \( \varphi, \psi \), indicano funzioni parziali.}
+  , definiamo una funzione
+  parziale \( \varphi: \mathbb{N}^n \to \mathbb{N} \text{ o diverge} \):
+  \[
+    \varphi(x_1 \ldots x_n) = \mu z. \left(f(x_1 \ldots x_n, z) = 0\right)
+  \] 
+  dove \( \mu z \) rappresenta il più piccolo \( z \) (se esiste) tale che
+  \( f(x_1 \ldots x_n, z) = 0 \). Se non esiste tale \( z \) allora
+  \( \varphi(x_1 \ldots x_n) \uparrow \).
+
+  \vspace{1em}
+  \noindent
+  L'algoritmo che calcola \( \varphi \) è:
+\begin{lstlisting}
+input(x_1, ..., x_n)
+  z = 0
+  while f(x_1, ..., x_n, z) != 0 do
+    z++
+
+  output(z)
+\end{lstlisting}
+\end{definition}
+
+\begin{example}
+  Un esempio di funzione calcolata con la minimizzazione è:
+  \[
+    \left\lfloor log_a x \right\rfloor
+  \]
+  cioè l'intero inferiore del logaritmo in base \( a \) di \( x \) (l'esponente più
+  piccolo che non fa superare il valore di \( x \)).
+
+  Definiamo la funzione con la minimizzazione:
+  \[
+    f(x) = \mu z. lte(x, a^{z+1}) = 0
+  \] 
+  dove \( lte \) è la funzione minore o uguale:
+  \[
+    lte(x, y) = \begin{cases}
+      0 & \text{se } x \le y \\
+      1 & \text{se } x > y
+    \end{cases}
+  \] 
+\end{example}
+\begin{example}
+  Un altro esempio è la funzione radice:
+  \[
+    \left\lfloor \sqrt[n]{x} \right\rfloor
+  \]
+  sappiamo che:
+  \[
+    x = a^n \iff \sqrt[n]{x} = a
+  \] 
+  Definiamo la funzione con la minimizzazione:
+  \[
+    f(x) = \mu z. \left( lte\left(x, \left(z+1\right)^n\right) = 0 \right) 
+  \] 
+\end{example}
+
+\begin{theorem}
+  Una funzione \( f: \mathbb{N} \to \mathbb{N} \) è una 
+  \textbf{parziale ricorsiva} se e solo se \( f \) è Turing calcolabile.
+
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione}:
+  \begin{itemize}
+    \item \( \implies \) (\( f \) parziale ricorsiva \( \Rightarrow \) Turing calcolabile):
+    \begin{itemize}
+      \item \textbf{Casi base}:
+        \begin{itemize}
+          \item Funzioni di base: esistono MdT che le calcolano
+        \end{itemize}
+
+      \item \textbf{Composizione}: Consideriamo le funzioni parziali ricorsive \( f \) e \( g \).
+        Per ipotesi induttiva sappiamo che esiste una macchina di turing \( M_f \) 
+        che calcola \( f \) e una macchina di turing \( M_g \) che calcola \( g \).
+        Vogliamo mostrare che la funzione composta \( f \circ g \) è parziale ricorsiva
+        \[
+          f \circ g \text{ è parziale ricorsiva } \implies \exists M_{f \circ g}
+        \] 
+        Definiamo la MdT che calcola \( f \circ g \) in pseudocodice:
+        \[
+          M_{f \circ g} =
+          \begin{cases}
+            input(x)\\
+            temp = M_g(x)\\
+            M_f(temp)\\
+          \end{cases}
+        \] 
+
+      \item \textbf{Primitiva ricorsione}: Consideriamo le funzioni parziali ricorsive
+        \( g \) e \( h \). Per ipotesi induttiva sappiamo che esiste una macchina di turing
+        \( M_h \) che calcola \( h \) e una macchina di turing \( M_g \) che calcola \( g \).
+        Vogliamo mostrare che la funzione definita mediante primitiva ricorsione \( f \) è
+        parziale ricorsiva
+        \[
+          f(x, n) =
+          \begin{cases}
+            g(x) & n = 0\\
+            h(x, n-1, f(x, n-1)) & n > 0
+          \end{cases}
+        \] 
+        La MdT che calcola \( f \) è:
+        \[
+          M_f =
+          \begin{cases}
+            input(x) \\
+            input(n) \\
+            temp = M_g(x) \\
+            \text{for } i = 0 \text{ to } n \text{ do } \\
+            \quad \left\{ temp := M_h(x, i, temp) \right\} \\
+            output(temp) \\
+          \end{cases}
+        \] 
+
+      \item \textbf{Minimizzazione}: Consideriamo la funzione parziale ricorsiva
+        \( f \). Per ipotesi induttiva sappiamo che esiste una macchina di turing \( M_f \)
+        che calcola \( f \).
+        Vogliamo mostrare che la funzione definita mediante minimizzazione \( \varphi \) è
+        parziale ricorsiva
+        \[
+          \varphi(x) = \mu z. (f(x_1 \ldots x_k, z) = 0)
+        \] 
+        La MdT che calcola \( \varphi \) è:
+        \[
+          M_\varphi =
+          \begin{cases}
+            input(x_1 \ldots x_k) \\
+            i = 0 \\
+            temp = M_f(x_1 \ldots x_k, i) \\
+            \text{while } temp \ne 0 \text{ do } \{ \\
+            \quad i++
+            \quad temp = M_f(x_1 \ldots x_k, i) \\
+            \} \\
+            output(temp) \\
+          \end{cases}
+        \]
+    \end{itemize}
+
+  \item \( \Leftarrow \) (\( f \) Turing calcolabile \( \Rightarrow \) parziale ricorsiva):
+    Data la descrizione istantanea:
+    \[
+      \left<q, n, s, m \right> \to \left<q', n', s', m' \right> \quad \text{ primo passo}
+    \] 
+    dove:
+    \begin{itemize}
+      \item I simboli della macchina di Turing sono \( \left\{ \$, 0, 1 \right\} \)
+      \item \( n, m \) le sequenze di simboli sul nastro sono numeri binari con il
+        numero meno significativo vicino alla testina
+      \item Codifichiamo gli spostamenti della testina come:
+        \begin{itemize}
+          \item \( L \to 0 \)
+          \item \( R \to 1 \)
+        \end{itemize}
+    \end{itemize}
+    Scorporiamo la funzione le funzioni in
+    \( \delta: Q \times \Sigma \to Q \times \Sigma \times \{ R, L\}  \):
+    \begin{itemize}
+      \item \( \mathbb{Q}: Q \times \Sigma \to Q \) funzione totale, quindi \( PR \). Rappresenta la 
+        transizione di stato
+      \item \( \mathbb{S}: Q \times \Sigma \to \Sigma  \) funzione totale, quindi \( PR \).
+        Rappresenta la transizione di simbolo
+      \item \( \mathbb{X}: Q \times \Sigma \to \{R, L\}  \) funzione totale, quindi \( PR \).
+        Rappresenta transizione di direzione
+    \end{itemize}
+    Distinguiamo due casi:
+    \begin{enumerate}
+      \item Se \( \mathbb{X}(q,s) = L = 0 \) allora:
+        \[
+          \begin{aligned}
+            q' &= \mathbb{Q}(q,s)\\
+            m' &= 2m + \mathbb{S}(q,s) \text{ (aggiungo il simbolo meno significativo di \( m \))} \\
+            n' &= n div 2 \text{ (\( n \) senza il suo simbolo meno significativo)} \\
+            s' &= n mod 2 \text{ (simbolo meno significativo di \( n \))}
+          \end{aligned}
+        \] 
+        con il nastro:
+        \[
+          \overbrace{\ldots}^n \underset{\underset{q}{\uparrow}}{s} \overbrace{\ldots}^{m}
+        \] 
+        Se ci si sposta a sinistra il nastro diventa:
+        \[
+          \overbrace{\ldots}^{n'} \underset{\underset{q'}{\uparrow}}{s'} \overbrace{\ldots}^{m'}
+        \] 
+        Essendo le funzioni \( mod \) e \( div \) primitiva ricorsive, allora tutte
+        queste operazioni sono primitiva ricorsive.
+
+      \item Se \( \mathbb{X}(q,s) = R = 1 \) allora:
+        \[
+          \begin{aligned}
+            q' &= \mathbb{Q}(q,s)\\
+            m' &= m div 2 \text{ (\( m \) senza il suo simbolo meno significativo)} \\
+            n' &= 2n + \mathbb{S}(q,s) \text{ (aggiungo il simbolo meno significativo di \( n \))} \\
+            s' &= m mod 2 \text{ (simbolo meno significativo di \( m \))}
+          \end{aligned}
+        \] 
+    \end{enumerate}
+    Combiniamo questi due casi:
+    \[
+      \begin{aligned}
+        q' &= \mathbb{Q}(q,s)\\
+        s' &= (n mod 2) \cdot \underbrace{(1 - \mathbb{X}(q,s))}_{\begin{aligned}
+          \neq 0 \text{ se } L \\
+          = 0 \text{ se } R
+        \end{aligned}}
+        + (m mod 2) \cdot \underbrace{\mathbb{X}(q,s)}_{\begin{aligned}
+          \neq 0 \text{ se } R \\
+          = 0 \text{ se } L
+        \end{aligned}}\\
+            m' &= (2m + \mathbb{S}(q,s)) \cdot (1 - \mathbb{X}(q,s)) + (m div 2) \cdot \mathbb{X}(q,s)\\
+            n' &= (n div 2) \cdot (1 - \mathbb{X}(q,s)) + (2n + \mathbb{S}(q,s)) \cdot \mathbb{X}(q,s)\\
+      \end{aligned}
+    \] 
+    quindi la funzione \( f \) definita come:
+    \[
+      f: \left<q, n, s, m \right> \to \left<q', n', s', m' \right>
+    \] 
+    è primitiva ricorsiva.
+
+    \vspace{1em}
+    \noindent
+    Per primitiva ricorsione calcoliamo lo stato raggiunto dopo \( t \) passi:
+    \[
+      P_q(t, q, n, s, m) =
+      \begin{cases}
+        P_q(0, q, n, s, m) = q \\
+        P_q(t+1, q, n, s, m) = P_q(t, \underbrace{q', n', s', m'}_{\text{Calcolati da \( f \) }})
+      \end{cases}
+    \]
+    Quindi \( P_q \) esegue \( t \) passi della MdT a partire dalla descrizione istantanea
+    \( \left<q, n, s, m \right> \) e restituisce lo stato raggiunto.
+
+    Supponendo l'output come ciò che sta a sinistra della testina quando la MdT termina,
+    definiamo per primitiva ricorsione (di computazione parziale) dopo \( t \) passi:
+    \[
+      P_{out}(t, q, n, s, m) =
+    \] 
+    \[
+      = \begin{cases}
+        P_{out}(0, q, n, s, m) = n \\
+        P_{out}(t+1, q, n, s, m) = P_{out}(t, q', n', s', m')
+      \end{cases}
+    \] 
+    Quindi \( P_{out} \) restituisce la sequenza a sinistra della testina dopo \( t \)
+    passi di calcolo.
+
+    \vspace{1em}
+    \noindent
+    In \( Q \) supponiamo di avere uno stato \( q_f \) di terminazione. Quindi il calcolo
+    di \( M \) è:
+    \[
+      \begin{aligned}
+        \varphi_M(x) = P_{out}(
+          &\mu t. \left( q_f - P_q\left( t, q_0, x div 2, x mod 2, 0 \right)  \right) = 0,\\
+          &q_0,\\
+          &x div 2,\\
+          & x mod 2,\\
+          &0)
+      \end{aligned}
+    \] 
+    dove:
+    \begin{itemize}
+      \item \( P_q\left( t, q_0, x, x mod 2, 0 \right) \) cerca il più piccolo \( t \) 
+        tale che partendo da \( q_0 \) con input \( x \) a sinistra della testina in
+        \( t \) passi arriva allo stato finale \( q_f \) 
+
+      \item \( P_{out}(\ldots) \) calcola l'output dopo \( t \) passi, i quali portano
+        allo stato finale
+    \end{itemize}
+  \end{itemize}
+  Abbiamo quindi dimostrato che le macchine di Turing sono equivalenti alle funzioni
+  parziali ricorsive:
+  \[
+    MdT \equiv \text{ Funzioni parziali ricorsive }
+  \] 
+  quindi se \( \varphi  \) è una funzione parziale ricorsiva allora esiste una MdT che la calcola,
+  cioè esiste un algoritmo che calcola \( \varphi \).
+  Se abbiamo una macchina di Turing \( M \) allora la funzione calcolata è parziale ricorsiva.
+\end{theorem}
+
+\subsubsection{Aritmetizzazione delle machcine di Turing}
+Una macchina di Turing è costituita da due componenti principali:
+\begin{itemize}
+  \item Programma, ad esempio Mdt, funzioni parziale ricorsive, programma in un qualsiasi
+    linguaggio di programmazione
+  \item Input, ad esempio un numero o una stringa, ecc...
+\end{itemize}
+Un programma può essere rappresentato nello stesso dominio degli input e quindi
+è possibile codificare (univicamente) ogni macchina di Turing in un numero naturale.
+Questo processo è chiamato \textbf{aritmetizzazione delle macchine di Turing}.
+\begin{example}
+  Se consideriamo:
+  \[
+    \sigma = \{0, \$\} \quad Q = \{q_0\} 
+  \] 
+  Tutte le macchine di Turing possibili sono:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|}
+      \hline
+      & 0 & \$ \\
+      \hline
+      \( q_0 \) & \( \bullet \)  & \( \bullet \)  \\
+      \hline
+    \end{tabular}
+  \end{table}
+  dove \( \bullet \) sono tutte le possibili istruzioni:
+  \[
+    \begin{cases}
+      (\$, \$, \$) \\
+      (q_0, \$, R) \\
+      (q_0, \$, L) \\
+      (q_0, 0, R) \\
+      (q_0, 0, L) \\
+    \end{cases}
+  \] 
+  Il numero di macchine di Turing possibili da 1 stato e 2 simboli è:
+  \[
+    5 \cdot 5 = 25
+  \] 
+\end{example}
+Possiamo mettere in ordine gli insiemi degli stati e dei simboli perchè sono finiti:
+\[
+  Q \to q_0 < q_1 < \ldots < q_n \quad q_i \le q_j \text{ se } i \le j
+\] 
+\[
+  \Sigma \to s_0 < s_1 < \ldots < s_k \quad s_i \le s_j \text{ se } i \le j
+\]
+Anche le triple possono essere messe in ordine lessicografico:
+\[
+  q_{i_1} s_{j_1} m_{k_1} \le q_{i_2} s_{j_2} m_{k_2} \text{ se }
+  \begin{cases}
+    q_{i_1} \le  q_{i_2} \text{ oppure }\\
+    q_{i_1} = q_{i_2} \wedge s_{j_1} \le  s_{j_2} \text{ oppure }\\
+    q_{i_1} = q_{i_2} \wedge s_{j_1} = s_{j_2} \wedge m_{k_1} \le  m_{k_2} \\
+  \end{cases}
+\] 
+
+\subsubsection{Fattorizzazione di Gödel}
+Esistono diversi algoritmi per aritmetizzare una MdT, uno di questi è la
+\textbf{fattorizzazione di Gödel}. L'idea è quella di associare ad ogni macchina di
+Turing un numero naturale unico e codificare la macchina di Turing con gli esponenti
+dei numeri della fattorizzazione in numeri primi.
+\[
+  x \in \mathbb{N} \quad fact(x) = p_1^{x_1} \cdot p_2^{x_2} \cdot \ldots \cdot p_n^{x_n}
+  \quad p_i \text{ sono primi}
+\] 
+
+\begin{itemize}
+  \item \textbf{Fattorizzazione di Gödel di una istruzione}:\\
+    Associamo ad ogni simbolo \( y \) della macchina di Turing un numero dispari maggiore di
+    1: \( a(y) \). Un istruzione della macchina di Turing è una quintupla:
+    \[
+      E = \left< q, s, q', s', R | L \right>
+    \] 
+    Calcoliamo il numero associato all'istruzione \( E \):
+    \[
+      gn(E) = \Pi_{i=1}^{5} p_i^{a(s_i)}
+    \] 
+    \begin{example}
+      Consideriamo la seguente istruzione:
+      \[
+        E = \left< q_0, \$, q_0, 0, R \right>
+      \] 
+      Il numero di Gödel associato è:
+      \[
+        gn(E) = 2^{a(q_0)} \cdot 3^{a(\$)} \cdot 5^{a(q_0)} \cdot 7^{a(0)} \cdot 11^{a(R)}
+      \] 
+    \end{example}
+
+  \item \textbf{Fattorizzazione di Gödel di una macchina di Turing}:\\
+    Nello stesso modo si può calcolare il numero di Gödel associato ad una macchina di
+    Turing \( M \), cioè una sequenza di istruzioni:
+    \[
+      M = E_1 E_2 \ldots E_n \quad \text{Programma della MdT}
+    \] 
+    \[
+      gn(M) = \Pi_{i=1}^{n} p_i^{gn(E_i)}
+    \] 
+
+  \item \textbf{Decodifica}:\\
+    Per decodificare un numero naturale \( x \) e ottenere la macchina di Turing
+    associata, si esegue la fattorizzazione in numeri primi di \( x \) e si ricavano le
+    istruzioni \( E_i \) dai fattori primi:
+    \[
+      x = n_1 \cdot \ldots n_k
+      = \underbrace{\underbrace{m_1^1 \cdot \ldots \cdot m_5^1}_{\text{Tupla 1}} \;\cdot\; m_1^2 \cdot \ldots \cdot m_5^2 
+      \;\cdot\; \ldots \;\cdot\; m_1^n \cdot \ldots \cdot m_5^n}_{\text{Tabella di \( M_x \) }}
+    \] 
+    Indichiamo con \( M_x \) la macchina di Turing il cui programma è codificato in
+    \( x \in \mathbb{N} \). \( M_x \) calcola la funcione \( \varphi_x \), che è una
+    notazione per indicare la funzione parziale ricorsiva calcolata dal programma
+    codificato in \( x \in \mathbb{N} \).
+    \[
+      \varphi_x(y) = M_x(y) \text{ (Calcolo la MdT \( M_x \) su input \( y \))}
+    \] 
+    \( \varphi_x \) è la semantica (funzione calcolata) dal programma \( x \).
+    \begin{example}
+      Se \( x_1 \) è il programma che calcola \( y+y \) e \( x_2 \) fosse il programma
+      che calcola \( 2y \) allora sappiamo che i programmi sono diversi:
+      \[
+        x_1 \neq x_2
+      \] 
+      Però la funzione calcolata è la stessa:
+      \[
+        \varphi_{x_1}(y) = \varphi_{x_2}(y)
+      \] 
+    \end{example}
+\end{itemize}
+
+\subsubsection{Macchina universale (interprete)}
+La macchina universale è un modello di una macchina programmabile. È un programma che
+prende in input due valori, interpreta il primo come un programma e lo applica al secondo.
+\begin{definition}
+  Dati:
+  \[
+    \begin{cases}
+      x_1 & \text{Codifica \( M_{x_1} \)} \\
+      x_2 & \text{Input da manipolare}
+    \end{cases}
+  \] 
+  Una macchina universale è definita come:
+  \[
+    \varphi_u(x_1, x_2) = \varphi_{x_1}(x_2)
+  \] 
+  che sottoforma di pseudocodice diventa:
+\begin{lstlisting}[language=Python]
+input(x_1) # Programma
+input(x_2) # Dato 
+
+M = decodifica(x_1) # Algoritmo descritto di decodifica che da x_1 costruisce il programma corrispondente
+  if ok(M) then M(x_2) # ok(M) e' il parser che verifica se M e' ben formata
+  else 
+    while true 
+      x = x # Diverge
+\end{lstlisting}
+\end{definition}
+
+\subsection{Lambda calcolo}
+Il lambda calcolo è un linguaggio di programmazione funzionale. Si è dimostrato che
+il lambda calcolo è equivalente alle macchine di Turing.
+Esiste una tesi (teorema non dimostrabile, ma non ancora confutata) chiamata tesi di Church
+e dice che:
+\begin{quote}
+  La classe delle funzioni "intuitivamente calcolabili" è equivalente alla classe
+  delle funzioni Turing calcolabili.
+\end{quote}
+
+\subsection{Problemi insolvibili}
+\subsubsection{Problema della terminazione}
+Il problema della terminazione (Halting Problem) è il seguente:
+Non esiste una funzione totale ricorsiva e quindi calcolabile \( g \) tale che:
+\[
+  \forall x. g(x) =
+  \begin{cases}
+    1 & \text{se } \varphi_x(x) \downarrow \text{ termina} \\
+    0 & \text{se } \varphi_x(x) \uparrow \text{ diverge}
+  \end{cases}
+\] 
+\( \varphi_x(x) \downarrow \) rappresenta la funzione calcolabile della MdT di codice \( x \) 
+e input \( x \) che termina.
+La funzione \( g \) decide (cioè risponde con 0 (diverge) o 1 (termina)) se \( \varphi_x \) 
+applicata a \( x \) termina.
+
+\vspace{1em}
+\noindent
+\textbf{Dimostrazione per assurdo}:\\
+Supponiamo che esista una tale funzione \( g \) totale ricorsiva, allora esiste
+una macchina di Turing di codice \( i_0 \in \mathbb{N} \) che la calcola.
+\[
+  g = \varphi_{i_0}
+\] 
+Possiamo definire una nuova funzione \( h \):
+\[
+  h(x) = 
+  \begin{cases}
+    0 & \text{se } g(x) = 0 = \varphi_{i_0}(x) \\
+    \uparrow & \text{se } g(x) = 1 = \varphi_{i_0}(x)
+  \end{cases}
+\] 
+Essendo \( g \) calcolabile, anche \( h \) è calcolabile, quindi:
+\[
+  \exists i_1 . h = \varphi_{i_1}
+\] 
+Definiamo \( h(x) \) in pseudocodice:
+\begin{lstlisting}[language=Python]
+input(x)
+
+if M_i0(x) == 1 then
+  output(0)
+else 
+  while true do 
+    x = x # Diverge
+\end{lstlisting}
+L'ipotesi è che \( M_{i_0} \) esiste e termina sempre. Si ha un assurdo per costruzione.
+Supponiamo che \( \varphi_{i_0}(i_0) \) converga:
+\[
+  \varphi_{i_1}(i_1) \downarrow
+  \iff \underbrace{h(i_1) = 0}_{\text{per \( h = \varphi_{i_1} \) }}
+  \iff \underbrace{g(i_1) = 0}_{\text{per def di \( h \) }}
+  \iff \underbrace{\varphi_{i_1}(i_1) \uparrow}_{\text{per def di \( g \)}} \quad \text{Assurdo}
+\] 
+Supponiamo che \( \varphi_{i_0}(i_0) \) diverga:
+\[
+  \varphi_{i_1}(i_1) \uparrow
+  \iff \underbrace{h(i_1) \uparrow}_{\text{per \( h = \varphi_{i_1} \) }}
+  \iff \underbrace{g(i_1) = 1}_{\text{per def di \( h \) }}
+  \iff \underbrace{\varphi_{i_1}(i_1) \downarrow}_{\text{per def di \( g \)}} \quad \text{Assurdo}
+\] 
+Si dovrebbero aspettare infiniti passi per decidere se \( \varphi_x(x) \) termina o diverge,
+quindi \( g \) non è calcolabile. Non esiste quindi un programma in grado di decidere
+\textbf{sempre} se un altro programma termina su un suo input:
+\[
+  \not \exists \psi . \psi(xy) =
+  \begin{cases}
+    1 & \text{se } \varphi_x(y) \downarrow \\
+    0 & \text{se } \varphi_x(y) \uparrow
+  \end{cases}
+\] 
+Se esistesse \( \psi(xy) \) allora potrei decidere se \( \varphi_x(x) \) termina o diverge:
+\[
+  \psi(xx) = g(x)
+\] 
+e abbiamo dimostrato sopra che non è possibile.
+
+\begin{definition}
+  Non esiste \( f \) totale ricorsiva tale che:
+  \[
+    \forall x . f(x) = 
+    \begin{cases}
+      1 & \text{se } \varphi_x(x) \text{ è totale} \\
+      0 & \text{se } \varphi_x(x) \text{ non è totale}
+    \end{cases}
+  \] 
+  \( \varphi_x(x) \) è totale se:
+  \[
+    \forall y . \varphi_x(y) \downarrow
+  \] 
+  e non è totale se:
+  \[
+    \exists y . \varphi_x(y) \uparrow
+  \] 
+\end{definition}
+Alcuni problemi \textbf{insolubili} sono:
+\begin{itemize}
+  \item 
+    Decidere se \( f \) è costante, cioè se:
+    \[
+      \exists n . \forall y . \varphi_x(y) = n
+    \] 
+    non è possibile.
+
+  \item 
+    Decidere se \( \varphi_x \) non restituisce mai un valore fissato \( m \) , cioè se:
+    \[
+      \forall y . \varphi_x(y) \ne m
+    \] 
+
+  \item Decidere se \( \varphi_x = \varphi_y \)
+\end{itemize}
+
+\subsection{Specializzatore}
+\begin{theorem}[smn (specializzatore)]
+  Consideriamo una programma con due input:
+  \[
+    f(x,y) = \lambda x y . x + y
+  \] 
+  \textbf{Specializzare} equivale a costruire un nuovo programma in cui una parte
+  degli input è integrata nel codice.
+  Usiamo \( f \) per ottenere \( f' \) che somma ad un valore in unput il valore \( 5 \).
+  \[
+    f'(y) = \lambda y . 5 + y
+  \] 
+  Si è quindi speciallizzata \( f \) a 5 per \( x \). Se si specializza su tutti gli
+  input, il programma diventa costante. La specializzazione su input parziali viene
+  detta \textbf{partial computation}.
+
+  \vspace{1em}
+  \noindent
+  Quindi in modo formale:
+  \( \forall n, m \ge 1 \) esiste una funzione \textbf{totale} ricorsiva \( s \) tale che
+  \[
+    \begin{aligned}
+      &\forall x, y_1, \ldots, y_m \;.\; \lambda z_1 \ldots z_n . \\
+      &\underbrace{\varphi_x}_{\text{Codice}}(\overbrace{y_1 \ldots y_m}^{\text{Input specializzati}}
+      z_1 \ldots z_n)\\
+      &= \lambda z_1 \ldots z_n . \varphi_s(x, y_1 \ldots y_m)
+    \end{aligned}
+  \]
+  Dove \( \varphi_s(x, y_1 \ldots y_m) \) è la trasformazione totale \( S \) del codice \( x \) 
+  e considerando gli input specializzati \( y_1 \ldots y_m \) 
+
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione}: Consideriamo \( m = n = 1 \) (caso particolare, ma \( m > 1 \) e
+  \( n > 1 \) è analogo) con:
+  \[
+    \lambda z . \varphi_x(y,z)
+  \] 
+  Fissiamo \( x_0 \) (programma) e \( y_0 \) (l'input su cui specializzare):
+  \[
+    \implies \lambda z . \varphi_{x_0}(y_0, z)
+  \] 
+  dove \( \varphi_{x_0} \) denota la funzione calcolata dalla macchina di Turing il cui
+  codice è aritmetizzato in \( x_0 \). Questa funzione è \textbf{intuitivamente calcolabile},
+  di conseguenza esiste una macchina di Turing che la calcola (tesi di Church) il cui
+  codice dipende (ed è costruibile ricorsivamente) da \( x_0 \) (codice originale) e
+  \( y_0 \) (l'input specializzato). Quindi esiste una trasformazione \textbf{totale ricorsiva}
+  tale che il codice è \( s(x_0, y_0) \):
+  \[
+    \varphi_{s(x_0, y_0)}(z) = \lambda z . \lambda z . \varphi_{x_0}(y_0, z)
+  \] 
+\end{theorem}
+
+\subsection{Prima proiezione di Futamura}
+La proiezione di Futamura è una tecnica per ottenere un compilatore a partire
+da un interprete e uno specializzatore.
+
+\begin{definition}
+  Dato un programma sorgente \( source \in L \) esiste una trasformazione di
+  \( source \) in un programma (semanticamente equivalente) \( target \in L' \).
+
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione}: Supponiamo che \( int \) sia la macchina universale:
+  \[
+    int(p, d) = p(d)
+  \] 
+  dove:
+  \begin{itemize}
+    \item \( p \) è un programma
+    \item \( d \) è un dato di input
+  \end{itemize}
+  Supponiamo che \( spec \) sia uno specializzatore:
+  \[
+    spec(Q, d) = Q'_d \text{ integra nel codice l'input specializzato } d
+  \] 
+  dove:
+  \begin{itemize}
+    \item \( Q \) è un programma a due input
+  \end{itemize}
+  Allora:
+  \[
+    target = \underbrace{spec(int, source)}_{\text{Compilatore}}
+  \] 
+\end{definition}
+
+\subsubsection{Linguaggio Turing completo}
+Un linguaggio Turing completo permette di calcolare tutte le funzioni intuitivamente calcolabili.
+Un linguaggio Turing completo equivale ad una macchina di Turing. I costrutti 
+minimi per avere un linguaggio Turing completo sono:
+\[
+  \begin{aligned}
+    &\exists p \;.\; \varphi_p = \lambda x . 0\\
+    &\exists p \;.\; \varphi_p = \lambda x . x + 1\\
+    &\exists p \;.\; \varphi_p = \lambda x . x \text{ (proiezione)}\\
+    &\exists p \;.\; \varphi_p = \varphi_Q \circ \varphi_H \text{ (composizione)}\\
+    &\exists p \;.\; \varphi_p = \varphi_{\text{While}} B \; \{Q\} \text{ (minimizzazione)}
+    &\exists p \;.\; \varphi_p(x,y) = \varphi_x(y)\\
+    &\exists p \;.\; \varphi_{spec(x,y)}(z) = \lambda z . \varphi_x(y,z) \text{ (proiezione)}
+  \end{aligned}
+\] 
+Se consideriamo la \textbf{primitiva ricorsione} abbiamo solo cicli for. Un linguaggio che non
+permette cicli non determinati (while) \textbf{non} è Turing completo.
+
+\vspace{1em}
+\noindent
+I linguaggi di Turing sono tutti quei linguaggi accettati da una mcchina di Turing:
+\[
+  \exists  MdT \; m \;.\; L = L(M) = \left\{ \left. y \;\right|\; \varphi_m(y) \downarrow \right\}
+\] 
+dove \( y \) sono le stringhe su cui la MdT termina. E \( \varphi_x \) è la funzione
+parziale ricorsiva calcolata da una MdT di codice \( x \).
+
+\vspace{1em}
+\noindent
+\begin{definition}
+  Il dominio di una funzione parziale ricorsiva \( \varphi_x \) è l'insieme:
+  \[
+    dom(\varphi_x) = \left\{ \left. y \;\right|\; \varphi_x(y) \downarrow \right\}
+  \] 
+\end{definition}
+
+
+\section{Teoria della ricorsione}
+La teoria della ricorsione parla degli insiemi (linguaggi) caratterizzati dalle macchine
+di Turing.
+
+\subsection{Insiemi ricorsivamente enumerabili}
+\begin{definition}
+  Un insieme \( I \subseteq \mathbb{N} \) è ricorsivamente enumerabile (RE) se è
+  il dominio di una funzione parziale ricorsiva, cioè:
+  \[
+    \exists \varphi_x \text{ parziale ricorsiva} \;.\; dom(\varphi_x) = I
+  \] 
+  Cioè se esiste una macchina di Turing che si ferma su \textbf{tutti} gli elementi di \( I \).
+
+  \vspace{1em}
+  \noindent
+  \textbf{Notazione}: Per rappresentare un insieme RE si usa la notazione:
+  \[
+    W_x \stackrel{def}{=} dom(\varphi_x)
+  \] 
+  Se abbiamo \( \varphi_x \) parziale ricorsiva, allora \( W_x \) è RE:
+  \[
+    \varphi_x \text{ PR} \implies W_x = dom(\varphi_x) \text{ è RE}
+  \] 
+  Se abbiamo \( I \subseteq \mathbb{N} \) e riusciamo a costruire la sua \textbf{funzione
+  semicaratteristica}, cioè: 
+  \[
+    \psi_I(x) =
+    \begin{cases}
+      1 & \text{se } x \in I \\
+      \uparrow & \text{se } x \notin I
+    \end{cases}
+    \implies dom(\psi_I) = I
+  \] 
+\end{definition}
+Per dimostrare che un insieme è RE bisogna fornire l'algoritmo della funzione semicaratteristica
+che deve terminare se e solo se ha in input un elemento dell'insieme.
+
+\begin{example}
+  Consideriamo una variante del problema della terminazione, cioè quello che determina i
+  programmi che terminano su \textbf{almeno un input}.
+  Si può riscrivere con il seguente insieme:
+  \[
+    \left\{ \left. x \;\right|\; \exists y \;.\; \varphi_x(y) \downarrow \right\}
+  \] 
+  Consideriamo il caso specifico applicato all'input 0:
+  \[
+    I = \left\{ \left. x \;\right|\; \varphi_x(0) \downarrow \right\}
+  \] 
+  L'algoritmo della funzione semicaratteristica è:
+\begin{lstlisting}[language=Python]
+input(x)
+stop = 0
+build phi_x # Esiste algoritmo ricorsivo che costruisce la MdT di codice x
+while !stop do {
+  execute next step of phi_x(0)
+  if phi_x(0) halts then {
+    output(1)
+    stop = 1
+  }
+}
+output(1)
+\end{lstlisting}
+  La funzione è semicaratteristico perchè se \( \varphi_x(0)\downarrow \) restituisce
+  1, altrimenti diverge.
+\end{example}
+
+\begin{example}
+  Considderiamo l'insieme del problema della terminazione generale:
+  \[
+    I = \left\{ \left. x \;\right|\; \exists y \;.\; \varphi_x(y)\downarrow \right\}
+  \] 
+  Un possibile algoritmo è:
+\begin{lstlisting}[language=Python]
+input(x)
+y = 0
+stop = 0
+while !stop do {
+  execute next step of phi_x(y)
+  if phi_x(y) halts then {
+    stop = 1
+  }
+}
+return(1)
+\end{lstlisting}
+  Questo programma è sbagliato perchè se diverge su 0, non potrà mai testare \( y > 0 \),
+  ma \( \varphi_x(1) \) potrebbe terminare. Quindi questo algoritmo diverge anche per
+  \( x \in I \) e di conseguenza non è la funzione semicaratteristica di \( I \).
+
+  \vspace{1em}
+  \noindent
+  Un modo per risolvere questo problema è eseguire in parallelo tutte le \( \varphi_x(y) \)
+  per \( y = 0, 1, 2, \ldots \). Siccome non si può eseguire in parallelo, si può simulare
+  l'esecuzione in parallelo eseguendo un passo di ogni \( \varphi_x(y) \) in modo ciclico
+  facendo partire una nuova computazione ad ogni ciclo. In questo modo se c'è almeno un
+  input su cui prima o poi la macchina termina, prima o poi lo trova:
+  \begin{itemize}
+    \item \textbf{Passo 0:} Esegue un passo di \( \varphi_x(0) \).
+      \begin{itemize}
+        \item Se termina (\( \downarrow \)) allora finisce
+        \item Se non termina (\( \uparrow \)) allora si esegue il passo successivo
+      \end{itemize}
+
+    \item \textbf{Passo n+1:} Esegue un passo per \( \varphi_x(0), \varphi_x(1), \ldots, \varphi_x(n) \) 
+      (se non sono terminate prima). Esegue il primo passo di \( \varphi_x(n+1) \).
+  \end{itemize}
+  Questo algoritmo si chiama \textbf{Dovetail}.
+
+  \vspace{1em}
+  \noindent
+  La funzione semicaratteristica di \( I \) è:
+\begin{lstlisting}[language=Python]
+input(x)
+build phi_x # Esiste una procedura ricorsiva per costruire phi_x da x
+
+y = 0 # Serve per identificare gli input su cui abbiamo iniziato la computazione
+stop = 0
+
+while !stop do {
+  for i from 0 to y {
+    execute next step of phi_x(i)
+    if phi_x(i) halts then {
+      stop = 1
+    }
+    y++
+  }
+}
+return(1)
+\end{lstlisting}
+\end{example}
+
+\subsection{Insiemi ricorsivi}
+Esiste un algoritmo che decide se un elemento sta o meno nell'insieme. L'insieme ricorsivo
+è caratterizzato da una funzione totale (\( \implies \) dominio in \( \mathbb{N} \)).
+\begin{definition}
+  Un insieme \( I \) è ricorsivo se esiste una funzione totale ricorsiva \( f_I \) tale che:
+  \[
+    f_I(x) =
+    \begin{cases}
+      1 & \text{se } x \in I \\
+      0 & \text{se } x \notin I
+    \end{cases}
+  \] 
+  Questa funzione è detta \textbf{funzione caratteristica} di \( I \).
+\end{definition}
+Per dimostrare che un insieme è ricorsivo bisogna fornire l'algoritmo che calcola la
+sua funzione caratteristica.
+\begin{example}
+  Un esempio di insieme ricorsivo è l'insieme dei numeri pari:
+  \[
+    I = \left\{ \left. x \in \mathbb{N} \;\right|\; x \text{ è pari} \right\}
+  \] 
+  L'algoritmo che calcola la funzione caratteristica \( f \) è:
+\begin{lstlisting}[language=Python]
+input(x)
+y = x mod 2 # Resto della divisione per 2 (funzione PR)
+z = neg(y) # y = 0 -> z = 1; y = 1 -> z = 0
+output(z)
+\end{lstlisting}
+\( f \) è la caratteristica di \( I \):
+\[
+  f(x) = 
+  \begin{cases}
+    1 & \text{se } x \in I \text{ (x è pari)} \\
+    0 & \text{se } x \notin I \text{ (x è dispari)}
+  \end{cases}
+\] 
+\end{example}
+
+\begin{example}
+  Consideriamo il seguente insieme:
+  \[
+    I = \left\{ \left. x \;\right|\; \exists n \;.\; x = n^2 \right\}
+  \] 
+  Un esempio di algoritmo è:
+\begin{lstlisting}[language=Python]
+input(x)
+n = 0
+while x != n^2 do n++
+output(1)
+\end{lstlisting}
+  Questo programma però non è la funzione caratteristica di \( I \) perchè non può essere
+  totale. Bisogna quindi trovare un modo per far terminare il programma anche se \( x \notin I \).
+\begin{lstlisting}[language=Python]
+input(x)
+n = 0
+while n <= x do {
+  if (x - n) then {
+    output(1)
+  }
+  n++
+}
+output(0)
+\end{lstlisting}
+  Questo programma è la funzione caratteristica di \( I \) perchè termina sempre:
+  \[
+    f(x) =
+    \begin{cases}
+      1 & \text{se } \exists n \;.\; x = n^2 \\
+      0 & \text{altrimenti}
+    \end{cases}
+  \]
+\end{example}
+
+\begin{theorem}
+  Se l'insieme \( A \) è ricorsivo, allora è anche ricorsivamente enumerabile.
+  \[
+    \exists f_A(x) =
+    \begin{cases}
+      1 & \text{se } x \in A \\
+      0 & \text{se } x \notin A
+    \end{cases}
+  \] 
+  ma allora possiamo definire:
+  \[
+    \psi_A(x) =
+    \begin{cases}
+      1 & \text{se } f_A(x) = 1 \\
+      \text{while true}\;(\uparrow) & \text{se } f_A(x) = 0 
+    \end{cases}
+  \] 
+  Supponiamo \( C_A \) è l'algoritmo che codifica \( f_A \):
+\begin{lstlisting}[language=Python]
+input(x)
+y = C_A(x) # Esiste per ipotesi ed e' totale
+  if y = 1 then output(1)
+  else while true do x = x # Diverge
+\end{lstlisting}
+  ed è la funzione semicaratteristica di \( A \).
+\end{theorem}
+
+\vspace{1em}
+\noindent
+\begin{theorem}[Teorema di Post]
+  Un insieme \( A \) è ricorsivo se e solo se \( A \) e \( \bar{A} \) sono entrambi 
+  ricorsivamente enumerabili.
+
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione:} Se \( A \) è ricorsivo, allora \( A \) è RE (teorema precedente) e
+  analogamente costruiamo la sue semicaratteristica per \( \bar{A} \):
+  \[
+    f_{\bar{A}}(x) =
+    \begin{cases}
+      1 & \text{se } f_A(x) = 0 \\
+      \uparrow & \text{altrimenti}
+    \end{cases}
+  \] 
+  Siano \( A \) e \( \bar{A} \) entrambi RE:
+  \[
+    \begin{aligned}
+      \psi_A(x) &=
+      \begin{cases}
+        1 & \text{se } x \in A \\
+        \uparrow & \text{altrimenti}
+      \end{cases}\\
+      \psi_{\bar{A}}(x) &=
+      \begin{cases}
+        1 & \text{se } x \in \bar{A} \; (x \notin A) \\
+        \uparrow & \text{altrimenti}
+      \end{cases}
+    \end{aligned}
+  \] 
+  La funzione caratteristica di \( A \) è:
+\begin{lstlisting}[language=Python]
+input(x)
+stop = 0
+while !stop do {
+  execute next step of C_A(x)
+  if C_A(x) halts then output(1)
+  execute next step of C_barA(x)
+  if C_barA(x) halts then output(0)
+}
+\end{lstlisting}
+\end{theorem}
+
+\begin{example}
+  Consideriamo l'insieme:
+  \[
+    A_m = \left\{ \left. x \;\right|\; \varphi_x(x) \downarrow \text{ in meno di \( m \) passi} \right\}
+  \] 
+  Questo insieme è ricorsivo perchè \( m \) è un input che limita il numero di passi della
+  computazione. Per dimostrarlo forniamo l'algoritmo della funzione caratteristica:
+  \[
+    f_{A_m}(x) =
+    \begin{cases}
+      1 & \text{se } x \in A_m \\
+      0 & \text{se } x \notin A_m
+    \end{cases}
+  \] 
+\begin{lstlisting}[language=Python]
+input(x, m)
+build phi_x # Esiste procedura ricorsiva per costruire la MdT di codice x
+for i from 1 to m do {
+  execute next step of phi_x(x)
+  if phi_x(x) halts then { # In questo caso la phi_x(x) ha terminato in meno di m passi
+    output(1)
+  }
+}
+output(0) # phi_x(x) e' arrivata a m passi senza terminare
+\end{lstlisting}
+\end{example}
+
+\subsection{Insieme K}
+Vogliamo mostrare che l'insieme dei ricorsivi è un sottoinsieme stretto dei RE:
+\[
+  R \subset RE
+\] 
+Per farlo introduciamo l'insieme \( K \), cioè l'insieme ricorsivamente
+enumerabile e \textbf{non} ricorsivo:
+\[
+  K \stackrel{def}{=} \left\{ \left. x \;\right|\; \varphi_x(x) \downarrow \right\}
+\] 
+
+\subsubsection{Dimostrazione}
+Per dimostrare che \( K \) è RE dobbiamo fornire l'algoritmo della semicaratteristica:
+\[
+  \psi_K(x) =
+  \begin{cases}
+    1 & \text{se } x \in K \\
+    \uparrow & \text{altrimenti}
+  \end{cases}
+\] 
+\begin{lstlisting}[language=Python]
+input(x)
+build phi_x # Esiste procedura ricorsiva per costruire la MdT di codice x
+stop = 0
+while !stop do {
+  execute next step of phi_x(x)
+  # Se esiste un numero di passi tale che phi_x(x) termina, allora il ciclo termina altrimenti diverge
+  if phi_x(x) halts then {
+    stop = 1
+  }
+}
+output(1)
+\end{lstlisting}
+Abbiamo dimostrato che \( K \) è RE.
+\begin{define}
+  Sappiamo quando una funzione parziale ricorsiva termina: 
+  \[
+    \varphi_x(y) \downarrow \iff \exists n \in \mathbb{N} \;.\; \varphi_x(y)
+    \text{ termina dopo esattamente } n \text{ passi}
+  \] 
+  e quando diverge:
+  \[
+    \varphi_x(y) \uparrow \iff \forall n \in \mathbb{N} \;.\; \varphi_x(y)
+    \text{ non termina dopo aver eseguito } n \text{ passi}
+  \] 
+\end{define}
+Ora dimostriamo che \( K \) non è ricorsivo per assurdo. Supponiamo che \( K \) sia
+ricorsivo, quindi per il teorema di Post anche \( \bar{K} \) è RE. Se \( \bar{K} \) è RE,
+allora, per definizione, è il dominio di una funzione parziale ricorsiva:
+\[
+  \exists y_0 \;.\; \bar{K} = dom(\varphi_{y_0}) \stackrel{def}{=} W_{y_0}
+\] 
+quindi:
+\[
+  \begin{aligned}
+    y_0 \in \bar{K} = W_{y_0} &\stackrel{\text{def di \( W_{y_0} \)}}{\iff}
+    y_0 \in dom(\varphi_{y_0}) \\
+                              &\stackrel{\text{def di dom}}{\iff} \varphi_{y_0}(y_0) \downarrow \\
+                              &\stackrel{\text{def di \( K \)}}{\iff} y_0 \in K \quad \text{Assurdo}
+  \end{aligned}
+\]
+Quindi \( K \) non è ricorsivo. Il suo complemento è definito come:
+\[
+  \begin{aligned}
+    \bar{K} &= \left\{ \left. x \;\right|\; \neg \varphi_x(x) \downarrow \right\}\\
+            &= \left\{ \left. x \;\right|\; \varphi_x(x) \uparrow \right\}
+  \end{aligned}
+\] 
+
+\subsection{Caratterizzare RE e RIC}
+\subsubsection{Teorema di caratterizzazione degli insiemi RE}
+\begin{theorem}
+  Le seguenti affermazioni sono equivalenti:
+  \begin{enumerate}
+    \item \( A \subseteq \mathbb{N} \) è RE, cioè
+      \( \exists \psi \in PR \;.\; A = dom\; \psi \) 
+
+    \item \( \exists \varphi \in PR \;.\; A = range\; \varphi \), dove
+      \[
+        range\; \varphi = \left\{ \left. \varphi(x) \;\right|\; x \in dom\; \varphi \right\}
+      \]
+      cioè l'insieme degli elementi restituiti da \( \varphi \) per tutti gli input su cui
+      termina.
+
+    \item \( A = \varnothing \) oppure \( \exists f \text{ totale ricorsiva} \;.\; A = range\; f \).
+      Essendo \( f \) totale, termina su tutti gli input, quindi:
+      \[
+        range\; f = \left\{ \left. f(x) \;\right|\; x \in \mathbb{N} \right\}
+      \] 
+  \end{enumerate}
+\end{theorem}
+
+\subsubsection{Teorema di caratterizzazione degli insiemi ricorsivi}
+\begin{theorem}
+  Le seguenti affermazioni sono equivalenti:
+  \begin{enumerate}
+    \item \( A \) è ricorsivo
+
+    \item \( A = \varnothing \) oppure \( \exists f \) totale ricorsiva \textbf{non decrescente}
+      tale che \( A = range\; f \). Una funzione non decrescente se:
+      \[
+        \forall x, y \;.\; x \le y \implies f(x) \le f(y)
+      \] 
+  \end{enumerate}
+\end{theorem}
+
+\subsubsection{Teorema di ricorsione di Kleene}
+\begin{theorem}
+  Sia \( t \) una funzione totale ricorsiva, allora esiste un codice \( n \in \mathbb{N} \) tale
+  che:
+  \[
+    \varphi_n = \varphi_{t(n)}
+  \] 
+  Cioè \( t(n) \) trasforma il codice \( n \) ma la semantica \( \varphi  \) dei due codici
+  è la stessa. Di conseguenza per ogni trasformazione esiste una programma tale che la
+  trasformazione modifica il codice ma non la funzione calcolata (semantica)
+
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione}: Consideriamo il codice \( u \in \mathbb{N} \) di una macchina
+  di Turing \( \varphi_u \). Definiamo:
+  \[
+    \psi(u, x) = 
+    \begin{cases}
+      \varphi_{\varphi_u(u)}(x) & \text{se } \varphi_u(u) \downarrow \\
+      \uparrow & \text{altrimenti}
+    \end{cases}
+  \] 
+  Dobbiamo verificare se \( \psi  \) è parziale ricorsiva, quidi dobbiamo fornire
+  l'algoritmo che la calcola e che deve terminare quando la funzione deve terminare:
+\begin{lstlisting}[language=Python]
+  input(u, x)
+  build phi_u # Esiste procedura ricorsiva per costruire la MdT di codice u
+  y = phi_u(u) # Se phi_u(u) non termina, il programma non termina, se termina, il risultato viene messo in y
+  build phi_y # Esiste procedura ricorsiva per costruire la MdT di codice y
+  output(phi_y(x)) # Esegue phi_y su x, se non termina, il programma non termina, se termina, restituisce il risultato
+\end{lstlisting}
+  Quindi \( \psi(u, x) \) è parziale ricorsiva.
+
+  \vspace{1em}
+  \noindent
+  Poichè \( \psi(u, x) \) è parziale ricorsiva, allora si può applicare il teorema smn:
+  \[
+    \exists g \text{ totale ricorsiva} \;.\; \psi(u, x) = \varphi_{g(u)}(x)
+  \] 
+  Prendiamo \( t \) totale ricorsiva e consideriamo:
+  \[
+    t \circ g \text{ composizione totale ricorsiva}
+  \] 
+  Essendo \( t \circ g \) ricorsiva, allora esiste una macchina di Turing che la calcola
+  con \( v \) l'indice di tale macchina, ovvero \( \varphi_v \) è la funzione calcolata:
+  \[
+    t \circ g = \varphi_v
+  \] 
+  Quindi \( t \circ g \) è la funzione calcolata dalla macchina di Turing di indice \( v \).
+
+  \vspace{1em}
+  \noindent
+  Calcoliamo ora \( \psi(v, x) \):
+  \[
+    \begin{aligned}
+      \psi(v, x) &\stackrel{smn}{=} \varphi_{g(v)}(x)\\
+                 &\stackrel{\text{def di } \psi}{=}
+                 \begin{cases}
+                    \varphi_{\varphi_v(v)}(x) & \text{se } \varphi_v(v) \downarrow \\
+                    \uparrow & \text{altrimenti}
+                 \end{cases}\\
+                 &\stackrel{\varphi_v = t \circ g}{=}
+                 \begin{cases}
+                   \varphi_{t \circ g(v)}(x) & \text{se } \varphi_v(v) = t \circ g(v) \downarrow \\
+                    \uparrow & \text{altrimenti}
+                 \end{cases}
+    \end{aligned}
+  \] 
+  Ma \( t \circ g \) è totale e termina sempre, quindi la condizione è sempre vera:
+  \[
+    \psi(v, x) = \varphi_{g(v)}(x) = \varphi_{t \circ g(v)}(x)
+  \] 
+  Quindi se prendiamo:
+  \[
+    n = g(v) \implies \varphi_n(x) = \varphi_{t(n)}(x) \; \forall x \in \mathbb{N}
+  \] 
+\end{theorem}
+
+\subsubsection{Dimostrare che un insieme è ricorsivo}
+Per dimostrare che un insieme \( A \) è ricorsivo, si usano i seguenti metodi:
+\begin{itemize}
+  \item \textbf{Insieme}: Per dimostrare che \( A \) è ricorsivo forniamo l'algoritmo per
+    la funzione caratteristica \( f \) 
+
+  \item \( range\;f \): Si costruisce il range:
+    \begin{itemize}
+      \item Se è finito allora \( A \) è ricorsivo
+      \item Se è infinito si dimostra che \( f \) non decresce per dimostrare che \( A \) è ricorsivo
+    \end{itemize}
+\end{itemize}
+
+\begin{example}
+  Consideriamo la funzione:
+  \[
+    f: \begin{cases}
+      f(0) = 2\\
+      f(n+1) = 2 \cdot f(n)
+    \end{cases}
+  \] 
+  Studiare l'insieme \( A = range\; f \).
+
+  \vspace{1em}
+  \noindent
+  La funzione \( f \) è totale in quanto definita ricorsivamente (primitiva ricorsione).
+  Controlliamo com'è fatta la funzione:
+  \[
+  \begin{aligned}
+    f(0) &= 2\\
+    f(1) &= 2 \cdot f(0) = = 4\\
+    f(2) &= 2 \cdot f(1) = = 8\\
+    f(3) &= 2 \cdot f(2) = = 16
+  \end{aligned}
+  \] 
+  Notiamo che questa funzione rappresenta le potenze di 2, quindi il range è:
+  \[
+    range\; f = \left\{ \left. 2^n \;\right|\; n \ge 1 \right\}
+  \] 
+  Si possono usare due metodi per dimostrare che \( A \) è ricorsivo:
+  \begin{enumerate}
+    \item Primo metodo
+      \begin{enumerate}
+        \item Dimostrare per induzione che:
+          \[
+            range\; f = \left\{ \left. 2^n \;\right|\; n \ge 1 \right\}
+            \] 
+
+          \item Fornire l'algoritmo per la funzione caratteristica
+        \end{enumerate}
+
+      \item Secondo metodo
+        \begin{enumerate}
+          \item 
+            Dimostrare per induzione che \( f \) è non decrescente
+        \end{enumerate}
+  \end{enumerate}
+
+  \vspace{1em}
+  \noindent
+  Svolgiamo il secondo metodo, cioè dimostriamo che \( f \) è non decrescente:
+  \[
+    \underbrace{\forall  n > 0 \;.\; f(n) \ge f(n-1)}_{\text{Tesi}} \equiv f(n) \le f(n+1)
+  \] 
+  \begin{itemize}
+    \item \textbf{Caso base}:\\
+      \( n = 1 \) dobbiamo verificare \( f(1) \ge f(0) \):
+      \[
+        f(1) = 4 \ge 2 = f(0) \quad \checkmark
+      \] 
+
+    \item \textbf{Passo induttivo}:\\
+      Prendiamo \( n >1 \). L'ipotesi induttiva è:
+      \[
+        \forall h \le n \;.\; f(h) \ge f(h-1)
+      \] 
+      Dimostriamo che vale per \( n \):
+      \[
+        f(n) = 2 f(n-1) \ge f(n-1) \quad \checkmark
+      \] 
+  \end{itemize}
+  Abbiamo dimostrato che \( f \) è non decrescente, quindi \( A \) è ricorsivo.
+\end{example}
+
+\end{document}

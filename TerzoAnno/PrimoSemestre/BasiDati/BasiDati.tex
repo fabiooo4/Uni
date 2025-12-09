@@ -1,0 +1,2348 @@
+\documentclass[a4paper]{article}
+\usepackage{import}
+\input{../../preamble.sty}
+
+\begin{document}
+
+\input{title.tex}
+
+\tableofcontents
+\pagebreak
+
+\section{Introduzione}
+Le basi di dati sono raccolte di dati strutturati, organizzati in modo tale da permettere
+un facile accesso. Questi dati sono persistenti, ovvero rimangono memorizzati anche dopo
+la chiusura del programma che li ha creati.
+
+\section{Sistema informativo}
+Un sistema informativo è l'insieme delle attività umane e dei dispositivi di memorizzazione
+ed elaborazione che organizza e gestisce l'informazione di interesse per un organizzazione
+di dimensioni qualsiasi. Non contiene necessariamente dati memorizzati in un computer.
+
+Un sistema informativo è composto da:
+\begin{itemize}
+  \item \textbf{Dato}: è l'elemento di conoscenza di base costituito da simboli che devono
+    essere elaborati
+  \item \textbf{Informazione}: è l'interpretazione dei dati che permette di ottenere una
+    conoscenza più o meno esatta di fatti e situazioni
+\end{itemize}
+
+
+\subsection{Base di dati}
+\begin{definition}
+  Una \textbf{base di dati} è una \textbf{collezione di dati persistenei} utilizzati per
+  rappresentare \textbf{con tecnologia informatica} le informazioni di interesse per un
+  \textbf{sistema informativo}
+\end{definition}
+La soluzione convenzionale per la gestione dei dati è l'uso di file, ma questa presenta
+alcuni problemi:
+\begin{itemize}
+  \item Scarsa efficienza nell'accesso ai dati (accesso sequenziale)
+  \item Ridondanza nei dati
+  \item Inconsistenza nei dati (aggiornamenti parziali)
+  \item Progettazione dei dati replicata per ogni applicazione
+\end{itemize}
+Per risolvere questi problemi si è creato un livello di astrazione maggiore tra le
+applicazioni e il filesystem, ovvero il \textbf{Data Base Management System (DBMS)}.
+
+\begin{definition}
+  Un \textbf{DBMS} è un sistema che gestisce su \textbf{memoria secondaria} collezioni
+  di dati (chiamate "basi di dati"). Le caratteristiche principali sono:
+  \begin{itemize}
+    \item Grandi
+    \item Condivise, cioè accessibili da più utenti
+    \item Persistenti
+  \end{itemize}
+  Un DBMS assicura:
+  \begin{itemize}
+    \item Affidabilità, cioè nessuna perdita di dati
+    \item Privatezza
+    \item Accesso efficiente
+  \end{itemize}
+\end{definition}
+
+\subsubsection{Modello dei dati}
+Un \textbf{modello dei dati} è un insieme di strutture che permettono di descrivere
+una base di dati. Per accedere a questi dati si usano delle \textbf{interrogazioni},
+cioè delle richieste, in un linguaggio dichiarativo specifico, che permettono di ottenere
+i dati desiderati.
+
+Ci sono diversi linguaggi per interagire con un DBMS:
+\begin{itemize}
+  \item Linguaggio per la definizione dei dati (DDL), consente di definire la struttura
+    della base di dati
+  \item Linguaggio per l'interrogazione e aggiornamento dei dati (DML), consente
+    di interrogare e aggiornare i dati
+    \begin{itemize}
+      \item Linguaggio di interrogazione: estrae informazioni da una base di dati,
+        ad esempio SQL, algèbre relazionale, calcolo relazionale
+      \item Linguaggio di manipolazione: popola la base di dati, modifica il suo contenuto
+        con aggiunge, cancellazioni e variazioni sui dati, ad esempio SQL
+    \end{itemize}
+\end{itemize}
+
+Il modello di dati è un insisme di \textbf{costrutti} forniti dal DBMS per descrivere la
+struttura e le proprietà dell'informazione contenute in una base di dati.
+
+Ci sono diversi tipi di modelli di dati:
+\begin{itemize}
+  \item \textbf{Modelli di dati del passato}:
+    \begin{itemize}
+      \item Modello reticolare
+      \item modello gerarchico
+    \end{itemize}
+
+  \item \textbf{Modelli di dati attuali}:
+    \begin{itemize}
+      \item Modello relazionale
+      \item Modello ad oggetti
+      \item Modello a oggetti-relazionale
+      \item Modello basato su documenti (JSON)
+      \item Modelli NoSQL
+    \end{itemize}
+\end{itemize}
+
+I modelli vengono utilizzati per creare:
+\begin{itemize}
+  \item \textbf{Schema di una base di dati}: è la descrizione della struttura e delle
+    proprietà di una specifica base di dati fatta utilizzando i costrutti del modello dei
+    dati (lo schema di una base di dati è invariante nel tempo)
+  \item \textbf{Istanza di una base di dati}: è costituita dai \textbf{valori effettivi}
+    che in un certo istante popolano le strutture dati (l'istanza di una base di dati
+    varia nel tempo)
+\end{itemize}
+
+Lo schema di una base di dati è diviso in tre livelli:
+\begin{itemize}
+  \item \textbf{Schema esterno}: è la visione dell'utente della base di dati, cioè la
+    parte di base di dati che interessa a un particolare utente o gruppo di utenti
+  \item \textbf{Schema logico}: è la visione globale della base di dati, cioè la
+    struttura logica della base di dati che descrive tutti i dati e le relazioni tra
+    essi
+  \item \textbf{Schema interno}: è la rappresentazione fisica della base di dati, cioè
+    il modo in cui i dati sono effettivamente memorizzati nella memoria secondaria
+\end{itemize}
+Le proprietà dello schema sono:
+\begin{itemize}
+  \item \textbf{Indipendenza fisica}: lo schema logico della base di dati è completamente
+    indipendente dallo schema interno
+  \item \textbf{Indipendenza logica}: gli schemi esterni della base di dati sono
+    indipendenti dallo schema logico
+\end{itemize}
+
+\section{Progettazione di una base di dati}
+Il ciclo di vita di un processo di automazione di un sistema informativo è diviso in diverse
+fasi:
+\begin{itemize}
+  \item \textbf{Studio di fattibilità}: si valuta se l'automazione del sistema
+    informativo è possibile e conveniente
+  \item \textbf{Raccolta e analisi dei requisiti}: si individuano proprietà e funzionalità
+    del sistema (dati e applicazioni) producendo una descrizione completa ma informale
+  \item \textbf{Progettazione}: si produce una descrizione formale del sistema
+    informativo
+\end{itemize}
+La progettazione si divide in due parti principali che vanno di pari passo:
+\begin{itemize}
+  \item \textbf{Progettazione dei dati}: si produce una descrizione formale dei dati
+    (schema). Una volta progettati i dati vengono implementati in un DBMS
+  \item \textbf{Progettazione delle applicazioni}: si produce una descrizione formale
+    delle applicazioni (specifica)
+\end{itemize}
+Una volta implementati i dati e le applicazioni si passa alla fase di \textbf{validazione
+e collaudo}
+
+\subsection{Progettazione dei dati}
+Una metodologia di progettazione dei dati è costituita da:
+\begin{itemize}
+  \item \textbf{Decomposizione}: dividere in passi le attività di progetto
+  \item \textbf{Strategie}: individuare un insieme di strategie e criteri di scelta da
+    seguire
+  \item \textbf{Modelli di riferimento}: utilizzare modelli di dati e tecniche di
+    progettazione consolidate
+\end{itemize}
+Una buona metodologia deve essere:
+\begin{itemize}
+  \item Generale
+  \item Facile da usare
+  \item Deve produrre un risultato di qualità
+\end{itemize}
+
+\subsection{Requisiti}
+\subsubsection{Progettazione concettuale}
+La progettazione concettuale è la prima fase della progettazione dei dati. Lo scopo è
+quello di produrre una descrizione formale dei dati (schema concettuale). Lo schema
+deve essere \textbf{indipendente dall'implementazione}.
+
+\vspace{1em}
+\noindent
+Non è solo un progetto intermedio, ma costituisce anche una porzione del risultato finale
+perchè rappresenta una descrizione di \textbf{alto livello} del contenuto della base di
+dati, comprensibile anche per utenti poco esperti.
+
+\subsubsection{Progettazione logica}
+La progettazione logica è la seconda fase della progettazione dei dati. Lo scopo è
+quello di tradurre lo schema concettuale in uno schema logico in modo da poterlo
+utilizzare su un sistema specifico. Lo schema logico infatti è dipendente dalle
+tecnologie utilizzate. Bisogna tenere anche in considerazione le operazioni più
+frequenti che le applicazioni effettueranno sulla base di dati.
+
+\subsubsection{Progettazione fisica}
+La progettazione fisica è la terza fase della progettazione dei dati. L'obiettivo è quello
+di ottimizzare l'accesso ai dati completando lo schema logico con i parametri relativi
+alla memorizzazione fisica dei dati e con gli opportuni metodi d'accesso (\textbf{indici}).
+
+\subsection{Strategie di progettazione}
+Lo sviluppo do uno schema concettuale può essere visto come un processo di ingegnerizzazione
+ed è quindi possibile applicare anche a tale processo le strategie classiche:
+\begin{itemize}
+  \item \textbf{Top-Down}: consiste nel considerare le specifiche \textbf{globalmente}
+    e produrre uno schema iniziale completo ma con \textbf{pochi concetti} molto astratti.
+    Si va poi a \textbf{raffinare} i concetti astratti fino ad arrivare allo schema
+    concettuale completo in ogni dettaglio
+
+  \item \textbf{Bottom-Up}: consiste nel \textbf{decomporre} le specifiche iniziali in
+    parti elementari e produrre uno schema iniziale dettagliato
+
+  \item \textbf{Inside-Out}: consiste nell'individuare nelle specifiche alcuni concetti
+    importanti (detti concetti guida) e partendo da quelli generare gli schemi
+    per i relativi concetti. Si procede fondendo gli schemi precedenti per generare
+    lo schema finale.
+\end{itemize}
+
+\subsubsection{Analisi di qualità dello shema}
+L'analisi della qualità dello schema concettuale prodotto può essere suddivisa in diverse
+fasi:
+\begin{itemize}
+  \item \textbf{Verifica della correttezza}: Uno schema concettuale è corretto se utilizza
+    correttamente i costrutti del modello concettuale adottato (nel nostro caso E-R).
+    I possibili errori sono:
+    \begin{itemize}
+      \item Errori sintattici: si verificano quando i costrutti vengono usati senza seguire
+        le regole sintattiche
+      \item Errori semantici: si verificano quando i costrutti vengono usati senza seguire
+        le regole semantiche, cioè la loro definizione
+    \end{itemize}
+
+  \item \textbf{Verifica della completezza}: Uno schema concettuale è completo se
+    rappresenta tutti i requisiti espressi nelle specifiche.
+
+  \item \textbf{Verifica di minimalità}: Uno schema è minimale quando tutti i concetti
+    descritti nei requisiti sono rappresentati nello schema \textbf{una volta sola}.
+    Uno schema non minimale contiene delle \textbf{ridondanze}. I casi di probabile
+    ridondanza sono:
+    \begin{itemize}
+      \item Ereditarietà nelle relazioni: si manifesta quando due 
+        entità padri sono in relazione e le loro entità figlie sono anch'esse in relazione.
+        Per far si che non ci sia ridondanza in questo caso bisogna verificare che le 
+        due relazioni non rappresentino lo stesso concetto
+
+      \item Cicli di relazioni: si manifesta quando esistono dei cicli tra le relazioni
+        di più entità. Non è detto che ci sia sicuramente ridondanza, ma per evitarla
+        bisogna verificare se la relazione \( R_i \) si possa ottenere dalla composizione
+        delle altre relazioni. Se è così allora \( R_i \) va eliminata in quanto ridondante.
+    \end{itemize}
+
+  \item \textbf{Verifica di leggibilità}: Uno schema concettuale è leggiible quando
+    rappresenta tutti i requisiti in modo naturale e facilmente compresnsibile. Alcuni
+    consigli per migliorare la leggibilità sono:
+    \begin{itemize}
+      \item Curare la scelta dei nomi delle componenti dello schema
+      \item Disegnare bene lo schema
+    \end{itemize}
+    Si può migliorare la leggibilità anche semplificando lo schema. Le relazioni
+    ternarie non sono facili da leggere e interpretare, quindi solitamente la loro
+    eliminazione può comportare una migliore leggibilità dello schema.
+    Le operazioni possibili sono:
+    \begin{itemize}
+      \item Trasformare una relazione ternaria in un'entità (sempre applicabile)
+      \item Riduzione di una relazione ternariaa a due relazioni binarie\\
+        (\textbf{precondizione}: una delle entità partecipa alla relazione ternaria
+        con cardinalità (1,1) (spiegata nel capitolo \ref{Cardinalità})) 
+      \item Trasformare una relazione sovrapposta in una generalizzazione esclusiva
+        esplicitando l'entità che rappresenta la sovrapposizione
+    \end{itemize}
+\end{itemize}
+
+\section{Progettazione Concettuale}
+È un modello, formale e non ambiguo, utilizzato per la progettazione concettuale di una
+base di dati. Fornisce strumenti formali (costrutti), con sintassi grafica, per specificare la
+struttura e le proprietà dei dati da rappresentare indipendentemente dalla tecnologia.
+
+\vspace{1em}
+\noindent
+Ogni costrutto viene definito specificando:
+\begin{itemize}
+  \item Il suo significato (o semantica)
+  \item La sua sintassi grafica
+  \item La rappresentazione delle sue istanze (o occorrenze)
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Progettare indipendentemente dalle tecnologie significa:
+\begin{itemize}
+  \item \textbf{Non considerare} eventuali ottimizzazioni
+  \item \textbf{Considerare} tutti i requisiti senza semplificazioni o convenzioni
+  \item \textbf{Considerare} sempre i processi di generazione e modifica dei dati
+    per verificare che ogni situazione sia rappresentabile da un'istanza "pulita"
+    della base di dati
+\end{itemize}
+
+\subsection{Entità}
+Un'entità \( E \) rappresenta una \textbf{classe di oggetti} che hanno le seguenti
+caratteristiche:
+\begin{itemize}
+  \item \textbf{Proprietà comuni}
+  \item \textbf{Eistenza autonoma} rispetto ad altre classi di oggetti
+  \item \textbf{Identificazione univoca}, cioè esiste una chiara corrispondenza tra
+    gli oggetti istanze di entità e concetti istanziati nel sistema informativo
+\end{itemize}
+Un entità si rappresenta con un rettangolo che contiene il nome dell'entità:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw, rectangle, minimum width=3cm, minimum height=1cm ]
+      (E) {Entità \( E \)};
+  \end{tikzpicture}
+  \caption{Rappresentazione grafica di un'entità}
+\end{figure}
+
+\subsubsection{Istanza}
+Un'istanza dell'entità \( E \) è un \textbf{oggetto} appartenente alla classe rappresentata
+da \( E \). Si indica con \( I(E) \) l'insieme delle istanze di \( E \) che esistono
+nella base di dati in un certo istante e alla creazione della base di dati è vuota:
+\( I(E) = \emptyset \).
+
+\begin{example}
+  Rappresentiamo con il costrutto entità il concetto di \textbf{persona}. Bisogna gestire
+  nella base di dati le informazioni che descrivono un gruppo di persone.
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \node[draw, rectangle, minimum width=3cm, minimum height=1cm ]
+        (E) {Persona};
+    \end{tikzpicture}
+    \caption{Rappresentazione grafica dell'entità Persona}
+  \end{figure}
+  L'insieme delle istanze dell'entità Persona è il seguente:
+  \[
+    I(\text{Persona}) = \{p_1, p_2, p_3, \ldots\}
+  \]
+\end{example}
+
+\subsection{Relazione}
+Una relazione \( R \) rappresenta un \textbf{legame logico} tra \textbf{due o più} entità.
+Può esserci anche una relazione all'entità stessa (relazione ricorsiva).
+
+\vspace{1em}
+\noindent
+Una relazione si rappresenta nello schema con un rombo a cui si collegano attraverso delle
+linee le entità coinvolte nella relazione. Il nome della relazione viene scritto a fianco
+al rombo:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm ]
+      (E1) {Entità \( E \)};
+    \node[draw, diamond, minimum width=0.7cm, minimum height=0.7cm, right=1cm of E1]
+      (R) {};
+    \node[below=0.3cm] at (R) {Relazione \( R \)};
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm, right=1cm of R]
+      (E2) {Entità \( F \)};
+    \draw (E1) -- (R);
+    \draw (E2) -- (R);
+  \end{tikzpicture}
+  \caption{Rappresentazione grafica di una relazione tra due entità}
+\end{figure}
+
+\subsubsection{Istanza}
+Data una relazione \( R \) tra \( n \) entità \( E_1, \ldots, E_n \) un'istanza della
+relazione \( R \) è una \textbf{ennupla di istanze di entità}:
+\[
+  (e_1, \ldots, e_n) \; \text{dove } e_i \in I(E_i) \text{ per } 1 \le i \le n
+\] 
+La popolazione di \( R \) rappresenta l'insieme delle coppie di istanze delle entità
+\( E \) e \( F \) che sono in relazione in un certo istante:
+\[
+  I(R) = \left\{ (e_i, f_j) \;\left|\; e_i \in I(E), f_j \in I(F) \right.\right\} 
+\]
+\begin{example}
+  Supponiamo che nello schema ci siano le entità \textbf{Persona} e \textbf{Comune},
+  bisogna gestire la \textbf{Residenza} delle persone nei comuni italiani.
+
+  \vspace{2em}
+  \noindent
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \node[draw, rectangle, minimum width=2cm, minimum height=1cm ]
+        (E1) {Persona};
+      \node[draw, diamond, minimum width=0.7cm, minimum height=0.7cm, right=1cm of E1]
+        (R) {};
+      \node[below=0.3cm] at (R) {Residenza};
+      \node[draw, rectangle, minimum width=2cm, minimum height=1cm, right=1cm of R]
+        (E2) {Comune};
+      \draw (E1) -- (R);
+      \draw (E2) -- (R);
+    \end{tikzpicture}
+    \caption{Rappresentazione grafica della relazione Residenza}
+  \end{figure}
+  \noindent
+  Ciò implica che per esistere un'istanza di residenza devono esistere un'istanza
+  di persona e un'istanza di comune.
+\end{example}
+Data una relazione \( R \) tra \( n \) entità \( \{E_1, E_2, \ldots, E_n\} \)
+vale \textbf{sempre} la seguente proprietà sull'insieme delle istanze \( I(R) \):
+\[
+  I(R) \subseteq I(E_1) \times I(E_2) \times \ldots \times I(E_n)
+\] 
+La conseguenza di questa proprietà è che non è possibilie rappresentare la stessa ennupla
+più volte.
+
+\subsubsection{Relazione ricorsiva}
+È una relazione binaria sulla stessa entità:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm ]
+      (E) {Entità \( E \)};
+    \node[draw, diamond, minimum width=0.7cm, minimum height=0.7cm, above right=1cm of E]
+      (R) {};
+    \node[above=0.3cm] at (R) {Relazione \( R \)};
+
+    \draw (E) |- (R);
+    \draw (E) -| (R);
+  \end{tikzpicture}
+  \caption{Rappresentazione grafica di una relazione ricorsiva}
+\end{figure}
+
+\subsection{Attributo}
+Rappresenta una proprietà elementare di un'entità o di una relazione.
+Ogni attributo di un'entità o di una relazione associa ad ogni istanza \textbf{un solo}
+valore appartenente ad un dominio di valori ammissibili. Può essere visto
+come una funzione che ha come dominio le istanze dell'entità (o relazione) e come
+codominio l'insieme dei valori ammissibili:
+\[
+  f_A: I(E) \mapsto D
+\] 
+dove \( a \) è un attributo dell'entità \( E \), mentre \( I(E) \) l'insieme delle
+istanze di \( E \) e \( D \) è l'insieme dei valori ammissibili.
+
+\vspace{1em}
+\noindent
+La sintassi grafica di un attributo è un cerchio \textbf{vuoto} collegato con una linea all'entità
+con accanto il nome dell'attributo:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm ]
+      (E) {Entità \( E \)};
+    \node[draw, circle, scale=0.7, right=0.5cm of E]
+      (A) {};
+    \node[right=0.1cm] at (A) {\( A \)};
+    \draw (E) -- (A);
+  \end{tikzpicture}
+  \caption{Rappresentazione grafica di un attributo di un'entità}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw, diamond, minimum width=0.7cm, minimum height=0.7cm ]
+      (E) {};
+    \node[below=0.3cm] at (E) {Relazione \( R \)};
+    \node[draw, circle, scale=0.7, right=0.5cm of E]
+      (A) {};
+    \node[right=0.1cm] at (A) {\( A \)};
+    \draw (E) -- (A);
+  \end{tikzpicture}
+  \caption{Rappresentazione grafica di un attributo di una relazione}
+\end{figure}
+
+\begin{example}
+  Rappresentiamo il concetto di persona tramite un'entità, bisogna gestire nella base
+  di dati il nome e il cognome di un gruppo di persone.
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \node[draw, rectangle, minimum width=2cm, minimum height=1cm ]
+        (E) {Persona};
+      \node[draw, circle, scale=0.7, yshift=0.4cm, right=0.5cm of E]
+        (A1) {};
+      \node[right=0.1cm] at (A1) {Nome};
+      \node[draw, circle, scale=0.7, yshift=-0.4cm, right=0.5cm of E]
+        (A2) {};
+      \node[right=0.1cm] at (A2) {Cognome};
+      \draw (A1) -- +(-0.65cm,0);
+      \draw (A2) -- +(-0.65cm,0);
+    \end{tikzpicture}
+    \caption{Rappresentazione grafica dell'entità Persona con gli attributi Nome e Cognome}
+  \end{figure}
+\end{example}
+
+\subsubsection{Attributo opzionale e multivalore}
+L'attributo opzionale o multivalore si ottiene da un attributo normale specificando un vincolo
+di cardinalità (spiegato più avanti per le relazioni \ref{Cardinalità}) sui valori che
+l'attributo può assumere (il default è (1,1)). I valori possibili sono i seguenti:
+\begin{itemize}
+  \item (0,1): attributo opzionale
+  \item (1,N): attributo multivalore obbligatorio
+  \item (0,N): attributo multivalore opzionale
+\end{itemize}
+
+\vspace{1em}
+\noindent
+La sintassi grafica per rappresentare un attributo opzionale o multivalore è la seguente:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm ]
+      (E) {Entità \( E \)};
+    \node[draw, circle, scale=0.7, right=1.3cm of E]
+      (A) {};
+    \node[right=0.1cm] at (A) {\( A \)};
+    \draw (E) -- node[midway, above, scale=0.8] {(min,max)} (A);
+
+  \end{tikzpicture}
+  \caption{Rappresentazione grafica di un attributo opzionale o multivalore}
+\end{figure}
+
+\subsubsection{Attributo composto}
+Permette di raggruppare gli attributi di un'entità o di una relazione che hanno un significato
+comune.
+
+\vspace{1em}
+\noindent
+La sintassi grafica per rappresentare un attributo composto è la seguente:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw, rectangle, minimum width=2cm, minimum height=1.5cm ]
+      (E) {Entità \( E \)};
+    \node[draw, circle, scale=0.7, right=1.3cm of E]
+      (B) {};
+    \node[right=0.1cm] at (B) {\( B \)};
+    \draw (B) -- +(-0.58cm,0);
+
+    \node[draw, circle, scale=0.7, above=0.2cm of B]
+      (A) {};
+    \node[right=0.1cm] at (A) {\( A \)};
+    \draw (A) -- +(-0.62cm,0);
+
+    \node[draw, circle, scale=0.7, below=0.2cm of B]
+      (C) {};
+    \node[right=0.1cm] at (C) {\( C \)};
+    \draw (C) -- +(-0.62cm,0);
+
+    \node[draw, ellipse, minimum height=1.3cm, right=0.5cm of E] (comp) {};
+
+    \draw (E) -- (comp);
+  \end{tikzpicture}
+  \caption{Rappresentazione grafica di un attributo composto}
+\end{figure}
+
+\subsection{Identificatore}
+Data un'entità \( E \), un identificatore è un insieme di proprietà (attributi e/o relazioni)
+che \textbf{identificano univocamente} ogni istanza di \( E \). Un insieme di proprietà
+identifica univocamente le istanze di un'entità \( E \) se \textbf{non esistono} due
+istanze di \( E \) che presentano gli stessi valori o istanze nelle proprietà dell'insieme.
+
+\vspace{1em}
+\noindent
+La sintassi grafica di un identificatore per un'entità con un solo attributo \( a \) è
+la seguente:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm ]
+      (E) {Entità \( E \)};
+    \node[draw, circle, scale=0.7, fill, right=0.5cm of E]
+      (A) {};
+    \node[right=0.1cm] at (A) {\( A \)};
+    \draw (E) -- (A);
+  \end{tikzpicture}
+  \caption{Rappresentazione grafica di un identificatore con un solo attributo}
+\end{figure}
+\noindent
+Per un identificatore costituito da più attributi \( a, b \) la sintassi grafica è la seguente:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm ]
+      (E) {Entità \( E \)};
+    \node[draw, circle, scale=0.7, yshift=0.5cm, right=0.5cm of E]
+      (A) {};
+    \node[right=0.1cm] at (A) {\( A \)};
+    \draw (A) -- +(-0.65cm,0);
+
+    \node[draw, circle, scale=0.7, below=0.5cm of A]
+      (B) {};
+    \node[right=0.1cm] at (B) {\( B \)};
+    \draw (B) -- +(-0.65cm,0);
+
+    \node[draw, circle, scale=0.7, fill, above left=0.2cm of A]
+      (I) {};
+    \draw (I) -- +(0,-1.3cm);
+  \end{tikzpicture}
+  \caption{Rappresentazione grafica di un identificatore con più attributi}
+\end{figure}
+\noindent
+Può anche esistere un identificatore costituito da una relazione \( R \) (deve essere
+una funzione):
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm ]
+      (E1) {Entità \( E \)};
+    \node[draw, diamond, minimum width=0.7cm, minimum height=0.7cm, right=1cm of E1]
+      (R) {};
+    \node[below=0.3cm] at (R) {Relazione \( R \)};
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm, right=1cm of R]
+      (E2) {\( \ldots \)};
+    \draw (E1) -- (R);
+    \draw (E2) -- (R);
+
+    \node[draw, circle, scale=0.7, yshift=0.5cm, right=0.5cm of E1]
+      (A) {};
+    \node[right=0.1cm] at (A) {\( A \)};
+    \draw (A) -- +(-0.65cm,0);
+
+    \node[draw, circle, scale=0.7, fill, above left=0.2cm of A]
+      (I) {};
+    \draw (I) -- +(0,-1.3cm);
+  \end{tikzpicture}
+  \caption{Rappresentazione grafica di un identificatore costituito da un attributo e una relazione}
+\end{figure}
+\noindent
+Oppure un identificatore può essere costituito soltanto da una relazione \( R \):
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm ]
+      (E1) {Entità \( E \)};
+    \node[draw, diamond, minimum width=0.7cm, minimum height=0.7cm, right=1cm of E1]
+      (R) {};
+    \node[below=0.3cm] at (R) {Relazione \( R \)};
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm, right=1cm of R]
+      (E2) {\( \ldots \)};
+    \draw (E1) -- (R);
+    \draw (E2) -- (R);
+
+    \node[draw, circle, scale=0.7, fill, above left=0.2cm of A]
+      (I) {};
+    \draw (I) -- +(0,-1.3cm);
+  \end{tikzpicture}
+  \caption{Rappresentazione grafica di un identificatore costituito da una relazione}
+\end{figure}
+\noindent
+Ci sono due tipi di identificatori:
+\begin{itemize}
+  \item \textbf{Identificatori interni}: sono costituiti solo da attributi dell'entità
+  \item \textbf{Identificatori esterni}: sono costituiti da almeno una relazione
+    con un'altra entità
+\end{itemize}
+
+\vspace{1em}
+\noindent
+\textbf{Attenzione}: Non esistono identificatori sulle relazioni perchè ogni relazione
+è già univocamente identificata dalle istanze delle entità coinvolte.
+
+\begin{example}
+  Rappresentiamo il concetto di persona tramite un'entità, bisogna gestire nella base
+  di dati il codice fiscale, il nome, il cognome e la data di nascita di un gruppo
+  di persone
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \node[draw, rectangle, minimum width=2cm, minimum height=1cm ]
+        (E1) {Persona};
+      \node[draw, circle, scale=0.7, yshift=0.6cm, right=0.5cm of E1]
+        (nome) {};
+      \node[right=0.1cm] at (nome) {Nome};
+      \draw (nome) -- +(-0.65cm,0);
+
+      \node[draw, circle, scale=0.7, yshift=0cm, right=0.5cm of E1]
+        (cognome) {};
+      \node[right=0.1cm] at (cognome) {Cognome};
+      \draw (cognome) -- +(-0.65cm,0);
+
+      \node[draw, circle, scale=0.7, yshift=-0.6cm, right=0.5cm of E1]
+        (data_nascita) {};
+      \node[right=0.1cm] at (data_nascita) {Data di nascita};
+      \draw (data_nascita) -- +(-0.65cm,0);
+
+      \node[draw, circle, scale=0.7, fill, above left=0.2cm of A]
+        (I) {};
+      \draw (I) -- +(0,-1.3cm);
+
+      \node[draw, circle, fill, scale=0.7, below=0.5cm of E1]
+        (fiscale) {};
+      \node[right=0.1cm] at (fiscale) {Codice fiscale};
+      \draw (fiscale) -- +(0,0.65cm);
+    \end{tikzpicture}
+    \caption{Esempio di identificatore interno}
+  \end{figure}
+\end{example}
+
+\begin{definition}
+  Un \textbf{vincolo di identificazione} limita la popolazione di un'entità impedendo
+  l'esistenza di due istanze con gli stessi valori nelle proprietà che costituiscono
+  l'identificatore.
+
+  \vspace{1em}
+  \noindent
+  La scelta dell'identificatore va sempre fatta considerando le proprietà significative
+  per il sistema informativo. A \textbf{livello concettuale} è quindi da \textbf{evitare}
+  l'introduzione di nuovi attributi identificatori (ad esempio l'ID).
+\end{definition}
+
+\subsection{Cardinalità}\label{Cardinalità}
+Tra due relazioni esistono dei vincoli di cardinalità che limitano il numero di istanze
+di una entità che possono essere in relazione con una singola istanza dell'altra entità.
+Data una relazione \( R \) i vincoli di cardinalità vengono specificati per ogni entità
+\( E_i \) coinvolta nella relazione \( R \) e specificano il numero \textbf{minimo} e
+\textbf{massimo} di istanze di \( R \) a cui un istanza di \( E_j \) deve o può 
+partecipare.
+
+\vspace{1em}
+\noindent
+La sintassi grafica per rappresentare i vincoli di cardinalità è la seguente:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm ]
+      (E1) {Entità \( E \)};
+    \node[draw, diamond, minimum width=0.7cm, minimum height=0.7cm, right=2cm of E1]
+      (R) {};
+    \node[below=0.3cm] at (R) {Relazione \( R \)};
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm, right=2cm of R]
+      (E2) {Entità \( F \)};
+    \draw (E1) -- node[midway, above, scale=0.8] {\( (min_1, max_1) \)} (R);
+    \draw (E2) -- node[midway, above, scale=0.8] {\( (min_2, max_2) \)} (R);
+  \end{tikzpicture}
+  \caption{Rappresentazione grafica dei vincoli di cardinalità}
+\end{figure}
+
+\subsubsection{Valori possibili per \texorpdfstring{\( \text{MIN}_i \)}{MIN\_i}}
+I possibili valori che il minimo \( \text{MIN}_i \) può assumere sono:
+\begin{itemize}
+  \item 0: Indica che la partecipazione alla relazione \( R \) delle istanze di \( E_i \)
+    è \textbf{opzionale}
+
+  \item 1: Indica che la partecipazione alla relazione \( R \) delle istanze di \( E_i \)
+    è \textbf{obbligatoria}
+
+  \item \( num > 1 \): Indica che per ogni istanza di \( E_i \) devono essere presenti
+    almeno \( num \) occorrenze della relazione \( R \) che la coinvolgono
+\end{itemize}
+
+\subsubsection{Valori possibili per \texorpdfstring{\( \text{MAX}_i \)}{MAX\_i}}
+\begin{itemize}
+  \item 1: Indica che un'istanza di \( E_i \) può \textbf{al massimo} partecipare a una
+    sola occorrenza della relazione \( R \) (se \( R \) è binaria questo indica che \( R \)
+    \textbf{è una funzione})
+
+  \item \( N \): Indica che un'istanza di \( E_i \) può partecipare a più occorrenze
+    della relazione \( R \) senza limite massimo
+
+  \item \( num > 1 \): Indica che per ogni istanza di \( E_i \) possono essere presenti
+    \textbf{al massimo} \( num \) occorrenze della relazione \( R \) che la coinvolgono
+\end{itemize}
+
+\begin{example}
+  Rappresentiamo il concetto di persona e comune tramite due entità, bisogna gestire
+  la residenza delle persone nei comuni italiani. Questi requisiti non rappresentano
+  la realtà perchè una persona deve avere obbligatoriamente una residenza e può avere
+  al massimo una residenza, mentre un comune può avere zero o più persone residenti.
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \node[draw, rectangle, minimum width=2cm, minimum height=1cm ]
+        (E1) {Persona};
+      \node[draw, diamond, minimum width=0.7cm, minimum height=0.7cm, right=1.3cm of E1]
+        (R) {};
+      \node[below=0.3cm] at (R) {Residenza};
+      \node[draw, rectangle, minimum width=2cm, minimum height=1cm, right=1.3cm of R]
+        (E2) {Comune};
+      \draw (E1) -- node[midway, above, scale=0.8] {\( (1, 1) \)} (R);
+      \draw (E2) -- node[midway, above, scale=0.8] {\( (0, N) \)} (R);
+    \end{tikzpicture}
+    \caption{Esempio di Residenza con i vincoli di cardinalità}
+  \end{figure}
+\end{example}
+
+\begin{definition}
+  Una relazione \( R \) può partecipare ad un identificatore esterno di un'entità \( E \)
+  \textbf{solo se} tale entità partecipa alla relazione \( R \) con vincolo di
+  cardinalità \( (1, 1) \), quindi se \( R \) è una \textbf{funzione} che associa ad
+  ogni istanza di \( E \) una e una sola istanza dell'altra entità coinvolta in \( R \).
+  Questo vale anche quando \( R \) è la sola proprietà che partecipa all'identificatore.
+\end{definition}
+
+\vspace{1em}
+\noindent
+Si potrebbe utilizzare anche il diagramma UML per rappresentare i concetti del modello
+Entità-Relazione, ma questa rappresentazione segue regole diverse, ad esempio la
+posizione dove specificare nel diagramma UML i vincoli di cardinalità è invertita rispetto
+all'ER.
+
+\subsection{Generalizzazione di entità}
+La generalizzazione è un legame logico (simile ad un'ereditarietà tra classi) tra un'entità
+padre \( E \) e \( n \) \( (n > 0) \) entità figlie \( E_1, E_2, \ldots, E_n \) dove
+\( E \) rappresenta una classe di oggetti più generale rispetto alle classi di oggetti
+rappresentate dalle entità figlie.
+
+\vspace{1em}
+\noindent
+La sintassi grafica per rappresentare una generalizzazione è la seguente:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm]
+      (E) {\( E \) };
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm, below left=1.3cm of E]
+      (E1) {\( E_1 \) };
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm, below right=1.3cm of E]
+      (E2) {\( E_2 \) };
+
+    \draw[-latex] (E1.north) -- +(0,0.5) -| (E);
+    \draw (E2.north) -- +(0,0.5) -| (E);
+
+    \node[below=1.3cm of E] {\( \ldots \)};
+  \end{tikzpicture}
+  \caption{Esempio di Residenza con i vincoli di cardinalità}
+\end{figure}
+
+\subsubsection{Proprietà delle istanze generalizzate}
+\begin{itemize}
+  \item Ogni istanza di un'entità figlia \( E_i \) è anche istanza dell'entità padre \( E \)
+  \item Ogni proprietà (attributi, identificatori e relazioni) dell'entità padre \( E \)
+    è anche proprietà di ogni entità figlia \( E_i \) 
+\end{itemize}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \draw (0,0) circle(2cm) node[yshift=-1.5cm] {\( I(E_{\text{padre}}) \)};
+    \draw (-0.8,0) circle(1cm) node
+      {\( I(E_1) \)};
+    \draw (0.8,0) circle(1cm) node
+      {\( I(E_2) \)};
+  \end{tikzpicture}
+  \caption{Istanze di entità generalizzate}
+\end{figure}
+
+\subsubsection{Classificazione delle generalizzazioni}
+Una generalizzazione può essere classificata secondo due criteri:
+\begin{itemize}
+  \item \textbf{Totale} se ogni istanza dell'entità padre \( E \) è anche istanza
+    di \textbf{almeno una} delle entità figlie \( E_i \), altrimenti si dice
+    \textbf{parziale}
+
+  \item \textbf{Esclusiva} se ogni istanza dell'entità padre \( E \) è anche istanza
+    di \textbf{al massimo una} delle entità figlie \( E_i \), altrimenti si dice
+    \textbf{sovrapposta}
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Per indicare la classificazione di una generalizzazione si mettono le seguenti
+notazioni accanto alla freccia della generalizzazione:
+\begin{itemize}
+  \item (p,s): parziale e sovrapposta: 
+  \item (p,e): parziale ed esclusiva: non si possono avere istanze comuni tra le entità figlie
+  \item (t,s): totale e sovrapposta: non si possono avere istanze dell'entità padre
+    che non siano istanze di almeno una delle entità figlie
+  \item (t,e): totale ed esclusiva: ogni istanza dell'entità padre è istanza
+    di \textbf{esattamente una} delle entità figlie
+\end{itemize}
+
+\subsubsection{Relazioni ternarie}
+Una relazione ternaria è una relazione che coinvolge tre entità e si usa quando:
+\begin{itemize}
+  \item Un'istanza del concetto per esistere nel sistema informativo richiede sempre
+    la presenza di tre istanze di entità (una per ogni entità coinvolta nella relazione)
+
+  \item Non esistono eccezioni al punto precedente
+  \item Non esistono situazioni nelle quali la terna di entità debba essere rappresentata
+    più volte
+\end{itemize}
+La sintassi grafica per rappresentare una relazione ternaria è la seguente (i vincoli
+di cardinalità sono richiesti, ma qua sono omessi):
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm ]
+      (E1) {Entità \( E \)};
+    \node[draw, diamond, minimum width=0.7cm, minimum height=0.7cm, right=1cm of E1]
+      (R) {};
+    \node[above=0.3cm] at (R) {Relazione \( R \)};
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm, right=1cm of R]
+      (E2) {Entità \( F \)};
+    \node[draw, rectangle, minimum width=2cm, minimum height=1cm, below=1cm of R]
+      (E3) {Entità \( G \)};
+
+    \draw (E1) -- (R);
+    \draw (E2) -- (R);
+    \draw (E3) -- (R);
+  \end{tikzpicture}
+  \caption{Rappresentazione grafica di una relazione tra due entità}
+\end{figure}
+\noindent
+Un uso errato avviene quando per rappresentare lo stato del sistema informativo
+sarebbe necessario che un'istanza della relazione \textbf{contenga solo una
+coppia e non una terna} di istanze di entità (cioè quando manca un attore).
+Quindi in questo caso si può sostituire la relazione ternaria con 3 relazioni binarie
+indipendenti.
+
+\vspace{1em}
+\noindent
+L'utilizzo delle relazioni ternarie è utile per "storicizzare" le relazioni binarie.
+Nella rappresentazione di una relazione binaria storicizzata è necessario poter rappresentare
+più volte \textbf{la stessa coppia in tempi diversi}. Pertanto la relazione binaria può
+essere trasformata in una relazione ternaria includendo l'entità \textbf{Tempo} come
+nuovo attore nella relazione in modo da poter rappresentare più volte la stessa coppia
+in istanti di tempo diversi.
+
+\section{Progettazione logica}
+\subsection{Modello relazionale}
+Il \textbf{modello relazionale} è un modello dei dati, quindi permette di definire le proprietà
+che la popolazione di una base di dati deve rispettare. I costrutti principali del
+modello relazionale sono:
+\begin{itemize}
+  \item \textbf{Domini di base}: insieme di valori atomici (non scomponibili) che
+    rappresentano i tipi di dati elementari
+  \item \textbf{Relazione (o tabella)}: rappresenta un insieme di entità o di relazioni
+    tra entità. Sono definite come un insieme di ennuple o tuple.
+  \item \textbf{Superchiavi, chiavi e chiavi primarie}: insieme di attributi che identificano
+    univocamente ogni ennupla di una relazione
+  \item \textbf{Vincoli di integrità referenziale}: vincoli che garantiscono la coerenza tra
+    i dati memorizzati in relazioni diverse
+  \item \textbf{Vincoli di integrità generici}: vincoli che garantiscono la coerenza dei dati
+    memorizzati in una singola relazione
+\end{itemize}
+
+\subsection{Domini di base}
+Sono i domini da cui si scelgono i valori delle proprietà delle istanze di informazione da
+rappresentare. I domini tipici sono:
+\begin{itemize}
+  \item Caratteri
+  \item Stringhe di caratteri
+  \item Numeri interi
+  \item Numeri decimali a virgola fissa
+  \item Numeri decimali a virgola mobile
+  \item Domini del tempo, per rappresentare istanti e intervalli di tempo
+  \item ecc...
+\end{itemize}
+I domini presenti variano a seconda del sistema, ma in questo corso vedremo il linguagigo
+SQL nel sistema postgreSQL.
+
+\subsection{Relazione}
+Una relazione può essere vista come una tabella.
+\begin{example}
+  \label{tab:esempio_relazione}
+  Ad esempio:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{|l|l|l|}
+      \hline
+      Milano & 20100 & 1.300.000 \\
+      \hline
+      Verona & 37100 & 350.000 \\
+      \hline
+      Brescia & 25100 & 250.000 \\
+      \hline
+    \end{tabular}
+    \caption{Esempio di tabella che rappresenta alcune città italiane}
+  \end{table}
+\end{example}
+Una tabella è un contenitore di dati la cui struttura è caratterizzata da una lista
+di colonne:
+\begin{itemize}
+  \item I dati sono scritti nelle righe dove \textbf{ogni riga} descrive le caratteristiche di
+    \textbf{un'istanza dell'informazione da rappresentare}
+  \item I valori contenuti nell \textbf{colonne} descrivono sempre la \textbf{stessa
+    proprietà delle istanze} di informazione da rappresentare
+\end{itemize}
+
+\begin{definition}[Definizione di relazione come insieme di ennulple (Lists)]
+  Dati \( n \) insiemi di valori (domini) \( D_1, \ldots, D_n \), con
+  \( n > 0 \) e indicato con \( D_1 \times \ldots \times D_n \) il loro prodotto
+  cartesiano:
+  \[
+    D_1 \times \ldots \times D_n = \left\{ (v_1, \ldots, v_n) \;\left|\; v_1 \in D_1 \wedge \ldots
+    \wedge v_n \in D_n \right. \right\}
+  \] 
+  una relazione \( \rho \) di grado \( n \) è un qualsiasi \textbf{sottoinsieme di}
+  \( D_1 \times \ldots \times D_n \):
+  \[
+    \rho \subseteq D_1 \times \ldots \times D_n
+  \] 
+  dove \( \left( v_1, \ldots, v_n \right) \) è una ennupla della relazione e \( |\rho| \) 
+  è la cardinalità della relazione (numero di ennuple).
+
+  \vspace{1em}
+  \noindent
+  \textbf{Nota}:
+  \begin{itemize}
+    \item I domini \( D_1, \ldots, D_n \) possono essere a \textbf{cardinalità infinita},
+      mentre le relazioni sono sempre a \textbf{cardinalità finita}
+    \item Dalla definizione si deduce inoltre che:
+      \begin{itemize}
+        \item \textbf{Non è definito alcun ordinamento} sulle ennuple di una relazione
+        \item \textbf{Non sono ammessi duplicati} di una ennupla
+        \item Nella definizione di relazione come insieme di ennuple, i valori delle
+          ennuple sono ordinati
+      \end{itemize}
+  \end{itemize}
+\end{definition}
+
+\begin{example}
+  Riprendendo l'esempio \ref{tab:esempio_relazione}, la relazione può essere vista come
+  insieme di ennuple (relazione città):
+  \[
+      \rho = \left.\begin{cases}
+        \left( \text{Milano}, 20100, 1300000 \right),\\
+        \left( \text{Verona}, 37100, 350000 \right),\\
+        \left( \text{Brescia}, 25100, 250000 \right)\\
+      \end{cases}
+      \right\}
+  \] 
+  dove:
+  \[
+    \rho \subseteq D_1 \times D_2 \times D_3
+  \] 
+\end{example}
+
+\subsubsection{Accesso ai valori di una ennupla}
+Se \( t \) è una ennupla \( \left( v_1, \ldots, v_n \right)  \) il valore posto in i-esima
+posizione si indica con la notazione:
+\[
+  t[i]
+\] 
+Questa modalità di accesso ai valori però non è efficace per l'uso pratico delle relazioni.
+Si preferisce quindi assegnare un \textbf{nome alle colonne}; ciò conduce all'introduzione
+della definizione di relazione come insieme di \textbf{tuple}.
+
+\begin{definition}[Definizione di relazione come insieme di tuple (Mappings)]
+  Sia \( X \) un insieme di nomi e sia \( \Delta \) l'insieme di tutti i domini di base
+  ammessi dal modello. Si definisce la funzione:
+  \[
+    DOM: X \to \Delta
+  \] 
+  Tale funzione associa ad ogni nome \( A \in X \) un dominio \( DOM(A) \in \Delta \).
+  I nomi di \( X \) si definiscono \textbf{attributi}.
+  Una tupla \( t \) su \( X \) è una funzione:
+  \[
+    t: X \to \bigcup_{A \in X} DOM(A)
+  \] 
+  dove:
+  \[
+    t[A] = v \in DOM(A)
+  \] 
+  Quindi una relazione su \( X \) è un \textbf{insieme di tuple su } \( X \), dove
+  \( X \) è l'insieme di attributi della relazione.
+
+  \vspace{1em}
+  \noindent
+  \textbf{Nota}:
+  \begin{itemize}
+    \item Una relazione è un \textbf{insieme} di tuple e quindi \textbf{non può contenere
+      tuple duplicate}
+    \item I domini per gli attributi possono essere solo domini di base, \textbf{non sono
+      ammessi altri domini}, nè \textbf{il prodotto cartesiano di domini}. Essenzialmente
+      non sono ammessi attributi annidati
+    \item In generale una base di dati relazionale è composta da \textbf{più relazioni}
+  \end{itemize}
+\end{definition}
+\begin{example}
+  Consideriamo l'esempio \ref{tab:esempio_relazione}. Definiamo l'insieme di attributi:
+  \[
+    X = \{ \text{Nome}, \text{CAP}, \text{Abitanti} \}
+  \] 
+  Definiamo il dominio di ciascun attributo:
+  \[
+    \begin{aligned}
+      DOM(\text{Nome}) & = \text{Stringhe di caratteri} \\
+      DOM(\text{CAP}) & = \text{Numeri interi} \\
+      DOM(\text{Abitanti}) & = \text{Numeri interi}
+    \end{aligned}
+  \]
+  La tabella della relazione è rappresentata come un insieme di tuple:
+  \[
+    \rho_X = \left\{
+      t_1, t_2, t_3
+    \right\}
+  \] 
+  dove:
+  \[
+    \begin{aligned}
+      t_1[\text{Nome}] & = \text{Milano} & t_1[\text{CAP}] & = 20100 & t_1[\text{Abitanti}] & = 1300000 \\
+      t_2[\text{Nome}] & = \text{Verona} & t_2[\text{CAP}] & = 37100 & t_2[\text{Abitanti}] & = 350000 \\
+      t_3[\text{Nome}] & = \text{Brescia} & t_3[\text{CAP}] & = 25100 & t_3[\text{Abitanti}] & = 250000 \\
+    \end{aligned}
+  \] 
+\end{example}
+
+\subsection{Progettazione nel modello relazionale}
+\subsubsection{Progettazione dei dati}
+Nel modello relazionale lo schema è costituito da un insieme di relazioni (o tabelle).
+Le dipendenze tra proprietà elementari (attributi) sono costituite dalle
+\textbf{dipendenze funzionali} che in questo corso sono sostituite dalla progettazione
+concettuale. 
+Consideriamo i seguenti requisiti da implementare nel modello relazionale:
+
+Vogliamo rappresentare in una base di dati relazionale le informazioni sulla
+proprietà degli appartamenti siti nel comune di Verona.
+\begin{itemize}
+  \item Per ogni appartamento vogliamo memorizzare: il codice ecografico (univoco),
+    la categoria catastale e l’indirizzo composto da: via, numero civico,
+    subalterno.
+
+  \item Per ogni proprietario si registra: il codice fiscale, il nome, il cognome e la data
+    di nascita.
+
+  \item Un appartamento può essere in comproprietà e un proprietario può
+    possedere più appartamenti
+\end{itemize}
+
+\subsubsection{Relazione unica}
+Una soluzione possibile è rappresentata da un'unica relazione che contiene tutte le
+informazioni sugli appartamenti e sui proprietari:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{esempio_relazionale}
+  \caption{Schema relazionale con una sola relazione Proprietà}
+\end{figure}
+\noindent
+Questa tabella associa ogni appartamento ad un proprietario perchè i dati dell'appartamento
+e della persona fanno parte della stessa riga. Il problema è che non c'è distinzione
+tra queste due categorie di informazioni. Questo porta a diversi problemi:
+\begin{enumerate}
+  \item \textbf{Mancata separazione delle informazioni}: le due categorie di
+    informazione non possono esistere separatamente.
+
+  \item \textbf{Ridondanza dei dati}: se un proprietario possiede più appartamenti
+    i suoi dati vengono memorizzati più volte. Questo comporta un aumento dello spazio
+    di memorizzazione e una possibile inconsistenza dello stesso dato.
+\end{enumerate}
+
+\subsubsection{Anomalie}
+Le problematiche descritte nel paragrafo precedente portano sono descritte in modo
+più dettagliato come \textbf{anomalie} che si dividono in:
+\begin{itemize}
+  \item \textbf{Anomalia di aggiornamento}: per aggiornare il valore di un attributo
+    si è obbligati a modificare tale valore su più tuple
+
+  \item \textbf{Anomalie di inserimento}: per inserire una nuova tupla è necessario
+    inserire valori al momento sconosciuti (sostituibili da valori nulli) per gli
+    attributi non disponibili
+    
+  \item \textbf{Anomalie di cancellazione}: per cancellare una tupla è necessario
+    cancellare valori ancola validi oppure inserire valori nulli per gli attributi
+    da cancellare
+\end{itemize}
+
+\subsubsection{Decomposizione della relazione unica}
+Riprendiamo l'esempio precedente con una singola relazione e decomponiamola separando
+le diverse categorie di informazioni in relazioni distinte. Ci sono diversi modi
+per effettuare questa decomposizione:
+\begin{enumerate}
+  \item Separazione in due relazioni distinte per Appartamento e Proprietario
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=1\textwidth]{esempio_relazionale_decomposto_1}
+      \caption{Schema relazionale con relazioni distinte per Appartamento e Proprietario}
+    \end{figure}
+    \noindent
+    Questa separazione risolve i problemi di ridondanza e anomalie di aggiornamento.
+    Però manca l'informazione che mette in relazione la persona con l'appartamento.
+    Quindi siccome si è persa un'informazione, questa decomposizione è detta
+    \textbf{decomposizione con perdita}.
+
+  \item Separazione in due relazioni distinte per Appartamento e Proprietario
+    con l'aggiunta di un informazione identificante per la relazione Appartamento, in questo
+    casoè 
+    \begin{itemize}
+      \item codice fiscale della Persona nella relazione Appartamento 
+    \end{itemize}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.6\textwidth]{esempio_relazionale_decomposto_2_1}
+      \caption{Relazione Appartamento con codice fiscale}
+    \end{figure}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.6\textwidth]{esempio_relazionale_decomposto_2_2}
+      \caption{Relazione Proprietario con codice ecografico}
+    \end{figure}
+    \noindent
+    Siccome non esistono i puntatori bisogna duplicare i valori identificanti 
+    nelle due relazioni. Anche questa decomposizione ha dati ridondanti.
+
+  \item Separazione in due relazioni distinte per Appartamento e Proprietario
+    con l'aggiunta di un informazione identificante per la relazione Proprietario, in questo
+    caso è: 
+    \begin{itemize}
+      \item codice ecografico dell'Appartamento nella relazione Proprietario
+    \end{itemize}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.6\textwidth]{esempio_relazionale_decomposto_2_1}
+      \caption{Relazione Appartamento con codice fiscale}
+    \end{figure}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.6\textwidth]{esempio_relazionale_decomposto_2_2}
+      \caption{Relazione Proprietario}
+    \end{figure}
+    \noindent
+    Siccome non esistono i puntatori bisogna duplicare i valori identificanti 
+    nelle due relazioni. Anche questa decomposizione ha dati ridondanti.
+
+  \item Separazione in due relazioni distinte per Appartamento e Proprietario
+    con l'aggiunta di un informazione identificante per ciascuna relazione, in questo
+    caso sono:
+    \begin{itemize}
+      \item codice fiscale nella relazione Appartamento 
+      \item codice ecografico nella relazione Proprietario
+    \end{itemize}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.6\textwidth]{esempio_relazionale_decomposto_3_1}
+      \caption{Relazione Appartamento}
+    \end{figure}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.6\textwidth]{esempio_relazionale_decomposto_3_2}
+      \caption{Relazione Proprietario con codice ecografico}
+    \end{figure}
+    \noindent
+    Anche in questo caso si presentano le stesse problematiche del punto precedente.
+
+  \item Separazione in tre relazione distinte:
+    \begin{itemize}
+      \item Appartamento
+      \item Persona
+      \item Proprietà (relazione tra Appartamento e Persona)
+    \end{itemize}
+    Per rappresentare la relazione tra Appartamento e Persona si introduce
+    una nuova relazione chiamata Proprietà che contiene i valori degli attributi
+    identificanti di entrambe le relazioni.
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.6\textwidth]{esempio_relazionale_decomposto_4_1}
+      \caption{Relazione Appartamento}
+    \end{figure}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.6\textwidth]{esempio_relazionale_decomposto_4_2}
+      \caption{Relazione Persona}
+    \end{figure}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.3\textwidth]{esempio_relazionale_decomposto_4_3}
+      \caption{Relazione Proprietà}
+    \end{figure}
+    \noindent
+    In questa decomposizione non esistono ridondanze e non si perdono informazioni.
+    Quindi questa è la decomposizione corretta e \textbf{senza perdita}. L'unica
+    ridondanza è quella degli attributi identificanti che però è necessaria per
+    rappresentare la relazione tra le due entità.
+\end{enumerate}
+
+\subsubsection{Proprietà del modello relazionale}
+\begin{itemize}
+  \item I legami tra relazioni si realizzano attraverso la replicazione
+    di un insieme di attributi, dove il legame tra due tuple si
+    intende stabilito quando esse presentano gli stessi valori
+    negli attributi replicati.
+
+  \item Il modello relazionale è \textbf{value-based} (basato sui valori).
+    Il modello non prevede l’uso di puntatori per rappresentare
+    legami tra i dati. Questo implica:
+    \begin{itemize}
+      \item Completa indipendenza dall'implementazione e dallo schema fisico
+      \item Facilità di trasferimento dei dati tra sistemi
+      \item Viene rappresentato solo ciò che è rilevante per il sistema informativo
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Terminologia}
+\begin{itemize}
+  \item \textbf{Schema di una relazione}: è costituito dal nome della relazione e
+    da un insieme di nomi per i suoi attributi:
+    \[
+      R(X) \text{ oppure } R(A_1, \ldots, A_n) \text{ oppure } R(A_1: D_1, \ldots, A_n: D_n)
+    \] 
+
+  \item \textbf{Schema di una base di dati relazionale}: è costituito da un insieme di
+    schemi di relazioni:
+    \[
+      S = \{ R_1(X_1), \ldots, R_n(X_n) \}
+    \]
+    con \( R_1 \neq \ldots \neq R_n \) 
+
+  \item \textbf{Istanza di uan relazione di schema \( R(X) \)}: è un insieme \( r \) 
+    di tuple su \( X \):
+    \[
+      r = \{ t_1, \ldots, t_k \}
+    \]
+
+  \item \textbf{Istanza di una base di dati relazionale di schema\\ \( S = \{ R_1(X_1), \ldots, R_n(X_n) \} \)}:
+    è costituito da un insieme di istanze delle relazioni \( R_1(X_1), \ldots, R_n(X_n) \):
+    \[
+      db = \{ r_1, \ldots, r_n \}
+    \] 
+\end{itemize}
+
+\subsection{Valori nulli}
+Dalla definizione di relazione si ha che ogni tupla deve sempre contenere nei propri
+attributi valori significativi appartenenti ai domini di base del modello. Non sempre
+però in una base di dati reale esistono i valori per tutti gli attributi di una tupla.
+Un valore può mancare nei seguenti casi:
+\begin{itemize}
+  \item Il valore di un attributo \( A \) è \textbf{inesistente} (attributo opzionale
+    a livello concettuale), cioè non esiste per questa tupla un valore per l'attributo
+    \( A \).
+
+  \item Il valore di un attributo \( A \) è \textbf{sconosciuto}, cioè esiste un valore
+    per l'attributo \( A \) di questa tupla ma non è noto alla base di dati.
+
+  \item Il valore di un attributo \( A \) è inesistente o sconosciuto.
+\end{itemize}
+Per poter gestire tali situazioni viene introdotto nel modello relazionale un valore
+speciale detto \textbf{valore nullo}. Quindi gli attributi di una tupla possono assumere
+un valore del dominio oppure il valore nullo. Il valore nullo non dovrebbe essere abusato.
+
+\vspace{1em}
+\noindent
+\begin{definition}[Tupla con valore nullo]
+  Una tupla su \( X \) con valori nullo è definita come una funzione:
+  \[
+    t: X \to \{NULL\} \cup \left( \bigcup_{A \in X} DOM(A) \right)
+  \] 
+  dove:
+  \[
+    t[A] = v \in DOM(A) \vee t[A] = NULL
+  \] 
+\end{definition}
+
+\subsubsection{Osservazioni}
+\begin{itemize}
+  \item La presenza di valori nulli è accettabile \textbf{solo in alcuni attributi}
+    (non è possibile avere tuple di soli valori nulli).
+
+  \item In particolare, negli \textbf{attributi replicati per rappresentare legami tra
+    tuple} la presenza di valori nulli può rendere inutilizzabile l’informazione
+\end{itemize}
+
+\begin{example}
+  \label{ex:orario_ferroviario}
+  Rappresentare attraverso un insieme di relazioni le
+  informazioni contenute in un orario ferroviario dove si
+  riportino per ogni treno in partenza dalla stazione di
+  Verona Porta Nuova:
+  il numero, l’orario di partenza, la destinazione finale, la categoria,
+  le fermate intermedie (con orario di fermata) e l’orario di arrivo
+  alla destinazione finale.
+
+  Lo schema relazionale risultante è il seguente:
+  \[
+    \begin{aligned}
+      &TRENO(Numero, Categoria, OraPart, Destinazione, OraArr)\\
+      &FERMATA(NumTreno, Stazione, Orario)
+    \end{aligned}
+  \] 
+  In progettazione concettuale equivale a due entità (Treno e Stazione) collegate
+  da una relazione (Fermata).
+\end{example}
+
+\subsection{Vincoli di integrità}
+Consentono di precisare quali sono le condizioni (vincoli) che le istanze delle relazioni
+devono rispettare per essere considerate valide.
+\begin{definition}
+  Un vincolo di integrità è una condizione, espressa da un \textbf{predicato}, che deve
+  essere \textbf{sempre} soddisfatta da \textbf{ogni istanza} della base di dati.
+\end{definition}
+
+\vspace{1em}
+\noindent
+\begin{example}
+  Consideriamo l'esempio \ref{ex:orario_ferroviario}, i predicati che esprimono possibili
+  vincoli sono:
+  \[
+    \begin{aligned}
+      \forall t \in TRENO:& t[OraPart] \in \left\{ 0, 1, \ldots, 23 \right\}\\
+      \forall t \in TRENO:& t[MinutoPart] \in \left\{ 0, 1, \ldots, 59 \right\}\\
+      \forall t \in TRENO:& t[Numero] > 0\\
+      \forall t \in TRENO:& t[Numero] > 5000 \Rightarrow t[Categoria] = \text{'Regionale'}\\
+      \forall t, t' \in TRENO:& t \neq t' \Rightarrow t[Numero] \neq t'[Numero]\\
+      \forall f \in FERMATA:& \exists t \in TRENO: f[NumTreno] = t[Numero]\\
+        \forall t \in TRENO:& t[Categoria] = \text{'Regionale'}\\
+                            & \Rightarrow \exists f \in FERMATA: f[NumTreno] = t[Numero]
+    \end{aligned}
+  \] 
+\end{example}
+
+\subsubsection{Classificazione}
+I vincoli di integrità si possono classificare in:
+\begin{itemize}
+  \item Vincoli di dominio
+  \item Vincoli di tupla
+  \item Vincoli intrarelazionali
+    \begin{itemize}
+      \item Chiavi (vincolo strutturale)
+    \end{itemize}
+  \item Vincoli interrelazionali
+    \begin{itemize}
+      \item Vincoli di integrità referenziale (vincolo strutturale)
+    \end{itemize}
+\end{itemize}
+Ci sono anche vincoli che hanno più importanza degli altri in quanto garantiscono
+\textbf{proprietà generali valide per tutti gli schemi relazionali}. Questi
+vincoli sono detti \textbf{vincoli strutturali}.
+
+\subsubsection{Vincoli di dominio}
+Impongono una restrizione sui valori che un attributo può assumere. Ad esempio:
+\[
+    \begin{aligned}
+      \forall t \in TRENO:& t[OraPart] \in \left\{ 0, 1, \ldots, 23 \right\}\\
+      \forall t \in TRENO:& t[MinutoPart] \in \left\{ 0, 1, \ldots, 59 \right\}\\
+      \forall t \in TRENO:& t[Numero] > 0\\
+    \end{aligned}
+\] 
+
+\subsubsection{Vincoli di tupla}
+Impongono uan restrizione alla \textbf{combinazione di valori che una tupla della relazione}
+può assumere indipendentemente dalle altre tuple, ad esempio:
+\[
+  \begin{aligned}
+    \forall t \in TRENO:& t[Numero] > 5000 \Rightarrow t[Categoria] = \text{'Regionale'}\\
+  \end{aligned}
+\] 
+
+\subsubsection{Vincoli di intrarelazionali}
+Impongono una restrizione al contenuto di uan relazione e specificano una condizione che 
+\textbf{ogni tupla della relazione deve soddisfare rispetto alle altre tuple della medesima
+relazione}. Una sottocateoria importante di questi vincoli include i \textbf{vincoli di chiave}:
+\begin{itemize}
+  \item \textbf{Superchiave}: Data una relazione di schema \( R(X) \), un insieme di
+    attributi \( K \) sottoinsieme di \( X \) è \textbf{superchiave} per \( R(X) \) se
+    per ogni istanza \( r \) di \( R(X) \) vale la seguente condizione:
+    \[
+      \forall t, t' \in r: t \neq t' \Rightarrow t[K] \neq t'[K]
+    \] 
+    dove:
+    \[
+      t[K] \neq t'[K] \equiv \exists A_i \in K: t[A_i] \neq t'[A_i]
+    \] 
+
+  \item \textbf{Chiave candidata}: Data una relazione di schema \( R(X) \), un insieme di
+    attributi \( K \) sottoinsieme di \( X \) è \textbf{chiave candidata} (o chiave) per
+    \( R(X) \) se \( K \) è superchiave per \( R(X) \) e vale la seguente condizione:
+    \[
+      \neg \exists K' \subseteq K: K' \text{ è superchiave per } R(X)
+    \] 
+
+    \begin{theorem}
+      Esiste sempre una chiave candidata \( K \) per una relazione \( R(X) \)
+    \end{theorem}
+
+  \item \textbf{Chiave primaria}: Data una relazione di schema \( R(X) \) la sua
+    \textbf{chiave primaria} è la chiave candidata scelta per \textbf{identificare le
+    tuple della relazione}. La chiave primaria viene usata per rappresentare i legami
+    tra le relazioni e ha le seguenti caratteristiche:
+    \begin{itemize}
+      \item Non contiene \textbf{mai valori nulli}
+      \item Su \( K \) il sistema genera una struttura d'accesso ai dati (o indice)
+        per supportare le interrogazioni
+    \end{itemize}
+\end{itemize}
+
+\begin{example}
+  Consideriamo la tabella Treno dell'esempio \ref{ex:orario_ferroviario}. I seguenti sottoinsiemi
+  di \( X \) sono:
+  \[
+  \begin{aligned}
+    K1 &= \{Numero\} \text{ è una superchiave e chiave candidata }\\
+    K2 &= \{Numero, Categoria\} \text{ è una superchiave ma non chiave candidata}\\
+    K3 &= \{OraPart, MinutoPart, Destinazione, Categoria\} \\
+       &\text{ è una superchiave e chiave candidata}
+  \end{aligned}
+  \] 
+\end{example}
+
+\subsubsection{Vincoli interrelazionali}
+Impongono una restrizione al contenuto di una relazione e
+specificano una condizione che ogni tupla della relazione
+deve soddisfare rispetto alle tuple \textbf{di altre relazioni della base}
+di dati.
+
+Una sottocategoria importante di tali vincoli include i \textbf{vincoli
+di integrità referenziale (o vincoli sulle chiavi esportate)}
+
+\begin{definition}[Vincolo di integrità referenziale]
+  Un vincolo di integrità referenziale tra un insieme di attributi
+  \( Y = \{A_1, \ldots, A_p\}  \) di \( R_1 \) e un insieme di attributi
+  \( K = \{K_1, \ldots, K_p\} \), chiave primaria di un'altra relazione \( R_2 \),
+  è soddisfatto se, per ogni istanza \( r_1 \) di \( R_1 \) e per ogni istanza
+  \( r_2 \) di \( R_2 \) vale la seguente condizione:
+  \[
+    \forall t \in r_1: \exists s \in r_2: \forall i \in \{1, \ldots, p\}: t[A_i] = s[K_i]
+  \] 
+
+  \vspace{1em}
+  \noindent
+  In presenza di valori nulli (legame opzionale) la condizione diventa:
+  \[
+    \begin{aligned}
+      &\forall t \in r_1: \exists s \in r_2:\\
+      &\left( \forall i \in \{1, \ldots, p\}:
+      t[A_i] = s[K_i] \right) \vee \left( \exists i \in \{1, \ldots, p\}: t[A_i] = NULL \right)
+    \end{aligned}
+  \] 
+\end{definition}
+
+\subsubsection{Notazione per indicare i vincoli strutturali}
+La chiave primaria di una relazione \( R(X) \) viene indicata sottolineando gli attributi
+della chiave.
+\begin{example}
+  Consideriamo l'esempio \ref{ex:orario_ferroviario}. La chiave primaria
+  della tabella Treno è l'attributo Numero:
+  \[
+    TRENO(\underline{Numero}, Categoria, OraPart, Destinazione, OraArr)
+  \] 
+  La chiave primaria della tabella FERMATA è:
+  \[
+    FERMATA(\underline{NumTreno, Stazione}, Orario)
+  \]
+\end{example}
+
+\vspace{1em}
+\noindent
+Il vincolo di integrità referenziale viene indicato in due modi:
+\begin{itemize}
+  \item 
+    Riquadrando gli attributi soggetti
+    al vincolo e collegando con una freccia il riquadro alla relazione (tabella) da cui 
+    la chiave proviene.
+    \begin{example}
+      Consideriamo l'esempio \ref{ex:orario_ferroviario}. Supponendo che esista un vincolo
+      di integrità referenziale sull'attributo NumTreno della tabella FERMATA rispetto
+      alla tabella TRENO, la notazione per indicarlo è la seguente:
+      \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+          \node at (0,0)
+            {\( TRENO(\underline{Numero}, Categoria, OraPart, Destinazione, OraArr) \)};
+          \node at (0,-2)
+            {\( FERMATA(\fbox{\underline{NumTreno}}, \underline{Stazione}, Orario) \)};
+
+          \draw[->] (-1.45,-2.27) -- ++(-3.8,0) |- (-5,0);
+        \end{tikzpicture}
+      \end{figure}
+    \end{example}
+
+  \item Indicare con una freccia l'attributo soggetto al vincolo verso la relazione da cui
+    la chiave proviene, ad esempio:
+    \[
+      \begin{aligned}
+        R_1, D &\to R_2\\
+        R_3 (Y,X) &\to R_1
+      \end{aligned}
+    \] 
+\end{itemize}
+
+\vspace{1em}
+\noindent
+L'attributo opzionale è indicato con un asterisco accanto al nome dell'attributo.
+
+\subsection{Progettazione logica dallo schema concettuale}
+L'obiettivo della progettazione logica è quello di produrre uno schema logico che 
+descriva in modo \textbf{corretto ed efficace} tutte le informazioni contenute nello
+schema concettuale.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{diagramma_progettazione_logica}
+  \caption{Diagramma della progettazione logica}
+\end{figure}
+
+\subsubsection{Ristrutturazione dello schema concettuale}
+La ristrutturazione dello schema concettuale può essere necessaria per i seguenti motivi:
+\begin{itemize}
+  \item Semplificare la fase successiva di traduzione
+  \item Ottimizzare le strutture rispetto al carico di lavoro che è composto da:
+    \begin{itemize}
+      \item Dimensioni dei dati
+      \item Caratteristiche delle operazioni
+        \begin{itemize}
+          \item Costo (numero di accessi alla memoria secondaria)
+          \item Frequenza
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+Si divide nelle seguenti fasi:
+\begin{enumerate}
+  \item \textbf{Analisi delle ridondanze dovute a presenza di dati derivabili}:
+    \begin{itemize}
+      \item 
+        La derivabilità è la presenza di dati derivabili da altri:
+        \begin{itemize}
+          \item Attributi derivabili da altri attributi della stessa entità (o relazione)
+          \item Attributi derivabili da attributi di altre entità (o relazioni)
+          \item Attributi derivabili dal conteggio di occorrenze
+        \end{itemize}
+
+      \item 
+        L'obiettivo dell'analisi delle ridondanze è quello di analizzare i dati derivabili
+        presenti nello schema (o richiesti dalle operazioni) e decidere se:
+        \begin{itemize}
+          \item Mantenere il dato derivabile (memorizzandolo esplicitamente). Questo
+            conviene quando il costo del calcolo è maggiore del costo di memorizzazione.
+          \item Calcolare il dato derivabile quando serve. Questo conviene quando il costo di
+            memorizzazione è maggiore del costo del calcolo.
+        \end{itemize}
+        Il costo viene misurato come il numero di accessi per unità di tempo in quanto
+        vengono considerate le frequenze di calcolo e di aggiornamento del dato.
+    \end{itemize}
+
+  \item \textbf{Eliminazione delle generalizzazioni}:\\
+    L'obiettivo è quello di sostituire le \textbf{generalizzazioni} presenti nello schema
+    ER con strutture alternative, in quanto non direttamente rappresentabili nel
+    modello relazionale. Esistono tre possibili soluzioni:
+    \begin{enumerate}
+      \item Accorpamento delle entità figlie nel padre: I passi sono i seguenti.
+        \begin{enumerate}
+          \item Eliminazione delle entità figlie
+
+          \item Accorpamento nel padre di tutti gli attributi specifici delle entità
+            figlie come attributi opzionali
+
+          \item Accorpamento nel padre delle relazioni che coinvolgono le entità figlie
+            assegnando cardinalità minima uguale a zero (lato entità padre)
+
+          \item Aggiunta di un attributo \texttt{"tipo"} per distinguere nel padre le
+            occorrenze delle entità figlie eliminate
+        \end{enumerate}
+        \begin{example}
+          Consideriamo il seguente esempio:
+          \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\textwidth]{esempio_accorpamento_nel_padre}
+            \caption{Esempio di accorpamento delle entità figlie nel padre}
+          \end{figure}
+          \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\textwidth]{esempio_accorpamento_nel_padre_2}
+            \caption{Esempio dopo l'accorpamento delle entità figlie nel padre}
+          \end{figure}
+        \end{example}
+
+      \item Accorpamento del padre nelle entità figlie: La precondizione per poter
+        applicare questa trasformazione è che la generalizzazione sia \textbf{totale}.
+        I passi sono i seguenti.
+        \begin{enumerate}
+          \item Eliminazione dell'entità padre
+          \item Replicazione degli attributi dell’entità padre su ogni entità figlia
+          \item Partizionamento sui figli delle relazioni che coinvolgono l’entità
+            padre assegnando cardinalità minima uguale a zero (lato entità
+            esterne)
+        \end{enumerate}
+        \begin{example}
+          Consideriamo il seguente esempio:
+          \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\textwidth]{esempio_accorpamento_nel_figlio}
+            \caption{Esempio di accorpamento del padre nelle entità figlie}
+          \end{figure}
+          \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\textwidth]{esempio_accorpamento_nel_figlio_2}
+            \caption{Esempio dopo l'accorpamento del padre nelle entità figlie}
+          \end{figure}
+        \end{example}
+
+      \item Sostituzione della generalizzazione con relazioni:
+        I passi sono i seguenti.
+      \begin{enumerate}
+        \item Eliminazione della generalizzazione
+        \item Inserire \( n \) relazioni tra il padre e ciascuna delle \( n \) entità figlie
+        \item Tutti gli attributi conservano la loro collocazione
+      \end{enumerate}
+      \begin{example}
+        Consideriamo il seguente esempio:
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width=0.8\textwidth]{esempio_accorpamento_entità_relazioni}
+          \caption{Esempio di accorpamento di entità e relazioni}
+        \end{figure}
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width=0.8\textwidth]{esempio_accorpamento_entità_relazioni_2}
+          \caption{Esempio dopo l'accorpamento di entità e relazioni}
+        \end{figure}
+      \end{example}
+    \end{enumerate}
+
+  \item \textbf{Accorpamento (o partizionamento) di entità e relazioni}:
+    \begin{itemize}
+      \item Partizionamento di entità:\\
+        È la sostituzione di un’entità dello schema con una coppia di entità con
+        lo stesso identificatore e una relazione uno a uno che le lega
+        tra loro. Si esegue solo nel caso in cui esistano operazioni frequenti che
+        trattano solo un sottoinsieme degli attributi dell’entità da
+        partizionare
+        \begin{example}
+          Consideriamo il seguente esempio:
+          \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\textwidth]{esempio_accorpamento_entità}
+            \caption{Esempio di accorpamento di entità}
+          \end{figure}
+          \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.8\textwidth]{esempio_accorpamento_entità_2}
+            \caption{Eliminazione di attributi multivalore}
+          \end{figure}
+        \end{example}
+
+      \item Partizionamento di relazioni:\\
+        Si realizza sostituendo una relazione \( R \)  con due
+        relazioni distinte \( R_1 \)  e \( R_2 \), dove le occorrenze di \( R \)  si
+        partizionano tra \( R_1 \)  e \( R_2 \).
+        È conveniente quando esistono operazioni che si
+        riferiscono ad un sottoinsieme delle occorrenze di
+        \( R \)  e altre operazioni che si riferiscono alle altre
+        occorrenze di \( R \).
+    \end{itemize}
+
+  \item \textbf{Scelta degli identificatori principali}:
+    Va scelto un identificatore principale per ogni entità in
+    quanto tale identificatore verrà utilizzato nel modello
+    relazionale per identificare le tuple che rappresentano
+    istanze di entità. Si scelgono seguendo i seguenti criteri:
+    \begin{itemize}
+      \item Gli identificatori che includono attributi opzionali non
+        possono essere chiavi primarie
+      \item Meglio identificatori con pochi attributi
+      \item Meglio identificatori utilizzati nelle operazioni
+    \end{itemize}
+\end{enumerate}
+
+\subsubsection{Traduzione nel modello logico}
+La traduzione è un processo automatico che si realizza applicando allo schema concettuale
+ristrutturato un insieme di regole di traduzione. \textbf{Ogni regola si applica ad un
+costrutto deo modello concettuale ER e produce una o più strutture del modello relazionale}.
+\begin{itemize}
+  \item Si rappresenta un'\textbf{istanza di entità} con una \textbf{tupla}.
+
+  \item Si rappresenta un'\textbf{istanza di relazione} con un \textbf{legame tra tuple}
+    o con una \textbf{tupla esplicita}.
+
+  \item Si rappresenta \textbf{l'identificatore principale} di un'entità con la
+    \textbf{chiave primaria} della tabella che implementa l'entità.
+\end{itemize}
+Le relazioni binarie del modello ER sono classificate in:
+\begin{itemize}
+  \item \textbf{Uno a uno}: se entrambe le entità coinvolte nella relazione hanno
+    \textbf{cardinalità massima uguale a 1}.
+
+  \item \textbf{Uno a molti}: se una delle entità coinvolte nella relazione ha 
+    \textbf{cardinalità massima uguale a 1} e l'altra ha \textbf{cardinalità massima
+    maggiore di 1}.
+
+  \item \textbf{Molti a molti}: se entrambe le entità coinvolte nella relazione hanno
+    \textbf{cardinalità massima maggiore di 1}.
+\end{itemize}
+Le regole di traduzione sono le seguenti:
+\begin{enumerate}
+  \item \textbf{Entità}:
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{regola_traduzione_entità}
+      \caption{Regola di traduzione per entità}
+    \end{figure}
+
+  \item \textbf{Relazione uno a molti}:
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{regola_traduzione_relazione_uno_a_molti}
+      \caption{Regola di traduzione per relazione uno a molti}
+    \end{figure}
+
+  \item \textbf{Relazione uno a uno}:
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{regola_traduzione_relazione_uno_a_uno}
+      \caption{Regola di traduzione per relazione uno a uno}
+    \end{figure}
+
+  \item \textbf{Relazione molti a molti}:
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{regola_traduzione_relazione_molti_a_molti}
+      \caption{Regola di traduzione per relazione molti a molti}
+    \end{figure}
+
+  \item \textbf{Relazione uno a molti con identificatore esterno}:
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{regola_traduzione_relazione_uno_a_molti_con_identificatore_esterno}
+      \caption{Regola di traduzione per relazione uno a molti con identificatore esterno}
+    \end{figure}
+
+  \item \textbf{Relazione uno a molti con attributo sulla relazione}:
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{regola_traduzione_relazione_uno_a_molti_con_attributo}
+      \caption{Regola di traduzione per relazione uno a molti con attributo sulla relazione}
+    \end{figure}
+
+  \item \textbf{Relazione uno a uno con cardinalità minima uguale a 0}:
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{regola_traduzione_relazione_uno_a_uno_con_cardinalità_minima_0}
+      \caption{Regola di traduzione per relazione uno a uno con cardinalità minima uguale a 0}
+    \end{figure}
+
+  \item \textbf{Relazione uno a uno con due cardinalità minime uguali a 0}:
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{regola_traduzione_relazione_uno_a_uno_con_due_cardinalità_minime_0}
+      \caption{Regola di traduzione per relazione uno a uno con due cardinalità minime uguali a 0}
+    \end{figure}
+
+  \item \textbf{Relazione molti a molti con attributi}:
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{regola_traduzione_relazione_molti_a_molti_con_attributi}
+      \caption{Regola di traduzione per relazione molti a molti con attributi}
+    \end{figure}
+
+  \item \textbf{Relazione molti a molti con identificatori da più attributi}:
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{regola_traduzione_relazione_molti_a_molti_con_identificatori_da_più_attributi}
+      \caption{Regola di traduzione per relazione molti a molti con identificatori da più attributi}
+    \end{figure}
+
+  \item \textbf{Relazione molti a molti con relazione ternaria}:
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{regola_traduzione_relazione_molti_a_molti_con_relazione_ternaria}
+      \caption{Regola di traduzione per relazione molti a molti con relazione ternaria}
+    \end{figure}
+
+  \item \textbf{Relazione molti a molti con relazione ternaria a cardinalità (1,1)}:
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{regola_traduzione_relazione_molti_a_molti_con_relazione_ternaria_a_cardinalità_1_1}
+      \caption{Regola di traduzione per relazione molti a molti con relazione ternaria a cardinalità (1,1)}
+    \end{figure}
+\end{enumerate}
+
+\section{Tecnologie NoSQL: sistemi document based}
+Ci sono diversi approcci NoSQL per la gestione dei dati:
+\begin{itemize}
+  \item \textbf{Sistemi key-value}: tutti i dati sono rappresentati per mezzo di
+    \textbf{coppie chiave-valore}, dove la chiave identifica le istanze e il valore
+    può avere una qualsiasi struttura anche non omogenea nella collezione. Un esempio
+    di questo approccio è il sistema HADOOP.
+
+  \item \textbf{Sistemi document-store}: i dati sono rappresentati come
+    \textbf{collezioni di documenti} (oggetti con struttura complessa). Ogni oggetto
+    della collezione ha una struttura complessa (con dati \textbf{incapsulati}) senza
+    schema fisso. Consentono la definizione di indici secondari su proprietà degli oggetti
+    (attributi comuni). Un esempio di questo approccio è il sistema MongoDB.
+
+  \item \textbf{Sistemi extensible-record-store o column store}: i dati sono rappresentati
+    da \textbf{collezioni di record}, dette tabelle, dove ogni record ha un certa lista
+    di colonne che può variare da record a record (struttura variabile).
+    Esempi di sistemi di questa categoria sono: BigTable di Google, HBase, Cassandra.
+
+  \item \textbf{Sistemi graph-store}: le collezioni di dati sono rappresentati
+    come \textbf{grafi}. I nodi rappresentano gli oggetti, gli archi le relazioni
+    o proprietà (approccio RDF - Resource Description Framework).
+    Esempi di sistemi di questa categoria sono: Neo4j e OrientDB
+\end{itemize}
+
+\subsection{Modello dei dati dei sistemi document-store}
+Le caratteristiche principali di dali modelli sono:
+\begin{itemize}
+  \item I dati sono rappresentati da \textbf{collezioni di oggetti} (detti documenti)
+  \item Gli oggetti hanno \textbf{struttura complessa} (non sono tuple piatte ma
+    contengono dati nidificati)
+  \item L'incapsulamento (encapsulation) dei dati è un aspetto chiave di questi modelli
+  \item Gli oggetti di una collezione \textbf{non devono avere necessariamente tutti la
+    stessa struttura}, tuttavia dovrebbero condividere un \textbf{nucleo di proprietà
+    comuni}
+\end{itemize}
+
+\subsubsection{Progettazione dei dati come documenti}
+Le decisioni chiave nel processo di progettazione dei dati usando questo approccio sono:
+\begin{itemize}
+  \item Scegliere la \textbf{chiave di accesso}
+  \item \textbf{Strutturare i documenti} (grado di incapsulamento)
+  \item \textbf{Rappresentazione delle relazioni} (legami) tra i documenti
+\end{itemize}
+Esistono in particolare due approcci per rappresentare le relazioni tra i documenti:
+\begin{itemize}
+  \item Attraverso \textbf{riferimenti} che si ottengono esportando l'ID del documento
+  \item Attraverso \textbf{documenti nidificati} (incapsulamento)
+\end{itemize}
+\begin{example}
+  L’uso di riferimenti per rappresentare i legami tra documenti porta a
+  \textbf{schemi normalizzati}.
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{esempio_documenti_con_riferimenti}
+    \caption{Esempio di documenti con riferimenti}
+  \end{figure}
+  \noindent
+  Un alternativa è quella in cui si rappresentano i legami tra documenti
+  attraverso documenti nidificati:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{esempio_documenti_con_riferimenti_2}
+    \caption{Esempio di documenti con documenti nidificati}
+  \end{figure}
+  \noindent
+  Questa soluzione è meno efficiente.
+\end{example}
+
+\begin{itemize}
+  \item L’approccio normalizzato consente di rappresentare il dato in modo
+    simile a quanto avviene nel modello relazionale. Non c’è ridondanza e gli
+    aggiornamenti sono più semplici (riguardano sempre una sola istanza).
+
+    \begin{example}
+      Un esempio dell'approccio normalizzato è il seguente:
+      \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\textwidth]{esempio_documenti_normalizzati}
+        \caption{Esempio di documenti normalizzati}
+      \end{figure}
+    \end{example}
+
+  \item 
+    L’approccio embedded consente di rappresentare in un
+    \textbf{unico documento} quanto viene rappresentato di solito nel modello ER con
+    una entità \( E \)  insieme alle sue "entità deboli" (entità collegate ad \( E \)  
+    attraverso identificatori esterni).
+    Vale a dire è possibile rappresentare nello stesso documento un’istanza di
+    informazione con altre istanze di informazione in essa logicamente
+    contenute.
+    In questo caso il documento può essere aggiornato come oggetto
+    complesso in modo atomico.
+\end{itemize}
+
+\subsubsection{Rappresentazione di un documento}
+Per rappresentare un documento si segue lo standard JSON (JavaScript Object Notation):
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{struttura_documento_json}
+  \caption{Struttura di un documento JSON}
+\end{figure}
+\begin{itemize}
+  \item Le parentesi graffe delimitano il documento
+  \item Il documento contiene una lista di proprietà separate da virgole
+  \item Ogni proprietà si specifica con la sintassi:
+    \begin{quote}
+      nome\_proprietà: valore
+    \end{quote}
+  \item I valori atomici si indicano come costanti stringa (delimitate da apici) o numeri
+    interi o reali
+  \item Le proprietà multi valore si specificano elencando i valori tra parentesi quadre
+  \item Il valore di una proprietà può essere un documento annidato che inizia e finisce
+    con parentesi graffe
+  \item Le proprietà multi valore possono contenere anche liste di documenti
+\end{itemize}
+
+\subsection{Traduzione di uno schema ER in collezioni di documenti}
+Per procedere con la progettazione logica dei dati come documenti bisogna fare delle
+ipotesi di partenza:
+\begin{itemize}
+  \item Supponiamo di applicare un \textbf{approccio embedded}
+  \item Supponiamo che lo schema ER sia già stato ristrutturato e quindi sia
+    \textbf{privo di generalizzazioni}
+  \item Vengono eliminate tutte le \textbf{relazioni ternarie (o ennarie)}
+  \item A partire dalle operazioni di elaborazione da eseguire sui dati vengono identificate
+    le collezioni di documenti da generare nel sistema:
+    \[
+      \left\{ DOC_1, \ldots, DOC_N \right\}
+    \] 
+    possono essere al massimo una per ogni entità dello schema.
+\end{itemize}
+
+\subsubsection{Regole di traduzione}
+\begin{itemize}
+  \item Ogni collezione \( DOC_i \) è in corrispondenza con un'entità \( EP \) dello
+    schema ER, detta \textbf{entità principale della collezione di documenti}
+
+  \item Per ogni istanza dell'entità principale ci sarà uno e sun solo documento
+    nella collezione
+
+  \item Ogni istanza delle \textbf{entità non principali} sarà rappresentata da uno
+    (o più) documenti \textbf{incapsulati in un altro documento} che rappresenta
+    un'istanza di un'entità principale
+
+  \item Le istanze di \textbf{relazione dello schema ER} saranno rappresentate
+    \textbf{strutturalmente} (attraverso l'incapsulamento) oppure esportando \( ID \) 
+    di documento o chiavi applicative
+\end{itemize}
+
+\subsubsection{Etichettatura dello schema ER}
+Ci sono diverse fasi per tradurre uno schema ER in collezioni di documenti:
+\begin{enumerate}
+  \item \textbf{Individuazione delle entità principali}
+    \begin{enumerate}
+      \item Etichettare l'entità principale di una collezione di documenti \( DOC_i \) 
+        con l'etichetta \( DOC_i \)
+        \begin{example}
+          Ad esempio, se la collezione \( DOC_3 \) ha come entità principale l'entità
+          \( E_2 \), questa va etichettata come segue:
+          \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.3\textwidth]{esempio_etichettatura_entità_principale}
+            \caption{Esempio di etichettatura dell'entità principale}
+          \end{figure}
+        \end{example}
+    \end{enumerate}
+
+  \item \textbf{Incapsulamento delle entità non principali}
+    \begin{enumerate}
+      \item Per ogni entità \( E_i \) non etichettata come principale, va deciso
+        \textbf{in quale collezione incapsularla}. Tutti i casi possibili sono:
+        \begin{enumerate}
+          \item Se \( E_i \) è collegata attraverso una relazione \( R \) ad una sola
+            entità principale \( EP \) allora \( E_i \) verrà incapsulata in \( EP \) 
+
+          \item Se \( E_i \) è collegata attraverso le relazioni \( R_1, \ldots, R_N \) 
+            a più entità principali \( EP_1, \ldots, EP_N \) bisogna scegliere in quale
+            entità principale \( EP_X \) incapsulare \( E_i \). \( E_i \) verrà quindi
+            incapsulata in \( EP_X \) 
+
+          \item Se \( E_i \) non è collegata attraverso una relazione \( R \) ad un'entità
+            principale, ma è collegata ad altre entità \( E_{Y_1}, \ldots, E_{Y_M} \) già
+            collegate ad altre entità principali, bisogna scegliere l'entità \( E_{Y_K} \)
+            in cui incapsulare \( E_i \). \( E_i \) verrà quindi incapsulata in \( E_{Y_K} \)
+        \end{enumerate} 
+        Per rappresentare che \( E_i \) viene incapsulata in \( EP \) si usa una freccia
+        che indica la direzione dell'incapsulamento:
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width=0.5\textwidth]{esempio_freccia_incapsulamento}
+          \caption{Esempio di freccia per indicare l'incapsulamento}
+        \end{figure}
+        L'etichetta da assegnare all'entità \( E_i \) dipende dalla cardinalità di \( R \) 
+        lato \( E_i \) 
+          \begin{enumerate}
+            \item Se \( E_i \) è collegata attraverso una relazione \( R \) ad un'entità
+              principale \( EP \) (unica scelta tra quelle possibili). \( E_i \) verrà
+              quindi incapsulata in \( EP \). \( E_i \) partecipa alla relazione \( R \) con
+              cardinalità massima \( (1,1) \).
+              \begin{figure}[H]
+                \centering
+                \includegraphics[width=0.5\textwidth]{esempio_incapsulamento_1}
+                \caption{Esempio di incapsulamento con cardinalità (1,1)}
+              \end{figure}
+              Se la relazione \( R \) è uno a uno o uno a molti con \( (1,1) \) lato \( E_i \),
+              allora l'etichetta di \( E_i \) è uguale a "X" e indica che l'incapsulamento è
+              senza perdita e non ridondante
+
+            \item Se \( E_i \) è collegata attraverso una relazione \( R \) ad un'entità
+              principale \( EP \) (unica o a scelta). \( E_i \) verrà
+              quindi incapsulata in \( EP \). \( E_i \) partecipa alla relazione \( R \) con
+              cardinalità massima \( (0,1) \).
+              \begin{figure}[H]
+                \centering
+                \includegraphics[width=0.5\textwidth]{esempio_incapsulamento_2}
+                \caption{Esempio di incapsulamento con cardinalità (0,1)}
+              \end{figure}
+              Se la relazione \( R \) è uno a uno o uno a molti con \( (0,1) \) lato \( E_i \),
+              allora l'etichetta di \( E_i \) è uguale a "XL" e indica che \textbf{si perdono}
+              le istanze di \( E_i \) che non sono collegate a nessuna istanza di \( EP \).
+              Ciò viene indicato dal suffisso "L" (loss) aggiunto all'etichetta.
+
+            \item Se \( E_i \) è collegata attraverso una relazione \( R \) ad un'entità
+              principale \( EP \) (unica o a scelta). \( E_i \) verrà
+              quindi incapsulata in \( EP \). \( E_i \) partecipa alla relazione \( R \) con
+              cardinalità massima \( (1,N) \).
+              \begin{figure}[H]
+                \centering
+                \includegraphics[width=0.5\textwidth]{esempio_incapsulamento_3}
+                \caption{Esempio di incapsulamento con cardinalità (1,N)}
+              \end{figure}
+              Se la relazione \( R \) è molti a molti o molti a uno con \( (1,N) \) lato \( E_i \),
+              allora le istanze di \( E_i \) vengono rappresentate in modo \textbf{ridondante}
+              in quanto sono collegate a più istanze di \( EP \). L'etichetta di \( E_i \) è
+              uguale a "XR" e indica che l'incapsulamento è ridondante dal suffisso "R".
+
+            \item Se \( E_i \) è collegata attraverso una relazione \( R \) ad un'entità
+              principale \( EP \) (unica o a scelta). \( E_i \) verrà
+              quindi incapsulata in \( EP \). \( E_i \) partecipa alla relazione \( R \) con
+              cardinalità massima \( (0,N) \).
+              \begin{figure}[H]
+                \centering
+                \includegraphics[width=0.5\textwidth]{esempio_incapsulamento_4}
+                \caption{Esempio di incapsulamento con cardinalità (0,N)}
+              \end{figure}
+              Se la relazione \( R \) è molti a molti o molti a uno con \( (0,N) \) lato \( E_i \),
+              allora le istanze di \( E_i \) vengono rappresentate in modo \textbf{ridondante}
+              in quanto sono collegate a più istanze di \( EP \) e si \textbf{perdono}
+              quelle non collegate. Ciò viene indicato dall'etichetta di \( E_i \) uguale
+              a "XLR" che indica che l'incapsulamento è ridondante e con perdita, dal
+              suffisso "LR".
+
+            \item Se \( E_i \) è collegata attraverso una relazione \( R \) ad un'entità
+              \( E_Y \) (unica o a scelta) a sua volta collegata ad un'entità principale \( EP \)
+              allora \( E_i \) verrà incapsulata in \( E_Y \).
+              \begin{figure}[H]
+                \centering
+                \includegraphics[width=0.5\textwidth]{esempio_incapsulamento_5}
+                \caption{Esempio di incapsulamento in un'entità non principale}
+              \end{figure}
+              Se la relazione \( R \) è uno a uno o uno a molti con \( (1,1) \) lato \( E_i \),
+              allora l'etichetta di \( x_i \) è uguale all'etichetta \( x_y \). Se invece di
+              \( (1,1) \) ci sono altri vincoli si ha:
+              \begin{itemize}
+                \item \( (0,1) \to x_y L \)
+                \item \( (1,N) \to x_y R \)
+                \item \( (0,N) \to x_y LR \)
+              \end{itemize}
+          \end{enumerate}
+      \end{enumerate}
+
+
+      \item \textbf{Rappresentazione delle relazioni non già rappresentate strutturalmente}:\\
+        Tutte le relazioni che sono state etichettate da una freccia piena sono già
+        rappresentate strutturalmente. Quelle che rimangono devono essere
+        rappresentate con il meccanismo dei riferimenti
+        \begin{itemize}
+          \item Caso 1:\\
+            Per ogni relazione binaria \( R \) che coinvolge due entità principali \( EP_1 \)
+            ed \( EP_2 \), va deciso in quale collezione incapsularla. Tutti i casi possibili
+            sono:
+            \begin{enumerate}
+              \item \( R \) viene incapsulata in una sola entità principale \( EP_1 \) o
+                \( EP_2 \)
+              \item \( R \) viene incapsulata in entrambe le entità principali \( EP_1 \)
+                e \( EP_2 \) (questa scelta genera ridondanza)
+            \end{enumerate}
+            Viene utilizzata una freccia semplice per indicare dove viene
+            rappresentata la relazione e la sua etichetta indica se la
+            rappresentazione è per id del documento (\texttt{ID}) o per chiave applicativa
+            (\texttt{KEY}). Un suffisso "(R)" indica che la rappresentazione è ridondante
+
+            \begin{figure}[H]
+              \centering
+              \includegraphics[width=0.7\textwidth]{esempio_etichettatura}
+              \caption{Esempio di etichettatura di relazioni binarie}
+            \end{figure}
+        \end{itemize}
+        Casi particolari:
+        \begin{itemize}
+          \item Un'entità non principale \( E_i \) incapsulata in un'entità principale
+            \( EP_1 \) è collegata attraverso una relazione binaria \( R \) ad un'altra
+            entità principale \( EP_2 \). 
+            \begin{figure}[H]
+              \centering
+              \includegraphics[width=0.7\textwidth]{caso_particolare_etichettatura_1}
+              \caption{Esempio di etichettatura di relazioni binarie con entità non principale}
+            \end{figure}
+
+          \item Un'entità non principale \( E_i \) (incapsulata in un'entità principale
+            \( EP_1 \)) è collegata attraverso una relazione binaria \( R \) ad un'altra
+            entità non principale \( E_Y \) (incapsulata in un'altra entità principale
+            \( EP_2 \)).
+            \begin{figure}[H]
+              \centering
+              \includegraphics[width=0.7\textwidth]{caso_particolare_etichettatura_2}
+              \caption{Esempio di etichettatura di relazioni binarie con entità non principale}
+            \end{figure}
+        \end{itemize}
+
+  \item \textbf{Regole di traduzione di uno schema etichettato}:\\
+    Le strutture dei documenti vengono descritte con una sintassi semplificata e
+    la generazione della struttura dipende poi dallo specifico sistema scelto
+    \begin{enumerate}
+      \item Regola 1: Entità principale
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width=0.8\textwidth]{traduzione_etichettata_1}
+          \caption{Regola di traduzione per entità principale}
+        \end{figure}
+        \texttt{<TIPO>} può essere solo:
+        \begin{itemize}
+          \item string
+          \item integer
+          \item number
+          \item boolean
+          \item date
+          \item time
+          \item timestamp
+        \end{itemize}
+        L’attributo \texttt{\_id} è sempre presente ed è autogenerato dal sistema.
+        In tutti gli esempi a seguire i tipi sono stati scelti a caso. Nel caso specifico si
+        scelgono i tipi in base al contesto applicativo (requisiti)
+
+      \item Regola 2: Entità non principale
+        \begin{enumerate}
+          \item 
+            Se c'è un'entità principale \( EP \) con entità debole \( E_i \) (o
+            non principale) da incapsulare, allora \( E_i \) partecipa alla relazione \( R \) con
+            vincolo di cardinalità \( (1,1) \) e \( EP \) con vincolo di cardinalità
+            \( (X,N) \):
+            \begin{figure}[H]
+              \centering
+              \includegraphics[width=0.9\textwidth]{esempio_traduzione_etichettata_1}
+              \caption{Regola di traduzione per entità principale con entità debole}
+            \end{figure}
+
+            \begin{example}
+              Un esempio di applicazione è il seguente:
+              \begin{figure}[H]
+                \centering
+                \includegraphics[width=1\textwidth]{esempio_traduzione_etichettata_1_2}
+                \caption{Esempio di traduzione di entità principale con entità debole}
+              \end{figure}
+            \end{example}
+
+          \item Se c'è un entità principale \( EP \) con entità debole \( E_i \) (o
+            non principale) da incapsulare, allora \( E_i \) partecipa alla relazione \( R \) con
+            vincolo di cardinalità \( (1,1) \) e \( EP \) con vincolo di cardinalità
+            \( (X,1) \):
+            \begin{figure}[H]
+              \centering
+              \includegraphics[width=0.9\textwidth]{esempio_traduzione_etichettata_2}
+              \caption{Regola di traduzione per entità principale con entità debole}
+            \end{figure}
+        \end{enumerate}
+
+      \item Regola 3: Entità debole o non principale
+        \begin{enumerate}
+          \item Se c'è un'entità principale \( EP \) con entità debole \( E_i \) (o
+            non principale) da incapsulare, allora \( E_i \) partecipa alla relazione \( R \) con
+            vincolo di cardinalità \( (0,1) \) o \( (0,N) \) o \( (1,N) \) e \( EP \)
+            con vincolo di cardinalità \( (X,N) \):
+            \begin{figure}[H]
+              \centering
+              \includegraphics[width=0.9\textwidth]{esempio_traduzione_etichettata_3}
+              \caption{Regola di traduzione per entità principale con entità debole}
+            \end{figure}
+
+          \item Se c'è un'entità principale \( EP \) con entità debole \( E_i \) (o
+            non principale) da incapsulare, allora \( E_i \) partecipa alla relazione \( R \) con
+            vincolo di cardinalità \( (0,1) \) o \( (0,N) \) o \( (1,N) \) e \( EP \)
+            con vincolo di cardinalità \( (X,1) \):
+            \begin{figure}[H]
+              \centering
+              \includegraphics[width=0.9\textwidth]{esempio_traduzione_etichettata_4}
+              \caption{Regola di traduzione per entità principale con entità debole}
+            \end{figure}
+        \end{enumerate}
+
+      \item Regola 4: Entità non principale incapsulata in un'entità non principale
+        \begin{enumerate}
+          \item Se \( E_i \) è collegata attraverso una relazione \( R \) ad un'entità
+            \( E_y \) (unica o a scelta) a sua volta collegata con un'entità \( EP \),
+            allora \( E_i \) viene incapsulata in \( E_y \) e \( E_y \) viene incapsulata
+            in \( EP \). I vincoli su \( E_y \) e \( EP \) sono \( (0,N) \) o \( (1,N) \):
+            \begin{figure}[H]
+              \centering
+              \includegraphics[width=0.9\textwidth]{esempio_traduzione_etichettata_5}
+              \caption{Regola di traduzione per entità incapsulata in un'entità non principale}
+            \end{figure}
+
+          \item Se \( E_i \) è collegata attraverso una relazione \( R \) ad un'entità
+            \( E_y \) (unica o a scelta) a sua volta collegata con un'entità \( EP \),
+            allora \( E_i \) viene incapsulata in \( E_y \) e \( E_y \) viene incapsulata
+            in \( EP \). I vincoli su \( E_y \) e \( EP \) sono \( (0,1) \) o \( (1,1) \):
+            \begin{figure}[H]
+              \centering
+              \includegraphics[width=0.9\textwidth]{esempio_traduzione_etichettata_6}
+              \caption{Regola di traduzione per entità incapsulata in un'entità non principale}
+            \end{figure}
+        \end{enumerate}
+
+      \item Regola 5: Relazione molti a molti tra entità principali\\
+        Se c'è una relazione molti a molti tra entità principali \( EP_1 \) ed \( EP_2 \),
+        allora \( EP_2 \) partecipa alla relazione \( R \) con vincolo di cardinalità \( (0,N) \)
+        o \( (1,N) \) e incapsulo \( R \) solo in \( EP_2 \):
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width=0.9\textwidth]{esempio_traduzione_etichettata_7}
+          \caption{Regola di traduzione per relazione molti a molti tra entità principali}
+        \end{figure}
+        \begin{example}
+          Un esempio di applicazione è il seguente:
+          \begin{figure}[H]
+            \centering
+            \includegraphics[width=1\textwidth]{esempio_traduzione_etichettata_7_2}
+            \caption{Esempio di traduzione di relazione molti a molti tra entità principali}
+          \end{figure}
+
+          \vspace{1em}
+          \noindent
+          oppure
+          \begin{figure}[H]
+            \centering
+            \includegraphics[width=1\textwidth]{esempio_traduzione_etichettata_7_3}
+            \caption{Esempio di traduzione di relazione molti a molti tra entità principali}
+          \end{figure}
+        \end{example}
+
+      \item Regola 6: Relazione binaria tra entità non principale ed entità principale
+        \begin{enumerate}
+          \item Relazione binaria \( P_2 \) tra un'entità non principale
+            \( E_i \), da incapsulare in \( EP_1 \), e un'entità principale \( EP_2 \)
+            con vincolo \( (X,1) \) lato \( E_i \):
+            \begin{figure}[H]
+              \centering
+              \includegraphics[width=0.9\textwidth]{esempio_traduzione_etichettata_8}
+              \caption{Regola di traduzione per relazione binaria tra entità non principale ed entità principale}
+            \end{figure}
+            \begin{example}
+              Un esempio di applicazione è il seguente:
+              \begin{figure}[H]
+                \centering
+                \includegraphics[width=1\textwidth]{esempio_traduzione_etichettata_8_2}
+                \caption{Esempio di traduzione di relazione binaria tra entità non principale ed entità principale}
+              \end{figure}
+            \end{example}
+
+          \item Relazione binaria \( P_2 \) tra un'entità non principale
+            \( E_i \), da incapsulare in \( EP_1 \), e un'entità principale \( EP_2 \)
+            con vincolo \( (X,N) \) lato \( E_i \):
+            \begin{figure}[H]
+              \centering
+              \includegraphics[width=0.9\textwidth]{esempio_traduzione_etichettata_9}
+              \caption{Regola di traduzione per relazione binaria tra entità non principale ed entità principale}
+            \end{figure}
+        \end{enumerate}
+
+      \item Regola 7:
+        \begin{enumerate}
+          \item Relazione binaria \( P_2 \) tra due entità non principali
+            \( E_i, E_j \), da incapsulare in \( EP_1 \) ed \( EP_2 \) rispettivamente,
+            con vincolo \( (X,1) \) lato \( E_i \):
+            \begin{figure}[H]
+              \centering
+              \includegraphics[width=0.9\textwidth]{esempio_traduzione_etichettata_10}
+              \caption{Regola di traduzione per relazione binaria tra due entità non principali}
+            \end{figure}
+
+          \item Relazione binaria \( P_2 \) tra due entità non principali
+            \( E_i, E_j \), da incapsulare in \( EP_1 \) ed \( EP_2 \) rispettivamente,
+            con vincolo \( (X,N) \) lato \( E_i \):
+            \begin{figure}[H]
+              \centering
+              \includegraphics[width=0.9\textwidth]{esempio_traduzione_etichettata_11}
+              \caption{Regola di traduzione per relazione binaria tra due entità non principali}
+            \end{figure}
+        \end{enumerate}
+    \end{enumerate}
+\end{enumerate}
+
+\end{document}
