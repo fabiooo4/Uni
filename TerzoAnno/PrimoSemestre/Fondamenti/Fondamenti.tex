@@ -5327,6 +5327,7 @@ Quindi \( K \) non è ricorsivo. Il suo complemento è definito come:
 
 \subsubsection{Teorema di ricorsione di Kleene}
 \begin{theorem}
+  \label{thm:kleene}
   Sia \( t \) una funzione totale ricorsiva, allora esiste un codice \( n \in \mathbb{N} \) tale
   che:
   \[
@@ -5403,13 +5404,16 @@ Quindi \( K \) non è ricorsivo. Il suo complemento è definito come:
   \] 
 \end{theorem}
 
-\subsubsection{Dimostrare che un insieme è ricorsivo}
+\subsection{Dimostrare che un insieme è ricorsivo}
 Per dimostrare che un insieme \( A \) è ricorsivo, si usano i seguenti metodi:
 \begin{itemize}
-  \item \textbf{Insieme}: Per dimostrare che \( A \) è ricorsivo forniamo l'algoritmo per
+  \item Se \( A \) è un \textbf{Insieme generico}: Per dimostrare che \( A \) è ricorsivo forniamo l'algoritmo per
     la funzione caratteristica \( f \) 
 
-  \item \( range\;f \): Si costruisce il range:
+  \item Se \( A \) è definita tramite una funzione:
+    \[
+      A = \left\{\left. f(x) \;\right|\; x \in \mathbb{N} \right\}
+    \] e rappresenta esattamente il \( range\;f \) si dimostra che \( f \) è totale monotona non decrescente.
     \begin{itemize}
       \item Se è finito allora \( A \) è ricorsivo
       \item Se è infinito si dimostra che \( f \) non decresce per dimostrare che \( A \) è ricorsivo
@@ -5486,5 +5490,302 @@ Per dimostrare che un insieme \( A \) è ricorsivo, si usano i seguenti metodi:
   \end{itemize}
   Abbiamo dimostrato che \( f \) è non decrescente, quindi \( A \) è ricorsivo.
 \end{example}
+
+\subsection{Dimostrare che un insieme non è ricorsivo}
+Per dimostrare che un insieme non è ricorsivo si usa il \textbf{teorema di Rice}
+L'insieme \( A \) non è ricorsivo se:
+\begin{itemize}
+  \item Se l'insieme \( A \) è estensionale e non banale (teorema di Rice)
+  \item Se l'insieme \( A \) non è estensionale va costruito un assurdo
+\end{itemize}
+
+\subsubsection{Proprietà}
+\begin{definition}[Proprietà su \( \mathbb{N} \)]
+  Un qualunque sottoinsieme di un "universo" rappresenta una proprietà sugli
+  elementi di tale universo.
+
+  \vspace{1em}
+  \noindent
+  Grazie all'aritmetizzazione delle macchine di Turing si ha che una proprietà
+  sugli elementi di \( \mathbb{N} \) corrisponde ad una proprietà sui programmi:
+  \[
+    x \subseteq \mathbb{N} \implies \text{proprietà sui programmi (MdT)}
+  \] 
+  Dove:
+  \begin{itemize}
+    \item \( N \equiv \) essere un programma
+    \item \( \varnothing \equiv \) non essere un programma
+  \end{itemize}
+  La quantità di proprietà sui programmi è \( \mathcal{P}(\mathbb{N}) \) quindi non
+  numerabile.
+\end{definition}
+
+\begin{example}
+  Per rappresentare la proprietà di essere pari:
+  \[
+    x \text{ è pari se } x \;div\; 2 = \text{ resto } 0
+  \] 
+  Quindi:
+  \[
+    \left\{ \left. x \in \mathbb{N} \;\right|\; x \mod 2 = 0 \right\}
+  \] 
+  è l'insieme di tutti e i soli numeri pari. Rappresenta in modo
+  estensionale la proprietà dei numeri pari.
+\end{example}
+
+\begin{example}
+  I programmi che hanno 50 righe di codice sono la seguente proprietà:
+  \[
+    \left\{\left. P \in MdT \;\right|\; P \text{ ha 50 righe di codice} \right\}
+  \] 
+  I programmi che restituiscono la costante 5 sono la seguente proprietà:
+  \[
+    \left\{\left. P \in MdT \;\right|\; \forall x \;.\; P(x) = 5 \right\}
+  \] 
+\end{example}
+
+
+\subsubsection{Proprietà estensionale}
+\begin{definition}[Proprietà estensionale]
+  La proprietà \( \Pi \in \mathbb{N} \) è estensionale se:
+  \[
+    \forall x, y \in \mathbb{N} \;.\; x \in \Pi \wedge \varphi_x = \varphi_y \implies y \in \Pi
+  \] 
+  Cioè se il programma \( x \) soddisfa la proprietà \textbf{e} i programmi \( x \) e \( y \) 
+  calcolano la stessa funzione, allora anche \( y \) soddisfa la proprietà.
+
+  \vspace{1em}
+  \noindent
+  Un insieme è estensionale ogni volta che nella condizione compare solo la funzione
+  calcolata e non il codice del programma.
+\end{definition}
+\begin{example}
+  \( P \in \Pi_1 \) allora \( P \) ha 50 righe di codice.\\
+  \( P' = P;\; skip \) allora \( P' \) ha 51 righe di codice.
+
+  \vspace{1em}
+  \noindent
+  \( P \) e \( P' \) calcolano la stessa funzione, ma:
+  \[
+    P \in \Pi_1 \wedge P' \notin \Pi_1
+  \] 
+  Quindi \( \Pi_1 \) \textbf{non è estensionale}
+\end{example}
+\begin{example}
+  Gli insiemi \( \varnothing, \mathbb{N} \) sono estensionali (banali)
+\end{example}
+\begin{example}
+  Verifichiamo che l'insieme \( \left\{ \left. x \;\right|\; \forall y \;.\; \varphi_x(y) = y \right\} \)
+    è estensionale.
+    \begin{itemize}
+      \item Prendiamo \( z \in \Pi  \) per definizione di \( \Pi  \):
+        \[
+          \varphi_z(y) = y \quad \forall y
+        \] 
+      \item Prendiamo \( w \) tale che:
+        \[
+          \varphi_z = \varphi_w \implies \forall y \;.\; \varphi_w(y) = \varphi_z(y) = y
+        \] 
+        Per definizione di \( \Pi  \) \( w \in \Pi \) 
+    \end{itemize}
+\end{example}
+\begin{example}
+  Verifichiamo che l'insieme \( \left\{ \left. x \;\right|\; \varphi_x
+    \text{ definitivamente }\footnote{
+      Cioè \( \exists m \;.\; \forall n \ge m \;.\; \varphi_x(n) \ge 3 \)} \ge 3 \right\} \) è estensionale.
+      \begin{itemize}
+        \item Prendiamo \( z \in \Pi \) per definizione di \( \Pi \):
+          \[
+            \varphi_z \text{ definitivamente } \ge 3 \equiv \exists m \;.\; \forall n \ge m \;.\; \varphi_z(n) \ge 3
+          \] 
+
+        \item Prendiamo \( w \) tale che:
+          \[
+            \begin{aligned}
+              \varphi_z = \varphi_w &\implies \forall n \;.\; \varphi_w(n) = \varphi_z(n)\\
+                                    &\implies \forall n \ge m \;.\; \varphi_w(n) = \varphi_z(n) \ge 3
+            \end{aligned}
+          \] 
+          Per definizione di \( \Pi \) \( w \in \Pi \)
+      \end{itemize}
+\end{example}
+
+\subsubsection{Teorema di Rice}
+\begin{theorem}[Teorema di Rice]
+  Sia \( \Pi  \) una proprietà estensionale, allora \( \Pi  \) è ricorsiva se
+  e solo se è banale.
+
+  Cioè le uniche proprietà che descrivono il comportamento di un programma sono 
+  quelle banali (vuote o totali).
+
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione:} Vogliamo dimostrare che:
+  \begin{itemize}
+    \item \( \Leftarrow \):\\
+      Se \( \Pi  \) una proprietà banale, allora
+      \[
+        \Pi = \varnothing \quad \text{o} \quad \Pi  = \mathbb{N}
+      \] 
+      e sia \( \varnothing \) che \( \mathbb{N} \) sono ricorsivi.
+
+    \item \( \Rightarrow \):\\
+      Se \( \Pi  \) è ricorsiva, allora \( \Pi \) è banale. Ciò equivale a dire
+      che se \( \Pi  \) è non banale, allora non è ricorsiva.
+  \end{itemize}
+  Prendiamo \( \Pi  \) \textbf{ricorsiva estensionale}:
+  \[
+    \exists g \text{ totale ricorsiva (caratteristica)} \;.\; g(x) =
+    \begin{cases}
+      1 & \text{se } x \in \Pi \\
+      0 & \text{se } x \notin \Pi
+    \end{cases}
+  \] 
+  Supponiamo che \( \Pi  \) non sia banale, allora sappiamo che:
+  \begin{itemize}
+    \item 
+      \(
+        \Pi \neq \varnothing \equiv \exists a \in \Pi
+      \) 
+
+    \item \( \Pi \neq \mathbb{N} \equiv \exists b \notin \Pi  \) 
+  \end{itemize}
+  Costruiamo \( h: \mathbb{N} \to \mathbb{N} \) 
+  \[
+    h(x) =
+    \begin{cases}
+      a & \text{se } g(x) = 0 \quad (x \notin \Pi) \\
+      b & \text{se } g(x) = 1 \quad (x \in \Pi)
+    \end{cases}
+  \] 
+  Per il teorema di ricorsione di Kleene (teorema \ref{thm:kleene}) \( h \) è totale
+  ricorsiva perchè lo è anche \( g \):
+  \[
+    h \text{ totale ricorsiva} \implies \exists n_0 \;.\; \varphi_{n_0} = \varphi_{h(n_0)}
+  \] 
+  Ci domandiamo dove sia \( n_0 \) rispetto a \( \Pi \):
+  \begin{itemize}
+    \item 
+      Se \( n_0 \in \Pi \quad (\varphi_{n_0} = \varphi_{h(n_0)}) \) allora \( \Pi  \) è
+      estensionale, quindi \( h(n_0) \in \Pi  \), ma:
+      \[
+        h(n_0) = b \notin \Pi \quad \text{ perchè } n_0 \in \Pi 
+      \] 
+
+    \item Se \( n_0 \notin \Pi \) allora \( h(n_0) \notin \Pi \) sempre per estensibilità,
+      ma:
+      \[
+        h(n_0) = a \in \Pi \quad \text{ perchè } n_0 \notin \Pi
+      \] 
+  \end{itemize}
+  Quindi \( \Pi  \) deve essere per forza \( \varnothing \) o \( \mathbb{N} \) 
+  cioè banale.
+\end{theorem}
+
+\begin{example}
+  Studiamo se le seguenti proprietà sono estensionali o no:
+  \begin{itemize}
+    \item \( \left\{ \left. x \;\right|\; \forall y \;.\; \varphi_x(y) \downarrow \right\} \)
+        È estensionale perchè dipende solo dalla funzione calcolata.
+    \item \( \left\{ \left. P \;\right|\; P \text{ contiene almeno un ciclo while} \right\} \)
+        Non è estensionale perchè dipende dal codice del programma.
+    \item \( \left\{ \left. x \;\right|\; x \text{ ha dimensione } \ge 1000 \right\} \)
+        Non è estensionale perchè dipende dal codice del programma.
+    \item \( \left\{ \left. P \;\right|\; P \text{ soddisfa confidenzialità} \right\} \)
+        È estensionale perchè dipende solo dalla funzione calcolata.
+    \item \( \left\{ \left. x \;\right|\; \varphi_x(x)\downarrow \right\} = K \;(\text{non ricorsivo})\)
+        Non è estensionale perchè l'indice è usato come input della funzione.
+
+        \vspace{1em}
+        \noindent
+        \textbf{Dimostrazione}: 
+        \begin{itemize}
+          \item 
+            Prendiamo \( z \in \Pi \implies \varphi_z(z) \downarrow\) per
+            definizione di \( \Pi  \).
+
+          \item Prendiamo \( w \;.\; \varphi_w = \varphi_z \implies \varphi_w(z) = \varphi_z(z) \downarrow \) 
+            per poter dire che \( w \in \Pi  \) dovremmo avere \( \varphi_w(w) \downarrow \) che non
+            necessariamente vale e quindi \( \Pi  \) non è estensionale.
+        \end{itemize}
+
+      \item \( \Pi_n = \left\{ \left. x \;\right|\; \varphi_x(n) \downarrow \right\} \)
+          È estensionale perchè non dipende dal codice del programma.
+  \end{itemize}
+\end{example}
+
+\subsubsection{Esempi}
+\begin{example}
+  Consideriamo l'insieme dei programmi che divergono sempre:
+  \[
+    \begin{aligned}
+      A &= \left\{ \left. x \;\right|\; W_x\footnote{\( W_x \stackrel{def}{=} dom \varphi_x
+          = \left\{ \left. y \;\right|\; \varphi_x(y) \downarrow \right\}\) } = \varnothing \right\}\\
+        &= \left\{ \left. x \;\right|\; \forall y \;.\; \varphi_x(y) \uparrow \right\}
+    \end{aligned}
+  \] 
+  Dimostriamo che \( A \) non è ricorsivo tramite il teorema di Rice.
+
+  \vspace{1em}
+  \noindent
+  \begin{enumerate}
+    \item Dimostriamo che \( A \) è estensionale:
+      \begin{itemize}
+        \item Prendiamo \( z \in A \stackrel{def A}{\implies} W_z = \varnothing \equiv
+          \forall y \;.\; \varphi_z(y) \uparrow \)
+        \item Prendiamo \( w \in \mathbb{N} \;.\; \varphi_w = \varphi_z \implies
+          W_w = W_z = \varnothing \) perchè:
+          \[
+            \forall y \;.\; \varphi_w(y) = \varphi_z(y) \uparrow
+          \] 
+      \end{itemize}
+      Quindi per definizione di \( A \) \( w \in A \) 
+
+    \item Dimostriamo che \( A \) è non banale, cioè:
+      \[
+        \begin{aligned}
+          A &\neq \varnothing \; (\exists x \in A) \wedge \\
+          A &\neq \mathbb{N} \; (\exists x \notin A)
+        \end{aligned}
+      \] 
+      \begin{itemize}
+        \item 
+          \(
+            f(x) = \lambda x. x
+          \) 
+          Questa funzione è ricorsifva, quindi esiste una macchina di Turing che la calcola:
+          \[
+            \exists n \;.\; \varphi_n = f \implies W_n = \mathbb{N} \neq \varnothing \implies
+            n \notin A \implies A \neq \mathbb{N}
+          \] 
+
+        \item \( f(x) = \lambda x. \uparrow \) (while true do x = x) Questa funzione
+          è ricorsiva quindi, esiste una macchina di Turing che la calcola:
+          \[
+            \exists m \;.\; \varphi_m = f \implies W_m = \varnothing \implies m \in A \implies
+            A \neq \varnothing
+          \] 
+      \end{itemize}
+  \end{enumerate}
+  Per il teorema di Rice \( A \) non è ricorsivo.
+\end{example}
+\begin{example}
+  Consideriamo il complemento dell'esempio precedente:
+  \[
+    B = \left\{ \left. x \;\right|\; W_x \neq \varnothing \right\}
+  \] 
+  Se \( A \) fosse ricorsivo, per il teorema di Post anche \( \bar{A} = B \) sarebbe ricorsivo.
+  Siccome \( A \) non è ricorsivo, neanche \( B \) lo è.
+\end{example}
+
+\subsection{Dimostrare che un insieme è ricorsivamente enumerabile}
+Per dimostrare che un insieme è RE si fornisce l'algoritmo che implementa la
+funzione semicaratteristica.
+
+\subsection{Dimostrare che un insieme non è ricorsivamente enumerabile}
+Per dimostrare che un insieme non è RE si usa il \textbf{teorema di Post}
+\[
+  A \text{ è ricorsivo } \iff A \wedge \bar{A} \text{ sono RE}
+\] 
 
 \end{document}
