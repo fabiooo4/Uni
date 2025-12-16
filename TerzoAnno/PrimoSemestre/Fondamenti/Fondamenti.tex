@@ -5788,4 +5788,370 @@ Per dimostrare che un insieme non è RE si usa il \textbf{teorema di Post}
   A \text{ è ricorsivo } \iff A \wedge \bar{A} \text{ sono RE}
 \] 
 
+\subsection{Riducibilità funzionale}
+Si usa per "ridurre" un problema sconosciuto ad un problema noto.
+L'inclusione insiemistica non permette di ereditare proprietà di ricorsione, ad
+esempio:
+\[
+  \underset{RIC}{\varnothing} \subseteq \underset{RE}{K} \subseteq \underset{RIC}{\mathbb{N}}
+\] 
+
+\vspace{1em}
+\noindent
+Consideriamo un insieme \( A \) di cui non conosciamo la ricorsività e un
+insieme \( B \) con ricorsività nota (ad esempio \( B \) ricorsivo). Allora:
+\[
+  \exists f_B(x) =
+  \begin{cases}
+    1 & \text{se } x \in B \\
+    0 & \text{se } x \notin B
+  \end{cases}
+\] 
+Se si riesce a prendere un elemento \( x \in A \) e trasformarlo in un elemento
+di B \( h(x) \in B \), allora si può prendere l'elemento \( h(x) \) e calcolare
+\( f_B(h(x)) \) per sapere se \( x \in A \):
+\[
+   x \leadsto h(x) \leadsto f_B(h(x)) =
+  \begin{cases}
+    1 & \text{se } h(x) \in B \implies x \in A \\
+    0 & \text{se } h(x) \notin B \implies x \notin A
+  \end{cases}
+\] 
+La riducibilità funzionale da \( A \) a \( B \) è definita come
+la funzione \textbf{totale} \( h: \mathbb{N} \to \mathbb{N} \) tale che
+\( x \in A \iff h(x) \in B \):
+\[
+  \implies (B \text{ ricorsivo } \implies A \text{ ricorsivo})
+\] 
+Quindi \( f \circ h \) è la funzione caratteristica di \( A \) e
+quindi \( A \) è ricorsivo.
+
+\begin{definition}
+  Siano \( A, B \subseteq \mathbb{N} \). \( A \) si \textbf{si riduce} (funzionalmente)
+  a \( B \) (denotato \( A \preceq_f B \)) se esiste \( f: \mathbb{N} \to \mathbb{N} \) 
+  \textbf{totale ricorsiva} tale che:
+  \[
+    x \in A \iff f(x) \in B
+  \] 
+\end{definition}
+
+\begin{example}
+  Consideriamo l'insieme di
+  coppie programma-input tali che il programma \( x \) termina sull'input \( y \).
+  \[
+    \begin{aligned}
+      K_2 &= \left\{ \left. \left<x, y \right> \;\right|\; y \in W_x \right\}
+          &= \left\{ \left. \left<x, y \right> \;\right|\; \varphi_x(y) \downarrow \right\}\\
+    \end{aligned}
+  \] 
+  Ci chiediamo in che classe di ricorsività sia \( K_2 \).
+
+  \vspace{1em}
+  \noindent
+  Sappiamo che \( K_2 \subseteq \mathbb{N} \times \mathbb{N} \), e generalizzando
+  abbiamo che:
+  \[
+    x \in K \iff \left<x, x \right> \in K_2
+  \] 
+  Questa è una riduzione funzionale da \( K \) a \( K_2 \):
+  \[
+    f(x) = \lambda x. \left<x, x \right>
+  \] 
+  Quindi:
+  \[
+     x \in K \iff f(x) \in K_2 \implies k \preceq_f K_2
+  \] 
+  Siccome \( K \) è ricorsivamente enumerabile ma non ricorsivo, allora
+  se \( K_2 \) fosse ricorsivo anche \( K \) lo sarebbe, quindi \( K_2 \)
+  non è ricorsivo.
+  Possiamo costruire l'algoritmo della semicaratteristica di \( K_2 \), quindi
+  \( K_2 \) è RE non ricorsivo.
+\end{example}
+
+\subsubsection{Insieme completo}
+\begin{definition}
+  Un insieme \( C \in RE \) è completo se per ogni \( A \in RE \) \( A \) si riduce
+  a \( C \):
+  \[
+    \forall a \in RE \;.\; A \preceq_f C
+  \] 
+
+  \vspace{1em}
+  \noindent
+  La riducibilità funzionale è:
+  \begin{itemize}
+    \item \textbf{Transitiva}:
+      \[
+        A \preceq_f B \wedge B \preceq_f C \implies A \preceq_f C
+      \] 
+      Quindi:
+      \[
+        \begin{aligned}
+          &x \in A \iff f(x) \in B\\
+          &y \in B \iff g(y) \in C
+        \end{aligned}
+        \implies x \in A \iff g(f(x)) \in C
+      \] 
+
+    \item \textbf{Riflessiva}:
+      \[
+        A \preceq_f A
+      \]
+      Quindi:
+      \[
+        x \in A \iff x \in A
+      \] 
+      e la funzione di riduzione è l'identità:
+      \[
+        f(x) = \lambda x. x
+      \] 
+  \end{itemize}
+\end{definition}
+
+\begin{theorem}
+  L'insieme \( K_2 \) è completo per la classe RE.
+
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione}: Sia \( A \in RE \), allora esiste un algoritmo di cui
+  \( A \) è il dominio:
+  \[
+    \exists y_0 \;.\; A = W_{y_0}
+  \] 
+  \[
+    x \in A = W_{y_0} \underset{def W_{y_0}}{\iff} \varphi_{y_0}(x) \downarrow
+    \underset{def K_2}{\iff} \left<y_0, x\right> \in K_2
+  \] 
+  Quindi la funzione di riduzione funzionale è:
+  \[
+    f_{y_0} = \lambda x. \left<y_0, x\right> \implies A \preceq_f K_2
+  \] 
+  cioè:
+  \[
+    x \in A \iff f_{y_0}(x) \in K_2
+  \] 
+  Vista la genericità di \( A \), vale per ogni insieme \( A \) in RE,
+  quindi \( K_2 \) è completo.
+\end{theorem}
+\vspace{1em}
+\noindent
+\begin{theorem}
+  \( K \) è completo.
+
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione:}
+  (\( \forall A \in RE \;.\; A \preceq_f K_2 \))
+  Siccome \( \preceq_f \) è transitiva se dimostriamo che \( K_2 \preceq_f K \)
+  allora \( K \) è completo:
+  \[
+    \forall A \;.\; A \preceq_f K_2 \preceq_f K \implies K \text{ completo}
+  \] 
+  \[
+    \left<x, y \right> \in K_2 \iff \varphi_x(y) \downarrow
+  \] 
+  Definiamo la funzione \( \psi \) con un numero di input pari agli input dell'insieme
+  di partenza più uno:
+  \[
+    \psi(x, y, z) =
+    \begin{cases}
+      1 & \text{se } \varphi_x(y) \downarrow \\
+      \uparrow & \text{altrimenti}
+    \end{cases}
+  \] 
+  Questa funzione è la caratteristica di \( K_2 \) con un input in più \( z \).
+  Esiste un algoritmo che calcola \( \psi \) e quindi \( \psi \) è parziale ricorsiva
+  e possiamo applicare il teorema smn:
+  \[
+    \exists g \text{ totale ricorsiva } \quad g: \mathbb{N} \times \mathbb{N} \to \mathbb{N}
+  \] 
+  tale che:
+  \[
+    \psi(x,y,z) = \varphi_{g(x, y)}(z)
+  \] 
+  si specializza sui primi due input. Ci chiediamo se \( g \) è una funzione di
+  riduzione funzionale da \( K_2 \) a \( K \):
+  \[
+   \left<x, y \right> \in K_2 \iff g(x, y) \in K
+  \] 
+  \[
+    \begin{aligned}
+      \left<x, y \right> \in K_2 &\underset{def K_2}{\implies} \varphi_x(y) \downarrow\\
+                                 &\underset{def \psi}{\implies} \psi(x, y, z) \downarrow\\
+                                 &\underset{smn}{\implies} \forall z \;.\; \varphi_{g(x, y)}(z) \downarrow\\
+                                 &\underset{z = g(x,y)}{\implies} \varphi_{g(x, y)}(g(x, y)) \downarrow\\
+                                 &\underset{def K}{\implies} g(x, y) \in K
+    \end{aligned}
+  \] 
+  Quindi:
+  \[
+    \begin{aligned}
+      \left<x, y \right> \notin K_2 &\underset{def K_2}{\implies} \varphi_x(y) \uparrow\\
+                                    &\underset{def \psi}{\implies} \forall z \;.\; \psi(x, y, z) \uparrow\\
+                                    &\underset{smn}{\implies} \forall z \;.\; \varphi_{g(x, y)}(z) \uparrow\\
+                                    &\underset{z = g(x,y)}{\implies} \varphi_{g(x, y)}(g(x, y)) \uparrow\\
+                                    &\underset{def K}{\implies} g(x, y) \notin K
+    \end{aligned}
+  \] 
+\end{theorem}
+
+\subsubsection{Proprietà della riducibilità funzionale}
+\begin{enumerate}
+  \item \( A \) si riduce a \( B \) se e solo se \( \bar{A} \) si riduce a \( \bar{B} \):
+    \[
+      A \preceq_f B \iff \bar{A} \preceq_f \bar{B}
+    \]
+    \[
+      x \in A \iff f(x) \in B \equiv x \notin \bar{A} \iff f(x) \notin \bar{B}
+    \] 
+
+  \item Se \( A \) si riduce a \( B \) e \( B \) è ricorsivamente enumerabile,
+    allora anche \( A \) è ricorsivamente enumerabile: 
+    \[
+      A \preceq_f B \implies \exists f: \mathbb{N} \to \mathbb{N} \text{ totale ricorsiva }
+      \;.\; x \in A \iff f(x) \in B
+    \] 
+    \[
+      B \in RE \implies \exists \psi_B(x) =
+      \begin{cases}
+        1 & \text{se } x \in B \\
+        \uparrow & \text{se } x \notin B
+      \end{cases}
+    \] 
+    Possiamo definire:
+    \[
+      \psi(x) =
+      \begin{cases}
+        1 & \text{se } f(x) \in B \\
+        \uparrow & \text{altrimenti}
+      \end{cases}
+      \underset{\text{per riduzione}}{=}
+      \begin{cases}
+        1 & \text{se } x \in A \\
+        \uparrow & \text{altrimenti}
+      \end{cases}
+    \] 
+    è parziale ricorsiva in quanto \( f \) è totale. Ci dobbiamo assicurare che diverge solo
+    quando la condizione di terminazione è falsa.
+    \( \psi  \) è la semicaratteristica di \( A \) e quindi \( A \in RE \).
+
+  \item Se \( A \) si riduce a \( B \) e \( B \) è ricorsivo,
+    allora anche \( A \) è ricorsivo:
+    \[
+      A \preceq_f B \implies \exists f: \mathbb{N} \to \mathbb{N} \text{ totale ricorsiva }
+      \;.\; x \in A \iff f(x) \in B
+    \] 
+    \[
+      B \in RIC \implies \exists f_B(x) =
+      \begin{cases}
+        1 & \text{se } x \in B \\
+        0 & \text{se } x \notin B
+      \end{cases}
+    \] 
+    Possiamo definire:
+    \[
+      h(x) =
+      \begin{cases}
+        1 & \text{se } f(x) \in B \\
+        0 & \text{se } f(x) \notin B
+      \end{cases}
+      \underset{\text{per riduzione}}{=}
+      \begin{cases}
+        1 & \text{se } x \in A \\
+        0 & \text{se } x \notin A
+      \end{cases}
+    \] 
+    è totale ricorsiva in quanto \( f \) è totale. \( h \) è la caratteristica di \( A \)
+    e quindi \( A \in RIC \).
+\end{enumerate}
+
+\subsection{Insiemi creativi}
+\begin{definition}
+  Un insieme \( I \subseteq \mathbb{N} \) è \textbf{creativo} se è \textbf{ricorsivamente
+  enumerabile} ed è il complemento di un insieme \textbf{produttivo}
+\end{definition}
+
+\subsection{Insiemi produttivi}
+Il complemento di un insieme produttivo può essere:
+\begin{itemize}
+  \item Ricorsivamente enumerabile, e allora l'insieme produttivo è creativo
+  \item Non ricorsivamente enumerabile
+\end{itemize}
+Quindi:
+\[
+  A \in RE \leadsto \psi_A(x) =
+  \begin{cases}
+    1 & \text{se } x \in A \\
+    \uparrow & \text{se } x \notin A
+  \end{cases}
+\] 
+\[
+  \bar{A} \notin RE \leadsto \psi_{\bar{A}}(x) =
+  \begin{cases}
+    \uparrow & \text{se } x \in \bar{A} \\
+    1 & \text{se } x \notin \bar{A}
+  \end{cases}
+\] 
+Questa \textbf{NON} è la semicaratteristica di \( \bar{A} \) perchè diverge quando l'imput
+appartiene a \( \bar{A} \). Ma la non appartenenza a \( \bar{A} \) (\( x \in A \)) è
+\textbf{semidecidibile}, cioè esiste un algoritmo che si ferma quando l'input
+appartiene a \( A \).
+Possono esistere insiemi in cui nessuno dei due test (\( \in, \notin  \)) è semidecidibile.
+Quindi:
+\[
+  \begin{aligned}
+    A &\notin RE \implies \bar{A} \in RE \vee \bar{A} \notin RE\\
+    A &\in RE \implies \bar{A} \notin RE
+  \end{aligned}
+\] 
+\begin{example}
+  L'insieme:
+  \[
+    \left\{\left. x \;\right|\; W_x = \varnothing \right\}
+  \] 
+  non è ricorsivamente enumerabile, ma il suo complemento:
+  \[
+    \left\{\left. x \;\right|\; W_x \neq \varnothing \right\}
+  \] 
+  è ricorsivamente enumerabile.
+\end{example}
+
+\begin{example}
+  L'insieme:
+  \[
+    \left\{\left. x \;\right|\; W_x = \mathbb{N} \right\}
+  \] 
+  non è ricorsivamente enumerabile perchè:
+  \[
+    \forall n \in \mathbb{N} \;.\; \varphi_x(n) \downarrow
+  \] 
+  e anche il suo complemento:
+  \[
+    \left\{\left. x \;\right|\; W_x \neq \mathbb{N} \right\}
+  \] 
+  non è ricorsivamente enumerabile perchè:
+  \[
+    \exists y \in \mathbb{N} \;.\; \varphi_x(y) \uparrow
+  \] 
+\end{example}
+
+\begin{definition}
+  L'insieme \( A \subseteq \mathbb{N} \) è \textbf{produttivo} se esiste una
+  funzione \textbf{totale ricorsiva} tale che:
+  \[
+    \forall x \in \mathbb{N} \;.\; \left( W_x \subseteq A \implies f(x) \in A \setminus W_x \right) 
+  \] 
+  Per qualunque tentativo di enumerare gli elementi di \( A \) con un algoritmo
+  \( \varphi_x \), la funzione \( f \) trasforma \( x \in A \) in un elemento
+  non enumerato da \( W_x \).
+\end{definition}
+Quindi:
+\[
+  \begin{aligned}
+    A \text{ produttivo } &\implies \bar{A} \text{ produttivo} \vee \bar{A} \text{ creativo}\\
+    A \text{ creativo } &\implies \bar{A} \text{ produttivo }
+  \end{aligned}
+\] 
+L'insieme \( K \) è creativo, quindi il suo complemento \( \bar{K} \) è produttivo.
+
 \end{document}
