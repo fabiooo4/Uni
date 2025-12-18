@@ -3716,4 +3716,178 @@ diversi tipi, come immagini, testo, audio, video, ecc...
   \end{figure}
 \end{example}
 
+\subsubsection{Attenzione}
+L'importanza di un conncetto dipende dal contesto in cui viene usato. Ad esempio:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{attention_example}
+  \caption{Esempio di attenzione nei modelli di linguaggio}
+\end{figure}
+Questo meccanismo è chiamato \textbf{attenzione}.
+
+\vspace{1em}
+\noindent
+I \textbf{transformer} sono un'architettura di rete neurale basata sul meccanismo di
+attenzione. L'idea principale è quella di permettere al modello di "prestare attenzione"
+a diverse parti dell'input in base al contesto.
+
+\subsubsection{Language models}
+I \textbf{Language Models} (LM) sono modelli che trasformano i concetti in
+embedding di testo in modo da predirre la parola successiva in una frase.
+Il modello si basa su:
+\begin{itemize}
+  \item Embedding e tokenizzazione per rappresentare l'input
+  \item Transformer, attention per rappresentare il contesto
+  \item \textbf{Self-supervised learning} per addestrare il modello su grandi quantità di testo
+    senza bisogno di label
+\end{itemize}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{language_model}
+  \caption{Rappresentazione grafica di un language model}
+\end{figure}
+Un Large Language Model (LLM) è un LM con un numero molto grande di parametri,
+almeno 10 miliardi di parametri.
+
+\subsection{Reinforcement learning}
+Il \textbf{Reinforcement Learning} (RL) è un paradigma di apprendimento automatico
+in cui un agente apprende a prendere decisioni ottimali, massimizzando una ricompensa,
+interagendo con un ambiente.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{reinforcement_learning}
+  \caption{Rappresentazione grafica del reinforcement learning}
+\end{figure}
+\noindent
+I concetti chiave del RL sono:
+\begin{itemize}
+  \item \textbf{Trial and error}: l'agente esplora l'ambiente e apprende dalle conseguenze delle sue azioni
+  \item \textbf{Delayed reward}: le azioni possono avere conseguenze a lungo termine
+\end{itemize}
+L'obiettivo del RL è stimare a lungo termine la \textbf{funzione di valore} \( V(s) \),
+e trovare la \textbf{policy} ottimale \( \pi(s) \) che massimizza la ricompensa attesa.
+
+\vspace{1em}
+\noindent
+Il reinforcement learning è un MDP (Markov Decision Process), ma:
+\begin{itemize}
+  \item Non si conoscono gli stati positivi o negativi (non si conosce \( R(s, a, s') \))
+  \item Non si conoscono le transizioni tra stati (non si conosce \( T(s, a, s') \))
+\end{itemize}
+Si deve quindi provare ogni azione e collezionare la ricompensa.
+
+\subsubsection{Conoscenza del modello}
+Ci sono due approcci principali per fare reinforcement learning:
+\begin{itemize}
+  \item \textbf{Model-based}: sono metodi che cercano di \textbf{stimare il modello
+    dell'ambiente}. Questi metodi evitano stati e azioni che portano a ricompense negative
+    e quindi usano meno step per raggiungere l'obiettivo con un utilizzo più efficiente
+    dei dati.
+
+  \item \textbf{Model-free}: sono metodi cercano di \textbf{imparare la Q-function
+    e la policy ottimale} direttamente dalle esperienze dell'agente. Questi metodi
+    sono più semplici da implementare perchè non richiedono un modello, ma hanno
+    bisogno di più dati per apprendere una buona policy. Una diretta conseguenza
+    è che questi metodi hanno meno bias rispetto ai metodi model-based.
+\end{itemize}
+\begin{example}
+  Si vuole calcolare l'età attesa per una classe data la distribuzione di
+  probabilità:
+  \[
+    \mathbb{E}[A] = \sum_a P(a) \cdot a
+  \] 
+  \begin{itemize}
+    \item \textbf{Model-based}: stimare \( \hat{P}(a) \):
+      \[
+        \hat{P}(a) = \frac{\text{numero di studenti con età } a}{\text{numero totale di studenti}}
+      \] 
+      e quindi:
+      \[
+        \mathbb{E}[A] \approx \sum_a \hat{P}(a) \cdot a
+      \] 
+      Funziona perchè si impara il modello corretto.
+
+      \vspace{1em}
+      \noindent
+       Oltre a stimare il modello il duale è la stima della funzione
+       di transizione \( T(s, a, s') \) che si può calcolare dati i samples
+       con le relative azioni (traiettoria):
+       \[
+         s_0, a_0, s_1, a_1, s_2, a_2, \ldots
+       \] 
+       Si stima \( \hat{T}(s, a, s') \):
+       \[
+       \hat{T}(s, a, s') = \frac{count(s_{t+1} = s', a_t = a, s_t = s)}{count(s_t = s, a_t = a)}
+       \] 
+       Lo stesso vale per la stima della funzione di ricompensa
+
+    \item \textbf{Model-free}: campionare \( N \) studenti e calcolare la media delle età:
+      \[
+        \mathbb{E}[A] \approx \frac{1}{N} \sum_{i=1}^{N} a_i
+      \] 
+      Funziona perchè la media campionaria converge alla media vera al crescere di \( N \).
+  \end{itemize}
+\end{example}
+
+\subsubsection{Metodi model-based}
+Un algoritmo per l'approccio model-based per il reinforcement learning è il seguente:
+\begin{lstlisting}
+Require: A, S, S_0
+Ensure: T_hat, R_hat, pi_hat
+  Initialize T_hat, R_hat, pi_hat
+  repeat
+    Execute pi_hat for a learning episode
+    Acquire a sequence of tuples <(s, a, s', r )>
+    Update T_hat and R_hat according to tuples <(s, a, s', r )>
+    Given current dynamics compute a policy (e.g., VI or PI)
+  until termination condition is met
+\end{lstlisting}
+
+\subsubsection{Metodi model-free}
+L'obiettivo dei metodi model-free è quello di stimare un'expectation pesata
+per il modello senza il modello, quindi partendo dai campioni:
+\[
+  x_i \sim P(x),\; \mathbb{E}[f(x)] \approx \frac{1}{N} \sum_{i} f(x_i)
+\] 
+Dove \( x_i \sim P(x) \) indica che i campioni sono estratti dalla distribuzione
+di probabilità \( P(x) \). Alla fine si vuole stimare una funzione di valore
+data la policy \( \pi \):
+\begin{itemize}
+  \item Si esegue \( \pi \) per alcuni episodi di learning
+  \item Si calcola la somma dei reward scontati \textbf{ogni volta che si visita uno stato}
+  \item Si calcola la media dei reward scontati per ogni campione
+\end{itemize}
+
+\subsubsection{Sample-based policy evalueation}
+L'obiettivo è quello di \textbf{migliorare} la funzione di valore \( V \) considerando
+la Bellman Update, data una policy \( \pi  \):
+\[
+  V_{\pi}^{k+1}(s) = \sum_{s'} T(s, \pi(s), s') \left( R(s, \pi(s), s') + \gamma V_{\pi}^{k}(s') \right)
+\] 
+
+\subsubsection{Temporal Difference Learning}
+Il Temporal Difference Learning permette di usare la Sample-based policy evaluation
+per \textbf{imparare da ogni esperienza} senza aspettare la fine dell'episodio.
+Questo viene fatto calcolando una \textbf{running average}:
+\begin{itemize}
+  \item Si parte dal campione:
+    \[
+      sample = R(s, \pi(s), s') + \gamma V_{\pi}(s')
+    \] 
+
+  \item Si aggiorna il valore come:
+    \[
+      V_{\pi}(s) = (1 - \alpha) V_{\pi}(s) + \alpha (sample - V_{\pi}(s))
+    \] 
+
+  \item \( \alpha \) deve decrescere nel tempo per garantire la convergenza,
+    l'opzione più semplice è mettere \( \alpha = \frac{1}{n} \) dove \( n \)
+    è il numero di volte che lo stato \( s \) è stato visitato.
+\end{itemize}
+Quindi:
+\[
+  V_{\pi}(s) \leftarrow (1 - \alpha) V_{\pi}(s) + \alpha \left( R(s, \pi(s), s') + \gamma V_{\pi}(s') \right)
+\] 
+
+
 \end{document}
