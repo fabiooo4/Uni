@@ -2345,4 +2345,268 @@ Ci sono diverse fasi per tradurre uno schema ER in collezioni di documenti:
     \end{enumerate}
 \end{enumerate}
 
+\section{Operazioni su una base di dati relazionale}
+I linguaggi per gestire i dati sono divisi in due categorie a seconda del tipo di operazioni
+che consentono di eseguire:
+\begin{itemize}
+  \item \textbf{Data Definition Language (DDL)}: è usato per la \textbf{definizione} dei
+    dati. Questo linguaggio consente di:
+    \begin{itemize}
+      \item Creare lo schema della base di dati
+      \item Modificare lo schema della base di dati
+    \end{itemize}
+
+  \item \textbf{Data Manipulation Language (DML)}: è usato per la \textbf{manipolazione}
+    dei dati. Questo linguaggio consente di:
+    \begin{itemize}
+      \item Inserire o cancellare tuple nelle relazioni
+      \item Aggiornare i valori nelle tuple delle relazioni
+      \item \textbf{Interrogare le relazioni} per estrarre informazioni
+    \end{itemize}
+    I linguaggi di interrogazione che fanno parte del DML si dividono in due categorie:
+    \begin{itemize}
+      \item \textbf{Linguaggi procedurali}: specificano \textbf{il procedimento} per
+        ottenere il risultato. Ad esempio l'algebra relazionale.
+
+      \item \textbf{Linguaggi dichiarativi}: specificano \textbf{le proprietà} del risultato.
+        Ad esempio il calcolo relazionale e SQL (Structured Query Language).
+    \end{itemize}
+\end{itemize}
+
+\subsection{Algebra relazionale}
+L'algebra relazionale è un linguaggio procedurale per l'interrogazione delle basi di dati
+relazionali. Questo linguaggio è un insieme di \textbf{operatori} su \textbf{relazioni}.
+
+\subsubsection{Operatori dell'algebra relazionale}
+La "segnatura" degli operatori dell'algebra relazionale è la seguente:
+\begin{itemize}
+  \item Operatore \textbf{unario}:
+    \[
+      op_{\text{parametri}}(r_1) \to r_2
+    \] 
+    Dove \( r_1 \) e \( r_2 \) sono relazioni e \( op \) è l'operatore con i suoi
+    parametri specifici.
+
+  \item Operatore \textbf{binario}:
+    \[
+      r_1 op_{\text{parametri}} r_2 \to r_3
+    \]
+    Dove \( r_1, r_2 \) e \( r_3 \) sono relazioni e \( op \) è l'operatore con i suoi
+    parametri specifici.
+\end{itemize}
+Gli operatori si classificano in due modi:
+\begin{itemize}
+  \item Classificazione \textbf{funzionale}: distingue
+    \begin{itemize}
+      \item operatori \textbf{insiemistici}
+      \item operatori \textbf{specifici}
+      \item operatori di \textbf{giunzione (o join)} tra relazioni
+    \end{itemize}
+
+  \item Classificazione in base alla \textbf{derivabilità}: distingue
+    \begin{itemize}
+      \item operatori \textbf{di base}
+      \item operatori \textbf{derivati}
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Operatori insiemistici}
+Siccome le relazioni sono \textbf{insiemi di tuple} ha senso applicare ad esse
+le operazioni insiemistiche. Tuttavia va considerato che le relazioni sono insiemi
+di \textbf{tuple omogenee}, cioè tutte le tuple di una relazione hanno lo stesso
+\textbf{schema} (stesso insieme di attributi con stessi domini).
+Quindi le operazioni insiemistiche si possono applicare
+\textbf{soltanto a relazioni con lo stesso schema}.
+
+\vspace{1em}
+\noindent
+Date due relazioni \( r_1 \) e \( r_2 \) sullo \textbf{stesso schema} \( X \) si definiscono
+i seguenti operatori.
+\begin{itemize}
+  \item \textbf{Operatori di base}:
+  \begin{itemize}
+    \item \textbf{Unione}:
+      \[
+        r_1 \cup r_2 = r_3 = \left\{ t \mid t \in r_1 \lor t \in r_2 \right\}
+      \] 
+      \[
+        \text{schema: } X
+      \] 
+      \textbf{Nota}: tutte le tuple duplicate vengono rappresentate una sola volta.
+
+    \item \textbf{Differenza}:
+      \[
+        r_1 - r_2 = r_3 = \left\{ t \mid t \in r_1 \land t \notin r_2 \right\}
+      \]
+      \[
+        \text{schema: } X
+      \] 
+      \textbf{Nota}: la differenza non è commutativa.
+  \end{itemize}
+
+\item \textbf{Operatori derivati}:
+  \begin{itemize}
+    \item \textbf{Intersezione}:
+      \[
+        r_1 \cap r_2 = r_1 - (r_1 - r_2)
+      \]
+      \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\textwidth]{operatore_intersezione}
+        \caption{Operatore di intersezione}
+      \end{figure}
+  \end{itemize}
+\end{itemize}
+
+\vspace{1em}
+\noindent
+La cardinalità degli operatori insiemistici è il numero di tuple contenute nella relazione
+risultante:
+\begin{itemize}
+  \item Unione:
+    \[
+      max(|r_1|, |r_2|) \leq |r_1 \cup r_2| \leq |r_1| + |r_2|
+    \] 
+
+  \item Differenza:
+    \[
+      0 \leq |r_1 - r_2| \leq |r_1|
+    \]
+
+  \item Intersezione:
+    \[
+      0 \leq |r_1 \cap r_2| \leq min(|r_1|, |r_2|)
+    \]
+\end{itemize}
+
+\subsubsection{Operatori specifici}
+Data una relazione \( r_1 \) sullo schema \( X = \left\{ A_1, A_2, \ldots, A_n \right\} \),
+si definiscono i seguenti operatori (tutti unari):
+\begin{itemize}
+  \item \textbf{Operatori di base}:
+    \begin{itemize}
+      \item \textbf{Ridenominazione}: cambia il nome degli attributi di una relazione.
+        Sia \( Y = \left\{ B_1, B_2, \ldots, B_n \right\} \) un insieme di attributi
+        con \( |Y| = |X| \), allora:
+        \[
+          \rho_{A_1, \ldots, A_n \to B_1, \ldots, B_n}(r_1) = r_2
+          = \left\{ t \mid \exists t' \in r_1: \forall i \in [1,n] . t[B_i] = t'[A_i] \right\}
+        \] 
+        \[
+          \text{schema: } Y
+        \] 
+
+        \vspace{2em}
+        \noindent
+        \begin{example}
+          Consideriamo lo schema relazionale:
+          \[
+            \begin{aligned}
+              &CAPOLUOGO\_PROV(Nome, Popolazione, CAP)\\
+              &COMUNI\_MINORI(Nome, Abitanti, CAP)
+            \end{aligned}
+          \]
+
+          \vspace{1em}
+          \noindent
+          Si richiede di produrre la lista di tutti i comuni:
+          \[
+            \begin{aligned}
+              \rho_{Popolazione \to Abitanti}(CAPOLUOGO\_PROV) \\
+              \;\cup\; COMUNI\_MINORI
+            \end{aligned}
+          \] 
+        \end{example}
+
+      \item \textbf{Selezione}: consente di estrarre da una relazione le tuple che
+        soddisfano una certa condizione \( F(t) \):
+        \[
+          \sigma_F(r_1) = r_2 = \left\{ t \mid t \in r_1 \land F(t) \right\}
+        \] 
+        \[
+          \text{schema: } X
+        \] 
+        La condizione \( F(t) \) è una formula proposizionale con le seguenti
+        caratteristiche:
+        \begin{itemize}
+          \item Si ottiene combinando con i connettivi logici \( \land, \lor  \) e \( \lnot \)
+            condizioni atomiche del tipo: \( A \;\Theta\; B \) o \( A \;\Theta\; c \), dove:
+            \begin{itemize}
+              \item \( A, B \in X \)
+              \item \( \;\Theta\; \in \left\{ <, =, >, \neq, \ge, \le  \right\} \)
+              \item \( c \in DOM(A) \) è una costante compatibile con il dominio di \( A \)
+            \end{itemize}
+
+          \item Una formula \( A \;\Theta\; B \) è vera sulla tupla \( t \) se:
+            \[
+              t[A] \;\Theta\; t[B]
+            \] 
+
+          \item Una formula \( A \;\Theta\; c \) è vera sulla tupla \( t \) se:
+            \[
+              t[A] \;\Theta\; c
+            \]
+
+          \item Le formule \( F_1 \land F_2 \), \( F_1 \lor F_2 \) e \( \lnot F \) hanno
+            valori booleani definiti dalle note tabelle di verità dei connettivi logici
+            corrispondenti.
+        \end{itemize}
+
+        \begin{example}
+          Consideriamo lo schema relazionale:
+          \[
+            \begin{aligned}
+              TRENO(\underline{Numero},& PartOra, PartMin, Cat, Dest,\\ ArrOra, ArrMin)\\
+            \end{aligned}
+          \] 
+          \[
+            FERMATA(\underline{NumTreno, Stazione}, Ora, Min)
+          \] 
+
+          \vspace{1em}
+          \noindent
+          Si richiede di produrre la lista di tutti i treni non regionali che partono
+          alle 12.00 o dopo le 12.00 e prima delle 16.00.
+          \[
+            \sigma_{PartOra \ge 12 \;\land\; PartOra < 16 \;\land\; Cat \neq 'Regionale'}(TRENO)
+          \] 
+        \end{example}
+
+      \item \textbf{Proiezione}: riduce le tuple di una relazione in verticale, cioè
+        elimina attributi. Sia \( Y = \left\{ A_1, \ldots, A_m \right\} \subseteq X \) un
+        sottoinsieme degli attributi di \( X \) allora:
+        \[
+          \Pi_Y(r_1) = r_2 = \left\{ t \mid \exists t' \in r_1: t'[Y] = t \right\}
+        \] 
+        \[
+          \text{schema: } Y
+        \] 
+        dove \( t'[Y] \) indica una tupla \( t_0 \) su \( Y \) tale che:
+        \[
+          \forall A_i \in Y: t_0[A_i] = t'[A_i]
+        \] 
+
+
+        \begin{example}
+          Consideriamo lo schema relazionale:
+          \[
+            \begin{aligned}
+              TRENO(\underline{Numero},& PartOra, PartMin, Cat, Dest,\\ ArrOra, ArrMin)\\
+            \end{aligned}
+          \] 
+          \[
+            FERMATA(\underline{NumTreno, Stazione}, Ora, Min)
+          \] 
+
+          \vspace{1em}
+          \noindent
+          Si richiede di restituire il numero e l'ora di partenza dei treni Freccia Rossa
+          (categoria = 'FR') con destinazione 'Milano Centrale'.
+          \[
+            \Pi_{Numero, PartOra}(\sigma_{Cat = FR \land Dest = 'Milano\;Centrale'}(TRENO))
+          \] 
+        \end{example}
+    \end{itemize}
+\end{itemize}
+
 \end{document}
