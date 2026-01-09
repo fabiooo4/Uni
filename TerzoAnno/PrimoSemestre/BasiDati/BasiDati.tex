@@ -2609,4 +2609,121 @@ si definiscono i seguenti operatori (tutti unari):
     \end{itemize}
 \end{itemize}
 
+La cardinalità degli operatori specifici è il numero di tuple contenuto nella relazione
+risultante:
+\begin{itemize}
+  \item Selezione:
+    \[
+      0 \leq |\sigma_F(r_1)| \leq |r_1|
+    \]
+
+  \item Proiezione:
+    \[
+      min(|r_1|, 1) \leq |\Pi_Y(r_1)| \leq |r_1|
+    \]
+    \( |\Pi_Y(r_1)| = |r_1| \) se \( Y \) è superchiave per \( r_1 \).
+\end{itemize}
+
+\subsubsection{Operatori di giunzione}
+Date due relazioni \( r_1 \) e \( r_2 \) con schemi \( X_1 \) e \( X_2 \) rispettivamente,
+gli operatori di \textbf{join} generano tuple \( t \) nella relazione risultante a partire
+dalle coppie di tuple \( (t_1, t_2) \in r_1 \times r_2 \) che soddisfano una certa
+condizione chiamata \textbf{predicato di join}.
+
+\begin{itemize}
+  \item \textbf{Operatori di base}:
+    \begin{itemize}
+      \item \textbf{Join naturale}: il predicato di join in questo operatore si basa sugli
+        attributi comuni alle due relazioni (è dipendente dallo schema).
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width=0.9\textwidth]{operatore_join_naturale}
+        \end{figure}
+        Il predicato di join è implicito.
+
+        \vspace{1em}
+        \noindent
+        \textbf{Proprietà}:
+        \begin{itemize}
+          \item Il join naturale si dice \textbf{completo} se tutte le tuple di
+            \( r_1 \) e \( r_2 \) contribuiscono a generare almeno una tupla della
+            relazione risultante:
+            \[
+              \begin{aligned}
+                &\forall t_1 \in r_1: \exists t \in r_1 \bowtie r_2: t[X_1] = t_1 \\
+                &\land\\
+                &\forall t_2 \in r_2: \exists t \in r_1 \bowtie r_2: t[X_2] = t_2
+              \end{aligned}
+            \] 
+
+          \item Se il join naturale non è completo le tuple che non contribuiscono al
+            risultato si dicono \textbf{dangling tuples}.
+
+          \item Il join naturale è \textbf{commutativo}:
+            \[
+              r_1 \bowtie r_2 = r_2 \bowtie r_1
+            \] 
+
+          \item Il join naturale è \textbf{associativo}:
+            \[
+              r_1 \bowtie (r_2 \bowtie r_3) = (r_1 \bowtie r_2) \bowtie r_3
+            \]
+
+          \item Se \( r_1 \) e \( r_2 \) hanno lo stesso schema, allora:
+            \[
+              r_1 \bowtie r_2 = r_1 \cap r_2
+            \] 
+
+          \item Se \( r_1 \) e \( r_2 \) non hanno attributi in comune, allora:
+            \[
+              r_1 \bowtie r_2 = r_1 \times r_2 \quad \text{Tutte le possibili coppie}
+            \]
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+La cardinalità del join naturale è:
+\begin{itemize}
+  \item In generale:
+    \[
+      0 \leq |r_1 \bowtie r_2| \leq |r_1| \cdot |r_2|
+    \]
+
+  \item Se il join è \textbf{completo}:
+    \[
+      max(|r_1|, |r_2|) \leq |r_1 \bowtie r_2| \leq |r_1| \cdot |r_2|
+    \]
+
+  \item Se \( X_1 \cap X_2 \) è una superchiave per \( r_2 \):
+    \[
+      0 \leq |r_1 \bowtie r_2| \leq |r_1|
+    \]
+
+  \item Se \( X_1 \cap X_2 \) è una superchiave per \( r_2 \) ed esiste un vincolo
+    di integrità referenziale tra \( X_1 \cap X_2 \) (o una parte) di \( r_1 \) e \( r_2 \):
+    \[
+      |r_1 \bowtie r_2| = |r_1|
+    \]
+    La cardinalità del join è sempre quella dove si esporta la chiave.
+\end{itemize}
+
+\begin{example}
+  Consideriamo gli schemi relazionali:
+  \[
+    \begin{aligned}
+      &DOCENTE(\underline{CFDocente}, Nome, Cognome)\\
+      &CORSO(\underline{Nome}, CFDocente)\\
+    \end{aligned}
+  \] 
+
+  \vspace{1em}
+  \noindent
+  Si richiede di produrre l'insieme dei corsi riportando: nome del corso e cognome del docente
+  \[
+    \Pi_{NomeCorso, Cognome}(
+      \rho_{Nome \to NomeCorso}(CORSO) \bowtie DOCENTE
+    )
+  \]
+\end{example}
+
 \end{document}
