@@ -311,7 +311,7 @@ Un entità si rappresenta con un rettangolo che contiene il nome dell'entità:
 Un'istanza dell'entità \( E \) è un \textbf{oggetto} appartenente alla classe rappresentata
 da \( E \). Si indica con \( I(E) \) l'insieme delle istanze di \( E \) che esistono
 nella base di dati in un certo istante e alla creazione della base di dati è vuota:
-\( I(E) = \emptyset \).
+\( I(E) = \varnothing \).
 
 \begin{example}
   Rappresentiamo con il costrutto entità il concetto di \textbf{persona}. Bisogna gestire
@@ -2678,7 +2678,117 @@ condizione chiamata \textbf{predicato di join}.
             \[
               r_1 \bowtie r_2 = r_1 \times r_2 \quad \text{Tutte le possibili coppie}
             \]
+            \begin{example}
+              Consideriamo gli schemi relazionali:
+              \[
+                \begin{aligned}
+                &DOCENTE(\underline{CFDocente}, Nome, Cognome)\\
+                &CORSO(\underline{Nome}, CFDocente)\\
+                \end{aligned}
+              \] 
+
+              \vspace{1em}
+              \noindent
+              Si richiede di produrre l'insieme dei corsi riportando: nome del corso e cognome del docente
+              \[
+                \begin{aligned}
+                  &\Pi_{NomeCorso, Cognome}(\\
+                  &\quad \rho_{Nome \to NomeCorso}(CORSO) \bowtie DOCENTE\\
+                  &)
+                \end{aligned}
+              \]
+            \end{example}
+
         \end{itemize}
+    \end{itemize}
+
+  \item \textbf{Operatori derivati}:
+    \begin{itemize}
+      \item \textbf{Theta join}: il predicato di join in questo operatore viene indicato
+        esplicitamente (\textbf{è indipendente dallo schema}). C'è la precondizione 
+        che gli schemi di \( r_1 \) e \( r_2 \) \textbf{devono essere disgiungi}:
+        \[
+          X_1 \cap X_2 = \varnothing
+        \] 
+        Il theta join si rappresenta come:
+        \[
+          r_1 \bowtie_{\Theta} r_2 = \sigma_{\Theta}(r_1 \bowtie r_2)
+        \] 
+
+        \vspace{1em}
+        \noindent
+        \textbf{Proprietà}:
+        \begin{itemize}
+          \item Il theta join si dice \textbf{equi-join} se la condizione \( \Theta  \) è
+            una congiunzione di uguaglianze:
+            \[
+              r_1 \bowtie_{A_1 = B_1 \land \ldots \land A_n = B_n} r_2
+            \] 
+
+            \textbf{Nota bene:} non esiste un operatore misto che applica la logica del
+            join naturale per gli attributi comuni e aggiunge la condizione specificata
+            esplicitamente attraverso il predicato \( \Theta \).
+
+            \vspace{1em}
+            \noindent
+            \textbf{Proprietà dell'equi-join}:
+            \begin{itemize}
+              \item Date due relazioni \( r_1 \) e \( r_2 \) di schema \( X_1 \) e \( X_2 \) 
+                con \( X_1 \cap X_2 = {C_1, \ldots, C_m} \) con \( m > 0 \), vale la
+                seguente equivalenza:
+                \[
+                  \begin{aligned}
+                    r_1 \bowtie r_2 &= \Pi_{X_1 \cup X_2}(\\
+                                    & \quad r_1 \bowtie_{C_1 = C_1' \land \ldots \land C_m = C_m'}
+                    \rho_{C_1, \ldots, C_m \to C_1', \ldots, C_m'}(r_2)\\
+                                    &)
+                  \end{aligned}
+                \] 
+            \end{itemize}
+
+            \vspace{1em}
+            \noindent
+            \textbf{Forme brevi}: Data la relazione \( r_1 \) di schema \( X_1 = \left\{ A_1, \ldots, A_n \right\} \)
+            per cambiare nome a tutti gli attributi si può scrivere:
+            \[
+               \rho_{A_1, \ldots, A_n \to A_1', \ldots, A_n'}(r_1)
+            \] 
+            oppure in forma breve:
+            \[
+              \rho_{X \to X'}(r_1)
+            \] 
+
+            \textbf{Nota bene:} \textbf{non è una notazione ammessa} dall'algebra relazionale la dot
+            notation per rinominare gli attributi, cioè non è ammesso scrivere:
+            \[
+              r_1.A_1 \to r_1.A_1'
+            \]
+
+        \end{itemize}
+        \begin{example}
+          Consideriamo gli schemi relazionali:
+          \[
+            \begin{aligned}
+              &DOCENTE(\underline{CF}, Nome, Cognome)\\
+              &CORSO(\underline{Nome}, Docente)\\
+            \end{aligned}
+          \] 
+          \[
+            CORSO.Docente \to DOCENTE.CF
+          \] 
+
+          \vspace{1em}
+          \noindent
+          Si richiede di produrre l'elenco di tutti i corsi riportando: nome del corso
+          e cognome del docente.
+          \[
+            \begin{aligned}
+              &\Pi_{NomeCorso, Cognome}(\\
+              &\quad \rho{Nome \to NomeCorso}(CORSO) \bowtie_{CF = Docente} DOCENTE\\
+              &)
+            \end{aligned}
+          \]
+        \end{example}
     \end{itemize}
 \end{itemize}
 
@@ -2706,24 +2816,5 @@ La cardinalità del join naturale è:
     \]
     La cardinalità del join è sempre quella dove si esporta la chiave.
 \end{itemize}
-
-\begin{example}
-  Consideriamo gli schemi relazionali:
-  \[
-    \begin{aligned}
-      &DOCENTE(\underline{CFDocente}, Nome, Cognome)\\
-      &CORSO(\underline{Nome}, CFDocente)\\
-    \end{aligned}
-  \] 
-
-  \vspace{1em}
-  \noindent
-  Si richiede di produrre l'insieme dei corsi riportando: nome del corso e cognome del docente
-  \[
-    \Pi_{NomeCorso, Cognome}(
-      \rho_{Nome \to NomeCorso}(CORSO) \bowtie DOCENTE
-    )
-  \]
-\end{example}
 
 \end{document}
