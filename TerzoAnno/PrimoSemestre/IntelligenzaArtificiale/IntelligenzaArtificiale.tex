@@ -3889,5 +3889,266 @@ Quindi:
   V_{\pi}(s) \leftarrow (1 - \alpha) V_{\pi}(s) + \alpha \left( R(s, \pi(s), s') + \gamma V_{\pi}(s') \right)
 \] 
 
+\vspace{1em}
+\noindent
+L'obiettivo è calcolare una policy, ma questo non si può fare perchè per calcolarla bisognerebbe
+trovare l'azione che massimizza \( Q(s,a) \):
+\[
+  \pi(x) = argmax_a Q(s,a)
+\] 
+dove:
+\[
+  Q(s,a) = \sum_{s'} T(s, a, s') \left( R(s, a, s') + \gamma V(s') \right)
+\] 
+Non si può usare direttamente \( V \) per calcolare \( \pi \).
+L'idea è quella di stimare direttamente i valori di \( Q(s,a) \).
+
+\subsubsection{Q-learning}
+Il Q-learning è un algoritmo di reinforcement learning che permette di stimare
+direttamente la Q-function \( Q(s,a) \) senza conoscere il modello dell'ambiente.
+\[
+  Q_{k+1}(s,a) = \sum_{s'} T(s, a, s') \left( R(s, a, s') + \gamma \max_{a'} Q_k(s', a') \right)
+\] 
+Questa equazione trova iterativamente il valore ottimo di Q.
+
+\subsubsection{Sample based Q-learning}
+Dati dei campioni \( (s, a, s', r) \) si può aggiornare la Q-function in base alla
+vecchia stima \( Q(s,a) \)  considerando il nuovo campione:
+\[
+  sample = R(s, a, s') + \gamma \max_{a'} Q(s', a')
+\] 
+Si incorpora la nuova stima in una running average:
+\[
+  Q(s,a) \leftarrow (1 - \alpha) Q(s,a) + \alpha (R(s, a, s') + \gamma \max_{a'} Q(s', a'))
+\] 
+Il valore di \( \alpha \) rappresenta il \textbf{learning rate}, cioè il peso che
+viene dato al nuovo campione rispetto alla vecchia stima. Il valore di \( \alpha \)
+deve decrescere nel tempo per garantire la convergenza.
+Questo non è un modello, è un esperienza, cioè si esegue un azione e si osserva
+la conseguenza.
+
+\vspace{1em}
+\noindent
+\textbf{Proprietà}:
+\begin{itemize}
+  \item Il Q-learning converge alla policy ottima se:
+    \begin{itemize}
+      \item Si esplora abbastanza
+      \item se \( \alpha \) diventa abbastanza piccolo, ma non troppo velocemente.
+        Tipicamente il valore usato è \( \alpha = \frac{1}{n(s, a)} \), dove \( n(s,a) \) 
+        è il numero di visite alla coppia \( (s,a) \)
+    \end{itemize}
+
+  \item La selezione delle azioni non impatta la convergenza. Esiste una strategia chiamata
+    \textbf{Off-policy learning} che permette di imparare la policy ottimale senza seguirla,
+    ma per garantire la convergenza bisogna visitare ogni coppia stato-azione infinite volte.
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Lo pseudocodice del Q-learning è il seguente:
+\begin{lstlisting}
+Initialize Q(s, a), for all S, a in A(s), arbitrarily, and Q(terminal-state, *) = 0
+Repeat (for each episode):
+  Initialize s
+  Repeat (for each step of episode):
+    Choose a from s using policy derived from Q (e.g., epsilon-greedy)
+    Take action a, observe r, s'
+    Q(s, a) <- Q(s, a) + alpha [r + gamma max_a' Q(s', a') - Q(s, a)]
+    s <- s'
+  until s is terminal
+\end{lstlisting}
+
+\subsubsection{SARSA: alternativa on-policy al Q-learning}
+Questo algoritmo è simile al Q-learning, ma segue la policy corrente per scegliere
+l'azione successiva \( a' \) invece di scegliere l'azione che massimizza \( Q(s', a') \).
+Il Q-value viene fatto sapendo quale azione si prenderà nel prossimo stato.
+\begin{lstlisting}
+Initialize Q(s, a), for all S, a in A(s), arbitrarily, and Q(terminal-state, *) = 0
+  Repeat (for each episode):
+    Initialize s
+    Choose a from s using policy derived from Q (e.g., epsilon-greedy)
+    Repeat (for each step of episode):
+      Take action a, observe r, s'
+      Choose a' from s' using policy derived from Q (e.g., epsilon-greedy)
+      Q(s, a) <- Q(s, a) + alpha [r + gamma Q(s', a') - Q(s, a)]
+      s <- s'; a <- a'
+    until s is terminal
+\end{lstlisting}
+Questo algoritmo converge solo se la policy usata per scegliere le azioni converge
+alla policy greedy e ogni coppia stato-azione viene visitata infinite volte.
+
+\subsection{Esplorazione vs Sfruttamento}
+Un problema fondamentale nel reinforcement learning è il trade-off tra
+\textbf{esplorazione} e \textbf{sfruttamento}:
+\begin{itemize}
+  \item \textbf{Esplorazione}: consiste nel provare nuove azioni per scoprire
+    nuove strategie che potrebbero portare a ricompense maggiori in futuro.
+
+  \item \textbf{Sfruttamento}: consiste nel scegliere le azioni che si conoscono
+    per massimizzare la ricompensa immediata.
+\end{itemize}
+La scelta dipende dal contesto e dall'obiettivo dell'agente.
+
+Ci sono due approcci principali:
+\begin{itemize}
+  \item \textbf{\( \varepsilon \)-greedy}:\\
+    La politica \( \varepsilon\)-greedy sceglie l'azione migliore di sempre, ma ogni tanto
+    (con probabilità \( \varepsilon \)) sceglie un'azione a caso. Questo metodo è off-policy.
+
+  \item \textbf{Softmax} (o Boltzmann):\\
+    Si sceglie un'azione in base ad una distribuzione di probabilità:
+    \[
+      p(a) = \frac{e^{Q(s,a)/T}}{\sum_{a'} e^{Q(s,a')/T}}
+    \] 
+    T è il parametro di temperatura che controlla il livello di esplorazione:
+    \begin{itemize}
+      \item Quando la "temperatura" \( T \) è alta, tutte le azioni hanno probabilità simili
+        di essere scelte (si esplora di più)
+      \item Quando la temperatura \( T \) è bassa, l'azione con il valore \( Q(s,a) \)
+        più alto ha una probabilità maggiore di essere scelta (si sfrutta di più)
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Funzioni di esplorazione}
+L'idea è quella di aggiungere un bonus di esplorazione alla ricompensa
+per incentivare l'agente a esplorare nuove azioni. Si esplorano le aree in cui non
+si è sicuri che siano negative (optimism in face of uncertainty). La funzione di esplorazione
+è definita considerando:
+\begin{itemize}
+  \item Una stima \( u \)
+  \item Un numero di visite \( n \)
+  \item Il calcolo di una funzione \( f(u, n) = u + \frac{k}{n} \)
+\end{itemize}
+\begin{itemize}
+  \item Update regolare della Q-function:
+    \[
+      Q(s,a) = (1 - \alpha) Q(s,a) + \alpha (R(s, a, s') + \gamma \max_{a'} Q(s', a'))
+    \]
+
+  \item Update modificato con bonus di esplorazione:
+    \[
+      Q(s,a) = (1 - \alpha) Q(s,a) + \alpha (R(s, a, s') + \gamma \max_{a'} f(Q(s', a'), N(s, a)))
+    \]
+    dove:
+    \begin{itemize}
+      \item \( N(s', a') \) è il numero \( n \) di volte che una coppia stato-azione
+        \( (s', a') \) è stata visitata
+      \item \( f(Q(s', a'), N(s, a)) \) è la funzione di esplorazione che aggiunge
+        un bonus alla stima di \( Q(s', a') \) in base a \( N(s, a) \)
+      \item \( k \) è un parametro fissato
+    \end{itemize}
+\end{itemize}
+
+\subsection{Deep reinforcement learning}
+Nel mondo reale gli stati e le azioni sono spesso continui e in grandi quantità e
+quindi non si riesce a rappresentare le funzioni chiave per il reinforcement learning:
+\( (\pi(s), V(s), Q(s,a)) \) come tabelle. Per risolvere questo problema si possono
+approssimare usando:
+\begin{itemize}
+  \item Approssimazione lineare
+  \item Approssimazione tramite rete neurale (Deep Reinforcement Learning)
+  \item Approssimazione con Deep Q-Networks (DQN) in cui si approssima \( Q(s,a) \)
+    usando una Deep Neural Network
+\end{itemize}
+
+\subsubsection{Gradient Q-Learning}
+Per approssimare \( Q(s,a) \) con una funzione parametrica \( Q_w(s,a) \) si può
+usare il gradiente per aggiornare i pesi \( w \):
+\begin{itemize}
+  \item Stima \( Q_w(s,a) \) 
+  \item Target \( r(s,a,s') + \gamma \max_{a'} Q_{\overline{w}}(s', a') \), cioè il valore
+    che si otterrebbe se si conoscesse il modello
+\end{itemize}
+I pesi si stipano minimizzando una funzione di errore, in questo caso l'errore quadratico:
+\[
+  Err(w) = \left( \underbrace{Q_w(s,a)}_{\text{Stima}}
+  - 
+  \underbrace{r(s,a,s') - \gamma \max_{a'} Q_{\overline{w}}(s', a')}_{\text{Valore reale}} \right)^2
+\] 
+per farlo si usa il gradiente:
+\[
+  \frac{\partial Err(w)}{\partial w} = 2 \left( Q_w(s,a) - r(s,a,s') - \gamma \max_{a'} Q_{\overline{w}}(s', a') \right)
+  \cdot \frac{\partial Q_w(s,a)}{\partial w}
+\] 
+Lo scalare 2 non è rilevante per l'aggiornamento perchè l'unica cosa che conta è la direzione
+del gradiente.
+
+\vspace{1em}
+\noindent
+L'algoritmo del gradient Q-learning è il seguente:
+\begin{lstlisting}
+Initialize weights w randomly in [-1, 1]
+Initialize s {observe current state}
+loop
+  Select and execute action a
+  Observe new state s' receive immediate reward r
+  Compute gradient:
+    grad = (Q_w(s,a) - r - gamma * max_a' Q_w(s', a')) * partial Q_w(s,a) / partial w
+  Update weights:
+    w = w - alpha * grad
+  Update state:
+    s = s'
+end loop
+\end{lstlisting}
+Si nota che non si usa \( \overline{w} \) per calcolare il gradiente, ma si usa la stima
+perchè il valore reale non è noto. Per questo motivo \textbf{non c'è garanzia di convergenza}.
+La convervenza è garantita solo se si usa il \textbf{Linear gradient Q-learning}.
+
+
+\subsection{Mitigare la divergenza}
+Ci sono due approcci principali per mitigare la divergenza nel Deep Q-learning:
+\begin{itemize}
+  \item Experience replay
+  \item Utilizzare due network diverse:
+    \begin{itemize}
+      \item Q-network
+      \item Target network
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Experience replay}
+L'idea è quella di memorizzare in un buffer le esperienze dell'agente (ad esempio \( (s, a, s', r) \))
+e usarle ad ogni step di apprendimento. Ad ogni passo si estrae un batch casuale di esperienze
+dal buffer e si usa per aggiornare i pesi della rete neurale. I vantaggi sono:
+
+\begin{itemize}
+  \item Riduce la correlazione tra campioni successivi (aumenta la stabilità)
+  \item Riduce il numero di interazioni con l'ambiente (aumenta l'efficienza dei dati)
+\end{itemize}
+
+\subsubsection{Target network}
+L'idea è quella di mantenere una rete \textbf{target} separata da aggiornare periodicamente,
+ma non ad ogni step.
+
+\begin{itemize}
+  \item Il Q-network calcola: \( Q_w(s,a) \)
+  \item Il Target network calcola: \( Q_{\overline{w}}(s', a') \)
+\end{itemize}
+
+\subsubsection{Deep Q Network}
+Il Deep Q Network (DQN) è un algoritmo di Deep Reinforcement Learning che
+utilizza una rete neurale profonda per approssimare la Q-function \( Q(s ,a) \).
+Si utilizzano sia l'experience replay che il target network per migliorare
+la stabilità e l'efficienza dell'apprendimento. Lo pseudocodice del DQN è il seguente:
+
+\begin{lstlisting}
+Initialize weights w and w' randomly in [-1, 1]
+Initialize s {observe current state}
+loop
+  Select and execute action a
+  Observe new state s' receive immediate reward r
+  Add (s, a, s', r ) to experience buffer
+  Sample mini-batch MB of experiences from buffer
+  for (s_hat, a_hat, s', r_hat) in MiniBatch do
+    grad = (Q_w(s_hat, a_hat) - r_hat - gamma * max_a_hat'(Q_w_hat(s_hat', a_hat'))) * partial Q_w(s_hat, a_hat)/partial w
+    update weights w <- w - alpha * grad
+  end for
+  update state s <- s'
+  every c steps, update target: w <- w
+end loop
+\end{lstlisting}
+
+
 
 \end{document}
