@@ -30,15 +30,9 @@
         numpy
         jupyterlab
         jupyterlab-gruvbox
-        jupyterlab-vim
         ipykernel
         matplotlib
         tqdm
-        pandas
-        seaborn
-        scikit-learn
-        keras
-        tensorflow
       ]);
   in {
     devShells.x86_64-linux.default = pkgs.mkShell {
