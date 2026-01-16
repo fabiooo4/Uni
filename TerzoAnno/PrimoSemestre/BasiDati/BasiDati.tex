@@ -2817,4 +2817,150 @@ La cardinalità del join naturale è:
     La cardinalità del join è sempre quella dove si esporta la chiave.
 \end{itemize}
 
+\subsection{Algebra con valori nulli}
+In una base di dati relazionale, un attributo può assumere il valore speciale
+\textbf{null} che indica l'assenza di un valore noto.
+È quindi opportuno estendere l'algebra relazionale per fare in modo che possa manipolare
+anche relazioni che contengono valori nulli.
+Le operazioni che devono essere estese per gestire relazioni con valori nulli sono:
+\begin{itemize}
+  \item \textbf{Selezione}\\
+    Le condizioni di selezione in presenza di valori nulli hanno i seguenti valori di
+    verità:
+    \begin{itemize}
+      \item \( A \Theta B \) sulla tupla \( t \): se \( t[A] \) o \( t[B] \) sono null,
+        allora \( t[A] \Theta t[B] \) è \textbf{falso}:
+
+      \item \( A \Theta cost \) sulla tupla \( t \): se \( t[A] \) è null, allora
+        \( t[A] \Theta cost \) è \textbf{falso}
+
+      \item Condizioni atomiche aggiuntive: \( A IS NULL \) e \( A IS NOT NULL \):
+        \begin{itemize}
+          \item \( A IS NULL \) validato sulla tupla \( t \) è \textbf{vero} se \( t[A] \)
+            contiene null, altrimenti è \textbf{falso}.
+          \item \( A IS NOT NULL \) validato sulla tupla \( t \) è \textbf{vero} se \( t[A] \)
+            non contiene null, altrimenti è \textbf{falso}.
+        \end{itemize}
+    \end{itemize}
+
+  \item Join naturale\\
+    La condizione di uguaglianza sugli attributi comuni alle due relazioni è falsa sulle
+    tuple \( t_1 \) e \( t_2 \) \textbf{se almeno uno degli attributi comuni} di
+    \( t_1 \) o \( t_2 \) \textbf{è null}.
+\end{itemize}
+
+\subsubsection{Join esterni}
+(Questi operatori non sono ammessi in questo corso).
+
+\vspace{1em}
+\noindent
+Consentono di ottenere nel risultato del join tutte le tuple (anche le tuple pendenti
+"dangling tuples") di una o di entrambe le relazioni coinvolte nel join, eventualmente
+estese con valori nulli:
+\begin{itemize}
+  \item \textbf{Left join}: \( r_1 \bowtie_{LEFT} r_2 \)
+
+  \item \textbf{Right join}: \( r_1 \bowtie_{RIGHT} r_2 \)
+
+  \item \textbf{Full join}: \( r_1 \bowtie_{FULL} r_2 \)
+\end{itemize}
+
+\subsubsection{Ottimizzazione di espressioni DML}
+Ogni espressione DML (solitamente specificata in \textbf{linguaggio dichiarativo}) ricevuta
+dal DBMS è soggetta ad un processo di \textbf{elaborazione}.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{ottimizzazione_dml}
+  \caption{Ottimizzazione di espressioni DML}
+\end{figure}
+
+\vspace{1em}
+\noindent
+L'\textbf{ottimizzatore} genera un'espressione equivalente all'interrogazione in input
+e di costo inferiore. Il costo viene valutato in termini di \textbf{dimensione dei
+risultati intermedi}. L'ottimizzatore esegue \textbf{trasformazioni di equivalenza} allo
+scopo di \textbf{ridurre la dimensione dei risultati intermedi}.
+
+\subsubsection{Trasformazioni di equivalenza}
+Esistono diversi tipi di equivalenze tra espressioni algebriche:
+
+\begin{itemize}
+  \item \textbf{Equivalenza dipendente dallo schema}\\
+    Dato uno schema \( R \):
+    \[
+      E_1 \equiv_R E_2 \text{ se } E_1(r) = E_2(r) \text{ per ogni istanza } r \text{ di schema } R
+    \] 
+    ad esempio:
+    \[
+      \Pi_{AB}(R_1) \;\bowtie\; \Pi_{AC}(R_2) \equiv_R \Pi_{ABC}(R_1 \bowtie R_2)
+    \] 
+    con \( R = \left\{ R_1(A,B,D), R_2(A,C,E) \right\} \)
+
+  \item \textbf{Equivalenza assoluta}\\
+    È indipendente dallo schema:
+    \[
+      E_1 \equiv E_2 \text{ se } E_1 \equiv_R E_2 \text{ per ogni schema } R \text{ compatibile con }
+      E_1 \text{ e } E_2
+    \] 
+    ad esempio:
+    \[
+      \Pi_{AB}(\sigma_{A > 0}(R_1)) \equiv \sigma_{A > 0}(\Pi_{AB}(R_1))
+    \]
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Considerando \( E \) un'espressione di schema \( X \), si definiscono le seguenti
+trasformazioni di equivalenza:
+\begin{itemize}
+  \item \textbf{Atomizzazione delle selezioni}:
+    \[
+      \sigma_{F_1 \land F_2}(E) \underset{\longrightarrow}{\equiv} \sigma_{F_1}(\sigma_{F_2}(E))
+    \] 
+    È propedeutica ad altre trasformazioni. Non ottimizza se non è seguita da altre trasformazioni.
+
+  \item \textbf{Idempotenza delle proiezioni}:
+    \[
+      \Pi_Y(E) \underset{\longrightarrow}{\equiv} \Pi_Y(\Pi_{YZ}(E)) \text{ dove } Z \subseteq X
+    \] 
+    È propedeutica ad altre trasformazioni. Non ottimizza se non è seguita da altre trasformazioni.
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Siano \( E_1 \) e \( E_2 \) espressioni di schema \( X_1 \) e \( X_2 \), si definiscono le
+seguenti trasformazioni di equivalenza:
+\begin{itemize}
+  \item \textbf{Anticipazione delle selezioni rispetto al join}:
+    \[
+      \sigma_F(E_1 \bowtie E_2) \underset{\longrightarrow}{\equiv} E_1 \bowtie \sigma_F(E_2)
+    \]
+    Applicabile solo se \( F \) si riferisce solo ad attributi di \( E_2 \).
+  \item \textbf{Anticipazione della proiezione rispetto al join}:
+    \[
+      \Pi_{X_1 Y}(E_1 \bowtie E_2) \underset{\longrightarrow}{\equiv} E_1 \bowtie \Pi_Y(E_2)
+    \]
+    Applicabile solo se \( Y \subseteq X_2 \) e \( (X_2 - Y) \cap X_1 = \varnothing \)
+\end{itemize}
+
+
+\vspace{1em}
+\noindent
+Combinando l’anticipazione della proiezione con l'idempotenza delle proiezioni otteniamo:
+\[
+  \Pi_Y \left( E_1 \bowtie_F E_2 \right) \underset{\longrightarrow}{\equiv} \Pi_{Y} \left( \Pi_{Y_1}(E_1) \bowtie_F \Pi_{Y_2}(E_2) \right)
+\]
+\[
+  \Pi_Y \left( E_1 \bowtie E_2 \right) \underset{\longrightarrow}{\equiv} \Pi_{Y} \left( \Pi_{Y_1}(E_1) \bowtie \Pi_{Y_2}(E_2) \right)
+\] 
+dove:
+\begin{itemize}
+  \item \( Y_1 = (X_1 \cap Y) \cup J_1 \)
+  \item \( Y_2 = (X_2 \cap Y) \cup J_2 \)
+  \item \( J_1 (J_2) \) sono gli attributi di \( E_1 (E_2) \) coinvolti nel join
+    (vale a dire presenti in \( F \) per il theta-join, mentre in caso di join naturale
+    \( J_1 = J_2 = X_1 \cap X_2 \))
+\end{itemize}
+
+
 \end{document}
