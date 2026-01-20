@@ -2963,4 +2963,251 @@ dove:
 \end{itemize}
 
 
+\subsection{Calcolo relazionale}
+È un linguaggio di interrogazione dichiarativo, cioè specifica le proprietà del risultato
+dell'interrogazione.
+Esistono due versioni del calcolo relazionale:
+\begin{itemize}
+  \item Il calcolo relazionale sui domini
+  \item Il calcolo relazionale sulle tuple (è il fondamento teorico del linguaggio SQL)
+\end{itemize}
+(in questo corso si vede solo il calcolo relazionale sulle tuple).
+
+\subsubsection{Caratteristiche del linguaggio}
+Nel calcolo relazionale sulle tuple l'interrogazione viene specificata attraverso
+\textbf{una formula logica con variabili libere}, dove la formula viene interpretata sul
+\textbf{contenuto della base di dati} e le variabili assumono come valori le tuple
+delle relazioni della base di dati.
+
+\vspace{1em}
+\noindent
+Il calcolo relazionale sulle tuple definisce la semantica del linguaggio SQL "semplice"
+(senza operatori aggregati e senza join esterni) includendo le interrogazioni nidificate.
+
+\begin{definition}
+  Una variabile è \textbf{libera} in una formula logica \( F \), se non compare in un
+  quantificatore (esistenziale \( \exists  \) o universale \( \forall  \)) di \( F \).
+\end{definition}
+
+\begin{example}
+  Alcuni esempi di variabili libere sono:
+  \begin{enumerate}
+    \item \( F_1(x) \equiv x > 3  \) 
+    \item \( F_2(x,y) \equiv x > 3 \wedge x < 6 \wedge y = 10  \) 
+    \item \( F_3(x) \equiv y > 0 \wedge \exists y (y < 0) \)
+    \item \( F_4(x) \equiv x > 3 \wedge \exists y (y < x)  \)
+    \item \( F_5(z) \equiv z < 10 \wedge \forall y (y < z)  \)
+    \item \( F_6(y) \equiv y < 10 \vee \forall x (y > x)  \)
+  \end{enumerate}
+\end{example}
+L'interpretazione è la scelta degli insiemi da cui prelevare i valori da sostituire nelle
+variabili. Ad esempio, si può scegliere di interpretare le formule nell'insieme degli
+interi \( \mathbb{I} \) o nei naturali \( \mathbb{N} \), ecc...
+
+\subsubsection{Sintassi del calcolo relazionale sulle tuple}
+Le espressioni del calcolo relazionale sulle tuple sono della forma:
+\[
+  \left\{ T | L | F \right\}
+\] 
+dove:
+\begin{itemize}
+  \item \( T \) è la \textbf{target list}, cioè definisce lo \textbf{schema della relazione
+    risultato} e come le tuple risultato si ottengono dalle variabili libere.
+    \( T \) è una lista di elementi separati da virgole:
+    \[
+      e_1, \ldots, e_n
+    \] 
+    dove ogni elemento \( e_i \) può essere:
+    \begin{itemize}
+      \item \( Y: x. (Z) \), dove \( Y \) e \( Z \) sono sequenze di attributi con
+        la stessa cardinalità e \( x \) è una variabile libera.
+
+      \item \( x. (Z) \), dove \( Z \) è una sequenza di attributi e \( x \)
+        è una variabile libera (equivale a \( Z: x.(Z) \)).
+
+      \item \( x.* \) dove \( x \) è una variabile libera; in questo caso gli
+        attributi sono esattamente tutti quelli della relazione
+        associata alla variabile \( x \) nella range list \( L \).
+    \end{itemize}
+
+  \item \( L \) è la \textbf{range list}, cioè definisce le \textbf{variabili libere} e le
+    \textbf{collega} alle relazioni della base di dati coinvolte nell'interrogazione.
+
+    \( L \) è una lista di elementi separati da virgole:
+    \[
+      r_1, \ldots, r_m
+    \] 
+    dove ogni elemento \( r_i \) è della seguente forma:
+    \[
+      x_j(R)
+    \] 
+    dove \( x_j \) è una variabile libera e \( R \) è il nome di una relazione
+    dello schema della base di dati.
+    Esiste \textbf{uno e un solo} elemento \( r_i \) nella range list per ogni variabile
+    libera della formula \( F \).
+
+  \item \( F \) è una \textbf{formula} che specifica \textbf{la condizione che deve essere
+    soddisfatta} dalle variabili libere, cioè dalle tuple coinvolte nell'interrogazione.
+
+    \( F \) può essere:
+    \begin{itemize}
+      \item \textbf{Formula atomica}:
+        \begin{itemize}
+          \item \( x.A \;\Theta\; c \) oppure  \( x_1.A_1 \;\Theta\; x_2.A_2 \)
+        \end{itemize}
+        dove \( x, x_1, x_2 \) sono variabili libere, \( A, A_1, A_2 \) sono attributi,
+        \( c \) è una costante e \( \;\Theta\; \in \left\{ =, \neq, >, <, \ge, \le  \right\} \).
+
+      \item \textbf{Formula non atomica}:
+        \begin{itemize}
+          \item se \( f_1 \) e \( f_2 \) sono formule, allora anche \( f_1 \land f_2 \),
+            \( f_1 \lor f_2 \), \( \lnot f_1 \) e \( \lnot f_2 \) lo sono.
+          \item se \( f \) è una formula, allora anche \( \forall x(R)(f) \) e
+            \( \exists x(R)(f) \) lo sono.
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Nota bene:
+\begin{itemize}
+  \item Nelle formule atomiche tutte le variabili sono \textbf{libere}.
+  \item Nelle formule:
+    \[
+      \forall x (f) \quad \text{e} \quad \exists x (f)
+    \] 
+    \( x \) è una variabile \textbf{legata}, mentre tutte le altre variabili sono 
+    libere o legate se sono libere o legate in \( f \).
+
+  \item Le congiunzioni, disgiunzioni e la negazione non cambiano l'insieme delle variabili
+    libere o legate di una formula.
+\end{itemize}
+
+\subsubsection{Semantica del calcolo relazionale sulle tuple}
+Le formule vengono interpretate sull'istanza corrente della base di dati:
+\[
+  db = \left\{ r_1, \ldots, r_n \right\}
+\] 
+di schema:
+\[
+  S = \left\{ R_1(X_1), \ldots, R_n(X_n) \right\}
+\]
+Ogni formula contiene un certo numero di variabili libere:
+\[
+  f(x_1, \ldots, x_n)
+\] 
+Data una ennupla di tuple \( (t_1, \ldots, t_n) \), tale ennupla rende vera la formula
+se, quando si sostituiscono le tuple \( t_1, \ldots, t_n \) alle variabili libere
+\( x_1, \ldots, x_n \), tale sostituzione soddisfa la formula.
+\begin{itemize}
+  \item \textbf{Formule atomiche}:
+    \begin{itemize}
+      \item \( x_1.A_1 \;\Theta\; x_2.A_2 \) è vera sulle tuple \( (t_1, t_2) \) se il
+        confronto:
+        \[
+          t_1[A_1] \;\Theta\; t_2[A_2]
+        \] 
+        è soddisfatto.
+
+      \item \( x.A \;\Theta\; c \) è vera sulla tupla \( t_1 \) se il confronto:
+        \[
+          t_1[A] \;\Theta\; c
+        \] 
+        è soddisfatto.
+    \end{itemize}
+
+  \item \textbf{Formule non atomiche}:
+    \begin{itemize}
+      \item Le formule \( f_1 \land f_2 \), \( f_1 \lor f_2 \), \( \lnot f_1 \) e
+        \( \lnot f_2 \) sono vere secondo le usuali definizioni dei connettivi logici
+        (tabelle di verità).
+    \end{itemize}
+
+  \item \textbf{Formule con quantificatori}:
+    \begin{itemize}
+      \item \( \exists x (R_i)(f) \) con variabili libere \( (x_1, \ldots, x_q) \) è vera
+        sulle tuple \( (t_1, \ldots, t_q) \), se \textbf{esiste almeno} una tupla
+        \( t \in r_i \) (istanza di \( R_i \)) tale che \( f \) è vera quando si
+        sostituiscono le tuple \( (t, t_1, \ldots, t_q) \) alle variabili
+        \( (x, x_1, \ldots, x_q) \).
+
+      \item \( \forall x (R_i)(f) \) con variabili libere \( (x_1, \ldots, x_q) \) è vera
+        sulle tuple \( (t_1, \ldots, t_q) \), se \textbf{per ogni} tupla
+        \( t \in r_i \) (istanza di \( R_i \)), \( f \) è vera quando si
+        sostituiscono le tuple \( (t, t_1, \ldots, t_q) \) alle variabili
+        \( (x, x_1, \ldots, x_q) \).
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Semantica di una interrogazione}
+L'interpretazione di una espressione del calcolo come interrogazione:
+\[
+  Q = \left\{ Y_1: x_1. (Z_1), \ldots, Y_k: x_k. (Z_k) \mid
+    x_1 (R_1), \ldots, x_n (R_n) \mid
+    f(x_1, \ldots, x_n) \right\}
+\] 
+La valutazione dell'interrogazione \( Q \) produce una relazione risultato \( R \) dove:
+\begin{itemize}
+  \item Lo schema di \( R \) è:
+    \[
+      Y = Y_1 \cup \ldots \cup Y_k
+    \]
+  \item \( R \) contiene tutte le tuple \( t \) su \( Y \) tali che esiste una ennupla
+    di tuple \( (t_1, \ldots, t_n) \in R_1 \times \ldots \times R_n \) che generano
+    \( t \) e che sostituite alle variabil libere \( (x_1, \ldots, x_n) \) rendono vera
+    \( f \).
+\end{itemize}
+
+\vspace{1em}
+\noindent
+\textbf{Osservazioni}:
+\begin{itemize}
+  \item Il calcolo relazionale sulle tuple \textbf{non è equivalente
+    all’algebra relazionale} e \textbf{non è equivalente al calcolo
+    relazionale sui domini} in quanto l’unione di due relazioni
+    non è rappresentabile nel calcolo relazionale sulle tuple.
+  \item È invece possibile rappresentare nel calcolo relazionale
+    sulle tuple sia l’intersezione che la differenza tra due
+    relazioni.
+\end{itemize}
+L'espressione del calcolo \( \left\{ T \mid L \mid F \right\} \) è in diretta
+corrispondenza con la foma base delle interrogazioni SQL:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{corrispondenza_sql_calcolo_relaionale}
+\end{figure}
+
+\subsubsection{Operatori insiemistici nel calcolo relazionale sulle tuple}
+\begin{itemize}
+  \item \textbf{Intersezione}:
+    L'intersezione tra due relazioni \( R_1 \) e \( R_2 \) di shema
+    \( X = \left\{ A_1, \ldots, A_n \right\} \) si esprime come:
+    \[
+      R_1 \cap R_2 = \left\{ x.* \mid x(R_1), y(R_2) \mid
+      x.A_1 = y.A_1 \land \ldots \land x.A_n = y.A_n \right\}
+    \] 
+    oppure:
+    \[
+      R_1 \cap R_2 = \left\{ x.* \mid x(R_1) \mid
+        \exists y(R_2)(
+          x.A_1 = y.A_1 \land \ldots \land x.A_n = y.A_n
+        ) \right\}
+      \] 
+
+    \item \textbf{Differenza}: 
+      La differenza tra due relazioni \( R_1 \) e \( R_2 \) di shema
+      \( X = \left\{ A_1, \ldots, A_n \right\} \) si esprime come:
+      \[
+        R_1 - R_2 = \left\{ x.* \mid x(R_1) \mid
+          \not \exists y(R_2)(
+            x.A_1 = y.A_1 \land \ldots \land x.A_n = y.A_n
+          ) \right\}
+      \]
+
+    \item \textbf{Unione}:
+      L'unione \textbf{non è esprimibile} in quanto \textbf{non è possibile associare
+      una variabile libera a più relazioni della base di dati}.
+\end{itemize}
+
 \end{document}
