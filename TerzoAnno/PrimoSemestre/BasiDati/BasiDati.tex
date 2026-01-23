@@ -3177,6 +3177,25 @@ corrispondenza con la foma base delle interrogazioni SQL:
   \centering
   \includegraphics[width=0.9\textwidth]{corrispondenza_sql_calcolo_relaionale}
 \end{figure}
+\begin{example}
+  Consideriamo lo schema relazionale:
+  \[
+    \begin{aligned}
+      &TRENO(\underline{Num}, Cat, Part, Arr, Dest)\\
+      &FERMATA(\underline{Treno, Staz}, Orario)
+    \end{aligned}
+  \] 
+  Si richiede di restituire il numero e l'ora di partenza dei treni Freccia Rossa (Cat = 'FR')
+  con destinazione 'Milano Centrale'.
+  \[
+    \begin{aligned}
+      &\{ Numero, Orario_partenza: x.(Num, Part) \mid \\
+      &\quad x(TRENO) \mid \\
+      &\quad x.Cat = 'FR' \land x.Dest = 'Milano Centrale'
+      \}
+    \end{aligned}
+  \] 
+\end{example}
 
 \subsubsection{Operatori insiemistici nel calcolo relazionale sulle tuple}
 \begin{itemize}
@@ -3209,5 +3228,62 @@ corrispondenza con la foma base delle interrogazioni SQL:
       L'unione \textbf{non è esprimibile} in quanto \textbf{non è possibile associare
       una variabile libera a più relazioni della base di dati}.
 \end{itemize}
+
+\subsubsection{Semantica dei quantificatori}
+Le espressioni che possono essere specificate attraverso i quantificatori (\( \exists  \),
+\( \forall  \)) corrispondono in SQL a clausole \texttt{WHERE} nelle quali compaiono
+\textbf{predicati complessi che richiedono interrogazioni nidificate}.
+\begin{itemize}
+  \item \( \exists x (R_i)(f) \) con variabili libere \( (x_1, \ldots, x_q) \) è
+    vera sulle tuple \( (t_1, \ldots, t_q) \), se \textbf{esiste almeno} una tupla
+    \( t \in r_i \) tale che \( f \) è vera quando si sostituiscono le tuple
+    \( (t, t_1, \ldots, t_q) \) alle variabili \( (x, x_1, \ldots, x_q) \).
+
+  \item \( \forall x (R_i)(f) \) con variabili libere \( (x_1, \ldots, x_q) \) è
+    vera sulle tuple \( (t_1, \ldots, t_q) \), se \textbf{per ogni} tupla
+    \( t \in r_i \), \( f \) è vera quando si sostituiscono le tuple
+    \( (t, t_1, \ldots, t_q) \) alle variabili \( (x, x_1, \ldots, x_q) \).
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Il quantificatore esistenziale si può eliminare \textbf{solo quando non è negato}.
+
+\begin{example}
+  Consideriamo lo schema relazionale:
+  \[
+    \begin{aligned}
+      &TRENO(\underline{Num}, Cat, Part, Arr, Dest)\\
+      &FERMATA(\underline{Treno, Staz}, Orario)
+    \end{aligned}
+  \] 
+  Trovare il numero e la categoria dei treni che fermano a 'Vicenza' e fermano
+  a 'Padova' dopo le 20.30.
+  \[
+    \begin{aligned}
+      &\{\\
+      &\quad Numero, Categoria: x.(Num, Cat) \mid \\
+      &\quad x(TRENO) \mid \\
+      &\quad \exists y(FERMATA)(
+      x.Num = y.Treno \land y.Staz = 'Vicenza'
+      ) \land\\
+      &\quad \exists z(FERMATA)(\\
+      &\quad \quad x.Num = z.Treno \land z.Staz = 'Padova' \land z.Orario > '20:30'\\
+      &\quad)\\
+      &\}
+    \end{aligned}
+  \] 
+  oppure:
+  \[
+    \begin{aligned}
+      &\{\\
+      &\quad Numero, Categoria: x.(Num, Cat) \mid \\
+      &\quad x(TRENO), y(FERMATA), z(FERMATA) \mid \\
+      &\quad x.Num = y.Treno \land y.Staz = 'Vicenza' \land \\
+      &\quad x.Num = z.Treno \land z.Staz = 'Padova' \land z.Orario > '20:30'\\
+      &\}
+    \end{aligned}
+  \] 
+\end{example}
 
 \end{document}
