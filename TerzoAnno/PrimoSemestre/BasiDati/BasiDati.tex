@@ -3286,4 +3286,255 @@ Il quantificatore esistenziale si può eliminare \textbf{solo quando non è nega
   \] 
 \end{example}
 
+\subsection{Interrogazioni nei sistemi document based}
+Nei sistemi NoSQL spesso non sono presenti veri e propri linguaggi di interrogazione come
+nei sistemi relazionali. Solo i sistemi document based forniscono strumenti simili ad
+algebra relazionale e calcolo relazionale per l'accesso ai dati. I due principali sistemi
+document based sono:
+\begin{itemize}
+  \item Couchbase: Fornisce un linguaggio SQL++, simile all'SQL e dichiarativo
+  \item MongoDB: Fornisce una serie di operatori che consentono di scrivere complesse
+    espressioni algebriche (pipeline) per estrarre dati dalle collezioni di documenti
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Buona parte del linguaggio di interrogazione di MongoDB è realizzato attraverso il
+metodo find.
+
+\begin{example}
+  Considerando la seguente basi di dati di seguito ci sono alcuni esempi di interrogazioni
+  in MongoDB.
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{interrogazione_mongodb}
+    \caption{Esempio di interrogazione in MongoDB}
+  \end{figure}
+  Un esempio di inserimenti è il seguente:
+\begin{lstlisting}
+db.studenti.insertMany([
+  { _id: "VR00010",
+    nome: "Mario",
+    cognome: "Rossi",
+    esami: [
+      {
+        ins: "Basi di dati",
+        voto: 22,
+        data: "1/7/2016"
+      },
+      {
+        ins: "Reti di calcolatori",
+        voto: 28,
+        data: "15/9/2016"
+      }
+    ]
+  }
+  ,
+  { _id: "VR00011",
+    nome: "Luigi",
+    cognome: "Verdi",
+    esami: [
+      {
+        ins: "Basi di dati",
+        voto: 30,
+        data: "10/7/2016"
+      },
+      {
+        ins: "Reti di calcolatori",
+        voto: 26,
+        data: "20/9/2016"
+      }
+    ]
+  }
+])
+\end{lstlisting}
+
+  \vspace{1em}
+  \noindent
+  Alcune interrogazioni semplici sono:
+  \begin{itemize}
+    \item Trovare tutti gli studenti:
+\begin{lstlisting}
+db.studenti.find({})
+\end{lstlisting}
+
+    \item Trovare tutti gli studenti con cognome 'Rossi':
+\begin{lstlisting}
+db.studenti.find({ Cognome: "Rossi" })
+\end{lstlisting}
+
+    \item Trovare tutti gli studenti di cognome 'Rossi' e nome 'Mario':
+\begin{lstlisting}
+db.studenti.find({ Cognome: "Rossi", Nome: "Mario" })
+\end{lstlisting}
+
+    \item Trovare tutti gli studenti di cognome 'Rossi' o 'Verdi':
+\begin{lstlisting}
+db.studenti.find({
+  Cognome: { $in: [ "Rossi", "Verdi" ] } 
+})
+\end{lstlisting}
+    Tutti gli operatori hanno il prefisso \$. In questo caso l'operatore \$in
+    consente di specificare una condizione di appartenenza ad un insieme.
+  \end{itemize}
+
+\end{example}
+
+\subsubsection{Operatori logici e di confronto in MongoDB}
+Gli operatori logici e di confronto in MongoDB sono:
+\begin{itemize}
+  \item \textbf{Operatori logici}:
+    \begin{itemize}
+      \item \$and: congiunzione logica
+      \item \$or:  disgiunzione logica
+      \item \$not: negazione logica
+      \item \$nor: negazione della disgiunzione logica
+    \end{itemize}
+
+  \item \textbf{Operatori di confronto}:
+    \begin{itemize}
+      \item \$eq: uguale
+      \item \$ne: diverso
+      \item \$gt: maggiore di
+      \item \$gte: maggiore o uguale
+      \item \$lt: minore di
+      \item \$lte: minore o uguale
+      \item \$in: appartiene ad un insieme
+      \item \$nin: non appartiene ad un insieme
+    \end{itemize}
+\end{itemize}
+
+\begin{example}
+  Alcuni esempi di utilizzo di questi operatori sono:
+  \begin{itemize}
+    \item 
+\begin{lstlisting}
+{ $or: [
+    { Cognome: "Rossi" },
+    { Cognome: "Verdi" }
+  ]
+}
+\end{lstlisting}
+
+    \item 
+\begin{lstlisting}
+{ $and: [
+    { Cognome: "Rossi" },
+    { Nome "Verdi" }
+  ]
+}
+\end{lstlisting}
+
+    \item 
+\begin{lstlisting}
+{ $and: [
+    { Esami.voto: { $gte: 21 } },
+    { Esami.voto: { $lte: 26 } }
+  ]
+}
+\end{lstlisting}
+  \end{itemize}
+\end{example}
+
+\subsubsection{Interrogazione di dati incapsulati}
+Per interrogare dati incapsulati in array o documenti annidati si usa il punto (.)
+come operatore di accesso ai campi.
+
+\begin{example}
+  Alcuni esempi di interrogazioni di dati incapsulati sono:
+  \begin{itemize}
+    \item Trovare tutti gli studenti che hanno registrato \textbf{almeno un esame} con
+      voto 30:
+\begin{lstlisting}
+db.studenti.find({ Esami.voto: 30 })
+\end{lstlisting}
+
+\item Trovare tutti gli studenti che hanno registrato \textbf{almeno un esame} con
+  voto maggiore di 22:
+\begin{lstlisting}
+db.studenti.find({ Esami.voto: { $gt: 22 } })
+\end{lstlisting}
+  \end{itemize}
+\end{example}
+
+\subsubsection{Interrogazioni con proiezione}
+La proiezione in MongoDB si ottiene specificando un secondo argomento al metodo find.
+\begin{example}
+  Alcuni esempi di interrogazioni con proiezione sono:
+  \begin{itemize}
+    \item Trovare il cognome degli studenti di nome 'Mario':
+\begin{lstlisting}
+db.studenti.find(
+  { Nome: "Mario" },
+  { Cognome: 1 }
+)
+\end{lstlisting}
+    \item Trovare il cognome degli studenti di nome 'Mario' escludendo il campo \_id:
+\begin{lstlisting}
+db.studenti.find(
+  { Nome: "Mario" },
+  { Cognome: 1, _id: 0 }
+)
+\end{lstlisting}
+ 
+    \item Trovare la matricola e i voti di tutti gli studenti:
+\begin{lstlisting}
+db.studenti.find(
+  {},
+  { _id: 1, "Esami.voto": 1 }
+)
+\end{lstlisting}
+  \end{itemize}
+\end{example}
+
+\subsubsection{Interrogazioni con join}
+Per eseguire il join tra due collezioni in MongoDB bisogna usare l'operazione
+\textbf{aggregate} con l'operatore \$lookup. Questo tipo di query è sconsigliato
+dal sistema MongoDB in quanto meno efficiente.
+
+\begin{example}
+  Considerando il seguente schema di base di dati:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{schema_mongodb_join}
+    \caption{Schema di base di dati in MongoDB per join}
+  \end{figure}
+  \noindent
+  Un esempio di interrogazione con join è:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{join_mongodb}
+    \caption{Esempio di join in MongoDB}
+  \end{figure}
+  \noindent
+  Il risultato di questa interrogazione è:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{risultato_join_mongodb}
+    \caption{Risultato di join in MongoDB}
+  \end{figure}
+\end{example}
+
+\subsubsection{Interrogazioni su dati incapsulati con condizioni multiple}
+Per eseguire interrogazioni su dati incapsulati con condizioni multiple in MongoDB
+si usa l'operatore \$elemMatch.
+
+\begin{example}
+  Un esempio di interrogazione su dati incapsulati con condizioni multiple è:
+  \begin{itemize}
+    \item Trovare tutti gli studenti che hanno ottenuto un voto maggiore di 22
+      nell'appello del 30/10/2025:
+\begin{lstlisting}
+db.studenti.find({
+  esami: {
+    $elemMatch: {
+      data: "30/10/2025",
+      voto: { $gt: 22 }
+    }
+  }
+})
+\end{lstlisting}
+  \end{itemize}
+\end{example}
+
 \end{document}
