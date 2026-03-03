@@ -91,17 +91,25 @@ I'm sharing them because they can be useful to other students.
 <summary>&emsp;First Semester</summary>
     
 - [Databases](./TerzoAnno/PrimoSemestre/BasiDati/BasiDati.pdf)
-- Signal and image processing (Only Matlab)
+  - [Course exercises](./TerzoAnno/PrimoSemestre/BasiDati/Esercizi)
+  - [Exam exercises](./TerzoAnno/PrimoSemestre/BasiDati/Esami)
+- [Signal and image processing](./TerzoAnno/PrimoSemestre/ElaborazioneSegnaliImmagini/matlab) (Only Matlab)
 - [Foundations of computing](./TerzoAnno/PrimoSemestre/Fondamenti/Fondamenti.pdf)
+  - [Course exercises](./TerzoAnno/PrimoSemestre/Fondamenti/Esercitazione)
+  - [Exam exercises](./TerzoAnno/PrimoSemestre/Fondamenti/Esami)
+  - [Personal exercises](./TerzoAnno/PrimoSemestre/Fondamenti/Esercizi)
+  - [Tutoring exercises](./TerzoAnno/PrimoSemestre/Fondamenti/Tutoraggio)
 - [Artificial Intelligence](./TerzoAnno/PrimoSemestre/IntelligenzaArtificiale/IntelligenzaArtificiale.pdf)
+  - [Python lab](./TerzoAnno/PrimoSemestre/IntelligenzaArtificiale/Laboratorio)
 - [Graphics Programming](./TerzoAnno/PrimoSemestre/GraficaAlCalcolatore/GraficaAlCalcolatore.pdf)
+  - [LearnOpenGL in Rust](https://github.com/fabiooo4/learnopengl)
 </details>
 <details>
 <summary>&emsp;Second Semester</summary>
     
-- Databases
-- Programming languages
-- Compilers
+- [Databases](./TerzoAnno/SecondoSemestre/BasiDati/BasiDati.pdf)
+- [Programming languages and interpreters](./TerzoAnno/SecondoSemestre/Linguaggi/Linguaggi.pdf)
+- [Compilers](./TerzoAnno/SecondoSemestre/Compilatori/Compilatori.pdf)
 </details>
 </details>
 
