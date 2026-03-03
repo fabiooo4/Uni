@@ -9,4 +9,858 @@
 \tableofcontents
 \pagebreak
 
+\section{Tecnologia dei DBMS}
+Un DBMS (Database Management System) è un software in grado di gestire collezioni di dati
+che siano \textbf{grandi, condivise e persistenti} assicurando \textbf{affidabilità e
+privatezza}.
+\begin{itemize}
+  \item Grandi: i dati devono essere organizzati in modo efficiente per poter essere gestiti
+    in grandi quantità
+  \item Condivise: i dati devono essere accessibili da più utenti contemporaneamente
+  \item Persistenti: i dati devono essere memorizzati in modo permanente, anche dopo la
+    chiusura del programma
+  \item Affidabilità: i dati devono essere protetti da errori e guasti del sistema
+  \item Privatezza: i dati devono essere protetti da accessi non autorizzati
+\end{itemize}
+
+Un DBMS deve essere anche \textbf{efficiente} ed \textbf{efficace}:
+\begin{itemize}
+  \item Efficiente: il DBMS deve essere in grado di gestire grandi quantità di dati in
+    modo rapido e con un utilizzo minimo delle risorse
+  \item Efficace: il DBMS deve essere in grado di soddisfare le esigenze degli utenti
+    in modo completo e accurato
+\end{itemize}
+Il DBMS si appoggia sul filesystem estendendo le sue funzionalità.
+
+\subsection{Architettura transazionale di un DBMS}
+Un DBMS è composto da tre livelli:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{architettura_3_livelli}
+  \caption{Architettura a 3 livelli di un DBMS}
+\end{figure}
+\noindent
+Un DBMS basato sul \textbf{modello relazionale} è nella maggior parte dei casi anche
+un \textbf{sistema transazionale}, cioè fornisce un meccanismo per la definizione ed
+esecuzione di transazioni:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{architettura_transazionale}
+  \caption{Architettura transazionale di un DBMS}
+\end{figure}
+
+\subsection{Transazione}
+\begin{definition}
+  È \textbf{un’unità} di lavoro svolta da un programma applicativo (che interagisce con una base
+  di dati) per la quale si vogliono garantire proprietà di correttezza, robustezza e
+  isolamento.
+\end{definition}
+La principale caratteristica di una transazione è che deve essere \textbf{atomica}, cioè
+deve essere eseguita completamente o non essere eseguita affatto. \textbf{Non sono
+ammesse esecuzioni parziali}.
+
+\subsubsection{Sintassi}
+La sintassi per definire una transazione è la seguente:
+\begin{lstlisting}
+<transazione> -> begin transaction
+                 <programma>
+                 end transaction
+
+<programma> -> < <istruzione> | commit work | rollback work >
+               { < <istruzione> | commit work | rollback work > }
+\end{lstlisting}
+\begin{itemize}
+  \item La transazione va a buon fine all'esecuzione di un \texttt{commit work}.
+  \item La transazione non ha alcun effetto se viene eseguito un \texttt{rollback work}.
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Una transazione è ben formata se:
+\begin{itemize}
+  \item Inizia con un \texttt{begin transaction}.
+  \item Termina con un \texttt{end transaction}.
+  \item La sua esecuzione comporta il raggiungimento di un \texttt{commit work} o di un
+    \texttt{rollback work} e dopo il \texttt{commit/rollback} non si eseguono altri
+    accessi alla base di dati.
+\end{itemize}
+
+\begin{example}
+  Un esempio di transazione ben formata è il seguente:
+\begin{lstlisting}
+begin transaction;
+  update CONTO set saldo = saldo - 1200
+    where filiale = '005' and numero = 15;
+  update CONTO set saldo = saldo + 1200
+    where filiale = '005' and numero = 205;
+  commit work;
+end transaction;
+\end{lstlisting}
+\end{example}
+
+\subsubsection{Proprietà delle transazionei}
+Una transazione ha 4 proprietà fondamentali, note come ACID:
+\begin{itemize}
+  \item \textbf{Atomicità} (\textbf{A}tomicity):
+    Una transazione è una unità di esecuzione \textbf{indivisibile}. O viene eseguita
+    completamente o non viene eseguita affatto.
+
+    \vspace{1em}
+    \noindent
+    Implicazioni:
+    \begin{itemize}
+      \item Se una transazione viene interrotta prima del commit, il lavoro fin qui
+        eseguito dalla transazione deve essere disfatto ripristinando la situazione in
+        cui si trovava la base di dati prima dell’inizio della transazione.
+
+      \item Se una transazione viene interrotta dopo l’esecuzione del commit (commit
+        eseguito con successo), il sistema deve assicurare che la transazione abbia
+        effetto sulla base di dati.
+    \end{itemize}
+
+  \item \textbf{Consistenza} (\textbf{C}onsistency):
+    L’esecuzione di una transazione non deve violare i vincoli di integrità.
+
+    \vspace{1em}
+    \noindent
+    Implicazioni:
+    \begin{itemize}
+      \item Verifica immediata:
+        \begin{itemize}
+          \item Fatta nel corso della transazione
+          \item Viene abortita solo l’ultima operazione e il sistema restituisce
+            all’applicazione una segnalazione d’errore
+          \item L’applicazione può quindi reagire alla violazione.
+        \end{itemize}
+
+      \item Verifica differita:
+        \begin{itemize}
+          \item Al commit se un vincolo di integrità viene violato la transazione viene
+            abortita senza possibilità da parte dell’applicazione di reagire alla
+            violazione.
+        \end{itemize}
+    \end{itemize}
+
+  \item \textbf{Isolamento} (\textbf{I}solation):
+    L’esecuzione di una transazione deve essere indipendente dalla contemporanea
+    esecuzione di altre transazioni.
+
+    \vspace{1em}
+    \noindent
+    Implicazioni:
+    \begin{itemize}
+      \item Il rollback di una transazione non deve creare rollback a catena di altre
+        transazioni che si trovano in esecuzione contemporaneamente.
+
+      \item Il sistema deve regolare l’esecuzione concorrente con meccanismi di controllo
+        dell’accesso alle risorse.
+    \end{itemize}
+
+  \item \textbf{Persistenza} (\textbf{D}urability):
+    L’effetto di una transazione che ha eseguito il commit non deve andare perso.
+
+    \vspace{1em}
+    \noindent
+    Implicazioni:
+    \begin{itemize}
+      \item Il sistema deve essere in grado, in caso di guasto, di garantire gli effetti
+        delle transazioni che al momento del guasto avevano già eseguito un commit.
+    \end{itemize}
+\end{itemize}
+Un DBMS che gestisce transazioni dovrebbe garantire per ogni transazione che esegue
+tutte queste proprietà.
+
+\subsection{Architettura di di un DBMS}
+L'architettura di un DBMS è composta da \textbf{moduli} che si occupano di gestire
+le diverse funzionalità del sistema.
+
+\subsubsection{Vista ad alto livello}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{architettura_alto_livello}
+  \caption{Vista ad alto livello dell'architettura di un DBMS}
+\end{figure}
+
+\subsubsection{Modulo di gestione delle transazioni}
+Questo modulo si occupa di trasformare una transazione in un insieme di operazioni
+sulla base di dati, garantendo le proprietà ACID.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{modulo_gestione_transazioni}
+  \caption{Modulo di gestione delle transazioni di un DBMS}
+\end{figure}
+
+I singoli moduli che compongono questo modulo sono:
+\begin{itemize}
+  \item \textbf{Gestore delle interrogazioni}:
+    Riceve in ingresso una query SQL
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{gestore_interrogazioni}
+      \caption{Gestore delle interrogazioni di un DBMS}
+    \end{figure}
+
+  \item \textbf{Gestore dei metodi di accesso}: Determina quali sono le 
+    pagine della memoria secondaria di cui si ha bisogno, ma capisce anche se
+    è possibile accederci.
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{gestore_metodi_accesso}
+      \caption{Gestore dei metodi di accesso di un DBMS}
+    \end{figure}
+
+  \item \textbf{Gestore dell'affidabilità}:
+    Carica in memoria principale le pagine della memoria
+    secondaria di cui si ha bisogno, e le mantiene in memoria finché non sono più
+    necessarie.
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{gestore_affidabilita}
+      \caption{Gestore del buffer di un DBMS}
+    \end{figure}
+
+  \item \textbf{Gestore del buffer}
+  \item \textbf{Gestore della memoria secondaria}
+  \item \textbf{Gestore della concorrenza}
+\end{itemize}
+
+\vspace{1em}
+\noindent
+I moduli che contribuiscono a garantire le proprietà ACID sono:
+\begin{itemize}
+  \item \textbf{Gestore dei metodi di accesso}: garantisce la consistenza
+  \item \textbf{Gestore dell'esecuzione concorrente}: garantisce l'isolamento e l'atomicità
+  \item \textbf{Gestore dell'affidabilità}: garantisce l'atomicità e la persistenza
+\end{itemize}
+
+\section{Linguaggio di interrogazione SQL}
+SQL (Structured Query Language) è il linguaggio di riferimento per le basi di dati
+relazionali. SQL è un linguaggio dichiarativo composto da 3 tipi di istruzioni:
+\begin{itemize}
+\item \textbf{Data Definition Language} (DDL): linguaggio per la definizione della
+  struttura della base di dati (es. \texttt{CREATE}, \texttt{ALTER}, \texttt{DROP})
+
+\item \textbf{Data Manipulation Language} (DML): linguaggio per manipolare i dati
+  come inserimento, aggiornamento e cancellazione (es. \texttt{INSERT}, \texttt{UPDATE},
+  \texttt{DELETE})
+
+\item \textbf{Data Query Language} (DQL): linguaggio per interrogare i dati (es.
+  \texttt{SELECT})
+\end{itemize}
+Esistono varie versioni di SQL, in questo corso ci baseremo su SQL-92 (SQL-2), che è una versione
+standard del linguaggio SQL.
+
+\vspace{1em}
+\noindent
+La parte di SQL dedicata alle interrogazioni fa parte dei DQL (Data Query Language). SQL esprime le
+interrogazioni in modo dichiarativo (specifica l’obiettivo e non la procedura per ottenerlo,
+come l’algebra relazionale). Una parte del DBMS, detta query optimizer, traduce di
+fatto l’interrogazione SQL nel linguaggio procedurale interno del sistema, che è nascosto
+all’utente. SQL permette quindi di descrivere le interrogazioni in modo astratto ed ad
+alto livello.
+
+\subsection{SELECT}
+La sintassi dell’istruzione SELECT è la seguente:
+\begin{lstlisting}
+SELECT [ DISTINCT ]
+[ * | expression [[ AS] output_name ] [, ...] ]
+[ FROM from_item [, ...] ]
+[ WHERE condition ]
+[ GROUP BY grouping_element [, ...] ]
+[ HAVING condition [, ...] ]
+[ { UNION | INTERSECT | EXCEPT } [ DISTINCT ] other_select ]
+[ ORDER BY expression [ ASC | DESC | USING operator ]]
+\end{lstlisting}
+dove:
+\begin{itemize}
+  \item \texttt{expression}: è un espressione che determina un attributo
+  \item \texttt{from\_item}: è un'espressione che determina una sorgente per gli attributi
+  \item \texttt{condition}: è un'espressione booleana per selezionare i valori degli attributi
+  \item \texttt{grouping\_element}: è un'espressione per poter eseguire operazioni su più
+    valori di un attributo
+\end{itemize}
+
+\vspace{1em}
+\noindent
+La struttura dell'istruzione è la seguente:
+\begin{lstlisting}
+SELECT ListaAttributi
+FROM ListaTabelle
+[WHERE Condizione]
+\end{lstlisting}
+\texttt{SELECT}, \texttt{FROM} e \texttt{WHERE} sono chiamate \textbf{clausole}.
+Il \texttt{SELECT} estrae dal prodotto cartesiano delle tabelle elencate nella clausola
+\texttt{FROM}, le righe che soddisfano la condizione specificata nella clausola \texttt{WHERE}.
+Il risultato dell'interrogazione è una tabella con una riga per ogni riga prodotta dalla clausola
+\texttt{FROM} ed eventualmente filtrata dalla clausola \texttt{WHERE} (se esiste), le cui
+colonne dipendono dalla lista degli attributi nella clausola \texttt{SELECT}.
+
+\begin{example}
+  Prendendo ad esempio la seguente base di dati:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{esempio_db}
+    \caption{Esempio di base di dati}
+  \end{figure}
+  \noindent
+  Un esempio di istruzione SELECT è il seguente:
+
+  Estrarre lo stipendio degli impiegati di cognome 'Rossi'
+  
+\begin{lstlisting}
+SELECT Stipendio
+FROM Impiegato
+WHERE Cognome = 'Rossi';
+\end{lstlisting}
+  Il risultato di questa interrogazione è la seguente tabella:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.2\textwidth]{esempio_select}
+    \caption{Risultato dell'istruzione SELECT}
+  \end{figure}
+\end{example}
+
+\vspace{1em}
+\noindent
+Alcune possibili espressioni sono:
+\begin{itemize}
+  \item \texttt{*}: seleziona tutti gli attributi:
+\begin{lstlisting}
+SELECT *
+FROM Impiegato;
+\end{lstlisting}
+
+  \item \texttt{as}: permette di rinominare un attributo:
+\begin{lstlisting}
+SELECT Stipendio AS Salario
+FROM Impiegato;
+\end{lstlisting}
+\end{itemize}
+
+\subsection{FROM}
+\textbf{Clausola FROM}: specifica le tabelle da cui estrarre i dati:
+\begin{lstlisting}
+FROM from_item [, ...]
+\end{lstlisting}
+dove \texttt{from\_item} può essere \textbf{una sola} delle seguenti clausole:
+\begin{enumerate}
+  \item \textbf{table\_name [[AS] alias [(column\_alias [, ...])]}: Se sono presenti due
+    o più tabelle, si esegue il prodotto cartesiano tra tutte le tabelle. Se ci sono
+    attributi con lo stesso nome su tabelle diverse, nella SELECT questi attributi
+    sono identificati anteponendo il nome della tabella e un '.' (es. \texttt{nomeTabella.nomeAttributo}).
+
+  \item \textbf{(other\_select) [AS] nomeRisultato [(column\_alias [,...])]}: è una SELECT
+    innestata. Il risultato della SELECT interna è lo schema con nome \texttt{nomeRisultato}
+    su cui fare la SELECT corrente.
+
+  \item \textbf{from\_item [NATURAL] join\_type from\_item [ON condition]}: è la clausola JOIN. Metodo
+    più sofisticato di 1) che permette di selezionare un sottoinsieme del prodotto cartesiano
+    di due o più tabelle. \texttt{join\_type} specifica il tipo di join.
+\end{enumerate}
+
+\begin{example}
+  Considerando la seguente base di dati:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{esempio_db_from_1}
+  \end{figure}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{esempio_db_from_2}
+    \caption{Esempio di base di dati per la clausola JOIN}
+  \end{figure}
+  \noindent
+  Estrarre i nomi ed il cognome degli impiegati e le città in cui lavorano:
+\begin{lstlisting}
+SELECT Impiegato.Nome, Impiegato.Cognome,
+       Dipartimento.Citta'
+FROM Impiegato, Dipartimento
+WHERE Impiegato.Dipart = Dipartimento.Nome
+\end{lstlisting}
+  Il risultato di questa interrogazione è la seguente tabella:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{esempio_select_from}
+    \caption{Risultato dell'istruzione SELECT con clausola FROM}
+  \end{figure}
+\end{example}
+
+\subsection{WHERE}
+\textbf{Clausola WHERE}: specifica la condizione per selezionare le righe da estrarre:
+\begin{lstlisting}
+WHERE condition
+\end{lstlisting}
+La clausola \texttt{WHERE} ammette come argomento un’espressione booleana costruita
+combinando predicati semplici con gli operatori AND, OR e NOT
+\begin{itemize}
+  \item \textbf{AND}: seleziona le righe in cui tutti i predicati sono veri
+  \item \textbf{OR}: seleziona le righe in cui almeno un predicato è vero
+  \item \textbf{NOT}: seleziona le righe in cui il predicato è falso
+\end{itemize}
+
+Ciascun predicato semplice usa gli operatori =, <> (\( <> \iff \neq \ \) ), <, >, <= e >= per confrontare
+un’espressione costruita a partire dal valore di un attributo con un valore costante,
+oppure un’altra espressione.
+
+\begin{example}
+  Considerando la seguente base di dati:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{esempio_db_from_1}
+  \end{figure}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{esempio_db_from_2}
+    \caption{Esempio di base di dati per la clausola JOIN}
+  \end{figure}
+  \noindent
+  Estrarre i nomi ed il cognome degli impiegati che lavorano
+  nell’ufficio 20 del dipartimento Amministrazione.
+\begin{lstlisting}
+SELECT Nome, Cognome
+FROM Impiegato
+WHERE Uffico = 20 AND
+      Dipart = 'Amministrazione'
+\end{lstlisting}
+  Il risultato di questa interrogazione è la seguente tabella:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{esempio_select_where}
+    \caption{Risultato dell'istruzione SELECT con clausola WHERE}
+  \end{figure}
+\end{example}
+
+\begin{example}
+  Considerando la base di dati precedente:
+
+  Estrarre i nomi ed il cognome degli impiegati che lavorano dipartimento
+  Amministrazione o nel dipartimento Produzione.
+\begin{lstlisting}
+SELECT Nome, Cognome
+FROM Impiegato
+WHERE Dipart = 'Amministrazione'
+      OR Dipart = 'Produzione'
+\end{lstlisting}
+  Il risultato di questa interrogazione è la seguente tabella:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{esempio_select_where_or}
+    \caption{Risultato dell'istruzione SELECT con clausola WHERE e operatore OR}
+  \end{figure}
+\end{example}
+
+\begin{example}
+  Considerando la base di dati precedente:
+
+  Estrarre i nomi degli impiegati di cognome Rossi che lavorano
+  dipartimento Amministrazione o nel dipartimento Produzione.
+\begin{lstlisting}
+SELECT Nome
+FROM Impiegato
+WHERE Cognome = 'Rossi' AND
+      (Dipart = 'Amministrazione' OR
+      Dipart = 'Produzione')
+\end{lstlisting}
+  Il risultato di questa interrogazione è la seguente tabella:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.2\textwidth]{esempio_select_where_and_or}
+    \caption{Risultato dell'istruzione SELECT con clausola WHERE e operatori AND e OR}
+  \end{figure}
+\end{example}
+
+\subsubsection{LIKE}
+Per il confronto tra stringhe, SQL mette a disposizione anche
+l’operatore LIKE che consente verificare se una stringa rispetta un certo
+“pattern” (oppure ILIKE per case insentive). I due caratteri speciali per il confronto
+sono:
+\begin{itemize}
+  \item \texttt{\_}: confronto con un carattere arbitrario
+  \item \texttt{\%}: confronto con una stringa di lunghezza arbitraria (anche 0) di
+    caratteri arbitrari
+\end{itemize}
+\begin{example}
+  Un esempio di pattern è il seguente:
+\begin{lstlisting}
+_o%i
+\end{lstlisting}
+  che equivale a una stringa che ha una o in seconda posizione, seguita da una
+  sequenza qualsiasi di caratteri (anche vuota) e che termina con una i.
+\end{example}
+
+\begin{example}
+  Considerando la base di dati precedente:
+
+  Estrarre gli impiegati che hanno un cognomen cha ha una “o”
+  in seconda posizione e finisce con una “I”.
+
+\begin{lstlisting}
+SELECT *
+FROM Impiegato
+WHERE Cognome LIKE '_o%i';
+\end{lstlisting}
+  Il risultato di questa interrogazione è la seguente tabella:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{esempio_select_where_like}
+    \caption{Risultato dell'istruzione SELECT con clausola WHERE e operatore LIKE}
+  \end{figure}
+\end{example}
+
+\subsubsection{SIMILAR TO}
+L’operatore SIMILAR TO è un LIKE più espressivo che accetta,
+come pattern, un sottoinsieme delle espressioni regolari POSIX
+(versione SQL).
+
+La sintassi delle espressioni regolari è:
+\begin{itemize}
+  \item \texttt{\_}: 1 carattere qualsiasi
+  \item \texttt{\%}: 0 o più caratteri qualsiasi
+  \item \texttt{*}: ripetizione del precedente match 0 o più volte
+  \item \texttt{+}: ripetizione del precedente match UNA o più volte
+  \item \texttt{\{n,m\}}: ripetizione del precedente match almeno n e non più di m volte
+  \item \texttt{[...]}: ... è un elenco di caratteri ammissibili
+\end{itemize}
+
+\begin{example}
+  Considerando la seguente base di dati:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{esempio_db_similar_to}
+    \caption{Esempio di base di dati per la clausola SIMILAR TO}
+  \end{figure}
+  Estrarre gli studenti con cognome che inizia con ’A’ o ’B’, o ’D’, o ’N’ e finisce con ’a’:
+\begin{lstlisting}
+SELECT cognome, nome, citta' FROM Studente
+WHERE cognome SIMILAR TO '[ABDN]{1}%a';
+\end{lstlisting}
+  Il risultato di questa interrogazione è evidenziato in giallo.
+\end{example}
+
+\subsubsection{BETWEEN}
+L’operatore BETWEEN consente di verificare se un valore è compreso tra due valori
+estremi (inclusi). La sintassi è la seguente:
+\begin{lstlisting}
+expression BETWEEN value1 AND value2
+\end{lstlisting}
+
+\begin{example}
+  Considerando la seguente base di dati:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{esempio_db_between}
+    \caption{Esempio di base di dati per la clausola BETWEEN}
+  \end{figure}
+  Estrarre tutti gli studenti che hanno matricola tra ’IN0002’ e ’IN0004’.
+\begin{lstlisting}
+SELECT cognome, nome, matricola FROM Studente
+WHERE matricola BETWEEN 'IN0002' AND 'IN0004';
+\end{lstlisting} 
+  Il risultato di questa interrogazione è il seguente:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{esempio_select_where_between}
+    \caption{Risultato dell'istruzione SELECT con clausola WHERE e operatore BETWEEN}
+  \end{figure}
+\end{example}
+
+\subsubsection{IN}
+Nella clausola WHERE può apparire l’operatore [NOT] IN per
+testare l’appartenenza di un valore ad un insieme. La sintassi è la seguente:
+\begin{lstlisting}
+WHERE attributo [NOT] IN ( valore [, ...] );
+\end{lstlisting}
+
+\subsubsection{IS NULL}
+Per verificare se un attributo ha un valore nullo o meno si utilizza il predicato
+IS NULL che ritorna true se l'attributo ha valore nullo. Oppure IS NOT NULL.
+
+\begin{lstlisting}
+WHERE attributo IS [ NOT ] NULL;
+\end{lstlisting}
+
+SQL-2 implementa la logica a 3 valori, cioè un predicato semplice restituisce il valore
+NULL quando uno qualsiasi dei termini del predicato ha valore nullo. Il predicato IS NULL
+è una eccezione, restituendo sempre il valore vero oppure false, mai il valore NULL.
+
+\subsection{Gestione dei duplicati}
+Siccome la rimozione delle righe duplicate è un'operazione costosa, SQL le mantiene
+di default. Per togliere i duplicati si può utilizzare la parola chiave DISTINCT dopo SELECT:
+\begin{lstlisting}
+SELECT DISTINCT Stipendio
+FROM Impiegato
+WHERE Cognome = 'Rossi';
+\end{lstlisting}
+
+Il costrutto ALL è invece usato per mantenere i duplicati, ma è superfluo.
+
+\subsection{JOIN}
+Le interrogazioni con il join possono essere definite in due modi:
+\begin{enumerate}
+  \item Senza l’uso di nuova sintassi, e specifica il legame
+    tra le tabelle coinvolte a livello della clausola WHERE.
+
+  \item Con una sintassi riservata a livello di clausola FROM
+\end{enumerate}
+
+% • La clausola FROM ammette come argomento:
+% table_name [[AS] name]] [, ...]
+% • Si è visto che se sono presenti due o più nomi di tabelle, si esegue
+% il prodotto cartesiano tra tutte le tabelle e lo schema del risultato
+% può contenere tutti gli attributi del prodotto cartesiano.
+% • Il prodotto cartesiano di due o più tabelle è un CROSS JOIN.
+% • A partire da SQL-2, esistono altri tipi di JOIN (join_type):
+% INNER JOIN, LEFT [OUTER] JOIN, RIGHT [OUTER] JOIN e FULL
+% [OUTER] JOIN.
+La clausola FROM ammette come argomento:
+\begin{lstlisting}
+table_name [[AS] name]] [, ...]
+\end{lstlisting}
+Si è visto che se sono presenti due o più nomi di tabelle, si esegue il prodotto
+cartesiano tra tutte le tabelle e lo schema del risultato può contenere tutti gli attributi
+del prodotto cartesiano. Il prodotto cartesiano di due o più tabelle è un CROSS JOIN.
+
+A partire da SQL-2, esistono altri tipi di JOIN (join\_type):
+\begin{itemize}
+  \item \textbf{INNER JOIN}: restituisce solo le righe che soddisfano la condizione di join
+  \item \textbf{LEFT [OUTER] JOIN}: restituisce tutte le righe della tabella di sinistra e le righe della tabella di destra che soddisfano la condizione di join, e NULL per le righe della tabella di destra che non soddisfano la condizione di join
+  \item \textbf{RIGHT [OUTER] JOIN}: restituisce tutte le righe della tabella di destra e le righe della tabella di sinistra che soddisfano la condizione di join, e NULL per le righe della tabella di sinistra che non soddisfano la condizione di join
+  \item \textbf{FULL [OUTER] JOIN}: restituisce tutte le righe di entrambe le tabelle, e NULL per le righe che non soddisfano la condizione di join
+\end{itemize}
+La sintassi generale è:
+\begin{lstlisting}
+table_name [ NATURAL ] join_type table_name [ON join_condition [, ...]].
+\end{lstlisting}
+dove \texttt{join\_condition} è un’espressione booleana che
+seleziona le tuple del join da aggiungere al risultato. Le
+tuple selezionate possono essere poi filtrate con la
+condizione della clausola WHERE
+
+\begin{example}[Prodotto Cartesiano]
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{esempio_db_join}
+    \caption{Esempio di base di dati per la clausola JOIN}
+  \end{figure}
+\end{example}
+
+\subsubsection{INNER JOIN}
+La sintassi è la seguente:
+\begin{lstlisting}
+table1 [ INNER ] JOIN table2 ON join_condition [, ...]
+\end{lstlisting}
+Rappresenta il tradizionale \( \Theta  \) join dell’algebra relazionale. Combina ciascuna
+riga \( r_1 \) di table1 con ciascuna riga di table2 che soddisfa la condizione della clausola
+ON.
+
+\begin{example}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{esempio_db_inner_join}
+    \caption{Esempio di base di dati per la clausola INNER JOIN}
+  \end{figure}
+\end{example}
+
+\subsubsection{LEFT OUTER JOIN}
+La sintassi è la seguente:
+\begin{lstlisting}
+table1 LEFT [ OUTER ] JOIN table2 ON join_condition [, ...].
+\end{lstlisting}
+Si esegue un INNER JOIN. Poi, per ciascuna riga \( r_1 \) di table1 che non soddisfa la
+condizione con qualsiasi riga di table2, si aggiunge una riga al risultato con i valori
+di \( r_1 \) e assegnando NULL agli altri attributi.
+
+\begin{example}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{esempio_db_left_outer_join}
+    \caption{Esempio di base di dati per la clausola LEFT OUTER JOIN}
+  \end{figure}
+\end{example}
+
+\textbf{ATTENZIONE}: Il LEFT [OUTER] JOIN non è simmetrico, cioè con le stesse tabelle
+si possono ottenere risultati diversi a seconda dell’ordine in cui si scrivono le tabelle.
+
+\subsubsection{RIGHT OUTER JOIN}
+La sintassi è la seguente:
+\begin{lstlisting}
+table1 RIGHT [ OUTER ] JOIN table2 ON join_condition [, ...].
+\end{lstlisting}
+Si esegue un INNER JOIN. Poi, per ciascuna riga \( r_2 \) di table2 che non soddisfa la
+condizione con qualsiasi riga di table1, si aggiunge una riga al risultato con i valori
+di \( r_2 \) e assegnando NULL agli altri attributi.
+
+\begin{example}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{esempio_db_right_outer_join}
+    \caption{Esempio di base di dati per la clausola RIGHT OUTER JOIN}
+  \end{figure}
+\end{example}
+
+\subsubsection{FULL OUTER JOIN}
+La sintassi è la seguente:
+\begin{lstlisting}
+table1 FULL [ OUTER ] JOIN table2 ON join_condition [, ...].
+\end{lstlisting}
+È equivalente a:
+\begin{lstlisting}
+INNER JOIN + LEFT OUTER JOIN + RIGHT OUTER JOIN
+\end{lstlisting}
+Non è equivalente a CROSS JOIN!
+
+\subsection{Ordinamento del risultato}
+Una relazione è un insieme di tuple non ordinato, ma spesso c'è bisogno di costruire
+un ordine sulle righe. Per questo SQL mette a disposizione la clausola ORDER BY che permette
+di ordinare le righe del risultato in base ai valori di uno o più attributi. La sintassi è la
+seguente:
+\begin{lstlisting}
+ORDER BY attributo [{ ASC | DESC }] [, ... ];
+\end{lstlisting}
+Le righe vengono ordinate per il primo attributo nell’elenco, a parità di valore
+del primo attributo si usa il secondo, e così via in sequenza. Di default l’ordinamento è ASC.
+
+\subsection{Operatori insiemistici}
+Gli operatori insiemistici disponibili sono:
+\begin{lstlisting}
+SELECT
+  { UNION | INTERSECT| EXCEPT
+  [ALL] SELECT }
+\end{lstlisting}
+Gli operatori insiemistici, al contrario del resto del linguaggio, assumono come default
+di eseguire un’eliminazione dei duplicati, a meno che si usi ALL. Sono sufficienti domini
+compatibili ed ugual numero di attributi. La corrispondenza degli attributi si basa sulla
+posizione, e se i nomi degli attributi sono diversi di solito il sistema usa il nome del
+primo operando.
+
+\subsection{Operatori aggregati}
+Gli operatori aggregati permettono di eseguire operazioni su più righe per ottenere un unico
+valore. Gli operatori aggregati disponibili sono:
+\begin{itemize}
+  \item \textbf{COUNT}
+  \item \textbf{SUM}
+  \item \textbf{AVG}
+  \item \textbf{MIN}
+  \item \textbf{MAX}
+\end{itemize}
+Tutte le condizioni specificate vengono valutate su una tupla alla volta e gli operatori
+permettono di valutare proprietà che dipendono da insiemi di tuple.
+
+Prima viene eseguita l’interrogazione considerando solo le clausole
+FROM e WHERE, quindi l’operatore di aggregazione viene applicato alla
+tabella contenente il risultato.
+
+\subsubsection{COUNT}
+Conta il numero di righe di una tabella o il numero di valori di uno o più attributi.
+La sintassi è la seguente:
+\begin{lstlisting}
+COUNT ( <* | [DISTNCT | ALL] ListaAttributi> )
+\end{lstlisting}
+dove:
+% DISTINCT ListaAttributi: conta il numero di valori diversi degli
+% attributi ListaAttributi
+% • ALL ListaAttributi: conta il numero di righe che hanno valori diversi
+% da NULL negli attributi in ListaAttributi
+% • Comportamento di default
+\begin{itemize}
+  \item \texttt{*}: conta il numero di righe della tabella
+
+  \item \texttt{DISTINCT ListaAttributi}: conta il numero di valori diversi degli
+    attributi ListaAttributi
+
+  \item \texttt{ALL ListaAttributi}: conta il numero di righe che hanno valori diversi da
+    NULL negli attributi in ListaAttributi
+\end{itemize}
+
+\subsubsection{SUM}
+La sintassi è la seguente:
+\begin{lstlisting}
+SUM ( [DISTINCT | ALL] AttrExpr )
+\end{lstlisting}
+Restituisce la somma dei valori posseduti dall'espressione.
+Ammette come argomento solo espressioni che rappresentano valori numerici o intervalli
+di tempo.
+
+\begin{itemize}
+  \item DISTINCT elimina i duplicati
+  \item ALL trascura solo i valori nulli
+\end{itemize}
+
+\subsubsection{MAX/MIN}
+La sintassi è la seguente:
+\begin{lstlisting}
+<MAX | MIN> ( [DISTINCT | ALL] AttrExpr )
+\end{lstlisting}
+Restituisce il massimo/minimo dei valori posseduti dall’espressione.
+Ammettono come argomento solo espressioni su cui è definito un ordinamento (quindi anche
+stringhe)
+
+\subsubsection{AVG}
+La sintassi è la seguente:
+\begin{lstlisting}
+AVG ( [DISTINCT | ALL] AttrExpr )
+\end{lstlisting}
+Restituisce la media dei valori posseduti dall’espressione.
+
+\begin{itemize}
+  \item DISTINCT elimina i duplicati
+  \item ALL trascura solo i valori nulli
+\end{itemize}
+
+
+\subsection{Interrogazioni con raggruppamento}
+Gli operatori di aggregazione possono essere applicati separatamente a sottoinsiemi di righe.
+La clausola GROUP BY permette di specificare come dividere le tabelle in sottoinsiemi e
+permette di specificare un insieme di attributi secondo cui raggruppare le righe che possiedono
+gli stessi valori per questo insieme di attributi.
+
+\vspace{1em}
+\noindent
+In una interrogazione che fa uso della clausola GROUP BY può comparire
+come argomento della SELECT solo un sottoinsieme degli attributi usati nella
+clausola GROUP BY oppure operatori di aggregazione.
+Ogni sottoinsieme di righe generato dal GROUP BY deve corrispondere ad un’unica riga nella
+tabella risultato.
+
+\subsubsection{HAVING}
+È possibile applicare delle selezioni ai gruppi generati tramite la clausola GROUP BY
+tramite la clausola HAVING. Questa clausola permette di specificare delle condizioni che
+devono essere soddisfatte dai gruppi generati dopo l’esecuzione
+del raggruppamento tramite GROUP BY.
+
+\vspace{1em}
+\noindent
+\textbf{Osservazione}:
+\begin{itemize}
+  \item La clausola WHERE applica delle selezioni su SINGOLE RIGHE, prima dell’eventuale
+    raggruppamento tramite GROUP BY.
+
+  \item La clausola HAVING applica delle selezioni su GRUPPI, generati a seguito dell’esecuzione del
+    raggruppamento tramite GROUP BY.
+\end{itemize}
+
+\subsection{Interrogazioni nidificate}
+Un'interrogazione nidificata è un'interrogazione che contiene al suo interno altre
+interrogazioni. La nidificazione può avvenire sia nella clausola SELECT, che nella
+clausola FROM, che nella clausola WHERE. Il caso tipico è la nidificazione nella clausola
+WHERE, dove un predicato contiene un confronto tra un valore (espressione su una singola
+riga) ed il risultato di un’interrogazione SQL.
+
+\subsubsection{WHERE}
+Se in un predicato si confronta un attributo o una espressione che produce un valore
+singolo con il risultato di un’interrogazione, sorge il problema di disomogeneità dei termini
+del confronto. I normali operatori di confronto (=, <>, <, >, $\le$ , $\ge$) possono
+essere estesi con le parole chiave ANY e ALL:
+\begin{itemize}
+  \item \textbf{ANY}: la riga soddisfa la condizione se risulta vero il confronto
+    (con l’operatore specificato) tra il valore dell’attributo (o espressione) e ALMENO uno
+    degli elementi restituiti dall’interrogazione.
+
+  \item \textbf{ALL}: la riga soddisfa la condizione se risulta vero il confronto
+    (con l’operatore specificato) tra il valore dell’attributo (o espression) e TUTTI gli elementi restituiti dall’interrogazione.
+\end{itemize}
+Per il controllo di appartenenza o esclusione rispetto ad un insieme si possono usare anche
+gli operatori IN (= ANY) e NOT IN (<> ALL).
+
+
 \end{document}
