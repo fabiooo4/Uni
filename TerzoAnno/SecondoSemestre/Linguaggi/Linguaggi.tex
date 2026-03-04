@@ -9,7 +9,7 @@
 \tableofcontents
 \pagebreak
 
-\section{Introduzione}
+\section{Linguaggi di programmazione}
 Un linguaggio interpretato è un linguaggio di programmazione in cui le istruzioni vengono
 eseguite direttamente, senza la necessità di essere compilate in un formato eseguibile.
 Un interprete è rappresentato da un modello di esecuzione, cioè un \textbf{control
@@ -28,4 +28,287 @@ I programmi si possono interpretare in diversi modi:
   \item \textbf{Analisi statica}: l'interprete analizza il programma senza eseguirlo, ad
     esempio per verificare la correttezza del codice o per ottimizzare le prestazioni.
 \end{itemize}
+
+
+\subsection{Obiettivo dei linguaggi di programmazione}
+\noindent
+L'obiettivo è creare un modello formale che riesca ad eseguire i costrutti necessari
+per eseguire un programma. I componenti principali sono:
+\begin{itemize}
+  \item \textbf{Dati}
+  \item \textbf{Algoritmi}: Calcolo da eseguire sui dati, cioè calcola funzioni.
+\end{itemize}
+
+\vspace{1em}
+\noindent
+
+\begin{definition}[Algoritmo]
+    Un algoritmo è una sequenza di passi primitivi finita. L'algoritmo è descritto
+    attraverso un programma in un linguaggio di programmazione.
+\end{definition}
+
+\vspace{1em}
+\noindent
+
+\begin{definition}[Linguaggio di programmazione]
+  Un linguaggio di programmazione è uno strumento formale per descrivere algoritmi
+  applicati ai dati.
+\end{definition}
+
+\vspace{1em}
+\noindent
+
+\begin{definition}[Programma]
+  Il programma è la realizzazione nel linguaggio di programmazione di un algoritmo
+  (concetto astratto).
+  È una rappresentazione sintattica, cioè rispetta delle regole sintattiche del
+  linguaggio di programmazione, finita di comportamenti potenzialmente infiniti.
+  I comportamenti potenzialmente infiniti sono funzioni calcolate dall'algoritmo
+  rappresentato (o implementato) dal programma:
+  \[
+    f: Dom \to Codom \cup \{\uparrow\}
+  \] 
+
+  \noindent
+  Il linguaggio di programmazione deve considerare strumenti per descrivere
+  \textbf{metodi di calcolo}
+\end{definition}
+
+\noindent
+Alcuni esempi di linguaggi sono:
+\begin{itemize}
+  \item \textbf{Linguaggio matematico}: notazione rigorosa per rappresentare funzioni.
+    Questo linguaggio non è adatto per descrivere algoritmi perchè non ha strumenti
+    che descrivono \textbf{come} calcolare funzioni.
+
+    \begin{itemize}
+      \item Paradigma funzionale: nascono dal linguaggio matematico per adattarlo
+        alla descrizione di algoritmi. Derivano dal lambda calcolo e alcune implementazioni
+        sono Haskell o Lisp.
+    \end{itemize}
+
+
+  \item \textbf{Linguaggi logici}: notazione rigorosa con regole-assiomi che permettono
+    di specificare un processo di calcolo attraverso regole di derivazione. Il
+    calcolo è rappresentato da un processo di dimostrazione. Manca la descrizione
+    di calcoli potenzialmente infiniti.
+
+    \begin{itemize}
+      \item Paradigma logico: nascono dal linguaggio logico per adattarlo alla descrizione di
+        algoritmi. Derivano dal calcolo dei predicati e un esempio di implementazione è
+        Prolog.
+    \end{itemize}
+
+  \item \textbf{Linguaggi di programmazione}: notazione rigorosa, tramite grammatiche CF,
+    con:
+    \begin{itemize}
+      \item \textbf{Regole}: descrivono la semantica delle istruzioni
+      \item \textbf{Istruzioni}: permettono di descrivere i passi di calcolo
+    \end{itemize}
+\end{itemize}
+
+\begin{example}
+  Alcuni esempi di applicazioni dei linguaggi di programmazione sono:
+  \begin{itemize}
+    \item Applicazioni scientifiche: Fortran, ecc...
+    \item Applicazioni economiche: Cobol, ecc...
+    \item Applicazioni AI: Lisp, ecc...
+    \item Applicazioni sistemi: C, ecc...
+    \item Applicazioni web: JavaScript, Java, ecc...
+  \end{itemize}
+\end{example}
+
+\subsection{Aspetti di progettazione}
+Gli aspetti per scegliere un linguaggio di programmazione sono:
+\begin{itemize}
+  \item \textbf{Readability} (Leggibilità): quanto è facile leggere e comprendere i
+    programmi, cioè:
+    \begin{itemize}
+      \item Sintassi chiara
+      \item Nessuna ambiguità
+      \item Facilità di analisi del codice
+    \end{itemize}
+
+  \item \textbf{Writability} (Facilità di scrittura): quanto è facile o agevole scrivere
+    programmi.
+
+  \item \textbf{Reliability} (Affidabilità): quanto il linguaggio è conforme alle specifiche
+    e quanto riduce l'introduzione di errori di programmazione.
+
+  \item \textbf{Cost} (Costo):
+    \begin{itemize}
+      \item Costi di efficienza
+      \item Costi di apprendimento
+      \item Costi di utilizzo in modo corretto
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Tipi di linguaggi}
+I linguaggi di programmazione si possono classificare come:
+\begin{itemize}
+  \item \textbf{Linguaggi di basso livello}: sono linguaggi vicini alla macchina fisica,
+    come ad esempio l'assembly o il linguaggio macchina.
+
+  \item \textbf{Linguaggi di alto livello}: sono linguaggi più vicini al linguaggio umano,
+    come ad esempio:
+    \begin{itemize}
+      \item Linguaggi funzionali
+      \item Linguaggi imperativi
+      \item Linguaggi logici
+    \end{itemize}
+
+    \vspace{1em}
+    \noindent
+    I linguaggi si possono ulteriormente dividere in:
+    \begin{itemize}
+      \item \textbf{Linguaggi puri}: 
+        I linguaggi imperativi e alcuni linguaggi funzionali sono detti \textbf{funzionali impuri}
+        perchè permettono di descrivere algoritmi con variabili e assegnamenti che
+        possono ricevere degli "effetti collaterali" (side effects) cioè modifiche
+        dello stato del programma. Quindi la variabile è un'astrazione della cella di memoria,
+        di conseguenza lo stesso nome in punti diversi può avere valori diversi.
+
+      \item \textbf{Linguaggi puri}:
+        I linguaggi logici e alcuni linguaggi funzionali sono detti \textbf{funzionali puri}
+        perchè le variabili sono matematiche e quindi \textbf{immutabili}, cioè non possono
+        essere modificate dopo essere state assegnate. In questo modo si evitano gli
+        effetti collaterali.
+    \end{itemize}
+
+    \vspace{1em}
+    \noindent
+    I linguaggi di alto livello si possono dividere in base al paradigma di programmazione:
+    \begin{itemize}
+      \item \textbf{Object Oriented}: linguaggi che permettono di strutturare il codice
+        in oggetti con attributi e metodi.
+
+      \item \textbf{Procedurali}: linguaggi che permettono di strutturare il codice in procedure
+        o funzioni.
+
+      \item \textbf{Strutturati}: linguaggi che permettono di strutturare il codice in blocchi di istruzioni
+        con costrutti di controllo come if, while, for, ecc...
+
+      \item \textbf{Dichiarativi}: linguaggi che si basano sulla descrizione del problema
+        piuttosto che sulla descrizione del processo di calcolo.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Implementare un linguaggio di programmazione}
+Le caratteristiche che hanno effetto sulla progettazione di un linguaggio di programmazione
+sono:
+\begin{itemize}
+  \item L'architettura della macchina su cui è implementato
+  \item Le metodologie di progettazione di programmi, cioè i paradigmi di programmazione
+\end{itemize}
+
+\section{Esecuzione dei linguaggi}
+L'obiettivo dei linguaggi è \textbf{eseguire i programmi}.
+Per poter eseguire un programma serve un altro programma che lo esegue che è detto
+\textbf{macchina astratta} per il linguaggio di programmazione.
+
+\begin{definition}[Macchina astratta]
+  Dato un linguaggio di programmazione \( L \), la macchina astratta per \( L \)
+  \( M_L \) è un insieme di \textbf{strutture dati} e \textbf{algoritmi} che permettono
+  di memoriazzare e eseguire programmi scritti in \( L \).
+
+  \vspace{1em}
+  \noindent
+  Intuitivamente è la macchina il cui linguaggio è esattamente \( L \).
+\end{definition}
+
+\begin{example}
+  La macchina fisica è la \textbf{macchina astratta} per il linguaggio macchina.
+  Mentre tutte le macchine astratte per qualsiasi altro linguaggio di programmazione
+  di alto livello
+  sono software, quindi altri programmi che traducono le istruzioni del linguaggio di programmazione
+  in un'istruzione in un livello più basso.
+\end{example}
+
+\begin{definition}[Linguaggio macchina]
+  Data una macchina \( M \), il linguaggio macchina di \( M \) \( L_M \) è il linguaggio
+  che ha come stringhe quelle direttamente interpretabili da \( M \).
+
+  \vspace{1em}
+  \noindent
+  Se si ha una pila di macchine astratte \( \{M_{i-1}, M_i, M_{i+1}, M_{i+2}\} \)
+  la macchina \( M_i \) ha il suo linguaggio macchina \( L_{i} \) che utilizza il
+  linguaggio macchina \( L_{i-1} \) della macchina \( M_{i-1} \) per eseguire i
+  programmi scritti in \( L_i \). Inoltre il linguaggio \( L_i \) può essere usato
+  ai livelli superiori.
+
+\end{definition}
+\noindent
+Implementare \( L \) equivale a realizzare la macchina astratta \( M_L \). Per realizzare
+\( M_L \) ci sono due modi:
+\begin{enumerate}
+  \item \label{item:compilazione}
+    \textbf{Compilazione}: Tradurre \( L \) in un linguaggio macchina sottostante
+  \item \label{item:interpretazione}
+    \textbf{Interpretazione}: Eseguire \( L \) sulla macchina sottostante
+\end{enumerate}
+
+\begin{definition}[Compilazione]
+  La compilazione è una traduzione esplicita di un linguaggio \( L \) in un linguaggio
+  \( L' \).
+\end{definition}
+
+\begin{definition}[Interpretazione]
+  L'interpretazione è una traduzione implicita di un linguaggio \( L \) che viene
+  \textbf{simulato} in \( L' \).
+\end{definition}
+
+\subsection{Notazione}
+La notazione che verrà utilizzata per descrivere i programmi è la seguente:
+\begin{itemize}
+  \item \( Prog^L \): Insieme dei programmi scritti in \( L \)
+  \item \( D \): Insieme dei dati manipolati dai programmi in \( L \) 
+  \item \( P^L \in Prog^L \quad P^L: D \to D \):
+    \[
+      \forall input \in D.\; P^L(input) = output \in D
+    \] 
+    cioè il programma \( P^L \) è una funzione che prende in input un dato e restituisce
+    un dato in output.
+\end{itemize}
+
+\subsection{Interprete}
+L'interprete è la realizzazione della macchina astratta con soluzione interpretativa
+(\ref{item:interpretazione}).
+\begin{definition}[Interprete]
+  Un interprete per il linguaggio \( L \) (scritto nel linguaggio \( L_0 \)) è un programma
+  \( I^{L_0L}: (Prog^L \times D) \to D \) che prende in input un programma \( P^L \) e un dato
+  e restituisce in output il risultato dell'esecuzione di \( P^L \) su \( input \).
+  Questa è la realizzazione della \textbf{macchina di Turing universale}.
+  \[
+    \underbrace{I^{L_0L}(P^L, input) = output \quad t.c. \quad P^L(input) = output}
+  \] 
+  \[
+    I^{L_0L}(P^L, input) = P^L(input) \Rightarrow \text{Macchina universale}
+  \] 
+\end{definition}
+
+\subsubsection{Struttura dell'interprete}
+La struttura dell'interprete è data dal seguente pseudocodice:
+\begin{lstlisting}
+begin
+  go = true;
+  while go do
+    fetch(opcode, opinfo) at PC; // Program counter
+    decode(opcode, opinfo)
+
+    if opcode needs arguments then
+      fetch(args)
+
+    case opcode
+      opcode1: execute(opcode1, args)
+      opcode2: execute(opcode2, args)
+      ...
+      halt: go = false
+
+    if opcode has result then store(result)
+
+    PC = PC + sizeof(opcode)
+
+end
+\end{lstlisting}
+
 \end{document}
