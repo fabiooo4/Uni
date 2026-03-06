@@ -259,6 +259,223 @@ fatto l’interrogazione SQL nel linguaggio procedurale interno del sistema, che
 all’utente. SQL permette quindi di descrivere le interrogazioni in modo astratto ed ad
 alto livello.
 
+\subsection{PostgreSQL}
+È un Relational Database Management System (RDBMS) con alcune funzionalità orientate
+agli oggetti e verrà utilizzato all'interno del corso. Il modello di interazione con
+le basi di dati è \textbf{Client-Server}.
+
+\subsection{Fondamenti del DDL}
+\subsubsection{Identificatori}
+Un identificatore è una sequenza di caratteri che identifica un elemento del database
+come ad esempio una tabella, un attributo, un vincolo, ecc. Gli identificatori in SQL
+devono rispettare le seguenti regole:
+\begin{itemize}
+  \item Devono iniziare con una lettera (UTF-8) o un underscore (\texttt{\_})
+  \item Possono contenere lettere, numeri (0-9) e underscore (\texttt{\_})
+  \item Non possono essere parole chiave riservate di SQL
+\end{itemize}
+Gli identificatori sono \textbf{case-insensitive}, quindi \texttt{idPersona} e
+\texttt{idpersona} sono considerati lo stesso identificatore.
+
+\subsubsection{Domini elementari}
+I domini elementari sono i tipi predefiniti di SQL:
+\begin{itemize}
+  \item \textbf{Tipo carattere}:
+    Rappresenta stringhe di lunghezza variabile secondo la seguente sintassi:
+\begin{lstlisting}[language=SQL, numbers=none]
+CHARACTER [VARYING][(lunghezza)]
+\end{lstlisting}
+    \begin{itemize}
+      \item \texttt{CHARACTER}: carattere singolo
+
+      \item \texttt{CHARACTER(20)}: stringa di lunghezza fissa di 20 caratteri.
+        Se la stringa è più corta di 20 caratteri, viene riempita con spazi a destra.
+
+      \item \texttt{CHARACTER VARYING(20)}: stringa di lunghezza variabile con un massimo
+        di 20 caratteri. Se la stringa è più corta di 20 caratteri, viene memorizzata
+        senza spazi aggiuntivi.
+
+      \item \texttt{TEXT} (estensione PostgreSQL): stringa di lunghezza variabile senza
+        un limite.
+    \end{itemize}
+    Le scritte sono delimitate da apici singoli (\texttt{'}) o doppi (\texttt{"}).
+
+  \item \textbf{Tipo booleano}:
+    Rappresenta valori booleani (vero o falso) più lo stato nullo secondo la seguente
+    sintassi:
+\begin{lstlisting}[language=SQL, numbers=none]
+BOOLEAN
+\end{lstlisting}
+    La rappresentazione dei valori booleani può essere:
+    \begin{itemize}
+      \item \texttt{TRUE} o \texttt{FALSE}
+      \item \texttt{t} o \texttt{f}
+      \item \texttt{1} o \texttt{0}
+      \item \texttt{yes} o \texttt{no}
+      \item \texttt{NULL}
+    \end{itemize}
+
+  \item \textbf{Tipo numerico esatto}:
+    Rappresenta numeri interi o con parte decimale fissa.
+    \begin{itemize}
+      \item Valori interi:
+        \begin{itemize}
+          \item \texttt{SMALLINT}: 16bit con segno
+          \item \texttt{INTEGER}: 32bit con segno
+        \end{itemize}
+
+      \item Valori decimali:
+        \begin{itemize}
+          \item 
+\begin{lstlisting}[language=SQL, numbers=none]
+NUMERIC | DECIMAL [(precisione [, scala])]
+\end{lstlisting}
+            \begin{itemize}
+              \item \texttt{precisione}: numero totale di cifre (intere + decimali)
+              \item \texttt{scala}: numero di cifre decimali
+              \item \texttt{|}: indica che è possibile utilizzare sia \texttt{NUMERIC} che \texttt{DECIMAL}
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+
+  \item \textbf{Tipo numerico approssimato}:
+    Rappresenta numeri in virgola mobile \textbf{approssimati}:
+    \begin{itemize}
+      \item \texttt{REAL}: 6 cifre decimali
+      \item \texttt{DOUBLE PRECISION}: 15 cifre decimali
+    \end{itemize}
+
+  \item \textbf{Tipo temporale}:
+    Rappresenta istanti di tempo:
+    \begin{itemize}
+      \item 
+\begin{lstlisting}[language=SQL, numbers=none]
+DATE
+\end{lstlisting}
+        Rappresenta una data (fra apici) nel formato ISO: \texttt{YYYY-MM-DD} (anno-mese-giorno)
+
+      \item 
+\begin{lstlisting}[language=SQL, numbers=none]
+TIME [(precisione)][WITH TIME ZONE]
+\end{lstlisting}
+      Rappresenta un'orario del tipo \texttt{hh:mm:ss} (ore-minuti-secondi). 
+      \begin{itemize}
+        \item \texttt{precisione}: numero di cifre decimali per le frazioni di secondo
+        \item \texttt{WITH TIME ZONE}: indica che l'orario include anche il fuso orario
+          nei seguenti possibili formati:
+          \begin{itemize}
+            \item \texttt{[+-]hh:mm}: rappresenta la differenza rispetto all'ora di
+              Greenwich
+            \item Nome del fuso orario (es. \texttt{UTC}, \texttt{CET}, \texttt{EST}, ecc.)
+          \end{itemize}
+      \end{itemize}
+
+      \item 
+\begin{lstlisting}[language=SQL, numbers=none]
+TIMESTAMP [(precisione)][WITH TIME ZONE]
+\end{lstlisting}
+Equivale a \texttt{DATE} + \texttt{TIME}.
+    \end{itemize}
+
+  \item \textbf{Tipo intervallo temporale}:
+    Rappresenta un intervallo di tempo secondo la seguente sintassi:
+\begin{lstlisting}[language=SQL, numbers=none]
+INTERVAL PrimaUnitaDiTempo [TO UltimaUnitaDiTempo]
+\end{lstlisting}
+    dove \texttt{PrimaUnitaDiTempo} e \texttt{UltimaUnitaDiTempo} definiscono le
+    unità di misura che devono essere utilizzate, dalla più precisa alla meno precisa.
+    \begin{itemize}
+      \item \texttt{INTERVAL YEAR}
+      \item \texttt{INTERVAL MONTH}
+      \item \texttt{INTERVAL DAY}
+      \item \texttt{INTERVAL YEAR TO MONTH}
+      \item \texttt{INTERVAL DAY TO HOUR}
+      \item ecc...
+    \end{itemize}
+    Ad esempio \texttt{INTERVAL "1 DAY"}
+\end{itemize}
+
+\subsubsection{Domini definiti dall'utente}
+Per creare un dominio si usa il seguente comando:
+\begin{lstlisting}[language=SQL]
+CREATE DOMAIN nome AS tipoBase [valoreDefault][vincolo]
+\end{lstlisting}
+Definisce un dominio utilizzabile in definizioni di relazioni, anche con vincoli
+e valori default.
+Il dominio può essere definito a partire da un dominio elementare oppure da un altro
+dominio definito dall‘utente
+
+\vspace{2em}
+\noindent
+
+\begin{example}
+  Alcuni esempi di domini definiti dall'utente sono i seguenti:
+
+\begin{lstlisting}[language=SQL]
+CREATE DOMAIN Voto                     -- Nome dominio
+  AS SMALLINT                          -- Tipo base
+  DEFAULT NULL                         -- Valore default
+  CHECK ( value >=18 AND value <= 30 ) -- Vincolo
+\end{lstlisting}
+
+\begin{lstlisting}[language=SQL]
+CREATE DOMAIN giorniSettimana AS CHARACTER (3)
+  CHECK (VALUE IN (
+    "LUN",
+    "MAR",
+    "MER",
+    "GIO",
+    "VEN",
+    "SAB",
+    "DOM"
+  ));
+\end{lstlisting}
+\vspace{1em}
+\noindent
+
+\end{example}
+
+\subsubsection{Vincoli intrarelazionali}
+% TODO
+
+
+\subsection{CREATE TABLE}
+Definisce uno schema di relazione e ne crea un'istanza vuota specificando attributi,
+domini e vincoli secondo la seguente sintassi:
+\begin{lstlisting}[language=SQL]
+CREATE TABLE tabella (
+     attributo dominio [ valoreDefault ] { vincolo }
+  {, attributo dominio [ valoreDefault ] { vincolo } }
+  {, vincoloTabella }
+);
+\end{lstlisting}
+dove:
+\begin{itemize}
+  \item \texttt{[]}: indicano parti opzionali
+  \item \texttt{[ valoreDefault ]}: indica un eventuale valore default
+  \item \texttt{\{\}}: indica un elemento che può essere ripetuto zero o più volte
+  \item \texttt{\{ vincolo \}}: indica eventuali (zero o più) vincoli di integrità per
+    ogni attributo
+\end{itemize}
+
+\begin{example}
+  Un esempio di creazione di una tabella è il seguente:
+\begin{lstlisting}[language=SQL]
+CREATE TABLE Impiegato (
+  Matricola CHARCTER(6) PRIMARY KEY,
+  Nome      CHARCTER    VARYING(20) NOT NULL,
+  Cognome   CHARCTER    VARYING(20) NOT NULL,
+  Dipart    CHARCTER    VARYING(15),
+  Stipendio NUMERIC(9)  DEFAULT 0,
+
+  -- Vincoli di integrita'
+  FOREIGN KEY(Dipart)
+    REFERENCES Dipartimento(NomeDip), 
+  UNIQUE (Cognome, Nome)
+)
+\end{lstlisting}
+\end{example}
+
 \subsection{SELECT}
 La sintassi dell’istruzione SELECT è la seguente:
 \begin{lstlisting}
