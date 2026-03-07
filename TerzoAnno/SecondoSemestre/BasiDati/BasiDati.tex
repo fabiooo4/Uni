@@ -436,8 +436,140 @@ CREATE DOMAIN giorniSettimana AS CHARACTER (3)
 \end{example}
 
 \subsubsection{Vincoli intrarelazionali}
-% TODO
+I vincoli intrarelazionali sono vincoli che si applicano a livello di relazione, cioè a
+una singola tabella. I principali tipi di vincoli intrarelazionali sono:
+\begin{itemize}
+  \item \texttt{NOT NULL}: Il valore nullo non è ammesso per un attributo
+\begin{lstlisting}[language=SQL, numbers=none]
+nome VARCHAR(20) NOT NULL
+\end{lstlisting}
 
+
+  \item \texttt{DEFAULT}: Specifica un valore di default per un attributo quando
+    il comando di inserimento non specifica nessun valore per l'attributo
+
+\begin{lstlisting}[language=SQL, numbers=none]
+cognome VARCHAR(20) NOT NULL DEFAULT "VUOTO"
+\end{lstlisting}
+
+  \item \texttt{UNIQUE}: Impone che i valori di un attributo (o insieme di attributi)
+    siano una superchiave, cioè righe diverse della tabella non possono avere gli stessi
+    valori
+
+    \begin{itemize}
+      \item 
+        Il seguente vincolo impone che non ci siano due righe che abbiano sia il nome
+        che il cognome uguale
+\begin{lstlisting}[language=SQL]
+Nome VARCHAR(20),
+Cognome VARCHAR(20),
+UNIQUE(Nome,Cognome)
+\end{lstlisting}
+
+    \item 
+      Il seguente vincolo impone che non ci siano due righe che abbiano lo stesso
+      nome o lo stesso cognome
+\begin{lstlisting}[language=SQL]
+Nome VARCHAR(20) UNIQUE,
+Cognome VARCHAR(20) UNIQUE
+\end{lstlisting}
+    \end{itemize}
+
+  \item \texttt{PRIMARY KEY}: Identifica l'attributo che rappresenta la chiave primaria
+    della relazione. Impone i seguenti vincoli:
+    \begin{itemize}
+      \item Si usa una sola volta per tabella
+      \item Implica il vincolo \texttt{NOT NULL}
+    \end{itemize}
+    Si può definire in due modi:
+    \begin{itemize}
+      \item Nella definizione dell'attributo se la chiave primaria è composta da un
+        solo attributo:
+\begin{lstlisting}[language=SQL, numbers=none]
+matricola CHAR(6) PRIMARY KEY;
+\end{lstlisting}
+
+      \item Nel vincolo della tabella se la chiave primaria è composta da più attributi:
+\begin{lstlisting}[language=SQL]
+nome VARCHAR(20),
+cognome VARCHAR(20),
+PRIMARY KEY(nome, cognome)
+\end{lstlisting}
+    \end{itemize}
+
+  \item \texttt{CHECK}: Specifica un vincolo generico che devono soddisfare le tuple
+    della tabella. Il vincolo è soddisfatto se la sua espressione è \textbf{vera}
+    o \textbf{nulla}.
+
+\begin{lstlisting}[language=SQL, numbers=none]
+CREATE TABLE Impiegato (
+  matricola CHAR(6) PRIMARY KEY,
+  nome VARCHAR(20) NOT NULL,
+  cognome VARCHAR(20) NOT NULL,
+  qualifica VARCHAR(20),
+  stipendio NUMERIC(8,2) DEFAULT 500.00 NOT NULL
+  CHECK(stipendio >= 0.0), --check di attributo
+  UNIQUE(cognome, nome),
+  CHECK(nome <> cognome) --check di tabella
+);
+\end{lstlisting}
+\end{itemize}
+
+\subsubsection{Vincoli interrelazionali}
+Un vincolo interrelazionale (o di integrità referenziale) crea un legame tra i valori
+di un attributo (o insieme di attributi) \( A \) della tabella corrente, detta
+\textbf{interna o slave}, e i valori di un attributo (o di un insieme di attributi)
+\( B \) di un'altra tabella detta \textbf{esterna o master}.
+
+Il vincolo impone che:
+\begin{itemize}
+  \item In ogni tupla della tabella \textbf{interna}, il valore di
+    \( A \) (se è diverso dal valore nullo), deve essere presente tra i valori di \( B \) 
+    nella tabella esterna.
+
+  \item L'attributo \( B \) della tabella \textbf{esterna} deve essere soggetto ad
+    un vincolo \texttt{UNIQUE} o \texttt{PRIMARY KEY}. Può anche non essere la chiave
+    primaria, ma deve essere identificante per le tuple della tabella esterna.
+\end{itemize}
+Per definire un vincolo di integrità referenziale si usa la seguente sintassi:
+\begin{itemize}
+  \item \texttt{REFERENCES}: Se nel vincolo è coinvolto solo un attributo, si
+    specifica la tabella esterna e il relativo attributo coinvolto nel vincolo.
+
+\begin{lstlisting}[language=SQL]
+CREATE TABLE Impiegato ( -- Tabella interna
+  Matricola CHARACTER(6) PRIMARY KEY,
+  Nome CHARACTER VARYING(20) NOT NULL,
+  Cognome CHARACTER VARYING(20) NOT NULL,
+  Dipart CHARACTER VARYING(15)
+    REFERENCES Dipartimento(NomeDip), -- Tabella esterna
+  Ufficio NUMERIC(3),
+  Stipendio NUMERIC(9) DEFAULT 0,
+  UNIQUE (Cognome, Nome)
+);
+\end{lstlisting}
+
+  \item \texttt{FOREIGN KEY}: Se nel vincolo è coinvolto un insieme di attributi,
+    si specifica l'insieme di attributi della tabella interna coinvolti nel vincolo.
+    Poi con il vincolo \texttt{REFERENCES} si specifica
+    la tabella esterna e l'insieme di attributi della tabella esterna coinvolti nel
+    vincolo.
+
+\begin{lstlisting}[language=SQL]
+CREATE TABLE Impiegato ( -- Tabella interna
+  Matricola CHARACTER(6) PRIMARY KEY,
+  Nome CHARACTER VARYING(20) NOT NULL,
+  Cognome CHARACTER VARYING(20) NOT NULL,
+  Dipart CHARACTER VARYING(15)
+    REFERENCES Dipartimento(NomeDip),
+  Ufficio NUMERIC(3),
+  Stipendio NUMERIC(9) DEFAULT 0,
+  FOREIGN KEY (Nome, Cognome)
+    REFERENCES Anagrafica (Nome, Cognome) -- Tabella esterna
+);
+\end{lstlisting}
+
+\end{itemize}
 
 \subsection{CREATE TABLE}
 Definisce uno schema di relazione e ne crea un'istanza vuota specificando attributi,
@@ -475,6 +607,79 @@ CREATE TABLE Impiegato (
 )
 \end{lstlisting}
 \end{example}
+
+\subsection{Modifiche degli schemi}
+\subsubsection{DROP DOMAIN}
+Permette di rimuovere i domini definiti dall'utente secondo la seguente sintassi:
+\begin{lstlisting}[language=SQL, numbers=none]
+DROP DOMAIN nomeDominio
+\end{lstlisting}
+
+\subsubsection{DROP TABLE}
+Permette di rimuovere le tabelle secondo la seguente sintassi:
+\begin{lstlisting}[language=SQL, numbers=none]
+DROP TABLE nomeTabella
+\end{lstlisting}
+
+\subsubsection{ALTER}
+Effettua modifiche a domini, tabelle, ecc...
+\begin{itemize}
+  \item \textbf{Aggiunta di un nuovo attributo} (\texttt{ADD COLUMN}):
+    \begin{itemize}
+      \item Sintassi:
+\begin{lstlisting}[language=SQL, numbers=none]
+ALTER TABLE tabella ADD COLUMN attributo tipo;
+\end{lstlisting}
+
+      \item Esempio:
+\begin{lstlisting}[language=SQL, numbers=none]
+ALTER TABLE impiegato ADD COLUMN stipendio NUMERIC(8,2);
+\end{lstlisting}
+    \end{itemize}
+
+  \item \textbf{Rimozione di un attributo} (\texttt{DROP COLUMN}):
+    \begin{itemize}
+      \item Sintassi:
+\begin{lstlisting}[language=SQL, numbers=none]
+ALTER TABLE tabella DROP COLUMN attributo;
+\end{lstlisting}
+
+      \item Esempio:
+\begin{lstlisting}[language=SQL, numbers=none]
+ALTER TABLE impiegato DROP COLUMN stipendio;
+\end{lstlisting}
+    \end{itemize}
+
+  \item \textbf{Modifica valore di default di un attributo} (\texttt{ALTER COLUMN}):
+    \begin{itemize}
+      \item Sintassi:
+\begin{lstlisting}[language=SQL, numbers=none]
+ALTER TABLE tabella ALTER COLUMN attributo { SET DEFAULT valore | DROP DEFAULT };
+\end{lstlisting}
+
+      \item Esempio:
+\begin{lstlisting}[language=SQL, numbers=none]
+ALTER TABLE impiegato ALTER COLUMN stipendio SET DEFAULT 1000.00;
+\end{lstlisting}
+    \end{itemize}
+\end{itemize}
+
+\subsection{Cancellazione dati in una tabella}
+Le tuple di una tabella vengono cancellate con il comando \texttt{DELETE} secondo
+la seguente sintassi:
+\begin{lstlisting}[language=SQL, numbers=none]
+DELETE FROM tabella [WHERE condizione];
+\end{lstlisting}
+\begin{itemize}
+  \item \texttt{condizione}: è un'espressione booleana che seleziona quali tuple
+    cancellare
+
+  \item Se \texttt{WHERE} non è presente \textbf{tutte le tuple saranno cancellate}
+\end{itemize}
+Ad esempio:
+\begin{lstlisting}[language=SQL, numbers=none]
+DELETE FROM impiegato WHERE matricola = "A001";
+\end{lstlisting}
 
 \subsection{SELECT}
 La sintassi dell’istruzione SELECT è la seguente:
