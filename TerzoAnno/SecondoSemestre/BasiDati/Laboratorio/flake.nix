@@ -31,10 +31,13 @@
           # Put the PostgreSQL databases in the project diretory.
           export PGDATA=$NIX_SHELL_DIR/db
 
-          # Clean up after exiting the Nix shell using `trap`.
+          # Clean up after exiting the Nix shell using `trap`
+          # Executes only if there are no other Nix shells running
           cleanup() {
-            # Stop PostgreSQL
-            pg_ctl -D $PGDATA stop
+            # Stop PostgreSQL if it's running
+            if pg_ctl -D $PGDATA status > /dev/null 2>&1; then
+              pg_ctl -D $PGDATA stop
+            fi
 
             # Delete `.nix-shell` directory
             cd $PWD
@@ -59,13 +62,15 @@
             sed -i "s|^#$OPT.*$|$OPT = '$PGDATA'|" $PGDATA/postgresql.conf
           fi
 
-          # Start PostgreSQL
-          pg_ctl -D $PGDATA -l $PGDATA/postgres.log  start
+          # Start PostgreSQL if it's not already running
+          if ! pg_ctl -D $PGDATA status > /dev/null 2>&1; then
+            pg_ctl -D $PGDATA -l $PGDATA/postgres.log start
+          fi
 
           printf "PostgreSQL is running. To connect, use:\n\
           psql -h $PGDATA -U $USER -d postgres\n\n\
           Or via PostgreSQL connection URL:\n\
-          postgresql://username@domain/dbname\n"
+          postgresql://$USER@localhost/postgres\n"
         '';
       };
 
@@ -76,7 +81,7 @@
           printf "To connect to the uni database server, use:\n\
           psql -h db-srv.di.univr.it -U <userGIA> <userGIA>\n\n\
           Or via PostgreSQL connection URL:\n\
-          postgresql://username@domain/dbname\n"
+          postgresql://userGIA@db-srv.di.univr/userGIA\n"
         '';
       };
     };
