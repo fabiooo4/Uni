@@ -25,7 +25,7 @@ privatezza}.
 
 Un DBMS deve essere anche \textbf{efficiente} ed \textbf{efficace}:
 \begin{itemize}
-  \item Efficiente: il DBMS deve essere in grado di gestire grandi quantità di dati in
+  \item Efficiente: il DBMS deve essere in grado di gestire grandi quantità di dati inbasitex
     modo rapido e con un utilizzo minimo delle risorse
   \item Efficace: il DBMS deve essere in grado di soddisfare le esigenze degli utenti
     in modo completo e accurato
@@ -662,6 +662,18 @@ ALTER TABLE tabella ALTER COLUMN attributo { SET DEFAULT valore | DROP DEFAULT }
 ALTER TABLE impiegato ALTER COLUMN stipendio SET DEFAULT 1000.00;
 \end{lstlisting}
     \end{itemize}
+
+  \item \textbf{Ridenominazione di un attributo} (\texttt{RENAME COLUMN}):
+    \begin{itemize}
+      \item Sintassi:
+\begin{lstlisting}[language=SQL, numbers=none]
+ALTER TABLE tabella RENAME COLUMN vecchioAttributo TO nuovoAttributo;
+\end{lstlisting}
+      \item Esempio:
+\begin{lstlisting}[language=SQL, numbers=none]
+ALTER TABLE impiegato RENAME COLUMN stipendio TO salario;
+\end{lstlisting}
+    \end{itemize}
 \end{itemize}
 
 \subsection{Cancellazione dati in una tabella}
@@ -679,6 +691,45 @@ DELETE FROM tabella [WHERE condizione];
 Ad esempio:
 \begin{lstlisting}[language=SQL, numbers=none]
 DELETE FROM impiegato WHERE matricola = "A001";
+\end{lstlisting}
+
+\subsection{Inserimento dati in una tabella}
+Le tuple di una tabella vengono inserite con il comando \texttt{INSERT} secondo
+la seguente sintassi:
+\begin{lstlisting}[language=SQL, numbers=none]
+INSERT INTO tabella [(attributo1, attributo2, ...)]
+VALUES (valore1, valore2, ...);
+\end{lstlisting}
+\begin{itemize}
+  \item Se la lista degli attributi non è presente, i valori devono essere specificati
+    nell'ordine in cui sono stati definiti nella tabella.
+
+  \item Se un attributo non è specificato, viene utilizzato il valore di default se
+    è definito, altrimenti viene utilizzato il valore nullo.
+\end{itemize}
+Ad esempio:
+\begin{lstlisting}[language=SQL, numbers=none]
+INSERT INTO impiegato (matricola, nome, cognome, dipartimento)
+VALUES ("A001", "Mario", "Rossi", "Informatica");
+\end{lstlisting}
+
+\subsubsection{Aggiornamento dati in una tabella}
+Le tuple di una tabella vengono aggiornate con il comando \texttt{UPDATE} secondo
+la seguente sintassi:
+\begin{lstlisting}[language=SQL, numbers=none]
+UPDATE tabella
+SET attributo1 = valore1, attributo2 = valore2, ...
+[WHERE condizione];
+\end{lstlisting}
+\begin{itemize}
+  \item \texttt{condizione}: è un'espressione booleana che seleziona quali tuple aggiornare
+  \item Se \texttt{WHERE} non è presente \textbf{tutte le tuple saranno aggiornate}
+\end{itemize}
+Ad esempio:
+\begin{lstlisting}[language=SQL, numbers=none]
+UPDATE impiegato
+SET stipendio = stipendio * 1.1
+WHERE dipartimento = "Informatica";
 \end{lstlisting}
 
 \subsection{SELECT}
