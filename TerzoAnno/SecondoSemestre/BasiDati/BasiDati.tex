@@ -906,7 +906,7 @@ WHERE Uffico = 20 AND
 \begin{example}
   Considerando la base di dati precedente:
 
-  Estrarre i nomi ed il cognome degli impiegati che lavorano dipartimento
+  Estrarre i nomi ed il cognome degli impiegati che lavorano nel dipartimento
   Amministrazione o nel dipartimento Produzione.
 \begin{lstlisting}
 SELECT Nome, Cognome
@@ -964,7 +964,7 @@ _o%i
 \begin{example}
   Considerando la base di dati precedente:
 
-  Estrarre gli impiegati che hanno un cognomen cha ha una “o”
+  Estrarre gli impiegati che hanno un cognome cha ha una “o”
   in seconda posizione e finisce con una “I”.
 
 \begin{lstlisting}
@@ -1067,6 +1067,53 @@ WHERE Cognome = 'Rossi';
 
 Il costrutto ALL è invece usato per mantenere i duplicati, ma è superfluo.
 
+\begin{example}
+  Considerando la seguente base di dati:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{esempio_db_distinct}
+    \caption{Esempio di base di dati per la clausola DISTINCT}
+  \end{figure}
+  Estrarre le città delle persone il cui cognome è Rossi
+\begin{lstlisting}[language=SQL]
+SELECT Citta
+  FROM Persona
+  WHERE Cognome = 'Rossi'
+\end{lstlisting}
+  L'output di questa interrogazione è la seguente tabella:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{|c|}
+      \hline
+      Città \\
+      \hline
+      Verona \\
+      Verona \\
+      Milano \\
+      \hline
+    \end{tabular}
+  \end{table}
+  \noindent
+  Per togliere i duplicati si può utilizzare la parola chiave DISTINCT dopo SELECT:
+\begin{lstlisting}[language=SQL]
+SELECT DISTINCT Citta
+  FROM Persona
+  WHERE Cognome = 'Rossi'
+\end{lstlisting}
+  L'output di questa interrogazione è la seguente tabella:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{|c|}
+      \hline
+      Città \\
+      \hline
+      Verona \\
+      Milano \\
+      \hline
+    \end{tabular}
+  \end{table}
+\end{example}
+
 \subsection{JOIN}
 Le interrogazioni con il join possono essere definite in due modi:
 \begin{enumerate}
@@ -1115,6 +1162,53 @@ condizione della clausola WHERE
     \includegraphics[width=0.8\textwidth]{esempio_db_join}
     \caption{Esempio di base di dati per la clausola JOIN}
   \end{figure}
+\end{example}
+
+\begin{example}
+  Considerando la seguente base di dati:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{esempio_db_join_2}
+    \caption{Esempio di base di dati per la clausola JOIN}
+  \end{figure}
+
+\begin{lstlisting}[language=SQL]
+SELECT i.Nome, i.Cognome, d.Citta
+  FROM Impiegato as i, Dipartimento as d -- Prodotto cartesiano
+  WHERE i.Dipart = d.Nome
+\end{lstlisting}
+\end{example}
+
+\noindent
+Il JOIN si può spostare nella clausola FROM, a livello delle tabelle (questa sintassi
+sarà utilizzata per gli esercizi del corso). La sintassi è la seguente:
+\begin{lstlisting}[language=SQL]
+SELECT ListaAttributi
+  FROM Tabella1 JOIN Tabella2 ON ( CondizioneDiJoin )
+  [WHERE AltraCondizione]
+\end{lstlisting}
+
+\begin{example}
+  Ad esempio:
+\begin{lstlisting}[language=SQL]
+SELECT i.Nome, d.Citta
+FROM Impiegato AS i JOIN Dipartimento as d ON ( i.Dipart = d.Nome )
+\end{lstlisting}
+\end{example}
+
+\begin{example}
+  Considerando la seguente base di dati:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{esempio_db_distinct}
+    \caption{Esempio di base di dati per la clausola DISTINCT}
+  \end{figure}
+  Selezionare i padri di persone che guadagnano più di 20
+\begin{lstlisting}[language=SQL]
+SELECT DISTINCT Padre
+  FROM Persone JOIN Paternita ON ( Figlio = Nome )
+  WHERE Reddito > '20' 
+\end{lstlisting}
 \end{example}
 
 \subsubsection{INNER JOIN}
@@ -1182,6 +1276,41 @@ INNER JOIN + LEFT OUTER JOIN + RIGHT OUTER JOIN
 \end{lstlisting}
 Non è equivalente a CROSS JOIN!
 
+\subsection{Uso di variabili (alias)}
+SQL permette di associare un nome alternativo (alias) alle tabelle
+che compaiono nella clausola FROM e viene usato per far riferimento alla tabella nel
+contesto dell’interrogazione.
+
+\begin{example}
+  Considerando la seguente base di dati:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{esempio_db_alias}
+    \caption{Esempio di base di dati per l'uso di alias}
+  \end{figure}
+  Estrarre tutti gli impiegati che hanno lo stesso cognome ma nome
+  diverso, del dipartimento Produzione.
+\begin{lstlisting}[language=SQL]
+SELECT i1.Cognome, I1.Nome
+  FROM Impiegato i1, Impiegato i2
+  WHERE i1.Cognome = i2.Cognome AND
+  i1.Nome <> i2.Cognome AND
+  i2.Dipart = 'Produzione'
+\end{lstlisting}
+  Questa interrogazione confronta ciascuna riga di Impiegato con tutte le righe
+  di Impiegato associate al dipartimento Produzione.
+  Si può immaginare che al momento della definizione dell’alias vengano
+  create due copie della tabella Impiegato, ciascuna associata ad una
+  delle due variabili i1 e i2. Le due copie contengono tutte le
+  righe di Impiegato Sulla copia i2 vengono selezionate
+  solo le righe del dipartimento 'Produzione'.
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{rappresentazione_alias}
+    \caption{Esempio di base di dati per l'uso di alias e JOIN}
+  \end{figure}
+\end{example}
+
 \subsection{Ordinamento del risultato}
 Una relazione è un insieme di tuple non ordinato, ma spesso c'è bisogno di costruire
 un ordine sulle righe. Per questo SQL mette a disposizione la clausola ORDER BY che permette
@@ -1192,6 +1321,39 @@ ORDER BY attributo [{ ASC | DESC }] [, ... ];
 \end{lstlisting}
 Le righe vengono ordinate per il primo attributo nell’elenco, a parità di valore
 del primo attributo si usa il secondo, e così via in sequenza. Di default l’ordinamento è ASC.
+
+\begin{example}
+  Considerando la seguente base di dati:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{esempio_db_order_by}
+    \caption{Esempio di base di dati per la clausola ORDER BY}
+  \end{figure}
+  Estrarre il nome, l’età ed il reddito delle persone con meno
+  di trenta anni in ordine alfabetico.
+\begin{lstlisting}[language=SQL]
+SELECT Nome, Eta, Reddito
+  FROM Persone
+  WHERE Eta < '30'
+  ORDER BY Eta
+\end{lstlisting}
+\end{example}
+
+\begin{example}
+  Considerando la seguente base di dati:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{esempio_db_order_by_2}
+    \caption{Esempio di base di dati per la clausola ORDER BY}
+  \end{figure}
+  Estrarre il contenuto della tabella Automobile ordinato in
+  base alla marca (in modo discendente) e al modello.
+\begin{lstlisting}[language=SQL]
+SELECT *
+  FROM Automobile
+  ORDER BY Marca DESC, Modello
+\end{lstlisting}
+\end{example}
 
 \subsection{Operatori insiemistici}
 Gli operatori insiemistici disponibili sono:
@@ -1205,6 +1367,8 @@ di eseguire un’eliminazione dei duplicati, a meno che si usi ALL. Sono suffici
 compatibili ed ugual numero di attributi. La corrispondenza degli attributi si basa sulla
 posizione, e se i nomi degli attributi sono diversi di solito il sistema usa il nome del
 primo operando.
+
+% TODO: Q12
 
 \subsection{Operatori aggregati}
 Gli operatori aggregati permettono di eseguire operazioni su più righe per ottenere un unico
@@ -1334,6 +1498,112 @@ essere estesi con le parole chiave ANY e ALL:
 \end{itemize}
 Per il controllo di appartenenza o esclusione rispetto ad un insieme si possono usare anche
 gli operatori IN (= ANY) e NOT IN (<> ALL).
+L'interrogazione può essere eseguita una sola volta ed il risultato ottenuto può
+essere salvato in una tabella temporanea usata per eseguire
+ciascun confronto con le righe dalla tabella esterna, però  l’interrogazione nidificata
+fa riferimento al contesto dell’interrogazione che la racchiude attraverso l’uso di una
+variabile (\textbf{passaggio di binding}), quindi l'interrogazione nidificata
+dovrà essere \textbf{valutata separatamente per ciascuna riga} prodotta dalla
+valutazione della query esterna.
 
+\subsubsection{Binding e EXISTS}
+L'operatore EXISTS riceve come parametro un'interrogazione nidificata e restituisce il
+valore vero solo se l'interrogazione fornisce un risultato non vuoto. Si può utilizzare
+soltanto quando c'è un passaggio di binding tra la query esterna e quella interna,
+cioè quando la query interna fa riferimento ad una variabile che assume valori dalle
+righe prodotte dalla query esterna.
+\begin{example}
+  Estrarre le persone che hanno degli omonimi (ovvero
+  persone con lo stesso nome e cognome, ma codice fiscale
+  diverso)
+\begin{lstlisting}[language=SQL]
+SELECT *
+  FROM Persona P
+  WHERE EXISTS (
+    SELECT *
+    FROM Persona P1
+    WHERE P1.Nome = P.Nome AND
+    P1.Cognome = P.Cognome AND
+    P1.CodFiscale <> P.CodFiscale
+  );
+\end{lstlisting}
+\end{example}
+\begin{example}
+  Estrarre le persone che non hanno degli omonimi (ovvero
+  persone con lo stesso nome e cognome, ma codice fiscale
+  diverso)
+\begin{lstlisting}[language=SQL]
+SELECT *
+  FROM Persona P
+  WHERE NOT EXISTS (
+    SELECT *
+    FROM Persona P1
+    WHERE P1.Nome = P.Nome AND
+    P1.Cognome = P.Cognome AND
+    P1.CodFiscale <> P.CodFiscale
+  );
+\end{lstlisting}
+  oppure
+\begin{lstlisting}[language=SQL]
+SELECT *
+  FROM Persona P
+  WHERE NOT IN (
+    SELECT Nome, Cognome
+    FROM Persona P1
+    WHERE P1.CodFiscale <> P.CodFiscale
+  );
+\end{lstlisting}
+\end{example}
+
+\subsubsection{Interrogazioni nidificate nella clausola SELECT}
+Le interrogazioni nidificate possono essere specificate anche come
+elemento della clausola SELECT.
+È necessario che l’interrogazione nidificata restituisca una
+sola tupla (riferimenti tramite variabile alla interrogazione esterna).
+Spesso le interrogazioni nidificate nel SELECT
+sostituiscono l'uso del JOIN.
+\begin{example}
+  Estrarre per ogni cantante il numero di canzoni di cui è autore.
+\begin{lstlisting}[language=SQL]
+SELECT DISTINCT Nome,
+  NumCanzoni =
+    (
+      SELECT COUNT(*)
+      FROM Autore A
+      WHERE A.Nome = C.Nome
+    )
+  FROM Cantante C
+\end{lstlisting}
+  equivale a 
+\begin{lstlisting}[language=SQL]
+  SELECT DISTINCT C.Nome,
+    COUNT(*) as NumCanzoni
+    FROM Cantante C JOIN Autore A
+    ON C.Nome = A.Nome
+    GROUP BY C.Nome
+\end{lstlisting}
+\end{example}
+
+\subsubsection{Interrogazioni nidificate nella clausola FROM}
+Le interrogazioni nidificate possono essere utilizzate nella clausola FROM come
+sorgente dati su cui eseguire l’interrogazione.
+È possibile creare una catena di interrogazioni, dove ciascuna
+interrogazione utilizza il risultato della precedente come una
+tabella di base.
+
+\begin{example}
+  Estrarre per ogni cantante che è anche autore di canzoni il numero
+  di canzoni di cui è rispettivamente interprete e autore.
+\begin{lstlisting}[language=SQL]
+SELECT DISTINCT C.Nome, C.NumCantate, A.NumScritte
+  FROM
+  ( SELECT Nome, Count(*) as NumCantate FROM Cantante) C
+  JOIN
+  ( SELECT Nome, Count(*) as NumScritte FROM Autore) A
+  ON C.Nome = A.Nome
+\end{lstlisting}
+  Prima vengono eseguite le interrogazioni nella clausola FROM e i
+  risultati di queste vengono usati come normali tabelle.
+\end{example}
 
 \end{document}
