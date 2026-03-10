@@ -1597,13 +1597,255 @@ tabella di base.
 \begin{lstlisting}[language=SQL]
 SELECT DISTINCT C.Nome, C.NumCantate, A.NumScritte
   FROM
-  ( SELECT Nome, Count(*) as NumCantate FROM Cantante) C
+  ( SELECT Nome, Count(*) as NumCantate FROM Cantante GROUP BY Nome) C
   JOIN
-  ( SELECT Nome, Count(*) as NumScritte FROM Autore) A
+  ( SELECT Nome, Count(*) as NumScritte FROM Autore GROUP BY Nome) A
   ON C.Nome = A.Nome
 \end{lstlisting}
   Prima vengono eseguite le interrogazioni nella clausola FROM e i
   risultati di queste vengono usati come normali tabelle.
+\end{example}
+
+\subsubsection{Esercizi}
+
+\begin{exercise}
+  Considerando la seguente base di dati:
+  \begin{itemize}
+    \item Turista(\underline{username}, cognome, nome, data\_nascita, nazionalita)
+
+    \item Attrazione(\underline{codice}, nome, descrizione, latitudine, longitudine,
+      indirizzo, citta, prov)
+
+    \item Recensione(\underline{attrazione, turista, timestamp}, titolo, testo, voto)
+  \end{itemize}
+  \noindent
+  Con i seguenti vincoli di integrità:
+  \begin{itemize}
+    \item Recensione.attrazione $\to$ Attrazione
+    \item Recensione.turista $\to$ Turista
+  \end{itemize}
+  \noindent
+  Scrivere le seguenti interrogazioni SQL:
+  \begin{enumerate}
+    \item Trovare tutte le attrazioni della città di Verona il cui nome inizia con la
+      lettera f maiuscola o minuscola
+\begin{lstlisting}[language=SQL]
+SELECT *
+  FROM Attrazione
+  WHERE nome ILIKE 'f%';
+\end{lstlisting}
+      oppure
+\begin{lstlisting}[language=SQL]
+SELECT *
+  FROM Attrazione
+  WHERE nome LIKE 'f%' OR nome LIKE 'F%';
+\end{lstlisting}
+      oppure
+\begin{lstlisting}[language=SQL]
+SELECT *
+  FROM Attrazione
+  WHERE LOWER(nome) LIKE 'f%'; -- Converte nome in minuscolo;
+\end{lstlisting}
+
+
+    \item Trovare tutti i turisti che nel 2025 \textbf{non} hanno mai rilasciato
+      recensioni con un voto maggiore di 2 per attrazioni fuori dalla provincia
+      di Verona.
+\begin{lstlisting}[language=SQL]
+SELECT turista
+  FROM Turista T
+  EXCEPT -- Le due query devono avere schemi compatibili
+  (
+    SELECT turista
+      FROM Recensione as R
+      JOIN Attrazione A
+        ON (A.codice = R.attrazione)
+      WHERE EXTRACT(YEAR FROM R.timestamp) = '2025'
+        AND R.voto > 2 
+        AND A.provincia <> 'Verona'
+  );
+\end{lstlisting}
+      Questa query è difficile da cambiare, ad esempio aggiungendo attributi perchè
+      bisognerebbe cambiare sia la query esterna che quella interna.
+      Un'alternativa è la seguente:
+\begin{lstlisting}[language=SQL]
+SELECT T.username, T.nome, T.cognome
+  FROM Turista as T
+  WHERE T.username
+  NOT IN
+  (
+    SELECT turista
+      FROM Recensione as R
+      JOIN Attrazione A
+        ON (A.codice = R.attrazione)
+      WHERE EXTRACT(YEAR FROM R.timestamp) = '2025'
+        AND R.voto > 2 
+        AND A.provincia <> 'Verona'
+  );
+\end{lstlisting}
+      Questa query non richiede che gli schemi siano compatibili, e permette di
+      aggiungere facilmente altri attributi alla query esterna.
+
+    \item Trovare tutte le attrazioni che hanno ricevuto nel 2025 un numero di
+      recensioni superiore a quelle ricevute nel 2024.
+\begin{lstlisting}[language=SQL]
+-- Attrazioni con numero recensioni nel 2025
+SELECT R1.attrazione, COUNT(*)
+  FROM Recensione as R1
+  WHERE EXTRACT(YEAR FROM R1.timestamp) = 2025
+  GROUP BY R1.attrazione;
+  HAVING COUNT(*) > (
+    -- Numero recensioni nel 2024
+    SELECT COUNT(*)
+      FROM Recensione as R2
+      WHERE R1.attrazione = R2.attrazione
+        AND EXTRACT(YEAR FROM R2.timestamp) = 2024;
+  );
+\end{lstlisting}
+      Nella query annidata si può omettere il GROUP BY perchè grazie al data binding
+      si sta già confrontando le recensioni della stessa attrazione.
+
+    \item Trovare la media dei voti massimi rilasciati dagli utenti.
+\begin{lstlisting}[language=SQL]
+SELECT AVG(R1.voto_max)
+  FROM (
+    SELECT MAX(R2.voto) as voto_max
+      FROM Recensione as R2
+      GROUP BY R2.turista;
+  ) as R1;
+\end{lstlisting}
+      Non si può scrivere AVG(MAX()) perchè l'operatore aggregato esterno non riceve
+      una lista di valori, ma un singolo attributo che rappresenta il risultato
+      dell'operatore aggregato interno.
+
+  \end{enumerate}
+\end{exercise}
+
+
+\begin{exercise}
+  \label{exercise:parcheggi}
+  Considerando la seguente base di dati:
+  \begin{itemize}
+    \item Auto(\underline{targa}, num\_telaio, modello, colore, km, cilindrata, posti,
+      proprietario)
+
+    \item Parcheggio(\underline{numero}, comune, indirizzo, coperto)
+
+    \item Prenotazione(\underline{codice}, parcheggio, posto, auto, data, ora\_inizio,\\
+      ora\_fine, tipo, pagato)
+  \end{itemize}
+  \noindent
+  Con i seguenti vincoli di integrità:
+  \begin{itemize}
+    \item Prenotazione.parcheggio $\to$ Parcheggio
+    \item Prenotazione.auto $\to$ Auto
+  \end{itemize}
+  \noindent
+  Scrivere le seguenti interrogazioni SQL:
+  \begin{enumerate}
+    \item Trovare tutti i parcheggi coperti di Verona
+\begin{lstlisting}[language=SQL]
+SELECT *
+  FROM Parcheggio
+  WHERE 
+    comune = 'Verona';
+    AND coperto
+\end{lstlisting}
+
+    \item Trovare tutti i parcheggi in cui \textbf{non} sono mai state fatte
+      prenotazioni online nel 2024. Per ciascun parcheggio riportare il nome
+      e il numero di prenotazioni complessive.
+\begin{lstlisting}[language=SQL]
+-- Tutti i parcheggi
+SELECT P.nome, COUNT(*) as num_prenotazionu
+  FROM Parcheggio as P
+    JOIN Prenotazione as Pr
+    ON (P.codice = Pr.parcheggio)
+  WHERE P.codice
+    NOT IN (
+      -- Parcheggi con almeno una prenotazione online nel 2024
+      SELECT P2.parcheggio
+      FROM  Prenotazione as Pr2
+      WHERE Pr2.tipo = 'online'
+        AND EXTRACT(YEAR FROM data) = '2024'
+    )
+  GROUP BY P.nome;
+\end{lstlisting}
+
+    \item Trovare tutti i parcheggi in cui vengono effettuate più prenotazioni online
+      rispetto a quelle fisihce.
+\begin{lstlisting}[language=SQL]
+SELECT Pr.parcheggio
+  FROM Prenotazione as Pr
+  WHERE Pr.tipo = 'online'
+  GROUP BY Pr.parcheggio
+    HAVING COUNT(*) > (
+      SELECT COUNT(*)
+        FROM Prenotazione as Pr2
+        WHERE Pr2.tipo = 'fisica'
+          AND Pr2.parcheggio = Pr.parcheggio -- Data binding
+    );
+\end{lstlisting}
+    Siccome c'è un data binding tra la query esterna e quella interna, la query interna
+    viene valutata separatamente per ciascun parcheggio restituito dalla query esterna.
+
+  \end{enumerate}
+\end{exercise}
+
+\subsection{Viste}
+Le viste permettono di salvare una query che genera una tabella temporanea.
+La sintassi è la seguente:
+\begin{lstlisting}[language=SQL, numbers=none]
+CREATE VIEW nome_vista AS ( query );
+\end{lstlisting}
+Si da un nome alla query (nome\_vista) che si può usare come se fosse il nome di una
+tabella.
+
+\begin{example}
+  Considerando la base di dati dell'esercizio \ref{exercise:parcheggi},
+  trovare quanti parcheggi del comune di 'Verona' hanno avuto un numero di prenotazioni
+  nel 2024 superiore al numero medio di prenotazioni complessive nel 2024 dei parcheggi
+  di 'Padova'.
+
+  I passi da seguire sono:
+  \begin{enumerate}
+    \item Calcolare il numero di prenotazioni del 2024 per parcheggio, per ogni
+      parcheggio di 'Verona'
+
+    \item \label{step:padova}
+      Calcolare il numero di prenotazioni del 2024 per parcheggio, per ogni
+      parcheggio di 'Padova'
+
+    \item Calcolare la media su \ref{step:padova}
+  \end{enumerate}
+
+\begin{lstlisting}[language=SQL]
+-- Per ogni parcheggio si ottiene:
+-- * codice
+-- * comune
+-- * num prenotazioni
+CREATE VIEW NumPrenotazioni as (
+  SELECT Pr.codice as parcheggio, P.comune, COUNT(*) as num_pr
+  FROM Parcheggio as P
+    JOIN Prenotazione as Pr
+    ON (P.codice = Pr.parcheggio)
+  WHERE EXTRACT(YEAR FROM Pr.data) = '2024'
+  GROUP BY Pr.codice, P.comune
+);
+
+-- Calcola il numero medio di prenotazioni dei parcheggi
+-- di Padova nel 2024
+SELECT NP1.parcheggio
+FROM NumPrenotazioni as NP1
+WHERE NP1.num_pr > (
+    SELECT AVG(NP2.num_pr) -- Ritorna 1 valore
+    FROM NumPrenotazioni as NP2
+    WHERE NP2.comune = 'Padova'
+  )
+  AND NP1.comune = 'Verona';
+  -- Per ogni parcheggio di 'Verona' guardo quali hanno il numero
+  -- di prenotazioni > della media di quelli di 'Padova'
+\end{lstlisting}
 \end{example}
 
 \end{document}
