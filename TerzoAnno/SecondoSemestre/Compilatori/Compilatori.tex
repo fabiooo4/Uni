@@ -9,4 +9,268 @@
 \tableofcontents
 \pagebreak
 
+
+\subsection{Storia dei compilatori}
+All'inizio i programmi venivano scritti traducendo formule matematiche in codice macchina.
+Nel 1948 Nathaniel Rochester sviluppò il primo \textbf{assembler}, un programma che
+traduceva istruzioni mnemoniche in codice macchina.
+\begin{example}
+  1 + 2 = 3 in assembly:
+\begin{lstlisting}
+MOV R0, 1
+MOV R1, 2
+ADD R0, R1, R2
+MOV R0, 64
+STO R2, R0
+\end{lstlisting}
+\end{example}
+
+  \noindent
+  Nel 1953 John Backus sviluppò il primo linguaggio interpretato, chiamato
+  \textbf{Speedcoding} che esevuiva dalle 10 alle 20 volte più lentamente dell'assembly
+  scritto a mano, ma era più facile da scrivere e leggere.
+  Successivamente nel 1954-1957 sviluppò il primo \textbf{compilatore} per il linguaggio
+  \textbf{Fortran} (FORmula TRANslation) che aveva performance paragonabili all'assembly
+  scritto a mano. Questo linguaggio ha avuto un enorme impatto sulla programmazione:
+  \begin{itemize}
+    \item \textbf{Open programming}: La possibilità di programmare viene estesa da un numero limitato di matematici
+      e scienziati a un pubblico più ampio di persone.
+
+    \item \textbf{Portability}: Programmi di alto livello potevano essere ricompilati
+      per un nuovo computer con modifiche minime. Questo ha rimosso la necessità
+      del programmatore di preoccuparsi su che architettura il programma sarebbe stato
+      eseguito.
+  \end{itemize}
+
+\section{Compilatori}
+Un compilatore è un programma che legge un altro programma scritto in un linguaggio
+di programmazione e lo traduce in un altro linguaggio equivalente chiamato
+\textbf{target}. Il compilatore traduce l'intero programma in un altro (solitamente
+linguaggio macchina) prima dell'esecuzione.
+\begin{enumerate}
+  \item Prende l'intero programma in input
+  \item Lo traduce in un altro linguaggio (solitamente linguaggio macchina)
+  \item Genera un file eseguibile che prende input e produce output
+\end{enumerate}
+Il compilatore può anche applicare un processo di ottimizzazione \textbf{globale}
+sul programma, migliorando le prestazioni del codice generato.
+
+\subsection{Modelli ibridi}
+Esistono anche modelli ibridi di compilatori che combinano compilazione e interpretazione:
+\begin{itemize}
+  \item \textbf{Compilazione in bytecode} che viene poi interpretato da una macchina
+    virtuale. Ad esempio Java con JVM.
+    \begin{itemize}
+      \item \textbf{Bytecode}: Codice intermedio
+      \item \textbf{Macchina virtuale}: Software che esegue il bytecode
+    \end{itemize}
+
+  \item \textbf{Compilazione Just-In-Time (JIT)}: Il codice viene compilato
+    \textbf{durante l'esecuzione}, consentendo ottimizzazioni dinamiche basate sull'uso
+    effettivo del programma.
+\end{itemize}
+
+\subsection{Fasi della compilazione}
+Le fasi della compilazione preservano la struttura che Fortran ha introdotto.
+Ci sono due parti principali nel processo di compilazione:
+\begin{itemize}
+  \item \textbf{Analisi}: Determina le operazioni implicate dal programma sorgente
+    che sono rappresentate in una struttura ad albero (rappresentazione intermedia).
+    L'informazione sul programma sorgente è salvata nella \textbf{symbol table},
+    che contiene informazioni su variabili, funzioni, tipi, ecc e permette di
+    comunicare tra le fasi di compilazione. Questa fase è composta da:
+    \begin{itemize}
+      \item \textbf{Lexical analysis}: Suddivide il codice sorgente (una lista di caratteri)
+        in token (una lista di parole chiave, identificatori, operatori, ecc.)
+
+      \item \textbf{Parsing}: Analizza la struttura sintattica del programma, costruendo
+        un albero sintattico astratto (AST) che rappresenta la struttura gerarchica del
+        programma.
+
+      \item \textbf{Semantic analysis}: Verifica la correttezza semantica del programma,
+        controllando tipi, dichiarazioni, e altre regole del linguaggio.
+    \end{itemize}
+
+  \item \textbf{Sintesi}: Prende la rappresentazione intermedia ad albero e traduce
+    tutte le operazioni nel programma target. Questa fase è composta da:
+    \begin{itemize}
+      \item \textbf{Optimization}: Migliora le prestazioni del codice generato, ad esempio 
+        eliminando codice morto o riducendo il numero di istruzioni.
+
+      \item \textbf{Code generation}: Traduce l'AST ottimizzato in codice macchina o in un
+        altro linguaggio target \textbf{senza cambiare la semantica del programma originale}.
+    \end{itemize}
+\end{itemize}
+
+\noindent
+Per generare codice eseguibile c'è bisogno di altri programmi in cui il compilatore
+è solo una parte del processo:
+\begin{itemize}
+  \item \textbf{Preprocessor}: Prende in input il codice sorgente e lo trasforma, ad esempio
+    espandendo macro o includendo file header.
+
+  \item \textbf{Compilatore}: Traduce il codice sorgente preprocessato in codice
+    oggetto (codice macchina non ancora collegato).
+
+  \item \textbf{Assembler}: Traduce il codice oggetto in codice macchina eseguibile.
+
+  \item \textbf{Linker}: Combina più file oggetto in un unico file eseguibile,
+    risolvendo le dipendenze tra i vari moduli.
+\end{itemize}
+
+\subsubsection{Lexical analysis}
+Il processo di lexical analysis, o tokenizzazione, è il primo passo nella fase di analisi
+e consiste nel riconoscere le "parole" del programma:
+
+\begin{example}
+  Bisogna riconoscere:
+\begin{lstlisting}[numbers=none]
+This is a Compiler book.
+\end{lstlisting}
+  Bisogna riconoscere anche che corrispondano alle regole del linguaggio, quindi 
+  la seguente stringa non è valida:
+\begin{lstlisting}[numbers=none]
+thi sis aCompil erb ook.
+\end{lstlisting}
+\end{example}
+
+Il lexical analyzer legge lo stream di caratteri e li raggruppa in sequenze significative
+chiamate \textbf{lexemes} e per ogni lexeme produce in output un \textbf{token}
+della forma:
+\begin{lstlisting}[numbers=none]
+  <token_name, token_value>
+\end{lstlisting}
+che viene messo nella tabella dei simboli.
+
+\begin{example}
+  Consideriamo la seguente riga di codice:
+\begin{lstlisting}[numbers=none]
+  position = initial + rate * 60
+\end{lstlisting}
+  Il lexical analyzer raggruppa i caratteri nei seguenti lexemes e tokens:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|}
+      \hline
+      Lexeme & Token \\
+      \hline
+      position & <id, 1> \\
+      = & <=> \\
+      initial & <id, 3> \\
+      + & <+> \\
+      rate & <id, 3> \\
+      * & <*> \\
+      60 & <60> \\
+      \hline
+    \end{tabular}
+  \end{table}
+  \noindent
+  Il \texttt{token\_value} è un riferimento alla tabella dei simboli:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|}
+      \hline
+      id & name \\
+      \hline
+      1 & position \\
+      2 & initial \\
+      3 & rate \\
+      \hline
+    \end{tabular}
+  \end{table}
+  \noindent
+  La sequenza di token ritornata dal lexical analyzer è:
+\begin{lstlisting}[numbers=none]
+<id, 1> <=> <id, 2> <+> <id, 3> <*> <60>
+\end{lstlisting}
+\end{example}
+
+\subsubsection{Parsing}
+Il parsing è una fase del lexical analysis che si occupa di analizzare la struttura sintattica
+del programma, costruendo un albero sintattico astratto (AST) che rappresenta la struttura
+gerarchica.
+\begin{example}
+  La sequenza di token dell'esempio precedente viene rappresentata nel seguente
+  albero sintattico:
+\begin{lstlisting}[numbers=none]
+<id, 1> <=> <id, 2> <+> <id, 3> <*> <60>
+\end{lstlisting}
+  \[
+    \Downarrow
+  \] 
+  \begin{figure}[H]
+    \centering
+    \begin{forest}
+      [{$=$}
+        [{$\langle \mathit{id}, 1 \rangle$}]
+        [{$+$}
+          [{$\langle \mathit{id}, 2 \rangle$}]
+          [{$*$}
+            [{$\langle \mathit{id}, 3 \rangle$}]
+            [60]
+          ]
+        ]
+      ]
+    \end{forest}
+    \caption{Syntax Tree}
+  \end{figure}
+\end{example}
+
+\noindent
+Questa fase controlla gli \textbf{errori semantici} (Type Checking) e ottiene le
+informazioni dei tipi per le fasi successive. Il type checking controlla i tipi
+degli operandi (potrebbe anche imporre delle conversioni di tipo) e controlla che le operazioni siano valide per i tipi degli operandi. Ad esempio controlla che non ci
+siano numeri reali per indicizzare un array.
+
+\subsubsection{Intermediate code generator}
+Il \textbf{codice intermedio} è generato come un programma per una \textbf{macchina
+astratta}. Questo codice dovrebbe essere facile da generare e tradurre nel programma
+target.
+
+% TODO
+
+\subsubsection{Optimization}
+L'ottimizzazione \textbf{indipendentemente dalla macchina} cerca di migliorare il
+codice intermedio in modo da ottenere codice macchina migliore, ad esempio
+più veloce o che utilizza meno memoria o che consuma meno energia o rete, ecc... .
+Compilatori diversi possono applicare ottimizzazioni diverse.
+
+\subsubsection{Code generation}
+Questa fase genera il codice target che consiste in codice assembly.
+\begin{itemize}
+  \item Per ogni variabile e risultato intermedio, viene assegnato un \textbf{registro} o
+    una posizione in memoria. L'\textbf{allocazione della memoria} viene fatta in questa
+    fase, oppure nella fase di intermediate code generation.
+
+  \item Le istruzioni sono tradotte in sequenze di istruzioni assembly.
+\end{itemize}
+
+\begin{example}
+  Il seguente codice verrà poi tradotto in assembly:
+\begin{lstlisting}
+t1 = id3 * 60
+id1 = id2 + t1
+\end{lstlisting}
+\[
+  \Downarrow
+\] 
+\begin{lstlisting}
+LDF R2, id3
+MULF R2, R2, 60
+LDF R1, id2
+ADDF R1, R1, R2
+STOF R1, id1
+\end{lstlisting}
+% TODO
+
+\end{example}
+
+\subsubsection{Front end e back end}
+Il \textbf{front end} del compilatore si occupa dell'analisi, mentre il
+\textbf{back end} si occupa della sintesi. Il front end è indipendente dalla macchina,
+mentre il back end è specifico per la macchina target. Questo permette di riutilizzare
+il front end per diversi target, ad esempio un compilatore che supporta sia x86 che ARM
+può avere lo stesso front end e due back end diversi.
+
+
 \end{document}
