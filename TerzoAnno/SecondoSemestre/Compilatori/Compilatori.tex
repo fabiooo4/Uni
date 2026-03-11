@@ -425,9 +425,31 @@ context free. Una grammatica context free è composta da:
   \item Un simbolo non terminale di partenza
 \end{itemize}
 
-% TODO
-% \begin{example}
-% \end{example}
+\begin{example}
+  \label{example:grammatica}
+  L'esempio di una grammatica è il seguente:
+  \begin{itemize}
+    \item Simboli terminali:
+      \( \{ \textbf{+, -, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9} \}  \) 
+
+    \item Simboli non terminali:
+      \( \left\{ \textit{list, digit} \right\} \) 
+
+    \item Simbolo di partenza: \textit{list}
+
+    \item Produzioni:
+      \[
+        \begin{aligned}
+          \textit{list} &\to \textit{list} + \textit{digit} \\
+          \textit{list} &\to \textit{list} - \textit{digit} \\
+          \textit{list} &\to \textit{digit} \\
+          \textit{list} &\to \textbf{0} \mid \textbf{1} \mid \textbf{2} \mid \textbf{3} \mid \textbf{4} \mid \textbf{5} \mid \textbf{6} \mid \textbf{7} \mid \textbf{8} \mid \textbf{9}
+        \end{aligned}
+      \]
+  \end{itemize}
+  Questa grammatica definisce le liste di numeri separati da operatori \textbf{+} o
+  \textbf{-}.
+\end{example}
 
 \subsection{Derivazione}
 Data una grammatica context free si può determinare l'insieme di tutte le stringhe
@@ -454,13 +476,33 @@ Il processo per trovare un albero sintattico per una data stringa di terminali �
 chiamato \textbf{parsing} di quella stringa.
 
 \begin{example}
-  Un esempio di albero sintattico è il seguente:
-  % TODO
-  % \begin{figure}[H]
-  %   \centering
-  %   \begin{forest}
-  %   \end{forest}
-  % \end{figure}
+  L'albero sintattico per la stringa "\textbf{9 - 5 + 2}" secondo la grammatica
+  dell'esempio precedente è il seguente:
+  \begin{figure}[H]
+    \centering
+    \begin{forest}
+      [\textit{list}
+        [\textit{list}
+          [\textit{list} [\textit{digit} [\textbf{9}]]]
+          [\textbf{-}]
+          [\textit{digit} [\textbf{5}]]
+        ]
+        [\textit{digit} [\textbf{2}]]
+      ]
+    \end{forest}
+  \end{figure}
+  \noindent
+  La derivazione per questa stringa è la seguente:
+  \[
+  \begin{aligned}
+    \textit{list} &\to \textit{list} \,\textbf{+}\, \textit{digit} \\
+                  &\to \textit{list} \,\textbf{-}\, \textit{digit} \,\textbf{+}\, \textit{digit} \\
+                  &\to \textit{digit} \,\textbf{-}\, \textit{digit} \,\textbf{+}\, \textit{digit} \\
+                  &\to \textbf{9} \,\textbf{-}\, \textit{digit} \,\textbf{+}\, \textit{digit} \\
+                  &\to \textbf{9} \,\textbf{-}\, \textbf{5} \,\textbf{+}\, \textit{digit} \\
+                  &\to \textbf{9} \,\textbf{-}\, \textbf{5} \,\textbf{+}\, \textbf{2}
+  \end{aligned}
+  \] 
 \end{example}
 
 \subsection{Ambiguità}
@@ -470,9 +512,59 @@ Siccome una stringa con più di un albero sintattico solitamente ha più di un s
 bisogna progettare grammatiche non ambigue per le applicazioni di compilazione, o
 utilizzare grammatiche ambigue con regole aggiuntive per risolvere le ambiguità.
 
-% TODO
-% \begin{example}
-% \end{example}
+\begin{example}
+  Considerando la seguente grammatica:
+  \begin{itemize}
+    \item Simboli terminali: \( \{ \textbf{+, -, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9} \} \)
+    \item Simboli non terminali: \( \left\{ \textit{string} \right\} \)
+    \item Simbolo di partenza: \textit{string}
+    \item Produzioni:
+      \[
+        \begin{aligned}
+          \textit{string} &\to \textit{string} + \textit{string} \\
+          \textit{string} &\to \textit{string} - \textit{string} \\
+          \textit{string} &\to \textbf{0} \mid \textbf{1} \mid \textbf{2} \mid \textbf{3} \mid \textbf{4} \mid \textbf{5} \mid \textbf{6} \mid \textbf{7} \mid \textbf{8} \mid \textbf{9}
+        \end{aligned}
+      \]
+  \end{itemize}
+  La stringa "\textbf{9 - 5 + 2}" può essere generata da due alberi sintattici diversi,
+  che hanno significati diversi:
+  \begin{figure}[H]
+    \centering
+    \begin{minipage}{0.45\textwidth}
+      \begin{forest}
+        [\textit{string}
+          [\textit{string}
+            [\textit{string} [\textbf{9}]]
+            [\textbf{-}]
+            [\textit{string} [\textbf{5}]]
+          ]
+          [\textbf{+}]
+          [\textit{string} [\textbf{2}]]
+        ]
+      \end{forest}
+      \caption{(9 - 5) + 2 = 6}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.45\textwidth}
+      \begin{forest}
+        [\textit{string}
+          [\textit{string} [\textbf{9}]]
+          [\textbf{-}]
+          [\textit{string}
+            [\textit{string} [\textbf{5}]]
+            [\textbf{+}]
+            [\textit{string} [\textbf{2}]]
+          ]
+        ]
+      \end{forest}
+      \caption{9 - (5 + 2) = 2}
+    \end{minipage}
+  \end{figure}
+  \noindent
+  L'ordine delle operazioni è diverso nei due alberi sintattici, e quindi la grammatica
+  è ambigua.
+\end{example}
 
 \subsection{Associatività degli operatori}
 Nella maggior parte dei linguaggi di programmazione le quattro operazioni aritmetiche
@@ -480,35 +572,119 @@ Nella maggior parte dei linguaggi di programmazione le quattro operazioni aritme
 \begin{example}
   La stringa \texttt{a + b + c} è interpretata come \texttt{(a + b) + c}
     \[
-      left \to left + letter | letter
+      left \to left + letter \mid letter
     \] 
+    \begin{figure}[H]
+      \centering
+      \begin{forest}
+        [\textit{left}
+          [\textit{left}
+            [\textit{left} [\textit{letter} [\textbf{a}]]]
+            [\textbf{+}]
+            [\textit{letter} [\textbf{b}]]
+          ]
+          [\textbf{+}]
+          [\textit{letter} [\textbf{c}]]
+        ]
+      \end{forest}
+    \end{figure}
 \end{example}
 Altre operazioni, come gli assegnamenti o l'esponenziazione sono invece
 \textbf{associate a destra}, cioè:
 \begin{example}
   La stringa \texttt{a = b = c} è interpretata come \texttt{a = (b = c)}
     \[
-      right \to letter = right | letter
+      right \to letter = right \mid letter
     \]
+    \begin{figure}[H]
+      \centering
+      \begin{forest}
+        [\textit{right}
+          [\textit{letter} [\textbf{a}]]
+          [\textbf{=}]
+          [\textit{right}
+            [\textit{letter} [\textbf{b}]]
+            [\textbf{=}]
+            [\textit{right} [\textit{letter} [\textbf{c}]]]
+          ]
+        ]
+      \end{forest}
+    \end{figure}
 \end{example}
 
 \subsection{Precedenza degli operatori}
 Bisogna introdurre regole che definiscono la precedenza relativa degli operatori
 quando più di un tipo di operatore è presente, ad esempio
-\( * \) e \( / \) hanno precedenza più alta di \( + \) e \( - \)
+\( * \) e \( / \) hanno precedenza più alta di \( + \) e \( - \).
+
 \begin{example}
   La stringa \texttt{9 + 5 * 2} ha il significato di \texttt{9 + (5 * 2)}.
   Si può quindi costruire una grammatica per le operazioni aritmetiche che rispetta
   la precedenza degli operatori:
-  % TODO
+  \[
+    \begin{aligned}
+      \textit{expr} &\to \textit{expr} \,\textbf{+}\, \textit{term}
+      \mid \textit{expr} \,\textbf{-}\, \textit{term}
+      \mid \textit{term} \\
+      \textit{term} &\to \textit{term} \,\textbf{*}\, \textit{factor}
+      \mid \textit{term} \,\textbf{/}\, \textit{factor}
+      \mid \textit{factor} \\
+      \textit{factor} &\to \textit{digit} \mid \textbf{(} \textit{expr} \textbf{)} \\
+      \textit{digit} &\to \textbf{0} \mid \textbf{1} \mid \textbf{2} \mid \textbf{3} \mid \textbf{4} \mid \textbf{5} \mid \textbf{6} \mid \textbf{7} \mid \textbf{8} \mid \textbf{9}
+    \end{aligned}
+  \] 
+  L'albero sintattico per la stringa \texttt{9 + 5 * 2} secondo questa grammatica è il
+  seguente:
+  \begin{figure}[H]
+    \centering
+    \begin{forest}
+      [\textit{expr}
+        [\textit{expr}
+          [\textit{term}
+            [\textit{factor}
+              [\textit{digit} [\textbf{9}]]
+            ]
+          ]
+        ]
+        [\textbf{+}]
+        [\textit{term}
+          [\textit{term}
+            [\textit{factor}
+              [\textit{digit} [\textbf{5}]]
+            ]
+          ]
+          [\textbf{*}]
+          [\textit{factor}
+            [\textit{digit} [\textbf{2}]]
+          ]
+        ]
+      ]
+    \end{forest}
+  \end{figure}
+  \noindent
+  E ha come significato \texttt{9 + (5 * 2)} = 19.
 \end{example}
 
 \subsection{Sintassi degli statements}
 Uno statement è una unità sintattica che rappresenta un'azione da eseguire, ad esempio
 \texttt{if}, \texttt{while}, \texttt{for}, ecc... .
-La sintassi degli statements è
-definita attraverso le produzioni della grammatica, ad esempio:
-% TODO
+
+\begin{example}
+  Un esempio di grammatica per gli statements è il seguente:
+  \[
+    \begin{aligned}
+      \textit{stmt} &\to \textbf{id} \; \textbf{=} \; \textit{expr} \textbf{;} \\
+                    &\mid\; \textbf{if} \; \textit{expr}\; \textbf{then}\; \textit{stmt} \\
+                    &\mid\; \textbf{if}\; \textit{expr}\; \textbf{then}\; \textit{stmt}\; \textbf{else} \textit{stmt} \\
+                    &\mid\; \textbf{while}\; \textit{expr}\; \textbf{do}\; \textit{stmt} \\
+                    &\mid\; \textbf{do}\; \textit{stmt}\; \textbf{while}\; \textit{expr} \textbf{;} \\
+                    &\mid\; \textbf{\{}\; \textit{stmt}\; \textbf{\}} \\
+                    \\
+      \textit{stmts} &\to \textit{stmts} \; \textit{stmt} \\
+                     &\mid\; \varepsilon
+    \end{aligned}
+  \] 
+\end{example}
 
 \subsection{Tipi di parser}
 Per ogni grammatica context free esiste un \textbf{parser} che ha complessita di tempo
@@ -814,10 +990,50 @@ L'albero sintattico annotato è un albero sintattico in cui ogni nodo è annotat
 i valori degli attributi calcolati dalle regole semantiche.
 \begin{example}
   Un esempio di albero sintattico annotato è il seguente:
+  % \begin{figure}[H]
+  %   \centering
+  %   \includegraphics[width=0.8\textwidth]{albero_annotato}
+  %   \caption{Albero sintattico annotato}
+  % \end{figure}
   \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{albero_annotato}
+    \begin{minipage}{0.45\textwidth}
+      \resizebox{\linewidth}{!}{%
+      \begin{forest}
+        [\textit{expr.t = 9 5 - 2 +}
+          [\textit{expr.t = 9 5 -}
+            [\textit{expr.t = 9}
+              [\textit{term.t = 9} [\textbf{9}]]
+            ]
+            [\textbf{-}]
+            [\textit{term.t = 5} [\textbf{5}]]
+          ]
+          [\textbf{+}]
+          [\textit{term.t = 2} [\textbf{2}]]
+        ]
+      \end{forest}%
+      }
     \caption{Albero sintattico annotato}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.45\textwidth}
+      \resizebox{0.6\linewidth}{!}{%
+      \begin{forest}
+        [\textit{expr}
+          [\textit{expr}
+            [\textit{expr}
+              [\textit{term} [\textbf{9}]]
+            ]
+            [\textbf{-}]
+            [\textit{term} [\textbf{5}]]
+          ]
+          [\textbf{+}]
+          [\textit{term} [\textbf{2}]]
+        ]
+      \end{forest}%
+      }
+    \caption{Albero sintattico}
+  \end{minipage}
   \end{figure}
 \end{example}
 Un albero viene visitato tramite un \textbf{Depth-first traversal} in cui si visitano
@@ -930,8 +1146,9 @@ token con le parole chiave nella symbol table.
   collect letters or digits into a buffer |\textit{b}|;
   |\textit{s}| = string formed from the characters in |\textit{b}|;
   |\textit{w}| = token returned by |\textit{words.get(s)}|;
-  |\textbf{if}| ( |\textit{w}| is |\textbf{not null}| ) |\textbf{return}| |\textit{w}|;
-  |\textbf{else}| {
+  |\textbf{if}| ( |\textit{w}| is |\textbf{not null}| ) {
+    |\textbf{return}| |\textit{w}|;
+  } |\textbf{else}| {
     Enter the key-value pair (|\textit{s}|, |$\langle\textbf{id}, \textit{s}\rangle$|) into |\textit{words}|
     |\textbf{return}| token |$\langle\textbf{id}, \textit{s}\rangle$|;
   }
