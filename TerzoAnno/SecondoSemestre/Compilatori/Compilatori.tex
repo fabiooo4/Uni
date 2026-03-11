@@ -117,7 +117,7 @@ Ci sono due parti principali nel processo di compilazione:
     \node[draw, rectangle, minimum size=3em, inner sep=5pt, below of=LEX,
       yshift=-1cm]
       (SYN) {Parsing (Syntax analysis)};
-    \node[right of=SYN, xshift=2.3cm, scale=0.8] {Costruisce l'albero di parsing};
+    \node[right of=SYN, xshift=3cm, scale=0.8] {Costruisce l'albero di parsing};
 
     \node[draw, rectangle, minimum size=3em, inner sep=2pt, below of=SYN,
       yshift=-1cm, align=center]
@@ -277,15 +277,74 @@ siano numeri reali per indicizzare un array.
 \subsubsection{Intermediate code generator}
 Il \textbf{codice intermedio} è generato come un programma per una \textbf{macchina
 astratta}. Questo codice dovrebbe essere facile da generare e tradurre nel programma
-target.
+target. Come codice intermedio consideriamo il \textbf{three-address code}, cioè
+codice simile all'assembly: una sequenza di istruzioni con al massimo tre operandi tali
+che:
+\begin{itemize}
+  \item C'è al massimo un operatore, oltre all'assegnazione. In questo modo si rende
+    esplicita la precedenza degli operatori.
 
-% TODO
+  \item Bisogna generare nomi temporanei per memorizzare i risultati intermedi.
+\end{itemize}
+
+\begin{example}
+  L'intermediate code generator prende in input un albero sintattico e lo trasforma
+  in codice intermedio:
+  \begin{figure}[H]
+    \centering
+    \begin{forest}
+      [{$=$}
+        [{$\langle \mathit{id}, 1 \rangle$}]
+        [{$+$}
+          [{$\langle \mathit{id}, 2 \rangle$}]
+          [{$*$}
+            [{$\langle \mathit{id}, 3 \rangle$}]
+            [60]
+          ]
+        ]
+      ]
+    \end{forest}
+  \end{figure}
+  \[
+    \Downarrow
+  \] 
+\begin{lstlisting}
+temp1 = int2float(60)
+temp2 = id3 * temp1
+temp3 = id2 + temp2
+id1 = temp3
+\end{lstlisting}
+\end{example}
 
 \subsubsection{Optimization}
 L'ottimizzazione \textbf{indipendentemente dalla macchina} cerca di migliorare il
 codice intermedio in modo da ottenere codice macchina migliore, ad esempio
 più veloce o che utilizza meno memoria o che consuma meno energia o rete, ecc... .
-Compilatori diversi possono applicare ottimizzazioni diverse.
+Compilatori diversi possono applicare ottimizzazioni diverse e non tutte le ottimizzazioni
+sono valide per tutti i programmi, ad esempio:\\
+\texttt{x = y * 0} è uguale a 0 è:
+\begin{itemize}
+  \item Valido per gli interi
+  \item Non valido per i numeri in virgola mobile, perché dovrebbe essere uguale a 
+    \texttt{NaN}
+\end{itemize}
+
+\begin{example}
+  Un esempio di ottimizzazione è la seguente:
+\begin{lstlisting}
+temp1 = int2float(60)
+temp2 = id3 * temp1
+temp3 = id2 + temp2
+id1 = temp3
+\end{lstlisting}
+  \[
+    \Downarrow
+  \] 
+\begin{lstlisting}
+temp1 = id3 * 60.0
+id1 = id2 + temp1
+\end{lstlisting}
+\end{example}
 
 \subsubsection{Code generation}
 Questa fase genera il codice target che consiste in codice assembly.
@@ -300,21 +359,30 @@ Questa fase genera il codice target che consiste in codice assembly.
 \begin{example}
   Il seguente codice verrà poi tradotto in assembly:
 \begin{lstlisting}
-t1 = id3 * 60
-id1 = id2 + t1
+temp1 = id3 * 60.0
+id1 = id2 + temp1
 \end{lstlisting}
 \[
   \Downarrow
 \] 
 \begin{lstlisting}
 LDF R2, id3
-MULF R2, R2, 60
+MULF R2, R2, #60.0
 LDF R1, id2
-ADDF R1, R1, R2
-STOF R1, id1
+ADDF R1,R1, R2
+STF id1, R1
 \end{lstlisting}
-% TODO
 
+\end{example}
+
+\subsubsection{Riassunto delle fasi}
+\begin{example}
+  Mettendo insieme tutte le fasi di compilazione si ottiene:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{passi_compilazione}
+    \caption{Riassunto delle fasi di compilazione}
+  \end{figure}
 \end{example}
 
 \subsubsection{Front end e back end}
@@ -323,6 +391,12 @@ Il \textbf{front end} del compilatore si occupa dell'analisi, mentre il
 mentre il back end è specifico per la macchina target. Questo permette di riutilizzare
 il front end per diversi target, ad esempio un compilatore che supporta sia x86 che ARM
 può avere lo stesso front end e due back end diversi.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{frontend_backend}
+  \caption{Esempi di front end e back end}
+\end{figure}
 
 
 \end{document}
