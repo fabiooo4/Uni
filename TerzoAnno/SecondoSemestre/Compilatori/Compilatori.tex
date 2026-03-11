@@ -102,6 +102,58 @@ Ci sono due parti principali nel processo di compilazione:
     \end{itemize}
 \end{itemize}
 
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw, ellipse, minimum size=2em, inner sep=5pt]
+      (SRC) {Source program};
+
+    \node[draw, rectangle, minimum size=2em, inner sep=5pt, below of=SRC,
+      yshift=-1cm]
+      (LEX) {Lexical analysis};
+    \node[right of=LEX, xshift=2cm, align=center, scale=0.8]
+      {Individua unità lessicale\\nel programma};
+
+    \node[draw, rectangle, minimum size=3em, inner sep=5pt, below of=LEX,
+      yshift=-1cm]
+      (SYN) {Parsing (Syntax analysis)};
+    \node[right of=SYN, xshift=2.3cm, scale=0.8] {Costruisce l'albero di parsing};
+
+    \node[draw, rectangle, minimum size=3em, inner sep=2pt, below of=SYN,
+      yshift=-1cm, align=center]
+      (GEN) {Intermediate code generator\\(Semantic analysis)};
+
+    \node[draw, rectangle, minimum size=3em, inner sep=5pt, right of=GEN,
+      xshift=3cm]
+      (OPT) {Optimization};
+
+    \node[draw, rectangle, minimum size=3em, inner sep=5pt, left of=GEN,
+      xshift=-3cm, align=center]
+      (SYM) {Symbol table};
+
+    \node[draw, rectangle, minimum size=3em, inner sep=5pt, below of=GEN,
+      yshift=-1cm, align=center]
+      (GEN2) {Target code generator};
+
+    \node[below of=GEN2, yshift=-1cm, align=center]
+      (TAR) {Target program};
+
+
+    \draw[->] (SRC) -- (LEX);
+    \draw[->] (LEX) -- (SYN);
+    \draw[->] (SYN) -- node[right,align=center, scale=0.8] {Parsing tree} (GEN);
+    \draw[->] (GEN) -- (OPT);
+    \draw[->] (GEN) -- node[right,align=center, scale=0.8] {Generates\\intermediate code} (GEN2);
+    \draw[->] (OPT) |- (GEN2);
+    \draw[->] (GEN2) -- (TAR);
+
+    \draw[->] (SYN) -| (SYM);
+    \draw[->] (GEN.west) |- (SYM);
+    \draw[->] (LEX) -| (SYM);
+  \end{tikzpicture}
+  \caption{Struttura di un compilatore}
+\end{figure}
+
 \noindent
 Per generare codice eseguibile c'è bisogno di altri programmi in cui il compilatore
 è solo una parte del processo:

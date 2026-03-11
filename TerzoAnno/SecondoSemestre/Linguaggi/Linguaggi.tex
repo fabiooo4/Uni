@@ -214,6 +214,13 @@ Per poter eseguire un programma serve un altro programma che lo esegue che è de
   \vspace{1em}
   \noindent
   Intuitivamente è la macchina il cui linguaggio è esattamente \( L \).
+
+  \begin{itemize}
+    \item Per ogni macchina astratta \( M_L \) esiste un unico linguaggio \( L \) 
+      che è il linguaggio riconosciuto ed eseguito da \( M_L \) 
+    \item Per ogni linguaggio di programmazione \( L \) possono esistere
+      infinite macchine astratte per \( L \) 
+  \end{itemize}
 \end{definition}
 
 \begin{example}
@@ -310,5 +317,331 @@ begin
 
 end
 \end{lstlisting}
+
+\begin{example}
+  Un semplice autointerprete, cioè un interprete scritto nel linguaggio che interpreta.
+\begin{lstlisting}[language=Python]
+input P, d;
+pc = 2;
+store = [in -> d, out -> 0, x_1 -> 0, x_2 -> 0, ...];
+while pc < length(P) do
+  # Find the pc-th instruction
+  instruction = lookup(P, pc);
+
+  # Syntax rules
+  case instruction of
+    skip: pc = pc + 1;
+    x = e: store = store[x -> eval(e, store)]; pc = pc + 1;
+    ...
+  endcase
+endwhile;
+
+output store[out]
+
+
+# Semantic rules
+eval(e, store) = case e of
+  constant: e
+  variable: store(e)
+  e1 + e2: eval(e1, store) + eval(e2, store)
+  e1 - e2: eval(e1, store) - eval(e2, store)
+  e1 * e2: eval(e1, store) * eval(e2, store)
+  ...
+endcase
+\end{lstlisting}
+Dove \texttt{in -> d} rappresenta l'assegnamento del dato di input alla variabile \texttt{in}.
+\end{example}
+\noindent
+L'interprete \textbf{realizza} la macchina astratta \( M_L \) di un
+linguaggio di programmazione \( L \) partendo da un linguaggio \( L_0 \) 
+con una macchina astratta \( M_0 \) direttamente eseguibile passando
+attraverso una macchina intermedia \( M_I \) (interprete).
+
+\subsection{Compilatore}
+\begin{definition}
+  Il compilatore da \( L \) a \( L_0 \) è un programma del tipo:
+  \[
+    C^{LL_0}: Prog^L \to Prog^{L_0}
+  \] 
+  che prende in input un programma \( P^L \) e restituisce in output un programma \( P^{L_0} \).
+  \[
+    \forall P^L \in Prog^L \;.\; C^{LL_0}(P^L) = P^{L_0} \quad t.c. \quad
+    \forall d \in D \;.\; P^{L_0}(d) = P^L(d)
+  \] 
+  Non ci sono accessi alla memoria o a dati. Verificare che due programmi
+  siano uguali è un problema non decidibile, quindi il compilatore deve
+  essere costruito in modo da garantire che i programmi compilati siano
+  equivalenti a quelli originali.
+\end{definition}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw, rectangle, minimum size=2em, inner sep=1pt] (C) {\( C^{LL_0} \)};
+    \node[below of=C, yshift=-1cm, draw, rectangle, minimum size=2em, inner sep=1pt]
+      (M) {\( M_{L_1} \equiv M_{L_0} \)};
+    \draw[->] (C) -- node[right] {\( C^{LL_0}\) può essere scritto in \( L_1 \)
+      diverso da \( L_0 \), ma implementato} (M);
+
+    \node[left of=C] (L) {\( P^L \)};
+    \node[right of=C] (L0) {\( P^{L_0} \)};
+    \draw[->] (L) -- (C);
+    \draw[->] (C) -- (L0);
+  \end{tikzpicture}
+  \caption{Rappresentazione grafica del compilatore}
+\end{figure}
+\begin{itemize}
+  \item Per eseguire il programma bisogna applicare \( P^{L_0} \) all'input.
+  \item Il compilatore traduce un codice in un codice diverso, separando
+    la traduzione dall'esecuzione.
+\end{itemize}
+
+\subsubsection{Struttura del compilatore}
+La struttura di un compilatore è data da diversi componenti che lavorano
+insieme. I componenti principali sono:
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node[draw, ellipse, minimum size=2em, inner sep=5pt]
+      (SRC) {Programma sorgente};
+
+    \node[draw, rectangle, minimum size=2em, inner sep=5pt, below of=SRC,
+      yshift=-1cm]
+      (LEX) {Analisi lessicale};
+    \node[right of=LEX, xshift=2cm, align=center, scale=0.8]
+      {Individua unità lessicale\\nel programma};
+
+    \node[draw, rectangle, minimum size=3em, inner sep=5pt, below of=LEX,
+      yshift=-1cm]
+      (SYN) {Analisi sintattica};
+    \node[right of=SYN, xshift=2.3cm, scale=0.8] {Costruisce l'albero di parsing};
+
+    \node[draw, rectangle, minimum size=3em, inner sep=2pt, below of=SYN,
+      yshift=-1cm, align=center]
+      (GEN) {Generatore di\\codice intermedio};
+
+    \node[draw, rectangle, minimum size=3em, inner sep=5pt, right of=GEN,
+      xshift=3cm]
+      (OPT) {Ottimizzatore};
+
+    \node[draw, rectangle, minimum size=3em, inner sep=5pt, left of=GEN,
+      xshift=-3cm, align=center]
+      (SYM) {Tabella dei\\simboli};
+
+    \node[draw, rectangle, minimum size=3em, inner sep=5pt, below of=GEN,
+      yshift=-1cm, align=center]
+      (GEN2) {Generatore di\\codice target};
+
+    \node[below of=GEN2, yshift=-1cm, align=center]
+      (TAR) {Programma target};
+
+
+    \draw[->] (SRC) -- (LEX);
+    \draw[->] (LEX) -- (SYN);
+    \draw[->] (SYN) -- node[right,align=center, scale=0.8] {Albero di parsing} (GEN);
+    \draw[->] (GEN) -- (OPT);
+    \draw[->] (GEN) -- node[right,align=center, scale=0.8] {Genera codice\\intermedio} (GEN2);
+    \draw[->] (OPT) |- (GEN2);
+    \draw[->] (GEN2) -- (TAR);
+
+    \draw[->] (SYN) -| (SYM);
+    \draw[->] (GEN.west) |- (SYM);
+    \draw[->] (LEX) -| (SYM);
+  \end{tikzpicture}
+  \caption{Struttura di un compilatore}
+\end{figure}
+\noindent
+Il compilatore \textbf{traduce} un programma \( P^L \) scritto in un linguaggio
+di programmazione \( L \) in un programma \( P^{L_0} \) scritto in un linguaggio
+\( L_0 \) con una macchina astratta \( M_0 \) direttamente eseguibile, passando
+attraverso una macchina intermedia \( M_I \) (compilatore).
+
+\subsubsection{Prima proiezione di Futamura}
+Un compilatore può essere ottenuto \textbf{specializzando} un interprete
+su un programma.
+
+\begin{definition}[Specializzatore]
+  Uno specializzatore per un linguaggio di programmazione \( L \) è un
+  programma che realizza la funzione:
+  \[
+    Spec_L: (Prog^L \times D) \to Prog^L
+  \] 
+  tale che:
+  \[
+    \begin{aligned}
+      & \forall P^L \in Prog^L, \forall d \in D \;.\; \\
+      &\quad Spec_L(P^L, d) = P^L_d\\
+      &\quad \; t.c. \; P^L(d, input) = P^L_d(input)
+    \end{aligned}
+  \] 
+  Quindi \( d \) non è più un dato di input, ma è incorporato nel codice.
+
+  \vspace{1em}
+  \noindent
+  Lo specializzatore fornisce un legame tra interprete e compilatore. Infatti
+  specializzando un interprete (scritto in \( L \)) si ottiene un
+  compilatore da \( L \) a \( L_0 \).
+  \[
+    I(P^L, d) \Rightarrow Spec(I, P^L)
+  \] 
+  \( Spec \) è un programma scritto in \( L_0 \) che integra nel codice
+  l'esecuzione di \( P^L \).
+\end{definition}
+
+\section{Descrivere i linguaggi di programmazione}
+I linguaggi di programmazione sono dei linguaggi, quindi hanno in caratteristiche
+in comune con i linguaggi e quindi anche quelli naturali. Le caratteristiche sono:
+\begin{itemize}
+  \item \textbf{Sintassi}: Regole di formazione. Determinano quali sono
+    le frasi ben formate nel linguaggio e descrive relazioni tra simboli
+
+  \item \textbf{Semantica}: Attribuzione del \textbf{significato} ai simboli.
+    Determina il significato delle frasi ben formate nel linguaggio e descrive
+    relazioni tra simboli e significati.
+
+  \item \textbf{Pragmatica}: Regole di buon utilizzo del linguaggio.
+
+  \item \textbf{Implementazione} (Caratteristica aggiunta per i linguaggi di programmazione):
+    Esistono strumenti che eseguono frasi ben formate del linguaggio.
+\end{itemize}
+
+\begin{example}
+  Il numero è soltanto sintassi, mentre il significato è il valore che assume:
+  \[
+    4 \quad \text{(sintassi)} \to \text{significato} \quad 4
+  \] 
+  \[
+    IV \quad \text{(sintassi)} \to  \text{significato} \quad 4
+  \] 
+\end{example}
+
+\subsection{Sintassi}
+Le componenti principali della sintassi sono:
+\begin{itemize}
+  \item \textbf{Parola}: stringa su un alfabeto \( \Sigma \)
+
+  \item \textbf{Frase}: sequenza di parole ben formata, cioè che rispetta le regole
+    della sintassi
+
+  \item \textbf{Linguaggio}: insieme di frasi ben formate
+
+    \begin{example}
+      Prendiamo ad esempio il seguente linguaggio:
+      \[
+        \left\{ a^n b^n \;\left|\; n \in \mathbb{N} \right. \right\}
+      \] 
+      \begin{itemize}
+        \item \textbf{Alfabeto}: \( \Sigma = \left\{ a, b \right\} \) 
+        \item \textbf{Parole}: \( \varepsilon, a, b, aa, ab, ba, bb, aaa, aab, ... \)
+        \item \textbf{Linguaggio}: \(
+          \left\{ a^n b^n \;\left|\; n \in \mathbb{N} \right. \right\}
+        \)
+      \end{itemize}
+    \end{example}
+
+  \item \textbf{Lessema}: una parola (costituita da soli terminali nell'alfabeto) che
+  ha un significato, cioè è una parola che rappresenta un concetto o un oggetto nel
+  linguaggio.
+
+  \begin{example}
+    Alcuni esempi di lessemi sono:
+    \begin{itemize}
+      \item \texttt{if exp then com else com}:\\
+        I lessemi sono \texttt{if}, \texttt{then}, \texttt{else}, mentre \texttt{exp}
+        e \texttt{com} non sono lessemi perchè rappresentano un'espressione e un comando,
+        cioè sono dei simboli non terminali.
+    \end{itemize}
+  \end{example}
+
+  \item \textbf{Token}: categorie sintattiche, cioè simboli non terminali
+
+    \begin{example}
+      Alcuni esempi di token sono:
+      \item \texttt{if exp then com else com}:\\
+        I token sono \texttt{exp} e \texttt{com} perchè sono simboli non terminali.
+    \end{example}
+\end{itemize}
+
+\subsubsection{Strumenti di definizione della sintassi}
+Gli strumenti per definire la sintassi di un linguaggio di programmazione sono:
+\begin{itemize}
+  \item \textbf{Riconoscitore}: è uno strumento per il \textbf{riconoscimento} di
+    stringhe appartenenti al linguaggio. Ad esempio gli automi a stati finiti, utilizzati
+    nell'analisi lessicale per il riconoscimento dei lessemi.
+
+  \item \textbf{Generatore}: è uno strumento per la \textbf{generazione} di stringhe
+    appartenenti al linguaggio. Ad esempio le grammatiche CF, utilizzate nella fase
+    di parsing della compilazione per riconoscere programmi scritti in un linguaggio
+    di programmazione.
+\end{itemize}
+
+\begin{define}
+  Un linguaggio di programmazione è dipendente dal contesto, quindi si cerca di svilupparli
+  "a livelli", cioè si fa prima tutto ciò che si può fare con gli automi, poi tutto ciò
+  che si può fare con le grammatiche CF, e così via.
+\end{define}
+
+\begin{definition}
+  Una grammatica context free è definita da:
+  \[
+    G = \left<V, T, P, S \right>
+  \] 
+  dove:
+  \begin{itemize}
+    \item \( V \): è un insieme finito di simboli non terminali (variabili)
+    \item \( T \): è un insieme finito di simboli terminali
+      \[
+        V \cap T = \varnothing
+      \] 
+    \item \( P \): è un insieme finito di procedure:
+      \[
+        A \to \alpha \quad A \in V, \alpha \in (V \cup T)^*
+      \] 
+    \item \( S \in V \): è il simbolo iniziale
+  \end{itemize}
+  In un linguaggio di programmazione la grammatica CF è mappata nel seguente modo:
+  \begin{itemize}
+    \item \( V \): categorie sintattiche (ad esempio le espressioni, le variabili, ecc...)
+    \item \( T \): vocabolario di parole (\texttt{if}, \texttt{then}, \texttt{else}, ecc...)
+    \item \( P \): regole di formazione
+    \item \( S \in V \): categoria della frase (il programma)
+  \end{itemize}
+
+  \vspace{1em}
+  \noindent
+
+\end{definition}
+
+\begin{define}[Notazione BNF]
+  Per i linguaggi di programmazione viene utilizzata la notazione BNF (Backus-Naur Form)
+  che cambia i simboli utilizzati per rappresentare i componenti della grammatica CF,
+  ad esempio:
+  \[
+    \to \quad \text{diventa} \quad ::=
+  \] 
+  Un linguaggio BNF è CF.
+\end{define}
+
+\begin{example}
+  Costruiamo una grammatica per espressioni booleane:
+  \[
+    G = \left< \{Exp\}, \{0, 1, or, and, not, (, )\}, P, Exp \right>
+  \] 
+  \[
+    \begin{aligned}
+      P &= \left\{
+        \begin{aligned}
+        & Exp \to 0 \\
+        & Exp \to 1 \\
+        & Exp \to (Exp \; or \; Exp) \\
+        & Exp \to (Exp \; and \; Exp) \\
+        & Exp \to (not \; Exp) \\
+        \end{aligned}
+      \right.\\
+        &= 0 | 1 | (Exp \; or \; Exp) | (Exp \; and \; Exp) | (not \; Exp)
+    \end{aligned}
+  \] 
+\end{example}
+
 
 \end{document}
