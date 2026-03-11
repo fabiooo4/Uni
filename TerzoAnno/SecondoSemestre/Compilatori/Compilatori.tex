@@ -42,7 +42,7 @@ STO R2, R0
       eseguito.
   \end{itemize}
 
-\section{Compilatori}
+\section{Compilazione}
 Un compilatore è un programma che legge un altro programma scritto in un linguaggio
 di programmazione e lo traduce in un altro linguaggio equivalente chiamato
 \textbf{target}. Il compilatore traduce l'intero programma in un altro (solitamente
@@ -277,16 +277,7 @@ siano numeri reali per indicizzare un array.
 \subsubsection{Intermediate code generator}
 Il \textbf{codice intermedio} è generato come un programma per una \textbf{macchina
 astratta}. Questo codice dovrebbe essere facile da generare e tradurre nel programma
-target. Come codice intermedio consideriamo il \textbf{three-address code}, cioè
-codice simile all'assembly: una sequenza di istruzioni con al massimo tre operandi tali
-che:
-\begin{itemize}
-  \item C'è al massimo un operatore, oltre all'assegnazione. In questo modo si rende
-    esplicita la precedenza degli operatori.
-
-  \item Bisogna generare nomi temporanei per memorizzare i risultati intermedi.
-\end{itemize}
-
+target.
 \begin{example}
   L'intermediate code generator prende in input un albero sintattico e lo trasforma
   in codice intermedio:
@@ -386,8 +377,13 @@ STF id1, R1
 \end{example}
 
 \subsubsection{Front end e back end}
-Il \textbf{front end} del compilatore si occupa dell'analisi, mentre il
-\textbf{back end} si occupa della sintesi. Il front end è indipendente dalla macchina,
+\begin{itemize}
+  \item \textbf{Front-end}: Si occupa dell'analisi, cioè definisce la \textbf{sintassi} del linguaggio di
+    programmazione (attraverso grammatiche context free). 
+
+  \item \textbf{Back-end}: Si occupa della sintesi.
+\end{itemize}
+Il front end è indipendente dalla macchina,
 mentre il back end è specifico per la macchina target. Questo permette di riutilizzare
 il front end per diversi target, ad esempio un compilatore che supporta sia x86 che ARM
 può avere lo stesso front end e due back end diversi.
@@ -397,6 +393,557 @@ può avere lo stesso front end e due back end diversi.
   \includegraphics[width=0.8\textwidth]{frontend_backend}
   \caption{Esempi di front end e back end}
 \end{figure}
+
+\section{Definizione della sintassi}
+In questo corso verrà implementato un front-end per un compilatore:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{front_end}
+  \caption{Front-end di un compilatore}
+\end{figure}
+
+\vspace{1em}
+\noindent
+La sintassi di un linguaggio di programmazione è definita attraverso le grammatiche
+context free. Una grammatica context free è composta da:
+\begin{itemize}
+  \item Un insieme di \textbf{simboli terminali}, che rappresnetano simboli, numeri
+    e parole chiave del linguaggio. Solitamente scritte in grassetto, ad esempio:
+    \textbf{<, =, +, 1, 2, while}, ecc...
+    % TODO: Per ogni blocco di codice metti il grassetto o l'italic
+
+  \item Un insieme di \textbf{simboli non terminali}, che rappresentano categorie sintattiche
+    come espressioni, istruzioni, blocchi, ecc... Solitamente scritte in corsivo, ad esempio:
+    \textit{expr, stmt, var}, ecc...
+
+  \item Un insieme di \textbf{produzioni}, che definiscono come i simboli non terminali
+    possono essere sostituiti da sequenze di simboli terminali e non terminali:
+    \[
+      A \rightarrow \alpha \quad A \in V \text{(Non terminali)}, \alpha \in (V \cup T)^* \text{(T terminali)}
+    \] 
+
+  \item Un simbolo non terminale di partenza
+\end{itemize}
+
+% TODO
+% \begin{example}
+% \end{example}
+
+\subsection{Derivazione}
+Data una grammatica context free si può determinare l'insieme di tutte le stringhe
+(sequenze di token) generate dalla grammatica utilizzando le \textbf{derivazioni}.
+Si parte dal simbolo di partenza e ad ogni passo si sostituisce un simbolo non terminale
+nella \textbf{forma sentenziale} (cioè una stringa che contiene sia simboli terminali
+che non terminali) con la parte destra di una produzione che ha quel simbolo non terminale.
+
+\section{Parsing}
+Il parsing è il processo di analisi sintattica che prende in input una sequenza di token
+e determina se la sequenza è sintatticamente corretta secondo la grammatica del linguaggio
+e costruisce un albero sintattico astratto (AST) che rappresenta la struttura gerarchica
+del programma. L'albero ha le seguenti caratteristiche:
+\begin{itemize}
+  \item La \textbf{radice} dell'albero è etichettato con il simbolo di partenza della grammatica.
+  \item Ogni \textbf{foglia} dell'albero è etichettato con un simbolo terminale (un token) o la
+    stringa vuota \( \varepsilon  \).
+  \item Ogni \textbf{nodo interno} è etichettato con un simbolo non terminale
+  \item Se \( A \to X_1 X_2 \ldots X_n \) è una produzione, allora il nodo \( A \) ha
+    \( n \) figli, etichettati con \( X_1, X_2, \ldots, X_n \) dove \( X_i \) è 
+    un terminale o non terminale (oppure \( \varepsilon  \).
+\end{itemize}
+Il processo per trovare un albero sintattico per una data stringa di terminali è
+chiamato \textbf{parsing} di quella stringa.
+
+\begin{example}
+  Un esempio di albero sintattico è il seguente:
+  % TODO
+  % \begin{figure}[H]
+  %   \centering
+  %   \begin{forest}
+  %   \end{forest}
+  % \end{figure}
+\end{example}
+
+\subsection{Ambiguità}
+Una grammatica è ambigua se esiste una stringa che può essere generata da più di
+un albero sintattico.
+Siccome una stringa con più di un albero sintattico solitamente ha più di un significato,
+bisogna progettare grammatiche non ambigue per le applicazioni di compilazione, o
+utilizzare grammatiche ambigue con regole aggiuntive per risolvere le ambiguità.
+
+% TODO
+% \begin{example}
+% \end{example}
+
+\subsection{Associatività degli operatori}
+Nella maggior parte dei linguaggi di programmazione le quattro operazioni aritmetiche
+(+, -, *, /) sono \textbf{associate a sinistra}, cioè:
+\begin{example}
+  La stringa \texttt{a + b + c} è interpretata come \texttt{(a + b) + c}
+    \[
+      left \to left + letter | letter
+    \] 
+\end{example}
+Altre operazioni, come gli assegnamenti o l'esponenziazione sono invece
+\textbf{associate a destra}, cioè:
+\begin{example}
+  La stringa \texttt{a = b = c} è interpretata come \texttt{a = (b = c)}
+    \[
+      right \to letter = right | letter
+    \]
+\end{example}
+
+\subsection{Precedenza degli operatori}
+Bisogna introdurre regole che definiscono la precedenza relativa degli operatori
+quando più di un tipo di operatore è presente, ad esempio
+\( * \) e \( / \) hanno precedenza più alta di \( + \) e \( - \)
+\begin{example}
+  La stringa \texttt{9 + 5 * 2} ha il significato di \texttt{9 + (5 * 2)}.
+  Si può quindi costruire una grammatica per le operazioni aritmetiche che rispetta
+  la precedenza degli operatori:
+  % TODO
+\end{example}
+
+\subsection{Sintassi degli statements}
+Uno statement è una unità sintattica che rappresenta un'azione da eseguire, ad esempio
+\texttt{if}, \texttt{while}, \texttt{for}, ecc... .
+La sintassi degli statements è
+definita attraverso le produzioni della grammatica, ad esempio:
+% TODO
+
+\subsection{Tipi di parser}
+Per ogni grammatica context free esiste un \textbf{parser} che ha complessita di tempo
+\( O(n^3) \) per fare il parsing di una stringa di lunghezza \( n \).
+Algoritmi più efficienti, con complessità \( O(n) \), esistono per classi più ristrette
+di grammatiche. Ci sono due tipi di parser:
+\begin{itemize}
+  \item \textbf{Top-down parsing}: Costruisce l'albero sintattico partendo dalla radice
+    applicando le produzioni fino a raggiungere le foglie.
+  \item \textbf{Bottom-up parsing}: Costruisce l'albero sintattico partendo dalle foglie
+    applicando le produzioni fino a raggiungere la radice.
+\end{itemize}
+
+\subsubsection{Top-down parsing}
+Consideriamo la seguente grammatica:
+\[
+  \begin{aligned}
+    stmt &\to expr;\\
+         &| if (expr) stmt \\
+          &| for (optexpr; optexpr; optexpr) stmt \\
+          &| other \\
+          \\
+    optexpr &\to expr \\
+            &| \varepsilon
+  \end{aligned}
+\] 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{top_down_parsing}
+  \caption{Esempio di top-down parsing}
+\end{figure}
+Questa grammatica ad esempio riconosce la seguente stringa:
+\begin{lstlisting}
+for (; expr ; expr) other
+\end{lstlisting}
+
+\subsubsection{Predictive parsing}
+Il predictive parsing è un metodo di top-down parsing che utilizza un simbolo di lookahead
+per decidere quale produzione applicare. il \textbf{Recursive descent parsing} è un
+metodo di top-down parsing in cui viene utilizzato un insieme di procedure ricorsive
+per processare l'input, in cui \textbf{ogni non terminale} ha una \textbf{procedura ricorsiva} che si
+occupa di fare il parsing di quel non terminale.
+In generale la selezione di una produzione per un non terminale può comportare
+un approccio trial-and-error, ma il predictive parsing \textbf{evita il backtracking}
+utilizzando un \textbf{simbolo di lookahead} per determinare in modo univoco quale produzione
+applicare.
+
+\begin{definition}[Simbolo di lookahead]
+  Il simbolo di lookahead è un simbolo terminale che viene utilizzato per decidere quale
+  produzione applicare durante il parsing. Ad esempio, se il simbolo di lookahead è
+  \texttt{for}, allora si sa che bisogna applicare la produzione \( stmt \to for (optexpr; optexpr; optexpr) stmt \).
+\end{definition}
+
+\noindent
+Quando un non terminale ha più produzioni, ogni produzione viene implementata in
+un ramo di una dichiarazione di selezione basata sulle informazioni del simbolo di
+lookahead. Il predictive parsing è una forma speciale di recursive descent parsing
+in cui si utilizza un simbolo di lookahead per determinare in modo univoco le operazioni
+di parsing.
+
+\begin{example}
+  Considerando la seguente grammatica:
+  \[
+    \begin{aligned}
+      stmt &\to expr;\\
+           &| if (expr) stmt \\
+           &| for (optexpr; optexpr; optexpr) stmt \\
+           &| other \\
+           \\
+      optexpr &\to expr \\
+              &| \varepsilon
+    \end{aligned}
+  \] 
+  \noindent
+  Il predictive parser per questa grammatica è il seguente:
+\begin{lstlisting}[language=C]
+void stmt() {
+  switch (lookahead) {
+    case expr:
+      match(expr);
+      match(';');
+      break;
+    case if:
+      match(if);
+      match('(');
+      match(expr);
+      match(')');
+      stmt();
+      break;
+    case for:
+      match(for);
+      match('(');
+      optexpr();
+      match(';');
+      optexpr();
+      match(';');
+      optexpr();
+      match(')');
+      stmt();
+      break;
+    case other:
+      match(other);
+      break;
+    default:
+      report("Syntax error");
+  }
+}
+
+void optexpr() {
+  if (lookahead == expr) {
+    match(expr);
+  }
+}
+
+void match(terminal t) {
+  if (lookahead == t) {
+    lookahead = nextTerminal();
+  } else {
+    report("Syntax error");
+  }
+}
+\end{lstlisting}
+\end{example}
+
+\subsubsection{Funzione first}
+La funzione \( FIRST(\alpha) \) è l'insieme dei terminali che appaiono come primi
+simboli di una o più stringhe generate da \( \alpha \).
+\begin{example}
+  Considerando la grammatica dell'esempio precedente si ha:
+  \[
+  \begin{aligned}
+    FIRST(stmt) &= \{ expr, if, for, other \} \\
+    FIRST(optexpr) &= \{ expr, \varepsilon \}
+  \end{aligned}
+  \] 
+\end{example}
+
+\subsubsection{Ricorsione sinistra}
+Una produzione del tipo:
+\[
+  A \to A \alpha | \beta
+\] 
+% When the leftmost symbol of the body of a
+% production is the same as the nonterminal at the head of
+% the production a predictive parsing may loop forever
+è detta \textbf{ricorsiva sinistra} perchè il primo simbolo del corpo della produzione
+è lo stesso del non terminale alla testa della produzione. La ricorsione sinistra
+può causare un loop infinito nel predictive parsing, perchè il parser potrebbe continuare
+ad applicare la produzione senza mai arrivare a una produzione che non è ricorsiva sinistra.
+
+% We can eliminate left recursive productions by
+% systematically rewriting the grammar using right recursive
+% productions
+Per risolvere questo problema, si possono eliminare le produzioni ricorsive sinistra
+riscrivendo la grammatica in modo da utilizzare produzioni ricorsive a destra. Ad esempio:
+\[
+  \begin{aligned}
+    A &\to \beta R \\
+    R &\to \alpha R | \varepsilon
+  \end{aligned}
+\] 
+
+\section{Generazione del codice intermedio}
+
+
+\subsection{Rappresentazioni intermedie}
+Le rappresentazioni intermedie più importanti sono:
+\begin{itemize}
+  \item \textbf{Alberi}, inclusi gli alberi di parsing e gli alberi sintattici astratti (AST).
+  \item \textbf{Rappresentazioni lineari}, in particolare il three-address code.
+\end{itemize}
+Oltre a creare una rappresentazione intermedia, il front end di un compilatore controlla
+che il programma sorgente segua le regole sintattiche e semantiche del linguaggio
+sorgente. Questo controllo è chiamato \textbf{static checking}.
+
+Il codice intermedio è codice che rappresenta le operazioni del programma
+in modo più vicino al codice macchina, ma ancora indipendente dalla macchina target.
+
+\subsubsection{Static checking}
+Lo static checking applica controlli di consistenza e assicura che certi tipi di
+errori di programmazione, inclusi gli errori di tipizzazione, siano rilevati e
+segnalati durante la compilazione. Ci sono due tipi di static checking:
+\begin{itemize}
+  \item \textbf{Syntactic checking}: Controlla che il programma sorgente segua le
+    regole sintattiche del linguaggio, ad esempio che in un'assegnazione ci sia un
+    identificatore a sinistra e un'espressione a destra:
+    \begin{lstlisting}
+    # L-value   R-value
+            x = 5; // corretto
+            5 = x; // errore di sintassi
+    \end{lstlisting}
+
+  \item \textbf{Type checking}: Controlla che le operazioni siano applicate a tipi di 
+    dati compatibili, ad esempio
+    \begin{lstlisting}
+    int x = 5; // corretto
+    x = "hello"; // errore di tipo
+    \end{lstlisting}
+\end{itemize}
+
+\subsubsection{Three-address code}
+Come codice intermedio consideriamo il \textbf{three-address code}, cioè
+codice simile all'assembly: una sequenza di istruzioni con al massimo tre operandi tali
+che:
+\begin{itemize}
+  \item C'è al massimo un operatore, oltre all'assegnazione. In questo modo si rende
+    esplicita la precedenza degli operatori.
+
+  \item Bisogna generare nomi temporanei per memorizzare i risultati intermedi.
+\end{itemize}
+
+\begin{example}
+  Alcuni esempi di three-address code sono i seguenti:
+  \begin{itemize}
+    \item 
+\begin{lstlisting}[numbers=none]
+x = y op z
+\end{lstlisting}
+
+    \item 
+\begin{lstlisting}[numbers=none]
+x[y] = z
+x = y[z]
+\end{lstlisting}
+
+    \item 
+\begin{lstlisting}[numbers=none]
+ifFalse x goto L # se x e' falso salta a L
+ifTrue x goto L # se x e' vero salta a L
+goto L # salta a L
+\end{lstlisting}
+  \end{itemize}
+\end{example}
+
+\subsection{Traduzione diretta dalla sintassi}
+La traduzione diretta dalla sintassi è un metodo per generare codice intermedio 
+direttamente dall'albero sintattico.
+
+Utilizza una grammatica context free per specificare la struttura sintattica del linguaggio
+e associa un insieme di attributi ai terminali e non terminali della grammatica, associando
+ad ogni produzione un insieme di regole semantiche per calcolare i valori degli
+\textbf{attributi}. L'albero sintattico annotato viene poi attraversato e le regole
+semantiche applicate: dopo che l'attraversamento dell'albero è completato, i valori
+degli attributi sui non terminali contengono la forma tradotta dell'input.
+
+\subsubsection{Attributi}
+Un attributto è detto:
+\begin{itemize}
+  \item \textbf{Synthesized} se il suo valore in un nodo dell'albero sintattico è
+    determinato dai valori degli attributi nei figli del nodo (attraversamento depth-first).
+
+  \item \textbf{Inherited} se il suo valore in un nodo dell'albero sintattico è determinato
+    dal genitore (applicando le regole semantiche del genitore) e dai fratelli.
+\end{itemize}
+Esistono due tipi di notazioni:
+\begin{itemize}
+  \item \textbf{Notazione infissa}: Gli operatori si trovano tra gli operandi, ad esempio:
+    \begin{itemize}
+      \item \( (9 - 5) + 2 \) 
+      \item \( 9 - (5 + 2) \) 
+    \end{itemize}
+
+  \item \textbf{Notazione postfissa}: Gli operatori si trovano dopo gli operandi, ad esempio:
+    \begin{itemize}
+      \item \( 9 5 - 2 + \) 
+      \item \( 9 5 2 + - \)
+    \end{itemize}
+    Questo tipo di notazione è più facile da tradurre in codice intermedio, perché non
+    richiede di tenere conto della precedenza degli operatori.
+\end{itemize}
+
+\begin{example}
+  Grammatica per la traduzione da notazione infissa a postfissa:
+  \begin{itemize}
+    \item \textbf{Produzioni} (notazione infissa):
+      \[
+        \begin{aligned}
+          expr &\to expr1 + term \\
+          expr &\to expr1 - term \\
+          expr &\to term \\
+          term \to 0 &| 1 &| \ldots &| 9
+        \end{aligned}
+      \] 
+
+    \item \textbf{Regole semantiche} (notazione postfissa):
+      \[
+        \begin{aligned}
+          expr.t &\to expr1.t || term.t || "+" \\
+          expr.t &\to expr1.t || term.t || "-" \\
+          expr.t &\to term.t \\
+          term.t &\to "0" \\
+          term.t &\to "1" \\
+                 &\ldots \\
+          term.t &\to "9"
+        \end{aligned}
+      \] 
+  \end{itemize}
+  dove \( || \) rappresenta la concatenazione di stringhe.
+\end{example}
+
+\subsubsection{Albero sintattico annotato}
+L'albero sintattico annotato è un albero sintattico in cui ogni nodo è annotato con
+i valori degli attributi calcolati dalle regole semantiche.
+\begin{example}
+  Un esempio di albero sintattico annotato è il seguente:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{albero_annotato}
+    \caption{Albero sintattico annotato}
+  \end{figure}
+\end{example}
+Un albero viene visitato tramite un \textbf{Depth-first traversal} in cui si visitano
+prima i figli di un nodo e poi si valutano le regole semantiche per quel nodo:
+\begin{lstlisting}
+procedure visit(N) {
+  for ( each child C of N , from left to right ) {
+    visit(C);
+  }
+  evaluate the semantic rules at node N
+}
+\end{lstlisting}
+\begin{example}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{depth_first_traversal}
+    \caption{Depth-first traversal}
+  \end{figure}
+\end{example}
+
+\subsubsection{Schemi di traduzione}
+Uno schema di traduzione è una grammatica context free in cui sono inserite delle
+\textbf{azioni semantiche}, cioè frammenti di codice che vengono eseguiti
+quando viene applicata una produzione.
+\begin{example}
+  Un esempio è:
+  \[
+    \begin{aligned}
+      expr &\to expr1 + term \quad& \overbrace{\{ print("+") \}}^{\text{azione semantica}}\\
+      expr &\to expr1 - term \quad& \{ print("-") \}\\
+      expr &\to term \\
+      term &\to 0 \quad& \{ print("0") \} \\
+      term &\to 1 \quad& \{ print("1") \} \\
+           &\ldots \\
+      term &\to 9 \quad& \{ print("9") \}
+    \end{aligned}
+  \] 
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{schemi_traduzione}
+    \caption{Esempio di schema di traduzione}
+  \end{figure}
+\end{example}
+
+
+
+\section{Analizzatore lessicale}
+L'analizzatore lessicale, o lexer si occupa di suddividere il codice sorgente in token
+e di costruire la tabella dei simboli. Il lexer è solitamente implementato come un
+programma che legge il codice sorgente e produce in output una sequenza di token.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{lexer}
+  \caption{Esempio di analizzatore lessicale}
+\end{figure}
+
+\subsection{Preprocessione}
+La preprocessione è una fase che avviene prima dell'analisi lessicale e si occupa di
+trasformare il codice sorgente in una forma più adatta per l'analisi lessicale, ad esempio
+rimuovendo spazi e commenti.
+\begin{example}
+  Per rimuovere spazi e commenti si può utilizzare una funzione del tipo:
+\begin{lstlisting}[language=C]
+for (; ; peek = next input character) {
+  if (peek is a blank or a tab) do nothing;
+  else if (peek is a newline) line = line + 1;
+  else break;
+}
+\end{lstlisting}
+\end{example}
+
+\subsection{Reading ahead}
+Il reading ahead è una tecnica utilizzata per gestire i casi in cui un token può essere
+composto da più caratteri. Ad esempio i numeri possono essere composti da più cifre
+e le parole chiave possono essere composte da più lettere. In questi casi, il lexer
+deve leggere più caratteri per determinare se si tratta di un token valido o meno.
+
+\begin{example}
+  Per gestire i numeri si può utilizzare una funzione del tipo:
+\begin{lstlisting}[escapechar=|, basicstyle=\rmfamily, columns=fullflexible,
+keepspaces=true]
+|\textbf{if}| ( |\textit{peek}| holds a digit ) {
+  |\textit{v}| = 0;
+  |\textbf{do}| {
+    |\textit{v}| = |\textit{v}| * 10 + integer value of digit |\textit{peek}|;
+    |\textit{peek}| = next input character;
+  } |\textbf{while}| ( |\textit{peek}| holds a digit );
+  |\textbf{return}| token |$\langle\textbf{num}, \textit{v}\rangle$|;
+}
+\end{lstlisting}
+\end{example}
+
+\subsection{Riconoscimento delle keyword}
+Il riconoscimento delle keyword è una tecnica utilizzata per distinguere le parole chiave
+dalle identificatori. Ad esempio, la parola chiave \texttt{if} deve essere riconosciuta
+come una keyword e non come un identificatore. Per fare questo, il lexer può utilizzare
+una \textbf{symbol table} (tabella hash) che contiene tutte le parole chiave del linguaggio e confrontare ogni
+token con le parole chiave nella symbol table.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{keyword_recognition}
+  \caption{Esempio di riconoscimento delle keyword}
+\end{figure}
+
+\begin{example}
+  Per riconoscere le keyword si può utilizzare una funzione del tipo:
+\begin{lstlisting}[escapechar=|, basicstyle=\rmfamily, columns=fullflexible, keepspaces=true]
+|\textbf{if}| ( |\textit{peek}| holds a letter ) {
+  collect letters or digits into a buffer |\textit{b}|;
+  |\textit{s}| = string formed from the characters in |\textit{b}|;
+  |\textit{w}| = token returned by |\textit{words.get(s)}|;
+  |\textbf{if}| ( |\textit{w}| is |\textbf{not null}| ) |\textbf{return}| |\textit{w}|;
+  |\textbf{else}| {
+    Enter the key-value pair (|\textit{s}|, |$\langle\textbf{id}, \textit{s}\rangle$|) into |\textit{words}|
+    |\textbf{return}| token |$\langle\textbf{id}, \textit{s}\rangle$|;
+  }
+}
+\end{lstlisting}
+\end{example}
+
+\subsubsection{Symbol table}
+La symbol table tipicamente deve supportare più dichiarazioni dello stesso
+identificatore all'interno di un programma. Lo scope di una dichiarazione è
+la porzione di un programma a cui si applica la dichiarazione e gli scope sono
+implementati creando una symbol table separata per ogni scope.
 
 
 \end{document}
