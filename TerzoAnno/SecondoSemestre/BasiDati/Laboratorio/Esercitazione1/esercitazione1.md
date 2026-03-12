@@ -1,4 +1,4 @@
-#`Museo` Esercitazione 1
+# Esercitazione 1
 
 - [Schema base di dati](#schema-base-di-dati)
   - [Esercizi](#esercizi)
@@ -115,16 +115,18 @@ Scrivere il codice PostgreSQL che generi tutte le tabelle. Per gli attributi di 
 possibili, sia intra- sia inter-relazionali.
 
 ```sql
+create domain giornosettimana as varchar(10)
+    check (value in ('lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato', 'domenica'));
+
 create table Museo (
     nome char varying(30) default 'MuseoVeronese',
     città char varying(20) default 'Verona',
     indirizzo char varying(50),
     numeroTelefono char varying(20),
-    giornoChiusura char varying(10) not null,
+    giornoChiusura giornosettimana not null,
     prezzo decimal not null default 10,
 
     check(numeroTelefono ~ '^[+]?[0-9 ]+$'),
-    check(giornoChiusura in ('lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato', 'domenica')),
     check(prezzo >= 0),
 
     primary key (nome, città)
@@ -170,7 +172,7 @@ create table Orario (
     progressivo integer primary key,
     museo char varying(30) not null,
     città char varying(20) not null,
-    giorno date not null,
+    giorno giornosettimana not null,
     orarioApertura time with time zone default '09:00 CET',
     orarioChiusura time with time zone default '19:00 CET',
 
@@ -311,9 +313,9 @@ comportamento del DBMS.
 
 ```sql
 insert into Orario
-values (1, 'Arena', 'Verona', '2026-01-01', '09:00 CET', '19:00 CET'),
-       (2, 'CastelVecchio', 'Verona', '2026-01-02', '09:00 CET', '19:00 CET'),
-       (3, 'Arena', 'Verona', '2026-01-03', '09:00 CET', '19:00 CET');
+values (1, 'Arena', 'Verona', 'lunedì', '09:00 CET', '19:00 CET'),
+       (2, 'CastelVecchio', 'Verona', 'martedì', '09:00 CET', '19:00 CET'),
+       (3, 'Arena', 'Verona', 'mercoledì', '09:00 CET', '19:00 CET');
 
 
 select * from Museo;

@@ -700,6 +700,11 @@ la seguente sintassi:
 INSERT INTO tabella [(attributo1, attributo2, ...)]
 VALUES (valore1, valore2, ...);
 \end{lstlisting}
+oppure
+\begin{lstlisting}[language=SQL, numbers=none]
+INSERT INTO tabella [(attributo1, attributo2, ...)]
+SELECT (...);
+\end{lstlisting}
 \begin{itemize}
   \item Se la lista degli attributi non è presente, i valori devono essere specificati
     nell'ordine in cui sono stati definiti nella tabella.

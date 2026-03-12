@@ -1,14 +1,16 @@
 -- Esercizio 1
+create domain giornosettimana as varchar(10)
+    check (value in ('lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato', 'domenica'));
+
 create table Museo (
     nome char varying(30) default 'MuseoVeronese',
     città char varying(20) default 'Verona',
     indirizzo char varying(50),
     numeroTelefono char varying(20),
-    giornoChiusura char varying(10) not null,
+    giornoChiusura giornosettimana not null,
     prezzo decimal not null default 10,
 
     check(numeroTelefono ~ '^[+]?[0-9 ]+$'),
-    check(giornoChiusura in ('lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato', 'domenica')),
     check(prezzo >= 0),
 
     primary key (nome, città)
@@ -54,7 +56,7 @@ create table Orario (
     progressivo integer primary key,
     museo char varying(30) not null,
     città char varying(20) not null,
-    giorno date not null,
+    giorno giornosettimana not null,
     orarioApertura time with time zone default '09:00 CET',
     orarioChiusura time with time zone default '19:00 CET',
 
