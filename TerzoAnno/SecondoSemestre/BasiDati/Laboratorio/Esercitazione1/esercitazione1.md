@@ -313,8 +313,8 @@ comportamento del DBMS.
 
 ```sql
 insert into Orario
-values (1, 'Arena', 'Verona', 'lunedì', '09:00 CET', '19:00 CET'),
-       (2, 'CastelVecchio', 'Verona', 'martedì', '09:00 CET', '19:00 CET'),
+values (1, 'Arena', 'Verona', 'lunedì', '13:00 CET', '19:00 CET'),
+       (2, 'CastelVecchio', 'Verona', 'venerdì', '09:00 CET', '19:00 CET'),
        (3, 'Arena', 'Verona', 'mercoledì', '09:00 CET', '19:00 CET');
 
 
