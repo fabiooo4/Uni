@@ -950,7 +950,7 @@ WHERE Cognome = 'Rossi' AND
 \subsubsection{LIKE}
 Per il confronto tra stringhe, SQL mette a disposizione anche
 l’operatore LIKE che consente verificare se una stringa rispetta un certo
-“pattern” (oppure ILIKE per case insentive). I due caratteri speciali per il confronto
+"pattern" (oppure ILIKE per case insentive). I due caratteri speciali per il confronto
 sono:
 \begin{itemize}
   \item \texttt{\_}: confronto con un carattere arbitrario
@@ -969,8 +969,8 @@ _o%i
 \begin{example}
   Considerando la base di dati precedente:
 
-  Estrarre gli impiegati che hanno un cognome cha ha una “o”
-  in seconda posizione e finisce con una “I”.
+  Estrarre gli impiegati che hanno un cognome cha ha una "o"
+  in seconda posizione e finisce con una "I".
 
 \begin{lstlisting}
 SELECT *
@@ -1852,6 +1852,460 @@ WHERE NP1.num_pr > (
   -- di prenotazioni > della media di quelli di 'Padova'
 \end{lstlisting}
 \end{example}
+
+\section{Strutture fisiche e strutture di accesso ai dati}
+Le basi di dati risiedono in \textbf{memoria secondaria}, in quanto sono:
+\begin{itemize}
+  \item \textbf{Grandi}: non possono essere contenute completamente in memoria centrale
+  \item \textbf{Persistente}: hanno un tempo di vita che non è limitato all'esecuzione
+    dei programmi che le usano
+\end{itemize}
+Le caratteristiche della memoria secondaria sono:
+\begin{itemize}
+  \item Non è direttamente utilizzabile dai programmi
+
+  \item I dati sono organizzati \textbf{a blocchi}. La grandezza dei
+    blocchi dipende dal sistema operativo.
+
+  \item Le uniche operazioni possibili sono:
+    \begin{itemize}
+      \item Lettura di un intero blocco
+      \item Scrittura di un intero blocco
+    \end{itemize}
+
+  \item Il costo di tali operazioni è ordini di grandezza maggiore del costo per
+    accedere ai dati in memoria centrale
+\end{itemize}
+
+\subsection{Gestore dei buffer}
+L'interazione tra memoria secondaria e memoria centrale avviene tramite il
+\textbf{gestore del buffer} e consiste nel caricare uno o più \textbf{blocchi
+dalla memoria secondaria} in \textbf{pagine} dedicate della \textbf{memoria centrale}
+detta \textbf{buffer}. La dimensione delle pagine in memoria centrale sono solitamente
+un multiplo della dimensione dei blocchi in memoria secondaria, ma semplifichiamo
+assumendo che siano uguali:
+\[
+  1\; pagina \approx 1\; blocco
+\] 
+
+\subsubsection{Buffer}
+Il buffer è una zona di memoria \textbf{condivisa dalle applicazioni} ed è importante
+gestirlo in modo ottimizzato per massimizzare le prestazioni. Quando un dato viene
+utilizzato più volte in tempi ravvicinati, il buffer evita di accedere alla memoria
+secondaria. Il gestore del buffer si occupa di caricare dati dalla memoria secondaria
+alla memoria centrale e viceversa ottimizzando gli accessi.
+
+\subsubsection{Politica di gestione della memoria}
+Le politiche della gestione della memoria sono:
+\begin{itemize}
+  \item \textbf{Lettura di un blocco}:
+    \begin{itemize}
+      \item Se il blocco \textbf{è già presente in una
+        pagina del buffer}, allora non si esegue una lettura su memoria secondaria, ma
+        si restituisce un puntatore alla pagina del buffer.
+
+      \item Se il blocco \textbf{non è già presente in una pagina del buffer},
+        si cerca una pagina libera e si carica il blocco nella pagina, restituendo
+        il puntatore alla pagina stessa.
+    \end{itemize}
+
+  \item \textbf{Scrittura di un blocco}: In caso di richiesta di scrittura di un
+    blocco precedentemente caricato in una pagina del buffer, il gestore del buffer
+    può decidere di \textbf{differire la scrittura} su memoria secondaria in un secondo
+    momento.
+\end{itemize}
+Queste politiche si basano sul \textbf{principio di località}, cioè i dati
+referenziati di recente hanno maggiore probabilità di essere referenziati nuovamente
+nel futuro.
+
+Inoltre una nota \textbf{legge empirica} afferma che il 20\% dei dati viene referenziato
+l'80\% delle volte.
+
+\subsubsection{Gestione delle pagine}
+Le pagine del buffer possono essere rappresentate tramite una tabella in cui
+\begin{itemize}
+  \item Per ogni \textbf{pagina del buffer} si memorizza il blocco \( B \) contenuto
+    indicando il file e il numero di blocco (o offset). \( L \) indica che la pagina è
+    libera
+
+  \item Per ogni pagina del buffer si memorizza un insieme di \textbf{variabili di
+    stato} tra cui si trovano sicuramente:
+    \begin{itemize}
+      \item Un \textbf{Contatore I} (\( B_I \)): indica il 
+        \textbf{numero di transazioni} che stanno usando quella pagina
+
+      \item Un \textbf{Bit di stato J} (\( B_J \)): indica se la pagina è stata
+        modificata (1) o no (0)
+    \end{itemize}
+\end{itemize}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{gestione_pagine}
+  \caption{Gestione delle pagine del buffer}
+\end{figure}
+
+\subsubsection{Primitive per la gestione del buffer}
+Le primitive per la gestione del buffer sono:
+\begin{itemize}
+  \item \texttt{fix}: viene usata dalle transazioni per richiedere l'accesso ad un
+    blocco e restituisce un puntatore alla pagina contenente il blocco richiesto.
+    I passi di questa primitiva sono:
+    \begin{enumerate}
+      \item Il blocco richiesto viene cercato nelle pagine del buffer, in caso sia
+        presente, si restituisce un puntatore alla pagina contenente il blocco
+
+      \item Altrimenti, viene scelta una pagina libera \( P \) (pagina \( L \) oppure
+        con contatore \( I \) = zero). Si sceglie la pagina in base a criteri diversi:
+        \begin{itemize}
+          \item \textbf{LRU} (Least Recently Used): La pagina usata meno di recente
+          \item \textbf{FIFO} (First In First Out): La pagina caricata da più tempo
+        \end{itemize}
+        \begin{itemize}
+          \item 
+            Se il bit di stato \( J \) di \( P \) è a 1 (cioè la pagina è stata modificata),
+            \( P \) viene salvata in memoria secondaria (primitiva flush).
+
+          \item Se \( J = 0 \) non si fa nulla
+        \end{itemize}
+            Si carica il blocco in P aggiornando file e numero di blocco corrispondenti.
+            
+      \item Se non esistono pagine libere, il gestore del buffer può adottare due
+        politiche:
+        \begin{itemize}
+          \item \textbf{Steal}: "ruba" una pagina ad un’altra transazione
+            (primitiva flush).
+          \item \textbf{No steal}: sospende la transazione inserendola in una coda di
+            attesa.
+        \end{itemize}
+        Se una pagina si libera (contatore \( I \) = zero) il gestore si comporterà
+        come al punto precedente.
+
+      \item Quando una transazione accede ad una pagina per la prima volta il contatore
+        si incrementa.
+    \end{enumerate}
+
+  \item \texttt{unfix}: viene usata dalle transazioni per indicare che la transazione
+    ha terminato di usare il blocco
+    \begin{itemize}
+      \item L'effetto è il decremento del contatore I che indica l'uso della pagina.
+    \end{itemize}
+
+  \item \texttt{setDirty}: viene usata dalle transazioni per indicare al gestore del
+    buffer che il blocco della pagina è stato modificato
+    \begin{itemize}
+      \item L'effetto è la modifica del bit di stato \( J \) a 1
+    \end{itemize}
+
+  \item \texttt{flush}: viene usata dal gestore del buffer per salvare blocchi sulla
+    bit di stato viene posto a zero)
+    memoria secondaria in modo \textbf{asincrono}.
+    \begin{itemize}
+      \item L'effetto è la liberazione delle pagine "dirty", quindi il bit di stato
+        \( J \) viene impostato a 0
+    \end{itemize}
+
+  \item \texttt{force}: viene usata per salvare in memoria secondaria in modo
+    \textbf{sincrono} il blocco contenuto nella pagina (primitiva usata dal modulo
+    Gestore dell’Affidabilità).
+    \begin{itemize}
+      \item L'effetto è il salvataggio in memoria secondaria del blocco e il bit di
+        stato \( J \) posto a zero
+    \end{itemize}
+\end{itemize}
+
+\subsection{Gestore dell'affidabilità}
+Siccome il gestore del buffer differisce le operazioni di scrittura, questo potrebbe
+essere pericoloso, quindi il gestore dell'affidabilità si occupa di garantire:
+\begin{itemize}
+  \item \textbf{Atomicità}: che le transazioni non vengano lasciate incomplete con
+    alcune operazioni eseguite ed altre no
+
+  \item \textbf{Persistenza}: che gli effetti di ciascuna transazione con conclusa
+    con un commit siano mantenuti in modo permanente a prescindere dai guasti
+    o dalle scritture differite
+\end{itemize}
+
+\subsubsection{File di log}
+Il funzionamento si basa sull'utilizzo del \textbf{log}, cioè un archivio persistente
+su cui vengono registrate tutte le operazioni eseguite dal DBMS e per il corretto
+funzionamento il gestore deve disporre di un dispositivo di memoria \textbf{stabile},
+cioè resistente ai guasti.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{gestore_affidabilita_2}
+  \caption{Gestore dell'affidabilità nell'architettura di un DBMS}
+\end{figure}
+\noindent
+Il file di log viene memorizzato in memoria stabile e al suo interno vengono
+memorizzati:
+\begin{itemize}
+  \item \textbf{Record di transazione}: cioè informazioni sulla transazione:
+    \begin{itemize}
+      \item \( B(T) \): Begin di una transazione \( T \) 
+      \item \( C(T) \): Commit di una transazione \( T \)
+      \item \( A(T) \): Abort di una transazione \( T \)
+      \item Insert, delete, update eseguite da una transazione \( T \) su un oggetto
+        \( O \), ad esempio una riga in una tabella
+        \begin{itemize}
+          \item \( I(T, O, AS) \): Insert di un oggetto \( O \) da parte di una
+            transazione \( T \) con il suo \textbf{after state} \( AS \)
+            (stato dell'oggetto dopo l'operazione)
+
+          \item \( D(T, O, BS) \): Delete di un oggetto \( O \) da parte di una
+            transazione \( T \) con il suo \textbf{before state} \( BS \)
+            (stato dell'oggetto prima dell'operazione)
+
+          \item \( U(T, O, BS, AS) \): Update di un oggetto \( O \) da parte di una
+            transazione \( T \) con il suo \textbf{before state} \( BS \) e il suo
+            \textbf{after state} \( AS \)
+        \end{itemize}
+    \end{itemize}
+    L'obiettivo è quello di consentire il in caso di ripristino le seguenti operazioni:
+    \begin{itemize}
+      \item \textbf{UNDO}: per disfare un’azione su un oggetto \( O \)  è sufficiente
+        ricopiare in \( O \) il valore \( BS \); l’insert/delete viene disfatto
+        cancellando/inserendo \( O \);
+
+      \item \textbf{REDO}: per rifare un’azione su un oggetto \( O \) è sufficiente
+        ricopiare in \( O \) il valore \( AS \); l’insert/delete viene rifatto
+        inserendo/cancellando \( O \)
+    \end{itemize}
+    Gli inserimenti controllano sempre l'esistenza dell'oggetto \( O \) prima di eseguire
+    l'operazione, quindi non vengono inseriti i duplicati
+
+    Per queste operazioni vale la \textbf{proprietà di idempotenza}, cioè:
+    \[
+      \begin{aligned}
+        UNDO(UNDO(A)) &= UNDO(A) \\
+        REDO(REDO(A)) &= REDO(A)
+      \end{aligned}
+    \] 
+
+  \item \textbf{Record di sistema}: cioè informazioni sulle operazioni eseguite dal
+    DBMS:
+    \begin{itemize}
+      \item \textbf{Operazione di DUMP} della base di dati: record di \texttt{DUMP}, copia
+      completa e consistente della base di dati
+
+      \item \textbf{Operazione di CheckPoint}: record \( CK(T_1, \ldots, T_n) \)
+        indica che all'esecuzione del CheckPoint le transazioni attive erano
+        \( T_1, \ldots, T_n \) 
+        \begin{itemize}
+          \item Sono elencate le transazioni che non hanno ancora espresso la loro
+            scelta relativamente all'esito finale.
+
+          \item Operazione svolta periodicamente dal gestore dell'affidabilità per
+            garantire che gli effetti delle transazioni che hanno eseguito il commit
+            siano registrati in modo permanente.
+
+          \item Prevede i seguenti passi:
+            \begin{enumerate}
+              \item Sospensione delle operazioni di scrittura, commit e abort delle
+                transazioni
+
+              \item Esecuzione della primitiva \texttt{force} sulle pagine "dirty" di
+                transazioni che hanno eseguito il commit
+
+              \item Scrittura sincrona (primitiva \texttt{force}) sul file di LOG del
+                record di CheckPoint con gli identificatori delle transazioni attive
+
+              \item Ripresa delle operazioni di scrittura, commit e abort delle transazioni
+            \end{enumerate}
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Regole di scrittura sul file di log}
+Il gestore dell'affidabilità deve rispettare le seguenti regole di scrittura sul
+file di log:
+\begin{itemize}
+  \item \textbf{Regola WAL} (Write-Ahead Logging): i record di log devono essere
+    scritti sul LOG prima dell'esecuzione delle corrispondenti operazioni sulla base
+    di dati (garantisce la possibilità di fare sempre UNDO)
+
+  \item \textbf{Regola di Commit-Precedenza}: i record di log devono essere scritti
+    sul LOG prima dell'esecuzione del COMMIT della transazione (garantisce la
+    possibilità di fare sempre REDO)
+\end{itemize}
+Tali regole consentono inoltre di salvare i blocchi delle pagine "dirty" in modo
+totalmente asincrono rispetto al commit delle transazioni.
+
+\subsubsection{Guasti}
+Una transazione \( T \) sceglie in modo atomico l'esito di COMMIT nel momento in
+cui scrive nel file di log in modo sincrono (primitiva \texttt{force}) il suo
+record di COMMIT \( C(T) \). Se avviene:
+\begin{itemize}
+  \item Un guasto prima della scrittura del record di COMMIT, allora si effettua un
+    UNDO
+  \item Un guasto dopo la scrittura del record di COMMIT, allora si effettua un REDO
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Esistono due tipologie di guasto:
+\begin{itemize}
+  \item \textbf{Guasto di sistema}: è la perdita del contenuto della memoria centrale.
+    Si risolve con la \textbf{ripresa a caldo} seguendo i seguenti passi:
+    \begin{enumerate}
+      \item Si accede al file di LOG e si ripercorre all'indietro il LOG fino al più
+        recente record di CheckPoint
+
+      \item Si inizializzano:
+        \begin{itemize}
+          \item L'insieme UNDO con tutte le transazioni da disfare
+            \[
+              UNDO = \text{tutte le transazioni presenti nel record di CheckPoint}
+            \] 
+          \item L'insieme REDO con tutte le transazioni da rifare
+            \[
+              REDO = \varnothing
+            \] 
+        \end{itemize}
+
+      \item Si ripercorre in avanti il LOG e:
+        \begin{itemize}
+          \item Per ogni record \( B(T) \) incontrato si aggiunge \( T \) all'insieme
+            UNDO
+
+          \item Per ogni record \( C(T) \) incontrato si sposta \( T \) dall'insieme UNDO
+            all'insieme REDO
+        \end{itemize}
+
+      \item Si ripercorre all'indietro il LOG disfacendo le operazioni eseguite dalle
+        transazioni UNDO risalendo fino alla prima azione della transazione più vecchia.
+
+      \item Si ripercorre in avanti il LOG per rifare le operazioni eseguite dalle
+        transazioni REDO
+    \end{enumerate}
+
+  \item \textbf{Guasto di dispositivo}: è la perdita di parte o tutto il contenuto
+    della base di dati in memoria secondaria. Si risolve con la ripresa a freddo
+    seguendo i seguenti passi:
+    \begin{enumerate}
+      \item Si accede al DUMP della base di dati e si ricopia selettivamente la parte
+        deteriorata della base di dati
+
+      \item Si accede al LOG risalendo al record di DUMP
+
+      \item Si ripercorre in avanti il LOG rieseguendo tutte le operazioni relative
+        alla perte deteriorata comprese le azioni di commit e abort
+
+      \item Si applica una ripresa a caldo
+    \end{enumerate}
+\end{itemize}
+
+\begin{exercise}
+  Data la seguente situazione del file di LOG:
+  \[
+    \begin{aligned}
+      & B(T1), B(T2), U(T2,O1,B1,A1), I(T1,O2,A2), B(T3), C(T1), B(T4), \\
+      &U(T3,O2,B3,A3), U(T4,O3,B4,A4), CK(T2,T3,T4), C(T4), B(T5), \\
+      & U(T3,O3,B5,A5), U(T5,O4,B6,A6), D(T3,O5,B7), A(T3), C(T5), \\
+      &I(T2,O6,A8) \text{ guasto}
+    \end{aligned}
+  \] 
+  Che passi svolge la ripresa a caldo?
+
+  \begin{enumerate}
+    \item Risale il LOG fino all'ultimo record di CheckPoint \( CK(T2,T3,T4) \)
+
+    \item Inizializza UNDO e REDO:
+      \begin{itemize}
+        \item \( UNDO = \left\{ T_2, T_3, T_4 \right\} \). Viene inizializzato con le
+          transazioni del CheckPoint
+        \item \( REDO = \varnothing \)
+      \end{itemize}
+
+    \item Ripercorre in avanti il LOG dal CheckPoint fino al guasto e si aggiungono
+      o si spostano le transazioni tra UNDO e REDO:
+      \begin{itemize}
+        \item \( UNDO = \left\{ T_2, T_3, \cancel{T_4}, \cancel{\color{blue}T_5\color{black}} \right\}  \) 
+        \item \( REDO = \left\{ T_4, T_5 \right\}  \) 
+      \end{itemize}
+      Quindi la situazione dopo questo passo è:
+      \begin{itemize}
+        \item \( UNDO = \left\{ T_2, T_3 \right\}  \)
+        \item \( REDO = \left\{ T_4, T_5 \right\}  \)
+      \end{itemize}
+
+    \item Si ripercorre all'indietro il LOG disfacendo le operazioni eseguite dalle
+      transazioni UNDO risalendo fino alla prima azione della transazione più vecchia.
+      \[
+        \begin{aligned}
+          &DELETE(O6) \quad \text{(disfare insert)} \\
+          &O5 := B7 \quad \text{(disfare delete)} \\
+          &O3 := B5 \quad \text{(disfare update)} \\
+          &O2 := B3 \quad \text{(disfare update)} \\
+          &O1 := B1 \quad \text{(disfare update)}
+        \end{aligned}
+      \] 
+
+    \item Si ripercorre in avanti il LOG per rifare le operazioni eseguite dalle
+      transazioni REDO:
+      \[
+        \begin{aligned}
+          &O3 := A4 \quad \text{(rifare update)} \\
+          &O4 := A6 \quad \text{(rifare update)} \\
+        \end{aligned}
+      \]
+  \end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+  Data la seguente situazione del file di LOG:
+  \[
+    \begin{aligned}
+      &B(T1), B(T2), B(T3), I(T1,O1,A1), D(T2,O2,B2), B(T4), \\ 
+      &U(T4,O3,B3,A3), U(T1,O4,B4,A4), C(T2), CK(T1,T3,T4), B(T5), B(T6), \\ 
+      &U(T5,O5,B5,A5), A(T3), CK(T1,T4,T5,T6), B(T7), C(T4), \\
+      &U(T7,O6,B6,A6), U(T6,O3,B7,A7), B(T8), A(T7), \text{ guasto}
+    \end{aligned}
+  \]
+  Che passi svolge la ripresa a caldo?
+
+  \begin{enumerate}
+    \item Si risale il LOG fino all'ultimo record di CheckPoint \( CK(T1,T4,T5,T6) \)
+    \item Inizializza UNDO e REDO:
+      \begin{itemize}
+        \item \( UNDO = \left\{ T1, T4, T5, T6 \right\} \)
+        \item \( REDO = \varnothing \)
+      \end{itemize}
+
+    \item Ripercorre in avanti il LOG dal CheckPoint fino al guasto e si aggiungono
+      o si spostano le transazioni tra UNDO e REDO:
+      \begin{itemize}
+        \item \( UNDO = \left\{ T1, \cancel{T4}, T5, T6, \color{blue}T7\color{black}, \color{blue}T8\color{black} \right\} \) 
+        \item \( REDO = \left\{ T4 \right\} \) 
+      \end{itemize}
+      Quindi la situazione dopo questo passo è:
+      \begin{itemize}
+        \item \( UNDO = \left\{ T1, T5, T6, T7, T8 \right\} \) 
+        \item \( REDO = \left\{ T4 \right\} \) 
+      \end{itemize}
+
+    \item Si ripercorre all'indietro il LOG disfacendo le operazioni eseguite dalle
+      transazioni UNDO risalendo fino alla prima azione della transazione più vecchia:
+      \[
+        \begin{aligned}
+          &O3 := B7 \quad \text{(disfare update)}\\
+          &O6 := B6 \quad \text{(disfare update)}\\
+          &O5 := B5 \quad \text{(disfare update)}\\
+          &O4 := B4 \quad \text{(disfare update)}\\
+          &DELETE(O1) \quad \text{(disfare insert)}
+        \end{aligned}
+      \] 
+
+    \item Si ripercorre in avanti il LOG per rifare le operazioni eseguite dalle
+      transazioni REDO:
+      \[
+        O3 := A3 \quad \text{(rifare update)}
+      \]
+  \end{enumerate}
+  Si nota che ci sono due operazioni che riguardano l'oggetto \( O3 \) e l'ultima
+  operazione è quella di \( T4 \) che ha eseguito il commit, quindi è quella che viene
+  rifatta. Quella di \( T6 \) non viene applicata.
+\end{exercise}
+
 
 \section{Transazioni concorrenti}
 Il componente dell'architettura del DBMS che si occupa di gestire le transazioni
