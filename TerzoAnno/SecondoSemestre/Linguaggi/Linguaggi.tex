@@ -643,5 +643,305 @@ Gli strumenti per definire la sintassi di un linguaggio di programmazione sono:
   \] 
 \end{example}
 
+\subsubsection{Definizione non formale}
+Un linguaggio si può definire anche in un modo non formale, definendo
+i costrutti base:
+\begin{itemize}
+  \item Niente dichiarazioni
+  \item Solo variabili ed espressioni booleane
+  \item Istruzioni:
+    \begin{itemize}
+      \item Assegnamento
+      \item Composizione sequenziale
+      \item Comando iterativo (ciclo)
+      \item Comando condizionale (if)
+    \end{itemize}
+\end{itemize}
+Il linguaggio è definito su livelli, partendo dal basso verso l'alto:
+\begin{enumerate}
+  \item Notazione della grammatica
+
+  \item Linguaggio regolare per riconoscere gli identificatori e le parole
+    riservate al linguaggio di programmazione
+
+  \item Espressioni booleane che parte dai simboli definiti ai livelli
+    sottostanti
+    \[
+      \color{blue}B\color{black} \to true \mid false \mid
+      (\color{blue}B\color{black} \; or \; \color{blue}B\color{black}) \mid
+      (\color{blue}B\color{black} \; and \; \color{blue}B\color{black}) \mid
+      (not \; \color{blue}B\color{black}) \mid x
+    \] 
+
+  \item Comandi atomici, ad esempio l'assegnamento. Utilizza gli identificatori,
+    un simbolo di assegnamento e un espressione (booleana in questo caso).
+    \[
+      \color{green}A\color{black} \to x := \color{blue}B\color{black}
+    \] 
+
+  \item Comandi, ad esempio l'if o il ciclo. Utilizzano i comandi atomici
+    e le espressioni booleane.
+
+    \[
+      \color{purple}C\color{black} \to \color{green}A\color{black} \mid
+      \color{purple}C\color{black} ; \color{purple}C\color{black} \mid
+      while \; \color{blue}B\color{black} \; do \; \color{purple}C\color{black} \mid
+      if \; \color{blue}B\color{black} \; then \color{purple}C\color{black} \; else
+      \; \color{purple}C\color{black}
+    \] 
+
+  \item Programmi, cioè sequenze di comandi.
+    \[
+      \color{orange}P\color{black} \to
+      \left\{ \color{purple}C\color{black} \right\}
+    \] 
+\end{enumerate}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{livelli}
+  \caption{Rappresentazione grafica dei livelli di un linguaggio di programmazione}
+\end{figure}
+Si utilizzano espressioni parentesizzate per evitare ambiguità. Se non
+si utilizzassero le parentesi si potrebbe scegliere di eseguire prima
+un'operatore invece di un altro e questo porterebbe a risultati diversi
+dalla stessa espressione.
+
+
+\subsection{Analisi semantica}
+L'analisi semantica verifica i \textbf{vincoli sintattici}, ad esempio che il numero
+di parametri formali sia uguale al numero di parametri attuali, oppure
+che l'uso di una variabile sia possibile solo dopo che sia stata dichiarata.
+Questi sono vincoli sul codice, quindi \textbf{non catturati dalla grammatica} e si
+dicono \textbf{contestuali}.
+\begin{itemize}
+  \item Sintassi \( \to \) Grammatica CF
+  \item Semantica \( \to \) Tutti i processi di verifica ed esclusione che non sono
+    descritti dalla sintassi
+\end{itemize}
+
+\subsubsection{Semantica}
+La semantica è l'attribuzione di significato ai simboli.
+Il significato è un'entità autonoma che esiste indipendentemente dai simboli
+usati per descriverlo. La semantica è più
+complessa della sintassi perchè deve essere:
+\begin{itemize}
+  \item \textbf{Esatta}: deve avere una descrizione precisa e non ambigua
+    di ciò che ci si deve aspettare da ogni costrutto sintatticamente corretto
+    per sapere a priori cosa succederà durante l'esecuzione
+
+  \item \textbf{Flessibile}: non deve anticipare scelte che possono essere 
+    richieste all'implementazione
+\end{itemize}
+
+\subsubsection{Induzione strutturale}
+L'induzione strutturale permette di dimostrare proprietà di oggetti descritti
+in modo induttivo o ricorsivo. Una grammatica descrive in modo induttivo il
+linguaggio (insieme di strunche) che genera, quindi si può utilizzare l'induzione
+strutturale per dimostrare proprietà delle stringhe generate.
+
+\begin{definition}
+  Per dimostrare una proprietà \( \Pi \) su tutti gli elementi di un insieme
+  definito in modo strutturale da una grammatica bisogna:
+  \begin{enumerate}
+    \item (Caso base): Dimostrare la proprietà su tutti gli elementi base, cioè quelli
+      che sono esplicitamente inseriti nell'insieme di stringhe generate dalla
+      grammatica.
+
+    \item (Passo induttivo): Dimostrare la proprietà sugli elementi composti sotto \textbf{l'ipotesi
+      induttiva} che la proprietà valga per gli elementi che la compongono
+  \end{enumerate}
+\end{definition}
+
+\begin{example}
+  Definiamo l'insieme \( X \subseteq \mathbb{N} \):
+  \[
+  \begin{cases}
+    \text{Base} &: 0 \in X \\
+    \text{Passo induttivo} &: \text{se } n \in X \text{ allora } n + 3 \in X
+  \end{cases}
+  \] 
+  La proprietà è \( X = 3 \mathbb{N} \) 
+
+  \vspace{1em}
+  \noindent
+  La proprietà dimostrabile in modo strutturale è: \( X \subseteq 3 \mathbb{N} \):
+  \begin{enumerate}
+    \item \textbf{Caso base}: \( 0 \) è la base di \( X \) e \( 0 \in 3 \mathbb{N} \) 
+    \item \textbf{Passo induttivo}: dimostriamo \( \forall n.\; n \in X \Rightarrow n \in 3 \mathbb{N} \).\\
+      Prendiamo \( n \in X \), l'ipotesi induttiva è la seguente:
+      \[
+        n \in X \Rightarrow n \in 3 \mathbb{N}
+      \] 
+      bisogna dimostrare che \( n+3 \in 3 \mathbb{N} \). Quindi sappiamo che
+      \[
+        \begin{aligned}
+          n \in  3 \mathbb{N} &\Rightarrow \exists i .\; n = 3i\\
+                              &\Rightarrow n + 3 = 3i + 3 = 3(i + 1) \in 3 \mathbb{N}
+        \end{aligned}
+      \] 
+  \end{enumerate}
+\end{example}
+
+\begin{example}
+  Definiamo induttivamente gli alberi binari in cui i nodi sono numeri \( n \in \mathbb{N} \).
+  Ogni numero è un albero binario, perchè è un albero con un solo nodo:
+  \[
+    n \in BT \quad \text{(Base)}
+  \] 
+  Consideriamo due alberi binari \( T_1 \in BT \) e \( T_2 \in BT \) allora:
+  \begin{figure}[H]
+    \centering
+    \begin{forest}
+      [n
+        [\( T_1 \)]
+        [\( T_2 \)]
+      ]
+    \end{forest}
+    \( \in BT \) 
+    \caption{Albero binario composto da due alberi binari}
+  \end{figure}
+  Quindi:
+  \[
+    br(T_1, T_2) \in BT
+  \] 
+  dove \( br() \) è l'operatore che aggiunge un nodo una radice comune a \( T_1 \) 
+  e \( T_2 \) 
+
+
+  \vspace{1em}
+  \noindent
+  \textbf{IMPORTANTE:} Dimostriamo che la funzione che calcola il numero di foglie
+  (\texttt{\#foglie(T)}) e la funzione che restituisce il numero di nodi che
+  hanno figli (\texttt{\#branch(T)}) sono uguali a:
+  \[
+    \forall T \in BT.\; \texttt{\#foglie}(T) = \texttt{\#branch}(T) + 1
+  \] 
+  Definiamo la funzione \texttt{\#foglie(T)}:
+  \[
+    \left\{
+    \begin{aligned}
+      &\#foglie(n) = 1 \\
+      &\#foglie(br(T_1, T_2)) = \#foglie(T_1) + \#foglie(T_2)
+    \end{aligned}
+    \right.
+  \] 
+  Definiamo la funzione \texttt{\#branch(T)}:
+  \[
+    \left\{
+    \begin{aligned}
+      &\#branch(n) = 0 \\
+      &\#branch(br(T_1, T_2)) = \#branch(T_1) + \#branch(T_2) + 1
+    \end{aligned}
+    \right.
+  \]
+  Dimostrazione per induzione sulla costruzione degli elementi di \( BT \):
+  \begin{enumerate}
+    \item \textbf{Caso Base}: è il nodo che non ha figli in BT:
+      \[
+        T = n \in BT
+      \] 
+      Sappiamo che:
+      \[
+        \#foglie(T) = \#foglie(n) = 1 = 1 + 0 = 1 + \#branch(T)
+      \] 
+      e questo soddisfa la proprietà.
+
+    \item \textbf{Passo induttivo}: \( T = br(T_1, T_2) \). Ipotesi
+      induttiva: supponiamo che \( T_1 \) e \( T_2 \) soddisfino la proprietà,
+      quindi:
+      \[
+        \begin{aligned}
+          \#foglie(T_1) &= \#branch(T_1) + 1 \\
+          \#foglie(T_2) &= \#branch(T_2) + 1
+        \end{aligned}
+      \] 
+      Dobbiamo dimostrare che \( \#foglie(T) = \#branch(T) + 1 \):
+      \[
+        \begin{aligned}
+          \#foglie(T) &\stackrel{def\; T}{=} \#foglie(br(T_1, T_2)) \\
+                      &\stackrel{def \; \#foglie}{=} \#foglie(T_1) + \#foglie(T_2) \\
+                      &\stackrel{Hp\; Ind}{=}
+                  \underbrace{\#branch(T_1) + 1 + 
+                  \#branch(T_2)}_{def\; \#branch(br(T_1, T_2))}
+                  + 1 \\
+                      &= \#branch(\underbrace{br(T_1, T_2)}_{T}) + 1 \\
+                      &= \#branch(T) + 1
+        \end{aligned}
+      \] 
+      Quindi anche \( T \) soddisfa la proprietà.
+  \end{enumerate}
+\end{example}
+
+\begin{example}
+  Consideriamo la seguente grammatica:
+  \[
+    S \to aa \mid bb \mid aSa \mid bSb
+  \] 
+  questa grammatica genera tutte le stringhe palindrome di lunghezza pari.
+  Siccome \( aa \) e \( bb \) sono nel linguaggio, se si prende una qualsiasi
+  stringa nel linguaggio \( S \) e si aggiungono \( a \) o \( b \) all'inizio e
+  alla fine, si ottiene una stringa ancora palindroma, quindi anche questa stringa è
+  nel linguaggio. Si può quindi definire questa grammatica in modo induttivo:
+  \[
+    LS: 
+    \begin{cases}
+      aa, bb, \in LS \quad \text{(Base)} \\
+      \sigma \in LS \Rightarrow a\sigma a, b\sigma b \in LS \quad \text{(Passo induttivo)}
+    \end{cases}
+  \] 
+  Quindi \( L(S) = LS \) e la proprietà da dimostrare è:
+  \[
+    \sigma \in LS \Rightarrow \exists x, y.\; \sigma = x y \land x = reverse(y)
+  \] 
+
+  \begin{enumerate}
+    \item \textbf{Caso base}: Prendiamo:
+      \[
+        aa = \sigma \Rightarrow x = a, y = a \quad \text{e} \quad
+        x = a = reverse(a) = reverse(y)
+      \] 
+      analogo per \( \sigma = bb \).
+
+    \item \textbf{Passo induttivo}: Prendiamo \( \sigma \in LS \), l'ipotesi
+      induttiva è la seguente:
+      \[
+        \sigma = xy \;t.c.\; x = reverse(y)
+      \] 
+      Prendiamo \( \sigma' = a \sigma a \). Per ipotesi induttiva:
+      \[
+        \sigma' = a \sigma a = a \overbrace{xy}^{\sigma} a = x'y'
+      \] 
+      con \( x' = ax \) e \( y' = ya \). Quindi:
+      \[
+        \begin{aligned}
+          x' = ax &= a reverse(y) \\
+                  &= reverse(\underbrace{ya}_{y'}) \\
+                  &= reverse(y')
+        \end{aligned}
+      \] 
+      Abbiamo dimostrato che \( \sigma' \) è palindroma, quindi \( \sigma' \in LS \).
+  \end{enumerate}
+\end{example}
+
+\begin{exercise}
+  Consideriamo la seguente grammatica:
+  \[
+    E \to n \mid E + E \mid E * E
+  \] 
+  \begin{enumerate}
+    \item Definire strutturalmente l'insieme \( L(E) \)
+    \item Si considerino le seguenti funzioni:
+      \begin{itemize}
+        \item \( op(E): op(n) = 0 \quad op(E_1 + E_2) = op(E_1 * E_2) = 1 + op(E_1) +
+          op(e_2) \) 
+
+        \item \( val(E): val(n) = 1 \quad val(E_1 + E_2) = val(E_1 * E_2) = val(E_1) + val(E_2) \)
+      \end{itemize}
+      Dimostrare che:
+      \[
+        \forall E \;.\; val(E) = op(E) + 1
+      \] 
+  \end{enumerate}
+\end{exercise}
 
 \end{document}
