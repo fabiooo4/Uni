@@ -1090,6 +1090,13 @@ programma che legge il codice sorgente e produce in output una sequenza di token
   \includegraphics[width=0.8\textwidth]{lexer}
   \caption{Esempio di analizzatore lessicale}
 \end{figure}
+\noindent
+L'analisi lessicale è una fase di compilazione separata per i seguenti motivi:
+\begin{itemize}
+  \item Semplicità di design
+  \item Permette di implementare ottimizzazioni mirate e quindi migliorare l'efficienza
+  \item Portabilità del compilatore migliorata
+\end{itemize}
 
 \subsection{Preprocessione}
 La preprocessione è una fase che avviene prima dell'analisi lessicale e si occupa di
@@ -1106,8 +1113,71 @@ for (; ; peek = next input character) {
 \end{lstlisting}
 \end{example}
 
-\subsection{Reading ahead}
-Il reading ahead è una tecnica utilizzata per gestire i casi in cui un token può essere
+\subsection{Analisi lessicale}
+L'analisi lessicale si occupa di riconoscere \textbf{unità lessicali} e trasformarle
+in \textbf{token}. Ad esempio il seguente codice sorgente:
+\begin{lstlisting}[escapechar=|, basicstyle=\rmfamily, columns=fullflexible, keepspaces=true]
+|\textbf{if}| (i == j)
+  z = 0|\textbf{;}|
+|\textbf{else}|
+  z = 1|\textbf{;}|
+\end{lstlisting}
+viene visto come una stringa di caratteri:
+\begin{lstlisting}[numbers=none]
+\tif (i == j) \n\t\tz = 0 ;\n \telse \n\t\tz = 1;
+\end{lstlisting}
+e poi viene suddiviso ad esempio nei seguenti tipi di token: \textbf{ws},
+\textbf{keyword}, \textbf{id}, \textbf{num}, \textbf{op}, \textbf{(}, \textbf{)},
+\textbf{;}, ecc...
+% <ws,\t> <keyword,if> <ws, > <(> <id,i> <ws, > <op,==>
+% <ws, > <id,j> <)> <ws, > <ws,\n\t\t> <id,z> <ws, > <=>
+% <ws, > <num,0> <;> <ws,\n \t> <keyword,else> <ws, \n\t\t>
+% <id,z> <ws, > <=> <num,1> <;> 
+\begin{lstlisting}[escapechar=|, basicstyle=\rmfamily, columns=fullflexible, keepspaces=true]
+<|\textbf{ws}|, \t> <|\textbf{keyword}|, if> <|\textbf{ws}|,  > <(> <|\textbf{id}|, i> <|\textbf{ws}|,  > <|\textbf{op}|, ==>
+<|\textbf{ws}|,  > <|\textbf{id}|, j> <)> <|\textbf{ws}|,  > <|\textbf{ws}|, \n\t\t> <|\textbf{id}|, z> <|\textbf{ws}|,  > <=>
+<|\textbf{ws}|,  > <|\textbf{num}|, 0> <;> <|\textbf{ws}|, \n \t> <|\textbf{keyword}|, else> <|\textbf{ws}|, \n\t\t>
+<|\textbf{id}|, z> <|\textbf{ws}|,  > <=> <|\textbf{num}|, 1> <;>
+\end{lstlisting}
+
+\begin{definition}[Token]
+  Un token è una coppia che consiste nel nome del token e un valore opzionale
+  associato. Ad esempio, il token per la parola chiave \texttt{if} potrebbe essere
+  rappresentato come \( \langle \textbf{if}, \texttt{if} \rangle \), mentre il token
+  per un numero potrebbe essere rappresentato come \( \langle \textbf{num}, 42 \rangle \).
+\end{definition}
+
+\begin{definition}[Pattern]
+  Un pattern è una descrizione della forma che i lessemi di un token possono assumere.
+  Ad esempio, il pattern per un numero potrebbe essere descritto come una sequenza di
+  cifre, mentre il pattern per un identificatore potrebbe essere descritto come una
+  lettera seguita da zero o più lettere o cifre.
+\end{definition}
+
+\begin{definition}[Lessema]
+  Un lessema è una sequenza di caratteri del programma sorgente che corrisponde a
+  un pattern di un token ed è identificato dal lexer come un'istanza di quel token.
+  Ad esempio, nella stringa \texttt{if (i == j)}, i lessemi sono
+  \texttt{if}, \texttt{(}, \texttt{i}, \texttt{==}, \texttt{j} e \texttt{)}.
+\end{definition}
+
+\begin{example}
+  Alcuni esempi di tokens, patterns e lessemi sono i seguenti:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{tokens_patterns_lessemi}
+    \caption{Esempi di tokens, patterns e lessemi}
+  \end{figure}
+\end{example}
+
+\subsubsection{Attributi dei token}
+Più di un lessema può matchare lo stesso pattern, quindi il lexer associa ad ogni
+token un \textbf{attributo} (opzionale) che descrive il lessema specifico che è stato
+riconosciuto. Il nome del token influisce sulle decisioni di parsing, mentre il
+valore dell'attributo influenza la traduzione dei token dopo il parsing.
+
+\subsection{Lookahead}
+Il lookahead è una tecnica utilizzata per gestire i casi in cui un token può essere
 composto da più caratteri. Ad esempio i numeri possono essere composti da più cifre
 e le parole chiave possono essere composte da più lettere. In questi casi, il lexer
 deve leggere più caratteri per determinare se si tratta di un token valido o meno.
@@ -1125,6 +1195,58 @@ keepspaces=true]
   |\textbf{return}| token |$\langle\textbf{num}, \textit{v}\rangle$|;
 }
 \end{lstlisting}
+\end{example}
+\noindent
+Un altro esempio in cui è necessario il lookahead è quando le parole chiave del
+linguaggio non sono riservate, cioè quando una parola chiave può essere utilizzata
+anche come identificatore. In quel caso bisogna leggere più caratteri per determinare
+se si tratta di una parola chiave o di un identificatore.
+
+\subsubsection{Coppia di buffer}
+Per gestire il lookahead, il lexer può utilizzare una coppia di buffer che vengono
+caricati alternativamente con i caratteri del programma sorgente. Si sfruttano due
+puntatori per analizzare i lessemi:
+\begin{itemize}
+  \item \texttt{lexemeBegin}: punta al primo carattere del lessema corrente
+  \item \texttt{forward}: avanza finchè non viene matchato un pattern, a quel punto
+    viene ritratto
+\end{itemize}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{coppia_buffer}
+  \caption{Esempio di coppia di buffer}
+\end{figure}
+
+\vspace{1em}
+\noindent
+Per riconoscere quando si è arrivati alla fine del buffer, oppure quando si è arrivati
+alla fine del file si possono utilizzare dei caratteri speciali, ad esempio il carattere
+\texttt{EOF} (End Of File).
+
+\begin{example}
+  Un esempio di codice per riconoscere la fine del buffer o del file è il seguente:
+\begin{lstlisting}[escapechar=|, basicstyle=\rmfamily, columns=fullflexible, keepspaces=true]
+|\textbf{switch}| ( *|\textit{forward}|++ ) {
+    |\textbf{case}| |\textbf{eof}|:
+        |\textbf{if}| (|\textit{forward}| is at end of first buffer ) {
+            reload second buffer;
+            |\textit{forward}| = beginning of second buffer;
+        }
+        |\textbf{else if}| (|\textit{forward}| is at end of second buffer ) {
+            reload first buffer;
+            |\textit{forward}| = beginning of first buffer;
+        }
+        |\textbf{else}| /* |\textbf{eof}| within a buffer marks the end of input */
+            terminate lexical analysis;
+        |\textbf{break}|;
+    Cases for the other characters
+}
+\end{lstlisting}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{coppia_buffer_sentinella}
+    \caption{Esempio di riconoscimento della fine del buffer o del file}
+  \end{figure}
 \end{example}
 
 \subsection{Riconoscimento delle keyword}
@@ -1167,5 +1289,232 @@ identificatore all'interno di un programma. Lo scope di una dichiarazione è
 la porzione di un programma a cui si applica la dichiarazione e gli scope sono
 implementati creando una symbol table separata per ogni scope.
 
+\subsection{Espressioni regolari}
+Un'espressione regolare è una notazione per descrivere un insieme di stringhe che
+appartengono a un linguaggio regolare. Le espressioni regolari sono utilizzate per
+descrivere i pattern dei token che il lexer deve riconoscere.
+
+\subsubsection{Definizione di linguaggio}
+\begin{itemize}
+  \item \textbf{Alfabeto} \( \Sigma  \): è un insieme finito di simboli
+  \item \textbf{Stringa} \( s \): è una sequenza finita di simboli dell'alfabeto
+    \begin{itemize}
+      \item \( |s| \) rappresenta la lunghezza della stringa \( s \)
+      \item \( \varepsilon \) rappresenta la stringa vuota, cioè la stringa
+        di lunghezza zero
+    \end{itemize}
+  \item \textbf{Linguaggio} \( L \): è un insieme di stringhe sull'alfabeto \( \Sigma \)
+\end{itemize}
+
+\subsubsection{Operazioni sulle stringhe}
+\begin{define}
+  Alcuni termini importanti sono i seguenti:
+  \begin{itemize}
+    \item Il \textbf{prefisso} di una stringa \( s \) è qualsiasi stringa ottenuta
+      rimuovendo zero o più simboli alla fine di \( s \). Ad esempio, \textit{ban},
+      \textit{banana} e \( \varepsilon  \) sono prefissi di \textit{banana}.
+
+    \item Il \textbf{suffisso} di una stringa \( s \) è qualsiasi stringa ottenuta rimuovendo zero o più simboli
+      all'inizio di \( s \). Ad esempio,
+      \textit{nana}, \textit{banana} e \( \varepsilon  \) sono suffissi di
+      \textit{banana}.
+
+    \item La \textbf{sottostringa} di una stringa \( s \) è ottenuta rimuovendo
+      qualsiasi prefisso o suffisso da \( s \). Ad esempio, \textit{nan} e
+      \( \varepsilon  \) sono sottostringhe di \textit{banana}.
+
+    \item I prefissi, suffissi e sottostringhe si dicono \textbf{propri} se sono
+      diversi da \( s \) stesso o da \( \varepsilon  \).
+
+    \item Una \textbf{sottosequenza} di una stringa \( s \) è una stringa ottenuta
+      rimuovendo zero o più simboli da \( s \) anche in posizioni non consecutive.
+      Ad esempio \textit{baan} è una sottosequenza di \textit{banana}.
+  \end{itemize}
+\end{define}
+
+Le operazioni sulle stringhe sono le seguenti:
+\begin{itemize}
+  \item \textbf{Concatenazione}: La concatenazione di due stringhe \( x \) e \( y \) è
+    denotata con \( xy \) 
+
+    \begin{itemize}
+      \item L'elemento nullo della concatenazione è \( \varepsilon  \):
+        \[
+          s \varepsilon  = \varepsilon  s = s
+        \] 
+    \end{itemize}
+
+  \item La ripetizione di una stringa \( s \) è denotata con \( s^n \):
+    \[
+      \begin{aligned}
+        s^0 = \varepsilon  \\
+        s^i = s^{i-1} s \quad \text{per } i > 0
+      \end{aligned}
+    \] 
+\end{itemize}
+
+\subsubsection{Operazioni sui linguaggi}
+Le operazioni sui linguaggi sono le seguenti:
+\begin{itemize}
+  \item \textbf{Unione}:
+    \( L \cup M = \left\{ s \mid s \in L \lor s \in M \right\} \)
+
+  \item \textbf{Concatenazione}:
+    \( LM = \left\{ xy \mid x \in L, y \in M \right\} \)
+
+  \item \textbf{Ripetizione}:
+    \( L^0 = \left\{ \varepsilon  \right\}; L^i = L^{i-1} L \text{ per } i > 0 \)
+
+  \item \textbf{Chiusura di Kleene}:
+    \( L^* = \bigcup_{i \geq 0} L^i \)
+
+  \item \textbf{Chiusura positiva}:
+    \( L^+ = \bigcup_{i > 0} L^i \)
+\end{itemize}
+
+\subsubsection{Definizione di espressioni regolari}
+Le espressioni regolari sono definite ricorsivamente partendo da simboli base:
+\begin{itemize}
+  \item \( \varepsilon  \) è un'espressione regolare che denota il linguaggio
+    \( \left\{ \varepsilon  \right\} \)
+
+  \item Ogni simbolo \( a \) dell'alfabeto \( \Sigma  \) è un'espressione regolare
+    che denota il linguaggio \( \left\{ a \right\} \)
+\end{itemize}
+Se \( r \) e \( s \) sono espressioni regolari che denotano i linguaggi \( L(r) \) e
+\( L(s) \) rispettivamente, allora:
+\begin{itemize}
+  \item \( r \mid  s \) è un'espressione regolare che denota il linguaggio \( L(r) \cup L(s) \)
+  \item \( rs \) è un'espressione regolare che denota il linguaggio \( L(r) L(s) \)
+  \item \( r^* \) è un'espressione regolare che denota il linguaggio \( L(r)^* \)
+  \item \( r^+ \) è un'espressione regolare che denota il linguaggio \( L(r)^+ \)
+  \item \( (r) \) è un'espressione regolare che denota il linguaggio \( L(r) \)
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Le \textbf{definizioni regolari} introducono una \textbf{naming convention}. Dato un
+alfabeto \( \Sigma  \) di simboli base, una definizione regolare è una sequenza di
+definizioni della forma:
+\[
+  \begin{aligned}
+    d_1 &\to r_1 \\
+    d_2 &\to r_2 \\
+        &\ldots \\
+    d_n &\to r_n
+  \end{aligned}
+\] 
+Ogni \( d_i \) è un \textbf{nuovo simbolo}, non presente nell'alfabeto \( \Sigma  \),
+e diverso da ogni altro \( d_j \) con \( j \neq i \). Ogni \( r_i \) è un'espressione
+regolare dell'alfabeto \( \Sigma  \cup \left\{ d_1, d_2, \ldots, d_{i-1} \right\} \).
+
+\begin{example}
+  Il seguente esempio rappresenta una definizione regolare per gli identificatori
+  in C:
+  \[
+    \begin{aligned}
+      letter &\to A \mid B \mid \ldots \mid Z \mid a \mid b \mid \ldots \mid z \\
+      digit &\to 0 \mid 1 \mid \ldots \mid 9 \\
+      id &\to letter ( letter \mid digit )^*
+    \end{aligned}
+  \] 
+\end{example}
+
+\begin{example}
+  Il seguente esempio rappresenta una definizione regolare per i numeri positivi
+  (interi o decimali) che sono stringhe del tipo:
+  \texttt{5280}, \texttt{0.0123}, \texttt{6.336E4}, \texttt{1.88E-2}:
+  \[
+  \begin{aligned}
+    digit &\to 0 \mid 1 \mid \ldots \mid 9 \\
+    digits &\to digit \, digit^* \\
+    optionalFraction &\to . digits \mid \varepsilon  \\
+    optionalExponent &\to ( E ( + \mid - \mid \varepsilon  ) digits ) \mid \varepsilon  \\
+    number &\to digits \, optionalFraction \, optionalExponent
+  \end{aligned}
+  \] 
+\end{example}
+
+\subsubsection{Precedenza degli operatori}
+Gli operatori nelle espressioni regolari hanno la seguente precedenza:
+\begin{itemize}
+  \item \textbf{Chiusura di Kleene} \( ^* \) e \textbf{chiusura positiva} \( ^+ \) hanno
+    la precedenza più alta e sono associativi a sinistra.
+
+  \item \textbf{Concatenazione} \( rs \) è il secondo operatore per precedenza ed è
+    associativo a sinistra.
+
+  \item \textbf{Unione} \( r \mid  s \) è l'operatore con la precedenza più bassa ed è
+    associativo a sinistra.
+\end{itemize}
+
+\begin{example}
+  La seguente espressione regolare:
+  \[
+    ( a ) \mid ( ( b )*( c ) )
+  \] 
+  può essere sostituita con:
+  \[
+    a \mid b^* c
+  \] 
+\end{example}
+
+\noindent
+Se due espressioni regolari \( r \) e \( s \) denotano lo stesso linguaggio, si dice
+che \( r \) e \( s \) sono \textbf{equivalenti} e si scrive \( r = s \).
+
+\subsubsection{Regole algebriche per le espressioni regolari}
+Le espressioni regolari soddisfano le seguenti regole algebriche:
+\begin{itemize}
+  \item \(  \mid  \) è commutativo:
+    \[
+      r \mid s = s \mid r
+    \] 
+
+  \item \(  \mid  \) è associativo:
+    \[
+      r \mid (s \mid t) = (r \mid s) \mid t
+    \]
+
+  \item La concatenazione è associativa:
+    \[
+      r(s t) = (r s) t
+    \]
+
+  \item La concatenazione distribuisce su \(  \mid  \):
+    \[
+      r(s \mid t) = r s \mid r t
+    \] 
+    \[
+      (s \mid t) r = s r \mid t r
+    \]
+
+  \item \( \varepsilon  \) è l'identità per la concatenazione:
+    \[
+      \varepsilon r = r \varepsilon  = r
+    \]
+
+  \item \( \varepsilon  \) è garantito in una chiusura:
+    \[
+      r^* = (r \mid \varepsilon  )^*
+    \]
+
+  \item La chiusura di Kleene è idempotente:
+    \[
+      r^{**} = r^*
+    \]
+\end{itemize}
+
+\subsubsection{Notazione compatta}
+Per rendere più compatte le espressioni regolari, si possono utilizzare le seguenti
+abbreviazioni:
+\begin{itemize}
+  \item \( r^+ \to rr^* \) 
+  \item \( r? \to r \mid \varepsilon  \) 
+  \item \( \left[ r_1 \, r_2 \, \ldots \, r_q  \right] = r_1 \mid r_2 \mid \ldots \mid r_q \)
+  \item \( \left[ a - z \right] = a \mid b \mid \ldots \mid z \)
+\end{itemize}
+
+\subsection{Diagrammi di transizione}
 
 \end{document}
