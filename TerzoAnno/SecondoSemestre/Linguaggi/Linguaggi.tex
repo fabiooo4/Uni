@@ -719,20 +719,6 @@ dicono \textbf{contestuali}.
     descritti dalla sintassi
 \end{itemize}
 
-\subsubsection{Semantica}
-La semantica è l'attribuzione di significato ai simboli.
-Il significato è un'entità autonoma che esiste indipendentemente dai simboli
-usati per descriverlo. La semantica è più
-complessa della sintassi perchè deve essere:
-\begin{itemize}
-  \item \textbf{Esatta}: deve avere una descrizione precisa e non ambigua
-    di ciò che ci si deve aspettare da ogni costrutto sintatticamente corretto
-    per sapere a priori cosa succederà durante l'esecuzione
-
-  \item \textbf{Flessibile}: non deve anticipare scelte che possono essere 
-    richieste all'implementazione
-\end{itemize}
-
 \subsubsection{Induzione strutturale}
 L'induzione strutturale permette di dimostrare proprietà di oggetti descritti
 in modo induttivo o ricorsivo. Una grammatica descrive in modo induttivo il
@@ -751,6 +737,9 @@ strutturale per dimostrare proprietà delle stringhe generate.
       induttiva} che la proprietà valga per gli elementi che la compongono
   \end{enumerate}
 \end{definition}
+
+\vspace{1em}
+\noindent
 
 \begin{example}
   Definiamo l'insieme \( X \subseteq \mathbb{N} \):
@@ -929,19 +918,362 @@ strutturale per dimostrare proprietà delle stringhe generate.
     E \to n \mid E + E \mid E * E
   \] 
   \begin{enumerate}
-    \item Definire strutturalmente l'insieme \( L(E) \)
+    \item Definire strutturalmente l'insieme \( Exp \)
+
     \item Si considerino le seguenti funzioni:
       \begin{itemize}
-        \item \( op(E): op(n) = 0 \quad op(E_1 + E_2) = op(E_1 * E_2) = 1 + op(E_1) +
-          op(e_2) \) 
+        \item Conta il numero di operatori:\\
+          \( op(E): op(n) = 0 \quad op(E_1 + E_2) = op(E_1 * E_2) = 1 + op(E_1) +
+          op(e_2) \)
 
-        \item \( val(E): val(n) = 1 \quad val(E_1 + E_2) = val(E_1 * E_2) = val(E_1) + val(E_2) \)
+        \item Conta il numero di valori:\\
+          \( val(E): val(n) = 1 \quad val(E_1 + E_2) = val(E_1 * E_2) = val(E_1) + val(E_2) \)
       \end{itemize}
       Dimostrare che:
       \[
         \forall E \;.\; val(E) = op(E) + 1
       \] 
   \end{enumerate}
+
+  Definizione strutturale dell'insieme \( Exp \):
+  \begin{itemize}
+    \item \textbf{Base}: \( n \in L(E) \)
+    \item \textbf{Passo induttivo}: se \( e_1, e_2 \in Exp \) allora
+      \( e_1 + e_2, e_1 * e_2 \in Exp \).
+      Le espressioni sono il minimo insieme chiuso che soddisfa queste condizioni,
+      quindi non ci sono altre espressioni in \( L(E) \). Quindi ad esempio:
+      \[
+        3 + 5 * 2 \in Exp
+      \] 
+  \end{itemize}
+  Sappiamo che:
+  \[
+    \begin{aligned}
+      &\begin{cases}
+        val(n) = 1 \\
+        val(e_1 + e_2) = val(e_1 * e_2) = val(e_1) + val(e_2)
+      \end{cases} \\
+      &\begin{cases}
+        op(n) = 0 \\
+        op(e_1 + e_2) = op(e_1 * e_2) = op(e_1) + op(e_2) + 1
+      \end{cases}
+    \end{aligned}
+  \] 
+  Quindi sull'esempio precedente:
+  \[
+    \begin{aligned}
+      val(\underbrace{3 + 5}_{e_1} * \underbrace{2}_{e_2}) &= val(3 + 5) + val(2) \\
+                                                           &= val(3) + val(5) + val(2) \\
+                                                           &= 1 + 1 + 1 = 3
+    \end{aligned}
+  \] 
+  \[
+    \begin{aligned}
+      op(\underbrace{3 + 5}_{e_1} * \underbrace{2}_{e_2}) &= op(3 + 5) + op(2) + 1 \\
+                                                          &= op(3) + op(5) + op(2) + 1 + 1 \\
+                                                          &= 0 + 0 + 0 + 1 + 1 = 2
+    \end{aligned}
+  \] 
+  Dimostriamo che \( \Pi:\; \forall e \in Exp \;.\; val(e) = op(e) + 1 \) per induzione
+  strutturale su \( Exp \) 
+  \begin{itemize}
+    \item \textbf{Caso base}: Verifichiamo \( \Pi  \) sugli elementi esplicitamente
+      inseriti nell'insieme \( Exp \), cioè sui numeri \( n \in \mathbb{N}\):
+      consideriamo le espressioni \( e = n \) 
+      \[
+        val(e) = val(n) = 1 \quad \textbf{=} \quad 1 + 0 = 1 + op(n) = 1 + op(e)
+      \] 
+
+    \item \textbf{Ipotesi induttiva}: Dimostriamo per gli elementi composti supponendo
+      l'ipotesi induttiva sugli elementi che li compongono. Sia \( e = e_1 + e_2 \) (ipotesi1)
+      (analogo per \( e = e_1 * e_2 \)), l'ipotesi induttiva è la seguente:
+      \[
+        val(e_1) = op(e_1) + 1 \quad \land \quad val(e_2) = op(e_2) + 1
+      \] 
+      Dobbiamo dimostrare che \( val(e) = op(e) + 1 \):
+      \[
+        \begin{aligned}
+          val(e) &\stackrel{ipotesi1}{=} val(e_1 + e_2) \\
+                 &\stackrel{def\; val}{=} val(e_1) + val(e_2) \\
+                 &\stackrel{Hp.\; Ind.}{=} \underbrace{op(e_1) + 1 + op(e_2)}_{op(e_1 + e_2)} + 1 \\
+                 &\stackrel{def\; op}{=} op(e_1 + e_2) + 1 \\
+                 &\stackrel{ipotesi1}{=} op(e) + 1
+        \end{aligned}
+      \] 
+  \end{itemize}
+  Abbiamo dimostrato che \( \Pi \) è vera per tutti gli elementi di \( Exp \).
 \end{exercise}
+
+\subsubsection{Semantica}
+La semantica è l'attribuzione di significato ai simboli.
+Il significato è un'entità autonoma che esiste indipendentemente dai simboli
+usati per descriverlo. Esistono 3 tipi di semantica:
+\begin{itemize}
+  \item \textbf{Denotazionale}: È un modello completamente matematico che descrive il
+    programma come una funzione su stati (programmi come funzioni). Lo \textbf{stato}
+    descrive il valore di tutte le variabili in un certo momento.
+    \[
+      Stato: Var \mapsto Val
+    \] 
+    La semantica denotazionale è una funzione che prende un programma e restituisce
+    una funzione che prende uno stato iniziale e restituisce uno stato finale:
+    \[
+      E: Prog \mapsto \underbrace{(Stato \to Stato)}_{\text{Denotazione associata al programma}}
+    \] 
+    Un esempio di semantica denotazionale è il comportamento input/output
+
+  \item \textbf{Operazionale}: Descrive il significato del programma come sequenza
+    di trasformazione di stati, \textbf{eseguendo} i suoi comandi sulla macchina astratta.
+    Per semplificare vedremo lo stato come se fosse la memoria:
+    \[
+      \text{Memoria: } \sigma: Var^n \mapsto Val^n
+    \] 
+    \[
+      \text{Stato: } (Prog \times Mem) \cup Mem
+    \] 
+    dove:
+    \begin{itemize}
+      \item \( Prog \) è il programma che stiamo eseguendo
+      \item \( Mem \) è la memoria su cui stiamo eseguendo il programma
+      \item \( \cup Mem \) è l'insieme degli stati finali
+    \end{itemize}
+    Ad esempio:
+    \[
+      \text{Variabili:} <x, y, z> \mapsto <2, 5, 3>
+      \leadsto <x \mapsto 2, y \mapsto 5, z \mapsto 3>
+    \] 
+    Per eseguire un programma si utilizza un \textbf{sistema di transizione}:
+    \[
+      <\Sigma, \to>
+    \] 
+    dove:
+    \begin{itemize}
+      \item \( \Sigma \) è l'insieme degli stati
+      \item \( \to \) è la relazione di transizione che descrive come si passa da
+        uno stato ad un altro eseguendo un comando del programma
+    \end{itemize}
+
+  \item \textbf{Assiomatica}: Descrive il programma attraverso le proprietà che
+    soddisfa. Si calcola utilizzando un sistema di derivazione che fornisce regole per
+    dimostrare proprietà sui programmi:
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.6\textwidth]{assiomatica}
+      \caption{Esempio di sistema di derivazione per la semantica assiomatica}
+    \end{figure}
+    \noindent
+    Quindi descrive relazioni tra proprietà di stati.
+    Ad esempio fornendo le proprietà invarianti dei programmi, cioè le
+    proprietà che sono vere prima e dopo l'esecuzione di un programma.
+\end{itemize}
+
+\begin{example}
+  Consideriamo il seguente programma:
+  \[
+  P = \begin{cases}
+    z := 2; \\
+    y := z; \\
+    y := y + 1; \\
+    z := y;
+  \end{cases}
+  \] 
+  Applichiamo i tre tipi diversi di semantica al programma \( P \):
+  \begin{itemize}
+    \item \textbf{Semantica denotazionale}:
+      \[
+        \begin{aligned}
+          &\mathcal{D}[\overbrace{P}^{Prog}]
+          (\overbrace{z \mapsto \bot, y \mapsto \bot}^{Stato\; iniziale}) = \\
+          &= \mathcal{D}[z := 2; y := z; y := y + 1; z := y](z \mapsto \bot, y \mapsto \bot) \\
+          &= \mathcal{D}[z := y] \circ \mathcal{D}[y := y + 1] \circ \mathcal{D}[y := z] \circ
+          \color{blue}\mathcal{D}[z := 2] (z \mapsto \bot, y \mapsto \bot) \\
+          &= \mathcal{D}[z := y] \circ \mathcal{D}[y := y + 1] \circ
+          \color{blue}\mathcal{D}[y := z] (z \mapsto 2, y \mapsto \bot) \\
+          &= \mathcal{D}[z := y] \circ
+          \color{blue}\mathcal{D}[y := y + 1] (z \mapsto 2, y \mapsto 2) \\
+          &= \color{blue}\mathcal{D}[z := y] (z \mapsto 2, y \mapsto 2) \\
+          &= \color{blue}(z \mapsto 3, y \mapsto 2)
+        \end{aligned}
+      \] 
+      Quindi \( \mathcal{D}[P](z \mapsto \bot, y \mapsto \bot) = (z \mapsto 3, y \mapsto 2) \)
+      è usata per:
+      \begin{itemize}
+        \item Dimostrare proprietà (correttezza)
+        \item Fornisce uno strumento formale per ragionare sulle funzionalità dei
+          programmi
+        \item Non è utile a chi usa il linguaggio di programmazione
+      \end{itemize}
+
+    \item \textbf{Semantica assiomatica}: Fornisce proprietà relazionali sull'input
+      e sull'output del programma, ad esempio:
+      \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\textwidth]{esempio_assiomatica}
+        \caption{Esempio di proprietà assiomatica per il programma \( P \)}
+      \end{figure}
+
+    \item \textbf{Semantica operazionale}:
+      \[
+        \begin{aligned}
+          &<P, (z \mapsto \bot, y \mapsto \bot)> = \\
+          &= <\color{blue}z := 2\color{black}; y := z; y := y + 1; z := y, (z \mapsto \bot, y \mapsto \bot)> \\
+          &= <\color{blue}y := z\color{black}; y := y + 1; z := y, (z \mapsto 2, y \mapsto \bot)> \\
+          &= <\color{blue}y := y + 1\color{black}; z := y, (z \mapsto 2, y \mapsto 2)> \\
+          &= <\color{blue}z := y\color{black}, (z \mapsto 2, y \mapsto 3)> \\
+          &= <z \mapsto 3, y \mapsto 3>
+        \end{aligned}
+      \] 
+  \end{itemize}
+\end{example}
+
+\subsubsection{Composizionalità della semantica}
+Il significato di ogni programma è funzione del significato dei suoi componenti
+immediati, cioè si possono ottenere le proprietà semantiche di un programma a partire
+dalle proprietà semantiche dei suoi componenti.
+
+\subsubsection{Equivalenza di programmi}
+La semantica viene utilizzata per verificare l'equivalenza tra programmi.
+\begin{itemize}
+  \item \( P_1 = P_2 \) dice che \( P_1 \) è esattamente lo stesso programma di \( P_2 \),
+    cioè sono sintatticamente uguali. Questa si dice \textbf{uguaglianza sintattica}.
+
+  \item \( P_1 \equiv P_2 \) dice che \( P_1 \) e \( P_2 \) hanno lo stesso comportamento
+    (stesso significato), anche se sono scritti in modo diverso. Questa si dice
+    \textbf{equivalenza} o uguaglianza semantica.
+\end{itemize}
+
+\begin{example}
+  Consideriamo i seguenti programmi:
+  \begin{itemize}
+    \item \( P_1 \) insertion sort
+    \item \( P_2 \) bubblue sort
+  \end{itemize}
+  Sappiamo che i due programmi sono diversi, quindi:
+  \[
+    P_1 \neq P_2
+  \] 
+  Ma sappiamo che entrambi ordinano una lista, quindi il loro comportamento è lo stesso:
+  \begin{itemize}
+    \item Con la semantica denotazionale si ha:
+      \[
+        \mathcal{D}[P_1] = \mathcal{D}[P_2] \leadsto P_1 \equiv P_2
+      \] 
+
+    \item Con la semantica operazionale si ha:
+      \[
+        [\![ P_1 ]\!] \neq [\![ P_2 ]\!] \leadsto P_1 \not\equiv P_2
+      \] 
+  \end{itemize}
+  Quindi l'equivalenza dipende dalla scelta della semantica
+\end{example}
+
+\subsubsection{Categorie sintattiche}
+Le categorie sintattiche sono insiemi di stringhe che condividono una certa proprietà
+per:
+\begin{itemize}
+  \item Manipolare dati (espressioni)
+  \item Trasformare stati (comandi)
+  \item Creare e manipolare i legami (dichiarazioni), ad esempio variabile-valore,
+    variabile-tipo, funzione-codice, ecc...
+\end{itemize}
+Si hanno quindi:
+\begin{itemize}
+  \item \textbf{Stato}: descrive gli effetti sugli identificatori
+  \item \textbf{Ambiente}: è un insieme di legami tra identificatori e oggetti
+    denotati
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Le categorie sintattiche principali sono:
+\begin{itemize}
+  \item \textbf{Espressioni}: denotano e manipolano valori. Le espressioni possono
+    essere complesse e quindi devono essere \textbf{valutate} per restituire il
+    singolo valore che sta denotando.
+    Espressioni \textbf{sintatticamente diverse} possono denotare lo stesso valore.
+    Ad esempio \( 1 + 5 \) e \( 3 * 2 \) denotano lo stesso valore.
+
+    \begin{definition}
+      Due espressioni sono equivalenti se vengono valutate nello \textbf{stesso}
+      valore a partire da qualunque stato/memoria iniziale.
+    \end{definition}
+
+  \item \textbf{Comandi}: denotano richieste di modifica della memoria.
+    \begin{itemize}
+      \item Le strutture di controllo decidono quali comandi eseguire
+      \item Gli assegnamenti modificano effettivamente la memoria
+    \end{itemize}
+    Rappresentano funzioni: \( Memoria \mapsto Memoria \). I comandi vengono
+    \textbf{eseguiti} per attuare la corrispondente richiesta di trasformazione della
+    memoria. Queste trasformazioni sono \textbf{irreversibili}, cioè non possono essere
+    cancellate, ma solo annullate semanticamente, ad esempio:
+    \[
+      x := x + 1; \; x := x - 1
+    \] 
+    Questi comandi si annullano, ma lo stato è stato comunque modificato.
+
+    \begin{definition}
+      Due comandi sono equivalenti se per ogni stato iniziale in input producono lo
+      stesso stato in output. Quindi l'equivalenza è vista come uguaglianza della
+      funzione calcolata.
+    \end{definition}
+
+  \item \textbf{Dichiarazioni}: denotano richieste di creazione o modifica di legami,
+    ovvero di \textbf{ambienti}. Le dichiarazioni vengono \textbf{elaborate} per
+    attuare le richieste di creazione o modifica degli ambienti.
+
+    \begin{definition}
+      Due dichiarazioni sono equivalenti se producono lo stesso ambiente (e la stessa
+      memoria) a partire da qualunque stato iniziale.
+    \end{definition}
+\end{itemize}
+La separazione tra le categorie sintattiche non è rigida, ad esempio un'espressione
+può avere anche side effects, quindi modificare la memoria, ecc...
+
+\subsubsection{Linguaggio "giocattolo" PLO}
+In questo corso considereremo un linguaggio di programmazione "giocattolo" 
+simile al linguaggio Pascal in cui:
+\begin{itemize}
+  \item Esiste un singolo tipo di dato \texttt{integer}
+  \item I booleani sono rappresentati come interi
+  \item Strutture di controllo standard
+  \item Astrazione del controllo
+  \item Le procedure non hanno parametri
+\end{itemize}
+Il linguaggio è definito nel seguente modo:
+
+% <program> P → B.
+% <block> B → D S
+% <declar> D → [const I=N{,I=N};]
+% | [var I{,I};]
+% | [procedure I;B;]
+% <stmts> S → # | I := E
+% | call I
+% | if C then S
+% | while C do S
+% | begin S{;S} end
+% <Cond> C → odd E | E > E
+% | E >= E | E = E
+% | E # E | E < E
+% | E <= E
+% <Expr> E → I | N | E bop E
+% | ( E )
+\[
+  % TODO:
+\] 
+e ha la seguente sintassi:
+% <Expr> E → [+,-] T [A T]
+% <Add op> A → + | -
+% <Terms> T → F [M F]
+% M → * | /
+% <Factor> F → I | N | ( E )
+% <Numbers> N → [+,-] d{d}
+% <Digit> d → 0 | … | 9
+% <Ident> I → l{l,d}
+% <Letter> l → A | … | Z
+\[
+  % TODO:
+\] 
+
 
 \end{document}
