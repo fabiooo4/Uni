@@ -1202,6 +1202,20 @@ linguaggio non sono riservate, cioè quando una parola chiave può essere utiliz
 anche come identificatore. In quel caso bisogna leggere più caratteri per determinare
 se si tratta di una parola chiave o di un identificatore.
 
+\vspace{1em}
+\noindent
+% Lex lookahead operator / in a Lex pattern r1 / r2 is sometimes necessary, because the
+% pattern r1 for a particular token may need to describe some trailing context r2 in order
+% to correctly identify the actual lexeme
+L'\textbf{operatore di lookahead} è un operatore che viene utilizzato in un pattern
+del tipo \( r1 / r2 \) quando il pattern \( r1 \) per un particolare token deve descrivere
+un contesto finale \( r2 \) per identificare correttamente il lessema effettivo. Ad esempio:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{lookahead_operator}
+  \caption{Esempio di operatore di lookahead}
+\end{figure}
+
 \subsubsection{Coppia di buffer}
 Per gestire il lookahead, il lexer può utilizzare una coppia di buffer che vengono
 caricati alternativamente con i caratteri del programma sorgente. Si sfruttano due
@@ -1261,6 +1275,8 @@ token con le parole chiave nella symbol table.
   \caption{Esempio di riconoscimento delle keyword}
 \end{figure}
 
+\vspace{1em}
+\noindent
 \begin{example}
   Per riconoscere le keyword si può utilizzare una funzione del tipo:
 \begin{lstlisting}[escapechar=|, basicstyle=\rmfamily, columns=fullflexible, keepspaces=true]
@@ -1330,6 +1346,9 @@ descrivere i pattern dei token che il lexer deve riconoscere.
       rimuovendo zero o più simboli da \( s \) anche in posizioni non consecutive.
       Ad esempio \textit{baan} è una sottosequenza di \textit{banana}.
   \end{itemize}
+
+  \vspace{2em}
+  \noindent
 \end{define}
 
 Le operazioni sulle stringhe sono le seguenti:
@@ -1516,5 +1535,524 @@ abbreviazioni:
 \end{itemize}
 
 \subsection{Diagrammi di transizione}
+I \textbf{diagrammi di transizione} rappresentano espressioni regolari e definizioni
+regolari e sono definiti da:
+\begin{itemize}
+  \item \textbf{Stati}: riassumono tutte le informazioni riguardo i caratteri compresi
+    tra i due puntatori \texttt{lexemeBegin} e \texttt{forward}
+
+  \item \textbf{Archi}: rappresentano le transizioni tra stati, etichettati con i
+    caratteri che causano la transizione
+
+  \item \textbf{Stato iniziale}: è lo stato in cui si trova il lexer prima di leggere
+    qualsiasi carattere
+
+  \item \textbf{Stati finali}: è un insieme di stati che indicano che è stato
+    riconosciuto un token valido
+
+  \item \textbf{Operatore *}: utilizzato per \textbf{ritrarre il puntatore}
+    \texttt{forward} 
+
+  \item Sono diagrammi deterministici
+\end{itemize}
+
+\subsubsection{Grammatica modello}
+Nelle sezioni successive utilizzeremo la seguente grammatica come modello per costruire
+i diagrammi di transizione:
+\begin{itemize}
+  \item Grammatica:
+    \[
+      \begin{aligned}
+        \texttt{\textit{stmt}} &\to \texttt{if \textit{expr} then \textit{stmt}} \\
+                        &\mid \texttt{if \textit{expr} then \textit{stmt} else \textit{stmt}} \\
+                        &\mid \varepsilon  \\
+        %
+        \texttt{\textit{expr}} &\to \texttt{term \textit{relop} term} \\
+                        &\mid \texttt{term} \\
+        %
+        \texttt{\textit{term}} &\to \texttt{id} \\
+                               &\mid \texttt{number} \\
+      \end{aligned}
+    \] 
+
+  \item Definizioni regolari:
+    \[
+      \begin{aligned}
+        \texttt{\textit{digit}} &\to \texttt{[0-9]} \\
+        %
+        \texttt{\textit{digits}} &\to \texttt{\textit{digit}}^+ \\
+        %
+        \texttt{\textit{number}} &\to \texttt{\textit{digits}(.\textit{digits})?(E[+-]?)?[0-9]} \\
+        %
+        \texttt{\textit{letter}} &\to \texttt{[A-Za-z]} \\
+        %
+        \texttt{\textit{id}} &\to \texttt{\textit{letter}(\textit{letter} | \textit{digit})} \\
+        %
+        \texttt{\textit{if}} &\to \texttt{if} \\
+        %
+        \texttt{\textit{then}} &\to \texttt{then} \\
+        %
+        \texttt{\textit{else}} &\to \texttt{else} \\
+        %
+        \texttt{\textit{relop}} &\to \texttt{< | > | <= | >= | <> | =} \\
+        %
+        \texttt{\textit{ws}} &\to \texttt{(blank | tab | newline)}^+
+      \end{aligned}
+    \] 
+    Il token \texttt{\textit{ws}} rappresenta gli spazi bianchi ed è diverso dagli altri
+    token perchè quando viene riconosciuto, il lexer non lo restituisce al parser, ma
+    lo ignora e ricomincia l'analisi lessicale dal carattere successivo.
+
+    Da questa definizione si ricava la seguente tabella:
+    \begin{table}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{grammatica_modello_tabella}
+      \caption{Tabella delle definizioni regolari}
+    \end{table}
+\end{itemize}
+
+\begin{example}
+  Un esempio di diagramma di transizione per il token \texttt{relop} è il seguente:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{diagramma_relop}
+    \caption{Esempio di diagramma di transizione per il token \texttt{relop}}
+  \end{figure}
+  \noindent
+  Il codice di implementazione è del tipo:
+\begin{lstlisting}[language=C]
+TOKEN getRelop() {
+  TOKEN retToken = new(RELOP);
+  // repeat character processing until a return or failure occurs
+  while (1) {
+    // state is the current state of the transition diagram
+    switch (state) {
+      case 0:
+        char c = nextChar();
+        if (c == '<') state = 1;
+        else if (c == '=') state = 5;
+        else if (c == '>') state = 6;
+        else fail(); // lexeme is not a relop
+        break;
+
+      case 1: //...
+      //...
+      case 8: 
+        retract();
+        retToken.attribute = GT;
+        return retToken;
+    }
+  }
+}
+\end{lstlisting}
+\end{example}
+\begin{example}
+  Un esempio di diagramma di transizione per il token \texttt{number} è il seguente:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{diagramma_number}
+    \caption{Esempio di diagramma di transizione per il token \texttt{number}}
+  \end{figure}
+\end{example}
+
+\subsubsection{Stringhe riservate}
+Le stringhe riservate sono stringhe che corrispondono a token specifici,
+ad esempio le parole chiave del linguaggio. Per riconoscere gli identificatori
+si usa il seguente diagramma:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{diagramma_id}
+  \caption{Esempio di diagramma di transizione per il token \texttt{id}}
+\end{figure}
+Per evitare che un identificatore utilizzi una parola chiave bisogna creare un 
+diagramma di transizione per ogni parola chiave e dare \textbf{priorità} a questi
+lessemi quando ci sono più match possibili. Ad esempio, se il lexer riconosce la stringa
+\texttt{then}, deve riconoscerla come la parola chiave e non come un identificatore,
+quindi il diagramma di transizione per \texttt{then} è il seguente:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{diagramma_then}
+  \caption{Esempio di diagramma di transizione per il token \texttt{then}}
+\end{figure}
+
+\subsection{Architettura di un diagram-based lexer}
+Un diagram-based lexer è un lexer che utilizza i diagrammi di transizione per
+riconoscere i token e ha le seguenti proprietà:
+\begin{itemize}
+  \item Ogni token ha un diagramma di transizione associato che viene tentato
+    sequenzialmente. Successivamente la funzione \texttt{fail()} resetta il puntatore
+    \texttt{forward} e tenta il diagramma di transizione del token successivo.
+
+  \item Si eseguono i vari diagrammi di transizione in \textbf{parallelo}, dando
+    in input il carattere successivo a tutti i diagrammi contemporaneamente permettendo
+    a tutti di fare qualsiasi transizione richiesta. Alla fine si restituisce:
+    \begin{itemize}
+      \item Il match più lungo, oppure
+      \item In caso di pareggio, il token con la priorità più alta
+    \end{itemize}
+
+  \item Si combinano tutti i diagrammi di transizione in uno solo
+    \begin{example}
+      Un esempio di combinazione di diagrammi di transizione è il seguente:
+      \begin{figure}[H]
+        \centering
+        \includegraphics[width=1\textwidth]{diagramma_combinato}
+        \caption{Esempio di combinazione di diagrammi di transizione}
+      \end{figure}
+    \end{example}
+\end{itemize}
+
+\begin{example}
+  Consideriamo il seguente diagramma che riconosce le espressioni regolari per i
+  token:
+  \begin{itemize}
+    \item \( a \) 
+    \item \( abb \) 
+    \item \( a^*b^+ \) 
+  \end{itemize}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{diagramma_combinato_2}
+    \caption{Esempio di combinazione di diagrammi di transizione per i token \( a \), \( abb \) e \( a^*b^+ \)}
+  \end{figure}
+  \noindent
+  Se l'input è \( aabb \), il lexer restituisce ad ogni passo l'insieme di stati
+  in cui la simulazione del diagramma combinato si trova. L'esecuzione va avanti
+  finchè l'insieme di stati è vuoto, cioè non ci sono più transizioni possibili con
+  il carattere successivo, e a quel punto si torna indietro e si restituisce il token
+  con il match più lungo:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{diagramma_combinato_risultato}
+    \caption{Esempio di esecuzione del diagramma combinato per l'input \( aabb \)}
+  \end{figure}
+  \noindent
+  In questo caso, il lexer restituisce il token \( a^*b^+ \) con il lessema \( aabb \)
+  e procederà con l'analisi lessicale dei caratteri successivi.
+\end{example}
+
+\subsubsection{Lex: Lexical Analyzer Generator}
+\textbf{Lex}\footnote{\url{https://thiagoh.github.io/lex/}} è un tool di generazione di analizzatori lessicali che permette di 
+specificare un lexer utilizzando espressioni regolari. Gli input sono specificati
+nel linguaggio Lex.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{lex}
+  \caption{Esempio di generazione di Lex}
+\end{figure}
+
+\subsubsection{Architettura di un lexical analyzer generator}
+Un lexical analyzer generator è un tool che prende in input una specifica del lexer
+e produce in output un programma che implementa il lexer. Il compito del lexical
+analyzer generator è:
+\begin{itemize}
+  \item Tradurre espressioni regolari in NFA
+  \item Tradurre NFA in DFA
+  \item Minimizzare il DFA
+\end{itemize}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{lexical_analyzer_generator}
+  \caption{Esempio di architettura di un lexical analyzer generator}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{lexical_analyzer_generator_2}
+  \caption{Diagramma di architettura di un lexical analyzer generator}
+\end{figure}
+
+\subsubsection{Simulare un DFA}
+Per simulare un DFA, si utilizza un codice simile al seguente:
+\begin{lstlisting}[language=C]
+s = s_0;
+c = nextChar();
+while (c != eof) {
+  s = move(s, c);
+  c = nextChar();
+}
+if (s is in F) accept();
+else reject();
+\end{lstlisting}
+dove:
+\begin{itemize}
+  \item \texttt{move(s, c)} restituisce lo stato raggiunto partendo dallo stato \( s \) e
+    leggendo il carattere \( c \)
+  \item \texttt{nextChar()} restituisce il prossimo carattere dell'input
+\end{itemize}
+La complessità di questo algoritmo è \( O(|x|) \) dove \( x \) è la stringa da
+analizzare.
+
+\subsubsection{Convertire un NFA in un DFA}
+Per convertire un NFA in un DFA, si utilizza l'algoritmo di
+\textbf{subset construction} che fa corrispondere ad ogni stato del DFA generato un
+insieme di stati dell'NFA originale.
+Dopo aver letto l'input \( a_1 a_2 \ldots a_n \), il DFA si trova nello stato che
+corrisponde all'insieme di stati che l'NFA può raggiungere, partendo dallo stato
+iniziale, seguendo i percorsi etichettati \( a_1 a_2 \ldots a_n \).
+È possibile che il numero di stati del DFA generato sia esponenziale rispetto al
+numero di stati dell'NFA originale, ma in pratica per linguaggi reali il numero
+di stati del DFA è simile a quello dell'NFA.
+
+Per convertire un NFA in un DFA, bisogna definire le seguenti funzioni:
+\begin{itemize}
+  \item \( \varepsilon \)\texttt{-closure(s)}: restituisce l'insieme degli stati
+    raggiungibili dallo stato \( s \) di un NFA seguendo solo transizioni
+    \( \varepsilon \).
+
+  \item \( \varepsilon \)\texttt{-closure(T)}: restituisce l'insieme degli stati
+    raggiungibili da alcuni stati \( s \) dell'insieme \( T \) di un NFA seguendo solo
+    transizioni \( \varepsilon \):
+    \[
+      \cup_{s \in T} \varepsilon\text{-closure}(s)
+    \] 
+\begin{lstlisting}[escapechar=|, basicstyle=\rmfamily, columns=fullflexible, keepspaces=true]
+push all states of T onto stack;
+initialize |\( \varepsilon \)|-closure(T) to T;
+while (stack not empty) {
+    |\textit{t}| = pop stack;
+    for (each state |\textit{u}| with an edge from |\textit{t}| to |\textit{u}| labeled |\( \varepsilon \)|) {
+        if (|\textit{u}| is not in |\( \varepsilon \)|-closure(T)) {
+            add |\textit{u}| to |\( \varepsilon \)|-closure(T);
+            push |\textit{u}| onto stack;
+        }
+    }
+}
+\end{lstlisting}
+
+  \item \texttt{move(T, a)}: restituisce l'insieme degli stati raggiungibili da alcuni
+    stati \( s \) dell'insieme \( T \) di un NFA seguendo solo transizioni etichettate
+    \( a \)
+\end{itemize}
+L'algoritmo di subset construction è il seguente:
+\begin{lstlisting}[escapechar=|, basicstyle=\rmfamily, columns=fullflexible, keepspaces=true]
+initially, |\( \varepsilon  \)|-closure(|\( s_0 \) |) is the only state in |\textit{Dstates}|; and it is unmarked;
+while (there is an unmarked state |\textit{T}| in |\textit{Dstates}|) {
+    mark |\textit{T}|;
+    for (each input symbol |\( a \)|) {
+        |\textit{U}| = |\( \varepsilon  \)|-closure(|\texttt{move}(|\textit{T}|, |\( a \)|)|);
+        if (|\textit{U}| is not in |\textit{Dstates}|) {
+            add |\textit{U}| as an unmarked state to |\textit{Dstates}|;
+        }
+        add a transition from |\textit{T}| to |\textit{U}| on input |\( a \)|;
+    }
+}
+\end{lstlisting}
+
+\begin{example}
+  Consideriamo il seguente NFA che riconosce il linguaggio \( L(N) = (a \mid b)^*abb \) :
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{esempio_nfa}
+    \caption{Esempio di NFA}
+  \end{figure}
+  Si trasformano gli stati dell'NFA in stati del DFA come mostrato nella seguente
+  tabella:
+  \begin{table}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{esempio_nfa_dfa}
+    \caption{Esempio di trasformazione da NFA a DFA}
+  \end{table}
+  Il DFA risultante è il seguente:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{esempio_dfa}
+    \caption{Esempio di DFA risultante dalla trasformazione da NFA a DFA}
+  \end{figure}
+\end{example}
+
+\subsubsection{Simulare un NFA}
+Per simulare un NFA, si utilizza un codice simile al seguente:
+\begin{lstlisting}[escapechar=|, basicstyle=\rmfamily, columns=fullflexible, keepspaces=true]
+|\textit{S}| = |\( \varepsilon  \)-closure(|\( s_0 \)|)|;
+|\textit{c}| = nextChar();
+while (|\textit{c}| != eof) {
+    |\textit{S}| = |\( \varepsilon  \)-closure(|move(|\textit{S}|, |\textit{c}|)|)|;
+    |\textit{c}| = nextChar();
+}
+if (|\textit{S} \( \cap \) \textit{F}| |\( \neq \)| |\( \varnothing \)|) accept();
+else reject();
+\end{lstlisting}
+La complessità di questo algoritmo è \( O(|x| \cdot |r|) \) dove \( x \) è la stringa
+da analizzare e \( r \) è l'espressione regolare che rappresenta il linguaggio riconosciuto
+dall'NFA.
+
+\subsubsection{Trasformare espressioni regolari in NFA}
+\begin{definition}[Stati importanti]
+  Gli stati importanti di un NFA sono tutti quelli che hanno almeno una transizione
+  in uscita che non sia una transizione \( \varepsilon  \), cioè se:
+  \[
+    \texttt{move}(\{s\}, a) \neq \varnothing \quad \text{per qualche simbolo } a
+  \] 
+  allora lo stato \( s \) è uno stato importante.
+\end{definition}
+Per trasformare un'espressione regolare in un NFA si seguono i seguenti passi:
+\begin{enumerate}
+  \item \textbf{Aumentare} l'espressione regolare con un simbolo finale speciale, in
+    questo caso \( \# \), che fa si che anche gli stati finali dell'NFA risultante
+    siano stati importanti.
+    Ad esempio, se l'espressione regolare è \( r \), si trasforma in \( r\# \).
+
+  \item Costruire un syntax tree per \( r\# \)
+    \begin{example}
+      Prendiamo ad esempio l'espressione regolare \[ (a \mid b)^*abb\# \] il syntax
+      tree è il seguente:
+      \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\textwidth]{syntax_tree_regolare}
+        \caption{Esempio di syntax tree per l'espressione regolare \( (a \mid b)^*abb\# \)}
+      \end{figure}
+      \noindent
+      Per ogni foglia diversa da \( \varepsilon  \) si assegna un numero di posizione
+      univoco.
+    \end{example}
+
+  \item Percorrere il syntax tree per costruire le funzioni:
+    \begin{itemize}
+      \item \texttt{nullable(n)}: è \texttt{true} per un nodo \( n \) del syntax tree
+        se la sottoespressione rappresentata da \( n \) contiene la stringa vuota
+        \( \varepsilon  \) nel suo linguaggio.
+
+      \item \texttt{firstpos(n)}: insieme di posizioni che possono matchare il
+        primo simbolo di una stringa generata dal sottoalbero con radice \( n \)
+
+      \item \texttt{lastpos(n)}: insieme di posizioni che possono matchare l'ultimo
+        simbolo di una stringa generata dal sottoalbero con radice \( n \)
+
+      \item Le funzioni precedenti si calcolano secondo la seguente tabella:
+        \begin{table}[H]
+          \centering
+          \includegraphics[width=0.9\textwidth]{funzioni_syntax_tree}
+          \caption{Tabella per il calcolo delle funzioni \( \texttt{nullable} \), \( \texttt{firstpos} \) e \( \texttt{lastpos} \)}
+        \end{table}
+
+      \item \texttt{followpos(n)}: per una posizione \( p \), è l'insieme di posizioni
+        \( q \) in tutto il syntax tree tale che esiste una stringa
+        \( x = a_1 a_2 \ldots a_n \) in \( L((r)\#) \) tale che per qualche \( i \),
+        esiste un modo di spiegare l'appartenenza di \( x \) a \( L((r)\#) \) facendo
+        matchare \( a_i \) alla posizione \( p \) del syntax tree e \( a_{i+1} \) alla
+        posizione \( q \).
+
+        Ci sono soltanto due modi in cui una posizione del syntax tree può essere
+        seguita da un'altra posizione:
+        \begin{enumerate}
+          \item Se \( n \) è un nodo con operatore di concatenazione con figlio sinistro
+            \( c_1 \) e figlio destro \( c_2 \), allora per ogni posizione \( i \) in
+            \( \texttt{lastpos}(c_1) \) tutte le posizioni in \( \texttt{firstpos}(c_2) \)
+            sono in \( \texttt{followpos}(i) \)
+
+          \item Se \( n \) è un nodo con operatore di chiusura di Kleene e \( i \) è
+            una posizione in \( \texttt{lastpos}(n) \), allora tutte le posizioni in
+            \( \texttt{firstpos}(n) \) sono in \( \texttt{followpos}(i) \)
+        \end{enumerate}
+
+    \end{itemize}
+\end{enumerate}
+
+\begin{example}
+  Considerando l'espressione regolare \( (a \mid b)^*abb\# \) e il syntax tree mostrato 
+  nell'esempio precedente, si calcolano le funzioni \( \texttt{nullable} \),
+  \( \texttt{firstpos} \), \( \texttt{lastpos} \) per ogni nodo del syntax tree:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{funzioni_syntax_tree_calcolate}
+    \caption{Esempio di calcolo delle funzioni \( \texttt{nullable} \), \( \texttt{firstpos} \) e \( \texttt{lastpos} \) per il syntax tree dell'espressione regolare \( (a \mid b)^*abb\# \)}
+  \end{figure}
+  \noindent
+  Successivamente, si calcolano le funzioni \( \texttt{followpos} \) per ogni nodo
+  del syntax tree:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{funzioni_followpos_calcolate}
+    \caption{Esempio di calcolo della funzione \( \texttt{followpos} \) per il syntax tree dell'espressione regolare \( (a \mid b)^*abb\# \)}
+  \end{figure}
+\end{example}
+
+\vspace{1em}
+\noindent
+L'algoritmo che prende in input un'espressione regolare \( r \) e costruisce un DFA
+che riconosce \( L(r) \) è il seguente:
+\begin{lstlisting}[escapechar=|, basicstyle=\rmfamily, columns=fullflexible, keepspaces=true]
+initialize |\textit{Dstates}| to contain only the unmarked state |\textit{firstpos}(\( n_0 \))|, where |\( n_0 \)| is the root of the syntax tree |\textit{T}| for |\( (r)\# \)|;
+while (there is an unmarked state |\textit{S}| in |\textit{Dstates}|) {
+    mark |\textit{S}|;
+    for (each input symbol |\textit{a}|) {
+        let |\textit{U}| be the union of |\textit{followpos}(\textit{p})| for all positions |\textit{p}| in |\textit{S}| that correspond to |\textit{a}|;
+        if (|\textit{U}| is not in |\textit{Dstates}|) {
+            add |\textit{U}| as an unmarked state to |\textit{Dstates}|;
+        }
+        |\textit{Dtrans}[\textit{S}, \textit{a}]| = |\textit{U}|;
+    }
+}
+\end{lstlisting}
+
+\subsubsection{Minimizzare un DFA}
+Siccome possono esistere più DFA che riconoscono lo stesso linguaggio, è preferibile
+implementare un lexer con un DFA che abbia il numero minimo di stati possibile. Per ogni
+DFA esiste sempre un DFA \textbf{univoco equivalente} con il numero minimo di stati
+per ogni linguaggio regolare. Il DFA minimo può essere costruito da un qualsiasi DFA
+raggruppando insieme stati che sono \textbf{equivalenti}:
+
+\begin{definition}
+  La stringa \( x \) \textbf{distingue} lo stato \( s \) dallo stato \( t \) se
+  esattamente uno degli stati raggiunti da \( s \) e \( t \) seguendo il percorso
+  con etichetta \( x \) è uno stato di accettazione. Quindi lo stato \( s \) è
+  distinguibile dallo stato \( t \) se esiste una stringa che li distingue.
+\end{definition}
+\begin{example}
+  Nel seguente esempio, la stringa \( bb \) distingue gli stati \( A \) e \( B \):
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{dfa_distinguibile}
+    \caption{Esempio di DFA in cui la stringa \( bb \) distingue gli stati \( A \) e \( B \)}
+  \end{figure}
+\end{example}
+
+\vspace{1em}
+\noindent
+L'algoritmo per minimizzare un DFA segue i seguenti passi:
+\begin{enumerate}
+  \item Si parte con una partizione iniziale \( \Pi \) con due gruppi, \( F \) e \( S - F \), gli
+    stati di accettazione e non di accettazione del DFA \( D \).
+
+  \item \label{step:partizione}
+    Si costruisce una nuova partizione \( \Pi_{new} \) 
+
+  \item Se \( \Pi_{new} = \Pi \), allora \( \Pi_{final} = \Pi \) e si continua con il
+    passo successivo. Altrimenti, si ripete il passo \ref{step:partizione} con
+    \( \Pi_{new} \) al posto di \( \Pi \).
+
+  \item Si sceglie uno stato in ogni gruppo di \( \Pi_{final} \) come rappresentante
+    per quel gruppo. I rappresentanti saranno gli stati del DFA minimo \( D_{min} \).
+    Gli altri componenti di \( D_{min} \) sono costruiti come segue:
+    \begin{itemize}
+      \item Lo stato iniziale di \( D_{min} \) è il rappresentante del gruppo che
+        contiene lo stato iniziale di \( D \)
+
+      \item Gli stati finali di \( D_{min} \) sono i rappresentanti di quei gruppi che
+        contengono uno stato di accettazione di \( D \)
+
+      \item Sia \( s \) il rappresentante di un gruppo \( G \) di \( \Pi_{final} \), e
+        sia \( t \) lo stato raggiunto da \( s \) con una transizione su un input \( a \)
+        in \( D \). Sia \( r \) il rappresentante del gruppo \( H \) di \( t \). Allora
+        in \( D_{min} \) c'è una transizione da \( s \) a \( r \) su input \( a \).
+    \end{itemize}
+\end{enumerate}
+\begin{lstlisting}[escapechar=|, basicstyle=\rmfamily, columns=fullflexible, keepspaces=true]
+initially, let |\( \Pi_{new} = \Pi \)|;
+for (each group |\textit{G}| of |\( \Pi \)|) {
+    partition |\textit{G}| into subgroups such that two states |\textit{s}| and |\textit{t}| are in the same subgroup if and only if for all input symbols |\textit{a}|, states |\textit{s}| and |\textit{t}| have transitions on |\textit{a}| to states in the same group of |\( \Pi \)|;
+    \* at worst, a state will be in a subgroup by itself *\
+    replace |\textit{G}| in |\( \Pi_{new} \)| by the set of all subgroups formed;
+}
+\end{lstlisting}
+
+\begin{example}
+  Un esempio di partizioni per la minimizzazione di un DFA è il seguente:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{dfa_partizioni}
+    \caption{Esempio di partizioni per la minimizzazione di un DFA}
+  \end{figure}
+\end{example}
 
 \end{document}
