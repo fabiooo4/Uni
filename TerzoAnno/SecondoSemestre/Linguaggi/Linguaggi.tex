@@ -1260,14 +1260,84 @@ Il linguaggio è definito nel seguente modo:
 % | ( E )
 \[
   \begin{aligned}
-    \color{orange}<program> \quad &P \color{black} \to \color{purple}B \\
-    <block> \quad &B \to D \, S \\
-    <declar> \quad & D \to \texttt{[const I = N\{,I=N\};]} \\
+    \color{orange}<program> \quad &\color{orange}P \color{black} \to \color{purple}B \\
+    %
+    \color{purple}<block> \quad &\color{purple}B \color{black} \to \color{green}D
+    \, \color{blue}S \\
+    %
+    \color{green}<declar> \quad & \color{green}D \color{black} \to
+    \texttt{[const I = N\{,I=N\};]} \\
                    & \mid \texttt{[var \; I\{,I\};]} \\
-                   & \mid \texttt{[procedure I;B;]}
+                   & \mid \texttt{[procedure I;\color{green}B\color{black};]} \\
+    %
+    \color{blue}<stmts> \quad & \color{blue}S \color{black} \to \varepsilon 
+    \mid \texttt{I := E} \\
+                   & \mid \texttt{call I} \\
+                   & \mid \texttt{if \color{olive}C\color{black}\ then \color{blue}S\color{black}} \\
+                   & \mid \texttt{while \color{olive}C\color{black} do \color{blue}S\color{black}} \\
+                   & \mid \texttt{begin \color{blue}S\color{black}\{;\color{blue}S\color{black}\} end} \\
+    %
+    \color{olive}<Cond> \quad & \color{olive}C \color{black} \to \texttt{odd \color{gray}E\color{black}} 
+                    \mid \texttt{\color{gray}E\color{black}\ > \color{gray}E\color{black}} \\
+                   & \mid \texttt{\color{gray}E\color{black}\ >= \color{gray}E\color{black}} 
+                    \mid \texttt{\color{gray}E\color{black}\ = \color{gray}E\color{black}} \\
+                   & \mid \texttt{\color{gray}E\color{black}\ \# \color{gray}E\color{black}} 
+                    \mid \texttt{\color{gray}E\color{black}\ < \color{gray}E\color{black}} \\
+                   & \mid \texttt{\color{gray}E\color{black}\ <= \color{gray}E\color{black}} \\
+    %
+      \color{gray}<Expr> \quad & \color{gray}E \color{black} \to \texttt{I} 
+                      \mid \texttt{N} 
+                      \mid \texttt{\color{gray}E\color{black}\ op \color{gray}E\color{black}} 
+                      \mid \texttt{(\color{gray}E\color{black})}
   \end{aligned}
 \] 
-e ha la seguente sintassi:
+\begin{itemize}
+  \item I programmi \( \color{orange}P \) sono blocchi \( \color{purple}B \).
+  \item I blocchi \( \color{purple}B \) sono una dichiarazione \( \color{green}D \)
+    seguita da un comando \( \color{blue}S \).
+    Si noti che \( \color{green}D \) ed \( \color{blue}S \) sono definiti in modo
+    libero dal contesto, ovvero quello che possiamo generare da \( \color{blue}S \)
+    non deve avere necessariamente nessun vincolo con quello che generiamo da
+    \( \color{green}D \). In altre parole questa grammatica non ci obbliga in nessun
+    modo ad usare identificatori precedentemente definiti. Quindi dalla descrizione
+    sintattica rimangono fuori gli aspetti context sensitive (vincoli sintattici)
+    che la grammatica CF non è in grado di rappresentare. Servirà la definizione di
+    una “semantica statica” che avrà il ruolo di verificare questi vincoli prima di
+    compilare e/o eseguire.
+
+  \item Le dichiarazioni \( \color{green}D \) sono dichiarazioni di valori costanti
+    con nome (\texttt{const}), dichiarazioni di variabili (\texttt{var}) e
+    dichiarazioni di procedure (ovvero di un blocco riferibile con un nome).
+
+  \item I nomi sono gli identificatori \( I \), considerati qui parte del vocabolario;
+    \( N \) sono i numeri naturali, considerati anch’essi parte del vocabolario.
+
+  \item Non abbiamo bisogno del concetto di tipo in quanto abbiamo solo un tipo di dato.
+
+  \item Si noti che le produzioni di \( \color{green}D \) sono tutte opzionali, questo
+    significa che un programma può essere un blocco senza dichiarazioni.
+
+  \item I comandi sono: il comando vuoto, l’assegnamento di un valore (denotato da una
+    espressione) ad un identificatore, la chiamata ad una procedura mediante il suo
+    nome, il comando condizionale che esegue un comando al verificarsi di una
+    condizione booleana \( \color{olive}C \), il ciclo che ripete un comando finché una data
+    condizione \( \color{olive}C \) è vera e la composizione sequenziale di comandi.
+
+  \item Le condizioni \( \color{olive}C \) sono espressioni dal valore booleano:
+    \texttt{odd} è un predicato unario che verifica se l’espressione è
+    0, poi ci sono vari operatori di confronto di espressioni \( \color{gray}E \).
+
+  \item Le espressioni \( \color{gray}E \) sono identificatori, valori naturali,
+    operazioni tra espressioni e espressioni tra parentesi.
+
+  \item Si sintetizza con \( \texttt{op} \) la metavariabile dell’insieme
+    \( \{+, -, *, /\} \). La stessa cosa si potrebbe fare per gli operatori
+    di confronto, mettendo in \( \color{olive}C \) la produzione \( E \; cop \; E \) con
+    \( cop \) metavariabile per gli elementi in \( \{ >, >=, =, \#, <=, < \} \).
+\end{itemize}
+La grammatica delle espressioni è ambigua, ma più comoda da usare e si può utilizzare
+per definire la semantica. Per il compilatore però bisogna fornire una grammatica
+equivalente precisa e quindi non ambigua, come la seguente:
 % <Expr> E → [+,-] T [A T]
 % <Add op> A → + | -
 % <Terms> T → F [M F]
@@ -1278,7 +1348,10 @@ e ha la seguente sintassi:
 % <Ident> I → l{l,d}
 % <Letter> l → A | … | Z
 \[
-  % TODO:
+  \begin{aligned}
+    \color{gray}<Expr> \quad &\color{gray}E \color{black} \to \texttt{[+,-]\color{gray}
+    T\color{black} [\color{gray}A\color{black} \color{gray}T\color{black}]} \\
+  \end{aligned}
 \] 
 
 
