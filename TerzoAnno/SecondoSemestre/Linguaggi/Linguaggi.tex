@@ -1259,7 +1259,13 @@ Il linguaggio è definito nel seguente modo:
 % <Expr> E → I | N | E bop E
 % | ( E )
 \[
-  % TODO:
+  \begin{aligned}
+    \color{orange}<program> \quad &P \color{black} \to \color{purple}B \\
+    <block> \quad &B \to D \, S \\
+    <declar> \quad & D \to \texttt{[const I = N\{,I=N\};]} \\
+                   & \mid \texttt{[var \; I\{,I\};]} \\
+                   & \mid \texttt{[procedure I;B;]}
+  \end{aligned}
 \] 
 e ha la seguente sintassi:
 % <Expr> E → [+,-] T [A T]
