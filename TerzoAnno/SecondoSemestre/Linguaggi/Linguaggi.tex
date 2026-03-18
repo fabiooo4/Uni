@@ -667,10 +667,10 @@ Il linguaggio è definito su livelli, partendo dal basso verso l'alto:
   \item Espressioni booleane che parte dai simboli definiti ai livelli
     sottostanti
     \[
-      \color{blue}B\color{black} \to true \mid false \mid
-      (\color{blue}B\color{black} \; or \; \color{blue}B\color{black}) \mid
-      (\color{blue}B\color{black} \; and \; \color{blue}B\color{black}) \mid
-      (not \; \color{blue}B\color{black}) \mid x
+      \color{blue}B\color{black} \to true \color{BrickRed}\mid\color{black} false \color{BrickRed}\mid\color{black}
+      (\color{blue}B\color{black} \; or \; \color{blue}B\color{black}) \color{BrickRed}\mid\color{black}
+      (\color{blue}B\color{black} \; and \; \color{blue}B\color{black}) \color{BrickRed}\mid\color{black}
+      (not \; \color{blue}B\color{black}) \color{BrickRed}\mid\color{black} x
     \] 
 
   \item Comandi atomici, ad esempio l'assegnamento. Utilizza gli identificatori,
@@ -683,9 +683,9 @@ Il linguaggio è definito su livelli, partendo dal basso verso l'alto:
     e le espressioni booleane.
 
     \[
-      \color{purple}C\color{black} \to \color{green}A\color{black} \mid
-      \color{purple}C\color{black} ; \color{purple}C\color{black} \mid
-      while \; \color{blue}B\color{black} \; do \; \color{purple}C\color{black} \mid
+      \color{purple}C\color{black} \to \color{green}A\color{black} \color{BrickRed}\mid\color{black}
+      \color{purple}C\color{black} ; \color{purple}C\color{black} \color{BrickRed}\mid\color{black}
+      while \; \color{blue}B\color{black} \; do \; \color{purple}C\color{black} \color{BrickRed}\mid\color{black}
       if \; \color{blue}B\color{black} \; then \color{purple}C\color{black} \; else
       \; \color{purple}C\color{black}
     \] 
@@ -864,7 +864,7 @@ strutturale per dimostrare proprietà delle stringhe generate.
 \begin{example}
   Consideriamo la seguente grammatica:
   \[
-    S \to aa \mid bb \mid aSa \mid bSb
+    S \to aa \color{BrickRed}\mid\color{black} bb \color{BrickRed}\mid\color{black} aSa \color{BrickRed}\mid\color{black} bSb
   \] 
   questa grammatica genera tutte le stringhe palindrome di lunghezza pari.
   Siccome \( aa \) e \( bb \) sono nel linguaggio, se si prende una qualsiasi
@@ -915,7 +915,7 @@ strutturale per dimostrare proprietà delle stringhe generate.
 \begin{exercise}
   Consideriamo la seguente grammatica:
   \[
-    E \to n \mid E + E \mid E * E
+    E \to n \color{BrickRed}\mid\color{black} E + E \color{BrickRed}\mid\color{black} E * E
   \] 
   \begin{enumerate}
     \item Definire strutturalmente l'insieme \( Exp \)
@@ -1241,71 +1241,57 @@ simile al linguaggio Pascal in cui:
   \item Le procedure non hanno parametri
 \end{itemize}
 Il linguaggio è definito nel seguente modo:
-
-% <program> P → B.
-% <block> B → D S
-% <declar> D → [const I=N{,I=N};]
-% | [var I{,I};]
-% | [procedure I;B;]
-% <stmts> S → # | I := E
-% | call I
-% | if C then S
-% | while C do S
-% | begin S{;S} end
-% <Cond> C → odd E | E > E
-% | E >= E | E = E
-% | E # E | E < E
-% | E <= E
-% <Expr> E → I | N | E bop E
-% | ( E )
 \[
   \begin{aligned}
-    \color{orange}<program> \quad &\color{orange}P \color{black} \to \color{purple}B \\
+    \texttt{\color{orange}<Program>} \quad &\texttt{\color{orange}P\color{black}} \to
+    \texttt{\color{purple}B} \\
     %
-    \color{purple}<block> \quad &\color{purple}B \color{black} \to \color{green}D
-    \, \color{blue}S \\
+    \texttt{\color{purple}<Block>} \quad &\texttt{\color{purple}B\color{black}} \to
+    \texttt{\color{Green}D\color{blue}S} \\
     %
-    \color{green}<declar> \quad & \color{green}D \color{black} \to
+    \texttt{\color{Green}<Declar>} \quad & \texttt{\color{Green}D\color{black}} \to
     \texttt{[const I = N\{,I=N\};]} \\
-                   & \mid \texttt{[var \; I\{,I\};]} \\
-                   & \mid \texttt{[procedure I;\color{green}B\color{black};]} \\
+                   & \color{BrickRed}\color{BrickRed}\mid\color{black}\color{black} \texttt{[var I\{,I\};]} \\
+                   & \color{BrickRed}\color{BrickRed}\mid\color{black}\color{black} \texttt{[procedure I;\color{Green}B\color{black};]} \\
     %
-    \color{blue}<stmts> \quad & \color{blue}S \color{black} \to \varepsilon 
-    \mid \texttt{I := E} \\
-                   & \mid \texttt{call I} \\
-                   & \mid \texttt{if \color{olive}C\color{black}\ then \color{blue}S\color{black}} \\
-                   & \mid \texttt{while \color{olive}C\color{black} do \color{blue}S\color{black}} \\
-                   & \mid \texttt{begin \color{blue}S\color{black}\{;\color{blue}S\color{black}\} end} \\
+    \texttt{\color{blue}<Stmts>} \quad & \texttt{\color{blue}S\color{black}} \to
+    \varepsilon 
+    \color{BrickRed}\color{BrickRed}\mid\color{black}\color{black} \texttt{I := E} \\
+                   & \color{BrickRed}\color{BrickRed}\mid\color{black}\color{black} \texttt{call I} \\
+                   & \color{BrickRed}\color{BrickRed}\mid\color{black}\color{black} \texttt{if \color{olive}C\color{black}\ then \color{blue}S\color{black}} \\
+                   & \color{BrickRed}\color{BrickRed}\mid\color{black}\color{black} \texttt{while \color{olive}C\color{black}\ do \color{blue}S\color{black}} \\
+                   & \color{BrickRed}\color{BrickRed}\mid\color{black}\color{black} \texttt{begin \color{blue}S\color{black}\{;\color{blue}S\color{black}\} end} \\
     %
-    \color{olive}<Cond> \quad & \color{olive}C \color{black} \to \texttt{odd \color{gray}E\color{black}} 
-                    \mid \texttt{\color{gray}E\color{black}\ > \color{gray}E\color{black}} \\
-                   & \mid \texttt{\color{gray}E\color{black}\ >= \color{gray}E\color{black}} 
-                    \mid \texttt{\color{gray}E\color{black}\ = \color{gray}E\color{black}} \\
-                   & \mid \texttt{\color{gray}E\color{black}\ \# \color{gray}E\color{black}} 
-                    \mid \texttt{\color{gray}E\color{black}\ < \color{gray}E\color{black}} \\
-                   & \mid \texttt{\color{gray}E\color{black}\ <= \color{gray}E\color{black}} \\
+    \texttt{\color{olive}<Cond>} \quad & \texttt{\color{olive}C\color{black}} \to
+    \texttt{odd \color{gray}E\color{black}} 
+                    \color{BrickRed}\color{BrickRed}\mid\color{black}\color{black} \texttt{\color{gray}E\color{black}\ > \color{gray}E\color{black}} \\
+                   & \color{BrickRed}\color{BrickRed}\mid\color{black}\color{black} \texttt{\color{gray}E\color{black}\ >= \color{gray}E\color{black}} 
+                    \color{BrickRed}\color{BrickRed}\mid\color{black}\color{black} \texttt{\color{gray}E\color{black}\ = \color{gray}E\color{black}} \\
+                   & \color{BrickRed}\color{BrickRed}\mid\color{black}\color{black} \texttt{\color{gray}E\color{black}\ \# \color{gray}E\color{black}} 
+                    \color{BrickRed}\color{BrickRed}\mid\color{black}\color{black} \texttt{\color{gray}E\color{black}\ < \color{gray}E\color{black}} \\
+                   & \color{BrickRed}\color{BrickRed}\mid\color{black}\color{black} \texttt{\color{gray}E\color{black}\ <= \color{gray}E\color{black}} \\
     %
-      \color{gray}<Expr> \quad & \color{gray}E \color{black} \to \texttt{I} 
-                      \mid \texttt{N} 
-                      \mid \texttt{\color{gray}E\color{black}\ op \color{gray}E\color{black}} 
-                      \mid \texttt{(\color{gray}E\color{black})}
+    \texttt{\color{gray}<Expr>} \quad & \texttt{\color{gray}E\color{black}} \to
+    \texttt{I} \color{BrickRed}\color{BrickRed}\mid\color{black}\color{black} \texttt{N} 
+                      \color{BrickRed}\color{BrickRed}\mid\color{black}\color{black} \texttt{\color{gray}E\color{black}\ op \color{gray}E\color{black}} 
+                      \color{BrickRed}\color{BrickRed}\mid\color{black}\color{black} \texttt{(\color{gray}E\color{black})}
   \end{aligned}
 \] 
 \begin{itemize}
   \item I programmi \( \color{orange}P \) sono blocchi \( \color{purple}B \).
-  \item I blocchi \( \color{purple}B \) sono una dichiarazione \( \color{green}D \)
+  \item I blocchi \( \color{purple}B \) sono una dichiarazione \( \color{Green}D \)
     seguita da un comando \( \color{blue}S \).
-    Si noti che \( \color{green}D \) ed \( \color{blue}S \) sono definiti in modo
+    Si noti che \( \color{Green}D \) ed \( \color{blue}S \) sono definiti in modo
     libero dal contesto, ovvero quello che possiamo generare da \( \color{blue}S \)
     non deve avere necessariamente nessun vincolo con quello che generiamo da
-    \( \color{green}D \). In altre parole questa grammatica non ci obbliga in nessun
+    \( \color{Green}D \). In altre parole questa grammatica non ci obbliga in nessun
     modo ad usare identificatori precedentemente definiti. Quindi dalla descrizione
     sintattica rimangono fuori gli aspetti context sensitive (vincoli sintattici)
     che la grammatica CF non è in grado di rappresentare. Servirà la definizione di
     una “semantica statica” che avrà il ruolo di verificare questi vincoli prima di
     compilare e/o eseguire.
 
-  \item Le dichiarazioni \( \color{green}D \) sono dichiarazioni di valori costanti
+  \item Le dichiarazioni \( \color{Green}D \) sono dichiarazioni di valori costanti
     con nome (\texttt{const}), dichiarazioni di variabili (\texttt{var}) e
     dichiarazioni di procedure (ovvero di un blocco riferibile con un nome).
 
@@ -1314,7 +1300,7 @@ Il linguaggio è definito nel seguente modo:
 
   \item Non abbiamo bisogno del concetto di tipo in quanto abbiamo solo un tipo di dato.
 
-  \item Si noti che le produzioni di \( \color{green}D \) sono tutte opzionali, questo
+  \item Si noti che le produzioni di \( \color{Green}D \) sono tutte opzionali, questo
     significa che un programma può essere un blocco senza dichiarazioni.
 
   \item I comandi sono: il comando vuoto, l’assegnamento di un valore (denotato da una
@@ -1338,19 +1324,38 @@ Il linguaggio è definito nel seguente modo:
 La grammatica delle espressioni è ambigua, ma più comoda da usare e si può utilizzare
 per definire la semantica. Per il compilatore però bisogna fornire una grammatica
 equivalente precisa e quindi non ambigua, come la seguente:
-% <Expr> E → [+,-] T [A T]
-% <Add op> A → + | -
-% <Terms> T → F [M F]
-% M → * | /
-% <Factor> F → I | N | ( E )
-% <Numbers> N → [+,-] d{d}
-% <Digit> d → 0 | … | 9
-% <Ident> I → l{l,d}
-% <Letter> l → A | … | Z
 \[
   \begin{aligned}
-    \color{gray}<Expr> \quad &\color{gray}E \color{black} \to \texttt{[+,-]\color{gray}
+    \texttt{\color{gray}<Expr>} \quad &\texttt{\color{gray}E\color{black}} \to
+    \texttt{[+,-]\color{gray}
     T\color{black} [\color{gray}A\color{black} \color{gray}T\color{black}]} \\
+    %
+    \texttt{\color{gray}<Add op>} \quad &\texttt{\color{gray}A\color{black}} \to
+    \texttt{+} \color{BrickRed}\mid\color{black} \texttt{-} \\
+    %
+    \texttt{\color{gray}<Terms>} \quad &\texttt{\color{gray}T\color{black}} \to
+    \texttt{\color{gray}F\color{black} [\color{gray}M\color{black}
+    \color{gray}F\color{black}]} \\
+                                       &\texttt{\color{gray}M\color{black}} \to
+                                       \texttt{*} \color{BrickRed}\mid\color{black}
+                                       \texttt{/} \\
+    %
+    \texttt{\color{gray}<Factor>} \quad &\texttt{\color{gray}F\color{black}} \to 
+    \color{MidnightBlue}\texttt{I}\color{black} \color{BrickRed}\mid\color{black}
+    \color{OliveGreen}\texttt{N}\color{black} \color{BrickRed}\mid\color{black} \texttt{\color{black}(\color{gray}E\color{black})} \\
+    %
+    \texttt{\color{OliveGreen}{<Numbers>}} \quad &\texttt{\color{OliveGreen}N\color{black}}
+    \to \texttt{[+,-]\color{Orchid}d\color{black}\{\color{Orchid}d\color{black}\}} \\
+    %
+    \texttt{\color{Orchid}{<Digit>}} \quad &\texttt{\color{Orchid}d\color{black}} \to
+    \texttt{0} \color{BrickRed}\mid\color{black} \ldots \color{BrickRed}\mid\color{black} \texttt{9} \\
+    %
+    \texttt{\color{MidnightBlue}{<Ident>}} \quad &\texttt{\color{MidnightBlue}I\color{black}} \to
+    \texttt{\color{Maroon}l\color{black}\{\color{Maroon}l\color{black},
+    \color{Orchid}d\color{black}\}} \\
+    %
+    \texttt{\color{Maroon}{<Letter>}} \quad &\texttt{\color{Maroon}l\color{black}} \to
+    \texttt{A} \color{BrickRed}\mid\color{black} \ldots \color{BrickRed}\mid\color{black} \texttt{Z}
   \end{aligned}
 \] 
 
