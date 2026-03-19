@@ -1,5 +1,16 @@
 # Esercitazione 2
 
+- [Esercizi](#esercizi)
+  - [Esercizio 1](#esercizio-1)
+  - [Esercizio 2](#esercizio-2)
+  - [Esercizio 3](#esercizio-3)
+  - [Esercizio 4](#esercizio-4)
+  - [Esercizio 5](#esercizio-5)
+  - [Esercizio 6](#esercizio-6)
+  - [Esercizio 7](#esercizio-7)
+  - [Esercizio 8](#esercizio-8)
+  - [Esercizio 9](#esercizio-9)
+
 Eseguire i seguenti esercizi usando la seguente base di dati:
 [esercitazione1.sql](../Esercitazione1/esercitazione1.sql)
 
