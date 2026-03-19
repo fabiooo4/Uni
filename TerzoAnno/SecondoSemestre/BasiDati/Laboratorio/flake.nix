@@ -75,13 +75,33 @@
       };
 
       uni = pkgs.mkShell {
-        inherit packages;
+        packages =
+          packages
+          ++ (with pkgs; [
+            gpclient
+          ]);
 
         shellHook = ''
+          # Clean up after exiting the Nix shell using `trap`
+          # Executes only if there are no other Nix shells running
+          cleanup() {
+            # Stop the vpn if it's running
+            if test -n "$GPCLIENT_PID" && kill -0 $GPCLIENT_PID > /dev/null 2>&1; then
+              kill $GPCLIENT_PID > /dev/null 2>&1
+            fi
+          }
+          trap cleanup EXIT
+
+          sudo -v
+
+          printf "Connecting to university's VPN:\n"
+          sudo gpclient --quiet --ignore-tls-errors connect "vpn.univr.it" > /dev/null 2>&1 &
+          GPCLIENT_PID=$!
+
           printf "To connect to the uni database server, use:\n\
-          psql -h db-srv.di.univr.it -U <userGIA> <userGIA>\n\n\
+          psql -h dbserver.scienze.univr.it -U <userGIA> <userGIA>\n\n\
           Or via PostgreSQL connection URL:\n\
-          postgresql://userGIA@db-srv.di.univr/userGIA\n"
+          postgresql://userGIA@dbserver.scienze.univr.it/userGIA\n"
         '';
       };
     };
