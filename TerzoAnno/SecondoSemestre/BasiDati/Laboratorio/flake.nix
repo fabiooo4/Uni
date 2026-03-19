@@ -92,9 +92,9 @@
           }
           trap cleanup EXIT
 
+          printf "Connecting to university's VPN:\n"
           sudo -v
 
-          printf "Connecting to university's VPN:\n"
           sudo gpclient --quiet --ignore-tls-errors connect "vpn.univr.it" > /dev/null 2>&1 &
           GPCLIENT_PID=$!
 
