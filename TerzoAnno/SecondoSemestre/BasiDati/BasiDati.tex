@@ -2306,6 +2306,406 @@ Esistono due tipologie di guasto:
   rifatta. Quella di \( T6 \) non viene applicata.
 \end{exercise}
 
+\subsection{Gestore dei metodi di accesso}
+Il gestore dei metodi di accesso è il modulo che esegue il piano di esecuzione
+prodotto dall'ottimizzatore e produce sequenze di richieste di accesso ai
+blocchi della base di dati presenti in memoria secondaria. Le richieste
+vengono inviate al gestore del buffer che si occupa di caricare i blocchi
+necessari in pagine di memoria centrale.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{richieste_metodi_accesso}
+  \caption{Gestore dei metodi di accesso nell'architettura di un DBMS}
+\end{figure}
+
+\subsubsection{Metodi di accesso}
+I metodi di accesso sono moduli \textbf{software} che implementano gli algoritmi di
+\textbf{accesso e manipolazione dei dati} organizzati in specifiche strutture fisiche.
+\begin{example}
+  Alcuni esempi di metodi di accesso sono:
+  \begin{itemize}
+    \item Scansione sequenziale
+    \item Accesso via indice
+    \item Ordinamento
+    \item Varie implementazioni del join
+  \end{itemize}
+\end{example}
+Ogni metodo di accesso ai dati conosce:
+\begin{itemize}
+  \item \textbf{L'organizzazione delle tuple} (o dei record di indice) nei blocchi
+    DATI (o INDICE) salvati in memoria secondaria. Come una tabella (o indice) viene
+    organizzata in pagine di memoria secondaria.
+
+  \item \textbf{L'organizzazione fisica interna delle pagine} sia quando contengono
+    DATI, sia quando contengono strutture fisiche di accesso (o INDICI).
+\end{itemize}
+
+\subsubsection{Organizzazione di una pagina}
+In una pagina sono presenti due tipi di informazioni:
+\begin{itemize}
+  \item \textbf{Informazioni utili}: dati veri e propri, cioè le tuple di una tabella
+
+  \item \textbf{Informazioni di controllo}: consentono di accedere alle informazioni
+    utili, ad esempio il dizionario, bit di parità, altre informazioni del file system,
+    ecc.
+\end{itemize}
+La struttura di una pagina è la seguente:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{organizzazione_pagina}
+  \caption{Organizzazione di una pagina}
+\end{figure}
+
+\noindent
+e i diversi campi sono:
+\begin{itemize}
+  \item \textbf{\textcolor{RedViolet}{Block header e block trailer}}:
+    Ogni pagina, siccome coincide con un
+    blocco di memoria di massa, ha una parte iniziale ed una parte finale che
+    contengono informazioni di controllo utilizzate dal file system
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.7\textwidth]{block_header_trailer}
+      \caption{Block header e block trailer}
+    \end{figure}
+
+  \item \textbf{\textcolor{RedViolet}{Page header e page trailer}}:
+    Ogni pagina, siccome contiene dati gestiti dal DBMS, ha una parte iniziale ed una
+    finale contenenti l'informazione di controllo relativa alla specifica struttura
+    fisica.
+    Ad esempio:
+    identificatore dell’oggetto (tabella, indice, dizionario dei dati, ecc.)
+    contenuto nella pagina, puntatori a pagine successive o precedenti nella struttura
+    dati, numero di dati utili elementari (tuple) contenuti nella pagina e quantità di
+    memoria libera (contigua o non contigua) disponibile nella pagina.
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.7\textwidth]{page_header_trailer}
+      \caption{Page header e page trailer}
+    \end{figure}
+
+  \item 
+    \begin{itemize}
+      \item \textbf{\textcolor{RedViolet}{Dizionario di pagina}}: Contiene puntatori a
+        ciascun dato utile elementare contenuto della pagina. Se le tuple sono a:
+        \begin{itemize}
+          \item \textbf{Lunghezza fissa}, allora il dizionario di pagina non è
+            necessario perchè si deve soltanto memorizzare la dimensione delle tuple
+            e l'offset dal punto iniziale
+          \item \textbf{Lunghezza variabile} (valori nulli o stringhe), allora il
+            dizionario memorizza l'offset di ogni tupla presente nel blocco e di
+            ogni attributo di ogni tupla
+        \end{itemize}
+        Molti gestori non consentono la separazione di una tupla su più pagine.
+
+      \item \textbf{\textcolor{RoyalBlue}{Parte utile}}: Contiene i dati veri e propri.
+        Il dizionario di pagina e la parte utile crescono come stack contrapposti,
+        lasciando libera la parte centrale in uno spazio contiguo.
+
+      \item \textbf{\textcolor{Green}{Bit di parità}}: Verifica che l'informazione 
+        contenuta nella pagina sia valida
+    \end{itemize}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.7\textwidth]{dati_utili}
+      \caption{Dizionario di pagina, parte utile e bit di parità}
+    \end{figure}
+\end{itemize}
+
+\subsubsection{Operazioni sulle pagine}
+Le operazioni che si possono eseguire sulle pagine sono:
+\begin{itemize}
+  \item \textbf{Inserimento ed aggiornamento di una tupla}:
+    \begin{itemize}
+      \item Se esiste spazio contiguo sufficiente: inserimento semplice.
+
+      \item Se non esiste spazio contiguo ma esiste spazio sufficiente: riorganizzare lo
+        spazio ed eseguire un inserimento semplice (operazione in memoria centrale).
+        Operazione aggiuntiva: \textbf{riorganizzazione} della pagina.
+
+      \item Se non esiste spazio sufficiente: interazione col file system per allocare
+        nuovi blocchi per il file.
+    \end{itemize}
+
+  \item \textbf{Cancellazione}: è sempre possibile anche senza riorganizzare il
+    contenuto nella pagina.
+
+  \item \textbf{Accesso ad una tupla} particolare tramite il valore di chiave oppure
+    l’offset nel dizionario.
+    \begin{itemize}
+      \item Accesso sequenziale a più tuple.
+    \end{itemize}
+
+  \item \textbf{Accesso ad un attributo di una tupla}: identificato in base all’offset
+    e alla lunghezza del campo dopo aver identificato la tupla tramite la chiave o il
+    suo offset.
+\end{itemize}
+
+\subsubsection{Strutture primarie per l'organizzazione di file}
+La struttura primaria di un file stabilisce il criterio secondo il quale sono disposte
+le tuple all'interno del file presente in memoria secondaria. Le strutture primarie più
+comuni sono:
+\begin{itemize}
+  \item \textbf{Sequenziali}: disposizione consecutiva delle tuple che si basa su un
+    criterio specifico, come l'ordine di inserimento
+
+  \item \textbf{Ad accesso calcolato} (hash): collocano le tuple in posizioni
+    determinate sulla base dell'esecuzione di un algoritmo di hashing
+
+  \item \textbf{Ad albero}: utilizzate soprattutto come strutture secondarie (indici)
+\end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{strutture_primarie}
+  \caption{Strutture primarie per l'organizzazione di file}
+\end{figure}
+
+\subsubsection{Struttura sequenziale}
+Un file è costituito da blocchi \textbf{logicamente} consecutivi e le tuple vengono
+inserite nei blocchi rispettando una sequenza:
+\begin{itemize}
+  \item \textbf{Struttura sequenziale disordinata} (o seriale): le tuple sono disposte
+    in base al loro ordine di inserimento, senza alcun criterio specifico. Questa è
+    la struttura più semplice e più diffusa.
+
+    L'efficienza di ogni operazione è la seguente:
+    \begin{itemize}
+      \item \textbf{Inserimento}: operazione molto efficiente, è sufficiente mantenere
+        un riferimento all'ultimo blocco e richiede un solo accesso in memoria
+        secondaria. Si avrà un costo maggiore in caso di verifica dei vincoli di
+        integrità.
+
+      \item \textbf{Ricerca}: operazione non efficiente, richiede ogni volta una
+        scansione sequenziale che consideri tutti i record, con un costo lineare
+        nel numero di blocchi. La ricerca si può fare usando strutture secondarie
+        (indici).
+
+      \item \textbf{Eliminazione}: facile una volta individuate le tuple
+        coinvolte. Si marcano le tuple come "cancellate" senza riorganizzazione locale.
+
+      \item \textbf{Modifica}: facile una volta individuate le tuple coinvolte. Si
+        procede in loco se possibile, cioè quando non c'è stata nessuna modifica alla
+        dimensione della tupla, oppure si procede con una cancellazione e un
+        inserimento in fondo al file.
+    \end{itemize}
+    Eliminazioni e modifiche possono portare ad un uso non ottimale dello spazio
+    siccome si devono effettuare riorganizzazioni periodiche.
+
+  \item \textbf{Struttura sequenziale ad array}: le tuple sono disposte come in un
+    array, e la loro posizione dipende dal valore assunto in ciascuna tupla da un
+    campo detto \textbf{indice}. Questa struttura è utilizzabile soltanto quando
+    le tuple di una tabella hanno una dimensione fissa, infatti non è quasi masi usata
+    nei DBMS reali perchè difficilmente sono soddisfatte le condizioni per la sua
+    applicazione.
+
+    Ad ogni file viene assegnato un numero \( n \) di blocchi contigui e ciascun
+    blocco è dotato di un numero \( m \) di posizioni disponibili per le tuple
+    (quindi è un array bidimensionale \( n \times m \)). Ogni tupla è dotata di un
+    valore numerico \( i \) che rappresenta l'indice della tupla in \( i \)-esima
+    posizione nell'array.
+
+    \begin{itemize}
+      \item \textbf{Inserimento}: 
+        \begin{itemize}
+          \item Iniziale: l'indice \( i \) viene ottenuto incrementando un contatore
+          \item Successivo: in una posizione libera oppure alla fine del file
+        \end{itemize}
+
+      \item \textbf{Cancellazioni}: creano delle posizioni libere
+    \end{itemize}
+
+  \item \textbf{Struttura sequenziale ordinata}: è un file sequenziale dove le tuple
+    sono ordinate secondo una \textbf{chiave di ordinamento} (diversa dalla chiave
+    primaria). Questa struttura rende efficienti le operazioni che hanno bisogno
+    dell'ordinamento utilizzato, ad esempio:
+    \begin{itemize}
+      \item Elenco ordinato
+      \item Range query
+      \item Operazioni aggregate
+    \end{itemize}
+    In caso di aggiornamento è necessario mantenere l'ordinamento, quindi servono
+    periodiche riorganizzazioni.
+
+    \begin{itemize}
+      \item \label{item:inserimento_ordinato} \textbf{Inserimento}: I passi da eseguire sono:
+        \begin{enumerate}
+          \item Individuare il blocco \( B \) che contiene \textbf{la tupla che precede},
+            nell'ordine della chiave, la tupla da inserire
+          \item Se \( B \) contiene spazio sufficiente per la nuova tupla allora si
+            inserisce la tupla in \( B \)
+          \item Altrimenti si aggiunge un nuovo blocco, detto \textbf{overflow page},
+            alla struttura e si inserisce la tupla nel nuovo blocco e si aggiusta la
+            catena di puntatori.
+        \end{enumerate}
+
+      \item \textbf{Scansione sequenziale ordinata secondo la chiave}: è sufficiente
+        seguire i puntatori
+
+      \item \label{item:cancellazione_ordinata} \textbf{Cancellazione di una tupla}: I passi da seguire sono:
+        \begin{enumerate}
+          \item Individuare il blocco \( B \) che contiene la tupla da cancellare
+          \item Cancellare la tupla da \( B \)
+          \item Aggiustare la catena di puntatori
+        \end{enumerate}
+
+      \item \textbf{Riorganizzazione}: si assegnano le tuple ai blocchi in base ad
+        opportuni coefficienti di riempimento, riaggiustando i puntatori.
+    \end{itemize}
+
+    \begin{example}
+      Il seguente esempio mostra una struttura sequenziale ordinata secondo la chiave
+      \texttt{Filiale}:
+      \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\textwidth]{struttura_sequenziale_ordinata}
+        \caption{Esempio di struttura sequenziale ordinata secondo la chiave \texttt{Filiale}}
+      \end{figure}
+    \end{example}
+\end{itemize}
+
+\subsubsection{Indici}
+Per aumentare le prestazioni degli accessi alle tuple memorizzate nelle strutture
+fisiche (\textbf{file sequenziale}), si introducono strutture ausiliarie dette
+strutture di accesso ai dati, o \textbf{indici}. Queste strutture velocizzano l'accesso
+casuale via chiave di ricerca, cioè un insieme di attributi utilizzati nell'indice
+della ricerca. Ci sono due tipi di indici su file sequenziali:
+\begin{itemize}
+  \item \textbf{Indice primario}: La chiave di ordinamento del file sequenziale 
+    \textbf{coincide} con la chiave di ricerca dell'indice.
+
+    Ogni record dell'indice primario contiene una coppia \( \left<v_i, p_i \right> \),
+    dove:
+    \begin{itemize}
+      \item \( v_i \) è il valore della chiave di ricerca
+      \item \( p_i \) è il puntatore al primo record nel file sequenziale con chiave
+        \( v_i \) 
+    \end{itemize}
+    Esistono due varianti dell'indice primario:
+    \begin{itemize}
+      \item \textbf{Indice denso}: per ogni occorrenza della chiave presente nel file
+        esiste un corrispondente record nell'indice
+
+      \item \textbf{Indice sparso}: solo per alcune occorrenze della chiave presenti
+        nel file esiste un corrispondente record nell'indice, tipicamente una per
+        blocco
+    \end{itemize}
+
+    Le operazioni che si possono eseguire su un indice primario sono:
+    \begin{itemize}
+      \item \textbf{Ricerca} di una tupla con chiave di ricerca \( K \).
+        \begin{itemize}
+          \item Se l'indice è \textbf{denso} \( K \) è presente nell'indice.
+            \begin{enumerate}
+              \item Scansione sequenziale dell'indice per trovare il record \( \left(K, p_k\right) \)
+              \item Accesso al file attraverso il puntatore \( p_k \)
+            \end{enumerate}
+            Il costo è 1 accesso indice + 1 accesso blocco dati
+
+            \begin{example}
+              Un esempio di ricerca con indice primario denso è il seguente:
+              (ricerca dei conti della filiale B)
+              \begin{figure}[H]
+                \centering
+                \includegraphics[width=0.9\textwidth]{ricerca_indice_primario_denso}
+                \caption{Esempio di ricerca con indice primario denso}
+              \end{figure}
+            \end{example}
+
+          \item Se l'indice è \textbf{sparso} \( K \) potrebbe non essere presente
+            nell'indice
+            \begin{enumerate}
+              \item Scansione sequenziale dell'indice fino al record
+                \( \left( K', p_k \right) \), dove \( K' \) è il valore più grande che
+                sia minore o uguale a \( K \)
+
+              \item Accesso al file attraverso il puntatore \( p_k \) e scansione
+                del file (blocco corrente) per trovare le tuple con chiave \( K \)
+            \end{enumerate}
+            Il costo è 1 accesso indice + 1 accesso blocco dati
+
+            \begin{example}
+              Un esempio di ricerca con indice primario sparso è il seguente:
+              (ricerca dei conti della filiale B)
+              \begin{figure}[H]
+                \centering
+                \includegraphics[width=0.9\textwidth]{ricerca_indice_primario_sparso}
+                \caption{Esempio di ricerca con indice primario sparso}
+              \end{figure}
+            \end{example}
+
+
+          \item \textbf{Inserimento} di un record nell'indice. Si effettuano gli
+            stessi passi dell'inserimento in un file sequenziale
+            (\ref{item:inserimento_ordinato}), solo che nel blocco di memoria secondaria
+            al posto di tuple ci sono record di indice.
+
+            \begin{itemize}
+              \item Se l'indice è \textbf{denso} l'inserimento nell'indice avviene
+                solo se la tupla inserita nel file ha un valore di chiave \( K \) che
+                non è già presente
+
+              \item Se l'indice è \textbf{sparso} l'inserimento avviene solo quando,
+                per effetto dell'inserimento di una nuova tupla, si aggiunge un blocco
+                dati alla struttura; in tutti gli altri casi l'indice rimane invariato
+            \end{itemize}
+
+          \item \textbf{Cancellazione} di un record nell'indice. Si effettuano gli stessi
+            passi della cancellazione in un file sequenziale
+            (\ref{item:cancellazione_ordinata}).
+
+            \begin{itemize}
+              \item Se l'indice è \textbf{denso} la cancellazione nell'indice avviene
+                solo se la tupla cancellata nel file è l’ultima tupla con valore di
+                chiave \( K \)  
+
+              \item Se l'indice è \textbf{sparso} la cancellazione nell'indice avviene
+                solo quando \( K \) è presente nell'indice e il corrispondente blocco
+                viene eliminato; altrimenti, se il blocco sopravvive, va sostituito
+                \( K \) nel record dell'indice con il primo valore \( K' \) presente
+                nel blocco.
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+
+  \item \textbf{Indice secondario}: La chiave di ordinamento e la chiave di ricerca
+    sono diverse.
+
+    Ogni record dell'indice secondario contiene una coppia \( \left<v_i, p_i \right> \),
+    dove:
+    \begin{itemize}
+      \item \( v_i \) è il valore della chiave di ricerca
+      \item \( p_i \) è il puntatore al \textbf{bucket di puntatori} che individuano
+        nel file sequenziale tutte le tuple con chiave \( v_i \)
+    \end{itemize}
+    Gli indici secondari \textbf{sono sempre densi}.
+
+    Le operazioni che si possono eseguire su un indice secondario sono:
+    \begin{itemize}
+      \item \textbf{Ricerca} di una tupla con chiave di ricerca \( K \).
+        \begin{enumerate}
+          \item Scansione sequenziale dell'indice per trovare il record
+            \( \left(K, p_k\right) \)
+          \item Accesso al bucket \( B \) di puntatori attraverso il puntatore \( p_k \)
+          \item Accesso al file attraverso i puntatori del bucket \( B \) 
+        \end{enumerate}
+        Il costo è 1 accesso indice + 1 accesso al bucket + \( n \) accessi pagine dati
+
+        \begin{example}
+          Un esempio di ricerca con indice secondario è il seguente:
+          (ricerca dei conti di "Verdi")
+          \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.9\textwidth]{ricerca_indice_secondario}
+            \caption{Esempio di ricerca con indice secondario}
+          \end{figure}
+        \end{example}
+
+      \item \textbf{Inserimento e cancellazione}: si effettuano gli stessi passi
+        dell'inserimento e della cancellazione in un indice primario denso, con in più
+        l'aggiornamento dei bucket.
+    \end{itemize}
+\end{itemize}
 
 \section{Transazioni concorrenti}
 Il componente dell'architettura del DBMS che si occupa di gestire le transazioni
