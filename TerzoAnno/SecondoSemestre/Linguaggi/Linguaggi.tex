@@ -667,10 +667,10 @@ Il linguaggio è definito su livelli, partendo dal basso verso l'alto:
   \item Espressioni booleane che parte dai simboli definiti ai livelli
     sottostanti
     \[
-      \color{blue}B\color{black} \to true \color{BrickRed}\mid\color{black} false \color{BrickRed}\mid\color{black}
-      (\color{blue}B\color{black} \; or \; \color{blue}B\color{black}) \color{BrickRed}\mid\color{black}
-      (\color{blue}B\color{black} \; and \; \color{blue}B\color{black}) \color{BrickRed}\mid\color{black}
-      (not \; \color{blue}B\color{black}) \color{BrickRed}\mid\color{black} x
+      \color{blue}B\color{black} \to true \mid false \mid
+      (\color{blue}B\color{black} \; or \; \color{blue}B\color{black}) \mid
+      (\color{blue}B\color{black} \; and \; \color{blue}B\color{black}) \mid
+      (not \; \color{blue}B\color{black}) \mid x
     \] 
 
   \item Comandi atomici, ad esempio l'assegnamento. Utilizza gli identificatori,
@@ -683,9 +683,9 @@ Il linguaggio è definito su livelli, partendo dal basso verso l'alto:
     e le espressioni booleane.
 
     \[
-      \color{purple}C\color{black} \to \color{green}A\color{black} \color{BrickRed}\mid\color{black}
-      \color{purple}C\color{black} ; \color{purple}C\color{black} \color{BrickRed}\mid\color{black}
-      while \; \color{blue}B\color{black} \; do \; \color{purple}C\color{black} \color{BrickRed}\mid\color{black}
+      \color{purple}C\color{black} \to \color{green}A\color{black} \mid
+      \color{purple}C\color{black} ; \color{purple}C\color{black} \mid
+      while \; \color{blue}B\color{black} \; do \; \color{purple}C\color{black} \mid
       if \; \color{blue}B\color{black} \; then \color{purple}C\color{black} \; else
       \; \color{purple}C\color{black}
     \] 
@@ -722,7 +722,7 @@ dicono \textbf{contestuali}.
 \subsubsection{Induzione strutturale}
 L'induzione strutturale permette di dimostrare proprietà di oggetti descritti
 in modo induttivo o ricorsivo. Una grammatica descrive in modo induttivo il
-linguaggio (insieme di strunche) che genera, quindi si può utilizzare l'induzione
+linguaggio (insieme di stringhe) che genera, quindi si può utilizzare l'induzione
 strutturale per dimostrare proprietà delle stringhe generate.
 
 \begin{definition}
@@ -864,7 +864,7 @@ strutturale per dimostrare proprietà delle stringhe generate.
 \begin{example}
   Consideriamo la seguente grammatica:
   \[
-    S \to aa \color{BrickRed}\mid\color{black} bb \color{BrickRed}\mid\color{black} aSa \color{BrickRed}\mid\color{black} bSb
+    S \to aa \mid bb \mid aSa \mid bSb
   \] 
   questa grammatica genera tutte le stringhe palindrome di lunghezza pari.
   Siccome \( aa \) e \( bb \) sono nel linguaggio, se si prende una qualsiasi
@@ -915,7 +915,7 @@ strutturale per dimostrare proprietà delle stringhe generate.
 \begin{exercise}
   Consideriamo la seguente grammatica:
   \[
-    E \to n \color{BrickRed}\mid\color{black} E + E \color{BrickRed}\mid\color{black} E * E
+    E \to n \mid E + E \mid E * E
   \] 
   \begin{enumerate}
     \item Definire strutturalmente l'insieme \( Exp \)
@@ -1018,7 +1018,7 @@ usati per descriverlo. Esistono 3 tipi di semantica:
     La semantica denotazionale è una funzione che prende un programma e restituisce
     una funzione che prende uno stato iniziale e restituisce uno stato finale:
     \[
-      E: Prog \mapsto \underbrace{(Stato \to Stato)}_{\text{Denotazione associata al programma}}
+      E: Prog \mapsto \underbrace{(Stato \to Stato)}_{\substack{\text{Denotazione associata}\\\text{al programma}}}
     \] 
     Un esempio di semantica denotazionale è il comportamento input/output
 
@@ -1091,11 +1091,11 @@ usati per descriverlo. Esistono 3 tipi di semantica:
           \color{blue}\mathcal{D}[y := z] (z \mapsto 2, y \mapsto \bot) \\
           &= \mathcal{D}[z := y] \circ
           \color{blue}\mathcal{D}[y := y + 1] (z \mapsto 2, y \mapsto 2) \\
-          &= \color{blue}\mathcal{D}[z := y] (z \mapsto 2, y \mapsto 2) \\
-          &= \color{blue}(z \mapsto 3, y \mapsto 2)
+          &= \color{blue}\mathcal{D}[z := y] (z \mapsto 2, y \mapsto 3) \\
+          &= \color{blue}(z \mapsto 3, y \mapsto 3)
         \end{aligned}
       \] 
-      Quindi \( \mathcal{D}[P](z \mapsto \bot, y \mapsto \bot) = (z \mapsto 3, y \mapsto 2) \)
+      Quindi \( \mathcal{D}[P](z \mapsto \bot, y \mapsto \bot) = (z \mapsto 3, y \mapsto 3) \)
       è usata per:
       \begin{itemize}
         \item Dimostrare proprietà (correttezza)
@@ -1252,11 +1252,11 @@ Il linguaggio è definito nel seguente modo:
     \texttt{\color{Green}<Declar>} \quad & \texttt{\color{Green}D\color{black}} \to
     \texttt{[const I = N\{,I=N\};]} \\
                    & \color{BrickRed}\color{BrickRed}\mid\color{black}\color{black} \texttt{[var I\{,I\};]} \\
-                   & \color{BrickRed}\color{BrickRed}\mid\color{black}\color{black} \texttt{[procedure I;\color{Green}B\color{black};]} \\
+                   & \color{BrickRed}\color{BrickRed}\mid\color{black}\color{black} \texttt{[procedure I;\color{purple}B\color{black};]} \\
     %
     \texttt{\color{blue}<Stmts>} \quad & \texttt{\color{blue}S\color{black}} \to
     \varepsilon 
-    \color{BrickRed}\color{BrickRed}\mid\color{black}\color{black} \texttt{I := E} \\
+    \color{BrickRed}\color{BrickRed}\mid\color{black}\color{black} \texttt{I := \color{gray}E} \\
                    & \color{BrickRed}\color{BrickRed}\mid\color{black}\color{black} \texttt{call I} \\
                    & \color{BrickRed}\color{BrickRed}\mid\color{black}\color{black} \texttt{if \color{olive}C\color{black}\ then \color{blue}S\color{black}} \\
                    & \color{BrickRed}\color{BrickRed}\mid\color{black}\color{black} \texttt{while \color{olive}C\color{black}\ do \color{blue}S\color{black}} \\
