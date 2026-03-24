@@ -2649,6 +2649,8 @@ della ricerca. Ci sono due tipi di indici su file sequenziali:
                 per effetto dell'inserimento di una nuova tupla, si aggiunge un blocco
                 dati alla struttura; in tutti gli altri casi l'indice rimane invariato
             \end{itemize}
+            Gli indici sono costosi, quindi bisogna fare un compromesso sul numero di indici
+            da mantenere e il numero di attributi ad accesso sequenziale.
 
           \item \textbf{Cancellazione} di un record nell'indice. Si effettuano gli stessi
             passi della cancellazione in un file sequenziale
@@ -2678,7 +2680,8 @@ della ricerca. Ci sono due tipi di indici su file sequenziali:
       \item \( p_i \) è il puntatore al \textbf{bucket di puntatori} che individuano
         nel file sequenziale tutte le tuple con chiave \( v_i \)
     \end{itemize}
-    Gli indici secondari \textbf{sono sempre densi}.
+    Gli indici secondari \textbf{sono sempre densi} perchè non si può sfruttare
+    l'ordinamento delle tuple.
 
     Le operazioni che si possono eseguire su un indice secondario sono:
     \begin{itemize}
@@ -2689,7 +2692,8 @@ della ricerca. Ci sono due tipi di indici su file sequenziali:
           \item Accesso al bucket \( B \) di puntatori attraverso il puntatore \( p_k \)
           \item Accesso al file attraverso i puntatori del bucket \( B \) 
         \end{enumerate}
-        Il costo è 1 accesso indice + 1 accesso al bucket + \( n \) accessi pagine dati
+        Il costo è 1 accesso indice + 1 accesso al bucket + \( n \) accessi alle pagine
+        dati dove \( n \) è il numero di puntatori nel bucket \( B \)
 
         \begin{example}
           Un esempio di ricerca con indice secondario è il seguente:
