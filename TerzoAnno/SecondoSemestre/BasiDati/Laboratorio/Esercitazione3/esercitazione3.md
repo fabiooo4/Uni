@@ -61,12 +61,22 @@ e le seguenti indicazioni:
 
 Visualizzare il numero di corso studi presenti nella base di dati.
 
+```sql
+select count(*)
+from corsostudi;
+```
+
 Soluzione: ci sono 635 corsi di studio.
 
 ### Esercizio 2
 
 Visualizzare il nome, il codice, l'indirizzo e l'identificatore del preside di tutte
 le facoltà.
+
+```sql
+select nome, codice, indirizzo, id_preside_persona
+from facolta;
+```
 
 Soluzione: ci sono 8 facoltà.
 
@@ -81,11 +91,21 @@ Soluzione: ci sono 211 righe. Le 5 righe dalla 10° posizione sono:
 
 | nome                                                         | nome                                   |
 | ------------------------------------------------------------ | -------------------------------------- |
-| Corso di Perfezionamento IN Traumatologia dentale            | Medicina e Chirurgia                   |
-| Laurea IN Beni culturali                                     | Lettere e filosofia                    |
-| Laurea IN Bioinformatica                                     | Scienze matematiche fisiche e naturali |
-| Laurea IN Bioinformatica (ordinamento fino ALL'a.a. 2008/09) | Scienze matematiche fisiche e naturali |
-| Laurea IN Biotecnologie                                      | Scienze matematiche fisiche e naturali |
+| Corso di Perfezionamento in Traumatologia dentale            | Medicina e Chirurgia                   |
+| Laurea in Beni culturali                                     | Lettere e filosofia                    |
+| Laurea in Bioinformatica                                     | Scienze matematiche fisiche e naturali |
+| Laurea in Bioinformatica (ordinamento fino ALL'a.a. 2008/09) | Scienze matematiche fisiche e naturali |
+| Laurea in Biotecnologie                                      | Scienze matematiche fisiche e naturali |
+
+```sql
+select distinct corsostudi.nome, facolta.nome
+from corsoinfacolta
+  join corsostudi on (corsostudi.id = corsoinfacolta.id_corsostudi)
+  join facolta on (facolta.id = corsoinfacolta.id_facolta)
+  join inserogato on (inserogato.id_corsostudi = corsostudi.id)
+where inserogato.annoaccademico = '2010/2011'
+order by corsostudi.nome;
+```
 
 ### Esercizio 4
 
@@ -93,6 +113,14 @@ Visualizzare il nome, il codice e l'abbreviazione di tutti i corsi di studio ges
 dalla facoltà di Medicina e Chirurgia.
 
 Soluzione: ci sono 236 righe.
+
+```sql
+select corsostudi.nome, corsostudi.codice, corsostudi.abbreviazione
+from corsoinfacolta
+  join corsostudi on (corsoinfacolta.id_corsostudi = corsostudi.id)
+  join facolta on (corsoinfacolta.id_facolta = facolta.id)
+where facolta.nome = 'Medicina e Chirurgia';
+```
 
 ### Esercizio 5
 
@@ -102,11 +130,22 @@ LIKE: in questo modo i caratteri maiuscolo e minuscolo non sono diversi).
 
 Soluzione: ci sono 16 righe.
 
+```sql
+select corsostudi.codice, corsostudi.nome, corsostudi.abbreviazione
+from corsostudi
+where corsostudi.nome ilike '%lingue%';
+```
+
 ### Esercizio 6
 
 Visualizzare le sedi dei corsi di studi in un elenco senza duplicati.
 
 Soluzione: ci sono 48 righe.
+
+```sql
+select distinct corsostudi.sede
+from corsostudi;
+```
 
 ### Esercizio 7
 
@@ -117,6 +156,18 @@ Si visualizzi il nome dell'insegnamento, il discriminante (attributo descrizione
 tabella Discriminante), il nome del modulo e l'attributo modulo.
 
 Soluzione: ci sono 27 righe.
+
+```sql
+select insegn.nomeins, discriminante.descrizione, inserogato.nomemodulo, inserogato.modulo
+from inserogato
+  join insegn on insegn.id = inserogato.id_insegn
+  join discriminante on discriminante.id = inserogato.id_discriminante
+  join corsoinfacolta on corsoinfacolta.id_corsostudi = inserogato.id_corsostudi
+  join facolta on facolta.id = corsoinfacolta.id_facolta
+where inserogato.annoaccademico = '2010/2011'
+  and facolta.nome = 'Economia'
+  and inserogato.modulo > 0;
+```
 
 ### Esercizio 8
 
