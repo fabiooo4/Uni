@@ -1198,194 +1198,6 @@ Le categorie sintattiche principali sono:
       valore a partire da qualunque stato/memoria iniziale.
     \end{definition}
 
-    Gli aspetti progettuali da definire per le espressioni sono:
-    \begin{itemize}
-      \item \textbf{Arietà}: cioè a quanti argomenti un operatore si applica
-
-      \item \textbf{Notazione}:
-        \begin{itemize}
-          \item \textbf{Infissa}: \texttt{e1 + e2}\\ Questa notazione richiede 
-            la definizione di regole di \textbf{associatività} e \textbf{precedenza}
-            per descrivere quale operatore applicare prima. Le seguentinotazioni non
-            ne hanno bisogno.
-
-
-          \item \textbf{Prefissa}: \texttt{+ e1 e2}\\
-            Si utilizza una variabile contatore \texttt{arietà} che tiene traccia del
-            numero di operandi dell'operatore da applicare e uno stack in cui
-            vengono messi gli operandi.
-            \begin{example}
-              Consideriamo la seguente espressione:
-              \[
-                 + \, * \, 3 \, 2 \, 5
-              \] 
-              dove:
-              \begin{itemize}
-                \item \( * \) accetta due operandi
-                \item \( + \) accetta due operandi
-              \end{itemize}
-              Si inizia con uno stack vuoto e \( \texttt{arietà} = 0 \), quindi si legge da
-              sinistra a destra:
-              \begin{enumerate}
-                \item Si legge \( + \), è un operatore, quindi si mette nello stack e si
-                  aggiorna \( \texttt{arietà} \):
-                  \[
-                    Stack = [+], \quad \texttt{arietà} = 2
-                  \]
-                \item Si legge \( * \), è un operatore, quindi si mette nello stack.
-                  L'\texttt{arietà} rimane a 2 perchè fa riferimento all'ultimo operatore
-                  inserito nello stack:
-                  \[
-                    Stack = [+, *], \quad \texttt{arietà} = 2
-                  \]
-                \item Si legge \( 3 \), è un operando, quindi si mette nello stack e si
-                  aggiorna \( \texttt{arietà} \):
-                  \[
-                    Stack = [+, *, 3], \quad \texttt{arietà} = 1
-                  \]
-                \item Si legge \( 2 \), è un operando, quindi si mette nello stack e si
-                  aggiorna \( \texttt{arietà} \):
-                  \[
-                    Stack = [+, *, 3, 2], \quad \texttt{arietà} = 0
-                  \]
-                  A questo punto \( \texttt{arietà} = 0 \) quindi si applica l'operatore
-                  \( * \) agli ultimi due operandi inseriti nello stack, si mette il
-                  risultato nello stack e si aggiorna \( \texttt{arietà} \):
-                  \[
-                    Stack = [+, 6], \quad \texttt{arietà} = 1
-                  \]
-                \item Si legge \( 5 \), è un operando, quindi si mette nello stack e
-                  si aggiorna \( \texttt{arietà} \):
-                  \[
-                    Stack = [+, 6, 5], \quad \texttt{arietà} = 0
-                  \]
-                  A questo punto \( \texttt{arietà} = 0 \) quindi si applica l'operatore
-                  \( + \) agli ultimi due operandi inseriti nello stack, si mette il
-                  risultato nello stack e si aggiorna \( \texttt{arietà} \):
-                  \[
-                    Stack = [11], \quad \texttt{arietà} = 0
-                  \]
-              \end{enumerate}
-            \end{example}
-
-          \item \textbf{Postfissa}: \texttt{e1 e2 +}\\ Si utilizza uno stack
-            che conterrà gli operandi di ciascun operatore, quindi quando si incontra
-            un operatore si prendono dal stack gli operandi necessari.
-            \begin{example}
-              Consideriamo la seguente espressione:
-              \[
-                5 \, 3 \, 2 \, * \, + 
-              \] 
-              dove:
-              \begin{itemize}
-                \item \( * \) accetta due operandi
-                \item \( + \) accetta due operandi
-              \end{itemize}
-              Si inizia con uno stack vuoto, quindi si legge da sinistra a destra:
-              \begin{enumerate}
-                \item Si legge \( 5 \), è un operando, quindi si mette nello stack:
-                  \[
-                    Stack = [5]
-                  \]
-                \item Si legge \( 3 \), è un operando, quindi si mette nello stack:
-                  \[
-                    Stack = [5, 3]
-                  \]
-                \item Si legge \( 2 \), è un operando, quindi si mette nello stack:
-                  \[
-                    Stack = [5, 3, 2]
-                  \]
-                \item Si legge \( * \), è un operatore, quindi si prendono dal stack
-                  i due operandi necessari, si applica l'operatore e si mette il
-                  risultato nello stack:
-                  \[
-                    Stack = [5, 6]
-                  \]
-                \item Si legge \( + \), è un operatore, quindi si prendono dal stack
-                  i due operandi necessari, si applica l'operatore e si mette il
-                  risultato nello stack:
-                  \[
-                    Stack = [11]
-                  \]
-              \end{enumerate}
-            \end{example}
-        \end{itemize}
-
-      \item \textbf{Regole di associatività}: decidono l'ordine di applicazione di
-        operatori allo stesso livello di precedenza. Solitamente per gli operatori
-        aritmetici si sceglie l'associatività a sinistra, quindi si applica prima
-        l'operatore più a sinistra.
-
-
-      \item \textbf{Regole di precedenza}: cioè in che ordine valutare le espressioni
-        quando non sono esplicitamente raggruppate da parentesi.
-
-        Per gli operatori aritmetici le \textbf{precedenze} sono:
-        \begin{enumerate}
-          \item \( +, - \) sono allo stesso livello
-          \item \( *, / \) sono allo stesso livello e hanno precedenza su \( +, - \)
-        \end{enumerate}
-
-       \item \textbf{Ordine di valutazione degli operandi}: cioè in che ordine valutare
-          gli operandi di un operatore. Bisogna essere consapevoli delle seguenti
-          problematiche legate all'ordine di valutazione degli operandi:
-          \begin{itemize}
-            \item \textbf{Operandi non definiti}: ad esempio in alcuni linguaggi è
-              possibile scrivere espressioni non definite, ad esempio:
-              \begin{center}
-                \texttt{a == 0 ? b : b / a}
-              \end{center}
-              è un'espressione non definita se \( a = 0 \)
-              perchè si avrebbe una divisione per zero. Ci sono due tipi di valutazioni:
-              \begin{itemize}
-                \item \textbf{Valutazione eager}: si valutano prima tutte le parti
-                  dell'espressione
-
-                \item \textbf{Valutazione lazy}: si valutano solo le parti necessarie
-                  per applicare l'operatore, quindi in questo caso si valuterebbe solo
-                  \( a \) e soltanto se \( a \neq 0 \) si valuterebbe \( b / a \).
-              \end{itemize}
-
-            \item \textbf{Ordine dei side effects}: Consideriamo il seguente codice:
-              \[
-                \begin{aligned}
-                    &\texttt{a := 10;} \\
-                    &\texttt{b := a + fun(\&a);} \\
-                \end{aligned}
-              \] 
-              dove \( fun \) è una funzione che prende un puntatore ad una variabile
-              e modifica il suo parametro. Supponiamo che \texttt{fun(\&a)} imposti
-              il valore di \texttt{a} a 12 e lo ritorni.
-              \begin{itemize}
-                \item Se si valuta prima \texttt{a} e poi si esegue \texttt{fun(\&a)},
-                si avrebbe \texttt{b = 10 + fun(\&a)} e dopo l'esecuzione di
-                \texttt{fun(\&a)} si avrebbe \texttt{a = 12} e
-                \[
-                  \texttt{b = 10 + 12 = 22}
-                \] 
-
-              \item Se si valuta prima \texttt{fun(\&a)} e poi \texttt{a}, si avrebbe
-                \texttt{b = a + fun(\&a)} e dopo l'esecuzione di \texttt{fun(\&a)}
-                si avrebbe \texttt{a = 12} e
-                \[
-                  \texttt{b = 12 + 12 = 24}
-                \]
-              \end{itemize}
-              Quindi l'ordine di valutazione degli operandi può influenzare il
-              risultato di un'espressione se ci sono side effects.
-          \end{itemize}
-
-        \item \textbf{Presenza di side effects}: cioè se la valutazione di un'espressione
-          modifica lo stato/memoria
-
-        \item \textbf{Overloading degli operatori}: cioè se un operatore può essere
-          applicato a più tipi di operandi, ad esempio in alcuni linguaggi il \( + \)
-          può essere applicato a interi come somma, oppure a stringhe come concatenazione
-
-        \item \textbf{Espressioni con operandi di tipo misto}: cioè se un operatore può
-          essere applicato a operandi di tipi diversi, ad esempio in alcuni linguaggi
-          è possibile sommare un intero ad una stringa applicando casting automatici
-    \end{itemize}
 
   \item \textbf{Comandi}: denotano richieste di modifica della memoria.
     \begin{itemize}
@@ -1419,7 +1231,7 @@ Le categorie sintattiche principali sono:
 La separazione tra le categorie sintattiche non è rigida, ad esempio un'espressione
 può avere anche side effects, quindi modificare la memoria, ecc...
 
-\subsubsection{Linguaggio "giocattolo" PLO}
+\subsubsection{Esempio di sintassi per un linguaggio giocattolo "PLO"}
 In questo corso considereremo un linguaggio di programmazione "giocattolo" 
 simile al linguaggio Pascal in cui:
 \begin{itemize}
@@ -1549,9 +1361,202 @@ equivalente precisa e quindi non ambigua, come la seguente:
 \] 
 
 
-\subsection{Implementazione di un linguaggio di programmazione IMP}
-\subsubsection{Espressioni}
-Definiamo la grammatica del linguaggio IMP per le espressioni:
+\section{Implementazione di un linguaggio di programmazione IMP}
+
+\subsection{Espressioni}
+
+\subsubsection{Aspetti implementativi}
+Gli aspetti progettuali da definire per le espressioni sono:
+\begin{itemize}
+  \item \textbf{Arietà}: cioè a quanti argomenti un operatore si applica
+
+  \item \textbf{Notazione}:
+    \begin{itemize}
+      \item \textbf{Infissa}: \texttt{e1 + e2}\\ Questa notazione richiede 
+        la definizione di regole di \textbf{associatività} e \textbf{precedenza}
+        per descrivere quale operatore applicare prima. Le seguentinotazioni non
+        ne hanno bisogno.
+
+
+      \item \textbf{Prefissa}: \texttt{+ e1 e2}\\
+        Si utilizza una variabile contatore \texttt{arietà} che tiene traccia del
+        numero di operandi dell'operatore da applicare e uno stack in cui
+        vengono messi gli operandi.
+        \begin{example}
+          Consideriamo la seguente espressione:
+          \[
+             + \, * \, 3 \, 2 \, 5
+          \] 
+          dove:
+          \begin{itemize}
+            \item \( * \) accetta due operandi
+            \item \( + \) accetta due operandi
+          \end{itemize}
+          Si inizia con uno stack vuoto e \( \texttt{arietà} = 0 \), quindi si legge da
+          sinistra a destra:
+          \begin{enumerate}
+            \item Si legge \( + \), è un operatore, quindi si mette nello stack e si
+              aggiorna \( \texttt{arietà} \):
+              \[
+                Stack = [+], \quad \texttt{arietà} = 2
+              \]
+            \item Si legge \( * \), è un operatore, quindi si mette nello stack.
+              L'\texttt{arietà} rimane a 2 perchè fa riferimento all'ultimo operatore
+              inserito nello stack:
+              \[
+                Stack = [+, *], \quad \texttt{arietà} = 2
+              \]
+            \item Si legge \( 3 \), è un operando, quindi si mette nello stack e si
+              aggiorna \( \texttt{arietà} \):
+              \[
+                Stack = [+, *, 3], \quad \texttt{arietà} = 1
+              \]
+            \item Si legge \( 2 \), è un operando, quindi si mette nello stack e si
+              aggiorna \( \texttt{arietà} \):
+              \[
+                Stack = [+, *, 3, 2], \quad \texttt{arietà} = 0
+              \]
+              A questo punto \( \texttt{arietà} = 0 \) quindi si applica l'operatore
+              \( * \) agli ultimi due operandi inseriti nello stack, si mette il
+              risultato nello stack e si aggiorna \( \texttt{arietà} \):
+              \[
+                Stack = [+, 6], \quad \texttt{arietà} = 1
+              \]
+            \item Si legge \( 5 \), è un operando, quindi si mette nello stack e
+              si aggiorna \( \texttt{arietà} \):
+              \[
+                Stack = [+, 6, 5], \quad \texttt{arietà} = 0
+              \]
+              A questo punto \( \texttt{arietà} = 0 \) quindi si applica l'operatore
+              \( + \) agli ultimi due operandi inseriti nello stack, si mette il
+              risultato nello stack e si aggiorna \( \texttt{arietà} \):
+              \[
+                Stack = [11], \quad \texttt{arietà} = 0
+              \]
+          \end{enumerate}
+        \end{example}
+
+      \item \textbf{Postfissa}: \texttt{e1 e2 +}\\ Si utilizza uno stack
+        che conterrà gli operandi di ciascun operatore, quindi quando si incontra
+        un operatore si prendono dal stack gli operandi necessari.
+        \begin{example}
+          Consideriamo la seguente espressione:
+          \[
+            5 \, 3 \, 2 \, * \, + 
+          \] 
+          dove:
+          \begin{itemize}
+            \item \( * \) accetta due operandi
+            \item \( + \) accetta due operandi
+          \end{itemize}
+          Si inizia con uno stack vuoto, quindi si legge da sinistra a destra:
+          \begin{enumerate}
+            \item Si legge \( 5 \), è un operando, quindi si mette nello stack:
+              \[
+                Stack = [5]
+              \]
+            \item Si legge \( 3 \), è un operando, quindi si mette nello stack:
+              \[
+                Stack = [5, 3]
+              \]
+            \item Si legge \( 2 \), è un operando, quindi si mette nello stack:
+              \[
+                Stack = [5, 3, 2]
+              \]
+            \item Si legge \( * \), è un operatore, quindi si prendono dal stack
+              i due operandi necessari, si applica l'operatore e si mette il
+              risultato nello stack:
+              \[
+                Stack = [5, 6]
+              \]
+            \item Si legge \( + \), è un operatore, quindi si prendono dal stack
+              i due operandi necessari, si applica l'operatore e si mette il
+              risultato nello stack:
+              \[
+                Stack = [11]
+              \]
+          \end{enumerate}
+        \end{example}
+    \end{itemize}
+
+  \item \textbf{Regole di associatività}: decidono l'ordine di applicazione di
+    operatori allo stesso livello di precedenza. Solitamente per gli operatori
+    aritmetici si sceglie l'associatività a sinistra, quindi si applica prima
+    l'operatore più a sinistra.
+
+
+  \item \textbf{Regole di precedenza}: cioè in che ordine valutare le espressioni
+    quando non sono esplicitamente raggruppate da parentesi.
+
+    Per gli operatori aritmetici le \textbf{precedenze} sono:
+    \begin{enumerate}
+      \item \( +, - \) sono allo stesso livello
+      \item \( *, / \) sono allo stesso livello e hanno precedenza su \( +, - \)
+    \end{enumerate}
+
+   \item \textbf{Ordine di valutazione degli operandi}: cioè in che ordine valutare
+      gli operandi di un operatore. Bisogna essere consapevoli delle seguenti
+      problematiche legate all'ordine di valutazione degli operandi:
+      \begin{itemize}
+        \item \textbf{Operandi non definiti}: ad esempio in alcuni linguaggi è
+          possibile scrivere espressioni non definite, ad esempio:
+          \begin{center}
+            \texttt{a == 0 ? b : b / a}
+          \end{center}
+          è un'espressione non definita se \( a = 0 \)
+          perchè si avrebbe una divisione per zero. Ci sono due tipi di valutazioni:
+          \begin{itemize}
+            \item \textbf{Valutazione eager}: si valutano prima tutte le parti
+              dell'espressione
+
+            \item \textbf{Valutazione lazy}: si valutano solo le parti necessarie
+              per applicare l'operatore, quindi in questo caso si valuterebbe solo
+              \( a \) e soltanto se \( a \neq 0 \) si valuterebbe \( b / a \).
+          \end{itemize}
+
+        \item \textbf{Ordine dei side effects}: Consideriamo il seguente codice:
+          \[
+            \begin{aligned}
+                &\texttt{a := 10;} \\
+                &\texttt{b := a + fun(\&a);} \\
+            \end{aligned}
+          \] 
+          dove \( fun \) è una funzione che prende un puntatore ad una variabile
+          e modifica il suo parametro. Supponiamo che \texttt{fun(\&a)} imposti
+          il valore di \texttt{a} a 12 e lo ritorni.
+          \begin{itemize}
+            \item Se si valuta prima \texttt{a} e poi si esegue \texttt{fun(\&a)},
+            si avrebbe \texttt{b = 10 + fun(\&a)} e dopo l'esecuzione di
+            \texttt{fun(\&a)} si avrebbe \texttt{a = 12} e
+            \[
+              \texttt{b = 10 + 12 = 22}
+            \] 
+
+          \item Se si valuta prima \texttt{fun(\&a)} e poi \texttt{a}, si avrebbe
+            \texttt{b = a + fun(\&a)} e dopo l'esecuzione di \texttt{fun(\&a)}
+            si avrebbe \texttt{a = 12} e
+            \[
+              \texttt{b = 12 + 12 = 24}
+            \]
+          \end{itemize}
+          Quindi l'ordine di valutazione degli operandi può influenzare il
+          risultato di un'espressione se ci sono side effects.
+      \end{itemize}
+
+    \item \textbf{Presenza di side effects}: cioè se la valutazione di un'espressione
+      modifica lo stato/memoria
+
+    \item \textbf{Overloading degli operatori}: cioè se un operatore può essere
+      applicato a più tipi di operandi, ad esempio in alcuni linguaggi il \( + \)
+      può essere applicato a interi come somma, oppure a stringhe come concatenazione
+
+    \item \textbf{Espressioni con operandi di tipo misto}: cioè se un operatore può
+      essere applicato a operandi di tipi diversi, ad esempio in alcuni linguaggi
+      è possibile sommare un intero ad una stringa applicando casting automatici
+\end{itemize}
+
+\subsubsection{Sintassi}
+Definiamo la sintassi del linguaggio IMP per le espressioni:
 \[
   \begin{aligned}
     \texttt{<Expr} \quad &\texttt{E} \to \texttt{A} \mid \texttt{B} \\
@@ -1564,21 +1569,24 @@ Dove:
 \begin{itemize}
   \item \( N \) sono i numeri naturali, considerati parte del vocabolario
   \item \( op \) è l'insieme di operatori aritmetici \( \{+, -, *\} \)
+  \item \texttt{A} sono le espressioni aritmetiche
+  \item \texttt{B} sono le espressioni booleane
+\end{itemize}
+
+\subsubsection{Semantica per espressioni aritmetiche}
+Consideriamo:
+\begin{itemize}
+  \item \( \texttt{N} \): l'insieme dei valori numerici \( n, m, p \) 
+  \item \( \mathcal{E} \): l'insieme di espressioni valutabili, ovvero alberi di
+    valutazione di espressioni \( e \). Cioè una stringa di soli terminali generati
+    in Exp
 \end{itemize}
 
 \vspace{1em}
 \noindent
-Consideriamo:
-\begin{itemize}
-  \item \( \mathcal{N} \): l'insieme dei valori numerici \( n, m, p \) 
-  \item \( \mathcal{E} \): l'insieme di alberi di valutazione di espressioni \( e \).
-    Cioè una stringa di soli terminali generati in Exp
-\end{itemize}
-
-\noindent
-Diamo una semantica definendo un sistema di transiszione:
+Diamo una semantica per le \textbf{espressioni aritmetiche} definendo un sistema di transizione:
 \[
-   Stati: \mathcal{E} \cup \mathcal{N} \; \text{(stati terminali)}
+  Stati: \mathcal{E} \cup \texttt{N} \; \text{(stati terminali)}
 \] 
 Le \textbf{regole di transizione} sono definite attraverso regole costruite
 induttivamente sulla grammatica:
@@ -1587,29 +1595,32 @@ induttivamente sulla grammatica:
 \] 
 Le regole di transizione per le espressioni sono:
 \begin{itemize}
-  \item Regola 1
+  \item Regola 1 (Assioma): Definisce \( p \) come la semantica del calcolo
+    effettivo di un operatore
     \[
       \mathcal{E}_1: \overbrace{\texttt{m op n}}^{\text{simboli}} \to p
-      = \underbrace{\texttt{m op n}}_{\substack{\text{Calcolo} \\ \text{effettivo}}}
+      = \underbrace{\texttt{m op n}}_{\text{significato}}
     \] 
 
-  \item Regola 2
-    \begin{center}
-      \( \mathcal{E}_2:\; \) 
+  \item Regola 2: Definisce la valutazione dell'espressione a sinistra per prima
+    \[ \mathcal{E}_2:\; 
       \begin{prooftree}
         \hypo{e_0 \to e'_0}
         \infer1{e_0 \texttt{ op } e_1 \to e'_0 \texttt{ op } e_1}
       \end{prooftree}
-    \end{center}
+    \]
 
-  \item Regola 3
-      \[ \mathcal{E}_3:\;
+  \item Regola 3: Definisce la valutazione dell'espressione a destra con un'espressione
+    già valutata a sinistra
+    \[ \mathcal{E}_3:\;
       \begin{prooftree}
         \hypo{e_1 \to e'_1}
-        \infer1{n \texttt{ op } e_1 \to m \texttt{ op } e'_1}
+        \infer1{m \texttt{ op } e_1 \to m \texttt{ op } e'_1}
       \end{prooftree}
-     \] 
+    \] 
 \end{itemize}
+Le regole \( \mathcal{E}_2 \) e \( \mathcal{E}_3 \) impongono un ordine di valutazione
+delle espressioni, in questo caso da sinistra a destra.
 \begin{example}
   Consideriamo la seguente espressione valutandola seguendo le regole appena definite:
   \[
@@ -1623,7 +1634,7 @@ Le regole di transizione per le espressioni sono:
           [2, Blue]
           [3, Blue]
         ]
-        [-, Red
+          [-, Red
           [5, Red]
           [+, Orange
             [1, Orange]
@@ -1636,14 +1647,388 @@ Le regole di transizione per le espressioni sono:
   Le regole che abbiamo fissato non ci permettodno di valutare prima \( e_1 \) e poi
   \( e_0 \), ma ci obbliga a valutare prima \( e_0 \) e poi \( e_1 \). Si potrebbe
   aggiungere la seguente regola alternativa per permettere di valutare prima \( e_1 \):
-    \[ 
+  \[ 
     \mathcal{E}_3':\;
     \begin{prooftree}
       \hypo{e_1 \to e'_1}
       \infer1{e_0 \texttt{ op } e_1 \to e_0 \texttt{ op } e'_1}
     \end{prooftree}
-    \] 
+  \] 
 \end{example}
+
+\subsubsection{Semantica per espressioni booleane}
+Diamo una semantica per le \textbf{espressioni booleane}:
+Gli stati terminali sono i seguenti:
+\[
+  \texttt{B} = \left\{ \texttt{true}, \texttt{false} \right\}
+\] 
+Definiamo le regole di transizione continuando da quelle già definite per le
+espressioni aritmetiche:
+\begin{itemize}
+  \item Regola 4:
+    \[
+    \mathcal{E}_4: \; \underbrace{t_1 \texttt{ or } t_2}_\text{simbolo} \to t
+    = \underbrace{t_1 \texttt{ or } t_2}_\text{significato}
+    \] 
+
+  \item Regola 2: Vale anche per le espressioni booleane
+
+  \item Regola 3: Adattata per le espressioni booleane
+    \[
+      \mathcal{E}_3':\;
+      \begin{prooftree}
+        \hypo{e_1 \to e'_1}
+        \infer1{t \texttt{ or } e_1 \to t \texttt{ or } e_1'}
+      \end{prooftree}
+    \] 
+
+  \item Uniamo \( \mathcal{E}_3 \) con \( \mathcal{E}_3' \)
+    % TODO
+
+  \item Regola 5:
+    \[
+      \mathcal{E}: \;
+      \begin{prooftree}
+        \hypo{e \to e'}
+        \infer1{\texttt{not } e \to \texttt{not } e'}
+      \end{prooftree}
+    \] 
+
+  \item Regola 6:
+    \[
+      \mathcal{E}_6: \; \texttt{not } e_t \to t' = \texttt{not } t \quad t, t' \in \texttt{B}
+    \] 
+\end{itemize}
+Il sistema di transizione che abbiamo definito è:
+\( \left<\mathcal{E} \cup \underbrace{\texttt{N} \cup \texttt{B} }_{\text{Terminali}} \right>\) 
+
+\begin{definition}[Valutazione]
+  La funzione di valutazione:
+  \[
+    Eval:\; Exp \to \overbrace{\texttt{N} \cup \texttt{B}}^{\text{Con}}
+  \] 
+  descrive il comportamento dinamico delle espressioni:
+  \[
+    \forall e \in \mathcal{E} \;.\; Eval(e) = k \iff e \to^*_e k
+  \] 
+  dove \( \to^*_e \) è la chiusura transitiva di \( \to  \), cioè:
+  \[
+    \exists n \;.\; e \to e_1 \to e_2 \to \ldots \to e_n = k
+  \] 
+  con \( n \) transizioni.
+\end{definition}
+
+\begin{definition}[Equivalenza di espressioni]
+  Definiamo la relazione di equivalenza \( \equiv \subseteq Exp \times Exp \) tra
+  espressioni come:
+  \[
+    e_1 \equiv e_2 \iff Eval(e_1) = Eval(e_2)
+  \] 
+  cioè due espressioni sono equivalenti se vengono valutate allo stesso valore.
+\end{definition}
+
+\subsection{Identificatori}
+Gli identificatori sono \textbf{sequenze di caratteri} usate per riferirsi ad
+\textbf{oggetti denotabili}, ovvero a variabili, costanti, funzioni, procedure, ecc...
+
+\begin{example}
+  Alcuni esempi di identificatori sono i seguenti:
+  \[
+  \begin{aligned}
+    &\texttt{const \textcolor{Blue}{pi} = 3.14;} \\
+    &\texttt{int \textcolor{Blue}{x};} \\
+    &\texttt{void \textcolor{Blue}{f}(...)\{...\}}
+  \end{aligned}
+  \] 
+  Ogni identificatore crea un legame tra il nome dell'identificatore e l'oggetto
+  che denota, ad esempio \texttt{pi} denota la costante \( 3.14 \), \texttt{x} denota
+  una variabile di tipo intero e \texttt{f} denota una procedura.
+\end{example}
+
+\begin{definition}[Oggetti denotabili]
+  Sono oggetti del linguaggio di programmazione a cui si può fare riferimento mediante
+  l'uso di identificatori
+\end{definition}
+
+\noindent
+ Nel nostro linguaggio gli 
+identificatori sono definiti nel seguente insieme:
+\[
+  Id = \left< \texttt{a}, \texttt{rate}, \texttt{b20}, \ldots, \texttt{id}, \texttt{x}, \ldots \right>
+\] 
+
+\subsubsection{Aspetti implementativi}
+Gli aspetti implementativi da tenere in considerazione nella definizione degli
+identificatori sono i seguenti:
+\begin{itemize}
+  \item \textbf{Nomi case sensitive o case insensitive}
+  \item \textbf{Parole riservate}
+  \item \textbf{Vincoli sulla lunghezza}
+  \item \textbf{Presenza di caratteri speciali}
+\end{itemize}
+Le parole chiave del nostro linguaggio oppure altre specifiche che dipendono dal
+linguaggio non si possono usare come identificatori.
+
+\subsubsection{Legami, scope e occorrenze}
+\begin{definition}[Legami (binding)]
+  Consideriamo il seguente esempio:
+  \[
+    \left( 
+      \sum_{\mathcolor{Green}{i=1}}^{\mathcolor{Red}{n}}
+      \left( 
+        \sum_{\mathcolor{Green}{j=1}}^{\mathcolor{Red}{m}} a_{\color{Blue}ij} \ldots b_{\color{Blue}i\color{Red}k}
+      \right) 
+    \right) 
+  \] 
+  \begin{itemize}
+    \item \color{Green}Le \textbf{definizioni} creano dei legami tra il nome e
+      il significato, cioè crea \textbf{occorrenze di binding}.\color{black}
+
+    \item \color{Blue}Gli usi del legame, cioè \textbf{occorrenze d'uso (applied)}
+      sono quelli che utilizzano il nome per far riferimento al significato\color{black}
+
+    \item \color{Red}Le \textbf{occorrenze libere} sono quelle che non fanno riferimento
+      ad alcun legame, quindi il significato non è definito.\color{black}
+  \end{itemize}
+\end{definition}
+
+\begin{definition}[Scope]
+  Lo scope è il \textbf{raggio di azione} di una definizione. Determina lo spazio in
+  cui le potenziali occorrenze dell'identificatore definito fanno riferimento a
+  quella definizione \( def \).
+  \[
+    \color{Green}\underbrace{\color{black}
+    \left( 
+      \sum_{\mathcolor{Green}{\underbrace{i=1}_{def}}}^{\mathcolor{Red}{n}}
+      \color{Blue}\underbrace{\color{black}
+      \left( 
+        \sum_{\mathcolor{Blue}{\underbrace{j=1}_{def}}}^{\mathcolor{Red}{m}} \overbrace{a_{\color{Blue}ij} \ldots b_{\color{Blue}i\color{Red}k\color{black}}}^{\color{Blue}\text{uso}}
+      \right)}_{\color{Blue}\text{scope } j\color{black}}
+    \right)}_{\color{Green}\text{scope } i\color{black}}
+  \] 
+\end{definition}
+
+\vspace{1em}
+\noindent
+Nei linguaggi di programmazione gli identificatori possono essere in diverse posizioni
+e sono le seguenti:
+\begin{itemize}
+  \item \textbf{Definizione} (occorrenze di binding): Un identificatore è in posizione di definizione
+    quando si attribuisce il significato dell'identificatore
+
+  \item \textbf{Uso} (occorrenze di uso): Un identificatore è in posizione di
+    uso quando l'occorrenza serve per riferirsi al significato determinato da una
+    definizione. Deve trovarsi nello scope (raggio di azione) di una definizione.
+
+  \item \textbf{Libera}: Un identificatore è in posizione libera se laa sua
+    occorrenza non si trova nello scope (raggio di azione) di una definizione.
+\end{itemize}
+
+\subsubsection{Tipi di binding}
+Nel seguente esempio i legami tra i nomi e i significati sono:
+\[
+  \begin{aligned}
+    &\texttt{const pi = 3.14;} \quad& \text{costante} \\
+    &\texttt{int x;} \quad& \text{locazione in memoria} \\
+    &\texttt{void f(...)\{...\}} \quad& \text{pezzo di codice}
+  \end{aligned}
+\] 
+Esistono due tipi di binding:
+\begin{itemize}
+  \item \textbf{Binding statici}:
+    Sono legami che non cambiano durante l'esecuzione del
+    programma, a meno che non vengano sovrascritti da un altro legame. Un legame
+    può essere:
+    \begin{itemize}
+      \item Creato
+      \item Distrutto
+      \item Sovrascritto
+      \item \textbf{Non può essere modificato}
+    \end{itemize}
+
+  \item \textbf{Binding dinamici}:
+    Alcuni legami possono cambiare, ad esempio il legame tra una locazione e un valore.
+    Questi legami sono \textbf{dinamici}, cioè uno degli elementi del legame cambia
+    durante l'esecuzione del programma. Ad esempio il valore di una variabile può
+    cambiare, ma il nome della variabile e la locazione in memoria a cui fa riferimento
+    non cambiano.
+\end{itemize}
+
+\begin{definition}[Tempo di binding]
+  È il momento in cui un legame viene creato e dipende dal linguaggio e anche dagli
+  oggetti. Ad esempio le costanti presenti nel linguaggio vengono legate a tempo
+  di progettazione, mentre le costanti definite dall'utente vengono legate a tempo di
+  implementazione, cioè quando si compila il programma.
+\end{definition}
+
+\subsubsection{Ambiente}
+I legami vengono inseriti nell'\textbf{ambiente}, che non è altro che un
+\textbf{insieme di binding}. In un programma tutti gli identificatori devono essere
+definiti, cioè non possono mai essere in \textbf{posizione libera}.
+
+Ci sono due tipi di termini:
+\begin{itemize}
+  \item \textbf{Termini ground}:
+    Un termine è detto \textbf{ground} se non ha identificatori e ha sempre significato.
+    Nel nostro caso le espressioni che abbiamo definito sono ground.
+
+  \item \textbf{Tremini chiusi}:
+    Un termine è detto \textbf{chiuso} se non ha identificatori in posizione libera
+\end{itemize}
+Entrambi questi tipi di termini hanno significato senza dover ricorrere ad un
+contesto esterno, cioè ad un ambiente.
+
+\subsubsection{Aggiungiamo gli identificatori alla sintassi delle espressioni}
+Riprendiamo la seguente notazione:
+\begin{itemize}
+  \item \( \mathcal{E} \): l'insieme di espressioni
+
+  \item \( DVal = \texttt{N} \cup \texttt{B} \): l'insieme di valori numerici e
+    booleani, che sono anche \textbf{valori denotabili}
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Definiamo un ambiente per le espressioni:
+\[
+  \begin{aligned}
+    &Env = \bigcup_{I \subseteq_f Id} Env_I \\
+    &Env_I:\; I \to Dval \quad \rho \text{ metavariabile per un ambiente specifico}
+  \end{aligned}
+\] 
+L'ambiente è una funzione che associa un valore denotabile ad ogni identificatore
+in un insieme \( I \) finito (\( \subseteq_f \) sottoinsieme finito).
+
+\begin{example}
+  Consideriamo i seguenti identificatori:
+  \[
+    I = \left\{ x, y \right\}
+  \] 
+  Allora un esempio di ambiente è il seguente:
+  \[
+  \begin{aligned}
+    \rho \in Env_I: \quad &\rho(x) = 5 \\
+                 &\rho(y) = 5
+  \end{aligned}
+  \] 
+  L'espressione \( x + y - 5 \) ha significato soltanto se valutata nell'ambiente
+  \( \rho \):
+  \[
+    \rho \vdash x + y - 5
+  \] 
+\end{example}
+
+\vspace{1em}
+\noindent
+Ora aggiungiamo alla sintassi delle espressioni gli identificatori 
+con \( \mathcolor{Blue}{x} \in Id \):
+\[
+  \begin{aligned}
+    \texttt{<Expr} \quad &\texttt{E} \to \texttt{A} \mid \texttt{B} \\
+                         &\texttt{A} \to \texttt{N}  \mid \mathcolor{Blue}{x} \mid  \texttt{A op A} \\
+                         &\texttt{B} \to \texttt{true} \mid \texttt{false}  \mid \textcolor{Blue}{x} \\
+                         &\mid \texttt{A = A} \mid \texttt{not B} \mid \texttt{B or B}
+  \end{aligned}
+\] 
+
+
+\subsubsection{Semantica per espressioni con identificatori}
+Definiamo la semantica per le espressioni da valutare in un ambiente \( \rho  \):
+\[
+  \rho \vdash e \to e'
+\] 
+questo significa che l'espressione \( e \) viene valutata in \( e' \) nell'ambiente \( \rho \).
+Le regole di transizione per le espressioni con identificatori diventano:
+\begin{itemize}
+  \item Regola 1 (Assioma):
+    \[
+      \rho \vdash \texttt{m op n} \to p = \texttt{m op n}
+    \] 
+
+  \item Regola 2:
+    \[
+      \begin{prooftree}
+        \hypo{\rho \vdash e_0 \to e'_0}
+        \infer1{\rho \vdash e_0 \texttt{ op } e_1 \to e'_0 \texttt{ op } e_1}
+      \end{prooftree}
+    \]
+
+  \item Regola 3+4:
+    \[
+      \begin{prooftree}
+        \hypo{\rho \vdash e_1 \to e'_1}
+        \infer1{\rho \vdash k \texttt{ bop } e_1 \to k \texttt{ bop } e'_1}
+      \end{prooftree}
+    \]
+    con \( bop \in \{\texttt{or}, +, -, *\} \)
+
+  \item Regola 5:
+    \[
+      \begin{prooftree}
+        \hypo{\rho \vdash e \to e'}
+        \infer1{\rho \vdash \texttt{not } e \to \texttt{not } e'}
+      \end{prooftree}
+    \]
+
+  \item Regola 6:
+    \[
+      \rho \vdash \texttt{not } e_t \to t' = \texttt{not } t \quad t, t' \in \texttt{B}
+    \]
+\end{itemize}
+Sono le stesse regole di transizione che avevamo definito per le espressioni senza
+identificatori, ma ora sono valutate in un ambiente \( \rho \) che viene propagato in
+tutte le transizioni.
+
+Ora definiamo una nuova regola che utilizza l'ambiente \( \rho \) per valutare un
+identificatore \( x \):
+\begin{itemize}
+  \item Regola 7:
+    \[
+      \rho \vdash x \to k \text{ se } \rho(x) = k
+    \]
+\end{itemize}
+
+\begin{example}
+  Consideriamo la seguente espressione:
+  \[
+    \texttt{x + y - 5}
+  \] 
+  da valutare nell'ambiente:
+  \[
+    \rho = [\texttt{x} \mapsto 2, \texttt{y} \mapsto 5]
+  \] 
+
+  \vspace{1em}
+  \noindent
+  Applichiamo le regole:
+  \begin{enumerate}
+    \item \[
+        \begin{aligned}
+          &\begin{prooftree}
+            \hypo{\rho \vdash \texttt{x} \to 2}
+            \infer1[$\mathcal{E}_2$]{\rho \vdash \texttt{x + y - 5} \to 2 + \texttt{y - 5}}
+          \end{prooftree}\\
+          &\qquad \downarrow\\
+          &\begin{prooftree}
+            \hypo{\rho \vdash \texttt{y} \to 5}
+            \infer1[$\rho(y)=5$]{\rho \vdash \texttt{y - 5} \to 5 - 5}
+            \infer1{\rho \vdash \texttt{2 + y - 5} \to 2 + 5 - 5}
+          \end{prooftree}\\
+          &\qquad \downarrow\\
+          &\begin{prooftree}
+            \hypo{\rho \vdash 5-5 \to 0}
+            \infer1{\rho \vdash 2 + 5 - 5 \to 2 + 0}
+            \infer1{\rho \vdash 2 + 0 \to 2}
+          \end{prooftree}
+        \end{aligned}
+    \] 
+  \end{enumerate}
+\end{example}
+
+\subsection{Tipo di dato}
+Il tipo è l'insieme dei valori che una variabile può riferire, tali valori devono
+condividere una certa proprietà. Ad esempio, il tipo \texttt{int} è l'insieme dei
+numeri interi, il tipo \texttt{bool} è l'insieme dei valori booleani, ecc...
 
 
 \end{document}
