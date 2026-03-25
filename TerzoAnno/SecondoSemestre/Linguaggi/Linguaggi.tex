@@ -2008,14 +2008,14 @@ identificatore \( x \):
             \hypo{\rho \vdash \texttt{x} \to 2}
             \infer1[$\mathcal{E}_2$]{\rho \vdash \texttt{x + y - 5} \to 2 + \texttt{y - 5}}
           \end{prooftree}\\
-          &\qquad \downarrow\\
+          &\qquad\qquad\qquad \downarrow\\
           &\begin{prooftree}
             \hypo{\rho \vdash \texttt{y} \to 5}
             \infer1[$\rho(y)=5$]{\rho \vdash \texttt{y - 5} \to 5 - 5}
             \infer1{\rho \vdash \texttt{2 + y - 5} \to 2 + 5 - 5}
           \end{prooftree}\\
-          &\qquad \downarrow\\
-          &\begin{prooftree}
+          &\qquad\qquad\qquad \downarrow\\
+          &\quad \begin{prooftree}
             \hypo{\rho \vdash 5-5 \to 0}
             \infer1{\rho \vdash 2 + 5 - 5 \to 2 + 0}
             \infer1{\rho \vdash 2 + 0 \to 2}
@@ -2030,5 +2030,31 @@ Il tipo è l'insieme dei valori che una variabile può riferire, tali valori dev
 condividere una certa proprietà. Ad esempio, il tipo \texttt{int} è l'insieme dei
 numeri interi, il tipo \texttt{bool} è l'insieme dei valori booleani, ecc...
 
+L'utilizzo del tipo ha varie funzionalità:
+\begin{itemize}
+  \item \textbf{A tempo di progettazione}: permette di organizzare le funzionalità
+    del linguaggio.
+
+  \item \textbf{A tempo di sviluppo}: servono a prevenire errori di programmazione,
+    ad esempio se si cerca di sommare una stringa ad un intero, il compilatore può
+    segnalare un errore di tipo.
+
+  \item \textbf{A tempo di implementazione}: Servono per capire quanta memoria
+    allocare per una certa variabile.
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Il tipo deve essere legato alla variable, quindi viene aggiunto al legame con l'oggetto
+denotato. Si dovrà creare un ambiente separato per i tipi e si avrà:
+\begin{itemize}
+  \item Un ambiente \textbf{dinamico}, come quello definito per le espressioni
+    (\( \rho  \)), che viene utilizzato durante l'esecuzione. Infatti la valutazione
+    delle espressioni \textbf{assume che siano scritte correttamente}.
+
+  \item Un ambiente \textbf{statico}, che viene utilizzato durante la compilazione per
+    verificare la correttezza dei tipi e per allocare la memoria necessaria per
+    le variabili.
+\end{itemize}
 
 \end{document}
