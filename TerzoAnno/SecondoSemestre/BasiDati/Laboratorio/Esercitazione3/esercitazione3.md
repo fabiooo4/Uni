@@ -356,20 +356,14 @@ righe a partire dalla 50° sono:
 | 280 | Giuseppe   | Ceriani |
 
 ```sql
--- SBAGLIATO
 select distinct persona.id, persona.nome, persona.cognome
 from inserogato
-  join docenza as d1 on inserogato.id = d1.id_inserogato
-  join persona on d1.id_persona = persona.id
+  join docenza on inserogato.id = docenza.id_inserogato
+  join persona on docenza.id_persona = persona.id
 where inserogato.annoaccademico = '2010/2011'
-  -- Se lo stesso docente ha insegnato in un insegnamento diverso
-  -- dal primo
-  and exists (
-    select d2.id
-    from docenza as d2
-    where d2.id_persona = d1.id_persona and
-      d1.id_inserogato <> d2.id_inserogato
-  )
+group by persona.id, persona.nome, persona.cognome
+having count(distinct docenza.id_inserogato) > 1
+  and count(distinct inserogato.id_corsostudi) > 1
 order by persona.id;
 ```
 
