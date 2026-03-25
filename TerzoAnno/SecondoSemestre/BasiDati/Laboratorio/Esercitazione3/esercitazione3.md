@@ -185,6 +185,17 @@ Soluzione: ci sono 724 righe distinte. Le ultime 5 righe sono:
 | Laboratorio di composizione italiana | Cognomi L-Z   |
 | Biologia                             | Cognomi M-Z   |
 
+```sql
+select distinct insegn.nomeins, discriminante.descrizione
+from inserogato
+  join insegn on inserogato.id_insegn = insegn.id
+  join discriminante on inserogato.id_discriminante = discriminante.id
+where inserogato.annoaccademico = '2009/2010'
+  and inserogato.modulo = 0
+  and inserogato.crediti in (3, 5, 12)
+order by discriminante.descrizione;
+```
+
 ### Esercizio 9
 
 Visualizzare l'identificatore, il nome e il discriminante degli insegnamenti erogati
@@ -201,6 +212,17 @@ Soluzione: ci sono 1218 righe. Le 5 righe dalla 1023° riga sono:
 | 44428 | Storia del diritto medievale e moderno | Matricole dispari |
 | 44441 | Storia del diritto medievale e moderno | Matricole dispari |
 
+```sql
+select inserogato.id, insegn.nomeins, discriminante.descrizione
+from inserogato
+  join insegn on inserogato.id_insegn = insegn.id
+  join discriminante on inserogato.id_discriminante = discriminante.id
+where inserogato.annoaccademico = '2008/2009'
+  and inserogato.modulo = 0
+  and inserogato.crediti > 9
+order by insegn.nomeins;
+```
+
 ### Esercizio 10
 
 Visualizzare in ordine alfabetico di nome degli insegnamenti (esclusi i moduli e le
@@ -209,6 +231,21 @@ il nome, il discriminante, i crediti e gli anni di erogazione.
 
 Soluzione: ci sono 26 righe.
 
+```sql
+select insegn.nomeins,
+  discriminante.descrizione,
+  inserogato.crediti,
+  inserogato.annierogazione
+from inserogato
+  join insegn on inserogato.id_insegn = insegn.id
+  join discriminante on inserogato.id_discriminante = discriminante.id
+  join corsostudi on inserogato.id_corsostudi = corsostudi.id
+where inserogato.annoaccademico = '2010/2011'
+  and inserogato.modulo = 0
+  and corsostudi.nome = 'Laurea in Informatica'
+order by insegn.nomeins;
+```
+
 ### Esercizio 11
 
 Trovare il massimo numero di crediti associato a un insegnamento fra quelli erogati
@@ -216,12 +253,26 @@ nel 2010/2011.
 
 Soluzione: 180.
 
+```sql
+select max(inserogato.crediti)
+from inserogato
+where inserogato.annoaccademico = '2010/2011';
+```
+
 ### Esercizio 12
 
 Trovare, per ogni anno accademico, il massimo e il minimo numero di crediti erogati
 tra gli insegnamenti dell'anno.
 
 Soluzione: ci sono 16 righe.
+
+```sql
+select inserogato.annoaccademico,
+  max(inserogato.crediti),
+  min(inserogato.crediti)
+from inserogato
+group by inserogato.annoaccademico;
+```
 
 ### Esercizio 13
 
@@ -234,6 +285,18 @@ Soluzione: ci sono 1587 righe. La riga relativa alla "Scuola di
 Specializzazione in Urologia (Vecchio ordinamento)" nell'anno 2011/2012 ha valori
 52.00, 10.00 e 162.00.
 
+```sql
+select inserogato.annoaccademico,
+  corsostudi.nome,
+  max(inserogato.crediti),
+  min(inserogato.crediti),
+  sum(inserogato.crediti)
+from inserogato
+  join corsostudi on inserogato.id_corsostudi = corsostudi.id
+where inserogato.modulo = 0
+group by inserogato.annoaccademico, corsostudi.nome;
+```
+
 ### Esercizio 14
 
 Trovare per ogni corso di studi della facoltà di Scienze Matematiche Fisiche e
@@ -241,6 +304,18 @@ Naturali il numero di insegnamenti (esclusi i moduli e le unità logistiche) ero
 nel 2009/2010.
 
 Soluzione: ci sono 19 righe.
+
+```sql
+select corsostudi.nome, count(inserogato.id) as numinsegnamenti
+from inserogato
+  join corsostudi on inserogato.id_corsostudi = corsostudi.id
+  join corsoinfacolta on inserogato.id_corsostudi = corsoinfacolta.id_corsostudi
+  join facolta on corsoinfacolta.id_facolta = facolta.id
+where facolta.nome = 'Scienze matematiche fisiche e naturali'
+  and inserogato.annoaccademico = '2009/2010'
+  and inserogato.modulo = 0
+group by corsostudi.nome;
+```
 
 ### Esercizio 15
 
@@ -251,6 +326,17 @@ crediti di laboratorio sono rappresentati dall'attributo creditilab della tabell
 InsErogato.
 
 Soluzione: ci sono 197 righe.
+
+```sql
+select distinct corsostudi.nome, corsostudi.durataanni
+from inserogato
+  join corsostudi on inserogato.id_corsostudi = corsostudi.id
+where inserogato.annoaccademico = '2010/2011'
+  and (
+        inserogato.crediti in (4, 6, 8, 10, 12)
+        or inserogato.creditilab between 10 and 15
+      );
+```
 
 ### Esercizio 16
 
@@ -269,6 +355,24 @@ righe a partire dalla 50° sono:
 | 278 | Alessandro | Lai     |
 | 280 | Giuseppe   | Ceriani |
 
+```sql
+-- SBAGLIATO
+select distinct persona.id, persona.nome, persona.cognome
+from inserogato
+  join docenza as d1 on inserogato.id = d1.id_inserogato
+  join persona on d1.id_persona = persona.id
+where inserogato.annoaccademico = '2010/2011'
+  -- Se lo stesso docente ha insegnato in un insegnamento diverso
+  -- dal primo
+  and exists (
+    select d2.id
+    from docenza as d2
+    where d2.id_persona = d1.id_persona and
+      d1.id_inserogato <> d2.id_inserogato
+  )
+order by persona.id;
+```
+
 ### Esercizio 17
 
 Trovare per ogni periodo di lezione del 2010/2011 la cui descrizione inizia con
@@ -284,6 +388,30 @@ La soluzione ha 3 righe:
 | Primo semestre | Primo semestre | 2010 -10 -04 | 2011 -01 -22 | 124         |
 | I semestre     | I semestre     | 2010 -10 -04 | 2011 -01 -31 | 159         |
 
+```sql
+select periodolez.abbreviazione,
+  periododid.discriminante,
+  periododid.inizio,
+  periododid.fine,
+  count(inserogato.id)
+from periododid
+  join periodolez on periododid.id = periodolez.id
+  join insinperiodo on periodolez.id = insinperiodo.id_periodolez
+  join inserogato on insinperiodo.id_inserogato = inserogato.id
+where periododid.annoaccademico = '2010/2011'
+  and (
+        periododid.descrizione like 'I semestre'
+        or periododid.descrizione like 'Primo semestre'
+      )
+group by (
+  periodolez.abbreviazione,
+  periododid.discriminante,
+  periododid.inizio,
+  periododid.fine
+)
+order by periododid.inizio, periododid.fine;
+```
+
 ### Esercizio 18
 
 Trovare per ogni segreteria che serve almeno un corso di studi il numero di corsi di
@@ -291,3 +419,12 @@ studi serviti, riportando il nome della struttura, il suo numero di fax e il con
 richiesto.
 
 La soluzione ha 42 righe.
+
+```sql
+select strutturaservizio.nomestruttura,
+  strutturaservizio.fax,
+  count(corsostudi.id)
+from strutturaservizio
+  join corsostudi on strutturaservizio.id = corsostudi.id_segreteria
+group by strutturaservizio.nomestruttura, strutturaservizio.fax;
+```
