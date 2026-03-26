@@ -51,7 +51,7 @@
 
   <build>
     <plugins>
-      <!-- Executes the main class defined by running `mvn compile exec:java` -->
+      <!-- Executes the main class defined by running `mvn compile exec:java -Dexec.args="<binary_parameters>"` -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
