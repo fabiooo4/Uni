@@ -108,8 +108,11 @@ I'm sharing them because they can be useful to other students.
 <summary>&emsp;Second Semester</summary>
     
 - [Databases](./TerzoAnno/SecondoSemestre/BasiDati/BasiDati.pdf)
+  - [SQL Exercises](./TerzoAnno/SecondoSemestre/BasiDati/Laboratorio)
 - [Programming languages and interpreters](./TerzoAnno/SecondoSemestre/Linguaggi/Linguaggi.pdf)
+  - [Interpreter implementation](./TerzoAnno/SecondoSemestre/Linguaggi/Laboratorio)
 - [Compilers](./TerzoAnno/SecondoSemestre/Compilatori/Compilatori.pdf)
+  - [Compiler implementation](./TerzoAnno/SecondoSemestre/Compilatori/Laboratorio)
 </details>
 </details>
 
