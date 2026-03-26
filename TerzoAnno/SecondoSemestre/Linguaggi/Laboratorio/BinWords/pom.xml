@@ -43,13 +43,47 @@
 
     <dependency>
       <groupId>org.antlr</groupId>
-      <artifactId>antlr4</artifactId>
+      <artifactId>antlr4-runtime</artifactId>
       <version>4.13.2</version>
       <scope>compile</scope>
     </dependency>
   </dependencies>
 
   <build>
+    <plugins>
+      <!-- Executes the main class defined by running `mvn compile exec:java` -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.5.0</version>
+        <configuration>
+          <mainClass>App</mainClass>
+        </configuration>
+      </plugin>
+
+      <!-- This plugin automatically generates the java files from the grammar files located in ${basedir}/src/main/antlr4 -->
+      <plugin>
+        <groupId>org.antlr</groupId>
+        <artifactId>antlr4-maven-plugin</artifactId>
+        <version>4.13.2</version>
+        <executions>
+          <execution>
+            <id>antlr</id>
+            <goals>
+              <goal>antlr4</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <sourceDirectory>${basedir}/src/main/antlr4</sourceDirectory>
+
+          <!-- For building interpreters -->
+          <visitor>true</visitor> 
+          <listener>true</listener>
+        </configuration>
+      </plugin>
+    </plugins>
+
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
         <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->

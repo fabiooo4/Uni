@@ -1,7 +1,0 @@
-package com.fabiooo4.binwords;
-
-public class App {
-  public static void main(String[] args) {
-    System.out.println("Hello World!");
-  }
-}
