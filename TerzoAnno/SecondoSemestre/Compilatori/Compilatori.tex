@@ -394,458 +394,6 @@ può avere lo stesso front end e due back end diversi.
   \caption{Esempi di front end e back end}
 \end{figure}
 
-\section{Definizione della sintassi}
-In questo corso verrà implementato un front-end per un compilatore:
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.8\textwidth]{front_end}
-  \caption{Front-end di un compilatore}
-\end{figure}
-
-\vspace{1em}
-\noindent
-La sintassi di un linguaggio di programmazione è definita attraverso le grammatiche
-context free. Una grammatica context free è composta da:
-\begin{itemize}
-  \item Un insieme di \textbf{simboli terminali}, che rappresnetano simboli, numeri
-    e parole chiave del linguaggio. Solitamente scritte in grassetto, ad esempio:
-    \textbf{<, =, +, 1, 2, while}, ecc...
-    % TODO: Per ogni blocco di codice metti il grassetto o l'italic
-
-  \item Un insieme di \textbf{simboli non terminali}, che rappresentano categorie sintattiche
-    come espressioni, istruzioni, blocchi, ecc... Solitamente scritte in corsivo, ad esempio:
-    \textit{expr, stmt, var}, ecc...
-
-  \item Un insieme di \textbf{produzioni}, che definiscono come i simboli non terminali
-    possono essere sostituiti da sequenze di simboli terminali e non terminali:
-    \[
-      A \rightarrow \alpha \quad A \in V \text{(Non terminali)}, \alpha \in (V \cup T)^* \text{(T terminali)}
-    \] 
-
-  \item Un simbolo non terminale di partenza
-\end{itemize}
-
-\begin{example}
-  \label{example:grammatica}
-  L'esempio di una grammatica è il seguente:
-  \begin{itemize}
-    \item Simboli terminali:
-      \( \{ \textbf{+, -, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9} \}  \) 
-
-    \item Simboli non terminali:
-      \( \left\{ \textit{list, digit} \right\} \) 
-
-    \item Simbolo di partenza: \textit{list}
-
-    \item Produzioni:
-      \[
-        \begin{aligned}
-          \textit{list} &\to \textit{list} + \textit{digit} \\
-          \textit{list} &\to \textit{list} - \textit{digit} \\
-          \textit{list} &\to \textit{digit} \\
-          \textit{list} &\to \textbf{0} \mid \textbf{1} \mid \textbf{2} \mid \textbf{3} \mid \textbf{4} \mid \textbf{5} \mid \textbf{6} \mid \textbf{7} \mid \textbf{8} \mid \textbf{9}
-        \end{aligned}
-      \]
-  \end{itemize}
-  Questa grammatica definisce le liste di numeri separati da operatori \textbf{+} o
-  \textbf{-}.
-\end{example}
-
-\subsection{Derivazione}
-Data una grammatica context free si può determinare l'insieme di tutte le stringhe
-(sequenze di token) generate dalla grammatica utilizzando le \textbf{derivazioni}.
-Si parte dal simbolo di partenza e ad ogni passo si sostituisce un simbolo non terminale
-nella \textbf{forma sentenziale} (cioè una stringa che contiene sia simboli terminali
-che non terminali) con la parte destra di una produzione che ha quel simbolo non terminale.
-
-\section{Parsing}
-Il parsing è il processo di analisi sintattica che prende in input una sequenza di token
-e determina se la sequenza è sintatticamente corretta secondo la grammatica del linguaggio
-e costruisce un albero sintattico astratto (AST) che rappresenta la struttura gerarchica
-del programma. L'albero ha le seguenti caratteristiche:
-\begin{itemize}
-  \item La \textbf{radice} dell'albero è etichettato con il simbolo di partenza della grammatica.
-  \item Ogni \textbf{foglia} dell'albero è etichettato con un simbolo terminale (un token) o la
-    stringa vuota \( \varepsilon  \).
-  \item Ogni \textbf{nodo interno} è etichettato con un simbolo non terminale
-  \item Se \( A \to X_1 X_2 \ldots X_n \) è una produzione, allora il nodo \( A \) ha
-    \( n \) figli, etichettati con \( X_1, X_2, \ldots, X_n \) dove \( X_i \) è 
-    un terminale o non terminale (oppure \( \varepsilon  \).
-\end{itemize}
-Il processo per trovare un albero sintattico per una data stringa di terminali è
-chiamato \textbf{parsing} di quella stringa.
-
-\begin{example}
-  L'albero sintattico per la stringa "\textbf{9 - 5 + 2}" secondo la grammatica
-  dell'esempio precedente è il seguente:
-  \begin{figure}[H]
-    \centering
-    \begin{forest}
-      [\textit{list}
-        [\textit{list}
-          [\textit{list} [\textit{digit} [\textbf{9}]]]
-          [\textbf{-}]
-          [\textit{digit} [\textbf{5}]]
-        ]
-        [\textit{digit} [\textbf{2}]]
-      ]
-    \end{forest}
-  \end{figure}
-  \noindent
-  La derivazione per questa stringa è la seguente:
-  \[
-  \begin{aligned}
-    \textit{list} &\to \textit{list} \,\textbf{+}\, \textit{digit} \\
-                  &\to \textit{list} \,\textbf{-}\, \textit{digit} \,\textbf{+}\, \textit{digit} \\
-                  &\to \textit{digit} \,\textbf{-}\, \textit{digit} \,\textbf{+}\, \textit{digit} \\
-                  &\to \textbf{9} \,\textbf{-}\, \textit{digit} \,\textbf{+}\, \textit{digit} \\
-                  &\to \textbf{9} \,\textbf{-}\, \textbf{5} \,\textbf{+}\, \textit{digit} \\
-                  &\to \textbf{9} \,\textbf{-}\, \textbf{5} \,\textbf{+}\, \textbf{2}
-  \end{aligned}
-  \] 
-\end{example}
-
-\subsection{Ambiguità}
-Una grammatica è ambigua se esiste una stringa che può essere generata da più di
-un albero sintattico.
-Siccome una stringa con più di un albero sintattico solitamente ha più di un significato,
-bisogna progettare grammatiche non ambigue per le applicazioni di compilazione, o
-utilizzare grammatiche ambigue con regole aggiuntive per risolvere le ambiguità.
-
-\begin{example}
-  Considerando la seguente grammatica:
-  \begin{itemize}
-    \item Simboli terminali: \( \{ \textbf{+, -, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9} \} \)
-    \item Simboli non terminali: \( \left\{ \textit{string} \right\} \)
-    \item Simbolo di partenza: \textit{string}
-    \item Produzioni:
-      \[
-        \begin{aligned}
-          \textit{string} &\to \textit{string} + \textit{string} \\
-          \textit{string} &\to \textit{string} - \textit{string} \\
-          \textit{string} &\to \textbf{0} \mid \textbf{1} \mid \textbf{2} \mid \textbf{3} \mid \textbf{4} \mid \textbf{5} \mid \textbf{6} \mid \textbf{7} \mid \textbf{8} \mid \textbf{9}
-        \end{aligned}
-      \]
-  \end{itemize}
-  La stringa "\textbf{9 - 5 + 2}" può essere generata da due alberi sintattici diversi,
-  che hanno significati diversi:
-  \begin{figure}[H]
-    \centering
-    \begin{minipage}{0.45\textwidth}
-      \begin{forest}
-        [\textit{string}
-          [\textit{string}
-            [\textit{string} [\textbf{9}]]
-            [\textbf{-}]
-            [\textit{string} [\textbf{5}]]
-          ]
-          [\textbf{+}]
-          [\textit{string} [\textbf{2}]]
-        ]
-      \end{forest}
-      \caption{(9 - 5) + 2 = 6}
-    \end{minipage}
-    \hfill
-    \begin{minipage}{0.45\textwidth}
-      \begin{forest}
-        [\textit{string}
-          [\textit{string} [\textbf{9}]]
-          [\textbf{-}]
-          [\textit{string}
-            [\textit{string} [\textbf{5}]]
-            [\textbf{+}]
-            [\textit{string} [\textbf{2}]]
-          ]
-        ]
-      \end{forest}
-      \caption{9 - (5 + 2) = 2}
-    \end{minipage}
-  \end{figure}
-  \noindent
-  L'ordine delle operazioni è diverso nei due alberi sintattici, e quindi la grammatica
-  è ambigua.
-\end{example}
-
-\subsection{Associatività degli operatori}
-Nella maggior parte dei linguaggi di programmazione le quattro operazioni aritmetiche
-(+, -, *, /) sono \textbf{associate a sinistra}, cioè:
-\begin{example}
-  La stringa \texttt{a + b + c} è interpretata come \texttt{(a + b) + c}
-    \[
-      left \to left + letter \mid letter
-    \] 
-    \begin{figure}[H]
-      \centering
-      \begin{forest}
-        [\textit{left}
-          [\textit{left}
-            [\textit{left} [\textit{letter} [\textbf{a}]]]
-            [\textbf{+}]
-            [\textit{letter} [\textbf{b}]]
-          ]
-          [\textbf{+}]
-          [\textit{letter} [\textbf{c}]]
-        ]
-      \end{forest}
-    \end{figure}
-\end{example}
-Altre operazioni, come gli assegnamenti o l'esponenziazione sono invece
-\textbf{associate a destra}, cioè:
-\begin{example}
-  La stringa \texttt{a = b = c} è interpretata come \texttt{a = (b = c)}
-    \[
-      right \to letter = right \mid letter
-    \]
-    \begin{figure}[H]
-      \centering
-      \begin{forest}
-        [\textit{right}
-          [\textit{letter} [\textbf{a}]]
-          [\textbf{=}]
-          [\textit{right}
-            [\textit{letter} [\textbf{b}]]
-            [\textbf{=}]
-            [\textit{right} [\textit{letter} [\textbf{c}]]]
-          ]
-        ]
-      \end{forest}
-    \end{figure}
-\end{example}
-
-\subsection{Precedenza degli operatori}
-Bisogna introdurre regole che definiscono la precedenza relativa degli operatori
-quando più di un tipo di operatore è presente, ad esempio
-\( * \) e \( / \) hanno precedenza più alta di \( + \) e \( - \).
-
-\begin{example}
-  La stringa \texttt{9 + 5 * 2} ha il significato di \texttt{9 + (5 * 2)}.
-  Si può quindi costruire una grammatica per le operazioni aritmetiche che rispetta
-  la precedenza degli operatori:
-  \[
-    \begin{aligned}
-      \textit{expr} &\to \textit{expr} \,\textbf{+}\, \textit{term}
-      \mid \textit{expr} \,\textbf{-}\, \textit{term}
-      \mid \textit{term} \\
-      \textit{term} &\to \textit{term} \,\textbf{*}\, \textit{factor}
-      \mid \textit{term} \,\textbf{/}\, \textit{factor}
-      \mid \textit{factor} \\
-      \textit{factor} &\to \textit{digit} \mid \textbf{(} \textit{expr} \textbf{)} \\
-      \textit{digit} &\to \textbf{0} \mid \textbf{1} \mid \textbf{2} \mid \textbf{3} \mid \textbf{4} \mid \textbf{5} \mid \textbf{6} \mid \textbf{7} \mid \textbf{8} \mid \textbf{9}
-    \end{aligned}
-  \] 
-  L'albero sintattico per la stringa \texttt{9 + 5 * 2} secondo questa grammatica è il
-  seguente:
-  \begin{figure}[H]
-    \centering
-    \begin{forest}
-      [\textit{expr}
-        [\textit{expr}
-          [\textit{term}
-            [\textit{factor}
-              [\textit{digit} [\textbf{9}]]
-            ]
-          ]
-        ]
-        [\textbf{+}]
-        [\textit{term}
-          [\textit{term}
-            [\textit{factor}
-              [\textit{digit} [\textbf{5}]]
-            ]
-          ]
-          [\textbf{*}]
-          [\textit{factor}
-            [\textit{digit} [\textbf{2}]]
-          ]
-        ]
-      ]
-    \end{forest}
-  \end{figure}
-  \noindent
-  E ha come significato \texttt{9 + (5 * 2)} = 19.
-\end{example}
-
-\subsection{Sintassi degli statements}
-Uno statement è una unità sintattica che rappresenta un'azione da eseguire, ad esempio
-\texttt{if}, \texttt{while}, \texttt{for}, ecc... .
-
-\begin{example}
-  Un esempio di grammatica per gli statements è il seguente:
-  \[
-    \begin{aligned}
-      \textit{stmt} &\to \textbf{id} \; \textbf{=} \; \textit{expr} \textbf{;} \\
-                    &\mid\; \textbf{if} \; \textit{expr}\; \textbf{then}\; \textit{stmt} \\
-                    &\mid\; \textbf{if}\; \textit{expr}\; \textbf{then}\; \textit{stmt}\; \textbf{else} \textit{stmt} \\
-                    &\mid\; \textbf{while}\; \textit{expr}\; \textbf{do}\; \textit{stmt} \\
-                    &\mid\; \textbf{do}\; \textit{stmt}\; \textbf{while}\; \textit{expr} \textbf{;} \\
-                    &\mid\; \textbf{\{}\; \textit{stmt}\; \textbf{\}} \\
-                    \\
-      \textit{stmts} &\to \textit{stmts} \; \textit{stmt} \\
-                     &\mid\; \varepsilon
-    \end{aligned}
-  \] 
-\end{example}
-
-\subsection{Tipi di parser}
-Per ogni grammatica context free esiste un \textbf{parser} che ha complessita di tempo
-\( O(n^3) \) per fare il parsing di una stringa di lunghezza \( n \).
-Algoritmi più efficienti, con complessità \( O(n) \), esistono per classi più ristrette
-di grammatiche. Ci sono due tipi di parser:
-\begin{itemize}
-  \item \textbf{Top-down parsing}: Costruisce l'albero sintattico partendo dalla radice
-    applicando le produzioni fino a raggiungere le foglie.
-  \item \textbf{Bottom-up parsing}: Costruisce l'albero sintattico partendo dalle foglie
-    applicando le produzioni fino a raggiungere la radice.
-\end{itemize}
-
-\subsubsection{Top-down parsing}
-Consideriamo la seguente grammatica:
-\[
-  \begin{aligned}
-    stmt &\to expr;\\
-         &| if (expr) stmt \\
-          &| for (optexpr; optexpr; optexpr) stmt \\
-          &| other \\
-          \\
-    optexpr &\to expr \\
-            &| \varepsilon
-  \end{aligned}
-\] 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.8\textwidth]{top_down_parsing}
-  \caption{Esempio di top-down parsing}
-\end{figure}
-Questa grammatica ad esempio riconosce la seguente stringa:
-\begin{lstlisting}
-for (; expr ; expr) other
-\end{lstlisting}
-
-\subsubsection{Predictive parsing}
-Il predictive parsing è un metodo di top-down parsing che utilizza un simbolo di lookahead
-per decidere quale produzione applicare. il \textbf{Recursive descent parsing} è un
-metodo di top-down parsing in cui viene utilizzato un insieme di procedure ricorsive
-per processare l'input, in cui \textbf{ogni non terminale} ha una \textbf{procedura ricorsiva} che si
-occupa di fare il parsing di quel non terminale.
-In generale la selezione di una produzione per un non terminale può comportare
-un approccio trial-and-error, ma il predictive parsing \textbf{evita il backtracking}
-utilizzando un \textbf{simbolo di lookahead} per determinare in modo univoco quale produzione
-applicare.
-
-\begin{definition}[Simbolo di lookahead]
-  Il simbolo di lookahead è un simbolo terminale che viene utilizzato per decidere quale
-  produzione applicare durante il parsing. Ad esempio, se il simbolo di lookahead è
-  \texttt{for}, allora si sa che bisogna applicare la produzione \( stmt \to for (optexpr; optexpr; optexpr) stmt \).
-\end{definition}
-
-\noindent
-Quando un non terminale ha più produzioni, ogni produzione viene implementata in
-un ramo di una dichiarazione di selezione basata sulle informazioni del simbolo di
-lookahead. Il predictive parsing è una forma speciale di recursive descent parsing
-in cui si utilizza un simbolo di lookahead per determinare in modo univoco le operazioni
-di parsing.
-
-\begin{example}
-  Considerando la seguente grammatica:
-  \[
-    \begin{aligned}
-      stmt &\to expr;\\
-           &| if (expr) stmt \\
-           &| for (optexpr; optexpr; optexpr) stmt \\
-           &| other \\
-           \\
-      optexpr &\to expr \\
-              &| \varepsilon
-    \end{aligned}
-  \] 
-  \noindent
-  Il predictive parser per questa grammatica è il seguente:
-\begin{lstlisting}[language=C]
-void stmt() {
-  switch (lookahead) {
-    case expr:
-      match(expr);
-      match(';');
-      break;
-    case if:
-      match(if);
-      match('(');
-      match(expr);
-      match(')');
-      stmt();
-      break;
-    case for:
-      match(for);
-      match('(');
-      optexpr();
-      match(';');
-      optexpr();
-      match(';');
-      optexpr();
-      match(')');
-      stmt();
-      break;
-    case other:
-      match(other);
-      break;
-    default:
-      report("Syntax error");
-  }
-}
-
-void optexpr() {
-  if (lookahead == expr) {
-    match(expr);
-  }
-}
-
-void match(terminal t) {
-  if (lookahead == t) {
-    lookahead = nextTerminal();
-  } else {
-    report("Syntax error");
-  }
-}
-\end{lstlisting}
-\end{example}
-
-\subsubsection{Funzione first}
-La funzione \( FIRST(\alpha) \) è l'insieme dei terminali che appaiono come primi
-simboli di una o più stringhe generate da \( \alpha \).
-\begin{example}
-  Considerando la grammatica dell'esempio precedente si ha:
-  \[
-  \begin{aligned}
-    FIRST(stmt) &= \{ expr, if, for, other \} \\
-    FIRST(optexpr) &= \{ expr, \varepsilon \}
-  \end{aligned}
-  \] 
-\end{example}
-
-\subsubsection{Ricorsione sinistra}
-Una produzione del tipo:
-\[
-  A \to A \alpha | \beta
-\] 
-% When the leftmost symbol of the body of a
-% production is the same as the nonterminal at the head of
-% the production a predictive parsing may loop forever
-è detta \textbf{ricorsiva sinistra} perchè il primo simbolo del corpo della produzione
-è lo stesso del non terminale alla testa della produzione. La ricorsione sinistra
-può causare un loop infinito nel predictive parsing, perchè il parser potrebbe continuare
-ad applicare la produzione senza mai arrivare a una produzione che non è ricorsiva sinistra.
-
-% We can eliminate left recursive productions by
-% systematically rewriting the grammar using right recursive
-% productions
-Per risolvere questo problema, si possono eliminare le produzioni ricorsive sinistra
-riscrivendo la grammatica in modo da utilizzare produzioni ricorsive a destra. Ad esempio:
-\[
-  \begin{aligned}
-    A &\to \beta R \\
-    R &\to \alpha R | \varepsilon
-  \end{aligned}
-\] 
 
 \section{Generazione del codice intermedio}
 
@@ -1078,9 +626,7 @@ quando viene applicata una produzione.
   \end{figure}
 \end{example}
 
-
-
-\section{Analizzatore lessicale}
+\section{Analisi lessicale}
 L'analizzatore lessicale, o lexer si occupa di suddividere il codice sorgente in token
 e di costruire la tabella dei simboli. Il lexer è solitamente implementato come un
 programma che legge il codice sorgente e produce in output una sequenza di token.
@@ -2056,6 +1602,700 @@ for (each group |\textit{G}| of |\( \Pi \)|) {
 \end{example}
 
 
-\section{Analisi sintattica}
+\section{Analisi sintattica (Parsing)}
+Il parsing è il processo di analisi sintattica che prende in input una sequenza di token
+e determina se la sequenza è sintatticamente corretta secondo la grammatica del linguaggio
+e costruisce un albero sintattico astratto (AST) che rappresenta la struttura gerarchica
+del programma. L'albero ha le seguenti caratteristiche:
+\begin{itemize}
+  \item La \textbf{radice} dell'albero è etichettato con il simbolo di partenza della grammatica.
+  \item Ogni \textbf{foglia} dell'albero è etichettato con un simbolo terminale (un token) o la
+    stringa vuota \( \varepsilon  \).
+  \item Ogni \textbf{nodo interno} è etichettato con un simbolo non terminale
+  \item Se \( A \to X_1 X_2 \ldots X_n \) è una produzione, allora il nodo \( A \) ha
+    \( n \) figli, etichettati con \( X_1, X_2, \ldots, X_n \) dove \( X_i \) è 
+    un terminale o non terminale (oppure \( \varepsilon  \).
+\end{itemize}
+Il processo per trovare un albero sintattico per una data stringa di terminali è
+chiamato \textbf{parsing} di quella stringa.
+
+\begin{example}
+  L'albero sintattico per la stringa "\textbf{9 - 5 + 2}" secondo la grammatica
+  dell'esempio precedente è il seguente:
+  \begin{figure}[H]
+    \centering
+    \begin{forest}
+      [\textit{list}
+        [\textit{list}
+          [\textit{list} [\textit{digit} [\textbf{9}]]]
+          [\textbf{-}]
+          [\textit{digit} [\textbf{5}]]
+        ]
+        [\textit{digit} [\textbf{2}]]
+      ]
+    \end{forest}
+  \end{figure}
+  \noindent
+  La derivazione per questa stringa è la seguente:
+  \[
+  \begin{aligned}
+    \textit{list} &\to \textit{list} \,\textbf{+}\, \textit{digit} \\
+                  &\to \textit{list} \,\textbf{-}\, \textit{digit} \,\textbf{+}\, \textit{digit} \\
+                  &\to \textit{digit} \,\textbf{-}\, \textit{digit} \,\textbf{+}\, \textit{digit} \\
+                  &\to \textbf{9} \,\textbf{-}\, \textit{digit} \,\textbf{+}\, \textit{digit} \\
+                  &\to \textbf{9} \,\textbf{-}\, \textbf{5} \,\textbf{+}\, \textit{digit} \\
+                  &\to \textbf{9} \,\textbf{-}\, \textbf{5} \,\textbf{+}\, \textbf{2}
+  \end{aligned}
+  \] 
+\end{example}
+
+\subsection{Definizione della sintassi}
+In questo corso verrà implementato un front-end per un compilatore:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{front_end}
+  \caption{Front-end di un compilatore}
+\end{figure}
+
+\vspace{1em}
+\noindent
+La sintassi di un linguaggio di programmazione è definita attraverso le grammatiche
+context free. Una grammatica context free è composta da:
+\begin{itemize}
+  \item Un insieme di \textbf{simboli terminali}, che rappresnetano simboli, numeri
+    e parole chiave del linguaggio. Solitamente scritte in grassetto, ad esempio:
+    \textbf{<, =, +, 1, 2, while}, ecc...
+    % TODO: Per ogni blocco di codice metti il grassetto o l'italic
+
+  \item Un insieme di \textbf{simboli non terminali}, che rappresentano categorie sintattiche
+    come espressioni, istruzioni, blocchi, ecc... Solitamente scritte in corsivo, ad esempio:
+    \textit{expr, stmt, var}, ecc...
+
+  \item Un insieme di \textbf{produzioni}, che definiscono come i simboli non terminali
+    possono essere sostituiti da sequenze di simboli terminali e non terminali:
+    \[
+      A \rightarrow \alpha \quad A \in V \text{(Non terminali)}, \alpha \in (V \cup T)^* \text{(T terminali)}
+    \] 
+
+  \item Un simbolo non terminale di partenza
+\end{itemize}
+
+\begin{example}
+  \label{example:grammatica}
+  L'esempio di una grammatica è il seguente:
+  \begin{itemize}
+    \item Simboli terminali:
+      \( \{ \textbf{+, -, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9} \}  \) 
+
+    \item Simboli non terminali:
+      \( \left\{ \textit{list, digit} \right\} \) 
+
+    \item Simbolo di partenza: \textit{list}
+
+    \item Produzioni:
+      \[
+        \begin{aligned}
+          \textit{list} &\to \textit{list} + \textit{digit} \\
+          \textit{list} &\to \textit{list} - \textit{digit} \\
+          \textit{list} &\to \textit{digit} \\
+          \textit{list} &\to \textbf{0} \mid \textbf{1} \mid \textbf{2} \mid \textbf{3} \mid \textbf{4} \mid \textbf{5} \mid \textbf{6} \mid \textbf{7} \mid \textbf{8} \mid \textbf{9}
+        \end{aligned}
+      \]
+  \end{itemize}
+  Questa grammatica definisce le liste di numeri separati da operatori \textbf{+} o
+  \textbf{-}.
+\end{example}
+
+\subsubsection{Derivazioni}
+Data una grammatica context free si può determinare l'insieme di tutte le stringhe
+(sequenze di token) generate dalla grammatica utilizzando le \textbf{derivazioni}.
+Si parte dal simbolo di partenza e ad ogni passo si sostituisce un simbolo non terminale
+nella \textbf{forma sentenziale} (cioè una stringa che contiene sia simboli terminali
+che non terminali) con la parte destra di una produzione che ha quel simbolo non terminale.
+
+\vspace{1em}
+\noindent
+Ci sono due tipi di derivazioni:
+\begin{itemize}
+  \item \textbf{Derivazione sinistra}: ad ogni passo si sostituisce il simbolo non
+    terminale più a sinistra. Ad esempio:
+    \[
+      E \Rightarrow -E \Rightarrow -(E) \Rightarrow -(E + E) \Rightarrow
+      -(\textbf{id} + E) \Rightarrow -(\textbf{id} + \textbf{id})
+    \] 
+
+  \item \textbf{Derivazione destra}: ad ogni passo si sostituisce il simbolo non
+    terminale più a destra. Ad esempio:
+    \[
+      E \Rightarrow -E \Rightarrow -(E) \Rightarrow -(E + E) \Rightarrow
+      -(E + \textbf{id}) \Rightarrow -(\textbf{id} + \textbf{id})
+    \] 
+\end{itemize}
+
+\begin{theorem}
+  Ogni albero sintattico è associato ad \textbf{una unica derivazione sinistra} e ad
+  \textbf{una unica derivazione destra}, e viceversa.
+\end{theorem}
+
+\subsection{Ambiguità}
+Una grammatica è ambigua se esiste una stringa che può essere generata da più di
+un albero sintattico.
+Siccome una stringa con più di un albero sintattico solitamente ha più di un significato,
+bisogna progettare grammatiche non ambigue per le applicazioni di compilazione, o
+utilizzare grammatiche ambigue con regole aggiuntive per risolvere le ambiguità.
+
+\begin{example}
+  Considerando la seguente grammatica:
+  \begin{itemize}
+    \item Simboli terminali: \( \{ \textbf{+, -, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9} \} \)
+    \item Simboli non terminali: \( \left\{ \textit{string} \right\} \)
+    \item Simbolo di partenza: \textit{string}
+    \item Produzioni:
+      \[
+        \begin{aligned}
+          \textit{string} &\to \textit{string} + \textit{string} \\
+          \textit{string} &\to \textit{string} - \textit{string} \\
+          \textit{string} &\to \textbf{0} \mid \textbf{1} \mid \textbf{2} \mid \textbf{3} \mid \textbf{4} \mid \textbf{5} \mid \textbf{6} \mid \textbf{7} \mid \textbf{8} \mid \textbf{9}
+        \end{aligned}
+      \]
+  \end{itemize}
+  La stringa "\textbf{9 - 5 + 2}" può essere generata da due alberi sintattici diversi,
+  che hanno significati diversi:
+  \begin{figure}[H]
+    \centering
+    \begin{minipage}{0.45\textwidth}
+      \begin{forest}
+        [\textit{string}
+          [\textit{string}
+            [\textit{string} [\textbf{9}]]
+            [\textbf{-}]
+            [\textit{string} [\textbf{5}]]
+          ]
+          [\textbf{+}]
+          [\textit{string} [\textbf{2}]]
+        ]
+      \end{forest}
+      \caption{(9 - 5) + 2 = 6}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.45\textwidth}
+      \begin{forest}
+        [\textit{string}
+          [\textit{string} [\textbf{9}]]
+          [\textbf{-}]
+          [\textit{string}
+            [\textit{string} [\textbf{5}]]
+            [\textbf{+}]
+            [\textit{string} [\textbf{2}]]
+          ]
+        ]
+      \end{forest}
+      \caption{9 - (5 + 2) = 2}
+    \end{minipage}
+  \end{figure}
+  \noindent
+  L'ordine delle operazioni è diverso nei due alberi sintattici, e quindi la grammatica
+  è ambigua.
+\end{example}
+
+\noindent
+L'ambiguità può essere usata per semplificare la grammatica, ma poi bisogna crearne
+una equivalente non ambigua per usarla durante il parsing. È impossibile convertire
+automaticamente una grammatica ambigua in una equivalente non ambigua.
+
+\subsection{Associatività degli operatori}
+Nella maggior parte dei linguaggi di programmazione le quattro operazioni aritmetiche
+(+, -, *, /) sono \textbf{associate a sinistra}, cioè:
+\begin{example}
+  La stringa \texttt{a + b + c} è interpretata come \texttt{(a + b) + c}
+    \[
+      left \to left + letter \mid letter
+    \] 
+    \begin{figure}[H]
+      \centering
+      \begin{forest}
+        [\textit{left}
+          [\textit{left}
+            [\textit{left} [\textit{letter} [\textbf{a}]]]
+            [\textbf{+}]
+            [\textit{letter} [\textbf{b}]]
+          ]
+          [\textbf{+}]
+          [\textit{letter} [\textbf{c}]]
+        ]
+      \end{forest}
+    \end{figure}
+\end{example}
+Altre operazioni, come gli assegnamenti o l'esponenziazione sono invece
+\textbf{associate a destra}, cioè:
+\begin{example}
+  La stringa \texttt{a = b = c} è interpretata come \texttt{a = (b = c)}
+    \[
+      right \to letter = right \mid letter
+    \]
+    \begin{figure}[H]
+      \centering
+      \begin{forest}
+        [\textit{right}
+          [\textit{letter} [\textbf{a}]]
+          [\textbf{=}]
+          [\textit{right}
+            [\textit{letter} [\textbf{b}]]
+            [\textbf{=}]
+            [\textit{right} [\textit{letter} [\textbf{c}]]]
+          ]
+        ]
+      \end{forest}
+    \end{figure}
+\end{example}
+
+\subsection{Precedenza degli operatori}
+Bisogna introdurre regole che definiscono la precedenza relativa degli operatori
+quando più di un tipo di operatore è presente, ad esempio
+\( * \) e \( / \) hanno precedenza più alta di \( + \) e \( - \).
+
+\begin{example}
+  La stringa \texttt{9 + 5 * 2} ha il significato di \texttt{9 + (5 * 2)}.
+  Si può quindi costruire una grammatica per le operazioni aritmetiche che rispetta
+  la precedenza degli operatori:
+  \[
+    \begin{aligned}
+      \textit{expr} &\to \textit{expr} \,\textbf{+}\, \textit{term}
+      \mid \textit{expr} \,\textbf{-}\, \textit{term}
+      \mid \textit{term} \\
+      \textit{term} &\to \textit{term} \,\textbf{*}\, \textit{factor}
+      \mid \textit{term} \,\textbf{/}\, \textit{factor}
+      \mid \textit{factor} \\
+      \textit{factor} &\to \textit{digit} \mid \textbf{(} \textit{expr} \textbf{)} \\
+      \textit{digit} &\to \textbf{0} \mid \textbf{1} \mid \textbf{2} \mid \textbf{3} \mid \textbf{4} \mid \textbf{5} \mid \textbf{6} \mid \textbf{7} \mid \textbf{8} \mid \textbf{9}
+    \end{aligned}
+  \] 
+  L'albero sintattico per la stringa \texttt{9 + 5 * 2} secondo questa grammatica è il
+  seguente:
+  \begin{figure}[H]
+    \centering
+    \begin{forest}
+      [\textit{expr}
+        [\textit{expr}
+          [\textit{term}
+            [\textit{factor}
+              [\textit{digit} [\textbf{9}]]
+            ]
+          ]
+        ]
+        [\textbf{+}]
+        [\textit{term}
+          [\textit{term}
+            [\textit{factor}
+              [\textit{digit} [\textbf{5}]]
+            ]
+          ]
+          [\textbf{*}]
+          [\textit{factor}
+            [\textit{digit} [\textbf{2}]]
+          ]
+        ]
+      ]
+    \end{forest}
+  \end{figure}
+  \noindent
+  E ha come significato \texttt{9 + (5 * 2)} = 19.
+\end{example}
+
+\subsection{Sintassi degli statements}
+Uno statement è una unità sintattica che rappresenta un'azione da eseguire, ad esempio
+\texttt{if}, \texttt{while}, \texttt{for}, ecc... .
+
+\begin{example}
+  Un esempio di grammatica per gli statements è il seguente:
+  \[
+    \begin{aligned}
+      \textit{stmt} &\to \textbf{id} \; \textbf{=} \; \textit{expr} \textbf{;} \\
+                    &\mid\; \textbf{if} \; \textit{expr}\; \textbf{then}\; \textit{stmt} \\
+                    &\mid\; \textbf{if}\; \textit{expr}\; \textbf{then}\; \textit{stmt}\; \textbf{else} \textit{stmt} \\
+                    &\mid\; \textbf{while}\; \textit{expr}\; \textbf{do}\; \textit{stmt} \\
+                    &\mid\; \textbf{do}\; \textit{stmt}\; \textbf{while}\; \textit{expr} \textbf{;} \\
+                    &\mid\; \textbf{\{}\; \textit{stmt}\; \textbf{\}} \\
+                    \\
+      \textit{stmts} &\to \textit{stmts} \; \textit{stmt} \\
+                     &\mid\; \varepsilon
+    \end{aligned}
+  \] 
+\end{example}
+
+\subsection{Errori}
+Siccome un compilatore può tradurre soltanto programmi validi, è importante che
+sia in grado di riconoscere quando un programma non è valido. Ci sono diversi
+tipi di errori:
+\begin{itemize}
+  \item \textbf{Errori lessicali}: include errori di spelling di identificatori,
+    keywords o operatori e sono rilevati durante l'analisi lessicale.
+
+  \item \textbf{Errori sintattici}: include errori di sintassi, come ad esempio
+    punti e virgola fuori posto o parentesi graffe extra o mancanti. In questo
+    caso, le singole unità lessicali sono corrette, ma non possono essere
+    analizzate sintatticamente, e gli errori sono rilevati durante
+    l'analisi sintattica.
+
+  \item \textbf{Errori semantici}: include errori di tipo e sono rilevati dal
+    Type Checker.
+
+  \item \textbf{Errori di correttezza}: sono errori che non possono essere rilevati
+    dai compilatori, ma devono essere individuati tramite testing.
+\end{itemize}
+
+\subsubsection{Gestione degli errori}
+In generale l'error handler di un parser dovrebbe:
+\begin{itemize}
+  \item \textbf{Riportare} la presenza di errori in modo chiaro e accurato
+
+  \item Cercare di \textbf{riprendere} l'analisi sintattica dopo un errore, in modo da
+    rilevare ulteriori errori in un singolo passaggio
+
+  \item \textbf{Non dovrebbe rallentare} il processo di parsing di programmi validi
+\end{itemize}
+
+\noindent
+Ci sono diversi modi per gestire gli errori sintattici:
+\begin{itemize}
+  \item \textbf{Panic mode}: È il metodo più semplice e popolare. Quando viene rilevato
+    un errore:
+    \begin{itemize}
+      \item Ignora tutti i token finchè non viene trovato un token con un ruolo valido
+        detto \textbf{synchronizing token}
+      \item Continua l'analisi sintattica a partire da quel token
+    \end{itemize}
+    I synchronizing token sono tipicamente i terminatori di espressioni o di statements.
+
+    \begin{example}
+      Considerando il seguente codice:
+      \[
+        \texttt{(1 +\textcolor{Red}{+} 2) + 3}
+      \] 
+      Una volta che viene trovato il token \( + \) in più, il parser ignora tutti i
+      token fino all'intero successivo e continua l'analisi sintattica a partire da quel
+      token.
+    \end{example}
+
+    \noindent
+    Il problema della panic mode è che può portare a \textbf{cascading errors}, cioè
+    errori che sono causati da un errore precedente, ma che non sono errori reali.
+    Solitamente fixare il primo errore rilevato potrebbe risolvere anche tutti gli
+    errori successivi.
+
+  \item \textbf{Error productions}: Consiste nell'aggiungere alla grammatica le
+    produzioni per gli errori più comuni, perchè se vengono fatti spesso forse è
+    meglio aggiungerli come feature del linguaggio.
+
+    \begin{example}
+      Ad esempio per permettere di scrivere \texttt{5x} al posto di\\ \texttt{5 * x}
+      si aggiunge la seguente produzione alla grammatica:
+      \[
+        \texttt{expr} \to \texttt{expr expr} \mid \ldots
+      \] 
+    \end{example}
+
+    \noindent
+    Questo metodo spesso non è la soluzione migliore e ha lo svantaggio di complicare
+    la grammatica.
+
+  \item \textbf{Correzione automatica locale o globale}: L'idea è quella di cercare
+    un programma corretto \textbf{"vicino"} e sostituire le parti errate del
+    programma con le parti corrette di un altro programma. Questo metodo è molto
+    complesso da implementare, rallenta molto il parsing e il programma corretto "vicino"
+    non è necessariamente quello che l'utente intendeva scrivere.
+
+    Questo metodo era molto utile in passato, quando i compilatori erano così lenti
+    che era preferibile correggere automaticamente gli errori piuttosto che farli
+    correggere manualmente dagli utenti e ricompilare il programma più volte.
+\end{itemize}
+
+\subsection{Top-down parsing (Recursive descent)}
+Il Top-down parsing costruisce l'albero sintattico partendo dalla radice annotata con
+il simbolo di partenza e applicando due passi:
+\begin{enumerate}
+  \item Seleziona un nodo annotato con un simbolo non terminale \( A \) partendo
+    da \textbf{sinistra}
+
+  \item Seleziona una produzione per \( A \) e genera tanti figli di \( A \) quanti
+    sono i simboli a destra della produzione
+\end{enumerate}
+Questa procedura finisce quando tutti i nodi foglia sono annotati con simboli terminali,
+oppure quando non è possibile applicare nessuna produzione a un nodo annotato con un
+simbolo non terminale. In quest'ultimo caso, la stringa di input non è generata dalla
+grammatica.
+
+\noindent
+La selezione di una produzione per un non terminale può comportare \textbf{backtracking},
+cioè provare una produzione e se non funziona tornare indietro e provare un'altra produzione.
+
+\begin{example}
+  Il codice per parsare un non terminale \( A \) è il seguente:
+\begin{lstlisting}[escapechar=|, basicstyle=\rmfamily, columns=fullflexible, keepspaces=true]
+void A() {
+    Choose an A-production, |\( A \to X_1 X_2 \ldots X_k \)|;
+      for (i = 1 to k) {
+          if (|\( X_i \)| is not terminal) {
+            call procedure |\( X_i() \)|;
+        } else if (|\( X_i \)| equals the current input symbol |\( a \)|) {
+            advance the input to the next symbol;
+        } else {
+            report an error; // or backtrack and try another production
+        }
+    }
+}
+\end{lstlisting}
+\end{example}
+
+\begin{example}
+  Consideriamo il seguente esempio di backtracking con la grammatica:
+  \[
+    \begin{aligned}
+      &E \to T + E \mid T \\
+      &T \to \textbf{id} * T \mid \textbf{id} \mid (E)
+    \end{aligned}
+  \] 
+  Vogliamo parsare la stringa \texttt{id + id}. Il parser esegue i seguenti passi:
+  \begin{enumerate}
+    \item Inizia dalla radice dell'albero che contiene il simbolo non terminale \( E \)
+      \[
+        \begin{forest}
+          [E, Blue]
+        \end{forest}
+      \] 
+
+    \item Usa la produzione \( E \to T + E \)
+      \[
+        \begin{forest}
+          [E
+            [T, Blue]
+            [\textbf{+}, Blue]
+            [E, Green, Blue]
+          ]
+        \end{forest}
+      \] 
+
+    \item Usa la produzione \( T \to \textbf{id} * T \), e si ha che \( \textbf{id} \)
+      corrisponde al primo token di input, ma \( * \) non corrisponde al secondo token
+      \[
+        \begin{forest}
+          [E
+            [T, Blue
+              [\textbf{id}, Green]
+              [\textbf{*}, Red]
+              [T, Red]
+            ]
+            [\textbf{+}]
+            [E]
+          ]
+        \end{forest}
+      \] 
+
+    \item \textbf{Backtracking}: usa l'altra produzione per
+      \( T \): \( T \to \textbf{id} \); il token \( \textbf{id} \) corrisponde e anche
+      il token \( + \)
+      \[
+        \begin{forest}
+          [E
+            [T
+              [\textbf{id}, Green]
+            ]
+            [\textbf{+}, Green]
+            [E]
+          ]
+        \end{forest}
+      \] 
+
+    \item Bisogna scegliere una produzione per il secondo \( E \)
+      \begin{itemize}
+        \item Se si sceglie \( E \to T + E \) si fallisce, quindi si fa backtracking
+        \[
+          \begin{forest}
+            [E
+              [T
+                [\textbf{id}, Green]
+              ]
+              [\textbf{+}, Green]
+              [E, Blue
+                [T, Red
+                  [\ldots, Red]
+                ]
+                [\textbf{+}, Red]
+                [E, Red]
+              ]
+            ]
+          \end{forest}
+        \] 
+
+        \item Se si sceglie la produzione \( E \to T \) si sceglie anche una produzione
+          per \( T \) e si ottiene l'albero sintattico con successo
+        \[
+          \begin{forest}
+            [E
+              [T
+                [\textbf{id}, Green]
+              ]
+              [\textbf{+}, Green]
+              [E
+                [T
+                  [\textbf{id}, Green]
+                ]
+              ]
+            ]
+          \end{forest}
+        \] 
+      \end{itemize}
+  \end{enumerate}
+\end{example}
+
+
+\subsubsection{Predictive parsing}
+Il predictive parsing è un metodo di top-down parsing che utilizza un simbolo di lookahead
+per decidere quale produzione applicare. il \textbf{Recursive descent parsing} è un
+metodo di top-down parsing in cui viene utilizzato un insieme di procedure ricorsive
+per processare l'input, in cui \textbf{ogni non terminale} ha una \textbf{procedura ricorsiva} che si
+occupa di fare il parsing di quel non terminale.
+In generale la selezione di una produzione per un non terminale può comportare
+un approccio trial-and-error, ma il predictive parsing \textbf{evita il backtracking}
+utilizzando un \textbf{simbolo di lookahead} per determinare in modo univoco quale produzione
+applicare.
+
+\begin{definition}[Simbolo di lookahead]
+  Il simbolo di lookahead è un simbolo terminale che viene utilizzato per decidere quale
+  produzione applicare durante il parsing. Ad esempio, se il simbolo di lookahead è
+  \texttt{for}, allora si sa che bisogna applicare la produzione \( stmt \to for (optexpr; optexpr; optexpr) stmt \).
+\end{definition}
+
+\noindent
+Quando un non terminale ha più produzioni, ogni produzione viene implementata in
+un ramo di una dichiarazione di selezione basata sulle informazioni del simbolo di
+lookahead. Il predictive parsing è una forma speciale di recursive descent parsing
+in cui si utilizza un simbolo di lookahead per determinare in modo univoco le operazioni
+di parsing.
+
+\begin{example}
+  Considerando la seguente grammatica:
+  \[
+    \begin{aligned}
+      stmt &\to expr;\\
+           &| if (expr) stmt \\
+           &| for (optexpr; optexpr; optexpr) stmt \\
+           &| other \\
+           \\
+      optexpr &\to expr \\
+              &| \varepsilon
+    \end{aligned}
+  \] 
+  \noindent
+  Il predictive parser per questa grammatica è il seguente:
+\begin{lstlisting}[language=C]
+void stmt() {
+  switch (lookahead) {
+    case expr:
+      match(expr);
+      match(';');
+      break;
+    case if:
+      match(if);
+      match('(');
+      match(expr);
+      match(')');
+      stmt();
+      break;
+    case for:
+      match(for);
+      match('(');
+      optexpr();
+      match(';');
+      optexpr();
+      match(';');
+      optexpr();
+      match(')');
+      stmt();
+      break;
+    case other:
+      match(other);
+      break;
+    default:
+      report("Syntax error");
+  }
+}
+
+void optexpr() {
+  if (lookahead == expr) {
+    match(expr);
+  }
+}
+
+void match(terminal t) {
+  if (lookahead == t) {
+    lookahead = nextTerminal();
+  } else {
+    report("Syntax error");
+  }
+}
+\end{lstlisting}
+\end{example}
+
+\subsubsection{Funzione first}
+La funzione \( FIRST(\alpha) \) è l'insieme dei terminali che appaiono come primi
+simboli di una o più stringhe generate da \( \alpha \).
+\begin{example}
+  Considerando la grammatica dell'esempio precedente si ha:
+  \[
+  \begin{aligned}
+    FIRST(stmt) &= \{ expr, if, for, other \} \\
+    FIRST(optexpr) &= \{ expr, \varepsilon \}
+  \end{aligned}
+  \] 
+\end{example}
+
+\subsubsection{Ricorsione sinistra immediata}
+Una produzione del tipo:
+\[
+  A \to A \alpha \mid \beta
+\] 
+è detta \textbf{ricorsiva sinistra} perchè il primo simbolo del corpo della produzione
+è lo stesso del non terminale alla testa della produzione. La ricorsione sinistra
+può causare un \textbf{loop infinito} nel Top-down parsing, perchè il parser siccome
+sceglie le produzioni partendo da sinistra applicherebbe la produzione senza mai
+arrivare a una produzione che non è ricorsiva sinistra.
+
+Per risolvere questo problema, si possono eliminare le produzioni ricorsive sinistra
+riscrivendo la grammatica in modo da utilizzare produzioni ricorsive a destra. Ad esempio:
+\[
+  A \to A \alpha \mid \beta
+\] 
+\[
+  \Downarrow
+\] 
+\[
+  \begin{aligned}
+    A &\to \beta R \\
+    R &\to \alpha R \mid \varepsilon
+  \end{aligned}
+\] 
+
+\begin{definition}[Eliminazione della ricorsione sinistra immediata]
+  Data una produzione ricorsiva sinistra della forma:
+  \[
+    A \to A \alpha_1 \mid A \alpha_2 \mid \ldots \mid A \alpha_m
+    \mid \beta_1 \mid \beta_2 \mid \ldots \mid \beta_n
+  \] 
+  Dove \( \beta_1, \ldots, \beta_n \) sono produzioni che non iniziano con \( A \),
+  allora una grammatica equivalente senza ricorsione sinistra è la seguente:
+  \[
+    \begin{aligned}
+      A \to &\beta_1 R \mid \ldots \mid \beta_n R \\
+      R \to &\alpha_1 R \mid \ldots \mid \alpha_m R \mid \varepsilon
+    \end{aligned}
+  \] 
+\end{definition}
+
+\noindent
+Se la grammatica ha ricorsione sinistra indiretta, cioè se esiste una sequenza di
+più di una produzione che porta a una produzione ricorsiva sinistra, esiste un algoritmo
+per eliminare la ricorsione sinistra indiretta, ma è complesso e non verrà trattato in
+questo corso.
 
 \end{document}
