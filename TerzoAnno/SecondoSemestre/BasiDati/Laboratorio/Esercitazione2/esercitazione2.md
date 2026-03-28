@@ -12,9 +12,10 @@
   - [Esercizio 9](#esercizio-9)
 
 Eseguire i seguenti esercizi usando la seguente base di dati:
-[esercitazione1.sql](../Esercitazione1/esercitazione1.sql)
+[init.sql](./init.sql)
 
-La base di dati è riempita con i seguenti dati:
+Che sarebbe la base di dati ottenuta dall'[Esercitazione1](../Esercitazione1/esercitazione1.md)
+riempita con i seguenti dati:
 
 ```sql
 insert into Museo (nome, città, indirizzo, numeroTelefono, giornoChiusura, prezzo, sitoInternet)
