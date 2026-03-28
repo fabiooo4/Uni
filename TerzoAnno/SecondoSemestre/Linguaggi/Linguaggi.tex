@@ -1669,6 +1669,7 @@ espressioni aritmetiche:
     \[
     \mathcal{E}_4: \; \underbrace{t_1 \texttt{ or } t_2}_\text{simbolo} \to t
     = \underbrace{t_1 \texttt{ or } t_2}_\text{significato}
+    \quad t, t_1, t_2 \in \texttt{B}
     \] 
 
   \item Regola 2: Vale anche per le espressioni booleane
@@ -1683,7 +1684,13 @@ espressioni aritmetiche:
     \] 
 
   \item Uniamo \( \mathcal{E}_3 \) con \( \mathcal{E}_3' \)
-    % TODO
+    \[
+      \begin{prooftree}
+        \hypo{e_1 \to e'_1}
+        \infer1{k \texttt{ bop } e_1 \to k \texttt{ bop } e_1'}
+      \end{prooftree}
+    \] 
+    con \( k \in \texttt{N} \cup \texttt{B} \) e \( bop \in \{or, +, -, *\} \)
 
   \item Regola 5:
     \[
@@ -1949,9 +1956,10 @@ Le regole di transizione per le espressioni con identificatori diventano:
     \[
       \begin{prooftree}
         \hypo{\rho \vdash e_0 \to e'_0}
-        \infer1{\rho \vdash e_0 \texttt{ op } e_1 \to e'_0 \texttt{ op } e_1}
+        \infer1{\rho \vdash e_0 \texttt{ bop } e_1 \to e'_0 \texttt{ bop } e_1}
       \end{prooftree}
     \]
+    con \( bop \in \{\texttt{or}, +, -, *\} \)
 
   \item Regola 3+4:
     \[
@@ -1972,7 +1980,12 @@ Le regole di transizione per le espressioni con identificatori diventano:
 
   \item Regola 6:
     \[
-      \rho \vdash \texttt{not } e_t \to t' = \texttt{not } t \quad t, t' \in \texttt{B}
+      \rho \vdash \texttt{not } t \to t' = \texttt{not } t
+    \]
+
+  \item Regola 7:
+    \[
+      \rho \vdash x \to k \text{ se } \rho(x) = k
     \]
 \end{itemize}
 Sono le stesse regole di transizione che avevamo definito per le espressioni senza
@@ -2006,7 +2019,7 @@ identificatore \( x \):
         \begin{aligned}
           &\begin{prooftree}
             \hypo{\rho \vdash \texttt{x} \to 2}
-            \infer1[$\mathcal{E}_2$]{\rho \vdash \texttt{x + y - 5} \to 2 + \texttt{y - 5}}
+            \infer1[$\rho(x) = 2$]{\rho \vdash \texttt{x + y - 5} \to 2 + \texttt{y - 5}}
           \end{prooftree}\\
           &\qquad\qquad\qquad \downarrow\\
           &\begin{prooftree}
