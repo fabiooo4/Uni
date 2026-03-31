@@ -2039,7 +2039,8 @@ identificatore \( x \):
 \end{example}
 
 \subsection{Tipo di dato}
-Il tipo è l'insieme dei valori che una variabile può riferire, tali valori devono
+Il tipo è l'insieme dei valori denotabili da un identificatore e l'insieme degli
+operatori applicabili, tali valori devono
 condividere una certa proprietà. Ad esempio, il tipo \texttt{int} è l'insieme dei
 numeri interi, il tipo \texttt{bool} è l'insieme dei valori booleani, ecc...
 
@@ -2061,13 +2062,426 @@ L'utilizzo del tipo ha varie funzionalità:
 Il tipo deve essere legato alla variable, quindi viene aggiunto al legame con l'oggetto
 denotato. Si dovrà creare un ambiente separato per i tipi e si avrà:
 \begin{itemize}
-  \item Un ambiente \textbf{dinamico}, come quello definito per le espressioni
-    (\( \rho  \)), che viene utilizzato durante l'esecuzione. Infatti la valutazione
-    delle espressioni \textbf{assume che siano scritte correttamente}.
-
-  \item Un ambiente \textbf{statico}, che viene utilizzato durante la compilazione per
+  \item \textbf{Semantica statica}, che viene utilizzata durante la compilazione per
     verificare la correttezza dei tipi e per allocare la memoria necessaria per
-    le variabili.
+    le variabili. \textbf{Verifica che le espressioni siano scritte correttamente}.
+
+  \item \textbf{Semantica dinamica}, come quella definita per le espressioni
+    (\( \rho  \)), che viene utilizzata durante l'esecuzione. Infatti la valutazione
+    delle espressioni \textbf{assume che siano scritte correttamente}.
+\end{itemize}
+
+\subsubsection{Ambiente statico}
+È l'insieme di legami tra identificatori e tipi. I tipi denotabili sono definiti
+dal seguente insieme:
+\[
+  DTyp = \left\{ \texttt{int}, \texttt{bool} \right\}
+\] 
+Con valori denotabili \( DVal \) che sono i valori numerici e booleani, quindi:
+\[
+  DVal = \texttt{N} \cup \texttt{B}
+\] 
+L'insieme di tutti gli ambienti è l'insieme di tutti i possibili ambienti
+di un certo identificatore \( I \):
+\[
+  TEnv = \bigcup_{I \subseteq_f Id} TEnv_I
+\] 
+dove per ogni identificatore in \( I \) associa un tipo in \( DTyp \) 
+\[
+  TEnv_I:\; I \to DTyp
+\] 
+
+\vspace{1em}
+\noindent
+La metavariabile utilizzata per rappresentare un generico ambiente statico è
+\( \Delta \in TEnv \). La seguente notazione asserisce che l'espressione \( e \) 
+è di tipo \( \tau \in DTyp \) nell'ambiente statico \( \Delta \) definito sugli
+identificatori in \( I \):
+\[
+  \Delta \vdash_I e : \tau
+\] 
+Quando l'ambiente non è indicato, si sottintende l'insieme vuoto:
+\[
+  \vdash e : \tau \equiv \varnothing \vdash e : \tau
+\] 
+Cioè per ogni ambiente è possibile applicare la regola di semantica statica.
+
+Se le regole della semantica statica permettono di associare un tipo ad un'espressione,
+allora l'espressione è \textbf{ben formata}
+
+\subsubsection{Semantica statica per le espressioni}
+La semantica statica per le espressioni associa un tipo alle espressioni ben formate,
+quindi verifica solo vincoli di tipo tra operandi. 
+Definiamo la semantica statica per le espressioni:
+\begin{itemize}
+  \item Regola 1: con \( n \in \texttt{N} \)
+    \[
+      \mathcal{E}_{S_1}: \; \vdash n : \texttt{int}
+    \] 
+
+  \item Regola 2: con \( t \in \texttt{B} \)
+    \[
+      \mathcal{E}_{S_2}: \; \vdash t : \texttt{bool}
+    \] 
+
+  \item Regola 3:
+    \[
+      \mathcal{E}_{S_3}: \;
+      \Delta \vdash_I x : \tau \quad\text{ se }\quad x \in I,\; \Delta(x) = \tau
+    \] 
+
+  \item Regola 4:
+    \[
+      \mathcal{E}_{S_4}: \;
+      \begin{prooftree}
+        \hypo{\Delta \vdash_I e_1 : \texttt{int}}
+        \hypo{\Delta \vdash_I e_2 : \texttt{int}}
+        \infer2{\Delta \vdash_I e_1 \texttt{ op } e_2 : \texttt{int}}
+      \end{prooftree}
+    \] 
+
+  \item Regola 5:
+    \[
+      \mathcal{E}_{S_5}: \;
+      \begin{prooftree}
+        \hypo{\Delta \vdash_I e_1 : \texttt{bool}}
+        \hypo{\Delta \vdash_I e_2 : \texttt{bool}}
+        \infer2{\Delta \vdash_I e_1 \texttt{ or } e_2 : \texttt{bool}}
+      \end{prooftree}
+    \]
+
+  \item Regola 6:
+    \[
+      \mathcal{E}_{S_6}: \;
+      \begin{prooftree}
+        \hypo{\Delta \vdash_I e : \texttt{bool}}
+        \infer1{\Delta \vdash_I \texttt{not } e : \texttt{bool}}
+      \end{prooftree}
+    \]
+
+  \item Regola 7:
+    \[
+      \mathcal{E}_{S_7}: \;
+      \begin{prooftree}
+        \hypo{\Delta \vdash_I e_1 : \texttt{int}}
+        \hypo{\Delta \vdash_I e_2 : \texttt{int}}
+        \infer2{\Delta \vdash_I e_1 = e_2 : \texttt{bool}}
+      \end{prooftree}
+    \]
+\end{itemize}
+
+\subsubsection{Ambienti compatibili}
+\begin{definition}
+  Considerando \( I \subseteq_f Id \) 
+  \begin{itemize}
+    \item Ambiente dinamico \( \rho \in Env_I \) che associa valori a nomi
+    \item Ambiente statico \( \Delta \in TEnv_I \) che associa tipi a identificatori
+  \end{itemize}
+  Si dice che \( \rho  \) e \( \Delta \) sono compatibili se
+  \[
+    \forall id \in I \;.\; \Delta(id) = \tau \iff \rho(id) \in \tau
+  \] 
+  cioè se per ogni identificatore \( id \) in \( I \), il tipo associato a \( id \) in
+  \( \Delta \) è \( \tau \) se e solo se il valore associato a \( id \) in \( \rho \) è
+  un elemento di \( \tau \).
+
+  Per dire che due ambienti \( \rho  \) e \( \Delta \) sono compatibili, si scrive:
+  \[
+    \rho \vdash_{\Delta}
+  \] 
+\end{definition}
+
+\begin{example}
+  Consideriamo ad esempio i seguenti ambienti:
+  \begin{itemize}
+    \item Ambienti compatibili
+      \[
+        \begin{aligned}
+        &\Delta = \left[ x \mapsto \texttt{int}, y \mapsto \texttt{bool} \right] \\
+        &\rho = \left[ x \mapsto 2, y \mapsto \texttt{true} \right]
+        \end{aligned}
+      \] 
+
+    \item Ambienti non compatibili
+      \[
+        \begin{aligned}
+        &\Delta = \left[ x \mapsto \texttt{int}, y \mapsto \texttt{bool} \right] \\
+        &\rho = \left[ x \mapsto 2, y \mapsto 3 \right]
+        \end{aligned}
+      \] 
+  \end{itemize}
+\end{example}
+
+\noindent
+Per definire gli ambienti (sia \( \Delta \) che \( \rho  \)) c'è bisogno di una
+categoria sintattica che permette di creare e modificare legami che vanno a costituire
+gli ambienti
+
+\subsection{Dichiarazioni}
+La dichiaraazione è una \textbf{categoria sintattica} che fornisce il meccanismo (implicito
+o esplicito) per \textbf{creare legami} tra identificatori e tipi (statico) o oggetti
+(dinamico). Le dichiarazioni denotano richieste di 
+\textbf{modifica o creazione di ambienti}.
+
+\vspace{1em}
+\noindent
+Le dichiarazioni vengono \textbf{elaborate} per ottenere le richieste di modifica o
+creazione di ambienti
+
+\subsubsection{Sintassi delle dichiarazioni}
+Definiamo la sintassi delle dichiarazioni:
+\[
+  \begin{aligned}
+    \mathcal{D}: \; D & \to  \texttt{ nil}  \\
+                      & \mid \texttt{const x: } \tau = e  \\
+                      & \mid D; D  \mid D \texttt{ in } D \\
+                      & \mid \rho 
+  \end{aligned}
+\] 
+dove:
+\begin{itemize}
+  \item \texttt{nil}: corrisponde a \( \Delta = \varnothing \) 
+
+  \item \( \texttt{const x: } \tau = e \):  è la dichiarazione di un \( id \)  costante
+    di nome \( x \), tipo \( \tau \) e valore rappresentato da \( e \).
+
+  \item \( D; D \): è la composizione sequenziale, cioè prima si elabora la
+    dichiarazione a sinistra e poi quella a destra
+
+  \item \( D \texttt{ in } D \): è la composizione privata, cioè i legami della
+    dichiarazione a sinistra sono visibili solo nella dichiarazione a destra
+
+  \item \( \rho \): è un ambiente dinamico presente nella grammatica per motivi formali
+\end{itemize}
+
+\subsubsection{Aggiornamento di un ambiente}
+Consideriamo gli ambienti \( \beta \) e \( \beta' \). La modifica di \( \beta \) da
+parte di \( \beta' \) si scrive:
+\[
+  \beta \left[ \beta' \right]
+\] 
+Consideriamo che \( \beta \) sia definito sugli identificatori \( I \):
+\[
+  \beta:\; I \quad I \subseteq_f Id
+\] 
+e \( \beta' \) sia definito sugli identificatori \( I' \):
+\[
+  \beta':\; I' \quad I' \subseteq_f Id
+\] 
+Il nuovo ambiente parlerà sia degli identificatori in \( I \) che di quelli in \( I' \):
+\[
+  \beta \left[ \beta' \right] = \overline{\beta} \quad \overline{\beta}:\; I \cup I'
+\] 
+Se l'identificatore è presente sia nell'ambiente \( \beta \) che in \( \beta' \), allora
+la priorità è data a \( \beta' \):
+\[
+  \forall x \in I' \;.\; \overline{\beta}(x) = \beta'(x)
+\] 
+Se l'identificatore è presente solo in \( \beta \) allora si mantiene lo stesso legame:
+\[
+  \forall x \in I \setminus I' \;.\; \overline{\beta}(x) = \beta(x)
+\] 
+Quindi \( \overline{\beta} \) è un nuovo ambiente in cui si prendono tutti i legami
+di \( \beta \) e \( \beta' \) e per quelli in comune si tengono solo quelli di
+\( \beta' \). Di fatto \( \beta' \) \textbf{sovrascrive} \( \beta \).
+
+\vspace{2em}
+\noindent
+\begin{example}
+  Consideriamo i seguenti ambienti:
+  \[
+    \begin{aligned}
+      &\rho = \left[ x \mapsto 2, y \mapsto \texttt{true}, z \mapsto 5 \right] \\
+      &\rho' = \left[ x \mapsto 5, w \mapsto \texttt{false} \right]
+    \end{aligned}
+  \] 
+  Allora l'aggiornamento di \( \rho \) da parte di \( \rho' \) è il seguente:
+  \[
+    \rho \left[ \rho' \right] =
+    \left[ x \mapsto 5, w \mapsto \texttt{false}, y \mapsto \texttt{true}, z \mapsto 5 \right]
+  \]
+  Si vede che \( x \) è stato sovrascritto da \( \rho' \), mentre \( y \) e \( z \)
+  sono rimasti invariati e \( w \) è stato aggiunto.
+\end{example}
+
+\subsubsection{Composizione sequenziale}
+% TODO: Disegno elaborazione con dichiarazioni D1; D2 e ambiente rho
+% Magari da mettere nell'itemize precedente
+Ogni dichiarazione successiva o aggiunge nuovi legami o sovrascrive legami esistenti.
+L'ambiente risultante è così visibile al codice che viene successivamente
+
+\begin{example}
+  Consideriamo ad esempio il seguente codice:
+\begin{lstlisting}
+const x: int = 3;
+const x: int = 5; const y: int = 6 * x;
+const z: int = x + y;
+\end{lstlisting}
+  Osserviamo i valori di questo codice:
+  \begin{enumerate}
+    \item A riga 1 il valore assegnato a \( x \) è \( \rho = [x \mapsto 3] \) 
+    \item A riga 2 il valore assegnato a \( x \) è \( \rho[x \mapsto 5] = [x \mapsto 5] = \rho_1 \) e
+      viene usata per elaborare \( y \) che assume il valore
+      \( \rho_2 = [x \mapsto 5, y \mapsto 6 * 5 = 30] \)
+    \item A riga 3 viene usato il valore di \( x \) dichiarato a riga 2 e il valore
+      di \( y \) dichiarato a riga 2, cioè \( (\rho[\rho_1])[\rho_2] = [x \mapsto 5, y \mapsto 30] \),
+      per elaborare \( z \) che assume il valore \( \rho_3 = [x \mapsto 5, y \mapsto 30, z \mapsto 5 + 30 = 35] \)
+  \end{enumerate}
+\end{example}
+
+\subsubsection{Composizione privata}
+% TODO: Disegno elaborazione con dichiarazioni D1 in D2 e ambiente rho
+% Magari da mettere nell'itemize precedente
+I legami creati o sovrascritti da \( D_1 \) sono \textbf{ad uso esclusivo}
+dell'elaborazione di \( D_2 \) e \textbf{non visibili} al codice successivo.
+
+\begin{example}
+  Consideriamo ad esempio il seguente codice:
+\begin{lstlisting}
+const x: int = 3;
+const x: int = 5 in y: int = 6 * x;
+const z: int = x + y;
+\end{lstlisting}
+  Osserviamo i valori di questo codice:
+  \begin{enumerate}
+    \item A riga 1 il valore assegnato a \( x \) è \( \rho = [x \mapsto 3] \) 
+    \item A riga 2 il valore assegnato a \( x \) è \( \rho_1 = [x \mapsto 5] \) e
+      viene usata per elaborare \( y \) che assume il valore
+      \( \rho_2 = [y \mapsto 6 * 5 = 30] \)
+    \item A riga 3 viene usato il valore di \( x \) dichiarato a riga 1 e il valore
+      di \( y \) dichiarato a riga 2, cioè \( \rho[\rho_2] = [x \mapsto 3, y \mapsto 30] \),
+      per elaborare \( z \) che assume il valore \( \rho_3 = [x \mapsto 3, y \mapsto 30, z \mapsto 3 + 30 = 33] \)
+  \end{enumerate}
+\end{example}
+
+\subsubsection{Identificatori in posizione libera e in posizione di definizione}
+Caratterizziamo le dichiarazioni:
+\begin{itemize}
+  \item \textbf{In posizione libera (FI)}: Associa ad ogni costrutto sintattico
+    l'insieme degli identificatori \textbf{liberi}, cioè identificatori che non hanno
+    un legame e richiedono un contesto per avere significato.
+    \[
+      FI(Exp \cup Dec) = I \subseteq Id \quad FI:\; Exp \cup Dec \to \mathcal{P}(Id)
+    \] 
+    Definiamo \( FI \) per induzione:
+    \begin{itemize}
+      \item \textbf{Caso base}: \( FI(k) = \varnothing \) con \( k \in \texttt{N} \cup \texttt{B} \)
+      \item \textbf{Passo induttivo}:
+        \begin{itemize}
+          \item Espressioni:
+            \begin{itemize}
+              \item \( FI(x) = \left\{ x \right\} \) 
+              \item \( FI(e_1 \texttt{ op } e_2) = FI(e_1) \cup FI(e_2) = FI(e_1 \texttt{ or } e_2) \) 
+              \item \( FI(\texttt{not } e) = FI(e)\) 
+            \end{itemize}
+
+          \item Dichiarazioni:
+            \begin{itemize}
+              \item \( FI(\texttt{nil}) = \varnothing \) 
+              \item \( FI(\texttt{const x: } \tau = e) = FI(e) \) 
+              \item \( FI(d_1; d_2) = FI(d_1) \cup (FI(d_2) \setminus DI(d_1) = FI(d_1 \texttt{ in } d_2) \) dove
+                \( DI(d_1) \) è l'insieme degli identificatori definiti da \( d_1 \) 
+              \item \( FI(\rho) = \varnothing \) 
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+    Questa funzione fornisce l'insieme degli identificatori per cui bisogna cercare
+    un significato nell'ambiente per poter valutare l'espressione o elaborare la
+    dichiarazione.
+
+  \item \textbf{In posizione di definizione (DI)}: Restituisce gli identificatori
+    che nel costrutto vengono legati ad un significato che è visibile all'esterno
+    del costrutto
+    \[
+      DI: \; Exp \cup Dec \to \mathcal{P}(Id)
+    \]
+    Definiamo \( DI \):
+    \begin{itemize}
+      \item Espressioni: Le espressioni non definiscono identificatori, quindi:
+        \[
+          \forall e \in Exp \;.\; DI(e) = \varnothing
+        \] 
+      \item Dichiarazioni:
+        \begin{itemize}
+          \item \( DI(\texttt{nil}) = \varnothing \) 
+          \item \( DI(\texttt{const x: } \tau = e) = \left\{ x \right\} \) 
+          \item \( DI(\rho) = I \quad \rho : I \; (\rho \in Env_I)\)
+          \item \( DI(d_1 \texttt{ in } d_2) = DI(d_2) \): solo gli identificatori
+            legati in \( d_2 \) hanno significato \textbf{dopo} l'elaborazione della
+            composizione
+          \item \( DI(d_1; d_2) = DI(d_1) \cup DI(d_2) \): tutti gli identificatori
+            legati in \( d_1 \) e \( d_2 \) restano legati al loro significato dopo
+            l'elaborazione della composizione
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Semantica statica per le dichiarazioni}
+La semantica statica per le dichiarazioni associa un ambiente statico alle
+dichiarazioni ben formate.
+Definiamo la semantica statica per le dichiarazioni:
+\[
+  \Delta \vdash d: \Delta'
+\] 
+dove:
+\begin{itemize}
+  \item \( \Delta \) è il contesto, cioè eventuali dichiarazioni precedenti
+  \item \( \Delta' \) è un ambiente definito (e quindi associato) da \( d \)
+\end{itemize}
+Le regole per le dichiarazioni sono:
+\begin{itemize}
+  \item Regola 1:
+    \[
+      \mathcal{D}_{S_1}: \; \vdash \texttt{nil} : \varnothing
+    \] 
+
+  \item Regola 2:
+    \[
+      \mathcal{D}_{S_2}: \; \vdash \rho : \Delta
+    \]
+    dove \( \rho  \) e \( \Delta \) sono compatibili.
+    \begin{example}
+      Ad esempio:
+      \[
+        \rho = \left[ x \mapsto 3, y \mapsto \texttt{true} \right]
+      \] 
+      \[
+        \downarrow
+      \] 
+      \[
+        \Delta = \left[ x \mapsto \texttt{int}, y \mapsto \texttt{bool} \right]
+      \] 
+    \end{example}
+
+  \item Regola 3:
+    \[
+      \mathcal{D}_{S_3}: \;
+      \begin{prooftree}
+        \hypo{\Delta \vdash e : \tau}
+        \infer1{\Delta \vdash \texttt{const x:}\; \tau = e : \left[ x \mapsto \tau \right]}
+      \end{prooftree}
+    \] 
+    I tipi \textbf{devono essere tutti uguali}
+
+  \item Regola 4:
+    \[
+      \mathcal{D}_{S_4}: \;
+      \begin{prooftree}
+        \hypo{\Delta \vdash d_1 : \Delta_1}
+        \hypo{\Delta[\Delta_1] \vdash d_2 : \Delta_2}
+        \infer2{\Delta \vdash d_1 \texttt{ in } d_2 : \Delta_2}
+      \end{prooftree}
+    \] 
+
+  \item Regola 5:
+    \[
+      \mathcal{D}_{S_5}: \;
+      \begin{prooftree}
+        \hypo{\Delta \vdash d_1 : \Delta_1}
+        \hypo{\Delta[\Delta_1] \vdash d_2 : \Delta_2}
+        \infer2{\Delta \vdash d_1; d_2 : \Delta_1[\Delta_2]}
+      \end{prooftree}
+    \]
 \end{itemize}
 
 \end{document}
