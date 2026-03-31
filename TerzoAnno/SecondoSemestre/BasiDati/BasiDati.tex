@@ -2711,468 +2711,800 @@ della ricerca. Ci sono due tipi di indici su file sequenziali:
     \end{itemize}
 \end{itemize}
 
-\section{Transazioni concorrenti}
-Il componente dell'architettura del DBMS che si occupa di gestire le transazioni
-concorrenti è il \textbf{gestore della concorrenza} che riceve richieste di accesso
-ai dati e decide se autorizzarle o meno, eventualmente riordinandole, come se
-fosse uno scheduler.
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.9\textwidth]{gestore_concorrenza}
-  \caption{Gestore della concorrenza nell'architettura di un DBMS}
-\end{figure}
-
-\noindent
-L'unità di misura per caratterizzare il carico applicativo di un DBMS è il numero di
-transazioni al secondo (TPS, Transactions Per Second). Per gestire un carico elevato,
-tipico delle applicazioni gestionali (100 o 1000 tps), un DBMS deve eseguire le
-transazioni in modo concorrente.
-
-\subsection{Anomalie}
-L'esecuzione concorrente di transazioni senza controllo può generare \textbf{anomalie}
-o problemi di correttezza ed è quindi necessario introdurre dei meccanismi di
-controllo nell'esecuzione delle transazioni per evitare queste anomalie.
-
-\begin{define}[Notazione]
-  Verrà utilizzata la seguente notazione:
-  \begin{itemize}
-    \item \( t_i \) indica una transazione
-    \item \( r_i(x) \) è un operazione di lettura eseguita dalla transazione \( t_i \) 
-      sulla risorsa \( x \) 
-    \item \( w_i(x) \) è un operazione di scrittura eseguita dalla transazione \( t_i \) 
-      sulla risorsa \( x \)
-
-    \item \texttt{bot} indica l'inizio di una transazione (begin of transaction)
-    \item \texttt{commit} indica l'applicazione definitiva degli effetti di una
-      transazione (commit)
-    \item \texttt{eot} indica la fine di una transazione (end of transaction)
-  \end{itemize}
-\end{define}
-
-\subsubsection{Perdita di aggiornamento}
-Questa anomalia si verifica quando gli effetti di una transazione concorrente sono
-persi. Si considerino le seguenti transazioni:
-\[
-\begin{aligned}
-  t_1: & bot \; r_1(x); \; x = x + 1; \; w_1(x); \; commit; \; eot \\
-  t_2: & bot \; r_2(x); \; x = x + 1; \; w_2(x); \; commit; \; eot
-\end{aligned}
-\] 
-L'esecuzione concorrente di \( t_1 \) e \( t_2 \) può portare alla perdita di
-aggiornamento, come si può vedere dalla seguente simulazione:
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=1\textwidth]{perdita_aggiornamento}
-  \caption{Esempio di perdita di aggiornamento}
-\end{figure}
-
-\subsubsection{Lettura inconsistente}
-Questa anomalia si verifica quando accessi successivi ad uno stesso dato, all'interno
-di una transazione, ritornano valori diversi. Si considerino le seguenti transazioni:
-\[
-\begin{aligned}
-  t_1: & bot \; r_1(x); \; r_1'(x); \; commit; \; eot \\
-  t_2: & bot \; r_2(x); \; x = x + 1; \; w_2(x); \; commit; \; eot
-\end{aligned}
-\] 
-L'esecuzione concorrente di \( t_1 \) e \( t_2 \) può portare alla lettura
-inconsistente, come si può vedere dalla seguente simulazione:
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=1\textwidth]{lettura_inconsistente}
-  \caption{Esempio di lettura inconsistente}
-\end{figure}
-
-\subsubsection{Lettura sporca}
-Questa anomalia si verifica quando viene letto un dato che rappresenta uno stato
-intermedio nell’evoluzione di una transazione. Si considerino le seguenti transazioni:
-\[
-\begin{aligned}
-  t_1: & bot \; r_1(x); \; commit; \; eot \\
-  t_2: & bot \; r_2(x); \; x = x + 1; \; w_2(x); \; \ldots abort;
-\end{aligned}
-\] 
-L'esecuzione concorrente di \( t_1 \) e \( t_2 \) può portare alla lettura
-sporca, come si può vedere dalla seguente simulazione:
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=1\textwidth]{lettura_sporca}
-  \caption{Esempio di lettura sporca}
-\end{figure}
-
-\subsubsection{Aggiornamento fantasma}
-Questa anomalia si verifica quando avviene l'osservazione di uno stato intermedio che
-non soddisfa i vincoli di integrità. Si considerino le seguenti transazioni:
-\[
-\begin{aligned}
-  Risorse &: x, y, z \\
-  Vincoli &: x + y + z = 100 \\
-\end{aligned}
-\] 
-\[
-\begin{aligned}
-  t_1: & bot \; r_1(y); \; r_1(x); \; r_1(z); \; s = x + y + z; \; eot \\
-  t_2: & bot \; r_2(y); \; y = y + 10; \; r_2(z); \; z = z - 10; \; w_2(y); \; w_2(z);
-  \; commit; \; eot
-\end{aligned}
-\] 
-L'esecuzione concorrente di \( t_1 \) e \( t_2 \) può portare all'aggiornamento
-fantasma, come si può vedere dalla seguente simulazione:
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=1\textwidth]{aggiornamento_fantasma}
-  \caption{Esempio di aggiornamento fantasma}
-\end{figure}
-
-\subsubsection{Inserimento fantasma}
-Questa anomalia si verifica quando avvengono valutazioni diverse di valori aggregati a
-causa di inserimenti intermedi.
-La transazione che valuta un valore aggregato relativo a tutti gli elementi che
-soddisfano un predicato di selezione (ad esempio il voto medio degli studenti del terzo
-anno) può subire l'anomalia di inserimento fantasma se il valore aggregato viene
-valutato due volte e tra la prima e la seconda valutazione viene inserito un nuovo
-studente, quindi i due valori medi letti potrebbero essere diversi. Questa anomalia
-non si può risolvere facendo riferimento solo ai dati già presenti nella base di dati,
-ma è necessario tener presente che potrebbero esserci delle nuove tuple che compaiono
-\textit{improvvisamente}.
-
-\subsection{Schedule}
-Uno schedule è una sequenza di operazioni di lettura e scrittura eseguite su risorse
-della base di dati da diverse transazioni concorrenti che rappresenta una possibile
-esecuzione concorrente di diverse transazioni:
-\[
-  S: r_1(x); \; r_2(z); \; w_1(x); \; w_2(z);
-\] 
-Per evitare anomalie si stabilisce di accettare \textbf{solo} gli schedule equivalenti
-ad uno schedule seriale.
-
-\subsubsection{Schedule seriale}
-Lo schedule seriale è uno schedule dove le operazioni di ogni
-transazione compaiono in sequenza \textbf{senza essere inframezzate} da operazioni
-di altre transazioni.
-\begin{example}
-  Consideriamo i seguenti esempi di schedule:
-  \begin{itemize}
-    \item \( S_1: r_1(x); \; \color{blue}r_2(x); \; w_2(x); \; \color{black}w_1(x); \)
-      \textbf{non} è seriale
-
-    \item \( S_2: r_1(x); \; w_1(x); \; \color{blue} r_2(x); \; w_2(x); \) 
-      \textbf{è} seriale
-  \end{itemize}
-\end{example}
-
-
-\subsubsection{Schedule serializzabile}
-Lo schedule serializzabile è uno schedule equivalente ad uno schedule
-seriale. Due schedule sono equivalenti se \textbf{producono gli stessi effetti}
-sulla base di dati.
-
-\subsection{Tecniche di gestione della concorrenza}
-Per le seguenti tecniche di gestione della concorrenza, si assume l'ipotesi di
-\textbf{commit-proiezione}, cioè si suppone che le transazioni abbiano esito noto.
-Quindi si tolgono dagli schedule tutte le operazioni delle transazioni che non vanno
-a buon fine.
-
-\subsubsection{View-equivalenza}
-\begin{definition}[Relazione LEGGE\_DA]
-  Dato uno schedule \( S \) si dice che un'operazione di lettura \( r_i(x) \), che
-  compare in \( S \), \texttt{LEGGE\_DA} un'operazione di scrittura \( w_j(x) \), che
-  compare in \( S \), se \( w_j(x) \) \textbf{precede} \( r_i(x) \) in \( S \) e non
-  vi è alcuna operazione di scrittura \( w_k(x) \) tra le due.
-
-  \begin{example}
-    Un esempio di utilizzo della relazione LEGGE\_DA è il seguente:
-    \begin{itemize}
-      \item \( S_1: r_1(x);\; r_2(x);\; w_2(x);\; w_1(x);\, \) 
-        \texttt{LEGGE\_DA}\( (S_1) = \varnothing \) 
-
-      \item \( S_2: r_1(x);\; w_1(x);\; r_2(x);\; w_2(x);\, \) 
-        \texttt{LEGGE\_DA}\( (S_2) = \{ (r_2(x), w_1(x)) \} \)
-    \end{itemize}
-  \end{example}
-\end{definition}
-
-\begin{definition}[SCRITTURE\_FINALI]
-  Dato uno schedule \( S \) si dice che un'operazione di scrittura \( w_i(x) \), che
-  compare in \( S \), è una \textbf{SCRITTURA FINALE} se è l'ultima operazione di
-  scrittura della risorsa \( x \) in \( S \).
-
-  \begin{example}
-    Un esempio di utilizzo della relazione \\ SCRITTURE\_FINALI è il seguente:
-    \begin{itemize}
-      \item \( S_1: r_1(x);\; r_2(x);\; w_2(x);\; w_3(y);\; w_1(x); \) \\
-        \texttt{SCRITTURE\_FINALI}\( (S_1) = \{ w_3(y), w_1(x) \} \)
-
-      \item \( S_2: r_1(x);\; w_1(x);\; r_2(x);\; w_2(x);\; w_3(y); \) \\
-        \texttt{SCRITTURE\_FINALI}\( (S_2) = \{ w_2(x), w_3(y) \} \)
-    \end{itemize}
-  \end{example}
-\end{definition}
-
-\begin{definition}[View-equivalenza]
-  Due schedule \( S_1 \) e \( S_2 \) sono view-equivalenti (\( S_1 \approx_V S_2 \))
-  se possiedono le stesse relazioni LEGGE\_DA e SCRITTURE\_FINALI.
-\end{definition}
-
-\begin{definition}[View-serializzabilità]
-  Uno schedule \( S \) è view-serializzabile (VSR) se esiste uno schedule seriale \( S' \)
-  tale che \( S \approx_V S' \).
-
-  \vspace{1em}
-  \noindent
-  \textbf{Attenzione:} gli schedule seriali \( S' \) si generano considerando tutte le
-  possibili permutazioni delle transazioni che compaiono in \( S \). Inoltre \textbf{non
-  si deve} cambiare l'ordine delle operazioni di ciascuna transazione perchè ciò
-  significherebbe modificare la transazione.
-\end{definition}
-
-\noindent
-Gli schedule corrispondenti alle anomalie di:
+\subsubsection{Struttura ad albero}
+Quando l'indice aumenta di dimensioni, non si può più gestire in memoria centrale,
+di conseguenza deve essere gestito in memoria secondaria. Per migliorare le prestazioni
+degli accessi ad un indice di grandi dimensioni, si utilizza il B+-Tree, una struttura
+ad albero con le seguenti caratteristiche:
 \begin{itemize}
-  \item Perdita di aggiornamento
-  \item Letture inconsistenti
-  \item Aggiornamenti fantasma
+  \item Ogni \textbf{nodo viene memorizzato in una pagina/blocco di memoria secondaria}.
+
+  \item I legami tra i nodi sono \textbf{puntatori a pagine di memoria secondaria}.
+
+  \item Sono presenti \textbf{molti figli} e di conseguenza ha \textbf{pochi livelli}.
+
+  \item L'albero è \textbf{bilanciato}, cioè la lunghezza dei percorsi che collegano
+    la radice ai nodi foglia è costante
+
+  \item Inserimenti e cancellazioni non alterano le prestazioni dell’accesso ai dati:
+    l’albero si mantiene bilanciato
 \end{itemize}
-\textbf{non sono view-serializzabili}. Inoltre l'algoritmo per il test di view-equivalenza
-tra due schedule è di complessità lineare, mentre l'algoritmo per il test di
-view-serializzabilità di uno schedule è di complessità esponenziale.
 
-\vspace{1em}
-\noindent
-In conclusione si è osservato che la view-serializzabilità richiede l'ipotesi di
-commit-proiezione, e algoritmi di complessità troppo elevata, quindi non è applicabile
-nei sistemi reali.
-
-\subsubsection{Conflict-equivalenza}
-
-\begin{definition}[Conflitto]
-  Dato uno schedule \( S \) si dice che una coppia di operazioni \( (a_i, a_j) \),
-  dove \( a_i \) e \( a_j \) compaiono nello schedule \( S \), rappresentano un
-  conflitto se:
-  \begin{itemize}
-    \item appartengono a transazioni diverse (\( i \neq j \))
-
-    \item entrambe operano sulla stessa risorsa
-
-    \item almeno una di esse è un'operazione di scrittura
-
-    \item \( a_i \) compare in \( S \) prima di \( a_j \)
-  \end{itemize}
-\end{definition}
-
-\begin{definition}[Conflict-equivalenza]
-  Due schedule \( S_1 \) e \( S_2 \) sono conflict-equivalenti (\( S_1 \approx_C S_2 \))
-  se possiedono le stesse operazioni e gli stessi conflitti, cioè se le operazioni 
-  in conflitto sono nello stesso ordine nei due schedule.
-\end{definition}
-
-\begin{definition}[Conflict-serializzabilità]
-  Uno schedule \( S \) è \\ conflict-serializzabile (CSR) se esiste uno schedule seriale
-  \( S' \) tale che \( S \approx_C S' \).
-\end{definition}
-
-\noindent
-L'algoritmo per il test di conflict-serializzabilità di uno schedule è di \textbf{
-complessità lineare} ed è il seguente:
-
-Dato uno schedule \( S \):
+\subsubsection*{Struttura}
+La struttura di un B+-Tree con \textbf{fan-out} \( = n \), cioè con \( n \) figli per
+ogni nodo, è la seguente:
 \begin{itemize}
-  \item Si costruisce il grafo dei conflitti \( G(N, A) \) dove:
-    \begin{itemize}
-      \item \( N = \left\{ t_1, \ldots, t_n \right\} \) è l'insieme delle transazioni
-        di \( S \) 
-
-      \item \( (t_i, t_j) \in A \) se esiste almeno un conflitto \( (a_i, a_j) \) in 
-        \( S \)
-    \end{itemize}
-
-  \item Se il grafo è \textbf{aciclico}, allora \( S \) è conflict-serializzabile.
-\end{itemize}
-Richiede comunque l'ipotesi di commit-proiezione.
-
-\begin{theorem}
-  La conflict-serializzabilità è una condizione sufficiente, ma non necessaria per
-  la view-serializzabilità, cioè \( CSR \subset VSR \):
-  \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{csr_vsr}
-    \caption{Relazione tra conflict-serializzabilità e view-serializzabilità}
-  \end{figure}
-\end{theorem}
-
-\subsubsection{Locking a due fasi stretto}
-Il locking a due fasi (2PL, Two-Phase Locking) è il metodo applicato nei sistemi reali
-per la gestione dell'esecuzione concorrente delle transazioni perchè non richiede di
-conoscere in anticipo l'esito delle transazioni. Il locking a due fasi è un sottoinsieme
-della conflict-serializzabilità.
-Gli aspetti che caratterizzano il locking a due fasi sono i seguenti:
-\begin{itemize}
-  \item \textbf{Meccanismo di base per la gestione dei lock}:
-    Si basa sull'introduzione di alcune \textbf{primitive di lock} che consentono
-    alle transazioni di bloccare le risorse sulle quali vogliono agire con operazioni
-    di lettura e scrittura. Le primitive di lock sono le seguenti:
-    \begin{itemize}
-      \item \( r\_lock_K(x) \): richiesta di un lock \textbf{condiviso} da parte della
-        transazione \( t_K \) sulla risorsa \( x \) per eseguire una lettura
-
-      \item \( w\_lock_K(x) \): richiesta di un lock \textbf{esclusivo} da parte della
-        transazione \( t_K \) sulla risorsa \( x \) per eseguire una scrittura
-
-      \item \( unlock_K(x) \): richiesta da parte della transazione \( t_K \) di
-        liberare la risorsa \( x \) da un precedente lock
-    \end{itemize}
-    Le transazioni devono seguire le seguenti regole per applicare le primitive di
-    lock:
-    \begin{itemize}
-      \item Ogni \textbf{lettura} deve essere preceduta da un \( r\_lock \) e seguita
-        da un \( unlock \). Sono ammessi più \( r\_lock \) contemporanei sulla stessa
-        risorsa (lock condiviso)
-
-      \item Ogni \textbf{scrittura} deve essere preceduta da un \( w\_lock \) e seguita
-        da un \( unlock \). \textbf{Non} sono ammessi più \( w\_lock \) (oppure
-        \( w\_lock \) e \( r\_lock \)) contemporanei sulla stessa risorsa (lock
-        esclusivo)
-    \end{itemize}
-    Se una transazione segue le precedenti regole, allora si dice \textbf{ben formata}
-    rispetto al locking.
-
-  \item \textbf{Politica di concessione dei lock sulle risorse}:
-    Il gestore dei lock (o gestore della concorrenza) mantiene per ogni risorsa \( x \) 
-    le seguenti informazioni:
-    \begin{itemize}
-      \item \textbf{Stato}: \( s(x) \in \left\{ libero, r\_lock, w\_lock \right\} \) 
-
-      \item \textbf{Transazioni in r\_lock}: \( c(x) = \left( t_1, \ldots, t_n \right)  \),
-        dove \( t_1, \ldots, t_n \) hanno un \( r\_lock \) su \( x \)
-    \end{itemize}
-    Il comportamento del gestore dei lock è descritto dalla seguente tablella:
-    \begin{table}[H]
-      \centering
-      \includegraphics[width=0.9\textwidth]{gestore_lock}
-      \caption{Comportamento del gestore dei lock}
-    \end{table}
-
-  \item \textbf{Regola che garantisce la serializzabilità}:
-    Una transazione \textbf{dopo aver rilasciato un lock non può acquisirne altri}.
-    Questa regola è visualizzata dal seguente grafico:
+  \item \textbf{Nodo foglia}:
     \begin{figure}[H]
       \centering
-      \includegraphics[width=0.9\textwidth]{grafico_locking_due_fasi}
-      \caption{Locking a due fasi}
+      \includegraphics[width=0.9\textwidth]{b_plus_tree}
+      \caption{Struttura di un nodo foglia di un B+-Tree con fan-out \( = n \)}
+    \end{figure}
+    \noindent
+    Può contenere fino a \( n-1 \) valori ordinati di chiave di ricerca e fino a \( n \) 
+    puntatori ai dati. Ogni nodo foglia ha un \textbf{vincolo di ordinamento}, cioè
+    \begin{itemize}
+      \item Le chiavi dentro ad un nodo foglia sono ordinate e 
+      \item I nodi foglia sono ordinati tra di loro. Dati due nodi foglia \( L_i \) e
+        \( L_j \) con \( i < j \), allora:
+        \[
+          \forall k_t \in L_i; \forall k_s \in L_j; k_t < k_s
+        \] 
+    \end{itemize}
+    Il puntatore \( p_m \) del nodo \( L_i \) punta al nodo foglia \( L_{i+1} \) se esiste:
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.9\textwidth]{puntatore_foglia}
+      \caption{Puntatore \( p_m \) del nodo \( L_i \) che punta al nodo \( L_{i+1} \)}
+    \end{figure}
+
+    Una variante del B+-Tree è quella in cui i nodi foglia contengono direttamente le
+    tuple. In questo caso si ha una struttura fisica integrata dati/indice.
+
+  \item \textbf{Nodo intermedio}: È una sequenza di \( m' \le n \) valori ordinati di
+    chiave (può contenere fino a \( n \) puntatori a nodo). Ogni chiave \( K_i \) 
+    è seguita da un puntatore \( p_i \):
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.9\textwidth]{b_plus_tree_nodo_intermedio}
+      \caption{Struttura di un nodo intermedio di un B+-Tree con fan-out \( = n \)}
     \end{figure}
 \end{itemize}
-
-\noindent
-Il locking a due fasi stretto (Strict 2PL) è una variante del locking a due fasi che
-introduce una condizione aggiuntiva per rimuovere la necessità dell'ipotesi di
-commit-proiezione. La condizione aggiuntiva è la seguente: Una transazione può
-rilasciare i lock solo quando ha eseguito correttamente un \textbf{commit} o un
-\textbf{rollback}.
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.9\textwidth]{grafico_locking_due_fasi_stretto}
-  \caption{Locking a due fasi stretto}
-\end{figure}
-
-\subsubsection{Blocco critico (deadlock)}
-Il blocco critico è una situazione di blocco che si verifica nell'esecuzione di
-transazioni concorrenti quando:
+Il fan-out è un parametro che fornisce un limite massimo, ma bisogna anche fornire
+un limite minimo per evitare che i nodi siano troppo vuoti, questi limiti sono detti
+\textbf{vincoli di riempimento}:
 \begin{itemize}
-  \item Due transazioni hanno bloccato delle risorse:
-    \begin{itemize}
-      \item \( t_1 \) ha bloccato \( r_1 \)
+  \item \textbf{Vincoli per i nodi foglia}: Ogni nodo foglia può contenere un numero
+    di valori di chiave (\#chiavi) vincolato come:
+    \[
+      \left\lceil \frac{n-1}{2} \right\rceil \le \#chiavi \le n-1
+    \] 
 
-      \item \( t_2 \) ha bloccato \( r_2 \)
-    \end{itemize}
-
-  \item Inoltre \( t_1 \) è in attesa sulla risorsa \( r_2 \) e \( t_2 \) è in attesa
-    sulla risorsa \( r_1 \)
+  \item \textbf{Vincoli per i nodi intermedi}: Ogni nodo intermedio può contenere
+    un numero di puntatori (\#puntatori) vincolato come:
+    \[
+      \left\lceil \frac{n}{2} \right\rceil \le \#puntatori \le n
+    \] 
 \end{itemize}
-Se il numero medio di tuple per tabella è \( n \) e la granularità del lock (cioè
-il numero di risorse che possono essere bloccate) è la tupla, la probabilità che
-si verifichi un lock tra due transazioni è:
-\[
-  P(\text{deadlock di lunghezza 2}) = \frac{1}{n^2}
-\] 
+
 \begin{example}
-  Un esempio di deadlock utilizzando il locking a due fasi stretto è il seguente:
+  Consideriamo ad esempio un B+-Tree con fan-out = 4 con contenuto:
+  \[
+    A, B, D, E, F, G, L, M, N, P
+  \] 
+  Il fan-out ci dice che per:
+  \begin{itemize}
+    \item I nodi foglia i vincoli di riempimento sono:
+      \[
+        2 \le \#chiavi \le 3
+      \] 
+
+    \item I nodi intermedi i vincoli di riempimento sono:
+      \[
+        2 \le \#puntatori \le 4
+      \]
+
+    \item La radice è l'unico nodo per cui i vincoli di riempimento \textbf{minimi}
+      non si applicano
+  \end{itemize}
   \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{deadlock_locking_due_fasi_stretto}
-    \caption{Esempio di deadlock con locking a due fasi stretto}
+    \includegraphics[width=1\textwidth]{b_plus_tree_esempio}
+    \caption{Esempio di B+-Tree con vincolo di riempimento minimo}
+  \end{figure}
+  \noindent
+  La radice \( L \) punta:
+  \begin{itemize}
+    \item A sinistra: al sottoalbero con chiave \( K < "L" \) 
+    \item A destra: al sottoalbero con chiave \( K \ge "L" \)
+  \end{itemize}
+  I figli puntano alle tuple con chiave uguale a quella del nodo foglia
+  
+  In questo caso l'albero per chiavi desiderate rispetta il vincolo di riempimento
+  minimo. Per rispettare il vincolo di riempimento massimo bisogna fare un altro albero:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{b_plus_tree_esempio_2}
+    \caption{Esempio di B+-Tree con vincolo di riempimento massimo}
+  \end{figure}
+  Le etichette per la radice sono assegnate secondo:
+  \begin{itemize}
+    \item Sinistra: Chiavi comprese tra: \( "E" \le K < "L" \) 
+    \item Centro: Chiavi comprese tra \( "L" \le K < "N" \)
+    \item Destra: Chiavi \( K \ge "N" \)
+  \end{itemize}
+\end{example}
+
+\subsubsection*{Ricerca con chiave K}
+Per effettuare la ricerca di una tupla con chiave di ricerca \( K \) si effettuano
+i seguenti passi:
+\begin{enumerate}
+  \item \label{item:ricerca_b_plus_tree_1}
+    Cercare nel \textbf{nodo radice} il più piccolo valore di chiave maggiore di
+    \( K \)
+    \begin{itemize}
+      \item Se tale valore esiste (supponiamo sia \( K_i \)) allora seguire il
+        puntatore \( p_i \) 
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width=0.8\textwidth]{ricerca_b_plus_tree}
+          \caption{Ricerca di una tupla con chiave di ricerca \( K \) in un B+-Tree}
+        \end{figure}
+
+      \item Se tale valore non esiste seguire il puntatore \( p_m \)  
+        \begin{figure}[H]
+          \centering
+          \includegraphics[width=0.8\textwidth]{ricerca_b_plus_tree_2}
+          \caption{Ricerca di una tupla con chiave di ricerca \( K \) in un B+-Tree quando il più piccolo valore di chiave maggiore di \( K \) non esiste}
+        \end{figure}
+    \end{itemize}
+
+  \item Se il nodo raggiunto è un \textbf{nodo foglia} cercare il valore \( K \) al suo
+    interno e seguire il corrispondente puntatore verso le tuple, se non esistono
+    riprendere il passo \ref{item:ricerca_b_plus_tree_1}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{ricerca_b_plus_tree_3}
+      \caption{Ricerca di una tupla con chiave di ricerca \( K \) in un B+-Tree quando si raggiunge un nodo foglia}
+    \end{figure}
+\end{enumerate}
+
+\begin{example}
+  Ad esempio ricerchiamo la tupla con chiave di ricerca \( K = "G" \):
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{ricerca_b_plus_tree_esempio}
+    \caption{Esempio di ricerca di una tupla con chiave di ricerca \( K \) in un B+-Tree}
   \end{figure}
 \end{example}
 
-\noindent
-Le tecniche per risolvere i deadlock sono le seguenti:
-\begin{itemize}
-  \item \textbf{Timeout}: se una transazione è in attesa su una risorsa da troppo tempo 
-    viene abortita
-
-  \item \textbf{Prevenzione}: 
-    \begin{itemize}
-      \item Una transazione blocca tutte le risorse a cui deve accedere in lettura o
-        scrittura in una sola volta (o blocca tutto o non blocca nulla)
-
-      \item Ogni transazione \( t_i \) acquisisce un timestamp \( TS_i \) all'inizio
-        della sua esecuzione. La transazione \( t_i \) può attendere una risorsa
-        bloccata da \( t_j \) solo se vale una certa condizione sui timestamp, ad esempio
-        \( TS_i < TS_j \), altrimenti \( t_i \) viene abortita e fatta ripartire con
-        lo stesso timestamp
-    \end{itemize}
-
-  \item \textbf{Rilevamento}: Si esegue un'analisi periodica della tabella di lock per
-    rilevare la presenza di un deadlock che corrisponde ad un ciclo nel grafo delle
-    relazioni di attesa. Questa tecnica è la più utilizzata nei sistemi reali.
-\end{itemize}
-
 \vspace{1em}
 \noindent
-Inoltre la scelta di gestire i lock in lettura come lock condivisi introduce il
-problema della \textbf{starvation} che tuttavia nel contesto delle DMBS risulta poco
-probabile, ma comunque risolvibile con le tecniche precedenti (in particolare il
-rilevamento).
+Il costo della ricerca dipende dalla profondità dell'albero in termini di
+\textbf{accessi alla memoria secondaria}, dove ogni nodo rappresenta un blocco. 
+Il costo in una struttura ad albero è pari alla profondità dell'albero, che nel
+B+-Tree è indipendente dal percorso ed è funzione del fan-out \( n \) e del numero
+di valori chiave presenti nell'albero \#valoriChiave
+\[
+  prof_{\text{B+-Tree}} \le \underbrace{1}_{\text{Radice}} + 
+  \underbrace{\log_{\left\lceil \frac{n}{2} \right\rceil} \left( 
+      \overbrace{\frac{\#valoriChiave}{\left\lceil \frac{n-1}{2} \right\rceil }}^{\text{Nodi foglia massimi}}
+  \right)}_{\text{\# Livelli}}
+\] 
 
-\begin{definition}[Starvation]
-  Se una risorsa \( x \) viene costantemente bloccata da una sequenza di transazioni 
-  che acquisiscono \( r\_lock \) su \( x \), un'eventuale transazione in attesa di
-  scrivere su \( x \) viene bloccata per un lungo periodo fino alla fine della
-  sequenza di letture.
+\subsubsection*{Inserimento}
+Per inserire una tupla in un B+-Tree bisogna mantenere i vincoli di riempimento, quindi
+vengono eseguiti i seguenti passi:
+\begin{enumerate}
+  \item \textbf{Ricerca} del nodo foglia \( NF \) dove \( K \) va inserito
+  \item 
+  \begin{itemize}
+    \item Se \( K \) è presente in \( NF \):
+      \begin{itemize}
+        \item Se è \textbf{indice primario}: non si fa nessuna azione
+        \item Se è \textbf{indice secondario}: si aggiornano i bucket di puntatori
+      \end{itemize}
+
+    \item Altrimenti si inserisce \( K \) in \( NF \) rispettando l'ordine:
+      \begin{itemize}
+        \item Se è \textbf{indice primario}: si inserisce \( K \) e si aggiorna il
+          puntatore alla prima tupla
+
+        \item Se è \textbf{indice secondario}: si inserisce \( K \) e si crea
+          il bucket
+      \end{itemize}
+      Se all'inserimento di \( K \) viene violato il vincolo di riempimento massimo,
+      bisogna eseguire uno \textbf{split} del nodo \( NF \) in due nodi foglia.
+      Lo split viene eseguito se in \( NF \) esistono già \( n \) valori di chiave
+      e bisogna eseguire i seguenti passi:
+      \begin{enumerate}
+        \item Creare due nodi foglia \( NF_1 \) e \( NF_2 \) 
+
+        \item Inserire i primi \( \left\lceil \frac{n-1}{2} \right\rceil  \) valori
+          di chiave in \( NF_1 \)
+
+        \item Inserire i restanti in \( NF_2 \)
+
+        \item Aggiornare il padre, cioè se il padre viola il vincolo di riempimento
+          massimo bisogna propagare lo split e quindi creare una nuova radice/livello
+          se necessario
+      \end{enumerate}
+  \end{itemize}
+\end{enumerate}
+
+\begin{example}
+  Un esempio di split di un nodo foglia con fan-out = 5 è il seguente:
   \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{starvation}
-    \caption{Esempio di starvation}
+    \includegraphics[width=1\textwidth]{split_b_plus_tree}
+    \caption{Esempio di split di un nodo foglia in un B+-Tree con fan-out = 5}
   \end{figure}
+  \noindent
+  Se si aggiungesse la chiave \( 15 \) tra il \( 12 \) e il \( 16 \)  si violerebbe
+  il vincolo di riempimento massimo: \( \#chiavi = 5 \), quindi si esegue lo split
+  del nodo foglia.
+\end{example}
+
+\subsubsection*{Cancellazione}
+Per cancellare una tupla in un B+-Tree con chiavee \( K \) bisogna mantenere i vincoli
+di riempimento, quindi vengono eseguiti i seguenti passi:
+\begin{enumerate}
+  \item \textbf{Ricercare} il nodo foglia \( NF \) che contiene \( K \)
+  \item Cancellare \( K \) e il suo puntatore. Potrebbe violare il vincolo di riempimento minimo, in quel caso bisogna
+        fare il \textbf{merge} di \( NF \) con un fratello.
+        Per fare il merge, se nel nodo da unire esistono \( \left\lceil \frac{n-1}{2} \right\rceil -1 \) 
+        valori chiave, si procede come segue:
+        \begin{enumerate}
+          \item Individuare il nodo fratello
+          \item Si genera un unico nodo foglia
+          \item Si aggiorna il padre
+            \begin{itemize}
+              \item Se non c'è un nodo foglia fratello che unito rispetta il vincolo
+                di riempimento massimo, si fa prima il merge e poi lo split
+
+              \item Se anche il padre viola il vincolo di riempimento massimo, si
+                propaga il merge fino ad arrivare alla radice
+            \end{itemize}
+        \end{enumerate}
+\end{enumerate}
+
+\begin{example}
+  Un esempio di merge di un nodo foglia con fan-out = 5, in cui si vuole eliminare
+  la tupla con chiave \( K = "3" \) è il seguente:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{merge_b_plus_tree}
+    \caption{Esempio di merge di un nodo foglia in un B+-Tree con fan-out = 5}
+  \end{figure}
+  \noindent
+  Se si eliminasse il nodo con chiave \( 3 \) si violerebbe il vincolo di riempimento
+  minimo, quindi si deve fare il merge con il nodo fretello.
+\end{example}
+
+\subsubsection{Struttura ad accesso calcolato (hash)}
+Questa struttura garantisce un \textbf{accesso associativo} alle tuple, cioè la
+locazione fisica dei dati dipende dal valore assunto dalla chiave. Si potrebbe
+utilizzare un array indicizzato dalla chiave, ma questo non è pratico perchè i valori
+della chiave sono tanti, quindi si utilizza una \textbf{funzione di hash} che mappa
+i valori di chiave in indirizzi di memorizzazione delle tuple:
+\[
+  h: \; K \to B
+\] 
+dove:
+\begin{itemize}
+  \item \( K \) è il dominio delle chiavi
+  \item \( B \) è il dominio degli indirizzi di memorizzazione
+\end{itemize}
+Il vantaggio di questa struttura è che il costo della ricerca è costante e uguale
+ad un accesso alla memoria secondaria. Lo svantaggio è quello delle \textbf{collisioni},
+cioè valori di chiavi diversi possono produrre lo stesso indirizzo. Una funzione
+di hash \textbf{buona} minimizza il numero di collisioni.
+
+\begin{definition}
+  Il fattore di riempimento definisce la frazione di spazio fisico mediamente
+  utilizzata da un blocco
 \end{definition}
 
-\subsubsection{Gestione della concorrenza in SQL}
-Siccome risulta molto pesante per il sistema gestire l'esecuzione concorrente di
-transazioni con una conseguente diminuzione delle prestazioni, SQL prevede la 
-possibilità di \textbf{rinunciare del tutto o in parte al controllo di concorrenza}
-per aumentare le prestazioni del sistema. È quindi possibile, a livello di una singola
-transazione, decidere di \textbf{tollerare alcune anomalie} di esecuzione concorrente.
-La seguente tabella mostra le possibili combinazioni di anomalie che si possono tollerare:
-\begin{table}[H]
-  \centering
-  \includegraphics[width=0.9\textwidth]{anomalie_tollerate}
-  \caption{Anomalie tollerate in SQL}
-\end{table}
-\textbf{Nota:}
+\noindent
+Siano:
 \begin{itemize}
-  \item Tutti i livelli richiedono il 2PL stretto per le scritture
-
-  \item \textbf{Serializable}: Richiede il 2PL stretto anche per le scritture e applica
-    il lock di predicato (cioè blocca tutte le risorse che soddisfano un certo
-    predicato) per evitare l'inserimento fantasma
-
-  \item \textbf{Repeatable read}: Applica il 2PL stretto per tutti i lock in lettura 
-    applicati a livello di tupla e non di tabella. Consente inserimenti e quindi non
-    evita l'anomalia di inserimento fantasma
-
-  \item \textbf{Read committed}: Richiede lock condivisi per le letture, ma non il
-    2PL stretto
-
-  \item \textbf{Read uncommitted}: Non applica lock in lettura
+  \item \( T \) il numero di tuple
+  \item \( F \) il fattore blocco, cioè il numero di tuple che ci stanno in un blocco
+  \item \( f \) il fattore di riempimento
 \end{itemize}
+Si ha che il numero di blocchi è definito come:
+\[
+  \#B = \left\lceil \frac{T}{F \cdot f} \right\rceil 
+\] 
+Il DBMS alloca un numero di bucket di puntatori uguale al numero di blocchi \( \#B \).
+Si definiscono due funzioni:
+\begin{itemize}
+  \item Funzione di \textbf{folding}: trasforma i valori chiave in numeri interi
+    positivi
+    \[
+      f: \; K \to \mathbb{Z}^+
+    \] 
+
+  \item Funzione di \textbf{hashing}:
+    \[
+      h: \; \mathbb{Z}^+ \to B
+    \] 
+\end{itemize}
+
+\subsubsection*{Ricerca con chiave K}
+Per effettuare la ricerca di una tupla con chiave di ricerca \( K \) si effettuano
+i seguenti passi:
+\begin{enumerate}
+  \item Calcolare \( b = h(f(K)) \) (costo zero)
+  \item Accedere al bucket \( b \) (costo: 1 accesso alla pagina di memoria secondaria)
+  \item Accedere alle \( n \) tuple attraverso i puntatori del bucket (costo:
+    \( m \) accessi a pagine di memoria secondaria, con \( m \le n \))
+\end{enumerate}
+
+% TODO:
+
+% \section{Transazioni concorrenti}
+% Il componente dell'architettura del DBMS che si occupa di gestire le transazioni
+% concorrenti è il \textbf{gestore della concorrenza} che riceve richieste di accesso
+% ai dati e decide se autorizzarle o meno, eventualmente riordinandole, come se
+% fosse uno scheduler.
+% \begin{figure}[H]
+%   \centering
+%   \includegraphics[width=0.9\textwidth]{gestore_concorrenza}
+%   \caption{Gestore della concorrenza nell'architettura di un DBMS}
+% \end{figure}
+%
+% \noindent
+% L'unità di misura per caratterizzare il carico applicativo di un DBMS è il numero di
+% transazioni al secondo (TPS, Transactions Per Second). Per gestire un carico elevato,
+% tipico delle applicazioni gestionali (100 o 1000 tps), un DBMS deve eseguire le
+% transazioni in modo concorrente.
+%
+% \subsection{Anomalie}
+% L'esecuzione concorrente di transazioni senza controllo può generare \textbf{anomalie}
+% o problemi di correttezza ed è quindi necessario introdurre dei meccanismi di
+% controllo nell'esecuzione delle transazioni per evitare queste anomalie.
+%
+% \begin{define}[Notazione]
+%   Verrà utilizzata la seguente notazione:
+%   \begin{itemize}
+%     \item \( t_i \) indica una transazione
+%     \item \( r_i(x) \) è un operazione di lettura eseguita dalla transazione \( t_i \) 
+%       sulla risorsa \( x \) 
+%     \item \( w_i(x) \) è un operazione di scrittura eseguita dalla transazione \( t_i \) 
+%       sulla risorsa \( x \)
+%
+%     \item \texttt{bot} indica l'inizio di una transazione (begin of transaction)
+%     \item \texttt{commit} indica l'applicazione definitiva degli effetti di una
+%       transazione (commit)
+%     \item \texttt{eot} indica la fine di una transazione (end of transaction)
+%   \end{itemize}
+% \end{define}
+%
+% \subsubsection{Perdita di aggiornamento}
+% Questa anomalia si verifica quando gli effetti di una transazione concorrente sono
+% persi. Si considerino le seguenti transazioni:
+% \[
+% \begin{aligned}
+%   t_1: & bot \; r_1(x); \; x = x + 1; \; w_1(x); \; commit; \; eot \\
+%   t_2: & bot \; r_2(x); \; x = x + 1; \; w_2(x); \; commit; \; eot
+% \end{aligned}
+% \] 
+% L'esecuzione concorrente di \( t_1 \) e \( t_2 \) può portare alla perdita di
+% aggiornamento, come si può vedere dalla seguente simulazione:
+% \begin{figure}[H]
+%   \centering
+%   \includegraphics[width=1\textwidth]{perdita_aggiornamento}
+%   \caption{Esempio di perdita di aggiornamento}
+% \end{figure}
+%
+% \subsubsection{Lettura inconsistente}
+% Questa anomalia si verifica quando accessi successivi ad uno stesso dato, all'interno
+% di una transazione, ritornano valori diversi. Si considerino le seguenti transazioni:
+% \[
+% \begin{aligned}
+%   t_1: & bot \; r_1(x); \; r_1'(x); \; commit; \; eot \\
+%   t_2: & bot \; r_2(x); \; x = x + 1; \; w_2(x); \; commit; \; eot
+% \end{aligned}
+% \] 
+% L'esecuzione concorrente di \( t_1 \) e \( t_2 \) può portare alla lettura
+% inconsistente, come si può vedere dalla seguente simulazione:
+% \begin{figure}[H]
+%   \centering
+%   \includegraphics[width=1\textwidth]{lettura_inconsistente}
+%   \caption{Esempio di lettura inconsistente}
+% \end{figure}
+%
+% \subsubsection{Lettura sporca}
+% Questa anomalia si verifica quando viene letto un dato che rappresenta uno stato
+% intermedio nell’evoluzione di una transazione. Si considerino le seguenti transazioni:
+% \[
+% \begin{aligned}
+%   t_1: & bot \; r_1(x); \; commit; \; eot \\
+%   t_2: & bot \; r_2(x); \; x = x + 1; \; w_2(x); \; \ldots abort;
+% \end{aligned}
+% \] 
+% L'esecuzione concorrente di \( t_1 \) e \( t_2 \) può portare alla lettura
+% sporca, come si può vedere dalla seguente simulazione:
+% \begin{figure}[H]
+%   \centering
+%   \includegraphics[width=1\textwidth]{lettura_sporca}
+%   \caption{Esempio di lettura sporca}
+% \end{figure}
+%
+% \subsubsection{Aggiornamento fantasma}
+% Questa anomalia si verifica quando avviene l'osservazione di uno stato intermedio che
+% non soddisfa i vincoli di integrità. Si considerino le seguenti transazioni:
+% \[
+% \begin{aligned}
+%   Risorse &: x, y, z \\
+%   Vincoli &: x + y + z = 100 \\
+% \end{aligned}
+% \] 
+% \[
+% \begin{aligned}
+%   t_1: & bot \; r_1(y); \; r_1(x); \; r_1(z); \; s = x + y + z; \; eot \\
+%   t_2: & bot \; r_2(y); \; y = y + 10; \; r_2(z); \; z = z - 10; \; w_2(y); \; w_2(z);
+%   \; commit; \; eot
+% \end{aligned}
+% \] 
+% L'esecuzione concorrente di \( t_1 \) e \( t_2 \) può portare all'aggiornamento
+% fantasma, come si può vedere dalla seguente simulazione:
+% \begin{figure}[H]
+%   \centering
+%   \includegraphics[width=1\textwidth]{aggiornamento_fantasma}
+%   \caption{Esempio di aggiornamento fantasma}
+% \end{figure}
+%
+% \subsubsection{Inserimento fantasma}
+% Questa anomalia si verifica quando avvengono valutazioni diverse di valori aggregati a
+% causa di inserimenti intermedi.
+% La transazione che valuta un valore aggregato relativo a tutti gli elementi che
+% soddisfano un predicato di selezione (ad esempio il voto medio degli studenti del terzo
+% anno) può subire l'anomalia di inserimento fantasma se il valore aggregato viene
+% valutato due volte e tra la prima e la seconda valutazione viene inserito un nuovo
+% studente, quindi i due valori medi letti potrebbero essere diversi. Questa anomalia
+% non si può risolvere facendo riferimento solo ai dati già presenti nella base di dati,
+% ma è necessario tener presente che potrebbero esserci delle nuove tuple che compaiono
+% \textit{improvvisamente}.
+%
+% \subsection{Schedule}
+% Uno schedule è una sequenza di operazioni di lettura e scrittura eseguite su risorse
+% della base di dati da diverse transazioni concorrenti che rappresenta una possibile
+% esecuzione concorrente di diverse transazioni:
+% \[
+%   S: r_1(x); \; r_2(z); \; w_1(x); \; w_2(z);
+% \] 
+% Per evitare anomalie si stabilisce di accettare \textbf{solo} gli schedule equivalenti
+% ad uno schedule seriale.
+%
+% \subsubsection{Schedule seriale}
+% Lo schedule seriale è uno schedule dove le operazioni di ogni
+% transazione compaiono in sequenza \textbf{senza essere inframezzate} da operazioni
+% di altre transazioni.
+% \begin{example}
+%   Consideriamo i seguenti esempi di schedule:
+%   \begin{itemize}
+%     \item \( S_1: r_1(x); \; \color{blue}r_2(x); \; w_2(x); \; \color{black}w_1(x); \)
+%       \textbf{non} è seriale
+%
+%     \item \( S_2: r_1(x); \; w_1(x); \; \color{blue} r_2(x); \; w_2(x); \) 
+%       \textbf{è} seriale
+%   \end{itemize}
+% \end{example}
+%
+%
+% \subsubsection{Schedule serializzabile}
+% Lo schedule serializzabile è uno schedule equivalente ad uno schedule
+% seriale. Due schedule sono equivalenti se \textbf{producono gli stessi effetti}
+% sulla base di dati.
+%
+% \subsection{Tecniche di gestione della concorrenza}
+% Per le seguenti tecniche di gestione della concorrenza, si assume l'ipotesi di
+% \textbf{commit-proiezione}, cioè si suppone che le transazioni abbiano esito noto.
+% Quindi si tolgono dagli schedule tutte le operazioni delle transazioni che non vanno
+% a buon fine.
+%
+% \subsubsection{View-equivalenza}
+% \begin{definition}[Relazione LEGGE\_DA]
+%   Dato uno schedule \( S \) si dice che un'operazione di lettura \( r_i(x) \), che
+%   compare in \( S \), \texttt{LEGGE\_DA} un'operazione di scrittura \( w_j(x) \), che
+%   compare in \( S \), se \( w_j(x) \) \textbf{precede} \( r_i(x) \) in \( S \) e non
+%   vi è alcuna operazione di scrittura \( w_k(x) \) tra le due.
+%
+%   \begin{example}
+%     Un esempio di utilizzo della relazione LEGGE\_DA è il seguente:
+%     \begin{itemize}
+%       \item \( S_1: r_1(x);\; r_2(x);\; w_2(x);\; w_1(x);\, \) 
+%         \texttt{LEGGE\_DA}\( (S_1) = \varnothing \) 
+%
+%       \item \( S_2: r_1(x);\; w_1(x);\; r_2(x);\; w_2(x);\, \) 
+%         \texttt{LEGGE\_DA}\( (S_2) = \{ (r_2(x), w_1(x)) \} \)
+%     \end{itemize}
+%   \end{example}
+% \end{definition}
+%
+% \begin{definition}[SCRITTURE\_FINALI]
+%   Dato uno schedule \( S \) si dice che un'operazione di scrittura \( w_i(x) \), che
+%   compare in \( S \), è una \textbf{SCRITTURA FINALE} se è l'ultima operazione di
+%   scrittura della risorsa \( x \) in \( S \).
+%
+%   \begin{example}
+%     Un esempio di utilizzo della relazione \\ SCRITTURE\_FINALI è il seguente:
+%     \begin{itemize}
+%       \item \( S_1: r_1(x);\; r_2(x);\; w_2(x);\; w_3(y);\; w_1(x); \) \\
+%         \texttt{SCRITTURE\_FINALI}\( (S_1) = \{ w_3(y), w_1(x) \} \)
+%
+%       \item \( S_2: r_1(x);\; w_1(x);\; r_2(x);\; w_2(x);\; w_3(y); \) \\
+%         \texttt{SCRITTURE\_FINALI}\( (S_2) = \{ w_2(x), w_3(y) \} \)
+%     \end{itemize}
+%   \end{example}
+% \end{definition}
+%
+% \begin{definition}[View-equivalenza]
+%   Due schedule \( S_1 \) e \( S_2 \) sono view-equivalenti (\( S_1 \approx_V S_2 \))
+%   se possiedono le stesse relazioni LEGGE\_DA e SCRITTURE\_FINALI.
+% \end{definition}
+%
+% \begin{definition}[View-serializzabilità]
+%   Uno schedule \( S \) è view-serializzabile (VSR) se esiste uno schedule seriale \( S' \)
+%   tale che \( S \approx_V S' \).
+%
+%   \vspace{1em}
+%   \noindent
+%   \textbf{Attenzione:} gli schedule seriali \( S' \) si generano considerando tutte le
+%   possibili permutazioni delle transazioni che compaiono in \( S \). Inoltre \textbf{non
+%   si deve} cambiare l'ordine delle operazioni di ciascuna transazione perchè ciò
+%   significherebbe modificare la transazione.
+% \end{definition}
+%
+% \noindent
+% Gli schedule corrispondenti alle anomalie di:
+% \begin{itemize}
+%   \item Perdita di aggiornamento
+%   \item Letture inconsistenti
+%   \item Aggiornamenti fantasma
+% \end{itemize}
+% \textbf{non sono view-serializzabili}. Inoltre l'algoritmo per il test di view-equivalenza
+% tra due schedule è di complessità lineare, mentre l'algoritmo per il test di
+% view-serializzabilità di uno schedule è di complessità esponenziale.
+%
+% \vspace{1em}
+% \noindent
+% In conclusione si è osservato che la view-serializzabilità richiede l'ipotesi di
+% commit-proiezione, e algoritmi di complessità troppo elevata, quindi non è applicabile
+% nei sistemi reali.
+%
+% \subsubsection{Conflict-equivalenza}
+%
+% \begin{definition}[Conflitto]
+%   Dato uno schedule \( S \) si dice che una coppia di operazioni \( (a_i, a_j) \),
+%   dove \( a_i \) e \( a_j \) compaiono nello schedule \( S \), rappresentano un
+%   conflitto se:
+%   \begin{itemize}
+%     \item appartengono a transazioni diverse (\( i \neq j \))
+%
+%     \item entrambe operano sulla stessa risorsa
+%
+%     \item almeno una di esse è un'operazione di scrittura
+%
+%     \item \( a_i \) compare in \( S \) prima di \( a_j \)
+%   \end{itemize}
+% \end{definition}
+%
+% \begin{definition}[Conflict-equivalenza]
+%   Due schedule \( S_1 \) e \( S_2 \) sono conflict-equivalenti (\( S_1 \approx_C S_2 \))
+%   se possiedono le stesse operazioni e gli stessi conflitti, cioè se le operazioni 
+%   in conflitto sono nello stesso ordine nei due schedule.
+% \end{definition}
+%
+% \begin{definition}[Conflict-serializzabilità]
+%   Uno schedule \( S \) è \\ conflict-serializzabile (CSR) se esiste uno schedule seriale
+%   \( S' \) tale che \( S \approx_C S' \).
+% \end{definition}
+%
+% \noindent
+% L'algoritmo per il test di conflict-serializzabilità di uno schedule è di \textbf{
+% complessità lineare} ed è il seguente:
+%
+% Dato uno schedule \( S \):
+% \begin{itemize}
+%   \item Si costruisce il grafo dei conflitti \( G(N, A) \) dove:
+%     \begin{itemize}
+%       \item \( N = \left\{ t_1, \ldots, t_n \right\} \) è l'insieme delle transazioni
+%         di \( S \) 
+%
+%       \item \( (t_i, t_j) \in A \) se esiste almeno un conflitto \( (a_i, a_j) \) in 
+%         \( S \)
+%     \end{itemize}
+%
+%   \item Se il grafo è \textbf{aciclico}, allora \( S \) è conflict-serializzabile.
+% \end{itemize}
+% Richiede comunque l'ipotesi di commit-proiezione.
+%
+% \begin{theorem}
+%   La conflict-serializzabilità è una condizione sufficiente, ma non necessaria per
+%   la view-serializzabilità, cioè \( CSR \subset VSR \):
+%   \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.6\textwidth]{csr_vsr}
+%     \caption{Relazione tra conflict-serializzabilità e view-serializzabilità}
+%   \end{figure}
+% \end{theorem}
+%
+% \subsubsection{Locking a due fasi stretto}
+% Il locking a due fasi (2PL, Two-Phase Locking) è il metodo applicato nei sistemi reali
+% per la gestione dell'esecuzione concorrente delle transazioni perchè non richiede di
+% conoscere in anticipo l'esito delle transazioni. Il locking a due fasi è un sottoinsieme
+% della conflict-serializzabilità.
+% Gli aspetti che caratterizzano il locking a due fasi sono i seguenti:
+% \begin{itemize}
+%   \item \textbf{Meccanismo di base per la gestione dei lock}:
+%     Si basa sull'introduzione di alcune \textbf{primitive di lock} che consentono
+%     alle transazioni di bloccare le risorse sulle quali vogliono agire con operazioni
+%     di lettura e scrittura. Le primitive di lock sono le seguenti:
+%     \begin{itemize}
+%       \item \( r\_lock_K(x) \): richiesta di un lock \textbf{condiviso} da parte della
+%         transazione \( t_K \) sulla risorsa \( x \) per eseguire una lettura
+%
+%       \item \( w\_lock_K(x) \): richiesta di un lock \textbf{esclusivo} da parte della
+%         transazione \( t_K \) sulla risorsa \( x \) per eseguire una scrittura
+%
+%       \item \( unlock_K(x) \): richiesta da parte della transazione \( t_K \) di
+%         liberare la risorsa \( x \) da un precedente lock
+%     \end{itemize}
+%     Le transazioni devono seguire le seguenti regole per applicare le primitive di
+%     lock:
+%     \begin{itemize}
+%       \item Ogni \textbf{lettura} deve essere preceduta da un \( r\_lock \) e seguita
+%         da un \( unlock \). Sono ammessi più \( r\_lock \) contemporanei sulla stessa
+%         risorsa (lock condiviso)
+%
+%       \item Ogni \textbf{scrittura} deve essere preceduta da un \( w\_lock \) e seguita
+%         da un \( unlock \). \textbf{Non} sono ammessi più \( w\_lock \) (oppure
+%         \( w\_lock \) e \( r\_lock \)) contemporanei sulla stessa risorsa (lock
+%         esclusivo)
+%     \end{itemize}
+%     Se una transazione segue le precedenti regole, allora si dice \textbf{ben formata}
+%     rispetto al locking.
+%
+%   \item \textbf{Politica di concessione dei lock sulle risorse}:
+%     Il gestore dei lock (o gestore della concorrenza) mantiene per ogni risorsa \( x \) 
+%     le seguenti informazioni:
+%     \begin{itemize}
+%       \item \textbf{Stato}: \( s(x) \in \left\{ libero, r\_lock, w\_lock \right\} \) 
+%
+%       \item \textbf{Transazioni in r\_lock}: \( c(x) = \left( t_1, \ldots, t_n \right)  \),
+%         dove \( t_1, \ldots, t_n \) hanno un \( r\_lock \) su \( x \)
+%     \end{itemize}
+%     Il comportamento del gestore dei lock è descritto dalla seguente tablella:
+%     \begin{table}[H]
+%       \centering
+%       \includegraphics[width=0.9\textwidth]{gestore_lock}
+%       \caption{Comportamento del gestore dei lock}
+%     \end{table}
+%
+%   \item \textbf{Regola che garantisce la serializzabilità}:
+%     Una transazione \textbf{dopo aver rilasciato un lock non può acquisirne altri}.
+%     Questa regola è visualizzata dal seguente grafico:
+%     \begin{figure}[H]
+%       \centering
+%       \includegraphics[width=0.9\textwidth]{grafico_locking_due_fasi}
+%       \caption{Locking a due fasi}
+%     \end{figure}
+% \end{itemize}
+%
+% \noindent
+% Il locking a due fasi stretto (Strict 2PL) è una variante del locking a due fasi che
+% introduce una condizione aggiuntiva per rimuovere la necessità dell'ipotesi di
+% commit-proiezione. La condizione aggiuntiva è la seguente: Una transazione può
+% rilasciare i lock solo quando ha eseguito correttamente un \textbf{commit} o un
+% \textbf{rollback}.
+% \begin{figure}[H]
+%   \centering
+%   \includegraphics[width=0.9\textwidth]{grafico_locking_due_fasi_stretto}
+%   \caption{Locking a due fasi stretto}
+% \end{figure}
+%
+% \subsubsection{Blocco critico (deadlock)}
+% Il blocco critico è una situazione di blocco che si verifica nell'esecuzione di
+% transazioni concorrenti quando:
+% \begin{itemize}
+%   \item Due transazioni hanno bloccato delle risorse:
+%     \begin{itemize}
+%       \item \( t_1 \) ha bloccato \( r_1 \)
+%
+%       \item \( t_2 \) ha bloccato \( r_2 \)
+%     \end{itemize}
+%
+%   \item Inoltre \( t_1 \) è in attesa sulla risorsa \( r_2 \) e \( t_2 \) è in attesa
+%     sulla risorsa \( r_1 \)
+% \end{itemize}
+% Se il numero medio di tuple per tabella è \( n \) e la granularità del lock (cioè
+% il numero di risorse che possono essere bloccate) è la tupla, la probabilità che
+% si verifichi un lock tra due transazioni è:
+% \[
+%   P(\text{deadlock di lunghezza 2}) = \frac{1}{n^2}
+% \] 
+% \begin{example}
+%   Un esempio di deadlock utilizzando il locking a due fasi stretto è il seguente:
+%   \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.9\textwidth]{deadlock_locking_due_fasi_stretto}
+%     \caption{Esempio di deadlock con locking a due fasi stretto}
+%   \end{figure}
+% \end{example}
+%
+% \noindent
+% Le tecniche per risolvere i deadlock sono le seguenti:
+% \begin{itemize}
+%   \item \textbf{Timeout}: se una transazione è in attesa su una risorsa da troppo tempo 
+%     viene abortita
+%
+%   \item \textbf{Prevenzione}: 
+%     \begin{itemize}
+%       \item Una transazione blocca tutte le risorse a cui deve accedere in lettura o
+%         scrittura in una sola volta (o blocca tutto o non blocca nulla)
+%
+%       \item Ogni transazione \( t_i \) acquisisce un timestamp \( TS_i \) all'inizio
+%         della sua esecuzione. La transazione \( t_i \) può attendere una risorsa
+%         bloccata da \( t_j \) solo se vale una certa condizione sui timestamp, ad esempio
+%         \( TS_i < TS_j \), altrimenti \( t_i \) viene abortita e fatta ripartire con
+%         lo stesso timestamp
+%     \end{itemize}
+%
+%   \item \textbf{Rilevamento}: Si esegue un'analisi periodica della tabella di lock per
+%     rilevare la presenza di un deadlock che corrisponde ad un ciclo nel grafo delle
+%     relazioni di attesa. Questa tecnica è la più utilizzata nei sistemi reali.
+% \end{itemize}
+%
+% \vspace{1em}
+% \noindent
+% Inoltre la scelta di gestire i lock in lettura come lock condivisi introduce il
+% problema della \textbf{starvation} che tuttavia nel contesto delle DMBS risulta poco
+% probabile, ma comunque risolvibile con le tecniche precedenti (in particolare il
+% rilevamento).
+%
+% \begin{definition}[Starvation]
+%   Se una risorsa \( x \) viene costantemente bloccata da una sequenza di transazioni 
+%   che acquisiscono \( r\_lock \) su \( x \), un'eventuale transazione in attesa di
+%   scrivere su \( x \) viene bloccata per un lungo periodo fino alla fine della
+%   sequenza di letture.
+%   \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.9\textwidth]{starvation}
+%     \caption{Esempio di starvation}
+%   \end{figure}
+% \end{definition}
+%
+% \subsubsection{Gestione della concorrenza in SQL}
+% Siccome risulta molto pesante per il sistema gestire l'esecuzione concorrente di
+% transazioni con una conseguente diminuzione delle prestazioni, SQL prevede la 
+% possibilità di \textbf{rinunciare del tutto o in parte al controllo di concorrenza}
+% per aumentare le prestazioni del sistema. È quindi possibile, a livello di una singola
+% transazione, decidere di \textbf{tollerare alcune anomalie} di esecuzione concorrente.
+% La seguente tabella mostra le possibili combinazioni di anomalie che si possono tollerare:
+% \begin{table}[H]
+%   \centering
+%   \includegraphics[width=0.9\textwidth]{anomalie_tollerate}
+%   \caption{Anomalie tollerate in SQL}
+% \end{table}
+% \textbf{Nota:}
+% \begin{itemize}
+%   \item Tutti i livelli richiedono il 2PL stretto per le scritture
+%
+%   \item \textbf{Serializable}: Richiede il 2PL stretto anche per le scritture e applica
+%     il lock di predicato (cioè blocca tutte le risorse che soddisfano un certo
+%     predicato) per evitare l'inserimento fantasma
+%
+%   \item \textbf{Repeatable read}: Applica il 2PL stretto per tutti i lock in lettura 
+%     applicati a livello di tupla e non di tabella. Consente inserimenti e quindi non
+%     evita l'anomalia di inserimento fantasma
+%
+%   \item \textbf{Read committed}: Richiede lock condivisi per le letture, ma non il
+%     2PL stretto
+%
+%   \item \textbf{Read uncommitted}: Non applica lock in lettura
+% \end{itemize}
 
 \end{document}
