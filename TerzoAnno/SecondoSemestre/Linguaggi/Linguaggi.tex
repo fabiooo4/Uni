@@ -2245,11 +2245,110 @@ dove:
   \item \( \texttt{const x: } \tau = e \):  è la dichiarazione di un \( id \)  costante
     di nome \( x \), tipo \( \tau \) e valore rappresentato da \( e \).
 
-  \item \( D; D \): è la composizione sequenziale, cioè prima si elabora la
-    dichiarazione a sinistra e poi quella a destra
+  \item \( D; D \): è la composizione sequenziale, cioè ogni dichiarazione
+    successiva o aggiunge nuovi legami o sovrascrive legami esistenti.
+    L'ambiente risultante è così visibile al codice che viene successivamente
 
-  \item \( D \texttt{ in } D \): è la composizione privata, cioè i legami della
-    dichiarazione a sinistra sono visibili solo nella dichiarazione a destra
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \node[draw, minimum width=1cm, minimum height=1cm]
+          (D1) at (0,0) {\( \mathcolor{Red}{D_1} \)};
+
+        \node[draw, minimum width=1cm, minimum height=1cm, right=1cm of D1]
+          (D2) {\( \mathcolor{Green}{D_2} \)};
+
+        \draw[<-] (D1) -- ++(-1.5,0) node[above] ()
+          {\( \mathcolor{Red}{D_1}; \mathcolor{Green}{D_2} \)};
+
+        \draw[<-] (D1) -- ++(0,1) node[left] ()
+          {\( \rho \)};
+
+        \draw[->] (D1) --
+          node[above] (env1) {\( \rho[\mathcolor{Red}{\rho_1}] \)}
+          (D2);
+
+        \draw[->] (env1) -- ++(0, 0.75) -| (D2);
+        \draw[<-, Red, align=center] (env1) -- ++(0, -1) node[below] ()
+          {Ambiente in cui\\viene elaborato \( D_1 \) };
+
+        \draw[->] (D2) -- ++(1.5, 0) node[above] (env2)
+          {\( (\rho[\mathcolor{Red}{\rho_1}])[\mathcolor{Green}{\rho_2}] \)};
+
+         \draw[<-, Green, align=center] (env2) -- ++(0, 1) node[above] ()
+          {Ambiente in cui\\viene elaborato \( D_2 \) };
+      \end{tikzpicture}
+      \caption{Composizione sequenziale \( D_1; D_2 \)}
+    \end{figure}
+
+    \begin{example}
+      Consideriamo ad esempio il seguente codice:
+\begin{lstlisting}
+const x: int = 3;
+const x: int = 5; const y: int = 6 * x;
+const z: int = x + y;
+\end{lstlisting}
+      Osserviamo i valori di questo codice:
+      \begin{enumerate}
+        \item A riga 1 il valore assegnato a \( x \) è \( \rho = [x \mapsto 3] \) 
+        \item A riga 2 il valore assegnato a \( x \) è \( \rho[x \mapsto 5] = [x \mapsto 5] = \rho_1 \) e
+          viene usata per elaborare \( y \) che assume il valore
+          \( \rho_2 = [x \mapsto 5, y \mapsto 6 * 5 = 30] \)
+        \item A riga 3 viene usato il valore di \( x \) dichiarato a riga 2 e il valore
+          di \( y \) dichiarato a riga 2, cioè \( (\rho[\rho_1])[\rho_2] = [x \mapsto 5, y \mapsto 30] \),
+          per elaborare \( z \) che assume il valore \( \rho_3 = [x \mapsto 5, y \mapsto 30, z \mapsto 5 + 30 = 35] \)
+      \end{enumerate}
+    \end{example}
+
+  \item \( D \texttt{ in } D \): è la composizione privata, cioè I legami
+    creati o sovrascritti da \( D_1 \) sono \textbf{ad uso esclusivo}
+    dell'elaborazione di \( D_2 \) e \textbf{non visibili}
+    al codice successivo.
+
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \node[draw, minimum width=4cm, minimum height=3cm] (big) at (0,0) {};
+        \node[draw, minimum width=1cm, minimum height=1cm]
+          (D1) at (-1,0) {\( \mathcolor{Red}{D_1} \)};
+
+        \draw[->] (D1) -- ++(1,0) node[above] (env1)
+          {\( \rho[\mathcolor{Red}{\rho_1}] \)};
+
+        \node (D2) at (1,0) {\( \mathcolor{Green}{D_2} \)};
+
+        \draw[->] (env1) -- ++(0,0.5) -| (D2);
+
+        \draw[<-] (big.north) -- ++(0,0.5) node[above]
+          {\( \rho \)};
+
+        \draw[<-] (big.west) -- ++(-1,0) node[above]
+          {\( \mathcolor{Red}{D_1} \texttt{ in } \mathcolor{Green}{D_2} \)};
+
+        \draw[->] (big.east) -- ++(1,0) node[above]
+          {\( \rho[\mathcolor{Green}{\rho_2}] \)};
+      \end{tikzpicture}
+      \caption{Composizione privata \( D_1 \texttt{ in } D_2 \)}
+    \end{figure}
+
+    \begin{example}
+      Consideriamo ad esempio il seguente codice:
+\begin{lstlisting}
+const x: int = 3;
+const x: int = 5 in y: int = 6 * x;
+const z: int = x + y;
+\end{lstlisting}
+      Osserviamo i valori di questo codice:
+      \begin{enumerate}
+        \item A riga 1 il valore assegnato a \( x \) è \( \rho = [x \mapsto 3] \) 
+        \item A riga 2 il valore assegnato a \( x \) è \( \rho_1 = [x \mapsto 5] \) e
+          viene usata per elaborare \( y \) che assume il valore
+          \( \rho_2 = [y \mapsto 6 * 5 = 30] \)
+        \item A riga 3 viene usato il valore di \( x \) dichiarato a riga 1 e il valore
+          di \( y \) dichiarato a riga 2, cioè \( \rho[\rho_2] = [x \mapsto 3, y \mapsto 30] \),
+          per elaborare \( z \) che assume il valore \( \rho_3 = [x \mapsto 3, y \mapsto 30, z \mapsto 3 + 30 = 33] \)
+      \end{enumerate}
+    \end{example}
 
   \item \( \rho \): è un ambiente dinamico presente nella grammatica per motivi formali
 \end{itemize}
@@ -2302,56 +2401,6 @@ di \( \beta \) e \( \beta' \) e per quelli in comune si tengono solo quelli di
   \]
   Si vede che \( x \) è stato sovrascritto da \( \rho' \), mentre \( y \) e \( z \)
   sono rimasti invariati e \( w \) è stato aggiunto.
-\end{example}
-
-\subsubsection{Composizione sequenziale}
-% TODO: Disegno elaborazione con dichiarazioni D1; D2 e ambiente rho
-% Magari da mettere nell'itemize precedente
-Ogni dichiarazione successiva o aggiunge nuovi legami o sovrascrive legami esistenti.
-L'ambiente risultante è così visibile al codice che viene successivamente
-
-\begin{example}
-  Consideriamo ad esempio il seguente codice:
-\begin{lstlisting}
-const x: int = 3;
-const x: int = 5; const y: int = 6 * x;
-const z: int = x + y;
-\end{lstlisting}
-  Osserviamo i valori di questo codice:
-  \begin{enumerate}
-    \item A riga 1 il valore assegnato a \( x \) è \( \rho = [x \mapsto 3] \) 
-    \item A riga 2 il valore assegnato a \( x \) è \( \rho[x \mapsto 5] = [x \mapsto 5] = \rho_1 \) e
-      viene usata per elaborare \( y \) che assume il valore
-      \( \rho_2 = [x \mapsto 5, y \mapsto 6 * 5 = 30] \)
-    \item A riga 3 viene usato il valore di \( x \) dichiarato a riga 2 e il valore
-      di \( y \) dichiarato a riga 2, cioè \( (\rho[\rho_1])[\rho_2] = [x \mapsto 5, y \mapsto 30] \),
-      per elaborare \( z \) che assume il valore \( \rho_3 = [x \mapsto 5, y \mapsto 30, z \mapsto 5 + 30 = 35] \)
-  \end{enumerate}
-\end{example}
-
-\subsubsection{Composizione privata}
-% TODO: Disegno elaborazione con dichiarazioni D1 in D2 e ambiente rho
-% Magari da mettere nell'itemize precedente
-I legami creati o sovrascritti da \( D_1 \) sono \textbf{ad uso esclusivo}
-dell'elaborazione di \( D_2 \) e \textbf{non visibili} al codice successivo.
-
-\begin{example}
-  Consideriamo ad esempio il seguente codice:
-\begin{lstlisting}
-const x: int = 3;
-const x: int = 5 in y: int = 6 * x;
-const z: int = x + y;
-\end{lstlisting}
-  Osserviamo i valori di questo codice:
-  \begin{enumerate}
-    \item A riga 1 il valore assegnato a \( x \) è \( \rho = [x \mapsto 3] \) 
-    \item A riga 2 il valore assegnato a \( x \) è \( \rho_1 = [x \mapsto 5] \) e
-      viene usata per elaborare \( y \) che assume il valore
-      \( \rho_2 = [y \mapsto 6 * 5 = 30] \)
-    \item A riga 3 viene usato il valore di \( x \) dichiarato a riga 1 e il valore
-      di \( y \) dichiarato a riga 2, cioè \( \rho[\rho_2] = [x \mapsto 3, y \mapsto 30] \),
-      per elaborare \( z \) che assume il valore \( \rho_3 = [x \mapsto 3, y \mapsto 30, z \mapsto 3 + 30 = 33] \)
-  \end{enumerate}
 \end{example}
 
 \subsubsection{Identificatori in posizione libera e in posizione di definizione}
@@ -2600,132 +2649,234 @@ Le regole per le dichiarazioni sono:
 \end{definition}
 
 \begin{example}
+  \newcommand\dOne{Green}
+  \newcommand\dTwo{Blue}
+  \newcommand\dThree{Red}
+  \newcommand\dFour{Purple}
+  \newcommand\dRule{Sepia}
   Un esempio di applicazione delle regole della semantica per elaborare una dichiarazione
   è il seguente:
   \[
-    \texttt{\textcolor{Green}{const x: int = 2} in \textcolor{Red}{const y: int x+1};
-    \textcolor{Violet}{const z: int = x+y}}
-  \] 
+    \mathcolor{\dOne}{
+      \underbrace{
+        \texttt{const x: int = 2}
+      }_{\mathcolor{\dOne}{d_1}}
+    }
+    \texttt{ in }
+    \mathcolor{\dTwo}{
+      \underbrace{
+        \textcolor{\dThree}{
+          \overbrace{
+            \texttt{const y: int = x+1}
+          }^{\mathcolor{\dThree}{d_3}}
+        }
+        \texttt{\textcolor{black}{;} }
+        \textcolor{\dFour}{
+          \overbrace{
+            \texttt{const z: int = x+y}
+          }^{\mathcolor{\dFour}{d_4}}
+        }
+      }_{\mathcolor{\dTwo}{d_2}}
+    }
+  \]
   \begin{enumerate}
-    \item Partiamo elaborando la dichiarazione \( \mathcolor{Green}{d_1} \) e \( \mathcolor{Blue}{d_2} \) 
+    \item Per prima cosa bisogna elaborare
+      \( 
+        \mathcolor{\dOne}{d_1}
+        \texttt{ in }
+        \mathcolor{\dTwo}{d_2}
+      \)\\
+      La regola da applicare è la seguente:
       \[
-        \underbrace{\texttt{\textcolor{Green}{const x: int = 2}}}_{\mathcolor{Green}{d_1}} in
-        \underbrace{\textcolor{Red}{const y: int x+1};
-        \textcolor{Violet}{\texttt{const z: int = x+y}}}_{\mathcolor{Blue}{d_2}}
+        \color{\dRule}
+        \begin{prooftree}
+          \hypo{ 
+            \vdash d_1 \to_d d_1' \text{ (oppure } \rho \text{)}
+          }
+          \infer1{ 
+            \vdash d_1 \texttt{ in } d_2 \to_d d_1' \texttt{ in } d_2
+          }
+        \end{prooftree}
       \] 
-      % TODO Fixa sta merda
-      \begin{itemize}
-        \item 
-          La regola da applicare è la regola 7:
+      Quindi il primo passo di elaborazione è quello di elaborare
+      \( \mathcolor{\dOne}{d_1} \):
+      \[
+        \begin{prooftree}
+          \hypo{ 
+            \vdash \texttt{%
+              \textcolor{\dOne}{
+                const x: int = 2%
+              }
+            }
+            \to_d
+            \mathcolor{\dOne}{
+              \overbrace{
+                \left[ x \mapsto 2 \right]
+              }^{\rho_1}
+            }
+          }
+          \infer1{ 
+            \vdash \mathcolor{\dOne}{d_1} \texttt{ in } \mathcolor{\dTwo}{d_2}
+            \to_d
+            \mathcolor{\dOne}{\left[ x \mapsto 2 \right]}
+            \texttt{ in }
+            \mathcolor{\dTwo}{d_2}
+          }
+        \end{prooftree}
+      \] 
+
+    \item Ora bisogna elaborare \( \mathcolor{\dTwo}{d_2} \) nell'ambiente
+      appena elaborato \( \mathcolor{\dOne}{\rho_1 = \left[ x \mapsto 2 \right]} \).
+      La regola da applicare è la seguente:
+      \[
+        \color{\dRule}
+        \begin{prooftree}
+          \hypo{ 
+            \rho_1 \vdash d_2 \to_d d_2'
+          }
+          \infer1{ 
+            \vdash \rho_1 \texttt{ in } d_2 \to_d \rho_1 \texttt{ in } d_2'
+          }
+        \end{prooftree}
+      \] 
+      Oppure una regola equivalente che esegue transitivamente l'elaborazione
+      completa di \( \mathcolor{\dTwo}{d_2} \) prima di applicare l'assioma
+      per \( \mathcolor{\dOne}{d_1} \texttt{ in } \mathcolor{\dTwo}{d_2} \):
+      \[
+        \color{\dRule}
+        \begin{prooftree}
+          \hypo{ 
+            \rho_1 \vdash d_2 \to_d^* \rho_2
+          }
+          \infer1{ 
+            \vdash \rho_1 \texttt{ in } d_2 \to_d \rho_1 \texttt{ in } \rho_2
+          }
+        \end{prooftree}
+      \] 
+      Siccome \( \mathcolor{\dTwo}{d_2} = \mathcolor{\dThree}{d_3} \texttt{;}
+      \mathcolor{\dFour}{d_4} \), bisogna elaborare prima
+      \( \mathcolor{\dThree}{d_3} \texttt{;} \mathcolor{\dFour}{d_4} \)
+      nell'ambiente \( \mathcolor{\dOne}{\rho_1} \):
+      \begin{enumerate}
+        \item Per prima cosa bisogna elaborare
+          \( \mathcolor{\dThree}{d_3} \) 
+          e la regola da applicare è la seguente:
           \[
+            \color{\dRule}
             \begin{prooftree}
-              \hypo{ \vdash d_1 \to_d d_1' \text{ (oppure } \rho \text{)}}
-              \infer1{ \vdash d_1 \texttt{ in } d_2 \to_d d_1' \texttt{ in } d_2}
+              \hypo{ 
+                \rho_1 \vdash d_3 \to_d d_3'
+              }
+              \infer1{ 
+                \rho_1 \vdash d_3; d_4 \to_d d_3'; d_4
+              }
+            \end{prooftree}
+          \]
+          oppure la sua versione transitiva:
+          \[
+            \color{\dRule}
+            \begin{prooftree}
+              \hypo{ 
+                \rho_1 \vdash d_3 \to_d^* \rho_3
+              }
+              \infer1{ 
+                \rho_1 \vdash d_3; d_4 \to_d \rho_3; d_4
+              }
             \end{prooftree}
           \] 
-          Quindi:
+          Siccome
+          \( \mathcolor{\dThree}{d_3 = \texttt{const y: int = x+1}} \)
+          bisogna prima elaborare \( \texttt{x+1} \) nell'ambiente \( \mathcolor{\dOne}{\rho_1} \).
+          Applichiamo la regola per elaborare un'espressione:
+          \[
+          \begin{prooftree}
+            \hypo{ 
+              \mathcolor{\dOne}{\rho_1} \vdash \mathcolor{\dOne}{x \to 2}
+            }
+            \infer1[\( \mathcolor{\dOne}{\rho_1(x) = 2} \) ]{ 
+              \mathcolor{\dOne}{\rho_1} \vdash
+              \mathcolor{\dThree}{x+1} \to \mathcolor{\dOne}{2}
+              \mathcolor{\dThree}{+ 1}
+            }
+          \end{prooftree}
+          \] 
+          Applichiamo l'assioma:
+          \[
+            \mathcolor{\dOne}{\rho_1} \vdash \mathcolor{\dOne}{2} +
+            \mathcolor{\dThree}{1} \to \mathcolor{\dThree}{3}
+          \] 
+          Ora che abbiamo elaborato \( \mathcolor{\dThree}{x+1} \) possiamo elaborare
+          \( \mathcolor{\dThree}{d_3} \):
           \[
             \begin{prooftree}
               \hypo{ 
-                \mathcolor{Green}{\vdash \texttt{const x: int = 2} \to_d \left[ x \mapsto 2 \right]}
+                \mathcolor{\dOne}{\rho_1} \vdash \mathcolor{\dThree}{x+1} \to_d^*
+                \mathcolor{\dThree}{3}
+              }
+              \infer1{
+                \mathcolor{\dOne}{\rho_1} \vdash
+                \mathcolor{\dThree}{
+                  \underbrace{
+                    \texttt{const y: int = x+1}
+                  }_{\mathcolor{\dThree}{d_3}}
+                }
+                \to_d
+                \mathcolor{\dThree}{
+                  \underbrace{
+                    \texttt{const y: int = 3}
+                  }_{\mathcolor{\dThree}{d_3'}}
+                }
+              }
+            \end{prooftree}
+          \] 
+          Applichiamo l'assioma:
+          \[
+            \mathcolor{\dOne}{\rho_1} \vdash
+            \mathcolor{\dThree}{
+              \texttt{const y: int = 3}
+            }
+            \to_d
+            \mathcolor{\dThree}{\left[ y \mapsto 3 \right]}
+          \] 
+          Quindi dopo aver elaborato \( \mathcolor{\dThree}{d_3} \) otteniamo
+          l'ambiente \( \mathcolor{\dThree}{\rho_3 = \left[ y \mapsto 3 \right]} \)
+
+        \item Dopo aver elaborato \( \mathcolor{\dThree}{d_3} \) bisogna elaborare
+          \( \mathcolor{\dFour}{d_4} \) nell'ambiente appena elaborato:
+          \( \mathcolor{\dOne}{\rho_1} \left[ \mathcolor{\dThree}{\rho_3} \right]
+          = \mathcolor{\dThree}{\left[ x \mapsto 2, y \mapsto 3 \right]} \).
+          La regola da applicare è la seguente:
+          \[
+            \color{\dRule}
+            \begin{prooftree}
+              \hypo{ 
+                \rho_1[\rho_3] \vdash d_4 \to_d d_4'
               }
               \infer1{ 
-                \mathcolor{Green}{d_1} \texttt{ in } \mathcolor{Blue}{d_2} \to_d
-                \mathcolor{Green}{\left[ x \mapsto 2 \right]} \texttt{ in }
-                \mathcolor{Blue}{d_2}
+                \rho_1 \vdash \rho_3 ; d_4 \to_d \rho_3 ; d_4'
               }
             \end{prooftree}
           \] 
-
-        \item La regola da applicare è la regola 8:
+          oppure la sua versione transitiva:
           \[
+            \color{\dRule}
             \begin{prooftree}
-              \hypo{ \rho_1 \vdash d_2 \to_d d_2' }
-              \infer1{ \rho_1 \texttt{ in } d_2 \to_d \rho_1 \texttt{ in } d_2' }
+              \hypo{ 
+                \rho_1[\rho_3] \vdash d_4 \to_d^* \rho_4
+              }
+              \infer1{ 
+                \rho_1 \vdash \rho_3 ; d_4 \to_d \rho_3 ; \rho_4
+              }
             \end{prooftree}
           \] 
-          Però utilizziamo una regola equivalente che esegue transitivamente 
-          l'elaborazione completa di \( d_2 \) prima di applicare l'assioma per
-          \( d_1 \). La regola è la seguente
-          \[
-            \equiv
-            \begin{prooftree}
-              \hypo{ \mathcolor{Blue}{\rho_1 \vdash d_2 \to_d^* \rho_2} }
-              \infer1{ \rho_1 \texttt{ in } d_2 \to \rho_1 \texttt{ in } \rho_2 }
-            \end{prooftree}
-          \] 
-
-          \begin{itemize}
-            \item 
-            \item Elaboriamo \( \mathcolor{Blue}{d_2} = \mathcolor{PLACEHOLDER1}{d_3}; \mathcolor{PLACEHOLDER2}{d_4} \) 
-              nell'ambiente \( \rho_1 \) 
-              \begin{itemize}
-                \item Regola da usare:
-                  \[
-                    \begin{prooftree}
-                      \hypo{ \rho_1 \vdash d_3 \to_d d_3' }
-                      \infer1{ \rho_1 \vdash d_3; d_4 \to_d d_3'; d_4 }
-                    \end{prooftree}
-                  \] 
-                  e la versione transitiva è la seguente:
-                  \[
-                    \begin{prooftree}
-                      \hypo{ \mathcolor{PLACEHOLDER1}{\rho_1 \vdash d_3 \to_d^* \rho_3} }
-                      \infer1{ \rho_1 \vdash d_3; d_4 \to_d \rho_3; d_4 }
-                    \end{prooftree}
-                  \] 
-
-                  \begin{itemize}
-                    \item Elaboriamo \( \mathcolor{PLACEHOLDER1}{d_3} = \texttt{const y: int x+1} \) 
-                      \begin{itemize}
-                        \item Regola da usare:
-                          \[
-                            \begin{prooftree}
-                              \hypo{ \mathcolor{PLACEHOLDER1}{\rho_1 \vdash \texttt{x+1} \to_e ?}}
-                              \infer1{ \rho_1 \vdash \texttt{const y: int x+1} \to_d
-                              \texttt{const y: int ?} }
-                            \end{prooftree}
-                          \] 
-                          e la versione transitiva è la seguente:
-                          \[
-                            \color{PLACEHOLDER1}
-                            \begin{prooftree}
-                              \hypo{ \rho_1 \vdash x \to 2 }
-                              \infer1[\( \rho_1(x) = 2 \)]{ 
-                                \rho_1 \vdash \texttt{x+1} \to_e 2 + 1
-                              }
-                            \end{prooftree}
-                          \] 
-                          quindi:
-                          \[
-                            \color{PLACEHOLDER1}\rho_1 \vdash 2+1 \to 3
-                          \] 
-                          Riscriviamo la regola:
-                          \[
-                            \begin{prooftree}
-                              \hypo{ \rho_1 \vdash \texttt{x+1} \to^* 3 }
-                              \infer1{ \rho_1 \mathcolor{PLACEHOLDER1}{\underbrace{
-                                    TODO
-                                }}}
-                            \end{prooftree}
-                          \] 
-                      \end{itemize}
-                  \end{itemize}
-              \end{itemize}
-              
-            \item Regola successiva:
-              \[
-              \begin{prooftree}
-                \hypo{ \mathcolor{Green}{\rho_1}[\mathcolor{Red}{\rho_3}]
-                  \vdash d_4 \to^* \rho_4
-                }
-                \infer1{
-                  TODO
-                }
-              \end{prooftree}
-              \] 
-          \end{itemize}
-      \end{itemize}
+          Siccome \( \mathcolor{\dFour}{d_4 = \texttt{const z: int = x+y}} \), bisogna
+          prima elaborare \( \mathcolor{\dFour}{\texttt{x}} \) e poi
+          \( \mathcolor{\dFour}{\texttt{y}} \) nell'ambiente
+          \( \mathcolor{\dThree}{\left[ x \mapsto 2, y \mapsto 3 \right]} \) per ottenere
+          il valore di \( \mathcolor{\dFour}{\texttt{x+y}} \):
+          % TODO
+          TODO
+      \end{enumerate}
   \end{enumerate}
 \end{example}
 
