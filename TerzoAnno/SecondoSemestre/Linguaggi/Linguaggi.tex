@@ -2111,7 +2111,7 @@ allora l'espressione è \textbf{ben formata}
 
 \subsubsection{Semantica statica per le espressioni}
 La semantica statica per le espressioni associa un tipo alle espressioni ben formate,
-quindi verifica solo vincoli di tipo tra operandi. 
+quindi verifica solo vincoli di tipo tra operandi.
 Definiamo la semantica statica per le espressioni:
 \begin{itemize}
   \item Regola 1: con \( n \in \texttt{N} \)
@@ -2417,8 +2417,8 @@ Caratterizziamo le dichiarazioni:
 \end{itemize}
 
 \subsubsection{Semantica statica per le dichiarazioni}
-La semantica statica per le dichiarazioni associa un ambiente statico alle
-dichiarazioni ben formate.
+La semantica statica per le dichiarazioni associa un ambiente statico \( \Delta \) 
+alle dichiarazioni ben formate.
 Definiamo la semantica statica per le dichiarazioni:
 \[
   \Delta \vdash d: \Delta'
@@ -2483,5 +2483,429 @@ Le regole per le dichiarazioni sono:
       \end{prooftree}
     \]
 \end{itemize}
+
+\subsubsection{Semantica dinamica per le dichiarazioni}
+L'ambiente statico generato dalla semantica statica è compatibile con l'ambiente dinamico.
+La forma della regola di transizione per le dichiarazioni è la seguente:
+\[
+  \rho \vdash_{\Delta} d \to_d d'
+\] 
+rappresenta che \( d \) viene elaborata, con un passo di elaborazione, in \( d' \)
+nell'ambiente dinamico \( \rho  \).
+
+\vspace{1em}
+\noindent
+Gli stati sono dichiarazioni generati dalla grammatica o ambienti
+\[
+  \mathcal{D} \cup Env
+\] 
+Le regole per le dichiarazioni sono:
+\begin{itemize}
+  \item Regola 1: Assioma
+    \[
+      \mathcal{D}_1: \; \vdash \texttt{nil} \to \varnothing
+    \] 
+    \( d = \rho  \) è già terminale, non c'è nulla da elaborare
+
+  \item Regola 2: Dichiarazione di una costante
+    \[
+      \mathcal{D}_2: \; \rho \vdash \texttt{const x:}\; \tau = k
+      \to \left[ x \mapsto k \right]
+    \] 
+
+  \item Regola 3: Elaborazione di un'espressione
+    \[
+      \mathcal{D}_3: \;
+      \begin{prooftree}
+        \hypo{ \rho \vdash e \to_e e' }
+        \infer1{ \rho \vdash \texttt{const x:}\; \tau = e \to_d 
+        \texttt{const x:}\; \tau = e' }
+      \end{prooftree}
+    \] 
+
+  \item Regola 4: Elaborazione di una composizione sequenziale
+    \[
+      \mathcal{D}_4: \;
+      \begin{prooftree}
+        \hypo{\rho \vdash d_1 \to_d d'_1}
+        \infer1{\rho \vdash d_1; d_2 \to_d d'_1; d_2}
+      \end{prooftree}
+    \] 
+
+  \item Regola 5: Elaborazione di una composizione sequenziale con un ambiente
+    già elaborato
+    \[
+      \mathcal{D}_5: \;
+      \begin{prooftree}
+        \hypo{\rho[\rho_1] \vdash d_2 \to_d d'_2}
+        \infer1{\rho \vdash \rho_1; d_2 \to_d \rho_1; d'_2}
+      \end{prooftree}
+    \]
+
+  \item Regola 6: Assioma per la composizione privata, quando entrambi gli ambienti
+    sono stati elaborati
+    \[
+      \mathcal{D}_6: \; \rho \vdash \rho_1; \rho_2 \to_d \rho_1[\rho_2]
+    \] 
+
+  \item Regola 7: Elaborazione di una composizione privata
+    \[
+      \mathcal{D}_7: \;
+      \begin{prooftree}
+        \hypo{\rho \vdash d_1 \to_d d'_1}
+        \infer1{\rho \vdash d_1 \texttt{ in } d_2 \to_d d'_1 \texttt{ in } d_2}
+      \end{prooftree}
+    \]
+
+  \item Regola 8: Elaborazione di una composizione privata con un ambiente già elaborato
+    \[
+      \mathcal{D}_8: \;
+      \begin{prooftree}
+        \hypo{\rho[\rho_1] \vdash d_2 \to_d d'_2}
+        \infer1{\rho \vdash \rho_1 \texttt{ in } d_2 \to_d \rho_1 \texttt{ in } d'_2}
+      \end{prooftree}
+    \]
+
+  \item Regola 9: Assioma per la composizione privata, quando entrambi gli ambienti
+    sono stati elaborati
+    \[
+      \mathcal{D}_9: \; \rho \vdash \rho_1 \texttt{ in } \rho_2 \to_d \rho_2
+    \]
+\end{itemize}
+
+\subsubsection{Elaborazione}
+\begin{definition}[Funzione di elaborazione]
+  La gunzione di elaborazione genera un ambiente dinamico a partire da una dichiarazione
+  della grammatica:
+  \[
+    Elab: \mathcal{D} \to Env
+  \] 
+  \[
+    \forall d \in \mathcal{D} \;.\; Elab(d) = \rho \iff \vdash d \to_d^* \rho
+  \] 
+  cioè l'elaborazione di \( d \) è l'ambiente \( \rho  \) se e solo se \( d \) viene
+  elaborata in \( \rho  \) con un numero finito di passi di elaborazione.
+\end{definition}
+
+\begin{definition}[Equivalenza tra dichiarazioni]
+  La relazione di equivalenza tra due dichiarazioni è definita come:
+  \[
+    \equiv \subset \mathcal{D} \times \mathcal{D}
+  \] 
+  \[
+    \forall d_1, d_2 \in \mathcal{D} \;.\; d_1 \equiv d_2 \iff Elab(d_1) = Elab(d_2)
+  \] 
+  cioè due dichiarazioni sono equivalenti se e solo se la loro elaborazione genera
+  lo stesso ambiente dinamico.
+\end{definition}
+
+\begin{example}
+  Un esempio di applicazione delle regole della semantica per elaborare una dichiarazione
+  è il seguente:
+  \[
+    \texttt{\textcolor{Green}{const x: int = 2} in \textcolor{Red}{const y: int x+1};
+    \textcolor{Violet}{const z: int = x+y}}
+  \] 
+  \begin{enumerate}
+    \item Partiamo elaborando la dichiarazione \( \mathcolor{Green}{d_1} \) e \( \mathcolor{Blue}{d_2} \) 
+      \[
+        \underbrace{\texttt{\textcolor{Green}{const x: int = 2}}}_{\mathcolor{Green}{d_1}} in
+        \underbrace{\textcolor{Red}{const y: int x+1};
+        \textcolor{Violet}{\texttt{const z: int = x+y}}}_{\mathcolor{Blue}{d_2}}
+      \] 
+      % TODO Fixa sta merda
+      \begin{itemize}
+        \item 
+          La regola da applicare è la regola 7:
+          \[
+            \begin{prooftree}
+              \hypo{ \vdash d_1 \to_d d_1' \text{ (oppure } \rho \text{)}}
+              \infer1{ \vdash d_1 \texttt{ in } d_2 \to_d d_1' \texttt{ in } d_2}
+            \end{prooftree}
+          \] 
+          Quindi:
+          \[
+            \begin{prooftree}
+              \hypo{ 
+                \mathcolor{Green}{\vdash \texttt{const x: int = 2} \to_d \left[ x \mapsto 2 \right]}
+              }
+              \infer1{ 
+                \mathcolor{Green}{d_1} \texttt{ in } \mathcolor{Blue}{d_2} \to_d
+                \mathcolor{Green}{\left[ x \mapsto 2 \right]} \texttt{ in }
+                \mathcolor{Blue}{d_2}
+              }
+            \end{prooftree}
+          \] 
+
+        \item La regola da applicare è la regola 8:
+          \[
+            \begin{prooftree}
+              \hypo{ \rho_1 \vdash d_2 \to_d d_2' }
+              \infer1{ \rho_1 \texttt{ in } d_2 \to_d \rho_1 \texttt{ in } d_2' }
+            \end{prooftree}
+          \] 
+          Però utilizziamo una regola equivalente che esegue transitivamente 
+          l'elaborazione completa di \( d_2 \) prima di applicare l'assioma per
+          \( d_1 \). La regola è la seguente
+          \[
+            \equiv
+            \begin{prooftree}
+              \hypo{ \mathcolor{Blue}{\rho_1 \vdash d_2 \to_d^* \rho_2} }
+              \infer1{ \rho_1 \texttt{ in } d_2 \to \rho_1 \texttt{ in } \rho_2 }
+            \end{prooftree}
+          \] 
+
+          \begin{itemize}
+            \item 
+            \item Elaboriamo \( \mathcolor{Blue}{d_2} = \mathcolor{PLACEHOLDER1}{d_3}; \mathcolor{PLACEHOLDER2}{d_4} \) 
+              nell'ambiente \( \rho_1 \) 
+              \begin{itemize}
+                \item Regola da usare:
+                  \[
+                    \begin{prooftree}
+                      \hypo{ \rho_1 \vdash d_3 \to_d d_3' }
+                      \infer1{ \rho_1 \vdash d_3; d_4 \to_d d_3'; d_4 }
+                    \end{prooftree}
+                  \] 
+                  e la versione transitiva è la seguente:
+                  \[
+                    \begin{prooftree}
+                      \hypo{ \mathcolor{PLACEHOLDER1}{\rho_1 \vdash d_3 \to_d^* \rho_3} }
+                      \infer1{ \rho_1 \vdash d_3; d_4 \to_d \rho_3; d_4 }
+                    \end{prooftree}
+                  \] 
+
+                  \begin{itemize}
+                    \item Elaboriamo \( \mathcolor{PLACEHOLDER1}{d_3} = \texttt{const y: int x+1} \) 
+                      \begin{itemize}
+                        \item Regola da usare:
+                          \[
+                            \begin{prooftree}
+                              \hypo{ \mathcolor{PLACEHOLDER1}{\rho_1 \vdash \texttt{x+1} \to_e ?}}
+                              \infer1{ \rho_1 \vdash \texttt{const y: int x+1} \to_d
+                              \texttt{const y: int ?} }
+                            \end{prooftree}
+                          \] 
+                          e la versione transitiva è la seguente:
+                          \[
+                            \color{PLACEHOLDER1}
+                            \begin{prooftree}
+                              \hypo{ \rho_1 \vdash x \to 2 }
+                              \infer1[\( \rho_1(x) = 2 \)]{ 
+                                \rho_1 \vdash \texttt{x+1} \to_e 2 + 1
+                              }
+                            \end{prooftree}
+                          \] 
+                          quindi:
+                          \[
+                            \color{PLACEHOLDER1}\rho_1 \vdash 2+1 \to 3
+                          \] 
+                          Riscriviamo la regola:
+                          \[
+                            \begin{prooftree}
+                              \hypo{ \rho_1 \vdash \texttt{x+1} \to^* 3 }
+                              \infer1{ \rho_1 \mathcolor{PLACEHOLDER1}{\underbrace{
+                                    TODO
+                                }}}
+                            \end{prooftree}
+                          \] 
+                      \end{itemize}
+                  \end{itemize}
+              \end{itemize}
+              
+            \item Regola successiva:
+              \[
+              \begin{prooftree}
+                \hypo{ \mathcolor{Green}{\rho_1}[\mathcolor{Red}{\rho_3}]
+                  \vdash d_4 \to^* \rho_4
+                }
+                \infer1{
+                  TODO
+                }
+              \end{prooftree}
+              \] 
+          \end{itemize}
+      \end{itemize}
+  \end{enumerate}
+\end{example}
+
+\subsection{Comandi}
+L'introduzione di \textbf{identificatori variabili} richiede l'introduzione del
+concetto della memoria e degli strumenti per manipolarla, cioè i \textbf{comandi}.
+Un classico assegnamento di una variabile è il seguente:
+\[
+  \underbrace{\texttt{x}}_{\text{Target}} \texttt{ := }
+  \underbrace{\texttt{x}}_{\text{Sorgente}} \texttt{+1}
+\] 
+In questo caso si osserva che il ruolo della \texttt{x} cambia a seconda di dove
+si trova:
+\begin{itemize}
+  \item Se si trova a sinistra è detto \textbf{L-value} (target) e il valore viene 
+    usato in scrittura
+  \item Se si trova a destra è detto \textbf{R-value} (sorgente) e il valore viene
+    usato in lettura
+\end{itemize}
+Per gestire questo cambio di ruolo è necessario:
+\begin{itemize}
+  \item Gestire diversi oggetti con lo stesso nome (ad esempio nella ricorsione o nella
+    definizione delle variabili)
+
+  \item Gestire diversi nomi per lo stesso oggetto (ad esempio puntatori o aliasing)
+
+  \item Gestire nomi e valori che cambiano durante l'esecuzione
+\end{itemize}
+È stato quindi introdotto un concetto astratto detto \textbf{locazione} che gestisce
+questi aspetti.
+
+\subsubsection{Locazione}
+La locazione è un elemento per le variabili che viene inserito tra l'identificatore
+e il valore o oggetto denotato. Fino ad ora abbiamo avuto soltanto un legame
+identificatore-valore:
+\[
+  \texttt{id} \longleftrightarrow \texttt{valore/oggetto}
+\] 
+Con l'introduzione delle locazioni, il legame diventa:
+\[
+  \texttt{id} \stackrel{\text{Ambiente}}{\longleftrightarrow} \texttt{locazione}
+  \stackrel{\text{Memoria}}{\longleftrightarrow} \texttt{valore/oggetto}
+\] 
+\begin{itemize}
+  \item L'ambiente gestisce delle \textbf{trasformazioni reversibili}, quindi
+    potenzialmente temporanee perchè possono essere sovrascritte da altre trasformazioni
+    per poi essere recuperate in un secondo momento
+
+  \item La memoria gestisce delle \textbf{trasformazioni irreversibili}, quindi
+    permanenti perchè cambiare il valore in memoria significa perdere il valore precedente
+    e sovrascriverlo con un nuovo valore. Nonostante il valore precedente possa essere
+    riassegnato in un secondo momento, non è lo stesso valore di prima, ma è
+    un nuovo valore che sovrascrive quello precedente
+\end{itemize}
+
+\begin{definition}[Memoria]
+  La memoria tiene traccia delle trasformazioni effettuate dall'esecuzione di
+  programmi
+\end{definition}
+
+\begin{definition}[Locazione]
+  La locazione viene creata dalle dichiarazioni:
+  \begin{itemize}
+    \item Se la dichiarazione è esplicita, allora viene creata a tempo di compilazione
+    \item Se la dichiarazione è implicita, allora viene creata dai comandi a tempo di
+      esecuzione (nei linguatti dinamici/interpretati)
+  \end{itemize}
+  Le locazioni:
+  \begin{itemize}
+    \item rappresentano una posizione in memoria e ha un \textbf{tempo di vita},
+      cioè un intervallo di tempo in cui è attiva. Il tempo di vita di una locazione
+      dipende dal linguaggio di programmazione, solitamente coincide con la durata di tutto
+      il programma, ma in alcuni linguaggi può essere limitato a un blocco di codice o
+      alle allocazioni e deallocazioni dinamiche.
+
+    \item Vengono usate per contenere/riferire oggetti che possono cambiare durante
+      l'esecuzione
+
+    \item Sono considerate illimitate
+
+    \item Sono oggetti denotabili
+  \end{itemize}
+\end{definition}
+Ci sono più tipi di legami:
+\begin{itemize}
+  \item \textbf{Identificatori costanti}: non usano la memoria perchè vengono associati
+    a valori che non cambiano durante l'esecuzione. Sono quindi legami che
+    \textbf{restano nell'ambiente dinamico}. Come notazione si usa:
+    \[
+      \texttt{const}
+    \] 
+    che crea un legame (bindin) in un ambiente.
+
+  \item \textbf{Variabili} (nei linguaggi imperativi): sono identificate da due legami:
+    \begin{itemize}
+      \item Uno nell'ambiente che rappresenta la locazione
+        \[
+          x \to \square
+        \] 
+      \item Uno nella memoria che rappresenta il valore a cui la locazione fa
+        riferimento che può anche cambiare
+        \[
+          \square \to 2
+        \] 
+    \end{itemize}
+    Come notazione si usa:
+    \[
+      \texttt{var}
+    \] 
+    che crea un \textbf{legame} in un ambiente e una \textbf{associazione} in memoria:
+    \[
+      x \underbrace{\longrightarrow}_{\substack{\text{Legame}\\\text{in ambiente}}}
+      \underbrace{\square}_{\text{Locazione}}
+      \underbrace{\longrightarrow}_{\substack{\text{Associazione}\\\text{in memoria}}}
+      2
+    \] 
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Nel nostro linguaggio abbiamo che:
+\begin{itemize}
+  \item I valori \textbf{esprimibili} sono elementi primitivi di \( Exp \):
+    \[
+      \texttt{B} \cup \texttt{N}
+    \] 
+
+  \item I valori \textbf{memorizzabili}, cioè che possono essere associati ad una
+    locazione, sono:
+    \[
+      \texttt{B} \cup \texttt{N}
+    \] 
+
+  \item I valori \textbf{denotabili}, cioè che possono essere legati ad un identificatore,
+    sono:
+    \[
+      \texttt{B} \cup \texttt{N} \cup \underbrace{L}_{\text{Locazioni}}
+    \] 
+\end{itemize}
+
+\subsubsection{Implementazione delle variabili nelle dichiarazioni}
+Modifichiamo le dichiarazioni per introdurre le variabili:
+\[
+  \begin{aligned}
+    \mathcal{D}: \; D & \to  \texttt{ nil}  \\
+                      & \mid \texttt{const x: } \tau = e  \\
+                      & \mid \mathcolor{Blue}{\texttt{var x:}\; \tau = e} \\
+                      & \mid D; D  \mid D \texttt{ in } D \\
+                      & \mid \rho
+  \end{aligned}
+\] 
+Questa sintassi dichiara una variabile di nome \texttt{x}, tipo \( \tau \) e valore
+\textbf{iniziale} descritto da \( e \).
+\begin{itemize}
+  \item Gli identificatori liberi sono:
+    \[
+      FI(\texttt{var x:}\; \tau = e) = FI(e)
+    \] 
+
+  \item Gli identificatori definiti sono:
+    \[
+      DI(\texttt{var x:}\; \tau = e) = \left\{ x \right\}
+    \]
+\end{itemize}
+Bisogna verificare, a livello statico, che non sia possibile modificare il valore
+di una costante. Per fare ciò bisogna aggiungere i tipi per le locazioni:
+\[
+  DTyp = \left\{ \texttt{int}, \texttt{bool}, \mathcolor{Blue}{\texttt{intloc}},
+  \mathcolor{Blue}{\texttt{boolloc}} \right\}
+\] 
+Ora bisogna definire le regole statiche per le dichiarazioni con variabili:
+\begin{itemize}
+  \item Regola 1:
+    \[
+      \begin{prooftree}
+        \hypo{ \Delta \vdash e : \tau }
+        \infer1{ \Delta \vdash \texttt{var x:}\; \tau = e : \left[ x \mapsto \tau\texttt{loc} \right] }
+      \end{prooftree}
+    \] 
+\end{itemize}
+
 
 \end{document}
