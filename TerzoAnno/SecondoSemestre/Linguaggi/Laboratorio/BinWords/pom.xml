@@ -3,7 +3,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.fabiooo4.binwords</groupId>
+  <groupId>it.univr.binwords</groupId>
   <artifactId>BinWords</artifactId>
   <version>1.0-SNAPSHOT</version>
 
@@ -53,11 +53,36 @@
     <plugins>
       <!-- Executes the main class defined by running `mvn compile exec:java -Dexec.args="<binary_parameters>"` -->
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>3.7.1</version>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <mainClass>it.univr.binwords.App</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+        <executions>
+          <execution>
+            <id>assemble-all</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.5.0</version>
         <configuration>
-          <mainClass>App</mainClass>
+          <mainClass>it.univr.binwords.App</mainClass>
         </configuration>
       </plugin>
 
@@ -72,14 +97,12 @@
             <goals>
               <goal>antlr4</goal>
             </goals>
+            <phase>generate-sources</phase>
           </execution>
         </executions>
         <configuration>
-          <sourceDirectory>${basedir}/src/main/antlr4</sourceDirectory>
-
-          <!-- For building interpreters -->
           <visitor>true</visitor> 
-          <listener>true</listener>
+          <listener>false</listener>
         </configuration>
       </plugin>
     </plugins>
