@@ -2679,15 +2679,20 @@ Le regole per le dichiarazioni sono:
       }_{\mathcolor{\dTwo}{d_2}}
     }
   \]
+  L'obiettivo è quello di elaborare
+  \( 
+  \mathcolor{\dOne}{d_1}
+  \texttt{ in }
+  \mathcolor{\dTwo}{d_2}
+  \) applicando l'assioma per la composizione privata.
+  Prima di elaborare \( \mathcolor{\dOne}{d_1} \texttt{ in } \mathcolor{\dTwo}{d_2} \)
+  bisogna prima elaborare i singoli componenti \( \mathcolor{\dOne}{d_1} \) e
+  \( \mathcolor{\dTwo}{d_2} \) per poter applicare l'assioma.
   \begin{enumerate}
-    \item Per prima cosa bisogna elaborare
-      \( 
-        \mathcolor{\dOne}{d_1}
-        \texttt{ in }
-        \mathcolor{\dTwo}{d_2}
-      \)\\
+    \item Quindi il primo passo di elaborazione è quello di elaborare
+      \( \mathcolor{\dOne}{d_1} \):
       La regola da applicare è la seguente:
-      \[
+      \begin{equation}\label{eq:rule_d1}
         \color{\dRule}
         \begin{prooftree}
           \hypo{ 
@@ -2697,9 +2702,8 @@ Le regole per le dichiarazioni sono:
             \vdash d_1 \texttt{ in } d_2 \to_d d_1' \texttt{ in } d_2
           }
         \end{prooftree}
-      \] 
-      Quindi il primo passo di elaborazione è quello di elaborare
-      \( \mathcolor{\dOne}{d_1} \):
+      \end{equation} 
+      Applichiamo questa regola:
       \[
         \begin{prooftree}
           \hypo{ 
@@ -2724,11 +2728,13 @@ Le regole per le dichiarazioni sono:
           }
         \end{prooftree}
       \] 
+      Alla fine \( \mathcolor{\dOne}{d_1} \) è stata elaborata in
+      \( \mathcolor{\dOne}{\rho_1 = \left[ x \mapsto 2 \right]} \).
 
     \item Ora bisogna elaborare \( \mathcolor{\dTwo}{d_2} \) nell'ambiente
       appena elaborato \( \mathcolor{\dOne}{\rho_1 = \left[ x \mapsto 2 \right]} \).
       La regola da applicare è la seguente:
-      \[
+      \begin{equation}\label{eq:rule_d2}
         \color{\dRule}
         \begin{prooftree}
           \hypo{ 
@@ -2738,11 +2744,11 @@ Le regole per le dichiarazioni sono:
             \vdash \rho_1 \texttt{ in } d_2 \to_d \rho_1 \texttt{ in } d_2'
           }
         \end{prooftree}
-      \] 
+      \end{equation} 
       Oppure una regola equivalente che esegue transitivamente l'elaborazione
       completa di \( \mathcolor{\dTwo}{d_2} \) prima di applicare l'assioma
       per \( \mathcolor{\dOne}{d_1} \texttt{ in } \mathcolor{\dTwo}{d_2} \):
-      \[
+      \begin{equation}\label{eq:rule_d2_transitive}
         \color{\dRule}
         \begin{prooftree}
           \hypo{ 
@@ -2752,16 +2758,16 @@ Le regole per le dichiarazioni sono:
             \vdash \rho_1 \texttt{ in } d_2 \to_d \rho_1 \texttt{ in } \rho_2
           }
         \end{prooftree}
-      \] 
+      \end{equation} 
       Siccome \( \mathcolor{\dTwo}{d_2} = \mathcolor{\dThree}{d_3} \texttt{;}
-      \mathcolor{\dFour}{d_4} \), bisogna elaborare prima
-      \( \mathcolor{\dThree}{d_3} \texttt{;} \mathcolor{\dFour}{d_4} \)
+      \mathcolor{\dFour}{d_4} \), bisogna elaborare prima i singoli componenti
+      \( \mathcolor{\dThree}{d_3} \) e \( \mathcolor{\dFour}{d_4} \)
       nell'ambiente \( \mathcolor{\dOne}{\rho_1} \):
       \begin{enumerate}
         \item Per prima cosa bisogna elaborare
           \( \mathcolor{\dThree}{d_3} \) 
           e la regola da applicare è la seguente:
-          \[
+          \begin{equation}\label{eq:rule_d3}
             \color{\dRule}
             \begin{prooftree}
               \hypo{ 
@@ -2771,9 +2777,9 @@ Le regole per le dichiarazioni sono:
                 \rho_1 \vdash d_3; d_4 \to_d d_3'; d_4
               }
             \end{prooftree}
-          \]
+          \end{equation}
           oppure la sua versione transitiva:
-          \[
+          \begin{equation}\label{eq:rule_d3_transitive}
             \color{\dRule}
             \begin{prooftree}
               \hypo{ 
@@ -2783,22 +2789,22 @@ Le regole per le dichiarazioni sono:
                 \rho_1 \vdash d_3; d_4 \to_d \rho_3; d_4
               }
             \end{prooftree}
-          \] 
+          \end{equation} 
           Siccome
           \( \mathcolor{\dThree}{d_3 = \texttt{const y: int = x+1}} \)
           bisogna prima elaborare \( \texttt{x+1} \) nell'ambiente \( \mathcolor{\dOne}{\rho_1} \).
           Applichiamo la regola per elaborare un'espressione:
           \[
-          \begin{prooftree}
-            \hypo{ 
-              \mathcolor{\dOne}{\rho_1} \vdash \mathcolor{\dOne}{x \to 2}
-            }
-            \infer1[\( \mathcolor{\dOne}{\rho_1(x) = 2} \) ]{ 
-              \mathcolor{\dOne}{\rho_1} \vdash
-              \mathcolor{\dThree}{x+1} \to \mathcolor{\dOne}{2}
-              \mathcolor{\dThree}{+ 1}
-            }
-          \end{prooftree}
+            \begin{prooftree}
+              \hypo{ 
+                \mathcolor{\dOne}{\rho_1} \vdash \mathcolor{\dOne}{x \to 2}
+              }
+              \infer1[\( \mathcolor{\dOne}{\rho_1(x) = 2} \) ]{ 
+                \mathcolor{\dOne}{\rho_1} \vdash
+                \mathcolor{\dThree}{x+1} \to \mathcolor{\dOne}{2}
+                \mathcolor{\dThree}{+ 1}
+              }
+            \end{prooftree}
           \] 
           Applichiamo l'assioma:
           \[
@@ -2806,7 +2812,7 @@ Le regole per le dichiarazioni sono:
             \mathcolor{\dThree}{1} \to \mathcolor{\dThree}{3}
           \] 
           Ora che abbiamo elaborato \( \mathcolor{\dThree}{x+1} \) possiamo elaborare
-          \( \mathcolor{\dThree}{d_3} \):
+          \( \mathcolor{\dThree}{d_3} \) usando la regola (\ref{eq:rule_d3_transitive}):
           \[
             \begin{prooftree}
               \hypo{ 
@@ -2846,7 +2852,7 @@ Le regole per le dichiarazioni sono:
           \( \mathcolor{\dOne}{\rho_1} \left[ \mathcolor{\dThree}{\rho_3} \right]
           = \mathcolor{\dThree}{\left[ x \mapsto 2, y \mapsto 3 \right]} \).
           La regola da applicare è la seguente:
-          \[
+          \begin{equation}\label{eq:rule_d4}
             \color{\dRule}
             \begin{prooftree}
               \hypo{ 
@@ -2856,9 +2862,9 @@ Le regole per le dichiarazioni sono:
                 \rho_1 \vdash \rho_3 ; d_4 \to_d \rho_3 ; d_4'
               }
             \end{prooftree}
-          \] 
+          \end{equation} 
           oppure la sua versione transitiva:
-          \[
+          \begin{equation}\label{eq:rule_d4_transitive}
             \color{\dRule}
             \begin{prooftree}
               \hypo{ 
@@ -2868,16 +2874,123 @@ Le regole per le dichiarazioni sono:
                 \rho_1 \vdash \rho_3 ; d_4 \to_d \rho_3 ; \rho_4
               }
             \end{prooftree}
-          \] 
+          \end{equation} 
           Siccome \( \mathcolor{\dFour}{d_4 = \texttt{const z: int = x+y}} \), bisogna
           prima elaborare \( \mathcolor{\dFour}{\texttt{x}} \) e poi
           \( \mathcolor{\dFour}{\texttt{y}} \) nell'ambiente
-          \( \mathcolor{\dThree}{\left[ x \mapsto 2, y \mapsto 3 \right]} \) per ottenere
-          il valore di \( \mathcolor{\dFour}{\texttt{x+y}} \):
-          % TODO
-          TODO
+          \( \mathcolor{\dThree}{\left[ x \mapsto 2, y \mapsto 3 \right]} \) per
+          ottenere il valore di \( \mathcolor{\dFour}{\texttt{x+y}} \):
+          \[
+            \begin{prooftree}
+              \hypo{ 
+                \mathcolor{\dOne}{\rho_1}[\mathcolor{\dThree}{\rho_3}] \vdash
+                \mathcolor{\dThree}{x \to 2}
+              }
+              \infer1[\( 
+              \mathcolor{\dOne}{\rho_1}[\mathcolor{\dThree}{\rho_3}](\mathcolor{\dFour}{x})
+              = \mathcolor{\dThree}{2}
+              \)]{ 
+                \mathcolor{\dOne}{\rho_1}[\mathcolor{\dThree}{\rho_3}] \vdash
+                \mathcolor{\dFour}{x+y} \to \mathcolor{\dThree}{2} +
+                \mathcolor{\dFour}{y}
+              }
+            \end{prooftree}
+          \] 
+          \[
+            \begin{prooftree}
+              \hypo{ 
+                \mathcolor{\dOne}{\rho_1}[\mathcolor{\dThree}{\rho_3}] \vdash
+                \mathcolor{\dThree}{y \to 3}
+              }
+              \infer1[\(
+              \mathcolor{\dOne}{\rho_1}[\mathcolor{\dThree}{\rho_3}](\mathcolor{\dFour}{y})
+              = \mathcolor{\dThree}{3}
+              \)]{ 
+                \mathcolor{\dOne}{\rho_1}[\mathcolor{\dThree}{\rho_3}] \vdash
+                \mathcolor{\dThree}{2} +
+                \mathcolor{\dFour}{y} \to \mathcolor{\dThree}{2}
+                \mathcolor{\dThree}{+ 3}
+              }
+            \end{prooftree}
+          \] 
+          Applichiamo l'assioma:
+          \[
+            \mathcolor{\dOne}{\rho_1}[\mathcolor{\dThree}{\rho_3}] \vdash
+            \mathcolor{\dThree}{2 + 3}
+            \to \mathcolor{\dThree}{5}
+          \] 
+          Ora che sappiamo il valore di \( \mathcolor{\dFour}{\texttt{x+y}} \) possiamo
+          elaborare \( \mathcolor{\dFour}{d_4} \) usando la regola
+          (\ref{eq:rule_d4_transitive}):
+          \[
+            \begin{prooftree}
+              \hypo{ 
+                \mathcolor{\dOne}{\rho_1}[\mathcolor{\dThree}{\rho_3}] \vdash
+                \mathcolor{\dFour}{\texttt{x+y}} \to_d^* \mathcolor{\dThree}{5}
+              }
+              \infer1{
+                \mathcolor{\dOne}{\rho_1}[\mathcolor{\dThree}{\rho_3}] \vdash
+                \mathcolor{\dFour}{
+                  \underbrace{
+                    \texttt{const z: int = x+y}
+                  }_{\mathcolor{\dFour}{d_4}}
+                }
+                \to_d
+                \mathcolor{\dFour}{
+                  \underbrace{
+                    \texttt{const z: int = 5}
+                  }_{\mathcolor{\dFour}{d_4'}}
+                }
+              }
+            \end{prooftree}
+          \] 
+          Applichiamo l'assioma:
+          \[
+            \mathcolor{\dOne}{\rho_1}[\mathcolor{\dThree}{\rho_3}] \vdash
+            \mathcolor{\dFour}{
+              \texttt{const z: int = 5}
+            }
+            \to_d
+            \mathcolor{\dFour}{\left[ z \mapsto 5 \right]}
+          \] 
+          Quindi dopo aver elaborato \( \mathcolor{\dFour}{d_4} \) otteniamo
+          l'ambiente \( \mathcolor{\dFour}{\rho_4 = \left[ z \mapsto 5 \right]} \).
+
       \end{enumerate}
+      Dopo aver elaborato \( \mathcolor{\dThree}{d_3} \) e
+      \( \mathcolor{\dFour}{d_4} \) possiamo elaborare
+      \( \mathcolor{\dTwo}{d_2} = \mathcolor{\dThree}{d_3}; \mathcolor{\dFour}{d_4} \)
+      applicando l'assioma:
+      \[
+        \mathcolor{\dOne}{\rho_1} \vdash
+        \mathcolor{\dTwo}{
+          \underbrace{
+            \mathcolor{\dThree}{\rho_3} \texttt{\textcolor{black}{;}} \mathcolor{\dFour}{\rho_4}
+          }_{d_2}
+        }
+        \to_d
+        \mathcolor{\dThree}{\rho_3}[\mathcolor{\dFour}{\rho_4}]
+        = \mathcolor{\dTwo}{\rho_2 =}
+        \mathcolor{\dTwo}{\left[ y \mapsto 3, z \mapsto 5 \right]}
+      \] 
+      Abbiamo ottenuto l'ambiente
+      \( \mathcolor{\dTwo}{\rho_2 = \left[ y \mapsto 3, z \mapsto 5 \right]} \) dopo
+      aver elaborato \( \mathcolor{\dTwo}{d_2} \).
   \end{enumerate}
+  Ora che abbiamo elaborato \( \mathcolor{\dOne}{d_1} \) nell'ambiente
+  \( \mathcolor{\dOne}{\rho_1} \) e \( \mathcolor{\dTwo}{d_2} \) nell'ambiente
+  \( \mathcolor{\dTwo}{\rho_2} \), possiamo elaborare
+  \( \mathcolor{\dOne}{d_1} \texttt{ in } \mathcolor{\dTwo}{d_2} \) applicando
+  l'assioma per la composizione privata:
+  \[
+    \vdash \mathcolor{\dOne}{\rho_1} \texttt{ in } \mathcolor{\dTwo}{\rho_2}
+    \to_d \mathcolor{\dTwo}{\rho_2}
+  \] 
+  e alla fine otteniamo:
+  \[
+    \vdash \mathcolor{\dOne}{d_1} \texttt{ in } \mathcolor{\dTwo}{d_2} \to_d^*
+    \mathcolor{\dTwo}{\rho_2 = \left[ y \mapsto 3, z \mapsto 5 \right]}
+  \] 
 \end{example}
 
 \subsection{Comandi}
