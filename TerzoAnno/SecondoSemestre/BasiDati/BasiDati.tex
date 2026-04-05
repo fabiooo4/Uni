@@ -3029,6 +3029,17 @@ Si definiscono due funzioni:
     \] 
 \end{itemize}
 
+\vspace{3em}
+\noindent
+\begin{example}
+  Un esempio di tabella di hash è il seguente:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{hash_table_esempio}
+    \caption{Esempio di creazione di una tabella di hash}
+  \end{figure}
+\end{example}
+
 \subsubsection*{Ricerca con chiave K}
 Per effettuare la ricerca di una tupla con chiave di ricerca \( K \) si effettuano
 i seguenti passi:
@@ -3038,15 +3049,46 @@ i seguenti passi:
   \item Accedere alle \( n \) tuple attraverso i puntatori del bucket (costo:
     \( m \) accessi a pagine di memoria secondaria, con \( m \le n \))
 \end{enumerate}
+L'inserimento e la cancellazione hanno costo simile alla ricerca.
 
-\begin{example}
-  Un esempio di creazione di una tabella di hash è il seguente:
-  \begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{hash_table_esempio}
-    \caption{Esempio di creazione di una tabella di hash}
-  \end{figure}
-\end{example}
+\subsubsection{Collisioni}
+La struttura ad accesso calcolato funziona se i buckets conservano un basso coefficiente
+di riempimento. Infatti il problema delle strutture ad accesso calcolato è la gestione delle
+collisioni.
+
+\begin{definition}[Collisione]
+  Si verifica quando, dati due valori di chiave \( K_1 \) e \( K_2 \) con
+  \( K_1 \neq K_2 \) , risulta:
+  \[
+    h(f(K_1)) = h(f(K_2))
+  \] 
+\end{definition}
+
+\noindent
+La probabilità che uno stesso bucket riceva \( t \) chiavi su \( n \) inserimenti
+è:
+\[
+  p(t) = \binom{n}{t} \left( \frac{1}{B} \right)^t \left( 1 - \frac{1}{B} \right)^{n-t}
+\] 
+dove \( B \) è il numero totale di bucket.
+La probabilità di avere più di \( F \) collisioni, con \( F \) il fattore blocco,
+cioè il numero di puntatori nel bucket, è:
+\[
+  p_K = 1 - \sum_{i=0}^{F} p(i)
+\] 
+
+\subsubsection*{Gestione delle collisioni}
+Un numero eccessivo di collisioni porta alla saturazione del bucket
+corrispondente. Per gestirlo si introducono dei \textbf{bucket di overflow}
+collegati al bucket originale, che contengono i puntatori alle tuple che hanno
+causato la saturazione del bucket originale. Le prestazioni della ricerca
+peggiorano perchè bisogna accedere ai bucket di overflow.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{bucket_overflow}
+  \caption{Esempio di bucket di overflow per gestire le collisioni in una struttura ad accesso calcolato}
+\end{figure}
+
 
 % \section{Transazioni concorrenti}
 % Il componente dell'architettura del DBMS che si occupa di gestire le transazioni
