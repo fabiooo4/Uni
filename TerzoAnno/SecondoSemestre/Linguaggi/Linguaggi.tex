@@ -1559,7 +1559,7 @@ Gli aspetti progettuali da definire per le espressioni sono:
 Definiamo la sintassi del linguaggio IMP per le espressioni:
 \[
   \begin{aligned}
-    \texttt{<Expr} \quad &\texttt{E} \to \texttt{A} \mid \texttt{B} \\
+    \texttt{<Expr>} \quad &\texttt{E} \to \texttt{A} \mid \texttt{B} \\
                          &\texttt{A} \to \texttt{N} \mid  \texttt{A op A} \\
                          &\texttt{B} \to \texttt{true} \mid \texttt{false} \\
                          &\mid \texttt{A = A} \mid \texttt{not B} \mid \texttt{B or B}
@@ -1827,7 +1827,7 @@ e sono le seguenti:
     uso quando l'occorrenza serve per riferirsi al significato determinato da una
     definizione. Deve trovarsi nello scope (raggio di azione) di una definizione.
 
-  \item \textbf{Libera}: Un identificatore è in posizione libera se laa sua
+  \item \textbf{Libera}: Un identificatore è in posizione libera se la sua
     occorrenza non si trova nello scope (raggio di azione) di una definizione.
 \end{itemize}
 
@@ -2993,7 +2993,7 @@ Le regole per le dichiarazioni sono:
   \] 
 \end{example}
 
-\subsection{Comandi}
+\subsection{Variabili}
 L'introduzione di \textbf{identificatori variabili} richiede l'introduzione del
 concetto della memoria e degli strumenti per manipolarla, cioè i \textbf{comandi}.
 Un classico assegnamento di una variabile è il seguente:
@@ -3154,15 +3154,20 @@ Questa sintassi dichiara una variabile di nome \texttt{x}, tipo \( \tau \) e val
       DI(\texttt{var x:}\; \tau = e) = \left\{ x \right\}
     \]
 \end{itemize}
+
+\subsubsection{Semantica statica per le dichiarazioni con variabili}
+La semantica statica verifica che la dichiarazione sia ben formata associando un
+ambiente statico alla dichiarazione.
 Bisogna verificare, a livello statico, che non sia possibile modificare il valore
 di una costante. Per fare ciò bisogna aggiungere i tipi per le locazioni:
 \[
   DTyp = \left\{ \texttt{int}, \texttt{bool}, \mathcolor{Blue}{\texttt{intloc}},
   \mathcolor{Blue}{\texttt{boolloc}} \right\}
 \] 
-Ora bisogna definire le regole statiche per le dichiarazioni con variabili:
+Aggiungiamo una nuova regola alla semantica statica delle dichiarazioni
+per gestire le variabili:
 \begin{itemize}
-  \item Regola 1:
+  \item Regola 6:
     \[
       \begin{prooftree}
         \hypo{ \Delta \vdash e : \tau }
@@ -3170,6 +3175,556 @@ Ora bisogna definire le regole statiche per le dichiarazioni con variabili:
       \end{prooftree}
     \] 
 \end{itemize}
+
+\begin{define}
+  Anche nelle espressioni gli identificatori possono essere variabili e questo non
+  cambia la sintassi.
+\end{define}
+Ricordiamo l'assioma per gli identificatori
+\[
+  \Delta \vdash x: \tau \quad \text{se } \Delta(x) = \tau
+\] 
+Dove \( \tau \) è il tipo associato a \( x \). Ora che abbiamo aggiunto le locazioni
+nei tipi, bisogna gestire anche i tipi delle locazioni e la nuova regola per gli 
+identificatori diventa:
+\[
+  \Delta \vdash x: \tau \quad \text{se } \Delta(x) \in \left\{ \tau, \tau\texttt{loc} \right\}
+\] 
+Quindi i valori a cui \( x \) si riferisce sono sempre di tipo \( \tau \), ma la
+dichiarazione di \( x \) può essere di \textbf{costante} (\( \Delta(x) = \tau \)) o di
+\textbf{variabile} (\( \Delta(x) = \tau\texttt{loc} \)).
+
+\subsubsection{Aggiornamento della memoria}
+Bisogna definire la \textbf{memoria} e integrarla nelle regole della semantica dinamica
+per le dichiarazioni. Consideriamo:
+\begin{itemize}
+  \item \( Loc \) l'insieme delle locazioni
+
+  \item \( new(L) \) è la funzione che restituisce una nuova, cioè che non appartiene
+    a \( L \), locazione
+
+  \item \( Mem_L: L \to \mathcal{V} \) è una funzione che associa ad ogni locazione un
+    valore
+
+  \item \( Mem = \bigcup_{L \subseteq_f Loc} Mem_L \) è l'insieme di tutte le funzioni
+    di memoria.
+
+  \item \( Env_I: I \to \mathcal{V} + Loc \) è una funzione che associa ad ogni
+    identificatore un valore o una locazione
+
+  \item \( Env = \bigcup_{I \subseteq_f Id} Env_I \) è l'insieme di tutte le funzioni
+    di ambiente
+\end{itemize}
+
+\noindent
+Siano \( \sigma  \in Env_I \) e \( \sigma' \in Env_{I'} \),
+l'aggiornamento della memoria si rappresenta come:
+\[
+  \sigma[\sigma']
+\] 
+dove \( \sigma \) è modificata da \( \sigma' \) e genera una nuova memoria \( \sigma'' \)
+tale che:
+\[
+  \begin{aligned}
+    \forall x \in I' \;.\; \sigma''(x) & = \sigma'(x) \\
+    \forall x \in I \setminus I' \;.\; \sigma''(x) & = \sigma(x)
+  \end{aligned}
+\] 
+cioè \( \sigma'' \) è una memoria che contiene tutte le associazioni di \( \sigma' \) e
+tutte le associazioni di \( \sigma \) che non sono sovrascritte da \( \sigma' \):
+\[
+  \sigma'' \in Env_{I \cup I'}
+\] 
+
+\subsubsection{Semantica dimanica per le espressioni con identificatori variabili}
+Consideriamo:
+\begin{itemize}
+  \item \textbf{Stati}: \( \mathcal{E} \times Mem \). Gli stati intermedi sono
+    l'espressione da valutare e la memoria iniziale
+
+  \item \textbf{Stati terminali}: \( \mathcal{V} \times Mem \) cioè il valore
+    associato all'espressione più la memoria
+\end{itemize}
+La forma della regola sarà del tipo:
+\[
+  \rho \vdash \left<e, \sigma  \right> \to_e \left<e', \sigma \right>
+\] 
+Seguendo questa forma possiamo aggiornare gli assiomi per le espressioni in modo da
+gestire le variabili:
+\begin{itemize}
+  \item 
+    \[
+      \rho \vdash \left< m \texttt{ op } n , \sigma \right> \to \left< p, \sigma  \right>
+      \quad p = m \texttt{ op } n
+    \] 
+
+  \item 
+    \[
+      \rho \vdash \left< t_1 \texttt{ or } t_2 , \sigma \right> \to
+      \left< t, \sigma  \right> \quad t = t_1 \texttt{ or } t_2
+    \]
+
+  \item
+    \[
+      \rho \vdash \left< \texttt{not } t , \sigma \right> \to
+      \left< t', \sigma  \right> \quad t' = \texttt{not } t
+    \]
+\end{itemize}
+Quindi si ha che:
+\[
+  \rho \vdash \left< x, \sigma \right> \to \left< k, \sigma  \right>
+\] 
+\begin{itemize}
+  \item Se \( \rho(x) = l \in Loc \) allora \( \sigma(l) = k \), cioè \( x \) è
+    variabile
+
+  \item Altrimenti \( \rho(x) = k \) cioè \( x \) è costante
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Ora bisogna aggiornare anche le altre regole per gestire le variabili:
+\begin{itemize}
+  \item
+    \[
+      \begin{prooftree}
+        \hypo{ 
+          \rho \vdash \left< e_1, \sigma \right> \to^*_e \left< k, \sigma \right>
+        }
+        \infer1{
+          \rho \vdash \left< e_1 \texttt{ bop } e_2, \sigma \right> \to
+          \left<k \texttt{ bop } e_2, \sigma \right>
+        }
+      \end{prooftree}
+    \] 
+
+  \item
+    \[
+      \begin{prooftree}
+        \hypo{ 
+          \rho \vdash \left< e_2, \sigma \right> \to^*_e \left< k', \sigma \right>
+        }
+        \infer1{ 
+          \rho \vdash \left< e_2 \texttt{ bop } e_2, \sigma \right> \to
+          \left<k \texttt{ bop } k', \sigma \right>
+        }
+      \end{prooftree}
+    \] 
+
+    \item
+      \[
+        \begin{prooftree}
+          \hypo{ 
+            \rho \vdash \left< e, \sigma \right> \to^*_e \left< t, \sigma \right>
+          }
+          \infer1{ 
+            \rho \vdash \left< \texttt{not } e, \sigma \right> \to
+            \left<\texttt{not } t, \sigma \right>
+          }
+        \end{prooftree}
+      \] 
+\end{itemize}
+
+\begin{itemize}
+  \item \textbf{Valutazione}: La valutazione per gestire le variabili diventa:
+    \[
+      Eval: Exp \times Mem \to \mathcal{V}
+    \] 
+    dove:
+    \[
+      Eval(e, \sigma) = k \iff \vdash \left< e, \sigma \right> \to^* k
+    \] 
+
+  \item \textbf{Equivalenza}: L'equivalenza per gestire le variabili diventa:
+    \[
+      \equiv \subseteq Exp \times Exp
+    \]
+    dove:
+    \[
+      e_1 \equiv e_2 \iff \forall \sigma \in Mem \;.\; Eval(e_1, \sigma) = Eval(e_2, \sigma)
+    \] 
+    Cioè qualunque sia il valore associato agli identificatori la valutazione delle
+    espressioni deve restare la stessa
+\end{itemize}
+
+\subsubsection{Semantica dinamica per le dichiarazioni con variabili}
+\begin{itemize}
+  \item \textbf{Stati}: \( Dec \times Mem \) 
+  \item \textbf{Stati terminali}: \( Env \times Mem \) 
+\end{itemize}
+La forma della regola sarà del tipo:
+\[
+  \vdash \left< d, \sigma \right> \to_d \left< d', \sigma' \right>
+\] 
+L'elaborazione porta ad una memoria \( \sigma' \) perchè la memoria \( \sigma \) può
+essere stata modificata siccome le dichiarazioni di variabile
+\textbf{inizializzano gli identificatori anche nella memoria}.
+
+Usando questa forma possiamo aggiornare gli assiomi per le dichiarazioni in modo da
+gestire le variabili:
+\begin{itemize}
+  \item
+    \[
+      \rho \vdash \left< \texttt{var x: } \tau = k, \sigma \right> \to 
+      \left< \left[ x \mapsto l \right], \sigma[l \mapsto k] \right>
+    \] 
+    dove \( l \in Loc \) è una nuova locazione per \( x \) e la memoria \( \sigma \)
+    viene aggiornata con l'associazione \( l \mapsto k \) per inizializzare la
+    variabile \( x \) con il valore \( k \).
+\end{itemize}
+Bisogna aggiornare anche le regole della dichiarazione composta
+per gestire le variabili (semplicemente propagando la memoria):
+\begin{itemize}
+  \item 
+    \[
+      \rho \vdash \left< \texttt{const x: } \tau = k, \sigma \right> \to_d
+      \left< \left[ x \mapsto k \right], \sigma \right>
+    \] 
+
+  \item
+    \[
+      \rho \vdash \left< \texttt{nil}, \sigma \right> \to_d
+      \left< \varnothing, \sigma \right>
+    \] 
+
+  \item 
+    \[
+      \begin{prooftree}
+        \hypo{ 
+          \rho \vdash \left< d_1, \sigma \right> \to^*_d \left< \rho_1, \sigma' \right>
+        }
+        \infer1{ 
+          \rho \vdash \left< d_1 ; d_2, \sigma \right> \to_d
+          \left< \rho_1 ; d_2, \sigma' \right>
+        }
+      \end{prooftree}
+    \] 
+
+  \item 
+    \[
+      \begin{prooftree}
+        \hypo{ 
+          \rho[\rho_1] \vdash \left< d_2, \sigma \right> \to^*_d \left< \rho_2,
+          \sigma' \right>
+        }
+        \infer1{ 
+          \rho \vdash \left< \rho_1; d_2, \sigma \right> \to_d
+          \left< \rho_1; \rho_2, \sigma' \right>
+        }
+      \end{prooftree}
+    \] 
+
+  \item
+    \[
+      \rho \vdash \left< \rho_1; \rho_2, \sigma \right> \to_d
+      \left< \rho_1[\rho_2], \sigma \right>
+    \] 
+\end{itemize}
+E anche le regole per la dichiarazione privata:
+\begin{itemize}
+  \item
+    \[
+      \begin{prooftree}
+        \hypo{ 
+          \rho \vdash \left< d_1, \sigma \right> \to^*_d \left< \rho_1, \sigma' \right>
+        }
+        \infer1{ 
+          \rho \vdash \left< d_1 \texttt{ in } d_2, \sigma \right> \to_d
+          \left< \rho_1 \texttt{ in } d_2, \sigma' \right>
+        }
+      \end{prooftree}
+    \] 
+
+  \item 
+    \[
+      \begin{prooftree}
+        \hypo{ 
+          \rho[\rho_1] \vdash \left< d_2, \sigma' \right> \to^*_d \left< \rho_2,
+          \sigma' \right>
+        }
+        \infer1{ 
+          \rho \vdash \left< \rho_1 \texttt{ in } d_2, \sigma' \right> \to_d
+          \left< \rho_1 \texttt{ in } \rho_2, \sigma' \right>
+        }
+      \end{prooftree}
+    \] 
+
+  \item 
+    \[
+      \rho \vdash \left< \rho_1 \texttt{ in } \rho_2, \sigma \right> \to_d
+      \left< \rho_1[\rho_2], \sigma \right>
+    \] 
+\end{itemize}
+
+\vspace{1em}
+\noindent
+\begin{itemize}
+  \item \textbf{Elaborazione}:
+    L'elaborazione per gestire le variabili diventa:
+    \[
+      Elab: Dec \times Mem \to Env \mathcolor{Blue}{\underbrace{\times Mem}_{\substack{
+            \text{Se vogliamo considerare}\\
+            \text{anche i side effects}
+          }
+        }
+      }
+    \] 
+    dove:
+    \[
+      \begin{aligned}
+        \forall d \in Dec, \sigma \in Mem \;.\; Elab(d, \sigma) = \mathcolor{Blue}{(}\rho
+        \mathcolor{Blue}{, \sigma')} \\
+        \iff \exists \sigma' \;.\;
+        \vdash \left< d, \sigma \right> \to^*_d \left< \rho, \sigma' \right>
+      \end{aligned}
+    \] 
+    Oppure \( \mathcolor{Blue}{\cancel \exists \sigma'} \) se si vogliono considerare
+    anche i side effects
+
+  \item \textbf{Equivalenza}:
+    L'equivalenza per gestire le variabili diventa:
+    \[
+      \equiv \subseteq Dec \times Dec
+    \] 
+    dove:
+    \[
+      \forall d_1, d_2 \;.\; d_1 \equiv d_2 \iff
+      \forall \sigma Elab(d_1, \sigma) = Elab(d_2, \sigma)
+    \] 
+\end{itemize}
+
+\subsection{Comandi}
+I comandi sono una categoria sintattica il cui ruolo principale consiste nella
+trasformazione (irreversibile) della memoria. I comandi vengono \textbf{eseguiti} per attuare
+le richieste di trasformazione della memoria che rappresentano.
+
+\begin{define}[Reversibilità]
+  Non esiste alcun meccanismo automatico che annulla la trasformazione
+\end{define}
+
+\noindent
+Esistono due tipi di comandi
+\begin{enumerate}
+  \item \textbf{Comandi base}: sono i comandi che denotano le trasformazioni della
+    memoria. Ad esempio, l'assegnamento o il comando nullo
+
+  \item \textbf{Comandi di controllo del flusso}:
+    sono i comandi che determinano un controllo del flusso di esecuzione.
+    Ad esempio i cicli o le istruzioni condizionali
+\end{enumerate}
+
+\subsubsection{Sintassi dei comandi}
+Aggiungiamo i comandi alla sintassi del linguaggio:
+\[
+  \begin{aligned}
+    Com: \; C & \to \overbrace{
+      \texttt{skip} \mid x := e 
+    }^{\text{Comandi base}} \\
+                      & \mid C; C  \\
+                      & \mid \texttt{while } B \texttt{ do } C
+                      & \mid \texttt{if } B \texttt{ then } C \texttt{ else } C  \\
+  \end{aligned}
+\] 
+\begin{itemize}
+  \item \textbf{Assegnamento}: modifica il valore della variabile \texttt{x} con la
+    valutazione dell'espressione \( e \)
+
+  \item \textbf{Variabile}: la variabile ha le seguenti caratteristiche:
+    \begin{itemize}
+      \item Nome
+      \item Tipo
+      \item Valore memorizzato (ciò che è salvato in memoria)
+      \item Locazione (la posizione in memoria a cui la variabile fa riferimento)
+      \item \textbf{Scope} (l'area di codice del programma in cui la variabile è
+        visibile e accessibile)
+      \item \textbf{Lifetime o tempo di vita} (l'intervallo di tempo durante
+        il quale la variabile esiste e può essere utilizzata)
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Semantica statica dei comandi}
+La semantica statica dei comandi verifica che i comandi siano ben formati e quindi
+fa solo \textbf{controlli di coerenza di tipi}. Consideriamo l'ambiente statico \( \Delta \)
+e definiamo la semantica statica per i comandi:
+\begin{itemize}
+  \item \( FI(\texttt{x := e}) = FI(e) \cup \left\{ x \right\} \) Purchè l'assegnamento abbia significato,
+    tutti devono avere un significato, quindi \( x \) deve essere definito e \( e \)
+    deve essere ben formata
+
+  \item \( DI(\texttt{x := e}) = \varnothing \) L'assegnamento non definisce nuovi
+    identificatori, ma modifica il valore di un identificatore \textbf{già definito}
+
+  \item
+    \[
+      \begin{prooftree}
+        \hypo{ 
+          \Delta \vdash e : \tau
+        }
+        \infer1[\( \Delta(x) = \tau\texttt{loc} \)]{ 
+          \Delta \vdash \texttt{x := e}
+        }
+      \end{prooftree}
+    \] 
+    \( \Delta(x) \) deve essere di tipo locazione \( \tau\texttt{loc} \) perchè \( x \) è
+    una variabile e quindi può essere usata come L-value in un assegnamento.
+    Quindi si ha che \texttt{x := e} è ben formata se:
+    \begin{enumerate}
+      \item \( x \) è di tipo locazione
+      \item \( x \) ed \( e \) hanno lo stesso tipo di valore \( \tau \)
+    \end{enumerate}
+
+  \item \( \Delta \vdash \texttt{skip} \) non ha vincoli da verificare
+\end{itemize}
+
+\subsubsection{Semantica dinamica dei comandi (esecuzione)}
+La semantica dinamica dei comandi descrive come i comandi modificano la memoria
+durante l'esecuzione. Consideriamo:
+\begin{itemize}
+  \item \textbf{Stati}: \( Com \times Mem \) 
+  \item \textbf{Stati terminali}: \( Mem \), cioè i comandi vengono eseguiti per
+    manipolare la memoria
+\end{itemize}
+La forma della regola sarà del tipo:
+\[
+  \rho \vdash \left< c, \sigma \right> \to_c \left<c', \sigma' \right>
+\] 
+Usando questa forma possiamo definire la semantica dinamica per i comandi:
+\begin{itemize}
+  \item Skip
+    \[
+      \rho \vdash \left< \texttt{skip}, \sigma \right> \to_c \sigma
+    \] 
+
+  \item Assegnamento: si valuta l'espressione \( e \) in \( k \) con un certo numero
+    di passi partendo da \( \sigma \) 
+    \[
+      \begin{prooftree}
+        \hypo{ 
+          \rho \vdash \left< e, \sigma \right> \to^*_e \left< k, \sigma' \right>
+        }
+        \infer1{ 
+          \rho \vdash \left< \texttt{x := e}, \sigma  \right>
+          \to \left< \texttt{x: = k}, \sigma \right>
+        }
+      \end{prooftree}
+    \] 
+
+  \item Assioma per l'assegnamento:
+    \[
+      \rho \vdash \left< \texttt{x := k}, \sigma \right> \to_c
+      \sigma[l \mapsto k], \; \rho(x) = l
+    \] 
+    dove \( \rho \) indica quale locazione è legata ad \( x \)
+\end{itemize}
+
+\begin{example}
+  Un esempio di esecuzione del seguente assegnamento:
+  \[
+    \texttt{x := x * y}
+  \] 
+  \texttt{x} e \texttt{y} sono \textbf{liberi} e quindi per eseguire l'assegnamento
+  abbiamo bisogno degli ambienti contestuali e poi dobbiamo usare una memoria.
+  Supponiamo che l'ambiente \( \rho \) sia:
+  \[
+    \begin{aligned}
+      \rho &= \left[ x \mapsto l_x, y \mapsto 2 \right] \\
+      \Delta &= \left[ x \mapsto \texttt{intloc}, y \mapsto \texttt{int} \right]
+    \end{aligned}
+  \] 
+  e la memoria \( \sigma \) sia:
+  \[
+    \sigma = \left[ l_x \mapsto 3 \right]
+  \] 
+
+  \vspace{1em}
+  \noindent
+  Andiamo a verificare se l'assegnamento è ben formato usando l'ambiente statico:
+  \[
+    \begin{prooftree}
+      \hypo{ 
+        \Delta \vdash \texttt{x: int}
+      }
+      \hypo{ 
+        \Delta \vdash \texttt{y: int}
+      }
+      \infer2[\( \Delta(x) = \texttt{intloc} \land \Delta(y) = \texttt{int} \) ]{ 
+        \Delta \vdash \texttt{x * y: int}
+      }
+      \infer1[\( \Delta(x) = \texttt{intloc} \) ]{ 
+        \Delta \vdash \texttt{x := x * y}
+      }
+    \end{prooftree}
+  \] 
+  cioè se \texttt{x * y} è di tipo \( \texttt{int} \) allora \texttt{x := x * y} è
+  ben formata.
+
+  \vspace{1em}
+  \noindent
+  \textbf{Esecuzione:}
+  La regola da applicare è quella per l'assegnamento:
+  \[
+    \begin{prooftree}
+      \hypo{ 
+        \rho \vdash \left< \texttt{x * y}, \sigma \right> \to^*_e \left< k, \sigma \right>
+      }
+      \infer1{ 
+        \rho \vdash \left< \texttt{x := x * y}, \sigma  \right>
+        \to \left< \texttt{x: = k}, \sigma  \right>
+      }
+    \end{prooftree}
+  \] 
+  Valutiamo \( \texttt{x * y} \), ma prima per farlo dobbiamo valutare i singoli
+  componenti \( \texttt{x} \) e \( \texttt{y} \):
+  \begin{enumerate}
+    \item Valutiamo \( \texttt{x} \):
+      \[
+        \begin{prooftree}
+          \hypo{ 
+            \rho \vdash \left< \texttt{x}, \sigma \right> \to \left< l_x, \sigma  \right>
+          }
+          \infer1[\( 
+          \rho(x) = l_x \land \sigma(l_x) = 3
+          \)]{ 
+            \rho \vdash \left< \texttt{x * y}, \sigma \right> \to \left< 3 * y, \sigma  \right>
+          }
+        \end{prooftree}
+      \] 
+
+    \item Valutiamo \( \texttt{y} \):
+      \[
+        \begin{prooftree}
+          \hypo{ 
+            \rho \vdash \left< \texttt{y}, \sigma  \right> \to \left< 2, \sigma  \right>
+          }
+          \infer1{ 
+            \rho \vdash \left< 3 * y, \sigma  \right> \to
+            \left< 3 * 2, \sigma  \right>
+          }
+        \end{prooftree}
+      \]
+  \end{enumerate}
+  Ora possiamo completare la valutazione di \( \texttt{x * y} \):
+  \[
+    \rho  \vdash \left< 3 * 2, \sigma  \right> \to \left< 6, \sigma  \right>
+  \] 
+  Si conclude applicando la regola per l'assegnamento:
+  \[
+    \begin{prooftree}
+      \hypo{ 
+        \rho \vdash \left< \texttt{x * y}, \sigma  \right> \to^*_e \left< 6, \sigma  \right>
+      }
+      \infer1{ 
+        \rho \vdash \left< \texttt{x := x * y}, \sigma  \right>
+        \to \left< \texttt{x: = 6}, \sigma  \right>
+      }
+    \end{prooftree}
+  \] 
+  Infine applichiamo l'assioma per l'assegnamento:
+  \[
+    \rho \vdash \left< \texttt{x: = 6}, \sigma  \right> \to_c
+    \sigma[l_x \mapsto 6], \; \rho(x) = l_x
+  \] 
+\end{example}
 
 
 \end{document}
