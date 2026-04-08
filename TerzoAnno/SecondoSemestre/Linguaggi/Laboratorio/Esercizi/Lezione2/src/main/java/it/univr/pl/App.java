@@ -20,8 +20,9 @@ public class App {
     // Add input checking
     int choice = Integer.max(0, Integer.min(Grammar.values().length, reader.nextInt() - 1));
     Grammar grammar = Grammar.values()[choice];
+    reader.nextLine();
 
-    System.out.println("Insert a string to parse:");
+    System.out.println("\nInsert a string to parse:");
     String input = reader.nextLine();
     reader.close();
 
