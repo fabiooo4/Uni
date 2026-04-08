@@ -16,6 +16,8 @@
   in {
     packages.x86_64-linux.default = pkgs.mkShell {
       packages = with pkgs; [
+        clang
+
         flex
         bison
       ];
