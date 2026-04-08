@@ -2298,4 +2298,392 @@ più di una produzione che porta a una produzione ricorsiva sinistra, esiste un 
 per eliminare la ricorsione sinistra indiretta, ma è complesso e non verrà trattato in
 questo corso.
 
+\subsection{Predictive parsing}
+Il predictive parsing è un metodo di top-down parsing che utilizza un simbolo di
+lookahead per decidere quale produzione applicare. Questo metodo funziona soltanto
+su una forma particolare di grammatiche, dette \textbf{\( LL(k) \) grammars}.
+Il predictive parser è completamente deterministico, cioè non ha bisogno di backtracking
+perchè ad ogni passo soltanto una produzione è applicabile.
+
+I criteri per la selezione di una produzione sono i seguenti:
+\begin{itemize}
+  \item Se la parte a destra della produzione \textbf{inizia con un token}, allora 
+    la produzione verrà usata solo se il token è uguale al simbolo di lookahead
+
+  \item Se la parte a destra della produzione \textbf{inizia con un non terminale},
+    allora la produzione verrà usata solo se il simbolo di lookahead può essere
+    generato da quel non terminale
+\end{itemize}
+
+\subsubsection{Grammatiche LL(k)}
+I predictive parser accettano soltanto grammatiche \( LL(k) \) che si chiamano così
+perchè:
+\begin{itemize}
+  \item La prima \( L \) sta per \textbf{Left-to-right scanning} dell'input
+  \item La seconda \( L \) sta per \textbf{Leftmost derivation} dell'albero sintattico
+  \item \( k \) è il numero di token di lookahead utilizzati per decidere quale
+    produzione applicare
+\end{itemize}
+Le grammatiche \( LL(k) \) sono un sottoinsieme delle grammatiche context free:
+\[
+   LL(1) \subset LL(2) \subset \ldots \subset CF
+\] 
+Nella pratica utilizziamo soltanto grammatiche \( LL(1) \) perchè sono più semplici
+da implementare.
+
+\subsubsection{Left factoring}
+Il left factoring è una tecnica che permette di trasformare una grammatica in una
+forma adatta al predictive parsing, eliminando le ambiguità che possono essere
+causate da prefissi comuni nelle produzioni di un non terminale.
+\begin{definition}[Left factoring]
+  Per ogni non terminale \( A \), cercare il più lungo prefisso non vuoto comune a
+  due o più produzioni di \( A \). Se esiste un prefisso comune, estrarlo in una
+  nuova produzione e sostituire il prefisso comune con la nuova produzione nelle
+  produzioni originali.
+  \[
+    A \to \alpha \beta_1 \mid \alpha \beta_2 \mid \ldots \mid \alpha \beta_n
+     \mid \gamma 
+  \] 
+  viene trasformata in:
+  \[
+    \begin{aligned}
+      A  &\to \alpha A' \mid \gamma \\
+      A' &\to \beta_1 \mid \beta_2 \mid \ldots \mid \beta_n
+    \end{aligned}
+  \] 
+\end{definition}
+
+\begin{example}
+  Eseguiamo il left factoring sulla seguente grammatica:
+  \[
+    \begin{aligned}
+      &E \to T \mid T + E \\
+      &T \to int \mid int * T \mid (E)
+    \end{aligned}
+  \] 
+  La produzione \( E \to T \mid T + E \) ha un prefisso comune \( T \), quindi si
+  estrae e lo stesso vale per la produzione \( T \to int \mid int * T \) che ha un
+  prefisso comune \( int \):
+  \[
+    \begin{aligned}
+      &E \to T \; X \\
+      &X \to + \; E \mid \varepsilon \\
+      &T \to int \; Y \mid (E) \\
+      &Y \to * \; T \mid \varepsilon
+    \end{aligned}
+  \] 
+\end{example}
+
+\subsubsection{Tabella di parsing}
+Definiamo le funzioni \( FIRST \) e \( FOLLOW \) che ci permettono di costruire la tabella.
+
+\vspace{1em}
+\noindent
+\begin{definition}
+  La funzione \( FIRST(X) \) è definita come:
+  \[
+    FIRST(X) = \{ t \mid X \to^* t \alpha \} \cup \{ \varepsilon \mid X \to^* \varepsilon \}
+  \] 
+  cioè l'insieme dei terminali che appaiono come primi simboli di una o più stringhe generate
+  da \( X \). \( \varepsilon  \) appartiene a \( FIRST(X) \) in due casi:
+  \begin{itemize}
+    \item Se \( X \to \varepsilon  \) 
+    \item Se \( X \to A_1 \ldots A_n \) e \( \varepsilon  \in FIRST(A_i) \) per ogni
+      \( 1 \le i \le n \) 
+  \end{itemize}
+  Il \( FIRST \) di un terminale è il terminale stesso:
+  \[
+    FIRST(t) = \left\{ t \right\}
+  \] 
+  e di conseguenza si ha che:
+  \[
+    FIRST(\alpha) \subseteq FIRST(X) \text{ se } X \to A_1 \ldots A_n \alpha \land 
+    \varepsilon \in FIRST(A_i) \quad \forall i \;.\; 1 \le i \le n
+  \] 
+\end{definition}
+
+\begin{example}
+  Consideriamo la seguente grammatica:
+  \[
+    \begin{aligned}
+      &E \to T \; X \\
+      &T \to int \; Y \mid (E) \\
+      &X \to + \; E \mid \varepsilon \\
+      &Y \to * \; T \mid \varepsilon
+    \end{aligned}
+  \] 
+  Calcoliamo il \( FIRST \) di ogni simbolo:
+  \begin{itemize}
+    \item \( FIRST(+) = \{ + \} \) ecc... per ogni terminale
+    \item \( FIRST(E) = FIRST(T) \)
+    \item \( FIRST(T) = \{ int, ( \} \)
+    \item \( FIRST(X) = \{ +, \varepsilon \} \)
+    \item \( FIRST(Y) = \{ *, \varepsilon \} \)
+  \end{itemize}
+\end{example}
+
+\vspace{1em}
+\noindent
+\begin{definition}
+  La funzione \( FOLLOW(X) \) è definita come:
+  \[
+    FOLLOW(X) = \{ t \mid S \to^* \beta X t \delta \}
+  \] 
+  cioè l'insieme dei terminali che appaiono immediatamente a destra di \( X \) in una
+  stringa generata da \( S \). Inoltre:
+  \begin{itemize}
+    \item Se \( X \to AB \) allora
+      \[
+        FIRST(B) \subseteq FOLLOW(A) \land FOLLOW(X) \subseteq FOLLOW(B)
+      \] 
+
+    \item Se \( B \to^* \varepsilon \) allora
+      \[
+        FOLLOW(X) \subseteq FOLLOW(A)
+      \] 
+  \end{itemize}
+  Solitamente si utilizza un simbolo speciale \( \$ \) per rappresentare la fine
+  dell'input, e si ha che \( \$ \in FOLLOW(S) \) dove \( S \) è il simbolo di partenza.
+\end{definition}
+
+\begin{example}
+  Considerando la stessa grammatica dell'esempio precedente, calcoliamo il
+  \( FOLLOW \) di ogni simbolo:
+  \begin{itemize}
+    \item Per il simbolo \( E \) si ha:
+      \begin{itemize}
+        \item \( FOLLOW(X) \subseteq FOLLOW(E) \) 
+        \item \( FOLLOW(E) \subseteq FOLLOW(X) \) 
+      \end{itemize}
+      Quindi \( FOLLOW(E) = FOLLOW(X) = \{ ), \$ \} \)
+
+    \item Per il simbolo \( T \) si ha:
+      \begin{itemize}
+        \item \( FOLLOW(E) \subseteq FOLLOW(T) \) 
+        \item \( FIRST(Y) \subseteq FOLLOW(T) \) 
+        \item \( FIRST(T) \subseteq FOLLOW(Y) \) 
+      \end{itemize}
+      Quindi \( FOLLOW(T) = FOLLOW(Y) = \{ +, ), \$ \} \)
+
+    \item Per il simbolo \( \texttt{(} \) si ha:
+      \[
+        FOLLOW(\texttt{(}) = FIRST(E) = FIRST(T) = \{ int, ( \})
+      \] 
+
+    \item Per il simbolo \( \texttt{)} \) si ha:
+      \[
+        FOLLOW(\texttt{)}) = FOLLOW(T) = \{ +, ), \$ \}
+      \]
+
+    \item Per il simbolo \( + \) si ha:
+      \[
+        FOLLOW(+) = FIRST(E) = FIRST(T) = \{ int, ( \}
+      \]
+
+    \item Per il simbolo \( * \) si ha:
+      \[
+        FOLLOW(*) = FIRST(T) = \{ int, ( \}
+      \]
+
+    \item Per il simbolo \( int \) si ha:
+      \[
+        FOLLOW(int) = FIRST(Y) = \{ *, +, ), \$ \}
+      \]
+  \end{itemize}
+\end{example}
+
+\vspace{1em}
+\noindent
+\begin{definition}[Tabella di parsing]
+  Sia \( A \) un simbolo non terminale con una produzione \( A \to \alpha \) e un
+  token \( t \). L'entrata della tabella \( T[A,t] = \alpha \) in due casi:
+  \begin{enumerate}
+    \item Se \( \alpha \to^* t \beta \), cioè se \( \alpha \) può generare una stringa
+      con primo simbolo \( t \):
+      \[
+        t \in FIRST(\alpha) \implies T[A,t] = \alpha
+      \] 
+
+    \item Se \( t \notin FIRST(\alpha) \), ma \( \alpha \to^* \varepsilon \) e
+      \( S \to^* \beta A t \delta \), cioè quando \( A \) non può generare una stringa
+      con primo simbolo \( t \), ma \( A \) può generare la stringa vuota e \( t \)
+      può apparire immediatamente a destra di \( A \):
+      \[
+        t \notin FIRST(\alpha) \land \varepsilon \in FIRST(\alpha) \land t \in FOLLOW(A)
+        \implies T[A,t] = \alpha
+      \] 
+  \end{enumerate}
+\end{definition}
+
+\noindent
+Per costruire una tabella di parsing \( T \) per la grammatica \( G \) si eseguono i
+seguenti passi:
+\begin{enumerate}
+  \item Per ogni produzione \( A \to \alpha \) della grammatica:
+    \begin{enumerate}
+      \item Per ogni terminale \( t \in FIRST(\alpha) \), inserire \( \alpha \) nella
+        tabella \( T[A,t] \)
+      \item Se \( \varepsilon \in FIRST(\alpha) \), allora per ogni terminale
+        \( t \in FOLLOW(A) \), inserire \( \alpha \) nella tabella \( T[A,t] \)
+      \item Se \( \varepsilon \in FIRST(\alpha) \) e \( \$ \in FOLLOW(A) \), inserire
+        \( \alpha \) nella tabella \( T[A,\$] \)
+    \end{enumerate}
+\end{enumerate}
+
+lo pseudocodice è il seguente:
+\begin{lstlisting}[escapechar=|, basicstyle=\rmfamily, columns=fullflexible, keepspaces=true]
+for each production |\( A \to \alpha \)| {
+    for each terminal |\( t \in FIRST(\alpha) \)| {
+        |\( T[A,t] = \alpha \)|
+    }
+
+    if |\( \varepsilon \in FIRST(\alpha) \)| {
+        for each terminal |\( t \in FOLLOW(A) \)| {
+            |\( T[A,t] = \alpha \)|
+        }
+        if |\( \$ \in FOLLOW(A) \)| {
+            |\( T[A,\$] = \alpha \)|
+        }
+    }
+}
+\end{lstlisting}
+
+\begin{example}
+  Un esempio di tabella di parsing per la grammatica:
+  \[
+    \begin{aligned}
+      &E \to T \; X \\
+      &T \to int \; Y \mid (E) \\
+      &X \to + \; E \mid \varepsilon \\
+      &Y \to * \; T \mid \varepsilon
+    \end{aligned}
+  \] 
+  è il seguente:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|c|}
+      \hline
+      & ( & ) & + & * & int & \$ \\
+      \hline
+      E & T X & & & & T X & \\
+      \hline
+      T & & (E) & & & int Y & \\
+      \hline
+      X & & $\varepsilon$ & + E & & & $\varepsilon$ \\
+      \hline
+      Y & & $\varepsilon$ & $\varepsilon$ & * T & & $\varepsilon$ \\
+      \hline
+    \end{tabular}
+  \end{table}
+\end{example}
+
+\subsubsection{Grammatiche LL(1)}
+Le condizioni per cui una grammatica \textbf{non} è più \( LL(1) \) sono le seguenti:
+\begin{enumerate}
+  \item Se una qualsiasi cella della tabella di parsing contiene più di una produzione
+  \item Se la grammatica non è left factored
+  \item Se la grammatica è ricorsiva sinistra
+  \item Se la grammatica è ambigua
+\end{enumerate}
+Quindi definiamo quando una grammatica è \( LL(1) \):
+\begin{definition}
+  Una grammatica \( G \) è \( LL(1) \) se non è ricorsiva sinistra e per ogni
+  insieme di produzioni \( A \to \alpha_1 \mid \alpha_2 \mid \ldots \mid \alpha_n \) si
+  ha che per il simbolo non terminale \( A \) vale:
+  \begin{itemize}
+    \item \( FIRST(\alpha_i) \cap FIRST(\alpha_j) = \varnothing \) per ogni \( i \neq j \)
+    \item Se \( \alpha_i \Rightarrow^* \varepsilon \) allora:
+      \begin{itemize}
+        \item \( \alpha_j \not\Rightarrow^* \varepsilon  \) per ogni \( j \neq i \) e
+        \item \( FIRST(\alpha_j) \cap FOLLOW(A) = \varnothing \))
+      \end{itemize}
+  \end{itemize}
+\end{definition}
+
+\subsubsection{Predictive parser}
+I predictive parser si costruiscono usando grammatiche \( LL(1) \), cioè grammatiche
+in cui per ogni non terminale e token di lookahead c'è solo una produzione applicabile.
+Il parser può essere quindi specificato usando una tabella bidimensionale chiamata
+\textbf{tabella di parsing}, in cui:
+\begin{itemize}
+  \item Una dimensione rappresenta il simbolo \textbf{non terminale corrente} da
+    espandere
+
+  \item Una dimensione rappresenta il token successivo
+\end{itemize}
+Ogni cella della tabella contiene la produzione da applicare oppure se è vuota
+rappresenta un errore sintattico. Il predictive parser può essere implementato in
+modo non ricorsivo gestendo manualmente uno stack per tenere traccia dei simboli non
+terminali da espandere.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{predictive_parser_non_ricorsivo}
+  \caption{Modello di un predictive parser non ricorsivo}
+\end{figure}
+Lo stato iniziale del parser è costituito da uno stack che contiene \( [S,\$] \) e
+da un buffer di input che contiene la stringa da parsare seguita da \( \$ \).
+
+\vspace{1em}
+\noindent
+L'algoritmo per il predictive parsing è il seguente:
+\begin{lstlisting}[escapechar=|, basicstyle=\rmfamily, columns=fullflexible, keepspaces=true]
+let |\( a \)| be the first symbol of |\( w \)|;
+let |\( X \)| be the top stack symbol;
+while ( |\( X \neq \$ \)| ) { /* stack is not empty */
+    if ( |\( X = a \)| ) pop the stack and let |\( a \)| be the next symbol of |\( w \)|;
+    else if ( |\( X \)| is a terminal ) |\textit{error}()|;
+    else if ( |\( M[X,a] \)| is an error entry ) |\textit{error}()|;
+    else if ( |\( M[X,a] = X \to Y_1 Y_2 \cdots Y_k \)| ) {
+        output the production |\( X \to Y_1 Y_2 \cdots Y_k \)|;
+        pop the stack;
+        push |\( Y_k, Y_{k-1}, \ldots, Y_1 \)| onto the stack, with |\( Y_1 \)| on top;
+    }
+    let |\( X \)| be the top stack symbol;
+}
+\end{lstlisting}
+
+\begin{example}
+  Consideriamo la seguente grammatica:
+  \[
+    \begin{aligned}
+      &E \to TE' \\
+      &E' \to +TE' \mid \varepsilon \\
+      &T \to FT' \\
+      &T' \to *FT' \mid \varepsilon \\
+      &F \to (E) \mid id
+    \end{aligned}
+  \] 
+  Costruiamo la tabella di parsing per questa grammatica e calcoliamo il \( FIRST \) e
+  il \( FOLLOW \) di ogni simbolo:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{esempio_tabella_parsing}
+    \caption{Tabella di parsing per la grammatica dell'esempio}
+  \end{figure}
+  Ora utilizzando questa tabella di parsing vogliamo parsare la stringa:
+  \[
+    \texttt{id + id * id}
+  \] 
+  I passi di parsing sono i seguenti:
+  \begin{table}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{esempio_predictive_parsing}
+    \caption{Passi di parsing per la stringa \texttt{id + id * id}}
+  \end{table}
+  \noindent
+  Da questo si può ottenere la sequenza di derivazioni per ottenere la stringa di input:
+  \[
+    \begin{aligned}
+      &E \Rightarrow TE' \Rightarrow FT' E' \Rightarrow \texttt{id} T' E' \Rightarrow
+      \texttt{id} E' \Rightarrow \texttt{id +} TE' \Rightarrow \texttt{id +} FT' E'
+      \Rightarrow \\
+      &\texttt{id + id} T' E' \Rightarrow \texttt{id + id *} FT' E' \Rightarrow 
+      \texttt{id + id * id} T' E' \\
+      &\Rightarrow \texttt{id + id * id} E' \Rightarrow \texttt{id + id * id}
+    \end{aligned}
+  \] 
+\end{example}
+
+
+
 \end{document}
