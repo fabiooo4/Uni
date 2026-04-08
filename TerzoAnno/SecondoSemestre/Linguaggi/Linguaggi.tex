@@ -1231,9 +1231,9 @@ Le categorie sintattiche principali sono:
 La separazione tra le categorie sintattiche non è rigida, ad esempio un'espressione
 può avere anche side effects, quindi modificare la memoria, ecc...
 
-\subsubsection{Esempio di sintassi per un linguaggio giocattolo "PLO"}
-In questo corso considereremo un linguaggio di programmazione "giocattolo" 
-simile al linguaggio Pascal in cui:
+\subsubsection{Esempio di sintassi per il linguaggio "PL0"}
+Il seguente è un esempio di sintassi per il linguaggio di programmazione PL0 simile
+al linguaggio Pascal, in cui:
 \begin{itemize}
   \item Esiste un singolo tipo di dato \texttt{integer}
   \item I booleani sono rappresentati come interi
@@ -3081,7 +3081,7 @@ Ci sono più tipi di legami:
     \[
       \texttt{const}
     \] 
-    che crea un legame (bindin) in un ambiente.
+    che crea un legame (binding) in un ambiente.
 
   \item \textbf{Variabili} (nei linguaggi imperativi): sono identificate da due legami:
     \begin{itemize}
@@ -3325,6 +3325,8 @@ Ora bisogna aggiornare anche le altre regole per gestire le variabili:
       \] 
 \end{itemize}
 
+\vspace{1em}
+\noindent
 \begin{itemize}
   \item \textbf{Valutazione}: La valutazione per gestire le variabili diventa:
     \[
@@ -3337,7 +3339,7 @@ Ora bisogna aggiornare anche le altre regole per gestire le variabili:
 
   \item \textbf{Equivalenza}: L'equivalenza per gestire le variabili diventa:
     \[
-      \equiv \subseteq Exp \times Exp
+      \equiv \; \subseteq Exp \times Exp
     \]
     dove:
     \[
@@ -3489,7 +3491,7 @@ E anche le regole per la dichiarazione privata:
     dove:
     \[
       \forall d_1, d_2 \;.\; d_1 \equiv d_2 \iff
-      \forall \sigma Elab(d_1, \sigma) = Elab(d_2, \sigma)
+      \forall \sigma \; Elab(d_1, \sigma) = Elab(d_2, \sigma)
     \] 
 \end{itemize}
 
@@ -3547,11 +3549,11 @@ La semantica statica dei comandi verifica che i comandi siano ben formati e quin
 fa solo \textbf{controlli di coerenza di tipi}. Consideriamo l'ambiente statico \( \Delta \)
 e definiamo la semantica statica per i comandi:
 \begin{itemize}
-  \item \( FI(\texttt{x := e}) = FI(e) \cup \left\{ x \right\} \) Purchè l'assegnamento abbia significato,
-    tutti devono avere un significato, quindi \( x \) deve essere definito e \( e \)
-    deve essere ben formata
+  \item \( FI(\texttt{x := e}) = FI(e) \cup \left\{ x \right\} \). Per far si che
+    l'assegnamento abbia significato, tutti devono avere un significato, quindi
+    \( x \) deve essere definito e \( e \) deve essere ben formata
 
-  \item \( DI(\texttt{x := e}) = \varnothing \) L'assegnamento non definisce nuovi
+  \item \( DI(\texttt{x := e}) = \varnothing \). L'assegnamento non definisce nuovi
     identificatori, ma modifica il valore di un identificatore \textbf{già definito}
 
   \item
@@ -3604,7 +3606,7 @@ Usando questa forma possiamo definire la semantica dinamica per i comandi:
         }
         \infer1{ 
           \rho \vdash \left< \texttt{x := e}, \sigma  \right>
-          \to \left< \texttt{x: = k}, \sigma \right>
+          \to \left< \texttt{x := k}, \sigma \right>
         }
       \end{prooftree}
     \] 
