@@ -3578,7 +3578,7 @@ e definiamo la semantica statica per i comandi:
   \item \( \Delta \vdash \texttt{skip} \) non ha vincoli da verificare
 \end{itemize}
 
-\subsubsection{Semantica dinamica dei comandi (esecuzione)}
+\subsubsection{Semantica dinamica dei comandi}
 La semantica dinamica dei comandi descrive come i comandi modificano la memoria
 durante l'esecuzione. Consideriamo:
 \begin{itemize}
@@ -3728,5 +3728,429 @@ Usando questa forma possiamo definire la semantica dinamica per i comandi:
   \] 
 \end{example}
 
+\subsubsection{Strutture di controllo}
+Le strutture di controllo manipolano il flusso di esecuzione e possono essere
+implementate
+\begin{itemize}
+  \item Tra espressioni nei linguaggi con le espressioni condizionali
+  \item Tra comandi (if, while, for)
+  \item Tra procedure
+\end{itemize}
+Esistono diversi tipi di comandi di controllo, ad esempio:
+\begin{itemize}
+  \item \textbf{Comandi di selezione del controllo}: sono i comandi che permettono di
+    scegliere tra più opzioni di esecuzione. I comandi di selezione si dividono
+    in:
+    \begin{itemize}
+      \item \textbf{Selettori a due vie}: permettono di scegliere tra due opzioni
+        a seconda della guardia a due valori, come ad esempio l'if. La sintassi
+        dell'if è:
+        \[
+          \texttt{if } guardia \texttt{ then } code_1 \texttt{ else } code_2
+        \] 
+        Gli aspetti progettuali per implementare un if sono:
+        \begin{itemize}
+          \item Forma e tipo di espressione di controllo (la guardia). Alcuni linguaggi
+            interpretano i numeri come guardia, altri invece richiedono solo espressioni
+            booleane
+
+          \item Specifica e delimitazione i rami \texttt{then} e \texttt{else}.
+            Cioè quali elementi sintattici si usano per delimitare i rami, ad esempio
+            usando le parentesi graffe o usando l'indentazione, ecc...
+
+          \item Come viene gestito l'annidamento di condizionali. Ad esempio nel seguente
+            codice
+\begin{lstlisting}
+if (sum == 0)
+    if (count == 0)
+        result = 0;
+else result = 1;
+\end{lstlisting}
+            bisogna specificare se l'\texttt{else} è associato al primo \texttt{if} o
+            al secondo.
+        \end{itemize}
+
+      \item \textbf{Selettori a più vie}: permettono di scegliere tra più opzioni a
+        seconda di una singola guardia a più valori, come ad esempio il case.
+        La sintassi di un tipico selettore a più vie è:
+        \[
+          \begin{aligned}
+            &\texttt{switch (} expr \texttt{) \{} \\
+            &\quad \texttt{case } val_1 \texttt{: } stmt_1; \\
+            &\quad \vdots \\
+            &\quad \texttt{case } val_n \texttt{: } stmt_n; \\
+            &\quad [\texttt{default: } stmt_d;] \\
+            &\texttt{\}}
+          \end{aligned}
+        \] 
+        dove \( stmt \) è un singolo comando o blocco di codice.
+
+        Gli aspetti progettuali per implementare un case sono:
+        \begin{itemize}
+          \item Forma e tipo delle espressioni di guardia. Tipicamente espressioni
+            non booleane
+
+          \item Come si selezionano i vari rami
+
+          \item Come procede il flusso di controllo. 
+
+          \item Cosa succede per i valori non rappresentati. Alcuni linguaggi dopo
+            aver eseguito un ramo escono dal case, altri invece continuano ad eseguire
+            i rami successivi, oppure alcuni richiedono un ramo default in caso di
+            mancata corrispondenza con i valori di guardia
+        \end{itemize}
+    \end{itemize}
+
+  \item \textbf{Comandi di iterazione}: sono i comandi che permettono di ripetere una
+    sequenza di comandi. Ad esempio, while, for.
+
+    Gli aspetti progettuali per implementare un comando di iterazione sono:
+    \begin{itemize}
+      \item Com'è controllata l'iterazione. I possibili controlli sono:
+        \begin{itemize}
+          \item \textbf{Controllo logico} (while)
+          \item \textbf{Controllo numerico} (for)
+        \end{itemize}
+
+      \item Dove si trova il meccanismo di controllo. Alcuni costrutti eseguono
+        il corpo del ciclo prima di controllare la guardia (do-while), altri invece
+        controllano la guardia prima di eseguire il corpo del ciclo (while)
+    \end{itemize}
+
+    Ci sono due tipi di iterazione:
+    \begin{itemize}
+      \item \textbf{Iterazione determinata}: è possibile determinare a priori
+        quante volte si esegue il ciclo (soliltamente il for).
+
+        Questo tipo di iterazione contiene una variabile di ciclo con un valore
+        iniziale e uno finale.
+
+        Gli aspetti progettuali per implementare un'iterazione
+        determinata sono:
+        \begin{itemize}
+          \item Tipo di variabile di controllo e la sua visibilità nel ciclo.
+
+          \item Legalità della modifica della variabile di ciclo
+
+          \item Quando avviene la valutazione dei valori di riferimento
+            della variabile di ciclo. Alcuni linguaggi valutano le espressioni
+            una volta e bloccano il valore che verrà usato per ogni iterazione,
+            altri invece valutano le espressioni ad ogni iterazione e questo rende
+            l'iterazione indeterminata siccome il numero di iterazioni dipende dai
+            valori di riferimento che possono cambiare ad ogni iterazione
+        \end{itemize}
+        La sintassi di un tipico for è:
+        \[
+          \texttt{for } indice \texttt{ := } inizio \texttt{ to } fine \texttt{ by }
+          passo \texttt{ do } corpo
+        \] 
+        dove:
+        \begin{itemize}
+          \item \( inizio \) è il valore di partenza
+          \item \( fine \) è il valore di terminazione
+          \item \( passo \) indica come cambia il valore di \( indice \) ad ogni
+            iterazione
+        \end{itemize}
+
+      \item \textbf{Iterazione indeterminata}: non è possibile, in generale,
+        determinare a priori quante volte si esegue il ciclo (solitamente il while).
+
+        Questo tipo di iterazione ha come controllo una guardia logica che determina
+        se continuare o terminare l'iterazione.
+
+        Gli aspetti progettuali per implementare
+        un'iterazione indeterminata sono:
+        \begin{itemize}
+          \item Quando avviene il controllo (do-while o while-do)
+
+          \item Forma e tipo di guardia
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Semantica dell'if}
+\begin{itemize}
+  \item \textbf{Semantica statica}: \\
+    La semantica statica dell'if verifica che l'if sia ben formato, cioè se soddisfa gli
+    eventuali vincoli. In questo caso i vincoli sono:
+    \begin{itemize}
+      \item La guardia deve essere di tipo booleano
+      \item I rami devono essere ben formati
+    \end{itemize}
+    Definiamo quindi la semantica statica per l'if:
+    \begin{itemize}
+      \item Gli identificatori liberi sono:
+        \[
+          FI(\texttt{if } b \texttt{ then } c_1 \texttt{ else } c_2) =
+          FI(b) \cup FI(c_1) \cup FI(c_2)
+        \]
+
+      \item Gli identificatori definiti sono:
+        \[
+          DI(\texttt{if } b \texttt{ then } c_1 \texttt{ else } c_2) =
+          DI(c_1) \cup DI(c_2)
+        \]
+        questo perchè nei blocchi \( c_1 \) e \( c_2 \) possono esserci delle dichiarazioni
+        (da inserire nella sintassi)
+
+      \item Regola per l'if ben formato (l'unico vincolo è che la guardia sia di tipo booleano):
+        \[
+          \begin{prooftree}
+            \hypo{ 
+              \Delta \vdash b : \texttt{bool} 
+            }
+            \hypo{ 
+              \Delta \vdash c_1
+            }
+            \hypo{ 
+              \Delta \vdash c_2
+            }
+            \infer3{ 
+              \Delta \vdash \texttt{if } b \texttt{ then } c_1 \texttt{ else } c_2
+            }
+          \end{prooftree}
+        \] 
+    \end{itemize}
+
+  \item \textbf{Semantica dinamica}: \\
+    La semantica dinamica dell'if descrive come si esegue un if, cioè come si eseguono
+    i comandi a seconda della memoria. Di conseguenza \textbf{agisce solo su ciò che
+    si deve eseguire} e \textbf{non cambia lo stato}.
+
+    \noindent
+    Definiamo quindi la semantica dinamica per l'if:
+    \begin{itemize}
+      \item Regola per l'esecuzione dell'if: per eseguire un if bisogna valutare la guardia
+        \( b \) fino al valore \( t \in \texttt{bool} \).
+        \[
+          \begin{prooftree}
+            \hypo{ 
+              \rho \vdash \left< b, \sigma  \right> \to^*_e \left< t, \sigma  \right>
+            }
+            \infer1{ 
+              \rho \vdash \left< \texttt{if } b \texttt{ then } c_1 \texttt{ else } c_2,
+              \sigma  \right>
+              \to 
+              \left< \texttt{if } t \texttt{ then } c_1 \texttt{ else } c_2, \sigma  \right>
+            }
+          \end{prooftree}
+        \] 
+
+      \item Assioma per il \texttt{true}:
+        se la guardia è \( true \) allora si esegue il ramo \( c_1 \)
+        \[
+          \rho \vdash \left< \texttt{if } true \texttt{ then } c_1 \texttt{ else } c_2,
+          \sigma  \right> \to_c
+          \left< c_1, \sigma  \right>
+        \] 
+
+      \item Assioma per il \texttt{false}:
+        se la guardia è \( false \) allora si esegue il ramo \( c_2 \)
+        \[
+          \rho \vdash \left< \texttt{if } false \texttt{ then } c_1 \texttt{ else } c_2,
+          \sigma  \right> \to_c
+          \left< c_2, \sigma  \right>
+        \]
+    \end{itemize}
+\end{itemize}
+
+\begin{example}
+  Consideriamo il seguente if:
+  \[
+    \texttt{if x = y then x := 5 else x := 6}
+  \] 
+  Gli identificatori liberi sono \( \left\{ x, y \right\} \) e quindi dobbiamo fornire
+  un ambiente e la memoria per poter eseguire l'if. Consideriamo ad esempio:
+  \[
+    \begin{aligned}
+      \rho &= \left[ x \mapsto l_x, y \mapsto 2 \right]\\
+      \sigma_1 &= \left[ l_x \mapsto 3 \right]\\
+      \sigma_2 &= \left[ l_x \mapsto 2 \right]\\
+      \Delta &= \left[ x \mapsto \texttt{intloc}, y \mapsto \texttt{int} \right]
+    \end{aligned}
+  \] 
+  Utilizziamo due memorie \( \sigma_1 \) e \( \sigma_2 \) per mostrare sia il caso
+  then che il caso else.
+
+  \begin{itemize}
+    \item \textbf{Semantica statica}: Verifichiamo che l'if sia ben formato usando
+      l'ambiente statico:
+      % TODO
+
+    \item \textbf{Semantica dimanica}:
+      \begin{itemize}
+        \item Utilizzando \( \sigma_1 = \left[ \lambda_x \mapsto 3 \right] \):
+          % TODO
+
+        \item Utilizzando \( \sigma_2 = \left[ \lambda_x \mapsto 2 \right] \):
+          % TODO: Esercizio per casa
+      \end{itemize}
+  \end{itemize}
+\end{example}
+
+\subsubsection{Semantica della composizione}
+\begin{itemize}
+  \item \textbf{Semantica statica}
+    \begin{itemize}
+      \item Gli identificatori liberi sono:
+        \[
+          FI(c_1; c_2) = FI(c_1) \cup FI(c_2)
+        \]
+
+      \item Gli identificatori definiti sono:
+        \[
+          DI(c_1; c_2) = DI(c_1) \cup DI(c_2)
+        \]
+
+      \item Regola per la composizione ben formata:
+        \[
+          \begin{prooftree}
+            \hypo{ 
+              \Delta \vdash c_1
+            }
+            \hypo{ 
+              \Delta \vdash c_2
+            }
+            \infer2{ 
+              \Delta \vdash c_1; c_2
+            }
+          \end{prooftree}
+        \] 
+    \end{itemize}
+
+  \item \textbf{Semantica dinamica}
+    \begin{itemize}
+      \item Regola per l'esecuzione di \( c_1 \): si esegue completamente \( c_1 \) 
+        che restituisce una nuova memoria \( \sigma_1 \) e poi partendo da \( \sigma_1 \)
+        si esegue \( c_2 \)
+        \[
+          \begin{prooftree}
+            \hypo{ 
+              \rho \vdash \left< c_1, \sigma  \right> \to^*_c \sigma_1
+            }
+            \infer1{ 
+              \rho \vdash \left< c_1; c_2, \sigma  \right> \to_c
+              \left< c_2, \sigma_1 \right>
+            }
+          \end{prooftree}
+        \] 
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Semantica del while}
+\begin{itemize}
+  \item \textbf{Semantica statica}:
+    \begin{itemize}
+      \item Gli identificatori liberi sono:
+        \[
+          FI(\texttt{while } e \texttt{ do } c) = FI(e) \cup FI(c)
+        \]
+
+      \item Gli identificatori definiti sono:
+        \[
+          DI(\texttt{while } e \texttt{ do } c) = DI(c)
+        \]
+
+      \item Regola per il while ben formato:
+        \[
+          \begin{prooftree}
+            \hypo{ 
+              \Delta \vdash e : \texttt{bool} 
+            }
+            \hypo{ 
+              \Delta \vdash c
+            }
+            \infer2{ 
+              \Delta \vdash \texttt{while } e \texttt{ do } c
+            }
+          \end{prooftree}
+        \]
+    \end{itemize}
+
+  \item \textbf{Semantica dinamica}:
+    \begin{itemize}
+      \item Regola per la valutazione della guardia: questa regola determina la
+        \textbf{posizione del controllo della guardia} e se \textbf{verrà rivalutata
+        ad ogni iterazione}. In questo caso viene valutata prima la guardia
+        \[
+        \begin{prooftree}
+          \hypo{ 
+            \rho \vdash \left< e, \sigma  \right> \to^*_e \left< t, \sigma \right>
+          }
+          \infer1{ 
+            \rho \vdash \left< \texttt{while } e \texttt{ do } c, \sigma  \right>
+            \to_c
+            \left< \texttt{while } t \texttt{ do } c, \sigma  \right>
+          }
+        \end{prooftree}
+        \] 
+
+      \item Assioma per il \texttt{false}: se la guardia è \( false \) allora
+        si termina l'iterazione e quindi non si esegue il corpo del ciclo
+        \[
+          \rho \vdash \left< \texttt{while } false \texttt{ do } c, \sigma  \right>
+          \to_c
+          \sigma
+        \]
+
+      \item Assioma per il \texttt{true}: se la guardia è \( true \) allora si esegue
+        il corpo del while \( c \) e poi si riesegue il ciclo while con la stessa guardia
+        che verrà rivalutata ad ogni iterazione
+        \[
+          \rho \vdash \left< \texttt{while } true \texttt{ do } c, \sigma  \right> 
+          \to_c
+          \left< c; \texttt{while } e \texttt{ do } c, \sigma  \right>
+        \] 
+        Questa regola non è scritta correttamente siccome l'espressione \( e \) non
+        è presente nelle premesse, quindi riscriviamo tutte le regola in una forma più
+        corretta fondendo la regola di valutazione con i due assiomi
+
+      \item Regola completa per il while con espressione \texttt{false}:
+        \[
+        \begin{prooftree}
+          \hypo{ 
+            \rho \vdash \left< e, \sigma  \right> \to^*_e \left< false, \sigma  \right>
+          }
+          \infer1{ 
+            \rho \vdash \left< \texttt{while } e \texttt{ do } c, \sigma  \right> \to_c
+            \sigma
+          }
+        \end{prooftree}
+        \] 
+
+      \item Regola completa per il while con espressione \texttt{true}:
+        \[
+          \begin{prooftree}
+            \hypo{ 
+              \rho \vdash \left< e, \sigma  \right> \to^*_e \left< true, \sigma  \right>
+            }
+            \infer1{ 
+              \rho \vdash \left< \texttt{while } e \texttt{ do } c, \sigma  \right> \to_c
+              \left< c; \texttt{while } e \texttt{ do } c, \sigma  \right>
+            }
+          \end{prooftree}
+        \] 
+    \end{itemize}
+\end{itemize}
+
+\begin{example}
+  Consideriamo il seguente while:
+  \[
+    \texttt{while not x = 0 do x := x - 1}
+  \] 
+  L'identificaotre libero è \( \left\{ x \right\} \) quindi dobbiamo fornire un
+  ambiente e una memoria per poter eseguire il while. Consideriamo ad esempio:
+  \[
+    \begin{aligned}
+      \rho &= \left[ x \mapsto l_x \right] \\
+      \Delta &= \left[ x \mapsto \texttt{intloc} \right]
+      \sigma_1 &= \left[ l_x \mapsto 2 \right] \\
+    \end{aligned}
+  \] 
+  \begin{itemize}
+    \item \textbf{Semantica statica}: % TODO: Esercizio per casa
+    \item \textbf{Semantica dinamica}: % TODO
+  \end{itemize}
+\end{example}
 
 \end{document}
