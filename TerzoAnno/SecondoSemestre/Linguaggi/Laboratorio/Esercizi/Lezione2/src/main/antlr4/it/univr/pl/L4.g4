@@ -6,3 +6,10 @@
 // 01, 011 in L_4
 // Not accepted examples:
 // 10, 0111 not in L_4
+grammar L4;
+
+main: l EOF;
+
+l: l1 | l2;
+l1: | '0' l1 '1' | l2;
+l2: | '0' l2 '11';

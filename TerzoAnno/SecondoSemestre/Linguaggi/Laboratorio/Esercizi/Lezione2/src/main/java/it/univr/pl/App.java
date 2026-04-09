@@ -19,7 +19,6 @@ public class App {
     System.out.println("1. L3");
     System.out.println("2. L4");
 
-    // Add input checking
     int choice = Integer.max(0, Integer.min(Grammar.values().length, reader.nextInt() - 1));
     Grammar grammar = Grammar.values()[choice];
     reader.nextLine();
@@ -35,6 +34,14 @@ public class App {
             L3Lexer::new,
             L3Parser::new,
             L3Parser::main);
+        break;
+
+      case L4:
+        exec_grammar(
+            input,
+            L4Lexer::new,
+            L4Parser::new,
+            L4Parser::main);
         break;
 
       default:
