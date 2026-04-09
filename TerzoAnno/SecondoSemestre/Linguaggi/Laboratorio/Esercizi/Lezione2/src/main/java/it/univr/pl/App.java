@@ -16,8 +16,10 @@ public class App {
   public static void main(String[] args) {
     Scanner reader = new Scanner(System.in);
     System.out.println("Which grammar do you want to execute?");
-    System.out.println("1. L3");
-    System.out.println("2. L4");
+    System.out.println("1. L1");
+    System.out.println("2. L2");
+    System.out.println("3. L3");
+    System.out.println("4. L4");
 
     int choice = Integer.max(0, Integer.min(Grammar.values().length, reader.nextInt() - 1));
     Grammar grammar = Grammar.values()[choice];
@@ -28,6 +30,22 @@ public class App {
     reader.close();
 
     switch (grammar) {
+      case L1:
+        exec_grammar(
+            input,
+            L1Lexer::new,
+            L1Parser::new,
+            L1Parser::main);
+        break;
+
+      case L2:
+        exec_grammar(
+            input,
+            L2Lexer::new,
+            L2Parser::new,
+            L2Parser::main);
+        break;
+
       case L3:
         exec_grammar(
             input,
