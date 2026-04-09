@@ -30,7 +30,7 @@ public class App {
     // Execute the grammar from the given nonterminal symbol
     ParseTree tree = parser.main();
 
-    IntExprImp interpreter = new IntExprImp();
+    IntExprInterpreter interpreter = new IntExprInterpreter();
     System.out.println(interpreter.visit(tree));
   }
 }

@@ -5,7 +5,7 @@ package it.univr.pl;
  *
  * Implements semantics for the grammar
  */
-public class IntExprImp extends IntExprBaseVisitor<Integer> {
+public class IntExprInterpreter extends IntExprBaseVisitor<Integer> {
   /**
    * The main node will have 2 nodes:
    * - The starting node
