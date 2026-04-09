@@ -273,9 +273,9 @@ from inserogato
   join persona on docenza.id_persona = persona.id
   join facolta on inserogato.id_facolta = facolta.id
 where inserogato.annoaccademico = '2009/2010'
-group by persona.nome, persona.cognome, facolta.nome
-having sum(docenza.orelez) >= all (
-    select docenza_in.orelez
+group by persona.nome, persona.cognome, facolta.nome, facolta.id
+having sum(docenza.orelez) = any (
+    select max(docenza_in.orelez)
     from inserogato as inserogato_in
       join docenza as docenza_in on inserogato_in.id = docenza_in.id_inserogato
       join facolta as facolta_in on inserogato_in.id_facolta = facolta_in.id
