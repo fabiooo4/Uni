@@ -16,7 +16,9 @@ public class App {
   public static void main(String[] args) {
     Scanner reader = new Scanner(System.in);
     System.out.println("Which grammar do you want to execute?");
-    System.out.println("1. Natural numbers");
+    System.out.println("1. L3");
+    System.out.println("2. L4");
+
     // Add input checking
     int choice = Integer.max(0, Integer.min(Grammar.values().length, reader.nextInt() - 1));
     Grammar grammar = Grammar.values()[choice];
@@ -27,12 +29,12 @@ public class App {
     reader.close();
 
     switch (grammar) {
-      case NAT_NUMBERS:
+      case L3:
         exec_grammar(
             input,
-            NatNumbersLexer::new,
-            NatNumbersParser::new,
-            NatNumbersParser::main);
+            L3Lexer::new,
+            L3Parser::new,
+            L3Parser::main);
         break;
 
       default:
