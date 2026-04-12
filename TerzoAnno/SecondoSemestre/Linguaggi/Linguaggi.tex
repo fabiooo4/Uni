@@ -1982,11 +1982,6 @@ Le regole di transizione per le espressioni con identificatori diventano:
     \[
       \rho \vdash \texttt{not } t \to t' = \texttt{not } t
     \]
-
-  \item Regola 7:
-    \[
-      \rho \vdash x \to k \text{ se } \rho(x) = k
-    \]
 \end{itemize}
 Sono le stesse regole di transizione che avevamo definito per le espressioni senza
 identificatori, ma ora sono valutate in un ambiente \( \rho \) che viene propagato in
@@ -2001,6 +1996,8 @@ identificatore \( x \):
     \]
 \end{itemize}
 
+\vspace{1em}
+\noindent
 \begin{example}
   Consideriamo la seguente espressione:
   \[
@@ -3955,6 +3952,7 @@ else result = 1;
 \end{itemize}
 
 \begin{example}
+  \newcommand\ruleCol{Sepia}
   Consideriamo il seguente if:
   \[
     \texttt{if x = y then x := 5 else x := 6}
@@ -3974,16 +3972,265 @@ else result = 1;
 
   \begin{itemize}
     \item \textbf{Semantica statica}: Verifichiamo che l'if sia ben formato usando
-      l'ambiente statico:
-      % TODO
+      l'ambiente statico:\\
+      Per prima cosa verifichiamo che le espressioni e le dichiarazioni siano ben formate:
+      \begin{enumerate}
+        \item Guardia
+          \[
+            \begin{prooftree}
+              \hypo{ 
+                \Delta \vdash x: \texttt{\textcolor{Blue}{int}}
+              }
+              \hypo{ 
+                \Delta \vdash y: \texttt{\textcolor{Blue}{int}}
+              }
+              \infer2
+              [\( 
+              \Delta(x) = \texttt{\textcolor{Blue}{int}loc} \land \Delta(y) =
+              \texttt{\textcolor{Blue}{int}}
+              \)]
+              { 
+                \Delta \vdash x = y: \texttt{bool}
+              }
+            \end{prooftree}
+          \] 
+
+        \item Ramo then
+          \[
+            \begin{prooftree}
+              \hypo{ 
+                \Delta \vdash x: \texttt{\textcolor{Blue}{int}}
+              }
+              \infer1
+              [\( 
+                \Delta(x) = \texttt{\textcolor{Blue}{int}loc}
+              \)]
+              { 
+                \Delta \vdash \texttt{x := 5}
+              }
+            \end{prooftree}
+          \] 
+
+        \item Ramo else
+          \[
+            \begin{prooftree}
+              \hypo{ 
+                \Delta \vdash x: \texttt{\textcolor{Blue}{int}}
+              }
+              \infer1[\( 
+                \Delta(x) = \texttt{\textcolor{Blue}{int}loc}
+              \)]{ 
+                \Delta \vdash \texttt{x := 6}
+              }
+            \end{prooftree}
+          \] 
+      \end{enumerate}
+      Dopo aver verificato tutte le componenti dell'if possiamo dire che è ben
+      formato:
+      \[
+        \begin{prooftree}
+          \hypo{ 
+            \Delta \vdash \texttt{x = y} : \texttt{bool}
+          }
+          \hypo{ 
+            \Delta \vdash \texttt{x := 5}: \texttt{int}
+          }
+          \hypo{ 
+            \Delta \vdash \texttt{x := 6}: \texttt{int}
+          }
+          \infer3{ 
+            \Delta \vdash \texttt{if x = y then x := 5 else x := 6}
+          }
+        \end{prooftree}
+      \] 
 
     \item \textbf{Semantica dimanica}:
       \begin{itemize}
-        \item Utilizzando \( \sigma_1 = \left[ \lambda_x \mapsto 3 \right] \):
-          % TODO
+        \item Utilizzando \( \sigma_1 = \left[ \lambda_x \mapsto 3 \right] \):\\
+          La regola che bisogna applicare è la seguente:
+          \begin{equation}
+            \label{eq:esecuzione_if}
+            \color{\ruleCol}
+            \begin{prooftree}
+              \hypo{ 
+                \rho \vdash \left< \texttt{x = y}, \sigma_1 \right>
+                \to^*_e \left< t, \sigma_1 \right>
+              }
+              \infer1{ 
+                \begin{aligned}
+                  \rho \vdash \left<
+                    \texttt{if x = y then x := 5 else x := 6},
+                    \sigma_1
+                  \right> \\
+                  \to 
+                  \rho \vdash \left<
+                    \texttt{if \( t \) then x := 5 else x := 6},
+                    \sigma_1
+                  \right>
+                \end{aligned}
+              }
+            \end{prooftree}
+          \end{equation}
+          Per applicare questa regola bisogna prima valutare la guardia \( \texttt{x = y} \):
+          \begin{enumerate}
+            \item Valutiamo \( \texttt{x} \):
+              \[
+                \begin{prooftree}
+                  \hypo{ 
+                    \rho \vdash \left< x, \sigma_1 \right> \to \left< 3, \sigma_1 \right>
+                  }
+                  \infer1[\( 
+                    \rho(x) = l_x \land \sigma_1(l_x) = 3
+                  \)]{ 
+                    \rho \vdash \left< \texttt{x = y}, \sigma_1 \right> \to
+                    \left< 3 = y, \sigma_1 \right>
+                  }
+                \end{prooftree}
+              \] 
+
+            \item Valutiamo \( \texttt{y} \):
+              \[
+                \begin{prooftree}
+                  \hypo{ 
+                    \rho \vdash \left< y, \sigma_1 \right> \to \left< 2, \sigma_1 \right>
+                  }
+                  \infer1
+                  [\( 
+                    \rho(y) = 2
+                  \)]
+                  { 
+                    \rho \vdash \left< 3 = y, \sigma_1  \right> \to
+                    \left< 3 = 2, \sigma_1  \right>
+                  }
+                \end{prooftree}
+              \]
+
+            \item Valutiamo \( \texttt{3 = 2} \):
+              \[
+                \rho \vdash \left< 3 = 2, \sigma_1  \right> \to
+                \left< \mathcolor{Red}{false}, \sigma_1  \right>
+              \]
+          \end{enumerate}
+          Ora che abbiamo valutato la guardia possiamo completare l'esecuzione dell'if
+          applicando la regola \ref{eq:esecuzione_if}:
+          \[
+            \begin{prooftree}
+              \hypo{ 
+                \rho \vdash \left< \texttt{x = y}, \sigma_1 \right>
+                \to^*_e \left< \mathcolor{Red}{false}, \sigma_1 \right>
+              }
+              \infer1{ 
+                \begin{aligned}
+                  \rho \vdash \left<
+                    \texttt{if x = y then x := 5 else x := 6},
+                    \sigma_1
+                  \right> \\
+                  \to 
+                  \rho \vdash \left<
+                  \texttt{if \( \mathcolor{Red}{false} \) then x := 5 else x := 6},
+                    \sigma_1
+                  \right>
+                \end{aligned}
+              }
+            \end{prooftree}
+          \] 
+          Applichiamo l'assioma per il \texttt{false}:
+          \[
+            \rho \vdash
+            \left<
+              \texttt{if\;\( \mathcolor{Red}{false} \)\;then x := 5 else x := 6},
+              \sigma_1
+            \right> \to_c
+            \left< \texttt{x := 6}, \sigma_1  \right>
+          \] 
+          Infine eseguiamo \( \texttt{x := 6} \):
+          \[
+            \rho \vdash \left< \texttt{x := 6}, \sigma_1  \right> \to_c
+            \sigma_1[l_x \mapsto 6] = \left[ l_x \mapsto 6 \right]
+          \] 
 
         \item Utilizzando \( \sigma_2 = \left[ \lambda_x \mapsto 2 \right] \):
-          % TODO: Esercizio per casa
+          La regola che bisogna applicare è la regola \ref{eq:esecuzione_if}.
+          Per applicarla bisogna prima valutare la guardia
+          \( \texttt{x = y} \):
+          \begin{enumerate}
+            \item Valutiamo \( \texttt{x} \):
+              \[
+                \begin{prooftree}
+                  \hypo{ 
+                    \rho \vdash \left< x, \sigma_2 \right> \to
+                    \left< 2, \sigma_2 \right>
+                  }
+                  \infer1[\( 
+                    \rho(x) = l_x \land \sigma_2(l_x) = 2
+                  \)]{ 
+                    \rho \vdash \left< \texttt{x = y}, \sigma_2 \right> \to
+                    \left< 2 = y, \sigma_2 \right>
+                  }
+                \end{prooftree}
+              \] 
+
+            \item Valutiamo \( \texttt{y} \):
+              \[
+                \begin{prooftree}
+                  \hypo{ 
+                    \rho \vdash \left< y, \sigma_2 \right> \to
+                    \left< 2, \sigma_2 \right>
+                  }
+                  \infer1
+                  [\( 
+                    \rho(y) = 2
+                  \)]
+                  { 
+                    \rho \vdash \left< 2 = y, \sigma_2  \right> \to
+                    \left< 2 = 2, \sigma_2  \right>
+                  }
+                \end{prooftree}
+              \]
+
+            \item Valutiamo \( \texttt{2 = 2} \):
+              \[
+                \rho \vdash \left< 2 = 2, \sigma_2  \right> \to
+                \left< \mathcolor{Green}{true}, \sigma_2  \right>
+              \]
+          \end{enumerate}
+          Ora che abbiamo valutato la guardia possiamo completare l'esecuzione dell'if
+          applicando la regola \ref{eq:esecuzione_if}:
+          \[
+            \begin{prooftree}
+              \hypo{ 
+                \rho \vdash \left< \texttt{x = y}, \sigma_2 \right>
+                \to^*_e \left< \mathcolor{Green}{true}, \sigma_2 \right>
+              }
+              \infer1{ 
+                \begin{aligned}
+                  \rho \vdash \left<
+                    \texttt{if x = y then x := 5 else x := 6},
+                    \sigma_2
+                  \right> \\
+                  \to 
+                  \rho \vdash \left<
+                  \texttt{if \( \mathcolor{Green}{true} \) then x := 5 else x := 6},
+                    \sigma_2
+                  \right>
+                \end{aligned}
+              }
+            \end{prooftree}
+          \] 
+          Applichiamo l'assioma per il \texttt{true}:
+          \[
+            \rho \vdash
+            \left<
+              \texttt{if\;\( \mathcolor{Green}{true} \)\;then x := 5 else x := 6},
+              \sigma_2
+            \right> \to_c
+            \left< \texttt{x := 5}, \sigma_2  \right>
+          \] 
+          Infine eseguiamo \( \texttt{x := 5} \):
+          \[
+            \rho \vdash \left< \texttt{x := 5}, \sigma_2  \right> \to_c
+            \sigma_2[l_x \mapsto 5] = \left[ l_x \mapsto 5 \right]
+          \] 
       \end{itemize}
   \end{itemize}
 \end{example}
@@ -4134,6 +4381,7 @@ else result = 1;
 \end{itemize}
 
 \begin{example}
+  \newcommand\ruleCol{Sepia}
   Consideriamo il seguente while:
   \[
     \texttt{while not x = 0 do x := x - 1}
@@ -4143,13 +4391,398 @@ else result = 1;
   \[
     \begin{aligned}
       \rho &= \left[ x \mapsto l_x \right] \\
-      \Delta &= \left[ x \mapsto \texttt{intloc} \right]
-      \sigma_1 &= \left[ l_x \mapsto 2 \right] \\
+      \Delta &= \left[ x \mapsto \texttt{intloc} \right] \\
+      \sigma &= \left[ l_x \mapsto 2 \right] \\
     \end{aligned}
   \] 
   \begin{itemize}
-    \item \textbf{Semantica statica}: % TODO: Esercizio per casa
-    \item \textbf{Semantica dinamica}: % TODO
+    \item \textbf{Semantica statica}:\\
+      Verifichiamo che le espressioni e le dichiarazioni siano ben formate:
+      \begin{enumerate}
+        \item Guardia
+          \[
+            \begin{prooftree}
+              \hypo{ 
+                \Delta \vdash x : \texttt{\textcolor{Blue}{int}}
+              }
+              \infer1[\( 
+                \Delta(x) = \texttt{\textcolor{Blue}{int}loc}
+              \)]{ 
+                \Delta \vdash \texttt{not x = 0} : \texttt{bool}
+              }
+            \end{prooftree}
+          \] 
+
+        \item Corpo del ciclo
+          \[
+            \begin{prooftree}
+              \hypo{ 
+                \Delta \vdash \texttt{x - 1} : \texttt{\textcolor{Blue}{int}}
+              }
+              \infer1[\( 
+                \Delta(x) = \texttt{\textcolor{Blue}{int}loc}
+              \)]{
+                \Delta \vdash \texttt{x := x - 1}
+              }
+            \end{prooftree}
+          \] 
+      \end{enumerate}
+      Dopo aver verificato tutte le componenti del while possiamo dire che è ben
+      formato:
+      \[
+        \begin{prooftree}
+          \hypo{ 
+            \Delta \vdash \texttt{not x = 0} : \texttt{bool}
+          }
+          \hypo{ 
+            \Delta \vdash \texttt{x := x - 1}
+          }
+          \infer2{ 
+            \Delta \vdash \texttt{while not x = 0 do x := x - 1}
+          }
+        \end{prooftree}
+      \] 
+
+    \item \textbf{Semantica dinamica}:
+      \begin{enumerate}
+        \item Primo ciclo:\\
+          Per prima cosa bisogna valutare la guardia \( \texttt{not x = 0} \)
+          per capire se eseguire o terminare il ciclo:
+          \begin{enumerate}
+            \item Valutiamo \texttt{not x = 0}:
+              \[
+                \begin{prooftree}
+                  \hypo{ 
+                    \rho \vdash \left<\texttt{x}, \sigma \right> \to_e \left< 2, \sigma \right>
+                  }
+                  \infer1[\( 
+                    \rho(x) = l_x \land \sigma(l_x) = 2
+                  \)]{  
+                    \rho \vdash \left< \texttt{x = 0}, \sigma \right>
+                    \to_e
+                    \left< \texttt{2 = 0}, \sigma \right>
+                  }
+                  \infer1{ 
+                    \rho \vdash \left< \texttt{not x = 0} \right>
+                    \to_e
+                    \left< \texttt{not 2 = 0}, \sigma \right>
+                  }
+                \end{prooftree}
+              \] 
+            \item Valutiamo \texttt{not 2 = 0} usando l'assioma:
+              \[
+                \begin{prooftree}
+                  \hypo{ 
+                    \rho \vdash \left< \texttt{2 = 0}, \sigma \right>
+                    \to_e
+                    \left< \texttt{\textcolor{Red}{false}}, \sigma \right>
+                  }
+                  \infer1{ 
+                    \rho \vdash \left<\texttt{not 2 = 0}, \sigma \right>
+                    \to_e
+                    \left< \texttt{\textcolor{Green}{true}}, \sigma \right>
+                  }
+                \end{prooftree}
+              \] 
+          \end{enumerate}
+          Ora che abbiamo valutato la guardia, sappiamo che il ciclo deve essere eseguito
+          e quindi applichiamo la regola per il while con espressione \texttt{true}:
+          \[
+            \begin{prooftree}
+              \hypo{ 
+                \rho \vdash \left< \texttt{not x = 0}, \sigma \right>
+                \to^*_e
+                \left< \texttt{\textcolor{Green}{true}}, \sigma \right>
+              }
+              \infer1{ 
+                \begin{aligned}
+                  \rho \vdash 
+                  \left<
+                    \texttt{while not x = 0 do x := x - 1}, \sigma
+                  \right>
+                  \to_c \\
+                  \left<
+                    \texttt{x := x - 1}; \texttt{while not x = 0 do x := x - 1},
+                    \sigma
+                  \right>
+                \end{aligned}
+              }
+            \end{prooftree}
+          \] 
+          Cioè si esegue \( \texttt{x := x - 1} \) e poi si riesegue il ciclo while con la
+          stessa guardia che verrà rivalutata su una nuova memoria \( \sigma_1 \)
+          che sarà il risultato dell'esecuzione di \( \texttt{x := x - 1} \):
+          \[
+            \begin{prooftree}
+              \hypo{ 
+                \rho \vdash \left< \texttt{x := x - 1}, \sigma  \right>
+                \to_c^*
+                \sigma_1
+              }
+              \infer1{ 
+                \begin{aligned}
+                  \rho \vdash
+                  \left<
+                  \texttt{x := x - 1}; \texttt{while not x = 0 do x := x - 1},
+                  \sigma
+                  \right> \\
+                  \to_c
+                  \left<
+                  \texttt{while not x = 0 do x := x - 1},
+                  \sigma_1
+                  \right>
+                \end{aligned}
+              }
+            \end{prooftree}
+          \] 
+          Valutiamo quindi \( \texttt{x := x - 1} \) usando la seguente regola:
+          \begin{equation}
+            \label{eq:esecuzione_assegnamento_x}
+            \color{\ruleCol}
+            \begin{prooftree}
+              \hypo{ 
+                \rho \vdash \left< \texttt{x - 1}, \sigma  \right> \to^*_e
+                \left< n, \sigma  \right>
+              }
+              \infer1{ 
+                \rho \vdash \left< \texttt{x := x - 1}, \sigma  \right> \to_c
+                \left< \texttt{x := n}, \sigma  \right>
+              }
+            \end{prooftree}
+          \end{equation}
+          Per applicare questa regola bisogna prima valutare l'espressione \( \texttt{x - 1} \):
+          \begin{enumerate}
+            \item Valutiamo \texttt{x}:
+              \[
+                \begin{prooftree}
+                  \hypo{ 
+                    \rho \vdash \left< x, \sigma  \right> \to_e \left< 2, \sigma  \right>
+                  }
+                  \infer1[\( 
+                    \sigma(\rho(x)) = 2
+                  \)]{ 
+                    \rho \vdash \left< \texttt{x - 1}, \sigma  \right> \to_e
+                    \left< 2 - 1, \sigma  \right>
+                  }
+                \end{prooftree}
+              \] 
+            \item Applichiamo l'assioma:
+              \[
+                \rho \vdash \left< 2 - 1, \sigma  \right> \to_e
+                \left< 1, \sigma  \right>
+              \] 
+          \end{enumerate}
+          Applichiamo la regola \ref{eq:esecuzione_assegnamento_x}:
+          \[
+            \begin{prooftree}
+              \hypo{ 
+                \rho \vdash \left< \texttt{x - 1}, \sigma  \right> \to^*_e
+                \left< 1, \sigma  \right>
+              }
+              \infer1{ 
+                \rho \vdash \left< \texttt{x := x - 1}, \sigma  \right> \to_c
+                \left< \texttt{x := 1}, \sigma  \right>
+              }
+            \end{prooftree}
+          \] 
+            L'esecuzione di \( \texttt{x := 1} \) restituisce una nuova memoria
+            \( \sigma_1 \):
+            \[
+              \rho \vdash \left< \texttt{x := 1}, \sigma  \right> \to_c
+              \sigma[l_x \mapsto 1] = \left[ l_x \mapsto 1 \right] = \sigma_1
+            \] 
+
+        \item Secondo ciclo:\\
+          Ora bisogna rieseguire il while con la nuova memoria \( \sigma_1 \).
+          Partiamo rivalutando la guardia \( \texttt{not x = 0} \):
+          \begin{enumerate}
+            \item Valutiamo \texttt{not x = 0}:
+              \[
+                \begin{prooftree}
+                  \hypo{ 
+                    \rho \vdash \left<\texttt{x}, \sigma_1 \right> \to_e
+                    \left< 1, \sigma_1 \right>
+                  }
+                  \infer1[\( 
+                    \sigma_1(\rho(x)) = 1
+                  \)]{  
+                    \rho \vdash \left< \texttt{x = 0}, \sigma_1 \right>
+                    \to_e
+                    \left< 1 = 0, \sigma_1 \right>
+                  }
+                  \infer1{ 
+                    \rho \vdash \left<\texttt{not x = 0}, \sigma_1 \right>
+                    \to_e
+                    \left<\texttt{not 1 = 0}, \sigma_1\right>
+                  }
+                \end{prooftree}
+              \] 
+            \item Valutiamo \( \texttt{not 1 = 0} \):
+              \[
+                \begin{prooftree}
+                  \hypo{ 
+                    \rho \vdash\left<\texttt{1 = 0},\sigma_1\right> 
+                    \to_e
+                    \left<\texttt{\textcolor{Red}{false}},\sigma_1\right>
+                  }
+                  \infer1{ 
+                    \rho\vdash\left<\texttt{not 1 = 0},\sigma_1\right> 
+                    \to_e
+                    \left<\texttt{\textcolor{Green}{true}},\sigma_1\right>
+                  }
+                \end{prooftree}
+              \]
+          \end{enumerate}
+          Il ciclo va eseguito di nuovo e quindi applichiamo la regola per il while
+          con espressione \texttt{true}:
+          \[
+            \begin{prooftree}
+              \hypo{ 
+                \rho \vdash \left< \texttt{not x = 0}, \sigma_1 \right>
+                \to^*_e
+                \left< \texttt{\textcolor{Green}{true}}, \sigma_1 \right>
+              }
+              \infer1{ 
+                \begin{aligned}
+                  \rho \vdash
+                  \left<
+                    \texttt{while not x = 0 do x := x - 1}, \sigma_1
+                  \right>
+                  \to_c \\
+                  \left<
+                    \texttt{x := x - 1}; \texttt{while not x = 0 do x := x - 1},
+                    \sigma_1
+                  \right>
+                \end{aligned}
+              }
+            \end{prooftree}
+          \] 
+          L'eseguzione di \( \texttt{x := x - 1} \) restituisce una nuova memoria
+          \( \sigma_2 \):
+          \[
+            \begin{prooftree}
+              \hypo{ 
+                \rho \vdash \left< \texttt{x := x - 1}, \sigma_1  \right> \to_c
+                \sigma_2
+              }
+              \infer1{ 
+                \begin{aligned}
+                  \rho \vdash \left< \texttt{x := x - 1}; \texttt{while not x = 0 do x := x - 1}, \sigma_1  \right> \\
+                  \to_c
+                  \left< \texttt{while not x = 0 do x := x - 1}, \sigma_2 \right>
+                \end{aligned}
+              }
+            \end{prooftree}
+          \] 
+          Valutiamo \( \texttt{x := x - 1} \) sulla memoria \( \sigma_1 \) usando
+          la regola \ref{eq:esecuzione_assegnamento_x}:
+          \begin{enumerate}
+            \item Valutiamo \texttt{x}:
+              \[
+                \begin{prooftree}
+                  \hypo{ 
+                    \rho \vdash \left< x, \sigma_1  \right> \to_e
+                    \left< 1, \sigma_1  \right>
+                  }
+                  \infer1[\( 
+                    \sigma_1(\rho(x)) = 1
+                  \)]{ 
+                    \rho \vdash \left< \texttt{x - 1}, \sigma_1  \right> \to_e
+                    \left< 1 - 1, \sigma_1  \right>
+                  }
+                \end{prooftree}
+              \] 
+            \item Applichiamo l'assioma:
+              \[
+                \rho \vdash \left< 1 - 1, \sigma_1  \right> \to_e
+                \left< 0, \sigma_1  \right>
+              \]
+          \end{enumerate}
+          Applichiamo la regola \ref{eq:esecuzione_assegnamento_x}:
+          \[
+            \begin{prooftree}
+              \hypo{ 
+                \rho \vdash \left< \texttt{x - 1}, \sigma_1  \right> \to^*_e
+                \left< 0, \sigma_1  \right>
+              }
+              \infer1{ 
+                \rho \vdash \left< \texttt{x := x - 1}, \sigma_1  \right> \to_c
+                \left< \texttt{x := 0}, \sigma_1  \right>
+              }
+            \end{prooftree}
+          \] 
+          L'esecuzione di \( \texttt{x := 0} \) restituisce una nuova memoria
+          \( \sigma_2 \):
+          \[
+            \rho \vdash \left< \texttt{x := 0}, \sigma_1  \right> \to_c
+            \sigma_1[l_x \mapsto 0] = \left[ l_x \mapsto 0 \right] = \sigma_2
+          \] 
+
+        \item Terzo ciclo:\\
+          Ora bisogna rieseguire il while con la nuova memoria \( \sigma_2 \).
+          Partiamo rivalutando la guardia \( \texttt{not x = 0} \):
+          \begin{enumerate}
+            \item Valutiamo \texttt{not x = 0}:
+              \[
+                \begin{prooftree}
+                  \hypo{ 
+                    \rho \vdash \left<\texttt{x}, \sigma_2 \right> \to_e
+                    \left< 0, \sigma_2 \right>
+                  }
+                  \infer1[\( 
+                    \sigma_2(\rho(x)) = 0
+                  \)]{  
+                    \rho \vdash \left< \texttt{x = 0}, \sigma_2 \right>
+                    \to_e
+                    \left< 0 = 0, \sigma_2 \right>
+                  }
+                  \infer1{ 
+                    \rho \vdash \left<\texttt{not x = 0}, \sigma_2\right> 
+                    \to_e
+                    \left<\texttt{not 0 = 0},\sigma_2\right>
+                  }
+                \end{prooftree}
+              \] 
+            \item Valutiamo \( \texttt{not 0 = 0} \):
+              \[
+                \begin{prooftree}
+                  \hypo{ 
+                    \rho\vdash\left<\texttt{0 = 0},\sigma_2\right> 
+                    \to_e
+                    \left<\texttt{\textcolor{Green}{true}},\sigma_2\right>
+                  }
+                  \infer1{ 
+                    \rho\vdash\left<\texttt{not 0 = 0},\sigma_2\right> 
+                    \to_e
+                    \left<\texttt{\textcolor{Red}{false}},\sigma_2\right>
+                  }
+                \end{prooftree}
+              \]
+          \end{enumerate}
+          La guardia è \( false \) quindi si termina l'iterazione, di
+          conseguenza applichiamo la regola per il while con espressione \texttt{false}:
+          \[
+            \begin{prooftree}
+              \hypo{ 
+                \rho \vdash \left< \texttt{not x = 0}, \sigma_2 \right>
+                \to^*_e
+                \left< \texttt{\textcolor{Red}{false}}, \sigma_2 \right>
+              }
+              \infer1{ 
+                \rho \vdash \left< \texttt{while not x = 0 do x := x - 1}, \sigma_2  \right> 
+                \to_c
+                \sigma_2
+              }
+            \end{prooftree}
+          \] 
+          Cioè il ciclo termina e restituisce la memoria \( \sigma_2 \)
+          inalterata:
+          \[
+            \rho \vdash \left< \texttt{while not x = 0 do x := x - 1}, \sigma_2  \right> 
+            \to_c
+            \sigma_2 = \left[ l_x \mapsto 0 \right]
+          \] 
+      \end{enumerate}
   \end{itemize}
 \end{example}
 
