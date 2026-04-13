@@ -266,32 +266,41 @@ La soluzione ha 10 righe.
 | Spera            | Mauro         | Scienze matematiche fisiche e naturali | 169.000 |
 
 ```sql
--- SBAGLIATO
-select persona.nome, persona.cognome, facolta.nome, sum(docenza.orelez) as oretot
+create temp view ore_docenti as (
+  select persona.cognome, persona.nome, facolta.nome as nome_facolta, sum(docenza.orelez) as sum_orelez
+  from inserogato
+    join docenza on inserogato.id = docenza.id_inserogato
+    join persona on docenza.id_persona = persona.id
+    join facolta on inserogato.id_facolta = facolta.id
+  where inserogato.annoaccademico = '2009/2010'
+  group by persona.nome, persona.cognome, facolta.nome
+);
+
+select persona.cognome, persona.nome, facolta.nome as nome_facolta, sum(docenza.orelez)
 from inserogato
   join docenza on inserogato.id = docenza.id_inserogato
   join persona on docenza.id_persona = persona.id
   join facolta on inserogato.id_facolta = facolta.id
 where inserogato.annoaccademico = '2009/2010'
-group by persona.nome, persona.cognome, facolta.nome, facolta.id
+group by persona.nome, persona.cognome, facolta.nome
 having sum(docenza.orelez) = any (
-    select max(docenza_in.orelez)
-    from inserogato as inserogato_in
-      join docenza as docenza_in on inserogato_in.id = docenza_in.id_inserogato
-      join facolta as facolta_in on inserogato_in.id_facolta = facolta_in.id
-    where inserogato_in.annoaccademico = '2009/2010'
-      and facolta_in.id = facolta.id
-  )
+  select max(ore_docenti.sum_orelez)
+  from ore_docenti
+  where ore_docenti.nome_facolta = facolta.nome
+  group by ore_docenti.nome_facolta
+)
+order by persona.cognome;
 ```
 
 ### Esercizio 8
 
-Trovare gli insegnamenti (esclusi i moduli e le unità logistiche) del corso di studi con id=240 erogati nel
-2009/2010 e nel 2010/2011 che hanno avuto almeno un docente ma che non hanno avuto docenti di
-nome 'Roberto', 'Alberto', 'Massimo' o 'Luca' in entrambi gli anni accademici, riportando il nome, il
+Trovare gli insegnamenti (esclusi i moduli e le unità logistiche) del corso di studi
+con `id = 240` erogati nel `2009/2010` e nel `2010/2011` che hanno avuto almeno un
+docente ma che non hanno avuto docenti di nome `'Roberto'`, `'Alberto'`, `'Massimo'`
+o `'Luca'` in entrambi gli anni accademici, riportando il nome, il
 discriminante dell'insegnamento, ordinati per nome insegnamento.
 
-La soluzione ha 22 righe. Le cinque a partire dalla XV riga sono
+La soluzione ha 22 righe. Le cinque a partire dalla 15° riga sono
 
 | nomeins                                                    | discriminante |
 | ---------------------------------------------------------- | ------------- |
@@ -301,11 +310,52 @@ La soluzione ha 22 righe. Le cinque a partire dalla XV riga sono
 | Patologia e clinica delle malattie del ricambio (IV anno ) | -             |
 | Patologia e clinica delle malattie del ricambio (V anno )  | -             |
 
+```sql
+select insegn.nomeins, discriminante.nome as discriminante
+from inserogato
+  join corsostudi on inserogato.id_corsostudi = corsostudi.id
+  join insegn on inserogato.id_insegn = insegn.id
+  join discriminante on inserogato.id_discriminante = discriminante.id
+  join docenza on inserogato.id = docenza.id_inserogato
+where corsostudi.id = 240
+  and inserogato.modulo = 0
+  and inserogato.annoaccademico = '2009/2010'
+  and not exists (
+    select 1
+    from docenza as docenza_in
+      join persona on docenza_in.id_persona = persona.id
+    where docenza_in.id_inserogato = inserogato.id
+      and persona.nome in ('Roberto', 'Alberto', 'Massimo', 'Luca')
+  )
+
+intersect
+
+select insegn.nomeins, discriminante.nome as discriminante
+from inserogato
+  join corsostudi on inserogato.id_corsostudi = corsostudi.id
+  join insegn on inserogato.id_insegn = insegn.id
+  join discriminante on inserogato.id_discriminante = discriminante.id
+  join docenza on inserogato.id = docenza.id_inserogato
+where corsostudi.id = 240
+  and inserogato.modulo = 0
+  and inserogato.annoaccademico = '2010/2011'
+  and not exists (
+    select 1
+    from docenza as docenza_in
+      join persona on docenza_in.id_persona = persona.id
+    where docenza_in.id_inserogato = inserogato.id
+      and persona.nome in ('Roberto', 'Alberto', 'Massimo', 'Luca')
+  )
+
+order by nomeins
+```
+
 ### Esercizio 9
 
-Trovare le unità logistiche del corso di studi con id=420 erogati nel 2010/2011 e che hanno lezione o
-il lunedì (Lezione.giorno=2) o il martedì (Lezione.giorno=3), ma non in entrambi i giorni, riportando
-il nomedell'insegnamento e il nome dell'unità ordinate per nome insegnamento.
+Trovare le unità logistiche del corso di studi con `id = 420` erogati nel `2010/2011`
+e che hanno lezione o il lunedì (`Lezione.giorno = 2`) o il
+martedì (`Lezione.giorno = 3`), ma non in entrambi i giorni, riportando il nome
+dell'insegnamento e il nome dell'unità ordinate per nome insegnamento.
 
 La soluzione ha 8 righe:
 
@@ -320,31 +370,102 @@ La soluzione ha 8 righe:
 | Sistemi operativi              | Laboratorio |
 | Sistemi operativi              | Teoria      |
 
+```sql
+select insegn.nomeins, inserogato.nomeunita
+from inserogato
+  join corsostudi on inserogato.id_corsostudi = corsostudi.id
+  join insegn on inserogato.id_insegn = insegn.id
+  join lezione on inserogato.id = lezione.id_inserogato
+where corsostudi.id = 420
+  and inserogato.annoaccademico = '2010/2011'
+  and inserogato.modulo < 0
+  and lezione.giorno in (2 /* lunedì */, 3 /* martedì */)
+group by inserogato.id, insegn.nomeins, inserogato.nomeunita
+having count(distinct lezione.giorno) = 1
+order by insegn.nomeins, inserogato.nomeunita;
+```
+
 ### Esercizio 10
 
-Trovare gli insegnamenti in ordine alfabetico (esclusi moduli e unità logistiche) dei corsi di studi della
-facoltà di 'Scienze Matematiche Fisiche e Naturali' che sono stati tenuti dallo stesso docente per due anni
-accademici consecutivi riportando id, nome dell'insegnamento e id, nome, cognome del docente. Per la
-relazione tra InsErogato e Facolta non usare la relazione diretta. Circa la condizione sull'anno
-accademico, dopo aver estratto una sua opportuna parte, si può trasformare questa in un intero e, quindi,
-usarlo per gli opportuni controlli. Oppure si può usarla direttamente confrontandola con un'opportuna
-parte dell'altro anno accademico.
+Trovare gli insegnamenti in ordine alfabetico (esclusi moduli e unità logistiche) dei
+corsi di studi della facoltà di `'Scienze matematiche fisiche e naturali'` che sono
+stati tenuti dallo stesso docente per due anni accademici consecutivi riportando `id`,
+`nome` dell'insegnamento e `id`, `nome`, `cognome` del docente. Per la relazione tra
+`InsErogato` e `Facolta` non usare la relazione diretta. Circa la condizione sull'anno
+accademico, dopo aver estratto una sua opportuna parte, si può trasformare questa in
+un intero e, quindi, usarlo per gli opportuni controlli. Oppure si può usarla
+direttamente confrontandola con un'opportuna parte dell'altro anno accademico.
 
 La soluzione ha 544 righe. Le ultime 5 sono:
-| id | ?? | ?? | ?? | ??|
-| ---- | -- |----|----|------------------------------------- |
-| 321 | Viticoltura III | 119 | Claudio | Giulivo|
-| 4068 | Viticoltura e territorio | 3937 | Maurizio | Boselli|
-| 4087 | Viticoltura generale | 3937 | Maurizio | Boselli|
-| 5648 | Web semantico | 62 | Matteo | Cristani|
-| 322 | Zonazione vinicola | 186 | Francesco | Morari|
+
+| id_insegn | nome_insegn              | id_docente | nome_docente | cognome_docente |
+| --------- | ------------------------ | ---------- | ------------ | --------------- |
+| 321       | Viticoltura III          | 119        | Claudio      | Giulivo         |
+| 4068      | Viticoltura e territorio | 3937       | Maurizio     | Boselli         |
+| 4087      | Viticoltura generale     | 3937       | Maurizio     | Boselli         |
+| 5648      | Web semantico            | 62         | Matteo       | Cristani        |
+| 322       | Zonazione vinicola       | 186        | Francesco    | Morari          |
+
+```sql
+select distinct
+  insegn.id as id_insegn,
+  insegn.nomeins as nome_insegn,
+  persona.id as id_docente,
+  persona.nome as nome_docente,
+  persona.cognome as cognome_docente
+from inserogato
+  join insegn on inserogato.id_insegn = insegn.id
+  join docenza on inserogato.id = docenza.id_inserogato
+  join persona on docenza.id_persona = persona.id
+  join corsoinfacolta on inserogato.id_corsostudi = corsoinfacolta.id_corsostudi
+  join facolta on corsoinfacolta.id_facolta = facolta.id
+where inserogato.modulo = 0
+  and facolta.nome = 'Scienze matematiche fisiche e naturali'
+  and exists (
+    select 1
+    from inserogato as inserogato_in
+      join docenza as docenza_in on inserogato_in.id = docenza_in.id_inserogato
+      join persona as persona_in on docenza_in.id_persona = persona_in.id
+      join corsoinfacolta as corsoinfacolta_in on inserogato_in.id_corsostudi = corsoinfacolta_in.id_corsostudi
+      join facolta as facolta_in on corsoinfacolta_in.id_facolta = facolta_in.id
+    where facolta_in.id = facolta.id
+      and persona_in.id = persona.id
+      and inserogato_in.id_insegn = inserogato.id_insegn
+      and inserogato_in.modulo = 0
+      and cast(substring(inserogato.annoaccademico, 6, 4) as int) = cast(substring(inserogato_in.annoaccademico, 6, 4) as int) + 1
+  )
+order by nome_insegn
+```
 
 ### Esercizio 11
 
-Trovare per ogni docente il numero di insegnamenti o moduli o unità logistiche a lui assegnate come
-docente
-nell'anno accademico 2005/2006, riportare anche coloro che non hanno assegnato alcun insegnamento.
-Nel risultato si mostri identificatore, nome e cognome del docente insieme al conteggio richiesto (0 per il
-caso nessun insegnamento/modulo/unità insegnati).
+Trovare per ogni docente il numero di insegnamenti o moduli o unità logistiche a lui
+assegnate come docente nell'anno accademico `2005/2006`, riportare anche coloro che
+non hanno assegnato alcun insegnamento. Nel risultato si mostri `id`, `nome`
+e `cognome` del docente insieme al conteggio richiesto (0 per il caso nessun
+insegnamento/modulo/unità insegnati).
 
 La soluzione ha 3315 righe.
+
+```sql
+create temp view numinsegnamenti (id, numins) as
+(
+  select persona.id, count(inserogato.id)
+  from persona
+    join docenza on persona.id = docenza.id_persona
+    join inserogato on docenza.id_inserogato = inserogato.id
+  group by persona.id
+);
+
+select persona.id, persona.nome, persona.cognome, numinsegnamenti.numins
+from persona
+  join docenza on persona.id = docenza.id_persona
+  join numinsegnamenti on persona.id = numinsegnamenti.id
+  where numinsegnamenti.numins = any (
+    select numinsegnamenti.numins
+    from numinsegnamenti
+    where numinsegnamenti.id = persona.id
+  )
+group by persona.id, persona.nome, persona.cognome, numinsegnamenti.numins
+order by persona.cognome, persona.nome;
+```
