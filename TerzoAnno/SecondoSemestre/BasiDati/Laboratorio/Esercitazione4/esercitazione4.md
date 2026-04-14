@@ -317,16 +317,11 @@ from inserogato
   join insegn on inserogato.id_insegn = insegn.id
   join discriminante on inserogato.id_discriminante = discriminante.id
   join docenza on inserogato.id = docenza.id_inserogato
+  join persona on docenza.id_persona = persona.id
 where corsostudi.id = 240
   and inserogato.modulo = 0
   and inserogato.annoaccademico = '2009/2010'
-  and not exists (
-    select 1
-    from docenza as docenza_in
-      join persona on docenza_in.id_persona = persona.id
-    where docenza_in.id_inserogato = inserogato.id
-      and persona.nome in ('Roberto', 'Alberto', 'Massimo', 'Luca')
-  )
+  and persona.nome not in ('Roberto', 'Alberto', 'Massimo', 'Luca')
 
 intersect
 
@@ -336,16 +331,11 @@ from inserogato
   join insegn on inserogato.id_insegn = insegn.id
   join discriminante on inserogato.id_discriminante = discriminante.id
   join docenza on inserogato.id = docenza.id_inserogato
+  join persona on docenza.id_persona = persona.id
 where corsostudi.id = 240
   and inserogato.modulo = 0
   and inserogato.annoaccademico = '2010/2011'
-  and not exists (
-    select 1
-    from docenza as docenza_in
-      join persona on docenza_in.id_persona = persona.id
-    where docenza_in.id_inserogato = inserogato.id
-      and persona.nome in ('Roberto', 'Alberto', 'Massimo', 'Luca')
-  )
+  and persona.nome not in ('Roberto', 'Alberto', 'Massimo', 'Luca')
 
 order by nomeins
 ```
