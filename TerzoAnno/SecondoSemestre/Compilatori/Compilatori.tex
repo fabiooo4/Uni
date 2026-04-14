@@ -2684,6 +2684,19 @@ while ( |\( X \neq \$ \)| ) { /* stack is not empty */
   \] 
 \end{example}
 
+\subsection{Bottom-up parsing}
+Il bottom-up parsing è un metodo di parsing più generale rispetto al top down ed è
+quello più utilizzato perchè non richiede grammatiche left factored. L'idea di
+base è quella di ridurre le stringhe al simbolo di partenza \textbf{invertendo le
+produzioni}
+
+% TODO: Slide 52 ha la tabella sbagliata, manca il terminale b e:
+% Per I_3 si ha R3 per il terminale b
+% Per I_4 si ha R1 per il terminale $
+% Per I_3 si ha R2 per il terminale $
+% Tutte le riduzioni si fanno per i FOLLOW(state) e si effettua una reduce quando
+% il pallino è alla fine della stringa
+
 
 
 \end{document}
