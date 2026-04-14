@@ -3470,7 +3470,7 @@ nei sistemi reali.
   Osserviamo che \( S_1 \approx_V S_{12} \) e quindi \( S_1 \) è view-serializzabile.
 \end{exercise}
 
-\begin{exercise}
+\begin{exercise}\label{esercizio_view_serializzabilita}
   Consideriamo le seguenti transazioni:
   \[
     \begin{aligned}
@@ -3527,7 +3527,7 @@ nei sistemi reali.
   \end{itemize}
 \end{exercise}
 
-\begin{exercise}
+\begin{exercise}\label{esercizio_view_serializzabilita_2}
   Consideriamo le seguenti transazioni:
   \[
     \begin{aligned}
@@ -3637,8 +3637,104 @@ Dato uno schedule \( S \):
     \end{itemize}
 
   \item Se il grafo è \textbf{aciclico}, allora \( S \) è conflict-serializzabile.
+
+    \vspace{1em}
+    \noindent
+    \textbf{Dimostrazione}:
+    \begin{itemize}
+      \item 
+        Se \( S \) è CSR, cioè esiste uno schedule \( S_r \) seriale tale che
+        \( S \approx_c S_r \), allora il suo grafo è aciclico.
+
+        Ipotesi: Le transazioni di \( S_r \) sono ordinate:
+        \[
+          t_1, t_2, \ldots, t_n
+        \] 
+        Poichè \( S \approx_C S_r \), allora \( S_r \) ha tutti i conflitti di \( S \)
+        con operazioni esattamente nello stesso ordine. Quindi nel grafo dei conflitti
+        di \( S_r \) ci possono essere solo archi \( (i,j) \) con \( i < j \), e questo
+        vuol dire che non possono esserci cicli perchè un ciclo richiederebbe un arco 
+        \( (j,i) \) con \( j > i \) che è impossibile.
+
+        Siccome \( S \approx_c S_r \) allora hanno lo stesso grafo dei conflitti, e quindi
+        anche il grafo dei conflitti di \( S \) è aciclico.
+
+      \item 
+        Se il grafo \( S \) è aciclico, allora \( S \) è CSR, cioè esiste uno schedule
+        \( S_r \) seriale tale che \( S \approx_C S_r \) e quindi \( S \) e \( S_r \) 
+        hanno gli stessi conflitti e quindi lo stesso grafo.
+
+        Ipotesi: il grafo dei conflitti di \( S \) è aciclico, e quindi esiste un
+        \textbf{ordinamento topologico}, cioè un'enumerazione dei nodi tale che
+        il grafo contiene solo archi \( (i,j) \) con \( i < j \).
+        Utilizzando questo ordinamento topologico possiamo definire un ordine
+        delle transazioni che produce lo stesso grafo e quindi siccome le transazioni
+        sono ordinate si ha uno schedule seriale.
+    \end{itemize}
 \end{itemize}
 Richiede comunque l'ipotesi di commit-proiezione.
+
+\vspace{1em}
+\noindent
+\begin{example}[Perdita di aggiornamento]
+  Consideriamo le seguenti transazioni:
+  \[
+    \begin{aligned}
+      t_1:\; & r_1(x); \; w_1(x) \\
+      t_2:\; & r_2(x); \; w_2(x)
+    \end{aligned}
+  \] 
+  Eseguite con lo schedule:
+  \[
+    S_{pa}:\; r_1(x); \; r_2(x); \; w_2(x); \; w_1(x);
+  \] 
+  L'insieme dei conflitti è:
+  \[
+    CONFLITTI(S_{pa}) = \left\{ (r_1(x), w_2(x)),\; (r_2(x), w_1(x)),\; (w_2(x), w_1(x)) \right\}
+  \] 
+  Generiamo il grafo dei conflitti:
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \node[circle, draw] (t1) at (0,0) {\( t_1 \)};
+      \node[circle, draw] (t2) at (3,0) {\( t_2 \)};
+
+      \draw[->] (t1) edge [bend left] node[above] {\( r_1(x), w_2(x) \)} (t2);
+      \draw[->] (t2) edge [bend left] node[below] {\( r_2(x), w_1(x) \)} (t1);
+    \end{tikzpicture}
+  \end{figure}
+  \noindent
+  Siccome il grafo ha un ciclo \( S_{pa} \) \textbf{non è conflict-serializzabile}.
+\end{example}
+
+\begin{example}[Lettura inconsistente]
+  Consideriamo le seguenti transazioni:
+  \[
+    \begin{aligned}
+      t_1:\; & r_1(x); \; r'_1(x) \\
+      t_2:\; & r_2(x); \; w_2(x)
+    \end{aligned}
+  \] 
+  Eseguite con lo schedule:
+  \[
+    S_{pa}:\; r_1(x); \; r_2(x); \; w_2(x); \; r'_1(x);
+  \] 
+  L'insieme dei conflitti è:
+  \[
+    CONFLITTI(S_{pa}) = \left\{ (r_1(x), w_2(x)),\; (w_2(x), r'_1(x)) \right\}
+  \] 
+  Generiamo il grafo dei conflitti:
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \node[circle, draw] (t1) at (0,0) {\( t_1 \)};
+      \node[circle, draw] (t2) at (3,0) {\( t_2 \)};
+
+      \draw[->] (t1) edge [bend left] node[above] {\( r_1(x), w_2(x) \)} (t2);
+      \draw[->] (t2) edge [bend left] node[below] {\( w_2(x), r'_1(x) \)} (t1);
+    \end{tikzpicture}
+  \end{figure}
+\end{example}
 
 \begin{theorem}
   La conflict-serializzabilità è una condizione sufficiente, ma non necessaria per
@@ -3648,13 +3744,212 @@ Richiede comunque l'ipotesi di commit-proiezione.
     \includegraphics[width=0.6\textwidth]{csr_vsr}
     \caption{Relazione tra conflict-serializzabilità e view-serializzabilità}
   \end{figure}
+
+  \vspace{1em}
+  \noindent
+  \textbf{Dimostrazione}: \( S \) è CSR \( \Rightarrow \) \( S \) è VSR.
+  (Se \( S \) non è CSR, allora non si può dire nulla sulla VSR)
+  \begin{itemize}
+    \item Dimostriamo che \( CSR \subset VSR \): Basta trovare un controesempio:
+      \[
+        S \in VSR \text{ ma } S \notin CSR
+      \] 
+      Consideriamo:
+      \[
+        S = r_1(x); \; w_2(x); \; w_1(x); \; w_3(x);
+      \] 
+      Gli insiemi sono:
+      \begin{itemize}
+        \item \texttt{LEGGE\_DA}\( (S) = \varnothing \)
+        \item \texttt{SCRITTURE\_FINALI}\( (S) = \{ w_3(x) \} \)
+      \end{itemize}
+      Quindi questo schedule è VSR perchè esiste uno schedule \( S_r \) tale che
+      \( S_r \approx_V S \):
+      \[
+        S_r = r_1(x); \; w_1(x); \; w_2(x); \; w_3(x);
+      \] 
+      che ha gli stessi insiemi:
+      \begin{itemize}
+        \item \texttt{LEGGE\_DA}\( (S_r) = \varnothing \)
+        \item \texttt{SCRITTURE\_FINALI}\( (S_r) = \{ w_3(x) \} \)
+      \end{itemize}
+      Ora mostriamo che questo schedule non è CSR. Il suo insieme dei conflitti è:
+      \[
+        \begin{aligned}
+          CONFLITTI(S) = & \{ (r_1(x), w_2(x)),\; (r_1(x), w_3(x)),\;
+            (w_2(x), w_1(x)),\\
+                         &(w_2(x), w_3(x)),\; (w_1(x), w_3(x))\}
+          \end{aligned}
+        \] 
+        Costruiamo il grafo dei conflitti:
+        \begin{figure}[H]
+          \centering
+          \begin{tikzpicture}
+            \node[circle, draw] (t1) at (0,0) {\( t_1 \)};
+            \node[circle, draw] (t2) at (1.5,1.5) {\( t_2 \)};
+            \node[circle, draw] (t3) at (3,0) {\( t_3 \)};
+
+            \draw[->] (t1) edge [bend left=20] node[above] {} (t2);
+            \draw[->] (t2) edge [bend left=20] node[above] {} (t1);
+            \draw[->] (t1) edge [bend left=20] node[above] {} (t3);
+            \draw[->] (t3) edge [bend left=20] node[above] {} (t1);
+            \draw[->] (t3) edge node[above] {} (t2);
+          \end{tikzpicture}
+        \end{figure}
+
+      \item Dimostriamo \( CSR \Rightarrow VSR \), quindi che \( S_1 \approx_C S_2 \) 
+        e dimostriamo \( S_1 \approx_V S_2 \).
+
+        \begin{itemize}
+          \item 
+            \( S_1 \) e \( S_2 \) devono avere lo stesso insieme di \( SCRITTURE\_FINALI \),
+            altrimenti ci sarebbero due scritture sulla stessa risorsa da parte
+            di transazioni diverse in un ordine diverso, e questo produrrebbe un
+            \textbf{ conflitto diverso}
+
+          \item Devono avere lo stesso insieme di \( LEGGE\_DA \), altrimenti ci sarebbe
+            un conflitto, composto da una lettura e una scrittura, diverso e quindi
+            siccome il conflitto è diverso, allora \( S_1 \) e \( S_2 \) non sono
+            conflict-equivalenti
+        \end{itemize}
+  \end{itemize}
+  Quindi se \( S \):
+  \begin{itemize}
+    \item È CSR allora \( S \) è VSR
+    \item Non è CSR allora \( S \) non è VSR
+  \end{itemize}
 \end{theorem}
+
+\begin{example}
+  Consideriamo il seguente schedule:
+  \[
+    S_1 = r_1(x); \; w_1(x); \; r_2(z); \; r_1(y); \; w_1(y); \; r_2(x); \; w_2(x); \;
+    w_2(z);
+  \] 
+  Verifichiamo se \( S_1 \) è VSR, per farlo vediamo se prima è CSR controllando
+  l'insieme dei conflitti:
+  \[
+    CONFLITTI(S_1) = \left\{ (r_1(x), w_2(x)),\; (w_1(x), r_2(x)),\; (w_1(x), w_2(x)) \right\}
+  \] 
+  Costruiamo il grafo dei conflitti:
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+      node distance=2cm
+      ]
+      \node[circle, draw] (t1) at (0,0) {\( t_1 \)};
+      \node[circle, draw, right of=t1] (t2) {\( t_2 \)};
+
+      \draw[->] (t1) to node[above] {} (t2);
+    \end{tikzpicture}
+  \end{figure}
+  \noindent
+  Siccome il grafo è aciclico, allora \( S_1 \) è CSR e quindi \( S_1 \) è VSR.
+\end{example}
+
+\begin{example}
+  Consideriamo lo schedule:
+  \[
+    S_2 = r_1(x); \; w_1(x); \; w_3(x); \; r_2(y); \; r_3(y); \; w_3(y); \; w_1(y); \;
+    r_2(x);
+  \] 
+  Verifichiamo se \( S_2 \) è VSR, per farlo vediamo se prima è CSR controllando
+  l'insieme dei conflitti:
+  \[
+    \begin{aligned}
+alignedCONFLITTI(S_2) =& 
+      \{
+        (r_1(x), w_3(x)),\;
+        (w_1(x), w_3(x)),\;
+        (w_1(x), r_2(x)), \\
+                             &(w_3(x), r_2(x)),\;
+                             (r_2(y), w_3(y)),\;
+                             (r_2(y), w_1(y)), \\
+                             &(r_3(y), w_1(y)),\;
+                             (w_3(y), w_1(y))
+                           \} 
+    \end{aligned}
+  \]
+  Costruiamo il grafo dei conflitti:
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+      \node[circle, draw] (t1) at (0,0) {\( t_1 \)};
+      \node[circle, draw] (t2) at (1.5,1.5) {\( t_2 \)};
+      \node[circle, draw] (t3) at (3,0) {\( t_3 \)};
+
+      \draw[->] (t1) edge [bend left=20] node[above] {} (t2);
+      \draw[->] (t2) edge [bend left=20] node[above] {} (t1);
+      \draw[->] (t1) edge [bend left=20] node[above] {} (t3);
+      \draw[->] (t3) edge [bend left=20] node[above] {} (t1);
+      \draw[->] (t3) edge [bend left=20] node[above] {} (t2);
+      \draw[->] (t2) edge [bend left=20] node[above] {} (t3);
+    \end{tikzpicture}
+  \end{figure}
+  \noindent
+  Il grafo è ciclico, quindi \( S_2 \) \textbf{non è conflict-serializzabile} e di
+  conseguenza \( S_2 \) \textbf{non è view-serializzabile}.
+
+  \vspace{1em}
+  \noindent
+  Questo schedule lo avevamo verificato anche nell'esercizio
+  \ref{esercizio_view_serializzabilita} e avevamo concluso che \( S_2 \) non è
+  view-serializzabile, e questo conferma che \( S_2 \) non è conflict-serializzabile
+   perchè \( CSR \subset VSR \).
+\end{example}
+
+\begin{example}
+  Consideriamo lo schedule:
+  \[
+    \begin{aligned}
+      S_3 =& r_1(x); \; r_2(x); \; w_2(x); \; r_3(x); \; r_4(z); \; w_1(x); \; w_3(y); \;
+      w_3(x); \; w_1(y);\\
+           &w_5(x); \; w_1(z); \; w_5(y); \; r_5(z);
+    \end{aligned}
+  \] 
+  Verifichiamo se \( S_3 \) è VSR, per farlo vediamo se prima è CSR controllando
+  l'insieme dei conflitti:
+  \[
+    \begin{aligned}
+      CONFLITTI(S_3) =& \{
+        (r_1(x), w_2(x)),\;
+        (r_1(x), w_3(x)),\;
+        (r_1(x), w_5(x)), \\
+                      &(r_2(x), w_1(x)),\;
+        (r_2(x), w_3(x)),\;
+        (r_2(x), w_5(x)), \\
+                      &(w_2(x), r_3(x)),\;
+        (w_2(x), w_1(x)),\;
+        (w_2(x), w_3(x)), \\
+                      &(w_2(x), w_5(x)),\;
+        (r_3(x), w_1(x)),\;
+        (r_3(x), w_5(x)), \\
+                      &(r_4(z), w_1(z)),\;
+        (w_1(x), w_3(x)),\;
+        (w_1(x), w_5(x)), \\
+                      &(w_3(y), w_1(y)),\;
+        (w_3(y), w_5(y)),\;
+        (w_3(x), w_5(x)), \\
+                      &(w_1(y), w_5(y)),\;
+        (w_1(z), r_5(z))
+      \} 
+    \end{aligned}
+  \] 
+  Il grafo dei conflitti è ciclico, allora \( S_3 \) \textbf{non è conflict-serializzabile} e di
+  conseguenza \( S_3 \) \textbf{non è view-serializzabile}.
+
+  \vspace{1em}
+  \noindent
+  Questo schedule lo avevamo verificato anche nell'esercizio
+  \ref{esercizio_view_serializzabilita_2} e avevamo concluso che \( S_3 \) non è
+  view-serializzabile.
+\end{example}
 
 \subsubsection{Locking a due fasi stretto}
 Il locking a due fasi (2PL, Two-Phase Locking) è il metodo applicato nei sistemi reali
 per la gestione dell'esecuzione concorrente delle transazioni perchè non richiede di
-conoscere in anticipo l'esito delle transazioni. Il locking a due fasi è un sottoinsieme
-della conflict-serializzabilità.
+conoscere in anticipo l'esito delle transazioni. \textbf{Il locking a due fasi è un sottoinsieme
+della conflict-serializzabilità.}
 Gli aspetti che caratterizzano il locking a due fasi sono i seguenti:
 \begin{itemize}
   \item \textbf{Meccanismo di base per la gestione dei lock}:
@@ -3712,6 +4007,32 @@ Gli aspetti che caratterizzano il locking a due fasi sono i seguenti:
     \end{figure}
 \end{itemize}
 
+\begin{example}[Perdita di aggiornamento]
+  Consideriamo le seguenti transazioni:
+  \[
+  \begin{aligned}
+    t_1:\; & r_1(x); \; w_1(x) \\
+    t_2:\; & r_2(x); \; w_2(x)
+  \end{aligned}
+  \] 
+  Eseguite con lo schedule:
+  \[
+    S_{pa}:\; r_1(x); \; r_2(x); \; w_2(x); \; w_1(x);
+  \]
+  \begin{enumerate}
+    \item \( r_1(x) \) richiede un \( r\_lock_1(x) \) 
+    \item \( r_2(x) \) richiede un \( r\_lock_2(x) \)
+    \item \( w_2(x) \) richiede un \( w\_lock_2(x) \), ma lo stato \( s(x) = r\_lock \),
+      con \( c(x) = \left\{ t_1, t_2 \right\} \), quindi \( w_2(x) \) per ottenere
+      \( w\_lock_2(x) \) deve attendere che \( t_1 \) rilasci \( r\_lock(x) \)
+      ma se \( t_1 \) rilascia \( r\_lock(x) \) e quindi inizierebbe la sua fase
+      discendente impedendogli di acquisire altri lock e di conseguenza
+      \( w\_lock_1(x) \) non è più possibile per la serializzabilità del 2PL
+  \end{enumerate}
+  Di conseguenza questo schedule non è 2PL
+\end{example}
+
+\vspace{1em}
 \noindent
 Il locking a due fasi stretto (Strict 2PL) è una variante del locking a due fasi che
 introduce una condizione aggiuntiva per rimuovere la necessità dell'ipotesi di
