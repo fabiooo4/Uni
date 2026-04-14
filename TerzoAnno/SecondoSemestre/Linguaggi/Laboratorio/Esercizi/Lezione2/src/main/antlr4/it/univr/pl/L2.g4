@@ -9,4 +9,7 @@ grammar L2;
 
 main: s EOF;
 
-s: 'placeholder';
+s: BIN mid 'b';
+mid: | BIN | BIN mid | '_' BIN mid;
+
+BIN: '0' | '1';
