@@ -4,7 +4,6 @@ import it.univr.pl.IntNegExprParser.ModContext;
 import it.univr.pl.IntNegExprParser.NegContext;
 import it.univr.pl.IntNegExprParser.ParenContext;
 import it.univr.pl.IntNegExprParser.SubContext;
-import it.univr.pl.IntNegExprParser.ValContext;
 
 /**
  * IntNegExprImp

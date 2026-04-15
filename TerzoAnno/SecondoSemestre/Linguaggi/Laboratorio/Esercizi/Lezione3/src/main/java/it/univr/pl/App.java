@@ -11,6 +11,7 @@ public class App {
     System.out.println("1. Natural numbers expressions");
     System.out.println("2. Natural to string expressions");
     System.out.println("3. Integer expressions");
+    System.out.println("4. Integer expressions with variables");
 
     int choice = Integer.max(0, Integer.min(Language.values().length, reader.nextInt() - 1));
     Language grammar = Language.values()[choice];
@@ -53,6 +54,18 @@ public class App {
             IntNegExprParser::main);
 
         int res = Language.exec(ast, IntNegExprInterpreter::new);
+        System.out.println(res);
+        break;
+      }
+
+      case VariableIntegerExpressions: {
+        ParseTree ast = Language.parse(
+            input,
+            IntVarExprLexer::new,
+            IntVarExprParser::new,
+            IntVarExprParser::main);
+
+        int res = Language.exec(ast, IntVarExprInterpreter::new);
         System.out.println(res);
         break;
       }

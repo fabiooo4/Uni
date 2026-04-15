@@ -17,6 +17,7 @@ public enum Language {
   IntegerExpressions,
   IntegerStringExpressions,
   NegativeIntegerExpressions,
+  VariableIntegerExpressions,
   ;
 
   /**
