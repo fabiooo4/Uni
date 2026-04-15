@@ -1,6 +1,10 @@
 package it.univr.pl;
 
+import it.univr.pl.IntNegExprParser.ModContext;
+import it.univr.pl.IntNegExprParser.NegContext;
+import it.univr.pl.IntNegExprParser.ParenContext;
 import it.univr.pl.IntNegExprParser.SubContext;
+import it.univr.pl.IntNegExprParser.ValContext;
 
 /**
  * IntNegExprImp
@@ -15,7 +19,6 @@ public class IntNegExprInterpreter extends IntNegExprBaseVisitor<Integer> {
 
   @Override
   public Integer visitAdd(IntNegExprParser.AddContext ctx) {
-    // Interpret left and right expressions
     Integer left = visit(ctx.exp(0));
     Integer right = visit(ctx.exp(1));
 
@@ -44,6 +47,24 @@ public class IntNegExprInterpreter extends IntNegExprBaseVisitor<Integer> {
     Integer right = visit(ctx.exp(1));
 
     return left / right;
+  }
+
+  @Override
+  public Integer visitMod(ModContext ctx) {
+    Integer left = visit(ctx.exp(0));
+    Integer right = visit(ctx.exp(1));
+
+    return left % right;
+  }
+
+  @Override
+  public Integer visitNeg(NegContext ctx) {
+    return -visit(ctx.exp());
+  }
+
+  @Override
+  public Integer visitParen(ParenContext ctx) {
+    return visit(ctx.exp());
   }
 
   @Override
