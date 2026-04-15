@@ -4786,4 +4786,371 @@ else result = 1;
   \end{itemize}
 \end{example}
 
+\subsection{Blocco di codice}
+Bisogna gestire come viene creato l'ambiente in cui si vuole eseguire un codice e
+quindi aggiungere \textbf{un'integrazione tra memoria e ambiente}. Per fare ciò
+introduciamo il \textbf{blocco}, cioè una porzione di programma potenzialmente
+isolata da altri pezzi di codice. I blocchi:
+\begin{itemize} 
+  \item Permettono di rendere modulare il codice e quindi di renderlo più chiaro
+  \item Permettono la gestione locale degli identificatori
+  \item Permettono di gestire l'allocazione della memoria
+  \item Permettono la ricorsione
+\end{itemize}
+Gli aspetti implementativi dei blocchi sono:
+\begin{itemize}
+  \item Visibilità delle dichiarazioni, quando una dichiarazione è visibile, ad esempio solo dopo la
+    dichiarazione o in tutto il programma
+
+  \item Ordine delle dichiarazioni
+\end{itemize}
+
+\subsubsection{Blocco inline}
+Un blocco inline è un blocco senza nome che specifica le dichiarazioni \( D \) che
+definiscono l'ambiente in cui eseguire i comandi \( C \). Il blocco inline è
+quindi:
+\[
+  D;C
+\] 
+Questa definizione non ha limitatori, ma in alcuni linguaggi i blocchi sono
+delimitati da parentesi graffe \( \left\{ \text{blocco} \right\} \).
+Aggiungiamo quindi i blocchi alla grammatica dei comandi:
+\[
+  \begin{aligned}
+    Com: \; C & \to \texttt{skip} \mid x := e \\
+              & \mid C; C  \\
+              & \mid \texttt{while } B \texttt{ do } C
+              & \mid \texttt{if } B \texttt{ then } C \texttt{ else } C  \\
+              & \mid \mathcolor{Blue}{D; C}
+  \end{aligned}
+\] 
+Siccome nel nostro linguaggio i blocchi fanno parte dei comandi è possibile inserire
+dichiarazioni in qualunque punto del programma. Con questa sintassi (e con la
+semantica che verrà specificata) una dichiarazione è visibile solo da dove viene
+inserita fino alla fine del programma (perchè non ha limitatori).
+
+\subsubsection{Blocchi annidati}
+I blocchi annidati devono essere \textbf{completamente contenuti}, cioè un blocco non
+può essere parzialmente contenuto in un altro blocco, ad esempio:
+\begin{itemize}
+  \item Il blocco 2 è completamente contenuto nel blocco 1
+\begin{lstlisting}[language=C]
+{ // Blocco 1 aperto
+  ...
+  [ // Blocco 2 aperto
+  ...
+  ] // Blocco 2 chiuso
+} // Blocco 1 chiuso
+\end{lstlisting}
+  \item Il blocco 2 è parzialmente contenuto nel blocco 1 e quindi non è valido
+\begin{lstlisting}[language=C]
+{ // Blocco 1 aperto
+  ...
+  [ // Blocco 2 aperto
+  ...
+} // Blocco 1 chiuso
+  ...
+  ] // Blocco 2 chiuso
+\end{lstlisting}
+\end{itemize}
+Questa regola di sovrapposizione tra blocchi permette di definire la regola di
+visibilita delle dichiarazioni.
+
+\subsubsection{Regola di visitbilità delle dichiarazioni}
+Una dichiarazione locale ad un blocco è visibile solo all'interno di quel
+blocco e in tutti i blocchi annidati, a meno che in tali blocchi non
+intervenga una dichiarazione dello stesso nome.
+
+\begin{example}
+  Consideriamo il seguente esempio:
+\begin{lstlisting}[language=C]
+{ // Blocco 1
+  const i: int = 3;
+  { // Blocco 2
+    var i: real = 1.2;
+    i := i+1;
+  } // Blocco 2
+  i := i+1;
+} // Blocco 1
+\end{lstlisting}
+  Il blocco 2 è detto \textbf{scope di \texttt{var i}}, mentre il blocco 1
+  è detto \textbf{scope di \texttt{const i}}.
+\end{example}
+
+\begin{example}
+  Consideriamo il seguente esempio:
+\begin{lstlisting}[language=C]
+{ // A
+  int a = 1;
+
+  { // B
+    int b = 2;
+    int c = 2;
+
+    { // C
+      int c = 3;
+      int d;
+
+      d = a + b + c;
+      write(d);
+    }
+
+    { // D
+      int e;
+      e = a + b + c;
+      write(e);
+    }
+  }
+}
+\end{lstlisting}
+  \begin{itemize}
+    \item \textbf{Blocco A}:\\
+      Se il blocco \texttt{A} rappresenta tutto il programma, allora la variabile
+      \texttt{a} è detta \textbf{variabile globale}, cioè visibile a tutti i blocchi
+      essendo tutti i blocchi annidati in \texttt{A}. L'unica variabile visibile
+      al blocco \texttt{A} è \texttt{a}.
+
+      \begin{itemize}
+        \item \textbf{Blocco B}:\\
+          Le variabili nel blocco \texttt{B} sono dette
+          \textbf{variabili locali} e il blocco \texttt{B} vede le sue dichiarazioni
+          locali e quelle del blocco \texttt{A}.
+
+          \begin{itemize}
+            \item \textbf{Blocco C}:\\
+              Nel blocco \texttt{C} la variabile \texttt{c} è una variabile
+              locale che viene ridefinita, cioè \textbf{nasconde dentro \texttt{c}
+              la precedente dichiarazione} (shadowing)
+
+            \item \textbf{Blocco D}:\\
+              Nel blocco \texttt{D} ci sono solo variabili locali che non
+              nascondono nessuna dichiarazione precedente. Il valore di \texttt{c}
+              che il blocco \texttt{D} vede è quello dichiarato nel blocco
+              esterno \texttt{B} siccome \textbf{la visibilità può andare solo
+              all'interno del blocco}.
+          \end{itemize}
+      \end{itemize}
+  \end{itemize}
+\end{example}
+
+\subsubsection{Scope}
+Lo scope di una dichiarazione di \texttt{x} è la porzione di codice in cui tutte
+le occorrenze di \texttt{x}fanno riferimento alla dichiarazione tramite il legame
+definito dalla dichiarazione.
+La \textbf{regola di visibilità definisce lo scope}, ovvero la porzione di codice
+in cui le occorrenze della variabile di chiarata fanno riferimento alla dichiarazione.
+Lo scope è un concetto \textbf{statico} che lega un identificatore all'ambiente
+di riferimento a \textbf{tempo di compilazione} in quanto (senza l'uso di procedure)
+\textbf{eseguiamo il codice dove viene definito}.
+
+\vspace{1em}
+\noindent
+Una \textbf{variabile} può avere una dichiarazione:
+\begin{itemize}
+  \item \textbf{Globale}: quando è visibile a tutti i blocchi, quindi all'intero
+    programma
+
+  \item \textbf{Rispetto al blocco} può essere:
+    \begin{itemize}
+      \item \textbf{Locale}: quando è inserita nel blocco che sovrascrive eventuali
+        variabili esterne
+      \item \textbf{Non locale} (globali incluse): quando è visibile al blocco, ma
+        posizionata in blocchi esterni
+    \end{itemize}
+\end{itemize}
+e un \textbf{ambiente} può essere:
+\begin{itemize}
+  \item \textbf{Globale}: visibile a tutti i blocchi
+  \item \textbf{Rispetto al blocco} può essere:
+    \begin{itemize}
+      \item \textbf{Locale}: definito nel blocco e non visibile esternamente
+      \item \textbf{Non locale}: ereditato dai blocchi esterni
+    \end{itemize}
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Lo scoping è un concetto che riguarda porzioni di codice e determina a quali legami
+(dell'ambiente) fa riferimento ogni occorrenza.
+
+\subsubsection{Tempo di vita}
+Ogni variabile ha un tempo di vita (lifetime), ovvero il tempo di esecuzione in cui
+l'associazione della locazione (memoria) rimane valida. Il tempo di vita è delimitato
+da:
+\begin{itemize}
+  \item Allocazione in memoria
+  \item Deallocazione
+\end{itemize}
+In alcuni lingauggi se l'allocazione e deallocazione non è esplicita, allora il
+tempo di vita coincide con il tempo di esecuzione del programma.
+\begin{example}
+  Consideriamo il seguente programma
+\begin{lstlisting}[language=C]
+{ // Blocco 1          // -----------+ Scope   --+
+  const i: int = 3;    // -----------+ const i   |
+  { // Blocco 2        // -+                     |
+    var i: real = 1.2; //  | Scope + lifetime    | Lifetime
+    i := i+1;          //  | var i               | const i
+  } // Blocco 2        // -+                     |
+  i := i+1;            // -----------+ Scope     |
+} // Blocco 1          // -----------+ const i --+
+\end{lstlisting}
+\end{example}
+
+\noindent
+\begin{itemize}
+  \item Lo scoping è un \textbf{concetto statico} nel senso che è completamente
+    determinabile dal codice fissate delle regole (ad esempio di visibilità)
+
+  \item Il tempo di vita è un \textbf{concetto dinamico} nel senso che dipende
+    dall'esecuzione del programma
+\end{itemize}
+
+\begin{example}
+  Consideriamo il seguente codice:
+\begin{lstlisting}[language=C]
+{
+  D_0 dich.
+  while ...
+   {
+     D_1 dich.
+     C_11 comandi
+     {
+        D_2 dich.
+        C_12 comandi
+     }
+     C_13 comandi
+   }
+}
+\end{lstlisting}
+  Utilizziamo uno stack per rappresentare gli ambienti:
+  \begin{enumerate}
+    \item Nel primo blocco viene creato l'ambiente \( \rho_0 \) che contiene le
+      dichiarazioni \( D_0 \):
+      \[
+        [\underset{\uparrow}{\rho_0}]
+      \] 
+      \begin{enumerate}
+        \item All'interno del while viene creato l'ambiente \( \rho_1 \) che contiene le
+          dichiarazioni \( D_1 \):
+          \[
+            [\rho_0, \underset{\uparrow}{\rho_1}]
+          \]
+
+          \begin{enumerate}
+            \item All'interno del terzo blocco viene creato l'ambiente \( \rho_2 \) che contiene
+              le dichiarazioni \( D_2 \):
+              \[
+                [\rho_0, \rho_1, \underset{\uparrow}{\rho_2}]
+              \]
+              Il tempo di vita delle dichiarazioni \( D_2 \) è la durata dell'ambiente
+              \( \rho_2 \) nello stack.
+
+            \item All'uscita del blocco più interno \( D_2 \) viene rimosso l'ambiente
+              \( \rho_2 \) dallo stack e quindi termina il tempo di vita delle dichiarazioni
+              \( D_2 \) del \textbf{primo ciclo}:
+              \[
+                [\rho_0, \underset{\uparrow}{\rho_1}]
+              \]
+              Il tempo di vita delle dichiarazioni \( D_1 \) è la durata dell'ambiente
+              \( \rho_1 \) nello stack.
+
+            \item Ulteriori cicli sono analoghi alla ripetizione dei due punti precedenti.
+              Allocazioni di \( \rho_1 \) e \( \rho_2 \) successive nello stack durante
+              l'esecuzione del while sono di fatto \textbf{nuovi ambienti diversi}
+              perchè sono stati "distrutti" e riallocati ad ogni iterazione.
+          \end{enumerate}
+      \end{enumerate}
+
+    \item All'uscita del while viene rimosso l'ambiente \( \rho_1 \) dallo stack e quindi
+      termina il tempo di vita delle dichiarazioni \( D_1 \):
+      \[
+        [\underset{\uparrow}{\rho_0}]
+      \]
+      Il tempo di vita delle dichiarazioni \( D_0 \) è la durata dell'ambiente
+      \( \rho_0 \) nello stack, che coincide con l'esecuzione del programma.
+  \end{enumerate}
+\end{example}
+
+\subsubsection{Semantica dei blocchi}
+Definiamo la semantica dei blocchi con le seguenti regole:
+\begin{itemize}
+  \item \textbf{Semantica statica}:
+    \begin{itemize}
+      \item Identificatori liberi:
+        \[
+          FI(d;c) = FI(d) \cup (FI(c) \setminus DI(d))
+        \] 
+
+      \item Identificatori dichiarati:
+        \[
+          DI(d;c) = DI(d) \cup DI(c)
+        \]
+
+      \item Regola per un blocco ben formato:
+        \[
+          \begin{prooftree}
+            \hypo{
+              \Delta \vdash d : \mathcolor{Green}{\Delta_0}
+            }
+            \hypo{
+              \Delta\left[ \mathcolor{Green}{\Delta_0} \right] \vdash c
+            }
+            \infer2{ 
+              \Delta \vdash d;c
+            }
+          \end{prooftree}
+        \] 
+    \end{itemize}
+
+  \item \textbf{Semantica dinamica}:
+    \begin{itemize}
+      \item Regola per l'esecuzione delle dichiarazioni di un blocco:
+        \[
+          \begin{prooftree}
+            \hypo{ 
+              \rho \vdash \left< d, \sigma \right>
+              \to_c^*
+              \left< \rho_0, \sigma' \right>
+            }
+            \infer1{
+              \rho \vdash \left< d;c, \sigma \right>
+              \to_c
+              \left< \rho_0; c, \sigma' \right>
+            }
+          \end{prooftree}
+        \] 
+
+      \item Regola per l'esecuzione di un blocco:
+        \[
+          \begin{prooftree}
+            \hypo{ 
+              \rho[\rho_0] \vdash \left< c, \sigma \right>
+              \to_c^*
+              \sigma'
+            }
+            \infer1{ 
+              \rho \vdash \left< \rho_0;c, \sigma \right>
+              \to_c
+              \sigma'
+            }
+          \end{prooftree}
+        \] 
+    \end{itemize}
+\end{itemize}
+
+\begin{example}
+  Consideriamo il seguente blocco:
+  \[
+    \underbrace{\texttt{var x: int = 3}}_{d}
+    \texttt{;}
+    \underbrace{\texttt{x := x+1;}}_{c}
+  \] 
+  % TODO
+  \begin{itemize}
+    \item \textbf{Semantica statica}:
+    \item \textbf{Semantica dinamica}:
+  \end{itemize}
+\end{example}
+
 \end{document}
