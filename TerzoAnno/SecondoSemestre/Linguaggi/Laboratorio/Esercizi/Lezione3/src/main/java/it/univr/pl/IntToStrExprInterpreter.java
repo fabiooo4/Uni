@@ -35,7 +35,7 @@ public class IntToStrExprInterpreter extends IntExprBaseVisitor<String> {
     String left = visit(ctx.exp(0));
     String right = visit(ctx.exp(1));
 
-    return left + "plus" + right;
+    return ctx.LPAR().getText() + left + " plus " + right + ctx.RPAR().getText();
   }
 
   /**
@@ -50,7 +50,7 @@ public class IntToStrExprInterpreter extends IntExprBaseVisitor<String> {
     String left = visit(ctx.exp(0));
     String right = visit(ctx.exp(1));
 
-    return left + "times" + right;
+    return ctx.LPAR().getText() + left + " times " + right + ctx.RPAR().getText();
   }
 
   /**
