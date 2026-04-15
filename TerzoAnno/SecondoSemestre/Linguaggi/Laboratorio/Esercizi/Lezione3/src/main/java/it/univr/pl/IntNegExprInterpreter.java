@@ -1,0 +1,54 @@
+package it.univr.pl;
+
+import it.univr.pl.IntNegExprParser.SubContext;
+
+/**
+ * IntNegExprImp
+ *
+ * Implements semantics for the grammar
+ */
+public class IntNegExprInterpreter extends IntNegExprBaseVisitor<Integer> {
+  @Override
+  public Integer visitMain(IntNegExprParser.MainContext ctx) {
+    return visit(ctx.exp());
+  }
+
+  @Override
+  public Integer visitAdd(IntNegExprParser.AddContext ctx) {
+    // Interpret left and right expressions
+    Integer left = visit(ctx.exp(0));
+    Integer right = visit(ctx.exp(1));
+
+    return left + right;
+  }
+
+  @Override
+  public Integer visitSub(SubContext ctx) {
+    Integer left = visit(ctx.exp(0));
+    Integer right = visit(ctx.exp(1));
+
+    return left - right;
+  }
+
+  @Override
+  public Integer visitMul(IntNegExprParser.MulContext ctx) {
+    Integer left = visit(ctx.exp(0));
+    Integer right = visit(ctx.exp(1));
+
+    return left * right;
+  }
+
+  @Override
+  public Integer visitDiv(IntNegExprParser.DivContext ctx) {
+    Integer left = visit(ctx.exp(0));
+    Integer right = visit(ctx.exp(1));
+
+    return left / right;
+  }
+
+  @Override
+  public Integer visitVal(IntNegExprParser.ValContext ctx) {
+    // Parse an integer from a string
+    return Integer.parseInt(ctx.getText());
+  }
+}

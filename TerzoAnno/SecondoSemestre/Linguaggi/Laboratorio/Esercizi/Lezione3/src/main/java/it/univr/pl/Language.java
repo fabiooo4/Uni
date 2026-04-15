@@ -11,10 +11,13 @@ import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 public enum Language {
   IntegerExpressions,
-  IntegerStringExpressions;
+  IntegerStringExpressions,
+  NegativeIntegerExpressions,
+  ;
 
   /**
    * Parses a grammar on a given input string, using the provided lexer and
@@ -55,7 +58,7 @@ public enum Language {
   /**
    * Executes the interpreter on a given parse tree
    */
-  public static <T, GenericInterpreter extends IntExprBaseVisitor<T>> T exec(
+  public static <T, GenericInterpreter extends ParseTreeVisitor<T>> T exec(
       ParseTree parseTree,
       Supplier<GenericInterpreter> interpreterConstructor) {
     GenericInterpreter interpreter = interpreterConstructor.get();
