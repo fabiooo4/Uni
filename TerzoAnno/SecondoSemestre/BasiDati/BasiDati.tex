@@ -4132,18 +4132,290 @@ La seguente tabella mostra le possibili combinazioni di anomalie che si possono 
 \begin{itemize}
   \item Tutti i livelli richiedono il 2PL stretto per le scritture
 
-  \item \textbf{Serializable}: Richiede il 2PL stretto anche per le scritture e applica
-    il lock di predicato (cioè blocca tutte le risorse che soddisfano un certo
-    predicato) per evitare l'inserimento fantasma
+  \item \textbf{Serializable}: Richiede il 2PL stretto anche per le letture e applica
+    il \textbf{lock sulle tabelle} per evitare l'inserimento fantasma
 
-  \item \textbf{Repeatable read}: Applica il 2PL stretto per tutti i lock in lettura 
-    applicati a livello di tupla e non di tabella. Consente inserimenti e quindi non
-    evita l'anomalia di inserimento fantasma
+  \item \textbf{Repeatable read}: Applica il 2PL stretto anche per le letture, ma
+    applica i \textbf{lock a livello di tupla} e non di tabella. Consente inserimenti
+    e quindi non evita l'anomalia di inserimento fantasma.
+    \textbf{Attenzione}: in PostgreSQL la repeatable read è implementata in modo più stringente
+    che evita anche l'anomalia di inserimento fantasma
 
   \item \textbf{Read committed}: Richiede lock condivisi per le letture, ma non il
     2PL stretto
 
   \item \textbf{Read uncommitted}: Non applica lock in lettura
 \end{itemize}
+
+\section{Ottimizzazione}
+Siccome SQL è un linguaggio dichiarativo, l'ottimizzatore deve trovare un'espressione
+equivalente in un linguaggio procedurale (ad esempio l'algebra relazionale) per
+generare un piano di esecuzione.
+
+\subsection{Compilazione della query}
+Data una query:
+\begin{enumerate}
+  \item Il primo passo è quello di verificare che sia scritta correttamente,
+    quindi si esegue un'analisi lessicale e sintattica
+
+  \item Successivamente si
+    svolge l'\textbf{ottimizzazione algebrica} che si basa sulle regole dell'algebra
+    relazionale:
+    \begin{itemize}
+      \item \textbf{Anticipo delle selezioni}
+      \item \textbf{Anticipo delle proiezioni}
+    \end{itemize}
+    L'ottimizzazione algebrica è indipendente dal contenuto del database.
+
+  \item Dopo l'ottimizzazione algebrica si esegue l'\textbf{ottimizzazione dipendente
+    dai metodi accesso} che si basa sulle statistiche e sulle strutture fisiche
+    (profili delle tabelle)
+
+  \item Infine si genera un piano di esecuzione che verrà eseguito per ottenere
+    il risultato della query
+\end{enumerate}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{ottimizzazione_query}
+  \caption{Ottimizzazione algebrica di una query}
+\end{figure}
+
+\subsection{Ottimizzazione dipendente dai metodi di accesso}
+Per ottimizzare in base ai metodi di accesso bisogna tenere in considerazione
+le operazioni tipiche di accesso supportate dal DBMS, che sono:
+\begin{itemize}
+  \item Scansione delle tuple di una tabella
+  \item Ordinamento delle tuple
+  \item Accesso diretto tramite indice
+  \item Join con diverse implementazioni
+\end{itemize}
+
+\subsubsection{Scansione sequenziale}
+Questa operazione viene fatta molto spesso e contestualmente ad altre operazioni:
+\begin{itemize}
+  \item Scansione + proiezione senza eliminazione di duplicati
+  \item Scansione + selezione in base ad un predicato semplice
+  \item Scansione + inserimento o cancellazione o modifica
+\end{itemize}
+Il costo della scansione sequenziale è definito come il numero di pagine della
+relazione \( R \):
+\[
+  NP(R)
+\] 
+dove \( NP() \) è il numero di pagine.
+
+\subsubsection{Ordinamento}
+L'ordinamento viene usato per:
+\begin{itemize}
+  \item Ordinare il risultato di una query tramite la clausola \texttt{ORDER BY}
+  \item Eliminare i duplicati (implica passare per un ordinamento) tramite
+    l'operatore \texttt{SELECT DISTINCT}
+  \item Raggruppare tuple tramite l'operatore \texttt{GROUP BY}
+\end{itemize}
+L'ordinamento è \textbf{eseguito su memoria secondaria} utilizzando l'algoritmo
+\textbf{Z-way Sort-Merge} che si basa su due fasi:
+\begin{enumerate}
+  \item \textbf{Sort interno}: Si legge una pagina alla volta; tutte le tuple di ogni
+    pagina vengono ordinate facendo uso di un algoritmo di sort interno
+    (es. QuickSort); ogni pagina così ordinata, detta anche \textbf{"run"}, viene
+    scritta su memoria secondaria in un file temporaneo
+
+  \item \textbf{Merge}: Applicando uno o più passi di merge, le run vengono unite,
+    fino a produrre un'unica run ordinata.
+\end{enumerate}
+Il costo di questo algoritmo, considerando solo gli accessi alla memoria secondaria,
+e considerando \( Z = 2 \) e \( NB = 3 \) è:
+\begin{itemize}
+  \item Nella fase di sort interno, si leggono \( NP(R) \) pagine e si scrivono
+    \( NP(R) \) pagine, quindi \( 2 \cdot NP(R) \)
+  \item Ad ogni passo di merge, si leggono \( NP(R) \) pagine e si scrivono \( NP(R) \)
+    pagine, quindi \( 2 \cdot NP(R) \)
+  \item Il numero di passi di merge è:
+    \[
+      \left\lceil \log_2(NP(R)) \right\rceil 
+    \] 
+\end{itemize}
+Quindi il costo complessivo è:
+\[
+  2 \times NP(R) \times \left( \left\lceil \log_2(NP(R)) \right\rceil + 1 \right) 
+\] 
+
+
+\begin{example}
+  Un esempio di ordinamento con l'algoritmo Z-way Sort-Merge è il seguente:
+
+  \vspace{1em}
+  \noindent
+  Supponiamo di dover ordinare una tabella che composta di \( NP \) pagine e di
+  avere a disposizione solo \( NB \) buffer in memoria centrale, con \( NB < NP \).
+
+  Per semplicità consideriamo il caso base a due vie (\(Z = 2\)), e supponiamo di
+  avere a disposizione solo 3 buffer in memoria centrale (\(NB = 3\)).
+
+  Si hanno 4 pagine composte da 3 tuple ciascuna, e si vuole ordinare in base alla
+  prima colonna:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{esempio_z_way_sort_merge}
+    \caption{Esempio di ordinamento con Z-way Sort-Merge}
+  \end{figure}
+
+  \noindent
+  Durante il sort interno si carica e ordina una pagina alla volta ottenendo
+  delle run ordinate. Si ottengono 4 run ordinate che passano alla fase di
+  merge a due vie, siccome \( z = 2 \), e si ottengono 2 run ordinate che 
+  vengono mergeate ulteriormente fino ad ottenere un'unica run ordinata.
+
+  Con \( NB = 3 \) si hanno solamente 3 buffer a disposizione, quindi si associano
+  2 buffer alle run da mergeare e 1 buffer per l'output.
+  Si legge la prima pagina da ciascuna run e si genera la prima pagina dell'output,
+  quando tutti i record di una pagina di run sono stati consumati, si legge un'altra
+  pagina della run:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{esempio_z_way_sort_merge_2}
+    \caption{Esempio di utilizzo dei buffer}
+  \end{figure}
+\end{example}
+
+\subsubsection{Accesso diretto tramite indice}
+Le operazioni che fanno uso dell'indice sono le selezioni con:
+\begin{itemize}
+  \item Condizione atomica di uguaglianza (\( A = v \)). Può usare gli indici:
+    \begin{itemize}
+      \item B+ tree
+      \item Hash
+    \end{itemize}
+
+  \item Condizione di range (\( A \ge v_1 \land A \le v_2 \)). Può usare l'indice
+    B+ tree, ma non l'indice hash perchè valori simili avrebbero valori molto diversi.
+
+  \item Condizioni costruite da \textbf{congiunzione} di condizioni di uguaglianza
+    (\( A = v_1 \land B = v_2 \)). In questo caso si sceglie l'indice in base alla
+    \textbf{condizione più selettiva}, l'altra condizione viene verificata
+    filtrando i record restituiti dall'indice.
+
+  \item Condizioni costruite da \textbf{disgiunzione} di condizioni di uguaglianza
+    (\( A = v_1 \lor B = v_2 \)). In questo caso si possono utilizzare più
+    indici in parallelo e poi fare il merge o unione dei risultati.
+\end{itemize}
+
+\subsubsection{Join}
+Il JOIN è l'operazione più costosa da eseguire, quindi l'ottimizzatore è particolarmente
+attento ad ottimizzare questa operazione, tanto da prevedere diversi algoritmi:
+\begin{itemize}
+  \item \textbf{Nested loop join}: è l'algoritmo più diffuso e funziona in tutti i casi
+  \item \textbf{Merge scan join}
+  \item \textbf{Hash-based join}
+\end{itemize}
+Dal punto di vista logico il join è commutativo, ma dal punto di vista fisico c'è
+una differenza sostanziale tra \( A \bowtie B \) e \( B \bowtie A \) che cambia
+le prestazioni.
+
+\subsubsection*{Nested loop join}
+Date 2 relazioni in input \( R \) e \( S \) tra cui è definito il predicato di JOIN
+\( PJ \), distinguiamo:
+\begin{itemize}
+  \item \textbf{Relazione esterna} \( R \)
+  \item \textbf{Relazione interna} \( S \)
+\end{itemize}
+L'algoritmo funziona come segue:
+\begin{lstlisting}[escapechar=|, basicstyle=\rmfamily, columns=fullflexible, keepspaces=true]
+|\( \forall  \) tupla \( t_R \) di \( R \)| { // Relazione esterna
+  |\( \forall  \) tupla \( t_S \) di \( S \)| { // Relazione interna
+    se la coppia |\( (t_R, t_S) \)| soddisfa |\( PJ \)|
+    allora aggiungi |\( (t_R, t_S) \)| al risultato
+  }
+}
+\end{lstlisting}
+
+\begin{example}
+  Consideriamo il seguente esempio di join tra le relazioni \( R \) e \( S \):
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{esempio_nested_loop_join}
+    \caption{Esempio di nested loop join}
+  \end{figure}
+  \( R \) deve verificare per ogni riga di \( S \) che il predicato sia verificato.
+\end{example}
+
+\noindent
+Per calcolare il costo di nested loop join bisogna conoscere la dimensione del buffer,
+quindi consideriamo 1 pagina per caricare \( R \) e 1 pagina per caricare \( S \):
+\begin{itemize}
+  \item Bisogna leggere \( R \) completamente una volta
+  \item Per ogni riga di \( R \) (\( NR(R) = \#RIGHE\; R \)) bisogna leggere completamente
+    \( S \) 
+\end{itemize}
+Il costo totale è quindi:
+\[
+  NP(R) + NR(R) \cdot NP(S)
+\] 
+A seconda del numero di righe di \( R \) cambia il numero di volte che bisogna leggere
+\( NP(S) \), quindi la relazione esterna deve essere quella più piccola
+per minimizzare il costo.
+
+\subsubsection*{Nested loop join con indice}
+Data una relazione esterna \( R \) e una interna \( S \), si ha che la scansione
+completa di \( S \) può essere sostituita dalla scansione basata sull'indice
+costruito sugli attributi di join di \( S \).
+\begin{example}
+  Consideriamo il seguente esempio di nested loop join con indice tra le relazioni
+  \( R \) e \( S \):
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{esempio_nested_loop_join_indice}
+    \caption{Esempio di nested loop join con indice}
+  \end{figure}
+  \noindent
+  L'indice su \( S.A \) permette di caricare solo i blocchi di \( S \) che contengono
+  l'attributo \( A = 22 \).
+\end{example}
+
+\vspace{1em}
+\noindent
+Se come indice si usasse un B+tree, il costo sarebbe:
+\[
+  NP(R) + NR(R) \cdot \left( ProfonditaIndice + \frac{NR(S)}{VAL(A,S)} \right) 
+\] 
+La tabella \( R \) deve comunque essere caricata tutta (\( NP(R) \)) e rimane invariato anche il
+numero di volte che si esegue il ciclo esterno (\( NR(R) \)). Ciò che cambia
+è il numero di blocchi/pagine di \( S \) che si devono caricare per ogni riga di \( R \)
+(\( \left( ProfonditaIndice + \frac{NR(S)}{VAL(A,S)} \right) \)).
+L'idea è invece di caricare tutte le pagine di \( S \) si caricano solo quelle che
+contengono \( S.A = R.A \).
+\begin{itemize}
+  \item 
+    \( \frac{NR(S)}{VAL(A,S)} \) rappresenta la stima di quanti
+    blocchi di \( S \) contengono \( A \) uguale al valore interessato; questa stima
+    è anche chiamata \textbf{selettività} dell'attributo \( A \).
+
+  \item \( VAL(A,S) \) è il numero di valori distinti di \( A \) che compaiono
+    in \( S \) 
+\end{itemize}
+
+\begin{example}
+  Supponiamo che \( A = Nome\_Regioni \), quindi il numero di possibili valori di
+  \( A \) è 21. Consideriamo:
+  \begin{itemize}
+    \item \( NR(S) = 21000 \) 
+    \item Il numero di righe per ogni regione è:
+      \[
+        \frac{NR(S)}{VAL(A,S)} = \frac{21000}{21} = 1000
+      \] 
+      quindi si ha l'assunzione che il dato sia uniforme, cioè che ci siano più o
+      meno lo stesso numero di righe per ogni regione
+    \item Nel caso pessimo si ha 1 blocco/pagina per riga.
+  \end{itemize}
+  Quindi il costo del nested loop join con indice è:
+  \[
+    \begin{aligned}
+      &NP(R) + NR(R) \cdot \left( ProfonditaIndice + \frac{NR(S)}{VAL(A,S)} \right) =\\
+      &NP(R) + NR(R) \cdot \left( ProfonditaIndice + 1000 \right)
+    \end{aligned}
+  \]
+
+\end{example}
+
 
 \end{document}
