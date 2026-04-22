@@ -5140,16 +5140,197 @@ Definiamo la semantica dei blocchi con le seguenti regole:
 \end{itemize}
 
 \begin{example}
+  \newcommand\ruleCol{Sepia}
   Consideriamo il seguente blocco:
   \[
     \underbrace{\texttt{var x: int = 3}}_{d}
     \texttt{;}
     \underbrace{\texttt{x := x+1;}}_{c}
   \] 
-  % TODO
   \begin{itemize}
-    \item \textbf{Semantica statica}:
-    \item \textbf{Semantica dinamica}:
+    \item \textbf{Semantica statica}: Verifichiamo che il blocco
+      sia ben formato usando la seguente formula:
+      \begin{equation}
+        \color{\ruleCol}
+        \begin{prooftree}
+          \hypo{ 
+            \vdash d : \Delta
+          }
+          \hypo{ 
+            \Delta \vdash c
+          }
+          \infer2{ 
+            \vdash d;c
+          }
+        \end{prooftree}
+        \label{eq:regola_dichiarazione_ben_formata}
+      \end{equation}
+      Per poterla applicare bisogna prima controllare che entrambe le dichiarazioni
+      siano ben formate:
+      \begin{enumerate}
+        \item Controlliamo che la dichiarazione \( d \) sia ben formata:
+          \[
+            \begin{prooftree}
+              \hypo{ 
+                \vdash 3 : \texttt{\textcolor{Blue}{int}}
+              }
+              \infer1{ 
+                \vdash \texttt{vad x: \textcolor{Blue}{int} = 3}
+                \to \left[ x \mapsto \texttt{\textcolor{Blue}{int}loc} \right]
+                = \Delta
+              }
+            \end{prooftree}
+          \] 
+
+        \item Controlliamo che la dichiarazione \( c \) sia ben formata, per farlo
+          bisogna prima verificare che sia ben formata l'espressione \texttt{x+1}:
+          \begin{enumerate}
+            \item Verifichiamo \texttt{x+1}:
+              \[
+                \begin{prooftree}
+                  \hypo{ 
+                    \left[ x \mapsto \texttt{intloc} \right] \vdash x : \texttt{\textcolor{Blue}{int}}
+                  }
+                  \hypo{ 
+                    \Delta \vdash 1 : \texttt{\textcolor{Blue}{int}}
+                  }
+                  \infer2[\( 
+                    \Delta(x) = \texttt{\textcolor{Blue}{int}loc}
+                  \)]
+                  { 
+                    \left[ x \mapsto \texttt{intloc} \right] \vdash x+1 : 
+                    \texttt{\textcolor{Blue}{int}}
+                  }
+                \end{prooftree}
+              \]
+          \end{enumerate}
+          Ora possiamo verificare che \( c \) sia ben formata:
+          \[
+            \begin{prooftree}
+              \hypo{ 
+                \left[ x \mapsto \texttt{intloc} \right] x+1 : \texttt{\textcolor{Blue}{int}}
+              }
+              \infer1[\( 
+              \Delta(x) = \texttt{\textcolor{Blue}{int}loc}
+              \)]{
+                \left[ x \mapsto \texttt{intloc} \right] \vdash
+                \texttt{x := x+1}
+              }
+            \end{prooftree}
+          \] 
+      \end{enumerate}
+      Ora che abbiamo controllato che le dichiarazioni sono ben formate possiamo
+      applicare la regola \ref{eq:regola_dichiarazione_ben_formata}:
+      \[
+        \begin{prooftree}
+          \hypo{ 
+            \vdash d : \left[ x \mapsto \texttt{intloc} \right]
+          }
+          \hypo{ 
+            \left[ x \mapsto \texttt{intloc} \right] \vdash c
+          }
+          \infer2{ 
+            \vdash d;c
+          }
+        \end{prooftree}
+      \] 
+      Abbiamo quindi mostrato che il blocco è ben formato
+    \item \textbf{Semantica dinamica}: Eseguiamo il blocco partendo da una memoria
+      iniziale vuota.
+      \begin{enumerate}
+        \item Per prima cosa eseguiamo la dichiarazione variabile \( d \):
+          \[
+            \rho \vdash \left< \texttt{var x: int = 3}, \varnothing \right>
+            \to_c
+            \left< \left[ x \mapsto l_x \right], \varnothing\left[ l_x \mapsto 3 \right] = \sigma_1 \right>
+          \] 
+
+        \item Ora eseguiamo il comando \( c \) usando la nuova memoria \( \sigma_1 \),
+          ma per prima cosa bisogna valutare l'espressione \texttt{x+1}:
+          \begin{enumerate}
+            \item Valutiamo \texttt{x+1}:
+              \[
+                \begin{prooftree}
+                  \hypo{ 
+                    \rho \vdash \left< x, \sigma_1 \right>
+                    \to_e
+                    \left< 3, \sigma_1 \right>
+                  }
+                  \hypo{ 
+                    \rho \vdash \left< 1, \sigma_1 \right>
+                  }
+                  \infer2[\( 
+                    \sigma_1(\rho(x)) = 3
+                  \)]{
+                    \rho \vdash \left< x+1, \sigma_1 \right>
+                    \to_e
+                    \left< 3 + 1, \sigma_1 \right>
+                  }
+                \end{prooftree}
+              \] 
+              \[
+                \rho \vdash \left< 3 + 1, \sigma_1 \right>
+                \to_e
+                \left< 4, \sigma_1 \right>
+              \] 
+          \end{enumerate}
+          Ora possiamo eseguire il comando \( c \):
+          \[
+            \begin{prooftree}
+              \hypo{ 
+                \rho \vdash \left< x+1, \sigma_1 \right>
+                \to^*_e
+                \left< 4, \sigma_1 \right>
+              }
+              \infer1{ 
+                \rho \vdash \left< \texttt{x := x+1}, \sigma_1 \right>
+                \to_c
+                \left< \texttt{x := 4}, \sigma_1 \right>
+              }
+            \end{prooftree}
+          \] 
+          Applichiamo l'assioma per l'assegnamento:
+          \[
+            \rho \vdash \left< \texttt{x := 4}, \sigma_1 \right>
+            \to_c
+            \sigma_1[l_x \mapsto 4] = \left[ l_x \mapsto 4 \right] = \sigma_2
+          \] 
+      \end{enumerate}
+      Dopo aver eseguito \( d \) e \( c \) possiamo eseguire il blocco completo:
+      \begin{enumerate}
+        \item Eseguiamo prima \( d \) nel blocco:
+          \[
+            \begin{prooftree}
+              \hypo{ 
+                \rho \vdash \left< d, \varnothing \right>
+                \to_c^*
+                \left< \left[ x \mapsto l_x \right], \varnothing\left[ l_x \mapsto 3 \right] \right>
+              }
+              \infer1{ 
+                \rho \vdash \left< d;c, \varnothing \right>
+                \to_c
+                \left< \left[ x \mapsto l_x \right]; c, \varnothing\left[ l_x \mapsto 3 \right] \right>
+              }
+            \end{prooftree}
+          \] 
+
+        \item Infine eseguiamo il blocco completo:
+          \[
+            \begin{prooftree}
+              \hypo{ 
+                \rho[x \mapsto l_x] \vdash \left< c, \left[ l_x \mapsto 3 \right] \right>
+                \to_c^*
+                \left[ l_x \mapsto 4 \right]
+              }
+              \infer1{ 
+                \rho \vdash \left< \left[ x \mapsto l_x \right]; c,
+                \left[ l_x \mapsto 3 \right] \right>
+                \to_c
+                \left[ l_x \mapsto 4 \right]
+              }
+            \end{prooftree}
+          \] 
+      \end{enumerate}
   \end{itemize}
 \end{example}
 
@@ -5284,6 +5465,8 @@ Di conseguenza la regola di visibilità delle dichiarazioni
 \ref{sec:regola_visibilita_dichiarazioni} non è più sufficiente a risolvere i riferimenti
 quando si usano le procedure se la procedura ha un ambiente non locale.
 
+\vspace{1em}
+\noindent
 \begin{example}
   Nel seguente codice la variabile \texttt{x} è dichiarata correttamente, ma non
   sappiamo a quale dichiarazione la funzione fa riferimento:
@@ -5312,8 +5495,6 @@ può essere:
 \end{itemize}
 
 \subsubsection{Scoping statico}
-Lo scoping statico consiste nell'applicare la regola di visibilità usando come
-relazione di annidamento \textbf{quello di definizione}.
 \begin{example}
   Consideriamo il seguente codice:
 \begin{lstlisting}[language=C]
@@ -5344,18 +5525,56 @@ Non possiamo sapere se alla fine si ottiene \texttt{x = 1} (scoping dinamico) o
 \end{example}
 
 \noindent
-Consideriamo il seguente codice: % TODO
+Consideriamo il seguente codice:
 \begin{lstlisting}[escapechar=|, basicstyle=\ttfamily, columns=fullflexible, keepspaces=true]
-{
+def(P) {
   |\textcolor{Purple}{def(x)}|
-  |\textcolor{Blue}{def($P_1$)}|
+
+  |\color{Blue} def(\( P_1 \)) \{|
+    |\color{Cyan} def(\( P_{11} \)) \{|
+      |\color{Red} use(x)|
+    |\color{Cyan}\}|
+
+    |\color{Cyan} \( P_{11} \)()|
+  |\color{Blue}\}|
+
+  |\color{Green} def(\( P_2 \)) \{|
+    |\color{Purple} def(x)|
+
+    |\color{Blue} \( P_1 \)() |
+  |\color{Green}\}|
+
+  |\color{Green} \( P_2 \)() |
 }
 \end{lstlisting}
 Nella sequenza di \textbf{annidamento statico} (delle definizioni) \( P_{11} \)  non
 vede \( P_2 \), quindi l'uso di \( x \) in \( P_{11} \) si riferisce alla definizione
 di \( x \) in \( P_1 \).
 
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \node (eq) at (0, 0) {
+        \(
+          P: \left[ 
+            \begin{aligned}
+              &\color{Blue} P_1: \left[
+                \color{Cyan}\stackrel{\mathcolor{white}{A}}{P_{11}}: \left[
+                \right.
+              \right. \\
+              &\color{Green}P_2: \left[ \stackrel{\mathcolor{white}{A}}{P_{11}}  \right.
+            \end{aligned}
+          \right.
+        \) 
+      };
+
+    \draw[Red, -latex] (0.8,0.2) -- ++(-1, 0);
+  \end{tikzpicture}
+\end{figure}
+
 \noindent
+Lo scoping statico consiste nell'applicare la regola di visibilità usando come
+relazione di annidamento \textbf{quello di definizione}.
 \begin{itemize}
   \item Sequenza di definizione:
     \begin{figure}[H]
@@ -5370,6 +5589,7 @@ di \( x \) in \( P_1 \).
       \end{forest}
     \end{figure}
     \noindent
+    La visibilità di \( P_{11} \) è limitata a \( P_1 \).
     Grazie a questo la risoluzione dei riferimenti avviene a tempo di compilazione
   \item Sequenza di chiamate:
     \[
@@ -5569,11 +5789,41 @@ print(x);
 \end{example}
 
 \subsubsection{Scoping dinamico}
-Lo scoping dinamico consiste nell'applicare la regola di visibilità usando come
-"relazione di annidamento" quella della sequenza di chiamate.
-% TODO
+Consideriamo il seguente codice:
+\begin{lstlisting}[escapechar=|, basicstyle=\ttfamily, columns=fullflexible, keepspaces=true]
+def(P) {
+  |\textcolor{Purple}{def(x)}|
 
+  |\color{Blue} def(\( P_1 \)) \{|
+    |\color{Cyan} def(\( P_{11} \)) \{|
+      |\color{Red} use(x)|
+    |\color{Cyan}\}|
+
+    |\color{Cyan} \( P_{11} \)()|
+  |\color{Blue}\}|
+
+  |\color{Green} def(\( P_2 \)) \{|
+    |\color{Purple} def(x)|
+
+    |\color{Blue} \( P_1 \)() |
+  |\color{Green}\}|
+
+  |\color{Green} \( P_2 \)() |
+}
+\end{lstlisting}
+
+\noindent
+Lo scoping dinamico consiste nell'applicare la regola di visibilità usando come
+relazione di annidamento quella della \textbf{sequenza di chiamate}.
 \begin{itemize}
+  \item Sequenza di chiamate:
+    \[
+      P \to P_2 \to P_1 \to P_{11}
+    \] 
+    \( P_{11} \) cerca la definizione di \texttt{x} in \( P_1 \) e non la trova, quindi
+    cerca in \( P_2 \) e la trova, quindi utilizza quella definizione di \texttt{x} a
+    tempo di esecuzione
+
   \item Sequenza di definizione:
     \begin{figure}[H]
       \centering
@@ -5587,13 +5837,6 @@ Lo scoping dinamico consiste nell'applicare la regola di visibilità usando come
       \end{forest}
     \end{figure}
 
-  \item Sequenza di chiamate:
-    \[
-      P \to P_2 \to P_1 \to P_{11}
-    \] 
-    \( P_{11} \) cerca la definizione di \texttt{x} in \( P_1 \) e non la trova, quindi
-    cerca in \( P_2 \) e la trova, quindi utilizza quella definizione di \texttt{x} a
-    tempo di esecuzione
 \end{itemize}
 
 \noindent
@@ -5633,8 +5876,8 @@ quindi chiamate diverse possono fare riferimento a legami diversi.
   \end{itemize}
 \end{example}
 
-\subsubsection{Regole di passaggio di parametri}
-Il passaggio di parametri è la modalità con cui i parametri formali di una procedura
-vengono inizializzati con i parametri attuali durante la chiamata.
+% \subsubsection{Regole di passaggio di parametri}
+% Il passaggio di parametri è la modalità con cui i parametri formali di una procedura
+% vengono inizializzati con i parametri attuali durante la chiamata.
 
 \end{document}
