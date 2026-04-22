@@ -4417,5 +4417,154 @@ contengono \( S.A = R.A \).
 
 \end{example}
 
+\subsubsection*{Block nested-loop join}
+Il block nested-loop join è una variante del nested loop join in cui ciascuna pagina
+di \( S \) (tabella interna) viene letta per ogni pagina di \( R \) (tabella esterna),
+invece che per ogni riga di \( R \). Lo pseudocodice è il seguente:
+\begin{lstlisting}[escapechar=|, basicstyle=\rmfamily, columns=fullflexible, keepspaces=true]
+|\( \forall  \) pagina \( P_R \) di \( R \)| { // Relazione esterna
+  |\( \forall  \) pagina \( P_S \) di \( S \)| { // Relazione interna
+    |\( \forall  \) tupla \( t_R \) in \( P_R \)| {
+      |\( \forall  \) tupla \( t_S \) in \( P_S \)| {
+        se la coppia |\( (t_R, t_S) \)| soddisfa |\( PJ \)|
+        allora aggiungi |\( (t_R, t_S) \)| al risultato
+      }
+    }
+  }
+}
+\end{lstlisting}
+
+\noindent
+Il costo di esecuzione di questo algoritmo dipende dallo spazio a disposizione nei
+buffer. Supponiamo di avere 1 buffer per \( R \) e 1 buffer per \( S \), allora:
+\begin{itemize}
+  \item Bisogna leggere \( R \) completamente una volta, quindi \( NP(R) \)
+  \item Per ogni pagina di \( R \) (\( NP(R) \)) bisogna leggere completamente \( S \)
+    quindi \( NP(R) \cdot NP(S) \)
+\end{itemize}
+Il costo totale è quindi:
+\[
+  NP(R) + NP(R) \cdot NP(S)
+\] 
+
+\begin{example}
+  Consideriamo il seguente esempio di block nested-loop join tra le relazioni \( R \)
+  e \( S \):
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{esempio_block_nested_loop_join}
+    \caption{Esempio di block nested-loop join}
+  \end{figure}
+\end{example}
+
+\subsubsection*{Merge scan join}
+Il merge scan join è applicabile quando entrambi gli insiemi di tuple in input sono
+\textbf{ordinati} sugli attributi di join e il join è un \textbf{equi-join}
+(cioè il predicato di join è una condizione di uguaglianza).
+Ciò accade se per entrambe le relazioni \( R \) e \( S \) vale almeno una delle
+seguenti condizioni:
+\begin{itemize}
+  \item La relazione è fisicamente ordinata sugli attributi di join (file sequenziale
+    ordinato come struttura fisica).
+
+  \item Esiste un indice sugli attributi di join della tabella che consente una
+    scansione ordinata delle tuple.
+\end{itemize}
+
+\noindent
+La logica di questo algoritmo sfrutta il fatto che \textbf{entrambi gli input sono
+ordinati} per evitare di fare confronti inutili, e questo fa sì che il numero di
+letture totali sia:
+\[
+  NP(R) + NP(S)
+\] 
+se si accede sequenzialmente alle due relazioni ordinate fisicamente.
+\begin{itemize}
+  \item Con indici B+tree su entrambe relazioni il costo può arrivare al massimo (con
+    indici già nel buffer) a:
+    \[
+      NR(R) + NR(S)
+    \] 
+
+  \item Con una relazione ordinata e un solo indice il costo è al massimo:
+    \[
+      NP(R) + NR(S) \quad \text{(o viceversa)}
+    \] 
+\end{itemize}
+
+\begin{example}
+  Consideriamo il seguente esempio di merge scan join tra le relazioni \( R \) e \( S \):
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{esempio_merge_scan_join}
+    \caption{Esempio di merge scan join}
+  \end{figure}
+\end{example}
+
+\subsubsection*{Hash-based join}
+L'algoritmo di Hash Join, applicabile solo in caso di equi-join, non richiede né la
+presenza di indici né input ordinati, e risulta particolarmente vantaggioso in caso
+di relazioni molto grandi. L'idea su cui si basa l'Hash Join è semplice:
+Si suppone di avere a disposizione una funzione hash \( h \), che viene applicata agli
+attributi di join delle due relazioni (ad es. \( R.J \) e \( S.J \)).
+\begin{itemize}
+  \item Se \( t_R \) e \( t_S \) sono 2 tuple di \( R \) e \( S \), allora è possibile
+    che sia \( t_R.J = t_S.J \) solo se \( h(t_R.J) = h(t_S.J) \)
+
+  \item Se, viceversa, \( h(t_R.J) \neq h(t_S.J) \), allora sicuramente si ha
+    \( t_R.J \neq t_S.J \)
+\end{itemize}
+Da questa idea si hanno diverse implementazioni, che hanno in comune il fatto
+che \( R \) e \( S \) vengono partizionate sulla base dei valori della funzione di
+hash \( h \), e che la ricerca di \textbf{matching tuples} avviene solo tra
+partizioni relative allo stesso valore di \( h \).
+
+\vspace{1em}
+\noindent
+Il costo di questo algoritmo è:
+\begin{itemize}
+  \item Costruzione dell'hash map:
+    \[
+      NP(R) + NP(S)
+    \] 
+
+  \item Accesso alle matching tuples che nel caso pessimo può costare:
+    \[
+      NP(R) * NP(S)
+    \] 
+\end{itemize}
+
+\subsection{Scelta del piano di esecuzione}
+Data un'espressione ottimizzata in algebra i passi da seguire sono:
+\begin{enumerate}
+  \item Si generano \textbf{tutti i possibili} piani di esecuzione (alberi) alternativi
+    (o un sottoinsieme) ottenuti considerando le seguenti dimensioni:
+    \begin{itemize}
+      \item Operatori alternativi applicabili per l'accesso ai dati: ad esempio, scan
+        sequenziale o via indice
+
+      \item Operatori alternativi applicabili nei nodi: ad esempio, nested-loop join o
+        hash-based join
+
+      \item L'ordine delle operazioni da compiere (associatività)
+    \end{itemize}
+
+  \item Si valuta con \textbf{formule approssimate} il costo di ogni alternativa in
+    termini di accessi alla memoria secondaria richiesti (è una stima)
+
+  \item Si sceglie l'albero con il costo stimato minimo
+\end{enumerate}
+
+\vspace{1em}
+\noindent
+Nella valutazione delle stime di costo si tiene conto del profilo delle relazioni,
+solitamente memorizzato nel Data Dictionary e contenente per ogni relazione \( T \):
+\begin{itemize}
+  \item Stima della cardinalità (\#tuple): \( CARD(T) \)
+  \item Stima della dimensione di una tupla: \( SIZE(T) \)
+  \item Stima della dimensione di ciascun attributo \( A \): \( SIZE(A,T) \)
+  \item Stima del numero di valori distinti per ogni attributo \( A \): \( VAL(A,T) \)
+  \item Stima del valore massimo e minimo per ogni attributo \( A \): \( MAX(A,T) \) e \( MIN(A,T) \)
+\end{itemize}
 
 \end{document}
