@@ -2688,7 +2688,169 @@ while ( |\( X \neq \$ \)| ) { /* stack is not empty */
 Il bottom-up parsing è un metodo di parsing più generale rispetto al top down ed è
 quello più utilizzato perchè non richiede grammatiche left factored. L'idea di
 base è quella di ridurre le stringhe al simbolo di partenza \textbf{invertendo le
-produzioni}
+produzioni} (le produzioni inverse si dicono \textbf{riduzioni}). 
+\begin{example}
+  Consideriamo la grammatica:
+  \[
+    \begin{aligned}
+      &E \to T + E \mid T \\
+      &T \to \texttt{int} \mid \texttt{int * } T \mid (E)
+    \end{aligned}
+  \] 
+  Un esempio di riduzioni per la stringa \texttt{int + int * int} è il seguente:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{esempio_bottom_up_parsing}
+    \caption{Esempio di riduzioni per la stringa \texttt{int + int * int}}
+  \end{figure}
+\end{example}
+
+\subsubsection{Shift-reduce parsing}
+Un bottom-up parser traccia una \textbf{rightmost derivation in reverse} e questo
+implica che la parte a destra rispetto a dove il parser si trova è composta da soli
+terminali:
+\begin{theorem}
+  Sia \( \alpha \beta \omega \) un passo di un bottom-up parsing. Ipotizzando che
+  la produzione successiva sia \( A \to \beta \), allora \( \omega \) è una stringa
+  di soli terminali.
+\end{theorem}
+Nel bottom-up parsing si utilizza un carattere per indicare la posizione del parser:
+\( \cdot \), ad esempio:
+\[
+  \alpha X \cdot \omega
+\] 
+
+\vspace{1em}
+\noindent
+Ad ogni passo di parsing una specifica sottostringa che matcha la parte destra di
+una produzione è \textbf{sostituita dal non terminale} a sinistra della stessa
+produzione. Bisogna capire \textbf{quando} e \textbf{quale produzione} applicare
+ad ogni passo e per farlo si introducono due azioni:
+\begin{itemize}
+  \item \textbf{Shift}: si sposta un \textbf{terminale} a sinistra del \( \cdot  \) 
+    nella sottostringa che è stata processata, ad esempio:
+    \[
+      ABC \cdot xyz \Rightarrow ABCx \cdot yz
+    \] 
+
+  \item \textbf{Reduce}: si applica una \textbf{riduzione} (produzione inversa) alla
+    sottostringa più a destra della stringa processata (a sinistra del \( \cdot  \))
+    che matcha la parte destra di una produzione, ad esempio data la produzione
+    \( A \to xy \) si ha:
+    \[
+      Cbxy \cdot ijk \Rightarrow CbA \cdot ijk
+    \] 
+\end{itemize}
+\begin{example}
+  Un esempio di applicazione delle azioni di shift e reduce per la stringa
+  \texttt{int * int + int} della grammatica dell'esempio precedente è il seguente:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{esempio_shift_reduce_parsing}
+    \caption{Esempio di applicazione delle azioni di shift e reduce per la stringa
+    \texttt{int * int + int}}
+  \end{figure}
+\end{example}
+
+\vspace{1em}
+\noindent
+Per implementare un shift-reduce parser si utilizza uno stack dove la cima rappresenta
+il \( \cdot \), cioè il punto in cui il parser si trova.
+\begin{itemize}
+  \item Lo shift pusha un terminale sullo stack
+  \item La reduce
+    \begin{itemize}
+      \item Poppa 0 o più simboli dallo stack (produzione rhs, right hand side)
+      \item Pusha un non terminale sullo stack (produzione lhs, left hand side)
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{Scegliere le azioni di shift e reduce}
+La parte più difficile del bottom-up parsing è capire quando applicare uno shift
+e quando applicare una reduce.
+
+\begin{example}
+  Consideriamo la grammatica:
+  \[
+    \begin{aligned}
+      &E \to T \mid T + E \\
+      &T \to \texttt{int} \mid \texttt{int * } T \mid (E)
+    \end{aligned}
+  \] 
+  e il seguente passo di parsing della stringa \texttt{int * int + int}:
+  \[
+    \texttt{int} \cdot \texttt{ * int + int}
+  \] 
+  In questo caso si potrebbe ridurre usando la produzione \( T \to \texttt{int} \)
+  e ottenere:
+  \[
+    T \cdot \texttt{* int + int}
+  \] 
+  ma questo \textbf{è sbagliato} perchè da questo stato non si può più ridurre
+  fino al simbolo iniziale \( E \).
+\end{example}
+Si vuole quindi applicare la reduce \textbf{soltanto se il risultato si può ridurre
+al simbolo iniziale} (handle), altrimenti si applica lo shift.
+
+\subsubsection{Riconoscere gli handle}
+\begin{definition}[Handle]
+  Un \textbf{handle} è una sottostringa che matcha la parte destra di una produzione, e
+  la cui riduzione rappresenta un passo lungo la reverse di una derivazione destra,
+  cioè che ammette ulteriori riduzioni fino ad arrivare al simbolo iniziale.
+
+  \noindent
+  Ad esempio, data la derivazione destra:
+  \[
+    S \Rightarrow^* \alpha A \omega \Rightarrow \alpha \beta \omega
+  \] 
+  e la produzione \( A \to \beta \), allora la sottostringa \( \beta \) è un handle
+  di \( \alpha \beta \omega \):
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{handle}
+    \caption{Esempio di handle}
+  \end{figure}
+\end{definition}
+
+\begin{theorem}
+  Se la grammatica non è ambigua, allora ogni forma sentenziale destra di una grammatica
+  ha esattamente un handle.
+\end{theorem}
+
+\noindent
+Non esistono algoritmi efficienti per riconoscere gli handle, ma esistono delle buone
+euristiche per riconoscerli e su \textbf{alcuni tipi} di grammatiche le euristiche riconoscono
+\textbf{sempre} gli handle.
+
+In un bottom-up parser, durante una scansione da sinistra a destra della stringa di
+input, il parser esegue zero o più shift fino a quando è pronto per ridurre una
+stringa di simboli della grammatica sulla cima dello stack. A quel punto, riduce al
+non terminale a sinistra della produzione appropriata. \textbf{L'handle sarà
+eventualmente sempre in cima allo stack, mai all'interno} e si hanno due casi:
+\begin{enumerate}
+  \item Caso 1: Si ha una derivazione del tipo:
+    \[
+      S \Rightarrow^*_rm \alpha A z \Rightarrow_rm \alpha \beta B y z
+      \Rightarrow_rm \alpha \beta \gamma y z
+    \] 
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.5\textwidth]{handle_caso1}
+      \caption{Albero della derivazione per il caso 1}
+    \end{figure}
+
+  \item Caso 2: Si ha una derivazione del tipo:
+    \[
+      S \Rightarrow^*_rm \alpha B x A z \Rightarrow_rm \alpha B x y z
+      \Rightarrow_rm \alpha \gamma x y z
+    \] 
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.5\textwidth]{handle_caso2}
+      \caption{Albero della derivazione per il caso 2}
+    \end{figure}
+\end{enumerate}
+% slide 19
 
 % TODO: Slide 52 ha la tabella sbagliata, manca il terminale b e:
 % Per I_3 si ha R3 per il terminale b
