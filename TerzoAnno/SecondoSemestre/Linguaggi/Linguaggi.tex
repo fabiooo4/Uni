@@ -5493,6 +5493,9 @@ può essere:
   \item \textbf{Statico}: l'ambiente è quello della definizione
   \item \textbf{Dinamico}: l'ambiente è quello della chiamata
 \end{itemize}
+Le regole di scoping quindi servono per risolvere riferimenti \textbf{non locali}
+presenti in procedure, ovvero dove il contesto di definizione può non
+coincidere con il contesto di esecuzione.
 
 \subsubsection{Scoping statico}
 \begin{example}
@@ -5562,7 +5565,7 @@ di \( x \) in \( P_1 \).
                 \color{Cyan}\stackrel{\mathcolor{white}{A}}{P_{11}}: \left[
                 \right.
               \right. \\
-              &\color{Green}P_2: \left[ \stackrel{\mathcolor{white}{A}}{P_{11}}  \right.
+              &\color{Green}P_2: \left[ \stackrel{\mathcolor{white}{A}}{\mathcolor{white}{P}}  \right.
             \end{aligned}
           \right.
         \) 
@@ -5644,7 +5647,7 @@ Lo scoping statico:
   \begin{enumerate}
     \item JavaScript:
       \begin{itemize}
-        \item 
+        \item Esempio 1
 \begin{lstlisting}
 var n = 12;
 
@@ -5665,7 +5668,7 @@ console.log(n);
 47
 \end{lstlisting}
 
-        \item 
+        \item Esempio 2
 \begin{lstlisting}
 var n = 12;
 
@@ -5689,7 +5692,7 @@ console.log(n);
       \end{itemize}
       In entrambi i casi viene sovrascritta la variabile \texttt{n} globale
       \begin{itemize}
-        \item 
+        \item Esempio 3
 \begin{lstlisting}
 var n = 12;
 
@@ -5718,7 +5721,7 @@ console.log(n);
 
     \item Python:
       \begin{itemize}
-        \item 
+        \item Esempio 1
 \begin{lstlisting}[language=Python]
 n = 12;
 
@@ -5740,7 +5743,7 @@ print(n);
 12
 \end{lstlisting}
 
-        \item 
+        \item Esempio 2
 \begin{lstlisting}[language=Python]
 n = 12;
 
@@ -5763,7 +5766,7 @@ print(n);
 13
 \end{lstlisting}
 
-        \item 
+        \item Esempio 3
 \begin{lstlisting}[language=Python]
 x = 4;
 z = 3;
@@ -5787,6 +5790,12 @@ print(x);
       Anche python utilizza scoping statico
   \end{enumerate}
 \end{example}
+
+\vspace{1em}
+\noindent
+Lo scoping statico è più difficile da implementare, ma è più efficiente e
+garantisce una maggiore comprensibilità del codice, inoltre è calcolabile
+a tempo di compilazione.
 
 \subsubsection{Scoping dinamico}
 Consideriamo il seguente codice:
@@ -5856,9 +5865,9 @@ quindi chiamate diverse possono fare riferimento a legami diversi.
   write(x); // 4
 
   {
-    int x = 0;
-    pippo(4);
-    write(x); // 5
+    int x = 0; // <-+<+
+    pippo(4);  // --+ |
+    write(x);  // 5 --+
   }
   write(x); // 4
 }
@@ -5875,6 +5884,115 @@ quindi chiamate diverse possono fare riferimento a legami diversi.
     \item L'ultima write stampa il valore di \texttt{x} globale, quindi \texttt{4}
   \end{itemize}
 \end{example}
+Le cause che rendono due risultati diversi in base allo scoping sono:
+\begin{itemize}
+  \item Il codice contiene una procedura con un ambiente non locale
+  \item Esistono diverse definizioni di questi riferimenti non locali nel
+    codice
+\end{itemize}
+
+\begin{example}
+  Alcuni esempi di scoping dinamico in linguaggi di programmazione comuni sono i seguenti:
+  \begin{enumerate}
+    \item Lisp:
+      \begin{itemize}
+        \item Esempio 1
+\begin{lstlisting}
+(defvar n 12)
+
+(defun addn () (+ n 30))
+
+(defun setn () 
+  (let ((n 17))
+    (print (addn)))
+)
+
+(setn)
+(print n)
+\end{lstlisting}
+          In output si ottiene:
+\begin{lstlisting}
+47
+12
+\end{lstlisting}
+
+        \item Esempio 2
+\begin{lstlisting}
+(defvar x 4)
+(defvar z 3)
+
+(defun f (y) (* x y))
+
+(let ((x 5))
+  (print (+ (f z) x)))
+
+(print x)
+\end{lstlisting}
+          In output si ottiene:
+\begin{lstlisting}
+20
+4
+\end{lstlisting}
+      \end{itemize}
+
+    \item Perl:
+      \begin{itemize}
+        \item Esempio 1
+\begin{lstlisting}
+$n = 12;
+
+sub addn() {return $n + 30};
+
+sub setn() {
+    $n = 17;
+    $n = addn();
+    print $n
+};
+
+setn();
+
+print ' ';
+print $n;
+\end{lstlisting}
+    In output si ottiene:
+\begin{lstlisting}
+47 47
+\end{lstlisting}
+          In questo codice non c'è alcun tipo di scoping perchè le variabili sono tutte globali.
+          Per avere variabili locali bisogna utilizzare la parola chiave \texttt{local}.
+
+        \item Esempio 2
+\begin{lstlisting}
+$n = 12;
+
+sub addn() {return $n + 30};
+
+sub setn() {
+    local $n = 17;
+    $n = addn();
+    print $n
+};
+
+setn();
+
+print ' ';
+print $n;
+\end{lstlisting}
+    In output si ottiene:
+\begin{lstlisting}
+47 12
+\end{lstlisting}
+          Se si forza la località delle variabili si ottiene scoping dinamico.
+      \end{itemize}
+  \end{enumerate}
+\end{example}
+
+\vspace{1em}
+\noindent
+Lo scoping dinamico ha un'implementazione più semplice, ma rende il codice
+meno leggibile e siccome è eseguito a tempo di esecuzione è più difficile 
+fare analisi statica del codice.
+
 
 % \subsubsection{Regole di passaggio di parametri}
 % Il passaggio di parametri è la modalità con cui i parametri formali di una procedura
