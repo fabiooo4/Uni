@@ -19,7 +19,7 @@ public class IntVarExprInterpreter extends IntVarExprBaseVisitor<Integer> {
 
   @Override
   public Integer visitMain(IntVarExprParser.MainContext ctx) {
-    return visit(ctx.exp());
+    return visit(ctx.prog());
   }
 
   @Override
@@ -97,6 +97,8 @@ public class IntVarExprInterpreter extends IntVarExprBaseVisitor<Integer> {
     Integer val = visit(ctx.exp());
 
     memory.put(varName, val);
+
+    visit(ctx.decl());
 
     return val;
   }
