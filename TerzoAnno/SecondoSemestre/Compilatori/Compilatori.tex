@@ -2839,6 +2839,20 @@ eventualmente sempre in cima allo stack, mai all'interno} e si hanno due casi:
       \caption{Albero della derivazione per il caso 1}
     \end{figure}
 
+    Consideriamo un parser nella configurazione:
+    \[
+        \alpha \beta \gamma \cdot y z
+    \] 
+    In questo caso, si riduce l'handle \( \gamma  \) a \( B \) e si ottiene:
+    \[
+        \alpha \beta B \cdot y z
+    \] 
+    Ora il parser esegue lo shift di \( y \) e si ottiene:
+    \[
+        \alpha \beta B y \cdot z
+    \] 
+    Con l'handle \( \beta B y \) in cima allo stack si può ridurre ad \( A \).
+
   \item Caso 2: Si ha una derivazione del tipo:
     \[
       S \Rightarrow^*_rm \alpha B x A z \Rightarrow_rm \alpha B x y z
@@ -2849,15 +2863,376 @@ eventualmente sempre in cima allo stack, mai all'interno} e si hanno due casi:
       \includegraphics[width=0.5\textwidth]{handle_caso2}
       \caption{Albero della derivazione per il caso 2}
     \end{figure}
-\end{enumerate}
-% slide 19
 
-% TODO: Slide 52 ha la tabella sbagliata, manca il terminale b e:
-% Per I_3 si ha R3 per il terminale b
-% Per I_4 si ha R1 per il terminale $
-% Per I_3 si ha R2 per il terminale $
-% Tutte le riduzioni si fanno per i FOLLOW(state) e si effettua una reduce quando
-% il pallino è alla fine della stringa
+    Consideriamo un parser nella configurazione:
+    \[
+      \alpha \gamma \cdot x y z
+    \] 
+    L'handle \( \gamma \) è in cima allo stack, quindi si riduce a \( B \) e si ottiene:
+    \[
+      \alpha B \cdot x y z
+    \] 
+    Ora il parser esegue lo shift di \( x \) e \( Y \) per avere l'handle \( y \) 
+    in cima allo stack, e si ottiene:
+    \[
+      \alpha B x y \cdot z
+    \] 
+\end{enumerate}
+In entrambi i casi, dopo aver effettuato una riduzione, il parser ha dovuto effettuare
+uno o più shift per portare l'handle in cima allo stack e non ha mai dovuto cercare
+nello stack per trovare l'handle.
+
+\vspace{1em}
+\noindent
+Ad ogni passo il parser vede soltanto la cima dello stack e non tutto l'input e quindi
+si ha che in un parser nello stato:
+\[
+  \alpha \cdot \omega
+\] 
+\( \alpha \) è detto \textbf{prefisso accettabile} perchè è il prefisso di un handle
+e \textbf{non supera mai la fine di un handle}. Finchè sono presenti prefissi accettabili
+nello stack, il parser non sono stati trovati errori di parsing.
+\textbf{Per ogni grammatica l'insieme di prefissi accettabili è un linguaggio regolare},
+quindi si può costruire un automa a stati finiti per riconoscere i prefissi accettabili.
+
+\subsubsection{LR parsing}
+% • The most prevalent type of bottom-up parser today is based on a concept called LR(k) parsing; the L is
+% for left-to-right scanning of the input, the R for constructing a rightmost derivation in reverse, and the k
+% for the number of input symbols of lookahead that are used in making parsing decisions.
+% • LR parsers are table-driven
+% • The LR-parsing method is the most general nonbacktracking shift-reduce parsing method known, yet it
+% can be implemented as efficiently
+% • An LR parser can detect a syntactic error as soon as it is possible to do so on a left-to-right scan of the
+% input.
+% • The class of grammars that can be parsed using LR methods is a proper superset of the class of
+% grammars that can be parsed with predictive or LL methods.
+% • The principal drawback of the LR method is that it is too much work to construct an LR parser by
+% hand for a typical programming-language grammar. A specialized tool, an LR parser generator, is needed
+Il tipo più diffuso di parser bottom-up è basato su un concetto chiamato \( LR(k) \)
+parsing, dove:
+\begin{itemize}
+  \item La \( L \) sta per \textbf{Left-to-right scanning} dell'input
+  \item La \( R \) sta per \textbf{Rightmost derivation in reverse} dell'albero
+    sintattico
+  \item \( k \) è il numero di token di lookahead utilizzati per decidere quale
+    produzione applicare
+\end{itemize}
+I parser \( LR \) sono table-driven e sono il metodo di parsing bottom-up più generale
+conosciuto che non richiede backtracking, e possono essere implementati in modo efficiente.
+Un parser \( LR \) può rilevare un errore sintattico non appena è possibile farlo
+durante una scansione da sinistra a destra dell'input. La classe di grammatiche che
+possono essere parsate usando i metodi \( LR \) è un sottoinsieme proprio della classe
+di grammatiche che possono essere parsate con i metodi \( LL \).
+
+Lo svantaggio principale del metodo \( LR \) è che è troppo complesso costruire un
+parser \( LR \) a mano per una tipica grammatica di un linguaggio di programmazione, quindi
+è necessario un tool specializzato, un generatore di parser \( LR \).
+
+\begin{definition}[Item]
+  Un item è qualsiasi produzione con un punto \( \cdot \) in qualche posizione della
+parte destra della produzione. Ad esempio, la produzione \( A \to XYZ \) ha 4 items:
+\begin{enumerate}
+  \item \( A \to \cdot XYZ \)
+  \item \( A \to X \cdot YZ \)
+  \item \( A \to XY \cdot Z \)
+  \item \( A \to XYZ \cdot \)
+\end{enumerate}
+Mentre la produzione \( A \to \varepsilon \) ha soltanto un item:
+\begin{enumerate}
+  \item \( A \to \cdot \)
+\end{enumerate}
+\end{definition}
+
+\begin{example}
+  Data la produzione \( T \to (E) \), l'item:
+  \[
+    T \to (E \cdot )
+  \] 
+  ci dice che fin'ora il parser ha visto \( (E \) e si aspetta di vedere \( ) \).
+  La produzione verrà ridotta al shift successivo.
+\end{example}
+
+\vspace{1em}
+\noindent
+Per riconoscere i prefissi accettabili bisogna riconoscere una sequenza di
+parti destre parziali di produzioni dove ogni parte destra parziale si può eventualmente
+ridurre ad una parte del suffisso mancante del suo predecessore.
+
+\subsubsection{Collezione canonica di una grammatica LR(0)}
+\begin{definition}
+  La \textbf{collezione canonica} di una grammatica \( LR(k) \) è l'insieme di insiemi
+  di item \( LR(k) \) (stati) che forniscono una base per costruire un automa a stati
+  utilizzto per fare decisioni di parsing.
+\end{definition}
+
+\begin{example}
+  Alcuni esempi di stati di varie grammatiche \( LR(0) \) sono i seguenti:
+  \begin{enumerate}
+    \item Gli stati sono insiemi di item
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.6\textwidth]{esempio_stato_LR0_1}
+    \end{figure}
+
+  \item Gli stati possono rappresentare diversi alberi alternativi contemporaneamente
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.7\textwidth]{esempio_stato_LR0_2}
+    \end{figure}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.8\textwidth]{esempio_stato_LR0_3}
+    \end{figure}
+  \end{enumerate}
+\end{example}
+
+\noindent
+Per costruire la collezione canonica di una grammatica \( LR(0) \) bisogna definire:
+\begin{itemize}
+  \item Data la grammatica \( G \) la grammatica \( G' \) con un nuovo simbolo iniziale
+    \( S' \) e una sola produzione \( S' \to S \) dove \( S \) è il simbolo iniziale di
+    \( G \)
+
+  \item La funzione \texttt{CLOSURE}:\\
+    Se \( I \) è un insieme di item per una grammatica \( G \), allora
+    \texttt{CLOSURE(I)} è l'insieme di item costruiti da \( I \) applicando le seguenti
+    regole:
+    \begin{enumerate}
+      \item Inizialmente aggiungere ogni item in \( I \) a \texttt{CLOSURE(I)}
+
+      \item Se \( A \to \alpha \cdot B \beta \) è in \texttt{CLOSURE(I)} e
+        \( B \to \gamma \) è una produzione, allora aggiungere l'item \( B \to \cdot \gamma \)
+        a \texttt{CLOSURE(I)} se non è già presente, e ripetere questo processo finchè non
+        è più possibile aggiungere item a \texttt{CLOSURE(I)}.
+    \end{enumerate}
+    \begin{example}
+      Un esempio di applicazione della funzione \texttt{CLOSURE} è il seguente:
+      \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\textwidth]{esempio_closure}
+        \caption{Esempio di applicazione della funzione \texttt{CLOSURE}}
+      \end{figure}
+    \end{example}
+
+  \item La funzione \texttt{GOTO}:\\
+    Prende in input lo stato corrente \( I \) e un simbolo della grammatica \( X \)
+    ed è definita come la \textbf{closure dell'insieme di tutti gli item} 
+    \( A \to \alpha X \cdot \beta\) tale che \( A \to \alpha \cdot X \beta \) è in \( I \).
+
+    La funzione \texttt{GOTO} ritorna lo stato aggiornato spostando il punto \( \cdot \)
+    oltre il simbolo \( X \) e scartando gli item che non hanno \( X \) dopo il punto, e
+    applicando la funzione \texttt{CLOSURE} al risultato.
+
+    \begin{example}
+      Un esempio di applicazione della funzione \texttt{GOTO} è il seguente:
+      \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\textwidth]{esempio_goto}
+        \caption{Esempio di applicazione della funzione \texttt{GOTO}}
+      \end{figure}
+    \end{example}
+
+    \begin{example}
+      Un altro esempio di applicazione della funzione \texttt{GOTO} è il seguente:
+      \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\textwidth]{esempio_goto_2}
+        \caption{Esempio di applicazione della funzione \texttt{GOTO}}
+      \end{figure}
+    \end{example}
+\end{itemize}
+
+\vspace{1em}
+\noindent
+L'algoritmo per calcolare la collezione canonica è il seguente:
+\begin{lstlisting}[escapechar=|, basicstyle=\rmfamily, columns=fullflexible, keepspaces=true]
+void items(|\( G' \)|) {
+    C = { |\( CLOSURE(\{ [S' \to \cdot S] \}) \)| };
+    do {
+        for each set of items |\( I \in C \)| {
+            for each grammar symbol |\( X \)| {
+                if |\( GOTO(I,X) \)| is not empty and not in |\( C \)| {
+                      add |\( GOTO(I,X) \)| to |\( C \)|;
+                }
+            }
+        }
+    } while no new set of items is added to C on a round;
+}
+\end{lstlisting}
+
+\subsubsection{DFA per la decisione di shift e reduce}
+Il risultato delle funzioni \texttt{CLOSURE} e \texttt{GOTO} è un DFA in cui:
+\begin{itemize}
+  \item \textbf{Stati}: sono insiemi di item della collezione canonica \( LR(0) \) 
+  \item \textbf{Transizioni}: sono determinate dalla funzione \texttt{GOTO} e rappresentano
+    i possibili spostamenti del punto \( \cdot \) in un item
+  \item \textbf{Stato iniziale}: è lo stato che contiene l'item \( S' \to \cdot S \) dove \( S' \)
+    è il nuovo simbolo iniziale della grammatica \( G' \)
+  \item Tutti gli stati sono stati finali che riconoscono i prefissi accettabili
+\end{itemize}
+Considerando una stringa di simboli della grammatica che porta l'automa \( LR(0) \) dallo
+stato iniziale \( 0 \) ad uno stato \( j \), allora si effettua:
+\begin{itemize}
+  \item \textbf{Shift} sull'input successivo \( a \) se lo stato \( j \) ha una
+    transizione su un simbolo di input \( a \)
+  \item \textbf{Reduce} altrimenti.
+\end{itemize}
+Gli item nello stato \( j \) determinano quale produzione utilizzare per la riduzione.
+
+\begin{example}
+  Data la grammatica aumentata:
+  \[
+    \begin{aligned}
+      &E' \to E \\
+      &E \to E + T \mid T \\
+      &T \to T * F \mid F \\
+      &F \to (E) \mid \texttt{id}
+    \end{aligned}
+  \] 
+  e la stringa di input \texttt{id * id}, il DFA per la decisione di shift e reduce è
+  il seguente:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{esempio_dfa_shift_reduce}
+    \caption{Esempio di DFA per la decisione di shift e reduce}
+  \end{figure}
+  \noindent
+  L'esecuzione di questo DFA per la stringa di input \texttt{id * id} è la seguente:
+  \begin{table}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{esempio_dfa_shift_reduce_esecuzione}
+    \caption{Esecuzione del DFA per la stringa di input \texttt{id * id}}
+  \end{table}
+\end{example}
+
+\subsubsection{Algoritmo di parsing LR}
+L'input di questo algoritmo è:
+\begin{itemize}
+  \item Una stringa \( w \) 
+  \item Una tabella \( LR \) con le funzioni \texttt{ACTION} e \texttt{GOTO} per una
+    grammatica \( G \)
+\end{itemize}
+L'algoritmo è il seguente:
+\begin{lstlisting}[escapechar=|, basicstyle=\rmfamily, columns=fullflexible, keepspaces=true]
+let |\( a \)| be the first symbol of |\( w\$ \)|;
+while(1) { /* repeat forever */
+    let |\( s \)| be the state on top of the stack;
+    if ( ACTION[|\(s, a\)|] = shift |\( t \)| ) {
+        push |\( t \)| onto the stack;
+        let |\( a \)| be the next input symbol;
+    } else if ( ACTION[|\(s, a\)|] = reduce |\( A \to \beta \)| ) {
+        pop |\( \vert \beta \vert \)| symbols off the stack;
+        let state |\( t \)| now be on top of the stack;
+        push GOTO[|\(t, A\)|] onto the stack;
+        output the production |\( A \to \beta \)|;
+    } else if ( ACTION[|\(s, a\)|] = accept ) break; /* parsing is done */
+    else call error-recovery routine;
+}
+\end{lstlisting}
+
+\vspace{1em}
+\noindent
+Lo stato del parser è detto \textbf{configurazione} ed è rappresentato dalla coppia
+stack e input imanente:
+\[
+  \left( s_0 \ldots s_m,\; a_i \ldots a_n\$ \right)
+\] 
+che rappresenta la forma sentenziale destra \( X_1 \ldots X_m a_i \ldots a_n \).
+
+Se l'azione da fare nello stato \( s_m \) con il token di lookahead \( a_i \)
+(\texttt{ACTION}\( [s_m, a_i] \)) è uguale a:
+\begin{itemize}
+  \item \textbf{shift \( s \)} allora si pusha \( s \) e si avanza l'input:
+    \[
+      \left( s_0 \ldots s_m s,\; a_{ i+1 } \ldots a_n\$ \right)
+    \] 
+
+  \item \textbf{reduce \( A \to \beta \)} e \texttt{GOTO}\( [s_{m-r}, A] = s \) 
+    con \( r = |\beta| \), cioè con \( s_{m-r} \) che è lo stato che si trova sotto i
+    simboli \( \beta \) che devono essere ridotti, allora si poppano \( r \) simboli
+    dallo stack e si pusha \( s \):
+    \[
+      \left( s_0 \ldots s_{m-r} s, \; a_i \ldots a_n \$ \right) 
+    \] 
+
+  \item \textbf{accept} allora si accetta la stringa di input e si termina il parsing
+  \item \textbf{error} allora si cerca di fare error recovery
+\end{itemize}
+
+\subsubsection{Simple LR parser (SLR)}
+Il SLR parsing si basa ul fatto che il DFA per un parser \( LR(0) \) riconosce i
+prefissi accettabili.
+Data una grammatica \( G \) si costruisce la grammatica aumentata \( G' \)
+da cui si costruisce la collezione canonica \( C \) e la funzione \texttt{GOTO}
+si costruisce la tabella di parsing \( SLR \) con le funzioni \texttt{ACTION} e
+\texttt{GOTO} usando il seguente algoritmo:
+\begin{lstlisting}[escapechar=|, basicstyle=\rmfamily, columns=fullflexible, keepspaces=true]
+let |\( C = \{I_0, I_1, \dots, I_n\} \)| be the set of LR(0) states for |\( G' \)|;
+let the initial state 0 be the |\( I_i \)| holding |\( [S' \to \cdot S] \)|;
+
+for each state |\( I_i \in C \)| {
+    for each item in |\( I_i \)| {
+        if item is |\( [S' \to S \cdot] \)| {
+            ACTION[|\(i, \$\)|] = accept;
+        } else  if item is |\( [A \to \alpha \cdot a\beta] \)| and |\( GOTO(I_i, a) = I_j \)| {
+            ACTION[|\(i, a\)|] = shift |\( j \)|;
+        } else if item is |\( [A \to \alpha \cdot] \)| and |\( A \neq S' \)| {
+            for each terminal |\( a \in FOLLOW(A) \)| {
+                ACTION[|\(i, a\)|] = reduce |\( A \to \alpha \)|;
+            }
+        }
+    }
+    for each nonterminal |\( A \)| {
+        if |\( GOTO(I_i, A) = I_j \)| {
+            GOTO[|\(i, A\)|] = |\( j \)|;
+        }
+    }
+}
+\end{lstlisting}
+\noindent
+Nella tabella di parsing:
+\begin{itemize}
+  \item \( si \) rappresenta uno shift sullo stack dello stato \( si \) 
+  \item \( rj \) rappresenta una reduce usando la produzione \( j \)
+  \item \( acc \) rappresenta l'accettazione della stringa di input
+  \item una cella vuota rappresenta un errore sintattico
+\end{itemize}
+
+\begin{example}
+  Un esempio di costruzione della tabella di parsing \( SLR \) per la il DFA seguente:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{esempio_slr_1}
+    \caption{Esempio di DFA per la costruzione della tabella di parsing \( SLR \)}
+  \end{figure}
+  \noindent
+  è il seguente:
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|}
+      \hline
+      & \texttt{a} & \texttt{b} & \texttt{\$} & C & A & B \\
+      \hline
+      \( I_0 \) & s3 & &  & 1 & 2 &  \\
+      \( I_1 \) &  & & acc  &  &  &  \\
+      \( I_2 \) & s5 & &  &  &  & 4 \\
+      \( I_3 \) & r3 & r3 &  & 1 & 2 &  \\
+      \( I_4 \) &  & r2 & r1 & 1 & 2 &  \\
+      \( I_5 \) &  & r4 & r2 & 1 & 2 &  \\
+      \hline
+    \end{tabular}
+  \end{table}
+  Tutte le riduzioni si fanno per i FOLLOW(state) e si effettua una reduce quando
+  il pallino è alla fine della stringa, dove le riduzioni rappresentano:
+  \begin{enumerate}
+    \item \( r1: C' \to C \)
+    \item \( r2: C \to AB \)
+    \item \( r3: A \to a \)
+    \item \( r4: B \to b \)
+  \end{enumerate}
+\end{example}
+% slide 53
+
 
 
 
