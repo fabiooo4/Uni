@@ -4567,4 +4567,432 @@ solitamente memorizzato nel Data Dictionary e contenente per ogni relazione \( T
   \item Stima del valore massimo e minimo per ogni attributo \( A \): \( MAX(A,T) \) e \( MIN(A,T) \)
 \end{itemize}
 
+\subsection{Riepilogo dei costi}
+Le operazioni tipiche supportate sono:
+\begin{enumerate}
+  \item Scansione delle tuple di una relazione \textbf{Costo: } \( NP(R) \) 
+    \begin{itemize}
+      \item Scan sequenziale per la ricerca (selezione)
+      \item Scan sequenziale per la proiezione
+    \end{itemize}
+
+  \item Ordinamento di un insieme di tuple
+    \begin{itemize}
+      \item Z-way Sort-Merge \textbf{Costo: }
+        \[
+          \underbrace{2 NP(R)}_{\text{Sort interno}}
+          + \overbrace{2NP(R)}^{\text{1 passo merge}}
+          \cdot
+          \underbrace{\left(
+          \left\lceil \log_2(NP(R)) \right\rceil + 1
+      \right)}_{\text{Merge}}
+        \]
+    \end{itemize}
+
+  \item Accesso diretto tramite indice
+    \begin{itemize}
+      \item Hash \textbf{Costo costante} \( \approx 1 \) bisogna:
+        \begin{itemize}
+          \item Caricare indice
+          \item Accesso diretto tuple (\( NP \) che dipende da dove si trovano le tuple)
+        \end{itemize}
+
+      \item B+tree \textbf{Costo dipende dall'altezza dell'albero}
+        \[
+          ProfonditaIndice \le 1 + \log_{\left\lceil \frac{n}{2} \right\rceil }
+          \left( \frac{CARD(R)}{VAL(A,R)} \right)
+        \] 
+    \end{itemize}
+
+  \item Join
+    \begin{itemize}
+      \item Nested loop join \textbf{Costo: }
+        \begin{itemize}
+          \item Senza indice:
+            \[
+              NP(R) + NR(R) \cdot NP(S)
+            \] 
+
+          \item Con indice:
+            \[
+              NP(R) + NR(R) \cdot \left( ProfonditaIndice + \frac{NR(S)}{VAL(A,S)} \right) 
+            \]
+        \end{itemize}
+
+      \item Merge-scan join \textbf{Costo: }
+        \begin{itemize}
+          \item Senza indice (sequenziale ordinato)
+            \[
+              NP(R) + NP(S)
+            \] 
+
+          \item Con indice
+            \[
+              NR(R) + NR(S)
+            \] 
+        \end{itemize}
+
+      \item Hash based join \textbf{Costo: }
+        \begin{itemize}
+          \item Costruzione dell'hash map:
+            \[
+              \underbrace{NP(R) + NP(S)}_{\text{Per costruire hash}}
+              +
+              \underbrace{NP(R) \cdot NP(S)}_{\substack{\text{Per match nel}\\\text{caso pessimo}}}
+            \] 
+
+          \item Accesso alle matching tuples che nel caso pessimo può costare:
+            \[
+              NP(R) * NP(S)
+            \]
+        \end{itemize}
+    \end{itemize}
+\end{enumerate}
+
+\subsubsection{Esercizi}
+\begin{exercise}
+  Consideriamo la seguente base di dati:
+  \begin{itemize}
+    \item Ingrediente(\underline{codice}, nome, calorie)
+    \item Composizione(\underline{ricetta, ingrediente}, quantità)
+    \item Ricetta(\underline{codiceRicetta}, nome, regione, tempoPreparazione)
+  \end{itemize}
+  e i seguenti vincoli di integrità:
+  \begin{itemize}
+    \item Composizione.ricetta \( \to  \) Ricetta
+    \item Composizione.ingrediente \( \to  \) Ingrediente
+  \end{itemize}
+  Data la seguente query:
+\begin{lstlisting}[language=sql]
+select R.codiceRicetta, I.nome, I.calorie
+from Ricetta R
+  join Composizione C on R.codiceRicetta = C.ricetta
+  join Ingrediente I on C.ingrediente = I.codice
+where R.regione = 'Veneto'
+\end{lstlisting}
+  \begin{enumerate}
+    \item Calcolare il costo dell'interrogazione in termini di numero di
+      accessi alla memoria secondaria con le seguenti ipotesi:
+      \begin{itemize}
+        \item La selezione (R.regione = 'Veneto') su Ricetta richiede una
+          scansione sequenziale della tabella Ricetta. Inoltre la 
+          selezione rimane nel buffer
+
+        \item L'ordine di esecuzione del join è:
+          \[
+            ( Ricetta \bowtie Composizione ) \bowtie Ingrediente
+          \] 
+
+        \item Le operazioni di join vengono eseguite con la tecnica nested
+          loop join con 1 pagina di buffer a disposizione per ogni tabella
+
+        \item Il risultato del primo join (Ricetta \(\bowtie\) Composizione)
+          viene interamente mantenuto nel buffer
+
+        \item Il numero di pagine e righe per ogni tabella è il seguente:
+          \begin{table}[H]
+            \centering
+            \begin{tabular}{|c|c|c|c|c|}
+              \hline
+              Tabella & NP & NR & VAL(Regione) & VAL(Ricetta) \\
+              \hline
+              Ricetta & 12 & 260 & 20 & \\
+              Ingrediente & 40 & 1200 &  &  \\
+              Composizione & 200 & 13000 &  & 260 \\
+              \hline
+            \end{tabular}
+          \end{table}
+      \end{itemize}
+
+    \item Come cambia il costo se è disponibile un indice B+tree
+      sull'attributo "codice" della tabella ingrediente con profondità 2?
+  \end{enumerate}
+
+
+  \vspace{1em}
+  \noindent
+  \textbf{Svolgimento:}
+  \begin{enumerate}
+    \item L'ordine delle operazioni è:
+      \begin{enumerate}
+        \item Selezione su Ricetta:\\
+          Siccome la scansione avviene in modo sequenziale bisogna leggere tutta
+          la tabella, quindi il costo è:
+          \[
+            NP(Ricetta)
+          \] 
+          Siccome il risultato della selezione rimane nel buffer, non viene
+          effettuata nessuna scrittura e quindi la scrittura ha costo 0.
+
+        \item Join su Composizione\\
+          In join va il risultato della selezione su Ricetta, di cui abbiamo
+          già calcolato il costo e che si trova ancora nel buffer, e quindi
+          non tutta la tabella. Il join diventa quindi:
+          \[
+            \underbrace{Sel.Veneto(Ricetta)}_{R}
+            \bowtie
+            \underbrace{Composizione}_{S}
+          \] 
+          Il costo è quindi:
+          \[
+            NP(R) + NR(R) \cdot NP(S)
+          \] 
+          \begin{itemize}
+            \item \( NP(R) \): è il costo della selezione, ma \\
+              \( R = Sel.Veneto(Ricetta) \) si trova già nel buffer, quindi
+              questo costo si riduce a 0 perchè lo abbiamo già caricato in memoria.
+
+            \item \( NR(R) \): è il numero di righe di Ricetta selezionate
+              da Sel.Veneto che è data dalla \textbf{selettività} dell'attributo
+              regione nella tabella Ricetta:
+              \[
+                NR(R) = \frac{NR(Ricetta)}{VAL(regione, Ricetta)} = \frac{260}{20} = 13
+              \] 
+
+            \item \( NP(S) \): è il numero di pagine di Composizione, che è 200
+          \end{itemize}
+          Quindi il costo totale è:
+          \[
+            NP(R) + NR(R) \cdot NP(S)
+            =
+            0 + 13 \cdot 200 = 2600
+          \] 
+
+        \item Join su Ingrediente\\
+          L'operazione del secondo join è data dal risultato del primo join, 
+          in join con Composizione, quindi:
+          \[
+            \underbrace{Risultato\;primo\;join}_R \bowtie
+            \underbrace{Ingrediente}_{S}
+          \] 
+          Il costo è quindi:
+          \[
+            NP(R) + NR(R) \cdot NP(S)
+          \] 
+          \begin{itemize}
+            \item \( NP(R) \): siccome il risultato del primo join viene
+              interamente mantenuto nel buffer il costo per caricare \( R \) 
+              è 0
+
+            \item \( NR(R) \): è il numero di righe del risultato del primo
+              join, cioè il numero medio di tuple di Composizione per ogni
+              Ricetta (\( \frac{260}{20} = 13 \)) moltiplicato per il numero di Ricette del Veneto.
+              Le ricette del veneto sono (\( \frac{NR(Composizione)}{VAL(ricetta, Composizione)} \)),
+              Quindi:
+              \[
+                \begin{aligned}
+                  &\frac{NR(Composizione)}{VAL(ricetta, Composizione)} \cdot
+                  \frac{NR(Ricetta)}{VAL(regione, Ricetta)}\\
+                  & = \frac{13000}{260} \cdot \frac{260}{20} = 650
+                \end{aligned}
+              \] 
+
+            \item \( NP(S) \): è il numero di pagine di Ingrediente, che è 40
+          \end{itemize}
+          Quindi il costo totale è:
+          \[
+            NP(R) + NR(R) \cdot NP(S)
+            =
+            0 + 650 \cdot 40 = 26000
+          \]
+      \end{enumerate}
+      Il costo totale della query è quindi la somma dei costi di ogni singola
+      operazione:
+      \[
+        12 + 2600 + 26000 = 28612
+      \] 
+
+    \item L'indice influisce solo sull'ultimo join perchè è definito sulla tabella
+      Ingrediente.codice, quindi il costo totale è dato dalla somma dei costi
+      di ogni singola operazione, con il costo del secondo join che cambia:
+      \[
+        (op1) + (op2) + (op3')
+      \] 
+      Dove:
+      \[
+        op3': \underbrace{Risultato\;primo\;join}_R \bowtie
+            \underbrace{Ingrediente}_{S}
+      \] 
+      e il costo è:
+      \[
+        NP(R) + NR(R) \cdot \left( ProfonditaIndice + \frac{NR(S)}{VAL(codice, S)} \right)
+      \] 
+      \begin{itemize}
+        \item \( NP(R) \): siccome il risultato del primo join viene
+          interamente mantenuto nel buffer il costo per caricare \( R \) 
+          è 0
+
+        \item \( NR(R) \): È lo stesso valore calcolato in precedenza, cioè 650
+
+        \item \( \left( ProfonditaIndice + \frac{NR(S)}{VAL(codice, S)} \right) \):
+          La profondità dell'indice, data dal testo, è 2 e il numero di righe
+          di Ingrediente è 1200, quindi rimane da calcolare il numero di valori distinti
+          di codice nella tabella Ingrediente. Siccome codice è la chiave primaria
+          di Ingrediente, il numero di valori distinti è uguale al numero di righe,
+          quindi diventa:
+          \[
+            2 + \frac{1200}{1200} = 3
+          \] 
+      \end{itemize}
+      Il costo totale di \( (op3') \) è quindi:
+      \[
+        0 + 650 \cdot 3 = 1950
+      \] 
+
+      \vspace{1em}
+      \noindent
+      Il costo totale dell'interrogazione con l'indice è quindi:
+      \[
+        12 + 2600 + 1950 = 4562
+      \] 
+  \end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+  Consideriamo la base di dati dell'esercizio precedente e la seguente query:
+\begin{lstlisting}[language=sql]
+select C.Ingrediente, C.quantita, C.ricetta, R.regione
+from Composizione C
+  join Ricetta R on C.ricetta = R.codiceRicetta
+where R.regione = 'Veneto'
+  and C.quantita = 4
+\end{lstlisting}
+  Le ipotesi da considerare sono le seguenti:
+  \begin{itemize}
+    \item La selezione su Composizione (C.quantita = 4) viene eseguita con una scansione 
+      sequenziale e il risultato viene salvato
+      in 180 pagine di memoria secondaria
+
+    \item La selezione su Ricetta (R.regione = 'Veneto') viene eseguita con
+      una scansione sequenziale e il risultato viene mantenuto nel buffer
+
+    \item L'esecuzione del join \( Ricetta \bowtie Composizione \) è fatta
+      con la tecnica di nested loop join
+
+    \item Il numero di pagine e righe per ogni tabella è il seguente:
+      \begin{table}[H]
+        \centering
+        \begin{tabular}{|c|c|c|c|c|c|}
+          \hline
+          Tabella & NP & NR & VAL(Regione) & VAL(Ricet.) & VAL(qtà) \\
+          \hline
+          Ingrediente  & 30  & 270   &    &    &    \\
+          Composizione & 780 & 19800 &    & 90 & 50 \\
+          Ricetta      & 150 & 900   & 18 &    &    \\
+          \hline
+        \end{tabular}
+      \end{table}
+  \end{itemize}
+
+  \begin{enumerate}
+    \item Calcolare il costo della query
+
+    \item Come cambia il costo in presenza di un indice B+tree di profondità
+      2 sull'attributo ricetta di Composizione?
+  \end{enumerate}
+
+  \vspace{1em}
+  \noindent
+  \textbf{Svolgimento:}
+  \begin{enumerate}
+    \item Le operazioni sono effettuate nel seguente ordine:
+      \begin{enumerate}
+        \item Selezione su Composizione\\
+          Il costo è dato da:
+          \[
+            \underbrace{NP(R)}_{\text{Lettura}} + 
+            \underbrace{NP(R)}_{\text{Scrittura}}
+          \] 
+          Bisogna leggere tutta la tabella Composizione, quindi il costo è
+          \[
+            NP(R) + NR(R) = 780 + 180 = 960
+          \] 
+
+        \item Selezione su Ricetta\\
+          Il costo è dato da:
+          \[
+            \underbrace{NP(R)}_{\text{Lettura}} + 
+            \underbrace{NP(R)}_{\text{Scrittura}}
+          \] 
+          Siccome il risultato viene mantenuto nel buffer, non viene effettuata nessuna
+          scrittura e quindi la scrittura ha costo 0.
+          Bisogna leggere tutta la tabella Ricetta, quindi il costo è
+          \[
+            NP(R) + NR(R) = 150 + 0 = 150
+          \]
+
+        \item Join su Ricetta\\
+          Il join viene effettuato tra il risultato della selezione su Ricetta
+          con il risultato della selezione su Composizione, quindi:
+          \[
+            \underbrace{(\text{Ricetta con selezione})}_{R} \bowtie
+            \underbrace{(\text{Composizione con selezione})}_{S}
+          \] 
+          Il costo è dato da:
+          \[
+            NP(R) + NR(R) \cdot NP(S)
+          \] 
+          \begin{itemize}
+            \item \( NP(R) \): è il costo della selezione su Ricetta, ma siccome il risultato
+              della selezione su Ricetta si trova già nel buffer, questo costo si riduce a 0
+
+            \item \( NR(R) \): è il numero di righe del risultato della selezione su Ricetta, che è dato
+              dalla selettività dell'attributo regione nella tabella Ricetta:
+              \[
+                NR(R) = \frac{NR(Ricetta)}{VAL(regione, Ricetta)} = \frac{900}{18} = 50
+              \]
+
+            \item \( NP(S) \): è il numero di pagine del risultato della selezione su
+              Composizione, che è 180
+          \end{itemize}
+          Il costo totale del join è quindi:
+          \[
+            0 + 50 \cdot 180 = 9000
+          \] 
+      \end{enumerate}
+      Il costo totale della query è quindi la somma dei costi di ogni singola
+      operazione:
+      \[
+        960 + 150 + 9000 = 10110
+      \] 
+
+    \item Osserviamo che l'attributo ricetta di Composizione è l'attributo
+      di join per la tabella interna (S), quindi la presenza dell'indice
+      ha un impatto solo sul costo del join, che diventa:
+      \[
+        NP(R) + NR(R) \cdot \left( ProfonditaIndice + \frac{NR(S)}{VAL(ricetta, S)} \right)
+      \] 
+      dove \( S \) è \( NR(\text{Composizione con selezione}) \) 
+      \begin{itemize}
+        \item \( NP(R) \): è il costo della selezione su Ricetta, ma siccome il risultato
+          della selezione su Ricetta si trova già nel buffer, questo costo si riduce a 0
+
+        \item \( NR(R) \): è lo stesso valore calcolato in precedenza, cioè 50
+
+        \item \( \left( ProfonditaIndice + \frac{NR(S)}{VAL(ricetta, S)} \right) \):
+          Il costo viene stimato come:
+          \[
+            \begin{aligned}
+              &\left( 2 + \frac{NR(Composizione)}{VAL(qta, Comp)}
+              \cdot \frac{1}{VAL(ricetta, Comp)} \right)\\
+              &= \left( 2 + \frac{19800}{50} \cdot \frac{1}{90} \right) \\
+              &= \left( 2 + \frac{19800}{4500} \right) \\
+              &= \left( 2 + 4.4 \right) = 6.4 \approx 7
+            \end{aligned}
+          \] 
+      \end{itemize}
+      Il costo totale del join con l'indice è quindi:
+      \[
+        0 + 50 \cdot 7 = 350
+      \]
+
+      \vspace{1em}
+      \noindent
+      Il costo totale dell'interrogazione con l'indice è quindi:
+      \[
+        960 + 150 + 350 = 1460
+      \]
+  \end{enumerate}
+\end{exercise}
+
 \end{document}
