@@ -1665,7 +1665,6 @@ context free. Una grammatica context free è composta da:
   \item Un insieme di \textbf{simboli terminali}, che rappresnetano simboli, numeri
     e parole chiave del linguaggio. Solitamente scritte in grassetto, ad esempio:
     \textbf{<, =, +, 1, 2, while}, ecc...
-    % TODO: Per ogni blocco di codice metti il grassetto o l'italic
 
   \item Un insieme di \textbf{simboli non terminali}, che rappresentano categorie sintattiche
     come espressioni, istruzioni, blocchi, ecc... Solitamente scritte in corsivo, ad esempio:
@@ -3222,6 +3221,7 @@ Nella tabella di parsing:
       \hline
     \end{tabular}
   \end{table}
+  \noindent
   Tutte le riduzioni si fanno per i FOLLOW(state) e si effettua una reduce quando
   il pallino è alla fine della stringa, dove le riduzioni rappresentano:
   \begin{enumerate}
@@ -3231,9 +3231,298 @@ Nella tabella di parsing:
     \item \( r4: B \to b \)
   \end{enumerate}
 \end{example}
-% slide 53
 
+\begin{example}
+  Un altro esempio di tabella di parsing \( SLR \) per la seguente grammatica:
+  \[
+    \begin{aligned}
+      &(1) E \to E + T \\
+      &(2) E \to T \\
+      &(3) T \to T * F \\
+      &(4) T \to F \\
+      &(5) F \to (E) \\
+      &(6) F \to \texttt{id}
+    \end{aligned}
+  \] 
+  è il seguente:
+  \begin{table}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{esempio_slr_2}
+    \caption{Tabella di parsing}
+  \end{table}
+  \noindent
+  Eseguiamo il parsing della stringa \texttt{id * id + id} usando questa tabella:
+  \begin{table}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{esempio_slr_2_parsing}
+    \caption{Parsing della stringa \texttt{id * id + id}}
+  \end{table}
+\end{example}
 
+\subsubsection{Parser LR(1)}
+La tabella di parsing \( SLR \) è deterministica e quindi richiede che non ci siano
+conflitti, di conseguenza tante grammatiche non sono \( SLR \), incluse tutte le
+grammatiche ambigue. Siccome \( SLR \) è troppo semplice si introducono i parser
+\( LR(1) \) in cui ogni item è arricchito con un \textbf{token di lookahead}.
+Ad esempio:
+\[
+  [ A \to \alpha \cdot \beta, a ] \quad a \in FOLLOW(A)
+\] 
+In questo modo si riescono a risolvere i conflitti.
+\begin{itemize}
+  \item Per item del tipo
+    \[
+      [ A \to \alpha \cdot, a ]
+    \] 
+    Questo indica che la riduzione \( A \to \alpha \) è applicabile soltanto se il
+    token di lookahead \( a \) è presente nell'input. 
 
+  \item Per item del tipo:
+    \[
+      [ A \to \alpha \cdot \beta, a ]
+    \] 
+    con \( \beta \neq \varepsilon  \) il simbolo di lookahead \( a \) è irrilevante
+\end{itemize}
+Ridichiariamo le funzioni \texttt{CLOSURE} e \texttt{GOTO} per i parser \( LR(1) \):
+\begin{itemize}
+  \item \texttt{CLOSURE}:
+    \begin{enumerate}
+      \item Inizialmente aggiungere ogni item in \( I \) a \texttt{CLOSURE(I)}
+      \item Se \( [ A \to \alpha \cdot B \beta, a ] \) è in \texttt{CLOSURE(I)} allora per
+        ogni produzione \( B \to \gamma \) nella grammatica e per ogni terminale \( b \in FIRST(\beta a) \)
+        aggiungere l'item \( [ B \to \cdot \gamma, b ] \) a \texttt{CLOSURE(I)} se non è
+        già presente
+      \item Ripetere il passo 2 finchè non è più possibile aggiungere item a \texttt{CLOSURE(I)}
+    \end{enumerate}
+
+  \item \texttt{GOTO}:
+    \begin{enumerate}
+      \item Per ogni item \([  A \to \alpha \cdot X \beta, a  ]\) in \( I \) aggiungere
+        l'insieme di item \( \texttt{CLOSURE}(\{ [ A \to \alpha X \cdot \beta, a ] \}) \) a
+        \( \texttt{GOTO}(I, X) \) se non è già presente
+
+      \item Ripetere il passo 1 finchè non è più possibile aggiungere item a
+        \( \texttt{GOTO}(I, X) \)
+    \end{enumerate}
+\end{itemize}
+Per costruire l'insieme degli item \( LR(1) \) si utilizzano i seguenti passi:
+\begin{enumerate}
+  \item Aumentare la grammatica con un nuovo simbolo iniziale \( S' \) e una
+    produzione \( S' \to S \)
+
+  \item Inizialmente, impostare \( C = \texttt{CLOSURE}(\{ [S' \to \cdot S, \$] \}) \)
+    (questo è lo stato iniziale del DFA)
+
+  \item Per ogni insieme di item \( I \in C \) e per ogni simbolo della grammatica
+    \( X \) tale che \( \texttt{GOTO}(I, X) \notin C \) e \( \texttt{GOTO}(I, X) \neq
+    \varnothing \), aggiungere l'insieme di item \( \texttt{GOTO}(I, X) \) a \( C \)
+
+  \item Ripetere il passo 3 finchè non è più possibile aggiungere insiemi a \( C \)
+\end{enumerate}
+Per costruire la tabella di parsing \( LR(1) \) si utilizza il seguente algoritmo:
+% 1. Construct the set C={I0,I1,…,In} of sets of item LR(1) of G’
+% 2. The parsing actions for state i are determined as follows:
+%   ➡ If [A→α•aβ,b] ∈ Ii and goto(Ii, a)=Ij then set action[i, a] = shift j
+%   ➡ If [A→α•,a] ∈ Ii and A ≠ S’ then set action[i, a] = reduce A→α
+%   ➡ If [S’→S•,$] is in Ii then set action[i, $] = accept
+% 3. If goto(Ii, A) = Ij then set goto(i,A) = j
+% 4. All entries not defined by rules (2) and (3) are made error.
+% 5. The initial state i is the Ii holding item [S’→•S,$]
+\begin{enumerate}
+  \item Costruire l'insieme \( C = \{ I_0, I_1, \ldots, I_n \} \) di insiemi di item
+    \( LR(1) \) per la grammatica \( G' \)
+
+  \item Le azioni di parsing per lo stato \( i \) sono determinate come segue:
+    \begin{itemize}
+      \item Se \( [ A \to \alpha \cdot a \beta, b ] \in I_i \) e \( GOTO(I_i, a) = I_j \) 
+        allora impostare \( ACTION[i, a] = shift j \)
+
+      \item Se \( [ A \to \alpha \cdot, a ] \in I_i \) e \( A \neq S' \) allora impostare
+        \( ACTION[i, a] = reduce A \to \alpha \)
+
+      \item Se \( [ S' \to S \cdot, \$ ] \in I_i \) allora impostare
+        \( ACTION[i, \$] = accept \)
+    \end{itemize}
+
+  \item Se \( GOTO(I_i, A) = I_j \) allora impostare \( GOTO[i, A] = j \)
+
+  \item Tutte le entry non definite dalle regole (2) e (3) sono impostate a \texttt{error}
+
+  \item Lo stato iniziale \( i \) è lo stato \( I_i \) che contiene l'item
+    \( [ S' \to \cdot S, \$ ] \)
+\end{enumerate}
+
+\begin{example}\label{esempio_lr1}
+  Consideriamo la grammatica:
+  \[
+    \begin{aligned}
+    &S' \to S \\
+    &S \to CC \\
+    &C \to cC \mid d
+    \end{aligned}
+  \] 
+  \begin{enumerate}
+    \item Calcoliamo \( \texttt{CLOSURE}(\{ [S' \to \cdot S, \$] \}) \):
+      \begin{itemize}
+        \item Per prima cosa aggiungiamo \( [S' \to \cdot CC, \$] \)
+        \item Poi siccome abbiamo \( FIRST(S) = FIRST(C) = \left\{ c, d \right\} \) 
+          aggiungiamo:
+          \begin{itemize}
+            \item \( \left[ C \to \cdot cC, c \right] \) 
+            \item \( \left[ C \to \cdot cC, d \right] \)
+            \item \( \left[ C \to \cdot d, c \right] \) 
+            \item \( \left[ C \to \cdot d, d \right] \)
+          \end{itemize}
+        \item Nessuno dei nuovi item ha un non terminale immediatamente a destra
+          del punto, quindi abbiamo completato il primo insieme di item \( LR(1) \)
+      \end{itemize}
+      Alla fine otteniamo:
+      \[
+        \begin{aligned}
+          I_0 :\; &S \to \cdot S, \$ \\
+                &S \to \cdot CC, \$ \\
+                &C \to \cdot cC, c \mid d \\
+                &C \to \cdot d, c \mid d
+        \end{aligned}
+      \] 
+
+    \item Calcoliamo \( \texttt{GOTO}(I_0, S) \):
+      Bisogna calcolare \( \texttt{CLOSURE}(\{ [S' \to S \cdot, \$] \}) \)
+      che equivale all'elemento stesso siccome il punto è alla fine della stringa
+
+    \item Poi bisogna calcolare \( \texttt{GOTO}(I_0, C) \):
+      Bisogna calcolare \( \texttt{CLOSURE}(\{ [S \to C \cdot C, \$] \}) \) che 
+      porta agli item di \( I_2 \):
+      \[
+        \begin{aligned}
+          I_2 :\; &S \to C \cdot C, \$ \\
+                  &C \to \cdot cC, \$ \\
+                  &C \to \cdot d, \$
+        \end{aligned}
+      \] 
+
+    \item Continuare a calcolare \( \texttt{GOTO} \) per tutti i simboli della grammatica e per tutti
+      gli insiemi di item finchè non si ottiene la collezione canonica completa
+  \end{enumerate}
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{esempio_lr1}
+    \caption{Esempio di collezione canonica per una grammatica \( LR(1) \)}
+  \end{figure}
+  Considerando le seguenti numerazioni delle produzioni:
+  \[
+    \begin{aligned}
+            &S' \to S \\
+      (r1)\; &S \to CC \\
+      (r2)\; &C \to cC \\
+      (r3)\; &C \to d
+    \end{aligned}
+  \] 
+  la tabella di parsing \( LR(1) \) è la seguente:
+  \begin{table}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{esempio_lr1_parsing_table}
+  \end{table}
+\end{example}
+
+\subsubsection{Parser LALR}
+Le tabelle di parsing \( LR(1) \) hanno tanti stati, quindi per ridurli si introduce
+il parser \( LALR \) (Look-Ahead LR) che unisce due o più stati \( LR(1) \) che
+hanno lo stesso \textbf{core}, cioè il primo componente dell'item. Nell'esempio
+\ref{esempio_lr1} gli stati \( I_4 \) e \( I_7 \) hanno lo stesso core.
+Siccome \( GOTO(I, X) \) dipende solo dal core di \( I \) allora il \( GOTO \) di
+stati uniti è l'unione dei \( GOTO \) dei singoli stati.
+Questo parser introduce degli svantaggi:
+\begin{itemize}
+  \item Meno potente del \( LR(1) \)
+  \item L'unione degli stati può introdurre conflitti:
+    \begin{itemize}
+      \item Non vengono introdotti conflitti di shift perchè gli shift non usano
+        il token di lookahead
+        
+      \item \textbf{Potrebbero} essere introdotti conflitti di reduce, ma questo
+        succede raramente per grammatiche di linguaggi di programmazione
+    \end{itemize}
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Per costruire la tabella di parsing \( LALR \) si utilizza il seguente algoritmo:
+\begin{enumerate}
+  \item Costruire l'insieme \( C = \{ I_0, I_1, \ldots, I_n \} \) di insiemi di
+    item \( LR(1) \) per la grammatica \( G' \)
+
+  \item Per ogni core presente tra gli insiemi di item \( LR(1) \), trovare tutti gli
+    insiemi che hanno quel core, e sostituire questi insiemi con la loro unione
+
+  \item Sia \( C = \{ J_0, J_1, \ldots, J_m \} \) l'insieme risultante di insiemi di
+    item uniti. Le azioni di parsing per lo stato \( i \) sono costruite da \( J_i \)
+    seguendo la procedura per la tabella di parsing \( LR(1) \)
+
+  \item Sia \( J = I_0 \cup I_1 \cup \ldots \cup I_k \) allora
+    \[
+      GOTO(I_0, X) = GOTO(I_1, X) = \ldots = GOTO(I_k, X)
+    \]
+    siccome hanno lo stesso core. Sia \( K \) l'insieme di tutti gli item che hanno
+    lo stesso core di \( GOTO(I_1, X) \), allora \( GOTO(J, X) = K \)
+\end{enumerate}
+
+\begin{example}
+  Consideriamo la grammatica dell'esempio \ref{esempio_lr1} e la collezione canonica
+  \( LR(1) \) con tutti gli stati che hanno lo stesso core evidenziati:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{esempio_lalr_1}
+    \caption{Collezione canonica \( LR(1) \) con stati che hanno lo stesso core evidenziati}
+  \end{figure}
+  \noindent
+  L'unione degli stati con lo stesso core produce i seguenti nuovi stati:
+  \[
+    \color{Red}
+    \begin{aligned}
+      I_{36} :\; &C \to c \cdot C , c \mid d \mid \$ \\
+                 &C \to \cdot cC , c \mid d \mid \$ \\
+                 &C \to \cdot d , c \mid d \mid \$
+    \end{aligned}
+  \] 
+  \[
+    \color{Cyan}
+    I_{47} :\; C \to d \cdot , c \mid d \mid \$
+  \] 
+  \[
+    \color{Purple}
+    I_{89} :\; C \to cC \cdot , c \mid d \mid \$
+  \] 
+  La nuova tabella di parsing \( LALR \) è la seguente:
+  \begin{table}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{esempio_lalr_2}
+    \caption{Tabella di parsing \( LALR \)}
+  \end{table}
+\end{example}
+
+\subsubsection{Regole di precedenza e associatività}
+Le grammatiche ambigue forniscono una specifica più naturale, ma non sono \( LR \),
+quindi sono necessarie delle regole che eliminino le ambiguità e permettano di
+costruire un parse tree univoco per la grammatica.
+\begin{example}
+  La seguente grammatica per le espressioni aritmetiche è ambigua e non specifica
+  regole di precedenza e associatività:
+  \[
+    E \to E + E \mid E * E \mid (E) \mid \texttt{id}
+  \] 
+  La seguente grammatica equivalente specifica la precedenza di \( * \) su \( + \) e
+  l'associatività a sinistra di entrambi gli operatori:
+  \[
+    \begin{aligned}
+      &E \to E + T \mid T \\
+      &T \to T * F \mid F \\
+      &F \to (E) \mid \texttt{id}
+    \end{aligned}
+  \] 
+  Il parser per la grammatica non ambigua è più complesso e quindi meno efficiente
+  perchè la maggior parte del tempo è speso a ridurre le produzioni unitarie
+  \( E \to T \) e \( T \to F \) che hanno la sola funzione di specificare la precedenza.
+\end{example}
 
 \end{document}
