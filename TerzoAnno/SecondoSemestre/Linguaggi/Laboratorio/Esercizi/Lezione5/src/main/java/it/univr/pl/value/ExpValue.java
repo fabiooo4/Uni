@@ -1,7 +1,6 @@
 package it.univr.pl.value;
 
 import java.util.Objects;
-
 import it.univr.pl.exception.TypeMismatchException;
 
 /**
@@ -92,7 +91,7 @@ public class ExpValue<T> extends Value {
 
   public ExpValue<?> pow(ExpValue<?> rhs) {
     if (this.isType(Integer.class) && rhs.isType(Integer.class)) {
-      return new ExpValue<Integer>((int)Math.pow((Float) this.toJavaValue(), (Float) rhs.toJavaValue()));
+      return new ExpValue<Integer>((int) Math.pow((Integer) this.toJavaValue(), (Integer) rhs.toJavaValue()));
     } else if (this.isType(Float.class) && rhs.isType(Float.class)) {
       return new ExpValue<Float>((float) Math.pow((Float) this.toJavaValue(), (Float) rhs.toJavaValue()));
     } else {
@@ -147,6 +146,15 @@ public class ExpValue<T> extends Value {
       return (Float) this.toJavaValue() >= (Float) rhs.toJavaValue();
     } else {
       throw new TypeMismatchException("Expected a numeric type");
+    }
+  }
+
+  public String strConcat(ExpValue<?> rhs) {
+    if ((this.isType(String.class) || this.isType(Character.class))
+        && (rhs.isType(String.class) || rhs.isType(Character.class))) {
+      return this.toJavaValue().toString() + rhs.toJavaValue().toString();
+    } else {
+      throw new TypeMismatchException("Expected a string or a character");
     }
   }
 }
