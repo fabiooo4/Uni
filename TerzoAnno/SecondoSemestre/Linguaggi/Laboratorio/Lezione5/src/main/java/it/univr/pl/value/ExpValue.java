@@ -36,10 +36,14 @@ public class ExpValue<T> extends Value {
     return value.toString();
   }
 
+  private boolean isType(Class<? extends Object> type) {
+    return this.toJavaValue().getClass().equals(type);
+  }
+
   public ExpValue<?> add(ExpValue<?> rhs) {
-    if (this.toJavaValue().getClass() == Integer.class && rhs.toJavaValue().getClass() == Integer.class) {
+    if (this.isType(Integer.class) && rhs.isType(Integer.class)) {
       return new ExpValue<Integer>((Integer) this.toJavaValue() + (Integer) rhs.toJavaValue());
-    } else if (this.toJavaValue().getClass() == Float.class && rhs.toJavaValue().getClass() == Float.class) {
+    } else if (this.isType(Float.class) && rhs.isType(Float.class)) {
       return new ExpValue<Float>((Float) this.toJavaValue() + (Float) rhs.toJavaValue());
     } else {
       throw new TypeMismatchException("Expected a numeric type");
@@ -47,13 +51,102 @@ public class ExpValue<T> extends Value {
   }
 
   public ExpValue<?> sub(ExpValue<?> rhs) {
-    if (this.toJavaValue().getClass() == Integer.class && rhs.toJavaValue().getClass() == Integer.class) {
+    if (this.isType(Integer.class) && rhs.isType(Integer.class)) {
       return new ExpValue<Integer>((Integer) this.toJavaValue() - (Integer) rhs.toJavaValue());
-    } else if (this.toJavaValue().getClass() == Float.class && rhs.toJavaValue().getClass() == Float.class) {
+    } else if (this.isType(Float.class) && rhs.isType(Float.class)) {
       return new ExpValue<Float>((Float) this.toJavaValue() - (Float) rhs.toJavaValue());
     } else {
       throw new TypeMismatchException("Expected a numeric type");
     }
   }
 
+  public ExpValue<?> mul(ExpValue<?> rhs) {
+    if (this.isType(Integer.class) && rhs.isType(Integer.class)) {
+      return new ExpValue<Integer>((Integer) this.toJavaValue() * (Integer) rhs.toJavaValue());
+    } else if (this.isType(Float.class) && rhs.isType(Float.class)) {
+      return new ExpValue<Float>((Float) this.toJavaValue() * (Float) rhs.toJavaValue());
+    } else {
+      throw new TypeMismatchException("Expected a numeric type");
+    }
+  }
+
+  public ExpValue<?> div(ExpValue<?> rhs) {
+    if (this.isType(Integer.class) && rhs.isType(Integer.class)) {
+      return new ExpValue<Integer>((Integer) this.toJavaValue() / (Integer) rhs.toJavaValue());
+    } else if (this.isType(Float.class) && rhs.isType(Float.class)) {
+      return new ExpValue<Float>((Float) this.toJavaValue() / (Float) rhs.toJavaValue());
+    } else {
+      throw new TypeMismatchException("Expected a numeric type");
+    }
+  }
+
+  public ExpValue<?> mod(ExpValue<?> rhs) {
+    if (this.isType(Integer.class) && rhs.isType(Integer.class)) {
+      return new ExpValue<Integer>((Integer) this.toJavaValue() % (Integer) rhs.toJavaValue());
+    } else if (this.isType(Float.class) && rhs.isType(Float.class)) {
+      return new ExpValue<Float>((Float) this.toJavaValue() % (Float) rhs.toJavaValue());
+    } else {
+      throw new TypeMismatchException("Expected a numeric type");
+    }
+  }
+
+  public ExpValue<?> pow(ExpValue<?> rhs) {
+    if (this.isType(Integer.class) && rhs.isType(Integer.class)) {
+      return new ExpValue<Integer>(Math.powExact((Integer) this.toJavaValue(), (Integer) rhs.toJavaValue()));
+    } else if (this.isType(Float.class) && rhs.isType(Float.class)) {
+      return new ExpValue<Float>((float) Math.pow((Float) this.toJavaValue(), (Float) rhs.toJavaValue()));
+    } else {
+      throw new TypeMismatchException("Expected a numeric type");
+    }
+  }
+
+  public ExpValue<?> negate() {
+    if (this.isType(Integer.class)) {
+      return new ExpValue<Integer>(-(Integer) this.toJavaValue());
+    } else if (this.isType(Float.class)) {
+      return new ExpValue<Float>(-(Float) this.toJavaValue());
+    } else {
+      throw new TypeMismatchException("Expected a numeric type");
+    }
+  }
+
+  public boolean lt(ExpValue<?> rhs) {
+    if (this.isType(Integer.class) && rhs.isType(Integer.class)) {
+      return (Integer) this.toJavaValue() < (Integer) rhs.toJavaValue();
+    } else if (this.isType(Float.class) && rhs.isType(Float.class)) {
+      return (Float) this.toJavaValue() < (Float) rhs.toJavaValue();
+    } else {
+      throw new TypeMismatchException("Expected a numeric type");
+    }
+  }
+
+  public boolean leq(ExpValue<?> rhs) {
+    if (this.isType(Integer.class) && rhs.isType(Integer.class)) {
+      return (Integer) this.toJavaValue() <= (Integer) rhs.toJavaValue();
+    } else if (this.isType(Float.class) && rhs.isType(Float.class)) {
+      return (Float) this.toJavaValue() <= (Float) rhs.toJavaValue();
+    } else {
+      throw new TypeMismatchException("Expected a numeric type");
+    }
+  }
+
+  public boolean gt(ExpValue<?> rhs) {
+    if (this.isType(Integer.class) && rhs.isType(Integer.class)) {
+      return (Integer) this.toJavaValue() > (Integer) rhs.toJavaValue();
+    } else if (this.isType(Float.class) && rhs.isType(Float.class)) {
+      return (Float) this.toJavaValue() > (Float) rhs.toJavaValue();
+    } else {
+      throw new TypeMismatchException("Expected a numeric type");
+    }
+  }
+
+  public boolean geq(ExpValue<?> rhs) {
+    if (this.isType(Integer.class) && rhs.isType(Integer.class)) {
+      return (Integer) this.toJavaValue() >= (Integer) rhs.toJavaValue();
+    } else if (this.isType(Float.class) && rhs.isType(Float.class)) {
+      return (Float) this.toJavaValue() >= (Float) rhs.toJavaValue();
+    } else {
+      throw new TypeMismatchException("Expected a numeric type");
+    }
+  }
 }

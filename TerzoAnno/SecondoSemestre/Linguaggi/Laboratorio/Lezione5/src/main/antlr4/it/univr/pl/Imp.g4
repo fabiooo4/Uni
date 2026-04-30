@@ -2,7 +2,7 @@ grammar Imp;
 
 main : prog EOF;
 
-prog : (stmt)*;
+prog : stmt | exp;
 
 stmt : ID ASSIGN exp                          # assign
      | IF LPAR exp RPAR LBRACE stmt RBRACE    # if

@@ -3,16 +3,24 @@ package it.univr.pl;
 import java.util.HashMap;
 
 import it.univr.pl.ImpParser.AddSubContext;
+import it.univr.pl.ImpParser.AndOrContext;
 import it.univr.pl.ImpParser.AssignContext;
+import it.univr.pl.ImpParser.BoolContext;
+import it.univr.pl.ImpParser.CmpExpContext;
 import it.univr.pl.ImpParser.EqExpContext;
 import it.univr.pl.ImpParser.ExpContext;
-import it.univr.pl.ImpParser.ExpStmtContext;
 import it.univr.pl.ImpParser.FloatContext;
 import it.univr.pl.ImpParser.IdContext;
 import it.univr.pl.ImpParser.IfContext;
 import it.univr.pl.ImpParser.IntContext;
 import it.univr.pl.ImpParser.MainContext;
+import it.univr.pl.ImpParser.MulDivModContext;
+import it.univr.pl.ImpParser.NegContext;
+import it.univr.pl.ImpParser.NotContext;
+import it.univr.pl.ImpParser.ParenContext;
+import it.univr.pl.ImpParser.PowContext;
 import it.univr.pl.ImpParser.SeqContext;
+import it.univr.pl.ImpParser.WhileContext;
 import it.univr.pl.exception.TypeMismatchException;
 import it.univr.pl.exception.UnknownVariableException;
 import it.univr.pl.value.BoolValue;
@@ -77,9 +85,79 @@ public class ImpInterpreter extends ImpBaseVisitor<Value> {
   }
 
   @Override
-  public StmtValue visitIf(IfContext ctx) {
-    BoolValue condition = visitBoolExp(ctx.exp());
-    return condition.toJavaValue() ? (StmtValue) visit(ctx.stmt()) : StmtValue.INSTANCE;
+  public Value visitNeg(NegContext ctx) {
+    ExpValue<?> val = visitNumberExp(ctx.exp());
+
+    return val.negate();
+  }
+
+  @Override
+  public Value visitMulDivMod(MulDivModContext ctx) {
+    ExpValue<?> left = visitNumberExp(ctx.exp(0));
+    ExpValue<?> right = visitNumberExp(ctx.exp(1));
+
+    return switch (ctx.op.getType()) {
+      case ImpParser.MUL -> left.mul(right);
+      case ImpParser.DIV -> left.div(right);
+      case ImpParser.MOD -> left.mod(right);
+      default -> null; // unreachable
+    };
+  }
+
+  @Override
+  public Value visitPow(PowContext ctx) {
+    ExpValue<?> base = visitNumberExp(ctx.exp(0));
+    ExpValue<?> exp = visitNumberExp(ctx.exp(1));
+    return base.pow(exp);
+  }
+
+  @Override
+  public BoolValue visitBool(BoolContext ctx) {
+    return new BoolValue(Boolean.parseBoolean(ctx.getText()));
+  }
+
+  @Override
+  public BoolValue visitNot(NotContext ctx) {
+    boolean val = visitBoolExp(ctx.exp()).toJavaValue();
+    return new BoolValue(!val);
+  }
+
+  @Override
+  public BoolValue visitAndOr(AndOrContext ctx) {
+    boolean left = visitBoolExp(ctx.exp(0)).toJavaValue();
+    boolean right = visitBoolExp(ctx.exp(1)).toJavaValue();
+
+    return switch (ctx.op.getType()) {
+      case ImpParser.AND -> new BoolValue(left && right);
+      case ImpParser.OR -> new BoolValue(left || right);
+      default -> null; // unreachable
+    };
+  }
+
+  @Override
+  public BoolValue visitEqExp(EqExpContext ctx) {
+    ExpValue<?> left = (ExpValue<?>) visit(ctx.exp(0));
+    ExpValue<?> right = (ExpValue<?>) visit(ctx.exp(1));
+
+    return switch (ctx.op.getType()) {
+      case ImpParser.EQQ -> new BoolValue(left.equals(right));
+      case ImpParser.NEQ -> new BoolValue(!left.equals(right));
+      default -> null; // unreachable
+    };
+  }
+
+  @Override
+  public BoolValue visitCmpExp(CmpExpContext ctx) {
+    ExpValue<?> left = visitNumberExp(ctx.exp(0));
+    ExpValue<?> right = visitNumberExp(ctx.exp(1));
+
+    return switch (ctx.op.getType()) {
+      case ImpParser.LT -> new BoolValue(left.lt(right));
+      case ImpParser.LEQ -> new BoolValue(left.leq(right));
+      case ImpParser.GEQ -> new BoolValue(left.geq(right));
+      case ImpParser.GT -> new BoolValue(left.gt(right));
+      default -> null; // unreachable
+    };
   }
 
   @Override
@@ -89,17 +167,6 @@ public class ImpInterpreter extends ImpBaseVisitor<Value> {
     memory.update(id, val);
 
     return StmtValue.INSTANCE;
-  }
-
-  @Override
-  public Value visitExpStmt(ExpStmtContext ctx) {
-    return visit(ctx.exp());
-  }
-
-  @Override
-  public StmtValue visitSeq(SeqContext ctx) {
-    visit(ctx.stmt(0));
-    return (StmtValue) visit(ctx.stmt(1));
   }
 
   @Override
@@ -118,15 +185,31 @@ public class ImpInterpreter extends ImpBaseVisitor<Value> {
   }
 
   @Override
-  public ExpValue<?> visitEqExp(EqExpContext ctx) {
-    ExpValue<?> left = (ExpValue<?>) visit(ctx.exp(0));
-    ExpValue<?> right = (ExpValue<?>) visit(ctx.exp(1));
-
-    return switch (ctx.op.getType()) {
-      case ImpParser.EQQ -> new BoolValue(left.equals(right));
-      case ImpParser.NEQ -> new BoolValue(!left.equals(right));
-      default -> null; // unreachable
-    };
+  public StmtValue visitSeq(SeqContext ctx) {
+    visit(ctx.stmt(0));
+    return (StmtValue) visit(ctx.stmt(1));
   }
 
+  @Override
+  public StmtValue visitIf(IfContext ctx) {
+    boolean condition = visitBoolExp(ctx.exp()).toJavaValue();
+    return condition ? (StmtValue) visit(ctx.stmt()) : StmtValue.INSTANCE;
+  }
+
+  @Override
+  public StmtValue visitWhile(WhileContext ctx) {
+    boolean condition = visitBoolExp(ctx.exp()).toJavaValue();
+
+    while (condition) {
+      visit(ctx.stmt());
+    }
+
+    return StmtValue.INSTANCE;
+  }
+
+  @Override
+  public ExpValue<?> visitParen(ParenContext ctx) {
+    ExpValue<?> val = (ExpValue<?>) visit(ctx.exp());
+    return val;
+  }
 }
