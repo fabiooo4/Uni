@@ -17,6 +17,7 @@ exp : SUB? type=(INT | FLOAT)    # val
     | VAR                        # var
     ;
 
+// decl: (VAR DECL exp SEMICOLON)* # declaration
 decl: VAR DECL exp SEMICOLON decl # declaration
     |                             # nildeclaration
     ;
@@ -30,12 +31,12 @@ fragment DIGIT    : '0' | POSDIGIT ;
 fragment POSDIGIT : [1-9] ;
 
 // TODO: implement non numerical types
-STRING : '"' STR* '"' ;
-fragment STR : ~["\\] | STRING_ESC ;
+STRING              : '"' STR* '"' ;
+fragment STR        : ~["\\] | STRING_ESC ;
 fragment STRING_ESC : '\\' [btnfr"'\\] ;
 
-CHAR : '\'' CH* '\'' ;
-fragment CH : ~['\\] | CHAR_ESC ;
+CHAR              : '\'' CH* '\'' ;
+fragment CH       : ~['\\] | CHAR_ESC ;
 fragment CHAR_ESC : '\\' [btnfr'\\] ;
 
 LPAR : '(';
