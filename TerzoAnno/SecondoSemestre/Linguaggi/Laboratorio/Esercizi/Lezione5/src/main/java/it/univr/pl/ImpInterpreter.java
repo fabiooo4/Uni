@@ -2,6 +2,8 @@ package it.univr.pl;
 
 import java.util.HashMap;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import it.univr.pl.ImpParser.AddSubContext;
 import it.univr.pl.ImpParser.AndOrContext;
 import it.univr.pl.ImpParser.AssignContext;
@@ -239,7 +241,8 @@ public class ImpInterpreter extends ImpBaseVisitor<Value> {
   public StringValue visitString(StringContext ctx) {
     String quoted_str = ctx.STRING().getText();
     String str = quoted_str.substring(1, quoted_str.length() - 1);
-    return new StringValue(str);
+
+    return new StringValue(StringEscapeUtils.unescapeJava(str));
   }
 
   @Override
