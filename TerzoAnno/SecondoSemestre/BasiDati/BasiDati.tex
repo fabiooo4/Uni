@@ -4994,4 +4994,322 @@ where R.regione = 'Veneto'
   \end{enumerate}
 \end{exercise}
 
+\section{MongoDB}
+MongoDB è un database NoSQL document based e distribuito che implementa le seguenti
+features:
+\begin{itemize}
+  \item \textbf{Replicazione}: consente di "disseminare" più copie identiche dello
+    stesso dato in server diversi per garantire una maggiore resistenza ai guasti.
+    Con la replicazione si aumenta l'\textbf{affidabilità}.
+
+  \item \textbf{Sharding}: consiste nella suddivisione di un dataset di grandi 
+    dimensioni in parti più piccole. Con lo sharding si aumentana la
+    \textbf{scalabilità orizzontale}. Ogni shard viene replicato.
+\end{itemize}
+
+\begin{define}
+  La scalabilità orizzontale consiste nell'aggiungere più nodi al sistema per
+  aumentare la capacità di gestione dei dati, mentre la scalabilità verticale
+  consiste nell'aumentare le risorse (CPU, RAM, storage) di un singolo nodo.
+\end{define}
+
+\subsection{Replicazione}
+La replicazione in MongoDB è basata su un'architettura di \textbf{replica set}, che
+è una collezione di processi "mongod" (mongo daemon) che mantengono una copia di uno
+stesso dataset. Questo garantisce:
+\begin{itemize}
+  \item Ridondanza e alta disponibilità
+  \item Tolleranza ai guasti
+  \item Fare aggiornamenti hardware o software di un singolo nodo senza dover interrompere
+    il servizio
+\end{itemize}
+In un replica set viene identificato un nodo \textbf{primario} e vengono replicati
+dei nodi \textbf{secondari}. I nodi secondari si sincronizzano continuamente con il
+nodo primario tramite un \textbf{hartbeat}, che è un messaggio inviato periodicamente
+dal nodo primario ai nodi secondari per comunicare che è ancora attivo:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{replica_set}
+  \caption{Replica set in MongoDB}
+\end{figure}
+
+\begin{itemize}
+  \item \textbf{Nodo primario}: gestisce tutte le operazioni di \textbf{scrittura}
+    e mantiene un log (oplog) dei cambiamenti. Ogni replica set ha \textbf{un solo} nodo
+    primario.
+
+  \item \textbf{Nodi secondari}: replicano le operazioni scritte nell'oplog, quindi
+    ripetono soltanto quello che ha fatto il nodo primario.
+\end{itemize}
+Se il nodo primario diventa non disponibile, allora un nodo secondario "qualificato"
+viene eletto nodo primario tramite un \textbf{algoritmo di elezione}, ad esempio
+il protocollo di consenso Raft.
+
+\subsubsection{Algoritmo di elezione Raft}
+L'algoritmo di elezione viene attivato in caso di:
+\begin{itemize}
+  \item Un errore di comunicazione tra
+    qualsiasi nodo secondario e il nodo primario, o in caso di comunicazione oltre
+    un tempo di timeout (solitamente 10 secondi). La perdita del nodo primario viene
+    identificata in modo automatico
+
+  \item Inizializzazione di un replica set
+
+  \item Modifica di un replica set, cioè quando viene aggiunto o rimosso un nodo
+    dal replica set
+
+  \item Votazione per determinare il nuovo nodo primario. Questa votazione non
+    richiede più di 12 secondi, compreso il tempo in cui ci si deve accorgere
+    che il nodo primario non è più disponibile
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Il nodo secondario con \textbf{timestamp di scrittura più recente} è quello
+con maggiori probabilità di vincere l'elezione.
+
+Per evitare elezioni continue, una volta conclusa un'elezione, i nodi entrano
+in un periodo di "congelamento" durante il quale non possono iniziare nuove elezioni.
+Finchè un'elezione non è conclusa, il replica set non può eseguire operazioni di
+scrittura.
+
+\subsubsection{Oplog}
+È un log che contiene tutte le operazioni eseguite sui database. Le operazioni di
+scrittura vengono prima eseguite sul nodo primario e poi trasmesse sugli oplog
+dei nodi secondari. Per supportare la replicazione è necessario che tutti i membri
+del replica set si scambino informazioni attraverso la condivisione dei propri oplog.
+Inoltre le operazioni nell'oplog sono idempotenti, cioè applicazioni multiple della
+stessa operazione producono lo stesso risultato di una singola applicazione.
+
+\subsubsection{Replicazione delle scritture}
+Per garantire l'affidabilità delle repliche bisogna avere un meccanismo per stabilire
+che i dati siano segnalati come scritti solo quando un certo numero di nodi 
+ha effettuato tale scrittura.
+
+\vspace{1em}
+\noindent
+La \textbf{write concern} è un meccanismo che consente di specificare il numero di nodi
+che devono confermare la scrittura prima che questa venga considerata completata.
+\begin{itemize}
+  \item \( w \): è il numero di nodi del replica set che devono aver confermato
+    la scrittura prima che l'operazione sia considerata conclusa. I valori possibili
+    sono:
+    \begin{itemize}
+      \item \( 0 \): non si aspetta che il nodo primario notifichi la scrittura nel
+        proprio oplog
+
+      \item \( 1 \): si aspetta soltanto il nodo primario
+
+      \item \( majority \): si aspetta che la maggioranza dei nodi del replica set
+        confermi la scrittura
+
+      \item un numero specifico \( n \): si aspetta che \( n \) nodi confermino la
+        scrittura.
+    \end{itemize}
+   Più un valore è basso più si riduce la latenza e più è alto più si garantisce la
+   persistenza.
+
+ \item \( j \): è un flag che richiede la conferma che l'operazione di scrittura sia
+   stata scritta sul disco
+
+ \item \( wtimeout \): è un limite di tempo oltre il quale se l'operazione di scrittura
+   non è terminata si restituisce un errore
+\end{itemize}
+
+\subsubsection{Replicazione delle letture}
+Di default le operazioni di lettura vengono redirette sul nodo primario, ma è
+possibile distribuire le letture su più nodi per migliorare le prestazioni e bilanciare
+il carico secondo i seguenti parametri:
+\begin{itemize}
+  \item \( primary \): si legge solo dal nodo primario
+
+  \item \( primaryPreferred \): si legge dal nodo primario se è disponibile, altrimenti
+    si legge da un nodo secondario
+
+  \item \( secondary \): si legge solo dai nodi secondari
+
+  \item \( secondaryPreferred \): si legge da un nodo secondario se è disponibile,
+    altrimenti si legge dal nodo primario
+
+  \item \( nearest \): si legge dal nodo più vicino (con latenza più bassa)
+\end{itemize}
+Se si legge da un nodo secondario bisogna \textbf{garantire la consistenza dei dati letti
+da una copia} (Read Concern). Per farlo si può specificare un livello di read concern:
+\begin{itemize}
+  \item \textbf{Local}: ritorna il dato disponibile più recente nel nodo al momento in
+    cui viene eseguita la query indipendentemente dallo stato di replicazione
+
+  \item \textbf{Majority}: ritorna il dato che è stato confermato dalla maggior parte
+    dei nodi del replica set. Questo garantisce un'alta consistenza
+
+  \item \textbf{Linearizable}: ritorna il dato confermato da tutti. Questo garantisce
+    la massima consistenza, ma è anche il più lento
+
+  \item \textbf{snapshot}: ritorna i dati confermati dalla maggioranza dei nodi in
+    un certo momento (anche antecedente al momento corrente)
+\end{itemize}
+
+\subsection{Architettura dei replica set}
+Un replica set è composto da 3 membri di default, di cui uno è un nodo primario e gli
+altri due sono nodi secondari. Le best practice per i replica set sono:
+\begin{itemize}
+  \item Devono contenere un numero \textbf{dispari} di membri votanti perchè questo evita situazioni di stallo
+    dovute a priorità di voto.
+
+  \item Se i membri non sono dispari è presente un \textbf{arbitro}. L'arbitro
+    non mantiene una copia dei dati e non può diventare un nodo primario
+
+  \item Includere la presenza di membri nascosti o ritardati che si occupano di
+    task particolari, ad esempio backup o reporting.
+    \begin{itemize}
+      \item I nodi nascosti non
+        possono diventare nodi primari e non sono direttamente accessibili dalle applicazioni
+        client
+
+      \item I nodi ritardati sono predisposti per replicare le operazioni del nodo
+        primario con un certo ritardo preimpostato e vengono utilizzati come una
+        fonte di backup continuo
+    \end{itemize}
+
+
+  \item Assicurarsi che almeno un membro di ciascun replica set si trovi in un data
+    center alternativo
+\end{itemize}
+
+\subsection{Sharding}
+Lo sharding consiste nel dividere il database in parti più piccole dette \textbf{shard}.
+Lo shard rappresenta il replica set che memorizza una porzione dei dati:
+\begin{itemize}
+  \item \textbf{Mongos}: funge da distributore di query e si occupa di reindirizzare
+    in modo efficiente le query tra i vari shard. Una volta ottenuti i risultati
+    parziali li consolida producendo una risposta definitiva
+
+  \item \textbf{Config server}: mantiene i metadati relativi allo sharding
+\end{itemize}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth]{sharding}
+  \caption{Sharding in MongoDB}
+\end{figure}
+\noindent
+I vantaggi dello sharding sono:
+\begin{itemize}
+  \item Aumentare velocità di lettura e scrittura
+  \item Aumentare la capacità di archiviazione
+  \item Sfruttare la località del dato (zone sharding)
+\end{itemize}
+
+\subsubsection{Architettura dello sharding}
+Lo sharding viene implementato a livello di collezione e permette la suddivisione
+dei documenti in \textbf{chunk}. La distribuzione del dato avviene tramite la
+\textbf{shard key} che è ottenuta a partire da una o più proprietà dei documenti.
+Esistono due principali strategie per implementare la suddivisione dei documenti
+in chunk:
+\begin{enumerate}
+  \item \textbf{Ranged sharding}: i dati vengono suddivisi in base ad intervalli
+    continui dei valori della chiave di shard. Le caratteristiche di questo metodo sono:
+    \begin{itemize}
+      \item Questo metodo è ottimale per range query sui valori chiave
+
+      \item Il dominio dell'attributo chiave shard
+        determina il numero di possibili shard
+
+      \item Se si hanno valori più probabili si possono ottenere chunk più numerosi
+        e chunk più piccoli
+
+      \item Se si hanno valori che crescono o decrescono in modo monotonico, producono
+        più probabilmente delle operazioni di inserimento che coinvolgono un unico
+        chunk
+    \end{itemize}
+
+  \item \textbf{Hashed sharding}: opera calcolando il valore di hash della chiave
+    di shard e assegnando ciascun chunk in base ad un range determinato da questo
+    valore di hash. Le caratteristiche di questo metodo sono:
+    \begin{itemize}
+      \item Valori di chiave simile avranno un valore di hash molto diverso, quindi
+        un chunk diverso
+
+      \item Non sono efficienti con range query
+    \end{itemize}
+\end{enumerate}
+
+\subsubsection{Balancer}
+Il balancer è un processo in background che si assicura che la quantità di dati
+assegnati a ciascun shard la più bilanciata possibile. Quando la quantità di dati
+assegnata ad un particolare shard raggiunge un certo threshold, il balancer 
+redistribuisce con principio di località i chunk tra gli shard. La redistribuzione
+funziona solo per chunk piccoli, quindi:
+\begin{itemize}
+  \item \textbf{Jumbo chunk}: se un chunk è troppo grande, ma non può essere diviso
+    in automatico, esso richiede un intervento manuale
+  \item \textbf{Chunk indivisibile}: è un chunk caratterizzato da un singolo
+    valore di chiave shard, si effettua quindi resharding, cioè si modifica la chiave
+    di shard.
+\end{itemize}
+
+\subsection{Interrogazioni in presenza di shared data}
+In presenza di shard, le query vengono inviate e gestite dal processo \textbf{mongos},
+che agisce da distributore delle query e decide a quale shard devono essere inviate.
+Agisce effettivamente da proxy delle richieste. Le funzioni utilizzate da mongos
+per gestire le query sono:
+\begin{itemize}
+  \item \texttt{find()}
+  \item \texttt{sort()}
+  \item \texttt{limit()}
+\end{itemize}
+
+\subsubsection{Proprietà ACID}
+\begin{itemize}
+  \item \textbf{A}tomicità: 
+    \begin{itemize}
+      \item Tutte le operazioni che coinvolgono \textbf{un solo} documento
+        sono sempre atomiche, anche in caso di attraversamento di proprietà che sono
+        suddivise in più documenti o array
+
+      \item Si stima che l'80\%-90\% delle applicazioni reali richiede query mono-documento.
+        In MongoDB c'è un limite di 16mb per documento, quindi se si supera questo limite
+        è necessario suddividere i dati in più documenti.
+    \end{itemize}
+
+  \item \textbf{C}onsistenza: ci sono due livelli di consistenza:
+    \begin{itemize}
+      \item \textbf{Strong consistency}: garantisce che ogni lettura fatta leggerà
+        sempre l'ultimo valore confermato. Questo però introduce problemi di
+        prestazioni, ma garantisce più affidabilità
+
+      \item \textbf{Eventual consistency}:garantisce che quando i dati sono stati
+        aggiornati e propagati, tutte le letture future ritorneranno eventualmente
+        l'ultimo stato confermato. Questo fornisce alte prestazioni.
+    \end{itemize}
+    MongoDB garantisce un livello di consistenza a metà tra i due livelli.
+
+  \item \textbf{I}solamento: MongoDB gestisce i livelli di isolamento tramite il
+    meccanismo di \textbf{write concern} e \textbf{read concern}.
+    \begin{itemize}
+      \item \textbf{Read concern}:
+        \begin{itemize}
+          \item Local: ritorna il dato più recente disponibile nel nodo, ma non è
+            detto che tutte le transazioni vedano lo stesso dato
+
+          \item Majority: garantisce che il dato letto sia quello confermato dalla
+            maggioranza dei nodi e questo garantisce che tutte le transazioni vedano
+            lo stesso risultato
+
+          \item Snapshot: ritorna il dato presente nello snapshot della maggioranza
+            dei nodi, questo garantisce che tutte le transazioni vedano lo stesso risultato
+        \end{itemize}
+
+      \item \textbf{Write concern}
+        \begin{itemize}
+          \item Majority: richiede che la maggioranza dei nodi in un replica set
+            confermi il dato
+        \end{itemize}
+    \end{itemize}
+
+  \item \textbf{D}urability (persistenza): MongoDB usa il meccanismo Write-Ahead
+    Log sul disco ogni 100 millisecondi per garantire la persistenza dei dati.
+    Le operazioni vengono quindi scritte prima nel file di log e poi vengono eseguite,
+    in questo modo è possibile ripristinare lo stato del database in caso di errori.
+\end{itemize}
+
 \end{document}
