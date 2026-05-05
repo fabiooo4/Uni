@@ -25,7 +25,7 @@ privatezza}.
 
 Un DBMS deve essere anche \textbf{efficiente} ed \textbf{efficace}:
 \begin{itemize}
-  \item Efficiente: il DBMS deve essere in grado di gestire grandi quantità di dati inbasitex
+  \item Efficiente: il DBMS deve essere in grado di gestire grandi quantità di dati in
     modo rapido e con un utilizzo minimo delle risorse
   \item Efficace: il DBMS deve essere in grado di soddisfare le esigenze degli utenti
     in modo completo e accurato
@@ -1855,7 +1855,7 @@ WHERE NP1.num_pr > (
 Le basi di dati risiedono in \textbf{memoria secondaria}, in quanto sono:
 \begin{itemize}
   \item \textbf{Grandi}: non possono essere contenute completamente in memoria centrale
-  \item \textbf{Persistente}: hanno un tempo di vita che non è limitato all'esecuzione
+  \item \textbf{Persistenti}: hanno un tempo di vita che non è limitato all'esecuzione
     dei programmi che le usano
 \end{itemize}
 Le caratteristiche della memoria secondaria sono:
@@ -1879,7 +1879,7 @@ Le caratteristiche della memoria secondaria sono:
 L'interazione tra memoria secondaria e memoria centrale avviene tramite il
 \textbf{gestore del buffer} e consiste nel caricare uno o più \textbf{blocchi
 dalla memoria secondaria} in \textbf{pagine} dedicate della \textbf{memoria centrale}
-detta \textbf{buffer}. La dimensione delle pagine in memoria centrale sono solitamente
+detta \textbf{buffer}. La dimensione delle pagine in memoria centrale è solitamente
 un multiplo della dimensione dei blocchi in memoria secondaria, ma semplifichiamo
 assumendo che siano uguali:
 \[
@@ -1995,7 +1995,6 @@ Le primitive per la gestione del buffer sono:
     \end{itemize}
 
   \item \texttt{flush}: viene usata dal gestore del buffer per salvare blocchi sulla
-    bit di stato viene posto a zero)
     memoria secondaria in modo \textbf{asincrono}.
     \begin{itemize}
       \item L'effetto è la liberazione delle pagine "dirty", quindi il bit di stato
@@ -2018,7 +2017,7 @@ essere pericoloso, quindi il gestore dell'affidabilità si occupa di garantire:
   \item \textbf{Atomicità}: che le transazioni non vengano lasciate incomplete con
     alcune operazioni eseguite ed altre no
 
-  \item \textbf{Persistenza}: che gli effetti di ciascuna transazione con conclusa
+  \item \textbf{Persistenza}: che gli effetti di ciascuna transazione conclusa
     con un commit siano mantenuti in modo permanente a prescindere dai guasti
     o dalle scritture differite
 \end{itemize}
@@ -2058,7 +2057,7 @@ memorizzati:
             \textbf{after state} \( AS \)
         \end{itemize}
     \end{itemize}
-    L'obiettivo è quello di consentire il in caso di ripristino le seguenti operazioni:
+    L'obiettivo è quello di consentire in caso di ripristino le seguenti operazioni:
     \begin{itemize}
       \item \textbf{UNDO}: per disfare un’azione su un oggetto \( O \)  è sufficiente
         ricopiare in \( O \) il valore \( BS \); l’insert/delete viene disfatto
