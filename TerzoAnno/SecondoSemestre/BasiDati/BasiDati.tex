@@ -5312,4 +5312,108 @@ per gestire le query sono:
     in questo modo è possibile ripristinare lo stato del database in caso di errori.
 \end{itemize}
 
+\section{Esercizi}
+\subsection{Query}
+Si consideri la seguente base di dati:
+\begin{itemize}
+  \item AUTO(\underline{targa}, num.telaio, modello, colore, km, cilindrata, posti,
+    proprietario)
+
+  \item PRENOTAZIONE(\underline{codice}, parcheggio, posto, auto, data\_prenotazione,
+    data\_ora\_inizio, data\_ora\_fine, tipo, pagato)
+
+  \item PARCHEGGIO(\underline{nome}, comune, indirizzo, coperto)
+\end{itemize}
+con i seguenti vincoli di integrità:
+\begin{itemize}
+  \item PRENOTAZIONE.auto \( \to  \) AUTO
+  \item PRENOTAZIONE.parcheggio \( \to  \) PARCHEGGIO
+\end{itemize}
+
+\subsubsection{Esercizio 1}
+Trovare tutti i parcheggi in cui vengono effettuate più prenotazione di
+tipo online che prenotazioni fisiche.
+\begin{lstlisting}[language=SQL]
+-- Numero di prenotazioni online
+select P.nome
+from parcheggio P
+  join prenotazione R on P.nome = R.parcheggio
+where tipo = 'online'
+group by P.nome
+having count(*) > -- num prenotazioni online di un parcheggio
+  (
+    -- Numero di prenotazioni fisiche
+    select count(*)
+    from prenotazione R1
+    where R1.tipo = 'fisica'
+      and R1.nome = P.nome
+  )
+\end{lstlisting}
+La query esterna viene eseguita per ogni riga della query esterna. Usando il
+data binding non si ha bisogno del group by perchè si stanno selezionando le
+righe di uno specifico parcheggio e quindi si vogliono contare tutte.
+
+
+\subsubsection{Esercizio 2}
+Trovare tutti i parcheggi in cui non sono mai state fatte prenotazioni 
+fisiche nel 2024
+\begin{itemize}
+  \item Usando \texttt{except}
+\begin{lstlisting}[language=SQL]
+-- Tutti i parcheggi
+select P.nome
+from parcheggio P
+
+except
+
+-- Tranne quelli con una prenotazione nel 2024
+select R.parcheggio
+from prenotazione R
+where R.tipo = 'fisica'
+  and R.data_prenotazione >= '01/01/2024'
+  and R.data_prenotazione <= '31/12/2024';
+  -- equivale a
+  -- extract(year from R.data_prenotazione) = '2024'
+\end{lstlisting}
+
+  \item Usando \texttt{not in}
+\begin{lstlisting}[language=SQL]
+select P.nome
+from parcheggio P
+where P.nome not in (
+  select R.parcheggio
+  from prenotazione R
+  where R.tipo = 'fisica'
+    and R.data_prenotazione >= '01/01/2024'
+    and R.data_prenotazione <= '31/12/2024'
+);
+\end{lstlisting}
+\end{itemize}
+
+
+\subsubsection{Esercizio 3}
+Trovare quanti parcheggi del comune di Verona hanno avuto un numero medio di
+prenotazioni complessive nel 2024 superiore al numero medio di prenotazioni dei
+parcheggi del comune di Padova.
+
+\begin{lstlisting}[language=SQL]
+create temp view nprenotazioni as (
+  select P.nome, P.comune, count(*) as num
+  from parcheggio P
+    join prenotazioni R on P.nome = R.parcheggio
+  where R.data_prenotazione >= '01/01/2024'
+    and R.data_prenotazione <= '31/12/2024'
+  group by P.nome, P.comune
+);
+
+select count(*)
+from nprenotazioni N
+where N.comune = 'Verona'
+  and N.num > (
+    select avg(N1.num)
+    from nprenotazioni N1
+    where N1.comune = 'Padova'
+  );
+\end{lstlisting}
+
 \end{document}
