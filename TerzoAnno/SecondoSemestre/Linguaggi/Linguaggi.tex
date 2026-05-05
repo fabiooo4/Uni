@@ -5993,9 +5993,261 @@ Lo scoping dinamico ha un'implementazione più semplice, ma rende il codice
 meno leggibile e siccome è eseguito a tempo di esecuzione è più difficile 
 fare analisi statica del codice.
 
+\subsection{Allocazione della memoria}
+Bisogna gestire come e quando viene allocato lo spazio in memoria per gli elementi del
+programma. Ha effetto sugli algoritmi di risoluzione dei riferimenti non locali.
+Esistono due tipi principali di allocazione della memoria:
+\begin{itemize}
+  \item \textbf{Allocazione statica}: la memoria è allocata a tempo di compilazione
+  \item \textbf{Allocazione dinamica}: la memoria è allocata a tempo di esecuzione.
+    Utilizza uno stack (LIFO) e lo heap per gestire la memoria
+\end{itemize}
 
-% \subsubsection{Regole di passaggio di parametri}
-% Il passaggio di parametri è la modalità con cui i parametri formali di una procedura
-% vengono inizializzati con i parametri attuali durante la chiamata.
+\begin{example}
+  Consideriamo il seguente codice (illegale) di fortran:
+\begin{lstlisting}[language=Fortran]
+subroutine error(n)
+  if (n.le.1) return
+  call error(n-1)
+  print n
+  end
+
+...
+
+call error(3)
+\end{lstlisting}
+  Lo spazio in memoria per la chiamata di error viene sovrascritta, quindi
+  si perde il puntatore al valore di ritorno originale e non è possibile ritornare.
+\end{example}
+
+\subsubsection{Allocazione dinamica su pila}
+L'allocazione dinamica su pila associa la memoria ad una struttura dati allocata
+dinamicamente e gestita in modalità LIFO. Per ogni chiamata a procedura viene
+creato un \textbf{RdA} (Record di Attivazione), cioè un insieme di infomazioni che
+permettono di eseguire la procedura e permettono di ritornare correttamente allo stato
+valido al momento della chiamata. L'RdA ha una dimensione nota staticamente e contiene:
+\begin{itemize}
+  \item \textbf{Indirizzo di ritorno}: rappresenta l'indirizzo a cui ritornare dopo
+    l'esecuzione della procedura
+    
+  \item \textbf{Variabili locali}: contiene parametri formali e l'ambiente dichiarato
+    nella procedura
+
+  \item \textbf{Puntatore alla testa della pila}
+
+  \item \textbf{Puntatore statico}: è il puntatore all'RdA della procedura genitore
+    nella catena storica delle definizioni (nello stack può essere distante dall'RdA
+    corrente). Serve per ricostruire la sequenza di
+    annidamento in caso di scoping statico
+
+  \item \textbf{Puntatore dinamico}: è il puntatore all'RdA della procedura chiamante.
+    serve per ricostruire la sequenza di chiamate in caso di scoping dinamico
+
+  \item Altre informazioni specifiche
+\end{itemize}
+
+% TODO: Disegno stack RdA1 RdA2
+% TODO: Esempio in C dalle slides
+
+\subsubsection{Procedure di chiamata a funzione}
+I passi da eseguire per chiamare una funzione sono i seguenti:
+\begin{enumerate}
+  \item Valutare i parametri (in funzione del metodo di passaggio)
+  \item Allocare un RdA sullo stack con un ambiente locale
+  \item Salvare lo stato del chiamante al momento della chiamata
+  \item Trasferire il controllo alla procedura chiamata
+\end{enumerate}
+
+\vspace{1em}
+\noindent
+I passi da eseguire per ritornare da una funzione sono i seguenti:
+\begin{enumerate}
+  \item Recupero delle informazioni dal RdA (passaggio valore-risultato)
+  \item Deallocazione del RdA dallo stack
+  \item Recupero dello stato del chiamante
+  \item Ritornare il controllo al chiamante
+\end{enumerate}
+
+% TODO: Esempio senza ricorsione dalle slides
+% TODO: Esempio con ricorsione dalle slides
+
+\subsubsection{Implementazione scoping statico}
+Lo scoping statico consiste nella costruzione del \textbf{link statico} alla chiamata
+di ogni procedura. Il link statico punta all'indirizzo del RdA della procedura che 
+contiene la definizione della procedura chiamata in atto.
+
+\begin{itemize}
+  \item \textbf{Catena statica} (CS): è la sequenza di RdA che si ottiene seguendo i
+    link statici a partire da un RdA
+  \item  \textbf{Profondità statica} (SD): è il valore che denota la profondità di annidamento.
+\end{itemize}
+
+\begin{example}
+  Consideriamo i seguenti nomi di procedura:
+  \[
+    A, B, C, D, E
+  \] 
+  Con la seguente sequenza di chiamate:
+  \[
+    A \underbrace{\to}_{\substack{\text{Determina i}\\\text{link dinamici}}} B \to C \to D \to E \to C
+  \] 
+  I link dinamici si ottengono seguendo al contrario la sequenza di chiamate.
+  Supponiamo che il codice sia definito nel seguente modo:
+  \begin{itemize}
+    \item \( B \) e \( C \) sono definiti dentro \( A \) 
+    \item \( D \) e \( E \) sono definiti dentro \( C \)
+  \end{itemize}
+  La profondità statica è la seguente:
+  \begin{itemize}
+    \item \( SD(A) = 0 \) 
+    \item \( SD(B) = 1 + SD(A) = 1 = SD(C) \) 
+    \item \( SD(B) = 1 + SD(C) = 2 = SD(E) \) 
+  \end{itemize}
+  % TODO:
+  % \[
+  %   P: \left[ 
+  %     \begin{aligned}
+  %             &\color{Blue} P_1: \left[
+  %               \color{Cyan}\stackrel{\mathcolor{white}{A}}{P_{11}}: \left[
+  %               \right.
+  %             \right. \\
+  %             &\color{Green}P_2: \left[ \stackrel{\mathcolor{white}{A}}{\mathcolor{white}{P}}  \right.
+  %     \end{aligned}
+  %   \right.
+  % \]
+
+  Lo stack è composto da:
+  % TODO: Disegno stack con link statici (azzurri) e link dinamici (blu)
+\end{example}
+
+\vspace{1em}
+\noindent
+Consideriamo la seguente notazione:
+\begin{itemize}
+  \item \( Ch \): Rappresenta il chiamante
+\end{itemize}
+Le informazioni che abbiamo per calcolare il link statico sono:
+\begin{itemize}
+  \item Profondità di annidamento (SD)
+  \item RdA della procedura (con struttura nota staticamente)
+\end{itemize}
+Supponiamo che \( Ch \) chiama \( P \), per determinare il link statico di \( P \):
+\begin{itemize}
+  \item Se \( P \) è definito in \( Ch \) allora il link statico di \( P \) coincide
+    con il link dinamico
+  \item Se \( P \) è definito in un blocco che si trova \( k \) passi prima di \( Ch \) 
+    allora bisogna risalire la catena statica di \( k \) passi. Dove 
+    \[
+      k = SD(Ck) - SD(P) + 1
+    \] 
+    Ciò implica che:
+    \begin{itemize}
+      \item Se \( k = 0 \) allora \( Ch \) definisce \( P \) e quindi
+        \( CS(P) = Ch \). Di conseguenza il link statico per \( P \) è l'indirizzo del
+        chiamante.
+
+      \item Se \( k > 0 \) allora \( CS(P) = CS(\overbrace{CS(\ldots CS(Ch))}^{\text{k volte}}) \),
+        cioè il link statico si ottiene risalendo \( k \) volte la catena statica
+        (la sequenza di link statici)
+    \end{itemize}
+\end{itemize}
+
+\begin{example}
+  Consideriamo lo stesso codice dell'esempio precedente:
+  \begin{enumerate}
+    \item 
+      Calcoliamo il link statico per \( B \):\\
+      Calcoliamo \( k \):
+      \[
+        k_b = SD(A) - SD(B) + 1 = 0 - 1 + 1 = 0
+      \] 
+      \[
+        \Downarrow
+      \] 
+      \[
+        CS(B) = A
+      \] 
+      Quindi il link statico di \( B \) è l'indirizzo del chiamante \( A \).
+
+    \item Calcoliamo il link statico per \( C \):
+      \[
+        k_c = SD(B) - SD(C) + 1 = 1 - 1 + 1 = 1
+      \] 
+      \[
+        \Downarrow
+      \] 
+      \[
+        CS(C) = CS(B) = A
+      \] 
+      Quindi il link statico di \( C \) è l'indirizzo del link statico di \( B \), che
+      coincide con \( A \).
+
+    \item Calcoliamo il link statico per \( D \):
+      \[
+        k_d = DS(C) - SD(D) + 1 = 1 - 2 + 1 = 0
+      \] 
+      \[
+        \Downarrow
+      \] 
+      \[
+        CS(D) = C
+      \] 
+      Quindi il link statico di \( D \) è l'indirizzo del chiamante \( C \).
+
+    \item Calcoliamo il link statico per \( E \):
+      \[
+        k_e = SD(D) - SD(E) + 1 = 2 - 2 + 1 = 1
+      \] 
+      \[
+        \Downarrow
+      \] 
+      \[
+        CS(E) = CS(D) = C
+      \] 
+      Quindi il link statico di \( E \) è l'indirizzo del link statico di \( D \), che
+      coincide con \( C \).
+
+    \item Calcoliamo il link statico per \( C \) chiamato da \( E \):
+      \[
+        k_{c_2} =SD(E) - SD(C) + 1 = 2 - 1 + 1 = 2
+      \] 
+      \[
+        \Downarrow
+      \] 
+      \[
+        CS(C) = CS(CS(E)) = CS(CS(D)) = CS(C) = CS(B) = A
+      \] 
+  \end{enumerate}
+\end{example}
+
+% TODO: Exempio in C dalle slides
+% TODO: Exempio ada slides
+
+\subsubsection{Risoluzione dei riferimenti}
+\textbf{Nota:} se il riferimento è locale allora la risoluzione è ovvia nell'RdA
+attivo.
+
+\vspace{1em}
+\noindent
+Se si ha \( x \) usato in \( P \) ma non locale, bisogna individuare il blocco più
+vicino nella catena statica che definisce \( x \). Per farlo:
+\begin{itemize}
+  \item Si utilizza \( SD \) e l'informazione data dai blocchi che definiscono
+    \( x \) 
+
+  \item Si utilizza la catena statica
+\end{itemize}
+
+\begin{example}
+  % TODO: Esempio slides blocco Main (A ; B(C))
+  Usiamo \( x \) in \( A \), quindi cerchiamo nella catena di annidamento, risalendo
+  da \( A \), il blocco più vicino che definisce \( x \). Il blocco più vicino
+  ad \( A \) che definisce \( x \) è il \( main \) e lo sappiamo a tempo di compilazione.
+  \[
+    \overbrace{N_x}^{\substack{\text{Quanto bisogna}\\\text{risalire la}\\\text{catena statica}\\\text{per trovare la}\\\text{corretta \( x \)}}} = \underbrace{SD(A)}_{\substack{\text{Blocco che}\\\text{usa \( x \)}}} -
+    \underbrace{SD(main)}_{\substack{\text{Blocco più vicino}\\\text{ad \( A \) che}\\
+    \text{definisce \( x \)}\\\text{nella catena di}\\\text{annidamento}}}
+  \] 
+\end{example}
 
 \end{document}
