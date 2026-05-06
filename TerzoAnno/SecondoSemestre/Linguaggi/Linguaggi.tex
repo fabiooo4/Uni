@@ -6005,19 +6005,11 @@ Esistono due tipi principali di allocazione della memoria:
 
 \begin{example}
   Consideriamo il seguente codice (illegale) di fortran:
-\begin{lstlisting}[language=Fortran]
-subroutine error(n)
-  if (n.le.1) return
-  call error(n-1)
-  print n
-  end
-
-...
-
-call error(3)
-\end{lstlisting}
-  Lo spazio in memoria per la chiamata di error viene sovrascritta, quindi
-  si perde il puntatore al valore di ritorno originale e non è possibile ritornare.
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{fortran}
+    \caption{Esempio in fortran}
+  \end{figure}
 \end{example}
 
 \subsubsection{Allocazione dinamica su pila}
@@ -6046,7 +6038,11 @@ valido al momento della chiamata. L'RdA ha una dimensione nota staticamente e co
   \item Altre informazioni specifiche
 \end{itemize}
 
-% TODO: Disegno stack RdA1 RdA2
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{stack}
+  \caption{Contenuti dello stack}
+\end{figure}
 % TODO: Esempio in C dalle slides
 
 \subsubsection{Procedure di chiamata a funzione}
@@ -6068,8 +6064,89 @@ I passi da eseguire per ritornare da una funzione sono i seguenti:
   \item Ritornare il controllo al chiamante
 \end{enumerate}
 
-% TODO: Esempio senza ricorsione dalle slides
-% TODO: Esempio con ricorsione dalle slides
+\begin{example}
+  Consideriamo il seguente codice:
+\begin{lstlisting}[language=C]
+void fun1(float r) {
+  int s, t;
+  ...
+
+  fun2(s);
+
+  ...
+}
+
+void fun2(int x) {
+  int y;
+  ...
+
+  fun3(y);
+
+  ...
+}
+
+void fun3(int q) {
+  ...
+}
+
+void main() {
+  float p;
+  ...
+
+  fun1(p);
+
+  ...
+}
+\end{lstlisting}
+  \begin{itemize}
+    \item main chiama fun1
+    \item fun1 chiama fun2
+    \item fun2 chiama fun3
+  \end{itemize}
+  E l'evoluzione dello stack per questo programma è la seguente:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{esempio_stack_senza_ricorsione}
+    \caption{Evoluzione dello stack}
+  \end{figure}
+\end{example}
+
+\begin{example}
+  Consideriamo il seguente codice:
+\begin{lstlisting}[language=C]
+int factorial (int n) {
+  // <---------------------------- 1
+  if (n <= 1) return 1;
+  else return (n * factorial(n - 1));
+  // <---------------------------- 2
+}
+
+void main() {
+  int value;
+  value = factorial(3);
+  // <---------------------------- 3
+}
+\end{lstlisting}
+  \begin{itemize}
+    \item Appena viene chiamata \texttt{factorial(3)} viene creato un RdA
+      per ogni chiamata a \texttt{factorial}, quindi si ottiene il seguente
+      stack:
+      \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\textwidth]{esempio_stack_con_ricorsione_1}
+        \caption{Evoluzione dello stack con ricorsione}
+      \end{figure}
+
+    \item Il valore della funzione viene calcolato partendo da quello più in
+      alto sullo stack e poi viene passato al RdA sottostante, quindi si ottiene
+      il seguente stack:
+      \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\textwidth]{esempio_stack_con_ricorsione_2}
+        \caption{Evoluzione dello stack con ricorsione (calcolo del valore)}
+      \end{figure}
+  \end{itemize}
+\end{example}
 
 \subsubsection{Implementazione scoping statico}
 Lo scoping statico consiste nella costruzione del \textbf{link statico} alla chiamata
@@ -6097,27 +6174,39 @@ contiene la definizione della procedura chiamata in atto.
     \item \( B \) e \( C \) sono definiti dentro \( A \) 
     \item \( D \) e \( E \) sono definiti dentro \( C \)
   \end{itemize}
+  \[
+    A: \left[ 
+      \begin{aligned}
+              &B: \left[
+              \stackrel{\mathcolor{white}{A}}{\mathcolor{white}{P}}
+              \right.\\
+              &C: \left[
+                % \color{Cyan}\stackrel{\mathcolor{white}{A}}{P_{11}}: \left[ \right.
+                \begin{aligned}
+                  &D: \left[
+                    \stackrel{\mathcolor{white}{A}}{\mathcolor{white}{P}}
+                    \right.\\
+                  &E: \left[
+                    \stackrel{\mathcolor{white}{A}}{\mathcolor{white}{P}}
+                    \right.
+                \end{aligned}
+              \right.
+      \end{aligned}
+    \right.
+  \]
   La profondità statica è la seguente:
   \begin{itemize}
     \item \( SD(A) = 0 \) 
     \item \( SD(B) = 1 + SD(A) = 1 = SD(C) \) 
     \item \( SD(B) = 1 + SD(C) = 2 = SD(E) \) 
   \end{itemize}
-  % TODO:
-  % \[
-  %   P: \left[ 
-  %     \begin{aligned}
-  %             &\color{Blue} P_1: \left[
-  %               \color{Cyan}\stackrel{\mathcolor{white}{A}}{P_{11}}: \left[
-  %               \right.
-  %             \right. \\
-  %             &\color{Green}P_2: \left[ \stackrel{\mathcolor{white}{A}}{\mathcolor{white}{P}}  \right.
-  %     \end{aligned}
-  %   \right.
-  % \]
 
   Lo stack è composto da:
-  % TODO: Disegno stack con link statici (azzurri) e link dinamici (blu)
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{stack_scoping_statico}
+    \caption{Stack con scoping statico}
+  \end{figure}
 \end{example}
 
 \vspace{1em}
@@ -6239,7 +6328,12 @@ vicino nella catena statica che definisce \( x \). Per farlo:
 \end{itemize}
 
 \begin{example}
-  % TODO: Esempio slides blocco Main (A ; B(C))
+  Consideriamo il seguente codice:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{esempio_riferimenti_scoping_statico}
+    \caption{Esempio di risoluzione dei riferimenti con scoping statico}
+  \end{figure}
   Usiamo \( x \) in \( A \), quindi cerchiamo nella catena di annidamento, risalendo
   da \( A \), il blocco più vicino che definisce \( x \). Il blocco più vicino
   ad \( A \) che definisce \( x \) è il \( main \) e lo sappiamo a tempo di compilazione.
