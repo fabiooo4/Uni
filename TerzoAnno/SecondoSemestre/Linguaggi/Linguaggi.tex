@@ -3520,7 +3520,7 @@ Aggiungiamo i comandi alla sintassi del linguaggio:
       \texttt{skip} \mid x := e 
     }^{\text{Comandi base}} \\
                       & \mid C; C  \\
-                      & \mid \texttt{while } B \texttt{ do } C
+                      & \mid \texttt{while } B \texttt{ do } C \\
                       & \mid \texttt{if } B \texttt{ then } C \texttt{ else } C  \\
   \end{aligned}
 \] 
@@ -6312,7 +6312,7 @@ Supponiamo che \( Ch \) chiama \( P \), per determinare il link statico di \( P 
 % TODO: Exempio in C dalle slides
 % TODO: Exempio ada slides
 
-\subsubsection{Risoluzione dei riferimenti}
+\subsubsection*{Risoluzione dei riferimenti}
 \textbf{Nota:} se il riferimento è locale allora la risoluzione è ovvia nell'RdA
 attivo.
 
@@ -6343,5 +6343,172 @@ vicino nella catena statica che definisce \( x \). Per farlo:
     \text{definisce \( x \)}\\\text{nella catena di}\\\text{annidamento}}}
   \] 
 \end{example}
+
+\subsubsection{Implementazione scoping dinamico}
+Per implementare lo scoping dinamico si utilizza l'algoritmo \textbf{shallow access}
+basato su \textbf{CRT} (Tabella Centrale dei Riferimenti) che utilizza strutture di dati
+centralizzate.
+
+\subsubsection*{Tabella centrale dei riferimenti}
+La tabella centrale dei riferimenti ha come obiettivo quello di evitare
+ricerche lineari mantenendo in modo \textbf{centralizzato} le informazioni necessarie per
+accedere al RdA dinamico corretto. La tabella contiene una riga per ogni identificatore
+usato nel programma e ogni \textbf{identificatore punta ad una lista} che ha in testa
+le informazioni dell'\textbf{ultimo RdA (dinamico) che definisce l'identificatore}.
+\begin{example}
+  Consideriamo la seguente sequenza di chiamate:
+  \[
+    A \to B \to C \to D
+  \] 
+  Con il seguente schema statico di annidamento delle definizioni (scoping statico):
+  \[
+    A: \left[ x,y \;
+      \begin{aligned}
+              &B: \left[ x,v \;\;
+              \stackrel{\mathcolor{white}{A}}{\mathcolor{white}{P}}
+              \right.\\
+              &C: \left[ w,x \;\;
+                \begin{aligned}
+                  &D: \left[ w
+                    \stackrel{\mathcolor{white}{A}}{\mathcolor{white}{P}}
+                    \right.\\
+                \end{aligned}
+              \right.
+      \end{aligned}
+    \right.
+  \]
+  La tabella centrale dei riferimenti è la seguente:
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{esempio_tabella_centrale_riferimenti}
+    \caption{Esempio di tabella centrale dei riferimenti}
+  \end{figure}
+  \begin{enumerate}
+    \item Alla chiamata di \( A \) viene creato l'RdA per \( A \) sullo stack e
+      viene inserito l'indirizzo dell'RdA in testa alla lista di \( x \).
+      Lo stesso vale per \( y \).
+
+    \item Alla chiamata di \( B \) \( y \) rimane inalterata e \( x \) viene ridefinita
+      e quindi viene inserito l'indirizzo dell'RdA di \( B \) in testa alla lista di
+      \( x \). Lo stesso vale per \( v \).
+
+    \item Alla chiamata di \( C \) \( x \) viene ridefinita e quindi viene inserito
+      l'indirizzo dell'RdA di \( C \) in testa alla lista di \( x \). Lo stesso vale per
+      \( w \).
+
+    \item Alla chiamata di \( D \) \( w \) viene ridefinita e quindi viene inserito l'indirizzo
+      dell'RdA di \( D \) in testa alla lista di \( w \).
+  \end{enumerate}
+  All'uscita da un blocco viene distrutto l'RdA e viene eliminata la testa di ogni lista
+  linkata da un identificatore definito in quel blocco.
+\end{example}
+
+\subsection{Implementazione delle procedure senza parametri}
+\subsubsection{Dichiarazione di procedure}
+Le procedure canno definite, quindi bisogna modificare le dichiarazioni:
+\[
+  \begin{aligned}
+    \mathcal{D}: \; D & \to  \texttt{ nil}  \\
+                      & \mid \texttt{const x: } \tau = e  \\
+                      & \mid \texttt{var x:}\; \tau = e \\
+                      & \mid \mathcolor{Blue}{\texttt{proc } P \texttt{() } C} \\
+                      & \mid D; D  \mid D \texttt{ in } D \\
+                      & \mid \rho
+  \end{aligned}
+\] 
+dove:
+\begin{itemize}
+  \item \( P \) è un identificatore per la procedura senza parametri
+  \item \( C \) è il corpo, cioè una sequenza di comandi
+\end{itemize}
+Aggiungiamo agli oggetti denotabili le \textbf{astrazioni}:
+\[
+  \lambda \varepsilon \;.\; C
+\] 
+cioè una funzione (\( \lambda \)) con una lista vuota di parametri (\( \varepsilon \))
+e un corpo \( C \).
+
+\vspace{1em}
+\noindent
+Definiamo la regola per la dichiarazione di una procedura:
+\[
+  \rho \vdash \left< \texttt{proc }  P \texttt{() } C , \sigma \right>
+  \to \left<\left[ P \mapsto \lambda \varepsilon \;.\; C' \right], \sigma  \right>
+\] 
+L'associazione di \( P \) al suo codice è costante, quindi non si ha nessuna
+locazione.
+\( C' \) è definito in modo diverso in base allo scoping:
+\begin{itemize}
+  \item Se si ha uno scoping statico si fissa l'ambiente presente al momento
+    della definizione di \( P \) per averlo alla sua esecuzione:
+    \[
+      C' = \rho ; C
+    \] 
+
+  \item Se si ha uno scoping statico si usa l'ambiente alla chiamata di \( P \):
+    \[
+      C' = C
+    \] 
+\end{itemize}
+
+\subsubsection{Chiamata di procedure}
+Le procedure vanno chiamate, quindi bisogna modificare i comandi:
+\[
+  \begin{aligned}
+    Com: \; C & \to \texttt{skip} \mid x := e  \\
+              & \mid C; C  \\
+              & \mid \texttt{while } B \texttt{ do } C \\
+              & \mid \texttt{if } B \texttt{ then } C \texttt{ else } C  \\
+              & \mid \mathcolor{Blue}{P \texttt{()}}
+  \end{aligned}
+\] 
+
+\vspace{1em}
+\noindent
+Definiamo la regola per la chiamata di una procedura:
+\[
+  \overline{\rho} \vdash \left< P \texttt{()}, \sigma \right> \to 
+  \left<C', \sigma  \right> \quad \overline{\rho}(P) = \lambda \varepsilon \;.\; C'
+\] 
+con una definizione di \texttt{proc P() C} nell'ambiente \( \rho \) e
+\[
+  C' = \begin{cases}
+    \rho ; C & \text{se si ha scoping statico} \\
+    C & \text{se si ha scoping dinamico}
+  \end{cases}
+\] 
+Nel caso di scoping statico si avrà \( \overline{\rho}[\rho] \) 
+
+\begin{exercise}
+  Dato il seguente codice:
+\begin{lstlisting}[escapechar=|, basicstyle=\ttfamily, columns=fullflexible, keepspaces=true]
+{
+  int b;
+  void |\textcolor{Red}{A}|() |\textcolor{Red}{\{}|
+    int |\textcolor{Red}{x = 0, y = 0, z = 0}|;
+
+    void |\textcolor{Green}{B}|() |\textcolor{Green}{\{}|
+      int |\textcolor{Green}{x = 3, w = 3}|;
+      x = y + z;
+    |\textcolor{Green}{\}}|
+
+    void |\textcolor{Blue}{C}|() |\textcolor{Blue}{\{}|
+      int |\textcolor{Blue}{y = 1, v = 1}|;
+
+      void |\textcolor{Orange}{D}|() |\textcolor{Orange}{\{}|
+        int |\textcolor{Orange}{z = 2, v = 2}|;
+        B();
+        v = x + y;
+      |\textcolor{Orange}{\}}|
+      D();
+      z = z + y;
+    |\textcolor{Blue}{\}}|
+    C(7);
+  |\textcolor{Red}{\}}|
+  A();
+}
+\end{lstlisting}
+\end{exercise}
+
 
 \end{document}
