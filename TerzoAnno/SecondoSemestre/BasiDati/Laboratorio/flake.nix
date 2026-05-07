@@ -10,7 +10,10 @@
     nixpkgs,
   }: let
     system = "x86_64-linux";
-    pkgs = import nixpkgs {inherit system;};
+    pkgs = import nixpkgs {
+      inherit system;
+      config.allowUnfree = true; # for mongodb
+    };
 
     packages = with pkgs; [
       postgresql_18
@@ -102,6 +105,21 @@
           psql -h dbserver.scienze.univr.it -U <userGIA> <userGIA>\n\n\
           Or via PostgreSQL connection URL:\n\
           postgresql://userGIA@dbserver.scienze.univr.it/userGIA\n"
+        '';
+      };
+
+      mongo = pkgs.mkShell {
+        packages = with pkgs; [
+          mongosh
+          mongodb-compass
+        ];
+
+        shellHook = ''
+          printf "MongoDB environment is ready.\n\n\
+          To connect to your cluster using the MongoDB Shell, use:\n\
+          mongosh \"mongodb+srv://<username>:<password>@<cluster-url>/<database>\"\n\n\
+          To connect using the GUI, run:\n\
+          mongodb-compass\n"
         '';
       };
     };
