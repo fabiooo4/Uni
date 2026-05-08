@@ -114,10 +114,11 @@
           mongodb-compass
         ];
 
+        # mongosh \"mongodb+srv://<username>:<password>@<cluster-url>/<database>\"\n\n\
         shellHook = ''
           printf "MongoDB environment is ready.\n\n\
           To connect to your cluster using the MongoDB Shell, use:\n\
-          mongosh \"mongodb+srv://<username>:<password>@<cluster-url>/<database>\"\n\n\
+          mongosh \"mongodb+srv://freecluster.7ev9td5.mongodb.net/\" --apiVersion 1 --username fabiooo4
           To connect using the GUI, run:\n\
           mongodb-compass\n"
         '';
