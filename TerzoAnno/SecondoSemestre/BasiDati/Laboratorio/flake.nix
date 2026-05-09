@@ -112,6 +112,7 @@
         packages = with pkgs; [
           mongosh
           mongodb-compass
+          typescript-language-server
         ];
 
         # mongosh \"mongodb+srv://<username>:<password>@<cluster-url>/<database>\"\n\n\
