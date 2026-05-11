@@ -18,6 +18,9 @@
     packages = with pkgs; [
       postgresql_18
       postgres-language-server
+      python3
+      python3Packages.psycopg2
+      basedpyright
     ];
   in {
     devShells.${system} = {

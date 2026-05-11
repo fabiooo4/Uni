@@ -98,7 +98,7 @@ end transaction;
 \end{lstlisting}
 \end{example}
 
-\subsubsection{Proprietà delle transazionei}
+\subsubsection{Proprietà delle transazioni}
 Una transazione ha 4 proprietà fondamentali, note come ACID:
 \begin{itemize}
   \item \textbf{Atomicità} (\textbf{A}tomicity):
@@ -170,7 +170,7 @@ Una transazione ha 4 proprietà fondamentali, note come ACID:
 Un DBMS che gestisce transazioni dovrebbe garantire per ogni transazione che esegue
 tutte queste proprietà.
 
-\subsection{Architettura di di un DBMS}
+\subsection{Architettura di un DBMS}
 L'architettura di un DBMS è composta da \textbf{moduli} che si occupano di gestire
 le diverse funzionalità del sistema.
 
@@ -3856,7 +3856,7 @@ Richiede comunque l'ipotesi di commit-proiezione.
   l'insieme dei conflitti:
   \[
     \begin{aligned}
-alignedCONFLITTI(S_2) =& 
+      CONFLITTI(S_2) =& 
       \{
         (r_1(x), w_3(x)),\;
         (w_1(x), w_3(x)),\;
@@ -5003,7 +5003,7 @@ features:
     Con la replicazione si aumenta l'\textbf{affidabilità}.
 
   \item \textbf{Sharding}: consiste nella suddivisione di un dataset di grandi 
-    dimensioni in parti più piccole. Con lo sharding si aumentana la
+    dimensioni in parti più piccole. Con lo sharding si aumenta la
     \textbf{scalabilità orizzontale}. Ogni shard viene replicato.
 \end{itemize}
 
