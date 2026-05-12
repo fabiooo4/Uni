@@ -6479,36 +6479,304 @@ con una definizione di \texttt{proc P() C} nell'ambiente \( \rho \) e
 \] 
 Nel caso di scoping statico si avrà \( \overline{\rho}[\rho] \) 
 
-\begin{exercise}
-  Dato il seguente codice:
-\begin{lstlisting}[escapechar=|, basicstyle=\ttfamily, columns=fullflexible, keepspaces=true]
-{
-  int b;
-  void |\textcolor{Red}{A}|() |\textcolor{Red}{\{}|
-    int |\textcolor{Red}{x = 0, y = 0, z = 0}|;
+\subsection{Implementazione delle procedure con passaggio di parametri}
+Le procedure senza parametri sono semplicemente zucchero sintattico, si vorrebbe
+però istanziare un blocco di codice in base a input diversi. I \textbf{parametri}
+sono quindi l'input della procedura che permettono una comunicazione tra chiamante
+e chiamato. La sintassi della funzione è la seguente:
+\[
+  \underbrace{\texttt{void}}_{
+    \substack{
+      \text{Tipo/valore}
+      \\
+      \text{di ritorno}
+    }
+  }
+  \texttt{fun} 
+  \underbrace{\texttt{(int x, int y)}}_{
+    \substack{
+      \text{Parametri formali}\\
+      \text{(Nella definizione}\\
+      \text{della procedura)}
+    }
+  }
+\] 
+Quando si chiama una procedura, i parametri in input sono detti parametri attuali:
+\[
+  \text{fun(2, 5)}
+\] 
+Ci sono diversi tipi di comunicazione tra chiamante e chiamato:
+\begin{itemize}
+  \item Passaggio per valore: il chiamante passa al chiamato una copia del valore del
+    parametro
 
-    void |\textcolor{Green}{B}|() |\textcolor{Green}{\{}|
-      int |\textcolor{Green}{x = 3, w = 3}|;
-      x = y + z;
-    |\textcolor{Green}{\}}|
+  \item Passaggio per riferimento: il chiamante passa al chiamato un riferimento alla
+    variabile del parametro, quindi il chiamato può modificare il valore del
+    parametro nel chiamante
 
-    void |\textcolor{Blue}{C}|() |\textcolor{Blue}{\{}|
-      int |\textcolor{Blue}{y = 1, v = 1}|;
+  \item Passaggio per risultato: il chiamante passa al chiamato una locazione di
+    memoria, quindi il chiamato può modificare il valore del parametro nel
+    chiamante, ma non può leggere il valore iniziale del parametro
 
-      void |\textcolor{Orange}{D}|() |\textcolor{Orange}{\{}|
-        int |\textcolor{Orange}{z = 2, v = 2}|;
-        B();
-        v = x + y;
-      |\textcolor{Orange}{\}}|
-      D();
-      z = z + y;
-    |\textcolor{Blue}{\}}|
-    C(7);
-  |\textcolor{Red}{\}}|
-  A();
+  \item Passaggio per valore-risultato: combina il passaggio per valore e per risultato
+\end{itemize}
+
+\vspace{1em}
+\noindent
+Gli aspetti implementativi da considerare per il passaggio di parametri sono i seguenti:
+\begin{itemize}
+  \item Modalità di passaggio (per valore, per riferimento, per risultato, per
+    valore-risultato)
+
+  \item Come avvinee l'associazione tra parametri attuali e parametri formali 
+    (tipicamente è posizionale)
+\end{itemize}
+
+\subsubsection{Direzione del passaggio dei parametri}
+Ci sono diverse direzioni per il passaggio dei parametri:
+\begin{itemize}
+  \item \textbf{In-mode}: \( \text{chiamante} \to \text{chiamato} \). Viene generata
+    una comunicazione in un unica direzione che va dal chiamante al chiamato.
+    I parametri vengono copiati e inviati al chiamato. La modalità di passaggio
+    dei parametri in-mode è il \textbf{passaggio per valore}
+
+  \item \textbf{Out-mode}: \( \text{chiamante} \leftarrow \text{chiamato} \).
+    I valori vengono inviati dal chiamato al chiamante tramite return, oppure 
+    tramite i parametri. La modalità di passaggio dei parametri out-mode è il
+    \textbf{passaggio per risultato}
+
+  \item \textbf{In-out-mode}: \( \text{chiamante} \leftrightarrow \text{chiamato} \).
+    È una combinazione di in-mode e out-mode e fornisce una doppia comunicazione.
+    Le modalità di passaggio dei parametri in-out-mode sono il
+    \textbf{passaggio per valore-risultato} e il \textbf{passaggio per riferimento}.
+\end{itemize}
+Queste direzioni non sono mutualmente esclusive. Anche l'ambiente globale è
+un canale di comunicazione che può essere usato in modo bidirezionale.
+
+\subsubsection{Passaggio per valore}
+Il valore del parametro attuale (eventualmente ottenuto come valutazione di
+un'espressione) viene passato come valore iniziale del
+corrispondente parametro formale. Viene implementato creando una \textbf{copia}
+del valore del parametro attuale nel formale.
+Ad esempio:
+\[
+  \texttt{fun(}
+  \underbrace{\texttt{x+1}}_{
+    \substack{
+      \text{Il parametro attuale}\\
+      \text{è un r-value}
+    }
+  }
+  \texttt{, y+2)}
+\] 
+Il passaggio per valore permette una certa \textbf{versabilità nella scritturaa dei parametri}
+attuali, ma lo svantaggio principale è l'\textbf{utilizzo della memoria} perchè ogni chiamata
+crea una copia dei parametri attuali.
+
+\vspace{1em}
+\noindent
+Considerando il seguente codice:
+\begin{lstlisting}[language=C]
+void foo(value int x) {
+  x = x + 1;
 }
-\end{lstlisting}
-\end{exercise}
 
+y = 1;
+foo(y + 1);
+\end{lstlisting}
+Si ha che:
+\begin{enumerate}
+  \item La chiamata a \texttt{foo} alloca \texttt{x} nell'ambiente locale di \texttt{foo}.
+
+  \item Alla chiamata \texttt{y+1} viene valutato, in questo caso a 2, e il valore
+    viene \textbf{copiato} nella cella riferita da \texttt{x}. Non c'è \textbf{nessun
+    legame} tra \texttt{x} e \texttt{y}.
+    
+  \item Alla terminazione di \texttt{foo} il RdA contenente \texttt{x} viene distrutto,
+    perdendo tutte le modifiche fatte a \texttt{x}. Questa metodologia \textbf{non} 
+    permette di comunicare al hciamante attraverso i parametri.
+\end{enumerate}
+
+\begin{example}
+  Consideriamo il seguente codice, con i parameteri passati per valore:
+\begin{lstlisting}
+void swap(value int a, value int b) {
+  int tmp = a;
+  a = b;
+  b = tmp;
+}
+
+int c = 3;
+int d = 4;
+swap(c, d);
+\end{lstlisting}
+  Si ha che:
+  \begin{enumerate}
+    \item Nell'esecuzione del main si ha che \( \left[ c \mapsto 3 \right] \) e
+      \( \left[ d \mapsto 4 \right] \) in memoria
+
+    \item Alla chiamata di swap vengono create le celle in memoria per i parametri:
+      \[
+        \left[ a \mapsto \varnothing \right] \quad \text{e} \quad
+        \left[ b \mapsto \varnothing \right] \quad \text{e} \quad
+        \left[ tmp \mapsto \varnothing \right]
+      \]
+
+    \item All'esecuzione di \texttt{swap} si ha che il valore di \( c \) viene copiato in \( a \)
+      e il valore di \( d \) viene copiato in \( b \), quindi:
+      \[
+        \left[ a \mapsto 3 \right] \quad \text{e} \quad
+        \left[ b \mapsto 4 \right] \quad \text{e} \quad
+        \left[ tmp \mapsto \varnothing \right]
+      \] 
+
+    \item Viene eseguito il corpo di \texttt{swap} e si scambiano i valori di \( a \) e \( b \), quindi:
+      \[
+        \left[ a \mapsto 4 \right] \quad \text{e} \quad
+        \left[ b \mapsto 3 \right] \quad \text{e} \quad
+        \left[ tmp \mapsto 3 \right]
+      \]
+
+    \item Alla terminazione di \texttt{swap} viene eliminato l'RdA di \texttt{swap},
+      quindi tutte le trasformazioni fatte vengono perse e rimane solo l'RdA del 
+      \texttt{main}:
+      \[
+        \left[ c \mapsto 3 \right] \quad \text{e} \quad
+        \left[ d \mapsto 4 \right]
+      \] 
+  \end{enumerate}
+\end{example}
+
+\begin{example}
+  Consideriamo il seguente codice JavaScript:
+\begin{lstlisting}
+var a = 2;
+var b = 3;
+
+function double(x, y) {
+  x = 2 * x;
+  y = 2 * y;
+
+  console.log(x + ' ' + y); // 4 6
+}
+
+console.log(double(a,b)); // undefined
+
+console.log(a + ' ' + b) // 2 3 
+\end{lstlisting}
+  Si osserva che i parametri sono stati passati per valore perchè \texttt{a} e \texttt{b}
+  sono rimasti invariati.
+\end{example}
+
+\subsubsection{Passaggio per riferimento}
+Viene passato un cammino di accesso al parametro formale (modalità In-Out). Il
+vantaggio è un uso efficiente della memoria, ma lo svantaggio è che vengono creati
+degli alias, cioè si hanno più nomi per la stessa cella di memoria che può avere
+degli effetti collaterali indesiderati.
+
+\vspace{1em}
+\noindent
+Considerando il seguente codice:
+\begin{lstlisting}[language=C]
+void foo(ref int x) {
+  x = x + 1;
+}
+
+y = 1;
+foo(y);
+\end{lstlisting}
+\begin{enumerate}
+  \item In questo caso i parametri attuali possono essere \textbf{solo l-value},
+    quindi riferimenti, ovvero oggetti che possono ricevere valori e non generarli.
+
+  \item Alla chiamata di \texttt{foo} si crea un RdA con una cella per \texttt{x}
+
+  \item All'esecuzione di \texttt{foo} \texttt{x} diventa un riferimento alla cella
+    riferita da \texttt{y}, quindi:
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}
+        \node[draw, rectangle, minimum size=0.5cm] (cell) at (0,0) {};
+        \node[left of=cell] (y) {\texttt{y}};
+        \node[right of=cell] (x) {\texttt{x}};
+
+        \draw[->] (y) -- (cell);
+        \draw[->] (x) -- (cell);
+      \end{tikzpicture}
+    \end{figure}
+
+  \item Alla terminazione di \texttt{foo} viene distrutto l'RdA di \texttt{foo}
+    contenente il riferimento \texttt{x}, ma tutte le trasformazioni fatte alla
+    cella di memoria che era riferita da \texttt{x} rimangono riferibili da \texttt{y}.
+\end{enumerate}
+
+\begin{example}
+  Consideriamo il seguente codice con parametri passati per riferimento:
+\begin{lstlisting}[language=c]
+void swap(ref int a, ref int b) {
+  int tmp = a;
+  a = b;
+  b = tmp;
+}
+
+int c = 3;
+int d = 4;
+swap(c, d);
+\end{lstlisting}
+  Si ha che:
+  \begin{enumerate}
+    \item All'esecuzione del \texttt{main} si creano le celle di memoria per \texttt{c}
+      e \texttt{d}:
+      \[
+        \left[ c \mapsto 3 \right] \quad \text{e} \quad
+        \left[ d \mapsto 4 \right]
+      \] 
+
+    \item Alla chiamata di \texttt{swap} si crea l'RdA per \texttt{swap} con le celle
+      per i parametri \texttt{a} e \texttt{b} che diventano riferimenti alle celle di
+      \texttt{c} e \texttt{d}, quindi:
+      \[
+        \left[ c \to 3 \leftarrow a \right] \quad \text{e} \quad
+        \left[ d \to 4 \leftarrow b \right] \quad \text{e} \quad
+        \left[ tmp \mapsto \varnothing \right]
+      \]
+
+    \item All'esecuzione di \texttt{swap} si scambiano i valori di \( a \) e \( b \),
+      quindi:
+      \[
+        \left[ c \to 4 \leftarrow a \right] \quad \text{e} \quad
+        \left[ d \to 3 \leftarrow b \right] \quad \text{e} \quad
+        \left[ tmp \mapsto 3 \right]
+      \]
+
+    \item Alla terminazione di \texttt{swap} viene eliminato l'RdA di \texttt{swap},
+      ma tutte le trasformazioni fatte alle celle di memoria che erano riferite da
+      \texttt{a} e \texttt{b} rimangono riferibili da \texttt{c} e \texttt{d}, quindi:
+      \[
+        \left[ c \mapsto 4 \right] \quad \text{e} \quad
+        \left[ d \mapsto 3 \right]
+      \]
+  \end{enumerate}
+\end{example}
+
+\begin{example}
+  Consideriamo il seguente codice JavaScript:
+\begin{lstlisting}
+var a = {val: 2};
+var b = {val: 3};
+
+function double(x, y) {
+  x.val = 2 * x.val;
+  y.val = 2 * y.val;
+
+  console.log(x.val + ' ' + y.val) // 4 6
+}
+
+console.log(double(a,b)); // undefined
+console.log(a.val + ' ' + b.val) // 4 6
+\end{lstlisting}
+  Si osserva che i parametri sono stati passati per riferimento perchè \texttt{a} e \texttt{b}
+  sono stati modificati.
+\end{example}
 
 \end{document}
