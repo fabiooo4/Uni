@@ -6779,4 +6779,205 @@ console.log(a.val + ' ' + b.val) // 4 6
   sono stati modificati.
 \end{example}
 
+\subsection{Funzioni di ordine superiore}
+Nel caso di \textbf{funzioni di ordine superiore}, cioè in cui una funzione può
+essere passata come argomento ad un altra funzione, le regole di visibilità e di
+scoping possono non essere più sufficienti.
+Il problema principale è la risoluzione
+dei riferimenti \textbf{non locali} in procedure/funzioni passate come parametro ad
+altre funzioni.
+In particolare nel caso dinamico sono necessarie anche delle \textbf{regole di
+binding}.
+
+\subsubsection{Regole di binding}
+Per le procedure con ambiente \textbf{non locale}, in base allo scoping le \textbf{regole
+di binding} sono:
+\begin{itemize}
+  \item \textbf{Dinamico}:
+    \begin{itemize}
+      \item \textbf{Deep binding}: Per le procedure passate per parametro, l'ambiente valido è quello al
+        momento del passaggio della funzione, cioè il momento della creazione
+        del legame con il parametro formale.
+
+      \item \textbf{Shallow binding}: Per le procedure passate per parametro, l'ambiente valido al momento
+        dell'esecuzione della procedura mediante il parametro formale.
+    \end{itemize}
+
+  \item \textbf{Statico}:
+    Per tutte le procedure, anche quelle passate per parametro,
+    l'ambiente valido è quello al momento della definizione della
+    procedura.
+\end{itemize}
+
+\begin{example}
+  Consideriamo il seguente codice:
+\begin{lstlisting}[language=c]
+  int x = 2;
+  int z = 0;
+
+  int f(int y) {
+    // x non locale 
+    return x * y;
+  }
+
+  int g(int h(int n)) {
+    int x = 7;
+    z = h(3) + x;
+  }
+
+  {
+    int x = 5;
+    g(f);
+  }
+\end{lstlisting}
+  Si ha una procedura (\texttt{f}) con ambiente non locale, quindi c'è bisogno di
+  regole di scoping, ed eventualmente di regole di binding. Inoltre la funzione
+  \texttt{f} con ambiente non locale viene passata come parametro ad un altra
+  funzione, quindi lo scoping può non essere sufficiente e bisogna introdurre le
+  regole di binding.
+
+  Le variabili non locali per \texttt{g} sono \texttt{z} e \texttt{x}, per \texttt{x}
+  bisogna usare le regole di scoping e di binding, mentre per \texttt{z} basta usare
+  le regole di scoping.
+  \begin{itemize}
+    \item L'ambiente con scoping statico è: \texttt{x = 4}
+      \begin{enumerate}
+        \item Si esegue la chiamata di \texttt{g(f)}
+          \begin{enumerate}
+            \item \texttt{z = h(3) + x}
+            \item \texttt{x} è locale a \texttt{g} e vale \texttt{x = 7}
+              \begin{enumerate}
+                \item Si esegue la chiamata di \texttt{h}
+                \item \texttt{x * 3 = 4 * 3 = 12}
+              \end{enumerate}
+            \item \texttt{z = 12 + 7 = 19}
+          \end{enumerate}
+      \end{enumerate}
+    \item L'ambiente dinamico con deep binding è: \texttt{x = 5}
+      \begin{enumerate}
+        \item Si esegue la chiamata di \texttt{g(f)}
+          \begin{enumerate}
+            \item \texttt{z = h(3) + x}
+            \item \texttt{x} è locale a \texttt{g} e vale \texttt{x = 7}
+              \begin{enumerate}
+                \item Si esegue la chiamata di \texttt{h}
+                \item \texttt{x} non è locale e si usa lo scoping dinamico con deep binding,
+                  quindi si prende l'ambiente al momento del passaggio di \texttt{f} a
+                  \texttt{g}, che è \texttt{x = 5}
+                \item \texttt{x * 3 = 5 * 3 = 15}
+              \end{enumerate}
+            \item \texttt{z = 15 + 7 = 22}
+          \end{enumerate}
+      \end{enumerate}
+    \item L'ambiente dinamico con shallow binding è: \texttt{x = 7}
+      \begin{enumerate}
+        \item Si esegue la chiamata di \texttt{g(f)}
+          \begin{enumerate}
+            \item \texttt{z = h(3) + x}
+            \item \texttt{x} è locale a \texttt{g} e vale \texttt{x = 7}
+              \begin{enumerate}
+                \item Si esegue la chiamata di \texttt{h}
+                \item \texttt{x} non è locale e si usa lo scoping dinamico con shallow binding,
+                  quindi si prende l'ambiente al momento dell'esecuzione di \texttt{h}, che
+                  è \texttt{x = 7}
+                \item \texttt{x * 3 = 7 * 3 = 21}
+              \end{enumerate}
+            \item \texttt{z = 21 + 7 = 28}
+          \end{enumerate}
+      \end{enumerate}
+  \end{itemize}
+\end{example}
+
+\begin{example}
+  Alcuni esempi in linguaggi comuni:
+  \begin{itemize}
+    \item \textbf{JavaScript}:
+\begin{lstlisting}
+x = 4;
+
+function f(y) {
+  return x * y;
+}
+
+function g(h) {
+  var x = 7;
+  return h(3) + x;
+}
+
+function callmap() {
+  var x = 5;
+  return g(f);
+}
+
+console.log(callmap()); // 19 
+\end{lstlisting}
+      In questo caso si ha scoping statico, quindi \( x \) vale 4.
+
+    \item \textbf{Lisp}:
+\begin{lstlisting}[language=Lisp]
+(defvar x 4)
+(defun f (y) (* x y))
+
+(defun g (h)
+  (let ((x 7))
+    (+ x (funcall h 3))
+  )
+)
+
+(let ((x 5))
+  (print (g 'f)) ; 28
+)
+\end{lstlisting}
+      In questo caso si ha scoping dinamico con shallow binding, quindi \( x \) vale 7.
+
+    \item \textbf{Perl}:
+\begin{lstlisting}[language=Perl]
+$x = 4;
+
+my $f = sub {
+  my ($y) = @_;
+  $y * $x;
+};
+
+my $g = sub {
+  my $x = 7;
+  my ($h) = @_;
+  sub {
+    $h->(@_) + $x;
+  };
+};
+
+sub callmap {
+  local $x = 5;
+  my $call = $g->($f);
+  print $call->(3);
+};
+
+callmap; // 22
+\end{lstlisting}
+      In questo caso si ha scoping dinamico con deep binding, quindi \( x \) vale 5.
+
+    \item \textbf{Python}:
+\begin{lstlisting}
+x = 4
+
+fef f(y):
+    return x * y
+
+def g(h):
+    x = 7
+    return result(n):
+        return h(n) + x
+
+def callmap():
+    x = 5
+    call = g(f)
+    print(call(x))
+
+callmap() # 27
+\end{lstlisting}
+      In questo caso si ha scoping statico, quindi \( x \) vale 4.
+  \end{itemize}
+\end{example}
+
 \end{document}
