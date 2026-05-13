@@ -22,13 +22,15 @@ lines: lines line
 
 line:  expr '\n' {printf("= %d\n", $1);}
 
-expr: expr expr '+' { $$ = $1 + $2;}
-    | expr expr '-' { $$ = $1 - $2;}
-    | expr expr '*' { $$ = $1 * $2;}
-    | expr expr '/' { $$ = $1 / $2;}
-    | expr expr '^' { $$ = my_pow($1, $2);}
-    | INTEGER       { $$ = $1; }
-    ;
+expr : expr '+' expr { $$ = $1 + $3;}
+     | expr '-' expr { $$ = $1 - $3;}
+     | expr '*' expr { $$ = $1 * $3;}
+     | expr '/' expr { $$ = $1 / $3;}
+     | expr '^' expr { $$ = my_pow($1, $3);}
+     | term
+     ;
+
+term : INTEGER       { $$ = $1; }
 %%
 
 void yyerror(char const *s) {

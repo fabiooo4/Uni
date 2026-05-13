@@ -5,15 +5,20 @@
 #include <string.h>
 
 extern int yylineno;
+extern int character;
 
 int yylex();
 int yyparse();
 void yyerror(char const *s);
 int my_pow(int base, int exp);
+
+// Indexed by yyllval = character - 'a'
+int memory[26] = {0};
 %}
 
 // token is a keyword, and the token name must be the same in yacc and lex
 %token INTEGER
+%token LETTER
 
 %%
 lines: lines line
@@ -28,7 +33,11 @@ expr: expr expr '+' { $$ = $1 + $2;}
     | expr expr '/' { $$ = $1 / $2;}
     | expr expr '^' { $$ = my_pow($1, $2);}
     | INTEGER       { $$ = $1; }
+    | LETTER        { $$ = memory[($1) - 'a']; }
+    | decl
     ;
+
+decl : LETTER '=' INTEGER { memory[character] = $3; }
 %%
 
 void yyerror(char const *s) {
