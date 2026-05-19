@@ -6980,4 +6980,178 @@ callmap() # 27
   \end{itemize}
 \end{example}
 
+\subsection{Ricorsione}
+La ricorsione è un metodo alternativo alla costruzione di procedure iterative.
+\begin{definition}
+  Una procedura è \textbf{ricorsiva} se è definita in funzione di se stessa,
+  cioè se all'interno della procedura esiste una chiamata alla procedura stessa.
+\end{definition}
+
+\begin{example}
+  Un esempio di procedura ricorsiva è la funzione fattoriale:
+  \[
+    fact(n) = \begin{cases}
+      n & \text{se } n \le 1 \\
+      n \cdot fact(n-1) & \text{altrimenti} 
+    \end{cases}
+  \] 
+\begin{lstlisting}[language=c]
+int fattoriale(int n) {
+  if (n <= 1) {
+    return n;
+  } else {
+    return n * fattoriale(n - 1);
+  }
+}
+\end{lstlisting}
+\end{example}
+
+\vspace{1em}
+\noindent
+Le funzioni ricorsive terminanti devono essere ben fondate, cioè devono avere una condizione di
+terminazione, altrimenti si ha una ricorsione infinita. 
+\begin{example}
+  Le seguenti funzioni non sono ben fondate:
+\begin{lstlisting}[language=c]
+int fun1(int n) {
+  if (n == 1) {
+    return fun1(n);
+  }
+}
+
+int fun2(int n) {
+  if (n == 0) {
+    return 1;
+  } else {
+    return fun2(n) + 1
+  }
+}
+\end{lstlisting}
+\end{example}
+
+\subsubsection{Ricorsione vs iterazione}
+\begin{itemize}
+  \item L'iterazione è sempre possibile in qualunque linguaggio di programmazione
+    turing completo.
+
+  \item La ricorsione è possibile se le procedure possono essere definite in termini
+    di se stesse. Ci sono due tipi di ricorsione:
+    \begin{itemize}
+      \item Tramite allocazione dinamica
+      \item Ricorsione in coda
+    \end{itemize}
+\end{itemize}
+
+\begin{theorem}
+  Ogni programma iterativo può essere riscritto in modo ricorsivo e viceversa ogni
+  programma iterativo può essere riscritto in modo ricorsivo.
+\end{theorem}
+
+\begin{example}
+  Consideriamo il codice del fattoriale:
+\begin{lstlisting}[language=c]
+int fact(int n) {
+  if (n <= 1) {
+    return n;
+  } else {
+    return n * fact(n - 1);
+  }
+}
+\end{lstlisting}
+La chiamata di \texttt{fact(3)} genera la seguente sequenza di chiamate:
+\begin{enumerate}
+  \item Lo stack al primo passo è:
+    % TODO: disegnare lo stack
+\end{enumerate}
+\end{example}
+
+\subsubsection{Ricorsione in coda}
+Consiste nell'aumentare il numero di parametri (solitamente uno) in cui si memorizza
+il calcolo temporaneo. Con questo metodo, la chiamata ricorsiva è l'ultima operazione
+eseguita dalla procedura.
+
+\begin{definition}
+  Siano \( f \) e \( g \) due funzioni, dove \( f \) chiama \( g \).
+  \begin{itemize}
+    \item 
+      La chiamata di \( g \) è detta in coda se \( f \) restituisce il valore restituito
+      da \( g \) senza ulteriori computazioni.
+
+    \item \( f \) è ricorsiva in coda se la chiamata ricorsiva a se stessa è in coda
+  \end{itemize}
+\end{definition}
+
+\begin{example}
+  La funzione fattoriale non è ricorsiva in coda perchè dopo la chiamata ricorsiva 
+  viene moltiplicato il risultato per \( n \).
+\end{example}
+
+\begin{example}
+  Scriviamo il fattoriale con ricorsione in coda:
+\begin{lstlisting}[language=c]
+int fact(int n) {
+  // il secondo parametro e' il valore iniziale per res
+  // che indicativamente e' il risultato del caso base 
+  fact-rc(n, 1);
+}
+
+int fact-rc(int n, int res) {
+  if (n == 1) { // questo indica il valore del risultato iniziale
+    return res;
+  } else {
+    return fact-rc(n - 1, n * res);
+  }
+}
+\end{lstlisting}
+  L'esecuzione di \texttt{fact(3)} genera la seguente sequenza di chiamate:
+  \begin{enumerate}
+    \item \texttt{fact(3)} chiama \texttt{fact-rc(3, 1)}
+    \item \texttt{fact-rc(3, 1)} chiama \texttt{fact-rc(2, 3)}
+    \item \texttt{fact-rc(2, 3)} chiama \texttt{fact-rc(1, 6)}
+    \item \texttt{fact-rc(1, 6)} siccome \texttt{n = 1} restituisce
+      \texttt{res}, cioè 6
+  \end{enumerate}
+  Di fatto si inverte l'ordine di esecuzione rispetto alla versione non ricorsiva in
+  coda.
+\end{example}
+
+\begin{example}
+  Un altro esempio di ricorsione è la funzione di Fibonacci:
+  \[
+    \begin{cases}
+      fib(0) = 1 \\
+      fib(1) = 1 \\
+      fib(n) = fib(n-1) + fib(n-2) \quad \text{se } n \ge 2
+    \end{cases}
+  \] 
+\begin{lstlisting}[language=c]
+int fib(int n) {
+  if (n <= 1) {
+    return n;
+  } else {
+    return fib(n - 1) + fib(n - 2);
+  }
+}
+\end{lstlisting}
+  Questa funzione ha complessità esponenziale sia in tempo che in spazio. La ricorsione
+  in coda ottimizza sia la complessità in spazio che in tempo.
+  Il problema principale è che ad ogni chiamata ricorsiva si fa lo stesso calcolo
+  più volte. La funzione in ricorsione in coda è la seguente:
+\begin{lstlisting}[language=c]
+int fib(int n) {
+  fib_rc(n, 1, 1);
+}
+
+// res1 e' il risultato al passo precedente
+// res2 e' il risultato calcolato
+int fib_rc(int n, int res1, int res2) {
+  if (n <= 1) {
+    return res2;
+  } else {
+    return fib_rc(n - 1, res2, res1 + res2);
+  }
+}
+\end{lstlisting}
+\end{example}
+
 \end{document}
