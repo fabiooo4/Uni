@@ -1,0 +1,58 @@
+%{
+#include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+extern int yylineno;
+extern int character;
+
+int yylex();
+int yyparse();
+void yyerror(char const *s);
+int my_pow(int base, int exp);
+
+// Indexed by yyllval = character - 'a'
+int memory[26] = {0};
+%}
+
+// token is a keyword, and the token name must be the same in yacc and lex
+%token INTEGER
+%token LETTER
+
+%%
+lines: lines line
+     | line
+     ;
+
+line:  expr '\n' {printf("= %d\n", $1);}
+
+expr: expr expr '+' { $$ = $1 + $2;}
+    | expr expr '-' { $$ = $1 - $2;}
+    | expr expr '*' { $$ = $1 * $2;}
+    | expr expr '/' { $$ = $1 / $2;}
+    | expr expr '^' { $$ = my_pow($1, $2);}
+    | INTEGER       { $$ = $1; }
+    | LETTER        { $$ = memory[($1) - 'a']; }
+    | decl
+    ;
+
+decl : LETTER '=' INTEGER { memory[character] = $3; }
+%%
+
+void yyerror(char const *s) {
+  fprintf(stderr, "Line number %d: %s\n", yylineno, s);
+}
+
+int my_pow(int base, int exp) {
+  int result = 1;
+  for (int i = 0; i < exp; i++) {
+    result *= base;
+  }
+  return result;
+}
+
+int main(){
+  yyparse();
+  return 0;
+}
