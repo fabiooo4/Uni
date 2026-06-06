@@ -2728,7 +2728,7 @@ ad albero con le seguenti caratteristiche:
 \end{itemize}
 
 \subsubsection*{Struttura}
-La struttura di un B+-Tree con \textbf{fan-out} \( = n \), cioè con \( n \) figli per
+La struttura di un B+-Tree con \textbf{fan-out} \( = n \), cioè con massimo \( n \) figli per
 ogni nodo, è la seguente:
 \begin{itemize}
   \item \textbf{Nodo foglia}:
@@ -2994,20 +2994,17 @@ dove:
 \end{itemize}
 Il vantaggio di questa struttura è che il costo della ricerca è costante e uguale
 ad un accesso alla memoria secondaria. Lo svantaggio è quello delle \textbf{collisioni},
-cioè valori di chiavi diversi possono produrre lo stesso indirizzo. Una funzione
+cioè valori di chiave diversi possono produrre lo stesso indirizzo. Una funzione
 di hash \textbf{buona} minimizza il numero di collisioni.
 
-\begin{definition}
-  Il fattore di riempimento definisce la frazione di spazio fisico mediamente
-  utilizzata da un blocco
-\end{definition}
-
+\vspace{3em}
 \noindent
 Siano:
 \begin{itemize}
   \item \( T \) il numero di tuple
   \item \( F \) il fattore blocco, cioè il numero di tuple che ci stanno in un blocco
-  \item \( f \) il fattore di riempimento
+  \item \( f \) il fattore di riempimento, cioè la frazione di spazio fisico mediamente
+    utilizzata da un blocco
 \end{itemize}
 Si ha che il numero di blocchi è definito come:
 \[
@@ -3028,7 +3025,7 @@ Si definiscono due funzioni:
     \] 
 \end{itemize}
 
-\vspace{3em}
+\vspace{4em}
 \noindent
 \begin{example}
   Un esempio di tabella di hash è il seguente:
@@ -5288,21 +5285,44 @@ per gestire le query sono:
     \begin{itemize}
       \item \textbf{Read concern}:
         \begin{itemize}
-          \item Local: ritorna il dato più recente disponibile nel nodo, ma non è
-            detto che tutte le transazioni vedano lo stesso dato
+          \item \textbf{Local}: ritorna il dato disponibile più recente nel nodo al momento in
+            cui viene eseguita la query indipendentemente dallo stato di replicazione
 
-          \item Majority: garantisce che il dato letto sia quello confermato dalla
-            maggioranza dei nodi e questo garantisce che tutte le transazioni vedano
-            lo stesso risultato
+          \item \textbf{Majority}: ritorna il dato che è stato confermato dalla maggior parte
+            dei nodi del replica set. Questo garantisce un'alta consistenza
 
-          \item Snapshot: ritorna il dato presente nello snapshot della maggioranza
-            dei nodi, questo garantisce che tutte le transazioni vedano lo stesso risultato
+          \item \textbf{Linearizable}: ritorna il dato confermato da tutti. Questo garantisce
+            la massima consistenza, ma è anche il più lento
+
+          \item \textbf{Snapshot}: ritorna i dati confermati dalla maggioranza dei nodi in
+            un certo momento (anche antecedente al momento corrente)
         \end{itemize}
 
       \item \textbf{Write concern}
         \begin{itemize}
-          \item Majority: richiede che la maggioranza dei nodi in un replica set
-            confermi il dato
+          \item \( w \): è il numero di nodi del replica set che devono aver confermato
+            la scrittura prima che l'operazione sia considerata conclusa. I valori possibili
+            sono:
+            \begin{itemize}
+              \item \( 0 \): non si aspetta che il nodo primario notifichi la scrittura nel
+                proprio oplog
+
+              \item \( 1 \): si aspetta soltanto il nodo primario
+
+              \item \( majority \): si aspetta che la maggioranza dei nodi del replica set
+                confermi la scrittura
+
+              \item un numero specifico \( n \): si aspetta che \( n \) nodi confermino la
+                scrittura.
+            \end{itemize}
+            Più un valore è basso più si riduce la latenza e più è alto più si garantisce la
+            persistenza.
+
+          \item \( j \): è un flag che richiede la conferma che l'operazione di scrittura sia
+            stata scritta sul disco
+
+          \item \( wtimeout \): è un limite di tempo oltre il quale se l'operazione di scrittura
+            non è terminata si restituisce un errore
         \end{itemize}
     \end{itemize}
 
