@@ -5145,7 +5145,7 @@ da una copia} (Read Concern). Per farlo si può specificare un livello di read c
   \item \textbf{Linearizable}: ritorna il dato confermato da tutti. Questo garantisce
     la massima consistenza, ma è anche il più lento
 
-  \item \textbf{snapshot}: ritorna i dati confermati dalla maggioranza dei nodi in
+  \item \textbf{Snapshot}: ritorna i dati confermati dalla maggioranza dei nodi in
     un certo momento (anche antecedente al momento corrente)
 \end{itemize}
 
@@ -5235,7 +5235,7 @@ in chunk:
 
 \subsubsection{Balancer}
 Il balancer è un processo in background che si assicura che la quantità di dati
-assegnati a ciascun shard la più bilanciata possibile. Quando la quantità di dati
+assegnati a ciascun shard sia la più bilanciata possibile. Quando la quantità di dati
 assegnata ad un particolare shard raggiunge un certo threshold, il balancer 
 redistribuisce con principio di località i chunk tra gli shard. La redistribuzione
 funziona solo per chunk piccoli, quindi:
@@ -5277,7 +5277,7 @@ per gestire le query sono:
         sempre l'ultimo valore confermato. Questo però introduce problemi di
         prestazioni, ma garantisce più affidabilità
 
-      \item \textbf{Eventual consistency}:garantisce che quando i dati sono stati
+      \item \textbf{Eventual consistency}: garantisce che quando i dati sono stati
         aggiornati e propagati, tutte le letture future ritorneranno eventualmente
         l'ultimo stato confermato. Questo fornisce alte prestazioni.
     \end{itemize}
