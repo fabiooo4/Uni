@@ -3088,7 +3088,7 @@ peggiorano perchè bisogna accedere ai bucket di overflow.
 \section{Transazioni concorrenti}
 Il componente dell'architettura del DBMS che si occupa di gestire le transazioni
 concorrenti è il \textbf{gestore della concorrenza} che riceve richieste di accesso
-ai dati e decide se autorizzarle o meno, eventualmente riordinandol o ritardandole,
+ai dati e decide se autorizzarle o meno, eventualmente riordinandole o ritardandole,
 come se fosse uno scheduler.
 \begin{figure}[H]
   \centering
@@ -3941,7 +3941,7 @@ Richiede comunque l'ipotesi di commit-proiezione.
   view-serializzabile.
 \end{example}
 
-\subsubsection{Locking a due fasi stretto}
+\subsubsection{Locking a due fasi}
 Il locking a due fasi (2PL, Two-Phase Locking) è il metodo applicato nei sistemi reali
 per la gestione dell'esecuzione concorrente delle transazioni perchè non richiede di
 conoscere in anticipo l'esito delle transazioni. \textbf{Il locking a due fasi è un sottoinsieme
