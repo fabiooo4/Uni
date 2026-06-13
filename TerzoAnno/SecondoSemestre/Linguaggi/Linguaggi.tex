@@ -161,7 +161,7 @@ I linguaggi di programmazione si possono classificare come:
     \noindent
     I linguaggi si possono ulteriormente dividere in:
     \begin{itemize}
-      \item \textbf{Linguaggi puri}: 
+      \item \textbf{Linguaggi impuri}: 
         I linguaggi imperativi e alcuni linguaggi funzionali sono detti \textbf{funzionali impuri}
         perchè permettono di descrivere algoritmi con variabili e assegnamenti che
         possono ricevere degli "effetti collaterali" (side effects) cioè modifiche
@@ -209,7 +209,7 @@ Per poter eseguire un programma serve un altro programma che lo esegue che è de
 \begin{definition}[Macchina astratta]
   Dato un linguaggio di programmazione \( L \), la macchina astratta per \( L \)
   \( M_L \) è un insieme di \textbf{strutture dati} e \textbf{algoritmi} che permettono
-  di memoriazzare e eseguire programmi scritti in \( L \).
+  di memorizzare e eseguire programmi scritti in \( L \).
 
   \vspace{1em}
   \noindent
@@ -489,7 +489,7 @@ su un programma.
 \end{definition}
 
 \section{Descrivere i linguaggi di programmazione}
-I linguaggi di programmazione sono dei linguaggi, quindi hanno in caratteristiche
+I linguaggi di programmazione sono dei linguaggi, quindi hanno caratteristiche
 in comune con i linguaggi e quindi anche quelli naturali. Le caratteristiche sono:
 \begin{itemize}
   \item \textbf{Sintassi}: Regole di formazione. Determinano quali sono
@@ -2621,7 +2621,7 @@ Le regole per le dichiarazioni sono:
 
 \subsubsection{Elaborazione}
 \begin{definition}[Funzione di elaborazione]
-  La gunzione di elaborazione genera un ambiente dinamico a partire da una dichiarazione
+  La funzione di elaborazione genera un ambiente dinamico a partire da una dichiarazione
   della grammatica:
   \[
     Elab: \mathcal{D} \to Env
@@ -4386,7 +4386,7 @@ else result = 1;
   \[
     \texttt{while not x = 0 do x := x - 1}
   \] 
-  L'identificaotre libero è \( \left\{ x \right\} \) quindi dobbiamo fornire un
+  L'identificatore libero è \( \left\{ x \right\} \) quindi dobbiamo fornire un
   ambiente e una memoria per poter eseguire il while. Consideriamo ad esempio:
   \[
     \begin{aligned}
@@ -4935,7 +4935,7 @@ intervenga una dichiarazione dello stesso nome.
 
 \subsubsection{Scope}
 Lo scope di una dichiarazione di \texttt{x} è la porzione di codice in cui tutte
-le occorrenze di \texttt{x}fanno riferimento alla dichiarazione tramite il legame
+le occorrenze di \texttt{x} fanno riferimento alla dichiarazione tramite il legame
 definito dalla dichiarazione.
 La \textbf{regola di visibilità definisce lo scope}, ovvero la porzione di codice
 in cui le occorrenze della variabile di chiarata fanno riferimento alla dichiarazione.
@@ -5791,12 +5791,6 @@ print(x);
   \end{enumerate}
 \end{example}
 
-\vspace{1em}
-\noindent
-Lo scoping statico è più difficile da implementare, ma è più efficiente e
-garantisce una maggiore comprensibilità del codice, inoltre è calcolabile
-a tempo di compilazione.
-
 \subsubsection{Scoping dinamico}
 Consideriamo il seguente codice:
 \begin{lstlisting}[escapechar=|, basicstyle=\ttfamily, columns=fullflexible, keepspaces=true]
@@ -6198,7 +6192,7 @@ contiene la definizione della procedura chiamata in atto.
   \begin{itemize}
     \item \( SD(A) = 0 \) 
     \item \( SD(B) = 1 + SD(A) = 1 = SD(C) \) 
-    \item \( SD(B) = 1 + SD(C) = 2 = SD(E) \) 
+    \item \( SD(D) = 1 + SD(C) = 2 = SD(E) \) 
   \end{itemize}
 
   Lo stack è composto da:
@@ -6799,7 +6793,8 @@ di binding} sono:
         momento del passaggio della funzione, cioè il momento della creazione
         del legame con il parametro formale.
 
-      \item \textbf{Shallow binding}: Per le procedure passate per parametro, l'ambiente valido al momento
+      \item \textbf{Shallow binding}: Per le procedure passate per parametro, l'ambiente valido
+        è quello al momento
         dell'esecuzione della procedura mediante il parametro formale.
     \end{itemize}
 
